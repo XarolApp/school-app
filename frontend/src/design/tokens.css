@@ -1,0 +1,158 @@
+/* AUTO-GENERATED from src/design/tokens.js — do not edit by hand.
+ * Regenerate with:  npm run tokens
+ *
+ * Both new token names and the legacy aliases the existing stylesheets consume
+ * are emitted here, so onboarding.css / App.css pick up the palette unchanged.
+ */
+
+:root {
+  --bg: #FBFAF8;
+  --surface: #FFFFFF;
+  --surface2: #F4F2EE;
+  --ink: #17161B;
+  --ink2: #5C5866;
+  --ink3: #8E8A98;
+  --line: #E6E3DD;
+  --line2: #D6D2CA;
+  --acc: #aa3bff;
+  --acc-ink: #FFFFFF;
+  --acc-soft: #F6EEFF;
+  --acc-line: #E2CCFF;
+  --ok: #2F7D5F;
+  --ok-soft: #E9F2ED;
+  --board: #EFEDE8;
+  --frost: rgba(255,255,255,0.82);
+  --glow: rgba(170,59,255,0.13);
+  --shadow: 0 1px 2px rgba(23,22,27,.05), 0 18px 40px -20px rgba(23,22,27,.18);
+  --text: #5C5866;
+  --text-h: #17161B;
+  --border: #E6E3DD;
+  --code-bg: #F4F2EE;
+  --accent: #aa3bff;
+  --accent-bg: #F6EEFF;
+  --accent-border: #E2CCFF;
+  --social-bg: #F4F2EE;
+  --sans: 'Hanken Grotesk', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --mono: ui-monospace, Consolas, monospace;
+  --r-card: 18px;
+  --r-button: 14px;
+  --r-option: 16px;
+  --r-chip: 10px;
+  --ob-radius: 18px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0C0B0F;
+    --surface: #15141A;
+    --surface2: #1E1C24;
+    --ink: #F2F0F5;
+    --ink2: #A5A1B0;
+    --ink3: #75717F;
+    --line: #262430;
+    --line2: #343141;
+    --acc: #c084fc;
+    --acc-ink: #1A1020;
+    --acc-soft: #221A2E;
+    --acc-line: #3E3054;
+    --ok: #6FCFA6;
+    --ok-soft: #16241E;
+    --board: #08080B;
+    --frost: rgba(28,26,36,0.78);
+    --glow: rgba(192,132,252,0.20);
+    --shadow: 0 1px 2px rgba(0,0,0,.5), 0 20px 44px -20px rgba(0,0,0,.75);
+    --text: #A5A1B0;
+    --text-h: #F2F0F5;
+    --border: #262430;
+    --code-bg: #1E1C24;
+    --accent: #c084fc;
+    --accent-bg: #221A2E;
+    --accent-border: #3E3054;
+    --social-bg: #1E1C24;
+    --sans: 'Hanken Grotesk', system-ui, 'Segoe UI', Roboto, sans-serif;
+    --heading: 'Newsreader', Georgia, 'Times New Roman', serif;
+    --mono: ui-monospace, Consolas, monospace;
+    --r-card: 18px;
+    --r-button: 14px;
+    --r-option: 16px;
+    --r-chip: 10px;
+    --ob-radius: 18px;
+  }
+}
+
+/* Explicit override hooks — let a future in-app theme switch force a mode
+   regardless of the OS setting. */
+:root[data-theme='light'] {
+  --bg: #FBFAF8;
+  --surface: #FFFFFF;
+  --surface2: #F4F2EE;
+  --ink: #17161B;
+  --ink2: #5C5866;
+  --ink3: #8E8A98;
+  --line: #E6E3DD;
+  --line2: #D6D2CA;
+  --acc: #aa3bff;
+  --acc-ink: #FFFFFF;
+  --acc-soft: #F6EEFF;
+  --acc-line: #E2CCFF;
+  --ok: #2F7D5F;
+  --ok-soft: #E9F2ED;
+  --board: #EFEDE8;
+  --frost: rgba(255,255,255,0.82);
+  --glow: rgba(170,59,255,0.13);
+  --shadow: 0 1px 2px rgba(23,22,27,.05), 0 18px 40px -20px rgba(23,22,27,.18);
+  --text: #5C5866;
+  --text-h: #17161B;
+  --border: #E6E3DD;
+  --code-bg: #F4F2EE;
+  --accent: #aa3bff;
+  --accent-bg: #F6EEFF;
+  --accent-border: #E2CCFF;
+  --social-bg: #F4F2EE;
+  --sans: 'Hanken Grotesk', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --mono: ui-monospace, Consolas, monospace;
+  --r-card: 18px;
+  --r-button: 14px;
+  --r-option: 16px;
+  --r-chip: 10px;
+  --ob-radius: 18px;
+}
+
+:root[data-theme='dark'] {
+  --bg: #0C0B0F;
+  --surface: #15141A;
+  --surface2: #1E1C24;
+  --ink: #F2F0F5;
+  --ink2: #A5A1B0;
+  --ink3: #75717F;
+  --line: #262430;
+  --line2: #343141;
+  --acc: #c084fc;
+  --acc-ink: #1A1020;
+  --acc-soft: #221A2E;
+  --acc-line: #3E3054;
+  --ok: #6FCFA6;
+  --ok-soft: #16241E;
+  --board: #08080B;
+  --frost: rgba(28,26,36,0.78);
+  --glow: rgba(192,132,252,0.20);
+  --shadow: 0 1px 2px rgba(0,0,0,.5), 0 20px 44px -20px rgba(0,0,0,.75);
+  --text: #A5A1B0;
+  --text-h: #F2F0F5;
+  --border: #262430;
+  --code-bg: #1E1C24;
+  --accent: #c084fc;
+  --accent-bg: #221A2E;
+  --accent-border: #3E3054;
+  --social-bg: #1E1C24;
+  --sans: 'Hanken Grotesk', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --mono: ui-monospace, Consolas, monospace;
+  --r-card: 18px;
+  --r-button: 14px;
+  --r-option: 16px;
+  --r-chip: 10px;
+  --ob-radius: 18px;
+}

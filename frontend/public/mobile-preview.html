@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<title>ŠkolaMatch — mobilní náhled</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    height: 100%;
+    background: #1c1b20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: system-ui, sans-serif;
+  }
+  .toolbar {
+    position: fixed;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    background: #2a2930;
+    border-radius: 999px;
+    padding: 6px 6px 6px 14px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.35);
+    z-index: 10;
+  }
+  .toolbar span {
+    color: #9a97a3;
+    font-size: 12px;
+  }
+  .toolbar input {
+    width: 220px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid #423f4a;
+    background: #1c1b20;
+    color: #f2f0f5;
+    font-size: 13px;
+  }
+  .toolbar button {
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: none;
+    background: #aa3bff;
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .phone {
+    width: 390px;
+    height: 844px;
+    background: #000;
+    border-radius: 55px;
+    padding: 14px;
+    box-shadow:
+      0 0 0 2px #3a3940,
+      0 30px 60px -12px rgba(0,0,0,.6),
+      0 18px 36px -18px rgba(0,0,0,.6);
+  }
+  .screen {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    border-radius: 42px;
+    overflow: hidden;
+  }
+  .notch {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 28px;
+    background: #000;
+    border-radius: 0 0 18px 18px;
+    z-index: 5;
+  }
+  iframe {
+    width: 390px;
+    height: 844px;
+    border: none;
+    display: block;
+    /* iOS-style status bar area is left to the app itself */
+  }
+</style>
+</head>
+<body>
+
+  <div class="toolbar">
+    <span>Cesta:</span>
+    <input id="path" value="/onboarding" spellcheck="false" />
+    <button onclick="go()">Přejít</button>
+    <button onclick="reload()" style="background:#423f4a">⟳</button>
+  </div>
+
+  <div class="phone">
+    <div class="screen">
+      <div class="notch"></div>
+      <iframe id="frame" src="http://localhost:5173/onboarding"></iframe>
+    </div>
+  </div>
+
+  <script>
+    const input = document.getElementById('path');
+    const frame = document.getElementById('frame');
+    function go() {
+      const path = input.value.startsWith('/') ? input.value : '/' + input.value;
+      frame.src = 'http://localhost:5173' + path;
+    }
+    function reload() {
+      frame.src = frame.src;
+    }
+    input.addEventListener('keydown', (e) => { if (e.key === 'Enter') go(); });
+  </script>
+
+</body>
+</html>

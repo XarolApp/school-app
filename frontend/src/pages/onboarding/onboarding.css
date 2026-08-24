@@ -1,0 +1,1223 @@
+/* ŠkolaMatch onboarding — mobile-first.
+   A 15-year-old meets this on a phone browser, so every layout starts at the
+   phone and only widens at 640px+. Every animation is disabled under
+   prefers-reduced-motion at the bottom of this file. */
+
+.ob-root {
+  /* Card radius comes from the design system (src/design/tokens.js).
+     Kept as a local alias so existing rules referencing --ob-radius still work. */
+  --ob-radius: var(--r-card);
+  --ob-gap: 12px;
+  text-align: left;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+.ob-screen {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 16px 20px 24px;
+  box-sizing: border-box;
+  gap: 20px;
+}
+
+.ob-screen-wide {
+  max-width: 720px;
+}
+
+.ob-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+
+/* --- header / progress ---------------------------------------------------- */
+.ob-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 4px;
+}
+
+.ob-back {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-h);
+  border-radius: 999px;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+
+.ob-back-loose {
+  align-self: flex-start;
+  margin-bottom: 8px;
+}
+
+.ob-progress {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ob-progress-track {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.ob-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent);
+  transition: width 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ob-progress-label {
+  font-size: 13px;
+  color: var(--text);
+}
+
+/* --- typography ----------------------------------------------------------- */
+/* Serif headings at weight 400 — the design never bolds the serif; gravity
+   comes from size and tight tracking, not weight. */
+.ob-title,
+.ob-title-xl {
+  font-family: var(--heading);
+  color: var(--text-h);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  margin: 0;
+  text-wrap: pretty;
+}
+
+.ob-title {
+  font-size: 32px;
+  line-height: 1.12;
+}
+
+.ob-title-xl {
+  font-size: 40px;
+  line-height: 1.06;
+}
+
+.ob-subtitle {
+  font-size: 16px;
+  color: var(--text-h);
+  margin: 0 0 4px;
+  font-weight: 600;
+}
+
+.ob-lead {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text);
+  margin: 0;
+}
+
+.ob-hint,
+.ob-microcopy {
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--text);
+  margin: 0;
+  opacity: 0.85;
+}
+
+.ob-honesty {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--text);
+  border-left: 3px solid var(--border);
+  padding-left: 10px;
+  margin: 0;
+}
+
+.ob-eyebrow {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.ob-reframe {
+  font-size: 17px;
+  line-height: 1.45;
+  color: var(--text-h);
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--ob-radius);
+  padding: 14px 16px;
+  margin: 0;
+}
+
+.ob-reassure {
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--text-h);
+  background: var(--social-bg);
+  border-radius: var(--ob-radius);
+  padding: 12px 14px;
+  margin: 0;
+}
+
+.ob-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* --- hero / welcome ------------------------------------------------------- */
+.ob-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  justify-content: center;
+  flex: 1;
+  padding-top: 32px;
+}
+
+.ob-logo {
+  font-weight: 800;
+  letter-spacing: -0.4px;
+  color: var(--accent);
+  font-size: 18px;
+}
+
+.ob-proof-line {
+  font-size: 14px;
+  color: var(--text);
+  margin: 0;
+}
+
+/* --- role fork ------------------------------------------------------------ */
+.ob-fork {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+  justify-content: center;
+}
+
+.ob-fork-cards {
+  display: grid;
+  gap: var(--ob-gap);
+  margin-top: 4px;
+}
+
+.ob-fork-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+  padding: 20px 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--ob-radius);
+  background: transparent;
+  color: var(--text-h);
+  font: inherit;
+  cursor: pointer;
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.ob-fork-card:hover,
+.ob-fork-card:focus-visible {
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+  transform: translateY(-2px);
+}
+
+.ob-fork-card strong {
+  font-size: 19px;
+}
+
+.ob-fork-emoji {
+  font-size: 28px;
+}
+
+.ob-fork-sub {
+  font-size: 14px;
+  color: var(--text);
+}
+
+/* --- options -------------------------------------------------------------- */
+.ob-options {
+  display: grid;
+  gap: 10px;
+}
+
+.ob-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-option);
+  background: var(--surface);
+  color: var(--text-h);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 140ms ease, background 140ms ease, transform 140ms ease;
+}
+
+.ob-option:hover,
+.ob-option:focus-visible {
+  border-color: var(--accent-border);
+}
+
+.ob-option:active {
+  transform: scale(0.99);
+}
+
+/* Selection is outline + soft tint, never a solid accent fill.
+   The 0.5px extra border is added as an inset shadow so nothing reflows. */
+.ob-option.is-selected {
+  border-color: var(--acc);
+  background: var(--acc-soft);
+  box-shadow: inset 0 0 0 0.5px var(--acc);
+}
+
+.ob-option.is-unsure {
+  opacity: 0.9;
+  font-style: italic;
+}
+
+.ob-option-mark {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  border: 2px solid var(--border);
+  position: relative;
+  transition: border-color 140ms ease, background 140ms ease;
+}
+
+.ob-option-mark.is-multi {
+  border-radius: 6px;
+}
+
+.ob-option.is-selected .ob-option-mark {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.ob-option.is-selected .ob-option-mark::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: inherit;
+  background: var(--bg);
+}
+
+.ob-option-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.ob-option-sub {
+  font-size: 13px;
+  color: var(--text);
+}
+
+.ob-select-wrap {
+  display: block;
+}
+
+.ob-select {
+  width: 100%;
+  padding: 14px 16px;
+  font: inherit;
+  font-size: 16px;
+  color: var(--text-h);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--ob-radius);
+}
+
+.ob-live {
+  font-size: 14px;
+  color: var(--text-h);
+  background: var(--social-bg);
+  border-radius: 999px;
+  padding: 8px 14px;
+  align-self: flex-start;
+  margin: 0;
+}
+
+.ob-live strong {
+  color: var(--accent);
+}
+
+/* --- actions -------------------------------------------------------------- */
+.ob-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: stretch;
+  position: sticky;
+  bottom: 0;
+  padding-top: 8px;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  background: linear-gradient(to top, var(--bg) 70%, transparent);
+}
+
+.ob-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 56px;
+  padding: 15px 20px;
+  border-radius: var(--r-button);
+  border: 1px solid transparent;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 140ms ease, opacity 140ms ease;
+}
+
+.ob-btn:active {
+  transform: scale(0.985);
+}
+
+.ob-btn[disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.ob-btn-primary {
+  background: var(--acc);
+  color: var(--acc-ink);
+}
+
+.ob-btn-ghost {
+  background: var(--surface);
+  border-color: var(--line2);
+  color: var(--text-h);
+}
+
+.ob-skip {
+  background: none;
+  border: none;
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 6px;
+}
+
+/* --- stakes --------------------------------------------------------------- */
+.ob-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.ob-stat-number {
+  font-size: 54px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: -2px;
+  line-height: 1;
+}
+
+.ob-stat-unit {
+  font-size: 20px;
+  color: var(--text);
+}
+
+/* --- mirroring ------------------------------------------------------------ */
+.ob-mirror-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.ob-mirror-list li {
+  padding: 14px 16px;
+  border-radius: var(--ob-radius);
+  background: var(--social-bg);
+  color: var(--text-h);
+  font-size: 16px;
+}
+
+/* --- honest expectation --------------------------------------------------- */
+.ob-honest-block {
+  border: 1px solid var(--border);
+  border-radius: var(--ob-radius);
+  padding: 14px 16px;
+}
+
+.ob-honest-block-warn {
+  border-style: dashed;
+}
+
+/* --- calculating ---------------------------------------------------------- */
+.ob-calc {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.ob-calc-ring {
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  border: 4px solid var(--border);
+  border-top-color: var(--accent);
+  animation: ob-spin 900ms linear infinite;
+}
+
+.ob-calc-ring.is-static {
+  animation: none;
+  border-top-color: var(--accent);
+}
+
+@keyframes ob-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ob-calc-steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.ob-calc-steps li {
+  display: flex;
+  gap: 10px;
+  font-size: 16px;
+  color: var(--text);
+  opacity: 0.45;
+  transition: opacity 260ms ease;
+}
+
+.ob-calc-steps li.is-active {
+  opacity: 1;
+  color: var(--text-h);
+}
+
+.ob-calc-steps li.is-done {
+  opacity: 0.75;
+}
+
+.ob-calc-mark {
+  color: var(--accent);
+}
+
+/* --- reveal / matches ----------------------------------------------------- */
+.ob-reveal {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 16px;
+}
+
+.ob-match {
+  border: 1px solid var(--border);
+  border-radius: var(--ob-radius);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--bg);
+}
+
+.ob-match-head {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.ob-match-rank {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1.2;
+}
+
+.ob-match-name {
+  margin: 0;
+  font-size: 18px;
+  color: var(--text-h);
+  line-height: 1.25;
+}
+
+.ob-match-loc,
+.ob-match-programs {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.ob-band {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border-radius: var(--r-chip);
+  background: var(--surface2);
+}
+
+/* Green is reserved exclusively for match strength — never generic success,
+   never decoration. This is the only place --ok may appear. */
+.ob-band-strong {
+  background: var(--ok-soft);
+  border: 1px solid transparent;
+}
+
+.ob-band-strong .ob-band-label {
+  color: var(--ok);
+  font-weight: 600;
+}
+
+.ob-band-label {
+  color: var(--text-h);
+  font-size: 16px;
+}
+
+.ob-band-basis,
+.ob-band-confidence {
+  font-size: 13px;
+  color: var(--text);
+}
+
+.ob-match-why {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.ob-match.is-locked {
+  position: relative;
+  opacity: 0.95;
+}
+
+.ob-match.is-locked .ob-match-name {
+  filter: blur(4px);
+  user-select: none;
+}
+
+.ob-match-lock {
+  font-size: 13px;
+  color: var(--text);
+  border-top: 1px dashed var(--border);
+  padding-top: 10px;
+}
+
+.ob-locked-block {
+  display: grid;
+  gap: 10px;
+}
+
+.ob-locked-list {
+  display: grid;
+  gap: 10px;
+}
+
+.ob-share {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px;
+  border-radius: var(--ob-radius);
+  border: 1px dashed var(--border);
+}
+
+.ob-share-title {
+  margin: 0;
+  font-size: 15px;
+  color: var(--text-h);
+  font-weight: 600;
+}
+
+.ob-share-note {
+  font-size: 13px;
+  color: var(--text);
+}
+
+.ob-demo-notice {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text-h);
+  background: var(--code-bg);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+/* --- timeline / summary --------------------------------------------------- */
+.ob-timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 18px;
+  border-left: 2px solid var(--border);
+  display: grid;
+  gap: 18px;
+}
+
+.ob-timeline li {
+  display: grid;
+  gap: 2px;
+  position: relative;
+}
+
+.ob-timeline li::before {
+  content: '';
+  position: absolute;
+  left: -25px;
+  top: 6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+.ob-timeline-when {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.ob-timeline-what {
+  font-size: 16px;
+  color: var(--text-h);
+}
+
+/* --- proof ---------------------------------------------------------------- */
+.ob-proof-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.ob-proof-card {
+  display: grid;
+  gap: 4px;
+  padding: 14px 16px;
+  border-radius: var(--ob-radius);
+  border: 1px solid var(--border);
+}
+
+.ob-proof-card strong {
+  color: var(--text-h);
+  font-size: 15px;
+}
+
+.ob-proof-card span {
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.ob-testimonials {
+  display: grid;
+  gap: 10px;
+}
+
+.ob-testimonial {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: var(--ob-radius);
+  background: var(--social-bg);
+  font-size: 15px;
+}
+
+.ob-testimonial cite {
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
+  font-style: normal;
+  color: var(--text);
+}
+
+/* --- paywall -------------------------------------------------------------- */
+.ob-paywall {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 12px;
+}
+
+.ob-outcomes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.ob-outcomes li {
+  position: relative;
+  padding-left: 26px;
+  font-size: 16px;
+  color: var(--text-h);
+  line-height: 1.4;
+}
+
+.ob-outcomes li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.ob-offer {
+  display: grid;
+  gap: 4px;
+  padding: 14px 16px;
+  border-radius: var(--ob-radius);
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+}
+
+.ob-offer strong {
+  color: var(--text-h);
+  font-size: 16px;
+}
+
+.ob-offer-timer {
+  font-family: var(--mono);
+  font-size: 15px;
+  color: var(--accent);
+}
+
+.ob-offer-note {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+.ob-plans {
+  display: grid;
+  gap: 10px;
+}
+
+.ob-plan {
+  display: grid;
+  gap: 6px;
+  text-align: left;
+  padding: 16px;
+  border-radius: var(--ob-radius);
+  border: 2px solid var(--border);
+  background: transparent;
+  color: var(--text-h);
+  font: inherit;
+  cursor: pointer;
+  transition: border-color 140ms ease, background 140ms ease;
+}
+
+.ob-plan.is-selected {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+}
+
+.ob-plan-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.ob-plan-name {
+  font-weight: 700;
+  font-size: 17px;
+}
+
+.ob-plan-tag {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  border: 1px solid var(--accent-border);
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+
+.ob-plan-price {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.ob-plan-strike {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text);
+  opacity: 0.8;
+}
+
+.ob-plan-suffix {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.ob-plan-sub,
+.ob-plan-pitch,
+.ob-plan-trial {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+.ob-plan-trial {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.ob-price-frame {
+  margin: 0;
+  font-size: 15px;
+  color: var(--text-h);
+}
+
+.ob-timeline-trial ol {
+  margin: 8px 0 0;
+  padding-left: 20px;
+  display: grid;
+  gap: 8px;
+  font-size: 15px;
+}
+
+.ob-timeline-trial strong {
+  color: var(--text-h);
+}
+
+.ob-cta-cluster {
+  display: grid;
+  gap: 10px;
+  position: sticky;
+  bottom: 0;
+  padding: 10px 0 env(safe-area-inset-bottom, 8px);
+  background: linear-gradient(to top, var(--bg) 78%, transparent);
+}
+
+.ob-trust {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.ob-mock-note {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-h);
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.ob-plan-pitch {
+  color: var(--text);
+  opacity: 0.95;
+}
+
+/* Trial pointer — shown when the pre-selected plan has no trial, so the
+   easy-exit option stays discoverable without being pushed. */
+.ob-trial-pointer {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.ob-inline-link {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: var(--accent);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Trust anchors immediately adjacent to the CTA (§1.6). Sits directly above
+   the sticky action cluster so it is the last thing read before the button. */
+.ob-cta-proof {
+  display: grid;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: var(--ob-radius);
+  border: 1px solid var(--border);
+  background: var(--code-bg);
+}
+
+.ob-cta-proof-count {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.ob-cta-proof-quote {
+  margin: 0;
+  display: grid;
+  gap: 4px;
+  font-size: 14px;
+  color: var(--text-h);
+}
+
+.ob-cta-proof-quote p {
+  margin: 0;
+}
+
+.ob-cta-proof-quote cite {
+  font-style: normal;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.ob-cta-proof-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--text);
+}
+
+.ob-cta-proof-list li {
+  position: relative;
+  padding-left: 20px;
+}
+
+.ob-cta-proof-list li::before {
+  content: '\2713';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* A promise we have not built yet is stated as not-promised, never hidden. */
+.ob-trust-unbuilt {
+  font-style: italic;
+}
+
+.ob-confirm-terms {
+  font-size: 14px;
+  color: var(--text);
+}
+
+/* --- parental confirmation ------------------------------------------------ */
+.ob-confirm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 24px;
+  flex: 1;
+}
+
+.ob-confirm-box {
+  display: grid;
+  gap: 6px;
+  padding: 14px 16px;
+  border-radius: var(--ob-radius);
+  border: 1px solid var(--border);
+}
+
+.ob-confirm-line {
+  margin: 0;
+  font-size: 15px;
+  color: var(--text-h);
+}
+
+.ob-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--text-h);
+  cursor: pointer;
+}
+
+.ob-check input {
+  margin-top: 3px;
+  width: 20px;
+  height: 20px;
+  accent-color: var(--accent);
+  flex: 0 0 auto;
+}
+
+.ob-confirm-alt {
+  display: grid;
+  gap: 8px;
+  border-top: 1px dashed var(--border);
+  padding-top: 14px;
+}
+
+/* --- post-onboarding checklist -------------------------------------------- */
+.ob-done {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 24px;
+  flex: 1;
+}
+
+.ob-checklist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.ob-checklist li {
+  padding: 12px 14px;
+  border-radius: var(--ob-radius);
+  border: 1px solid var(--border);
+}
+
+.ob-checklist .is-done {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* --- confetti (student branch only) --------------------------------------- */
+.ob-confetti {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 5;
+}
+
+.ob-confetti-piece {
+  position: absolute;
+  top: -12px;
+  width: 8px;
+  height: 14px;
+  border-radius: 2px;
+  animation: ob-fall 2400ms ease-in forwards;
+}
+
+.ob-confetti-c0 {
+  background: var(--accent);
+}
+.ob-confetti-c1 {
+  background: #ffb703;
+}
+.ob-confetti-c2 {
+  background: #06d6a0;
+}
+.ob-confetti-c3 {
+  background: #ef476f;
+}
+
+@keyframes ob-fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(105svh) rotate(520deg);
+    opacity: 0;
+  }
+}
+
+/* --- wider screens -------------------------------------------------------- */
+@media (min-width: 640px) {
+  .ob-screen {
+    padding: 24px 24px 32px;
+  }
+  .ob-title {
+    font-size: 30px;
+  }
+  .ob-title-xl {
+    font-size: 44px;
+  }
+  .ob-fork-cards {
+    grid-template-columns: 1fr 1fr;
+  }
+  .ob-proof-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .ob-actions,
+  .ob-cta-cluster {
+    position: static;
+    background: none;
+  }
+}
+
+/* --- reduced motion: every animation above is opt-in ---------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .ob-root *,
+  .ob-root *::before,
+  .ob-root *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .ob-confetti {
+    display: none;
+  }
+  .ob-calc-ring {
+    animation: none;
+  }
+}
+
+/* --- role switch ---------------------------------------------------------- */
+.ob-roleswitch-bar {
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 10px 20px 0;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ob-roleswitch {
+  background: none;
+  border: none;
+  padding: 4px;
+  font: inherit;
+  font-size: 13px;
+  color: var(--text);
+  text-decoration: underline;
+  cursor: pointer;
+}

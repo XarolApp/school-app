@@ -1,0 +1,163 @@
+import { useMemo } from 'react';
+import { ObButton, ObOption, ObScreen } from '../../../components/onboarding/ObKit';
+import { countCandidates } from '../../../lib/matching';
+import { useOnboarding } from '../useOnboarding';
+import { QUESTIONS, optionLabel, questionCopy, questionOptions } from '../quizQuestions';
+
+/**
+ * Screens 6-15 — the quiz. ONE QUESTION PER SCREEN.
+ *
+ * Single-question screens raise quiz completion by up to 40% versus one long
+ * vertical form, by removing visual overwhelm and decision paralysis.
+ *
+ * Mechanics on this screen:
+ *  - Smart defaults are pre-selected where an honest modal answer exists,
+ *    which cuts decision fatigue and drop-off.
+ *  - A live counter of matching schools updates after every answer. This is the
+ *    variable-reward loop — the moving number is the anticipation engine.
+ *    DEVIATION, stated deliberately: the playbook calls for a live "match %".
+ *    With only name/location/programs in the database, a percentage would be
+ *    invented precision. A real count of real candidates narrowing down is the
+ *    same dopamine mechanic and is true.
+ *  - "Přeskočit" is on every screen and never costs the user anything. A skip
+ *    drops the component and widens the confidence interval instead of
+ *    lowering the score (zero-shame rule).
+ */
+function QuizQuestion({ step }) {
+  const {
+    role,
+    answers,
+    setAnswer,
+    goNext,
+    goBack,
+    progress,
+    schools,
+    cleanedAnswers,
+  } = useOnboarding();
+  const parent = role === 'parent';
+  const question = QUESTIONS[step.questionIndex];
+  const copy = questionCopy(question, role);
+  const options = questionOptions(question, role);
+  const value = answers[question.key];
+
+  const candidates = useMemo(
+    () => countCandidates(schools, cleanedAnswers, role || 'student'),
+    [schools, cleanedAnswers, role]
+  );
+
+  const answered = Array.isArray(value) ? value.length > 0 : Boolean(value);
+
+  const selectSingle = (optionValue) => {
+    setAnswer(question.key, optionValue);
+    // No auto-advance: an accidental tap that skips a screen is far more
+    // annoying on a phone than one extra tap on "Pokračovat".
+  };
+
+  const toggleMulti = (optionValue) => {
+    const current = Array.isArray(value) ? value : [];
+    setAnswer(
+      question.key,
+      current.includes(optionValue)
+        ? current.filter((v) => v !== optionValue)
+        : [...current, optionValue]
+    );
+  };
+
+  const clear = () => setAnswer(question.key, question.type === 'multi' ? [] : '');
+
+  return (
+    <ObScreen
+      onBack={goBack}
+      progress={progress}
+      progressLabel={`Otázka ${step.questionIndex + 1} z ${QUESTIONS.length}`}
+      actions={
+        <>
+          <ObButton onClick={goNext} disabled={false}>
+            {answered ? 'Pokračovat' : 'Pokračovat bez odpovědi'}
+          </ObButton>
+          <button
+            type="button"
+            className="ob-skip"
+            onClick={() => {
+              clear();
+              goNext();
+            }}
+          >
+            {parent ? 'Přeskočit — nevím' : 'Přeskočit'}
+          </button>
+        </>
+      }
+    >
+      <h1 className="ob-title">{copy.title}</h1>
+      {copy.hint && <p className="ob-hint">{copy.hint}</p>}
+
+      {question.type === 'select' ? (
+        <div className="ob-select-wrap">
+          <select
+            className="ob-select"
+            aria-label={copy.title}
+            value={value || ''}
+            onChange={(e) => setAnswer(question.key, e.target.value)}
+          >
+            <option value="">{copy.placeholder}</option>
+            {options.map((o) => (
+              <option key={o.value} value={o.value}>
+                {optionLabel(o, role)}
+              </option>
+            ))}
+          </select>
+        </div>
+      ) : (
+        <div className="ob-options">
+          {options.map((o) => {
+            const selected =
+              question.type === 'multi'
+                ? Array.isArray(value) && value.includes(o.value)
+                : value === o.value;
+            return (
+              <ObOption
+                key={o.value}
+                multi={question.type === 'multi'}
+                unsure={Boolean(o.unsure)}
+                selected={selected}
+                onClick={() =>
+                  question.type === 'multi' ? toggleMulti(o.value) : selectSingle(o.value)
+                }
+              >
+                {optionLabel(o, role)}
+              </ObOption>
+            );
+          })}
+        </div>
+      )}
+
+      {question.honesty && <p className="ob-honesty">{question.honesty}</p>}
+
+      {schools.length > 0 && (
+        <p className="ob-live" aria-live="polite">
+          {candidates.fitting > 0 ? (
+            <>
+              Zatím {parent ? 'vyhovuje' : 'ti sedí'}{' '}
+              <strong>{candidates.fitting}</strong> {schoolWord(candidates.fitting)} z{' '}
+              {candidates.total}
+            </>
+          ) : (
+            <>
+              {parent
+                ? 'Zatím zpřesňujeme výběr z ' + candidates.total + ' škol'
+                : 'Zatím vybíráme z ' + candidates.total + ' škol'}
+            </>
+          )}
+        </p>
+      )}
+    </ObScreen>
+  );
+}
+
+function schoolWord(n) {
+  if (n === 1) return 'škola';
+  if (n >= 2 && n <= 4) return 'školy';
+  return 'škol';
+}
+
+export default QuizQuestion;
