@@ -1,3 +1,63 @@
+# 📋 Session Handoff — Read Once, Then Delete This Section
+
+You are picking this project up on a device that has never run it before (or
+resuming after a gap). This section exists to save you the archaeology of
+reconstructing recent state from git log and conversation history. It is
+scratch, not documentation: **once you have read it, delete this entire
+section — from the `# Session Handoff` heading down to the horizontal rule
+below — in the same session, before doing anything else the user asked for.**
+Everything durable is already in the sections below; nothing here should be
+re-added once removed.
+
+**Repo state as of this note:** everything is committed and pushed to
+`origin/main` (GitHub: `XarolApp/school-app`); working tree was clean when this
+was written. There is no half-finished code sitting uncommitted anywhere — the
+most recent work (an interactive district-picker map for the questionnaire's
+location question, covering all 22 Prague *správní obvody*, a "select
+all = don't care" shortcut, and a couple of small UX fixes to it) shipped and
+was verified before being pushed. If you run `git status` and see it isn't
+clean, that's new since this note — treat it as this session's own in-progress
+work, not a resumption of something old.
+
+**What is NOT on GitHub, and has to be recreated by hand on this device:**
+- Root `.env` — `SUPABASE_URL`, `SUPABASE_KEY`, `SUPABASE_SERVICE_ROLE_KEY`,
+  `PORT`, `FRONTEND_URL`, `DEVELOPER_EMAILS`, `STRIPE_SECRET_KEY`,
+  `STRIPE_PRICE_ID`, `STRIPE_WEBHOOK_SECRET`, `TRUST_PROXY`,
+  `OPENROUTER_API_KEY`, `OPENROUTER_MODEL`. Values come from the Supabase
+  project dashboard (Settings → API) and the OpenRouter dashboard
+  (openrouter.ai/keys); Stripe's three are unset until Stripe go-live (Open
+  Task below).
+- `frontend/.env` — `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`,
+  `VITE_API_BASE_URL`, `VITE_TURNSTILE_SITE_KEY`.
+- `node_modules/` in both the root and `frontend/` — run `npm install` in
+  each; nothing else is needed to reconstruct them.
+- Neither file's *absence* is a code problem. Do not try to reverse-engineer
+  values from the code — ask the user for them, or have them paste in their
+  existing copies from another machine.
+
+**The live Supabase database already has the current schema** —
+`supabase-setup.sql` was confirmed against it directly this session (queried
+`questionnaire_runs.label`/`is_default`/`archived_at` and got real rows back),
+so there is no pending migration to run. Re-run the file only after a future
+schema change; it is idempotent.
+
+**The Browser-pane ban two lines below is device-specific, not project
+policy.** It exists because of a GPU crash on the machine this was written on
+(Intel integrated graphics + Claude Desktop's Chromium process). If this is a
+different machine, that failure mode may simply not apply here — form your own
+judgment (or ask the user) about whether the Browser pane is safe to use on
+this hardware, rather than inheriting the restriction unquestioned. If you
+confirm it's fine here, update or remove that note instead of routing around
+it silently.
+
+**Where to look next:** the `## Open Tasks` section near the bottom of this
+file is the real, current backlog (three items right now, none blocking, none
+urgent). There is no other pending direction beyond what's written there —
+if the user hasn't given you a new task yet, that list plus asking them is
+the right next move, not guessing at unstated priorities.
+
+---
+
 # Important
 - **Do not use the Browser pane / preview tools** (`mcp__Claude_Browser__*`,
   `preview_start`, `preview_stop`). They crash Claude Desktop on this machine
@@ -890,12 +950,8 @@ Never put the service_role key in `frontend/.env` — it bypasses RLS.
       make on their own
 
 12. **What's NOT Built Yet (MVP Scope)**
-    1. **Run Supabase SQL** — execute `supabase-setup.sql` in Supabase SQL Editor to create tables, trigger, and RLS policies (required before signup/login works). Re-run it to add `questionnaire_runs`; the whole file is safe to run repeatedly.
-       **⚠️ Currently un-run:** the `label` / `is_default` / `archived_at`
-       columns and the two indexes added for multiple answer sets are in the file
-       but not yet in the database — verified by probing it. Until it is re-run,
-       `/api/questionnaire` and every school endpoint will error on the missing
-       column
+    1. **Run Supabase SQL** — execute `supabase-setup.sql` in Supabase SQL Editor to create tables, trigger, and RLS policies (required before signup/login works). The whole file is safe to run repeatedly; re-run it after any future schema change.
+       **Confirmed run:** probed the live database directly — `questionnaire_runs.label`/`is_default`/`archived_at` all exist and are queryable. This file's schema and the real database agree as of this session.
     2. **Stripe go-live** — decide price, create the product/price in Stripe, add `STRIPE_SECRET_KEY`, `STRIPE_PRICE_ID`, `STRIPE_WEBHOOK_SECRET` to `.env` (~2h)
     3. **Backend pagination** — CRITICAL for ~500+ schools; see note below.
        (The questionnaire used to share this ceiling by stuffing all 60 schools
