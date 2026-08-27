@@ -1,120 +1,3578 @@
+/* ==========================================================================
+   ŠkolaMatch — Component layer
+   Built entirely on the tokens in index.css. Selectors are kept flat and
+   single-purpose so new pages can compose these classes without the cascade
+   fighting itself.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Shell & layout primitives
+   -------------------------------------------------------------------------- */
+
 .app-shell {
-  min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
 }
 
-.navbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 32px;
-  border-bottom: 1px solid var(--border);
-}
-
-.navbar-brand {
-  font-weight: 700;
-  font-size: 18px;
-  text-decoration: none;
-  color: var(--text-h);
-}
-
-.navbar-links {
-  display: flex;
-  gap: 20px;
-}
-
-.navbar-links a {
-  text-decoration: none;
-  color: var(--text-h);
+.container {
+  width: 100%;
+  max-width: var(--content-width);
+  margin-inline: auto;
+  padding-inline: var(--space-6);
 }
 
 .app-content {
   flex: 1;
-  padding: 32px;
-  max-width: 960px;
-  width: 100%;
-  margin: 0 auto;
-  box-sizing: border-box;
+  padding-block: var(--space-7) var(--space-9);
 }
 
-.home-actions {
+/* A page is a vertical stack — children space themselves with gap, never
+   with their own margins. */
+.page {
   display: flex;
-  gap: 12px;
-  margin-top: 24px;
+  flex-direction: column;
+  gap: var(--space-6);
 }
+
+.page-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-width: var(--prose-width);
+}
+
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0;
+}
+
+.lede {
+  font-size: var(--step-1);
+  color: var(--muted);
+  max-width: var(--prose-width);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.divider {
+  height: 1px;
+  background: var(--border);
+  border: 0;
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   2. Site header
+   -------------------------------------------------------------------------- */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  /* Transform rather than `top`, so the slide runs on the compositor and never
+     reflows the page underneath it. */
+  transition: transform var(--dur-md) var(--ease-in-out),
+    box-shadow var(--dur-md) var(--ease-out);
+  will-change: transform;
+}
+
+/* Scrolling down hands the whole screen over to reading; scrolling up brings
+   the nav back instantly. useHideOnScroll decides, and only past 96px, so the
+   header never flickers during a short flick near the top. */
+.site-header.is-hidden {
+  transform: translateY(-100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* An instant disappear is worse than no effect at all: the header would blink
+     out with nothing to explain where it went. Pin it instead. */
+  .site-header.is-hidden {
+    transform: none;
+  }
+}
+
+.site-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  padding-block: var(--space-4);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.brand:hover {
+  color: var(--ink);
+}
+
+.brand-accent {
+  color: var(--accent);
+}
+
+.brand-region {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.site-nav-link {
+  position: relative;
+  font-size: var(--step-0);
+  font-weight: 500;
+  color: var(--text);
+  text-decoration: none;
+  /* The extra 2px replaces the border-bottom this used to carry — the rule is
+     now an absolutely positioned pseudo-element, which takes no space, so
+     without it the header would lose 2px of height. */
+  padding-block: var(--space-1) calc(var(--space-1) + 2px);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+/* The underline grows out of the centre rather than appearing whole, so moving
+   along the nav feels like one rule tracking the pointer. */
+.site-nav-link::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform var(--dur-md) var(--ease-out);
+}
+
+.site-nav-link:hover {
+  color: var(--ink);
+}
+
+/* Short of the full width, so hover reads as a preview of the active state
+   rather than a claim to be it. */
+.site-nav-link:hover::after {
+  transform: scaleX(0.55);
+}
+
+.site-nav-link.is-active {
+  color: var(--accent-ink);
+}
+
+.site-nav-link.is-active::after {
+  transform: scaleX(1);
+}
+
+/* --------------------------------------------------------------------------
+   3. Site footer
+   -------------------------------------------------------------------------- */
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  padding-block: var(--space-6);
+  margin-top: auto;
+}
+
+.site-footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  flex-wrap: wrap;
+  font-size: var(--step--1);
+  color: var(--muted);
+}
+
+.site-footer-links {
+  display: flex;
+  gap: var(--space-5);
+}
+
+.site-footer-links a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.site-footer-links a:hover {
+  color: var(--accent-ink);
+}
+
+/* --------------------------------------------------------------------------
+   4. Buttons
+   -------------------------------------------------------------------------- */
 
 .btn {
-  display: inline-block;
-  padding: 10px 20px;
-  border-radius: 6px;
-  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--step-0);
   font-weight: 600;
+  line-height: 1;
+  padding: 13px 22px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  text-decoration: none;
   cursor: pointer;
-  border: 2px solid transparent;
+  white-space: nowrap;
+  transition: background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-md) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
 }
 
+/* Press travels 2px — 1px below the resting position — so the button visibly
+   closes the gap its bottom edge was holding open. */
+.btn:active {
+  transform: translateY(1px);
+}
+
+/* Solid buttons get real thickness: a lit rim along the top inside, a darker
+   strip below standing in for the side of the key, and a drop shadow. Hover
+   lifts the whole assembly and lengthens the shadow; pressing collapses the
+   strip to nothing and swaps the rim for an inner shadow, which is what
+   selling "pushed in" actually requires. */
 .btn-primary {
-  background: var(--accent-bg, #333);
-  color: var(--accent, #fff);
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: inset 0 1px 0 var(--edge-highlight),
+    0 2px 0 var(--accent-edge),
+    0 4px 10px -4px var(--edge-shadow);
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  color: var(--on-accent);
+  transform: translateY(-1px);
+  box-shadow: inset 0 1px 0 var(--edge-highlight),
+    0 3px 0 var(--accent-edge),
+    0 9px 18px -7px var(--edge-shadow);
+}
+
+.btn-primary:active {
+  box-shadow: inset 0 2px 4px -1px var(--edge-shadow),
+    0 0 0 var(--accent-edge),
+    0 1px 2px -1px var(--edge-shadow);
 }
 
 .btn-secondary {
-  border-color: var(--border);
-  color: var(--text-h);
+  background: var(--surface);
+  border-color: var(--border-strong);
+  color: var(--ink);
+  box-shadow: inset 0 1px 0 var(--edge-highlight),
+    0 1px 0 var(--border-strong),
+    0 2px 6px -4px var(--edge-shadow);
 }
 
-.search-filters {
+.btn-secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent-ink);
+  transform: translateY(-1px);
+  box-shadow: inset 0 1px 0 var(--edge-highlight),
+    0 2px 0 var(--accent-border),
+    0 6px 14px -6px var(--edge-shadow);
+}
+
+.btn-secondary:active {
+  box-shadow: inset 0 2px 4px -2px var(--edge-shadow), 0 0 0 var(--border-strong);
+}
+
+/* Flat on purpose — a ghost button that cast a shadow would stop reading as
+   secondary to the solid one beside it. */
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  padding-inline: var(--space-3);
+}
+
+.btn-ghost:hover {
+  color: var(--accent-ink);
+  background: var(--accent-soft);
+}
+
+.btn-danger {
+  box-shadow: inset 0 1px 0 var(--edge-highlight),
+    0 2px 0 color-mix(in srgb, var(--danger) 70%, #000),
+    0 4px 10px -4px var(--edge-shadow);
+}
+
+.btn-danger:hover {
+  transform: translateY(-1px);
+  box-shadow: inset 0 1px 0 var(--edge-highlight),
+    0 3px 0 color-mix(in srgb, var(--danger) 70%, #000),
+    0 9px 18px -7px var(--edge-shadow);
+}
+
+.btn-danger:active {
+  box-shadow: inset 0 2px 4px -1px var(--edge-shadow), 0 0 0 transparent;
+}
+
+/* A disabled button must not lift, press, or otherwise imply it will respond. */
+.btn:disabled,
+.btn:disabled:hover,
+.btn:disabled:active {
+  transform: none;
+}
+
+.btn-sm {
+  font-size: var(--step--1);
+  padding: 9px 16px;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   5. Form controls
+   -------------------------------------------------------------------------- */
+
+.field {
   display: flex;
-  gap: 12px;
-  margin-bottom: 24px;
+  flex-direction: column;
+  gap: var(--space-2);
 }
 
-.search-filters input {
-  padding: 8px 12px;
+.field-label {
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 0.01em;
+}
+
+.field-hint {
+  font-size: var(--step--1);
+  color: var(--muted);
+}
+
+/* Label on the left, a helper link (e.g. "forgot password") on the right. */
+.field-label-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.field-label-link {
+  font-size: var(--step--1);
+  color: var(--muted);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.field-label-link:hover {
+  color: var(--accent-ink);
+  text-decoration: underline;
+}
+
+.input {
+  font-family: var(--font-sans);
+  font-size: var(--step-0);
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  width: 100%;
+  transition: border-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
+}
+
+/* Compact variant for inputs nested inside another surface, e.g. the search
+   field at the top of a dropdown menu. */
+.input-sm {
+  font-size: var(--step--1);
+  padding: 8px 10px;
+}
+
+.input:hover {
+  border-color: var(--muted);
+}
+
+/* `outline: none` is safe only because index.css gives every focusable element
+   a real `:focus-visible` outline — the ring below is the styled version for
+   this one control, not a removal of the indicator.
+   Deliberately no `transform` here: scaling a text field re-rasterises the text
+   inside it, so the value blurs for the length of the transition and the caret
+   drifts. A ring is the whole feedback a field needs. */
+.input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+/* --------------------------------------------------------------------------
+   6. Surfaces & cards
+   -------------------------------------------------------------------------- */
+
+.panel {
+  background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
 }
 
-.school-list {
+.panel-lg {
+  padding: var(--space-6);
+}
+
+.card-grid {
   list-style: none;
+  margin: 0;
   padding: 0;
   display: grid;
-  gap: 16px;
+  gap: var(--space-4);
 }
 
 .school-card {
+  position: relative;
+  background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 16px;
+  border-radius: var(--radius-lg);
+  transition: border-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-md) var(--ease-out),
+    transform var(--dur-md) var(--ease-out);
 }
 
-.school-card a {
+.school-card:hover {
+  border-color: var(--accent-border);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+
+/* Pressed. `:active` on the <li> fires while the link inside it is being
+   activated, so the whole card responds rather than just the anchor. It settles
+   most of the way back down instead of jumping somewhere new — the card is being
+   pushed into the page, not thrown. */
+.school-card:active {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.school-card-link {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-5);
+  padding: var(--space-5);
   text-decoration: none;
   color: inherit;
 }
 
-.signup-form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  max-width: 360px;
+.school-card-link:hover {
+  color: inherit;
 }
 
-.signup-form label {
+.school-card-body {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+/* ⚠️ `overflow-wrap: anywhere` is load-bearing on narrow screens, and it is the
+   half that `min-width: 0` above cannot do on its own. That lets the flex item
+   shrink; this lets the *text inside it* break. Without it a single long word
+   simply overhangs the shrunken box.
+   Real data, not a hypothetical: the scraped names run to 100 characters and
+   contain single words of 18 ("Gutha-Jarkovského", "elektrotechnická"). At
+   --step-2 in the display serif that is wider than the body column left on a
+   375px phone once the score and chevron have taken theirs. */
+.school-card-name {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.school-card-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--step--1);
+  color: var(--muted);
+}
+
+/* Sized in `em`, not px, so an icon dropped next to any piece of text — a
+   card's small meta line, a heading-sized label — matches that text's own
+   size automatically instead of needing a font-size-specific override.
+   `currentColor` (Lucide's default stroke) means it always picks up
+   whatever text color it sits next to without being told to. */
+.meta-icon {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+}
+
+.school-card-programs {
+  font-size: var(--step-0);
+  color: var(--text);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.school-card-chevron {
+  flex-shrink: 0;
+  color: var(--faint);
+  font-size: var(--step-2);
+  line-height: 1.4;
+  transition: color var(--dur-fast) var(--ease-out),
+    transform var(--dur-md) var(--ease-spring);
+}
+
+/* Leads the card's own lift by a couple of pixels, so the arrow reads as
+   pointing the way rather than just riding along. */
+.school-card:hover .school-card-chevron {
+  color: var(--accent);
+  transform: translateX(5px);
+}
+
+/* --------------------------------------------------------------------------
+   6b. Favorite star
+   -------------------------------------------------------------------------- */
+
+/* Floats in the top-right corner of a card, half off the edge — a sibling of
+   the card's own Link (see FavoriteButton.jsx for why), not nested inside it.
+   The parent card needs `position: relative`. */
+.favorite-star {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--faint);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.favorite-star:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  transform: scale(1.08);
+}
+
+.favorite-star.is-active {
+  border-color: var(--gold);
+  background: var(--gold-soft);
+  color: var(--gold);
+}
+
+.favorite-star-icon {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+
+.favorite-star.is-active .favorite-star-icon {
+  fill: currentColor;
+}
+
+.favorite-star:disabled {
+  cursor: default;
+}
+
+/* Plays once per click via the data-pop attribute (set on click, cleared on
+   animation end), never on mount — so a card that loads already-favorited
+   doesn't pop on page load. */
+.favorite-star[data-pop] {
+  animation: star-pop var(--dur-md) var(--ease-spring);
+}
+
+@keyframes star-pop {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.35);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .favorite-star[data-pop] {
+    animation: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   7. Tags, badges, pills
+   -------------------------------------------------------------------------- */
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.tag {
+  font-size: var(--step--1);
+  line-height: 1.3;
+  padding: 5px 11px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.tag-accent {
+  background: var(--accent-soft);
+  border-color: transparent;
+  color: var(--accent-ink);
+}
+
+.badge {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border-radius: var(--radius-sm);
+  background: var(--gold-soft);
+  color: var(--gold-ink);
+  align-self: flex-start;
+}
+
+/* --------------------------------------------------------------------------
+   8. Home page
+   -------------------------------------------------------------------------- */
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: var(--space-8);
+  align-items: center;
+  padding-block: var(--space-6) var(--space-8);
+}
+
+.hero-copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  align-items: flex-start;
+}
+
+.hero-title {
+  font-size: var(--step-5);
+  line-height: 1.08;
+  max-width: 14ch;
+}
+
+.hero-title em {
+  font-style: italic;
+  color: var(--accent-ink);
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding-top: var(--space-2);
+}
+
+/* Preview card stack shown beside the hero copy. */
+.hero-preview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.preview-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.preview-card-lead {
+  border-color: var(--accent-border);
+}
+
+.preview-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.preview-card-name {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.preview-card-meta {
+  font-size: var(--step--1);
+  color: var(--muted);
+}
+
+.match {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.match-value {
+  font-size: var(--step-2);
+  font-weight: 700;
+  color: var(--accent-ink);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+
+.match-label {
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+/* Stat strip */
+.stat-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-5);
+  padding-block: var(--space-6);
+  border-block: 1px solid var(--border);
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: var(--step-3);
+  font-weight: 700;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+
+.stat-label {
+  font-size: var(--step--1);
+  color: var(--muted);
+}
+
+/* Three-step explainer — numbered because the flow is genuinely sequential. */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  padding-top: var(--space-7);
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.step-index {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  color: var(--accent);
+  letter-spacing: 0.04em;
+}
+
+.step-title {
+  font-size: var(--step-2);
+}
+
+.step-text {
+  font-size: var(--step-0);
+  color: var(--muted);
+}
+
+/* --------------------------------------------------------------------------
+   9. Search page
+   -------------------------------------------------------------------------- */
+
+.search-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* One search box for name, obor and městská část — the icon and the clear
+   button sit inside the border, so the whole row reads as a single control. */
+.search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: 0 14px;
+  transition: border-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.search-bar:hover {
+  border-color: var(--muted);
+}
+
+.search-bar:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.search-bar-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: var(--muted);
+}
+
+.search-bar-input {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-sans);
+  font-size: var(--step-0);
+  color: var(--text);
+  background: none;
+  border: none;
+  padding-block: 14px;
+  text-overflow: ellipsis;
+}
+
+.search-bar-input:focus {
+  outline: none;
+}
+
+/* type="search" gives us Escape-to-clear, but Chrome's own ✕ would sit next to
+   ours. Ours stays: it is visible on touch, where the native one is not. */
+.search-bar-input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.search-bar-clear {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  font-size: 20px;
+  line-height: 1;
+  border: none;
+  border-radius: 50%;
+  background: var(--surface-sunken);
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.search-bar-clear:hover {
+  color: var(--ink);
+}
+
+.search-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Pushed away from the dropdowns so "zrušit" is never mis-clicked. */
+.search-filters-clear {
+  margin-left: auto;
+}
+
+/* --- Dropdown filter ------------------------------------------------------ */
+
+.filter-select {
+  position: relative;
+}
+
+.filter-select-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--step--1);
+  font-weight: 500;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.filter-select-button:hover {
+  border-color: var(--muted);
+}
+
+/* Was the one control in the app with no pressed state at all. Kept to a
+   1px settle rather than a scale, same as the other row-shaped controls. */
+.filter-select-button:active {
+  transform: translateY(1px);
+}
+
+.filter-select-button.is-active {
+  background: var(--accent-soft);
+  border-color: var(--accent-border);
+  color: var(--accent-ink);
+}
+
+.filter-select-button.is-active .filter-select-label {
+  color: var(--accent-ink);
+  opacity: 0.75;
+}
+
+.filter-select-value {
+  font-weight: 600;
+  max-width: 16ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.filter-select-caret {
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid currentColor;
+  opacity: 0.6;
+}
+
+.filter-select-menu {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 260px;
+  max-width: min(92vw, 340px);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  /* Grows out of the button it belongs to rather than appearing over it, so
+     the connection between the two is never in doubt. */
+  transform-origin: top left;
+  animation: menu-open var(--dur-fast) var(--ease-out) backwards;
+}
+
+@keyframes menu-open {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.filter-select-search {
+  padding: var(--space-3);
+  border-bottom: 1px solid var(--border);
+}
+
+.filter-select-list {
+  list-style: none;
+  margin: 0;
+  padding: var(--space-2);
+  /* ~9 rows before it scrolls: enough to browse, short enough that the menu
+     never runs off the bottom of a laptop screen. */
+  max-height: 288px;
+  overflow-y: auto;
+}
+
+.filter-select-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  width: 100%;
+  font-family: var(--font-sans);
+  font-size: var(--step--1);
+  text-align: left;
+  color: var(--text);
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+.filter-select-option[data-active='true'] {
+  background: var(--surface-sunken);
+}
+
+.filter-select-option.is-selected {
+  color: var(--accent-ink);
   font-weight: 600;
 }
 
-.signup-form input {
-  padding: 8px 12px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  font-weight: 400;
+.filter-select-option-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.error {
-  color: #d33;
+.filter-select-option-count {
+  flex-shrink: 0;
+  font-size: var(--step--1);
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+
+.filter-select-empty {
+  padding: var(--space-3) 10px;
+  font-size: var(--step--1);
+  color: var(--muted);
+}
+
+.results-bar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.results-count {
+  font-size: var(--step-0);
+  color: var(--muted);
+}
+
+.results-count strong {
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.results-range {
+  font-size: var(--step--1);
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Pagination ----------------------------------------------------------- */
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-top: var(--space-6);
+}
+
+.pagination-pages {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+}
+
+.pagination-step,
+.pagination-page {
+  font-family: var(--font-sans);
+  font-size: var(--step--1);
+  font-weight: 500;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.pagination-step {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 8px 14px;
+}
+
+/* Square-ish and equal width whatever the digit count, so the row does not
+   jitter as the numbers grow from 9 to 10. */
+.pagination-page {
+  min-width: 38px;
+  padding: 8px 6px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* `:not(.is-current)` rather than relying on source order. Both selectors are
+   (0,2,0), so whichever is written last would win — which made the current
+   page's own styling depend on staying below this rule in the file. */
+.pagination-step:hover:not(:disabled),
+.pagination-page:hover:not(.is-current) {
+  border-color: var(--accent-border);
+  color: var(--accent-ink);
+}
+
+/* Pressed state, matching the buttons elsewhere: the whole control settles by a
+   pixel rather than scaling, so a row of them cannot jitter its own layout. */
+.pagination-step:active:not(:disabled),
+.pagination-page:active:not(.is-current) {
+  transform: translateY(1px);
+}
+
+.pagination-step:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.pagination-page.is-current {
+  background: var(--accent);
+  border-color: var(--accent);
+  /* --on-accent, not --surface. The two are the same white in the light theme,
+     which is why this went unnoticed, but they are different colours in dark
+     mode and only one of them *means* "text sitting on the accent". */
+  color: var(--on-accent);
+  font-weight: 600;
+  /* It is still a real button so the aria-current label stays reachable, but
+     clicking it does nothing — so it should not offer a pointer. */
+  cursor: default;
+}
+
+.pagination-gap {
+  padding-inline: 2px;
+  color: var(--muted);
+}
+
+/* --------------------------------------------------------------------------
+   10. School detail page
+   -------------------------------------------------------------------------- */
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--step-0);
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: none;
+  align-self: flex-start;
+}
+
+.back-link:hover {
+  color: var(--accent-ink);
+}
+
+.detail-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* The largest type in the app rendering the longest scraped string — a 100-char
+   school name at --step-4. Highest overflow risk on a phone of anywhere in the
+   app, so it breaks rather than overhangs. */
+.detail-title {
+  font-size: var(--step-4);
+  overflow-wrap: anywhere;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: var(--space-5);
+  align-items: start;
+}
+
+.detail-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.detail-section-title {
+  font-family: var(--font-sans);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.detail-body {
+  font-size: var(--step-1);
+  color: var(--text);
+  white-space: pre-line;
+}
+
+/* Key/value list used for contact + practical info. */
+.info-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin: 0;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.info-term {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.info-value {
+  font-size: var(--step-0);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+  margin: 0;
+}
+
+.info-value a {
+  color: var(--accent-ink);
+}
+
+/* The location snapshot. `overflow: hidden` on the frame is what makes this a
+   snapshot at all — the tile block inside is deliberately larger than the frame
+   and hangs off every edge, so the frame is the crop. */
+/* ⚠️ `width: 100%` is not redundant here. `.detail-section` is a column flex
+   container, and a flex item in one sizes to its own content unless told
+   otherwise — which collapsed this whole block to the width of the link
+   underneath the map, dragging the frame down to about 155px with it. The
+   other capped layouts in this file (.auth-layout, .settings-layout,
+   .questionnaire-layout) carry the same declaration for the same reason.
+   SchoolMap measures this element, so the size below is the only place the
+   map's dimensions are decided. */
+.school-map {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  align-items: flex-start;
+  width: 100%;
+}
+
+.school-map-frame {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: var(--surface-sunken);
+}
+
+/* Anchored at the centre and then pulled back by the school's own offset
+   (applied inline), which is what puts the coordinate under the pin without
+   anything having to measure the frame. */
+.school-map-tiles {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+}
+
+.school-map-tile {
+  position: absolute;
+  display: block;
+}
+
+.school-map-pin {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  /* -100% rather than -50%: the tip of the pin is the coordinate, not its
+     middle. */
+  transform: translate(-50%, -100%);
+  line-height: 0;
+  filter: drop-shadow(0 2px 4px rgb(0 0 0 / 0.3));
+}
+
+/* Required by the OSM tile usage policy, not decoration — see SchoolMap.jsx.
+   Sits on the app's own surface colour rather than a hardcoded white, so it
+   stays legible in both themes without needing an override. */
+.school-map-credit {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 2px var(--space-2);
+  font-size: var(--step--1);
+  color: var(--muted);
+  background: var(--surface);
+  border-top-left-radius: var(--radius-sm);
+}
+
+.school-map-credit a {
+  color: inherit;
+}
+
+.school-map-open {
+  font-size: var(--step--1);
+  font-weight: 500;
+  color: var(--accent-ink);
+  text-decoration: none;
+}
+
+.school-map-open:hover {
+  text-decoration: underline;
+}
+
+/* OSM renders one light raster and has no dark counterpart, so the tiles get
+   knocked back rather than pretending a dark basemap exists. Mirrors the
+   two-way cascade in index.css: the media query covers "the OS is dark and the
+   visitor never picked a theme", the attribute rule covers the manual toggle.
+   Only one of them can be dropped safely — neither, in other words. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .school-map-tile {
+    filter: brightness(0.82) saturate(0.85);
+  }
+}
+
+:root[data-theme='dark'] .school-map-tile {
+  filter: brightness(0.82) saturate(0.85);
+}
+
+/* --------------------------------------------------------------------------
+   11. Auth / form pages
+   -------------------------------------------------------------------------- */
+
+.auth-layout {
+  max-width: 440px;
+  width: 100%;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* Tab control at the top of auth forms: the two buttons sit side-by-side in a
+   segmented bar, making it clear how to switch between login and signup. */
+.auth-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: var(--space-1);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.auth-tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 10px var(--space-3);
+  border-radius: var(--radius-sm);
+  font-size: var(--step-0);
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--dur-md) var(--ease-out);
+}
+
+.auth-tab:hover {
+  color: var(--ink);
+}
+
+/* No background of its own — the pill behind it is the selection. */
+.auth-tab.is-active {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.auth-tab:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* --- The sliding pill --------------------------------------------------- */
+
+/* Shared by the auth tabs and the theme picker. Selection is drawn once, as a
+   single element that travels, instead of a background switched off one cell
+   and on at another — the eye follows a moving object and reads the two states
+   as connected, where a cut just replaces one picture with another.
+   `isolation` gives the bar its own stacking context so the pill can sit under
+   the labels without escaping behind the bar's own background. */
+.auth-tabs,
+.segmented {
+  position: relative;
+  isolation: isolate;
+}
+
+.auth-tab,
+.segmented-option {
+  position: relative;
+  z-index: 1;
+}
+
+.tab-thumb {
+  position: absolute;
+  z-index: 0;
+  top: var(--space-1);
+  bottom: var(--space-1);
+  left: var(--space-1);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  /* Absolutely positioned children are out of grid flow, so the pill costs no
+     column and the cells stay equal. */
+  transition: transform var(--dur-md) var(--ease-spring);
+}
+
+/* The pill is exactly one cell wide, so translating by whole multiples of its
+   own width lands it dead centre on any cell — no measuring, and it stays
+   correct at every viewport width. --tab-index is set inline by the component. */
+.auth-tabs .tab-thumb {
+  width: calc((100% - 2 * var(--space-1)) / 2);
+  transform: translateX(calc(var(--tab-index, 0) * 100%));
+}
+
+.segmented .tab-thumb {
+  width: calc((100% - 2 * var(--space-1)) / 3);
+  transform: translateX(calc(var(--tab-index, 0) * 100%));
+}
+
+.auth-footnote {
+  font-size: var(--step--1);
+  color: var(--muted);
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   12. States: loading, empty, error
+   -------------------------------------------------------------------------- */
+
+.skeleton-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.skeleton-line {
+  height: 12px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(
+    90deg,
+    var(--surface-sunken) 25%,
+    var(--border) 50%,
+    var(--surface-sunken) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-sweep var(--dur-ambient) var(--ease-in-out) infinite;
+}
+
+.skeleton-line-title {
+  height: 18px;
+  width: 45%;
+}
+
+.skeleton-line-short {
+  width: 25%;
+}
+
+@keyframes skeleton-sweep {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.notice {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.notice-title {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.notice-text {
+  font-size: var(--step-0);
+  color: var(--muted);
+}
+
+.notice-error {
+  border-color: var(--danger);
+  background: var(--danger-soft);
+}
+
+.notice-error .notice-title {
+  color: var(--danger);
+}
+
+.notice-error .notice-text {
+  color: var(--text);
+}
+
+.notice-success {
+  border-color: var(--accent-border);
+  background: var(--accent-soft);
+}
+
+.notice-success .notice-title {
+  color: var(--accent-ink);
+}
+
+.notice-success .notice-text {
+  color: var(--text);
+}
+
+/* .notice is a flex column, so a button inside would otherwise stretch edge to
+   edge and read as the page's main action. */
+.notice .btn {
+  align-self: flex-start;
+  margin-top: var(--space-2);
+}
+
+/* --- Password field with reveal toggle ---------------------------------- */
+
+.password-field {
+  position: relative;
+  display: flex;
+}
+
+/* Keeps the text clear of the button. A long password would otherwise run
+   underneath the eye and be unreadable at exactly the moment you asked to
+   read it. */
+.password-field-input {
+  padding-right: 46px;
+}
+
+/* Sits inside the field's border so the two read as one control — the focus
+   ring belongs to the input and must enclose the button too. */
+.password-field-toggle {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--faint);
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+.password-field-toggle:hover {
+  color: var(--ink);
+  background: var(--surface-sunken);
+}
+
+/* The translate has to be repeated — a bare scale() here would drop it and
+   the button would jump to the bottom of the field mid-press. */
+.password-field-toggle:active {
+  transform: translateY(-50%) scale(0.9);
+}
+
+.password-field-toggle svg {
+  width: 19px;
+  height: 19px;
+}
+
+/* --- Password strength meter ------------------------------------------- */
+
+.pw-meter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+
+.pw-meter-track {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-1);
+}
+
+/* Slower than a hover so the bar visibly fills as the password improves,
+   rather than snapping between strengths on every keystroke. */
+.pw-meter-step {
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--border);
+  transition: background var(--dur-md) var(--ease-out);
+}
+
+.pw-meter-label {
+  font-size: var(--step--1);
+  color: var(--muted);
+}
+
+.pw-meter-label strong {
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.pw-meter.is-weak .pw-meter-step.is-filled,
+.pw-meter.is-empty .pw-meter-step.is-filled {
+  background: var(--danger);
+}
+
+.pw-meter.is-weak .pw-meter-label strong,
+.pw-meter.is-empty .pw-meter-label strong {
+  color: var(--danger);
+}
+
+.pw-meter.is-fair .pw-meter-step.is-filled {
+  background: var(--gold);
+}
+
+.pw-meter.is-fair .pw-meter-label strong {
+  color: var(--gold-ink);
+}
+
+.pw-meter.is-good .pw-meter-step.is-filled,
+.pw-meter.is-strong .pw-meter-step.is-filled {
+  background: var(--accent);
+}
+
+.pw-meter.is-good .pw-meter-label strong,
+.pw-meter.is-strong .pw-meter-label strong {
+  color: var(--accent-ink);
+}
+
+/* --- Checkbox row ------------------------------------------------------- */
+
+.checkbox-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  cursor: pointer;
+  font-size: var(--step-0);
+  color: var(--text);
+}
+
+.checkbox-row input[type='checkbox'] {
+  /* Nudged down so the box lines up with the first line of text rather than
+     the middle of the whole two-line block. */
+  margin-top: 3px;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.checkbox-hint {
+  display: block;
+  margin-top: var(--space-1);
+  font-size: var(--step--1);
+  color: var(--muted);
+}
+
+/* --- Captcha ------------------------------------------------------------ */
+
+/* Turnstile injects a fixed-size iframe. This just reserves the space so the
+   submit button does not jump when the widget finishes loading. */
+.captcha-field {
+  display: flex;
+  justify-content: center;
+  min-height: 65px;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  text-align: center;
+  padding: var(--space-8) var(--space-5);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-lg);
+}
+
+/* --------------------------------------------------------------------------
+   13. Account, trial and paywall
+   -------------------------------------------------------------------------- */
+
+/* The auto margin lives here rather than on .site-nav so the account controls
+   absorb all the free space and sit hard against the right edge — the nav
+   links stay grouped with the brand instead of crowding them. */
+.site-header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-left: auto;
+}
+
+/* Circular initials avatar — the entry point to Nastavení, always the
+   right-most thing in the header. Fixed size so the circle never turns into
+   an ellipse when the flex row gets tight. */
+.avatar-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  border: 1px solid var(--accent-border);
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-size: var(--step--1);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  /* Transition lives with the other micro-interactions in section 15. */
+}
+
+.avatar-link:hover {
+  background: var(--accent-border);
+  color: var(--accent-ink);
+}
+
+.avatar-link.is-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--surface);
+}
+
+.trial-banner {
+  background: var(--accent-soft);
+  border-top: 1px solid var(--accent-border);
+  font-size: var(--step--1);
+}
+
+.trial-banner-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-block: var(--space-2);
+  color: var(--accent-ink);
+}
+
+.trial-banner-inner strong {
+  font-variant-numeric: tabular-nums;
+}
+
+.trial-banner-inner a {
+  color: var(--accent-ink);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.route-loading {
+  padding: var(--space-8) 0;
+  text-align: center;
+  color: var(--muted);
+}
+
+.benefit-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  font-size: var(--step-0);
+}
+
+.benefit-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  color: var(--text);
+}
+
+/* Was a '✓' text glyph in a ::before. Now a real icon, for the same reason the
+   metadata pins are icons: it sits on the same stroke weight and optical grid as
+   every other mark in the app, where a font glyph's weight and baseline are
+   whatever the typeface decides. `em` sizing keeps it locked to the line it
+   labels — see .meta-icon. */
+.benefit-check {
+  width: 1.15em;
+  height: 1.15em;
+  flex-shrink: 0;
+  color: var(--accent);
+  /* Nudged to sit on the text's optical centre rather than its box top, which
+     is where `align-items: flex-start` would otherwise put it. */
+  margin-top: 0.15em;
+}
+
+/* A button that reads as inline text — used for sign-out inside a sentence. */
+.link-button {
+  font: inherit;
+  color: var(--accent-ink);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.btn.is-favorite {
+  border-color: var(--gold);
+  color: var(--gold-ink);
+}
+
+/* Spinner for async buttons. The label already changes ("Přihlašuji…"), but a
+   text swap alone is easy to miss on the click you just made — this is the part
+   that says *still working* rather than *done*.
+   `currentColor` so one rule serves primary, secondary and danger buttons. */
+.btn-spinner {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  border: 2px solid currentColor;
+  /* The gap in the ring is what makes rotation visible at all — a full ring
+     spinning looks static. */
+  border-top-color: transparent;
+  border-radius: var(--radius-pill);
+  /* --dur-ambient is the designated token for anything that loops forever (the
+     skeleton shimmer is the other one). Slower than a typical spinner on
+     purpose: at this size a fast spin reads as panic, and this sits next to
+     text that already explains itself. */
+  animation: btn-spin var(--dur-ambient) var(--ease-linear) infinite;
+}
+
+@keyframes btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ⚠️ Reduced motion needs the spinner *gone*, not slowed. The global rule in
+   index.css collapses every animation to 0.01ms, which for an infinite rotation
+   does not mean "calmer" — it means a ring frozen mid-turn, i.e. a permanently
+   broken-looking button. The label carries the state on its own, so the honest
+   fallback is to show nothing here. */
+@media (prefers-reduced-motion: reduce) {
+  .btn-spinner {
+    display: none;
+  }
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* --------------------------------------------------------------------------
+   14. Settings page
+   -------------------------------------------------------------------------- */
+
+/* Narrower than the school listings: this page is read line by line, and full
+   1080px rows would push the action buttons miles from their labels. */
+.settings-layout {
+  max-width: 720px;
+  width: 100%;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.settings-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.settings-section-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.settings-section-title {
+  font-size: var(--step-2);
+}
+
+.settings-section-text {
+  font-size: var(--step-0);
+  color: var(--muted);
+}
+
+/* A label/value pair on the left, its action on the right. Separated by a rule
+   rather than a card each, so a section reads as one list. */
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border);
+}
+
+.settings-row-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.settings-row-label {
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.settings-row-value {
+  font-size: var(--step-0);
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.settings-row-muted {
+  color: var(--muted);
+}
+
+/* The checkbox row is its own label, so it fills the width instead of sitting
+   beside an action button. */
+.settings-row > .checkbox-row {
+  flex: 1;
+}
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* Sunk and indented, so an open form reads as belonging to the row above it
+   rather than as a new section. */
+.settings-form-inset {
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+}
+
+.settings-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+/* Input and its save button on one line. */
+.settings-inline {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+}
+
+.settings-inline .input {
+  flex: 1;
+  min-width: 0;
+}
+
+/* --- Segmented control (theme picker) ---------------------------------- */
+
+.segmented {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: var(--space-1);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.segmented-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 10px var(--space-3);
+  border-radius: var(--radius-sm);
+  font-size: var(--step-0);
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color var(--dur-md) var(--ease-out);
+}
+
+.segmented-option:hover {
+  color: var(--ink);
+}
+
+/* See .tab-thumb — the sliding pill draws the selection, so this only has to
+   carry the text weight. */
+.segmented-option.is-active {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* The radio itself is hidden but still focusable, so the ring lands on the
+   visible label. */
+.segmented-option:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* --- Danger zone -------------------------------------------------------- */
+
+.settings-danger {
+  border-color: var(--danger);
+}
+
+.settings-danger .settings-section-title {
+  color: var(--danger);
+}
+
+/* Colours only — the elevation for this button is set with the other solid
+   buttons in section 4, and repeating box-shadow here would overwrite it. */
+.btn-danger {
+  background: var(--danger);
+  color: #ffffff;
+}
+
+.btn-danger:hover {
+  background: var(--danger);
+  color: #ffffff;
+  filter: brightness(1.08);
+}
+
+.btn-danger-ghost {
+  background: transparent;
+  border-color: var(--danger);
+  color: var(--danger);
+  align-self: flex-start;
+}
+
+.btn-danger-ghost:hover {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+/* Visible to screen readers, invisible on screen. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --------------------------------------------------------------------------
+   15. Questionnaire
+   -------------------------------------------------------------------------- */
+
+.questionnaire-layout {
+  max-width: 720px;
+  width: 100%;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* --- Usage meter --------------------------------------------------------- */
+
+.usage-meter {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+/* Out of runs is information, not an error — the results are still readable.
+   A warm border says "note this" without the alarm of the danger red. */
+.usage-meter.is-exhausted {
+  border-color: var(--gold);
+  background: var(--gold-soft);
+}
+
+.usage-meter-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.usage-meter-label {
+  font-size: var(--step-0);
+  color: var(--text);
+}
+
+.usage-meter-label strong {
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.usage-meter-help {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--surface-sunken);
+  color: var(--muted);
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.usage-meter-help:hover {
+  color: var(--accent-ink);
+  background: var(--accent-soft);
+  transform: scale(1.1);
+}
+
+.usage-meter-help svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Sits under the bar rather than beside the label — the row above is already
+   a sentence plus the "?" and a third item there crowds on a phone. */
+.usage-meter-action {
+  align-self: flex-start;
+}
+
+.usage-meter-track {
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-sunken);
+  overflow: hidden;
+}
+
+/* Full width, slid into place from the left rather than grown — so the bar
+   animates on the compositor instead of relaying out its track every frame.
+   `scaleX` would have been the obvious transform and is the wrong one twice
+   over: it stretches from the centre, and it squashes the pill caps
+   horizontally as it goes. Translating keeps the right-hand cap perfectly
+   round, and the track's own `overflow: hidden` supplies the rounded left
+   edge, so this is pixel-identical to the width version it replaced.
+   `--percent` is still the same percentage string the component sets, so
+   nothing in the JSX had to change: at 0% it sits fully off to the left, at
+   100% it lands flush. */
+.usage-meter-fill {
+  height: 100%;
+  width: 100%;
+  border-radius: inherit;
+  background: var(--accent);
+  transform: translateX(calc(var(--percent, 0%) - 100%));
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+.usage-meter.is-exhausted .usage-meter-fill {
+  background: var(--gold);
+}
+
+.usage-meter-popover {
+  position: absolute;
+  z-index: 15;
+  top: calc(100% - var(--space-2));
+  right: var(--space-4);
+  max-width: min(360px, calc(100vw - 3 * var(--space-5)));
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  font-size: var(--step--1);
+  color: var(--muted);
+  transform-origin: top right;
+  animation: menu-open var(--dur-fast) var(--ease-out) backwards;
+}
+
+.usage-meter-popover-title {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.usage-meter-popover strong {
+  color: var(--ink);
+}
+
+.usage-meter-popover-reset {
+  padding-top: var(--space-1);
+  border-top: 1px solid var(--border);
+  color: var(--faint);
+}
+
+/* --- Progress ------------------------------------------------------------ */
+
+.questionnaire-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.questionnaire-progress-head {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--step--1);
+  color: var(--muted);
+}
+
+.questionnaire-progress-track {
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-sunken);
+  overflow: hidden;
+}
+
+/* Slid, not grown — see .usage-meter-fill for why translate beats both width
+   and scaleX here. */
+.questionnaire-progress-fill {
+  height: 100%;
+  width: 100%;
+  border-radius: inherit;
+  background: var(--accent);
+  transform: translateX(calc(var(--percent, 0%) - 100%));
+  transition: transform var(--dur-md) var(--ease-out);
+}
+
+/* --- Question card ------------------------------------------------------- */
+
+.questionnaire-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.questionnaire-question {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  animation: rise-in var(--dur-md) var(--ease-out) backwards;
+}
+
+.questionnaire-question-label {
+  font-size: var(--step-3);
+}
+
+.questionnaire-question-hint {
+  font-size: var(--step-0);
+  color: var(--muted);
+}
+
+/* Reassurance, not a warning — this is why it takes the accent-soft treatment
+   rather than .notice's gold/danger palette, which would read as something
+   having gone wrong. Placed right above the nav buttons (not up by the label,
+   where .questionnaire-question-hint lives) so it lands right before the
+   student decides whether to answer, instead of being read once and forgotten
+   several seconds earlier. */
+.questionnaire-optional-note {
+  margin-top: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-size: var(--step--1);
+  font-weight: 500;
+}
+
+.option-grid {
+  display: grid;
+  gap: var(--space-2);
+  padding-top: var(--space-2);
+}
+
+/* For a picker question (short labels like "Praha 14") a single tall column
+   wastes the width every other question's full-width row needs for a
+   sentence. Two columns halves the scroll distance for 22 options without
+   crowding a label this short.
+
+   Row-major on purpose (the grid default — no `grid-auto-flow: column`):
+   Praha 1 top-left, Praha 2 top-right, Praha 3 second row left, Praha 4
+   second row right, and so on. DISTRICT_IDS is already in numeric order, so
+   plain left-to-right, top-to-bottom flow is what lines consecutive numbers
+   up as left/right pairs — matching how the map itself reads, since two
+   consecutively numbered obvody are usually neighbours. Column-major (1..11
+   down the left, 12..22 down the right) was tried first and reads worse for
+   exactly that reason: it splits adjacent numbers across separate columns. */
+.option-grid-compact {
+  grid-template-columns: 1fr 1fr;
+}
+
+@media (max-width: 640px) {
+  /* Back to one column on a phone — two columns of "Praha N" chips still fit,
+     but not comfortably enough for a thumb, and there is no width being
+     reclaimed from a wasted single column on a screen this narrow anyway. */
+  .option-grid-compact {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Full-width rows rather than a wrapped pill cloud: the labels are sentences,
+   not one-word tags, and a ragged cloud of long chips is hard to scan. */
+.option-chip {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  text-align: left;
+  font-family: var(--font-sans);
+  font-size: var(--step-0);
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-md) var(--ease-out),
+    transform var(--dur-md) var(--ease-out);
+}
+
+/* The card lift, scaled to a control this size — same three layers (border
+   tints, shadow blooms, surface rises), just shorter travel. A full -4px on a
+   row this thin reads as the row detaching from the list. */
+.option-chip:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--ink);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.option-chip.is-selected {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+
+/* Past the cap the remaining options are dimmed rather than hidden, so it is
+   obvious that the limit is why they stopped responding. */
+.option-chip:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Pressing collapses the hover lift rather than adding a new movement — the row
+   settles back onto the page under the finger, which is what a press *is*. */
+.option-chip:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Driven from the district map, not from the pointer being on this chip. It
+   deliberately does *not* lift: a lift means "you are about to click this", and
+   the pointer is somewhere else entirely. Tinting says "this is the same place"
+   without implying the click would land here. */
+.option-chip.is-peer-hovered:not(:disabled):not(.is-selected) {
+  border-color: var(--accent-border);
+  background: var(--accent-soft);
+}
+
+/* Holds the running count and, on questions that offer it, the select-all
+   button — side by side so the shortcut sits right next to the number it
+   affects. On its own (no button) this still just wraps a single <p>, so
+   nothing changes for a question that only shows the count. */
+.option-count-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-top: var(--space-3);
+}
+
+/* Running count for multi-selects. Sits between the question and its options,
+   which is where the eye already is after reading "vyber až pět". */
+.option-count {
+  font-size: var(--step--1);
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+/* At the cap this is the explanation for why the remaining chips just dimmed,
+   so it stops being quiet metadata and takes the warning colour. */
+.option-count.is-full {
+  color: var(--gold-ink);
+  font-weight: 600;
+}
+
+/* --- District map (questionnaire `casti` question) ----------------------- */
+
+/* ⚠️ `width: 100%` is not redundant — the question body is a column flex
+   container, and a flex item in one sizes to its own content unless told
+   otherwise. Without it this collapses to the width of the credit line
+   underneath, exactly as .school-map did. */
+.district-map {
+  width: 100%;
+  margin-bottom: var(--space-5);
+}
+
+.district-map-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.district-map-region {
+  cursor: pointer;
+}
+
+/* Matches .option-chip:disabled — past the cap the remaining districts dim
+   rather than vanish, so the limit is visibly the reason they stopped
+   responding. */
+.district-map-region.is-blocked {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+/* Colour only: no transform anywhere on the map. A district is a fixed piece
+   of ground, and nudging it would read as the map itself moving. */
+.district-map-shape {
+  fill: var(--surface-sunken);
+  stroke: var(--border-strong);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  transition: fill var(--dur-fast) var(--ease-out),
+    stroke var(--dur-fast) var(--ease-out);
+}
+
+/* ⚠️ `:not(.is-selected)` is load-bearing, not defensive noise. Without it this
+   selector is (0,4,0) against the selected rule's (0,3,0), so it wins on
+   specificity no matter which comes later in the file — and pointing at a
+   district you had already chosen repainted it pale, which reads exactly like
+   the click just turned it off. Selected districts get their own hover below.
+
+   `.is-peer-hovered` is the same treatment driven from the checkbox list
+   instead of the pointer being over the shape itself. */
+.district-map-region:hover:not(.is-blocked):not(.is-selected)
+  .district-map-shape,
+.district-map-region.is-peer-hovered:not(.is-blocked):not(.is-selected)
+  .district-map-shape {
+  fill: var(--accent-soft);
+  stroke: var(--accent-border);
+}
+
+/* ⚠️ Stroke is deliberately NOT var(--accent) here. Two adjacent selected
+   districts share a border, and a stroke identical to the fill on both sides
+   of that line makes it vanish — the two shapes read as one undifferentiated
+   blob, which is exactly wrong for a picker where the shape of the selection
+   is the thing being communicated. var(--surface) contrasts against --accent
+   in both themes (it is the page's own background, not a state colour), so
+   the seam between any two selected districts — or a selected one and its
+   unselected neighbour — stays visible everywhere. */
+.district-map-region.is-selected .district-map-shape {
+  fill: var(--accent);
+  stroke: var(--surface);
+}
+
+/* Hovering something already chosen has to acknowledge the pointer without
+   suggesting it was deselected, so it shifts to the *more* engaged accent
+   rather than fading out. `--accent-hover` is the right token for that in both
+   themes even though it moves in opposite directions — darker on light,
+   lighter on dark — because either way it reads as more prominent, not less. */
+.district-map-region.is-selected:hover .district-map-shape,
+.district-map-region.is-selected.is-peer-hovered .district-map-shape {
+  fill: var(--accent-hover);
+  /* Same reasoning as the base selected rule above — the border must not
+     match the fill it separates. */
+  stroke: var(--surface);
+}
+
+/* Size is set per district in the JSX (see labelSize) because the 22 správní
+   obvody differ too much in area for one value — deliberately not set here, or
+   it would override that. Inside a viewBox these are user units, so the labels
+   scale with the map and need no breakpoint of their own. */
+.district-map-number {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  fill: var(--muted);
+  pointer-events: none;
+  user-select: none;
+  transition: fill var(--dur-fast) var(--ease-out);
+}
+
+.district-map-region.is-selected .district-map-number {
+  fill: var(--on-accent);
+}
+
+.district-map-credit {
+  margin-top: var(--space-2);
+  font-size: var(--step--1);
+  color: var(--faint);
+  text-align: right;
+}
+
+.questionnaire-textarea {
+  resize: vertical;
+  min-height: 96px;
+  font-family: var(--font-sans);
+  line-height: 1.6;
+}
+
+.questionnaire-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border);
+}
+
+.questionnaire-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.questionnaire-waiting {
+  text-align: center;
+  font-size: var(--step--1);
+  color: var(--muted);
+}
+
+/* --- Results ------------------------------------------------------------- */
+
+.match-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  counter-reset: match;
+}
+
+.match-card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  animation: rise-in var(--dur-slow) var(--ease-out) backwards;
+  /* Same 45ms step as .card-grid below. --stagger caps at 7, so the last card
+     starts at 315ms rather than the 420ms a 60ms step gave — one rhythm across
+     the app, and inside the budget where a stagger still reads as one motion
+     instead of a queue. */
+  animation-delay: calc(var(--stagger, 0) * 45ms);
+  transition: border-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-md) var(--ease-out),
+    transform var(--dur-md) var(--ease-out);
+}
+
+.match-card:hover {
+  border-color: var(--accent-border);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+
+/* Same press as .school-card — see the note there. */
+.match-card:active {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* The top match is the answer to the whole questionnaire, so it gets the
+   accent ring the others do not. */
+.match-card:first-child {
+  border-color: var(--accent-border);
+}
+
+/* The entire card is one Link — clicking the rank, the reason text, the score,
+   anywhere, opens the school. Previously only the name text was clickable,
+   which meant missing it by a few pixels did nothing. */
+.match-card-link {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  color: inherit;
+  text-decoration: none;
+}
+
+.match-card-rank {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--surface-sunken);
+  color: var(--muted);
+  font-size: var(--step--1);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.match-card:first-child .match-card-rank {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.match-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+  flex: 1;
+}
+
+/* Same reasoning as .school-card-name — and this card is tighter still, since
+   the rank circle takes a column too. */
+.match-card-name {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.match-card:hover .match-card-name {
+  color: var(--accent-ink);
+}
+
+.match-card-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--step--1);
+  color: var(--muted);
+}
+
+.match-card-reason {
+  padding-top: var(--space-2);
+  font-size: var(--step-0);
+  color: var(--text);
+}
+
+/* One percentage, one look — questionnaire results, search cards, favourites
+   and the school detail page all render MatchScore, so the number a student
+   saw on their results page is recognisably the same number everywhere else. */
+.match-score {
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.match-score-value {
+  display: block;
+  font-size: var(--step-2);
+  font-weight: 700;
+  color: var(--accent-ink);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+
+/* Colour bands. The cut points live in MatchScore.jsx (70 / 45) with the
+   distribution data behind them; this only paints what that decides.
+
+   Deliberately plain coloured text rather than a filled chip. A solid red pill
+   on a school card would read as "this school is broken" — the schools are
+   real, it is the *fit* that is weak — and with three quarters of any full list
+   scoring under 45%, filled badges would turn a search page into an error
+   report. As text it reads as a rating, which is what it is.
+
+   `--accent-ink` rather than `--accent` for the strong band: it is the darker
+   accent tuned for text on light surfaces, and it is what this value already
+   used before the bands existed, so a strong match looks exactly as it did.
+
+   Moderate uses `--orange-ink`, not `--gold-ink`. Gold reads as a *prize*
+   (it is what the "Nejlepší shoda" badge and the star icon already use for
+   "good"), which fights the point of a middle band — a 55% match is not a
+   near-win, it is a real but limited fit, and orange/amber is the
+   universally-read "caution, partial" signal that gold does not carry. */
+.match-score.is-moderate .match-score-value {
+  color: var(--orange-ink);
+}
+
+.match-score.is-weak .match-score-value {
+  color: var(--danger);
+}
+
+.match-score-label {
+  display: block;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+/* The search card puts three things in one row — details, score, chevron — and
+   the row is `space-between`, which would strand the score in the middle. The
+   auto margin eats the free space instead, so the score sits next to the arrow
+   and a card with no score keeps exactly the layout it had before. */
+.school-card-link .match-score {
+  margin-left: auto;
+}
+
+/* On the detail page the score is a line of its own rather than a column in a
+   card, so the value and its label sit side by side under the address. */
+.detail-header .match-score {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  text-align: left;
+}
+
+/* --- Sets of answers -------------------------------------------------------
+   An account keeps every questionnaire it has completed; one of them is the
+   default and decides the match percentage on every school in the app.
+
+   Note what is NOT here: no percentage anywhere in the set list. A number shown
+   beside a set and the same number on its results page arrive by different
+   paths, and two paths eventually disagree. The list distinguishes sets by
+   their answers instead, which is also what a student actually recognises them
+   by. See lib/answerSummary.js.
+   -------------------------------------------------------------------------- */
+
+/* Deliberately flat — no hover lift, no shadow bloom. It is a statement about
+   the set plus two controls, and it does not respond to being clicked, so a
+   hover response would promise something it does not do. Same reasoning as
+   `.panel` and `.questionnaire-card`. */
+.run-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.run-panel-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.run-panel-title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.run-panel-title {
+  font-size: var(--step-2);
+  margin: 0;
+  /* A user-written name can be 60 characters with no spaces in it. */
+  overflow-wrap: anywhere;
+}
+
+/* `.badge` is inline-block, which drops an icon onto the text baseline and
+   leaves it sitting low. This variant is the same badge laid out as a row. */
+.run-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.run-panel-text {
+  color: var(--text);
+  font-size: var(--step-0);
+}
+
+.run-panel-text strong {
+  color: var(--ink);
+}
+
+.run-rename {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background: var(--surface-sunken);
+  border-radius: var(--radius-md);
+}
+
+.run-rename-row {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.run-rename-row .input {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+
+/* --- The set list --------------------------------------------------------- */
+
+.run-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.run-row {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-md) var(--ease-out);
+}
+
+/* The row does not travel on hover, unlike a school card. It is a container of
+   several separate controls rather than one big link, so lifting the whole
+   thing would suggest a single click target that is not there. */
+.run-row:hover {
+  border-color: var(--accent-border);
+  box-shadow: var(--shadow-md);
+}
+
+/* The set currently deciding every percentage in the app, marked on the
+   container as well as with its badge — it sorts to the top of the list, and the
+   accent edge is what makes that position read as meaningful rather than
+   accidental.
+   `--accent-soft` is not used as a background here: in dark mode it is a
+   translucent colour, so it would blend with the page rather than the card and
+   the row would read as see-through. A solid left edge is theme-independent. */
+.run-row.is-default {
+  border-color: var(--accent-border);
+  border-left: 3px solid var(--accent);
+  padding-left: calc(var(--space-5) - 2px);
+}
+
+.run-row.is-archived {
+  opacity: 0.72;
+}
+
+.run-row-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.run-row-main {
+  min-width: 0;
+  flex: 1 1 260px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.run-row-title-line {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.run-row-title {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.run-row-title:hover {
+  color: var(--accent-ink);
+}
+
+.run-row-archived-tag {
+  white-space: nowrap;
+}
+
+.run-row-date {
+  font-size: var(--step--1);
+  color: var(--muted);
+}
+
+/* The line that actually tells two sets apart. */
+.run-row-digest {
+  font-size: var(--step-0);
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.run-row-actions {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* --- Answer disclosure ---------------------------------------------------- */
+
+.run-row-toggle {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--accent-ink);
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.run-row-toggle:hover {
+  color: var(--accent);
+}
+
+/* The chevron is the only thing that moves, and it turns rather than travels —
+   the state it reports is "open", not "over here". */
+.run-row-toggle .meta-icon {
+  transition: transform var(--dur-md) var(--ease-out);
+}
+
+.run-row-toggle.is-open .meta-icon {
+  transform: rotate(180deg);
+}
+
+.answer-list {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--surface-sunken);
+  border-radius: var(--radius-md);
+}
+
+.answer-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: var(--space-3);
+  align-items: baseline;
+}
+
+.answer-term {
+  font-size: var(--step--1);
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.answer-value {
+  margin: 0;
+  font-size: var(--step-0);
+  color: var(--ink);
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.run-answers {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.run-results-title {
+  font-size: var(--step-3);
+}
+
+/* Names where a percentage came from. Without it the number arrives from
+   nowhere — and once an older set can be the default, "nowhere" is no longer
+   even reliably the most recent questionnaire. */
+.match-source-note {
+  font-size: var(--step--1);
+  color: var(--muted);
+}
+
+@media (max-width: 720px) {
+  /* Label above value rather than beside it. Two columns at this width leaves
+     the question wrapping to four words a line. */
+  .answer-item {
+    grid-template-columns: 1fr;
+    gap: var(--space-1);
+  }
+
+  /* Full-width buttons in a column, so a row of three does not become three
+     cramped ones on separate lines at unpredictable widths. */
+  .run-row-actions {
+    width: 100%;
+  }
+
+  .run-row-actions > * {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   16. Motion
+   Entrances and micro-interactions. Two rules hold the whole section together:
+   only `transform` and `opacity` are animated, because they are the only two
+   properties a browser can composite without re-laying out the page; and
+   nothing moves more than about 10px, because motion here is meant to explain
+   where an element came from, not to perform.
+
+   The reduced-motion block in index.css collapses every duration below, so
+   none of this needs its own opt-out.
+   -------------------------------------------------------------------------- */
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Every entrance below uses `backwards`, never `forwards`/`both`, and the
+   difference matters. `backwards` holds the opening frame through the delay —
+   without it a staggered element paints at full opacity before its turn — but
+   releases the element once the animation ends. `forwards` would instead pin
+   the closing frame permanently, and because animated values outrank ordinary
+   declarations, that pinned `transform: none` would silently beat every
+   `:hover` lift on this page. Since the closing frame is the element's resting
+   state anyway, `backwards` costs nothing and keeps hover working.
+
+   Route change: Layout keys this element by pathname, so navigating unmounts
+   it and mounts a fresh one, restarting the animation. */
+.route-view {
+  animation: rise-in var(--dur-slow) var(--ease-out) backwards;
+}
+
+/* Result cards arrive in sequence rather than as a wall. --stagger is set
+   inline and already capped by the page, so a full 20-card page finishes in
+   about a quarter of a second instead of trickling. */
+.card-grid > * {
+  animation: rise-in var(--dur-slow) var(--ease-out) backwards;
+  animation-delay: calc(var(--stagger, 0) * 45ms);
+}
+
+/* Same rhythm for the list of stored answer sets. Its --stagger is set inline
+   the same way, capped at 7, so the step matches every other list in the app
+   rather than being a second tempo on a neighbouring page. */
+.run-list > * {
+  animation: rise-in var(--dur-slow) var(--ease-out) backwards;
+  animation-delay: calc(var(--stagger, 0) * 45ms);
+}
+
+/* Home page. The hero reads top to bottom, so it arrives that way — eyebrow,
+   headline, lede, buttons — each a beat behind the last. */
+.hero-copy > * {
+  animation: rise-in var(--dur-slow) var(--ease-out) backwards;
+}
+
+.hero-copy > *:nth-child(1) {
+  animation-delay: 60ms;
+}
+.hero-copy > *:nth-child(2) {
+  animation-delay: 120ms;
+}
+.hero-copy > *:nth-child(3) {
+  animation-delay: 180ms;
+}
+.hero-copy > *:nth-child(4) {
+  animation-delay: 240ms;
+}
+
+/* The preview cards come in after the copy has landed, so they read as the
+   answer to the headline rather than competing with it. */
+.preview-card {
+  animation: rise-in var(--dur-slow) var(--ease-out) backwards;
+  transition: transform var(--dur-md) var(--ease-out),
+    box-shadow var(--dur-md) var(--ease-out);
+}
+
+.preview-card:nth-child(1) {
+  animation-delay: 260ms;
+}
+.preview-card:nth-child(2) {
+  animation-delay: 340ms;
+}
+.preview-card:nth-child(3) {
+  animation-delay: 420ms;
+}
+
+.preview-card:hover {
+  transform: translateY(-2px);
+}
+
+.stat-strip > *,
+.steps > * {
+  animation: rise-in var(--dur-slow) var(--ease-out) backwards;
+}
+
+.stat-strip > *:nth-child(2),
+.steps > *:nth-child(2) {
+  animation-delay: 80ms;
+}
+.stat-strip > *:nth-child(3),
+.steps > *:nth-child(3) {
+  animation-delay: 160ms;
+}
+.stat-strip > *:nth-child(4) {
+  animation-delay: 240ms;
+}
+
+/* Messages. An error that fades in is noticed; one that is simply present on
+   the next paint often is not. */
+.notice {
+  animation: rise-in var(--dur-md) var(--ease-out) backwards;
+}
+
+/* An expanding form in Settings comes from the row that opened it, so it
+   starts slightly compressed and settles rather than appearing full size. */
+.settings-form-inset {
+  animation: inset-open var(--dur-md) var(--ease-out) backwards;
+  transform-origin: top center;
+}
+
+@keyframes inset-open {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scaleY(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.empty-state,
+.skeleton-card {
+  animation: fade-in var(--dur-md) var(--ease-out) backwards;
+}
+
+/* --- Micro-interactions -------------------------------------------------- */
+
+/* The avatar is the only round target in the header; a small scale reads more
+   clearly on a circle than a shift would. */
+.avatar-link {
+  transition: background var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.avatar-link:hover {
+  transform: translateY(-1px) scale(1.06);
+}
+
+.avatar-link:active {
+  transform: scale(0.95);
+}
+
+.tag {
+  transition: background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.tag:hover {
+  border-color: var(--accent-border);
+  color: var(--accent-ink);
+}
+
+/* Underline slides out from the left on hover instead of blinking on. */
+.site-footer-links a {
+  position: relative;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.site-footer-links a::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: -2px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-md) var(--ease-out);
+}
+
+.site-footer-links a:hover::after {
+  transform: scaleX(1);
+}
+
+.search-bar-clear {
+  transition: background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.search-bar-clear:hover {
+  transform: rotate(90deg);
+}
+
+.link-button {
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+/* --- Toasts -------------------------------------------------------------- */
+
+/* Bottom-centre on purpose. Top-right is the reflex, but that is where this
+   app's own header and account controls are, and a toast landing on top of the
+   sign-out button is a toast in the way. The bottom edge is empty on every
+   page, and on a phone it is also the half of the screen a thumb can reach to
+   dismiss. */
+.toast-viewport {
+  position: fixed;
+  z-index: 60;
+  bottom: var(--space-5);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: max-content;
+  max-width: min(420px, calc(100vw - var(--space-5) * 2));
+  /* The container is always mounted so `aria-live` has somewhere to put a
+     message, which means it spans the page while empty. Without this it would
+     swallow clicks along the bottom edge of every page. Each toast turns
+     pointer events back on for itself. */
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  /* Floating, so the heavier shadow — same rule the dropdown menus follow. */
+  box-shadow: var(--shadow-lg);
+  color: var(--text);
+  font-size: var(--step-0);
+  pointer-events: auto;
+}
+
+/* Travels from below, the direction it entered from, so the motion explains
+   where it came from. `backwards` not `forwards` — see the note in section 16;
+   pinning the closing frame here would beat the close button's own hover. */
+.toast {
+  animation: toast-in var(--dur-md) var(--ease-out) backwards;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.toast-icon {
+  display: flex;
+  flex-shrink: 0;
+  color: var(--accent);
+}
+
+.toast.is-error .toast-icon {
+  color: var(--danger);
+}
+
+.toast-message {
+  flex: 1;
+}
+
+.toast-close {
+  display: flex;
+  flex-shrink: 0;
+  padding: var(--space-1);
+  margin: calc(var(--space-1) * -1);
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--faint);
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+.toast-close:hover {
+  color: var(--text);
+  background: var(--surface-sunken);
+}
+
+/* --------------------------------------------------------------------------
+   17. Responsive
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  .hero-title {
+    max-width: 100%;
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .steps {
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+
+  .stat-strip {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+  }
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding-inline: var(--space-4);
+  }
+
+  /* The score column is the first thing to give up its space — the school name
+     and the reason are what the student is actually reading. */
+  .match-card-link {
+    flex-wrap: wrap;
+    padding: var(--space-4);
+  }
+
+  .favorite-star {
+    top: -10px;
+    right: -10px;
+  }
+
+  /* Indented to clear the rank circle it now wraps underneath. Scoped to the
+     match card — the search and favourite cards do not wrap. */
+  .match-card .match-score {
+    text-align: left;
+    padding-left: calc(30px + var(--space-4));
+  }
+
+  .questionnaire-nav .btn {
+    flex: 1;
+  }
+
+  /* Anchored to the panel edge rather than the button, so a 360px screen does
+     not push the bubble off the side. */
+  .usage-meter-popover {
+    right: var(--space-3);
+    left: var(--space-3);
+    max-width: none;
+  }
+
+  .app-content {
+    padding-block: var(--space-5) var(--space-7);
+  }
+
+  .site-nav {
+    gap: var(--space-4);
+  }
+
+  .site-nav-link {
+    font-size: var(--step--1);
+  }
+
+  /* The dropdowns share the row with "Zrušit filtry"; on a phone they each
+     take a full line instead of wrapping mid-label. */
+  .search-filters {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .filter-select-button {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .filter-select-caret {
+    margin-left: auto;
+  }
+
+  .filter-select-menu {
+    left: 0;
+    right: 0;
+    min-width: 0;
+    max-width: none;
+  }
+
+  .search-filters-clear {
+    margin-left: 0;
+    align-self: flex-start;
+  }
+
+  /* Prev/next take the full row; the numbers wrap underneath them rather than
+     squeezing "Předchozí" down to an ellipsis. */
+  .pagination {
+    justify-content: center;
+  }
+
+  .pagination-pages {
+    order: -1;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .pagination-step {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .school-card-link {
+    padding: var(--space-4);
+  }
+
+  .site-footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+
+  /* Label and action stop competing for one line; the button drops below. */
+  .settings-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-3);
+  }
+
+  .settings-row .btn,
+  .settings-row .badge {
+    align-self: flex-start;
+  }
+
+  .settings-inline {
+    flex-direction: column;
+  }
+
+  .settings-inline .btn {
+    width: 100%;
+  }
+}
+
+/* The nav CTA is the first thing to go on very small screens — the links
+   themselves stay reachable. */
+@media (max-width: 520px) {
+  .site-header-cta {
+    display: none;
+  }
+
+  .trial-banner-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-1);
+  }
+
+  /* "Podle systému" will not fit a third of a phone screen. */
+  .segmented {
+    grid-template-columns: 1fr;
+  }
 }

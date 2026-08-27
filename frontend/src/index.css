@@ -1,111 +1,363 @@
+/* ==========================================================================
+   ŠkolaMatch — Design tokens & base styles
+   Direction: "Clean & Trustworthy" — forest/teal palette, serif display type,
+   generous whitespace. Every color, size and radius used in the app comes
+   from a token defined here, so new pages inherit the system automatically.
+   ========================================================================== */
+
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  /* --- Color: light theme -------------------------------------------- */
+  /* Neutrals are biased slightly green so they sit with the accent
+     instead of reading as generic grey. */
+  --bg: #f6f8f7;
+  --surface: #ffffff;
+  --surface-sunken: #eff4f2;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  --ink: #16302b; /* headings */
+  --text: #3c4b47; /* body copy */
+  --muted: #6e7d78; /* secondary / meta */
+  --faint: #93a09b; /* placeholders, disabled */
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --accent: #1f7a6c;
+  --accent-hover: #196256;
+  --accent-ink: #0f4a40; /* accent text on light backgrounds */
+  --accent-soft: #e4f1ec;
+  --accent-border: #b9dbd0;
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
+  --gold: #9a7016; /* secondary accent — badges, highlights */
+  /* Gold dark enough to be *text*, the same split as --accent / --accent-ink.
+     --gold itself is only 4.46:1 on white and 3.90:1 on --gold-soft, so the
+     11px badge label sitting on that soft background was below AA for small
+     text. This clears 5.3:1 on every surface it lands on. Use --gold for
+     borders, fills and meter segments (contrast rules do not apply to those)
+     and --gold-ink whenever gold is carrying a glyph. */
+  --gold-ink: #7f5c12;
+  --gold-soft: #f7efdc;
+
+  --orange: #d9651f; /* warm accent for moderate match scores */
+  --orange-ink: #a8501a; /* orange dark enough to be text */
+  --orange-soft: #fce8d6;
+
+  --danger: #a8322c;
+  --danger-soft: #fbeceb;
+
+  --border: #dce6e1;
+  --border-strong: #c3d3cd;
+
+  --on-accent: #ffffff;
+
+  /* --- Elevation ------------------------------------------------------ */
+  --shadow-sm: 0 1px 2px rgba(22, 48, 43, 0.06);
+  --shadow-md: 0 4px 12px -2px rgba(22, 48, 43, 0.08);
+  --shadow-lg: 0 20px 44px -24px rgba(22, 48, 43, 0.28);
+
+  /* --- Edges ----------------------------------------------------------- */
+  /* The "3D" on a button is three layers: a light rim along the top inside,
+     a solid darker strip underneath standing in for thickness, and a soft
+     drop shadow. --accent-edge must stay *darker* than --accent in both
+     themes or the light appears to come from below and the illusion breaks
+     — which is why it is its own token and not --accent-hover. */
+  --accent-edge: #14544a;
+  --edge-highlight: rgba(255, 255, 255, 0.55);
+  --edge-shadow: rgba(22, 48, 43, 0.4);
+
+  /* --- Motion ---------------------------------------------------------- */
+  /* One vocabulary for the whole app: hover feedback is fast, things that
+     move a distance take --dur-md, entrances take --dur-slow. --ease-out is
+     an expo curve — it leaves immediately and settles gently, which reads as
+     responsive. --ease-spring overshoots by a hair and is only for the
+     sliding pills, where a little bounce sells the physicality. */
+  --dur-fast: 120ms;
+  --dur-md: 220ms;
+  --dur-slow: 380ms;
+  --dur-theme: 320ms;
+  /* Ambient loops only — a skeleton shimmer and anything else that repeats
+     forever. Deliberately far slower than the scale above, because those
+     durations describe motion the eye is meant to follow to a conclusion; a
+     loop is background texture and reads as frantic at entrance speed. Named
+     rather than inlined so the next repeating animation matches this one
+     instead of inventing its own tempo. */
+  --dur-ambient: 1.4s;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  /* Constant rate, for continuous rotation only — currently just the button
+     spinner. Every curve above accelerates or decelerates, which on a loop that
+     never ends turns each revolution into a visible pulse. Named rather than
+     writing `linear` inline so the "no hardcoded easings" rule still holds and
+     the exception is stated once, here, instead of being argued at each use. */
+  --ease-linear: linear;
+
+  /* --- Typography ----------------------------------------------------- */
+  --font-display: 'Source Serif 4', Georgia, 'Iowan Old Style', serif;
+  --font-sans: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, Consolas, monospace;
+
+  --step--1: 0.8125rem; /* 13px — captions, tags */
+  --step-0: 0.9375rem; /* 15px — UI default */
+  --step-1: 1.0625rem; /* 17px — body copy */
+  --step-2: 1.3125rem; /* 21px — card titles */
+  --step-3: 1.75rem; /* 28px — section headings */
+  --step-4: 2.5rem; /* 40px — page titles */
+  --step-5: 3rem; /* 48px — hero */
+
+  /* --- Space & shape -------------------------------------------------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 88px;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-pill: 999px;
+
+  --content-width: 1080px;
+  --prose-width: 62ch;
+
+  color-scheme: light;
+}
+
+/* --- Color: dark theme ----------------------------------------------- */
+/* Only tokens are redefined — components never style inside a media query,
+   so the theme toggle and the OS preference stay in sync. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #0e1613;
+    --surface: #152420;
+    --surface-sunken: #101c18;
+
+    --ink: #eef5f2;
+    --text: #c4d2cd;
+    --muted: #8b9a95;
+    --faint: #68766f;
+
+    --accent: #4fbfa8;
+    --accent-hover: #6ad3bd;
+    --accent-ink: #a6e9d9;
+    --accent-soft: rgba(79, 191, 168, 0.13);
+    --accent-border: rgba(79, 191, 168, 0.34);
+
+    --gold: #e0b563;
+    /* On dark surfaces --gold already clears 8:1, so text needs no separate
+       value — the token exists so components can name their intent once and
+       have it be right in both themes. */
+    --gold-ink: #e0b563;
+    --gold-soft: rgba(224, 181, 99, 0.14);
+
+    --orange: #f0975a;
+    --orange-ink: #f0975a;
+    --orange-soft: rgba(240, 151, 90, 0.14);
+
+    --danger: #f08b85;
+    --danger-soft: rgba(240, 139, 133, 0.13);
+
+    --border: #24352f;
+    --border-strong: #35473f;
+
+    --on-accent: #08201b;
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 20px 44px -24px rgba(0, 0, 0, 0.65);
+
+    --accent-edge: #2b8b78;
+    --edge-highlight: rgba(255, 255, 255, 0.07);
+    --edge-shadow: rgba(0, 0, 0, 0.55);
+
+    color-scheme: dark;
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
+:root[data-theme='dark'] {
+  --bg: #0e1613;
+  --surface: #152420;
+  --surface-sunken: #101c18;
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+  --ink: #eef5f2;
+  --text: #c4d2cd;
+  --muted: #8b9a95;
+  --faint: #68766f;
+
+  --accent: #4fbfa8;
+  --accent-hover: #6ad3bd;
+  --accent-ink: #a6e9d9;
+  --accent-soft: rgba(79, 191, 168, 0.13);
+  --accent-border: rgba(79, 191, 168, 0.34);
+
+  --gold: #e0b563;
+  --gold-ink: #e0b563;
+  --gold-soft: rgba(224, 181, 99, 0.14);
+
+  --orange: #f0975a;
+  --orange-ink: #f0975a;
+  --orange-soft: rgba(240, 151, 90, 0.14);
+
+  --danger: #f08b85;
+  --danger-soft: rgba(240, 139, 133, 0.13);
+
+  --border: #24352f;
+  --border-strong: #35473f;
+
+  --on-accent: #08201b;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 20px 44px -24px rgba(0, 0, 0, 0.65);
+
+  --accent-edge: #2b8b78;
+  --edge-highlight: rgba(255, 255, 255, 0.07);
+  --edge-shadow: rgba(0, 0, 0, 0.55);
+
+  color-scheme: dark;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--step-1);
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
   min-height: 100svh;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
 }
 
 h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  color: var(--ink);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  margin: 0;
 }
 
 h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
+  font-size: var(--step-4);
 }
 h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
+  font-size: var(--step-3);
 }
+h3 {
+  font-size: var(--step-2);
+}
+h4 {
+  font-size: var(--step-1);
+}
+
 p {
   margin: 0;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+a {
+  color: var(--accent-ink);
+  text-decoration-color: var(--accent-border);
+  text-underline-offset: 3px;
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+a:hover {
+  color: var(--accent);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Consistent, visible keyboard focus everywhere. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+::placeholder {
+  color: var(--faint);
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+
+/* Crossfades the light/dark swap instead of cutting to it. Every colour in the
+   app comes from a token, so re-pointing the tokens changes thousands of
+   computed values in one frame — without this the whole page hard-cuts.
+
+   ThemeContext adds this class, flips the theme, and removes it again a beat
+   later, so the blanket `transition` is only live for the length of the swap
+   and never fights a component's own timing. `transform` is in the list on
+   purpose: the theme picker's pill is sliding at the same moment, and an
+   `!important` transition without it would make the pill teleport. */
+.theme-transition,
+.theme-transition *,
+.theme-transition *::before,
+.theme-transition *::after {
+  transition:
+    background-color var(--dur-theme) var(--ease-in-out),
+    border-color var(--dur-theme) var(--ease-in-out),
+    color var(--dur-theme) var(--ease-in-out),
+    fill var(--dur-theme) var(--ease-in-out),
+    stroke var(--dur-theme) var(--ease-in-out),
+    box-shadow var(--dur-theme) var(--ease-in-out),
+    transform var(--dur-md) var(--ease-spring) !important;
+  transition-delay: 0s !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (max-width: 720px) {
+  :root {
+    --step-4: 2rem;
+    --step-5: 2.25rem;
+    --step-3: 1.5rem;
+
+    /* Touch has no hover to telegraph that something is about to happen, so
+       the same duration that reads as considered with a cursor reads as lag
+       under a thumb. Capping the entrance token is enough on its own — every
+       entrance in the app is expressed in it, so none of them need touching
+       individually, and nothing that was already at or below this speed
+       changes at all. */
+    --dur-slow: 220ms;
+  }
 }
