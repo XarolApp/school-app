@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/colors.css">
+<link rel="stylesheet" href="_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/typography.css">
+<link rel="stylesheet" href="_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/shape.css">
+<link rel="stylesheet" href="_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/motion.css">
+<link rel="stylesheet" href="_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/base.css">
+<link rel="stylesheet" href="_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/styles.css">
+<script src="_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/_ds_bundle.js"></script>
+<style>
+body{margin:0;background:#EDE8DF;font-family:'Public Sans',system-ui,sans-serif}
+a{color:var(--text-muted)}a:hover{color:var(--primary-strong)}
+.dv-turn{padding:40px 44px 32px;border-bottom:1px solid var(--border);scroll-margin-top:16px}
+.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 6px}
+.dv-tid{font:600 10px 'Public Sans',sans-serif;padding:3px 7px;background:var(--on-surface);color:var(--surface);border-radius:4px;text-decoration:none}
+.dv-tname{font:600 13px/1.2 'Public Sans',sans-serif;color:var(--on-surface)}
+.dv-sub{margin:0 0 22px;font:400 11.5px/1.5 'Public Sans',sans-serif;color:var(--text-muted);max-width:70ch}
+.dv-opts{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start}
+.dv-opt{flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px}
+.dv-oid{font:600 10.5px 'Public Sans',sans-serif;padding:3px 7px;background:rgba(34,26,19,.10);color:var(--on-surface);border-radius:5px;text-decoration:none}
+.dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 11px/1.35 'Public Sans',sans-serif;color:var(--text-muted);max-width:56ch}
+.dv-card{max-width:100%;background:var(--surface);border:1px solid var(--border-strong);border-radius:8px;box-shadow:0 1px 3px rgba(34,26,19,.06);overflow:hidden}
+.dv-opt:target .dv-oid{background:var(--primary);color:var(--surface)}
+.dv-next{margin:22px 0 0;font:12px/1.5 'Public Sans',sans-serif;color:var(--text-faint)}
+.wf-note{font:400 10px/1.3 'Public Sans',sans-serif;color:var(--primary);letter-spacing:.02em}
+</style></helmet>
+
+<section class="dv-turn" id="t2">
+<div class="dv-thd"><a class="dv-tid" href="#t2">2</a><span class="dv-tname">Úvodní stránka — struktura (Part A)</span></div>
+<p class="dv-sub">Layout type <strong>B — Long form story</strong>: unfamiliar brand, an irreversible decision, and two readers with different objections (student: "is this going to judge me?", parent: "why should I pay?"). A hero screenshot cannot carry that argument alone, so the page educates in order. <a class="dv-oid" href="#2b">2b</a> shows the Classic Hero (A) fold for comparison. Structure and rough Czech copy only — no visual pass, no motion; the tagline-reveal moment (B11) is marked as a position, not built.</p>
+<div class="dv-opts">
+
+<div class="dv-opt" id="2a">
+<div class="dv-olabel"><a class="dv-oid" href="#2a">2a</a>Long form story, full page. Sections in A6 order; one primary CTA repeated verbatim at top and bottom.</div>
+<div class="dv-card" style="width:1000px">
+
+<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 40px;border-bottom:1px solid var(--border)">
+<div style="font-family:Fraunces,serif;font-weight:600;font-size:16px;color:var(--primary)">ŠkolaMatch</div>
+<div style="display:flex;align-items:center;gap:18px;font-size:12px;color:var(--text-muted)"><span>Jak to funguje</span><span>Databáze škol</span><span>Pro rodiče</span><span>Cena</span><span style="padding:7px 14px;border-radius:var(--radius-button);background:var(--primary);color:var(--text-on-primary)">Vyplnit dotazník</span></div>
+</div>
+
+<div style="padding:56px 40px 40px;display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:40px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:16px;max-width:560px">
+<div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint)">Střední školy v Praze · přijímačky 2027</div>
+<div style="font-family:Fraunces,serif;font-size:44px;line-height:1.08;font-weight:600;color:var(--on-surface);text-wrap:balance">Vyber si střední školu podle toho, co o ní víš — ne podle toho, co se říká</div>
+<div style="font-size:15px;line-height:1.55;color:var(--text-body);max-width:66ch">61 pražských středních škol s hranicemi přijetí, obory a dojezdem. Odpovíš na 20 otázek a uvidíš, které školy odpovídají tvému zadání a v čem se liší.</div>
+<div style="display:flex;align-items:center;gap:14px;padding-top:4px">
+<div style="padding:12px 20px;border-radius:var(--radius-button);background:var(--primary);color:var(--text-on-primary);font-size:14px;font-weight:600">Vyplnit dotazník — zdarma, 20 otázek</div>
+<div style="font-size:12px;color:var(--text-muted);max-width:20ch">Bez registrace, bez platební karty</div>
+</div>
+<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--border);margin-top:8px">
+<div style="font-size:12.5px;color:var(--text-muted)"><strong style="color:var(--on-surface)">Proof signal:</strong> data z výsledků přijímacích zkoušek CERMAT 2023–2025 · 61 škol · 4 812 dotazníků</div>
+</div>
+<div class="wf-note">jedno CTA nad foldem, žádné soupeřící tlačítko</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="height:300px;border:1px dashed var(--border-strong);border-radius:var(--radius-card);background:var(--neutral);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:0 24px">
+<div style="font-size:12.5px;color:var(--text-muted)">Hero visual — screenshot výsledkové obrazovky</div>
+<div style="font-size:11.5px;color:var(--text-faint)">skutečný produkt, ne ilustrace; případně foto reálných lidí (nedodáno)</div>
+</div>
+</div>
+</div>
+
+<div style="height:1px;background:var(--border)"></div>
+
+<div style="padding:36px 40px;background:var(--neutral);display:flex;flex-direction:column;gap:10px">
+<div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint)">B11 · Tagline reveal — position marker</div>
+<div style="border:1px dashed var(--border-strong);border-radius:var(--radius-card);padding:28px 24px;display:flex;flex-direction:column;gap:10px">
+<div style="font-family:Fraunces,serif;font-size:26px;line-height:1.2;font-weight:600;color:var(--text-faint);max-width:34ch">Dvě řádky tagline copy sem — benefit, ne nadpis sekce. Sazba a postupné odbarvování slov se řeší až ve vizuálním průchodu.</div>
+<div style="font-size:11.5px;color:var(--text-muted)">Blok jen drží pozici a výšku: sekce sedí za herem, před argumentem. Motion a typografie zatím nejsou navržené.</div>
+</div>
+</div>
+
+<div style="height:1px;background:var(--border-strong)"></div>
+
+<div style="padding:40px;display:grid;grid-template-columns:1fr 1fr;gap:32px">
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint)">Problém</div>
+<div style="font-family:Fraunces,serif;font-size:22px;font-weight:600;line-height:1.25;color:var(--on-surface)">Rozhoduje se podle dvou zdrojů: doslechu a webů škol</div>
+<div style="font-size:13.5px;line-height:1.6;color:var(--text-body);max-width:60ch">Hranice přijetí nejsou pohromadě. Obory se jmenují jinak, než se učí. Dojezd zjistíš až po přihlášce. Přihlášky se podávají tři a přepsat se nedá.</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint)">Řešení</div>
+<div style="font-family:Fraunces,serif;font-size:22px;font-weight:600;line-height:1.25;color:var(--on-surface)">Jedna tabulka, ve které jde filtrovat a porovnávat</div>
+<div style="font-size:13.5px;line-height:1.6;color:var(--text-body);max-width:60ch">Dotazník zapíše tvoje kritéria, databáze k nim doplní čísla a u každé školy je vidět, které kritérium splňuje a které ne — včetně toho, odkud číslo je.</div>
+</div>
+</div>
+
+<div style="height:1px;background:var(--border)"></div>
+
+<div style="padding:40px;display:flex;flex-direction:column;gap:18px">
+<div style="display:flex;align-items:baseline;justify-content:space-between">
+<div style="font-family:Fraunces,serif;font-size:22px;font-weight:600;color:var(--on-surface)">Co z toho máš</div>
+<div class="wf-note">4 benefity, každý s konkrétním číslem — ne „ušetři čas“</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px">
+<div style="background:var(--neutral);border-radius:var(--radius-card);padding:18px;display:flex;flex-direction:column;gap:6px"><div style="width:20px;height:20px;border:1.5px solid var(--border-strong);border-radius:4px"></div><div style="font-size:14px;font-weight:600;color:var(--on-surface)">Hranice přijetí za tři roky</div><div style="font-size:12.5px;line-height:1.5;color:var(--text-body)">U každé školy body 2023, 2024 a 2025 a podíl přijatých — vidíš trend, ne jedno číslo.</div></div>
+<div style="background:var(--neutral);border-radius:var(--radius-card);padding:18px;display:flex;flex-direction:column;gap:6px"><div style="width:20px;height:20px;border:1.5px solid var(--border-strong);border-radius:4px"></div><div style="font-size:14px;font-weight:600;color:var(--on-surface)">Filtrování 61 škol na tři přihlášky</div><div style="font-size:12.5px;line-height:1.5;color:var(--text-body)">Obor, městská část, dojezd MHD, talentová zkouška. Počet výsledků se mění hned.</div></div>
+<div style="background:var(--neutral);border-radius:var(--radius-card);padding:18px;display:flex;flex-direction:column;gap:6px"><div style="width:20px;height:20px;border:1.5px solid var(--border-strong);border-radius:4px"></div><div style="font-size:14px;font-weight:600;color:var(--on-surface)">U každé školy je vidět, co nesplňuje</div><div style="font-size:12.5px;line-height:1.5;color:var(--text-body)">Nesplněná kritéria jsou vypsaná stejně jako splněná. Žádné skóre bez vysvětlení.</div></div>
+<div style="background:var(--neutral);border-radius:var(--radius-card);padding:18px;display:flex;flex-direction:column;gap:6px"><div style="width:20px;height:20px;border:1.5px solid var(--border-strong);border-radius:4px"></div><div style="font-size:14px;font-weight:600;color:var(--on-surface)">Výsledek jde poslat rodičům</div><div style="font-size:12.5px;line-height:1.5;color:var(--text-body)">Odkaz na shrnutí s čísly a zdroji — rozhodnutí se dá probrat u stolu.</div></div>
+</div>
+</div>
+
+<div style="height:1px;background:var(--border)"></div>
+
+<div style="padding:40px;display:flex;flex-direction:column;gap:18px;background:var(--neutral)">
+<div style="font-family:Fraunces,serif;font-size:22px;font-weight:600;color:var(--on-surface)">Jak to funguje</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+<div style="display:flex;flex-direction:column;gap:8px"><div style="font-family:Fraunces,serif;font-size:15px;font-weight:600;color:var(--primary)">1</div><div style="font-size:14px;font-weight:600;color:var(--on-surface)">Odpovíš na 20 otázek</div><div style="font-size:12.5px;line-height:1.5;color:var(--text-body)">Obory, dojezd, jazyky, studijní výsledky. Zabere to asi šest minut.</div><div style="height:96px;border:1px dashed var(--border-strong);border-radius:var(--radius-card);background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--text-faint)">screenshot dotazníku</div></div>
+<div style="display:flex;flex-direction:column;gap:8px"><div style="font-family:Fraunces,serif;font-size:15px;font-weight:600;color:var(--primary)">2</div><div style="font-size:14px;font-weight:600;color:var(--on-surface)">Dostaneš seznam škol s čísly</div><div style="font-size:12.5px;line-height:1.5;color:var(--text-body)">Ke každé škole splněná i nesplněná kritéria a hranice přijetí za tři roky.</div><div style="height:96px;border:1px dashed var(--border-strong);border-radius:var(--radius-card);background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--text-faint)">screenshot výsledků</div></div>
+<div style="display:flex;flex-direction:column;gap:8px"><div style="font-family:Fraunces,serif;font-size:15px;font-weight:600;color:var(--primary)">3</div><div style="font-size:14px;font-weight:600;color:var(--on-surface)">Porovnáš a vybereš tři</div><div style="font-size:12.5px;line-height:1.5;color:var(--text-body)">Vedle sebe, ve stejných řádcích. Shrnutí pošleš rodičům odkazem.</div><div style="height:96px;border:1px dashed var(--border-strong);border-radius:var(--radius-card);background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--text-faint)">screenshot porovnání</div></div>
+</div>
+</div>
+
+<div style="height:1px;background:var(--border-strong)"></div>
+
+<div style="padding:40px;display:flex;flex-direction:column;gap:18px">
+<div style="display:flex;align-items:baseline;justify-content:space-between">
+<div style="font-family:Fraunces,serif;font-size:22px;font-weight:600;color:var(--on-surface)">Odkud jsou data a kdo to používá</div>
+<div class="wf-note">proof sedí u tvrzení, ne až v patičce</div>
+</div>
+<div style="display:grid;grid-template-columns:1.2fr 1fr;gap:20px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="border-left:0;background:var(--neutral);border-radius:var(--radius-card);padding:18px;display:flex;flex-direction:column;gap:8px"><div style="font-size:13.5px;line-height:1.6;color:var(--text-body);max-width:60ch">Placeholder citace rodiče, dvě až tři řádky, o rozhodování a číslech — ne o produktu. Skutečné citace zatím nejsou dodané.</div><div style="display:flex;align-items:center;gap:10px"><div style="width:32px;height:32px;border-radius:var(--radius-full);background:var(--border-strong)"></div><div style="font-size:11.5px;color:var(--text-muted)">jméno · rodič, Praha 6</div></div></div>
+<div style="background:var(--neutral);border-radius:var(--radius-card);padding:18px;display:flex;flex-direction:column;gap:8px"><div style="font-size:13.5px;line-height:1.6;color:var(--text-body);max-width:60ch">Placeholder citace studentky, dvě řádky, o tom, co se dozvěděla o konkrétní škole.</div><div style="display:flex;align-items:center;gap:10px"><div style="width:32px;height:32px;border-radius:var(--radius-full);background:var(--border-strong)"></div><div style="font-size:11.5px;color:var(--text-muted)">jméno · 9. třída, Praha 4</div></div></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px;padding:18px;border:1px solid var(--border);border-radius:var(--radius-card)">
+<div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint)">Zdroje dat</div>
+<div style="font-size:12.5px;line-height:1.6;color:var(--text-body)">Výsledky jednotné přijímací zkoušky (CERMAT), rejstřík škol MŠMT, jízdní doby PID. U každého čísla je uveden rok a zdroj.</div>
+<div style="font-size:12.5px;color:var(--text-muted)">61 škol · aktualizováno po každém kole přijímaček</div>
+</div>
+</div>
+</div>
+
+<div style="height:1px;background:var(--border)"></div>
+
+<div style="padding:40px;display:grid;grid-template-columns:280px minmax(0,1fr);gap:32px;background:var(--neutral)">
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="font-family:Fraunces,serif;font-size:22px;font-weight:600;color:var(--on-surface)">Časté otázky</div>
+<div style="font-size:12.5px;color:var(--text-muted);max-width:34ch">8 otázek: 4 studentské, 4 rodičovské. Otevřené v HTML kvůli AEO.</div>
+</div>
+<div style="display:flex;flex-direction:column">
+<div style="padding:12px 0;border-bottom:1px solid var(--border-strong);display:flex;flex-direction:column;gap:6px"><div style="font-size:13.5px;font-weight:600;color:var(--on-surface)">Řekne mi to, že na školu nemám?</div><div style="font-size:12.5px;line-height:1.55;color:var(--text-body);max-width:66ch">Ne. Ukazuje čísla o škole — loňskou hranici a podíl přijatých. Hodnocení tvých šancí nikde nepíše.</div></div>
+<div style="padding:12px 0;border-bottom:1px solid var(--border-strong);display:flex;flex-direction:column;gap:6px"><div style="font-size:13.5px;font-weight:600;color:var(--on-surface)">Kolik to stojí?</div><div style="font-size:12.5px;line-height:1.55;color:var(--text-body);max-width:66ch">Dotazník a seznam škol jsou zdarma. Placené je podrobné porovnání a shrnutí pro rodiče — cena a co v něm je.</div></div>
+<div style="padding:12px 0;border-bottom:1px solid var(--border-strong);display:flex;flex-direction:column;gap:6px"><div style="font-size:13.5px;font-weight:600;color:var(--on-surface)">Odkud berete hranice přijetí?</div><div style="font-size:12.5px;line-height:1.55;color:var(--text-body);max-width:66ch">Z výsledků jednotné přijímací zkoušky a z údajů škol. U každého čísla je rok a zdroj.</div></div>
+<div style="padding:12px 0;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:4px"><div style="font-size:13.5px;font-weight:600;color:var(--text-faint)">Musím se registrovat?</div></div>
+<div style="padding:12px 0;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:4px"><div style="font-size:13.5px;font-weight:600;color:var(--text-faint)">Co když moje škola v databázi není?</div></div>
+<div style="padding:12px 0;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:4px"><div style="font-size:13.5px;font-weight:600;color:var(--text-faint)">Jak pracujete s údaji o dítěti?</div></div>
+<div style="padding:12px 0;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:4px"><div style="font-size:13.5px;font-weight:600;color:var(--text-faint)">Doporučujete konkrétní školy za peníze?</div></div>
+<div style="padding:12px 0;display:flex;flex-direction:column;gap:4px"><div style="font-size:13.5px;font-weight:600;color:var(--text-faint)">Platí to i mimo Prahu?</div></div>
+</div>
+</div>
+
+<div style="height:1px;background:var(--border-strong)"></div>
+
+<div style="padding:40px;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;gap:12px;flex-wrap:wrap">
+<div style="padding:10px 14px;border:1px solid var(--border-strong);border-radius:var(--radius-chip);font-size:12.5px;color:var(--on-surface)">Dotazník zdarma</div>
+<div style="padding:10px 14px;border:1px solid var(--border-strong);border-radius:var(--radius-chip);font-size:12.5px;color:var(--on-surface)">Bez registrace</div>
+<div style="padding:10px 14px;border:1px solid var(--border-strong);border-radius:var(--radius-chip);font-size:12.5px;color:var(--on-surface)">Platíš až za porovnání, do 14 dnů vrácení peněz</div>
+<div style="padding:10px 14px;border:1px solid var(--border-strong);border-radius:var(--radius-chip);font-size:12.5px;color:var(--on-surface)">Data se neprodávají školám</div>
+</div>
+<div style="display:flex;align-items:flex-end;justify-content:space-between;gap:32px;padding-top:8px">
+<div style="display:flex;flex-direction:column;gap:12px;max-width:520px">
+<div style="font-family:Fraunces,serif;font-size:30px;line-height:1.15;font-weight:600;color:var(--on-surface);text-wrap:balance">Vyber si střední školu podle toho, co o ní víš</div>
+<div style="font-size:13.5px;color:var(--text-body)">20 otázek, asi šest minut. Seznam škol uvidíš hned po odpovědích.</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start">
+<div style="padding:12px 20px;border-radius:var(--radius-button);background:var(--primary);color:var(--text-on-primary);font-size:14px;font-weight:600">Vyplnit dotazník — zdarma, 20 otázek</div>
+<div class="wf-note">stejné CTA jako nad foldem, slovo za slovem</div>
+</div>
+</div>
+</div>
+
+<div style="padding:20px 40px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:11.5px;color:var(--text-faint)">
+<div>ŠkolaMatch · Zdroje dat · Ochrana osobních údajů · Podmínky</div>
+<div>Databáze škol · Pro rodiče · Kontakt</div>
+</div>
+</div>
+</div>
+
+<div class="dv-opt" id="2b">
+<div class="dv-olabel"><a class="dv-oid" href="#2b">2b</a>Same page, Classic Hero (A) fold for comparison: product shot leads, argument gets shorter. Faster for a parent who already knows the product; weaker for a first-time student.</div>
+<div class="dv-card" style="width:600px">
+<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 24px;border-bottom:1px solid var(--border)">
+<div style="font-family:Fraunces,serif;font-weight:600;font-size:14px;color:var(--primary)">ŠkolaMatch</div>
+<div style="display:flex;gap:12px;font-size:11.5px;color:var(--text-muted)"><span>Databáze</span><span>Cena</span><span style="padding:6px 12px;border-radius:var(--radius-button);background:var(--primary);color:var(--text-on-primary)">Vyplnit dotazník</span></div>
+</div>
+<div style="padding:32px 24px;display:flex;flex-direction:column;gap:16px;align-items:flex-start">
+<div style="font-family:Fraunces,serif;font-size:32px;line-height:1.1;font-weight:600;color:var(--on-surface);max-width:26ch;text-wrap:balance">61 pražských středních škol, hranice přijetí a obory na jednom místě</div>
+<div style="font-size:14px;line-height:1.55;color:var(--text-body);max-width:52ch">Odpovíš na 20 otázek a vyfiltrujete si tři školy, na které podáte přihlášku.</div>
+<div style="display:flex;align-items:center;gap:12px"><div style="padding:11px 18px;border-radius:var(--radius-button);background:var(--primary);color:var(--text-on-primary);font-size:13.5px;font-weight:600">Vyplnit dotazník — zdarma</div><div style="font-size:11.5px;color:var(--text-muted)">Bez registrace</div></div>
+<div style="width:100%;height:230px;border:1px dashed var(--border-strong);border-radius:var(--radius-card);background:var(--neutral);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--text-faint)">hero screenshot — vede vizuál, ne text</div>
+<div style="width:100%;padding-top:12px;border-top:1px solid var(--border);font-size:12px;color:var(--text-muted)">Data: CERMAT 2023–2025 · rejstřík MŠMT · 4 812 dotazníků</div>
+</div>
+<div style="padding:16px 24px;background:var(--neutral);border-top:1px solid var(--border);display:flex;flex-direction:column;gap:6px">
+<div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint)">dál stejné sekce jako v <a class="dv-oid" href="#2a" style="text-transform:none;letter-spacing:0">2a</a></div>
+<div style="font-size:12px;color:var(--text-muted)">Tagline reveal (B11) → benefity → jak to funguje → proof → FAQ → závěrečné CTA. Problém→řešení vypadává, argument nese hero.</div>
+</div>
+</div>
+</div>
+
+</div>
+<p class="dv-next">Try next: "postav mobilní verzi <a class="dv-oid" href="#2a">2a</a>" · "napiš finální copy pro hero a FAQ" · "rozveď sekci pro rodiče jako vlastní blok"</p>
+</section>
+
+<section class="dv-turn" id="t1">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Vyhledávání škol — struktura</span></div>
+<p class="dv-sub">Low-fi structural wireframes. Three layouts for the browse screen (dense mode) plus the empty state as its own frame. Colours, radii and type come from the design-system tokens; terracotta marks live/interactive behaviour to call out. Buttons, chips and checkboxes are drawn as unstyled placeholder boxes on purpose — this frame argues about structure, not component styling. Structural references: Zillow / Redfin filter-and-list, Wellfound match-criteria rows.</p>
+<div class="dv-opts">
+
+<div class="dv-opt" id="1a">
+<div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>Persistent left filter rail + dense list. Counts live on every control; sort is a named tradeoff row above the list.</div>
+<div class="dv-card" style="width:1120px">
+
+<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--border-strong)">
+<div style="display:flex;align-items:center;gap:20px">
+<div style="font-family:Fraunces,serif;font-weight:600;font-size:15px;color:var(--primary)">ŠkolaMatch</div>
+<div style="display:flex;gap:14px;font-size:11.5px;color:var(--text-muted)"><span style="color:var(--on-surface);font-weight:600;border-bottom:1.5px solid var(--primary);padding-bottom:2px">Školy</span><span>Dotazník</span><span>Uložené (3)</span></div>
+</div>
+<div style="width:150px;height:26px;border:1px dashed rgba(34,26,19,.3);border-radius:var(--radius-chip)"></div>
+</div>
+
+<div style="display:grid;grid-template-columns:264px 1fr">
+
+<div style="border-right:1px solid var(--border-strong);padding:16px;display:flex;flex-direction:column;gap:18px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="height:34px;border:1px solid var(--border-strong);border-radius:var(--radius-input);display:flex;align-items:center;padding:0 10px;gap:8px;font-size:11.5px;color:var(--text-faint)"><span style="width:12px;height:12px;border:1.5px solid rgba(34,26,19,.35);border-radius:50%"></span>Hledat podle názvu nebo oboru</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint)">Obor / zaměření</div>
+<label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--on-surface)"><span style="width:16px;height:16px;border:1.5px solid var(--primary);border-radius:4px;background:rgba(173,79,42,.12);flex:none"></span>IT a programování<span style="margin-left:auto;font-size:11px;color:var(--text-faint)">9</span></label>
+<label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--on-surface)"><span style="width:16px;height:16px;border:1px solid rgba(34,26,19,.3);border-radius:4px;flex:none"></span>Gymnázium všeobecné<span style="margin-left:auto;font-size:11px;color:var(--text-faint)">24</span></label>
+<label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--on-surface)"><span style="width:16px;height:16px;border:1px solid rgba(34,26,19,.3);border-radius:4px;flex:none"></span>Ekonomika a obchod<span style="margin-left:auto;font-size:11px;color:var(--text-faint)">11</span></label>
+<label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--on-surface)"><span style="width:16px;height:16px;border:1px solid rgba(34,26,19,.3);border-radius:4px;flex:none"></span>Zdravotnictví<span style="margin-left:auto;font-size:11px;color:var(--text-faint)">6</span></label>
+<label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-faint)"><span style="width:16px;height:16px;border:1px solid var(--border-strong);border-radius:4px;flex:none"></span>Umění a design<span style="margin-left:auto;font-size:11px">0</span></label>
+<div style="font-size:11px;color:var(--text-muted)">+ 6 dalších oborů</div>
+</div>
+
+<div style="height:1px;background:var(--border-strong)"></div>
+
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint)">Dojezd MHD z domova</div>
+<div style="display:flex;align-items:baseline;justify-content:space-between;font-size:12px;color:var(--on-surface)"><span>do 35 minut</span><span style="font-size:11px;color:var(--text-faint)">18 škol</span></div>
+<div style="height:4px;background:rgba(34,26,19,.15);border-radius:var(--radius-full);position:relative"><div style="position:absolute;left:0;top:0;bottom:0;width:58%;background:var(--primary);border-radius:var(--radius-full)"></div><div style="position:absolute;left:58%;top:-5px;width:14px;height:14px;border-radius:50%;background:var(--surface);border:1.5px solid var(--primary)"></div></div>
+<div class="wf-note">počet se přepočítá při tažení</div>
+</div>
+
+<div style="height:1px;background:var(--border-strong)"></div>
+
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint)">Městská část</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px">
+<span style="font-size:11.5px;padding:4px 9px;border-radius:var(--radius-chip);border:1.5px solid var(--primary);background:rgba(173,79,42,.10);color:var(--on-surface)">Praha 1 · 7</span>
+<span style="font-size:11.5px;padding:4px 9px;border-radius:var(--radius-chip);border:1px solid var(--border-strong);color:var(--text-muted)">Praha 2 · 5</span>
+<span style="font-size:11.5px;padding:4px 9px;border-radius:var(--radius-chip);border:1.5px solid var(--primary);background:rgba(173,79,42,.10);color:var(--on-surface)">Praha 4 · 9</span>
+<span style="font-size:11.5px;padding:4px 9px;border-radius:var(--radius-chip);border:1px solid var(--border-strong);color:var(--text-muted)">Praha 5 · 6</span>
+<span style="font-size:11.5px;padding:4px 9px;border-radius:var(--radius-chip);border:1px solid var(--border-strong);color:var(--text-muted)">Praha 6 · 8</span>
+<span style="font-size:11.5px;padding:4px 9px;border-radius:var(--radius-chip);border:1px dashed rgba(34,26,19,.3);color:var(--text-muted)">+ 6</span>
+</div>
+</div>
+
+<div style="height:1px;background:var(--border-strong)"></div>
+
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint)">Hranice přijetí 2025</div>
+<div style="display:flex;gap:8px">
+<div style="flex:1;height:30px;border:1px solid var(--border-strong);border-radius:var(--radius-input);display:flex;align-items:center;padding:0 8px;font-size:11.5px;color:var(--text-muted)">od 30</div>
+<div style="flex:1;height:30px;border:1px solid var(--border-strong);border-radius:var(--radius-input);display:flex;align-items:center;padding:0 8px;font-size:11.5px;color:var(--text-muted)">do 60</div>
+</div>
+<label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--on-surface)"><span style="width:16px;height:16px;border:1px solid rgba(34,26,19,.3);border-radius:4px;flex:none"></span>Jen školy bez talentové zkoušky<span style="margin-left:auto;font-size:11px;color:var(--text-faint)">15</span></label>
+</div>
+</div>
+
+<div>
+<div style="padding:12px 20px;border-bottom:1px solid var(--border-strong);display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:10px">
+<div style="font-family:Fraunces,serif;font-size:19px;font-weight:600;color:var(--on-surface)">18 škol z 61</div>
+<div style="font-size:11.5px;color:var(--text-muted)">odpovídá 4 filtrům · seznam se mění průběžně, nic se nepotvrzuje</div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center">
+<span style="font-size:11.5px;padding:4px 8px 4px 9px;border-radius:var(--radius-chip);background:rgba(173,79,42,.10);border:1.5px solid var(--primary);display:flex;gap:6px;align-items:center">IT a programování <span style="color:var(--text-faint)">✕</span></span>
+<span style="font-size:11.5px;padding:4px 8px 4px 9px;border-radius:var(--radius-chip);background:rgba(173,79,42,.10);border:1.5px solid var(--primary);display:flex;gap:6px;align-items:center">Praha 1 <span style="color:var(--text-faint)">✕</span></span>
+<span style="font-size:11.5px;padding:4px 8px 4px 9px;border-radius:var(--radius-chip);background:rgba(173,79,42,.10);border:1.5px solid var(--primary);display:flex;gap:6px;align-items:center">Praha 4 <span style="color:var(--text-faint)">✕</span></span>
+<span style="font-size:11.5px;padding:4px 8px 4px 9px;border-radius:var(--radius-chip);background:rgba(173,79,42,.10);border:1.5px solid var(--primary);display:flex;gap:6px;align-items:center">Dojezd do 35 min <span style="color:var(--text-faint)">✕</span></span>
+<span style="font-size:11.5px;color:var(--text-muted);text-decoration:underline;margin-left:4px">Zrušit všechny filtry</span>
+</div>
+<div style="display:flex;gap:8px;align-items:stretch">
+<div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint);align-self:center;flex:none">Řadit</div>
+<div style="flex:1;display:flex;gap:8px">
+<div style="flex:1;border:1.5px solid var(--primary);background:rgba(173,79,42,.08);border-radius:var(--radius-chip);padding:7px 10px"><div style="font-size:12px;font-weight:600;color:var(--on-surface)">Nejvíc splněných kritérií</div><div style="font-size:11px;color:var(--text-muted)">nebere ohled na dojezd</div></div>
+<div style="flex:1;border:1px solid var(--border-strong);border-radius:var(--radius-chip);padding:7px 10px"><div style="font-size:12px;font-weight:600;color:var(--on-surface)">Nejkratší dojezd</div><div style="font-size:11px;color:var(--text-muted)">může vynechat tvůj obor</div></div>
+<div style="flex:1;border:1px solid var(--border-strong);border-radius:var(--radius-chip);padding:7px 10px"><div style="font-size:12px;font-weight:600;color:var(--on-surface)">Nejnižší hranice přijetí</div><div style="font-size:11px;color:var(--text-muted)">bezpečnější, ne nutně silnější škola</div></div>
+</div>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column">
+<div style="display:flex;gap:12px;padding:12px 20px;border-bottom:1px solid var(--border)">
+<div style="width:14px;height:14px;border:1px solid rgba(34,26,19,.3);border-radius:4px;flex:none;margin-top:2px"></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:6px">
+<div style="display:flex;align-items:baseline;gap:8px"><div style="font-family:Fraunces,serif;font-size:15px;font-weight:600;color:var(--on-surface)">SPŠ elektrotechnická Ječná</div><div style="font-size:11.5px;color:var(--text-muted)">Praha 2 · 24 min MHD · veřejná</div></div>
+<div style="display:flex;flex-wrap:wrap;gap:5px">
+<span style="font-size:11px;padding:3px 8px;border-radius:var(--radius-chip);background:var(--neutral);color:var(--text-body)">Informační technologie</span>
+<span style="font-size:11px;padding:3px 8px;border-radius:var(--radius-chip);background:var(--neutral);color:var(--text-body)">Elektronika</span>
+<span style="font-size:11px;padding:3px 8px;border-radius:var(--radius-chip);background:var(--neutral);color:var(--text-body)">4 roky · maturita</span>
+</div>
+<div style="font-size:12px;color:var(--text-body);max-width:66ch">Vlastní laboratoře pro robotiku; třetí ročník má povinnou praxi ve firmě.</div>
+<div style="display:flex;gap:16px;font-size:11.5px;color:var(--text-muted)"><span>Hranice 2025 · <strong style="color:var(--on-surface)">54,5 bodu</strong></span><span>Přijato 38 % přihlášených</span><span>Splňuje 3 ze 4 tvých kritérií</span></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;flex:none">
+<div style="font-size:11.5px;padding:6px 12px;border-radius:var(--radius-chip);border:1px solid var(--border-strong);color:var(--on-surface)">Detail</div>
+<div style="font-size:11px;color:var(--text-muted)">Uložit</div>
+</div>
+</div>
+
+<div style="display:flex;gap:12px;padding:12px 20px;border-bottom:1px solid var(--border);background:var(--neutral)">
+<div style="width:14px;height:14px;border:1.5px solid var(--primary);background:rgba(173,79,42,.15);border-radius:4px;flex:none;margin-top:2px"></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:6px">
+<div style="display:flex;align-items:baseline;gap:8px"><div style="font-family:Fraunces,serif;font-size:15px;font-weight:600;color:var(--on-surface)">Gymnázium Na Vítězné pláni</div><div style="font-size:11.5px;color:var(--text-muted)">Praha 4 · 31 min MHD · veřejná</div></div>
+<div style="display:flex;flex-wrap:wrap;gap:5px">
+<span style="font-size:11px;padding:3px 8px;border-radius:var(--radius-chip);background:var(--surface);border:1px solid rgba(34,26,19,.12);color:var(--text-body)">Programování jako volitelný blok</span>
+<span style="font-size:11px;padding:3px 8px;border-radius:var(--radius-chip);background:var(--surface);border:1px solid rgba(34,26,19,.12);color:var(--text-body)">Všeobecné</span>
+<span style="font-size:11px;padding:3px 8px;border-radius:var(--radius-chip);background:var(--surface);border:1px solid rgba(34,26,19,.12);color:var(--text-body)">4 roky · maturita</span>
+</div>
+<div style="font-size:12px;color:var(--text-body);max-width:66ch">Jediné gymnázium v okolí, kde je informatika profilovým předmětem k maturitě.</div>
+<div style="display:flex;gap:16px;font-size:11.5px;color:var(--text-muted)"><span>Hranice 2025 · <strong style="color:var(--on-surface)">61,0 bodu</strong></span><span>Přijato 29 % přihlášených</span><span>Splňuje 4 ze 4 tvých kritérií</span></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;flex:none">
+<div style="font-size:11.5px;padding:6px 12px;border-radius:var(--radius-chip);border:1px solid var(--border-strong);color:var(--on-surface)">Detail</div>
+<div style="font-size:11px;color:var(--text-muted)">Uloženo</div>
+</div>
+</div>
+
+<div style="display:flex;gap:12px;padding:12px 20px;border-bottom:1px solid var(--border)">
+<div style="width:14px;height:14px;border:1px solid rgba(34,26,19,.3);border-radius:4px;flex:none;margin-top:2px"></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:6px">
+<div style="display:flex;align-items:baseline;gap:8px"><div style="font-family:Fraunces,serif;font-size:15px;font-weight:600;color:var(--on-surface)">Smíchovská střední průmyslová škola</div><div style="font-size:11.5px;color:var(--text-muted)">Praha 5 · 33 min MHD · veřejná</div></div>
+<div style="display:flex;flex-wrap:wrap;gap:5px">
+<span style="font-size:11px;padding:3px 8px;border-radius:var(--radius-chip);background:var(--neutral);color:var(--text-body)">Kybernetická bezpečnost</span>
+<span style="font-size:11px;padding:3px 8px;border-radius:var(--radius-chip);background:var(--neutral);color:var(--text-body)">Informační technologie</span>
+<span style="font-size:11px;padding:3px 8px;border-radius:var(--radius-chip);background:var(--neutral);color:var(--text-body)">4 roky · maturita</span>
+</div>
+<div style="font-size:12px;color:var(--text-body);max-width:66ch">Obor kyberbezpečnosti nabízí v Praze jako jedna ze dvou škol.</div>
+<div style="display:flex;gap:16px;font-size:11.5px;color:var(--text-muted)"><span>Hranice 2025 · <strong style="color:var(--on-surface)">47,0 bodu</strong></span><span>Přijato 52 % přihlášených</span><span>Splňuje 3 ze 4 tvých kritérií</span></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;flex:none">
+<div style="font-size:11.5px;padding:6px 12px;border-radius:var(--radius-chip);border:1px solid var(--border-strong);color:var(--on-surface)">Detail</div>
+<div style="font-size:11px;color:var(--text-muted)">Uložit</div>
+</div>
+</div>
+
+<div style="padding:12px 20px;display:flex;flex-direction:column;gap:8px">
+<div style="height:52px;border:1px dashed rgba(34,26,19,.22);border-radius:8px;display:flex;align-items:center;padding:0 12px;font-size:11.5px;color:var(--text-faint)">… dalších 15 řádků ve stejném rytmu (12px padding, bez fotek)</div>
+</div>
+</div>
+
+<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--border-strong);background:var(--neutral)">
+<div style="font-size:12px;color:var(--on-surface)">Vybráno k porovnání: 1 škola</div>
+<div style="display:flex;gap:8px"><div style="font-size:11.5px;padding:7px 12px;border-radius:var(--radius-chip);border:1px solid var(--border-strong)">Zrušit výběr</div><div style="font-size:11.5px;padding:7px 14px;border-radius:var(--radius-chip);background:var(--primary);color:var(--surface)">Porovnat vybrané</div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="dv-opt" id="1b">
+<div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>Filters collapse into a sticky top bar; the count sits in the bar and follows the scroll. More room for rows, one extra click per filter.</div>
+<div class="dv-card" style="width:860px">
+<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--border-strong)">
+<div style="font-family:Fraunces,serif;font-weight:600;font-size:15px;color:var(--primary)">ŠkolaMatch</div>
+<div style="display:flex;gap:14px;font-size:11.5px;color:var(--text-muted)"><span style="color:var(--on-surface);font-weight:600">Školy</span><span>Dotazník</span><span>Uložené (3)</span></div>
+</div>
+
+<div style="padding:12px 20px;border-bottom:1px solid var(--border-strong);background:var(--neutral);display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;gap:8px;align-items:center">
+<div style="flex:1;height:32px;border:1px solid var(--border-strong);border-radius:var(--radius-input);background:var(--surface);display:flex;align-items:center;padding:0 10px;font-size:11.5px;color:var(--text-faint)">Hledat podle názvu nebo oboru</div>
+<div style="font-family:Fraunces,serif;font-size:17px;font-weight:600;color:var(--on-surface);flex:none">18 / 61</div>
+</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap">
+<span style="font-size:11.5px;padding:5px 10px;border-radius:var(--radius-chip);border:1.5px solid var(--primary);background:rgba(173,79,42,.10)">Obor · IT a programování ▾</span>
+<span style="font-size:11.5px;padding:5px 10px;border-radius:var(--radius-chip);border:1.5px solid var(--primary);background:rgba(173,79,42,.10)">Městská část · 2 ▾</span>
+<span style="font-size:11.5px;padding:5px 10px;border-radius:var(--radius-chip);border:1.5px solid var(--primary);background:rgba(173,79,42,.10)">Dojezd ≤ 35 min ▾</span>
+<span style="font-size:11.5px;padding:5px 10px;border-radius:var(--radius-chip);border:1px solid var(--border-strong);color:var(--text-muted)">Hranice přijetí ▾</span>
+<span style="font-size:11.5px;padding:5px 10px;border-radius:var(--radius-chip);border:1px solid var(--border-strong);color:var(--text-muted)">Jazyky ▾</span>
+<span style="font-size:11.5px;padding:5px 10px;border-radius:var(--radius-chip);border:1px dashed rgba(34,26,19,.3);color:var(--text-muted)">Další filtry</span>
+<span style="font-size:11.5px;padding:5px 10px;color:var(--text-muted);text-decoration:underline">Zrušit vše</span>
+</div>
+<div style="display:flex;gap:10px;align-items:flex-start">
+<div style="width:230px;background:var(--surface);border:1px solid var(--border-strong);border-radius:var(--radius-chip);padding:10px;display:flex;flex-direction:column;gap:7px;box-shadow:0 8px 24px rgba(34,26,19,.10)">
+<div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint)">Obor / zaměření</div>
+<label style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:16px;height:16px;border:1.5px solid var(--primary);background:rgba(173,79,42,.12);border-radius:4px"></span>IT a programování<span style="margin-left:auto;font-size:11px;color:var(--text-faint)">9</span></label>
+<label style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:16px;height:16px;border:1px solid rgba(34,26,19,.3);border-radius:4px"></span>Gymnázium všeobecné<span style="margin-left:auto;font-size:11px;color:var(--text-faint)">+24</span></label>
+<label style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:16px;height:16px;border:1px solid rgba(34,26,19,.3);border-radius:4px"></span>Ekonomika a obchod<span style="margin-left:auto;font-size:11px;color:var(--text-faint)">+11</span></label>
+<div style="height:1px;background:var(--border)"></div>
+<div style="font-size:11.5px;color:var(--on-surface)">Výsledků teď: <strong>18</strong> — zavřením se nic nepotvrzuje</div>
+</div>
+<div class="wf-note" style="padding-top:8px">otevřený panel filtru: počet se aktualizuje uvnitř, žádné „Použít“</div>
+</div>
+</div>
+
+<div style="padding:10px 20px;border-bottom:1px solid var(--border-strong);display:flex;gap:8px;align-items:center">
+<div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint)">Řadit</div>
+<span style="font-size:11.5px;padding:5px 10px;border-radius:var(--radius-chip);border:1.5px solid var(--primary);background:rgba(173,79,42,.08)">Nejvíc splněných kritérií <span style="color:var(--text-muted)">· ignoruje dojezd</span></span>
+<span style="font-size:11.5px;padding:5px 10px;border-radius:var(--radius-chip);border:1px solid var(--border-strong);color:var(--text-muted)">Nejkratší dojezd <span style="color:var(--text-faint)">· může vynechat obor</span></span>
+<span style="font-size:11.5px;padding:5px 10px;border-radius:var(--radius-chip);border:1px solid var(--border-strong);color:var(--text-muted)">Nejnižší hranice <span style="color:var(--text-faint)">· bezpečnější</span></span>
+</div>
+
+<div>
+<div style="display:flex;gap:12px;padding:11px 20px;border-bottom:1px solid var(--border)">
+<div style="width:14px;height:14px;border:1px solid rgba(34,26,19,.3);border-radius:4px;flex:none;margin-top:3px"></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:5px">
+<div style="display:flex;align-items:baseline;gap:8px"><div style="font-family:Fraunces,serif;font-size:15px;font-weight:600">Gymnázium Na Vítězné pláni</div><div style="font-size:11.5px;color:var(--text-muted)">Praha 4 · 31 min · veřejná · hranice 61,0</div></div>
+<div style="font-size:12px;color:var(--text-body)">Informatika jako profilový maturitní předmět · 4 ze 4 kritérií</div>
+</div>
+<div style="font-size:11.5px;padding:6px 12px;border-radius:var(--radius-chip);border:1px solid var(--border-strong);flex:none">Detail</div>
+</div>
+<div style="display:flex;gap:12px;padding:11px 20px;border-bottom:1px solid var(--border)">
+<div style="width:14px;height:14px;border:1px solid rgba(34,26,19,.3);border-radius:4px;flex:none;margin-top:3px"></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:5px">
+<div style="display:flex;align-items:baseline;gap:8px"><div style="font-family:Fraunces,serif;font-size:15px;font-weight:600">SPŠ elektrotechnická Ječná</div><div style="font-size:11.5px;color:var(--text-muted)">Praha 2 · 24 min · veřejná · hranice 54,5</div></div>
+<div style="font-size:12px;color:var(--text-body)">Vlastní laboratoře pro robotiku, povinná praxe ve firmě · 3 ze 4 kritérií</div>
+</div>
+<div style="font-size:11.5px;padding:6px 12px;border-radius:var(--radius-chip);border:1px solid var(--border-strong);flex:none">Detail</div>
+</div>
+<div style="display:flex;gap:12px;padding:11px 20px;border-bottom:1px solid var(--border)">
+<div style="width:14px;height:14px;border:1px solid rgba(34,26,19,.3);border-radius:4px;flex:none;margin-top:3px"></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:5px">
+<div style="display:flex;align-items:baseline;gap:8px"><div style="font-family:Fraunces,serif;font-size:15px;font-weight:600">Smíchovská SPŠ</div><div style="font-size:11.5px;color:var(--text-muted)">Praha 5 · 33 min · veřejná · hranice 47,0</div></div>
+<div style="font-size:12px;color:var(--text-body)">Kyberbezpečnost jako jedna ze dvou škol v Praze · 3 ze 4 kritérií</div>
+</div>
+<div style="font-size:11.5px;padding:6px 12px;border-radius:var(--radius-chip);border:1px solid var(--border-strong);flex:none">Detail</div>
+</div>
+<div style="padding:12px 20px"><div style="height:44px;border:1px dashed rgba(34,26,19,.22);border-radius:8px;display:flex;align-items:center;padding:0 12px;font-size:11.5px;color:var(--text-faint)">… 15 dalších řádků</div></div>
+</div>
+</div>
+</div>
+
+<div class="dv-opt" id="1c">
+<div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a>Mobile (student, 15). Count lives in the sticky filter button; filters open as a sheet that keeps the count visible while adjusting.</div>
+<div style="display:flex;gap:20px;align-items:flex-start">
+<div class="dv-card" style="width:330px">
+<div style="padding:10px 14px;border-bottom:1px solid var(--border-strong);display:flex;align-items:center;justify-content:space-between"><div style="font-family:Fraunces,serif;font-weight:600;font-size:14px;color:var(--primary)">ŠkolaMatch</div><div style="width:18px;height:12px;border-top:1.5px solid rgba(34,26,19,.5);border-bottom:1.5px solid rgba(34,26,19,.5)"></div></div>
+<div style="padding:10px 14px;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--border-strong)">
+<div style="height:32px;border:1px solid var(--border-strong);border-radius:var(--radius-input);display:flex;align-items:center;padding:0 10px;font-size:11.5px;color:var(--text-faint)">Hledat školu</div>
+<div style="display:flex;gap:6px;overflow:hidden">
+<span style="font-size:11px;padding:4px 8px;border-radius:var(--radius-chip);border:1.5px solid var(--primary);background:rgba(173,79,42,.10);white-space:nowrap">IT ✕</span>
+<span style="font-size:11px;padding:4px 8px;border-radius:var(--radius-chip);border:1.5px solid var(--primary);background:rgba(173,79,42,.10);white-space:nowrap">Praha 4 ✕</span>
+<span style="font-size:11px;padding:4px 8px;border-radius:var(--radius-chip);border:1.5px solid var(--primary);background:rgba(173,79,42,.10);white-space:nowrap">≤35 min ✕</span>
+<span style="font-size:11px;padding:4px 8px;color:var(--text-muted);white-space:nowrap">Zrušit vše</span>
+</div>
+<div style="display:flex;align-items:baseline;justify-content:space-between"><div style="font-family:Fraunces,serif;font-size:16px;font-weight:600">18 škol z 61</div><div style="font-size:11px;color:var(--text-muted)">Nejvíc kritérií ▾</div></div>
+</div>
+<div style="display:flex;flex-direction:column">
+<div style="padding:11px 14px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:5px">
+<div style="font-family:Fraunces,serif;font-size:14px;font-weight:600">Gymnázium Na Vítězné pláni</div>
+<div style="font-size:11px;color:var(--text-muted)">Praha 4 · 31 min MHD · hranice 61,0</div>
+<div style="font-size:11.5px;color:var(--text-body)">Informatika jako profilový maturitní předmět</div>
+<div style="font-size:11px;color:var(--text-muted)">Splňuje 4 ze 4 tvých kritérií</div>
+</div>
+<div style="padding:11px 14px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:5px">
+<div style="font-family:Fraunces,serif;font-size:14px;font-weight:600">SPŠ elektrotechnická Ječná</div>
+<div style="font-size:11px;color:var(--text-muted)">Praha 2 · 24 min MHD · hranice 54,5</div>
+<div style="font-size:11.5px;color:var(--text-body)">Laboratoře pro robotiku, praxe ve firmě</div>
+<div style="font-size:11px;color:var(--text-muted)">Splňuje 3 ze 4 tvých kritérií</div>
+</div>
+<div style="padding:11px 14px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:5px">
+<div style="font-family:Fraunces,serif;font-size:14px;font-weight:600">Smíchovská SPŠ</div>
+<div style="font-size:11px;color:var(--text-muted)">Praha 5 · 33 min MHD · hranice 47,0</div>
+<div style="font-size:11.5px;color:var(--text-body)">Kyberbezpečnost — jedna ze dvou škol v Praze</div>
+<div style="font-size:11px;color:var(--text-muted)">Splňuje 3 ze 4 tvých kritérií</div>
+</div>
+<div style="padding:12px 14px"><div style="height:40px;border:1px dashed rgba(34,26,19,.22);border-radius:8px;display:flex;align-items:center;padding:0 10px;font-size:11px;color:var(--text-faint)">… další školy</div></div>
+</div>
+<div style="padding:10px 14px;border-top:1px solid var(--border-strong);background:var(--neutral);display:flex;gap:8px">
+<div style="flex:1;height:44px;border-radius:var(--radius-chip);background:var(--primary);color:var(--surface);display:flex;align-items:center;justify-content:center;font-size:12.5px">Filtry (3) · 18 výsledků</div>
+<div style="width:44px;height:44px;border-radius:var(--radius-chip);border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;font-size:11px">Řadit</div>
+</div>
+</div>
+<div class="dv-card" style="width:330px">
+<div style="height:150px;background:rgba(34,26,19,.10);display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;font-size:11px;color:var(--text-faint)">seznam pod scrimem</div>
+<div style="padding:12px 14px;display:flex;flex-direction:column;gap:12px;border-top:1px solid var(--border-strong)">
+<div style="display:flex;align-items:center;justify-content:space-between"><div style="font-family:Fraunces,serif;font-size:15px;font-weight:600">Filtry</div><div style="font-size:11.5px;color:var(--text-muted)">Zrušit vše</div></div>
+<div style="display:flex;flex-direction:column;gap:7px">
+<div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint)">Obor</div>
+<label style="display:flex;align-items:center;gap:8px;font-size:12.5px;min-height:44px"><span style="width:20px;height:20px;border:1.5px solid var(--primary);background:rgba(173,79,42,.12);border-radius:4px"></span>IT a programování<span style="margin-left:auto;font-size:11px;color:var(--text-faint)">9</span></label>
+<label style="display:flex;align-items:center;gap:8px;font-size:12.5px;min-height:44px"><span style="width:20px;height:20px;border:1px solid rgba(34,26,19,.3);border-radius:4px"></span>Gymnázium všeobecné<span style="margin-left:auto;font-size:11px;color:var(--text-faint)">24</span></label>
+<label style="display:flex;align-items:center;gap:8px;font-size:12.5px;min-height:44px"><span style="width:20px;height:20px;border:1px solid rgba(34,26,19,.3);border-radius:4px"></span>Ekonomika a obchod<span style="margin-left:auto;font-size:11px;color:var(--text-faint)">11</span></label>
+</div>
+<div style="height:1px;background:var(--border-strong)"></div>
+<div style="display:flex;flex-direction:column;gap:7px">
+<div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint)">Dojezd MHD</div>
+<div style="display:flex;justify-content:space-between;font-size:12.5px"><span>do 35 minut</span><span style="color:var(--text-muted)">18 škol</span></div>
+<div style="height:4px;background:rgba(34,26,19,.15);border-radius:var(--radius-full);position:relative"><div style="position:absolute;left:0;top:0;bottom:0;width:58%;background:var(--primary);border-radius:var(--radius-full)"></div><div style="position:absolute;left:58%;top:-6px;width:16px;height:16px;border-radius:50%;background:var(--surface);border:1.5px solid var(--primary)"></div></div>
+</div>
+<div style="height:48px;border-radius:var(--radius-chip);background:var(--primary);color:var(--surface);display:flex;align-items:center;justify-content:center;font-size:13px">Zobrazit 18 škol</div>
+<div class="wf-note" style="text-align:center">tlačítko jen zavírá sheet — filtry už platí</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="dv-opt" id="1d">
+<div class="dv-olabel"><a class="dv-oid" href="#1d">1d</a>No-results frame (state of <a class="dv-oid" href="#1a">1a</a>). Names the filter that costs the most, offers one-tap relaxation and a full reset; the rail keeps its state so nothing is lost.</div>
+<div class="dv-card" style="width:1120px">
+<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--border-strong)">
+<div style="display:flex;align-items:center;gap:20px">
+<div style="font-family:Fraunces,serif;font-weight:600;font-size:15px;color:var(--primary)">ŠkolaMatch</div>
+<div style="display:flex;gap:14px;font-size:11.5px;color:var(--text-muted)"><span style="color:var(--on-surface);font-weight:600;border-bottom:1.5px solid var(--primary);padding-bottom:2px">Školy</span><span>Dotazník</span><span>Uložené (3)</span></div>
+</div>
+<div style="width:150px;height:26px;border:1px dashed rgba(34,26,19,.3);border-radius:var(--radius-chip)"></div>
+</div>
+<div style="display:grid;grid-template-columns:264px 1fr">
+<div style="border-right:1px solid var(--border-strong);padding:16px;display:flex;flex-direction:column;gap:16px">
+<div style="height:34px;border:1px solid var(--border-strong);border-radius:var(--radius-input);display:flex;align-items:center;padding:0 10px;font-size:11.5px;color:var(--text-faint)">Hledat podle názvu nebo oboru</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint)">Obor / zaměření</div>
+<label style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:16px;height:16px;border:1.5px solid var(--primary);background:rgba(173,79,42,.12);border-radius:4px"></span>Umění a design<span style="margin-left:auto;font-size:11px;color:var(--text-faint)">5</span></label>
+<label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-faint)"><span style="width:16px;height:16px;border:1px solid var(--border-strong);border-radius:4px"></span>IT a programování<span style="margin-left:auto;font-size:11px">9</span></label>
+</div>
+<div style="height:1px;background:var(--border-strong)"></div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint)">Dojezd MHD z domova</div>
+<div style="display:flex;justify-content:space-between;font-size:12px"><span>do 20 minut</span><span style="color:var(--error)">0 škol</span></div>
+<div style="height:4px;background:rgba(34,26,19,.15);border-radius:var(--radius-full);position:relative"><div style="position:absolute;left:0;top:0;bottom:0;width:24%;background:var(--error);border-radius:var(--radius-full)"></div><div style="position:absolute;left:24%;top:-5px;width:14px;height:14px;border-radius:50%;background:var(--surface);border:1.5px solid var(--error)"></div></div>
+</div>
+<div style="height:1px;background:var(--border-strong)"></div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint)">Městská část</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px"><span style="font-size:11.5px;padding:4px 9px;border-radius:var(--radius-chip);border:1.5px solid var(--primary);background:rgba(173,79,42,.10)">Praha 1</span><span style="font-size:11.5px;padding:4px 9px;border-radius:var(--radius-chip);border:1px dashed rgba(34,26,19,.3);color:var(--text-muted)">+ 9</span></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint)">Hranice přijetí 2025</div>
+<label style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:16px;height:16px;border:1.5px solid var(--primary);background:rgba(173,79,42,.12);border-radius:4px"></span>Jen školy bez talentové zkoušky<span style="margin-left:auto;font-size:11px;color:var(--text-faint)">15</span></label>
+</div>
+</div>
+
+<div>
+<div style="padding:12px 20px;border-bottom:1px solid var(--border-strong);display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:10px">
+<div style="font-family:Fraunces,serif;font-size:19px;font-weight:600;color:var(--on-surface)">0 škol z 61</div>
+<div style="font-size:11.5px;color:var(--text-muted)">odpovídá všem 4 filtrům</div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center">
+<span style="font-size:11.5px;padding:4px 8px 4px 9px;border-radius:var(--radius-chip);background:rgba(122,48,32,.08);border:1.5px solid var(--error);display:flex;gap:6px;align-items:center">Dojezd do 20 min <span style="color:var(--text-faint)">✕</span></span>
+<span style="font-size:11.5px;padding:4px 8px 4px 9px;border-radius:var(--radius-chip);background:rgba(173,79,42,.10);border:1.5px solid var(--primary);display:flex;gap:6px;align-items:center">Umění a design <span style="color:var(--text-faint)">✕</span></span>
+<span style="font-size:11.5px;padding:4px 8px 4px 9px;border-radius:var(--radius-chip);background:rgba(173,79,42,.10);border:1.5px solid var(--primary);display:flex;gap:6px;align-items:center">Praha 1 <span style="color:var(--text-faint)">✕</span></span>
+<span style="font-size:11.5px;padding:4px 8px 4px 9px;border-radius:var(--radius-chip);background:rgba(173,79,42,.10);border:1.5px solid var(--primary);display:flex;gap:6px;align-items:center">Bez talentové zkoušky <span style="color:var(--text-faint)">✕</span></span>
+<span style="font-size:11.5px;color:var(--text-muted);text-decoration:underline;margin-left:4px">Zrušit všechny filtry</span>
+</div>
+</div>
+
+<div style="padding:20px;display:flex;flex-direction:column;gap:16px;max-width:720px">
+<div style="display:flex;flex-direction:column;gap:6px">
+<div style="font-family:Fraunces,serif;font-size:22px;font-weight:600;color:var(--on-surface)">Žádná škola nesplňuje všechny čtyři filtry současně</div>
+<div style="font-size:13px;line-height:1.55;color:var(--text-body);max-width:66ch">Nejvíc omezuje <strong>dojezd do 20 minut</strong> — vyřazuje 34 z 61 škol. Druhý nejužší filtr je <strong>Umění a design</strong> (5 škol v celé Praze).</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint)">Uvolnit jeden filtr</div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border:1px solid var(--border-strong);border-radius:var(--radius-chip);background:var(--surface)"><div style="font-size:12.5px;color:var(--on-surface)">Dojezd do <strong>40 minut</strong> místo 20</div><div style="display:flex;align-items:center;gap:12px"><div style="font-size:12px;color:var(--text-muted)">→ 4 školy</div><div style="font-size:11.5px;padding:6px 12px;border-radius:var(--radius-chip);background:var(--primary);color:var(--surface)">Použít</div></div></div>
+<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border:1px solid var(--border-strong);border-radius:var(--radius-chip);background:var(--surface)"><div style="font-size:12.5px;color:var(--on-surface)">Zrušit omezení na <strong>Prahu 1</strong></div><div style="display:flex;align-items:center;gap:12px"><div style="font-size:12px;color:var(--text-muted)">→ 3 školy</div><div style="font-size:11.5px;padding:6px 12px;border-radius:var(--radius-chip);border:1px solid var(--border-strong);color:var(--on-surface)">Použít</div></div></div>
+<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border:1px solid var(--border-strong);border-radius:var(--radius-chip);background:var(--surface)"><div style="font-size:12.5px;color:var(--on-surface)">Zrušit <strong>Bez talentové zkoušky</strong></div><div style="display:flex;align-items:center;gap:12px"><div style="font-size:12px;color:var(--text-muted)">→ 2 školy</div><div style="font-size:11.5px;padding:6px 12px;border-radius:var(--radius-chip);border:1px solid var(--border-strong);color:var(--on-surface)">Použít</div></div></div>
+</div>
+<div class="wf-note">každý řádek nese svůj dopad v počtu — student nehádá, co uvolnit</div>
+</div>
+
+<div style="height:1px;background:var(--border-strong)"></div>
+
+<div style="display:flex;align-items:center;gap:10px">
+<div style="font-size:12px;padding:8px 14px;border-radius:var(--radius-chip);border:1px solid var(--border-strong);color:var(--on-surface)">Zrušit všechny filtry (61 škol)</div>
+<div style="font-size:12px;color:var(--text-muted)">Filtry v levém panelu zůstávají nastavené, dokud je nezrušíš.</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:8px;padding-top:4px">
+<div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint)">Blízko tvému zadání</div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<div style="padding:10px 12px;border:1px dashed rgba(34,26,19,.22);border-radius:var(--radius-chip);display:flex;flex-direction:column;gap:3px"><div style="font-family:Fraunces,serif;font-size:14px;font-weight:600">VOŠ a SPŠ grafická, Hellichova</div><div style="font-size:11.5px;color:var(--text-muted)">Praha 1 · 22 min MHD · talentová zkouška — nesplňuje 1 filtr</div></div>
+<div style="padding:10px 12px;border:1px dashed rgba(34,26,19,.22);border-radius:var(--radius-chip);display:flex;flex-direction:column;gap:3px"><div style="font-family:Fraunces,serif;font-size:14px;font-weight:600">SUPŠ Žižkovská</div><div style="font-size:11.5px;color:var(--text-muted)">Praha 3 · 28 min MHD · nesplňuje filtr městské části a dojezdu</div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<p class="dv-next">Try next: "rozveď <a class="dv-oid" href="#1a">1a</a> — přidej porovnávací režim" · "make <a class="dv-oid" href="#1b">1b</a> work with a map pane" · "další směry pro řazení jako tradeoff"</p>
+</section>
+
+</x-dc>
+</body>
+</html>

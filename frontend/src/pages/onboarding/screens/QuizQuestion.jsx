@@ -1,5 +1,6 @@
-import { useMemo } from 'react';
-import { ObButton, ObOption, ObScreen } from '../../../components/onboarding/ObKit';
+import { useMemo, useState } from 'react';
+import { ObButton, ObOption, ObScreen, SelectionCount } from '../../../components/onboarding/ObKit';
+import DistrictMap from '../../../components/onboarding/DistrictMap';
 import { countCandidates } from '../../../lib/matching';
 import { useOnboarding } from '../useOnboarding';
 import { QUESTIONS, optionLabel, questionCopy, questionOptions } from '../quizQuestions';
@@ -39,6 +40,9 @@ function QuizQuestion({ step }) {
   const copy = questionCopy(question, role);
   const options = questionOptions(question, role);
   const value = answers[question.key];
+  // Synced both ways with the map, when this question has one — pointing at
+  // either representation highlights the other.
+  const [hoveredDistrict, setHoveredDistrict] = useState(null);
 
   const candidates = useMemo(
     () => countCandidates(schools, cleanedAnswers, role || 'student'),
@@ -55,12 +59,14 @@ function QuizQuestion({ step }) {
 
   const toggleMulti = (optionValue) => {
     const current = Array.isArray(value) ? value : [];
-    setAnswer(
-      question.key,
-      current.includes(optionValue)
-        ? current.filter((v) => v !== optionValue)
-        : [...current, optionValue]
-    );
+    if (current.includes(optionValue)) {
+      setAnswer(question.key, current.filter((v) => v !== optionValue));
+      return;
+    }
+    // Past the cap, adding is simply ignored — matching how the option chips
+    // (and the map's own regions) dim rather than silently doing nothing.
+    if (question.max && current.length >= question.max) return;
+    setAnswer(question.key, [...current, optionValue]);
   };
 
   const clear = () => setAnswer(question.key, question.type === 'multi' ? [] : '');
@@ -108,27 +114,54 @@ function QuizQuestion({ step }) {
           </select>
         </div>
       ) : (
-        <div className="ob-options">
-          {options.map((o) => {
-            const selected =
-              question.type === 'multi'
-                ? Array.isArray(value) && value.includes(o.value)
-                : value === o.value;
-            return (
-              <ObOption
-                key={o.value}
-                multi={question.type === 'multi'}
-                unsure={Boolean(o.unsure)}
-                selected={selected}
-                onClick={() =>
-                  question.type === 'multi' ? toggleMulti(o.value) : selectSingle(o.value)
-                }
-              >
-                {optionLabel(o, role)}
-              </ObOption>
-            );
-          })}
-        </div>
+        <>
+          {question.max && (
+            <SelectionCount count={Array.isArray(value) ? value.length : 0} max={question.max} />
+          )}
+
+          {question.map && (
+            <DistrictMap
+              selected={Array.isArray(value) ? value : []}
+              onToggle={toggleMulti}
+              max={question.max}
+              hovered={hoveredDistrict}
+              onHover={setHoveredDistrict}
+            />
+          )}
+
+          <div className="ob-options">
+            {options.map((o) => {
+              const selected =
+                question.type === 'multi'
+                  ? Array.isArray(value) && value.includes(o.value)
+                  : value === o.value;
+              const atMax =
+                question.type === 'multi' &&
+                question.max &&
+                Array.isArray(value) &&
+                value.length >= question.max;
+              return (
+                <ObOption
+                  key={o.value}
+                  multi={question.type === 'multi'}
+                  unsure={Boolean(o.unsure)}
+                  selected={selected}
+                  disabled={atMax && !selected}
+                  onClick={() =>
+                    question.type === 'multi' ? toggleMulti(o.value) : selectSingle(o.value)
+                  }
+                  onHover={
+                    question.map
+                      ? (isOver) => setHoveredDistrict(isOver ? o.value : null)
+                      : undefined
+                  }
+                >
+                  {optionLabel(o, role)}
+                </ObOption>
+              );
+            })}
+          </div>
+        </>
       )}
 
       {question.honesty && <p className="ob-honesty">{question.honesty}</p>}

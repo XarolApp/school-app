@@ -1,0 +1,5 @@
+- [Update CLAUDE.md on significant changes](feedback_documentation.md) — keep project docs current before session ends
+- [Dual buyer model: students AND parents pay](project_dual_buyer_model.md) — onboarding forks by role; never treat the teen as a non-buyer
+- [Read UX guide before any frontend work](feedback_frontend_ux_guide.md) — docs/sources/claude_code_ui_ux_guide.md applies app-wide, not just onboarding
+- [docs/sources/ holds standing reference docs](reference_docs_sources.md) — UX guide + feature-brainstorm, check before frontend work or feature proposals
+- [Pricing settled: one-time season pass, not recurring](project_pricing_model.md) — used once per lifetime, not seasonal-recurring; weekly and monthly-default both ruled out

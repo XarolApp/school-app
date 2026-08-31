@@ -1,0 +1,56 @@
+:root{
+/* base ramps — warm terracotta (primary), warm moss (tertiary), warm brick (error) */
+--terracotta-700:#8A3E20;--terracotta-500:#AD4F2A;--terracotta-300:#DFA98C;--terracotta-100:#F6E3D6;
+--moss-700:#3A5531;--moss-500:#4F7143;--moss-300:#A8BE9B;--moss-100:#E6EDDE;
+--brick-700:#5E2418;--brick-500:#7A3020;--brick-300:#C79E92;--brick-100:#F5E2DC;
+--paper-000:#FAF6EF;--paper-100:#F1ECE3;--paper-200:#E6DFD1;--paper-300:#D6CBB6;
+--graphite-500:#756B5C;--graphite-700:#6B6259;--ink-900:#221A13;
+--night-900:#17130E;--night-800:#1F1911;--night-700:#2A2216;--night-500:#362C1E;
+--bone-100:#F2ECE2;--bone-300:#B3A895;
+
+/* semantic aliases — always prefer these in product code */
+--primary:var(--terracotta-500);
+--primary-strong:var(--terracotta-700);
+--primary-subtle:var(--terracotta-100);
+--secondary:var(--graphite-700);
+--tertiary:var(--moss-500);
+--tertiary-subtle:var(--moss-100);
+--neutral:var(--paper-100);
+--surface:var(--paper-000);
+--on-surface:var(--ink-900);
+--on-surface-faint:var(--graphite-500);
+--border:var(--paper-200);
+--border-strong:var(--paper-300);
+--error:var(--brick-500);
+--error-subtle:var(--brick-100);
+
+--text-body:var(--on-surface);
+--text-muted:var(--secondary);
+--text-faint:var(--on-surface-faint);
+--text-on-primary:var(--surface);
+--surface-page:var(--surface);
+--surface-card:var(--neutral);
+--surface-raised:var(--surface);
+--surface-input:var(--surface);
+--focus-ring:var(--primary);
+}
+[data-theme="dark"]{
+/* dark mode is a separate design, not an inversion: chroma pulled down 15-20%,
+   raised surfaces get lighter, nothing is pure black. */
+--primary:#E08A5C;--primary-strong:#EFA57B;--primary-subtle:#3A251A;
+--secondary:var(--bone-300);
+--tertiary:#8FB57E;--tertiary-subtle:#26301F;
+--neutral:var(--night-800);
+--surface:var(--night-900);
+--on-surface:var(--bone-100);
+--on-surface-faint:var(--bone-300);
+--border:var(--night-500);--border-strong:#4A3D2A;
+--error:#C97F6A;--error-subtle:#3A211A;
+--surface-page:var(--night-900);
+--surface-card:var(--night-800);
+--surface-raised:var(--night-800);
+--surface-overlay:var(--night-700);
+--surface-input:var(--night-800);
+--text-body:var(--bone-100);--text-muted:var(--bone-300);--text-faint:var(--bone-300);
+--text-on-primary:var(--night-900);
+}

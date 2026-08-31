@@ -14,6 +14,21 @@ codebase audit (see "Not audited" below).
 | 001 | [Fix mobile preview harness clipping 28px](001-fix-mobile-preview-clipping.md) | HIGH | S | Very low | TODO |
 | 002 | [Paywall sticky CTA block eats up to 57% of screen](002-fix-paywall-sticky-cluster.md) | HIGH | M | Medium | TODO |
 | 003 | [Desktop breakpoint uses pre-redesign title sizes](003-fix-stale-breakpoint-title-sizes.md) | LOW-MED | S | Very low | TODO |
+| 004 | [Implement the "School Search" design on `/skoly`](004-search-design-import.md) | HIGH | L | Medium | DONE |
+| 005 | [Spacing & typography tokens: emit them, then adopt them site-wide](005-spacing-typography-migration.md) | HIGH | L | Medium | IN PROGRESS |
+
+> **004** was added 2026-08-30 by a separate `/improve plan <description>` run against
+> commit `5a8381c` — a targeted single-plan run, not part of the 2026-08-24 audit above.
+> It is independent of 001–003 (different files entirely). It ships **synthesized
+> stand-in data** for fields the `schools` table lacks; that is a deliberate,
+> user-approved pre-release tradeoff tracked in `UNFORGET.md` as a **hard launch blocker**.
+>
+> **005** was added 2026-08-31, same variant, same base commit. It migrates the app onto
+> `design/system`'s real spacing and type scales. **It interacts with 003**: 003 fixes a
+> stale breakpoint title size in `onboarding.css`, which 005 explicitly excludes from
+> scope — so 003 stays valid and independent, but per 005's `UNFORGET.md` entry it is
+> better folded into the planned onboarding redesign than patched separately. 005 also
+> supersedes the private `--space-*` block that 004 created inside `search.css`.
 
 ## Recommended order
 

@@ -5,13 +5,19 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Design system faces: Newsreader (serif headings) + Hanken Grotesk
-         (sans body/UI). Both OFL, both carry full Czech diacritics.
-         See src/design/tokens.js and docs/sources/design_system.md. -->
+    <!-- Design system faces: Fraunces (serif headings) + Public Sans (sans
+         body/UI), per DESIGN.md's Typography section — Fraunces replaces the
+         earlier Newsreader choice; the difference is not cosmetic (see
+         DESIGN.md for the reasoning). Both OFL, both carry full Czech
+         diacritics. DESIGN.md's eventual target is self-hosted .woff2 files;
+         no font binaries have been supplied yet, so this loads from the
+         Google Fonts CDN in the meantime (same substitution the design
+         system's own token files make) — swap for local @font-face rules
+         once the files exist. See src/design/tokens.js. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300..700&family=Hanken+Grotesk:wght@300..800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..700,0..100;1,9..144,400..700,0..100&family=Public+Sans:wght@400;600&display=swap"
       rel="stylesheet"
     />
 

@@ -1,0 +1,7 @@
+:root{
+/* palette-tinted, top-down, never neutral black */
+--shadow-card:0 1px 2px rgba(34,26,19,.06),0 8px 24px rgba(34,26,19,.10);
+--shadow-overlay:0 2px 4px rgba(34,26,19,.06),0 16px 40px rgba(34,26,19,.14);
+--shadow-none:none;
+}
+[data-theme="dark"]{--shadow-card:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.5);--shadow-overlay:0 2px 6px rgba(0,0,0,.5),0 20px 48px rgba(0,0,0,.6)}

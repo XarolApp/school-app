@@ -90,7 +90,7 @@ Every feature idea, organized by category. Rated:
 | Full contact info + director name | 🔥 | Already scraped |
 | Interactive map + Street View | ✅ | |
 | Commute calculator from user's address | 🔥 | |
-| Photo gallery | ✅ | Already scraped |
+| Photo gallery | ✅ | Already scraped — **but verify.** During the 2026-08-25 design pass this was assumed too costly for v1 and deferred. If photos genuinely are already scraped, that assumption was wrong and school imagery is much cheaper than treated. Confirm against the laptop dataset before the DESIGN.md rewrite settles the imagery question |
 | Video tours / embedded YouTube | ✅ | Already scraped for some schools |
 | Virtual 360° tour | 🟡 | Expensive to produce, schools may supply |
 | Program-by-program breakdown with stats | 🔥 | You have this: spots, applicants, required exams, GPA |
@@ -191,6 +191,7 @@ Every feature idea, organized by category. Rated:
 | Waitlist / early access page | ✅ | Build audience before launch |
 | Testimonials from students who got in | ✅ | Social proof, but requires a full cycle to collect |
 | TikTok-native short vertical content | ✅ | Your audience literally lives there |
+| Real Czech student photography (landing/onboarding) | ✅ | Post-launch, not v1. NN/g: teens *detect and penalise* stock photos (read as "they want my money"); authentic imagery earned "it seems like it's not about taking your money." Also solves the dual-audience problem in one move — a photo of a 15-year-old is warm to the teen and reassuring to the parent. Needs a real shoot + minor consent. See `design_direction_research.md` lever #8 |
 | Streak / gamification for profile completion | 🟡 | Feels gimmicky for a one-time decision |
 | Leaderboard | ❌ | Competitive ranking of children = terrible idea, anxiety-inducing |
 

@@ -8,20 +8,20 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 32px;
+  padding: var(--space-md) var(--space-xl);
   border-bottom: 1px solid var(--border);
 }
 
 .navbar-brand {
   font-weight: 700;
-  font-size: 18px;
+  font-size: var(--fs-body-lg);
   text-decoration: none;
   color: var(--text-h);
 }
 
 .navbar-links {
   display: flex;
-  gap: 20px;
+  gap: var(--space-lg);
 }
 
 .navbar-links a {
@@ -31,22 +31,38 @@
 
 .app-content {
   flex: 1;
-  padding: 32px;
-  max-width: 960px;
+  padding: var(--page-margin);
+  max-width: var(--content-max);
   width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
 }
 
+/* Widened from 960px to 1280px + these breakpoints 2026-08-31, to match
+   design/DESIGN.md's own Layout spec (1280px max content width, 64px outer
+   margin; below 1024px, 32px margins; below 768px, 16px margins). This is a
+   fixed-width port of the design's desktop spec, not a full responsive pass —
+   see UNFORGET.md for per-breakpoint layout work still needed below 1280px. */
+@media (max-width: 1024px) {
+  .app-content {
+    padding: var(--page-margin-md);
+  }
+}
+@media (max-width: 768px) {
+  .app-content {
+    padding: var(--page-margin-sm);
+  }
+}
+
 .home-actions {
   display: flex;
-  gap: 12px;
-  margin-top: 24px;
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
 }
 
 .btn {
   display: inline-block;
-  padding: 10px 20px;
+  padding: var(--space-sm) var(--space-lg);
   border-radius: 6px;
   text-decoration: none;
   font-weight: 600;
@@ -66,12 +82,12 @@
 
 .search-filters {
   display: flex;
-  gap: 12px;
-  margin-bottom: 24px;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
 }
 
 .search-filters input {
-  padding: 8px 12px;
+  padding: var(--space-sm) var(--space-md);
   border: 1px solid var(--border);
   border-radius: 6px;
 }
@@ -80,13 +96,13 @@
   list-style: none;
   padding: 0;
   display: grid;
-  gap: 16px;
+  gap: var(--space-md);
 }
 
 .school-card {
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 16px;
+  padding: var(--space-md);
 }
 
 .school-card a {
@@ -97,19 +113,19 @@
 .signup-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-md);
   max-width: 360px;
 }
 
 .signup-form label {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--space-xs);
   font-weight: 600;
 }
 
 .signup-form input {
-  padding: 8px 12px;
+  padding: var(--space-sm) var(--space-md);
   border: 1px solid var(--border);
   border-radius: 6px;
   font-weight: 400;

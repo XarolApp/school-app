@@ -1221,3 +1221,103 @@
   text-decoration: underline;
   cursor: pointer;
 }
+
+/* --- district map (question `districts`) ----------------------------------
+   Ported from the earlier laptop build's questionnaire and restyled to this
+   system's tokens. Inline SVG, no tiles, no mapping library — see
+   components/onboarding/DistrictMap.jsx for why. */
+
+.ob-selection-count {
+  font-size: 13px;
+  color: var(--text);
+  margin: -4px 0 4px;
+}
+
+.ob-selection-count.is-at-max {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.ob-district-map {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.ob-district-map-svg {
+  width: 100%;
+  max-width: 360px;
+  height: auto;
+}
+
+.ob-district-map-region {
+  cursor: pointer;
+}
+
+.ob-district-map-shape {
+  fill: var(--surface);
+  stroke: var(--border);
+  stroke-width: 1.5;
+  transition: fill 140ms ease, stroke 140ms ease;
+}
+
+.ob-district-map-number {
+  fill: var(--text);
+  font-family: var(--sans);
+  font-weight: 600;
+  pointer-events: none;
+  transition: fill 140ms ease;
+}
+
+.ob-district-map-region:hover .ob-district-map-shape,
+.ob-district-map-region.is-peer-hovered:not(.is-selected) .ob-district-map-shape {
+  stroke: var(--accent-border);
+  fill: var(--accent-bg);
+}
+
+.ob-district-map-region.is-selected .ob-district-map-shape {
+  fill: var(--acc-soft);
+  stroke: var(--acc);
+}
+
+.ob-district-map-region.is-selected .ob-district-map-number {
+  fill: var(--acc-ink, var(--text-h));
+}
+
+/* Selected districts get their own hover, shifted further, so hovering one
+   you already picked never reads as the click having turned it off. */
+.ob-district-map-region.is-selected:hover .ob-district-map-shape,
+.ob-district-map-region.is-selected.is-peer-hovered .ob-district-map-shape {
+  fill: var(--acc);
+}
+
+.ob-district-map-region.is-blocked {
+  cursor: default;
+  opacity: 0.4;
+}
+
+.ob-district-map-credit {
+  font-size: 11px;
+  color: var(--text);
+  opacity: 0.7;
+}
+
+.ob-district-map-credit a {
+  color: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ob-district-map-shape,
+  .ob-district-map-number {
+    transition: none;
+  }
+}
+
+/* Dimmed once a capped multi-select hits its limit — matches how the map's
+   own regions dim, so the two representations stay visually consistent. */
+.ob-option.is-blocked {
+  opacity: 0.45;
+  cursor: default;
+}

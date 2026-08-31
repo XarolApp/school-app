@@ -1,100 +1,102 @@
 ---
 version: alpha
 name: ŠkolaMatch
-description: A high school selection tool for Czech 9th graders and their parents — a searchable school database, an AI-matched questionnaire, and a paywall, built to be trusted with a once-in-a-lifetime decision.
+description: A high school selection tool for Czech 9th graders and their parents — a searchable school database, an AI-matched questionnaire, and a paywall, built to feel like a trusted advisor rather than an institution grading you.
 
 colors:
-  primary: "#35426E"
-  primary-strong: "#263153"
-  primary-subtle: "#E4E7F2"
-  secondary: "#5C5750"
-  tertiary: "#2E6B4E"
-  tertiary-subtle: "#E3EDE6"
-  neutral: "#F3F0E9"
-  surface: "#FBF9F4"
-  on-surface: "#1B1912"
-  on-surface-faint: "#6E6858"
-  border: "#E4DFD2"
-  border-strong: "#D2CBB8"
-  error: "#8C2F28"
-  error-subtle: "#F3E1DE"
+  primary: "#AD4F2A"
+  primary-strong: "#8A3E20"
+  primary-subtle: "#F6E3D6"
+  secondary: "#6B6259"
+  tertiary: "#4F7143"
+  tertiary-subtle: "#E6EDDE"
+  neutral: "#F1ECE3"
+  surface: "#FAF6EF"
+  on-surface: "#221A13"
+  on-surface-faint: "#756B5C"
+  border: "#E6DFD1"
+  border-strong: "#D6CBB6"
+  error: "#7A3020"
+  error-subtle: "#F5E2DC"
 
 typography:
   display:
-    fontFamily: Newsreader
-    fontSize: 80px
-    fontWeight: 400
-    lineHeight: 1.04
-    letterSpacing: -0.03em
-  headline-lg:
-    fontFamily: Newsreader
-    fontSize: 40px
-    fontWeight: 400
-    lineHeight: 1.12
+    fontFamily: Fraunces
+    fontSize: 72px
+    fontWeight: 600
+    lineHeight: 1.06
     letterSpacing: -0.02em
-  headline-md:
-    fontFamily: Newsreader
-    fontSize: 32px
-    fontWeight: 400
-    lineHeight: 1.16
+    fontVariation: "'SOFT' 60, 'opsz' 72"
+  headline-lg:
+    fontFamily: Fraunces
+    fontSize: 38px
+    fontWeight: 600
+    lineHeight: 1.14
     letterSpacing: -0.015em
-  headline-sm:
-    fontFamily: Newsreader
-    fontSize: 25px
-    fontWeight: 400
-    lineHeight: 1.22
+    fontVariation: "'SOFT' 50, 'opsz' 38"
+  headline-md:
+    fontFamily: Fraunces
+    fontSize: 28px
+    fontWeight: 600
+    lineHeight: 1.2
     letterSpacing: -0.01em
+    fontVariation: "'SOFT' 45, 'opsz' 28"
+  headline-sm:
+    fontFamily: Fraunces
+    fontSize: 22px
+    fontWeight: 500
+    lineHeight: 1.25
+    fontVariation: "'SOFT' 35, 'opsz' 22"
   body-lg:
-    fontFamily: Hanken Grotesk
+    fontFamily: Public Sans
     fontSize: 18px
     fontWeight: 400
     lineHeight: 1.6
   body-md:
-    fontFamily: Hanken Grotesk
+    fontFamily: Public Sans
     fontSize: 16px
     fontWeight: 400
     lineHeight: 1.55
   body-sm:
-    fontFamily: Hanken Grotesk
+    fontFamily: Public Sans
     fontSize: 14px
     fontWeight: 400
     lineHeight: 1.5
   caption:
-    fontFamily: Hanken Grotesk
+    fontFamily: Public Sans
     fontSize: 13px
     fontWeight: 400
     lineHeight: 1.45
   label-caps:
-    fontFamily: Hanken Grotesk
+    fontFamily: Public Sans
     fontSize: 11px
     fontWeight: 600
     lineHeight: 1.3
-    letterSpacing: 0.1em
+    letterSpacing: 0.08em
   label-md:
-    fontFamily: Hanken Grotesk
+    fontFamily: Public Sans
     fontSize: 15px
     fontWeight: 600
     lineHeight: 1
     letterSpacing: 0
   data-md:
-    fontFamily: JetBrains Mono
-    fontSize: 14px
-    fontWeight: 400
-    lineHeight: 1.45
+    fontFamily: Public Sans
+    fontSize: 15px
+    fontWeight: 500
+    lineHeight: 1.4
     fontFeature: "'tnum' 1"
   data-sm:
-    fontFamily: JetBrains Mono
-    fontSize: 12px
-    fontWeight: 400
+    fontFamily: Public Sans
+    fontSize: 13px
+    fontWeight: 500
     lineHeight: 1.4
-    letterSpacing: 0.01em
     fontFeature: "'tnum' 1"
 
 rounded:
-  input: 6px
-  chip: 8px
-  button: 8px
-  card: 12px
+  input: 10px
+  chip: 12px
+  button: 12px
+  card: 20px
   full: 9999px
 
 spacing:
@@ -184,7 +186,7 @@ components:
     typography: "{typography.data-sm}"
     rounded: "{rounded.chip}"
     padding: "{spacing.xs}"
-  badge-match:
+  match-indicator:
     backgroundColor: "{colors.tertiary-subtle}"
     textColor: "{colors.tertiary}"
     typography: "{typography.label-caps}"
@@ -200,300 +202,546 @@ components:
 
 # ŠkolaMatch
 
-## Overview
+## Overview — read this before anything else
 
-ŠkolaMatch is used exactly once, by two different people, for the same decision. A
-15-year-old fills out a questionnaire on a phone between classes. Their parent opens
-the same result on a laptop a few days later, deciding whether to pay for it. Neither
-is browsing — both are trying to get a high-stakes, irreversible choice right, and
-both need to feel the product is credible enough to trust with it.
+This is the **second** DESIGN.md written for ŠkolaMatch. The first one — Archival
+Institutional crossed with Soft Technical, navy primary, monospace numerics, hairline
+structure, a metaphor built on report cards and a teacher's red pen — lint-passed at
+zero errors and was still wrong. Seeing it rendered, the founder's reaction was
+immediate: *it looks like GitHub, n8n, or Supabase.* That diagnosis was correct, and
+this file is the correction, built on two inputs the first version didn't have:
 
-The register is **Archival Institutional**, borrowing its structure from an official
-school record rather than from a consumer app: a class ledger, a *vysvědčení* (report
-card), the stamped finality of an admissions decision. Crossed with **Soft Technical**
-for the working screens — search, filter, compare — which need working density, not
-archival stillness. The reference point named during intake was UWorld: serious,
-unglamorous, built to be trusted with an exam that matters, not to charm.
+1. **A 131KB sourced research document** (`design/research/design_direction_research.md`
+   — moved from `docs/sources/` 2026-08-31, see `design/research/`)
+   covering warmth-vs-credibility, teen design psychology, colour-and-trust folklore
+   vs. evidence, and anxiety-reduction patterns — with `[SOURCED]`/`[CONTESTED]`/
+   `[GAP]` flags throughout. Findings are cited by name below; treat `[INFERENCE]`-
+   flagged claims as reasoning, not measurement.
+2. **Ten reference screens pulled from Mobbin** (listed under each section below,
+   with URLs) — not because ŠkolaMatch should resemble any one of them, but because
+   every claim in this file about what "warm but credible" looks like in production
+   is checked against something that actually shipped.
 
-What this direction commits to: restraint. One interactive color, one success color,
-warm paper instead of white, hairline structure instead of shadow. What it gives up,
-deliberately: **warmth-through-decoration and any sense of speed-as-a-feature**. This
-is not a product that wants to feel fast or fun to open — it wants to feel like the
-kind of document you'd keep. For a purchase made once, under real stakes, that felt
-like the right trade over a livelier, more "appy" register that a returning-user
-product would earn back over time.
+**For whoever builds screens from this file (including `/design` and Claude Design):
+query the Mobbin MCP directly before generating anything, but treat it strictly as
+reference, never as a source of truth.** Priority order, always:
 
-**Explicit anti-reference:** atlasskolstvi.cz, the existing Czech school directory —
-dense unstyled tables, no visual hierarchy, dated chrome, nothing legible at a glance.
-ŠkolaMatch's whole value proposition is "the thing that site should have been," so
-resembling it in any way — table-first layouts, undifferentiated rows, no typographic
-hierarchy — is a direct product failure, not just a style miss.
+1. **`design/system/` first** — the real, built component library (`Button`, `Input`,
+   `Checkbox`, `Card`, `Chip`, `Divider`, `MatchIndicator`, `Tooltip`, tokens,
+   guidelines). This is the template. Its components, colors, spacing, and type scale
+   are not negotiable against anything Mobbin turns up.
+2. **This file, `DESIGN.md`, second** — the prose reasoning and direction behind that
+   template, for anything the built components don't cover yet.
+3. **Mobbin third, as a sanity check only.** Before designing any screen, search
+   Mobbin for 3–5 real shipped examples of that screen type (warm neutral grounds,
+   one desaturated accent, generous radius, real photography — the direction named
+   below). Use them to judge whether a layout or interaction choice holds up against
+   real products. **Never let a Mobbin example override or blend into this design
+   system's own colors, spacing, or components** — if a Mobbin pattern conflicts with
+   `design/system`, `design/system` wins, full stop. The ten screens cited here are a
+   starting point, not the full research. When evaluating a reference screen, check
+   that it's not fundamentally misaligned with the warm-but-credible direction —
+   exclude sites serving opposite purposes (cold developer tools, pure entertainment,
+   etc.), but don't restrict to only similar categories.
 
-**Scope note:** this pass covers **desktop/web** first, since that's what's being
-built next. Mobile app layout is deferred to its own pass before public launch, but
-reuses these same color, type, and spacing tokens — see "Layout" below for what
-carries over and what doesn't.
+### Who this is for, and the tension that shaped everything
+
+A 15-year-old fills out a questionnaire on a phone, stressed about an irreversible
+decision. Their parent opens the same result on a laptop days later, deciding whether
+to pay. Founder's own framing, verbatim: *"trustworthy in a calm way, without being a
+people-pleaser — real results you can trust, not flattery."* That is the whole brief
+in one sentence, and it resolves the register question directly: **Revolut/Spotify,
+not Notion/Linear (too cold, what the first version accidentally became) and not
+Duolingo (too playful for a decision this heavy).**
+
+The apparent contradiction — "stressed and scared" wants softness, "Revolut/Spotify"
+wants confidence — is resolved the way every warm-but-credible product in the
+research resolves it: **not with a midpoint, but by zoning.** Monzo's brand book
+states this as an explicit rule: hot coral "is exhausting at scale" and product UI
+should "default to deep navy on soft white" — warmth in the brand layer, sobriety in
+the interface layer. Confidence here comes from **craft and honesty** (real
+typography, generous space, an accent used with real restraint), never from urgency,
+noise, or flattering the user about a match that isn't actually strong.
+
+### The metaphor problem, and its replacement
+
+The first version's single worst decision, independently flagged by the research as
+"the single most damaging idea in the first pass": a visual metaphor built on being
+evaluated — report cards, a class register, a teacher's correction pen. Somerville et
+al. (fMRI, n=69) found sensitivity to social evaluation **peaks at ~15.3 years old** —
+almost exactly this product's primary user — with arousal elevated during
+*anticipation*, not only during the evaluation itself. A product about to tell a
+15-year-old what it thinks of their choices cannot afford to visually rhyme with being
+graded.
+
+This version has **no institutional-document metaphor at all.** Where a colour or
+form needs a referent, it's sourced from something a person actually owns and likes —
+never from an instrument that judges them. See Colors.
+
+### Explicit anti-references
+
+**atlasskolstvi.cz** (the existing Czech school directory) — dense unstyled tables, no
+hierarchy, dated chrome. ŠkolaMatch's entire value proposition is being the thing that
+site should have been; resembling it in any way is a direct product failure.
+
+**GitHub / n8n / Supabase** — the first version's actual result. Anything that reads
+as a developer tool, an admin panel, or "professional but cold" has failed this
+brief, independent of whether it lints clean.
 
 ## Colors
 
-Every named color in this system is sampled from the material world of an actual
-Czech school record — a signature, a mark, the paper itself — rather than picked from
-a color wheel. That constraint, not preference, set the values.
+**The architecture, before any specific values.** Every warm-but-credible brand
+examined in the research — Anthropic, Wise, Ethos, Notion, Air Bank, Zonky — uses the
+same three-layer structure, and *none* of them solve the tension with a single magic
+warm hue:
 
-- **Primary (#35426E):** *Fountain-pen ink blue* — the color of a signature on a
-  *vysvědčení*. The system's only interactive color: buttons, links, active states,
-  the questionnaire's selection outline. Text-safe on Surface at ~8.5:1, so
-  interaction never needs a lighter stand-in variant. This deliberately replaces an
-  earlier brand purple (`#aa3bff`) that sat inside the `#6366F1`–`#9333EA`
-  indigo-violet range — the single most common unconsidered "AI brand color." Ink
-  blue reads as chosen; that purple, on reflection, read as arrived-at.
-- **Primary-strong (#263153):** The same ink, dried and set. Hover and active states
-  only — never a standalone token elsewhere.
-- **Primary-subtle (#E4E7F2):** A wash of the same ink on paper. Used only as the
-  fill behind a selected option row, paired with a 1.5px Primary border — never a
-  solid Primary fill on interface chrome, which would read as a button rather than
-  a selection.
-- **Secondary (#5C5750):** *Pencil graphite* — warm, not neutral grey. Metadata,
-  captions, muted labels, unselected chip text.
-- **Tertiary (#2E6B4E):** *Ledger green* — the color of a passing mark entered in a
-  *třídní kniha* (class register). This is the **only** color in the system allowed
-  to mean "good outcome," and it has exactly one job: marking match strength on a
-  school result. It never appears as a generic success state, a decorative
-  checkmark, or a confirmation toast — those use Primary or plain type weight
-  instead. Its scarcity is what makes a strong match legible at a glance on a page
-  of otherwise restrained color.
-- **Tertiary-subtle (#E3EDE6):** Wash of Ledger Green, used only as the fill behind
-  a match-strength badge.
-- **Neutral (#F3F0E9) and Surface (#FBF9F4):** Two paper values a half-step apart —
-  *vysvědčení* cardstock and the slightly lighter stock beneath it. Surface is the
-  page and any raised content; Neutral is a half-step down, used for cards and
-  option rows to separate them from the page without a shadow. Neither is white:
-  R≠G≠B in both, carrying a trace of warmth so nothing in the interface reads as
-  screen-glow.
-- **On-surface (#1B1912):** Near-black ink, not `#000000` — it carries the same warm
-  hue as the paper it sits on, which is what keeps body text from looking pasted on
-  top rather than printed into the page.
-- **On-surface-faint (#6E6858):** Placeholder text, disabled states, the least
-  important label on a screen. Holds 5.27:1 against Surface — the linter enforces
-  the same 4.5:1 floor for placeholder text as for body copy, so this is set to
-  clear that bar with margin rather than at the lower threshold placeholder text
-  is sometimes technically exempt from.
-- **Border (#E4DFD2) and Border-strong (#D2CBB8):** Hairline rules. Border divides
-  within a group; Border-strong separates groups from each other. Neither is ever
-  used to "frame" a card — see Elevation.
-- **Error (#8C2F28):** *Correction red* — the color of a teacher's red-pen mark on a
-  wrong answer. Derived from the same warm family as Primary and Neutral, not
-  imported from a stock alert palette, so a validation error still looks like it
-  belongs to this document rather than to a different, more generic one.
-- **Error-subtle (#F3E1DE):** Wash of Correction Red, used as the fill behind an
-  invalid input — always paired with an icon and written message, never color alone.
+```
+one warm, desaturated accent  → CTAs, selection states, logo — never long-form text
+warm-neutral ground           → 90%+ of every surface
+a very dark, warm-tinted anchor → carries the actual credibility work, never pure black
+```
 
-All neutrals carry a small warm chroma (OKLCH hue ≈ 55–65, chroma 0.004–0.012); none
-are `R=G=B`. Primary, Tertiary, and Error were each built as short OKLCH ramps with
-chroma peaking mid-lightness and hue bending 6–10° across the ramp, so each reads as
-a material rather than a flat swatch — the visible artifact of that is
-Primary-strong sitting slightly more violet-shifted than Primary itself, the way ink
-actually darkens.
+Monzo's brand book states this explicitly as a "considerate use" rule: their coral
+"is exhausting at scale" and is banned from long-form reading and dense product UI.
+The same discipline applies here.
+
+**On "blue = trust."** The one direct experimental test (Alberts & van der Geest,
+n=200+) found blue rated most trustworthy — but the effect was **modest relative to
+other trust factors**, and the study never tested warm hues, warm neutrals, or an
+accent-vs-dominant application at all. The more useful finding is Bottomley & Doyle:
+**congruence beats hue** — there is no universally trustworthy colour, only colours
+congruent with a stated position. (The claim that "62–90% of judgements are colour
+alone" is untraceable marketing folklore, not a real finding — it does not appear
+anywhere in this file for that reason.)
+
+- **Primary (#AD4F2A):** *The colour of Prague's terracotta rooftops at golden hour* —
+  warm, confident, distinctly Czech rather than borrowed from any fintech's brand
+  book. Desaturated deliberately: full-saturation terracotta reads as decorative;
+  this value is pulled down until it reads as a decision made under the same
+  restraint Monzo applies to its coral. Its **only** jobs are the primary CTA, the
+  questionnaire's selection state, and the logo. It is banned from body text, from
+  long-form reading surfaces, and from dense browsing screens — the exact rule
+  Monzo's own brand book states for its accent. White text on this fill holds
+  4.96:1 (`button-primary`); as text on Surface it holds 4.96:1 in the other
+  direction, so a rare small-label use stays AA-safe, but the standing rule is:
+  reach for weight and space before reaching for Primary.
+- **Primary-strong (#8A3E20):** The same terracotta, darker — hover and active
+  states only.
+- **Primary-subtle (#F6E3D6):** A wash of Primary, used only as the fill behind a
+  selected option row, paired with a 1.5px Primary border. Never a solid Primary
+  fill on interface chrome — that would read as a button, not a considered choice.
+- **Secondary (#6B6259):** Warm graphite — metadata, captions, unselected chip text.
+  Holds 5.54:1 on Surface.
+- **Tertiary (#4F7143):** *A muted, warm-leaning moss green* — sourced the way Air
+  Bank (`#99CC33`/`#497D00`, the KPMG-surveyed Czech CX leader in a category where
+  every incumbent bank is blue) and Wise (`#9FE870`/`#163300`) source theirs: bright
+  hue plus dark anchor, not a stock alert green. Its **only** job is marking a
+  strong match — never a generic success toast, a decorative checkmark, or
+  confirmation copy. Holds 5.16:1 on Surface and 4.64:1 on its own subtle wash.
+- **Tertiary-subtle (#E6EDDE):** Wash of Tertiary, used only behind a match
+  indicator.
+- **Neutral (#F1ECE3) and Surface (#FAF6EF):** Two warm paper values a half-step
+  apart. This is the one piece of *actual evidence* in the whole colour picture:
+  Rello & Bigham (ASSETS 2017, n=341, 89 with dyslexia) tested ten background
+  colours against black text and found **warm backgrounds — peach, orange, yellow —
+  read significantly faster than cool ones**, with the same ordering in both
+  dyslexic and control groups. That is a readability finding, not a trust finding —
+  it is cited here for exactly that and no more. Surface is the page and any raised
+  content; Neutral sits a half-step down for cards and rows. Neither is white:
+  R≠G≠B in both.
+- **On-surface (#221A13):** Near-black with real warmth, not `#000000`. This is the
+  layer that actually does the credibility work — every brand in the research table
+  (Wise `#163300`, Ethos `#054742`, Mailchimp `#231E15`, Anthropic `#141413`) pairs
+  a warm accent with a very dark, warm anchor rather than relying on the accent
+  itself to seem serious. Holds 15.9:1 on Surface.
+- **On-surface-faint (#756B5C):** Placeholder and disabled text. Holds 4.86:1 on
+  Surface — clears the linter's 4.5:1 floor with real margin.
+- **Border (#E6DFD1) and Border-strong (#D6CBB6):** Hairline rules, used for
+  division, never to frame a card as a box — see Elevation.
+- **Error (#7A3020):** A muted brick-red, deliberately **not** "a teacher's red
+  pen" — that framing is gone from this system entirely, per the metaphor
+  discussion above. It means "this needs fixing" (a required field, a failed
+  payment), never "this is wrong about you." Derived from the same warm family as
+  Primary rather than a stock alert red — closer in hue to Primary than a
+  typical error/accent pair, which is intentional: this system has one warm
+  family, not two competing ones. Holds 8.28:1 on Surface.
+- **Error-subtle (#F5E2DC):** Wash of Error, fill behind an invalid input — always
+  paired with an icon and written message, never colour alone.
+
+Every neutral carries a small warm chroma; none is `R=G=B`. Primary, Tertiary, and
+Error were each built as short ramps with chroma peaking mid-lightness and a hue
+bend across the ramp, so each reads as a material rather than a flat swatch.
+
+### Mobbin references — colour and warmth in production
+
+- [Rocket Money — landing page](https://mobbin.com/screens/d6f98612-c267-4ede-ac5b-458571396f0e) —
+  warm without illustration-heavy; real photography of real people carries the
+  warmth instead of colour or mascots.
+- [YNAB — landing page](https://mobbin.com/screens/c893d1db-0d97-4210-a982-6f41381ca6d0) —
+  soft colour and illustration on a genuinely anxiety-adjacent financial product;
+  the test case for "does warmth read as childish here" (it doesn't).
+- [Family — crypto wallet landing](https://mobbin.com/screens/2a5126c9-091d-4870-b52a-12f586941c75) —
+  **anti-reference.** Cute-mascot illustration overload; this is what "warm" looks
+  like when it tips into the childishness this product cannot afford.
 
 ### Dark mode
 
-Both themes are first-class — this is a decision app people return to over the
-trial period, sometimes at night, and a light-only interface would be a real gap,
-not a deferred nice-to-have. Dark mode here is a **separate design**, not an
-inversion, per the standard cautions: chroma is pulled down roughly 15–20% from the
-light values above, nothing is pure black, and elevation logic inverts (raised
-surfaces get *lighter*, not shadowed).
+Both themes are first-class — this is a decision app people return to over days,
+sometimes at night, and light-only would be a real gap. Dark mode is a **separate
+design**, not an inversion: chroma is pulled down roughly 15–20% from the light
+values, nothing is pure black, and elevation logic inverts (raised surfaces get
+*lighter*).
 
 ```
-bg:              #0F0E0C   (near-black, warm-tinted — never #000)
-surface-raised:  #17150F
-surface-overlay: #201D16
-on-surface:      #EDE9E0   (not pure white — reduces fatigue on long reads)
-on-surface-faint: #A39C8C
-border:          #2C2820
-primary (dark):  #8FA3D6   (lifted + desaturated — the light-mode ink blue,
-                             #35426E, sinks into a dark ground and stops reading
-                             as interactive; this is the "some colors don't
-                             survive" case, not an inconsistency)
-tertiary (dark): #7FC49F   (lifted Ledger Green, same reasoning)
-error (dark):    #D98A80   (lifted Correction Red, same reasoning)
+bg:               #17130E   (near-black, warm-tinted — never #000)
+surface-raised:   #1F1911
+surface-overlay:  #2A2216
+on-surface:       #F2ECE2   (not pure white)
+on-surface-faint: #B3A895
+border:           #362C1E
+primary (dark):   #E08A5C   (lifted + desaturated — #AD4F2A sinks into a dark
+                              ground and stops reading as interactive)
+tertiary (dark):  #8FB57E   (lifted Tertiary, same reasoning)
+error (dark):     #C97F6A   (lifted Error, same reasoning)
 ```
 
-These are specified here as the design decision, not yet as `components` tokens —
-the DESIGN.md component schema has no first-class per-theme variant mechanism, so
-wiring a dark `components` block is an implementation task for whoever builds theme
-switching, not a gap in this document. The values above are normative regardless.
+Specified here as the design decision; wiring a dark `components` block is an
+implementation task, since the DESIGN.md schema has no first-class per-theme
+component variant.
 
 ## Typography
 
-Two families, split by job, plus a mono for anything counted rather than read.
+Two families, split by classification, and — this is the single most consequential
+change from the previous version — **no monospace anywhere.** The research names
+this explicitly: monospace numerics were "the single strongest dev-tool signal in
+the first pass and it buys nothing here." Tabular alignment is available in a normal
+sans via `'tnum'`; a code-editor typeface is not required to make a column of grades
+line up.
 
-**Newsreader** carries the voice — display and every headline. It is used at a
-single weight, 400, everywhere, on purpose: gravity comes from size and slightly
-negative tracking, never from bold. A serif that got heavier at every heading level
-would start to feel like a stack of headlines shouting over each other; this one
-stays quiet and lets scale do the work. It also carries full Czech diacritics
-cleanly at every size tested, which a lot of display serifs do not. Fallback:
-`Newsreader, Georgia, "Times New Roman", serif`. SIL Open Font License, self-hosted.
+**Fraunces** carries the voice — display and every headline. This replaces
+Newsreader, and the difference is not cosmetic: Newsreader was locked at weight 400
+everywhere, which read as hushed and document-like once paired with hairline
+structure. Fraunces is a variable serif with `SOFT` and `WONK` optical axes built
+specifically to carry warmth *without* losing authority — used here at weight
+500–600 with the `SOFT` axis engaged (35–60 depending on size), which is a
+materially different typographic personality from a flat-400 editorial serif. Full
+Czech diacritic support. Fallback: `Fraunces, Georgia, "Times New Roman", serif`.
+SIL Open Font License, self-hosted.
 
-**Hanken Grotesk** carries the apparatus — body copy, UI labels, buttons, captions.
-A humanist grotesque with a high x-height that holds up at 13px on a phone screen
-without going ragged, and full Czech diacritic support. It is deliberately not
-Inter: functionally similar, but Inter's ubiquity would make the Newsreader pairing
-read as an accident rather than a decision. Two weights only — 400 for reading, 600
-for anything that needs to be scanned rather than read (labels, buttons, uppercase
-eyebrows) — spaced far enough apart that the jump reads as intentional. Fallback:
-`"Hanken Grotesk", system-ui, "Segoe UI", sans-serif`. SIL Open Font License,
-self-hosted.
+**Public Sans** carries the apparatus — body, labels, buttons, captions, and now
+data. Chosen specifically because its own design brief (USWDS) targets "neutral,
+legible, institutionally credible" without reading cold — it is the sans the
+DESIGN.md format's own spec examples use, and it is not Inter, which would make the
+Fraunces pairing read as an accident rather than a decision. Two weights only — 400
+for reading, 600 for anything scanned rather than read. Tabular figures
+(`'tnum' 1`) on `data-md`/`data-sm` so a column of grade thresholds aligns without
+reaching for a different typeface family to do it. Full Czech diacritic support.
+Fallback: `"Public Sans", system-ui, "Segoe UI", sans-serif`. SIL Open Font
+License, self-hosted.
 
-**JetBrains Mono** carries counted things — grades, deadlines, the DiPSy
-application-round numbers, admission-cutoff scores. Tabular figures are enabled
-(`'tnum' 1`) so a column of grade thresholds actually aligns instead of jittering.
-Nothing else uses it; a mono applied to prose reads as a mistake, not a choice.
-Fallback: `"JetBrains Mono", ui-monospace, Consolas, monospace`.
+The scale runs 11 → 72px. Tracking is optical: −0.02em at Display, easing toward
+neutral through body, +0.08em on uppercase labels. Line-height moves inversely with
+size: 1.06 at Display, 1.55–1.6 at body.
 
-The scale runs 11 → 80px, generated at a 1.25 ratio from a 16px body and hand-broken
-at the top — the generated top step (61px) was too timid for the marketing/hero
-context, so Display was pushed to 80px to create a real jump rather than a
-progression. Tracking is optical: −0.03em at Display, tightening less at each
-smaller headline step, neutral through body, +0.1em on uppercase labels.
-Line-height moves inversely with size: 1.04 at Display, 1.55–1.6 at body, 1.3–1.45
-at labels and captions.
+### Mobbin references — type doing the credibility work without going cold
+
+- [Revolut — landing page](https://mobbin.com/screens/0e44445e-9382-4582-aaed-22251eb5f9df) —
+  the named register touchstone. Confident scale and real photography, minimal
+  chrome — check this before finalising how "confident structure" should actually
+  read in production, since prose can't fully specify it.
+- [Hims — quiz result screen](https://mobbin.com/screens/0cfcf67d-b709-4ee2-b980-aa681732cac8) —
+  plain numbers set with restraint and supporting context text, muted palette, zero
+  drama at the reveal. The direct anti-reference for what the results screen must
+  *not* do — see "No reveal drama," below.
 
 ## Layout
 
-**Desktop (current focus):** a 12-column grid, 1280px max content width, 24px
-gutters, 64px outer margin. This is deliberately wide-margined rather than
-edge-to-edge — the parent persona is reading and comparing on a laptop, not
-scanning a dashboard, and margin is what makes a page feel considered rather than
-stretched to fill the viewport. Below 1024px the grid collapses to 6 columns with
-32px margins; below 768px, a single column with 16px margins picks up where the
-existing mobile onboarding flow's 26px screen padding leaves off — the two aren't
-identical yet, and reconciling them is part of the mobile pass, not this one.
+**Desktop (current focus):** 12-column grid, 1280px max content width, 24px
+gutters, 64px outer margin. Below 1024px the grid collapses to 6 columns with 32px
+margins; below 768px, a single column with 16px margins.
 
-**Spacing** runs on a strict 8px base (`sm`/`md`/`lg`/`xl`/`xxl`/`xxxl`) with a 4px
-half-step (`xs`) for micro-adjustments inside chips and form controls. Nothing sits
-off this scale.
+> **Resolved 2026-08-31.** The live app's container (`frontend/src/components/Layout.jsx`
+> → `.app-content` in `App.css`) was widened from an earlier 960px cap to match this
+> spec's 1280px, with the 1024px/32px and 768px/16px breakpoints above implemented as
+> real media queries (`App.css` had none before). This is a fixed-width port of the
+> desktop spec, not a full responsive redesign — there's no intermediate tuning between
+> the three stated breakpoints, and no per-component responsive behavior beyond the
+> container's own padding. See `UNFORGET.md` for the remaining cross-device work.
 
-Density varies on purpose. **Marketing and result screens** (the paywall, the match
-explanation) get generous rhythm and the full Display/Headline range — they're read
-once, slowly, and need to justify a payment. **Search, filter, and compare screens**
-tighten to 8–12px row padding and lean on `body-sm`/`data-sm` — these are used
-repeatedly, by someone comparing many schools, and density there is a feature. This
-contrast — not color, not weight — is the primary signal for which kind of screen a
-user is on.
+**Spacing** runs on a strict 8px base with a 4px half-step for micro-adjustments.
 
-Layout is asymmetric where the grid allows it: content flush-left, with the right
-margin on wide viewports reserved for secondary context (a comparison rail, a
-"why this match" annotation) rather than centered on the page. Centered body text
-does not appear anywhere in this system.
+Density varies on purpose, and this did not change from the previous version because
+it was already right: **marketing and result screens breathe** — generous rhythm,
+the full Display/Headline range, read once and slowly. **Search, filter, and compare
+screens stay dense** — 8–12px row padding, `body-sm`/`data-sm` — because someone
+comparing many schools is being served by efficiency there, not by air.
+
+Layout is asymmetric where the grid allows it: content flush-left, wide viewports
+reserving the right margin for secondary context rather than centering. Centered
+body text does not appear anywhere in this system.
+
+### Mobbin references — structure for a matching product
+
+- [Care.com — daycare match results](https://mobbin.com/screens/0c456eb5-3dc2-4b76-820b-f332ddff43d8) —
+  ranked matches with a map, verified badges, urgency handled calmly rather than
+  frantically. The closest production analog to "help a family make a high-stakes
+  choice" this research turned up.
+- [Monarch — "Getting personalized advice" flow](https://mobbin.com/flows/adae1760-df5a-4a73-9da8-7c222a14ee8e) —
+  a checkbox questionnaire that opens with "Hello Sam, I'm Natalie, a Certified
+  Financial Planner" rather than a bare form. The clearest production example of
+  "counselor" as a structural pattern, not just a tone of voice.
+- [Mindtrip — persona-based recommendation](https://mobbin.com/screens/b68ecccf-7c6b-4c9f-a216-9b55bde7fbc7) —
+  a quiz result framed as a named persona with reasoning prose, not a bare score.
+  Directly relevant to how match strength should be presented — see Components.
 
 ## Elevation & Depth
 
-Structure comes from **hairlines and tone**, not shadow — this carries over from the
-existing mobile onboarding work and is one of the few decisions from before this
-pass worth keeping unchanged, because it's already correct.
+The previous version banned shadow almost entirely and relied on hairlines for all
+structure. That discipline is partially kept — hairlines still divide — but the
+total absence of any softness was part of what read as a spreadsheet rather than a
+product. This version allows a **soft, palette-tinted shadow on cards**, not only on
+modals, as one of the concrete costs of choosing warmth over austere precision. That
+is a real trade, not a free upgrade: some of the previous version's "institutional
+gravity" is deliberately given up here.
 
-1. **Tonal layering** — the Surface → Neutral half-step. A card or option row is a
-   slightly different paper stock laid on the page, not a floating object.
-2. **Hairline rules** — `divider` (1px Border) between related items, `divider-strong`
-   (1px Border-strong) between unrelated groups. Rules divide; they do not wrap
-   around content to fake a box.
-3. **Space** — the primary grouping device. Related fields sit at `sm`/`md`
-   distance, unrelated sections at `xxl`/`xxxl`. Most apparent "needs a shadow"
-   problems in this system are actually spacing problems.
+1. **Tonal layering** — the Surface → Neutral half-step, still the primary
+   separation device for anything that isn't genuinely floating.
+2. **Soft shadow on cards and raised rows** — tinted from On-surface
+   (`rgba(34,26,19,.06)` tight + `rgba(34,26,19,.10)` wide at 24px blur), top-down
+   light direction, never neutral black. Noticeably softer and lower-contrast than a
+   typical SaaS shadow — present, not heavy.
+3. **Hairline rules** (`divider`, `divider-strong`) still divide unrelated groups
+   from related ones, but no longer carry the *entire* structural load alone.
 
-Shadow is reserved for things genuinely above the page: modals, dropdowns, the
-phone-frame chrome in the mobile onboarding mockups. When used, it is tinted from
-On-surface (`rgba(27,25,18,.05)` tight + `rgba(27,25,18,.18)` wide at 40px blur), a
-top-down light direction, never neutral black. A static card is never shadowed.
+Shadow is reserved for things that benefit from separation — cards, modals,
+dropdowns — never applied to something flat by convention alone.
 
 ## Shapes
 
-Radius is small and hierarchical, and noticeably tighter than the existing mobile
-onboarding system (which ran 14–18px). That tightening is a deliberate sacrifice:
-less soft, more precise — the register this pass is targeting is "an institution
-you'd trust with a decision," and generous rounding reads as consumer-app friendly
-in a way that undercuts that. Inputs and chips get the smallest radius (6–8px),
-buttons a touch more (8px), cards the most (12px) — never inverted, and never
-uniform. `full` (9999px) is reserved for the match-strength badge and any pill-style
-progress indicator, marking them as a distinct visual class rather than a container.
+Radius moved from the previous version's 6–12px to a noticeably more generous
+8–20px, following the evidence the research surfaced for this exact tension: a
+third-party reconstruction of Headspace's token system (`[SOURCED — weak, not
+official]`) reports an 8/12/24/32 radius scale with **no elevation at all**, and
+NN/g's eyetracking work puts a real cost on weak visual signifiers — **22% more
+time, 25% more fixations** — which is the actual argument for generosity here, not
+just taste. Inputs at 10px, chips and buttons at 12px, cards at 20px — hierarchical,
+never uniform, never inverted. `full` (9999px) stays reserved for the match
+indicator and pill-style progress, marking them as a distinct visual class.
 
-Borders are 1px solid Border at rest; selected/focused states use 1.5px Primary,
-never a heavier weight — the selection rule from the existing system (1.5px accent
-border + tinted fill, never a solid fill) carries over unchanged.
+This is a direct reversal of the first version's stated sacrifice — where that file
+tightened radius specifically to read as "less consumer-app friendly," this one
+widens it specifically because friendliness was never optional in the first place.
+
+Borders stay 1px solid Border at rest; selected/focused states use 1.5px Primary,
+unchanged from the prior system, since that rule was never the problem.
 
 ## Components
 
-**Buttons.** Primary is a solid Primary fill with Surface text in `label-md` —
-sentence case, not uppercase; this is a decision app, not a landing page, and
-shouting labels would undercut the register. Secondary is a Surface fill with a
-Primary-colored label, no visible border unless hovered. There is no tertiary or
-ghost button — if a screen needs a third action, the screen has too many actions.
+**Buttons.** Primary: solid Primary fill, Surface text, `label-md`, sentence case —
+still not uppercase; this is a decision app, and shouting labels undercuts trust
+regardless of how warm the palette is. Secondary: Surface fill, Primary-colored
+label, no visible border until hover. No tertiary or ghost button.
 
-**Inputs.** Surface fill, 1px Border, `body-md` — full body size rather than a
-smaller UI size, because these are often filled out carefully, once, for something
-that matters. Placeholder text uses On-surface-faint (`input-placeholder`) — still
-legible, clearly secondary. Error state switches fill to Error-subtle and text to
-Error, always paired with an inline icon and message, never color alone.
+**Inputs.** Surface fill, 1px Border, `body-md`. Placeholder text uses
+On-surface-faint. Error state switches fill to Error-subtle and text to Error,
+always with an icon and a written message — this is unchanged, and it was already
+one of the things the research independently confirmed as correct (never encode
+state with colour alone; ~8% of the audience cannot reliably separate red from
+green).
 
-**Option rows** (the questionnaire's answer choices). Unselected: Surface fill, 1px
-Border. Selected: Primary-subtle fill, 1.5px Primary border — never a solid Primary
-fill, which would read as a button and undercut the sense that this is a considered
-choice, not a click.
+**Option rows** (questionnaire answer choices). Unselected: Surface fill, 1px
+Border. Selected: Primary-subtle fill, 1.5px Primary border — never a solid fill,
+which would read as a button rather than a considered choice.
 
-**Cards.** Neutral fill, `card` radius, `lg` padding, no border and no shadow — the
-Surface→Neutral tonal step does the separating work alone. Cards are for genuinely
-discrete objects (one school, one saved comparison) — a list of facts about a school
-is a list with hairline rules, not a stack of nested cards.
+**Cards.** Neutral fill, `card` radius, `lg` padding, soft shadow (see Elevation).
+Reserved for genuinely discrete objects — one school, one saved comparison — not a
+default wrapper for any group of facts.
 
-**Chips** (program tags, filter pills). Neutral fill, Secondary text, `data-sm` —
-these are metadata, not calls to action, and use the graphite color accordingly.
+**Match indicator — rebuilt from the previous system's `badge-match`, and this is
+the component most directly shaped by the research.** The previous version showed a
+band label ("Silná shoda") and explicitly ruled out a bare percentage. The research
+goes further than that and recommends against a headline number in *any* form:
+Hinge, the market leader in intentional matching, ships **no number at all**, just
+one recommendation with a stated reason; the closest-matched real study (Corcoran et
+al., NYC 8th graders choosing among ~400 high schools, n≈19,109) achieved its
+results with **a one-page list, no score**; GreatSchools' 1–10 rating was found to
+correlate with student demographics and tracked alongside increased housing
+segregation; OkCupid proved its displayed compatibility percentage moves user
+behaviour **independent of whether it was accurate**.
 
-**Match badge.** The only component allowed to use Tertiary. Pill-shaped,
-Tertiary-subtle fill, Tertiary text, `label-caps`. Shows a band ("Silná shoda,"
-"Dobrá shoda"), never a bare percentage — this matches the existing scoring engine's
-decision to drop unearned precision, and the visual treatment should reinforce that
-rather than fight it with a number-shaped UI.
+The `match-indicator` component here is deliberately built to support **met/unmet
+criteria the student themselves supplied** — reflecting the student's own stated
+values back at them, which structurally cannot be a verdict on the person — rather
+than a headline score. **This is not yet finalized against the real matching
+engine** (see `design/research/design_direction_interview.md`, "still open" — the
+founder's preference for a percentage is under active reconsideration against this
+evidence, pending access to the production scoring engine). Whatever is decided,
+one rule from the research is non-negotiable regardless of format: **write every
+result string about the school, never about the student.** "This school offers the
+IT focus you said mattered" is process feedback about the school. "You're a great
+fit for selective schools" is person feedback, and Brummelman's finding on praise
+and shame makes that exact framing a real risk the moment a student sees a
+rejection letter later.
 
-**Tooltips.** The one color inversion in the system: On-surface fill, Surface text.
-150ms delay in, no delay out.
+**Chips.** Neutral fill, Secondary text, `data-sm` — metadata, not calls to action.
+
+**Tooltips.** The one color inversion — On-surface fill, Surface text. But per the
+research (Dhami & Mandel: 66% comprehension for inline bracketed interpretation vs.
+40% for a tooltip vs. 32% control), **tooltips are not where consequential
+interpretation lives.** Anything that changes what a student should conclude about a
+school belongs inline, in the same viewport as the number or fact it explains —
+tooltips here are for genuinely optional supplementary detail only.
+
+## Motion — landing page (úvodní stránka)
+
+**Sourcing:** researched via a dedicated prompt
+(`design/research/landing_animation_research_prompt.md`), findings in
+`design/research/landing_animation_research.md` (2026-08-28). Unlike the Mobbin
+citations elsewhere in this file, the researcher had no live-browser/devtools
+access — treat the *pattern classification* below as reliable, and any
+specific "site X currently uses library Y" claim as inference, flagged
+inline in the source file. Two things in that file ARE solidly sourced and
+should be treated as settled: the accessibility guidance, and Duolingo's
+general approach (small, character-centered idle loops via Lottie — per
+LottieFiles' own published case study) even though the researcher could not
+verify today's exact homepage frame-by-frame behavior.
+
+**The actual pattern, corrected from an earlier draft of this section:** this
+is an **idle animation** — ambient motion that plays continuously on its own,
+no user action required — not a **scroll reveal** (entrances triggered by
+scroll position) and not **hover effect**/**press feedback** (both of those
+are ordinary interaction motion, covered in Do's/Don'ts below, and are a
+different thing from what's being specified here). The landing page is the
+one screen in the product where this kind of warmth-building motion belongs
+at all — see the Do's/Don'ts note on why the quiz and results screens are the
+opposite case.
+
+**What ships:**
+- **Exactly one idle animation**, small and contained — a corner
+  illustration, an icon, or a subtle background gradient/shape **float** (a
+  gentle, continuous drift with no fixed destination — the closest glossary
+  term for this effect; there's no exact "gradient drift" entry). Never
+  full-screen, never the literal subject of the hero (the headline and CTA
+  stay the focal point). Research finding: scale and containment are what
+  separate "polish" from "trying too hard" — a large central character
+  playing its own idle animation reads as juvenile for a decision-context
+  audience, a parent evaluating whether to pay specifically.
+- **Slow and unvarying** — multi-second **loop**, eased (see Easing below),
+  no sudden bursts or escalating gestures. Research finding: speed is the
+  strongest signal here — slow, **ease-in-out** motion (the Linear/Stripe
+  gradient-float register) reads premium/calm; a fast loop with **bounce**
+  (spring overshoot) reads young, which is exactly the territory this
+  product's parent-facing side cannot afford.
+- **Technique, in priority order for this product's mobile-first, budget
+  constraints:**
+  1. CSS **keyframes** (gradient/shape float) — cheapest, GPU-cheap via
+     `transform`/`opacity` only (**compositing**, not layout-triggering
+     properties — see Performance below), zero JS cost after paint. Default
+     choice.
+  2. A single small Lottie or Rive **loop** (the actual Duolingo-style
+     character/illustration idle-animation technique) — only if a designed
+     illustration asset exists to animate. Cap the frame size, and pause it
+     via `IntersectionObserver` when it scrolls off-screen — Lottie still
+     executes JS per frame and is a real battery/perf cost on low-end
+     Android, which is this product's actual acquisition-channel device
+     profile (TikTok/Instagram referral, not flagship phones).
+  3. WebGL/canvas and autoplay video loops are explicitly **not** recommended
+     for this product — highest implementation and performance cost, and the
+     research flags mobile load-time/Core Web Vitals cost as a documented,
+     recurring critique of exactly this category on high-traffic sites.
+
+**Explicitly out of scope, landing page included:**
+- No mascot, no character playing a **bounce**-heavy idle animation, no
+  confetti — confetti stays reserved for the in-product student reveal screen
+  (see onboarding); spending it pre-signup burns the one payoff it has.
+  Research names confetti/particle effects as the single highest-risk pattern
+  for reading as childish/gamified on a first-impression, trust-building
+  screen.
+- No **number ticker** (digits rolling/counting up) or fake "calculating"
+  states — a real stat can be present via an ordinary **fade in**, but does
+  not get a live-computation-implying counter effect (see Colors → tertiary
+  rule and the no-invented-numbers rule elsewhere in this file).
+- No second competing idle animation — one loop only. Multiple simultaneous
+  ambient loops dilute the "made, not templated" signal into visual noise,
+  and compete with the CTA for attention.
+
+**Always:** the idle animation is fully disabled under **reduced motion**
+(`prefers-reduced-motion: reduce`), falling back to a static illustration or
+the gradient's resting frame — no partial-motion compromise. This isn't just
+house style here: the research confirms this setting exists because motion
+(background/ambient motion specifically) can trigger real vestibular
+symptoms, not just a stylistic preference. Matches the pattern already used
+throughout onboarding (`usePrefersReducedMotion`), extended to the landing
+page.
+
+**Open question, flagged honestly by the research itself:** there is no hard
+data quantifying "ambient motion vs. perceived trust" for this specific
+teen+parent audience — Section 4 of the research file is design-practice
+consensus, not a measured study. Validate the final choice with a few real
+teen/parent reactions before treating this section as fully settled.
+
+---
+
+## ⚠️ ANIMATION BUILD INSTRUCTION — DO NOT IMPLEMENT YET
+
+**This motion spec is DESIGN ONLY. Do not build these animations as part of normal frontend UI work.**
+
+When the user explicitly says to build them:
+1. Use **Claude Design's dedicated animation tool ONLY** — pass this entire "Motion — landing page" section + `design/research/landing_animation_research.md` to that tool
+2. The animation tool handles implementation (Lottie/Rive/CSS, accessibility, performance), NOT hand-written component CSS
+3. This is a separate, gated pass — do not merge animation implementation into routine frontend tasks
+4. Needs explicit user trigger + right configuration before it runs
+
+---
 
 ## Do's and Don'ts
 
-- **Do** keep Tertiary (`#2E6B4E`) exclusively on match-strength indicators. A
-  second use anywhere — a generic success toast, a decorative checkmark — destroys
-  the one signal it's meant to carry.
-- **Don't** reintroduce the previous brand purple (`#aa3bff`) or anything in the
-  `#6366F1`–`#9333EA` range as a primary color. It's the most common unconsidered
-  AI-brand-color range and this system replaced it with a sourced value on purpose.
-- **Do** use Primary for exactly one job per screen: the primary action, or the
-  active/selected state. Never decoration, never a heading color, never a border
-  applied just for visual interest.
-- **Don't** add a shadow to a static card or row. If something needs to feel raised,
-  use the Surface→Neutral tonal step or a hairline rule first.
-- **Do** pair every Error state with an icon and a written message — never color
-  alone. Roughly 8% of the audience (skewed toward the parent persona, statistically)
-  cannot reliably distinguish red from green.
-- **Don't** use pure `#FFFFFF` or `#000000` anywhere, including exported PDFs or
-  print styles. Every neutral in this system carries a trace of warmth, and an
-  untinted value next to them reads as a defect, not a highlight.
-- **Do** cap body text measure at 65–70 characters. Match explanations and school
-  descriptions are read, not skimmed.
-- **Don't** center body text or paragraph content. Headlines may center only on the
-  narrowest mobile breakpoint where a flush-left headline would look accidental;
-  everything else is flush-left.
+- **Do** treat Primary (`#AD4F2A`) as CTA/selection/logo only — never body text,
+  never a dense browsing screen. This is Monzo's own stated rule for their accent
+  and it is the load-bearing discipline of this whole palette.
+- **Don't** reintroduce navy, indigo-violet (`#6366F1`–`#9333EA`), or any prior
+  accent from either previous version. Both were replaced for sourced reasons; see
+  Colors.
+- **Do** keep Tertiary (`#4F7143`) exclusively on match-strength signals. A second
+  use anywhere — a generic success toast, a decorative checkmark — destroys the one
+  signal it carries.
+- **Don't** write a result, a label, or a headline that evaluates the student.
+  "This school fits what you asked for" — yes. "You're a strong candidate" / "great
+  match for you" — no. This is the direct, permanent replacement for the deleted
+  report-card metaphor, and it applies to copy as much as to visual design.
+- **Don't** build a "calculating your match…" spinner, a counting-up percentage, or
+  any staged reveal at the results screen. Evaluative arousal peaks during
+  *anticipation*, not just evaluation, at almost exactly this product's target age.
+  If a hero moment belongs anywhere, it's the landing page, not the moment a
+  15-year-old is about to learn what the app thinks.
+- **Do** ship any consequential interpretation inline, in the same viewport as the
+  fact it explains — never gated behind a tooltip or a "learn more."
+- **Don't** add a shadow to something flat by convention; do add it where a card is
+  genuinely meant to feel raised — see Elevation for the tinted-shadow recipe.
+- **Do** pair every Error state with an icon and a written message, never color
+  alone.
+- **Don't** use pure `#FFFFFF` or `#000000` anywhere, including exported material.
+  Every neutral in this system carries warmth.
+- **Do** cap body measure at 65–70 characters.
+- **Don't** center body or paragraph content.
 - **Do** let search/filter/compare screens run denser than result and marketing
-  screens. That density contrast is the primary way a user knows what kind of
-  screen they're on — don't flatten it for visual consistency.
-- **Don't** build anything that resembles atlasskolstvi.cz: undifferentiated table
-  rows, no type hierarchy, dense unstyled data with no visual grouping. If a screen
-  starts to look like a spreadsheet, that's a structural regression, not a styling
-  detail to fix later.
-- **Do** use `data-md`/`data-sm` for every grade, cutoff score, deadline, and DiPSy
-  round number. Set in Hanken Grotesk, columns of figures will not align.
-- **Do** limit motion to confirming an action or explaining a spatial change —
-  a selection filling in, a card expanding — using short, purposeful durations
-  (~150ms state changes, ~250ms transitions). **Don't** animate section entrances
-  on scroll or fade anything the user is actively trying to read; both delay
-  comprehension for decoration this register doesn't want.
+  screens — the density contrast is the primary way a user knows what kind of
+  screen they're on.
+- **Don't** build anything that resembles atlasskolstvi.cz: undifferentiated rows,
+  no type hierarchy, dense unstyled data with no grouping.
+- **Don't** use "kid," "junior," "mini," or "for young people" anywhere in copy or
+  section labels. NN/g's research names this specifically as a teen repellent, and
+  the market evidence (Greenlight's "kids" framing vs. Step's direct address) backs
+  it up directly.
+- **Do** use `data-md`/`data-sm` (Public Sans, tabular figures) for every grade,
+  cutoff score, deadline, and DiPSy round number. No monospace anywhere in this
+  system — see Typography.
+- **Do** limit motion to **press/tap feedback** confirming an action, or a **layout
+  animation** explaining a spatial change, using short, purposeful durations (~150ms
+  for press feedback, ~250ms for a **crossfade**/state transition). **Don't** use a
+  **scroll reveal** for section entrances *inside the quiz or at the results screen*,
+  and don't animate the results reveal — see above. This rule is scoped to the
+  evaluation surfaces specifically, where anticipation has to peak before the
+  reveal, not the reveal itself. The landing page is the deliberate exception —
+  see "Motion — landing page" above for what's allowed there and why the same
+  logic doesn't apply pre-signup.

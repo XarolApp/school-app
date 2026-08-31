@@ -10,7 +10,7 @@
 import { writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
-import { light, dark, cssVarsText } from '../src/design/tokens.js';
+import { light, dark, cssVarsText, staticVarsText } from '../src/design/tokens.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const out = resolve(here, '../src/design/tokens.css');
@@ -20,9 +20,14 @@ const css = `/* AUTO-GENERATED from src/design/tokens.js — do not edit by hand
  *
  * Both new token names and the legacy aliases the existing stylesheets consume
  * are emitted here, so onboarding.css / App.css pick up the palette unchanged.
+ *
+ * Theme-independent tokens (spacing, layout, type) come from staticVarsText()
+ * and are emitted ONCE in the first :root block, not per palette/theme block —
+ * they don't vary by light/dark.
  */
 
 :root {
+${staticVarsText()}
 ${cssVarsText(light)}
 }
 

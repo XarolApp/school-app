@@ -21,11 +21,18 @@ import { FOCUS_CATEGORIES } from '../../lib/schoolFeatures';
 
 const UNSURE = { value: 'nevim', label: 'Nevím jistě', unsure: true };
 
-/** Praha 1-22 options for the district question. */
-const DISTRICT_OPTIONS = [
-  ...Array.from({ length: 22 }, (_, i) => ({ value: String(i + 1), label: `Praha ${i + 1}` })),
-  { value: 'mimo', label: 'Dojíždím mimo Prahu' },
-];
+/** Praha 1-22 options for the districts question. Values must match the `id`s
+ *  in lib/pragueDistricts.js exactly — that string equality is the whole
+ *  contract between the checkboxes and the clickable map. */
+const DISTRICT_OPTIONS = Array.from({ length: 22 }, (_, i) => ({
+  value: String(i + 1),
+  label: `Praha ${i + 1}`,
+}));
+
+/** How many districts a student can pick before the rest dim. Six of
+ *  twenty-two would quietly turn "where would you commute to" into a much
+ *  narrower question than it reads as. */
+const DISTRICTS_MAX = 10;
 
 export const QUESTIONS = [
   {
@@ -129,43 +136,33 @@ export const QUESTIONS = [
       UNSURE,
     ],
   },
+  /**
+   * Asks which districts the student would commute TO, not where they live
+   * plus a tolerance level. This is deliberate — see the note above
+   * `location` in lib/matching.js for why. Nothing about a home address is
+   * collected: the student already knows their own sense of "too far" and
+   * answers from it directly, more accurately than a distance estimate could.
+   *
+   * `map: true` tells QuizQuestion to render the interactive district picker
+   * (components/onboarding/DistrictMap.jsx) beside the checkboxes.
+   */
   {
-    id: 'district',
-    key: 'district',
-    type: 'select',
+    id: 'districts',
+    key: 'districts',
+    type: 'multi',
+    map: true,
+    max: DISTRICTS_MAX,
     student: {
-      title: 'Odkud budeš do školy jezdit?',
-      hint: 'Ptáme se proto, abychom uměli seřadit školy podle toho, jak jsou od tebe daleko. Nic dalšího s tím neděláme.',
-      placeholder: 'Vyber městskou část',
+      title: 'Do kterých částí Prahy jsi ochotný/á dojíždět?',
+      hint: 'Vyber klidně víc — čím širší okruh, tím víc škol uvidíš.',
     },
     parent: {
-      title: 'Odkud bude dítě do školy dojíždět?',
-      hint: 'Údaj používáme výhradně k seřazení škol podle vzdálenosti od vaší městské části.',
-      placeholder: 'Vyberte městskou část',
+      title: 'Do kterých částí Prahy je dítě ochotné dojíždět?',
+      hint: 'Můžete vybrat víc částí. Pokud si nejste jistí, klidně přeskočte.',
     },
     options: DISTRICT_OPTIONS,
     honesty:
-      'Vzdálenost počítáme podle městských částí, ne podle jízdních řádů. Přesné časy spojů zatím nemáme.',
-  },
-  {
-    id: 'commute',
-    key: 'commute',
-    type: 'single',
-    student: {
-      title: 'Jak daleko jsi ochotný jezdit?',
-      hint: '',
-    },
-    parent: {
-      title: 'Jak daleké dojíždění je pro vás přijatelné?',
-      hint: '',
-    },
-    defaultValue: 'stredni',
-    options: [
-      { value: 'blizko', label: 'Co nejblíž k domovu', parentLabel: 'Co nejblíže bydlišti' },
-      { value: 'stredni', label: 'I o pár čtvrtí dál', parentLabel: 'I do vzdálenějších částí' },
-      { value: 'kdekoli', label: 'Kdekoli v Praze', parentLabel: 'Kdekoli v Praze' },
-      UNSURE,
-    ],
+      'Ptáme se na části Prahy, ne na přesnou adresu — nic o tom, kde bydlíš, si neukládáme.',
   },
   {
     id: 'certainty',

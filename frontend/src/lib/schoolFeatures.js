@@ -96,6 +96,22 @@ export function parseDistrict(locationText) {
   return null;
 }
 
+/**
+ * `school.district` ("Praha 14") is attached server-side from real
+ * coordinates — see server.js `withDistricts`. It is the správní obvod, a
+ * different division than the městský obvod in `location` text, and the two
+ * disagree for roughly a third of schools. Prefer it; fall back to parsing
+ * `location` only when it is absent (demo data has no coordinates to derive
+ * a real district from).
+ */
+export function districtOf(school) {
+  if (school.district) {
+    const n = Number(String(school.district).replace(/\D/g, ''));
+    if (n >= 1 && n <= 22) return n;
+  }
+  return parseDistrict(school.location);
+}
+
 function matchAny(haystack, keywords) {
   return keywords.some((k) => haystack.includes(k));
 }
@@ -129,7 +145,7 @@ export function deriveFeatures(school) {
     languageKnown: programsN.length > 3,
     practice: matchAny(haystack, PRACTICE_KEYWORDS),
     practiceKnown: programsN.length > 3,
-    district: parseDistrict(school.location),
+    district: districtOf(school),
     breadth: programList.length,
     programList,
   };

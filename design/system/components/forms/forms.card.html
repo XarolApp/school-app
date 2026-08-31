@@ -1,0 +1,37 @@
+<!-- @dsCard group="Components" viewport="700x400" name="Forms" -->
+<!doctype html><html lang="cs"><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css"><style>body{margin:0;padding:20px 24px;background:var(--surface);font-family:var(--font-sans);color:var(--on-surface)}.lbl{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--on-surface-faint);margin:0 0 8px}.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.col{display:flex;flex-direction:column;gap:8px}</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script></head><body><div id="root"></div>
+<script type="text/babel">
+const { Button, Input, OptionRow, Checkbox } = window.KolaMatchDesignSystem_90cf52;
+function Demo() {
+  const [pick, setPick] = React.useState('it');
+  const [pub, setPub] = React.useState(true);
+  return (
+    <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'28px'}}>
+      <div>
+        <p className="lbl">Button — variant / size / disabled</p>
+        <div className="row"><Button>Zobrazit výsledky</Button><Button variant="secondary">Zpět</Button></div>
+        <div className="row" style={{marginTop:10}}><Button size="sm">Small</Button><Button size="lg">Large</Button><Button disabled>Disabled</Button></div>
+        <p className="lbl" style={{marginTop:24}}>Checkbox</p>
+        <div className="col"><Checkbox label="Jen státní školy" checked={pub} onChange={setPub} /><Checkbox label="Nabízí IT zaměření" checked={false} onChange={()=>{}} /><Checkbox label="Nedostupné" checked disabled /></div>
+      </div>
+      <div>
+        <p className="lbl">Input — default / hint / error</p>
+        <div className="col">
+          <Input label="Obec nebo PSČ" placeholder="Praha 5" />
+          <Input label="Průměr známek" value="1" error="Zadejte číslo mezi 1,0 a 5,0." />
+        </div>
+        <p className="lbl" style={{marginTop:24}}>OptionRow — selected / unselected</p>
+        <div className="col">
+          <OptionRow label="Informatika a programování" description="Maturitní obor s IT zaměřením" selected={pick==='it'} onSelect={()=>setPick('it')} />
+          <OptionRow label="Zdravotnictví" selected={pick==='zd'} onSelect={()=>setPick('zd')} />
+        </div>
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+</script></body></html>

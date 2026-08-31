@@ -1,0 +1,6 @@
+:root{
+--space-xs:4px;--space-sm:8px;--space-md:16px;--space-lg:24px;--space-xl:32px;--space-xxl:48px;--space-xxxl:64px;
+--gutter:24px;--page-margin:64px;--page-margin-md:32px;--page-margin-sm:16px;
+--content-max:1280px;--grid-columns:12;/* @kind other */
+--row-pad-dense:10px; /* dense search/compare rows: 8-12px */
+}

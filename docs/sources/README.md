@@ -5,6 +5,11 @@ session. CLAUDE.md links directly to files in this folder by path — **don't mo
 rename anything here without also updating every reference in `CLAUDE.md` and
 `.claude/agents/onboarding-architect.md`**, or those pointers go stale.
 
+**Design-system-specific material lives in `design/` at the repo root, not here** —
+see `design/DESIGN.md` and `design/research/`. This folder now holds only general
+product/research docs, not visual design work. That split happened 2026-08-31; see
+"Why the split happened" at the bottom for what moved and why.
+
 ## Research
 
 - **`pricing_research.md`** — 2025/2026 subscription pricing + EU minor-payment
@@ -21,18 +26,6 @@ rename anything here without also updating every reference in `CLAUDE.md` and
   IKEA effect, cognitive load, emotional design levels). Required reading before any
   frontend work, app-wide — not just onboarding.
 
-## Design system
-
-- **`design_system.md`** — the visual system actually being ported into the app,
-  extracted from the Claude Design mockup (2026-08-24). Purple accent (`#aa3bff`),
-  Newsreader + Hanken Grotesk. Partially wired into `frontend/src/design/tokens.js`.
-- **`DESIGN.google-format.md`** — a **separate, conflicting** design system produced
-  by the `design-md-planner` skill in Google's DESIGN.md format. Different palette
-  (navy `#35426E` / green, not purple), different structure. **This has not been
-  reconciled with `design_system.md` — that's a real open decision, not a filing
-  question.** Don't treat either as authoritative until the user picks one (or merges
-  them deliberately).
-
 ## Archival
 
 - **`onboarding.md`** — superseded. Fully merged into
@@ -41,10 +34,37 @@ rename anything here without also updating every reference in `CLAUDE.md` and
 
 ---
 
-## Why this folder isn't split into subfolders
+## Where the design-system docs went
 
-CLAUDE.md links to files here with 8 hardcoded `docs/sources/...` paths. Moving files
-into category subfolders (e.g. `docs/research/`, `docs/design/`) would require
-rewriting every one of those links correctly — get one wrong and it's a silently
-broken pointer, which is worse than the current flat structure. This README exists to
-give the categorization without that risk. Revisit if the folder keeps growing.
+`design/` at the repo root, created 2026-08-31:
+
+- **`design/DESIGN.md`** — the authoritative design system (moved from repo root).
+  Terracotta `#AD4F2A` / moss `#4F7143`, Fraunces + Public Sans. **Check this before
+  any non-trivial frontend visual change** — see CLAUDE.md's standing rule.
+- **`design/system/`** — the real, built design-system output from Claude Design:
+  actual component code (`Button`, `Input`, `Checkbox`, `Card`, `Chip`, …), tokens,
+  guideline preview pages, and example screen mockups. This is the current template
+  for all new `/design` work.
+- **`design/archive/`** — finished, already-implemented design work, kept for history.
+- **`design/research/`** — the design-direction research and Mobbin pattern surveys
+  that used to live here in `docs/sources/`, including `design_system-archived.md`
+  (the *prior* palette, superseded before the current terracotta/moss system).
+
+## Why the split happened
+
+This README previously described `DESIGN.md`'s palette as "Navy `#35426E` / green
+`#2E6B4E`" — that was already stale by the time it was read; the real design system
+had moved to terracotta/moss with Fraunces + Public Sans days earlier and this file
+was never updated. Splitting design material into its own top-level `design/` folder
+(rather than leaving it flat in here alongside general product docs) makes the design
+system discoverable as one coherent unit — for `/design`, for a human, and for future
+Claude Design imports — instead of scattered across `docs/sources/` and ad-hoc
+root-level folders with names like `# ŠkolaMatch School Search Wireframe`.
+
+## Why *this* folder stays flat
+
+The docs remaining here are general product/research material, not design-system
+work, and CLAUDE.md links to them with hardcoded `docs/sources/...` paths. Splitting
+these into further category subfolders would mean rewriting every one of those links
+correctly — get one wrong and it's a silently broken pointer, worse than a flat
+structure. This README exists to give the categorization without that risk.

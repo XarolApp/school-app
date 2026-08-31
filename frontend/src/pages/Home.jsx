@@ -20,7 +20,7 @@ function Home() {
         <Link to="/onboarding" className="btn btn-primary">
           Spustit dotazník
         </Link>
-        <Link to="/search" className="btn btn-secondary">
+        <Link to="/skoly" className="btn btn-secondary">
           Procházet školy
         </Link>
       </div>

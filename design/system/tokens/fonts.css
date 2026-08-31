@@ -1,0 +1,6 @@
+/* Fraunces + Public Sans — both SIL OFL, served from Google Fonts.
+   SUBSTITUTION NOTE: no font binaries were supplied with DESIGN.md, so these are
+   loaded from the Google Fonts CDN rather than self-hosted. DESIGN.md specifies
+   self-hosting; swap these @import lines for local @font-face rules once the
+   .woff2 files are available. */
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..700,0..100;1,9..144,400..700,0..100&family=Public+Sans:wght@400;600&display=swap");

@@ -1,5 +1,21 @@
 # School Selection App — Project Context
 
+> **⚠️ READ [`CONTEXT-HANDOFF.md`](CONTEXT-HANDOFF.md) BEFORE ANYTHING ELSE.**
+>
+> The project moved from a Windows PC to a MacBook on 2026-08-31. That file opens with a
+> **MacBook setup checklist** (install Node, set `core.autocrlf`, `npm install`, recreate
+> the two gitignored `.env` files, verify both servers boot).
+>
+> **If any box in that checklist is still unticked, say so proactively in your first
+> response** — name the specific unfinished steps and offer to walk through them, before
+> starting other work. A missing `.env` or wrong line-ending config causes confusing
+> failures much later that are hard to trace back to setup. Keep checking on each new
+> session until every box is ticked.
+>
+> It also records what was in flight when the old machine was retired — notably that
+> plan 005 (spacing/typography migration) is ~95% done with one specific step remaining.
+> Delete the file once its contents are resolved into this file / `UNFORGET.md`.
+
 ## The Problem This Solves
 
 In the Czech Republic, when 9th graders need to pick a high school (*střední škola*),
@@ -64,29 +80,33 @@ remains a full second surface (see "Platform Strategy"). It:
 
 ## Quick Start — Running the App Locally
 
-**No root `package.json` exists yet.** `server.js` currently runs on globally-available
-or ad-hoc-installed packages. If `node server.js` fails with `MODULE_NOT_FOUND` for
-`express`, `cors`, `dotenv`, or `@supabase/supabase-js`, that's why — see
-"Known Issues" below. This is priority #2 in the MVP scope list.
+You need **two terminal tabs/panes** running at the same time (they don't share a process).
 
-**Backend** (from repo root):
+**Terminal 1 — Backend** (from repo root):
 ```bash
+npm install
 node server.js
 ```
-Starts on `http://localhost:5000`. Reads `SUPABASE_URL`, `SUPABASE_KEY`, `PORT` from
-`.env` (exists locally, gitignored, not committed — ask the user if you need a value
-from it, never print its contents to chat or logs).
+Starts on `http://localhost:5000`. Reads its config from `.env` (gitignored, never
+committed). Only `SUPABASE_URL` and `SUPABASE_KEY` are needed to boot. Everything else
+degrades gracefully: missing Stripe keys make `/api/checkout` answer 503, missing
+`OPENROUTER_API_KEY` makes `/api/questionnaire` answer 503, and missing
+`SUPABASE_SERVICE_ROLE_KEY` logs a warning (needed once RLS is on).
 
-**Frontend** (from `frontend/`):
+**Terminal 2 — Frontend** (from repo root, in a new tab):
 ```bash
 cd frontend
-npm install   # only needed once / after dependency changes
+npm install   # only needed once, or after package changes
 npm run dev
 ```
-Starts on `http://localhost:5173`. Reads `VITE_API_BASE_URL` from env if set, otherwise
-defaults to `http://localhost:5000` (see `frontend/src/api.js`).
+Starts on `http://localhost:5173`. Reads config from `frontend/.env` (also gitignored).
+Without Supabase keys, the app still runs: auth is stubbed but the onboarding flow
+works. `VITE_API_BASE_URL` defaults to `http://localhost:5000` (the backend you're
+running in Terminal 1).
 
-**Run both** in separate terminal tabs/panes — they don't share a process.
+**Verify it's working:**
+- Backend: `curl http://localhost:5000/` should return `{"status":"ok"}`
+- Frontend: Open `http://localhost:5173` in your browser, start the onboarding flow
 
 **Verifying changes:** always start the dev server and check the running app in a
 browser before reporting frontend work as done — do not ask the user to check manually
@@ -96,13 +116,20 @@ themselves. Use the browser pane / preview tools for this.
 
 ## Current Tech Stack
 
-- **Backend:** Node.js + Express (`server.js`), no root `package.json` yet (see Known Issues)
-- **Database:** Supabase (PostgreSQL)
+- **Backend:** Node.js + Express 5 (`server.js`), root `package.json` present
+- **Database:** Supabase (PostgreSQL), schema in `supabase-setup.sql`
+- **Auth:** Supabase Auth — email + password, mandatory email confirmation,
+  Cloudflare Turnstile CAPTCHA, password reset
+- **Rate limiting:** `express-rate-limit` on `/api/`, checkout and questionnaire
 - **Frontend:** React 19 + Vite 8 + React Router 7, in `frontend/` (Vite, not CRA/Next)
 - **Frontend linting:** `oxlint` (`npm run lint` inside `frontend/`) — not ESLint
-- **AI:** Claude API (planned for the questionnaire matching logic — not built yet)
+- **Icons:** `lucide-react`, named imports only (never the barrel import — that is
+  what makes it tree-shakeable)
+- **AI:** Claude Sonnet via OpenRouter — writes the *explanation sentence* on the
+  standalone questionnaire only. Scoring is plain JS on both surfaces; the AI never
+  produces a number
 - **Scraping:** n8n + Firecrawl + Gemini 2.5 Flash Lite (external workflow, not in this repo)
-- **Payments:** Stripe (planned, not integrated yet)
+- **Payments:** Stripe — routes exist as **scaffolding only**, no live keys, untested
 - **Mobile app:** planned before public launch, framework not yet chosen. Intended
   primary surface — see "Platform Strategy" directly below.
 
@@ -131,20 +158,40 @@ themselves. Use the browser pane / preview tools for this.
 
 ## Supabase Schema
 
-Table: `schools`
-| Column | Type |
-|---|---|
-| id | int8 (primary) |
-| created_at | timestamptz |
-| name | text |
-| location | text |
-| programs | text |
-| contact | text |
-| website | text |
+**`supabase-setup.sql` at the repo root is the source of truth.** It is idempotent —
+safe to re-run after any schema change. It has been run against the live Supabase
+project (confirmed 2026-08-28: schools seeded, auth and the developer-email bypass
+both working end to end).
 
-RLS is currently **disabled** for development/testing. **Do not enable RLS without
-telling the user first** — it's an intentional dev-time choice, but it needs a real
-policy before any real user data (auth, quiz answers, payments) touches this project.
+| Table | What it holds |
+|---|---|
+| `schools` | id, created_at, name, location, programs, contact, website, latitude, longitude |
+| `users` | profile mirror of the private `auth.users`: email, name, `trial_expires_at`, `subscription_status`, Stripe ids |
+| `favorites` | `(user_id, school_id)` |
+| `questionnaire_runs` | one row per completed *standalone* questionnaire: answers, matches, `label`, `is_default`, `archived_at` |
+
+**Trial length is set by a database trigger, not by the signup form** — 3 days, matching
+`frontend/src/config/pricing.js`. If that number ever changes it must change in both
+places, or the paywall promises a window the database does not grant.
+
+`subscription_status` accepts `trialing / active / season / past_due / canceled /
+expired / developer`. `'season'` is the one-time season pass — **schema-ready but
+nothing writes it yet**, because `/api/checkout` only creates subscription-mode Stripe
+sessions.
+
+**RLS is enabled on all four tables** by that file (changed from disabled — this was a
+deliberate adoption, not a drift):
+- `users` — read your own row only. No client INSERT (the trigger creates it) and no
+  client UPDATE, because that row decides who has paid.
+- `favorites` — own rows only; inserting also requires `has_access()`.
+- `questionnaire_runs` — read and delete your own; **no INSERT or UPDATE policy**, so
+  `server.js` is the only writer.
+- `schools` — **no client policy at all.** The browser cannot read this table directly;
+  every school read goes through `server.js` with the service-role key. That is what
+  makes a paywall on school data possible at all.
+
+`service_role` bypasses RLS entirely, so both `server.js` and the n8n scraper keep
+working. Never put that key in `frontend/.env`.
 
 ---
 
@@ -152,11 +199,28 @@ policy before any real user data (auth, quiz answers, payments) touches this pro
 
 ```
 school-app/
-├── .env                        # Supabase creds + PORT — gitignored, never commit
+├── .env                        # backend secrets — gitignored, never commit
+├── .env.example                # documents every backend var
 ├── .gitignore
 ├── CLAUDE.md                   # this file
 ├── README.md                   # currently near-empty
-├── server.js                   # Express backend, root-level, no package.json yet
+├── server.js                   # Express backend, root-level
+├── package.json                # backend deps
+├── supabase-setup.sql          # schema + RLS, idempotent, SOURCE OF TRUTH
+├── lib/                        # server-side, standalone questionnaire only
+│   ├── questionnaire.js        # questions, validation, OpenRouter call, quota window
+│   ├── matching.js             # deterministic scoring (NOT the onboarding one)
+│   └── pragueDistricts.js      # full-precision správní obvody, point-in-polygon
+├── scripts/
+│   ├── geocode-schools.js      # one-time, fills schools.latitude/longitude
+│   └── build-district-map.js   # regenerates the district geometry
+├── schoool-app-laptop-progress/  # the older laptop build, kept for reference only
+├── design/                     # the design system — see "Design system — design/ folder" below
+│   ├── DESIGN.md                # authoritative design spec — CHECK BEFORE any non-trivial visual change
+│   ├── system/                  # real Claude Design output: components, tokens, guidelines, ui_kits
+│   ├── archive/                 # finished, already-implemented design work
+│   └── research/                # design-direction research + Mobbin surveys
+├── plans/                      # /improve implementation plans — see plans/README.md
 ├── .claude/
 │   ├── agents/
 │   │   └── onboarding-architect.md   # scoped subagent — see below
@@ -166,23 +230,49 @@ school-app/
 │       ├── claude_code_ui_ux_guide.md   # REQUIRED READING before any frontend work — see below
 │       ├── onboarding.md                 # archival — fully merged INTO onboarding-architect.md
 │       ├── feature-brainstorm.md         # full feature roadmap/ratings — REQUIRED READING before proposing new features or scope — see below
-│       └── pricing_research.md            # 2025/2026 subscription pricing + EU minor-payment research — read before touching pricing/plan structure
+│       ├── pricing_research.md            # 2025/2026 subscription pricing + EU minor-payment research — read before touching pricing/plan structure
+│       └── platform_onboarding_research.md  # web-vs-app onboarding placement research
 └── frontend/
+    ├── .env.example
     ├── package.json             # React 19, Vite 8, React Router 7, oxlint
     ├── vite.config.js
     └── src/
         ├── main.jsx
         ├── App.jsx               # route table — add new routes here
-        ├── App.css / index.css
-        ├── api.js                # fetch helpers, talks to backend on :5000
+        ├── App.css / index.css / auth.css
+        ├── api.js                # fetch helpers, attaches the Supabase JWT
+        ├── supabaseClient.js     # browser auth client (stubs out if unconfigured)
         ├── components/
-        │   └── Layout.jsx        # nav + <Outlet/>, wraps every route
+        │   ├── Layout.jsx        # nav + <Outlet/>, wraps every non-onboarding route
+        │   ├── AuthContext.jsx   # session, profile, every auth action
+        │   ├── ProtectedRoute.jsx
+        │   ├── AuthTabs.jsx / Captcha.jsx / PasswordInput.jsx / PasswordStrength.jsx
+        │   ├── FavoriteButton.jsx / ToastContext.jsx
+        │   └── onboarding/
+        ├── lib/
+        │   ├── matching.js + schoolFeatures.js   # ONBOARDING quiz scoring
+        │   ├── schoolSearch.js   # diacritics folding, typo tolerance, ranking
+        │   ├── demoSchools.js / offerEntitlement.js
         └── pages/
-            ├── Home.jsx
-            ├── Search.jsx
-            ├── SchoolDetail.jsx
-            └── SignUp.jsx
+            ├── Home.jsx / Search.jsx / SchoolDetail.jsx
+            ├── Login.jsx / SignUp.jsx / ForgotPassword.jsx / ResetPassword.jsx
+            ├── Settings.jsx
+            ├── SubscriptionExpired.jsx   # trial-expired redirect target (/predplatne)
+            └── onboarding/               # the 23-screen flow
 ```
+
+**Routes are Czech** (`/skoly`, `/prihlaseni`, `/registrace`, `/zapomenute-heslo`,
+`/nove-heslo`, `/nastaveni`, `/predplatne`) — the auth components have several of these
+hardcoded in their redirects, so do not rename them casually.
+
+**There are two `Paywall`-shaped surfaces and two `matching.js` files. Neither pair is
+a duplicate — do not merge them:**
+- `pages/onboarding/screens/Paywall.jsx` is the first-purchase paywall inside the flow.
+  `pages/SubscriptionExpired.jsx` (route `/predplatne`) is where `ProtectedRoute` sends
+  an account whose trial has lapsed. Different moments in the funnel.
+- `frontend/src/lib/matching.js` scores the onboarding quiz, entirely in the browser,
+  with no server call. `lib/matching.js` (repo root) scores the standalone
+  questionnaire server-side. They were built independently and are not interchangeable.
 
 **Before building or editing ANY frontend UI (components, pages, styling, layout —
 not just onboarding), read [`docs/sources/claude_code_ui_ux_guide.md`](docs/sources/claude_code_ui_ux_guide.md) first.**
@@ -223,7 +313,11 @@ system portable to the mobile app (see "Platform Strategy").
   and legacy aliases (`--text`, `--accent-bg`, …) that the existing stylesheets
   already consume, which is why the palette swap didn't require rewriting
   `onboarding.css`'s 1,200 lines. Prefer the new names in anything new.
-- Fonts (Newsreader + Hanken Grotesk) load from Google Fonts in `index.html`.
+- Fonts (Fraunces + Public Sans, per `DESIGN.md`) load from Google Fonts in
+  `index.html`, pending self-hosted `.woff2` files. Fixed 2026-08-31 — this line
+  previously said Newsreader + Hanken Grotesk, which was stale: DESIGN.md and
+  `tokens.js`'s own comments already specified Fraunces + Public Sans, but the
+  actual `webOnly` export and `index.html` hadn't been updated to match.
 - **Never hardcode a colour or radius** in a component or stylesheet.
 
 **Mobile preview:** `http://localhost:5173/mobile-preview.html` renders the live
@@ -246,10 +340,21 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
 ## What's Already Built
 
 1. **Backend server** (`server.js`) — Express, connected to Supabase via `.env`.
-   - `GET /` — health check
-   - `GET /test-db` — confirms Supabase connection, queries `schools` table
-   - `GET /api/schools` — returns all schools
-   - `GET /api/schools/:id` — returns one school by ID
+   - `GET /`, `GET /test-db` — health checks
+   - `GET /api/schools`, `GET /api/schools/:id` — **deliberately ungated** (see
+     Known Issues). They take `optionalAuth`: a signed-in caller also gets
+     `match_score` on every school, an anonymous one gets the same rows without it.
+   - `GET/PATCH/DELETE /api/me` — profile, rename, GDPR erasure
+   - `GET/POST/DELETE /api/favorites` — behind `requireAuth` + `requireAccess`
+   - `GET/POST /api/questionnaire` + `/api/questionnaire/runs/:id` (rename, set
+     default, archive) — the standalone questionnaire, behind auth
+   - `POST /api/checkout`, `POST /webhooks/stripe` — **scaffolding**, 503 without keys
+
+   **The access rule to keep straight:** routes that *read school rows* need
+   `requireAccess`; routes that let someone *manage or erase their own data*
+   (removing a favourite, renaming/archiving an answer set, deleting the account)
+   need only `requireAuth`. An account whose trial lapsed must never be locked out
+   of its own data.
 
 2. **n8n scraping workflow** (separate from this codebase, runs independently):
    - Scrapes atlasskolstvi.cz directory (Prague region, pages 1-3) via Firecrawl
@@ -321,28 +426,61 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
      that are true today, and switch over automatically when real data is added.
    - **Demo fallback:** `lib/demoSchools.js` (fictional names, "(ukázka)") is used
      when `/api/schools` returns empty (Supabase paused) and the UI says so.
+   - **Account creation is a step in the flow** (`screens/CreateAccount.jsx`, step id
+     `ucet`, sitting between `proof` and `paywall`). This is the canonical signup path;
+     `/registrace` exists only for direct links and returning users and is deliberately
+     not in the nav. It sits before the paywall because the trial window is opened by a
+     database trigger on account creation — there has to be an account before there is
+     anything to charge.
+
+8. **Auth, trial and access control** — real Supabase Auth, ported from the earlier
+   laptop build and wired into the onboarding flow.
+   - Email + password with **mandatory email confirmation**: `requireAuth` rejects any
+     token whose `email_confirmed_at` is null, so a trial can never start on an address
+     nobody proved they own.
+   - Cloudflare **Turnstile CAPTCHA** on signup/login/reset. Supabase verifies the token
+     itself, so there is nothing to check in `server.js`. Without
+     `VITE_TURNSTILE_SITE_KEY` the widget renders nothing and forms still work.
+   - **Password strength meter** — advisory only; flags Czech fragments (`fotbal`,
+     `slunicko`, `heslo`) an English wordlist would miss. The one hard rule is
+     Supabase's 8-character minimum.
+   - **Reveal toggle** on every password field; forwards every prop except `type`, so
+     callers keep control of `autoComplete` (getting that wrong breaks password managers).
+   - **"Stay signed in"** switches *where* the token is stored (localStorage vs
+     sessionStorage). It does not change how long the token is valid.
+   - **Duplicate signups are surfaced**, not hidden. Supabase's own response is
+     identical either way (a decoy user with an empty `identities` array); we turn that
+     back into "you already have an account". A deliberate email-enumeration trade-off:
+     Turnstile blocks the scripted version, and hiding it would leave a real user
+     waiting forever for a confirmation email that never comes. Login and password
+     reset stay fully generic, where hiding it costs a genuine user nothing.
+   - **Developer allowlist** — `DEVELOPER_EMAILS` in `.env` grants permanent access.
+     Deliberately server-side: a checkbox on the signup form would give the product away.
+   - **Never move an access decision into React.** `ProtectedRoute` and `hasAccess`
+     decide what to *show*; `server.js` and RLS decide what is *allowed*.
+
+9. **Search, favourites and the standalone questionnaire backend**
+   - `lib/schoolSearch.js` — diacritics folding (`gymnazium` finds `Gymnázium`),
+     length-scaled typo tolerance, prefix matching, an alias map for words no edit
+     distance can bridge (`gympl`, `zdravka`, `prumka`), and name > obor > location
+     ranking. Wired into `Search.jsx`.
+   - Favourites with optimistic toggling and toast confirmation.
+   - The server-side questionnaire (`lib/questionnaire.js` + `lib/matching.js`, multiple
+     saved answer sets with one marked default, monthly quota anchored to the signup
+     anniversary). **The backend is here; no UI is wired to it.** The onboarding quiz is
+     a separate surface with its own scoring engine.
 
 ## What's NOT Built Yet (MVP Scope)
 
-Estimated ~45 hours remaining, in priority order:
+**Status as of 2026-08-28:** Supabase connected, schools seeded (60), onboarding flow
+complete with district map and claim-framing signup, auth ported and wired, design tokens
+applied (terracotta/moss live), developer-email bypass confirmed working.
 
-1. **Modern design system** — upgrade frontend styling (colors, fonts, spacing) so all new pages look polished automatically (~2h)
-2. **Fix backend project setup** — add root `package.json`, `npm install` the deps
-   `server.js` already imports (`express`, `cors`, `dotenv`, `@supabase/supabase-js`),
-   confirm `node server.js` runs clean from a fresh clone (~1h)
-3. **Connect frontend to backend** — test data flow from Supabase → backend → frontend (~2h)
-4. **Search & Filter enhancement** — currently basic, make it better (~8h)
-5. **School Detail Pages** — currently skeleton, add full info display (~12h)
-6. **Sign Up & Login** — wire to Supabase Auth (~10h)
-7. **AI Questionnaire** — 10 questions → Claude API matches student to best-fit schools (~10h) — build this LAST
-8. **Onboarding flow** — build via the `onboarding-architect` subagent, not general-purpose
-   work; see canonical 23-screen spec in that agent file. Sits logically between #6 and #7
-   since the quiz IS the onboarding's core, but the agent scope covers the surrounding
-   funnel (role fork, paywall, trial framing) that #7 alone doesn't.
-9. **Payments** — Stripe integration for the paywall built in #8 (not yet scoped/estimated)
+**Every remaining task, decision, and deferred item is tracked in [`UNFORGET.md`](UNFORGET.md)
+— that file is the single source of truth for "what's left," not this section.** See
+"Keeping This File Useful" below for why deferred work lives there now, not here.
 
-Explicitly OUT of MVP scope (post-launch): Reviews/ratings, open-ended AI chat
-assistant.
+Explicitly OUT of MVP scope (post-launch): Reviews/ratings, open-ended AI chat assistant.
 
 **The mobile app is NOT out of scope — it is planned before public launch, and it is
 intended to be the PRIMARY surface.** (Corrected 2026-08-24; an earlier version of
@@ -353,17 +491,94 @@ Nothing built now should assume web is the only client. See "Platform Strategy".
 
 ## Known Issues / Traps
 
-- **No root `package.json`.** `server.js` imports `express`, `cors`, `dotenv`,
-  `@supabase/supabase-js` but there's no root `node_modules` or lockfile in this repo
-  snapshot. Running `node server.js` on a fresh checkout will throw `MODULE_NOT_FOUND`.
-  Fix before relying on backend automation — don't just `npm install` ad hoc packages
-  without also committing a `package.json`.
+These are standing architectural facts about the current codebase — not TODOs. Anything
+actionable that follows from them lives in [`UNFORGET.md`](UNFORGET.md) instead.
+
+- **Paywall is still mocked** — the onboarding's purchase button calls `mockStartSubscription`
+  and `lib/offerEntitlement.js` uses localStorage (not production-safe). This is deliberate
+  and current; see `UNFORGET.md` for the Stripe integration item and why it's gated on the
+  user re-raising it.
+- **`/api/schools*` is intentionally ungated**, unlike every other data route. The
+  onboarding quiz reads school data before any account exists, so gating it would break
+  the funnel at its widest point. RLS still blocks the browser from reading the table
+  directly, so `server.js` remains the only way in. Gating this is tied to the paywall
+  connection work in `UNFORGET.md` — remember `withMatchScores` must survive whatever
+  query replaces it, or every percentage in the app disappears with nothing logged.
 - **`cd` matters.** `server.js` lives at repo root, not in `frontend/`. Running it from
   inside `frontend/` throws `Cannot find module '.../frontend/server.js'`.
-- **RLS is disabled.** Fine for now, but don't build auth or payments features that
-  assume any row-level protection exists — it doesn't yet.
 - **`.env` is real and gitignored** — never read it into chat output, never commit it,
-  never suggest committing it "just for now."
+  never suggest committing it "just for now." Restart the backend after editing it —
+  env vars only load at process startup.
+
+---
+
+## Design tokens — tokens.js
+
+**What is `tokens.js`?** The single source of truth for all design values (colors,
+fonts, spacing, radii, etc.) as JavaScript constants, in `frontend/src/design/tokens.js`.
+JS, not CSS, deliberately: React Native can import a JS module but cannot read CSS
+variables — this is what makes the visual system portable to the mobile app later.
+
+**Current state (as of 2026-08-28):** matches `design/DESIGN.md` — terracotta `#AD4F2A` /
+moss `#4F7143`, Fraunces + Public Sans (fonts fixed site-wide 2026-08-31 — `index.html`
+and `tokens.js`'s `webOnly` export had drifted from DESIGN.md's own spec). `tokens.css`
+is auto-generated from `tokens.js` via `npm run tokens` (from `frontend/`) — **never
+hand-edit `tokens.css`.** Re-run that command after any future change to `tokens.js`.
+
+**Spacing and type-size tokens do not exist in CSS yet** — `tokens.js`'s `space` object
+uses different numbers (`4/8/12/16/24/32`) than `design/system/tokens/spacing.css`'s
+documented scale (`4/8/16/24/32/48/64`), and neither is exposed as a CSS custom
+property that stylesheets actually consume — `App.css`, `auth.css`, and
+`onboarding.css` all hardcode raw pixel values today. Migrating the whole app onto the
+design system's real scale is tracked in `UNFORGET.md` as a standing task, not done yet.
+
+---
+
+## Design system — `design/` folder (reorganized 2026-08-31)
+
+**Before any non-trivial frontend visual change, check `design/DESIGN.md` first.**
+("Non-trivial" — a color/spacing/typography choice, a new component, a layout
+decision. Not: renaming a button's label, fixing a typo.) This is in addition to, not
+instead of, the standing UX-guide-read rule below.
+
+```
+design/
+├── DESIGN.md          # the authoritative design system — moved from repo root 2026-08-31
+├── system/            # real Claude Design output: components/, tokens/, guidelines/,
+│                       # templates/, ui_kits/ — the current template for all /design work.
+│                       # Components under system/components/ are REAL, reusable code
+│                       # (Button, Input, Checkbox, Card, Chip, Divider, MatchIndicator,
+│                       # Tooltip — each with .jsx + .d.ts + .prompt.md). The example
+│                       # SCREENS under system/ui_kits/skolamatch/ are illustrative
+│                       # mockups only (invented layout + fake data, built without seeing
+│                       # this codebase) — reference for structure, never copy verbatim.
+├── archive/            # finished, already-implemented design work, kept for history
+│   └── school-search-wireframe/   # the wireframe behind frontend/src/pages/Search.jsx
+└── research/           # design-direction research + Mobbin pattern surveys,
+                         # moved from docs/sources/ (design-tool-specific docs only —
+                         # general product docs like feature-brainstorm.md stayed put)
+```
+
+**Use Mobbin as reference, never as a source of truth.** Before designing any screen
+with `/design`, search Mobbin (the connected Mobbin MCP) for 3–5 real shipped examples
+of that screen type, to sanity-check layout and interaction choices against real
+products. `design/system`'s own components and tokens always win on conflict — Mobbin
+informs judgment calls, it never overrides or gets blended into this design system's
+colors, spacing, or components.
+
+**Known gaps in `design/system`, don't treat as bugs:**
+- The `ui_kits/skolamatch` example screens predate real integration with this codebase
+  — their data is invented, same caveat as every Claude Design wireframe. `Search.jsx`
+  was removed from that folder 2026-08-31 as redundant, once superseded by the real
+  implementation.
+- `design/system`'s real components (`Button`, `Input`, etc.) are **newer** than the
+  hand-built primitives currently used by the live app (`ObKit.jsx`, `auth.css`) —
+  those predate this template by several days. They should eventually be replaced by
+  the real template components rather than the other way around. Not done yet — see
+  `UNFORGET.md`.
+- `design/system`'s content width is 1280px; the live app's `.app-content` was capped
+  at 960px until 2026-08-31, when it was widened to match. See `UNFORGET.md` for the
+  remaining responsive-breakpoint work below 1280px.
 
 ---
 
@@ -386,111 +601,79 @@ planned for later phases once the Prague version is validated with real users.
 
 ---
 
-## 🎯 DECISIONS YOU NEED TO MAKE (before charging real money)
+## 📝 CURRENT STATE — LAPTOP BUILD MERGED IN (2026-08-27)
 
-**Pick these three and we can move forward:**
+The earlier laptop build was cloned to `schoool-app-laptop-progress/` and its
+infrastructure grafted onto this codebase. The direction was deliberate: **keep the
+23-screen onboarding flow as the product's spine, and layer the laptop's real auth,
+Stripe scaffolding and RLS schema on top of it** — not the other way round.
 
-1. **Exact prices** — Season pass: ? Kč (placeholder: 690). Monthly: ? Kč (placeholder: 249).
-2. **Keep 3-day trial or change it?** — Research says 3 days is risky; people cancel before feeling value. Or extend to 5-7 days?
-3. **Which plan shows first?** — Currently: Season Pass (one-time, pre-selected) then Monthly (recurring). Keep this or flip?
-4. **Refund guarantee final number.** Set to **3 days (2026-08-24) as a testing placeholder**, not a committed number — see the blocker note below.
+**What came across:** Supabase Auth (with CAPTCHA, password strength, reset flow, email
+confirmation), the RLS schema, rate limiting, favourites, smart search, the server-side
+questionnaire engine, and Stripe checkout/webhook routes as scaffolding.
 
-**Three items in `pricing.js` are pre-launch blockers. The paywall currently tells users
-the truth about each — flip/finalize only when genuinely built:**
-- `TRIAL_REMINDER_IMPLEMENTED` (`false`) — blocks honest recurring billing
-- `ONE_STEP_CANCELLATION_IMPLEMENTED` (`false`) — blocks recurring billing; EU requirement
-- `REFUND_GUARANTEE_DAYS` (`3`, placeholder) — **displaying this to a real paying user
-  with no actual refund process behind it is not safe.** Do not go live with real
-  payments until both a final number is chosen and a working refund process exists.
-  14 days (EU distance-selling floor) is the benchmark to reconsider against.
+**What deliberately did not:** the laptop's own questionnaire UI, its forest/teal design
+system, and its map/match-score components. Those are coupled to a questionnaire surface
+we are not merging.
 
----
+**What was reconciled rather than copied:** the schema's trial trigger was changed from
+7 days to 3 to match the researched pricing decision, and `subscription_status` gained a
+`'season'` value so the season pass has somewhere to write.
 
-## 🚀 WHAT NEEDS TO BE BUILT NEXT
+`schoool-app-laptop-progress/` is kept as read-only reference. Nothing imports from it.
+Delete it once you are confident nothing else is needed from there.
 
-**Must do before launch (legal requirement):**
-- Stripe integration — make the payment button actually charge
-- Email reminders — send a message before the trial ends (EU law requirement)
-- Cancellation screen — let people actually cancel their subscription (EU law requirement)
-- Czech lawyer review — have a Czech consumer-law lawyer check it's legal before you charge anyone
-
-**After launch (to make more money):**
-- Better school matching — add real data (grades needed, spot count, etc.) so scores are actually useful
-- Priority optimizer — help students rank their top 3 schools for the Czech DiPSy system (this is the killer feature nobody else has)
-
-**Promises the Claude Design mockup makes that the product cannot yet keep.**
-The 2026-08-24 visual mockup (`docs/sources/design_system.md`) invented plausible
-product copy. The *visual system* is good and is what we're porting; these specific
-claims are NOT to be ported until the thing behind them exists. Recorded here so they
-aren't forgotten — do not build them now.
-
-Blocking before real payments (false trust signals on a payment screen):
-- Mockup shows **"Vrácení do 14 dnů"** — `REFUND_GUARANTEE_DAYS` is `null`, no refund
-  process exists. Needs a real policy + process before this string can appear.
-- Mockup shows **"Zrušíte kdykoli do dalšího zúčtování"** —
-  `ONE_STEP_CANCELLATION_IMPLEMENTED` is `false`. This exact claim was deliberately
-  removed from `Paywall.jsx` on 2026-08-24; needs a real cancel control first.
-
-Needs real data or a real source before it can ship:
-- Mockup's **"38 %" statistic** (students who'd choose differently) is labelled
-  "Zdroj: doplnit" in the mockup itself — an invented number on the credibility
-  screen. Find a real citable Czech source or drop the stat. Relatedly,
-  `config/socialProof.js` is still deliberately empty.
-- Mockup's outcome bullets promise **admission-chance estimates from pololetí grades**,
-  **commute times ("22 minut od tebe")**, and **deadline reminders**. Supabase holds
-  only `name`, `location`, `programs`, `contact`, `website`, and there is no email
-  system. These are roadmap features — see "better school matching" above.
-
-Cosmetic mismatches to reconcile when porting:
-- Mockup says 199 Kč monthly; `pricing.js` says 249. **`pricing.js` is the source of
-  truth**, always.
-- Mockup says season runs to 30. 6. 2027; config's window is end of March.
-- Mockup says "osm otázek" / "3 / 8" / "Krok 1 ze 3"; the real flow is 10 quiz
-  questions inside 23 screens.
-
-**Run the `/improve` skill before these milestones** — it's a read-only codebase
-audit (finds bugs/security/perf/tech-debt issues, produces a plan, never edits code
-itself). Use it as a pre-transition checkpoint, not on a schedule:
-- Before wiring real Stripe payments (highest priority — money + real card flows)
-- Before re-enabling Supabase RLS (security-boundary change)
-- Before doing serious work on `server.js` — it hasn't had a critical pass since
-  the initial package.json fix (4 flat routes, no validation, no rate limiting)
-- Before merging in the questionnaire/features from the user's laptop once accessible
-- **Not** needed right now on the onboarding/paywall — that already got a dedicated
-  deep pass from the onboarding-architect agent (2026-08-23/24), found and fixed 4
-  real bugs. Re-auditing it now would mostly re-surface already-tracked gaps.
-
-**Waiting on the user (not a coding task):**
-- **Big visual/graphic design pass on the onboarding.** Deliberately not done yet —
-  the user has an already-built site (with a questionnaire + other features) on their
-  laptop they're waiting to get access to, and wants to do the visual redesign once
-  that's available rather than designing twice. Current onboarding is functionally
-  complete (all 23 screens, both branches, real scoring) but visually plain by design
-  — built to the UX guide's structural/psychological rules, not final visual polish.
-  Do not start a design overhaul on this proactively; wait for the user to say the go-ahead.
+**The seam that is still open:** the onboarding paywall creates a real account (trial
+starts, server-side) but the purchase itself is still mocked. Closing that gap is MVP
+item #4 and #5.
 
 ---
 
-## 📝 CURRENT STATE — ONBOARDING IS STANDALONE
+## Design system update — DESIGN.md rewritten + Mobbin research completed (2026-08-25)
 
-The onboarding flow built 2026-08-23 is complete and working, but it's its own thing
-right now — not connected to your existing questionnaire or other features yet. You
-mentioned you have a questionnaire + other features already built on your laptop that
-are waiting to be fixed/accessible. Once those are ready, the integration task is to
-wire this onboarding paywall into the results of your existing questionnaire (they
-currently use the same scoring engine, but the UI flows are separate).
+**Done:**
+- **`DESIGN.md` fully rewritten** (warm terracotta `#AD4F2A` / moss-green `#4F7143`, Fraunces + Public Sans, no monospace, radii 8–20px, soft shadows, metaphor replaced). Lints clean: 0 errors, 0 warnings.
+- **Mobbin pattern survey** completed: `docs/sources/mobbin_pattern_survey.md` (634 lines, 73 searches, ~380–400 products, organized into paywalls/onboarding/landing pages/core product with checklists, anti-patterns, cross-section observations). Coverage gaps documented honestly.
+- **Four independent Mobbin-patterns skills created** for Claude Design to use independently:
+  - `.claude/skills/mobbin-paywall-patterns/SKILL.md`
+  - `.claude/skills/mobbin-onboarding-patterns/SKILL.md`
+  - `.claude/skills/mobbin-landing-page-patterns/SKILL.md`
+  - `.claude/skills/mobbin-core-product-patterns/SKILL.md`
+
+Each skill is self-contained (checklist + sourced patterns + anti-patterns + cross-cutting observations) so Claude Design can pull whichever fits the screen type being worked on.
+
+**tokens.js → tokens.css sync: done 2026-08-28.** See "Design tokens — tokens.js" above.
+
+**Two research-dependent decisions are still open** (photo gallery verification, score
+display resolution) — tracked in [`UNFORGET.md`](UNFORGET.md), not here.
+
+**Paywall patterns from the survey that map to existing code:** The survey's dated
+3-beat trial timeline, symmetrical decline paths, and due-today-vs-recurring split
+patterns provide concrete, sourced answers for the trial-reminder and cancellation-screen
+items tracked in `UNFORGET.md`.
 
 ---
 
 ## Keeping This File Useful
 
-This file is read at the start of every session — it should describe **current reality**,
-not a snapshot from whenever it was last edited. Update it when:
+This file is read at the start of every session — it should describe **current reality
+and locked-in decisions**, not a TODO list and not a snapshot from whenever it was last
+edited. Update it when:
 - A feature moves from "not built" to "built"
 - A new convention or file-structure decision gets made
-- A blocker gets fixed (or a new one gets found)
-- A product decision changes (pricing model, scope, target user)
-- **A decision lands and needs to be locked in** — move it from the "DECISIONS YOU NEED TO MAKE" section to the Monetization Plan section once it's final
+- A product decision changes and becomes final (pricing model, scope, target user)
 
 Prefer editing this file over letting drift accumulate — a stale CLAUDE.md is worse
 than no CLAUDE.md, because it actively misleads the next session.
+
+**All deferred work — pending decisions, TODOs, "come back to this," audit findings,
+paused plans — goes in [`UNFORGET.md`](UNFORGET.md), not in this file or in `DESIGN.md`.**
+This is a standing instruction for every future session, not a one-time cleanup:
+CLAUDE.md and DESIGN.md describe what *is* (architecture, conventions, locked-in
+decisions, design spec); `UNFORGET.md` tracks what's *not yet done*. Before adding a new
+"pending"/"TODO"/"not built yet" item to either file, put it in `UNFORGET.md` instead,
+following the format in `.claude/skills/unforget/SKILL.md`. When a decision that started
+as a `UNFORGET.md` open question becomes final, that's when it belongs here — move it
+into the relevant section (e.g. a settled pricing question moves into "Monetization
+Plan") and remove it from `UNFORGET.md`'s open items (or into its "Resolved" section if
+it was actionable work, not just a decision).

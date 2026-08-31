@@ -1,0 +1,645 @@
+/* Auth, settings, toasts and the shared form primitives the ported auth screens
+ * use. Written against design/tokens.css — no hardcoded colours or radii.
+ *
+ * These classes came in with the auth layer; the onboarding flow has its own
+ * stylesheet (pages/onboarding/onboarding.css) and does not read anything here.
+ */
+
+/* --- Layout ---------------------------------------------------------------- */
+
+.auth-layout,
+.settings-layout {
+  width: 100%;
+  max-width: 420px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.settings-layout {
+  max-width: 640px;
+  gap: var(--space-lg);
+}
+
+.page-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.eyebrow {
+  font-size: var(--fs-label-caps);
+  font-weight: 600;
+  letter-spacing: 1.76px;
+  text-transform: uppercase;
+  color: var(--ink3);
+}
+
+.lede {
+  color: var(--ink2);
+  line-height: 1.5;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.route-loading {
+  padding: var(--space-xxl) var(--space-lg);
+  text-align: center;
+  color: var(--ink2);
+}
+
+/* --- Panels ---------------------------------------------------------------- */
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  padding: var(--space-md);
+}
+
+.panel-lg {
+  padding: var(--space-lg);
+}
+
+/* --- Fields ---------------------------------------------------------------- */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.field-label,
+.settings-row-label {
+  font-size: var(--fs-body-sm);
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.field-label-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
+.field-label-link {
+  font-size: var(--fs-caption);
+  color: var(--acc);
+}
+
+.field-hint,
+.checkbox-hint,
+.auth-footnote {
+  font-size: var(--fs-caption);
+  color: var(--ink2);
+  line-height: 1.5;
+}
+
+.input {
+  width: 100%;
+  padding: var(--space-md);
+  font: inherit;
+  font-size: var(--fs-label-md);
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line2);
+  border-radius: var(--r-button);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--acc);
+  box-shadow: 0 0 0 4px var(--acc-soft);
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  font-size: var(--fs-body-sm);
+  color: var(--ink);
+}
+
+.settings-inline {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* --- Password field -------------------------------------------------------- */
+
+.password-field {
+  position: relative;
+  display: flex;
+}
+
+.password-field-input {
+  padding-right: var(--space-xxl);
+}
+
+.password-field-toggle {
+  position: absolute;
+  right: var(--space-xs);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: var(--ink2);
+  background: none;
+  border: none;
+  border-radius: var(--r-chip);
+  cursor: pointer;
+}
+
+.password-field-toggle svg {
+  width: 20px;
+  height: 20px;
+}
+
+.password-field-toggle:hover {
+  color: var(--ink);
+}
+
+/* --- Password strength meter ----------------------------------------------- */
+
+.pw-meter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.pw-meter-track {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-xs);
+}
+
+.pw-meter-step {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--line);
+}
+
+.pw-meter-label {
+  font-size: var(--fs-caption);
+  color: var(--ink2);
+}
+
+.pw-meter.is-empty .pw-meter-step.is-filled,
+.pw-meter.is-weak .pw-meter-step.is-filled {
+  background: var(--danger);
+}
+
+.pw-meter.is-fair .pw-meter-step.is-filled {
+  background: var(--ink3);
+}
+
+.pw-meter.is-good .pw-meter-step.is-filled,
+.pw-meter.is-strong .pw-meter-step.is-filled {
+  background: var(--ok);
+}
+
+.pw-meter.is-weak .pw-meter-label strong {
+  color: var(--danger);
+}
+
+.pw-meter.is-good .pw-meter-label strong,
+.pw-meter.is-strong .pw-meter-label strong {
+  color: var(--ok);
+}
+
+/* --- Buttons --------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  font: inherit;
+  font-size: var(--fs-body-md);
+  font-weight: 600;
+  border-radius: var(--r-button);
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.btn-sm {
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--fs-body-sm);
+}
+
+.btn-primary {
+  background: var(--acc);
+  color: var(--acc-ink);
+}
+
+.btn-secondary {
+  background: var(--surface);
+  color: var(--ink);
+  border-color: var(--line2);
+}
+
+.btn-ghost,
+.link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: var(--acc);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: var(--surface);
+}
+
+.btn-danger-ghost {
+  background: none;
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+/* Constant rate, because an endless rotation with an eased curve visibly
+   pulses once per revolution. */
+.btn-spinner {
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  animation: btn-spin 0.7s linear infinite;
+}
+
+@keyframes btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* The global reduced-motion rule collapses animations to near-zero, which for
+   an infinite rotation means a ring frozen mid-turn — i.e. a permanently
+   broken-looking button. The label already carries the state, so hide it. */
+@media (prefers-reduced-motion: reduce) {
+  .btn-spinner {
+    display: none;
+  }
+}
+
+/* --- Notices --------------------------------------------------------------- */
+
+.notice {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: var(--space-md);
+  border-radius: var(--r-chip);
+  border: 1px solid var(--line);
+  background: var(--surface2);
+}
+
+.notice-title {
+  font-weight: 600;
+  font-size: var(--fs-body-sm);
+  color: var(--ink);
+}
+
+.notice-text {
+  font-size: var(--fs-body-sm);
+  line-height: 1.5;
+  color: var(--ink2);
+}
+
+.notice-error {
+  border-color: var(--danger);
+  background: var(--danger-soft);
+}
+
+.notice-error .notice-title {
+  color: var(--danger);
+}
+
+.notice-success {
+  border-color: var(--ok);
+  background: var(--ok-soft);
+}
+
+.notice-success .notice-title {
+  color: var(--ok);
+}
+
+/* --- Auth tabs ------------------------------------------------------------- */
+
+.auth-tabs {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  padding: var(--space-xs);
+  background: var(--surface2);
+  border-radius: var(--r-button);
+}
+
+.auth-tab {
+  position: relative;
+  z-index: 1;
+  padding: var(--space-sm);
+  font: inherit;
+  font-size: var(--fs-label-md);
+  font-weight: 500;
+  text-align: center;
+  color: var(--ink2);
+  background: none;
+  border: none;
+  border-radius: var(--r-chip);
+  cursor: pointer;
+}
+
+.auth-tab.is-active {
+  color: var(--ink);
+}
+
+/* Travels by whole multiples of its own width, so nothing has to be measured
+   and it stays correct at any viewport size. */
+.tab-thumb {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc((100% - 8px) / 2);
+  background: var(--surface);
+  border-radius: var(--r-chip);
+  box-shadow: var(--shadow);
+  transform: translateX(calc(var(--tab-index, 0) * 100%));
+  transition: transform 220ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tab-thumb {
+    transition: none;
+  }
+}
+
+.auth-form,
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.settings-form-actions {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.settings-form-inset {
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--line);
+}
+
+/* --- Settings rows --------------------------------------------------------- */
+
+.settings-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.settings-section-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.settings-section-title {
+  font-family: var(--heading);
+  font-size: var(--fs-body-lg);
+  font-weight: 400;
+  color: var(--ink);
+}
+
+.settings-section-text {
+  font-size: var(--fs-body-sm);
+  color: var(--ink2);
+  line-height: 1.5;
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.settings-row-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.settings-row-value {
+  font-size: var(--fs-body-sm);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.settings-row-muted {
+  color: var(--ink2);
+}
+
+.settings-danger {
+  border-color: var(--danger);
+}
+
+/* --- Paywall / subscription ------------------------------------------------ */
+
+.benefit-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  list-style: none;
+  padding: 0;
+}
+
+.benefit-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  font-size: var(--fs-label-md);
+  color: var(--ink);
+}
+
+.benefit-check {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--ok);
+}
+
+.badge {
+  display: inline-block;
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--fs-label-caps);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--acc);
+  background: var(--acc-soft);
+  border-radius: 999px;
+}
+
+/* --- Favourite star -------------------------------------------------------- */
+
+.favorite-star {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  color: var(--ink3);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.favorite-star.is-favorite {
+  color: var(--acc);
+}
+
+.favorite-star-icon {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+/* --- Toasts ---------------------------------------------------------------- */
+
+/* Bottom-centre: top-right is where this app's own nav sits. Always mounted so
+   aria-live has somewhere to put a message, hence pointer-events: none —
+   otherwise it would swallow clicks along the bottom edge of every page. */
+.toast-viewport {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  width: min(420px, calc(100vw - 32px));
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-chip);
+  box-shadow: var(--shadow);
+  pointer-events: auto;
+}
+
+.toast-icon {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--ok);
+}
+
+.toast.is-error .toast-icon {
+  color: var(--danger);
+}
+
+.toast-message {
+  flex: 1;
+  font-size: var(--fs-body-sm);
+  color: var(--ink);
+}
+
+.toast-close {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  color: var(--ink3);
+  background: none;
+  border: none;
+  border-radius: var(--r-chip);
+  cursor: pointer;
+}
+
+.toast-close svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* --- Misc ------------------------------------------------------------------ */
+
+.detail-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
+.navbar-signout {
+  font: inherit;
+  padding: 0;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.trial-banner {
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--fs-caption);
+  text-align: center;
+  color: var(--acc);
+  background: var(--acc-soft);
+  border-bottom: 1px solid var(--acc-line);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}

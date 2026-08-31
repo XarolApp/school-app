@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/colors.css">
+<link rel="stylesheet" href="_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/typography.css">
+<link rel="stylesheet" href="_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/shape.css">
+<link rel="stylesheet" href="_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/motion.css">
+<link rel="stylesheet" href="_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/base.css">
+<link rel="stylesheet" href="_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/styles.css">
+<script src="_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/_ds_bundle.js"></script>
+<style>
+body{margin:0;background:var(--surface);font-family:var(--font-sans);color:var(--text-body)}
+a{color:var(--primary)}a:hover{color:var(--primary-strong)}
+input[type=range]{accent-color:var(--primary)}
+:root{--ease-out-strong:cubic-bezier(0.23,1,0.32,1)}
+@keyframes om-panel-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes om-fade-in{from{opacity:0}to{opacity:1}}
+.om-panel{animation:om-panel-in 200ms var(--ease-out-strong) both}
+@media (hover:hover) and (pointer:fine){
+.om-row:hover{background:var(--neutral)!important}
+.om-toggle:hover{border-color:var(--border-strong)}
+}
+@media (prefers-reduced-motion:reduce){
+.om-panel{animation:om-fade-in 150ms ease both}
+.om-bar{transition:opacity 150ms ease!important;transform:none!important}
+}
+</style>
+</helmet>
+
+<sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+<div style="min-height:100vh;background:var(--surface);padding-bottom:80px">
+
+<header style="position:sticky;top:0;z-index:30;background:var(--surface);border-bottom:1px solid var(--border)">
+<div style="max-width:1280px;margin:0 auto;padding:0 64px;height:68px;display:flex;align-items:center;gap:48px">
+<span style="font-family:var(--font-serif-display);font-weight:600;font-size:21px;letter-spacing:-0.01em;font-variation-settings:'SOFT' 40,'opsz' 24;color:var(--primary)">ŠkolaMatch</span>
+<nav style="display:flex;gap:24px;flex:1;font-size:14px">
+<a href="#" style="color:var(--on-surface);font-weight:600;text-decoration:none">Databáze škol</a>
+<a href="#" style="color:var(--text-muted);text-decoration:none">Dotazník</a>
+<a href="#" style="color:var(--text-muted);text-decoration:none">Moje shody</a>
+</nav>
+<x-import component-from-global-scope="KolaMatchDesignSystem_90cf52.Button" variant="secondary" size="sm" hint-size="120px,36px">Přihlásit se</x-import>
+<x-import component-from-global-scope="KolaMatchDesignSystem_90cf52.Button" size="sm" hint-size="150px,36px">Upravit dotazník</x-import>
+</div>
+</header>
+
+<main style="max-width:1280px;margin:0 auto;padding:32px 64px;display:grid;grid-template-columns:288px minmax(0,1fr);gap:48px;align-items:start">
+
+<aside style="position:sticky;top:100px;display:flex;flex-direction:column;gap:24px">
+<x-import component-from-global-scope="KolaMatchDesignSystem_90cf52.Input" placeholder="Hledat podle názvu nebo oboru" value="{{ q }}" onChange="{{ onQuery }}" hint-size="100%,44px"></x-import>
+
+<div style="display:flex;flex-direction:column;gap:12px">
+<p class="sm-label-caps" style="color:var(--text-faint)">Obor a zaměření</p>
+<sc-for list="{{ fieldOptions }}" as="o" hint-placeholder-count="5">
+<div style="display:flex;align-items:center;gap:8px;min-height:32px">
+<x-import component-from-global-scope="KolaMatchDesignSystem_90cf52.Checkbox" label="{{ o.label }}" checked="{{ o.checked }}" onChange="{{ o.onToggle }}" hint-size="200px,24px"></x-import>
+<span class="sm-data-sm" style="margin-left:auto;color:var(--text-faint)">{{ o.count }}</span>
+</div>
+</sc-for>
+</div>
+
+<x-import component-from-global-scope="KolaMatchDesignSystem_90cf52.Divider" hint-size="100%,1px"></x-import>
+
+<div style="display:flex;flex-direction:column;gap:8px">
+<p class="sm-label-caps" style="color:var(--text-faint)">Dojezd MHD z domova</p>
+<div style="display:flex;align-items:baseline;justify-content:space-between">
+<span class="sm-body-sm" style="color:var(--on-surface)">{{ travelLabel }}</span>
+<span class="sm-data-sm" style="color:var(--text-faint)">{{ travelCount }}</span>
+</div>
+<input type="range" min="10" max="60" step="5" value="{{ maxMin }}" onChange="{{ onTravel }}" style="width:100%;margin:4px 0 0">
+<p class="sm-caption">Počet se přepočítá při tažení. Nic se nepotvrzuje.</p>
+</div>
+
+<x-import component-from-global-scope="KolaMatchDesignSystem_90cf52.Divider" hint-size="100%,1px"></x-import>
+
+<div style="display:flex;flex-direction:column;gap:12px">
+<p class="sm-label-caps" style="color:var(--text-faint)">Městská část</p>
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<sc-for list="{{ districtOptions }}" as="d" hint-placeholder-count="9">
+<button class="om-toggle" onClick="{{ d.onToggle }}" style="appearance:none;font:inherit;cursor:pointer;border-radius:var(--radius-chip);padding:5px 10px;font-size:13px;line-height:1.3;transition:background 150ms cubic-bezier(0.23,1,0.32,1),border-color 150ms cubic-bezier(0.23,1,0.32,1);border:{{ d.border }};background:{{ d.bg }};color:var(--on-surface)">{{ d.label }} <span style="color:var(--text-faint);font-feature-settings:'tnum' 1">{{ d.count }}</span></button>
+</sc-for>
+</div>
+</div>
+
+<x-import component-from-global-scope="KolaMatchDesignSystem_90cf52.Divider" hint-size="100%,1px"></x-import>
+
+<div style="display:flex;flex-direction:column;gap:12px">
+<p class="sm-label-caps" style="color:var(--text-faint)">Přijímací zkouška</p>
+<div style="display:flex;align-items:center;gap:8px;min-height:32px">
+<x-import component-from-global-scope="KolaMatchDesignSystem_90cf52.Checkbox" label="Jen školy bez talentové zkoušky" checked="{{ noTalent }}" onChange="{{ onTalent }}" hint-size="220px,44px"></x-import>
+<span class="sm-data-sm" style="margin-left:auto;color:var(--text-faint)">{{ talentCount }}</span>
+</div>
+</div>
+</aside>
+
+<section style="display:flex;flex-direction:column;gap:16px;min-width:0">
+
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+<h1 class="sm-headline-md" style="font-feature-settings:'tnum' 1">{{ countHeadline }}</h1>
+<p class="sm-caption">{{ countSub }}</p>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+<sc-for list="{{ activeChips }}" as="c" hint-placeholder-count="4">
+<x-import component-from-global-scope="KolaMatchDesignSystem_90cf52.Chip" onRemove="{{ c.onRemove }}" hint-size="140px,28px">{{ c.label }}</x-import>
+</sc-for>
+<sc-if value="{{ hasFilters }}" hint-placeholder-val="{{ true }}">
+<button onClick="{{ onClearAll }}" style="appearance:none;border:0;background:transparent;padding:0 4px;font:inherit;font-size:13px;color:var(--text-muted);cursor:pointer;text-decoration:underline;text-underline-offset:2px">Zrušit všechny filtry</button>
+</sc-if>
+</div>
+</div>
+
+<div style="display:flex;align-items:stretch;gap:12px;padding:12px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+<p class="sm-label-caps" style="color:var(--text-faint);align-self:center;flex:none">Řadit</p>
+<div style="display:flex;gap:8px;flex:1;min-width:0">
+<sc-for list="{{ sortOptions }}" as="s" hint-placeholder-count="3">
+<button class="om-toggle" onClick="{{ s.onPick }}" style="appearance:none;font:inherit;cursor:pointer;text-align:left;flex:1;min-width:0;padding:8px 12px;border-radius:var(--radius-chip);transition:background 150ms cubic-bezier(0.23,1,0.32,1),border-color 150ms cubic-bezier(0.23,1,0.32,1);border:{{ s.border }};background:{{ s.bg }}">
+<span style="display:block;font-size:13px;font-weight:600;color:var(--on-surface)">{{ s.label }}</span>
+<span style="display:block;font-size:12px;line-height:1.35;color:var(--text-muted);margin-top:2px">{{ s.tradeoff }}</span>
+</button>
+</sc-for>
+</div>
+</div>
+
+<sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+<div class="om-panel" style="display:flex;flex-direction:column;gap:24px;padding:8px 0 0;max-width:760px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<h2 class="sm-headline-sm">Žádná škola nesplňuje všechny filtry současně</h2>
+<p class="sm-body-md" style="color:var(--text-body)">{{ blameSentence }}</p>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:12px">
+<p class="sm-label-caps" style="color:var(--text-faint)">Uvolnit jeden filtr</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<sc-for list="{{ relaxOptions }}" as="r" hint-placeholder-count="3">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 16px;border:1px solid var(--border);border-radius:var(--radius-card);background:var(--surface)">
+<p class="sm-body-sm" style="color:var(--on-surface)">{{ r.label }}</p>
+<div style="display:flex;align-items:center;gap:16px;flex:none">
+<span class="sm-data-sm" style="color:var(--text-muted)">{{ r.gain }}</span>
+<x-import component-from-global-scope="KolaMatchDesignSystem_90cf52.Button" variant="{{ r.variant }}" size="sm" onClick="{{ r.onApply }}" hint-size="90px,36px">Použít</x-import>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+<x-import component-from-global-scope="KolaMatchDesignSystem_90cf52.Divider" hint-size="100%,1px"></x-import>
+
+<div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+<x-import component-from-global-scope="KolaMatchDesignSystem_90cf52.Button" variant="secondary" onClick="{{ onClearAll }}" hint-size="220px,44px">{{ clearAllLabel }}</x-import>
+<p class="sm-caption">Filtry v levém panelu zůstávají nastavené, dokud je nezrušíš.</p>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:12px">
+<p class="sm-label-caps" style="color:var(--text-faint)">Blízko tvému zadání</p>
+<sc-for list="{{ nearMisses }}" as="n" hint-placeholder-count="2">
+<div style="display:flex;flex-direction:column;gap:4px;padding:12px 16px;border:1px dashed var(--border-strong);border-radius:var(--radius-card)">
+<p class="sm-headline-sm" style="font-size:17px">{{ n.name }}</p>
+<p class="sm-caption">{{ n.why }}</p>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ hasRows }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column">
+<sc-for list="{{ rows }}" as="row" hint-placeholder-count="6">
+<div class="om-row" style="display:flex;gap:16px;padding:12px 16px;margin:0 -16px;border-bottom:1px solid var(--border);border-radius:var(--radius-card);transition:background 150ms cubic-bezier(0.23,1,0.32,1);background:{{ row.bg }}">
+<div style="flex:none;padding-top:2px">
+<x-import component-from-global-scope="KolaMatchDesignSystem_90cf52.Checkbox" checked="{{ row.selected }}" onChange="{{ row.onSelect }}" hint-size="22px,22px"></x-import>
+</div>
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px">
+<div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+<h2 class="sm-headline-sm" style="font-size:19px">{{ row.name }}</h2>
+<p class="sm-caption">{{ row.meta }}</p>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px">
+<sc-for list="{{ row.progs }}" as="p" hint-placeholder-count="3">
+<x-import component-from-global-scope="KolaMatchDesignSystem_90cf52.Chip" hint-size="130px,26px">{{ p }}</x-import>
+</sc-for>
+</div>
+<p class="sm-body-sm" style="color:var(--text-body);max-width:66ch">{{ row.diff }}</p>
+<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:8px;overflow:hidden;max-width:560px">
+<div style="background:var(--surface);padding:8px 10px"><p class="sm-data-md" style="font-weight:600">{{ row.cut }}</p><p style="font-size:11px;line-height:1.3;color:var(--text-muted);margin-top:2px">hranice 2025</p></div>
+<div style="background:var(--surface);padding:8px 10px"><p class="sm-data-md" style="font-weight:600">{{ row.acc }}</p><p style="font-size:11px;line-height:1.3;color:var(--text-muted);margin-top:2px">přijato z přihlášených</p></div>
+<div style="background:var(--surface);padding:8px 10px"><p class="sm-data-md" style="font-weight:600">{{ row.min }}</p><p style="font-size:11px;line-height:1.3;color:var(--text-muted);margin-top:2px">dojezd MHD</p></div>
+<div style="background:var(--surface);padding:8px 10px"><p class="sm-data-md" style="font-weight:600">{{ row.metRatio }}</p><p style="font-size:11px;line-height:1.3;color:var(--text-muted);margin-top:2px">splněných kritérií</p></div>
+</div>
+</div>
+<div style="flex:none;display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+<x-import component-from-global-scope="KolaMatchDesignSystem_90cf52.Button" variant="secondary" size="sm" hint-size="90px,36px">Detail</x-import>
+<button onClick="{{ row.onSave }}" style="appearance:none;border:0;background:transparent;padding:0;font:inherit;font-size:13px;color:var(--text-muted);cursor:pointer;text-decoration:underline;text-underline-offset:2px">{{ row.saveLabel }}</button>
+</div>
+</div>
+</sc-for>
+</div>
+
+<sc-if value="{{ hasMore }}" hint-placeholder-val="{{ false }}">
+<div style="padding:8px 0">
+<x-import component-from-global-scope="KolaMatchDesignSystem_90cf52.Button" variant="secondary" onClick="{{ onMore }}" hint-size="240px,44px">{{ moreLabel }}</x-import>
+</div>
+</sc-if>
+
+<p class="sm-caption" style="padding-top:8px">Ukázková data: {{ totalLabel }} · hranice přijetí z výsledků jednotné přijímací zkoušky 2025, dojezd z jízdních dob PID.</p>
+</sc-if>
+</section>
+</main>
+
+<div class="om-bar" style="position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--surface);border-top:1px solid var(--border-strong);will-change:transform;transition:transform 250ms cubic-bezier(0.23,1,0.32,1),opacity 200ms cubic-bezier(0.23,1,0.32,1);transform:{{ barTransform }};opacity:{{ barOpacity }};pointer-events:{{ barEvents }}">
+<div style="max-width:1280px;margin:0 auto;padding:14px 64px;display:flex;align-items:center;gap:24px">
+<p class="sm-body-sm" style="flex:1;color:var(--text-muted)">{{ selectionLabel }}</p>
+<x-import component-from-global-scope="KolaMatchDesignSystem_90cf52.Button" variant="secondary" onClick="{{ onClearSelection }}" hint-size="140px,44px">Zrušit výběr</x-import>
+<x-import component-from-global-scope="KolaMatchDesignSystem_90cf52.Button" hint-size="220px,44px">{{ compareLabel }}</x-import>
+</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+<div style="min-height:100vh;background:var(--neutral);display:flex;justify-content:center;padding:24px 16px">
+<div style="width:390px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-card);overflow:hidden;display:flex;flex-direction:column;box-shadow:0 1px 2px rgba(34,26,19,.06),0 8px 24px rgba(34,26,19,.10)">
+
+<div style="padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+<span style="font-family:var(--font-serif-display);font-weight:600;font-size:18px;font-variation-settings:'SOFT' 40,'opsz' 20;color:var(--primary)">ŠkolaMatch</span>
+<span class="sm-caption">Databáze škol</span>
+</div>
+
+<div style="padding:16px;display:flex;flex-direction:column;gap:12px;border-bottom:1px solid var(--border)">
+<x-import component-from-global-scope="KolaMatchDesignSystem_90cf52.Input" placeholder="Hledat školu" value="{{ q }}" onChange="{{ onQuery }}" hint-size="100%,44px"></x-import>
+<div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:2px">
+<sc-for list="{{ activeChips }}" as="c" hint-placeholder-count="3">
+<x-import component-from-global-scope="KolaMatchDesignSystem_90cf52.Chip" onRemove="{{ c.onRemove }}" hint-size="120px,28px">{{ c.label }}</x-import>
+</sc-for>
+</div>
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px">
+<h1 class="sm-headline-sm" style="font-size:20px;font-feature-settings:'tnum' 1">{{ countHeadline }}</h1>
+<span class="sm-caption">{{ sortLabel }}</span>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column">
+<sc-for list="{{ mobileRows }}" as="row" hint-placeholder-count="4">
+<div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:6px">
+<h2 class="sm-headline-sm" style="font-size:17px">{{ row.name }}</h2>
+<p class="sm-caption">{{ row.meta }}</p>
+<p class="sm-body-sm" style="color:var(--text-body)">{{ row.diff }}</p>
+<div style="display:flex;gap:16px;padding-top:2px">
+<span class="sm-data-sm" style="color:var(--text-muted)">{{ row.cutLabel }}</span>
+<span class="sm-data-sm" style="color:var(--text-muted)">{{ row.metRatio }} kritérií</span>
+</div>
+</div>
+</sc-for>
+</div>
+
+<div style="padding:12px 16px;border-top:1px solid var(--border-strong);background:var(--neutral);display:flex;gap:8px;position:sticky;bottom:0">
+<div style="flex:1">
+<x-import component-from-global-scope="KolaMatchDesignSystem_90cf52.Button" style="width:100%" hint-size="100%,48px">{{ mobileFilterLabel }}</x-import>
+</div>
+<x-import component-from-global-scope="KolaMatchDesignSystem_90cf52.Button" variant="secondary" hint-size="84px,48px">Řadit</x-import>
+</div>
+</div>
+</div>
+</sc-if>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;screen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Desktop – výsledky&quot;,&quot;Desktop – bez výsledků&quot;,&quot;Mobil&quot;],&quot;default&quot;:&quot;Desktop – výsledky&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Obrazovka&quot;}}">
+const FIELDS = [
+  { id: 'it', label: 'IT a programování' },
+  { id: 'gym', label: 'Gymnázium všeobecné' },
+  { id: 'eko', label: 'Ekonomika a obchod' },
+  { id: 'zdr', label: 'Zdravotnictví' },
+  { id: 'art', label: 'Umění a design' },
+];
+
+const S = (name, d, min, cut, acc, talent, fields, progs, diff) =>
+  ({ name, d, min, cut, acc, talent, fields, progs, diff });
+
+const SCHOOLS = [
+  S('SPŠ elektrotechnická Ječná', 2, 24, 54.5, 38, false, ['it'], ['Informační technologie', 'Elektronika', '4 roky · maturita'], 'Vlastní laboratoře pro robotiku; třetí ročník má povinnou praxi ve firmě.'),
+  S('Gymnázium Na Vítězné pláni', 4, 31, 61.0, 29, false, ['gym', 'it'], ['Programování jako volitelný blok', 'Všeobecné', '4 roky · maturita'], 'Jediné gymnázium v okolí, kde je informatika profilovým předmětem k maturitě.'),
+  S('Smíchovská střední průmyslová škola', 5, 33, 47.0, 52, false, ['it'], ['Kybernetická bezpečnost', 'Informační technologie', '4 roky · maturita'], 'Obor kyberbezpečnosti nabízí v Praze jako jedna ze dvou škol.'),
+  S('SPŠ na Proseku', 9, 42, 41.5, 64, false, ['it', 'eko'], ['Informační technologie', 'Technické lyceum', '4 roky · maturita'], 'Nejnižší hranice mezi školami s IT oborem; třídy po 24 studentech.'),
+  S('Gymnázium Botičská', 2, 19, 66.5, 22, false, ['gym'], ['Přírodovědné zaměření', 'Všeobecné', '4 roky · maturita'], 'Laboratorní praktika z biologie a chemie od prvního ročníku.'),
+  S('Gymnázium Arabská', 6, 38, 59.0, 34, false, ['gym', 'it'], ['Programování', 'Všeobecné', '4 roky · maturita'], 'Volitelný blok informatiky se dělí na vývoj a datovou analýzu.'),
+  S('Obchodní akademie Holešovice', 7, 27, 44.0, 58, false, ['eko'], ['Ekonomika a podnikání', 'Účetnictví', '4 roky · maturita'], 'Povinná dvoutýdenní praxe v podniku ve třetím ročníku.'),
+  S('Obchodní akademie Vinohradská', 2, 22, 49.5, 47, false, ['eko'], ['Ekonomické lyceum', 'Obchodní akademie', '4 roky · maturita'], 'Druhý cizí jazyk povinně od prvního ročníku, výběr ze čtyř.'),
+  S('SZŠ Ruská', 10, 36, 45.0, 61, false, ['zdr'], ['Zdravotnický asistent', 'Laboratorní asistent', '4 roky · maturita'], 'Praxe probíhá ve dvou fakultních nemocnicích, rozpis na celý rok dopředu.'),
+  S('SZŠ Alšovo nábřeží', 1, 16, 52.0, 43, false, ['zdr'], ['Praktická sestra', 'Nutriční asistent', '4 roky · maturita'], 'Odborná praxe začíná už ve druhém ročníku, jeden den v týdnu.'),
+  S('VOŠ a SPŠ grafická Hellichova', 1, 22, 55.0, 31, true, ['art'], ['Grafický design', 'Fotografie', '4 roky · maturita'], 'Talentová zkouška má dvě části; portfolio se odevzdává v listopadu.'),
+  S('SUPŠ Žižkovská', 3, 28, 51.0, 36, true, ['art'], ['Užitá malba', 'Design interiéru', '4 roky · maturita'], 'Ateliéry jsou přístupné i mimo výuku do 19 hodin.'),
+  S('Gymnázium Jana Nerudy', 5, 25, 63.5, 26, false, ['gym', 'art'], ['Výtvarné zaměření', 'Všeobecné', '4 roky · maturita'], 'Výtvarná třída se přijímá bez talentové zkoušky, na základě portfolia.'),
+  S('Gymnázium Christiana Dopplera', 5, 34, 68.0, 19, false, ['gym'], ['Matematické zaměření', 'Všeobecné', '4 roky · maturita'], 'Matematická třída má šest hodin matematiky týdně a vlastní semináře.'),
+  S('SPŠ stavební Dušní', 1, 18, 39.0, 71, false, ['it', 'eko'], ['Stavebnictví', 'Technické lyceum', '4 roky · maturita'], 'Projektové ateliéry vede tři externisté z praxe.'),
+  S('Gymnázium Nad Alejí', 6, 41, 60.5, 30, false, ['gym'], ['Jazykové zaměření', 'Všeobecné', '4 roky · maturita'], 'Angličtina se dělí na tři úrovně podle vstupního testu.'),
+  S('Střední škola podnikání Vršovice', 10, 39, 36.5, 78, false, ['eko'], ['Podnikání', 'Marketing', '4 roky · maturita'], 'Poslední ročník staví na vlastním podnikatelském projektu.'),
+  S('SPŠ dopravní Motol', 5, 46, 38.0, 74, false, ['it'], ['Dopravní technika', 'Informační technologie', '4 roky · maturita'], 'Simulátory řízení provozu, praxe na dispečinku DPP.'),
+  S('Gymnázium Přípotoční', 10, 29, 57.5, 37, false, ['gym', 'zdr'], ['Biologické zaměření', 'Všeobecné', '4 roky · maturita'], 'Biologický seminář spolupracuje s laboratoří 2. lékařské fakulty.'),
+  S('SŠ designu a módy Podskalská', 2, 21, 48.0, 49, true, ['art'], ['Design oděvu', 'Modelářství', '4 roky · maturita'], 'Roční kolekce se šije a vystavuje, materiál hradí škola.'),
+  S('SPŠ potravinářská Podskalská', 2, 20, 35.0, 82, false, ['zdr', 'eko'], ['Analýza potravin', 'Technologie', '4 roky · maturita'], 'Analytická laboratoř je akreditovaná, studenti v ní pracují sami.'),
+  S('Gymnázium Ohradní', 4, 35, 55.5, 39, false, ['gym'], ['Sportovní zaměření', 'Všeobecné', '4 roky · maturita'], 'Tréninkový blok je zařazený do rozvrhu, ne po výuce.'),
+  S('SPŠ strojnická Betlémská', 1, 17, 42.5, 63, false, ['it'], ['Strojírenství', 'Automatizace', '4 roky · maturita'], 'CNC dílna a 3D tisk jsou součástí běžné výuky od druhého ročníku.'),
+  S('Lyceum Chodovská', 4, 33, 50.5, 45, false, ['eko', 'gym'], ['Ekonomické lyceum', 'Všeobecné', '4 roky · maturita'], 'Dva volitelné bloky ve třetím ročníku: ekonomie, nebo právo.'),
+];
+
+const DISTRICTS = [1, 2, 3, 4, 5, 6, 7, 9, 10];
+const SORTS = [
+  { id: 'match', label: 'Nejvíc splněných kritérií', tradeoff: 'nebere ohled na dojezd' },
+  { id: 'travel', label: 'Nejkratší dojezd', tradeoff: 'může vynechat tvůj obor' },
+  { id: 'cut', label: 'Nejnižší hranice přijetí', tradeoff: 'bezpečnější, ne nutně silnější škola' },
+];
+
+const plural = (n, one, few, many) => (n === 1 ? one : n >= 2 && n <= 4 ? few : many);
+const skol = (n) => plural(n, 'škola', 'školy', 'škol');
+const skoluAcc = (n) => plural(n, 'školu', 'školy', 'škol');
+const skolGen = (n) => plural(n, 'školu', 'školy', 'škol');
+const num = (v) => String(v).replace('.', ',');
+
+class Component extends DCLogic {
+  presetFor(screen) {
+    if (screen === 'Desktop – bez výsledků') {
+      return { fields: ['art'], districts: [1], maxMin: 20, noTalent: true, q: '', sort: 'match', sel: [], saved: [], page: 10 };
+    }
+    if (screen === 'Mobil') {
+      return { fields: ['it'], districts: [], maxMin: 35, noTalent: false, q: '', sort: 'match', sel: [], saved: [], page: 10 };
+    }
+    return { fields: ['it'], districts: [2, 4, 5], maxMin: 35, noTalent: false, q: '', sort: 'match', sel: [], saved: ['Gymnázium Na Vítězné pláni'], page: 10 };
+  }
+
+  state = this.presetFor(this.props.screen);
+
+  componentDidUpdate(prev) {
+    if (prev.screen !== this.props.screen) this.setState(this.presetFor(this.props.screen));
+  }
+
+  crit(s, f) {
+    const out = [];
+    if (f.fields.length) out.push({ k: 'fields', met: s.fields.some((x) => f.fields.includes(x)) });
+    if (f.districts.length) out.push({ k: 'districts', met: f.districts.includes(s.d) });
+    if (f.maxMin < 60) out.push({ k: 'travel', met: s.min <= f.maxMin });
+    if (f.noTalent) out.push({ k: 'talent', met: !s.talent });
+    if (f.q.trim()) {
+      const q = f.q.trim().toLowerCase();
+      out.push({ k: 'q', met: (s.name + ' ' + s.progs.join(' ')).toLowerCase().includes(q) });
+    }
+    return out;
+  }
+
+  list(f) {
+    return SCHOOLS.filter((s) => this.crit(s, f).every((c) => c.met));
+  }
+
+  sorted(f) {
+    const rows = this.list(f);
+    if (f.sort === 'travel') return rows.slice().sort((a, b) => a.min - b.min);
+    if (f.sort === 'cut') return rows.slice().sort((a, b) => a.cut - b.cut);
+    return rows.slice().sort((a, b) => a.min - b.min);
+  }
+
+  set(patch) {
+    this.setState(patch);
+  }
+
+  toggleIn(key, val) {
+    const cur = this.state[key];
+    this.set({ [key]: cur.includes(val) ? cur.filter((x) => x !== val) : cur.concat([val]) });
+  }
+
+  renderVals() {
+    const f = this.state;
+    const screen = this.props.screen ?? 'Desktop – výsledky';
+    const rowsAll = this.sorted(f);
+    const total = SCHOOLS.length;
+    const n = rowsAll.length;
+    const activeCount = this.crit(SCHOOLS[0], f).length;
+
+    const fieldOptions = FIELDS.map((o) => ({
+      label: o.label,
+      checked: f.fields.includes(o.id),
+      count: this.list(Object.assign({}, f, { fields: [o.id] })).length,
+      onToggle: () => this.toggleIn('fields', o.id),
+    }));
+
+    const districtOptions = DISTRICTS.map((d) => {
+      const on = f.districts.includes(d);
+      return {
+        label: 'Praha ' + d,
+        count: this.list(Object.assign({}, f, { districts: [d] })).length,
+        border: on ? '1.5px solid var(--primary)' : '1px solid var(--border-strong)',
+        bg: on ? 'var(--primary-subtle)' : 'transparent',
+        onToggle: () => this.toggleIn('districts', d),
+      };
+    });
+
+    const chips = [];
+    f.fields.forEach((id) => {
+      const o = FIELDS.find((x) => x.id === id);
+      chips.push({ label: o.label, onRemove: () => this.toggleIn('fields', id) });
+    });
+    f.districts.forEach((d) => chips.push({ label: 'Praha ' + d, onRemove: () => this.toggleIn('districts', d) }));
+    if (f.maxMin < 60) chips.push({ label: 'Dojezd do ' + f.maxMin + ' min', onRemove: () => this.set({ maxMin: 60 }) });
+    if (f.noTalent) chips.push({ label: 'Bez talentové zkoušky', onRemove: () => this.set({ noTalent: false }) });
+
+    const relaxRaw = [];
+    if (f.q.trim()) {
+      relaxRaw.push({
+        key: 'q',
+        blame: 'hledaný text „' + f.q.trim() + '“',
+        label: 'Zrušit hledaný text „' + f.q.trim() + '“',
+        gainN: this.list(Object.assign({}, f, { q: '' })).length,
+        onApply: () => this.set({ q: '', page: 10 }),
+      });
+    }
+    if (f.maxMin < 60) {
+      const relaxed = Math.min(60, f.maxMin + 20);
+      relaxRaw.push({
+        key: 'travel',
+        blame: 'dojezd do ' + f.maxMin + ' minut',
+        label: 'Dojezd do ' + relaxed + ' minut místo ' + f.maxMin,
+        gainN: this.list(Object.assign({}, f, { maxMin: relaxed })).length,
+        onApply: () => this.set({ maxMin: relaxed }),
+      });
+    }
+    if (f.districts.length) {
+      relaxRaw.push({
+        key: 'districts',
+        blame: 'omezení na ' + f.districts.map((d) => 'Prahu ' + d).join(', '),
+        label: 'Zrušit omezení na ' + f.districts.map((d) => 'Prahu ' + d).join(', '),
+        gainN: this.list(Object.assign({}, f, { districts: [] })).length,
+        onApply: () => this.set({ districts: [] }),
+      });
+    }
+    if (f.noTalent) {
+      relaxRaw.push({
+        key: 'talent',
+        blame: 'podmínka bez talentové zkoušky',
+        label: 'Zrušit filtr bez talentové zkoušky',
+        gainN: this.list(Object.assign({}, f, { noTalent: false })).length,
+        onApply: () => this.set({ noTalent: false }),
+      });
+    }
+    if (f.fields.length) {
+      relaxRaw.push({
+        key: 'fields',
+        blame: 'obor ' + f.fields.map((id) => (FIELDS.find((x) => x.id === id) || {}).label).join(', '),
+        label: 'Zrušit omezení oboru',
+        gainN: this.list(Object.assign({}, f, { fields: [] })).length,
+        onApply: () => this.set({ fields: [] }),
+      });
+    }
+    relaxRaw.sort((a, b) => b.gainN - a.gainN);
+    const helpful = relaxRaw.filter((r) => r.gainN > n);
+    const relaxOptions = helpful.map((r, i) => ({
+      label: r.label,
+      gain: '→ ' + r.gainN + ' ' + skolGen(r.gainN),
+      variant: i === 0 ? 'primary' : 'secondary',
+      onApply: r.onApply,
+    }));
+
+    let blame = 'Žádný jednotlivý filtr to sám neuvolní — zruš celou kombinaci a začni od jednoho kritéria.';
+    if (helpful.length) {
+      const worst = helpful[0];
+      blame = 'Nejvíc omezuje ' + worst.blame + ' — bez něj by odpovídalo ' + worst.gainN + ' ' +
+        skolGen(worst.gainN) + ' z ' + total + '.';
+    }
+
+    const nearMisses = SCHOOLS.map((s) => {
+      const cs = this.crit(s, f);
+      const unmet = cs.filter((c) => !c.met);
+      return { s, unmet };
+    })
+      .filter((x) => x.unmet.length === 1)
+      .slice(0, 3)
+      .map((x) => ({
+        name: x.s.name,
+        why: 'Praha ' + x.s.d + ' · ' + x.s.min + ' min MHD · hranice ' + num(x.s.cut) + ' bodu — nesplňuje ' +
+          ({ fields: 'filtr oboru', districts: 'filtr městské části', travel: 'dojezd', talent: 'podmínku bez talentové zkoušky', q: 'hledaný text' }[x.unmet[0].k]),
+      }));
+
+    const mk = (s) => {
+      const cs = this.crit(s, f);
+      const met = cs.filter((c) => c.met).length;
+      const selected = f.sel.includes(s.name);
+      const saved = f.saved.includes(s.name);
+      return {
+        name: s.name,
+        meta: 'Praha ' + s.d + ' · ' + s.min + ' min MHD · veřejná',
+        progs: s.progs,
+        diff: s.diff,
+        cut: num(s.cut) + ' b.',
+        cutLabel: 'hranice ' + num(s.cut),
+        acc: s.acc + ' %',
+        min: s.min + ' min',
+        metRatio: met + ' / ' + cs.length,
+        selected,
+        bg: selected ? 'var(--neutral)' : 'transparent',
+        saveLabel: saved ? 'Uloženo' : 'Uložit',
+        onSelect: () => this.toggleIn('sel', s.name),
+        onSave: () => this.toggleIn('saved', s.name),
+      };
+    };
+
+    const shown = rowsAll.slice(0, f.page).map(mk);
+    const rest = n - shown.length;
+
+    return {
+      isDesktop: screen !== 'Mobil',
+      isMobile: screen === 'Mobil',
+      q: f.q,
+      onQuery: (e) => this.set({ q: e.target.value, page: 10 }),
+      fieldOptions,
+      districtOptions,
+      maxMin: f.maxMin,
+      onTravel: (e) => this.set({ maxMin: Number(e.target.value) }),
+      travelLabel: f.maxMin >= 60 ? 'bez omezení' : 'do ' + f.maxMin + ' minut',
+      travelCount: this.list(Object.assign({}, f, { fields: f.fields })).length + ' ' + skol(n),
+      noTalent: f.noTalent,
+      onTalent: (v) => this.set({ noTalent: v }),
+      talentCount: this.list(Object.assign({}, f, { noTalent: true })).length,
+      countHeadline: n + ' ' + skol(n) + ' z ' + total,
+      countSub: activeCount
+        ? 'odpovídá ' + activeCount + ' ' + plural(activeCount, 'filtru', 'filtrům', 'filtrům') + ' · seznam se mění průběžně, nic se nepotvrzuje'
+        : 'bez filtrů · vyber obor nebo městskou část',
+      activeChips: chips,
+      hasFilters: chips.length > 0,
+      onClearAll: () => this.set({ fields: [], districts: [], maxMin: 60, noTalent: false, q: '', page: 10 }),
+      clearAllLabel: 'Zrušit všechny filtry (' + total + ' ' + skol(total) + ')',
+      sortOptions: SORTS.map((s) => ({
+        label: s.label,
+        tradeoff: s.tradeoff,
+        border: f.sort === s.id ? '1.5px solid var(--primary)' : '1px solid var(--border-strong)',
+        bg: f.sort === s.id ? 'var(--primary-subtle)' : 'transparent',
+        onPick: () => this.set({ sort: s.id }),
+      })),
+      sortLabel: (SORTS.find((s) => s.id === f.sort) || SORTS[0]).label,
+      rows: shown,
+      mobileRows: rowsAll.slice(0, 5).map(mk),
+      hasRows: n > 0,
+      isEmpty: n === 0,
+      hasMore: rest > 0,
+      moreLabel: 'Zobrazit ' + (rest === 1 ? 'další školu' : 'dalších ' + rest + ' ' + skolGen(rest)),
+      onMore: () => this.set({ page: f.page + 10 }),
+      totalLabel: total + ' pražských škol',
+      relaxOptions,
+      blameSentence: blame,
+      nearMisses,
+      hasSelection: f.sel.length > 0,
+      barTransform: f.sel.length > 0 ? 'translateY(0)' : 'translateY(100%)',
+      barOpacity: f.sel.length > 0 ? 1 : 0,
+      barEvents: f.sel.length > 0 ? 'auto' : 'none',
+      selectionLabel: 'Vybráno k porovnání: ' + f.sel.length + ' ' + skol(f.sel.length) + ' · porovnání ukáže stejné řádky vedle sebe',
+      compareLabel: 'Porovnat ' + f.sel.length + ' ' + skoluAcc(f.sel.length),
+      onClearSelection: () => this.set({ sel: [] }),
+      mobileFilterLabel: 'Filtry (' + chips.length + ') · ' + n + ' ' + plural(n, 'výsledek', 'výsledky', 'výsledků'),
+    };
+  }
+}
+
+</script>
+</body>
+</html>

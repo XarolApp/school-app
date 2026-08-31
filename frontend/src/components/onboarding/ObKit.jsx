@@ -78,13 +78,25 @@ export function ObButton({ children, variant = 'primary', ...rest }) {
   );
 }
 
-export function ObOption({ selected, onClick, children, sub, multi = false, unsure = false }) {
+export function ObOption({
+  selected,
+  onClick,
+  children,
+  sub,
+  multi = false,
+  unsure = false,
+  disabled = false,
+  onHover,
+}) {
   return (
     <button
       type="button"
-      className={`ob-option${selected ? ' is-selected' : ''}${unsure ? ' is-unsure' : ''}`}
-      onClick={onClick}
+      className={`ob-option${selected ? ' is-selected' : ''}${unsure ? ' is-unsure' : ''}${disabled ? ' is-blocked' : ''}`}
+      onClick={disabled ? undefined : onClick}
+      onMouseEnter={onHover ? () => onHover(true) : undefined}
+      onMouseLeave={onHover ? () => onHover(false) : undefined}
       aria-pressed={selected}
+      aria-disabled={disabled || undefined}
     >
       <span className={`ob-option-mark${multi ? ' is-multi' : ''}`} aria-hidden="true" />
       <span className="ob-option-text">
@@ -92,6 +104,16 @@ export function ObOption({ selected, onClick, children, sub, multi = false, unsu
         {sub && <span className="ob-option-sub">{sub}</span>}
       </span>
     </button>
+  );
+}
+
+/** "Vybráno X z Y" — shown above any capped multi-select, so hitting the cap
+ *  reads as a limit reached rather than the page silently breaking. */
+export function SelectionCount({ count, max }) {
+  return (
+    <p className={`ob-selection-count${count >= max ? ' is-at-max' : ''}`}>
+      Vybráno {count} z {max}
+    </p>
   );
 }
 

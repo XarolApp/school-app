@@ -11,6 +11,7 @@ import Reveal from './screens/Reveal';
 import JourneySummary from './screens/JourneySummary';
 import Commitment from './screens/Commitment';
 import SocialProof from './screens/SocialProof';
+import CreateAccount from './screens/CreateAccount';
 import Paywall from './screens/Paywall';
 import Activated from './screens/Activated';
 import { QUESTIONS } from './quizQuestions';
@@ -45,6 +46,10 @@ export const STEPS = [
   { id: 'summary', component: JourneySummary, chrome: true },
   { id: 'commitment', component: Commitment, chrome: true },
   { id: 'proof', component: SocialProof, chrome: true },
+  // Sits before the paywall because the trial window is opened by a database
+  // trigger on account creation — there has to be an account before there is
+  // anything to charge.
+  { id: 'ucet', component: CreateAccount, chrome: true },
   { id: 'paywall', component: Paywall, chrome: false },
   { id: 'hotovo', component: Activated, chrome: false, postFlow: true },
 ];

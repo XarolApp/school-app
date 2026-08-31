@@ -1,12 +1,16 @@
 /* Base document styles.
  *
- * The colour palette, fonts and radii are NOT defined here — they live in
- * src/design/tokens.js and are projected into CSS by src/design/tokens.css
- * (imported before this file in main.jsx). Do not add colour literals here.
+ * The colour palette, fonts, radii, spacing and type scale are NOT defined
+ * here — they live in src/design/tokens.js and are projected into CSS by
+ * src/design/tokens.css (imported before this file in main.jsx). Do not add
+ * colour literals, raw spacing values or raw font sizes here.
  */
 
 :root {
-  font: 400 16px/1.5 var(--sans);
+  font-family: var(--sans);
+  font-size: var(--fs-body-md);
+  font-weight: var(--fw-body-md);
+  line-height: var(--lh-body-md);
   color-scheme: light dark;
   color: var(--text);
   background: var(--bg);
@@ -35,40 +39,50 @@ body {
   flex-direction: column;
 }
 
+/* Headings carry per-size tracking from the type scale rather than one blanket
+   value — each step in the scale has its own optical correction. Sizes with no
+   tracking (headline-sm) emit no --ls-* token, hence the `normal` fallback. */
 h1,
 h2,
 h3 {
   font-family: var(--heading);
-  font-weight: 400;
   color: var(--text-h);
-  letter-spacing: -0.02em;
 }
 
 h1 {
-  font-size: 34px;
-  line-height: 1.08;
-  margin: 24px 0;
+  font-size: var(--fs-headline-md);
+  line-height: var(--lh-headline-md);
+  font-weight: var(--fw-headline-md);
+  letter-spacing: var(--ls-headline-md, normal);
+  margin: var(--space-lg) 0;
 }
 
 h2 {
-  font-size: 26px;
-  line-height: 1.15;
-  margin: 0 0 8px;
+  font-size: var(--fs-headline-sm);
+  line-height: var(--lh-headline-sm);
+  font-weight: var(--fw-headline-sm);
+  letter-spacing: var(--ls-headline-sm, normal);
+  margin: 0 0 var(--space-sm);
 }
 
 h3 {
-  font-size: 20px;
-  line-height: 1.2;
-  margin: 0 0 6px;
+  font-size: var(--fs-body-lg);
+  line-height: var(--lh-body-lg);
+  font-weight: var(--fw-headline-sm);
+  letter-spacing: var(--ls-body-lg, normal);
+  margin: 0 0 var(--space-sm);
 }
 
 @media (min-width: 640px) {
   h1 {
-    font-size: 46px;
-    line-height: 1.06;
+    font-size: var(--fs-headline-lg);
+    line-height: var(--lh-headline-lg);
+    letter-spacing: var(--ls-headline-lg, normal);
   }
   h2 {
-    font-size: 32px;
+    font-size: var(--fs-headline-md);
+    line-height: var(--lh-headline-md);
+    letter-spacing: var(--ls-headline-md, normal);
   }
 }
 
@@ -85,8 +99,8 @@ code,
 }
 
 code {
-  font-size: 14px;
-  line-height: 1.35;
-  padding: 4px 8px;
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-body-sm);
+  padding: var(--space-xs) var(--space-sm);
   background: var(--code-bg);
 }

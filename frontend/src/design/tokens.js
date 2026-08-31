@@ -26,41 +26,45 @@
  */
 
 // --- Typography --------------------------------------------------------------
-// Newsreader (serif) for headings, Hanken Grotesk (sans) for body/UI.
+// Fraunces (serif) for headings, Public Sans (sans) for body/UI.
 // Both OFL-licensed via Google Fonts, both carry full Czech diacritics.
 // On React Native these become the loaded font-family names; the fallback
 // stacks below are web-only and are appended in tokens.css, not here.
 export const fonts = {
-  heading: 'Newsreader',
-  body: 'Hanken Grotesk',
+  heading: 'Fraunces',
+  body: 'Public Sans',
   mono: 'ui-monospace',
 };
 
 /**
- * Type scale. Serif headings are deliberately weight 400 — the mockup never
- * bolds the serif; gravity comes from size and tight tracking, not weight.
+ * Type scale — matches design/system/tokens/typography.css exactly.
+ *
+ * NOTE the asymmetry: `tracking` was px-numeric in the old scale, but the
+ * template specifies tracking in `em`. Em values are stored as STRINGS
+ * (e.g. '-0.02em') and emitted verbatim by staticVars() below — never
+ * converted to px, since an em value means something different at every
+ * font-size. A tracking of exactly 0 is stored as the number 0.
  */
 export const type = {
-  hero: { size: 46, lineHeight: 1.06, weight: '400', tracking: -1.15, family: 'heading' },
-  title: { size: 32, lineHeight: 1.12, weight: '400', tracking: -0.64, family: 'heading' },
-  titleSm: { size: 28, lineHeight: 1.16, weight: '400', tracking: -0.56, family: 'heading' },
-  cardTitle: { size: 23, lineHeight: 1.2, weight: '400', tracking: -0.46, family: 'heading' },
-  statNumber: { size: 56, lineHeight: 1, weight: '400', tracking: -1.68, family: 'heading' },
-  lead: { size: 17, lineHeight: 1.5, weight: '400', tracking: 0, family: 'body' },
-  body: { size: 15, lineHeight: 1.5, weight: '400', tracking: 0, family: 'body' },
-  bodyStrong: { size: 15, lineHeight: 1.35, weight: '500', tracking: 0, family: 'body' },
-  small: { size: 14, lineHeight: 1.5, weight: '400', tracking: 0, family: 'body' },
-  caption: { size: 13, lineHeight: 1.5, weight: '400', tracking: 0, family: 'body' },
-  micro: { size: 12, lineHeight: 1.4, weight: '500', tracking: 0, family: 'body' },
-  /** Uppercase tracked-out eyebrow above titles. */
-  eyebrow: { size: 11, lineHeight: 1, weight: '600', tracking: 1.76, family: 'body' },
-  button: { size: 16, lineHeight: 1, weight: '600', tracking: 0, family: 'body' },
+  display: { size: 72, lineHeight: 1.06, weight: '600', tracking: '-0.02em', family: 'heading', variation: "'SOFT' 60,'opsz' 72" },
+  headlineLg: { size: 38, lineHeight: 1.14, weight: '600', tracking: '-0.015em', family: 'heading', variation: "'SOFT' 50,'opsz' 38" },
+  headlineMd: { size: 28, lineHeight: 1.2, weight: '600', tracking: '-0.01em', family: 'heading', variation: "'SOFT' 45,'opsz' 28" },
+  headlineSm: { size: 22, lineHeight: 1.25, weight: '500', tracking: 0, family: 'heading', variation: "'SOFT' 35,'opsz' 22" },
+  bodyLg: { size: 18, lineHeight: 1.6, weight: '400', tracking: 0, family: 'body' },
+  bodyMd: { size: 16, lineHeight: 1.55, weight: '400', tracking: 0, family: 'body' },
+  bodySm: { size: 14, lineHeight: 1.5, weight: '400', tracking: 0, family: 'body' },
+  caption: { size: 13, lineHeight: 1.45, weight: '400', tracking: 0, family: 'body' },
+  labelCaps: { size: 11, lineHeight: 1.3, weight: '600', tracking: '0.08em', family: 'body' },
+  labelMd: { size: 15, lineHeight: 1, weight: '600', tracking: 0, family: 'body' },
+  dataMd: { size: 15, lineHeight: 1.4, weight: '500', tracking: 0, family: 'body' },
+  dataSm: { size: 13, lineHeight: 1.4, weight: '500', tracking: 0, family: 'body' },
 };
 
 // --- Palette -----------------------------------------------------------------
 /**
  * Light theme. Background is warm paper (#FBFAF8), never pure white — that
  * warmth is most of why the mockup reads as calm rather than clinical.
+ * Accent is terracotta (#AD4F2A), secondary is moss (#4F7143).
  */
 export const light = {
   bg: '#FBFAF8',
@@ -71,15 +75,17 @@ export const light = {
   ink3: '#8E8A98',
   line: '#E6E3DD',
   line2: '#D6D2CA',
-  accent: '#aa3bff',
+  accent: '#AD4F2A',
   accentInk: '#FFFFFF',
-  accentSoft: '#F6EEFF',
-  accentLine: '#E2CCFF',
-  ok: '#2F7D5F',
-  okSoft: '#E9F2ED',
+  accentSoft: '#F5EDE5',
+  accentLine: '#D9A489',
+  ok: '#4F7143',
+  okSoft: '#EBF1E7',
+  danger: '#B3261E',
+  dangerSoft: '#FBEBE9',
   board: '#EFEDE8',
   frost: 'rgba(255,255,255,0.82)',
-  glow: 'rgba(170,59,255,0.13)',
+  glow: 'rgba(173,79,42,0.12)',
 };
 
 export const dark = {
@@ -91,20 +97,29 @@ export const dark = {
   ink3: '#75717F',
   line: '#262430',
   line2: '#343141',
-  accent: '#c084fc',
+  accent: '#E0B399',
   accentInk: '#1A1020',
-  accentSoft: '#221A2E',
-  accentLine: '#3E3054',
-  ok: '#6FCFA6',
-  okSoft: '#16241E',
+  accentSoft: '#3D2D1F',
+  accentLine: '#6B4C38',
+  ok: '#8FD9A8',
+  okSoft: '#1E3528',
+  danger: '#F2837A',
+  dangerSoft: '#2A1512',
   board: '#08080B',
   frost: 'rgba(28,26,36,0.78)',
-  glow: 'rgba(192,132,252,0.20)',
+  glow: 'rgba(224,179,153,0.15)',
 };
 
 // --- Geometry ----------------------------------------------------------------
-/** Spacing rhythm from the mockup: 8 / 12 / 16 / 24 / 32. */
-export const space = { xs: 4, sm: 8, md: 12, lg: 16, xl: 24, xxl: 32, screen: 26 };
+/** Spacing scale — matches design/system/tokens/spacing.css exactly (8pt grid). */
+export const space = { xs: 4, sm: 8, md: 16, lg: 24, xl: 32, xxl: 48, xxxl: 64 };
+
+/** Layout constants from the same file. rowPadDense is the documented 8–12px
+ *  exception for dense search/compare rows (DESIGN.md → Layout). */
+export const layout = {
+  gutter: 24, pageMargin: 64, pageMarginMd: 32, pageMarginSm: 16,
+  contentMax: 1280, gridColumns: 12, rowPadDense: 10,
+};
 
 export const radius = {
   card: 18,
@@ -148,8 +163,8 @@ export const selection = {
  * RN needs its own elevation/shadow handling.
  */
 export const webOnly = {
-  fontStackHeading: "'Newsreader', Georgia, 'Times New Roman', serif",
-  fontStackBody: "'Hanken Grotesk', system-ui, 'Segoe UI', Roboto, sans-serif",
+  fontStackHeading: "'Fraunces', Georgia, 'Times New Roman', serif",
+  fontStackBody: "'Public Sans', system-ui, 'Segoe UI', sans-serif",
   fontStackMono: 'ui-monospace, Consolas, monospace',
   shadow: {
     light: '0 1px 2px rgba(23,22,27,.05), 0 18px 40px -20px rgba(23,22,27,.18)',
@@ -188,6 +203,8 @@ export function cssVars(p) {
     '--acc-line': p.accentLine,
     '--ok': p.ok,
     '--ok-soft': p.okSoft,
+    '--danger': p.danger,
+    '--danger-soft': p.dangerSoft,
     '--board': p.board,
     '--frost': p.frost,
     '--glow': p.glow,
@@ -222,4 +239,33 @@ export function cssVarsText(p) {
   return Object.entries(cssVars(p))
     .map(([k, v]) => `  ${k}: ${v};`)
     .join('\n');
+}
+
+/** Theme-independent tokens: emitted ONCE in :root, not per palette.
+ *  Names match design/system/tokens/*.css exactly, so screens produced by
+ *  /design against that template need no translation layer. */
+export function staticVars() {
+  const out = {};
+  for (const [k, v] of Object.entries(space)) out[`--space-${k}`] = `${v}px`;
+  out['--gutter'] = `${layout.gutter}px`;
+  out['--page-margin'] = `${layout.pageMargin}px`;
+  out['--page-margin-md'] = `${layout.pageMarginMd}px`;
+  out['--page-margin-sm'] = `${layout.pageMarginSm}px`;
+  out['--content-max'] = `${layout.contentMax}px`;
+  out['--row-pad-dense'] = `${layout.rowPadDense}px`;
+  for (const [k, t] of Object.entries(type)) {
+    const n = k.replace(/[A-Z]/g, (c) => '-' + c.toLowerCase());  // headlineLg -> headline-lg
+    out[`--fs-${n}`] = `${t.size}px`;
+    out[`--lh-${n}`] = `${t.lineHeight}`;
+    out[`--fw-${n}`] = `${t.weight}`;
+    if (t.tracking) out[`--ls-${n}`] = typeof t.tracking === 'number' ? `${t.tracking}px` : t.tracking;
+    if (t.variation) out[`--var-${n}`] = t.variation;
+  }
+  out['--measure'] = '66ch';
+  return out;
+}
+
+/** Same two-space indent contract as cssVarsText. */
+export function staticVarsText() {
+  return Object.entries(staticVars()).map(([k, v]) => `  ${k}: ${v};`).join('\n');
 }

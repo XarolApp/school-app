@@ -46,7 +46,7 @@ The flow **asks the user who they are up front** — *"Kdo jsi?"* → **Jsem stu
 | **Voice** | Second person, informal Czech (*ty*, *tykání*), conversational, teen-native vocabulary (*gympl*, *průmyslovka*) | Formal Czech (*vy*, *vykání*), calm, respectful, adult peer-to-peer |
 | **Emotional frame** | Identity & self-discovery — *"Kam se opravdu hodíš?"* | Certainty & risk reduction — *"Podpořte dítě informovaným rozhodnutím."* |
 | **Quiz subject** | Answers about **themselves** — "co tě baví", "kde chceš být za 5 let" | Answers **about their child**, with explicit uncertainty options ("Nevím jistě") on every item — a parent genuinely does not know all the answers, and forcing a guess produces garbage scores and destroys trust |
-| **Motion & delight** | Full — confetti, animated reveals, micro-interactions (§1.3 visceral layer) | Restrained — subtle transitions only. Excess animation reads as unserious to an adult evaluating a paid tool |
+| **Motion & delight** | Full — confetti, a **reveal** (match card uncovered via clip-path/mask) on results, **press feedback** and **hover effects** throughout (§1.3 visceral layer) | Restrained — **crossfade**/**fade** transitions only, no confetti, no reveal effect. Excess animation reads as unserious to an adult evaluating a paid tool |
 | **Proof shown** | Peer social proof — student counts, classmate testimonials, "X deváťáků už našlo svou školu" | Authority proof — methodology transparency, deterministic scoring explanation, Stripe/security badges, parent testimonials, data-handling clarity |
 | **Price framing** | Daily micro-cost, framed against teen spending (*~6,60 Kč/den — míň než svačina*) | Total season cost stated plainly **and** daily breakdown; framed against the stakes of the decision, never against snacks |
 | **Paywall CTA** | Direct purchase, plus a visible, non-shaming *"Poslat rodičům"* alternative — never the only option, never framed as the fallback for kids who can't pay | Direct purchase |
@@ -135,7 +135,7 @@ You build **onboarding, quiz, paywall, pricing, activation and conversion surfac
 **ŠkolaMatch application:**
 - **Never render 60 schools as one unformatted list.** Chunk into intuitive filter groups: District (*Městská část*), Specialisation (*Zaměření*), Travel distance (*Dojezdová vzdálenost*).
 - Result reveals show top 3 first, then "show more" — never 60 at once.
-- Smooth transition animation on every quiz option selection (visceral layer).
+- **Press feedback** (a brief scale-down confirming the tap registered) on every quiz option selection (visceral layer).
 - Reflective layer is the payoff: the student should feel *"I now understand myself better,"* not just *"I got a list."*
 
 ### 1.4 Flow mechanics & the labour illusion
@@ -147,7 +147,10 @@ You build **onboarding, quiz, paywall, pricing, activation and conversion surfac
 
 **ŠkolaMatch application:**
 - Quiz is strictly 1 question per screen with persistent progress feedback.
-- Insert an animated calculation screen before results: *"Počítám shodu s pražskými středními školami…"* → *"Porovnávám dojezdové vzdálenosti…"* → *"Připravuji vysvětlení…"* (see ruling C-2 for duration).
+- Insert a **stepped animation** (discrete stage messages, not one continuous
+  loading state) before results, paired with a looping progress indicator:
+  *"Počítám shodu s pražskými středními školami…"* → *"Porovnávám dojezdové
+  vzdálenosti…"* → *"Připravuji vysvětlení…"* (see ruling C-2 for duration).
 - Ask for district/location only after: *"Abychom mohli spočítat, jak dlouho budeš dojíždět, potřebujeme vědět, odkud jezdíš."*
 
 ### 1.5 Paywall mechanics
@@ -532,10 +535,10 @@ PILLAR 2 — CLIMAX (14 screens)
                                     šance podle tvých známek." Builds trust,
                                     cuts refunds. Weight this HEAVIER on the
                                     parent branch — it is the credibility hinge.
- 18.   Labour illusion             ~3s, 3 sub-steps (C-2), Czech copy
+ 18.   Labour illusion             ~3s, stepped animation, 3 sub-steps (C-2), Czech copy
  19.   THE REVEAL — #1 match free  The taste. Emotional peak.
-                                    student │ full confetti + animation
-                                    parent  │ restrained reveal, no confetti
+                                    student │ confetti + reveal (match card uncovered)
+                                    parent  │ plain fade in, no confetti, no reveal effect
         └─→ Share prompt           Per C-4 — fire here, at the peak
                                     student │ "Ukázat rodičům" BESIDE the buy
                                             │ button, never instead of it (0.2)

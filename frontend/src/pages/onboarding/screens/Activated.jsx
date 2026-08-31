@@ -83,7 +83,7 @@ function Activated() {
         </p>
 
         <div className="ob-actions">
-          <Link to="/search" className="ob-btn ob-btn-primary">
+          <Link to="/skoly" className="ob-btn ob-btn-primary">
             {parent ? 'Přejít na školy' : 'Jdu na to'}
           </Link>
         </div>

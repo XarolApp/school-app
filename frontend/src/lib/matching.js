@@ -15,7 +15,7 @@
  *     in the database, "97% shoda" would be a lie.
  */
 
-import { deriveFeatures, districtHops } from './schoolFeatures';
+import { deriveFeatures } from './schoolFeatures';
 
 /** Base weights. Question `priority` shifts focus <-> location. */
 const BASE_WEIGHTS = {
@@ -92,21 +92,25 @@ const COMPONENTS = {
     return { score: 0.7, hit: false, note: 'praxe i teorie' };
   },
 
+  /**
+   * Binary membership, not a distance band: the student names every district
+   * they are willing to commute TO (question `districts`, a multi-select
+   * paired with the interactive map), rather than a home district plus a
+   * tolerance level scored by hop-count.
+   *
+   * This replaced the earlier home-district + hop-distance design. Reasoning
+   * kept here since it is easy to reintroduce by accident: a travel-time
+   * estimate would need a routing call and a home address, and there is no
+   * timetable data to make either honest. The student already knows their own
+   * tolerance and their own sense of "too far" — this question just asks for
+   * it directly instead of trying to infer it from geography.
+   */
   location(a, f) {
-    if (!a.district || a.district === 'mimo' || !f.district) return null;
-    const hops = districtHops(Number(a.district), f.district);
-    if (hops === null) return null;
-    const tolerance = a.commute || 'stredni';
-    // Coarse on purpose: stejná / sousední / dál. No minutes are ever claimed,
-    // because there is no timetable data in the database.
-    const table = {
-      blizko: [1, 0.6, 0.25, 0.1],
-      stredni: [1, 0.85, 0.55, 0.35],
-      kdekoli: [1, 0.95, 0.9, 0.85],
-    };
-    const row = table[tolerance] || table.stredni;
-    const score = row[Math.min(hops, row.length - 1)];
-    return { score, hit: hops <= 1, note: 'lokalita', hops };
+    if (!Array.isArray(a.districts) || a.districts.length === 0) return null;
+    if (f.district === null || f.district === undefined) return null;
+    const wanted = new Set(a.districts.map(Number));
+    const hit = wanted.has(f.district);
+    return { score: hit ? 1 : 0, hit, note: 'lokalita' };
   },
 
   breadth(a, f) {
@@ -219,21 +223,12 @@ export function explain(result, answers, role = 'student') {
     );
   }
 
-  if (p.location) {
-    const hops = p.location.hops;
-    const where =
-      hops === 0
-        ? 've stejné městské části, ze které jezdíš'
-        : hops === 1
-          ? 'v sousední městské části'
-          : 'dál od tvé městské části';
-    const whereFormal =
-      hops === 0
-        ? 've stejné městské části'
-        : hops === 1
-          ? 'v sousední městské části'
-          : 'dál od uvedené městské části';
-    out.push(formal ? `Škola je ${whereFormal}.` : `Je ${where}.`);
+  if (p.location?.hit) {
+    out.push(
+      formal
+        ? 'Škola leží v části Prahy, kam jste ochotni dojíždět.'
+        : 'Je v části Prahy, kam jsi ochotný/á jezdit.'
+    );
   }
 
   if (p.maturita?.hit && f.hasMaturita) {
