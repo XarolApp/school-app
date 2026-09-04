@@ -11,17 +11,22 @@ already true here: Node installed, repo cloned, `npm install` run in both root a
 `frontend/`, both `.env` files present, and both servers verified booting on
 2026-09-04.
 
-**Branch: `migration-backup`, NOT `main`.** This is the live line of development.
-`main` is a divergent older branch holding the standalone-questionnaire version of
-the frontend (`/dotaznik`, `/oblibene`); it was superseded by the onboarding flow
-here and is kept only for reference. The two diverged at `12ede66` and were never
-merged. Renaming this branch to `main` is a planned follow-up the user has asked
-for — until then, **commit and push to `migration-backup`.**
+**Branch: `main`.** Commit and push here. As of 2026-09-04 this branch holds the
+onboarding-flow frontend (`/onboarding/...`) — what was briefly on a branch called
+`migration-backup`, which was promoted to `main` and then deleted as redundant.
 
-Nothing from `main` is missing here. Verified file-by-file: all 69 of its app files
-are preserved byte-identical inside `schoool-app-laptop-progress/`, a reference
-snapshot of that branch. (That folder is a duplicate of `main` and safe to delete
-once it is no longer wanted — the content also lives on `main` and in git history.)
+`older-version` is the previous `main`: the standalone-questionnaire frontend
+(`/dotaznik`, `/oblibene`, favourites, match-score components). It was superseded by
+the onboarding flow, **not merged** — the two diverged at `12ede66` and went in
+different product directions on a shared backend. It is kept as reference only. Do
+not merge it into `main` expecting a clean result; if something from it is wanted,
+port that piece deliberately.
+
+Nothing from it is missing here. Verified file-by-file at promotion time: all 69 of
+its app files are preserved byte-identical inside `schoool-app-laptop-progress/`, a
+reference snapshot. (That folder duplicates `older-version` and is safe to delete
+whenever it stops being useful — the content also lives on that branch and in git
+history.)
 
 **⚠️ Push to GitHub after every meaningful chunk of work.** The user explicitly
 asked for this, having just lost a machine. Do not batch a session's work into one
