@@ -672,7 +672,8 @@ item #4 and #5.
 
 **Done:**
 - **`DESIGN.md` fully rewritten** (warm terracotta `#AD4F2A` / moss-green `#4F7143`, Fraunces + Public Sans, no monospace, radii 8–20px, soft shadows, metaphor replaced). Lints clean: 0 errors, 0 warnings.
-- **Mobbin pattern survey** completed: `docs/sources/mobbin_pattern_survey.md` (634 lines, 73 searches, ~380–400 products, organized into paywalls/onboarding/landing pages/core product with checklists, anti-patterns, cross-section observations). Coverage gaps documented honestly.
+- **Mobbin pattern survey** completed: `design/research/mobbin_pattern_survey.md` (moved
+  there in the 2026-08-31 reorg; this line said `docs/sources/` until 2026-09-05) (634 lines, 73 searches, ~380–400 products, organized into paywalls/onboarding/landing pages/core product with checklists, anti-patterns, cross-section observations). Coverage gaps documented honestly.
 - **Four independent Mobbin-patterns skills created** for Claude Design to use independently:
   - `.claude/skills/mobbin-paywall-patterns/SKILL.md`
   - `.claude/skills/mobbin-onboarding-patterns/SKILL.md`
