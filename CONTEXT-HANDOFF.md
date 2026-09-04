@@ -7,18 +7,24 @@ ended**, not things those two already document.
 
 ---
 
-# 🖥️ FIRST: MacBook setup checklist
+# 🖥️ MacBook setup checklist — DORMANT, do not action
 
 > **CLAUDE — INSTRUCTION TO YOU, NOT TO THE USER:**
-> If this section still has unchecked boxes, the user is on a freshly-set-up machine.
-> **Proactively remind them at the start of your first response**, before doing any
-> other work: tell them setup is incomplete, name the specific unchecked steps, and
-> offer to walk through them. Re-check this section on any new session until every box
-> is ticked. Once all boxes are ticked, tell the user this whole section can be deleted.
-> Do not silently skip this — a missing `.env` or a wrong `core.autocrlf` produces
-> confusing failures much later that are hard to trace back to setup.
+> **This checklist is not pending. Do not prompt the user through it.**
+> The MacBook move did not happen — the old PC was sold, and as of 2026-09-04 the
+> user is working on the **Windows laptop** until roughly mid-September 2026. On that
+> machine every step below is already satisfied: Node installed, repo cloned, deps
+> installed in root and `frontend/`, both `.env` files present, both servers verified
+> booting.
+>
+> Its boxes are left unticked on purpose, because they describe a *MacBook* that does
+> not exist yet. Re-activate this section only when the user actually moves to the
+> MacBook; until then treat it as reference for that future move, not as work. See
+> `CLAUDE.md`'s "Current working setup" section, which is the authority on where
+> things stand.
 
-Work through these in order on the new machine. Tick each box (`[ ]` → `[x]`) as you go.
+When the MacBook arrives, work through these in order on it. Tick each box
+(`[ ]` → `[x]`) as you go.
 
 - [ ] **1. Install Xcode command line tools** (gets you git)
       `xcode-select --install`

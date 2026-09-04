@@ -1,20 +1,48 @@
 # School Selection App — Project Context
 
-> **⚠️ READ [`CONTEXT-HANDOFF.md`](CONTEXT-HANDOFF.md) BEFORE ANYTHING ELSE.**
->
-> The project moved from a Windows PC to a MacBook on 2026-08-31. That file opens with a
-> **MacBook setup checklist** (install Node, set `core.autocrlf`, `npm install`, recreate
-> the two gitignored `.env` files, verify both servers boot).
->
-> **If any box in that checklist is still unticked, say so proactively in your first
-> response** — name the specific unfinished steps and offer to walk through them, before
-> starting other work. A missing `.env` or wrong line-ending config causes confusing
-> failures much later that are hard to trace back to setup. Keep checking on each new
-> session until every box is ticked.
->
-> It also records what was in flight when the old machine was retired — notably that
-> plan 005 (spacing/typography migration) is ~95% done with one specific step remaining.
-> Delete the file once its contents are resolved into this file / `UNFORGET.md`.
+## ⚠️ Current working setup — read this first
+
+**Machine: the Windows laptop, not a MacBook.** The MacBook move planned for
+2026-08-31 did not happen; the user is on this Windows laptop until roughly
+mid-September 2026. The old PC is sold and unreachable, so this laptop is the only
+machine. `CONTEXT-HANDOFF.md`'s "MacBook setup checklist" is therefore **not
+pending work** — do not prompt the user through it. Everything it asks for is
+already true here: Node installed, repo cloned, `npm install` run in both root and
+`frontend/`, both `.env` files present, and both servers verified booting on
+2026-09-04.
+
+**Branch: `migration-backup`, NOT `main`.** This is the live line of development.
+`main` is a divergent older branch holding the standalone-questionnaire version of
+the frontend (`/dotaznik`, `/oblibene`); it was superseded by the onboarding flow
+here and is kept only for reference. The two diverged at `12ede66` and were never
+merged. Renaming this branch to `main` is a planned follow-up the user has asked
+for — until then, **commit and push to `migration-backup`.**
+
+Nothing from `main` is missing here. Verified file-by-file: all 69 of its app files
+are preserved byte-identical inside `schoool-app-laptop-progress/`, a reference
+snapshot of that branch. (That folder is a duplicate of `main` and safe to delete
+once it is no longer wanted — the content also lives on `main` and in git history.)
+
+**⚠️ Push to GitHub after every meaningful chunk of work.** The user explicitly
+asked for this, having just lost a machine. Do not batch a session's work into one
+push at the very end, and do not wait to be asked — commit and push whenever a
+feature, fix, or coherent piece of work is finished and verified. `.env` files are
+gitignored and must stay that way; check `git status` before a broad `git add` so a
+secret never lands in a commit.
+
+**⚠️ Do not use the Browser pane / preview tools** (`mcp__Claude_Browser__*`,
+`preview_start`, `preview_stop`) **on this machine.** They crash Claude Desktop here
+(Chromium GPU-process crash on Intel integrated graphics, which then corrupts the
+MSIX package). This is a property of this hardware, not project policy — it will not
+apply on the MacBook, and the "verify in the browser yourself" instruction in Quick
+Start below is written for that machine. Until then: start the servers, verify with
+`curl`, `vite build`, and SSR/Node scripts, and ask the user to look at anything that
+genuinely needs eyes.
+
+> `CONTEXT-HANDOFF.md` still records what was in flight when the previous session
+> ended — notably that plan 005 (spacing/typography migration) is ~95% done with one
+> step remaining. Read it for that; ignore its setup checklist per the above. Delete
+> it once its contents are resolved into this file / `UNFORGET.md`.
 
 ## The Problem This Solves
 
