@@ -18,10 +18,88 @@
 /* 7fr/5fr split from the mockup: the copy column has to hold a 72px display
    headline at ~14ch, which needs the larger share. */
 .ls-hero {
+  position: relative;
   display: grid;
   grid-template-columns: 7fr 5fr;
   gap: var(--space-xxxl);
   align-items: center;
+
+  /* Motion tokens stay page-local, same as search.css does — the app's
+     tokens.css emits no motion scale. Values are the design system's own
+     (tokens/motion.css): --dur-ambient 14s, --ease-in-out cubic-bezier(.4,0,.2,1).
+     The gentler curve is deliberate over a stronger ease-in-out: across a 14s
+     loop an aggressive curve visibly parks at each end and then lurches. */
+  --dur-ambient: 14s;
+  --ease-ambient: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Both hero columns sit above the ambient layer. */
+.ls-hero-copy,
+.ls-photo {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- ambient idle loop ---------- */
+
+/* The one piece of ambient motion DESIGN.md sanctions anywhere in the product
+   ("Motion — landing page"). Constrained to the right half of the hero and
+   clipped, so it is never full-screen and never sits under the headline or the
+   CTA — the spec is explicit that the copy stays the focal point.
+   Once a real photograph lands in .ls-photo this keeps working: the bloom
+   haloes the frame rather than living inside it. */
+.ls-ambient {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 52%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Exactly ONE animated element. The spec bans a second competing loop, so this
+   is a single drifting bloom rather than the layered pair a mockup might use. */
+.ls-bloom {
+  position: absolute;
+  top: 8%;
+  right: -10%;
+  width: 460px;
+  height: 460px;
+  border-radius: 50%;
+  background: var(--accent-bg);
+  filter: blur(64px);
+  opacity: 0.9;
+  will-change: transform, opacity;
+  animation: ls-drift var(--dur-ambient) var(--ease-ambient) infinite alternate;
+}
+
+/* transform + opacity only — both composite, neither triggers layout or paint.
+   No scale from 0, no overshoot: this drifts, it does not arrive. */
+@keyframes ls-drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.9;
+  }
+  to {
+    transform: translate3d(-40px, 28px, 0) scale(1.07);
+    opacity: 0.6;
+  }
+}
+
+/* A full stop, not a slow-down. DESIGN.md is explicit that there is no
+   partial-motion compromise here: ambient background motion can trigger real
+   vestibular symptoms, so the resting frame (the `from` keyframe, which is
+   what the element already paints) is what these visitors get.
+   ⚠️ The design system's own tokens do NOT cover this — tokens/motion.css
+   zeroes --dur-state and --dur-transition under reduced motion but leaves
+   --dur-ambient at 14s, so an ambient loop has to be stopped by its own rule. */
+@media (prefers-reduced-motion: reduce) {
+  .ls-bloom {
+    animation: none;
+    will-change: auto;
+  }
 }
 
 .ls-eyebrow {
@@ -210,6 +288,15 @@
   /* Below the fold on a phone, and it carries no information — the copy and the
      CTA are the whole point of the screen at this width. */
   .ls-photo {
+    display: none;
+  }
+
+  /* The photo column is gone here, so an ambient layer pinned to it would drift
+     under the headline instead of beside it — the one thing DESIGN.md rules out
+     ("never the literal subject of the hero"). Dropping it also spares the
+     low-end Android the research names as this product's real acquisition
+     device: a permanently-compositing 64px-blur layer is not free on that phone. */
+  .ls-ambient {
     display: none;
   }
 

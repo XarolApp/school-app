@@ -26,7 +26,14 @@ function Home() {
   return (
     <div className="page page-home">
       <section className="ls-hero">
-        <div>
+        {/* The single ambient idle loop from DESIGN.md's "Motion — landing page".
+            Purely decorative and out of the accessibility tree; see landing.css
+            for the containment, reduced-motion and mobile rules. */}
+        <div className="ls-ambient" aria-hidden="true">
+          <span className="ls-bloom" />
+        </div>
+
+        <div className="ls-hero-copy">
           <p className="ls-eyebrow">Pro deváťáky a jejich rodiče</p>
           <h1 className="ls-title">Vyber si školu podle sebe</h1>
           <p className="ls-lede">

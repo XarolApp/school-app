@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..700,0..100&family=Public+Sans:wght@400;600&display=swap">
+  <style>
+    body { margin: 0; background: #FAF6EF; font-family: 'Public Sans', system-ui, sans-serif; }
+    a { color: #AD4F2A; } a:hover { color: #8A3E20; }
+
+    .stage { position: relative; overflow: hidden; height: 720px; background: #FAF6EF; }
+
+    .hero {
+      position: relative; z-index: 1;
+      display: grid; grid-template-columns: 7fr 5fr; gap: 64px; align-items: center;
+      padding: 64px; box-sizing: border-box; height: 100%;
+    }
+    .eyebrow {
+      margin: 0; font-size: 11px; font-weight: 600; line-height: 1.3;
+      letter-spacing: 0.08em; text-transform: uppercase; color: #6B6259;
+    }
+    .title {
+      margin: 16px 0 0; font-family: 'Fraunces', Georgia, serif;
+      font-size: 72px; font-weight: 600; line-height: 1.06; letter-spacing: -0.02em;
+      font-variation-settings: 'SOFT' 60, 'opsz' 72;
+      color: #221A13; max-width: 14ch; text-wrap: balance;
+    }
+    .lede { margin: 24px 0 0; font-size: 18px; line-height: 1.6; color: #6B6259; max-width: 42ch; }
+    .ctas { display: flex; gap: 16px; margin-top: 32px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 16px 24px; border-radius: 12px; border: 1px solid transparent;
+      font-family: 'Public Sans', system-ui, sans-serif; font-size: 18px; font-weight: 600;
+      line-height: 1; cursor: pointer;
+    }
+    .btn-primary { background: #AD4F2A; color: #FAF6EF; }
+    .btn-secondary { background: #FAF6EF; color: #AD4F2A; border-color: #D6CBB6; }
+    .fine { margin: 16px 0 0; font-size: 13px; line-height: 1.45; color: #6B6259; }
+
+    /* Everything that moves is clipped inside the photo frame. Nothing in the
+       layout shifts; the motion cannot bleed past a 20px-radius rectangle. */
+    .photo {
+      position: relative; overflow: hidden;
+      height: 380px; border-radius: 20px; background: #F1ECE3;
+      border: 1px dashed #D6CBB6; display: flex; align-items: flex-end; padding: 16px;
+      box-sizing: border-box;
+    }
+    .photo span { position: relative; z-index: 1; font-size: 13px; line-height: 1.45; color: #756B5C; }
+    .sheen {
+      position: absolute; border-radius: 9999px; filter: blur(52px);
+      will-change: transform, opacity; z-index: 0;
+    }
+    .sheen-1 {
+      width: 320px; height: 320px; top: -60px; left: -40px; background: #F6E3D6;
+      opacity: calc(0.9 * var(--amp));
+      animation: inA var(--loop) var(--ease) infinite alternate;
+    }
+    .sheen-2 {
+      width: 240px; height: 240px; bottom: -70px; right: -50px; background: #E6EDDE;
+      opacity: calc(0.75 * var(--amp));
+      animation: inB calc(var(--loop) * 1.4) var(--ease) infinite alternate;
+    }
+
+    @keyframes inA {
+      from { transform: translate3d(0, 0, 0) scale(1); opacity: calc(0.9 * var(--amp)); }
+      to   { transform: translate3d(34px, 30px, 0) scale(1.08); opacity: calc(0.55 * var(--amp)); }
+    }
+    @keyframes inB {
+      from { transform: translate3d(0, 0, 0) scale(1.05); opacity: calc(0.75 * var(--amp)); }
+      to   { transform: translate3d(-28px, -22px, 0) scale(1); opacity: calc(0.45 * var(--amp)); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .sheen-1, .sheen-2 { animation: none; }
+    }
+
+    .tag { position: absolute; z-index: 2; left: 64px; bottom: 24px; display: flex; align-items: baseline; gap: 10px; }
+    .tag b {
+      font-family: 'Fraunces', Georgia, serif; font-size: 13px; font-weight: 600;
+      color: #AD4F2A; letter-spacing: 0.04em; text-transform: uppercase;
+    }
+    .tag span { font-size: 13px; line-height: 1.45; color: #756B5C; }
+  </style>
+</helmet>
+
+<div class="stage" style="--loop: {{loop}}s; --amp: {{amp}}; --ease: cubic-bezier(.4,0,.2,1)">
+  <div class="hero">
+    <div>
+      <p class="eyebrow">Pro deváťáky a jejich rodiče</p>
+      <h1 class="title">Vyber si školu podle sebe</h1>
+      <p class="lede">Odpovíš na dvacet otázek o tom, co tě zajímá, kam dojedeš a jak se ti učí. Pak uvidíš školy, které tomu odpovídají — a u každé napsané, čím konkrétně.</p>
+      <div class="ctas">
+        <div class="btn btn-primary">Začít dotazník</div>
+        <div class="btn btn-secondary">Prohlédnout databázi škol</div>
+      </div>
+      <p class="fine">Dotazník je zdarma. Platí se až za podrobné srovnání.</p>
+    </div>
+    <div class="photo">
+      <div class="sheen sheen-1" aria-hidden="true"></div>
+      <div class="sheen sheen-2" aria-hidden="true"></div>
+      <span>Fotografie · reální lidé, teplý tón</span>
+    </div>
+  </div>
+
+  <div class="tag">
+    <b>C · In-frame</b>
+    <span>Pohyb ořezaný uvnitř rámu fotografie. Nejzdrženlivější — až fotografie přijde, zmizí pod ní.</span>
+  </div>
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{
+  "loop": {"editor": "range", "default": 14, "min": 8, "max": 26, "step": 1, "unit": "s", "section": "Motion"},
+  "amp": {"editor": "range", "default": 1, "min": 0, "max": 1, "step": 0.05, "section": "Motion"},
+  "$preview": {"width": 1280, "height": 720}
+}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      loop: this.props.loop ?? 14,
+      amp: this.props.amp ?? 1,
+    };
+  }
+}
+</script>
+</body>
+</html>

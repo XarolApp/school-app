@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..700,0..100&family=Public+Sans:wght@400;600&display=swap">
+  <style>
+    body { margin: 0; background: #FAF6EF; font-family: 'Public Sans', system-ui, sans-serif; }
+    a { color: #AD4F2A; } a:hover { color: #8A3E20; }
+
+    .sheet { padding: 48px 64px; box-sizing: border-box; background: #FAF6EF; }
+    .head { max-width: 62ch; }
+    .kicker {
+      margin: 0; font-size: 11px; font-weight: 600; line-height: 1.3;
+      letter-spacing: 0.08em; text-transform: uppercase; color: #AD4F2A;
+    }
+    .h {
+      margin: 12px 0 0; font-family: 'Fraunces', Georgia, serif;
+      font-size: 38px; font-weight: 600; line-height: 1.14; letter-spacing: -0.015em;
+      font-variation-settings: 'SOFT' 50, 'opsz' 38; color: #221A13;
+    }
+    .p { margin: 16px 0 0; font-size: 16px; line-height: 1.55; color: #6B6259; }
+
+    .row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 40px; }
+
+    .cell { display: flex; flex-direction: column; gap: 12px; }
+    .cap { display: flex; align-items: baseline; gap: 8px; }
+    .cap b {
+      font-family: 'Fraunces', Georgia, serif; font-size: 13px; font-weight: 600;
+      color: #AD4F2A; letter-spacing: 0.04em; text-transform: uppercase;
+    }
+    .cap span { font-size: 13px; line-height: 1.45; color: #756B5C; }
+
+    /* Each panel is the treatment's FIRST keyframe, painted with no animation
+       attached — that resting frame is exactly what a reduced-motion visitor
+       sees, and it is a full stop rather than a slowed-down loop. */
+    .panel {
+      position: relative; overflow: hidden; height: 260px;
+      border-radius: 20px; background: #F1ECE3; border: 1px solid #E6DFD1;
+    }
+    .blob { position: absolute; border-radius: 9999px; filter: blur(44px); }
+
+    .a1 { width: 240px; height: 240px; top: 20px; right: -20px; background: #F6E3D6; opacity: 0.95; }
+    .a2 { width: 170px; height: 170px; top: 120px; right: 120px; background: #E6EDDE; opacity: 0.7; }
+
+    .ring { position: absolute; border-radius: 9999px; border: 1.5px solid #DFA98C; }
+    .b1 { width: 150px; height: 150px; top: -30px; right: -24px; opacity: 0.85; }
+    .b2 { width: 96px; height: 96px; top: 62px; right: 92px; border-color: #A8BE9B; opacity: 0.7; }
+    .b3 { position: absolute; width: 9px; height: 9px; border-radius: 9999px; background: #AD4F2A; top: 120px; right: 56px; opacity: 0.55; }
+
+    .c1 { width: 200px; height: 200px; top: -40px; left: -30px; background: #F6E3D6; opacity: 0.9; }
+    .c2 { width: 150px; height: 150px; bottom: -46px; right: -34px; background: #E6EDDE; opacity: 0.75; }
+
+    .note {
+      margin-top: 40px; padding: 20px 24px; border-radius: 20px;
+      background: #F1ECE3; border: 1px solid #E6DFD1; max-width: 78ch;
+    }
+    .note p { margin: 0; font-size: 14px; line-height: 1.5; color: #6B6259; }
+    .note p + p { margin-top: 10px; }
+    .note code {
+      font-family: 'Public Sans', system-ui, sans-serif; font-weight: 600;
+      font-size: 13px; color: #221A13;
+    }
+  </style>
+</helmet>
+
+<div class="sheet">
+  <div class="head">
+    <p class="kicker">Reduced motion</p>
+    <h2 class="h">Co uvidí návštěvník s vypnutými animacemi</h2>
+    <p class="p">Všechny tři varianty se pod <code>prefers-reduced-motion: reduce</code> zastaví úplně — zůstane první snímek smyčky, ne zpomalený pohyb. Kompozice se nemění, nic nechybí.</p>
+  </div>
+
+  <div class="row">
+    <div class="cell">
+      <div class="cap"><b>A</b><span>Wash</span></div>
+      <div class="panel">
+        <div class="blob a1"></div>
+        <div class="blob a2"></div>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="cap"><b>B</b><span>Corner drift</span></div>
+      <div class="panel">
+        <div class="ring b1"></div>
+        <div class="ring b2"></div>
+        <div class="b3"></div>
+      </div>
+    </div>
+    <div class="cell">
+      <div class="cap"><b>C</b><span>In-frame</span></div>
+      <div class="panel">
+        <div class="blob c1"></div>
+        <div class="blob c2"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <p><b>Proč úplné zastavení.</b> DESIGN.md to říká výslovně: žádný kompromis s částečným pohybem. Ambientní pohyb na pozadí může u citlivých lidí vyvolat skutečné vestibulární potíže — není to jen otázka vkusu.</p>
+    <p><b>Pozor na jeden detail v tokenech.</b> <code>tokens/motion.css</code> nuluje pod reduced-motion jen <code>--dur-state</code> a <code>--dur-transition</code>. <code>--dur-ambient</code> (14 s) zůstává, takže samotné tokeny smyčku nevypnou — musí ji vypnout pravidlo v komponentě, jak to dělají všechny tři varianty tady.</p>
+  </div>
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"$preview": {"width": 1280, "height": 720}}'>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

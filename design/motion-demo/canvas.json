@@ -1,0 +1,25 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "title": "A · Wash", "x": 0, "y": 0, "w": 1280, "h": 720 },
+    { "file": "CornerDrift.dc.html", "title": "B · Corner drift", "x": 1400, "y": 0, "w": 1280, "h": 720 },
+    { "file": "InFrame.dc.html", "title": "C · In-frame", "x": 0, "y": 880, "w": 1280, "h": 720 },
+    { "file": "ReducedMotion.dc.html", "title": "Reduced motion", "x": 1400, "y": 880, "w": 1280, "h": 720 }
+  ],
+  "annotations": [
+    {
+      "id": "brief",
+      "x": 0,
+      "y": -190,
+      "w": 640,
+      "text": "Ambientní pohyb na úvodní stránce — 3 kandidáti.\n\nDESIGN.md → \"Motion — landing page\": právě JEDNA pomalá smyčka, malá a ohraničená, jen transform/opacity, ease-in-out, nikdy přes celou stránku a nikdy jako hlavní předmět heroe.\n\nChipy nad každým artboardem mění délku smyčky a intenzitu. Zatím nic z toho není v aplikaci."
+    },
+    {
+      "id": "tradeoff",
+      "x": 1400,
+      "y": -190,
+      "w": 640,
+      "text": "Jak se liší:\n\nA Wash — nejvíc vidět, pohyb sahá do okraje layoutu.\nB Corner drift — kreslené obrysy v rohu, funguje i bez fotografie.\nC In-frame — nejzdrženlivější, ořezané v rámu; až dorazí skutečná fotografie, varianta C zmizí pod ní."
+    }
+  ],
+  "launch": { "view": "canvas" }
+}
