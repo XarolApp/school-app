@@ -6,3 +6,7 @@ dist/
 .DS_Store
 .vscode/
 *.log
+
+# Generated Claude Design canvas payloads (~2.4MB each, regenerable from
+# the .dc.html artboards + canvas.json beside them via the design skill helper).
+design/**/skolamatch-*.html
