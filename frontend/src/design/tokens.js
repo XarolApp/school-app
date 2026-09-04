@@ -62,52 +62,88 @@ export const type = {
 
 // --- Palette -----------------------------------------------------------------
 /**
- * Light theme. Background is warm paper (#FBFAF8), never pure white — that
- * warmth is most of why the mockup reads as calm rather than clinical.
- * Accent is terracotta (#AD4F2A), secondary is moss (#4F7143).
+ * Light theme — the warm-paper palette from design/DESIGN.md → Colour.
+ *
+ * Every neutral carries a small warm chroma; **none is R=G=B, and neither
+ * `#FFFFFF` nor `#000000` appears anywhere** (DESIGN.md → Do/Don't, explicit).
+ * The evidence behind the warmth is Rello & Bigham (ASSETS 2017, n=341): warm
+ * backgrounds measured significantly faster to read than cool ones. That is a
+ * readability finding and is cited for nothing more.
+ *
+ * The three-step surface scale maps onto DESIGN.md's two named paper values
+ * exactly as that file defines them — "Surface is the page and any raised
+ * content; Neutral sits a half-step down for cards and rows":
+ *
+ *   bg       #FAF6EF  Surface — the page
+ *   surface  #FAF6EF  Surface — raised content (same value on purpose)
+ *   surface2 #F1ECE3  Neutral — rows, wells, recessed fills
+ *
+ * `surface` deliberately does NOT sit lighter than `bg`. Raised content is
+ * separated by a hairline, not by a brighter fill — DESIGN.md → Elevation
+ * ("hairline over shadow"; borders do the structural work). Lifting it would
+ * mean inventing a paper value the system does not have, and the only value
+ * above Surface is white, which the system forbids.
+ *
+ * Accent is terracotta (#AD4F2A), match-strength green is moss (#4F7143).
+ * `accentInk` is Surface rather than white for the same no-pure-white reason;
+ * it holds ~5.3:1 on the terracotta fill.
  */
 export const light = {
-  bg: '#FBFAF8',
-  surface: '#FFFFFF',
-  surface2: '#F4F2EE',
-  ink: '#17161B',
-  ink2: '#5C5866',
-  ink3: '#8E8A98',
-  line: '#E6E3DD',
-  line2: '#D6D2CA',
+  bg: '#FAF6EF',
+  surface: '#FAF6EF',
+  surface2: '#F1ECE3',
+  ink: '#221A13',
+  ink2: '#6B6259',
+  ink3: '#756B5C',
+  line: '#E6DFD1',
+  line2: '#D6CBB6',
   accent: '#AD4F2A',
-  accentInk: '#FFFFFF',
-  accentSoft: '#F5EDE5',
-  accentLine: '#D9A489',
+  accentInk: '#FAF6EF',
+  accentSoft: '#F6E3D6',
+  accentLine: '#DFA98C',
   ok: '#4F7143',
-  okSoft: '#EBF1E7',
-  danger: '#B3261E',
-  dangerSoft: '#FBEBE9',
-  board: '#EFEDE8',
-  frost: 'rgba(255,255,255,0.82)',
+  okSoft: '#E6EDDE',
+  danger: '#7A3020',
+  dangerSoft: '#F5E2DC',
+  board: '#EFE9DC',
+  frost: 'rgba(250,246,239,0.82)',
   glow: 'rgba(173,79,42,0.12)',
 };
 
+/**
+ * Dark theme — DESIGN.md → Dark mode. A separate design, not an inversion:
+ * chroma pulled down ~15–20%, nothing pure black, and elevation inverts
+ * (raised surfaces get *lighter*, which is why `surface` > `bg` here while
+ * they are equal in light).
+ *
+ * Accent, ok and danger are all lifted and desaturated — the light values
+ * sink into a dark ground and stop reading as interactive.
+ *
+ * `ink2` and `line2` are the two values DESIGN.md's dark block does not name;
+ * both are interpolated within its own ramp (ink2 between on-surface and
+ * on-surface-faint, line2 a step above border) rather than carried over from
+ * the retired cool palette.
+ */
 export const dark = {
-  bg: '#0C0B0F',
-  surface: '#15141A',
-  surface2: '#1E1C24',
-  ink: '#F2F0F5',
-  ink2: '#A5A1B0',
-  ink3: '#75717F',
-  line: '#262430',
-  line2: '#343141',
-  accent: '#E0B399',
-  accentInk: '#1A1020',
-  accentSoft: '#3D2D1F',
-  accentLine: '#6B4C38',
-  ok: '#8FD9A8',
-  okSoft: '#1E3528',
-  danger: '#F2837A',
-  dangerSoft: '#2A1512',
-  board: '#08080B',
-  frost: 'rgba(28,26,36,0.78)',
-  glow: 'rgba(224,179,153,0.15)',
+  bg: '#17130E',
+  surface: '#1F1911',
+  surface2: '#2A2216',
+  ink: '#F2ECE2',
+  ink2: '#D8CFC2',
+  ink3: '#B3A895',
+  line: '#362C1E',
+  line2: '#4A3D2B',
+  accent: '#E08A5C',
+  accentInk: '#17130E',
+  accentSoft: '#3A2617',
+  accentLine: '#7A5540',
+  ok: '#8FB57E',
+  okSoft: '#24301F',
+  danger: '#C97F6A',
+  dangerSoft: '#33201A',
+  board: '#100D09',
+  frost: 'rgba(31,25,17,0.78)',
+  glow: 'rgba(224,138,92,0.15)',
 };
 
 // --- Geometry ----------------------------------------------------------------
@@ -166,9 +202,11 @@ export const webOnly = {
   fontStackHeading: "'Fraunces', Georgia, 'Times New Roman', serif",
   fontStackBody: "'Public Sans', system-ui, 'Segoe UI', sans-serif",
   fontStackMono: 'ui-monospace, Consolas, monospace',
+  // Tinted with the theme's own near-black (#221A13 / #17130E) rather than a
+  // neutral or pure black — a cool grey shadow over warm paper greys the paper.
   shadow: {
-    light: '0 1px 2px rgba(23,22,27,.05), 0 18px 40px -20px rgba(23,22,27,.18)',
-    dark: '0 1px 2px rgba(0,0,0,.5), 0 20px 44px -20px rgba(0,0,0,.75)',
+    light: '0 1px 2px rgba(34,26,19,.05), 0 18px 40px -20px rgba(34,26,19,.18)',
+    dark: '0 1px 2px rgba(9,7,5,.5), 0 20px 44px -20px rgba(9,7,5,.75)',
   },
 };
 

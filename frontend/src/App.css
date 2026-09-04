@@ -71,8 +71,10 @@
 }
 
 .btn-primary {
-  background: var(--accent-bg, #333);
-  color: var(--accent, #fff);
+  /* No literal fallbacks: tokens.css always defines these, and #fff/#333 are
+     exactly the two values DESIGN.md forbids outright. */
+  background: var(--accent-bg);
+  color: var(--accent);
 }
 
 .btn-secondary {

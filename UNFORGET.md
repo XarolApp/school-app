@@ -356,38 +356,26 @@ Known pre-existing bug in that file, already tracked as `plans/003`: `.ob-title`
 *shrinks* 32px → 30px at the 640px breakpoint (`onboarding.css:107` vs `:1168`).
 Fold that fix into the redesign rather than patching it separately.
 
-## App palette neutrals diverge from DESIGN.md (accent already matches)
-- **Found:** 2026-09-04, while porting the Landing design onto `/`
-- **Urgency:** medium — visible, but the app is internally consistent today
-- **Risk of fixing now:** app-wide visual change. Every surface (onboarding's
-  1,882 lines, auth, search, the new landing) reads from these tokens, so this
-  is the same class of change as the spacing/typography migration and wants the
-  same care — one pass, then re-verify each surface.
-- **Risk of NOT fixing:** the app renders the design system's *structure* on a
-  cooler palette than the system specifies, so anything rebuilt from a Claude
-  Design mockup will look subtly unlike its own preview. It also breaks two of
-  DESIGN.md's own explicit Do/Don't rules.
-- **Effort:** small in `tokens.js` itself; the cost is re-verifying every screen
-- **Release/context:** sequence alongside (or just before) the `ObKit.jsx` /
-  `auth.css` primitives replacement above — both are app-wide visual passes and
-  doing them together avoids verifying everything twice
-
-The 2026-08-28 "apply DESIGN.md colors" pass took the **accent** (terracotta
-`#AD4F2A`) and the **fonts** (Fraunces + Public Sans) but left the neutrals on the
-older, cooler ramp. Measured 2026-09-04:
-
-| role | DESIGN.md | app `tokens.css` |
-|---|---|---|
-| page background | `#FAF6EF` warm paper | `--bg: #FBFAF8` (close, slightly cool) |
-| card surface | `#F1ECE3` warm paper | `--surface: #FFFFFF` **pure white** |
-| ink | `#221A13` warm near-black | `--ink: #17161B` cool/violet-leaning |
-| secondary text | `#6B6259` warm grey | `--ink2: #5C5866` violet-grey |
-| text on accent | `#FAF6EF` | `--acc-ink: #FFFFFF` **pure white** |
-
-Two of these break rules DESIGN.md states outright: *"Don't use pure `#FFFFFF` or
-`#000000` anywhere, including exported material. Every neutral in this system
-carries warmth."* The accent, the full type scale, the spacing scale and the
-1280/24/64 grid all already agree — this is only the neutral ramp.
+## App palette neutrals — VISUAL CHECK STILL OWED
+- **Found:** 2026-09-04 · **fixed the same day**, see Resolved
+- **What is still open:** only the human eyeball pass. The token change itself is
+  done and built clean, but the browser tools are blocked on this machine
+  (CLAUDE.md, top), so **no screen has actually been looked at** on the new
+  palette. Every surface in the app changed at once.
+- **Urgency:** medium — a contrast or fill regression would be live and unseen
+- **Effort:** minutes, but needs a person at a browser
+- **What to look at,** in rough order of how likely they are to break:
+  1. **Anything that was a white card on off-white.** `surface` is now the *same*
+     value as `bg`, so cards separate by hairline alone (DESIGN.md's own
+     elevation rule). Search results, school detail, settings, favourites — check
+     nothing reads as a flat undifferentiated sheet.
+  2. **`onboarding.css`** (1,882 lines, the largest consumer) — option cards,
+     selected states, the progress track.
+  3. **Auth pages** (`/prihlaseni`, `/registrace`) — inputs are wells on
+     `--surface2`, which moved.
+  4. **`.btn-primary`** — soft terracotta fill; confirm the label still reads.
+  5. **Dark mode**, if reachable — it was rewritten wholesale from DESIGN.md's
+     dark block and has never been rendered.
 
 ## Landing page: three gaps carried over from the mockup
 - **Found:** 2026-09-04, porting `ui_kits/skolamatch/Landing.jsx` onto `/`
@@ -417,6 +405,26 @@ carries warmth."* The accent, the full type scale, the spacing scale and the
 ## Resolved
 
 *(Move items here with a date + one-line note when they're actually done, rather than deleting them.)*
+
+- **App palette neutrals migrated to DESIGN.md's warm paper ramp** — done
+  2026-09-04, in `frontend/src/design/tokens.js` (+ `npm run tokens`). The
+  2026-08-28 pass had taken the accent and the fonts but left the neutrals on the
+  older cooler ramp, which broke DESIGN.md's outright rule against `#FFFFFF` and
+  `#000000` in two places (`--surface`, `--acc-ink`). Both light and dark
+  palettes were replaced wholesale from DESIGN.md → Colour / Dark mode.
+  Two judgement calls worth knowing about:
+  **(a)** DESIGN.md names only two paper values but the app's scale has three
+  levels, and the file says explicitly *"Surface is the page and any raised
+  content; Neutral sits a half-step down for cards and rows."* So `bg` and
+  `surface` are both `#FAF6EF` and `surface2` is `#F1ECE3` — raised content
+  separates by hairline, not by a brighter fill, which is that same file's
+  elevation rule. The alternative was inventing a paper value above Surface, and
+  the only thing above Surface is white.
+  **(b)** DESIGN.md's dark block does not name an `ink2` or a `line2`; both were
+  interpolated inside its own ramp rather than carried over from the retired cool
+  palette. Also warm-tinted the two box-shadows, which were mixed from a cool
+  near-black. `npx vite build` green; CSS 46.43 kB. **The visual check is still
+  owed** — see the open item above.
 
 - **Site-wide spacing and typography migration to design/system's real scale** —
   done 2026-09-04 (plan `005-spacing-typography-migration.md`). The app previously

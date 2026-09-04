@@ -552,8 +552,14 @@ fonts, spacing, radii, etc.) as JavaScript constants, in `frontend/src/design/to
 JS, not CSS, deliberately: React Native can import a JS module but cannot read CSS
 variables — this is what makes the visual system portable to the mobile app later.
 
-**Current state (as of 2026-08-28):** matches `design/DESIGN.md` — terracotta `#AD4F2A` /
-moss `#4F7143`, Fraunces + Public Sans (fonts fixed site-wide 2026-08-31 — `index.html`
+**Current state (as of 2026-09-04):** matches `design/DESIGN.md` in full — terracotta
+`#AD4F2A` / moss `#4F7143`, the warm paper neutral ramp (`#FAF6EF` / `#F1ECE3` /
+`#221A13` …), and Fraunces + Public Sans. **No `#FFFFFF` or `#000000` anywhere** —
+DESIGN.md forbids both outright and the palette now honours that; `--surface` and
+`--bg` are deliberately the *same* value, because raised content separates by
+hairline rather than by a brighter fill. Neutrals were migrated 2026-09-04 (they had
+been left on the older cooler ramp by the 2026-08-28 accent-only pass). Fonts fixed
+site-wide 2026-08-31 — `index.html`
 and `tokens.js`'s `webOnly` export had drifted from DESIGN.md's own spec). `tokens.css`
 is auto-generated from `tokens.js` via `npm run tokens` (from `frontend/`) — **never
 hand-edit `tokens.css`.** Re-run that command after any future change to `tokens.js`.

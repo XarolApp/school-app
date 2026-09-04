@@ -5,11 +5,8 @@
    from the design system's own token names (--primary, --surface-card,
    --secondary…) but from the app's existing equivalents (--acc, --surface,
    --ink2…), because those are what every other page in this app already uses.
-   The two palettes agree on the accent and on the whole type/space scale, but
-   the app's neutrals are still cooler than DESIGN.md's warm paper — see the
-   UNFORGET entry "App palette neutrals diverge from DESIGN.md". Fixing that is
-   an app-wide change, not a landing-page one, so this file deliberately does
-   not fork the palette locally.
+   Only the NAMES differ now — the values behind them are DESIGN.md's own warm
+   paper palette as of 2026-09-04, so nothing here needs a local override.
 
    Prefix `ls-` (landing), mirroring search.css's `ss-`. */
 
