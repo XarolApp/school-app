@@ -356,6 +356,64 @@ Known pre-existing bug in that file, already tracked as `plans/003`: `.ob-title`
 *shrinks* 32px → 30px at the 640px breakpoint (`onboarding.css:107` vs `:1168`).
 Fold that fix into the redesign rather than patching it separately.
 
+## App palette neutrals diverge from DESIGN.md (accent already matches)
+- **Found:** 2026-09-04, while porting the Landing design onto `/`
+- **Urgency:** medium — visible, but the app is internally consistent today
+- **Risk of fixing now:** app-wide visual change. Every surface (onboarding's
+  1,882 lines, auth, search, the new landing) reads from these tokens, so this
+  is the same class of change as the spacing/typography migration and wants the
+  same care — one pass, then re-verify each surface.
+- **Risk of NOT fixing:** the app renders the design system's *structure* on a
+  cooler palette than the system specifies, so anything rebuilt from a Claude
+  Design mockup will look subtly unlike its own preview. It also breaks two of
+  DESIGN.md's own explicit Do/Don't rules.
+- **Effort:** small in `tokens.js` itself; the cost is re-verifying every screen
+- **Release/context:** sequence alongside (or just before) the `ObKit.jsx` /
+  `auth.css` primitives replacement above — both are app-wide visual passes and
+  doing them together avoids verifying everything twice
+
+The 2026-08-28 "apply DESIGN.md colors" pass took the **accent** (terracotta
+`#AD4F2A`) and the **fonts** (Fraunces + Public Sans) but left the neutrals on the
+older, cooler ramp. Measured 2026-09-04:
+
+| role | DESIGN.md | app `tokens.css` |
+|---|---|---|
+| page background | `#FAF6EF` warm paper | `--bg: #FBFAF8` (close, slightly cool) |
+| card surface | `#F1ECE3` warm paper | `--surface: #FFFFFF` **pure white** |
+| ink | `#221A13` warm near-black | `--ink: #17161B` cool/violet-leaning |
+| secondary text | `#6B6259` warm grey | `--ink2: #5C5866` violet-grey |
+| text on accent | `#FAF6EF` | `--acc-ink: #FFFFFF` **pure white** |
+
+Two of these break rules DESIGN.md states outright: *"Don't use pure `#FFFFFF` or
+`#000000` anywhere, including exported material. Every neutral in this system
+carries warmth."* The accent, the full type scale, the spacing scale and the
+1280/24/64 grid all already agree — this is only the neutral ramp.
+
+## Landing page: three gaps carried over from the mockup
+- **Found:** 2026-09-04, porting `ui_kits/skolamatch/Landing.jsx` onto `/`
+- **Urgency:** low — none of them block the page working
+- **Risk of fixing now:** none; each is additive
+- **Risk of NOT fixing:** the hero has a visible empty photo slot, which is fine
+  internally but not shippable to real visitors
+- **Effort:** small each
+- **Release/context:** the photograph is a pre-launch blocker; the other two are not
+
+1. **No hero photograph.** `.ls-photo` is a labelled dashed placeholder. DESIGN.md
+   calls for real photography of real people, not illustration, and no asset
+   exists — `frontend/src/assets/hero.png` is an abstract purple 3D shape left
+   over from the retired design system, in a hue DESIGN.md explicitly bans, so it
+   cannot be used. Hidden below 900px, so mobile is unaffected.
+2. **The ambient idle animation is not implemented.** DESIGN.md's "Motion —
+   landing page" section specifies exactly one slow, contained idle loop
+   (CSS keyframes on `transform`/`opacity`, Linear/Stripe register — never a
+   mascot, never full-screen). The mockup omits it too and says so. This is the
+   landing page's one sanctioned piece of ambient motion.
+3. **The footer is landing-only.** `Shell.jsx` treats it as chrome shared by every
+   screen, but `components/Layout.jsx` has never had a footer and adding one
+   globally would change eight pages that were not part of this port. Two of the
+   mockup's footer links ("Zdroje dat", "Kontakt") were dropped rather than
+   shipped as dead `href="#"`; restore them when those pages exist.
+
 ## Resolved
 
 *(Move items here with a date + one-line note when they're actually done, rather than deleting them.)*

@@ -1,0 +1,225 @@
+/* Landing (úvodní stránka) — ported from
+   design/system/ui_kits/skolamatch/Landing.jsx.
+
+   Structure, hierarchy and copy follow that mockup exactly. Colours do NOT come
+   from the design system's own token names (--primary, --surface-card,
+   --secondary…) but from the app's existing equivalents (--acc, --surface,
+   --ink2…), because those are what every other page in this app already uses.
+   The two palettes agree on the accent and on the whole type/space scale, but
+   the app's neutrals are still cooler than DESIGN.md's warm paper — see the
+   UNFORGET entry "App palette neutrals diverge from DESIGN.md". Fixing that is
+   an app-wide change, not a landing-page one, so this file deliberately does
+   not fork the palette locally.
+
+   Prefix `ls-` (landing), mirroring search.css's `ss-`. */
+
+/* ---------- hero ---------- */
+
+/* 7fr/5fr split from the mockup: the copy column has to hold a 72px display
+   headline at ~14ch, which needs the larger share. */
+.ls-hero {
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  gap: var(--space-xxxl);
+  align-items: center;
+}
+
+.ls-eyebrow {
+  font-size: var(--fs-label-caps);
+  font-weight: 600;
+  line-height: var(--lh-label-caps);
+  letter-spacing: var(--ls-label-caps);
+  text-transform: uppercase;
+  color: var(--ink2);
+  margin: 0;
+}
+
+/* The one place in the app that uses Display (72px). Everywhere else tops out
+   at headline-lg — the density contrast is how a visitor knows a marketing
+   screen from a working one (DESIGN.md → Layout). */
+.ls-title {
+  font-family: var(--heading);
+  font-size: var(--fs-display);
+  font-weight: var(--fw-display);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+  font-variation-settings: var(--var-display);
+  color: var(--text-h);
+  text-wrap: balance;
+  max-width: 14ch;
+  margin: var(--space-md) 0 0;
+}
+
+.ls-lede {
+  font-size: var(--fs-body-lg);
+  line-height: var(--lh-body-lg);
+  color: var(--ink2);
+  max-width: 42ch;
+  margin: var(--space-lg) 0 0;
+}
+
+.ls-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
+}
+
+.ls-fineprint {
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  color: var(--ink2);
+  margin: var(--space-md) 0 0;
+}
+
+/* Photography placeholder. DESIGN.md calls for real photography of real people;
+   no asset exists yet (the repo's hero.png is from the retired purple system).
+   Deliberately reads as an empty slot rather than pretending to be art. */
+.ls-photo {
+  height: 380px;
+  border-radius: var(--r-card);
+  background: var(--surface2);
+  border: 1px dashed var(--line2);
+  display: flex;
+  align-items: flex-end;
+  padding: var(--space-md);
+}
+
+.ls-photo-label {
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  color: var(--ink3);
+}
+
+/* ---------- rule ---------- */
+
+.ls-rule {
+  height: 1px;
+  width: 100%;
+  background: var(--line2);
+  border: 0;
+  margin: var(--space-xxl) 0;
+}
+
+/* ---------- feature cards ---------- */
+
+.ls-features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gutter);
+}
+
+/* Flat on purpose — these are read, not clicked, and DESIGN.md's Do/Don't is
+   explicit that a shadow goes where something is genuinely raised, not on
+   anything rectangular by convention. */
+.ls-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  padding: var(--space-lg);
+}
+
+.ls-card-title {
+  font-family: var(--heading);
+  font-size: var(--fs-headline-sm);
+  font-weight: var(--fw-headline-sm);
+  line-height: var(--lh-headline-sm);
+  font-variation-settings: var(--var-headline-sm);
+  color: var(--text-h);
+  margin: 0;
+}
+
+.ls-card-body {
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-body-sm);
+  color: var(--ink2);
+  margin: var(--space-sm) 0 0;
+}
+
+/* ---------- footer ---------- */
+
+/* Home-only for now. Shell.jsx treats the footer as chrome shared by every
+   screen, but the app's Layout has never had one, and adding it globally would
+   change eight pages that were not part of this port. */
+.ls-footer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-xl);
+  flex-wrap: wrap;
+}
+
+.ls-wordmark {
+  font-family: var(--heading);
+  font-weight: 600;
+  font-size: 21px;
+  letter-spacing: -0.01em;
+  color: var(--acc);
+}
+
+.ls-footer-note {
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  color: var(--ink2);
+  max-width: 46ch;
+  margin: var(--space-sm) 0 0;
+}
+
+.ls-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-lg);
+}
+
+.ls-footer-links a {
+  font-size: var(--fs-body-sm);
+  color: var(--ink2);
+  text-decoration: none;
+}
+
+.ls-footer-links a:hover {
+  color: var(--acc);
+  text-decoration: underline;
+}
+
+/* ---------- responsive ---------- */
+
+/* Matches DESIGN.md's stated breakpoints (below 1024px the grid narrows, below
+   768px it goes single-column), same ones App.css already uses for the page
+   container. The 72px display is the first thing that has to give: at 390px it
+   is roughly six characters a line. */
+@media (max-width: 1024px) {
+  .ls-hero {
+    gap: var(--space-xl);
+  }
+
+  .ls-title {
+    font-size: var(--fs-headline-lg);
+    line-height: var(--lh-headline-lg);
+    letter-spacing: var(--ls-headline-lg);
+    font-variation-settings: var(--var-headline-lg);
+    max-width: 18ch;
+  }
+}
+
+@media (max-width: 900px) {
+  .ls-hero {
+    grid-template-columns: 1fr;
+  }
+
+  /* Below the fold on a phone, and it carries no information — the copy and the
+     CTA are the whole point of the screen at this width. */
+  .ls-photo {
+    display: none;
+  }
+
+  .ls-features {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .ls-ctas .btn {
+    width: 100%;
+  }
+}

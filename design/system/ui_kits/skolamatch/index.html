@@ -9,16 +9,36 @@
 </head><body><div id="root"></div>
 <script type="text/babel" src="Shell.jsx"></script>
 <script type="text/babel" src="Landing.jsx"></script>
-<script type="text/babel" src="Search.jsx"></script>
+<!-- Search.jsx was deleted 2026-08-31 — superseded by the real implementation at
+     frontend/src/pages/Search.jsx (see README + plans/004-search-design-import.md).
+     The nav item below now renders SearchMoved instead of 404-ing on a missing file. -->
 <script type="text/babel" src="Questionnaire.jsx"></script>
 <script type="text/babel" src="Results.jsx"></script>
 <script type="text/babel" src="SchoolDetail.jsx"></script>
 <script type="text/babel" src="Paywall.jsx"></script>
 <script type="text/babel">
+/* Stands in for the removed Search.jsx mockup, so the header's "Databáze škol"
+   link still resolves and says where the screen went. */
+function SearchMoved() {
+  return (
+    <Page>
+      <h1 className="sm-headline-lg">Databáze škol</h1>
+      <p className="sm-body-lg" style={{ marginTop: 'var(--space-lg)', color: 'var(--secondary)' }}>
+        Tato obrazovka už není součástí kitu — nahradila ji skutečná implementace
+        v aplikaci (<code>frontend/src/pages/Search.jsx</code>), postavená z podrobnějšího
+        wireframu s funkčními filtry, fasetami a řazením.
+      </p>
+      <p className="sm-body-sm" style={{ marginTop: 'var(--space-md)', color: 'var(--secondary)' }}>
+        Viz <code>README.md</code> a <code>plans/004-search-design-import.md</code>.
+      </p>
+    </Page>
+  );
+}
+
 function App() {
   const [screen, setScreen] = React.useState('landing');
   const go = (s) => { setScreen(s); window.scrollTo(0, 0); };
-  const S = { landing: Landing, search: Search, quiz: Questionnaire, results: Results, detail: SchoolDetail, paywall: Paywall }[screen];
+  const S = { landing: Landing, search: SearchMoved, quiz: Questionnaire, results: Results, detail: SchoolDetail, paywall: Paywall }[screen];
   return (
     <React.Fragment>
       {screen !== 'quiz' && <Header go={go} active={screen} />}

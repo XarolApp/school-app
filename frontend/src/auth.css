@@ -258,6 +258,13 @@
   font-size: var(--fs-body-sm);
 }
 
+/* The design system's Button `lg`, for marketing surfaces (currently the
+   landing hero). `.btn`'s own padding is already the 16px/24px that size
+   specifies, so only the type size changes. */
+.btn-lg {
+  font-size: var(--fs-body-lg);
+}
+
 .btn-primary {
   background: var(--acc);
   color: var(--acc-ink);
