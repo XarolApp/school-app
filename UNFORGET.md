@@ -287,29 +287,6 @@ explicitly marked not production-safe. Connecting this to real Stripe checkout
 and real trial/access state is blocked on the Stripe decision above — don't
 start this independently of that.
 
-## Site-wide spacing and typography migration to design/system's real scale
-- **Found:** 2026-08-31, during design/ folder reorganization
-- **Urgency:** high — user has explicitly requested this happen
-- **Risk of fixing now:** real, app-wide visual change. `App.css`, `auth.css`, and
-  `onboarding.css` (1,200+ lines) all hardcode raw pixel values today — none of
-  them consume a spacing or type-size CSS variable, because none exist yet.
-  Migrating means both adding the real tokens AND rewriting every hardcoded
-  value across those files. The already-shipped, already-tested onboarding flow
-  needs re-verification after this lands.
-- **Risk of NOT fixing:** the app's spacing (`4/8/12/16/24/32`) and the design
-  system's documented spacing (`4/8/16/24/32/48/64`) genuinely disagree past
-  `sm` — not just "unstyled," actively different numbers. User's explicit
-  judgment call (2026-08-31): the design system's scale is the better one on
-  its own merits (a standard 8pt grid, and the one `DESIGN.md` actually
-  explains and justifies) — adopt it as canonical, cost aside.
-- **Effort:** large — this is app-wide, not one file
-- **Release/context:** in progress — see `plans/` for the implementation plan once written
-
-Same treatment needed for the type scale (`design/system/tokens/typography.css`'s
-`--fs-*`/`--lh-*`/`--fw-*` values) — user asked for the identical fix, same reasoning.
-`tokens.js`'s `type` object today uses different numbers than the design system's
-scale; neither is exposed as CSS. This is one migration, not two.
-
 ## `ObKit.jsx` / `auth.css` primitives predate the real design-system template
 - **Found:** 2026-08-31 (file-mtime comparison, at user's request)
 - **Urgency:** medium
@@ -351,10 +328,55 @@ Search, which the plan above did explicitly test at 375px and 1280px) holds up
 across phone/tablet/ultrawide sizes. Do this properly once the spacing/typography
 and component-library work above have landed, so it isn't done twice.
 
+## onboarding.css still on the old spacing/type scale
+- **Found:** 2026-08-31, during the site-wide spacing/typography migration (plan 005)
+- **Urgency:** medium — deliberately deferred, not forgotten
+- **Risk of fixing now:** the work would be discarded; onboarding is slated for a
+  full /design redesign against design/system, which will restyle it natively
+- **Risk of NOT fixing:** onboarding renders on a different spacing and type scale
+  than the rest of the site until that redesign happens. Visible only if a user
+  moves between onboarding and the main app in one session.
+- **Effort:** large on its own (130 spacing values + ~10 display-type decisions);
+  near-zero if folded into the planned redesign
+- **Release/context:** do this AS PART OF the onboarding redesign, not before it
+
+Plan 005 migrated `index.css`, `App.css`, `auth.css`, and `search.css` onto the
+design system's real scales (`--space-*`, `--fs-*`, emitted from `tokens.js`).
+`onboarding.css` was explicitly excluded by the user: it holds 130 of the 246
+hardcoded spacing values and nearly all the hard display-type calls, and hand-migrating
+it now would be thrown away by the redesign.
+
+It also carries the only genuinely hard typography problem: the template's scale
+offers just 22/28/38/72 above 18px, and its 72px display is unusable on onboarding's
+390px mobile-first screens. **The template has no documented mobile type steps** —
+that gap needs resolving in `design/DESIGN.md` before or during the redesign, not
+guessed at.
+
+Known pre-existing bug in that file, already tracked as `plans/003`: `.ob-title`
+*shrinks* 32px → 30px at the 640px breakpoint (`onboarding.css:107` vs `:1168`).
+Fold that fix into the redesign rather than patching it separately.
+
 ## Resolved
 
 *(Move items here with a date + one-line note when they're actually done, rather than deleting them.)*
 
+- **Site-wide spacing and typography migration to design/system's real scale** —
+  done 2026-09-04 (plan `005-spacing-typography-migration.md`). The app previously
+  had **no** spacing or font-size CSS variables at all and `tokens.js`'s scales
+  silently disagreed with the template's (app `space.md` was 12, template's is 16);
+  the template's scale was adopted as canonical per the user's 2026-08-31 call.
+  Phase A emitted `--space-*` / `--fs-*` from `tokens.js` (once in `:root`, not
+  per-theme); Phases B and C migrated `index.css`, `App.css`, `auth.css` and
+  `search.css`. Verified: no hardcoded `font-size` px in any of the four, only 8
+  documented spacing exceptions left (1–2px hairlines, the `-1px` sr-only clip, the
+  derived 36px icon inset, the 88px sticky-bar clearance), each var emitted exactly
+  once, `npm run lint` clean (4 pre-existing `only-export-components` warnings),
+  build succeeds, and three consecutive `npm run tokens` runs are byte-identical.
+  `onboarding.css` was deliberately excluded and is **still open above** — see
+  "onboarding.css still on the old spacing/type scale". Two deliberate deviations
+  from the plan as written are recorded in `CONTEXT-HANDOFF.md` (`search.css` 26px →
+  28px to preserve a heading level, and `.ss-row` → `--row-pad-dense` per DESIGN.md's
+  density rule).
 - **Reorganized design files into `design/` folder** — done 2026-08-31.
   `DESIGN.md` moved from repo root to `design/DESIGN.md`; the Claude Design
   template moved from `Škola Match system design (new)/` to `design/system/`;

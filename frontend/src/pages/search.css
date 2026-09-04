@@ -159,7 +159,7 @@
   height: 44px;
   /* left: 36px = icon width(16) + icon inset(12) + gap(8) — derived from the
      icon layout below, not a scale value; kept literal (plan 005). */
-  padding: 0 var(--space-md) 0 36px; /* 36px = icon inset: 17px icon + 12px gutter + 7px edge — derived, not a scale value */
+  padding: 0 var(--space-md) 0 36px;
   border-radius: var(--r-button);
   border: 1px solid var(--border-strong);
   background: var(--surface-card);

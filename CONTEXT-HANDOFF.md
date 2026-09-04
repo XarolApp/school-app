@@ -121,9 +121,13 @@ breakpoint margins DESIGN.md documents (64/32/16px) implemented as real media qu
 Remaining responsive work is tracked in `UNFORGET.md` — this was a fixed-width port of
 the desktop spec, not a full responsive pass.
 
-### 4. Plan 005 — spacing & typography migration — **IN PROGRESS, ~95%**
+### 4. Plan 005 — spacing & typography migration — **CODE COMPLETE**
 
-**This is what to pick up.** Full spec: `plans/005-spacing-typography-migration.md`.
+Full spec: `plans/005-spacing-typography-migration.md`. All code and bookkeeping is
+finished as of 2026-09-04 (see "DONE" below). What remains is **three visual checks
+only**, listed under "Not yet checked" — they need a human with a browser, because the
+preview tools are hard-blocked on this laptop (`~/.claude/settings.json` →
+`permissions.deny`). Nothing is known to be wrong; they are unverified, not failing.
 
 The app had **no** spacing or font-size CSS variables at all; every stylesheet hardcoded
 pixels, and `tokens.js`'s scales silently disagreed with `design/system`'s
@@ -147,13 +151,27 @@ natively. Migrating it by hand now would be thrown away. **Exclusion verified ho
 - **Phase C** (typography) — complete across all four in-scope files.
   `grep -nE 'font-size:[^;]*[0-9]+px'` across all four returns **nothing**.
 
-#### NOT done — pick up here
+#### DONE — 2026-09-04 (Windows laptop, after the branch promotion)
 
-**The `UNFORGET.md` entry required by plan 005 §7 was never added.** Verified missing.
-It's written out verbatim in the plan — copy it in. It records that `onboarding.css` is
-still on the old scale, why it was excluded, and that the template has **no documented
-mobile type steps** (its 72px display is unusable on onboarding's 390px screens) — a real
-gap in `DESIGN.md` to resolve during the redesign, not guess at.
+The `UNFORGET.md` entry required by plan 005 §7 **has now been added**, verbatim from
+the plan, as "onboarding.css still on the old spacing/type scale". The stale
+"Site-wide spacing and typography migration" entry — which still read *"in progress —
+see `plans/` for the implementation plan once written"* — was moved to `## Resolved`
+with a summary of what shipped and what was verified, since its only remaining scope
+was the excluded `onboarding.css`, now tracked as its own open entry.
+
+Re-verified on this machine before closing it out, rather than trusting the notes:
+exclusion still holds (`onboarding.css` uses 0 tokens), no hardcoded `font-size` px in
+any of the four in-scope files, the 8 remaining hardcoded spacing values are all the
+documented exceptions, each `--space-*`/`--fs-*` emitted exactly once, lint exit 0 with
+only the 4 pre-existing warnings, build succeeds, and three consecutive `npm run tokens`
+runs are byte-identical.
+
+One defect found and fixed while verifying: `search.css`'s search-input padding carried
+**two contradictory comments on the same line** — a block comment reading
+`16 + 12 + 8 = 36` and a trailing one reading `17px icon + 12px gutter + 7px edge`. The
+actual rule above it is `left: 12px; width: 16px`, so the block comment is right and the
+trailing one was stale. Removed the wrong one.
 
 #### Two deliberate deviations from the plan as written
 
