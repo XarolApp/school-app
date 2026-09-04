@@ -102,6 +102,15 @@
   line-height: 1.5;
 }
 
+/* Sits right after the checkbox's own label text in the markup with no
+   separator between them — without this it runs straight into it
+   ("Zůstat přihlášenýNech vypnuté…"). `display: block` alone would still
+   touch the line above; the margin is what actually creates the gap. */
+.checkbox-hint {
+  display: block;
+  margin-top: var(--space-xs);
+}
+
 .input {
   width: 100%;
   padding: var(--space-md);
