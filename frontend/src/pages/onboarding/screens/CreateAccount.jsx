@@ -42,7 +42,6 @@ function CreateAccount() {
   // failed submit.
   const [captchaKey, setCaptchaKey] = useState(0);
   const [error, setError] = useState(null);
-  const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
 
   const submit = async (event) => {
@@ -63,28 +62,19 @@ function CreateAccount() {
       return;
     }
 
-    // With email confirmation on, Supabase issues no session until the link is
-    // clicked — so the flow cannot simply continue to the paywall.
-    if (result.needsEmailConfirmation) {
-      setSent(true);
-      return;
-    }
-
+    // Email confirmation is TEMPORARILY not gating the flow here. It used to
+    // stop the user on a "check your email" screen — but the confirmation
+    // link opens in whatever tab/device the email client uses, which has no
+    // way back to this exact onboarding tab (there is no cross-context API
+    // for one tab to hand control to another). Confirming is still required
+    // before real money moves (server.js's requireAuth still checks
+    // email_confirmed_at for every protected route) — Paywall here is fully
+    // mocked and calls nothing protected, so continuing the flow unconfirmed
+    // is safe for now. See UNFORGET.md for the real fix this is standing in
+    // for: redirect confirmation back into /onboarding instead of /prihlaseni,
+    // with a resumable step id.
     goNext();
   };
-
-  if (sent) {
-    return (
-      <ObScreen phase={phase}>
-        <h1 className="ob-title">Potvrď e-mail</h1>
-        <p className="ob-hint">
-          Poslali jsme {parent ? 'vám' : 'ti'} odkaz na <strong>{email}</strong>. Klikni
-          na něj a {parent ? 'můžete' : 'můžeš'} pokračovat — tvoje odpovědi zůstanou
-          uložené.
-        </p>
-      </ObScreen>
-    );
-  }
 
   return (
     <ObScreen

@@ -376,6 +376,7 @@ export const QUESTIONS = [
         value: 'vubec',
         label: 'Ještě vůbec nevím',
         parentLabel: 'Zatím nemá jasno',
+        unsure: true,
         reassure: {
           student:
             'Úplně normální a nic tím neztrácíš. Upřednostníme školy se širší nabídkou, kde se rozhoduješ až za rok nebo dva.',
@@ -383,7 +384,6 @@ export const QUESTIONS = [
             'Zcela běžné a na výsledek to nemá negativní vliv. Upřednostníme školy se širší nabídkou, kde se obor volí později.',
         },
       },
-      UNSURE,
     ],
   },
   {
@@ -435,28 +435,6 @@ export const QUESTIONS = [
         },
       },
     ],
-  },
-  {
-    id: 'secondFocus',
-    key: 'secondFocus',
-    type: 'multi',
-    student: {
-      title: 'A co by tě ještě mohlo bavit?',
-      hint: 'Poslední otázka. Klidně přeskoč, pokud tě nic dalšího nenapadá.',
-    },
-    parent: {
-      title: 'Která další oblast by mohla dítě zajímat?',
-      hint: 'Poslední otázka. Můžete přeskočit.',
-    },
-    options: FOCUS_CATEGORIES.map((c) => ({ value: c.id, label: c.label })),
-    optional: true,
-    panelLabel: 'Ještě by mohlo bavit',
-    reassure: {
-      student:
-        'Tohle bereme jako doplněk k hlavním zájmům, ne jako rovnocennou položku — nepřebije to, cos vybral na začátku.',
-      parent:
-        'Tuto oblast bereme jako doplněk k hlavním zájmům, nikoli jako rovnocennou položku. Nepřebije úvodní volbu.',
-    },
   },
 ];
 
@@ -543,10 +521,6 @@ export function cleanAnswers(answers) {
       continue;
     }
     out[k] = v;
-  }
-  // secondFocus is a light-weight extension of focus for the matcher.
-  if (out.secondFocus) {
-    out.focus = [...new Set([...(out.focus || []), ...out.secondFocus])];
   }
   return out;
 }

@@ -15,6 +15,45 @@ BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 
 ---
 
+## Onboarding: email confirmation gate temporarily disabled
+
+- **Found:** 2026-09-05, user request
+- **Urgency:** low now — no real charges happen yet (Paywall is fully mocked) —
+  high before Stripe goes live
+- **Release/context:** blocks nothing today; must be re-solved before real payments
+
+`CreateAccount.jsx` (`frontend/src/pages/onboarding/screens/CreateAccount.jsx`)
+used to block on a "check your email" screen after signup, because Supabase
+issues no session until the confirmation link is clicked. That screen was a
+dead end: the confirmation link opens in whatever tab/device the email client
+uses, and there is no cross-context browser API for one tab to hand control
+back to a specific other tab — "return to the same onboarding tab" is not
+something a web page can do, regardless of implementation effort. The
+confirmation link redirected to `/prihlaseni?potvrzeno=1` (generic Login),
+dropping the user out of the onboarding flow entirely.
+
+**Current state:** `CreateAccount.jsx` now calls `goNext()` immediately after
+`signUp()` succeeds, regardless of `needsEmailConfirmation`. This is safe
+today because `Paywall.jsx` right after it is fully mocked and calls nothing
+protected — no `requireAuth`-gated route is hit unconfirmed. Server-side,
+`requireAuth` in `server.js` still checks `email_confirmed_at` and rejects
+unconfirmed tokens on every protected route (favorites, questionnaire, real
+checkout) — that enforcement is untouched. So today: an account is created,
+the flow continues, but the user simply won't be able to use anything
+protected until they eventually click the confirmation link (whenever, no
+longer blocking).
+
+**What needs to happen before Stripe goes live:** either (a) change
+`emailRedirectTo` in `AuthContext.jsx`'s `signUp`/`resendConfirmation` to
+redirect into `/onboarding/<next-step>` instead of `/prihlaseni` when the
+signup happened inside onboarding — this only helps when the same browser
+opens the link (common case, not guaranteed) — or (b) require confirmation
+again before the real checkout call specifically, with a clear in-flow
+"check your email to unlock payment" moment instead of the old full-flow
+block. Either way, don't let a real charge process for an unconfirmed email.
+
+---
+
 ## Legal check on the paywall — one real open question, one resolved
 
 - **Found:** 2026-09-05, checking `onboarding-architect.md`'s legal constraints

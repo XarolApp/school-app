@@ -106,11 +106,16 @@
 .ob-title {
   font-size: 32px;
   line-height: 1.12;
+  /* Fraunces is a variable font; without an explicit opsz its J (and other
+     glyphs) render in the low-optical-size form, which reads as odd at
+     headline sizes. Values per DESIGN.md's Typography table. */
+  font-variation-settings: 'SOFT' 45, 'opsz' 28;
 }
 
 .ob-title-xl {
   font-size: 40px;
   line-height: 1.06;
+  font-variation-settings: 'SOFT' 50, 'opsz' 38;
 }
 
 .ob-subtitle {
@@ -1447,6 +1452,7 @@
   line-height: 1;
   letter-spacing: -0.03em;
   color: var(--accent);
+  font-variation-settings: 'SOFT' 58, 'opsz' 64;
 }
 
 .ob-stakes .ob-stat-unit {
@@ -1457,6 +1463,7 @@
   font-size: var(--fs-headline-md);
   line-height: var(--lh-headline-md);
   color: var(--text-h);
+  font-variation-settings: 'SOFT' 45, 'opsz' 28;
 }
 
 .ob-stakes-note {
@@ -1800,6 +1807,7 @@
   line-height: var(--lh-headline-md);
   letter-spacing: var(--ls-headline-md);
   color: var(--text-h);
+  font-variation-settings: 'SOFT' 45, 'opsz' 28;
 }
 
 .ob-hero-meta {
@@ -1923,6 +1931,7 @@
   font-size: var(--fs-headline-sm);
   line-height: var(--lh-headline-sm);
   color: var(--text-h);
+  font-variation-settings: 'SOFT' 35, 'opsz' 22;
 }
 
 .ob-lock-meta {
