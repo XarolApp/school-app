@@ -15,6 +15,51 @@ BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 
 ---
 
+## Legal check on the paywall — one real open question, one resolved
+
+- **Found:** 2026-09-05, checking `onboarding-architect.md`'s legal constraints
+  (§0.4) against primary sources rather than secondary commentary
+- **Urgency:** medium now, high before real money moves
+- **Release/context:** must be resolved before Stripe goes live (the current
+  checkout is mocked)
+
+**Resolved, favorably — GDPR Art. 8 age of consent.** `onboarding-architect.md`
+assumed the EU default (16) applies. It does not: **Czech law lowered it to 15**
+via Act No. 110/2019 Coll., §7. A 9th grader taking the quiz can legally consent
+to that data processing themselves, no parent needed. Source:
+[ARROWS](https://arws.cz/en/news-at-arrows/compliance-with-the-requirements-of-the-office-for-personal-data-protection-regarding-consent-to-the-processing-of-personal-data-of-minors).
+No action needed, but this is age-sensitive — re-check if the product ever
+targets 8th graders (age 14).
+
+**Open, and this is the one that matters — contract capacity to pay.** GDPR
+governs consent to *data processing*, not the capacity to *pay money*, which is
+a different area of law (Czech Civil Code). A minor's legal capacity there is
+only "matters appropriate to their intellectual and volitional maturity" —
+deliberately vague, and no source found states whether a 690 Kč purchase falls
+inside or outside that line for a 15-year-old.
+([Dostupný advokát](https://dostupnyadvokat.cz/en/blog/rights-and-responsibilities-for-children))
+
+The onboarding-v2 paywall design (`design/onboarding-v2/Paywall.dc.html`) already
+has a parental-confirmation checkbox before the mocked charge, per ruling C-8.
+**That checkbox is a UX safeguard, not a legal fix** — it doesn't transfer
+contractual capacity. If the card actually charged is the parent's own, this is
+moot. If a minor could ever complete checkout with their own card/account
+directly, the contract's validity is an unresolved question a generalist search
+cannot answer. **Get this read by someone with Czech consumer/contract law
+expertise before Stripe integration goes live with real charges** — this is
+squarely gated on that work, not on anything already built.
+
+**Also confirmed, informational:** the Digital Fairness Act (EU proposal, expected
+Q4 2026) *does* name minors specifically — a proposed default ban on "addictive
+design" aimed at children (infinite scroll, autoplay, exploitative gamification)
+and scrutiny of influencer marketing to minors
+([European Parliament, Oct 2025](https://www.europarl.europa.eu/news/en/press-room/20251013IPR30892/new-eu-measures-needed-to-make-online-services-safer-for-minors)).
+Nothing currently built or designed violates this, but it applies to the planned
+TikTok/Instagram influencer acquisition channel too, not just onboarding screens
+— worth remembering when that campaign gets built, not just now.
+
+---
+
 ## Pricing decisions not yet finalized
 - **Found:** 2026-08-24, pricing research passes
 - **Urgency:** high

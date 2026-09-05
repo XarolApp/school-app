@@ -52,8 +52,8 @@
        or a stock photo. "Visualising unlocked value" — and the same split-pane
        device Perplexity / Rox / Gorgias ship on desktop onboarding. */
     .right{background:var(--surface2);border-left:1px solid var(--line);padding:56px 48px;
-      display:flex;flex-direction:column;justify-content:center;gap:14px;position:relative}
-    .plabel{position:absolute;top:40px;left:48px;font-size:11px;font-weight:600;
+      display:flex;flex-direction:column;justify-content:center;gap:14px}
+    .plabel{font-size:11px;font-weight:600;margin:6px 0 0;
       letter-spacing:.08em;text-transform:uppercase;color:var(--ink3)}
 
     .card{background:var(--bg);border:1px solid var(--line);border-radius:18px;padding:20px 22px}
@@ -71,6 +71,15 @@
     .locked{filter:blur(3px);opacity:.5}
     .lockrow{display:flex;align-items:center;gap:9px;justify-content:center;margin-top:4px;
       font-size:12.5px;color:var(--ink3)}
+
+    /* Photography placeholder — DESIGN.md calls for real photography of real
+       people ("warmth without illustration-heavy"; Rocket Money is its named
+       reference). No photo exists yet, so this reads as an honest empty slot,
+       not filler art. Swap the inner <span> for a real <img> the day a photo
+       lands — nothing else in this artboard needs to change. */
+    .photo-slot{height:150px;border-radius:18px;border:1px dashed var(--line2);
+      background:var(--surface2);display:flex;align-items:flex-end;padding:14px 16px}
+    .photo-slot span{font-size:12.5px;color:var(--ink3)}
   </style>
 </helmet>
 
@@ -97,6 +106,7 @@
   </div>
 
   <div class="right">
+    <div class="photo-slot"><span>Fotografie · skutečný deváťák nebo rodič, teplý tón — viz DESIGN.md</span></div>
     <div class="plabel">Takhle vypadá výsledek</div>
     <div class="card lead">
       <div class="rank">Nejlepší shoda</div>
