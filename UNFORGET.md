@@ -60,28 +60,6 @@ TikTok/Instagram influencer acquisition channel too, not just onboarding screens
 
 ---
 
-## Profile: "Co nás o tobě ví" — preferences mirror
-
-- **Idea:** 2026-09-05, user request
-- **Scope:** post-MVP, product feature
-- **Priority:** medium (retention + trust builder)
-- **Effort:** small
-
-A new settings section that mirrors back to the user what the matching engine learned about them — the key, meaningful preferences only. Not a settings form (read-only), but a profile view that says something like:
-
-> **Co nás o tobě ví**
-> Podle tvých odpovědí víme:
-> - Baví tě: Přírodní vědy, Technika
-> - Chceš: Gymnázium se flexibilním oborem
-> - Chceš dojíždět max: 30 minut (Praha 5–7)
-
-**Why:** Makes the app feel like an extension of the user, not a generic recommender. User sees the system actually *understands them*, which increases trust in matches and confidence they'll retake the quiz if preferences change. Also demonstrates data value — they see exactly what the app uses to help them.
-
-**How it works:** Read-only summary anchored to the current default quiz run. It's not an editable profile — if they want to change what the app knows, they retake the quiz. Preserves the audit trail and keeps matching transparent.
-
-**Synergy:** Pairs with the multiple-questionnaire-runs feature — each run produces its own distinct preference mirror, so switching runs shows how different answers would change the app's understanding.
-
----
 
 ## Pricing decisions not yet finalized
 - **Found:** 2026-08-24, pricing research passes

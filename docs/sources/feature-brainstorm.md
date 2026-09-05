@@ -146,6 +146,7 @@ Every feature idea, organized by category. Rated:
 | Dark mode | 🟡 | Teens like it, zero business impact |
 | Language toggle (CZ / EN / UA) | ✅ | Ukrainian-speaking families are a real Czech segment |
 | Profile completion % nudge | ✅ | Drives data collection |
+| "Co nás o tobě ví" — preferences mirror | ✅ | Read-only summary showing what the matching engine learned about the user from their quiz answers (key preferences only). Makes the app feel like an extension of the user, builds trust in matches, and demonstrates data value. Anchored to default quiz run. |
 
 ---
 
