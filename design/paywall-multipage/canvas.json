@@ -66,8 +66,8 @@
     },
     {
       "file": "WebZkusebni.dc.html",
-      "x": 3630,
-      "y": 1613,
+      "x": 3600,
+      "y": 1600,
       "w": 1080,
       "h": 760,
       "title": "Web 4 · Jak proběhne trial"
@@ -87,7 +87,7 @@
       "x": 0,
       "y": -470,
       "w": 560,
-      "text": "STRUKTURA — 5 obrazovek místo jedné\n\nDnes je paywall JEDNA obrazovka, na které se sejde cena, výhody, trial, důvěra i platba. Tady se to rozloží na pět kroků, aby si člověk mohl každou věc zpracovat zvlášť:\n\n1 HODNOTA — kolik hodin ti to ušetří (a jak jsme k tomu číslu došli)\n2 CESTA — co tě čeká od září do března\n3 VÝBĚR — dvě varianty, cena\n4 TRIAL — co se stane dnes, 2. a 3. den\n5 PLATBA — karta, souhrn, potvrzení rodiče\n\nCENA PADNE AŽ NA KROKU 3. První dva kroky nic neprodávají — proto je pod nimi napsané „zatím nic neplatíš“. To je celý trik na to, aby to nepůsobilo jako zeď: než přijde otázka „zaplatíš?“, už dvakrát něco dostal.\n\nZAŘAZENÍ DO FLOW (steps.js):\n… proof → hodnota → cesta → ucet → plan → zkusebni → platba\nÚčet musí zůstat PŘED platbou. Flow tím naroste z 20 na 24 obrazovek — ale všechny přírůstky jsou ZA revealem, což je podle steps.js nejlépe podložená část flow. Škrtání v onboarding-v2 se týkalo prvních 15 interakcí, ne téhle části.\n\nŠIPKA V TLAČÍTKU: jen na hlavním CTA, na mobilu i na webu. Ne na ghost/decline tlačítkách. Čte se jako „další krok“, ne „kup“ — což je přesně ten rozdíl mezi krokem a zdí."
+      "text": "STRUKTURA — 5 obrazovek místo jedné\n\nDnes je paywall JEDNA obrazovka, na které se sejde cena, výhody, trial, důvěra i platba. Tady se to rozloží na pět kroků, aby si člověk mohl každou věc zpracovat zvlášť:\n\n1 HODNOTA — kolik hodin ti to ušetří (a jak jsme k tomu číslu došli)\n2 CESTA — co tě čeká od září do března\n3 VÝBĚR — dvě varianty, cena\n4 TRIAL — co se stane dnes, 2. a 3. den\n5 PLATBA — karta, souhrn, potvrzení rodiče\n\n(pozn.: krok 4 byl při editaci v GUI opraven na dnes → 3. den [připomínka] → 4. den [platba] — tři plné zkušební dny, ne dva; anotace níž jsou dopsané podle toho.)\n\nCENA PADNE AŽ NA KROKU 3. První dva kroky nic neprodávají — proto je pod nimi napsané „zatím nic neplatíš“. To je celý trik na to, aby to nepůsobilo jako zeď: než přijde otázka „zaplatíš?“, už dvakrát něco dostal.\n\nZAŘAZENÍ DO FLOW (steps.js):\n… proof → hodnota → cesta → ucet → plan → zkusebni → platba\nÚčet musí zůstat PŘED platbou. Flow tím naroste z 20 na 24 obrazovek — ale všechny přírůstky jsou ZA revealem, což je podle steps.js nejlépe podložená část flow. Škrtání v onboarding-v2 se týkalo prvních 15 interakcí, ne téhle části.\n\nŠIPKA V TLAČÍTKU: jen na hlavním CTA, na mobilu i na webu. Ne na ghost/decline tlačítkách. Čte se jako „další krok“, ne „kup“ — což je přesně ten rozdíl mezi krokem a zdí."
     },
     {
       "id": "cena",
@@ -101,7 +101,7 @@
       "x": 2000,
       "y": -470,
       "w": 560,
-      "text": "CO SE NEDÁ SLÍBIT — a jak to obrazovky říkají\n\nKARTA U TRIALU JE PROTI VLASTNÍMU VÝZKUMU. pricing_research.md §4: Digital Fairness Act směřuje k tomu, že vybírat platební údaje POUZE kvůli odemčení triálu bude omezené. Není to zatím zákon a celý trh to dělá — ale cílovka je nezletilí, což je přesně ta kombinace, na kterou §4 upozorňuje. Postaveno podle zadání, tohle je záznam, že výzkum radí jinak.\n\nPŘIPOMENUTÍ 2. DEN SE NESLIBUJE. TRIAL_REMINDER_IMPLEMENTED = false — e-maily zatím neumíme. Krok v časové ose proto zůstává, ale čárkovaně a s větou „tohle zatím neslibujeme“. Až se flag přehodí, styl se změní na plný. Slíbená připomínka, která nepřijde, je přesně to, z čeho jsou chargebacky.\n\nZRUŠENÍ NA JEDNO KLIKNUTÍ SE TAKY NESLIBUJE. ONE_STEP_CANCELLATION_IMPLEMENTED = false, takže u měsíčního je „skončíš, kdy budeš chtít“ (pravda) a ne „zrušíš jedním kliknutím“ (zatím lež).\n\nPOTVRZENÍ RODIČE zůstává a je teď na vlastní obrazovce s celým souhrnem ceny nad sebou — tlačítko je do zaškrtnutí neaktivní.\n\nCO ZMIZELO S KONCEM FREE VERZE:\n• „Když nezaplatíš, nic neztratíš“ — přestalo být pravda.\n• „Zatím ne, chci si projít školy zdarma“ → „Zatím ne, rozmyslím si to“. Pořád stejně velké a čitelné jako přijetí, pořád bez vyčítání.\n• /api/schools* bude potřeba zavřít — dnes je schválně otevřené. Pozor na withMatchScores.\n\nŽÁDNÝ ODPOČET. Jednorázová nabídka je z tohoto návrhu vyndaná (zadání) a leží v UNFORGET.md."
+      "text": "CO SE NEDÁ SLÍBIT — a jak to obrazovky říkají\n\nKARTA U TRIALU JE PROTI VLASTNÍMU VÝZKUMU. pricing_research.md §4: Digital Fairness Act směřuje k tomu, že vybírat platební údaje POUZE kvůli odemčení triálu bude omezené. Není to zatím zákon a celý trh to dělá — ale cílovka je nezletilí, což je přesně ta kombinace, na kterou §4 upozorňuje. Postaveno podle zadání, tohle je záznam, že výzkum radí jinak.\n\nPŘIPOMENUTÍ 3. DEN SE NESLIBUJE. TRIAL_REMINDER_IMPLEMENTED = false — e-maily zatím neumíme. Krok v časové ose proto zůstává, ale čárkovaně a s větou „tohle zatím neslibujeme“. Až se flag přehodí, styl se změní na plný. Slíbená připomínka, která nepřijde, je přesně to, z čeho jsou chargebacky.\n\nZRUŠENÍ NA JEDNO KLIKNUTÍ SE TAKY NESLIBUJE. ONE_STEP_CANCELLATION_IMPLEMENTED = false, takže u měsíčního je „skončíš, kdy budeš chtít“ (pravda) a ne „zrušíš jedním kliknutím“ (zatím lež).\n\nPOTVRZENÍ RODIČE zůstává a je teď na vlastní obrazovce s celým souhrnem ceny nad sebou — tlačítko je do zaškrtnutí neaktivní.\n\nCO ZMIZELO S KONCEM FREE VERZE:\n• „Když nezaplatíš, nic neztratíš“ — přestalo být pravda.\n• „Zatím ne, chci si projít školy zdarma“ → „Zatím ne, rozmyslím si to“. Pořád stejně velké a čitelné jako přijetí, pořád bez vyčítání.\n• /api/schools* bude potřeba zavřít — dnes je schválně otevřené. Pozor na withMatchScores.\n\nŽÁDNÝ ODPOČET. Jednorázová nabídka je z tohoto návrhu vyndaná (zadání) a leží v UNFORGET.md."
     },
     {
       "id": "web",
@@ -109,13 +109,6 @@
       "y": 1154,
       "w": 560,
       "text": "WEB — stejných pět kroků, jiný tvar\n\nKroků je na webu STEJNĚ PĚT a všech pět je tady vykreslených. Je to průvodce, ne ceník, a hlavně: stavový automat flow musí zůstat jeden pro obě plochy (CLAUDE.md, Platform Strategy — „nebakovat do modelu webové předpoklady“). Mění se rozvržení, ne počet kroků.\n\nCO SE NA WEBU LIŠÍ, krok po kroku:\n\n1 HODNOTA — dva sloupce. Vlevo tvrzení a výpočet za ním, vpravo srovnání „bez / se“ s tlačítkem na konci argumentu.\n\n2 CESTA — časová osa se otáčí NA LEŽATO. Celá sezóna září–duben je vidět naráz, což 390px displej fyzicky neumí; tohle je ten nejsilnější rozdíl mezi plochami v celém návrhu.\n\n3 VÝBĚR — karty VEDLE SEBE. Doklad: Babbel, Hootsuite, Cake Equity, Uxcel, Ghost, Fey — na webu prakticky standard. Na mobilu se stohují, a to je taky správně: stejný produkt, dvě různé správné odpovědi.\nVlevo je teď blok DŮVĚRY (jak se počítá pořadí, kam jdou odpovědi, že si školy pozici nekoupí, že nemáme vymyšlené recenze) — ne časová osa triálu. Ta patří kroku 4 a duplikovat ji na dvou obrazovkách za sebou by ji jen zlevnilo.\n\n4 TRIAL — osa vlevo v plném detailu, peníze vpravo jako samostatný blok. Na mobilu je to pod sebou a „k úhradě dnes 0 Kč“ se čte až po odscrollování; na webu je ta nula vidět zároveň s osou.\n\n5 PLATBA — vlevo karta a potvrzení rodiče, vpravo souhrn objednávky, který nejde odscrollovat pryč. Na mobilu je souhrn nahoře, protože jinde by ho nebylo vidět.\n\nVARIANTA A vs B (nedořešené z minula): rozhodnuto pro A — karta vybírá, potvrzuje jedno sdílené tlačítko dole. Ve vícekrokovém průvodci má mít každá obrazovka právě jednu hlavní akci, a je to jediné místo, kam patří šipka. Varianta B (tlačítko v každé kartě) by postavila dvě hlavní akce proti sobě."
-    },
-    {
-      "id": "note-1",
-      "x": -258,
-      "y": 1655,
-      "w": 240,
-      "text": ""
     }
   ],
   "launch": {
