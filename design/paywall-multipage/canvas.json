@@ -1,15 +1,85 @@
 {
   "artboards": [
-    { "file": "Hodnota.dc.html",   "title": "1 · Kolik času ušetříš",     "x": 0,    "y": 0,    "w": 390,  "h": 980 },
-    { "file": "Cesta.dc.html",     "title": "2 · Cesta do března",        "x": 500,  "y": 0,    "w": 390,  "h": 980 },
-    { "file": "Main.dc.html",      "title": "3 · Výběr přístupu",         "x": 1000, "y": 0,    "w": 390,  "h": 1080 },
-    { "file": "Zkusebni.dc.html",  "title": "4 · Jak proběhne trial",     "x": 1500, "y": 0,    "w": 390,  "h": 1000 },
-    { "file": "Platba.dc.html",    "title": "5 · Karta + potvrzení",      "x": 2000, "y": 0,    "w": 390,  "h": 1080 },
-    { "file": "WebHodnota.dc.html", "title": "Web 1 · Kolik času ušetříš", "x": 0,    "y": 1600, "w": 1080, "h": 700 },
-    { "file": "WebCesta.dc.html",   "title": "Web 2 · Cesta do března",    "x": 1200, "y": 1600, "w": 1080, "h": 720 },
-    { "file": "WebPlan.dc.html",    "title": "Web 3 · Výběr přístupu",     "x": 2400, "y": 1600, "w": 1080, "h": 820 },
-    { "file": "WebZkusebni.dc.html","title": "Web 4 · Jak proběhne trial", "x": 3600, "y": 1600, "w": 1080, "h": 760 },
-    { "file": "WebPlatba.dc.html",  "title": "Web 5 · Karta + potvrzení",  "x": 4800, "y": 1600, "w": 1080, "h": 800 }
+    {
+      "file": "Hodnota.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 980,
+      "title": "1 · Kolik času ušetříš"
+    },
+    {
+      "file": "Cesta.dc.html",
+      "x": 500,
+      "y": 0,
+      "w": 390,
+      "h": 980,
+      "title": "2 · Cesta do března"
+    },
+    {
+      "file": "Main.dc.html",
+      "x": 1000,
+      "y": 0,
+      "w": 390,
+      "h": 1080,
+      "title": "3 · Výběr přístupu"
+    },
+    {
+      "file": "Zkusebni.dc.html",
+      "x": 1500,
+      "y": 0,
+      "w": 390,
+      "h": 1000,
+      "title": "4 · Jak proběhne trial"
+    },
+    {
+      "file": "Platba.dc.html",
+      "x": 2000,
+      "y": 0,
+      "w": 390,
+      "h": 1080,
+      "title": "5 · Karta + potvrzení"
+    },
+    {
+      "file": "WebHodnota.dc.html",
+      "x": 0,
+      "y": 1600,
+      "w": 1080,
+      "h": 700,
+      "title": "Web 1 · Kolik času ušetříš"
+    },
+    {
+      "file": "WebCesta.dc.html",
+      "x": 1200,
+      "y": 1600,
+      "w": 1080,
+      "h": 720,
+      "title": "Web 2 · Cesta do března"
+    },
+    {
+      "file": "WebPlan.dc.html",
+      "x": 2400,
+      "y": 1600,
+      "w": 1080,
+      "h": 820,
+      "title": "Web 3 · Výběr přístupu"
+    },
+    {
+      "file": "WebZkusebni.dc.html",
+      "x": 3630,
+      "y": 1613,
+      "w": 1080,
+      "h": 760,
+      "title": "Web 4 · Jak proběhne trial"
+    },
+    {
+      "file": "WebPlatba.dc.html",
+      "x": 4800,
+      "y": 1600,
+      "w": 1080,
+      "h": 800,
+      "title": "Web 5 · Karta + potvrzení"
+    }
   ],
   "annotations": [
     {
@@ -35,11 +105,20 @@
     },
     {
       "id": "web",
-      "x": 0,
-      "y": 1300,
+      "x": -827,
+      "y": 1154,
       "w": 560,
       "text": "WEB — stejných pět kroků, jiný tvar\n\nKroků je na webu STEJNĚ PĚT a všech pět je tady vykreslených. Je to průvodce, ne ceník, a hlavně: stavový automat flow musí zůstat jeden pro obě plochy (CLAUDE.md, Platform Strategy — „nebakovat do modelu webové předpoklady“). Mění se rozvržení, ne počet kroků.\n\nCO SE NA WEBU LIŠÍ, krok po kroku:\n\n1 HODNOTA — dva sloupce. Vlevo tvrzení a výpočet za ním, vpravo srovnání „bez / se“ s tlačítkem na konci argumentu.\n\n2 CESTA — časová osa se otáčí NA LEŽATO. Celá sezóna září–duben je vidět naráz, což 390px displej fyzicky neumí; tohle je ten nejsilnější rozdíl mezi plochami v celém návrhu.\n\n3 VÝBĚR — karty VEDLE SEBE. Doklad: Babbel, Hootsuite, Cake Equity, Uxcel, Ghost, Fey — na webu prakticky standard. Na mobilu se stohují, a to je taky správně: stejný produkt, dvě různé správné odpovědi.\nVlevo je teď blok DŮVĚRY (jak se počítá pořadí, kam jdou odpovědi, že si školy pozici nekoupí, že nemáme vymyšlené recenze) — ne časová osa triálu. Ta patří kroku 4 a duplikovat ji na dvou obrazovkách za sebou by ji jen zlevnilo.\n\n4 TRIAL — osa vlevo v plném detailu, peníze vpravo jako samostatný blok. Na mobilu je to pod sebou a „k úhradě dnes 0 Kč“ se čte až po odscrollování; na webu je ta nula vidět zároveň s osou.\n\n5 PLATBA — vlevo karta a potvrzení rodiče, vpravo souhrn objednávky, který nejde odscrollovat pryč. Na mobilu je souhrn nahoře, protože jinde by ho nebylo vidět.\n\nVARIANTA A vs B (nedořešené z minula): rozhodnuto pro A — karta vybírá, potvrzuje jedno sdílené tlačítko dole. Ve vícekrokovém průvodci má mít každá obrazovka právě jednu hlavní akci, a je to jediné místo, kam patří šipka. Varianta B (tlačítko v každé kartě) by postavila dvě hlavní akce proti sobě."
+    },
+    {
+      "id": "note-1",
+      "x": -258,
+      "y": 1655,
+      "w": 240,
+      "text": ""
     }
   ],
-  "launch": { "view": "canvas" }
+  "launch": {
+    "view": "canvas"
+  }
 }
