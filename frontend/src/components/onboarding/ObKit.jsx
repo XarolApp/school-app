@@ -8,6 +8,21 @@ import { usePrefersReducedMotion } from './usePrefersReducedMotion';
  * every animation is gated behind prefers-reduced-motion.
  */
 
+/**
+ * The quiz progress bar.
+ *
+ * HONEST BY CONSTRUCTION. `percent` must be a real count of answered questions
+ * over total questions — see steps.js `quizProgressPercent`. There is no
+ * pre-filled head start here any more: an indicator inflated to manufacture a
+ * feeling of advancement is exactly the "artificial advancement" the DSA
+ * Art. 25 interface-manipulation prohibition describes, and the audience is
+ * minors. Do not add an offset, an easing curve, or a bar to a screen that has
+ * no questions on it.
+ *
+ * The rail is capped to the question column's width (see .ob-progress in
+ * onboarding.css) rather than stretched across a 1280px desktop viewport — a
+ * full-bleed bar reads as a decorative stripe, not as information.
+ */
 export function ObProgress({ percent, label }) {
   return (
     <div className="ob-progress" role="group" aria-label="Průběh">
@@ -27,30 +42,55 @@ export function ObProgress({ percent, label }) {
 }
 
 /**
- * Standard screen frame: back arrow, progress, content, sticky action bar.
- * `wide` drops the narrow column for reveal/paywall screens.
+ * Standard screen frame: back arrow, phase/progress chrome, content, sticky
+ * action bar. `wide` drops the narrow column for reveal/paywall screens.
+ *
+ * Pass EITHER `progress` (a real percentage, quiz screens only) OR `phase`
+ * (a plain label such as "Než začneme"). Never both — a screen that has no
+ * questions on it has nothing to honestly count.
  */
 export function ObScreen({
   children,
   onBack,
   progress,
   progressLabel,
+  phase,
   actions,
   wide = false,
   chrome = true,
+  aside = null,
 }) {
-  return (
+  const hasBar = typeof progress === 'number';
+  const frame = (
     <div className={`ob-screen${wide ? ' ob-screen-wide' : ''}`}>
       {chrome && (
-        <header className="ob-header">
+        <header className={`ob-header${hasBar ? '' : ' ob-header-phase'}`}>
           <button type="button" className="ob-back" onClick={onBack} aria-label="Zpět">
             <span aria-hidden="true">←</span>
           </button>
-          <ObProgress percent={progress} label={progressLabel} />
+          {hasBar ? (
+            <ObProgress percent={progress} label={progressLabel} />
+          ) : (
+            <>
+              {phase && <span className="ob-phase">{phase}</span>}
+              <span className="ob-brandmark">ŠkolaMatch</span>
+            </>
+          )}
         </header>
       )}
       <div className="ob-body">{children}</div>
       {actions && <div className="ob-actions">{actions}</div>}
+    </div>
+  );
+
+  // Desktop split pane. The aside is rendered as a sibling of the question
+  // column so it can occupy the empty right-hand space at 1024px+ and collapse
+  // (or move inline) below it — see .ob-split in onboarding.css.
+  if (!aside) return frame;
+  return (
+    <div className="ob-split">
+      {frame}
+      <div className="ob-split-aside">{aside}</div>
     </div>
   );
 }
@@ -95,7 +135,12 @@ export function ObOption({
       onClick={disabled ? undefined : onClick}
       onMouseEnter={onHover ? () => onHover(true) : undefined}
       onMouseLeave={onHover ? () => onHover(false) : undefined}
-      aria-pressed={selected}
+      // Single-choice rows are real radios to assistive tech (inside the
+      // role="radiogroup" the quiz wraps them in); multi-selects stay toggle
+      // buttons. The artboards are visual mockups and say nothing about this.
+      role={multi ? undefined : 'radio'}
+      aria-checked={multi ? undefined : selected}
+      aria-pressed={multi ? selected : undefined}
       aria-disabled={disabled || undefined}
     >
       <span className={`ob-option-mark${multi ? ' is-multi' : ''}`} aria-hidden="true" />

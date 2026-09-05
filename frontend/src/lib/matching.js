@@ -257,3 +257,62 @@ export function explain(result, answers, role = 'student') {
 
   return out;
 }
+
+/**
+ * The honest OTHER half of `explain`: the components that were scored and did
+ * NOT hit.
+ *
+ * A "Shoda podle" list containing only wins is a sales pitch, not an
+ * explanation — and the first thing a parent does with a recommendation is look
+ * for what it is not telling them. Naming the trade-offs is what makes the
+ * positives believable, and it is Cal AI's highest-transfer tactic (stating a
+ * limitation up front measurably reduces refunds).
+ *
+ * ZERO-SHAME: every line here is about the SCHOOL not matching a preference,
+ * never about the user. Nothing in this function may read as a judgement of the
+ * person answering. Components the user skipped are absent from `parts`
+ * entirely and therefore silently produce no line — a skip is not a trade-off.
+ */
+export function tradeoffs(result, role = 'student') {
+  const formal = role === 'parent';
+  const out = [];
+  const p = result.parts;
+
+  if (p.focus && !p.focus.hit) {
+    out.push(
+      formal
+        ? 'Zaměření — obory školy se s uvedenými zájmy nepřekrývají. Ve výsledku ji drží ostatní kritéria.'
+        : 'Zaměření — obory téhle školy se s tím, co tě baví, nepotkávají. Nahoře je díky ostatním věcem.'
+    );
+  }
+  if (p.studyType && !p.studyType.hit) {
+    out.push(
+      formal
+        ? 'Typ školy je jiný, než jaký jste uvedli jako preferovaný.'
+        : 'Typ školy není přesně ten, který jsi vybral.'
+    );
+  }
+  if (p.location && !p.location.hit) {
+    out.push(
+      formal
+        ? 'Leží mimo části Prahy, které jste označili — dojíždění bude delší.'
+        : 'Je mimo části Prahy, které jsi vybral — dojíždět budeš dýl.'
+    );
+  }
+  if (p.language && !p.language.hit) {
+    out.push(
+      formal
+        ? 'Jazyky zde mají standardní rozsah, nikoli rozšířený.'
+        : 'Jazyky tu jedou v běžném rozsahu, ne rozšířeně.'
+    );
+  }
+  if (p.practice && !p.practice.hit) {
+    out.push(
+      formal
+        ? 'Poměr praxe a teorie neodpovídá tomu, co jste označili.'
+        : 'Poměr praxe a teorie není přesně ten, cos chtěl.'
+    );
+  }
+
+  return out;
+}

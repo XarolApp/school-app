@@ -44,13 +44,13 @@ const MILESTONES = [
 ];
 
 function JourneySummary() {
-  const { role, goNext, goBack, progress, ranked } = useOnboarding();
+  const { role, goNext, goBack, phase, ranked } = useOnboarding();
   const parent = role === 'parent';
 
   return (
     <ObScreen
       onBack={goBack}
-      progress={progress}
+      phase={phase}
       actions={<ObButton onClick={goNext}>Pokračovat</ObButton>}
     >
       <h1 className="ob-title">{parent ? 'Co vás čeká' : 'Co tě čeká'}</h1>

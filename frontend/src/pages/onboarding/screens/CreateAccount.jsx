@@ -29,7 +29,7 @@ import Captcha, { captchaEnabled } from '../../../components/Captcha';
  * minor is written to Supabase during onboarding beyond the account itself.
  */
 function CreateAccount() {
-  const { role, ranked, goNext, goBack, progress } = useOnboarding();
+  const { role, ranked, goNext, goBack, phase } = useOnboarding();
   const matchCount = ranked?.length || 0;
   const { signUp } = useAuth();
   const parent = role === 'parent';
@@ -75,7 +75,7 @@ function CreateAccount() {
 
   if (sent) {
     return (
-      <ObScreen progress={progress}>
+      <ObScreen phase={phase}>
         <h1 className="ob-title">Potvrď e-mail</h1>
         <p className="ob-hint">
           Poslali jsme {parent ? 'vám' : 'ti'} odkaz na <strong>{email}</strong>. Klikni
@@ -89,7 +89,7 @@ function CreateAccount() {
   return (
     <ObScreen
       onBack={goBack}
-      progress={progress}
+      phase={phase}
       actions={
         <button
           type="submit"

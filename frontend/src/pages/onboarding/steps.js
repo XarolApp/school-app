@@ -1,11 +1,7 @@
 import Welcome from './screens/Welcome';
 import RoleFork from './screens/RoleFork';
-import ProblemFraming from './screens/ProblemFraming';
-import StakesClarifier from './screens/StakesClarifier';
-import IntentSelect from './screens/IntentSelect';
+import Stakes from './screens/Stakes';
 import QuizQuestion from './screens/QuizQuestion';
-import Mirroring from './screens/Mirroring';
-import HonestExpectation from './screens/HonestExpectation';
 import Calculating from './screens/Calculating';
 import Reveal from './screens/Reveal';
 import JourneySummary from './screens/JourneySummary';
@@ -17,40 +13,63 @@ import Activated from './screens/Activated';
 import { QUESTIONS } from './quizQuestions';
 
 /**
- * The canonical 23-screen flow.
+ * The canonical flow — 20 screens (onboarding-v2, 2026-09-05).
  *
- * Pillar 1 (5)  hook -> role fork -> problem -> stakes -> intent
- * Pillar 2 (14) 10 quiz screens -> mirroring -> honest expectation ->
- *               calculation -> reveal
- * Pillar 3 (4)  journey summary -> commitment -> social proof -> paywall
+ * Pillar 1 (3)  welcome -> role fork -> stakes+intent
+ * Pillar 2 (11) quiz (one question per screen) -> calculation -> reveal
+ * Pillar 3 (5)  journey summary -> commitment -> social proof -> account ->
+ *               paywall
  *
- * `Activated` sits AFTER the 23 and is the post-onboarding empty-state
- * checklist, not an onboarding screen. It is excluded from the progress maths.
+ * WHAT CHANGED FROM THE 23-SCREEN v1, and why (design/onboarding-v2/canvas.json):
+ * the steepest drop-off in an onboarding sits in the first ~15 interactions,
+ * which is exactly where v1 spent five framing screens before the user had
+ * received anything. Post-reveal screens are the best-evidenced part of the
+ * flow, so nothing after the reveal was touched. Three screens were removed:
+ *
+ *  - `problem` + `stakes` + `intent`  -> merged into ONE screen (`stakes`).
+ *    The neutral stat, the 60-schools problem statement and the multi-intent
+ *    chips all do framing work; they did not each need a tap.
+ *  - `mirror` (Mirroring)             -> DELETED as a screen. The "you were
+ *    heard" job moved INTO the quiz: selecting an option injects a reassurance
+ *    card directly under it (quizQuestions.js `reassure`). Same work, spread
+ *    across every question, paid for with zero extra screens.
+ *  - `expectation` (HonestExpectation) -> DELETED as a screen. Its content
+ *    moved onto the reveal, attached to the claim it actually qualifies.
+ *
+ * `Activated` sits AFTER the 20 and is the post-onboarding empty-state
+ * checklist, not an onboarding screen (`postFlow`).
  */
+
+/** Honest phase labels. There is no percentage before the quiz because there
+ *  is nothing to count yet, and none after it because "how far through a
+ *  paywall are you" is not a real quantity. */
+export const PHASES = {
+  intro: 'Než začneme',
+  quiz: 'Dotazník',
+  result: 'Výsledek',
+};
+
 export const STEPS = [
-  { id: 'welcome', component: Welcome, chrome: false },
-  { id: 'role', component: RoleFork, chrome: false },
-  { id: 'problem', component: ProblemFraming, chrome: true },
-  { id: 'stakes', component: StakesClarifier, chrome: true },
-  { id: 'intent', component: IntentSelect, chrome: true },
+  { id: 'welcome', component: Welcome, chrome: false, phase: 'intro' },
+  { id: 'role', component: RoleFork, chrome: false, phase: 'intro' },
+  { id: 'stakes', component: Stakes, chrome: true, phase: 'intro' },
   ...QUESTIONS.map((q, i) => ({
     id: `q${i + 1}`,
     component: QuizQuestion,
     chrome: true,
+    phase: 'quiz',
     questionIndex: i,
   })),
-  { id: 'mirror', component: Mirroring, chrome: true },
-  { id: 'expectation', component: HonestExpectation, chrome: true },
-  { id: 'calculating', component: Calculating, chrome: false },
-  { id: 'reveal', component: Reveal, chrome: false },
-  { id: 'summary', component: JourneySummary, chrome: true },
-  { id: 'commitment', component: Commitment, chrome: true },
-  { id: 'proof', component: SocialProof, chrome: true },
+  { id: 'calculating', component: Calculating, chrome: false, phase: 'result' },
+  { id: 'reveal', component: Reveal, chrome: false, phase: 'result' },
+  { id: 'summary', component: JourneySummary, chrome: true, phase: 'result' },
+  { id: 'commitment', component: Commitment, chrome: true, phase: 'result' },
+  { id: 'proof', component: SocialProof, chrome: true, phase: 'result' },
   // Sits before the paywall because the trial window is opened by a database
   // trigger on account creation — there has to be an account before there is
   // anything to charge.
-  { id: 'ucet', component: CreateAccount, chrome: true },
-  { id: 'paywall', component: Paywall, chrome: false },
+  { id: 'ucet', component: CreateAccount, chrome: true, phase: 'result' },
+  { id: 'paywall', component: Paywall, chrome: false, phase: 'result' },
   { id: 'hotovo', component: Activated, chrome: false, postFlow: true },
 ];
 
@@ -60,22 +79,29 @@ export function stepIndexById(id) {
   return STEPS.findIndex((s) => s.id === id);
 }
 
-/** Index of the first quiz screen, used for the "Otázka X z 10" label. */
+/** Index of the first quiz screen, used for the "Otázka X z N" label. */
 export const FIRST_QUIZ_INDEX = stepIndexById('q1');
 
 /**
- * Endowed progress + goal gradient.
+ * HONEST PROGRESS.
  *
- * Starts at 15% on screen one — Nunes & Drèze (2006) showed a pre-stamped card
- * doubled completion (19% -> 34%) for identical remaining work. The curve is
- * deliberately uneven: it moves slowly through the first half and accelerates
- * after the midpoint, because motivation rises as the finish line appears
- * closer (goal gradient, Hull 1932).
+ * The previous version pre-filled the bar to 15% on screen one and eased it
+ * through a goal-gradient curve (endowed progress, Nunes & Drèze 2006). That is
+ * deliberately gone: an indicator inflated to induce a feeling of advancement is
+ * "artificial advancement that misrepresents the actual state" — squarely the
+ * interface-manipulation prohibition in DSA Art. 25, and the audience here is
+ * minors. Do not reintroduce it.
+ *
+ * What is left is a bar that counts questions and nothing else:
+ *   - pre-quiz screens: no bar at all (a phase label instead),
+ *   - quiz screens:     exactly (answered position) / (number of questions),
+ *   - post-quiz:        no bar; a phase label only.
+ *
+ * @param {number} questionIndex zero-based index of the question on screen
+ * @returns {number} 0-100
  */
-const ENDOWED = 0.15;
-
-export function progressFor(stepIndex) {
-  const raw = Math.max(0, Math.min(1, stepIndex / (FLOW_LENGTH - 1)));
-  const eased = raw < 0.5 ? raw * 0.8 : 0.4 + (raw - 0.5) * 1.2;
-  return Math.round((ENDOWED + (1 - ENDOWED) * eased) * 100);
+export function quizProgressPercent(questionIndex, totalQuestions) {
+  if (!totalQuestions) return 0;
+  const clamped = Math.max(0, Math.min(totalQuestions, questionIndex + 1));
+  return Math.round((clamped / totalQuestions) * 100);
 }

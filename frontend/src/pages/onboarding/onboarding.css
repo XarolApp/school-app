@@ -449,62 +449,21 @@
   color: var(--text);
 }
 
-/* --- mirroring ------------------------------------------------------------ */
-.ob-mirror-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  gap: 10px;
-}
-
-.ob-mirror-list li {
-  padding: 14px 16px;
-  border-radius: var(--ob-radius);
-  background: var(--social-bg);
-  color: var(--text-h);
-  font-size: 16px;
-}
-
-/* --- honest expectation --------------------------------------------------- */
-.ob-honest-block {
-  border: 1px solid var(--border);
-  border-radius: var(--ob-radius);
-  padding: 14px 16px;
-}
-
-.ob-honest-block-warn {
-  border-style: dashed;
-}
-
-/* --- calculating ---------------------------------------------------------- */
+/* --- calculating (v2: itemised checklist, never a percentage) ------------- */
 .ob-calc {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: var(--space-lg);
   justify-content: center;
-  align-items: flex-start;
+  align-items: stretch;
+  max-width: 620px;
+  margin: 0 auto;
 }
 
-.ob-calc-ring {
-  width: 48px;
-  height: 48px;
-  border-radius: 999px;
-  border: 4px solid var(--border);
-  border-top-color: var(--accent);
-  animation: ob-spin 900ms linear infinite;
-}
-
-.ob-calc-ring.is-static {
-  animation: none;
-  border-top-color: var(--accent);
-}
-
-@keyframes ob-spin {
-  to {
-    transform: rotate(360deg);
-  }
+.ob-calc-title,
+.ob-calc-sub {
+  text-align: center;
 }
 
 .ob-calc-steps {
@@ -512,29 +471,124 @@
   padding: 0;
   margin: 0;
   display: grid;
-  gap: 12px;
+  gap: 2px;
 }
 
-.ob-calc-steps li {
+.ob-calc-step {
+  border-radius: var(--r-option);
+  padding: var(--space-md);
+  transition: background-color 260ms ease, opacity 260ms ease;
+}
+
+.ob-calc-step.is-next {
+  opacity: 0.4;
+}
+
+.ob-calc-step.is-now {
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  padding: calc(var(--space-md) - 1px);
+}
+
+.ob-calc-row {
   display: flex;
-  gap: 10px;
-  font-size: 16px;
-  color: var(--text);
-  opacity: 0.45;
-  transition: opacity 260ms ease;
-}
-
-.ob-calc-steps li.is-active {
-  opacity: 1;
-  color: var(--text-h);
-}
-
-.ob-calc-steps li.is-done {
-  opacity: 0.75;
+  align-items: center;
+  gap: var(--space-md);
 }
 
 .ob-calc-mark {
-  color: var(--accent);
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1.5px solid var(--line2);
+  color: transparent;
+}
+
+.ob-calc-step.is-done .ob-calc-mark {
+  background: var(--ok-soft);
+  color: var(--ok);
+  border-color: transparent;
+}
+
+.ob-calc-step.is-now .ob-calc-mark {
+  background: var(--acc-soft);
+  color: var(--acc);
+  border-color: transparent;
+}
+
+.ob-calc-text {
+  flex: 1;
+  font-size: var(--fs-body-md);
+  font-weight: 500;
+  color: var(--text-h);
+}
+
+.ob-calc-step.is-done .ob-calc-text {
+  color: var(--text);
+  font-weight: 400;
+}
+
+.ob-calc-state {
+  font-size: var(--fs-data-sm);
+  color: var(--ink3);
+}
+
+/* Genuinely INDETERMINATE. There is no honest percentage to report for a
+   sub-second computation, so the bar must never look like one. */
+.ob-calc-bar {
+  display: block;
+  margin: var(--space-sm) 0 0;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.ob-calc-bar-fill {
+  display: block;
+  height: 100%;
+  width: 42%;
+  border-radius: 999px;
+  background: var(--accent);
+  animation: ob-indeterminate 1100ms ease-in-out infinite;
+}
+
+.ob-calc-bar.is-static .ob-calc-bar-fill {
+  animation: none;
+}
+
+@keyframes ob-indeterminate {
+  0% {
+    transform: translateX(-60%);
+  }
+  100% {
+    transform: translateX(240%);
+  }
+}
+
+.ob-calc-note {
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--r-card);
+  background: var(--surface2);
+  border: 1px solid var(--line);
+}
+
+.ob-calc-note p {
+  margin: 0;
+  font-size: var(--fs-caption);
+  line-height: var(--lh-body-md);
+  color: var(--text);
+  text-align: center;
+}
+
+.ob-calc-note strong {
+  color: var(--text-h);
+  font-weight: 600;
 }
 
 /* --- reveal / matches ----------------------------------------------------- */
@@ -1195,7 +1249,7 @@
   .ob-confetti {
     display: none;
   }
-  .ob-calc-ring {
+  .ob-calc-bar-fill {
     animation: none;
   }
 }
@@ -1320,4 +1374,783 @@
 .ob-option.is-blocked {
   opacity: 0.45;
   cursor: default;
+}
+
+/* ===========================================================================
+   ONBOARDING V2 — 2026-09-05
+   Split-pane desktop quiz, honest chrome, merged stakes screen, rebuilt
+   reveal and two-pane paywall. Every value below comes from
+   src/design/tokens.css; nothing here hardcodes a colour, radius or size.
+   =========================================================================== */
+
+/* Base (mobile) shape of the split: there is no split. One column, the
+   profile panel collapsed into its strip. The grid only appears at 1024px+. */
+.ob-split {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+}
+
+/* --- honest chrome -------------------------------------------------------- */
+/* The progress rail is capped to the question column's width rather than
+   stretched across a 1280px viewport: a full-bleed bar at desktop width reads
+   as a decorative stripe, not as information. */
+.ob-progress {
+  max-width: 560px;
+}
+
+/* Pre-quiz and post-quiz screens carry a PHASE LABEL and no bar, because there
+   is nothing there to honestly count. Do not put a bar back on these. */
+.ob-header-phase {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: var(--space-md);
+}
+
+.ob-phase {
+  font-size: var(--fs-label-caps);
+  font-weight: var(--fw-label-caps);
+  letter-spacing: var(--ls-label-caps);
+  text-transform: uppercase;
+  color: var(--ink3);
+}
+
+.ob-brandmark {
+  margin-left: auto;
+  font-family: var(--heading);
+  font-weight: 600;
+  font-size: var(--fs-body-md);
+  color: var(--accent);
+}
+
+/* --- merged stakes + intent screen ---------------------------------------- */
+.ob-stakes {
+  display: grid;
+  gap: var(--space-xl);
+}
+
+.ob-stakes-why {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.ob-stakes .ob-stat {
+  display: block;
+  margin: 0;
+}
+
+.ob-stakes .ob-stat-number {
+  display: block;
+  font-family: var(--heading);
+  font-weight: 400;
+  font-size: 64px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--accent);
+}
+
+.ob-stakes .ob-stat-unit {
+  display: block;
+  margin-top: var(--space-sm);
+  font-family: var(--heading);
+  font-weight: 400;
+  font-size: var(--fs-headline-md);
+  line-height: var(--lh-headline-md);
+  color: var(--text-h);
+}
+
+.ob-stakes-note {
+  padding: var(--space-md) var(--space-lg);
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+}
+
+.ob-stakes-note p {
+  margin: 0;
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-body-md);
+  color: var(--text);
+}
+
+.ob-stakes-note strong {
+  color: var(--text-h);
+  font-weight: 600;
+}
+
+.ob-stakes-ask {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.ob-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+}
+
+.ob-chip {
+  font: inherit;
+  font-size: var(--fs-body-sm);
+  font-weight: 500;
+  padding: 12px 17px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text-h);
+  cursor: pointer;
+}
+
+.ob-chip:hover,
+.ob-chip:focus-visible {
+  border-color: var(--acc-line);
+}
+
+.ob-chip.is-selected {
+  border: 1.5px solid var(--accent);
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-weight: 600;
+  padding: 11.5px 16.5px;
+}
+
+/* --- welcome: photo slot + honest trust row ------------------------------- */
+/* An empty, clearly-labelled slot rather than stock art. DESIGN.md asks for
+   real photographs of real people; none exist yet, and filler illustration
+   would be exactly the "illustration-heavy" look it rules out. */
+.ob-photo-slot {
+  min-height: 132px;
+  border-radius: var(--r-card);
+  border: 1px dashed var(--line2);
+  background: var(--surface2);
+  display: flex;
+  align-items: flex-end;
+  padding: var(--space-md);
+}
+
+.ob-photo-slot span {
+  font-size: var(--fs-caption);
+  color: var(--ink3);
+}
+
+.ob-welcome-trust {
+  list-style: none;
+  margin: var(--space-lg) 0 0;
+  padding: var(--space-lg) 0 0;
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: var(--space-md);
+}
+
+.ob-welcome-trust li {
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  color: var(--ink3);
+}
+
+.ob-welcome-trust strong {
+  display: block;
+  font-size: var(--fs-body-sm);
+  font-weight: 600;
+  color: var(--text-h);
+  margin-bottom: 2px;
+}
+
+/* --- quiz: live candidate count ------------------------------------------ */
+/* A REAL count of real candidates, recomputed from the answers so far. This is
+   the honest replacement for a "live match %": after two of nine questions no
+   percentage exists that is not invented, and this product refuses to show
+   match percentages anywhere. */
+.ob-live {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  align-self: flex-start;
+  padding: 9px 14px;
+  border-radius: 999px;
+  background: var(--ok-soft);
+  color: var(--ok);
+  font-size: var(--fs-data-sm);
+  font-weight: 600;
+  margin: 0;
+}
+
+.ob-live strong {
+  font-weight: 700;
+}
+
+.ob-live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--ok);
+  flex: none;
+}
+
+/* --- quiz: answer reassurance (the migrated mirroring screen) ------------- */
+.ob-reassure {
+  display: flex;
+  gap: 11px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  border-radius: var(--r-option);
+  background: var(--ok-soft);
+  border: 1px solid var(--line);
+  margin: 0;
+}
+
+.ob-reassure p {
+  margin: 0;
+  font-size: var(--fs-data-sm);
+  line-height: var(--lh-body-md);
+  color: var(--ok);
+}
+
+.ob-reassure-icon {
+  color: var(--ok);
+  font-size: var(--fs-body-sm);
+  line-height: 1.4;
+  flex: none;
+}
+
+/* --- quiz: live profile panel -------------------------------------------- */
+.ob-profile {
+  position: sticky;
+  top: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  flex: 1;
+}
+
+.ob-profile-title {
+  margin: 0;
+  font-size: var(--fs-label-caps);
+  font-weight: var(--fw-label-caps);
+  letter-spacing: var(--ls-label-caps);
+  text-transform: uppercase;
+  color: var(--ink3);
+}
+
+.ob-profile-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ob-profile-row {
+  padding: 11px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.ob-profile-row.is-pending {
+  opacity: 0.45;
+}
+
+.ob-profile-key {
+  display: block;
+  font-size: var(--fs-data-sm);
+  color: var(--ink3);
+  margin-bottom: 6px;
+}
+
+.ob-profile-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ob-profile-tag {
+  font-size: var(--fs-data-sm);
+  font-weight: 500;
+  padding: 5px 10px;
+  border-radius: var(--r-chip);
+  background: var(--bg);
+  border: 1px solid var(--line2);
+  color: var(--text-h);
+  white-space: nowrap;
+}
+
+.ob-profile-row.is-current .ob-profile-tag {
+  border: 1.5px solid var(--accent);
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-weight: 600;
+  padding: 4px 9px;
+}
+
+/* Dashed empty slots: the panel shows what is still MISSING as honestly as
+   what has been filled in. */
+.ob-profile-slot {
+  display: block;
+  height: 26px;
+  border-radius: var(--r-chip);
+  border: 1px dashed var(--line2);
+}
+
+.ob-profile-foot {
+  margin-top: auto;
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--line2);
+}
+
+.ob-profile-left {
+  margin: 0 0 var(--space-sm);
+  font-size: var(--fs-data-sm);
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.ob-profile-privacy {
+  margin: 0;
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  color: var(--ink3);
+}
+
+/* Mobile shape: one tappable strip, same state. */
+.ob-profile-strip {
+  border-radius: var(--r-option);
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+
+.ob-profile-striphead {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 12px 14px;
+  background: none;
+  border: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.ob-profile-striptags {
+  display: flex;
+  gap: 6px;
+  overflow: hidden;
+  flex: 1;
+}
+
+.ob-profile-empty,
+.ob-profile-more {
+  font-size: var(--fs-data-sm);
+  color: var(--ink3);
+  white-space: nowrap;
+}
+
+.ob-profile-chev {
+  color: var(--ink3);
+  font-size: var(--fs-data-sm);
+  flex: none;
+}
+
+.ob-profile-stripbody {
+  padding: 0 14px 14px;
+}
+
+.ob-profile-strip .ob-profile-foot {
+  margin-top: var(--space-md);
+}
+
+/* --- reveal (v2) ---------------------------------------------------------- */
+.ob-reveal-head {
+  max-width: 22ch;
+}
+
+.ob-reveal-lede {
+  max-width: 58ch;
+}
+
+.ob-reveal-grid {
+  display: grid;
+  gap: var(--space-lg);
+  margin-top: var(--space-sm);
+  align-items: start;
+}
+
+.ob-hero-match {
+  background: var(--surface);
+  border: 1.5px solid var(--acc-line);
+  border-radius: var(--r-card);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow);
+}
+
+.ob-hero-rank {
+  margin: 0;
+  font-size: var(--fs-label-caps);
+  font-weight: var(--fw-label-caps);
+  letter-spacing: var(--ls-label-caps);
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.ob-hero-name {
+  margin: var(--space-sm) 0 0;
+  font-family: var(--heading);
+  font-weight: 400;
+  font-size: var(--fs-headline-md);
+  line-height: var(--lh-headline-md);
+  letter-spacing: var(--ls-headline-md);
+  color: var(--text-h);
+}
+
+.ob-hero-meta {
+  margin: var(--space-sm) 0 0;
+  font-size: var(--fs-body-sm);
+  color: var(--text);
+}
+
+/* A qualitative BAND, never a percentage — the engine cannot honestly justify
+   two significant figures and the product refuses to fake them. */
+.ob-hero-band {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin: var(--space-md) 0 0;
+  padding: 8px 13px;
+  border-radius: 999px;
+  background: var(--ok-soft);
+  color: var(--ok);
+  font-size: var(--fs-data-sm);
+  font-weight: 600;
+}
+
+.ob-hero-band.ob-band-ok,
+.ob-hero-band.ob-band-weak {
+  background: var(--surface2);
+  color: var(--text);
+}
+
+.ob-hero-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: currentColor;
+  flex: none;
+}
+
+.ob-hero-whylabel {
+  margin: var(--space-lg) 0 var(--space-sm);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink3);
+}
+
+.ob-hero-why {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.ob-hero-why li {
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-body-sm);
+  color: var(--text);
+  padding-left: 20px;
+  position: relative;
+}
+
+.ob-hero-why li::before {
+  content: '\2713';
+  position: absolute;
+  left: 0;
+  color: var(--ok);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+}
+
+/* The honest half. A reasons list that is all wins is a pitch, not an
+   explanation — and it is the first thing a parent distrusts. */
+.ob-hero-why li.is-tradeoff {
+  color: var(--ink3);
+}
+
+.ob-hero-why li.is-tradeoff::before {
+  content: '\2013';
+  color: var(--ink3);
+}
+
+.ob-hero-confidence {
+  margin: var(--space-md) 0 0;
+  font-size: var(--fs-caption);
+  color: var(--ink3);
+}
+
+.ob-lock-stack {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.ob-lock-card {
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-option);
+  padding: var(--space-md);
+  overflow: hidden;
+}
+
+.ob-lock-inner {
+  filter: blur(3.5px);
+  opacity: 0.55;
+  user-select: none;
+}
+
+.ob-lock-rank {
+  margin: 0;
+  font-size: var(--fs-label-caps);
+  font-weight: var(--fw-label-caps);
+  letter-spacing: var(--ls-label-caps);
+  text-transform: uppercase;
+  color: var(--ink3);
+}
+
+.ob-lock-name {
+  margin: 6px 0 0;
+  font-family: var(--heading);
+  font-weight: 400;
+  font-size: var(--fs-headline-sm);
+  line-height: var(--lh-headline-sm);
+  color: var(--text-h);
+}
+
+.ob-lock-meta {
+  margin: 4px 0 0;
+  font-size: var(--fs-caption);
+  color: var(--text);
+}
+
+.ob-lock-foot {
+  padding: 15px var(--space-md);
+  border: 1px dashed var(--line2);
+  border-radius: var(--r-option);
+  text-align: center;
+}
+
+.ob-lock-foot p {
+  margin: 0;
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-body-sm);
+  color: var(--text);
+}
+
+.ob-lock-foot strong {
+  color: var(--text-h);
+  font-weight: 600;
+}
+
+/* Buy path and share path at EQUAL reach — the share button is never
+   subordinated to the buy button and never framed as the fallback for someone
+   who cannot pay. */
+.ob-reveal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+}
+
+.ob-reveal-actions .ob-btn {
+  flex: 1 1 220px;
+}
+
+.ob-reveal-free {
+  font-size: var(--fs-body-sm);
+  color: var(--ink3);
+  flex-basis: 100%;
+}
+
+/* Honest expectation, migrated from its own screen to the claim it qualifies. */
+.ob-honest {
+  margin-top: var(--space-lg);
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--r-card);
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  display: flex;
+  gap: var(--space-md);
+  align-items: flex-start;
+}
+
+.ob-honest-icon {
+  color: var(--accent);
+  font-size: var(--fs-body-sm);
+  flex: none;
+  margin-top: 1px;
+}
+
+.ob-honest p {
+  margin: 0;
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-body-md);
+  color: var(--text);
+}
+
+.ob-honest strong {
+  color: var(--text-h);
+  font-weight: 600;
+}
+
+/* --- paywall (v2) --------------------------------------------------------- */
+.ob-keep {
+  margin-top: var(--space-lg);
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--r-card);
+  background: var(--ok-soft);
+  border: 1px solid var(--line);
+}
+
+.ob-keep p {
+  margin: 0;
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-body-md);
+  color: var(--ok);
+}
+
+/* The two panes stack on mobile, value first, price second. */
+.ob-paywall-case,
+.ob-paywall-buy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  min-width: 0;
+}
+
+/* Neutral decline. Never confirmshaming — it would be aimed at a 15-year-old. */
+.ob-decline {
+  margin: var(--space-lg) auto 0;
+  display: block;
+  font: inherit;
+  font-size: var(--fs-body-sm);
+  color: var(--text);
+  background: none;
+  border: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+/* ===========================================================================
+   DESKTOP (1024px+) — the split pane.
+   Not a stretched phone: the question column is CAPPED at a readable measure
+   and the freed space carries real content. Click targets shrink from the
+   56px touch size to 52px; reusing one number across both is the clearest
+   tell of a stretched-phone layout.
+   =========================================================================== */
+@media (min-width: 1024px) {
+  /* The reveal and paywall are two-pane at this width, so the 720px "wide"
+     cap from the mobile-first base is too narrow for them. Still well under
+     the 1280px content max — a paywall stretched edge to edge reads as a
+     pricing page, not as a decision. */
+  .ob-screen-wide {
+    max-width: 1080px;
+  }
+
+  .ob-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 420px;
+    align-items: stretch;
+    flex: 1;
+    width: 100%;
+    max-width: var(--content-max);
+    margin: 0 auto;
+  }
+
+  .ob-split .ob-screen {
+    max-width: 680px;
+    margin: 0;
+    padding: var(--space-xl) var(--space-xxl) var(--space-xl) var(--page-margin-md);
+  }
+
+  /* The question column itself stays narrow — long lines measurably hurt
+     reading past roughly 75 characters. */
+  .ob-split .ob-body {
+    max-width: 600px;
+    justify-content: center;
+    gap: var(--space-lg);
+  }
+
+  .ob-split .ob-actions {
+    max-width: 600px;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-lg);
+  }
+
+  .ob-split .ob-actions .ob-btn {
+    width: auto;
+  }
+
+  .ob-split .ob-actions .ob-skip {
+    margin-left: auto;
+  }
+
+  .ob-split-aside {
+    background: var(--surface2);
+    border-left: 1px solid var(--line);
+    padding: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* The strip is the MOBILE shape of the same state — hidden once the panel
+     itself is visible, never rendered twice. */
+  .ob-profile-strip-wrap {
+    display: none;
+  }
+
+  .ob-split .ob-option {
+    min-height: 52px;
+  }
+
+  .ob-reveal-grid {
+    grid-template-columns: minmax(0, 1fr) 360px;
+  }
+
+  .ob-stakes {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xxxl);
+    align-items: center;
+  }
+
+  .ob-paywall-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 460px;
+    gap: 0;
+    align-items: start;
+  }
+
+  .ob-paywall-case {
+    padding-right: var(--space-xl);
+  }
+
+  .ob-paywall-buy {
+    background: var(--surface2);
+    border: 1px solid var(--line);
+    padding: var(--space-xl);
+    border-radius: var(--r-card);
+  }
+}
+
+@media (max-width: 1023px) {
+  /* Below the split, the aside is the strip's job — the panel would duplicate
+     it. Same state, one shape at a time. */
+  .ob-split-aside {
+    display: none;
+  }
+
+  .ob-option {
+    min-height: 56px;
+  }
 }

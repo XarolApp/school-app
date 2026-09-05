@@ -4,7 +4,7 @@ import { fetchSchoolsForMatching } from '../../api';
 import { rankSchools } from '../../lib/matching';
 import { RoleSwitch } from '../../components/onboarding/ObKit';
 import { OnboardingContext } from './useOnboarding';
-import { STEPS, stepIndexById, progressFor } from './steps';
+import { PHASES, STEPS, stepIndexById } from './steps';
 import { cleanAnswers, initialAnswers } from './quizQuestions';
 import './onboarding.css';
 
@@ -125,6 +125,11 @@ function OnboardingFlow() {
     [schools, cleaned, role]
   );
 
+  // Honest chrome: a phase name, never a fabricated completion percentage.
+  // The only real percentage in the flow is computed on the quiz screen itself
+  // from the question index (steps.js `quizProgressPercent`).
+  const phase = PHASES[STEPS[stepIndex]?.phase] || null;
+
   const value = useMemo(
     () => ({
       role,
@@ -145,7 +150,7 @@ function OnboardingFlow() {
       setPurchased,
       stepIndex,
       totalSteps: STEPS.length,
-      progress: progressFor(stepIndex),
+      phase,
       goNext,
       goBack,
       goTo,
@@ -165,6 +170,7 @@ function OnboardingFlow() {
       ranked,
       purchased,
       stepIndex,
+      phase,
       goNext,
       goBack,
       goTo,

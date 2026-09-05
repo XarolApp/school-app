@@ -336,16 +336,24 @@ function Paywall() {
 
   return (
     <ObScreen chrome={false} wide>
-      <div className="ob-paywall">
+      {/* Two panes on desktop: the case for paying on the left, the plans and
+          the CTA on the right (--surface2). One column on mobile, value first.
+          Both plans render their full price at equal visual weight — hiding a
+          plan's cost until checkout is an undisclosed-cost pattern and is
+          prohibited, and pre-selecting one (season, per the pricing decision)
+          is fine only because the other's price is right there. */}
+      <div className="ob-paywall ob-paywall-split">
+        <div className="ob-paywall-case">
         <button type="button" className="ob-back ob-back-loose" onClick={goBack} aria-label="Zpět">
           <span aria-hidden="true">←</span>
         </button>
 
+        <p className="ob-eyebrow">{parent ? 'Poslední krok' : 'Zbývá poslední krok'}</p>
         <h1 className="ob-title">{parent ? 'Odemkněte celé pořadí' : 'Odemkni si celé pořadí'}</h1>
         <p className="ob-lead">
           {parent
-            ? `Nejlepší shodu jste viděli zdarma. V plné verzi najdete zbývajících ${lockedCount} škol i s odůvodněním.`
-            : `Jedničku máš zdarma. V plné verzi uvidíš zbylých ${lockedCount} škol i s vysvětlením.`}
+            ? `Nejlepší shodu jste viděli zdarma a zůstane vám tak jako tak. V plné verzi najdete zbývajících ${lockedCount} škol i s odůvodněním.`
+            : `Jedničku máš zdarma a zůstane ti tak jako tak. V plné verzi uvidíš zbylých ${lockedCount} škol i s vysvětlením.`}
         </p>
 
         <ul className="ob-outcomes">
@@ -354,6 +362,22 @@ function Paywall() {
           ))}
         </ul>
 
+        {/* The decline path stated positively and up front, so it is not a
+            surprise at the bottom. No confirmshaming anywhere on this screen —
+            it would be aimed at a 15-year-old. */}
+        <div className="ob-keep">
+          <p>
+            <strong>
+              {parent ? 'Když nezaplatíte, nic neztratíte.' : 'Když nezaplatíš, nic neztratíš.'}
+            </strong>{' '}
+            {parent
+              ? 'První škola i vaše odpovědi vám zůstanou a databázi všech škol si můžete procházet zdarma dál.'
+              : 'První škola i tvoje odpovědi ti zůstanou a databázi všech škol si můžeš procházet zdarma dál.'}
+          </p>
+        </div>
+        </div>
+
+        <div className="ob-paywall-buy">
         {offerLive && (
           <div className="ob-offer">
             <strong>
@@ -488,6 +512,14 @@ function Paywall() {
               Ukázková verze: platební brána zatím není napojená, nic se nestrhne.
             </p>
           )}
+
+          {/* Neutral decline. Never "ne, děkuji, na budoucnosti mi nezáleží". */}
+          <button type="button" className="ob-decline" onClick={goNext}>
+            {parent
+              ? 'Zatím ne, chceme si projít školy zdarma'
+              : 'Zatím ne, chci si projít školy zdarma'}
+          </button>
+        </div>
         </div>
       </div>
     </ObScreen>

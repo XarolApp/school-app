@@ -36,6 +36,28 @@ function Welcome() {
         {STUDENTS_HELPED && (
           <p className="ob-proof-line">Už {STUDENTS_HELPED.toLocaleString('cs-CZ')} deváťáků si tudy prošlo.</p>
         )}
+
+        {/* Photography placeholder. DESIGN.md calls for real photographs of
+            real people (warmth without illustration-heavy filler; Rocket Money
+            is its named reference). No such photo exists yet, so this is an
+            honest empty slot rather than a stock image or invented artwork.
+            Swap the inner <span> for an <img> the day a real photo lands —
+            nothing else on this screen needs to change. */}
+        <div className="ob-photo-slot" aria-hidden="true">
+          <span>Sem přijde fotografie</span>
+        </div>
+
+        <ul className="ob-welcome-trust">
+          <li>
+            <strong>60 pražských škol</strong>Gymnázia, odborné i učební obory
+          </li>
+          <li>
+            <strong>Veřejné rejstříky</strong>Data z veřejných zdrojů, u každého čísla rok
+          </li>
+          <li>
+            <strong>Žádné skóre o tobě</strong>Hodnotíme shodu se školou, ne tebe
+          </li>
+        </ul>
       </div>
     </ObScreen>
   );

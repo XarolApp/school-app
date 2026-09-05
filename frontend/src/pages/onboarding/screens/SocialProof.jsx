@@ -50,14 +50,14 @@ const METHOD_POINTS = [
 ];
 
 function SocialProof() {
-  const { role, goNext, goBack, progress } = useOnboarding();
+  const { role, goNext, goBack, phase } = useOnboarding();
   const parent = role === 'parent';
   const testimonials = testimonialsFor(parent ? 'parent' : 'student');
 
   return (
     <ObScreen
       onBack={goBack}
-      progress={progress}
+      phase={phase}
       actions={<ObButton onClick={goNext}>{parent ? 'Pokračovat' : 'Chci celé pořadí'}</ObButton>}
     >
       <h1 className="ob-title">{parent ? 'Na čem výsledky stojí' : 'Proč tomu můžeš věřit'}</h1>

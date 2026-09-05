@@ -24,14 +24,14 @@ const REASSURANCE = {
 };
 
 function Commitment() {
-  const { role, commitment, setCommitment, goNext, goBack, progress } = useOnboarding();
+  const { role, commitment, setCommitment, goNext, goBack, phase } = useOnboarding();
   const parent = role === 'parent';
   const soft = commitment === 'zjistuji';
 
   return (
     <ObScreen
       onBack={goBack}
-      progress={progress}
+      phase={phase}
       actions={
         <button type="button" className="ob-btn ob-btn-primary" onClick={goNext}>
           Pokračovat

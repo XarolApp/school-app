@@ -13,7 +13,11 @@ import { createContext, useContext } from 'react';
  *   schools: array, isDemo: bool, schoolsLoading: bool,
  *   ranked: array,            // deterministic match results (memoised)
  *   goNext(), goBack(), skip(),
- *   stepIndex, totalSteps, progress
+ *   stepIndex, totalSteps,
+ *   phase: string|null       // honest phase label ("Než začneme"). There is
+ *                            // deliberately NO flow-wide `progress` percentage:
+ *                            // see steps.js `quizProgressPercent` — the only
+ *                            // real number is questions answered / questions.
  * }
  */
 export const OnboardingContext = createContext(null);
