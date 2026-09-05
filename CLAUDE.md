@@ -612,6 +612,17 @@ products. `design/system`'s own components and tokens always win on conflict —
 informs judgment calls, it never overrides or gets blended into this design system's
 colors, spacing, or components.
 
+**Always match the Mobbin search platform to what you are actually designing** — the
+`platform` parameter (`ios` / `web`) is not a detail to leave on whatever it defaulted
+to. Designing a desktop/laptop layout → search `web`. Designing the phone layout →
+search `ios`. Designing both (the normal case here, since ŠkolaMatch ships mobile and
+web as two first-class surfaces — see "Platform Strategy") → **run both searches and
+treat them as separate evidence**, because the right answer genuinely differs by
+surface. A two-plan paywall is the worked example: on web, side-by-side plan cards are
+near-universal, while on a 390px phone the same two cards stack — the same product,
+the same decision, two different correct answers. Citing an iOS screen as justification
+for a desktop layout (or the reverse) is a research error, not a shortcut.
+
 **Known gaps in `design/system`, don't treat as bugs:**
 - The `ui_kits/skolamatch` example screens predate real integration with this codebase
   — their data is invented, same caveat as every Claude Design wireframe. `Search.jsx`

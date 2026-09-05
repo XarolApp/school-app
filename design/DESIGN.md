@@ -234,7 +234,14 @@ reference, never as a source of truth.** Priority order, always:
    below). Use them to judge whether a layout or interaction choice holds up against
    real products. **Never let a Mobbin example override or blend into this design
    system's own colors, spacing, or components** — if a Mobbin pattern conflicts with
-   `design/system`, `design/system` wins, full stop. The ten screens cited here are a
+   `design/system`, `design/system` wins, full stop.
+
+   **Match the search platform to the surface being designed.** Mobbin's `platform`
+   parameter (`ios` / `web`) must reflect what is actually being built: desktop layout
+   → `web`, phone layout → `ios`, both surfaces → run both searches and keep the
+   evidence separate. Layout answers legitimately diverge by surface — two plan cards
+   sit side by side on essentially every web pricing page and stack on a 390px phone —
+   so an iOS reference cannot justify a desktop decision, or the reverse. The ten screens cited here are a
    starting point, not the full research. When evaluating a reference screen, check
    that it's not fundamentally misaligned with the warm-but-credible direction —
    exclude sites serving opposite purposes (cold developer tools, pure entertainment,

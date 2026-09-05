@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Public+Sans:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Public Sans', system-ui, sans-serif; background: #FAF6EF; }
+    .chk { flex: 0 0 auto; margin-top: 3px; }
+  </style>
+</helmet>
+
+<div style="width: 1080px; min-height: 700px; background: #FAF6EF; padding: 20px 24px 28px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px;">
+
+  <!-- step chrome sits across the top on desktop, not stacked above the fold -->
+  <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+    <div style="width: 38px; height: 38px; border: 1px solid #E6DFD1; border-radius: 999px; display: flex; align-items: center; justify-content: center;">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#221A13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="M12 19l-7-7 7-7"></path></svg>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span style="width: 28px; height: 4px; border-radius: 999px; background: #AD4F2A;"></span>
+      <span style="width: 28px; height: 4px; border-radius: 999px; background: #E6DFD1;"></span>
+      <span style="width: 28px; height: 4px; border-radius: 999px; background: #E6DFD1;"></span>
+      <span style="width: 28px; height: 4px; border-radius: 999px; background: #E6DFD1;"></span>
+      <span style="font-size: 13px; color: #6B6259; margin-left: 6px;">Krok 1 ze 4 · zatím nic neplatíš</span>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: minmax(0, 1fr) 520px; gap: 48px; align-items: start;">
+
+    <!-- LEFT: the claim + the math behind it -->
+    <div style="display: flex; flex-direction: column; gap: 18px;">
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #AD4F2A; font-weight: 700;">Co tím získáš</div>
+        <h1 style="font-family: 'Lora', Georgia, serif; font-size: 40px; font-weight: 500; line-height: 1.1; letter-spacing: -0.02em; color: #221A13; margin: 0; text-wrap: balance;">Ušetříš si asi 12 hodin klikání po webech škol</h1>
+      </div>
+
+      <div style="border: 1px solid #E6DFD1; border-radius: 18px; padding: 20px; background: #F1ECE3; display: flex; flex-direction: column; gap: 12px; max-width: 460px;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+          <span style="font-size: 15px; color: #6B6259;">Pražských středních škol</span>
+          <span style="font-size: 17px; font-weight: 700; color: #221A13; font-variant-numeric: tabular-nums;">60</span>
+        </div>
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+          <span style="font-size: 15px; color: #6B6259;">Projít web jedné školy</span>
+          <span style="font-size: 17px; font-weight: 700; color: #221A13; font-variant-numeric: tabular-nums;">~12 min</span>
+        </div>
+        <div style="height: 1px; background: #D6CBB6;"></div>
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+          <span style="font-size: 16px; font-weight: 600; color: #221A13;">Dohromady</span>
+          <span style="font-size: 26px; font-weight: 700; color: #AD4F2A; letter-spacing: -0.6px; font-variant-numeric: tabular-nums;">12 hodin</span>
+        </div>
+        <p style="font-size: 13px; line-height: 1.5; color: #6B6259; margin: 0;">Odhad, ne měřený údaj — počítáme s 60 školami v naší databázi a s tím, kolik zabere projít jeden školní web. Tvoje číslo bude jiné.</p>
+      </div>
+
+      <div style="background: #E6EDDE; border-radius: 18px; padding: 18px 20px; max-width: 460px;">
+        <p style="font-size: 16px; line-height: 1.5; color: #221A13; margin: 0;">Dvanáct hodin je zhruba <strong style="font-weight: 700;">šest odpolední</strong>. Můžeš je strávit klikáním po webech — nebo přípravou na přijímačky, které o tvé škole nakonec rozhodnou.</p>
+      </div>
+    </div>
+
+    <!-- RIGHT: without / with, stacked so the paid block reads as the raised one -->
+    <div style="display: flex; flex-direction: column; gap: 14px;">
+
+      <div style="border: 1px solid #E6DFD1; border-radius: 18px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-size: 13px; font-weight: 700; color: #6B6259; text-transform: uppercase; letter-spacing: 0.6px;">Bez ŠkolaMatch</span>
+        <div style="display: flex; gap: 10px; align-items: flex-start;"><span style="color:#6B6259; font-size: 15px;">—</span><span style="font-size: 15px; line-height: 1.45; color: #6B6259;">60 webů, každý jinak poskládaný</span></div>
+        <div style="display: flex; gap: 10px; align-items: flex-start;"><span style="color:#6B6259; font-size: 15px;">—</span><span style="font-size: 15px; line-height: 1.45; color: #6B6259;">Poznámky v sešitě a v deseti otevřených panelech</span></div>
+        <div style="display: flex; gap: 10px; align-items: flex-start;"><span style="color:#6B6259; font-size: 15px;">—</span><span style="font-size: 15px; line-height: 1.45; color: #6B6259;">Pořád nevíš, jestli jsi na něco nezapomněl</span></div>
+      </div>
+
+      <div style="border: 2px solid #AD4F2A; border-radius: 18px; padding: 20px; background: #F6E3D6; box-shadow: 0 8px 24px rgba(34,26,19,0.08); display: flex; flex-direction: column; gap: 11px;">
+        <span style="font-size: 13px; font-weight: 700; color: #AD4F2A; text-transform: uppercase; letter-spacing: 0.6px;">Se ŠkolaMatch</span>
+        <div style="display: flex; gap: 10px; align-items: flex-start;"><svg class="chk" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4F7143" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg><span style="font-size: 15px; line-height: 1.45; color: #221A13;">Všech 60 škol seřazených podle tvých odpovědí</span></div>
+        <div style="display: flex; gap: 10px; align-items: flex-start;"><svg class="chk" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4F7143" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg><span style="font-size: 15px; line-height: 1.45; color: #221A13;">U každé napsané, proč sedí zrovna tobě</span></div>
+        <div style="display: flex; gap: 10px; align-items: flex-start;"><svg class="chk" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4F7143" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg><span style="font-size: 15px; line-height: 1.45; color: #221A13;">Srovnání vedle sebe na jedné obrazovce</span></div>
+        <div style="display: flex; gap: 10px; align-items: flex-start;"><svg class="chk" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4F7143" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg><span style="font-size: 15px; line-height: 1.45; color: #221A13;">Přehled, který můžeš rovnou ukázat rodičům</span></div>
+      </div>
+
+      <!-- CTA sits in the right column on desktop, at the end of the argument -->
+      <div style="background: #AD4F2A; color: #FAF6EF; font-size: 16px; font-weight: 600; padding: 16px; border-radius: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 4px;">
+        <span>Ukázat, co mě čeká</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FAF6EF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"></path></svg>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

@@ -124,6 +124,75 @@ placeholders in `frontend/src/config/pricing.js`:
 
 ---
 
+## Multi-page paywall — decisions deferred out of the 2026-09-05 redesign
+- **Found:** 2026-09-05, designing the 5-screen paywall
+  (`design/paywall-multipage/`, artifact `7b40dacd`)
+- **Urgency:** medium — none of these block the design proposal, all block go-live
+- **Risk of fixing now:** the one-time offer specifically was deferred by explicit
+  user instruction — do not reintroduce it without them raising it
+- **Effort:** mixed, per item
+- **Release/context:** blocks Stripe go-live alongside the pricing decisions above
+
+1. **One-time discount offer — judgement deliberately postponed.** The user asked
+   for it to be left out of the multi-page paywall and revisited later. It still
+   exists in code (`ONE_TIME_OFFER` in `pricing.js`, `lib/offerEntitlement.js`,
+   ruling C-9) and is *not* being deleted. The open question is whether a 15-minute
+   countdown belongs on a paywall aimed at minors at all: the Mobbin survey files
+   manufactured countdowns as its headline anti-pattern, and
+   `pricing_research.md` §4 puts countdown-plus-minors in the DSA Art. 25 zone.
+   Note the discount itself is genuine (the price returns to normal, the product
+   never becomes unavailable), which is what keeps it arguable rather than settled.
+   **Decide before Stripe go-live; until then it stays out of the flow.**
+
+2. **Real user reviews on the paywall, once there are real users.** Deliberately
+   nothing today: `frontend/src/config/socialProof.js` is empty on purpose and the
+   paywall says out loud that we don't publish invented reviews. Once the app has
+   launched and genuine reviews exist, fill `STUDENTS_HELPED` and `TESTIMONIALS` —
+   the count line and an attributed quote then appear above the method claims with
+   no component change. Per the Mobbin survey, a review must carry a **named
+   attribution and a source** to do any work; a bare five-star row is worth nothing.
+   Both persona branches need their own quotes (student and parent read different
+   proof — authority for the parent, peer for the student).
+
+3. **Card-gated trial contradicts our own research — accepted knowingly.**
+   `pricing_research.md` §4 records that the Digital Fairness Act direction "would
+   restrict collecting payment details upfront purely to gate a trial." Not binding
+   law, and it is the industry norm — but the audience here is minors, which is the
+   exact combination §4 flags. Built per the user's explicit instruction. Revisit if
+   the DFA is adopted, or if a Czech consumer-law review ever happens.
+
+4. **Trial moves from Měsíční to Sezónní** (proposed 2026-09-05, awaiting approval
+   of the design). Today `pricing.js` has `hasTrial: true` on `monthly` and `false`
+   on `season`, which is backwards on two counts: research §2 says trials belong on
+   the longer commitment so users can't trial-hop the cheap tier, and `pricing.js`'s
+   own `REFUND_GUARANTEE_DAYS` comment complains that the pre-selected season plan
+   has no exit at all. A trial solves that better than a refund window. Each plan
+   then keeps an exit of its own shape: season = 3 days to change your mind,
+   monthly = cancel whenever. **Flipping these two flags also needs the checkout to
+   support a one-time charge with a delayed start**, which the subscription-mode-only
+   `/api/checkout` cannot do yet (see Stripe integration below).
+
+5. **`/api/schools*` must be gated once the free tier is gone.** CLAUDE.md records
+   it as *deliberately* ungated because the onboarding quiz reads school data before
+   an account exists. With no free browsing that reasoning partly lapses — but the
+   quiz still runs pre-account, so the gate has to distinguish "quiz scoring a
+   session" from "browsing the database". **`withMatchScores` must survive whatever
+   query replaces it**, or every match percentage in the app disappears silently.
+
+6. **`perDayCzk()` formats money to one decimal.** `pricing.js` uses `toFixed(1)`,
+   producing "3,3 Kč" where Czech prices want "3,30 Kč". Cosmetic, one character,
+   but it sits on the largest number on the plan card.
+
+7. **Video paywall — recommended, not built.** A 15–20s silent looping screen
+   capture (ranked list scrolling, then one explanation card expanding) on the value
+   screen would carry the "what am I actually buying" job better than any copy, and
+   the Mobbin survey backs showing the artefact over describing it. Not built
+   because the video has to be recorded, not coded. If the user records one, it
+   drops into screen 1 above the headline. Keep it silent, autoplay, looping, with a
+   static poster frame — no audio, no controls, no fake UI.
+
+---
+
 ## Stripe integration
 - **Found:** 2026-08-27 merge, deferred explicitly by user 2026-08-28
 - **Urgency:** high, but explicitly gated on user decision

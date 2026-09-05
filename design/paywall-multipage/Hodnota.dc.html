@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Public+Sans:wght@400;500;600;700&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Public Sans', system-ui, sans-serif; background: #FAF6EF; }
+    .chk { flex: 0 0 auto; margin-top: 2px; }
+  </style>
+</helmet>
+
+<div style="width: 390px; min-height: 980px; background: #FAF6EF; padding: 14px 20px 28px; box-sizing: border-box; display: flex; flex-direction: column; gap: 18px;">
+
+  <!-- back -->
+  <div style="width: 36px; height: 36px; border: 1px solid #E6DFD1; border-radius: 999px; display: flex; align-items: center; justify-content: center;">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#221A13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="M12 19l-7-7 7-7"></path></svg>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 8px;">
+    <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #AD4F2A; font-weight: 700;">Co tím získáš</div>
+    <h1 style="font-family: 'Lora', Georgia, serif; font-size: 28px; font-weight: 500; line-height: 1.14; letter-spacing: -0.02em; color: #221A13; margin: 0;">Ušetříš si asi&nbsp;12&nbsp;hodin klikání po webech škol</h1>
+  </div>
+
+  <!-- THE MATH, shown not asserted -->
+  <div style="border: 1px solid #E6DFD1; border-radius: 18px; padding: 16px; background: #F1ECE3; display: flex; flex-direction: column; gap: 10px;">
+    <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px;">
+      <span style="font-size: 14px; color: #6B6259;">Pražských středních škol</span>
+      <span style="font-size: 16px; font-weight: 700; color: #221A13; font-variant-numeric: tabular-nums;">60</span>
+    </div>
+    <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px;">
+      <span style="font-size: 14px; color: #6B6259;">Na webu jedné školy zjistíš obory,<br>přijímačky, den otevřených dveří</span>
+      <span style="font-size: 16px; font-weight: 700; color: #221A13; font-variant-numeric: tabular-nums;">~12 min</span>
+    </div>
+    <div style="height: 1px; background: #D6CBB6;"></div>
+    <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px;">
+      <span style="font-size: 15px; font-weight: 600; color: #221A13;">Dohromady</span>
+      <span style="font-size: 22px; font-weight: 700; color: #AD4F2A; letter-spacing: -0.5px; font-variant-numeric: tabular-nums;">12 hodin</span>
+    </div>
+    <p style="font-size: 12px; line-height: 1.45; color: #6B6259; margin: 0;">Odhad, ne měřený údaj — počítáme s 60 školami v naší databázi a s tím, kolik zabere projít jeden školní web. Tvoje číslo bude jiné.</p>
+  </div>
+
+  <!-- WITHOUT / WITH — the honest version of a comparison table -->
+  <div style="display: flex; flex-direction: column; gap: 10px;">
+
+    <div style="border: 1px solid #E6DFD1; border-radius: 18px; padding: 14px 16px; background: transparent; display: flex; flex-direction: column; gap: 8px;">
+      <span style="font-size: 13px; font-weight: 700; color: #6B6259; text-transform: uppercase; letter-spacing: 0.6px;">Bez ŠkolaMatch</span>
+      <div style="display: flex; gap: 9px; align-items: flex-start;"><span style="color:#6B6259; font-size: 15px; line-height: 1.4;">—</span><span style="font-size: 14px; line-height: 1.45; color: #6B6259;">60 webů, každý jinak poskládaný</span></div>
+      <div style="display: flex; gap: 9px; align-items: flex-start;"><span style="color:#6B6259; font-size: 15px; line-height: 1.4;">—</span><span style="font-size: 14px; line-height: 1.45; color: #6B6259;">Poznámky v sešitě a deseti otevřených panelech</span></div>
+      <div style="display: flex; gap: 9px; align-items: flex-start;"><span style="color:#6B6259; font-size: 15px; line-height: 1.4;">—</span><span style="font-size: 14px; line-height: 1.45; color: #6B6259;">Pořád nevíš, jestli jsi na něco nezapomněl</span></div>
+    </div>
+
+    <!-- paid column raised: fill + border + shadow -->
+    <div style="border: 2px solid #AD4F2A; border-radius: 18px; padding: 16px; background: #F6E3D6; box-shadow: 0 6px 18px rgba(34,26,19,0.07); display: flex; flex-direction: column; gap: 9px;">
+      <span style="font-size: 13px; font-weight: 700; color: #AD4F2A; text-transform: uppercase; letter-spacing: 0.6px;">Se ŠkolaMatch</span>
+      <div style="display: flex; gap: 9px; align-items: flex-start;"><svg class="chk" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4F7143" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg><span style="font-size: 14px; line-height: 1.45; color: #221A13;">Všech 60 škol seřazených podle tvých odpovědí</span></div>
+      <div style="display: flex; gap: 9px; align-items: flex-start;"><svg class="chk" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4F7143" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg><span style="font-size: 14px; line-height: 1.45; color: #221A13;">U každé napsané, proč sedí zrovna tobě</span></div>
+      <div style="display: flex; gap: 9px; align-items: flex-start;"><svg class="chk" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4F7143" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg><span style="font-size: 14px; line-height: 1.45; color: #221A13;">Srovnání vedle sebe na jedné obrazovce</span></div>
+    </div>
+  </div>
+
+  <!-- what the saved time is FOR — the emotional payoff, stated plainly -->
+  <div style="background: #E6EDDE; border-radius: 18px; padding: 16px;">
+    <p style="font-size: 15px; line-height: 1.5; color: #221A13; margin: 0;">Dvanáct hodin je zhruba <strong style="font-weight: 700;">šest odpolední</strong>. Můžeš je strávit klikáním po webech — nebo přípravou na přijímačky, které o tvé škole nakonec rozhodnou.</p>
+  </div>
+
+  <div style="margin-top: auto; display: flex; flex-direction: column; gap: 10px; padding-top: 8px;">
+    <div style="background: #AD4F2A; color: #FAF6EF; font-size: 16px; font-weight: 600; padding: 16px; border-radius: 14px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+      <span>Ukázat, co mě čeká</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FAF6EF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"></path></svg>
+    </div>
+    <span style="font-size: 12px; color: #6B6259; text-align: center;">Krok 1 ze 4 · zatím nic neplatíš</span>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

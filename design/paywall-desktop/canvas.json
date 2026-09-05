@@ -1,0 +1,40 @@
+{
+  "artboards": [
+    { "file": "Current.dc.html",  "title": "Desktop — dnes",                 "x": 0,    "y": 0,    "w": 1080, "h": 940 },
+    { "file": "Main.dc.html",     "title": "Varianta A — sdílené CTA",       "x": 1200, "y": 0,    "w": 1080, "h": 940 },
+    { "file": "OptionB.dc.html",  "title": "Varianta B — celá karta",        "x": 2400, "y": 0,    "w": 1080, "h": 940 },
+    { "file": "Discount.dc.html", "title": "Varianta A — se slevou",         "x": 3600, "y": 0,    "w": 1080, "h": 940 },
+    { "file": "Mobile.dc.html",   "title": "Mobil — beze změny",             "x": 0,    "y": 1100, "w": 390,  "h": 1560 }
+  ],
+  "annotations": [
+    {
+      "id": "why",
+      "x": 0,
+      "y": -320,
+      "w": 520,
+      "text": "PROČ SE TO MĚNÍ\n\nMobbin, platforma web: 12 z 12 nalezených cenových stránek dává dvě varianty VEDLE SEBE, ne pod sebe (Hootsuite, Uxcel, Ghost, Notion, Lovable, Copy.ai, Grok, Emergent…). Vlastní průzkum v design/research/mobbin_pattern_survey.md cituje Matter jako „3 benefity vlevo, 2 karty vpravo — celý paywall v jedné řadě“ — což je přesně naše rozdělení.\n\nŽádný doložený důvod držet na desktopu sloupec pod sebou nebyl nalezen. Mobil zůstává beze změny — tam je pod sebou správně."
+    },
+    {
+      "id": "varianta-a",
+      "x": 1200,
+      "y": -320,
+      "w": 520,
+      "text": "VARIANTA A — KARTA JAKO VOLBA, JEDNO SDÍLENÉ CTA\n\nKarta je přepínač: vybereš si a dole potvrdíš jedním tlačítkem. Dvoukrokové, ale zůstává jedna primární akce na obrazovce.\n\nPravý panel 460 → 580 px (levý má pak ~460 px). Karta ~252 px. Při 460 px by karty měly po ~193 px, což náš obsah neunese.\n\nSTEJNÁ VÝŠKA: grid stretch + pitch přilepený dolů (margin-top: auto). Hlavičky lícují nahoře, pitche dole.\n\nMÍNUS: výběr a potvrzení jsou od sebe — u dvou variant je to krok navíc."
+    },
+    {
+      "id": "varianta-b",
+      "x": 2400,
+      "y": -320,
+      "w": 520,
+      "text": "VARIANTA B — CELÁ KARTA (vzor Cake Equity, Uxcel, Lovable, Emergent)\n\nKaždá karta si nese vlastní cenu, vlastní podmínky a VLASTNÍ TLAČÍTKO. Klik na tlačítko = volba i potvrzení. Jeden krok místo dvou.\n\nPravý panel 620 px, karta ~272 px, aby se do ní vešlo tlačítko.\n\nJEDEN ROZDÍL PROTI CAKE EQUITY, ZÁMĚRNÝ: u nich se plány liší funkcemi, u nás ne — obě varianty odemknou úplně to samé. Kopírovat stejný seznam do obou karet by lhalo, že se liší. Proto sdílený seznam zůstává vlevo (pod nadpisem „Obě varianty odemknou to samé“) a v kartě je jen to, co se SKUTEČNĚ liší: tvar platby, zkušební doba, ukončení.\n\nMÍNUS: dvě tlačítka vedle sebe = dvě primární akce. Sezónní drží plnou barvu, Měsíční je obrysové, aby doporučení zůstalo čitelné."
+    },
+    {
+      "id": "copy",
+      "x": 3600,
+      "y": -320,
+      "w": 520,
+      "text": "KOPIE: ZÍSKAT PŘÍSTUP, NE „PŘIJDEŠ O PŘÍSTUP“\n\nPodle docs/sources/paywall_copy_framing_research.md, sekce 6: ztrátové rámování na tomhle paywallu NEPOUŽÍVAT.\n\nDůvody z výzkumu:\n• Není doložené. Žádný publikovaný A/B test neukazuje, že by ztrátové rámování na paywallu fungovalo líp. Je to oborová pověra, ne měřený fakt.\n• Je to vyrobená ztráta. Uživatel celé pořadí nikdy neměl, takže „přijdeš o něj“ zkresluje jeho skutečný stav.\n• U nezletilých v EU je to právně exponované (čl. 25, vyrobená ztráta + odpočet = učebnicový dark pattern).\n\nCO SE POUŽILO MÍSTO TOHO — jediná páka, kterou výzkum doporučuje (endowed-progress effect, Nunes & Drèze 2006): pravdivé připomenutí už vynaložené práce. Úvodní věta nově začíná „Dotazník máš za sebou…“. Je to pravda, není to nátlak.\n\nNadpis „Odemkni si celé pořadí“ zůstává — už byl ziskově rámovaný a výzkum ho potvrzuje.\n\nOdpočet zůstává JEN u skutečné jednorázové slevy (rámuje cenu, ne přístup)."
+    }
+  ],
+  "launch": { "view": "canvas" }
+}
