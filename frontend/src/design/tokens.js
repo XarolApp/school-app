@@ -26,12 +26,18 @@
  */
 
 // --- Typography --------------------------------------------------------------
-// Fraunces (serif) for headings, Public Sans (sans) for body/UI.
+// Lora (serif) for headings, Public Sans (sans) for body/UI.
 // Both OFL-licensed via Google Fonts, both carry full Czech diacritics.
 // On React Native these become the loaded font-family names; the fallback
 // stacks below are web-only and are appended in tokens.css, not here.
+//
+// Changed from Fraunces 2026-09-05: Fraunces' J is a stylized swash-like
+// curl by design (its wonky, characterful serif is the point of the
+// typeface), not a rendering default that a size/axis tweak can fix — it
+// looks that way at every optical size and weight. Lora keeps the same
+// warm, editorial serif register but with conventional letterforms.
 export const fonts = {
-  heading: 'Fraunces',
+  heading: 'Lora',
   body: 'Public Sans',
   mono: 'ui-monospace',
 };
@@ -44,12 +50,15 @@ export const fonts = {
  * (e.g. '-0.02em') and emitted verbatim by staticVars() below — never
  * converted to px, since an em value means something different at every
  * font-size. A tracking of exactly 0 is stored as the number 0.
+ *
+ * `variation` (SOFT/opsz) was Fraunces-specific optical-axis tuning; Lora has
+ * no such axes, so those fields are gone rather than kept as dead no-ops.
  */
 export const type = {
-  display: { size: 72, lineHeight: 1.06, weight: '600', tracking: '-0.02em', family: 'heading', variation: "'SOFT' 60,'opsz' 72" },
-  headlineLg: { size: 38, lineHeight: 1.14, weight: '600', tracking: '-0.015em', family: 'heading', variation: "'SOFT' 50,'opsz' 38" },
-  headlineMd: { size: 28, lineHeight: 1.2, weight: '600', tracking: '-0.01em', family: 'heading', variation: "'SOFT' 45,'opsz' 28" },
-  headlineSm: { size: 22, lineHeight: 1.25, weight: '500', tracking: 0, family: 'heading', variation: "'SOFT' 35,'opsz' 22" },
+  display: { size: 72, lineHeight: 1.06, weight: '600', tracking: '-0.02em', family: 'heading' },
+  headlineLg: { size: 38, lineHeight: 1.14, weight: '600', tracking: '-0.015em', family: 'heading' },
+  headlineMd: { size: 28, lineHeight: 1.2, weight: '600', tracking: '-0.01em', family: 'heading' },
+  headlineSm: { size: 22, lineHeight: 1.25, weight: '500', tracking: 0, family: 'heading' },
   bodyLg: { size: 18, lineHeight: 1.6, weight: '400', tracking: 0, family: 'body' },
   bodyMd: { size: 16, lineHeight: 1.55, weight: '400', tracking: 0, family: 'body' },
   bodySm: { size: 14, lineHeight: 1.5, weight: '400', tracking: 0, family: 'body' },
@@ -199,7 +208,7 @@ export const selection = {
  * RN needs its own elevation/shadow handling.
  */
 export const webOnly = {
-  fontStackHeading: "'Fraunces', Georgia, 'Times New Roman', serif",
+  fontStackHeading: "'Lora', Georgia, 'Times New Roman', serif",
   fontStackBody: "'Public Sans', system-ui, 'Segoe UI', sans-serif",
   fontStackMono: 'ui-monospace, Consolas, monospace',
   // Tinted with the theme's own near-black (#221A13 / #17130E) rather than a

@@ -27,21 +27,17 @@
   --lh-display: 1.06;
   --fw-display: 600;
   --ls-display: -0.02em;
-  --var-display: 'SOFT' 60,'opsz' 72;
   --fs-headline-lg: 38px;
   --lh-headline-lg: 1.14;
   --fw-headline-lg: 600;
   --ls-headline-lg: -0.015em;
-  --var-headline-lg: 'SOFT' 50,'opsz' 38;
   --fs-headline-md: 28px;
   --lh-headline-md: 1.2;
   --fw-headline-md: 600;
   --ls-headline-md: -0.01em;
-  --var-headline-md: 'SOFT' 45,'opsz' 28;
   --fs-headline-sm: 22px;
   --lh-headline-sm: 1.25;
   --fw-headline-sm: 500;
-  --var-headline-sm: 'SOFT' 35,'opsz' 22;
   --fs-body-lg: 18px;
   --lh-body-lg: 1.6;
   --fw-body-lg: 400;
@@ -97,7 +93,7 @@
   --accent-border: #DFA98C;
   --social-bg: #F1ECE3;
   --sans: 'Public Sans', system-ui, 'Segoe UI', sans-serif;
-  --heading: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --heading: 'Lora', Georgia, 'Times New Roman', serif;
   --mono: ui-monospace, Consolas, monospace;
   --r-card: 18px;
   --r-button: 14px;
@@ -137,7 +133,7 @@
     --accent-border: #7A5540;
     --social-bg: #2A2216;
     --sans: 'Public Sans', system-ui, 'Segoe UI', sans-serif;
-    --heading: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --heading: 'Lora', Georgia, 'Times New Roman', serif;
     --mono: ui-monospace, Consolas, monospace;
     --r-card: 18px;
     --r-button: 14px;
@@ -179,7 +175,7 @@
   --accent-border: #DFA98C;
   --social-bg: #F1ECE3;
   --sans: 'Public Sans', system-ui, 'Segoe UI', sans-serif;
-  --heading: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --heading: 'Lora', Georgia, 'Times New Roman', serif;
   --mono: ui-monospace, Consolas, monospace;
   --r-card: 18px;
   --r-button: 14px;
@@ -218,7 +214,7 @@
   --accent-border: #7A5540;
   --social-bg: #2A2216;
   --sans: 'Public Sans', system-ui, 'Segoe UI', sans-serif;
-  --heading: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --heading: 'Lora', Georgia, 'Times New Roman', serif;
   --mono: ui-monospace, Consolas, monospace;
   --r-card: 18px;
   --r-button: 14px;

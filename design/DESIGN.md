@@ -418,6 +418,14 @@ the first pass and it buys nothing here." Tabular alignment is available in a no
 sans via `'tnum'`; a code-editor typeface is not required to make a column of grades
 line up.
 
+> **Superseded 2026-09-05 — see CLAUDE.md's "Design tokens — tokens.js" section.**
+> Fraunces was replaced by **Lora** for headings site-wide: its curled/swash "J" is
+> baked into the typeface's identity at every optical size and weight, not a
+> rendering default, and read as odd rather than characterful. The `SOFT`/`opsz`
+> guidance below (and in the type-scale table above) no longer applies — Lora has
+> no such variable axes. This section is kept for history; CLAUDE.md is
+> authoritative on the current font pair until this file gets a proper rewrite pass.
+
 **Fraunces** carries the voice — display and every headline. This replaces
 Newsreader, and the difference is not cosmetic: Newsreader was locked at weight 400
 everywhere, which read as hushed and document-like once paired with hairline

@@ -552,9 +552,18 @@ fonts, spacing, radii, etc.) as JavaScript constants, in `frontend/src/design/to
 JS, not CSS, deliberately: React Native can import a JS module but cannot read CSS
 variables — this is what makes the visual system portable to the mobile app later.
 
-**Current state (as of 2026-09-04):** matches `design/DESIGN.md` in full — terracotta
-`#AD4F2A` / moss `#4F7143`, the warm paper neutral ramp (`#FAF6EF` / `#F1ECE3` /
-`#221A13` …), and Fraunces + Public Sans. **No `#FFFFFF` or `#000000` anywhere** —
+**Current state (as of 2026-09-05):** terracotta `#AD4F2A` / moss `#4F7143`, the warm
+paper neutral ramp (`#FAF6EF` / `#F1ECE3` / `#221A13` …), and **Lora + Public Sans**
+for headings/body. This is a deviation from `design/DESIGN.md`, which still specifies
+Fraunces — DESIGN.md has not been updated yet, so read this file as authoritative on
+the font pair until it is. Fraunces was swapped out 2026-09-05: its distinctive
+curled/swash "J" is a deliberate part of that typeface's identity at every optical
+size and weight (not a rendering default fixable by tuning the `SOFT`/`opsz` variable
+axes, which was tried first and did not fix it) — it read as an odd glyph rather than
+characterful, so the whole heading typeface changed rather than living with it. Lora
+keeps the same warm, editorial serif register with conventional letterforms; DESIGN.md's
+`SOFT`/`opsz` axis guidance for headings no longer applies (Lora has no such axes) — it
+still needs its own update pass. **No `#FFFFFF` or `#000000` anywhere** —
 DESIGN.md forbids both outright and the palette now honours that; `--surface` and
 `--bg` are deliberately the *same* value, because raised content separates by
 hairline rather than by a brighter fill. Neutrals were migrated 2026-09-04 (they had

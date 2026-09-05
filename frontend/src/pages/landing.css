@@ -118,7 +118,6 @@
   font-weight: var(--fw-display);
   line-height: var(--lh-display);
   letter-spacing: var(--ls-display);
-  font-variation-settings: var(--var-display);
   color: var(--text-h);
   text-wrap: balance;
   max-width: 14ch;
@@ -199,7 +198,6 @@
   font-size: var(--fs-headline-sm);
   font-weight: var(--fw-headline-sm);
   line-height: var(--lh-headline-sm);
-  font-variation-settings: var(--var-headline-sm);
   color: var(--text-h);
   margin: 0;
 }
@@ -272,7 +270,6 @@
     font-size: var(--fs-headline-lg);
     line-height: var(--lh-headline-lg);
     letter-spacing: var(--ls-headline-lg);
-    font-variation-settings: var(--var-headline-lg);
     max-width: 18ch;
   }
 }
