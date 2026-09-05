@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { ObScreen } from '../../../components/onboarding/ObKit';
 import { useOnboarding } from '../useOnboarding';
 import { useAuth } from '../../../components/AuthContext';
@@ -160,6 +161,13 @@ function CreateAccount() {
 
         <Captcha onVerify={setCaptchaToken} resetKey={captchaKey} />
       </form>
+
+      <p className="ob-microcopy ob-signin-hint">
+        {parent ? 'Už máte účet?' : 'Už máš účet?'}{' '}
+        <Link to="/prihlaseni" className="ob-inline-link">
+          Přihlásit se
+        </Link>
+      </p>
     </ObScreen>
   );
 }

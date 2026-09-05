@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { ObButton, ObScreen } from '../../../components/onboarding/ObKit';
 import { STUDENTS_HELPED } from '../../../config/socialProof';
 import { useOnboarding } from '../useOnboarding';
@@ -23,6 +24,9 @@ function Welcome() {
         <>
           <ObButton onClick={goNext}>Začít</ObButton>
           <p className="ob-microcopy">Zabere to asi 3 minuty. Nic se neplatí předem.</p>
+          <p className="ob-microcopy ob-signin-hint">
+            Už máš účet? <Link to="/prihlaseni" className="ob-inline-link">Přihlásit se</Link>
+          </p>
         </>
       }
     >
