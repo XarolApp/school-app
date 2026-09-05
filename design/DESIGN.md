@@ -21,32 +21,28 @@ colors:
 
 typography:
   display:
-    fontFamily: Fraunces
+    fontFamily: Lora
     fontSize: 72px
     fontWeight: 600
     lineHeight: 1.06
     letterSpacing: -0.02em
-    fontVariation: "'SOFT' 60, 'opsz' 72"
   headline-lg:
-    fontFamily: Fraunces
+    fontFamily: Lora
     fontSize: 38px
     fontWeight: 600
     lineHeight: 1.14
     letterSpacing: -0.015em
-    fontVariation: "'SOFT' 50, 'opsz' 38"
   headline-md:
-    fontFamily: Fraunces
+    fontFamily: Lora
     fontSize: 28px
     fontWeight: 600
     lineHeight: 1.2
     letterSpacing: -0.01em
-    fontVariation: "'SOFT' 45, 'opsz' 28"
   headline-sm:
-    fontFamily: Fraunces
+    fontFamily: Lora
     fontSize: 22px
     fontWeight: 500
     lineHeight: 1.25
-    fontVariation: "'SOFT' 35, 'opsz' 22"
   body-lg:
     fontFamily: Public Sans
     fontSize: 18px
@@ -418,29 +414,27 @@ the first pass and it buys nothing here." Tabular alignment is available in a no
 sans via `'tnum'`; a code-editor typeface is not required to make a column of grades
 line up.
 
-> **Superseded 2026-09-05 — see CLAUDE.md's "Design tokens — tokens.js" section.**
-> Fraunces was replaced by **Lora** for headings site-wide: its curled/swash "J" is
-> baked into the typeface's identity at every optical size and weight, not a
-> rendering default, and read as odd rather than characterful. The `SOFT`/`opsz`
-> guidance below (and in the type-scale table above) no longer applies — Lora has
-> no such variable axes. This section is kept for history; CLAUDE.md is
-> authoritative on the current font pair until this file gets a proper rewrite pass.
-
-**Fraunces** carries the voice — display and every headline. This replaces
-Newsreader, and the difference is not cosmetic: Newsreader was locked at weight 400
-everywhere, which read as hushed and document-like once paired with hairline
-structure. Fraunces is a variable serif with `SOFT` and `WONK` optical axes built
-specifically to carry warmth *without* losing authority — used here at weight
-500–600 with the `SOFT` axis engaged (35–60 depending on size), which is a
-materially different typographic personality from a flat-400 editorial serif. Full
-Czech diacritic support. Fallback: `Fraunces, Georgia, "Times New Roman", serif`.
-SIL Open Font License, self-hosted.
+**Lora** carries the voice — display and every headline. This replaces Fraunces
+(2026-09-05): Fraunces' J is a stylized swash/curl at every optical size and
+weight — a deliberate part of that typeface's identity, not a rendering default —
+and in practice it read as an odd glyph rather than a characterful one, badly
+enough that it had to go. Before Fraunces, the slot held Newsreader, dropped for a
+different reason: locked at weight 400 everywhere, it read as hushed and
+document-like once paired with hairline structure. Lora is a warm, sturdy
+editorial serif with conventional letterforms and real italics — it keeps the same
+warm-but-authoritative register the family before it was chosen for, without
+either predecessor's specific failure. It is a static family, not a variable font:
+no `SOFT`/`WONK`/`opsz` axes exist to tune, so weight alone (500–600, per the scale
+below) carries what the axis engagement used to. Full Czech diacritic support.
+Fallback: `Lora, Georgia, "Times New Roman", serif`. SIL Open Font License,
+self-hosted target (currently Google Fonts CDN, per `index.html` — see CLAUDE.md's
+"Design tokens — tokens.js" section for the live implementation state).
 
 **Public Sans** carries the apparatus — body, labels, buttons, captions, and now
 data. Chosen specifically because its own design brief (USWDS) targets "neutral,
 legible, institutionally credible" without reading cold — it is the sans the
 DESIGN.md format's own spec examples use, and it is not Inter, which would make the
-Fraunces pairing read as an accident rather than a decision. Two weights only — 400
+Lora pairing read as an accident rather than a decision. Two weights only — 400
 for reading, 600 for anything scanned rather than read. Tabular figures
 (`'tnum' 1`) on `data-md`/`data-sm` so a column of grade thresholds aligns without
 reaching for a different typeface family to do it. Full Czech diacritic support.
