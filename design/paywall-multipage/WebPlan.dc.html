@@ -49,40 +49,32 @@
         <div style="display: flex; gap: 10px; align-items: flex-start;"><svg class="chk" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4F7143" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg><span style="font-size: 15px; line-height: 1.45; color: #221A13;">Přehled, který můžeš ukázat rodičům</span></div>
       </div>
 
-      <!-- trial rail lives BESIDE the cards on desktop; on mobile it is its own screen -->
-      <div style="border: 1px solid #E6DFD1; border-radius: 18px; padding: 18px 20px; background: #F1ECE3; display: flex; flex-direction: column; gap: 0; max-width: 420px;">
-        <span style="font-size: 13px; font-weight: 700; color: #221A13; text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 14px;">Jak zkušební dny proběhnou</span>
+      <!-- TRUST sits beside the cards on desktop — the widest surface we have, and
+           the moment the parent is deciding whether we look legitimate. The trial
+           rail is NOT duplicated here; it owns web step 4. -->
+      <div style="border: 1px solid #E6DFD1; border-radius: 18px; padding: 20px; background: #F1ECE3; display: flex; flex-direction: column; gap: 13px; max-width: 440px;">
+        <span style="font-size: 13px; font-weight: 700; color: #221A13; text-transform: uppercase; letter-spacing: 0.7px;">Proč nám věřit</span>
 
-        <div style="display: flex; gap: 12px; align-items: flex-start;">
-          <div style="display: flex; flex-direction: column; align-items: center; align-self: stretch;">
-            <div class="dot" style="background: #AD4F2A;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FAF6EF" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg></div>
-            <div style="width: 2px; flex: 1; background: #DFA98C; min-height: 14px;"></div>
-          </div>
-          <div style="padding-bottom: 14px; display: flex; flex-direction: column; gap: 1px;">
-            <span style="font-size: 12px; font-weight: 700; color: #AD4F2A; text-transform: uppercase; letter-spacing: 0.6px;">Dnes · 5. září</span>
-            <strong style="font-size: 15px; color: #221A13; font-weight: 700;">Odemkneš celou aplikaci — 0 Kč</strong>
-          </div>
+        <div style="display: flex; gap: 10px; align-items: flex-start;">
+          <svg class="ic" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4F7143" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          <span style="font-size: 14px; line-height: 1.45; color: #221A13;"><strong style="font-weight: 700;">Jedničku jsi viděl zdarma.</strong> Nekupuješ nic naslepo — víš přesně, jak výsledek vypadá.</span>
         </div>
 
-        <div style="display: flex; gap: 12px; align-items: flex-start;">
-          <div style="display: flex; flex-direction: column; align-items: center; align-self: stretch;">
-            <div class="dot" style="background: transparent; border: 1px dashed #D6CBB6;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B6259" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></div>
-            <div style="width: 2px; flex: 1; background: #E6DFD1; min-height: 14px;"></div>
-          </div>
-          <div style="padding-bottom: 14px; display: flex; flex-direction: column; gap: 1px;">
-            <span style="font-size: 12px; font-weight: 700; color: #6B6259; text-transform: uppercase; letter-spacing: 0.6px;">2. den · 6. září</span>
-            <strong style="font-size: 15px; color: #6B6259; font-weight: 700;">Připomeneme, že zítra začíná platba</strong>
-            <span style="font-size: 12px; line-height: 1.45; color: #6B6259; border-left: 2px solid #D6CBB6; padding-left: 8px; margin-top: 3px;">Zatím <strong style="font-weight:700;">neslibujeme</strong> — e-maily ještě neumíme posílat.</span>
-          </div>
+        <div style="display: flex; gap: 10px; align-items: flex-start;">
+          <svg class="ic" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4F7143" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+          <span style="font-size: 14px; line-height: 1.45; color: #221A13;"><strong style="font-weight: 700;">Pořadí počítá matematika</strong> z tvých odpovědí. Ne náhoda a ne reklama — školy si u nás pozici nekoupí.</span>
         </div>
 
-        <div style="display: flex; gap: 12px; align-items: flex-start;">
-          <div class="dot" style="background: #F6E3D6; border: 1px solid #DFA98C;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#AD4F2A" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"></rect><path d="M2 10h20"></path></svg></div>
-          <div style="display: flex; flex-direction: column; gap: 1px;">
-            <span style="font-size: 12px; font-weight: 700; color: #221A13; text-transform: uppercase; letter-spacing: 0.6px;">3. den · 7. září</span>
-            <strong style="font-size: 15px; color: #221A13; font-weight: 700;">Strhne se 690 Kč — jednou</strong>
-            <span style="font-size: 12px; line-height: 1.45; color: #6B6259;">Pak už nic. Přístup běží do konce března.</span>
-          </div>
+        <div style="display: flex; gap: 10px; align-items: flex-start;">
+          <svg class="ic" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#4F7143" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          <span style="font-size: 14px; line-height: 1.45; color: #221A13;"><strong style="font-weight: 700;">Odpovědi zůstávají u tebe</strong> v prohlížeči. Neprodáváme je a nepředáváme školám.</span>
+        </div>
+
+        <div style="height: 1px; background: #D6CBB6;"></div>
+
+        <div style="display: flex; gap: 10px; align-items: flex-start;">
+          <svg class="ic" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#6B6259" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+          <span style="font-size: 13px; line-height: 1.45; color: #6B6259;">Vymyšlené recenze ani počty uživatelů tu nenajdeš. Ukážeme je, až budou od skutečných lidí.</span>
         </div>
       </div>
     </div>
