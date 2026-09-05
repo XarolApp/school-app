@@ -1,0 +1,44 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html",        "title": "1 · Uvítání",            "x": 0,    "y": 0,    "w": 1280, "h": 900 },
+    { "file": "RoleFork.dc.html",    "title": "2 · Kdo vyplňuje",       "x": 1400, "y": 0,    "w": 1280, "h": 900 },
+    { "file": "Stakes.dc.html",      "title": "3 · Proč + s čím pomoct", "x": 2800, "y": 0,   "w": 1280, "h": 900 },
+    { "file": "QuizDesktop.dc.html", "title": "4–13 · Otázka (desktop)", "x": 4200, "y": 0,   "w": 1280, "h": 900 },
+
+    { "file": "QuizMobile.dc.html",  "title": "4–13 · Otázka (mobil)",  "x": 0,    "y": 1100, "w": 390,  "h": 844 },
+    { "file": "Calculating.dc.html", "title": "14 · Výpočet",           "x": 560,  "y": 1100, "w": 1280, "h": 900 },
+    { "file": "Reveal.dc.html",      "title": "15 · Výsledek",          "x": 1960, "y": 1100, "w": 1280, "h": 900 },
+    { "file": "Paywall.dc.html",     "title": "20 · Paywall",           "x": 3360, "y": 1100, "w": 1280, "h": 900 }
+  ],
+  "annotations": [
+    {
+      "id": "brief",
+      "x": 0,
+      "y": -300,
+      "w": 620,
+      "text": "ONBOARDING V2 — přepracováno, ne přebarveno.\n\n23 → 20 obrazovek. Výzkum (onboarding_conversion_research.md) říká, že nejstrmější odpad je v prvních ~15 interakcích — přesně tam, kde stálo 5 úvodních obrazovek a 10 otázek, ještě než uživatel cokoli dostal. Obrazovky PO odhalení výsledku jsou naopak nejlépe podložené, takže se nesahalo na ně.\n\nCO SE VYŘADILO (3 obrazovky, všechny z rizikové zóny):\n• Rámování problému + Sázka + Záměr → sloučeno do jedné (artboard 3)\n• Zrcadlení odpovědí → zrušeno jako samostatná obrazovka, přesunuto PŘÍMO DO OTÁZEK (zelená kartička pod vybranou odpovědí)\n• Upřímné očekávání → zrušeno jako samostatná obrazovka, přesunuto k výsledku, kterého se týká\n\nCO ZŮSTALO: 10 otázek (výzkum odhaduje bezpečné rozmezí 8–14 pro produkt, který člověk použije jednou za život)."
+    },
+    {
+      "id": "desktop",
+      "x": 700,
+      "y": -300,
+      "w": 620,
+      "text": "DESKTOP — hlavní změna, kterou jsi chtěl.\n\nVýzkum tvrdil, že o desktopovém onboardingu nejsou žádná data. Mobbin ale ukázal, že vzor reálně existuje a běží v produkci: úzký sloupec s otázkou + panel vedle něj, který ukazuje, co se právě staví.\nPerplexity, Rox, Gorgias, Turo, Kit, Mercury.\n\nCO Z TOHO PLYNE PRO NÁS (artboard 4):\n• Sloupec s otázkou je zastropovaný na ~600 px, ne roztažený na 1280 — delší řádky než ~75 znaků prokazatelně zhoršují čtení.\n• Ukazatel průběhu je zastropovaný na stejnou šířku. Roztažený přes celých 1280 px vypadá jako dekorativní pruh, ne jako informace.\n• Volná plocha vpravo nese PANEL „Tvůj profil“ — odpovědi se v něm viditelně vrší, nezodpovězené otázky jsou prázdné sloty.\n• Klikací cíle jsou menší než dotykové (mobil 56 px, desktop 52 px). Stejné číslo na obou je nejjasnější známka roztaženého telefonu.\n\nMobil (artboard 5) panel sbalí do jednoho proužku. Stavový model se nemění — jen tvar."
+    },
+    {
+      "id": "legal",
+      "x": 1400,
+      "y": -300,
+      "w": 620,
+      "text": "TŘI VĚCI, KTERÉ AGENT MĚL A TADY ZÁMĚRNĚ NEJSOU.\n\n1) PŘEDVYPLNĚNÝ UKAZATEL PRŮBĚHU (agent §1.1: „start na 10–15 %“). VYŘAZENO. Výzkum to označuje jmenovitě: nafouknutý ukazatel je „umělý postup, který zkresluje skutečný stav“ a spadá pod zákaz klamání v čl. 25 DSA. Ukazatel tady počítá jenom otázky, poctivě — a na úvodních obrazovkách žádný ukazatel není, protože není co počítat.\n\n2) ŽIVÉ PROCENTO SHODY BĚHEM KVÍZU (agent §1.1). VYŘAZENO. Po dvou z deseti otázek žádné poctivé procento neexistuje, a produkt zároveň jinde odmítá zobrazovat procenta shody vůbec. NAHRAZENO počtem, který je pravdivý: „Zatím sedí 34 z 60 škol“ — přesně jak to dělá Care.com. Skutečné číslo, spočítané z reálných odpovědí.\n\n3) ODPOČET NA PAYWALLU. Nepoužit. Sezónní termín přihlášek je skutečný a motivuje víc než vyrobený časovač.\n\nPaywall dál dodržuje: obě ceny plnou vahou (skryté náklady až u pokladny jsou zakázané), nezaškrtnuté potvrzení rodiče (předzaškrtnutý souhlas je zakázaný), neutrální odmítnutí bez zahanbování, sezónní přístup popsaný jako okno s datem — nikdy jako „doživotní“."
+    },
+    {
+      "id": "open",
+      "x": 2100,
+      "y": -300,
+      "w": 620,
+      "text": "OTEVŘENÉ OTÁZKY — nerozhodnuto, čeká na tebe.\n\n• DVĚ PERSONY (artboard 2): výzkum nenašel jedinou studii ani případovku produktu, který by přes jeden tok vedl dva nezávisle platící kupce, natož nezletilého a rodiče. Není to podložený vzor, je to sázka. Ověřit na pár skutečných lidech, ne dalším hledáním.\n\n• 20 OBRAZOVEK je pořád odhad. Výzkum výslovně říká, že žádné číslo pro tenhle typ produktu neexistuje — jen že úvodní obrazovky stojí víc než závěrečné. Kdyby se mělo krátit dál, další na řadě je závazek (artboard mimo těchto 8).\n\n• KVALITATIVNÍ PÁSMA MÍSTO PROCENT: nikdo nezměřil, kolik to stojí konverze. Držíme je, protože falešná přesnost je horší — ale je to volba, ne prokázaná výhra.\n\n• FOTOGRAFIE zatím nikde. DESIGN.md volá po skutečných lidech; žádný snímek neexistuje, tak tu radši nic není než ilustrační vata.\n\n• PRÁVNÍ ČÁST: výzkum se k minor-specific ustanovením Digital Fairness Act nedostal k primárnímu zdroji. Než půjdou skutečné peníze, nechat projít někým na EU spotřebitelské právo."
+    }
+  ],
+  "launch": { "view": "canvas" }
+}

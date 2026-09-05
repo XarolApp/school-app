@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..700,0..100&family=Public+Sans:wght@400;500;600&display=swap">
+  <style>
+    :root{
+      --bg:#FAF6EF; --surface:#FAF6EF; --surface2:#F1ECE3;
+      --ink:#221A13; --ink2:#6B6259; --ink3:#756B5C;
+      --line:#E6DFD1; --line2:#D6CBB6;
+      --acc:#AD4F2A; --acc-ink:#FAF6EF; --acc-soft:#F6E3D6; --acc-line:#DFA98C;
+      --ok:#4F7143; --ok-soft:#E6EDDE;
+      --heading:'Fraunces',Georgia,serif; --sans:'Public Sans',system-ui,sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:var(--sans);background:var(--bg);color:var(--ink)}
+    .frame{width:1280px;height:900px;display:flex;flex-direction:column;background:var(--bg)}
+
+    /* Chrome. NOTE the progress rail is NOT here: before the quiz there are no
+       questions to count, and a bar that fills on framing screens is exactly
+       the "artificial advancement" the DSA Art. 25 analysis flags. A phase
+       label is honest and costs nothing. */
+    .top{display:flex;align-items:center;gap:20px;padding:28px 72px;border-bottom:1px solid var(--line)}
+    .back{width:38px;height:38px;border-radius:50%;border:1px solid var(--line2);background:transparent;
+      color:var(--ink2);font-size:16px;cursor:pointer;display:grid;place-items:center}
+    .phase{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3)}
+    .brand{margin-left:auto;font-family:var(--heading);font-weight:600;font-size:16px;color:var(--acc);
+      font-variation-settings:'SOFT' 30,'opsz' 16}
+
+    .body{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:0 72px}
+    .col{width:100%;max-width:900px}
+    h1{margin:0;font-family:var(--heading);font-weight:400;font-size:46px;line-height:1.1;
+      letter-spacing:-.02em;font-variation-settings:'SOFT' 50,'opsz' 46;text-align:center}
+    .sub{margin:16px auto 0;font-size:17px;line-height:1.55;color:var(--ink2);max-width:52ch;text-align:center}
+
+    /* The two cards are deliberately IDENTICAL in weight, size and treatment.
+       Neither branch is a funnel into the other (dual-persona rule), so the
+       moment one looks like the primary and the other like the fallback, the
+       screen is wrong. */
+    .cards{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:44px}
+    .card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:30px 30px 26px;
+      text-align:left;cursor:pointer;font:inherit;color:inherit}
+    .card:hover{border-color:var(--acc-line)}
+    .ico{width:42px;height:42px;border-radius:12px;background:var(--acc-soft);display:grid;place-items:center;
+      color:var(--acc);font-size:19px}
+    .ctitle{margin:18px 0 0;font-family:var(--heading);font-weight:400;font-size:27px;line-height:1.15;
+      letter-spacing:-.015em;font-variation-settings:'SOFT' 45,'opsz' 27}
+    .cdesc{margin:10px 0 0;font-size:14.5px;line-height:1.55;color:var(--ink2)}
+    .rule{height:1px;background:var(--line);margin:20px 0 16px}
+    .clist{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:9px}
+    .clist li{font-size:13px;line-height:1.45;color:var(--ink2);padding-left:18px;position:relative}
+    .clist li::before{content:'';position:absolute;left:0;top:7px;width:5px;height:5px;border-radius:50%;
+      background:var(--acc-line)}
+
+    .foot{margin:32px auto 0;font-size:13.5px;line-height:1.5;color:var(--ink3);text-align:center;max-width:56ch}
+  </style>
+</helmet>
+
+<div class="frame">
+  <div class="top">
+    <button class="back">←</button>
+    <span class="phase">Než začneme</span>
+    <span class="brand">ŠkolaMatch</span>
+  </div>
+
+  <div class="body">
+    <div class="col">
+      <h1>Kdo vyplňuje dotazník?</h1>
+      <p class="sub">Podle toho se mění, jak se ptáme — ne jak počítáme.
+        Výsledky jsou v obou případech stejné.</p>
+
+      <div class="cards">
+        <button class="card">
+          <div class="ico">✦</div>
+          <p class="ctitle">Jsem deváťák</p>
+          <p class="cdesc">Ptáme se tě přímo na tebe — co tě baví, kam se ti chce dojíždět.</p>
+          <div class="rule"></div>
+          <ul class="clist">
+            <li>Otázky v první osobě, normální čeština</li>
+            <li>Výsledek si můžeš poslat rodičům</li>
+            <li>Můžeš si ho koupit sám</li>
+          </ul>
+        </button>
+
+        <button class="card">
+          <div class="ico">☗</div>
+          <p class="ctitle">Jsem rodič</p>
+          <p class="cdesc">Ptáme se na dítě — a u každé otázky můžete říct, že nevíte jistě.</p>
+          <div class="rule"></div>
+          <ul class="clist">
+            <li>Vykání a otázky o dítěti</li>
+            <li>„Nevím jistě“ u každé otázky</li>
+            <li>Vysvětlíme, jak se shoda počítá</li>
+          </ul>
+        </button>
+      </div>
+
+      <p class="foot">Můžeš to kdykoli přepnout — odpovědi zůstanou zachované a nemusíš nic vyplňovat znovu.</p>
+    </div>
+  </div>
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"$preview": {"width": 1280, "height": 900}}'>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

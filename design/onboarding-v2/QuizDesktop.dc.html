@@ -1,0 +1,175 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..700,0..100&family=Public+Sans:wght@400;500;600&display=swap">
+  <style>
+    :root{
+      --bg:#FAF6EF; --surface:#FAF6EF; --surface2:#F1ECE3;
+      --ink:#221A13; --ink2:#6B6259; --ink3:#756B5C;
+      --line:#E6DFD1; --line2:#D6CBB6;
+      --acc:#AD4F2A; --acc-ink:#FAF6EF; --acc-soft:#F6E3D6; --acc-line:#DFA98C;
+      --ok:#4F7143; --ok-soft:#E6EDDE;
+      --heading:'Fraunces',Georgia,serif; --sans:'Public Sans',system-ui,sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:var(--sans);background:var(--bg);color:var(--ink)}
+    .frame{width:1280px;height:900px;display:grid;grid-template-columns:1fr 420px;background:var(--bg)}
+
+    .main{display:flex;flex-direction:column;padding:28px 64px 40px}
+
+    /* Chrome. The progress rail is capped to the question column, NOT stretched
+       to 1280px — a full-bleed bar at desktop width reads as a decorative
+       stripe rather than an indicator. It also counts ONLY questions: no
+       pre-filled head start, because inflating it to induce the endowed-
+       progress effect is the "artificial advancement" DSA Art. 25 catches. */
+    .top{display:flex;align-items:center;gap:18px}
+    .back{width:38px;height:38px;border-radius:50%;border:1px solid var(--line2);background:transparent;
+      color:var(--ink2);font-size:16px;cursor:pointer;display:grid;place-items:center;flex:none}
+    .prog{flex:1;max-width:560px}
+    .ptrack{height:8px;border-radius:999px;background:var(--line);overflow:hidden}
+    .pfill{height:100%;width:30%;border-radius:999px;background:var(--acc)}
+    .plabel{margin:7px 0 0;font-size:13px;color:var(--ink2)}
+
+    .content{flex:1;display:flex;flex-direction:column;justify-content:center;max-width:600px;padding-bottom:20px}
+
+    /* Honest live count. Care.com ships exactly this above the question in a
+       matching product; the number here is REAL — recomputed from the answers
+       so far against the 60 seeded schools. It is the legitimate version of
+       the "live match %" idea: a true count, not a fabricated score. */
+    .count{display:inline-flex;align-items:center;gap:9px;align-self:flex-start;padding:9px 14px;
+      border-radius:999px;background:var(--ok-soft);color:var(--ok);font-size:13px;font-weight:600;
+      margin-bottom:24px}
+    .cdot{width:7px;height:7px;border-radius:50%;background:var(--ok)}
+
+    h1{margin:0;font-family:var(--heading);font-weight:400;font-size:42px;line-height:1.1;
+      letter-spacing:-.02em;font-variation-settings:'SOFT' 50,'opsz' 42;max-width:18ch}
+    .hint{margin:14px 0 0;font-size:15px;line-height:1.55;color:var(--ink2);max-width:46ch}
+
+    .opts{display:flex;flex-direction:column;gap:10px;margin-top:30px}
+    .opt{display:flex;align-items:center;gap:13px;width:100%;text-align:left;padding:16px 18px;
+      border:1px solid var(--line);border-radius:16px;background:var(--surface);color:var(--ink);
+      font:inherit;font-size:15px;font-weight:500;cursor:pointer}
+    .opt:hover{border-color:var(--acc-line)}
+    /* Selection = 1.5px accent border + soft fill. Never a solid accent fill —
+       a system rule, and it keeps the row readable. */
+    .opt[data-on]{border:1.5px solid var(--acc);background:var(--acc-soft);padding:15.5px 17.5px;font-weight:600}
+    .radio{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--line2);flex:none}
+    .opt[data-on] .radio{border-color:var(--acc);background:var(--acc);box-shadow:inset 0 0 0 3.5px var(--acc-soft)}
+
+    /* Answer-triggered reassurance, injected BETWEEN the chosen row and the
+       rest. This is what replaces the deleted stand-alone mirroring screen:
+       the same "you were heard" work, distributed across all ten questions
+       instead of paid for with one extra screen in the steep-drop-off zone. */
+    .reassure{margin:10px 0 0;padding:14px 16px;border-radius:14px;background:var(--ok-soft);
+      border:1px solid #D8E3CE;display:flex;gap:11px;align-items:flex-start}
+    .rico{color:var(--ok);font-size:14px;line-height:1.4;flex:none}
+    .reassure p{margin:0;font-size:13.5px;line-height:1.55;color:#3F5A36}
+
+    .actions{display:flex;align-items:center;gap:20px;margin-top:34px}
+    .btn{font:inherit;font-size:16px;font-weight:600;border-radius:14px;padding:16px 32px;
+      border:1px solid var(--acc);background:var(--acc);color:var(--acc-ink);cursor:pointer}
+    .quiet{font:inherit;font-size:14.5px;color:var(--ink2);background:none;border:0;cursor:pointer;
+      padding:8px 4px}
+    /* Back is quiet, Skip is quieter — both present. Skipping never lowers a
+       score here; it only widens the confidence interval. */
+    .quieter{font:inherit;font-size:13.5px;color:var(--ink3);background:none;border:0;cursor:pointer;
+      margin-left:auto;text-decoration:underline;text-underline-offset:3px}
+
+    /* ---- the live profile panel: the desktop-only idea ---- */
+    .panel{background:var(--surface2);border-left:1px solid var(--line);padding:32px 32px 28px;
+      display:flex;flex-direction:column}
+    .plab{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);
+      margin:0 0 20px}
+    .rows{display:flex;flex-direction:column;gap:4px}
+    .row{padding:11px 0;border-bottom:1px solid var(--line)}
+    .rk{font-size:12px;color:var(--ink3);margin:0 0 6px}
+    .rv{display:flex;flex-wrap:wrap;gap:6px}
+    .tag{font-size:12.5px;font-weight:500;padding:5px 10px;border-radius:8px;background:var(--bg);
+      border:1px solid var(--line2);color:var(--ink)}
+    .row[data-new] .tag{border:1.5px solid var(--acc);background:var(--acc-soft);color:var(--acc);
+      font-weight:600;padding:4px 9px}
+    .row[data-pending]{opacity:.45}
+    .row[data-pending] .slot{height:26px;border-radius:8px;border:1px dashed var(--line2)}
+
+    .pfoot{margin-top:auto;padding-top:20px;border-top:1px solid var(--line2)}
+    .left{font-size:13px;font-weight:600;color:var(--ink);margin:0 0 8px}
+    .priv{margin:0;font-size:12px;line-height:1.5;color:var(--ink3)}
+  </style>
+</helmet>
+
+<div class="frame">
+  <div class="main">
+    <div class="top">
+      <button class="back">←</button>
+      <div class="prog">
+        <div class="ptrack"><div class="pfill"></div></div>
+        <p class="plabel">Otázka 3 z 10</p>
+      </div>
+    </div>
+
+    <div class="content">
+      <span class="count"><span class="cdot"></span>Zatím sedí 34 z 60 pražských škol</span>
+
+      <h1>Táhne tě spíš gympl, nebo odborka?</h1>
+      <p class="hint">Když nevíš, klidně nech „ještě nevím“ — ukážeme ti obojí a nic tím neztratíš.</p>
+
+      <div class="opts">
+        <button class="opt" data-on><span class="radio"></span>Gymnázium (všeobecné)</button>
+        <div class="reassure">
+          <span class="rico">✦</span>
+          <p>Gympl nechává rozhodnutí o oboru na později — bereme to jako „ještě si nechávám otevřeno“,
+            ne jako hotovou volbu. V Praze jich je 31.</p>
+        </div>
+        <button class="opt"><span class="radio"></span>Odborná škola s maturitou</button>
+        <button class="opt"><span class="radio"></span>Učební obor s výučním listem</button>
+        <button class="opt"><span class="radio"></span>Ještě nevím</button>
+      </div>
+
+      <div class="actions">
+        <button class="btn">Další</button>
+        <button class="quiet">Zpět</button>
+        <button class="quieter">Přeskočit otázku</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <p class="plab">Tvůj profil</p>
+    <div class="rows">
+      <div class="row">
+        <p class="rk">Co tě baví</p>
+        <div class="rv"><span class="tag">Přírodní vědy</span><span class="tag">Technika a IT</span></div>
+      </div>
+      <div class="row">
+        <p class="rk">Za pět let</p>
+        <div class="rv"><span class="tag">Na vysoké škole</span></div>
+      </div>
+      <div class="row" data-new>
+        <p class="rk">Typ školy</p>
+        <div class="rv"><span class="tag">Gymnázium</span></div>
+      </div>
+      <div class="row" data-pending><p class="rk">Jazyky</p><div class="slot"></div></div>
+      <div class="row" data-pending><p class="rk">Praxe, nebo teorie</p><div class="slot"></div></div>
+      <div class="row" data-pending><p class="rk">Části Prahy</p><div class="slot"></div></div>
+      <div class="row" data-pending><p class="rk">Jak jistě máš vybráno</p><div class="slot"></div></div>
+    </div>
+    <div class="pfoot">
+      <p class="left">Zbývá 7 otázek</p>
+      <p class="priv">Odpovědi zůstávají v tvém prohlížeči. Nikam je neposíláme a nic o tobě
+        neukládáme, dokud si sám nevytvoříš účet.</p>
+    </div>
+  </div>
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"$preview": {"width": 1280, "height": 900}}'>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

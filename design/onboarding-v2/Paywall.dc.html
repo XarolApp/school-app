@@ -1,0 +1,164 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..700,0..100&family=Public+Sans:wght@400;500;600&display=swap">
+  <style>
+    :root{
+      --bg:#FAF6EF; --surface:#FAF6EF; --surface2:#F1ECE3;
+      --ink:#221A13; --ink2:#6B6259; --ink3:#756B5C;
+      --line:#E6DFD1; --line2:#D6CBB6;
+      --acc:#AD4F2A; --acc-ink:#FAF6EF; --acc-soft:#F6E3D6; --acc-line:#DFA98C;
+      --ok:#4F7143; --ok-soft:#E6EDDE;
+      --heading:'Fraunces',Georgia,serif; --sans:'Public Sans',system-ui,sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:var(--sans);background:var(--bg);color:var(--ink)}
+    .frame{width:1280px;height:900px;display:grid;grid-template-columns:1fr 500px;background:var(--bg)}
+
+    .left{padding:56px 56px 48px 72px;display:flex;flex-direction:column;justify-content:center}
+    .eyebrow{margin:0 0 14px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+      color:var(--acc)}
+    h1{margin:0;font-family:var(--heading);font-weight:400;font-size:44px;line-height:1.1;
+      letter-spacing:-.02em;font-variation-settings:'SOFT' 50,'opsz' 44;max-width:16ch}
+    .lede{margin:18px 0 0;font-size:16.5px;line-height:1.6;color:var(--ink2);max-width:46ch}
+
+    /* Outcomes in the user's language, never feature names. */
+    .bul{margin:30px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:14px}
+    .bul li{display:flex;gap:13px;align-items:flex-start;font-size:15.5px;line-height:1.5;max-width:46ch}
+    .bic{width:24px;height:24px;border-radius:8px;background:var(--acc-soft);color:var(--acc);flex:none;
+      display:grid;place-items:center;font-size:12px;font-weight:600;margin-top:1px}
+    .bul b{font-weight:600}
+    .bul span.d{display:block;color:var(--ink2);font-size:14px;margin-top:3px}
+
+    .keep{margin-top:32px;padding:16px 20px;border-radius:16px;background:var(--ok-soft);
+      border:1px solid #D8E3CE;max-width:48ch}
+    .keep p{margin:0;font-size:13.5px;line-height:1.55;color:#3F5A36}
+    .keep b{font-weight:600}
+
+    .right{background:var(--surface2);border-left:1px solid var(--line);padding:48px 44px;
+      display:flex;flex-direction:column;justify-content:center}
+
+    /* Both plans render their full price at equal weight. Pre-selecting one is
+       fine; hiding the other's cost until checkout is not — undisclosed cost
+       at the final step is named as a manipulative pattern. */
+    .plans{display:flex;flex-direction:column;gap:12px}
+    .plan{background:var(--bg);border:1px solid var(--line2);border-radius:18px;padding:20px 22px;
+      cursor:pointer;text-align:left;font:inherit;color:inherit;position:relative}
+    .plan[data-on]{border:1.5px solid var(--acc);background:var(--acc-soft);padding:19.5px 21.5px}
+    .ptop{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+    .pname{font-family:var(--heading);font-weight:400;font-size:22px;letter-spacing:-.01em;
+      font-variation-settings:'SOFT' 35,'opsz' 22}
+    .pprice{font-size:22px;font-weight:600;font-variant-numeric:tabular-nums}
+    .pwindow{margin:8px 0 0;font-size:13.5px;line-height:1.5;color:var(--ink2)}
+    .pday{margin:8px 0 0;font-size:12.5px;color:var(--ink3);font-variant-numeric:tabular-nums}
+    .tagbest{position:absolute;top:-9px;left:22px;font-size:10.5px;font-weight:600;letter-spacing:.06em;
+      text-transform:uppercase;background:var(--acc);color:var(--acc-ink);padding:4px 9px;border-radius:6px}
+
+    /* The 3-day trial belongs to Měsíční only. Rendering a trial timeline over
+       a one-time purchase would promise something that plan does not have. */
+    .tl{margin:10px 0 0;padding:14px 16px;border-radius:14px;background:var(--surface2);
+      border:1px solid var(--line)}
+    .tlrow{display:flex;gap:11px;align-items:flex-start;font-size:12.5px;line-height:1.45;color:var(--ink2)}
+    .tlrow+.tlrow{margin-top:9px}
+    .tlmark{width:7px;height:7px;border-radius:50%;background:var(--acc-line);flex:none;margin-top:5px}
+    .tlrow b{color:var(--ink);font-weight:600;min-width:56px;display:inline-block}
+
+    .confirm{margin:20px 0 0;padding:15px 17px;border-radius:14px;background:var(--bg);
+      border:1px solid var(--line2);display:flex;gap:12px;align-items:flex-start}
+    /* Deliberately UNticked. A pre-ticked consent box is prohibited outright,
+       and this one gates a charge where the payer may be 15. */
+    .box{width:20px;height:20px;border-radius:6px;border:1.5px solid var(--line2);background:var(--bg);flex:none;
+      margin-top:1px}
+    .confirm p{margin:0;font-size:13px;line-height:1.5;color:var(--ink2)}
+    .confirm b{color:var(--ink);font-weight:600}
+
+    .cta{margin:18px 0 0;width:100%;font:inherit;font-size:16.5px;font-weight:600;border-radius:14px;
+      padding:18px;border:1px solid var(--acc);background:var(--acc);color:var(--acc-ink);cursor:pointer}
+    .terms{margin:12px 0 0;font-size:12px;line-height:1.5;color:var(--ink3);text-align:center}
+
+    .trust{margin:18px 0 0;display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+    .trust span{font-size:12px;color:var(--ink3)}
+
+    /* Neutral decline. No "no thanks, I don't care about my future" —
+       confirmshaming is named as a violation, and it would be aimed at a
+       15-year-old here. */
+    .decline{margin:20px auto 0;font:inherit;font-size:14px;color:var(--ink2);background:none;border:0;
+      text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+  </style>
+</helmet>
+
+<div class="frame">
+  <div class="left">
+    <p class="eyebrow">Zbývá poslední krok</p>
+    <h1>Odemkni zbylých devět škol</h1>
+    <p class="lede">První školu máš zdarma a zůstane ti tak jako tak. Placená verze ukáže zbytek
+      žebříčku a to, čím se školy mezi sebou liší.</p>
+
+    <ul class="bul">
+      <li><span class="bic">1</span><span><b>Celý žebříček deseti škol</b>
+        <span class="d">Seřazený podle tvých odpovědí, s vysvětlením u každé</span></span></li>
+      <li><span class="bic">2</span><span><b>Porovnání vedle sebe</b>
+        <span class="d">Obory, hranice přijetí z loňska, počet míst — u každého čísla rok a zdroj</span></span></li>
+      <li><span class="bic">3</span><span><b>Shrnutí pro rodiče</b>
+        <span class="d">Jedna stránka, kterou můžeš poslat nebo vytisknout</span></span></li>
+      <li><span class="bic">4</span><span><b>Termíny, které se tě týkají</b>
+        <span class="d">Dny otevřených dveří a přihlášky u tvých škol</span></span></li>
+    </ul>
+
+    <div class="keep">
+      <p><b>Když nezaplatíš, nic neztratíš.</b> První škola i tvoje odpovědi ti zůstanou
+        a databázi všech 60 škol si můžeš procházet zdarma dál.</p>
+    </div>
+  </div>
+
+  <div class="right">
+    <div class="plans">
+      <button class="plan" data-on>
+        <span class="tagbest">Doporučujeme</span>
+        <div class="ptop"><span class="pname">Sezónní přístup</span><span class="pprice">690 Kč</span></div>
+        <p class="pwindow">Jednorázově. Platí do <b>31. března 2027</b>, tedy do konce přihlášek —
+          pak přístup skončí. Nic se automaticky neobnovuje.</p>
+        <p class="pday">≈ 3,25 Kč na den po celou sezónu</p>
+      </button>
+
+      <button class="plan">
+        <div class="ptop"><span class="pname">Měsíčně</span><span class="pprice">249 Kč</span></div>
+        <p class="pwindow">Chceš to nejdřív zkusit? První <b>3 dny zdarma</b>, potom 249 Kč měsíčně.
+          Zrušíš kdykoli jedním kliknutím.</p>
+        <div class="tl">
+          <div class="tlrow"><span class="tlmark"></span><span><b>Dnes</b> Přístup se odemkne — 0 Kč</span></div>
+          <div class="tlrow"><span class="tlmark"></span><span><b>2. den</b> Napíšeme ti e-mail, že zítra začne platba</span></div>
+          <div class="tlrow"><span class="tlmark"></span><span><b>3. den</b> Strhne se první platba 249 Kč</span></div>
+        </div>
+      </button>
+    </div>
+
+    <div class="confirm">
+      <span class="box"></span>
+      <p><b>Potvrzuji, že o platbě ví rodič.</b> Je ti méně než 18, tak se ptáme —
+        platit má smysl jen s jejich vědomím.</p>
+    </div>
+
+    <button class="cta">Pokračovat k platbě — 690 Kč</button>
+    <p class="terms">Jednorázová platba. Zrušení a vrácení do 14 dnů řešíme v Nastavení, na jedno kliknutí.</p>
+
+    <div class="trust">
+      <span>Platba přes Stripe</span><span>·</span><span>Neukládáme čísla karet</span><span>·</span><span>Faktura e-mailem</span>
+    </div>
+
+    <button class="decline">Zatím ne, chci si projít školy zdarma</button>
+  </div>
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"$preview": {"width": 1280, "height": 900}}'>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

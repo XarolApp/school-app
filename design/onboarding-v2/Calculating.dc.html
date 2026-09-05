@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..700,0..100&family=Public+Sans:wght@400;500;600&display=swap">
+  <style>
+    :root{
+      --bg:#FAF6EF; --surface:#FAF6EF; --surface2:#F1ECE3;
+      --ink:#221A13; --ink2:#6B6259; --ink3:#756B5C;
+      --line:#E6DFD1; --line2:#D6CBB6;
+      --acc:#AD4F2A; --acc-ink:#FAF6EF; --acc-soft:#F6E3D6; --acc-line:#DFA98C;
+      --ok:#4F7143; --ok-soft:#E6EDDE;
+      --heading:'Fraunces',Georgia,serif; --sans:'Public Sans',system-ui,sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:var(--sans);background:var(--bg);color:var(--ink)}
+    .frame{width:1280px;height:900px;display:grid;place-items:center;background:var(--bg)}
+    .col{width:620px}
+
+    h1{margin:0;font-family:var(--heading);font-weight:400;font-size:44px;line-height:1.1;
+      letter-spacing:-.02em;font-variation-settings:'SOFT' 50,'opsz' 44;text-align:center}
+    .sub{margin:14px auto 0;font-size:16px;line-height:1.55;color:var(--ink2);text-align:center;max-width:42ch}
+
+    /* Itemised, not a bare spinner — each row names real work the engine is
+       actually doing. Three sub-steps, ~1s each, ~3s total. Past 4s the
+       perceived-quality gain inverts into suspicion, so this must never be
+       padded to feel more impressive. */
+    .steps{margin-top:44px;display:flex;flex-direction:column;gap:2px}
+    .step{display:flex;align-items:center;gap:16px;padding:18px 20px;border-radius:16px}
+    .step[data-state=done]{background:transparent}
+    .step[data-state=now]{background:var(--surface2);border:1px solid var(--line)}
+    .step[data-state=next]{opacity:.4}
+
+    .mark{width:26px;height:26px;border-radius:50%;flex:none;display:grid;place-items:center;
+      font-size:13px;font-weight:600}
+    .step[data-state=done] .mark{background:var(--ok-soft);color:var(--ok)}
+    .step[data-state=now] .mark{background:var(--acc-soft);color:var(--acc)}
+    .step[data-state=next] .mark{border:1.5px solid var(--line2);color:transparent}
+
+    .stext{flex:1;font-size:15.5px;font-weight:500}
+    .step[data-state=done] .stext{color:var(--ink2);font-weight:400}
+    .sright{font-size:12.5px;color:var(--ink3)}
+
+    /* A real indeterminate bar for the running step only. No percentage: there
+       is no honest number to show for a sub-second computation. */
+    .runbar{margin:12px 20px 0;height:4px;border-radius:999px;background:var(--line);overflow:hidden}
+    .runfill{height:100%;width:42%;border-radius:999px;background:var(--acc)}
+
+    .note{margin:40px 0 0;padding:16px 20px;border-radius:16px;background:var(--surface2);
+      border:1px solid var(--line)}
+    .note p{margin:0;font-size:13.5px;line-height:1.55;color:var(--ink2);text-align:center}
+    .note b{color:var(--ink);font-weight:600}
+  </style>
+</helmet>
+
+<div class="frame">
+  <div class="col">
+    <h1>Skládám tvůj výsledek</h1>
+    <p class="sub">Deset odpovědí proti šedesáti školám. Chvilku to trvá, ale ne dlouho.</p>
+
+    <div class="steps">
+      <div class="step" data-state="done">
+        <span class="mark">✓</span>
+        <span class="stext">Porovnávám 60 pražských středních škol</span>
+        <span class="sright">hotovo</span>
+      </div>
+      <div class="step" data-state="now">
+        <span class="mark">◐</span>
+        <span class="stext">Počítám dojezd do částí, které jsi vybral</span>
+        <span class="sright">právě teď</span>
+      </div>
+      <div class="runbar"><div class="runfill"></div></div>
+      <div class="step" data-state="next">
+        <span class="mark">·</span>
+        <span class="stext">Připravuji vysvětlení u každé školy</span>
+      </div>
+    </div>
+
+    <div class="note">
+      <p><b>Počítá se to přímo u tebe v prohlížeči.</b> Tvoje odpovědi na náš server
+        vůbec neodcházejí — matematika je stejná pro všechny a je veřejně popsaná.</p>
+    </div>
+  </div>
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"$preview": {"width": 1280, "height": 900}}'>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

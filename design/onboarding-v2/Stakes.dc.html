@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..700,0..100&family=Public+Sans:wght@400;500;600&display=swap">
+  <style>
+    :root{
+      --bg:#FAF6EF; --surface:#FAF6EF; --surface2:#F1ECE3;
+      --ink:#221A13; --ink2:#6B6259; --ink3:#756B5C;
+      --line:#E6DFD1; --line2:#D6CBB6;
+      --acc:#AD4F2A; --acc-ink:#FAF6EF; --acc-soft:#F6E3D6; --acc-line:#DFA98C;
+      --ok:#4F7143; --ok-soft:#E6EDDE;
+      --heading:'Fraunces',Georgia,serif; --sans:'Public Sans',system-ui,sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:var(--sans);background:var(--bg);color:var(--ink)}
+    .frame{width:1280px;height:900px;display:flex;flex-direction:column;background:var(--bg)}
+
+    .top{display:flex;align-items:center;gap:20px;padding:28px 72px;border-bottom:1px solid var(--line)}
+    .back{width:38px;height:38px;border-radius:50%;border:1px solid var(--line2);background:transparent;
+      color:var(--ink2);font-size:16px;cursor:pointer;display:grid;place-items:center}
+    .phase{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3)}
+    .brand{margin-left:auto;font-family:var(--heading);font-weight:600;font-size:16px;color:var(--acc);
+      font-variation-settings:'SOFT' 30,'opsz' 16}
+
+    .body{flex:1;display:flex;align-items:center;padding:0 72px}
+    .col{width:100%;max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:64px;
+      align-items:center}
+
+    /* Neutral stakes, never fear. Both statements are true, verifiable, and
+       blame nobody — the zero-shame rule forbids the "you'll regret it for
+       4 years" version of this screen outright. */
+    .stat{font-family:var(--heading);font-weight:400;font-size:78px;line-height:1;letter-spacing:-.03em;
+      font-variation-settings:'SOFT' 60,'opsz' 78;color:var(--acc);margin:0}
+    .statcap{margin:14px 0 0;font-family:var(--heading);font-weight:400;font-size:29px;line-height:1.2;
+      letter-spacing:-.015em;font-variation-settings:'SOFT' 45,'opsz' 29;max-width:15ch}
+    .p{margin:22px 0 0;font-size:16.5px;line-height:1.6;color:var(--ink2);max-width:40ch}
+    .second{margin-top:26px;padding:18px 20px;background:var(--surface2);border-radius:16px;
+      border:1px solid var(--line)}
+    .second p{margin:0;font-size:14.5px;line-height:1.55;color:var(--ink2)}
+    .second b{color:var(--ink);font-weight:600}
+
+    .ask h2{margin:0;font-family:var(--heading);font-weight:400;font-size:32px;line-height:1.15;
+      letter-spacing:-.02em;font-variation-settings:'SOFT' 45,'opsz' 32}
+    /* Multi-intent, not single. Forcing one goal when the product serves
+       several is the pattern Headspace measured a 10% relative trial lift
+       from removing. */
+    .hint{margin:10px 0 22px;font-size:14px;color:var(--ink3)}
+    .chips{display:flex;flex-wrap:wrap;gap:10px}
+    .chip{font:inherit;font-size:14.5px;font-weight:500;padding:12px 17px;border-radius:999px;
+      border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+    .chip[data-on]{border:1.5px solid var(--acc);background:var(--acc-soft);color:var(--acc);font-weight:600;
+      padding:11.5px 16.5px}
+
+    .actions{margin-top:34px;display:flex;align-items:center;gap:18px}
+    .btn{font:inherit;font-size:16px;font-weight:600;border-radius:14px;padding:16px 30px;
+      border:1px solid var(--acc);background:var(--acc);color:var(--acc-ink);cursor:pointer}
+    .skip{font-size:14px;color:var(--ink3);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+  </style>
+</helmet>
+
+<div class="frame">
+  <div class="top">
+    <button class="back">←</button>
+    <span class="phase">Než začneme</span>
+    <span class="brand">ŠkolaMatch</span>
+  </div>
+
+  <div class="body">
+    <div class="col">
+      <div>
+        <p class="stat">5 800</p>
+        <p class="statcap">hodin strávíš na střední škole</p>
+        <p class="p">Čtyři roky, pět dní v týdnu. Je to nejdelší souvislá věc, o které teď rozhoduješ —
+          a rozhodnout se dá dobře.</p>
+        <div class="second">
+          <p><b>V Praze je přes 60 středních škol.</b> Většina deváťáků si projde tak tři nebo čtyři,
+            než se rozhodne. Ne proto, že by je nezajímaly ostatní — jen je nikde nevidí pohromadě.</p>
+        </div>
+      </div>
+
+      <div class="ask">
+        <h2>S čím ti máme pomoct?</h2>
+        <p class="hint">Vyber klidně víc věcí. Podle toho poskládáme výsledek.</p>
+        <div class="chips">
+          <button class="chip" data-on>Najít školy, co mi sedí</button>
+          <button class="chip">Porovnat je mezi sebou</button>
+          <button class="chip" data-on>Zjistit, kam se dá dostat</button>
+          <button class="chip">Vybrat si zaměření</button>
+          <button class="chip">Ukázat to rodičům</button>
+          <button class="chip">Zorientovat se v termínech</button>
+        </div>
+        <div class="actions">
+          <button class="btn">Pokračovat na otázky</button>
+          <span class="skip">Přeskočit</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"$preview": {"width": 1280, "height": 900}}'>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

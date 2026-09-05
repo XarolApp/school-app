@@ -1,0 +1,150 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..700,0..100&family=Public+Sans:wght@400;500;600&display=swap">
+  <style>
+    :root{
+      --bg:#FAF6EF; --surface:#FAF6EF; --surface2:#F1ECE3;
+      --ink:#221A13; --ink2:#6B6259; --ink3:#756B5C;
+      --line:#E6DFD1; --line2:#D6CBB6;
+      --acc:#AD4F2A; --acc-ink:#FAF6EF; --acc-soft:#F6E3D6; --acc-line:#DFA98C;
+      --ok:#4F7143; --ok-soft:#E6EDDE;
+      --heading:'Fraunces',Georgia,serif; --sans:'Public Sans',system-ui,sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:var(--sans);background:var(--bg);color:var(--ink)}
+    .frame{width:1280px;height:900px;display:flex;flex-direction:column;align-items:center;
+      justify-content:center;background:var(--bg);padding:40px 72px}
+    .col{width:100%;max-width:1040px}
+
+    .eyebrow{margin:0 0 14px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+      color:var(--acc)}
+    /* The reveal names something about the USER, not a settings summary of
+       what they typed. A reveal that echoes inputs back is a receipt, and
+       reads as one. */
+    h1{margin:0;font-family:var(--heading);font-weight:400;font-size:44px;line-height:1.1;
+      letter-spacing:-.02em;font-variation-settings:'SOFT' 50,'opsz' 44;max-width:22ch}
+    .lede{margin:16px 0 0;font-size:16.5px;line-height:1.6;color:var(--ink2);max-width:58ch}
+
+    .grid{display:grid;grid-template-columns:1fr 360px;gap:24px;margin-top:34px;align-items:start}
+
+    .hero{background:var(--surface);border:1.5px solid var(--acc-line);border-radius:20px;padding:26px 28px;
+      box-shadow:0 1px 2px rgba(34,26,19,.05),0 18px 40px -20px rgba(34,26,19,.18)}
+    .rank{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--acc)}
+    .sname{margin:10px 0 0;font-family:var(--heading);font-weight:400;font-size:32px;line-height:1.15;
+      letter-spacing:-.015em;font-variation-settings:'SOFT' 45,'opsz' 32}
+    .smeta{margin:8px 0 0;font-size:14.5px;color:var(--ink2)}
+    /* A band and named reasons, never a percentage. The scoring engine cannot
+       honestly justify two significant figures, and a fabricated 87% is
+       exactly the false precision this product refuses to sell. */
+    .band{display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding:8px 13px;border-radius:999px;
+      background:var(--ok-soft);color:var(--ok);font-size:13px;font-weight:600}
+    .dot{width:7px;height:7px;border-radius:50%;background:var(--ok)}
+    .whyl{margin:20px 0 10px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+      color:var(--ink3)}
+    .why{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+    .why li{font-size:14px;line-height:1.5;color:var(--ink2);padding-left:20px;position:relative}
+    .why li::before{content:'✓';position:absolute;left:0;color:var(--ok);font-size:12px;font-weight:600}
+    .why li[data-no]{color:var(--ink3)}
+    .why li[data-no]::before{content:'–';color:var(--ink3)}
+
+    .stack{display:flex;flex-direction:column;gap:10px}
+    .lock{background:var(--surface2);border:1px solid var(--line);border-radius:16px;padding:16px 18px;
+      position:relative;overflow:hidden}
+    .lockin{filter:blur(3.5px);opacity:.55}
+    .lr{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3)}
+    .ln{margin:6px 0 0;font-family:var(--heading);font-weight:400;font-size:19px;line-height:1.2}
+    .lm{margin:4px 0 0;font-size:12.5px;color:var(--ink2)}
+    .lockfoot{margin-top:2px;padding:15px 18px;border:1px dashed var(--line2);border-radius:16px;text-align:center}
+    .lockfoot p{margin:0;font-size:13.5px;line-height:1.5;color:var(--ink2)}
+    .lockfoot b{color:var(--ink);font-weight:600}
+
+    .actions{display:flex;align-items:center;gap:14px;margin-top:30px}
+    .btn{font:inherit;font-size:16px;font-weight:600;border-radius:14px;padding:17px 30px;cursor:pointer;
+      border:1px solid var(--acc);background:var(--acc);color:var(--acc-ink)}
+    /* The share path sits BESIDE the buy button at equal reach, never in front
+       of it and never styled as the fallback for someone who cannot pay. */
+    .btn2{font:inherit;font-size:16px;font-weight:600;border-radius:14px;padding:17px 26px;cursor:pointer;
+      border:1px solid var(--line2);background:transparent;color:var(--ink)}
+    .free{margin-left:6px;font-size:13.5px;color:var(--ink3)}
+
+    /* Honest expectation. This was a whole screen of its own; it works better
+       here, attached to the claim it qualifies, than as one more tap before
+       the payoff. */
+    .honest{margin-top:26px;padding:16px 20px;border-radius:16px;background:var(--surface2);
+      border:1px solid var(--line);display:flex;gap:12px;align-items:flex-start}
+    .hico{color:var(--acc);font-size:14px;flex:none;margin-top:1px}
+    .honest p{margin:0;font-size:13.5px;line-height:1.55;color:var(--ink2)}
+    .honest b{color:var(--ink);font-weight:600}
+  </style>
+</helmet>
+
+<div class="frame">
+  <div class="col">
+    <p class="eyebrow">Tvůj výsledek</p>
+    <h1>Jsi typ na všeobecný gympl, který si drží otevřená přírodovědná dvířka.</h1>
+    <p class="lede">Nespěcháš na jeden obor, ale víš, kterým směrem tě to táhne — a nechceš kvůli škole
+      trávit hodinu denně v metru. Tomu v Praze odpovídá deset škol. Tahle nejvíc:</p>
+
+    <div class="grid">
+      <div class="hero">
+        <div class="rank">Nejlepší shoda</div>
+        <p class="sname">Gymnázium Na Zatlance</p>
+        <p class="smeta">Praha 5 · Všeobecné gymnázium · 4leté i 6leté studium</p>
+        <span class="band"><span class="dot"></span>Velmi dobrá shoda</span>
+        <p class="whyl">Shoda podle</p>
+        <ul class="why">
+          <li>Přírodní vědy — škola má rozšířenou biologii a chemii</li>
+          <li>Gymnázium — obor si vybíráš až ve třetím ročníku</li>
+          <li>Praha 5 je mezi částmi, kam jsi ochotný dojíždět</li>
+          <li data-no>Jazyky — standardní výuka, ne rozšířená. To jsi neoznačil jako důležité.</li>
+        </ul>
+      </div>
+
+      <div class="stack">
+        <div class="lock">
+          <div class="lockin">
+            <div class="lr">2. místo</div>
+            <p class="ln">Gymnázium Christiana Dopplera</p>
+            <p class="lm">Praha 5 · Matematické zaměření</p>
+          </div>
+        </div>
+        <div class="lock">
+          <div class="lockin">
+            <div class="lr">3. místo</div>
+            <p class="ln">Střední průmyslová škola</p>
+            <p class="lm">Praha 9 · Informační technologie</p>
+          </div>
+        </div>
+        <div class="lockfoot">
+          <p><b>Dalších 9 škol</b> seřazených podle tvých odpovědí,<br>s vysvětlením u každé z nich</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn">Zobrazit zbylých 9 škol</button>
+      <button class="btn2">Poslat rodičům</button>
+      <span class="free">První škola je zdarma a zůstane ti.</span>
+    </div>
+
+    <div class="honest">
+      <span class="hico">◆</span>
+      <p><b>Shoda není záruka přijetí.</b> Říká, jak moc škola sedí tomu, co jsi napsal — ne jaké
+        máš šance se tam dostat. Hranice přijetí z loňska ukazujeme zvlášť, u každé školy a s rokem.</p>
+    </div>
+  </div>
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"$preview": {"width": 1280, "height": 900}}'>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

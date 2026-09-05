@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..700,0..100&family=Public+Sans:wght@400;500;600&display=swap">
+  <style>
+    :root{
+      --bg:#FAF6EF; --surface:#FAF6EF; --surface2:#F1ECE3;
+      --ink:#221A13; --ink2:#6B6259; --ink3:#756B5C;
+      --line:#E6DFD1; --line2:#D6CBB6;
+      --acc:#AD4F2A; --acc-ink:#FAF6EF; --acc-soft:#F6E3D6; --acc-line:#DFA98C;
+      --ok:#4F7143; --ok-soft:#E6EDDE;
+      --heading:'Fraunces',Georgia,serif; --sans:'Public Sans',system-ui,sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:var(--sans);background:var(--bg);color:var(--ink)}
+    .frame{width:390px;height:844px;display:flex;flex-direction:column;background:var(--bg);overflow:hidden}
+
+    .top{padding:16px 20px 14px;display:flex;align-items:center;gap:12px}
+    .back{width:36px;height:36px;border-radius:50%;border:1px solid var(--line2);background:transparent;
+      color:var(--ink2);font-size:15px;display:grid;place-items:center;flex:none}
+    .prog{flex:1}
+    .ptrack{height:8px;border-radius:999px;background:var(--line);overflow:hidden}
+    .pfill{height:100%;width:30%;border-radius:999px;background:var(--acc)}
+    .plabel{margin:6px 0 0;font-size:12.5px;color:var(--ink2)}
+
+    /* The desktop profile panel has no room here, so it collapses to one
+       tappable strip. Same information, same accumulating-progress job — the
+       flow's state model does not change between viewports, only its shape.
+       That matters because the mobile app is the eventual primary surface. */
+    .strip{margin:4px 16px 0;padding:12px 14px;border-radius:14px;background:var(--surface2);
+      border:1px solid var(--line);display:flex;align-items:center;gap:10px}
+    .stags{display:flex;gap:6px;overflow:hidden;flex:1}
+    .tag{font-size:12px;font-weight:500;padding:4px 9px;border-radius:8px;background:var(--bg);
+      border:1px solid var(--line2);color:var(--ink);white-space:nowrap}
+    .more{font-size:12px;color:var(--ink3);white-space:nowrap}
+    .chev{color:var(--ink3);font-size:13px}
+
+    .body{flex:1;overflow:hidden;padding:22px 20px 0}
+    .count{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;
+      background:var(--ok-soft);color:var(--ok);font-size:12.5px;font-weight:600;margin-bottom:18px}
+    .cdot{width:6px;height:6px;border-radius:50%;background:var(--ok)}
+
+    h1{margin:0;font-family:var(--heading);font-weight:400;font-size:30px;line-height:1.12;
+      letter-spacing:-.02em;font-variation-settings:'SOFT' 45,'opsz' 30}
+    .hint{margin:11px 0 0;font-size:14.5px;line-height:1.5;color:var(--ink2)}
+
+    .opts{display:flex;flex-direction:column;gap:9px;margin-top:22px}
+    /* Tap targets stay thumb-sized (56px tall) — the desktop artboard shrinks
+       them to click size instead. Reusing one number across both is the
+       clearest tell of a stretched-phone layout. */
+    .opt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:17px 16px;
+      border:1px solid var(--line);border-radius:16px;background:var(--surface);color:var(--ink);
+      font:inherit;font-size:15px;font-weight:500}
+    .opt[data-on]{border:1.5px solid var(--acc);background:var(--acc-soft);padding:16.5px 15.5px;font-weight:600}
+    .radio{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--line2);flex:none}
+    .opt[data-on] .radio{border-color:var(--acc);background:var(--acc);box-shadow:inset 0 0 0 3.5px var(--acc-soft)}
+
+    .reassure{margin:9px 0 0;padding:13px 14px;border-radius:14px;background:var(--ok-soft);
+      border:1px solid #D8E3CE;display:flex;gap:10px;align-items:flex-start}
+    .rico{color:var(--ok);font-size:13px;flex:none}
+    .reassure p{margin:0;font-size:13px;line-height:1.5;color:#3F5A36}
+
+    /* Sticky action bar — the CTA never scrolls out of reach on a phone. */
+    .bar{padding:14px 20px 22px;border-top:1px solid var(--line);background:var(--bg);
+      display:flex;flex-direction:column;gap:10px}
+    .btn{font:inherit;font-size:16px;font-weight:600;border-radius:14px;padding:17px;width:100%;
+      border:1px solid var(--acc);background:var(--acc);color:var(--acc-ink)}
+    .skip{font:inherit;font-size:13.5px;color:var(--ink3);background:none;border:0;text-decoration:underline;
+      text-underline-offset:3px;align-self:center}
+  </style>
+</helmet>
+
+<div class="frame">
+  <div class="top">
+    <button class="back">←</button>
+    <div class="prog">
+      <div class="ptrack"><div class="pfill"></div></div>
+      <p class="plabel">Otázka 3 z 10</p>
+    </div>
+  </div>
+
+  <div class="strip">
+    <div class="stags">
+      <span class="tag">Přírodní vědy</span>
+      <span class="tag">Technika a IT</span>
+      <span class="tag">Vysoká škola</span>
+    </div>
+    <span class="more">+1</span>
+    <span class="chev">›</span>
+  </div>
+
+  <div class="body">
+    <span class="count"><span class="cdot"></span>Zatím sedí 34 z 60 škol</span>
+    <h1>Táhne tě spíš gympl, nebo odborka?</h1>
+    <p class="hint">Když nevíš, klidně nech „ještě nevím“ — ukážeme ti obojí.</p>
+
+    <div class="opts">
+      <button class="opt" data-on><span class="radio"></span>Gymnázium (všeobecné)</button>
+      <div class="reassure">
+        <span class="rico">✦</span>
+        <p>Gympl nechává obor na později. V Praze jich je 31 — zúžili jsme výběr, ne uzavřeli.</p>
+      </div>
+      <button class="opt"><span class="radio"></span>Odborná škola s maturitou</button>
+      <button class="opt"><span class="radio"></span>Učební obor s výučním listem</button>
+      <button class="opt"><span class="radio"></span>Ještě nevím</button>
+    </div>
+  </div>
+
+  <div class="bar">
+    <button class="btn">Další</button>
+    <button class="skip">Přeskočit otázku</button>
+  </div>
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"$preview": {"width": 390, "height": 844}}'>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>
