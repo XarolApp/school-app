@@ -4,21 +4,52 @@ import Stakes from './screens/Stakes';
 import QuizQuestion from './screens/QuizQuestion';
 import Calculating from './screens/Calculating';
 import Reveal from './screens/Reveal';
-import JourneySummary from './screens/JourneySummary';
 import Commitment from './screens/Commitment';
 import SocialProof from './screens/SocialProof';
 import CreateAccount from './screens/CreateAccount';
-import Paywall from './screens/Paywall';
+import Hodnota from './screens/Hodnota';
+import Cesta from './screens/Cesta';
+import Plan from './screens/Plan';
+import Zkusebni from './screens/Zkusebni';
+import Platba from './screens/Platba';
 import Activated from './screens/Activated';
 import { QUESTIONS } from './quizQuestions';
 
 /**
- * The canonical flow — 20 screens (onboarding-v2, 2026-09-05).
+ * The canonical flow — 23 screens (onboarding-v2 + split paywall, 2026-09-05).
  *
  * Pillar 1 (3)  welcome -> role fork -> stakes+intent
  * Pillar 2 (11) quiz (one question per screen) -> calculation -> reveal
- * Pillar 3 (5)  journey summary -> commitment -> social proof -> account ->
- *               paywall
+ * Pillar 3 (9)  commitment -> social proof -> hodnota -> cesta -> account ->
+ *               plan -> zkusebni -> platba
+ *
+ * THE PAYWALL IS FIVE SCREENS, NOT ONE (2026-09-05, approved design in
+ * design/paywall-multipage-extract4/). It used to be a single `paywall` screen
+ * carrying price, benefits, trial rail, trust and card entry at once, preceded
+ * by a `summary` roadmap screen. Both are gone; five replace them:
+ *
+ *   hodnota   how many hours this saves, with the arithmetic shown
+ *   cesta     the season from today to March (replaces `summary`, whose
+ *             milestone data was ported rather than rewritten)
+ *   plan      the two plans and the price — the FIRST screen with a price
+ *   zkusebni  how the trial runs, with real dates (skipped for a plan with no
+ *             trial, so a monthly buyer goes plan -> platba)
+ *   platba    card, consent, order summary
+ *
+ * The point of the split is that the price does not appear until screen 3, so
+ * the user has twice received something before being asked for anything — the
+ * first two screens say "zatím nic neplatíš" on them and mean it. Each screen
+ * also carries exactly one decision, which is what makes a hard ask read as a
+ * step rather than a wall.
+ *
+ * The growth is entirely POST-REVEAL. The v2 cuts below removed screens from
+ * the first ~15 interactions, where drop-off actually lives; everything after
+ * the reveal is the best-evidenced part of the flow and was deliberately left
+ * alone. Do not "balance" this by trimming the post-reveal screens.
+ *
+ * `ucet` still sits immediately before `plan` for the original reason: the
+ * trial window is opened by a database trigger on account creation, so there
+ * has to be an account before there is anything to charge.
  *
  * WHAT CHANGED FROM THE 23-SCREEN v1, and why (design/onboarding-v2/canvas.json):
  * the steepest drop-off in an onboarding sits in the first ~15 interactions,
@@ -62,14 +93,20 @@ export const STEPS = [
   })),
   { id: 'calculating', component: Calculating, chrome: false, phase: 'result' },
   { id: 'reveal', component: Reveal, chrome: false, phase: 'result' },
-  { id: 'summary', component: JourneySummary, chrome: true, phase: 'result' },
   { id: 'commitment', component: Commitment, chrome: true, phase: 'result' },
   { id: 'proof', component: SocialProof, chrome: true, phase: 'result' },
-  // Sits before the paywall because the trial window is opened by a database
+  // --- the paywall, split across five screens (see the note above) ----------
+  { id: 'hodnota', component: Hodnota, chrome: false, phase: 'result' },
+  { id: 'cesta', component: Cesta, chrome: false, phase: 'result' },
+  // Sits before the price because the trial window is opened by a database
   // trigger on account creation — there has to be an account before there is
   // anything to charge.
   { id: 'ucet', component: CreateAccount, chrome: true, phase: 'result' },
-  { id: 'paywall', component: Paywall, chrome: false, phase: 'result' },
+  { id: 'plan', component: Plan, chrome: false, phase: 'result' },
+  // Reachable only when the chosen plan carries a trial; Plan jumps straight
+  // to `platba` otherwise rather than rendering an empty timeline.
+  { id: 'zkusebni', component: Zkusebni, chrome: false, phase: 'result' },
+  { id: 'platba', component: Platba, chrome: false, phase: 'result' },
   { id: 'hotovo', component: Activated, chrome: false, postFlow: true },
 ];
 

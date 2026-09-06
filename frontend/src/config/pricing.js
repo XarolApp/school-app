@@ -62,6 +62,13 @@ const SEASON_PRICE_CZK = 690; // PLACEHOLDER — one-time, whole season
 /** Sept-March application window, used only for the honest daily breakdown. */
 const SEASON_DAYS = 212;
 
+/**
+ * Whole months in the Sept-March decision window. Used ONLY to build the
+ * "ušetříš X %" comparison on the plan screen, which must be checkable:
+ * SEASON_PRICE vs MONTHLY_PRICE x SEASON_MONTHS. See savingsVsMonthly().
+ */
+const SEASON_MONTHS = 7;
+
 // --- TRIAL -------------------------------------------------------------------
 // Ruling C-1 (revised by the user 2026-08-23): compressed 3-day trial.
 // Dnes -> 2. den připomenutí -> 3. den platba.
@@ -187,8 +194,28 @@ export const PLANS = [
       parent:
         'Jedna platba na celé rozhodovací období. Žádné opakované strhávání, na které byste museli myslet.',
     },
-    ctaLabel: { student: 'Odemknout celé pořadí', parent: 'Odemknout celé pořadí' },
-    hasTrial: false,
+    ctaLabel: {
+      student: `Vyzvednout si moje ${trialDaysPhrase()} zdarma`,
+      parent: `Vyzvednout ${trialDaysPhrase()} zdarma pro dítě`,
+    },
+    /**
+     * THE TRIAL LIVES HERE, NOT ON MĚSÍČNÍ — flipped 2026-09-05 with the
+     * approved 5-screen paywall design (design/paywall-multipage-extract4/,
+     * annotation "cena"). Two reasons, both already written down elsewhere in
+     * this repo before the design existed:
+     *  1. pricing_research.md §2 — a trial belongs on the LONGER commitment.
+     *     Put it on the cheap recurring tier and users simply trial the cheap
+     *     tier instead of buying the one you actually want them on.
+     *  2. The comment block at the top of this file already complains that
+     *     Sezónní, as the pre-selected default, has NO exit of any kind ("no
+     *     trial, no cancellation, nothing") and leans entirely on
+     *     REFUND_GUARANTEE_DAYS to absorb that. A trial absorbs it better:
+     *     nothing has been charged yet, so there is nothing to claw back.
+     * Měsíční does NOT lose its C-8 job of absorbing distrust — it keeps it in
+     * its own shape ("skončíš, kdy budeš chtít"), which is a different kind of
+     * exit, not a weaker one. Do not give both plans a trial.
+     */
+    hasTrial: true,
     recommended: true,
   },
   {
@@ -212,10 +239,12 @@ export const PLANS = [
         'Pokud nás zatím neznáte a chcete si to nejdřív vyzkoušet: měsíční varianta se dá kdykoli ukončit.',
     },
     ctaLabel: {
-      student: `Začít ${trialDaysPhrase()} zdarma`,
-      parent: `Začít ${trialDaysPhrase()} zdarma`,
+      student: 'Pokračovat s měsíčním',
+      parent: 'Pokračovat s měsíčním',
     },
-    hasTrial: true,
+    // No trial here any more — see the note on the season plan above.
+    // Its exit is cancellation, not a free window, and the plan card says so.
+    hasTrial: false,
     recommended: false,
   },
 ];
@@ -301,10 +330,15 @@ export function refundTerms(plan, role) {
     : `Do ${REFUND_GUARANTEE_DAYS} dnů ti peníze vrátíme, i bez důvodu.`;
 }
 
-/** Czech decimal comma. Daily micro-cost framing (§1.5). */
+/**
+ * Czech decimal comma. Daily micro-cost framing (§1.5).
+ * TWO decimals, not one: toFixed(1) renders 690/212 as "3,3 Kč", and a money
+ * amount with one decimal place reads as a rendering bug on the exact screen
+ * where the user is deciding whether we look like a real company.
+ */
 export function perDayCzk(plan) {
   const perDay = plan.priceCzk / plan.periodDays;
-  return perDay.toFixed(1).replace('.', ',');
+  return perDay.toFixed(2).replace('.', ',');
 }
 
 export function formatCzk(amount) {
@@ -314,4 +348,65 @@ export function formatCzk(amount) {
 export function discountedPriceCzk(plan) {
   if (plan.id !== ONE_TIME_OFFER.planId) return plan.priceCzk;
   return Math.round(plan.priceCzk * (1 - ONE_TIME_OFFER.discountPercent / 100));
+}
+
+/**
+ * The "ušetříš X %" badge on the season card, WITH the numbers that produce it.
+ *
+ * A savings badge nobody can check is just a claim. Babbel's pattern (and the
+ * one the approved design copies) is badge + a footnote naming both sides of
+ * the comparison and admitting where it does not hold. Everything the footnote
+ * needs comes out of this one function so the badge and the footnote can never
+ * drift apart.
+ *
+ * @returns {{percent:number, referenceCzk:number, months:number,
+ *            monthlyCzk:number, seasonCzk:number}}
+ */
+export function savingsVsMonthly() {
+  const season = getPlan('season');
+  const monthly = getPlan('monthly');
+  const referenceCzk = monthly.priceCzk * SEASON_MONTHS;
+  return {
+    percent: Math.round((1 - season.priceCzk / referenceCzk) * 100),
+    referenceCzk,
+    months: SEASON_MONTHS,
+    monthlyCzk: monthly.priceCzk,
+    seasonCzk: season.priceCzk,
+  };
+}
+
+// --- TRIAL TIMELINE DATES ----------------------------------------------------
+/**
+ * The trial rail shows REAL dates, not "za 3 dny". A concrete date is the one
+ * thing that makes a trial checkable by the person paying — and it is what a
+ * user needs in order to put it in a calendar, which matters more than usual
+ * here because TRIAL_REMINDER_IMPLEMENTED is false and nobody is going to
+ * remind them.
+ *
+ * Day numbering follows the approved design: today is day 1 and is free, the
+ * reminder lands on day TRIAL_DAYS (the last free day), and the charge falls on
+ * day TRIAL_DAYS + 1 — i.e. three FULL free days, not two.
+ */
+export const TRIAL_REMINDER_DAY_NUMBER = TRIAL_DAYS;
+export const TRIAL_CHARGE_DAY_NUMBER = TRIAL_DAYS + 1;
+
+function addDays(from, days) {
+  const d = new Date(from.getTime());
+  d.setDate(d.getDate() + days);
+  return d;
+}
+
+/** Last free day — when the reminder would be sent, once one exists. */
+export function trialReminderDate(from = new Date()) {
+  return addDays(from, TRIAL_DAYS - 1);
+}
+
+/** First day money can move. */
+export function trialChargeDate(from = new Date()) {
+  return addDays(from, TRIAL_DAYS);
+}
+
+/** "8. září" — the form a Czech reader expects in a sentence, not 08.09.2026. */
+export function formatCzDate(date) {
+  return date.toLocaleDateString('cs-CZ', { day: 'numeric', month: 'long' });
 }

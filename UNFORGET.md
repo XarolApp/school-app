@@ -88,6 +88,21 @@ cannot answer. **Get this read by someone with Czech consumer/contract law
 expertise before Stripe integration goes live with real charges** — this is
 squarely gated on that work, not on anything already built.
 
+**2026-09-05 revision (multi-page paywall, `design/paywall-multipage/`):** the
+blocking parent-confirmation *screen* was replaced with a single self-attestation
+checkbox — "Potvrzuji, že je mi 18 let, nebo že o téhle platbě ví můj rodič či
+zákonný zástupce" — matching the industry-standard pattern (App Store, Netflix,
+etc. all use unverified 18+ checkboxes). User's explicit call: they expect most
+minors will check it without it being true, same as everywhere else, and accept
+that risk — the goal is having *a* documented consent step, not verifying it.
+A "Ať to zaplatí rodič" (let my parent pay this) option still exists alongside
+it, reframed from a demanding "send parent a link to approve" into a neutral
+delegation the student chooses. **This does not change the open legal question
+above** — still needs real lawyer review before Stripe goes live — but it's a
+materially different mitigation shape (self-attestation vs. hard gate) than what
+that review was scoped against, so flag the new copy specifically when this
+finally gets legal eyes.
+
 **Also confirmed, informational:** the Digital Fairness Act (EU proposal, expected
 Q4 2026) *does* name minors specifically — a proposed default ban on "addictive
 design" aimed at children (infinite scroll, autoplay, exploitative gamification)

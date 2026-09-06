@@ -12,7 +12,10 @@ import { createContext, useContext } from 'react';
  *   commitment: string|null,
  *   schools: array, isDemo: bool, schoolsLoading: bool,
  *   ranked: array,            // deterministic match results (memoised)
- *   goNext(), goBack(), skip(),
+ *   planId, setPlanId,      // selected plan, shared by the five paywall
+ *                            // screens (plan / zkusebni / platba) — they must
+ *                            // all describe the SAME purchase
+ *   goNext(), goBack(), goTo(index), goToStep(id),
  *   stepIndex, totalSteps,
  *   phase: string|null       // honest phase label ("Než začneme"). There is
  *                            // deliberately NO flow-wide `progress` percentage:

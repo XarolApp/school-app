@@ -5,6 +5,7 @@ import { rankSchools } from '../../lib/matching';
 import { RoleSwitch } from '../../components/onboarding/ObKit';
 import { OnboardingContext } from './useOnboarding';
 import { PHASES, STEPS, stepIndexById } from './steps';
+import { DEFAULT_PLAN_ID } from '../../config/pricing';
 import { cleanAnswers, initialAnswers } from './quizQuestions';
 import './onboarding.css';
 
@@ -52,6 +53,11 @@ function OnboardingFlow() {
   const [schoolsLoading, setSchoolsLoading] = useState(true);
   const [schoolsError, setSchoolsError] = useState(null);
   const [purchased, setPurchased] = useState(false);
+  // The paywall is five screens now (hodnota -> cesta -> plan -> zkusebni ->
+  // platba), so the selected plan can no longer be local state inside one
+  // component: the trial rail and the order summary both have to read the same
+  // choice. Pre-selected per ruling C-8.
+  const [planId, setPlanId] = useState(DEFAULT_PLAN_ID);
 
   // Load the catalogue once, early and in the background, so the reveal never
   // waits on the network after the labour-illusion screen has already run.
@@ -118,6 +124,17 @@ function OnboardingFlow() {
     else goTo(stepIndex - 1);
   }, [goTo, stepIndex, navigate]);
 
+  /** Jump to a named step. The paywall screens branch (a plan without a trial
+   *  skips the trial rail entirely), and importing steps.js from a screen would
+   *  close an import cycle, so the id->index lookup lives here. */
+  const goToStep = useCallback(
+    (id) => {
+      const idx = stepIndexById(id);
+      if (idx !== -1) goTo(idx);
+    },
+    [goTo]
+  );
+
   const cleaned = useMemo(() => cleanAnswers(answers), [answers]);
 
   const ranked = useMemo(
@@ -148,12 +165,15 @@ function OnboardingFlow() {
       ranked,
       purchased,
       setPurchased,
+      planId,
+      setPlanId,
       stepIndex,
       totalSteps: STEPS.length,
       phase,
       goNext,
       goBack,
       goTo,
+      goToStep,
     }),
     [
       role,
@@ -169,11 +189,13 @@ function OnboardingFlow() {
       schoolsError,
       ranked,
       purchased,
+      planId,
       stepIndex,
       phase,
       goNext,
       goBack,
       goTo,
+      goToStep,
     ]
   );
 

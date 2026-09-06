@@ -79,27 +79,114 @@
       "w": 1080,
       "h": 800,
       "title": "Web 5 · Karta + potvrzení"
+    },
+    {
+      "file": "ParentHodnota.dc.html",
+      "x": 0,
+      "y": 2700,
+      "w": 390,
+      "h": 980,
+      "title": "Rodič 1 · Kolik času ušetří"
+    },
+    {
+      "file": "ParentCesta.dc.html",
+      "x": 500,
+      "y": 2700,
+      "w": 390,
+      "h": 980,
+      "title": "Rodič 2 · Cesta do března"
+    },
+    {
+      "file": "ParentMain.dc.html",
+      "x": 1000,
+      "y": 2700,
+      "w": 390,
+      "h": 1080,
+      "title": "Rodič 3 · Výběr přístupu"
+    },
+    {
+      "file": "ParentZkusebni.dc.html",
+      "x": 1500,
+      "y": 2700,
+      "w": 390,
+      "h": 1000,
+      "title": "Rodič 4 · Jak proběhne trial"
+    },
+    {
+      "file": "ParentPlatba.dc.html",
+      "x": 2000,
+      "y": 2700,
+      "w": 390,
+      "h": 1080,
+      "title": "Rodič 5 · Karta + potvrzení"
+    },
+    {
+      "file": "ParentWebHodnota.dc.html",
+      "x": 0,
+      "y": 4300,
+      "w": 1080,
+      "h": 700,
+      "title": "Rodič Web 1 · Kolik času ušetří"
+    },
+    {
+      "file": "ParentWebCesta.dc.html",
+      "x": 1200,
+      "y": 4300,
+      "w": 1080,
+      "h": 720,
+      "title": "Rodič Web 2 · Cesta do března"
+    },
+    {
+      "file": "ParentWebPlan.dc.html",
+      "x": 2400,
+      "y": 4300,
+      "w": 1080,
+      "h": 820,
+      "title": "Rodič Web 3 · Výběr přístupu"
+    },
+    {
+      "file": "ParentWebZkusebni.dc.html",
+      "x": 3600,
+      "y": 4300,
+      "w": 1080,
+      "h": 760,
+      "title": "Rodič Web 4 · Jak proběhne trial"
+    },
+    {
+      "file": "ParentWebPlatba.dc.html",
+      "x": 4800,
+      "y": 4300,
+      "w": 1080,
+      "h": 800,
+      "title": "Rodič Web 5 · Karta + potvrzení"
     }
   ],
   "annotations": [
     {
+      "id": "rodic",
+      "x": 396,
+      "y": 2400,
+      "w": 560,
+      "text": "RODIČOVSKÁ VARIANTA — stejné obrazovky, jiné oslovení\n\nStejná struktura, stejné ceny, stejné wireframy jako studentská varianta výše. Mění se jen to, KOHO text oslovuje:\n\n• Vykání místo tykání, adresováno rodiči.\n• Věty o dítěti mluví o něm ve 3. osobě (\"vaše dítě\", \"jemu\") místo v 1. osobě (\"ty\").\n• Krok 5 (platba): rodič JE plátce, takže mizí volba \"sdílet s rodičem\" — nahrazena jednoduchým souhlasem \"jsem rodič/zákonný zástupce\" a informační řádkou \"Účet je pro vaše dítě\".\n• Krok 3: tlačítko \"Ať to zaplatí rodič\" (student volá o pomoc) se otáčí na \"Poslat odkaz dítěti\" (rodič může poslat zpět, pokud se rozhodne, že to má vyplnit dítě samo).\n\nBeze změny: ceny, trial, badge, layout, barvy, velikosti — jen text."
+    },
+    {
       "id": "struktura",
-      "x": 0,
-      "y": -470,
+      "x": 396,
+      "y": -891,
       "w": 560,
       "text": "STRUKTURA — 5 obrazovek místo jedné\n\nDnes je paywall JEDNA obrazovka, na které se sejde cena, výhody, trial, důvěra i platba. Tady se to rozloží na pět kroků, aby si člověk mohl každou věc zpracovat zvlášť:\n\n1 HODNOTA — kolik hodin ti to ušetří (a jak jsme k tomu číslu došli)\n2 CESTA — co tě čeká od září do března\n3 VÝBĚR — dvě varianty, cena\n4 TRIAL — co se stane dnes, 2. a 3. den\n5 PLATBA — karta, souhrn, potvrzení rodiče\n\n(pozn.: krok 4 byl při editaci v GUI opraven na dnes → 3. den [připomínka] → 4. den [platba] — tři plné zkušební dny, ne dva; anotace níž jsou dopsané podle toho.)\n\nCENA PADNE AŽ NA KROKU 3. První dva kroky nic neprodávají — proto je pod nimi napsané „zatím nic neplatíš“. To je celý trik na to, aby to nepůsobilo jako zeď: než přijde otázka „zaplatíš?“, už dvakrát něco dostal.\n\nZAŘAZENÍ DO FLOW (steps.js):\n… proof → hodnota → cesta → ucet → plan → zkusebni → platba\nÚčet musí zůstat PŘED platbou. Flow tím naroste z 20 na 24 obrazovek — ale všechny přírůstky jsou ZA revealem, což je podle steps.js nejlépe podložená část flow. Škrtání v onboarding-v2 se týkalo prvních 15 interakcí, ne téhle části.\n\nŠIPKA V TLAČÍTKU: jen na hlavním CTA, na mobilu i na webu. Ne na ghost/decline tlačítkách. Čte se jako „další krok“, ne „kup“ — což je přesně ten rozdíl mezi krokem a zdí."
     },
     {
       "id": "cena",
-      "x": 1000,
-      "y": -470,
+      "x": 1251,
+      "y": -830,
       "w": 560,
       "text": "CENA A TRIAL — dvě změny proti dnešku\n\n1) TRIAL SE STĚHUJE NA SEZÓNNÍ.\nDnes má hasTrial: true MĚSÍČNÍ a sezónní nic. To je obráceně:\n• pricing_research.md §2 — trial se dává na ten DELŠÍ tarif, jinak lidi „protrialují“ ten levný;\n• pricing.js si sám stěžuje, že sezónní jako výchozí tarif nemá ŽÁDNÝ únik („no trial, no cancellation, nothing“) a drží to jen refund. Trial ten problém řeší líp než refund.\n• Výsledek: každá varianta má svůj vlastní únik, jiného tvaru. Sezónní = 3 dny na rozmyšlenou. Měsíční = zrušíš kdykoli. Měsíční tím NEPŘICHÁZÍ o svou roli (absorbovat nedůvěru), jen ji plní svým způsobem.\n\n2) BADGE „UŠETŘÍŠ 60 %“ + POZNÁMKA POD ČAROU.\n690 Kč jednorázově vs. 249 × 7 měsíců (září–březen) = 1 743 Kč. Je to pravda, ale badge bez výpočtu je neověřitelný — proto je pod kartami věta, co přesně se s čím srovnává, a přiznání „kdo skončí dřív, ušetří míň“. Přesně tak to dělá Babbel (12 months vs Lifetime, „Save 41 %“ + hvězdička s referenční cenou).\n\nPOZOR NA KOLIZI S C-8: pricing.js říká, že měsíční NENÍ levná návnada. Badge ho jako návnadu čte. Proto má měsíční na kartě vlastní „pro koho to je“ řádek a vlastní benefit (blízko k východu) — ne jen vyšší cenu.\n\nDROBNOST: perDayCzk() dělá toFixed(1) → „3,3 Kč“. U peněz to vypadá rozbitě, tady je psáno „3,30 Kč“. Chce to toFixed(2).\n\nDVA TARIFY ZŮSTÁVAJÍ DVA. Žádný přepínač na skryté další plány — Hickův zákon a ruling C-8. Přepínač by měl smysl až u tří a víc."
     },
     {
       "id": "poctivost",
-      "x": 2000,
-      "y": -470,
+      "x": 3074,
+      "y": -297,
       "w": 560,
       "text": "CO SE NEDÁ SLÍBIT — a jak to obrazovky říkají\n\nKARTA U TRIALU JE PROTI VLASTNÍMU VÝZKUMU. pricing_research.md §4: Digital Fairness Act směřuje k tomu, že vybírat platební údaje POUZE kvůli odemčení triálu bude omezené. Není to zatím zákon a celý trh to dělá — ale cílovka je nezletilí, což je přesně ta kombinace, na kterou §4 upozorňuje. Postaveno podle zadání, tohle je záznam, že výzkum radí jinak.\n\nPŘIPOMENUTÍ 3. DEN SE NESLIBUJE. TRIAL_REMINDER_IMPLEMENTED = false — e-maily zatím neumíme. Krok v časové ose proto zůstává, ale čárkovaně a s větou „tohle zatím neslibujeme“. Až se flag přehodí, styl se změní na plný. Slíbená připomínka, která nepřijde, je přesně to, z čeho jsou chargebacky.\n\nZRUŠENÍ NA JEDNO KLIKNUTÍ SE TAKY NESLIBUJE. ONE_STEP_CANCELLATION_IMPLEMENTED = false, takže u měsíčního je „skončíš, kdy budeš chtít“ (pravda) a ne „zrušíš jedním kliknutím“ (zatím lež).\n\nPOTVRZENÍ RODIČE zůstává a je teď na vlastní obrazovce s celým souhrnem ceny nad sebou — tlačítko je do zaškrtnutí neaktivní.\n\nCO ZMIZELO S KONCEM FREE VERZE:\n• „Když nezaplatíš, nic neztratíš“ — přestalo být pravda.\n• „Zatím ne, chci si projít školy zdarma“ → „Zatím ne, rozmyslím si to“. Pořád stejně velké a čitelné jako přijetí, pořád bez vyčítání.\n• /api/schools* bude potřeba zavřít — dnes je schválně otevřené. Pozor na withMatchScores.\n\nŽÁDNÝ ODPOČET. Jednorázová nabídka je z tohoto návrhu vyndaná (zadání) a leží v UNFORGET.md."
     },

@@ -735,46 +735,6 @@
   padding: 10px 12px;
 }
 
-/* --- timeline / summary --------------------------------------------------- */
-.ob-timeline {
-  list-style: none;
-  margin: 0;
-  padding: 0 0 0 18px;
-  border-left: 2px solid var(--border);
-  display: grid;
-  gap: 18px;
-}
-
-.ob-timeline li {
-  display: grid;
-  gap: 2px;
-  position: relative;
-}
-
-.ob-timeline li::before {
-  content: '';
-  position: absolute;
-  left: -25px;
-  top: 6px;
-  width: 10px;
-  height: 10px;
-  border-radius: 999px;
-  background: var(--accent);
-}
-
-.ob-timeline-when {
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.6px;
-  color: var(--accent);
-  font-weight: 700;
-}
-
-.ob-timeline-what {
-  font-size: 16px;
-  color: var(--text-h);
-}
-
 /* --- proof ---------------------------------------------------------------- */
 .ob-proof-grid {
   display: grid;
@@ -820,182 +780,6 @@
   color: var(--text);
 }
 
-/* --- paywall -------------------------------------------------------------- */
-.ob-paywall {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding-top: 12px;
-}
-
-.ob-outcomes {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 8px;
-}
-
-.ob-outcomes li {
-  position: relative;
-  padding-left: 26px;
-  font-size: 16px;
-  color: var(--text-h);
-  line-height: 1.4;
-}
-
-.ob-outcomes li::before {
-  content: '✓';
-  position: absolute;
-  left: 0;
-  color: var(--accent);
-  font-weight: 700;
-}
-
-/* Deliberately NOT the terracotta accent — the pre-selected season plan
-   already owns that color below, and a discount banner in the same hue
-   reads as part of that same highlight instead of its own distinct thing.
-   Reusing the app's existing moss-green semantic (--ok), not a new color. */
-.ob-offer {
-  display: grid;
-  gap: 4px;
-  padding: 14px 16px;
-  border-radius: var(--ob-radius);
-  background: var(--ok-soft);
-  border: 1px solid var(--ok);
-}
-
-.ob-offer strong {
-  color: var(--text-h);
-  font-size: 16px;
-}
-
-.ob-offer-timer {
-  font-family: var(--mono);
-  font-size: 15px;
-  color: var(--ok);
-}
-
-.ob-offer-note {
-  font-size: 13px;
-  color: var(--text);
-  line-height: 1.4;
-}
-
-.ob-plans {
-  display: grid;
-  gap: 10px;
-}
-
-.ob-plan {
-  display: grid;
-  gap: 6px;
-  text-align: left;
-  padding: 16px;
-  border-radius: var(--ob-radius);
-  border: 2px solid var(--border);
-  background: transparent;
-  color: var(--text-h);
-  font: inherit;
-  cursor: pointer;
-  transition: border-color 140ms ease, background 140ms ease;
-}
-
-.ob-plan.is-selected {
-  border-color: var(--accent);
-  background: var(--accent-bg);
-}
-
-.ob-plan-head {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  justify-content: space-between;
-}
-
-.ob-plan-name {
-  font-weight: 700;
-  font-size: 17px;
-}
-
-.ob-plan-tag {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--accent);
-  border: 1px solid var(--accent-border);
-  border-radius: 999px;
-  padding: 2px 8px;
-}
-
-.ob-plan-price {
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-}
-
-.ob-plan-strike {
-  font-size: 16px;
-  font-weight: 400;
-  color: var(--text);
-  opacity: 0.8;
-}
-
-.ob-plan-suffix {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text);
-}
-
-.ob-plan-sub,
-.ob-plan-pitch,
-.ob-plan-trial {
-  font-size: 13px;
-  color: var(--text);
-  line-height: 1.4;
-}
-
-.ob-plan-trial {
-  color: var(--accent);
-  font-weight: 600;
-}
-
-.ob-price-frame {
-  margin: 0;
-  font-size: 15px;
-  color: var(--text-h);
-}
-
-.ob-timeline-trial ol {
-  margin: 8px 0 0;
-  padding-left: 20px;
-  display: grid;
-  gap: 8px;
-  font-size: 15px;
-}
-
-.ob-timeline-trial strong {
-  color: var(--text-h);
-}
-
-.ob-cta-cluster {
-  display: grid;
-  gap: 10px;
-  position: sticky;
-  bottom: 0;
-  padding: 10px 0 env(safe-area-inset-bottom, 8px);
-  background: linear-gradient(to top, var(--bg) 78%, transparent);
-}
-
-.ob-trust {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 4px;
-  font-size: 13px;
-  color: var(--text);
-}
-
 .ob-mock-note {
   margin: 0;
   font-size: 13px;
@@ -1003,20 +787,6 @@
   background: var(--code-bg);
   border-radius: 8px;
   padding: 8px 10px;
-}
-
-.ob-plan-pitch {
-  color: var(--text);
-  opacity: 0.95;
-}
-
-/* Trial pointer — shown when the pre-selected plan has no trial, so the
-   easy-exit option stays discoverable without being pushed. */
-.ob-trial-pointer {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.5;
-  color: var(--text);
 }
 
 .ob-signin-hint {
@@ -1034,97 +804,9 @@
   cursor: pointer;
 }
 
-/* Trust anchors immediately adjacent to the CTA (§1.6). Sits directly above
-   the sticky action cluster so it is the last thing read before the button. */
-.ob-cta-proof {
-  display: grid;
-  gap: 8px;
-  padding: 12px 14px;
-  border-radius: var(--ob-radius);
-  border: 1px solid var(--border);
-  background: var(--code-bg);
-}
-
-.ob-cta-proof-count {
-  margin: 0;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text-h);
-}
-
-.ob-cta-proof-quote {
-  margin: 0;
-  display: grid;
-  gap: 4px;
-  font-size: 14px;
-  color: var(--text-h);
-}
-
-.ob-cta-proof-quote p {
-  margin: 0;
-}
-
-.ob-cta-proof-quote cite {
-  font-style: normal;
-  font-size: 13px;
-  color: var(--text);
-}
-
-.ob-cta-proof-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 6px;
-  font-size: 13px;
-  line-height: 1.45;
-  color: var(--text);
-}
-
-.ob-cta-proof-list li {
-  position: relative;
-  padding-left: 20px;
-}
-
-.ob-cta-proof-list li::before {
-  content: '\2713';
-  position: absolute;
-  left: 0;
-  color: var(--accent);
-  font-weight: 700;
-}
-
 /* A promise we have not built yet is stated as not-promised, never hidden. */
 .ob-trust-unbuilt {
   font-style: italic;
-}
-
-.ob-confirm-terms {
-  font-size: 14px;
-  color: var(--text);
-}
-
-/* --- parental confirmation ------------------------------------------------ */
-.ob-confirm {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding-top: 24px;
-  flex: 1;
-}
-
-.ob-confirm-box {
-  display: grid;
-  gap: 6px;
-  padding: 14px 16px;
-  border-radius: var(--ob-radius);
-  border: 1px solid var(--border);
-}
-
-.ob-confirm-line {
-  margin: 0;
-  font-size: 15px;
-  color: var(--text-h);
 }
 
 .ob-check {
@@ -1143,13 +825,6 @@
   height: 20px;
   accent-color: var(--accent);
   flex: 0 0 auto;
-}
-
-.ob-confirm-alt {
-  display: grid;
-  gap: 8px;
-  border-top: 1px dashed var(--border);
-  padding-top: 14px;
 }
 
 /* --- post-onboarding checklist -------------------------------------------- */
@@ -2011,45 +1686,6 @@
   font-weight: 600;
 }
 
-/* --- paywall (v2) --------------------------------------------------------- */
-.ob-keep {
-  margin-top: var(--space-lg);
-  padding: var(--space-md) var(--space-lg);
-  border-radius: var(--r-card);
-  background: var(--ok-soft);
-  border: 1px solid var(--line);
-}
-
-.ob-keep p {
-  margin: 0;
-  font-size: var(--fs-body-sm);
-  line-height: var(--lh-body-md);
-  color: var(--ok);
-}
-
-/* The two panes stack on mobile, value first, price second. */
-.ob-paywall-case,
-.ob-paywall-buy {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-  min-width: 0;
-}
-
-/* Neutral decline. Never confirmshaming — it would be aimed at a 15-year-old. */
-.ob-decline {
-  margin: var(--space-lg) auto 0;
-  display: block;
-  font: inherit;
-  font-size: var(--fs-body-sm);
-  color: var(--text);
-  background: none;
-  border: 0;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  cursor: pointer;
-}
-
 /* ===========================================================================
    DESKTOP (1024px+) — the split pane.
    Not a stretched phone: the question column is CAPPED at a readable measure
@@ -2133,23 +1769,6 @@
     align-items: center;
   }
 
-  .ob-paywall-split {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 460px;
-    gap: 0;
-    align-items: start;
-  }
-
-  .ob-paywall-case {
-    padding-right: var(--space-xl);
-  }
-
-  .ob-paywall-buy {
-    background: var(--surface2);
-    border: 1px solid var(--line);
-    padding: var(--space-xl);
-    border-radius: var(--r-card);
-  }
 }
 
 @media (max-width: 1023px) {
@@ -2162,4 +1781,836 @@
   .ob-option {
     min-height: 56px;
   }
+}
+
+
+/* ===========================================================================
+   THE FIVE PAYWALL SCREENS  (hodnota / cesta / plan / zkusebni / platba)
+   design/paywall-multipage-extract4/, approved 2026-09-05.
+
+   Mobile-first like the rest of this file: everything below is the 390px
+   layout, and the 1024px block at the end of this section turns on the two
+   structural differences — the Cesta rail rotates to horizontal, and the
+   single column splits into main + side.
+
+   Colours and radii are tokens only. The mockups inline hex values are the
+   current token values (they were colour-matched during design), so they map
+   1:1: #FAF6EF --bg, #F1ECE3 --surface2, #221A13 --ink, #6B6259 --ink2,
+   #E6DFD1 --line, #D6CBB6 --line2, #AD4F2A --acc, #F6E3D6 --acc-soft,
+   #DFA98C --acc-line, #4F7143 --ok, #E6EDDE --ok-soft.
+   =========================================================================== */
+.ob-pw {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  flex: 1;
+}
+
+/* --- step chrome ---------------------------------------------------------- */
+.ob-pw-chrome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.ob-pw-steps {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ob-pw-dots {
+  display: none;
+  align-items: center;
+  gap: 6px;
+}
+
+.ob-pw-dot {
+  width: 28px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--line);
+}
+
+.ob-pw-dot.is-done {
+  background: var(--acc);
+}
+
+.ob-pw-steplabel {
+  font-size: 13px;
+  color: var(--ink2);
+}
+
+/* --- shared typography / blocks ------------------------------------------- */
+.ob-pw-head {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ob-pw-title {
+  font-size: 28px;
+  line-height: 1.14;
+}
+
+.ob-pw-card {
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--surface2);
+}
+
+/* The one raised block on a screen: fill + accent border + shadow. Used for
+   the "se ŠkolaMatch" column and the pre-selected plan, never for both at
+   once on the same screen — two raised blocks raise nothing. */
+.ob-pw-card.is-raised {
+  border: 2px solid var(--acc);
+  background: var(--acc-soft);
+  box-shadow: 0 6px 18px rgba(34, 26, 19, 0.07);
+}
+
+.ob-pw-caps {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.ob-pw-caps.is-accent {
+  color: var(--acc);
+}
+
+.ob-pw-rule {
+  display: block;
+  height: 1px;
+  background: var(--line2);
+  margin: 2px 0;
+}
+
+.ob-pw-rule.is-accent {
+  background: var(--acc-line);
+}
+
+.ob-pw-fine {
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--ink2);
+  margin: 0;
+}
+
+.ob-pw-ic {
+  flex: 0 0 auto;
+  margin-top: 2px;
+  color: var(--ink2);
+}
+
+.ob-pw-ic.is-ok {
+  color: var(--ok);
+}
+
+.ob-pw-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.ob-pw-list li {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+.ob-pw-dash {
+  color: var(--ink2);
+  line-height: 1.4;
+}
+
+/* The "bez ŠkolaMatch" column is transparent on purpose — the raised card is
+   what carries fill, so the contrast is between them, not against the page. */
+.ob-pw-compare {
+  background: transparent;
+}
+
+.ob-pw-compare .ob-pw-list li {
+  color: var(--ink2);
+}
+
+.ob-pw-compare.is-raised .ob-pw-list li {
+  color: var(--ink);
+}
+
+.ob-pw-payoff {
+  background: var(--ok-soft);
+  border-radius: var(--r-card);
+  padding: 16px;
+}
+
+.ob-pw-payoff p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.ob-pw-payoff strong {
+  font-weight: 700;
+}
+
+/* Desktop-only content. Not "nice to have on mobile" — these blocks would push
+   the actual decision under the fold on a 390px screen. */
+.ob-pw-only-wide {
+  display: none;
+}
+
+/* --- the math / summary rows ---------------------------------------------- */
+.ob-pw-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.ob-pw-row-label {
+  font-size: 14px;
+  color: var(--ink2);
+}
+
+.ob-pw-row-label.is-strong {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.ob-pw-row-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.ob-pw-total {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--acc);
+  letter-spacing: -0.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.ob-pw-due {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ok);
+  letter-spacing: -0.4px;
+  font-variant-numeric: tabular-nums;
+}
+
+.ob-pw-summary {
+  border: 1px solid var(--acc-line);
+  background: var(--acc-soft);
+}
+
+/* --- the season rail (Cesta) and the trial rail (Zkušební) ---------------- */
+.ob-pw-rail {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.ob-pw-rail.ob-pw-card {
+  padding: 18px 16px;
+}
+
+.ob-pw-rail-item {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.ob-pw-rail-mark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: stretch;
+  flex: 0 0 auto;
+}
+
+.ob-pw-rail-dot {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  color: var(--ink2);
+}
+
+.ob-pw-rail-dot.is-now {
+  background: var(--acc);
+  border-color: var(--acc);
+  color: var(--acc-ink);
+}
+
+.ob-pw-rail-dot.is-done {
+  background: var(--ok);
+  border-color: var(--ok);
+  color: var(--acc-ink);
+}
+
+.ob-pw-rail-dot.is-charge {
+  background: var(--acc-soft);
+  border-color: var(--acc-line);
+  color: var(--acc);
+}
+
+/* A dashed marker is the visual half of "we do not promise this yet".
+   Paired with the ob-honesty note in the body — never one without the other. */
+.ob-pw-rail-dot.is-unpromised,
+.ob-pw-rail-dot.is-future {
+  background: transparent;
+  border: 1px dashed var(--line2);
+  color: var(--ink2);
+}
+
+.ob-pw-rail-line {
+  width: 2px;
+  flex: 1;
+  min-height: 20px;
+  background: var(--line);
+}
+
+.ob-pw-rail-line.is-now {
+  background: var(--acc-line);
+}
+
+.ob-pw-rail-line.is-done {
+  background: var(--ok);
+}
+
+.ob-pw-rail-item:last-child .ob-pw-rail-line {
+  display: none;
+}
+
+.ob-pw-rail-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-bottom: 22px;
+  min-width: 0;
+}
+
+.ob-pw-rail-item:last-child .ob-pw-rail-body {
+  padding-bottom: 0;
+}
+
+.ob-pw-rail-when {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink2);
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+}
+
+.ob-pw-rail-when.is-now {
+  color: var(--acc);
+}
+
+.ob-pw-rail-when.is-done {
+  color: var(--ok);
+}
+
+.ob-pw-rail-when.is-strong {
+  color: var(--ink);
+}
+
+.ob-pw-rail-what {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* Already-happened or not-yet-promised beats read back, not forward. */
+.ob-pw-rail-what.is-past {
+  color: var(--ink2);
+  font-weight: 600;
+}
+
+.ob-pw-rail-detail {
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--ink2);
+}
+
+/* --- plan cards ----------------------------------------------------------- */
+.ob-pw-plans {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ob-pw-plan {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+  width: 100%;
+  border: 2px solid var(--line);
+  background: transparent;
+  border-radius: var(--r-card);
+  padding: 16px;
+  font: inherit;
+  color: var(--ink);
+  cursor: pointer;
+  transition: transform 140ms ease, border-color 140ms ease;
+}
+
+.ob-pw-plan:active {
+  transform: scale(0.995);
+}
+
+.ob-pw-plan.is-selected {
+  border-color: var(--acc);
+  background: var(--acc-soft);
+  box-shadow: 0 6px 18px rgba(34, 26, 19, 0.07);
+}
+
+/* Overlaps the card border on purpose so it reads as attached to this plan
+   rather than floating above the group. */
+.ob-pw-plan-badge {
+  position: absolute;
+  top: -11px;
+  right: 14px;
+  background: var(--ok);
+  color: var(--acc-ink);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.ob-pw-plan-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.ob-pw-plan-names {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.ob-pw-plan-name {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.ob-pw-plan-for {
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--ink2);
+}
+
+.ob-pw-radio {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  border: 2px solid var(--line2);
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--acc-ink);
+}
+
+.ob-pw-plan.is-selected .ob-pw-radio {
+  background: var(--acc);
+  border-color: var(--acc);
+}
+
+.ob-pw-plan-price {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ob-pw-plan-perday {
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.8px;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.ob-pw-plan-unit {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--ink2);
+  letter-spacing: 0;
+}
+
+/* The real charge, at full weight directly under the per-day figure. A daily
+   breakdown without the actual amount beside it is an undisclosed cost. */
+.ob-pw-plan-real {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.ob-pw-plan-ref {
+  font-size: 13px;
+  color: var(--ink2);
+}
+
+.ob-pw-plan-line {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--ink);
+  margin: 0;
+}
+
+.ob-pw-plan-line strong {
+  font-weight: 700;
+}
+
+.ob-pw-trust .ob-pw-plan-line {
+  font-size: 14px;
+}
+
+/* --- footer / CTA cluster ------------------------------------------------- */
+.ob-pw-foot {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.ob-pw-cta {
+  width: 100%;
+}
+
+.ob-pw-decline {
+  border-color: var(--line);
+  color: var(--ink2);
+  min-height: 48px;
+  font-weight: 500;
+}
+
+.ob-pw-centered {
+  text-align: center;
+}
+
+.ob-pw-chips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.ob-pw-chips li {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--ink2);
+}
+
+.ob-pw-chips-quiet li {
+  font-size: 13px;
+}
+
+/* --- payment screen ------------------------------------------------------- */
+.ob-pw-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ob-pw-fields-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.ob-pw-secure {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--ink2);
+}
+
+/* Inert while payments are mocked — see Platba.jsx. Styled as a real field so
+   the layout is honest about what will be here, but it accepts nothing. */
+.ob-pw-field {
+  border: 1px solid var(--line);
+  border-radius: var(--r-button);
+  background: var(--surface2);
+  padding: 14px;
+  font: inherit;
+  font-size: 15px;
+  color: var(--ink);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ob-pw-field:disabled {
+  color: var(--ink2);
+  cursor: not-allowed;
+}
+
+.ob-pw-field-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.ob-pw-consent {
+  gap: 12px;
+}
+
+.ob-pw-handoff {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--ink);
+}
+
+.ob-pw-summary-wide {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .ob-pw {
+    gap: 22px;
+  }
+
+  .ob-pw-dots {
+    display: flex;
+  }
+
+  .ob-pw-title {
+    font-size: 38px;
+    line-height: 1.1;
+    text-wrap: balance;
+  }
+
+  .ob-pw-only-wide {
+    display: flex;
+  }
+
+  /* Two columns. On mobile the two wrappers are `display: contents` so the
+     single column can order children across both (Hodnota needs the payoff
+     AFTER the comparison on a phone but beside it on desktop); here they
+     become real boxes again. */
+  .ob-pw-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 520px;
+    gap: 44px;
+    align-items: start;
+  }
+
+  .ob-pw-grid-plan {
+    grid-template-columns: minmax(0, 1fr) 560px;
+  }
+
+  .ob-pw-grid-pay {
+    grid-template-columns: minmax(0, 1fr) 400px;
+  }
+
+  .ob-pw-main,
+  .ob-pw-side {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    min-width: 0;
+  }
+
+  .ob-pw-main > *,
+  .ob-pw-side > * {
+    order: 0 !important;
+  }
+
+  /* The buy box is one panel on desktop so the plans, the footnote and the
+     CTA read as a single object rather than three stacked things. */
+  .ob-pw-buybox {
+    background: var(--surface2);
+    border: 1px solid var(--line);
+    border-radius: var(--r-card);
+    padding: 26px;
+  }
+
+  .ob-pw-buybox .ob-pw-plans {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    align-items: stretch;
+  }
+
+  .ob-pw-buybox .ob-pw-plan-badge {
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+
+  .ob-pw-buybox .ob-pw-plan-perday {
+    font-size: 25px;
+  }
+
+  /* CESTA: the rail rotates. The whole September-April season is visible at
+     once, which is the one thing a 390px screen physically cannot do. */
+  .ob-pw-rail:not(.ob-pw-rail-vertical) {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0;
+    align-items: start;
+  }
+
+  .ob-pw-rail:not(.ob-pw-rail-vertical) .ob-pw-rail-item {
+    flex-direction: column;
+    gap: 12px;
+    padding-right: 18px;
+  }
+
+  .ob-pw-rail:not(.ob-pw-rail-vertical) .ob-pw-rail-mark {
+    flex-direction: row;
+    align-self: auto;
+    width: 100%;
+    align-items: center;
+  }
+
+  .ob-pw-rail:not(.ob-pw-rail-vertical) .ob-pw-rail-line {
+    width: auto;
+    height: 2px;
+    min-height: 0;
+  }
+
+  .ob-pw-rail:not(.ob-pw-rail-vertical) .ob-pw-rail-body {
+    padding-bottom: 0;
+    gap: 4px;
+  }
+
+  .ob-pw-payoff-band {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+  }
+
+  .ob-pw-payoff-band p {
+    font-size: 17px;
+  }
+
+  .ob-pw-foot-end {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+
+  .ob-pw-foot-end .ob-pw-cta {
+    width: auto;
+  }
+
+  /* PLATBA: the order summary moves into the right column, where it cannot be
+     scrolled past. On mobile it is pinned above everything instead. */
+  .ob-pw-summary-mobile {
+    display: none;
+  }
+
+  .ob-pw-summary-wide {
+    display: block;
+  }
+}
+
+@media (max-width: 1023px) {
+  /* One column, and the two wrappers dissolve so their children can be
+     ordered against each other (see the `order` values set in Hodnota.jsx). */
+  .ob-pw-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .ob-pw-grid .ob-pw-main,
+  .ob-pw-grid .ob-pw-side {
+    display: contents;
+  }
+}
+
+
+/* --- parent handoff nudge (first quiz question, parent branch only) -------- */
+/* Reuses the accent-soft card shape rather than a warning colour: this is an
+   invitation, not an error, and §0.3 forbids anything that reads as a telling-off. */
+.ob-handoff-nudge {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--acc-line);
+  border-radius: var(--r-card);
+  background: var(--acc-soft);
+}
+
+.ob-handoff-nudge-lead {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.ob-handoff-nudge-lead strong {
+  font-weight: 700;
+}
+
+.ob-handoff-nudge-alt {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Disabled, and visibly so. The button is here to show the shape of the thing
+   we intend to build; the note under it is what stops it being a promise. */
+.ob-handoff-nudge-alt .ob-btn[disabled] {
+  min-height: 48px;
+  opacity: 0.5;
+}
+
+.ob-handoff-nudge-soon {
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--ink2);
 }

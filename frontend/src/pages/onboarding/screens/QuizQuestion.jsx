@@ -44,7 +44,53 @@ import {
  *  - "Přeskočit" is on every screen and never costs anything. A skip drops the
  *    component from the weights and widens the confidence interval; it never
  *    lowers a score (zero-shame rule).
+ *
+ * NOTE — there is deliberately NO "skip the whole questionnaire" control, and
+ * one must not be added. The quiz leading into the reveal is the only place in
+ * the funnel where the user receives something before being asked to pay; a
+ * shortcut past it would delete exactly the value it exists to create.
  */
+
+/**
+ * Parent branch, first question only.
+ *
+ * A parent answering eleven questions about their child's taste from memory
+ * produces confidently-wrong input, and the scoring engine cannot tell the
+ * difference between "wrong" and "right" — only between answered and skipped.
+ * So the honest fix is to get the child in front of the device for this part,
+ * on the same device, in the same session. Copy-only: the quiz mechanics,
+ * storage and scoring are identical on both branches.
+ *
+ * The "poslat odkaz dítěti" control beside it is INERT and says so. Real
+ * cross-device handoff needs session tokens and sync that do not exist in this
+ * codebase (answers live in sessionStorage — see CLAUDE.md, Platform
+ * Strategy), and a button that looks like it sends a link but sends nothing is
+ * the same class of lie as promising a trial reminder we cannot send. Same
+ * pattern as TRIAL_REMINDER_IMPLEMENTED in config/pricing.js: show the thing,
+ * mark it unbuilt, never fake it. Wire it up only when that infrastructure
+ * lands — and ship it together with the child-to-parent direction, since it is
+ * the same infrastructure.
+ */
+function ParentHandoffNudge() {
+  return (
+    <div className="ob-handoff-nudge">
+      <p className="ob-handoff-nudge-lead">
+        <strong>Nejlíp to půjde společně.</strong> Další otázky jsou o tom, co baví vaše dítě —
+        předejte mu teď telefon, ať na ně odpoví samo. Odpovídat můžete i vy: u každé otázky je
+        možnost „Nevím jistě“ a nezodpovězené otázky nikdy nesnižují výsledek.
+      </p>
+      <div className="ob-handoff-nudge-alt">
+        <button type="button" className="ob-btn ob-btn-ghost" disabled>
+          Poslat odkaz dítěti
+        </button>
+        <span className="ob-handoff-nudge-soon ob-trust-unbuilt">
+          Zatím nefunguje — poslat dotazník na jiné zařízení ještě neumíme, tak to neslibujeme.
+        </span>
+      </div>
+    </div>
+  );
+}
+
 function QuizQuestion({ step }) {
   const { role, answers, setAnswer, goNext, goBack, schools, cleanedAnswers } = useOnboarding();
   const parent = role === 'parent';
@@ -138,6 +184,9 @@ function QuizQuestion({ step }) {
           variant="strip"
         />
       </div>
+
+      {/* First question only — see ParentHandoffNudge above. */}
+      {parent && step.questionIndex === 0 && <ParentHandoffNudge />}
 
       {schools.length > 0 && (
         <p className="ob-live" aria-live="polite">
