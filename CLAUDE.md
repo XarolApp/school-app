@@ -2,14 +2,20 @@
 
 ## ⚠️ Current working setup — read this first
 
-**Machine: the Windows laptop, not a MacBook.** The MacBook move planned for
-2026-08-31 did not happen; the user is on this Windows laptop until roughly
-mid-September 2026. The old PC is sold and unreachable, so this laptop is the only
-machine. `CONTEXT-HANDOFF.md`'s "MacBook setup checklist" is therefore **not
-pending work** — do not prompt the user through it. Everything it asks for is
-already true here: Node installed, repo cloned, `npm install` run in both root and
-`frontend/`, both `.env` files present, and both servers verified booting on
-2026-09-04.
+**Machine: the MacBook, as of 2026-09-06.** The move that was announced (and then
+didn't happen) on 2026-08-31 has now actually happened — the Windows laptop is no
+longer the working machine. `CONTEXT-HANDOFF.md`'s "MacBook setup checklist" is
+**active, do-it-now work** on a fresh MacBook session, not dormant reference —
+run through it if `node_modules`, `.env`, or a working `npm run dev` aren't
+already confirmed present.
+
+**The Browser pane / preview tools are expected to work normally here.** The
+"do not use the Browser pane" rule that used to be here was specific to the
+Windows laptop's Intel-integrated-graphics hardware (a Chromium GPU crash), not a
+project policy — verify it's actually fine on this machine, then delete this
+paragraph and the stale warning further down once confirmed. Until confirmed,
+don't assume either way — test it once, cheaply, before relying on it for a real
+verification pass.
 
 **Branch: `main`.** Commit and push here. As of 2026-09-04 this branch holds the
 onboarding-flow frontend (`/onboarding/...`) — what was briefly on a branch called
@@ -35,19 +41,21 @@ feature, fix, or coherent piece of work is finished and verified. `.env` files a
 gitignored and must stay that way; check `git status` before a broad `git add` so a
 secret never lands in a commit.
 
-**⚠️ Do not use the Browser pane / preview tools** (`mcp__Claude_Browser__*`,
-`preview_start`, `preview_stop`) **on this machine.** They crash Claude Desktop here
-(Chromium GPU-process crash on Intel integrated graphics, which then corrupts the
-MSIX package). This is a property of this hardware, not project policy — it will not
-apply on the MacBook, and the "verify in the browser yourself" instruction in Quick
-Start below is written for that machine. Until then: start the servers, verify with
-`curl`, `vite build`, and SSR/Node scripts, and ask the user to look at anything that
-genuinely needs eyes.
+**Historical note, now resolved:** the previous (Windows) machine could not safely
+use the Browser pane / preview tools (`mcp__Claude_Browser__*`, `preview_start`,
+`preview_stop`) — a Chromium GPU-process crash on its Intel integrated graphics
+that corrupted the MSIX package. That was a property of that hardware, not this
+one. On the MacBook, use the Browser pane normally for the "verify in the browser
+yourself" instruction in Quick Start below.
 
-> `CONTEXT-HANDOFF.md` still records what was in flight when the previous session
-> ended — notably that plan 005 (spacing/typography migration) is ~95% done with one
-> step remaining. Read it for that; ignore its setup checklist per the above. Delete
-> it once its contents are resolved into this file / `UNFORGET.md`.
+> `CONTEXT-HANDOFF.md` records what was in flight at the machine switch —
+> notably the **new 5-screen paywall flow (`hodnota → cesta → plan → zkusebni →
+> platba`), built 2026-09-05/06, that has never been visually verified in a real
+> browser.** That's the first thing to check on this machine, now that the
+> Browser pane actually works. It also covers plan 005 (spacing/typography
+> migration, still IN PROGRESS, three visual checks outstanding) and the
+> MacBook setup checklist. Delete sections of it as they're resolved into this
+> file / `UNFORGET.md`.
 
 ## The Problem This Solves
 
@@ -298,11 +306,14 @@ school-app/
 `/nove-heslo`, `/nastaveni`, `/predplatne`) — the auth components have several of these
 hardcoded in their redirects, so do not rename them casually.
 
-**There are two `Paywall`-shaped surfaces and two `matching.js` files. Neither pair is
+**There are two paywall-shaped surfaces and two `matching.js` files. Neither pair is
 a duplicate — do not merge them:**
-- `pages/onboarding/screens/Paywall.jsx` is the first-purchase paywall inside the flow.
-  `pages/SubscriptionExpired.jsx` (route `/predplatne`) is where `ProtectedRoute` sends
-  an account whose trial has lapsed. Different moments in the funnel.
+- The first-purchase paywall inside the flow is now a **5-screen sequence**
+  (`Hodnota.jsx` → `Cesta.jsx` → `Plan.jsx` → `Zkusebni.jsx` → `Platba.jsx`, plus
+  shared chrome in `paywallKit.jsx`), replacing the old single-screen
+  `Paywall.jsx` (deleted 2026-09-06). `pages/SubscriptionExpired.jsx` (route
+  `/predplatne`) is where `ProtectedRoute` sends an account whose trial has
+  lapsed — a different moment in the funnel, not the same surface.
 - `frontend/src/lib/matching.js` scores the onboarding quiz, entirely in the browser,
   with no server call. `lib/matching.js` (repo root) scores the standalone
   questionnaire server-side. They were built independently and are not interchangeable.
