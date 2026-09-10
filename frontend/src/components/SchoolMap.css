@@ -1,0 +1,275 @@
+/* SchoolMap — styles scoped to .sm-*. Tokens reused directly from tokens.css
+ * since this component is rendered inside .school-search where the same
+ * aliases (--primary, --surface-card, ...) are already in scope.
+ *
+ * Every floating control here (locate panel, fullscreen button, card) uses
+ * z-index: 1000 — Leaflet's own panes run 200-700 and ITS controls sit at
+ * 1000, so matching that is what keeps ours visible all the time instead of
+ * buried under the map and only flashing into view during a zoom animation
+ * (Leaflet briefly gives the zooming pane its own stacking context then). */
+
+.sm-wrap {
+  position: relative;
+  height: 560px;
+  border-radius: var(--r-card);
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+}
+
+/* Optional, user-triggered — never automatic. Toggled by .sm-fullscreen-btn. */
+.sm-wrap.is-fullscreen {
+  position: fixed;
+  inset: 0;
+  height: 100dvh;
+  z-index: 500;
+  border-radius: 0;
+  border: none;
+}
+
+.sm-map {
+  position: absolute;
+  inset: 0;
+}
+
+/* Leaflet's own CSS ships fine defaults for tiles/controls; only the custom
+   divIcon pins and our own panels need styling here. */
+.sm-pin-wrap {
+  background: transparent;
+  border: none;
+}
+.sm-pin {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  border-radius: var(--r-chip, 10px);
+  padding: 4px 8px;
+  font-size: 11px;
+  line-height: 1.25;
+  font-weight: 600;
+  background: var(--surface);
+  border: 1.5px solid var(--border-strong);
+  color: var(--on-surface);
+  box-shadow: 0 2px 6px rgba(34, 26, 19, 0.12);
+  white-space: nowrap;
+  max-width: 150px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+.sm-pin-name {
+  font-weight: 500;
+  font-size: 10px;
+  color: var(--text-faint);
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sm-pin-pct {
+  font-variant-numeric: tabular-nums;
+  font-size: 13px;
+}
+.sm-pin.is-nodata .sm-pin-pct {
+  color: var(--text-faint);
+  border-style: dashed;
+}
+.sm-pin.is-selected {
+  background: var(--primary);
+  border-color: var(--primary);
+  box-shadow: 0 4px 12px rgba(173, 79, 42, 0.35);
+}
+.sm-pin.is-selected .sm-pin-name,
+.sm-pin.is-selected .sm-pin-pct {
+  color: var(--primary-strong);
+}
+
+.sm-home-pin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--primary);
+  font-size: 16px;
+  box-shadow: 0 3px 10px rgba(34, 26, 19, 0.2);
+  transform: translate(-50%, -50%);
+}
+
+.sm-fullscreen-btn {
+  position: absolute;
+  right: var(--space-md);
+  top: var(--space-md);
+  z-index: 1000;
+  appearance: none;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  border-radius: var(--r-button);
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--on-surface);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(34, 26, 19, 0.1);
+}
+.sm-fullscreen-btn:hover {
+  background: var(--surface-card);
+}
+
+.sm-locate-panel {
+  position: absolute;
+  left: var(--space-md);
+  top: var(--space-md);
+  z-index: 1000;
+  width: min(260px, calc(100% - var(--space-lg) - 44px));
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-card);
+  padding: var(--space-sm);
+  box-shadow: 0 2px 8px rgba(34, 26, 19, 0.1);
+  max-height: calc(100% - 2 * var(--space-md));
+  overflow-y: auto;
+}
+
+.sm-address-form {
+  display: flex;
+  gap: 6px;
+}
+.sm-address-input {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+  font-size: var(--fs-caption);
+  padding: 6px 8px;
+  border-radius: var(--r-button);
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--on-surface);
+}
+
+.sm-locate-btn {
+  appearance: none;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  border-radius: var(--r-button);
+  padding: var(--space-sm) var(--space-md);
+  font: inherit;
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  color: var(--on-surface);
+  cursor: pointer;
+}
+.sm-locate-btn:hover {
+  background: var(--surface-card);
+}
+
+.sm-privacy-note {
+  color: var(--text-faint);
+}
+.sm-address-error {
+  color: var(--danger, #b3402a);
+}
+
+.sm-radius-control {
+  border-top: 1px solid var(--border-strong);
+  padding-top: var(--space-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.sm-radius-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+.sm-radius-clear {
+  appearance: none;
+  background: none;
+  border: none;
+  font: inherit;
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  color: var(--primary);
+  cursor: pointer;
+  padding: 0;
+}
+.sm-radius-slider {
+  width: 100%;
+}
+
+/* Detail card — floats OVER the map (bottom-anchored, like Redfin/Zillow's
+   map card pattern), never pushes the map's own layout. z-index: 1000 (see
+   file header) plus a generous max-height with its own scroll is what keeps
+   it fully visible and clickable instead of clipped or buried under tiles. */
+.sm-card {
+  position: absolute;
+  left: var(--space-md);
+  right: var(--space-md);
+  bottom: var(--space-md);
+  z-index: 1000;
+  max-width: 360px;
+  max-height: calc(100% - 2 * var(--space-md));
+  /* Content here is fixed-shape (name, meta, 3 stats, one note, buttons) —
+     never a variable-length list — so this was a defensive scroll clip that
+     was never actually needed, and it silently ate the stat tooltips'
+     hover popovers trying to escape the card in either direction. Visible
+     instead: max-height above still caps normal layout, it just no longer
+     clips anything that intentionally paints outside the box. */
+  overflow: visible;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-card);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  box-shadow: 0 6px 20px rgba(34, 26, 19, 0.18);
+}
+.sm-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+.sm-card-close {
+  appearance: none;
+  border: none;
+  background: none;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--text-faint);
+  cursor: pointer;
+  padding: 0 4px;
+  flex: none;
+}
+.sm-card-stats {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  max-width: none;
+}
+.sm-card-actions {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+@media (max-width: 860px) {
+  .sm-wrap {
+    height: 70vh;
+  }
+  .sm-locate-panel {
+    width: calc(100% - var(--space-lg) - 44px);
+  }
+  .sm-card {
+    left: var(--space-sm);
+    right: var(--space-sm);
+    bottom: var(--space-sm);
+    max-width: none;
+  }
+}

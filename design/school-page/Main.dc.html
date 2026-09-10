@@ -1,0 +1,328 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Public+Sans:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; background: #FAF6EF; font-family: 'Public Sans', system-ui, 'Segoe UI', sans-serif; color: #221A13; }
+    a { color: #AD4F2A; text-decoration: none; }
+    a:hover { color: #7A3020; }
+    .h { font-family: 'Lora', Georgia, 'Times New Roman', serif; }
+  </style>
+</helmet>
+
+<div style="width: 1440px; background: #FAF6EF; padding: 0 0 64px 0;">
+
+  <!-- top bar -->
+  <div style="display: flex; align-items: center; justify-content: space-between; padding: 20px 64px; border-bottom: 1px solid #E6DFD1;">
+    <div class="h" style="font-size: 20px; font-weight: 600; letter-spacing: -0.01em;">ŠkolaMatch</div>
+    <div style="display: flex; gap: 32px; font-size: 15px; font-weight: 500; color: #6B6259;">
+      <span>Domů</span><span style="color: #221A13;">Školy</span><span>Najít školu</span><span>Přihlásit se</span>
+    </div>
+  </div>
+
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 64px;">
+
+    <!-- back -->
+    <div style="padding: 24px 0 0 0; font-size: 14px; color: #AD4F2A;">← Zpět na výpis</div>
+
+    <!-- ============ HERO ============ -->
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; padding: 24px 0 32px 0;">
+
+      <div style="grid-column: span 2; display: flex; flex-direction: column; gap: 16px;">
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <h1 class="h" style="margin: 0; font-size: 38px; line-height: 1.14; font-weight: 600; letter-spacing: -0.015em;">Střední odborná škola automobilní, informatiky a Gymnázium</h1>
+          <div style="font-size: 16px; line-height: 1.55; color: #6B6259;">Weilova 1270/4, Hostivař, 102 00 Praha 10</div>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+          <span style="display: inline-flex; align-items: center; padding: 6px 12px; border-radius: 10px; border: 1px solid #E6DFD1; background: #F1ECE3; font-size: 13px; font-weight: 500;">Praha 15</span>
+          <span style="display: inline-flex; align-items: center; padding: 6px 12px; border-radius: 10px; border: 1px solid #E6DFD1; background: #F1ECE3; font-size: 13px; font-weight: 500;">veřejná škola</span>
+          <span style="display: inline-flex; align-items: center; padding: 6px 12px; border-radius: 10px; border: 1px solid #E6DFD1; background: #F1ECE3; font-size: 13px; font-weight: 500;">maturitní i výuční list</span>
+          <span style="display: inline-flex; align-items: center; padding: 6px 12px; border-radius: 10px; border: 1px solid #E6DFD1; background: #F1ECE3; font-size: 13px; font-weight: 500;">8 oborů pro rok 2026</span>
+        </div>
+
+        <!-- fact tiles: the disqualifying facts, above the fold -->
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: #E6DFD1; border: 1px solid #E6DFD1; border-radius: 18px; overflow: hidden; margin-top: 8px;">
+          <div style="background: #FAF6EF; padding: 16px; display: flex; flex-direction: column; gap: 4px;">
+            <div class="h" style="font-size: 28px; line-height: 1.2; font-weight: 600; letter-spacing: -0.01em;">46,9 %</div>
+            <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #756B5C;">Průměrná hranice</div>
+          </div>
+          <div style="background: #FAF6EF; padding: 16px; display: flex; flex-direction: column; gap: 4px;">
+            <div class="h" style="font-size: 28px; line-height: 1.2; font-weight: 600; letter-spacing: -0.01em;">28,2 %</div>
+            <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #756B5C;">Přijato z přihlášených</div>
+          </div>
+          <div style="background: #FAF6EF; padding: 16px; display: flex; flex-direction: column; gap: 4px;">
+            <div class="h" style="font-size: 28px; line-height: 1.2; font-weight: 600; letter-spacing: -0.01em;">354</div>
+            <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #756B5C;">Míst v roce 2026</div>
+          </div>
+          <div style="background: #FAF6EF; padding: 16px; display: flex; flex-direction: column; gap: 4px;">
+            <div class="h" style="font-size: 28px; line-height: 1.2; font-weight: 600; letter-spacing: -0.01em;">3,2×</div>
+            <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #756B5C;">Uchazečů na místo</div>
+          </div>
+        </div>
+        <div style="font-size: 13px; line-height: 1.45; color: #756B5C;">Čísla z Cermatu, 1. kolo přijímaček 2024–2026. Průměr přes všechny obory školy.</div>
+      </div>
+
+      <!-- action rail -->
+      <div style="display: flex; flex-direction: column; gap: 8px; border: 1px solid #E6DFD1; border-radius: 18px; padding: 24px; background: #FAF6EF; align-self: start;">
+        <button style="height: 54px; border-radius: 14px; border: none; background: #AD4F2A; color: #FAF6EF; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer;">Uložit do oblíbených</button>
+        <button style="height: 54px; border-radius: 14px; border: 1px solid #D6CBB6; background: #FAF6EF; color: #221A13; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer;">Přidat k porovnání</button>
+        <button style="height: 54px; border-radius: 14px; border: 1px solid #D6CBB6; background: #FAF6EF; color: #221A13; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer;">Sdílet školu</button>
+        <div style="height: 1px; background: #E6DFD1; margin: 8px 0;"></div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <a href="#" style="font-size: 14px; font-weight: 500;">skolahostivar.cz</a>
+          <a href="#" style="font-size: 14px; font-weight: 500;">jitka.rajdlova@skolahostivar.cz</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ SECTION NAV ============ -->
+    <div style="display: flex; gap: 4px; border-top: 1px solid #E6DFD1; border-bottom: 1px solid #E6DFD1; padding: 12px 0; margin-bottom: 32px;">
+      <span style="padding: 8px 16px; border-radius: 10px; background: #F1ECE3; font-size: 14px; font-weight: 600;">Obory a přijímačky</span>
+      <span style="padding: 8px 16px; border-radius: 10px; font-size: 14px; font-weight: 500; color: #6B6259;">Kde to je</span>
+      <span style="padding: 8px 16px; border-radius: 10px; font-size: 14px; font-weight: 500; color: #6B6259;">Recenze</span>
+      <span style="padding: 8px 16px; border-radius: 10px; font-size: 14px; font-weight: 500; color: #6B6259;">Co zatím doplňujeme</span>
+    </div>
+
+    <!-- ============ WHAT THE NUMBER MEANS ============ -->
+    <div style="display: flex; gap: 16px; border: 1px solid #DFA98C; background: #F6E3D6; border-radius: 18px; padding: 24px; margin-bottom: 48px;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#AD4F2A" stroke-width="1.6" stroke-linecap="round" style="flex: none; margin-top: 2px;">
+        <circle cx="12" cy="12" r="9"></circle><path d="M12 16v-5"></path><path d="M12 8h.01"></path>
+      </svg>
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <div style="font-size: 16px; line-height: 1.55; font-weight: 600;">„Hranice 46,9 %“ nejsou body, ale procenta</div>
+        <div style="font-size: 15px; line-height: 1.55; color: #6B6259;">Je to průměrný podíl bodů z češtiny a matematiky, který loni stačil na přijetí. 100 % = plný počet z obou testů. Není to počet bodů ani známka.</div>
+      </div>
+    </div>
+
+    <!-- ============ OBORY ============ -->
+    <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px;">
+      <h2 class="h" style="margin: 0; font-size: 28px; line-height: 1.2; font-weight: 600; letter-spacing: -0.01em;">Obory a přijímačky</h2>
+      <span style="font-size: 13px; color: #756B5C;">8 oborů pro 2026 · seřazeno podle zájmu</span>
+    </div>
+    <div style="font-size: 15px; line-height: 1.55; color: #6B6259; margin-bottom: 24px;">Každý obor má vlastní přijímačky a vlastní hranici — průměr školy nahoře je jen orientační.</div>
+
+    <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 48px;">
+
+      <!-- obor 1 -->
+      <div style="border: 1px solid #E6DFD1; border-radius: 18px; padding: 24px; background: #FAF6EF;">
+        <div style="display: flex; justify-content: space-between; gap: 32px; margin-bottom: 16px;">
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div class="h" style="font-size: 22px; line-height: 1.25; font-weight: 500;">Informační technologie</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+              <span style="padding: 4px 10px; border-radius: 10px; border: 1px solid #E6DFD1; background: #F1ECE3; font-size: 13px;">SOŠ</span>
+              <span style="padding: 4px 10px; border-radius: 10px; border: 1px solid #E6DFD1; background: #F1ECE3; font-size: 13px;">4 roky</span>
+              <span style="padding: 4px 10px; border-radius: 10px; border: 1px solid #E6DFD1; background: #F1ECE3; font-size: 13px;">maturita</span>
+              <span style="padding: 4px 10px; border-radius: 10px; border: 1px solid #E6DFD1; background: #F1ECE3; font-size: 13px;">JPZ povinná</span>
+              <span style="padding: 4px 10px; border-radius: 10px; border: 1px solid #E6DFD1; background: #F1ECE3; font-size: 13px; color: #756B5C;">18-20-M/01</span>
+            </div>
+          </div>
+          <div style="text-align: right; flex: none;">
+            <div class="h" style="font-size: 28px; line-height: 1.2; font-weight: 600; letter-spacing: -0.01em;">2,8×</div>
+            <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #756B5C;">uchazečů na místo</div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; padding: 16px 0; border-top: 1px solid #E6DFD1; border-bottom: 1px solid #E6DFD1;">
+          <div><div style="font-size: 15px; font-weight: 500;">90</div><div style="font-size: 13px; color: #756B5C;">míst</div></div>
+          <div><div style="font-size: 15px; font-weight: 500;">253</div><div style="font-size: 13px; color: #756B5C;">přihlášek</div></div>
+          <div><div style="font-size: 15px; font-weight: 500;">76</div><div style="font-size: 13px; color: #756B5C;">přijatých</div></div>
+          <div><div style="font-size: 15px; font-weight: 500;">42 %</div><div style="font-size: 13px; color: #756B5C;">hranice 2026</div></div>
+        </div>
+
+        <!-- 3-year trend, real values -->
+        <div style="padding-top: 16px;">
+          <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #756B5C; margin-bottom: 8px;">Vývoj 2024 → 2026</div>
+          <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;">
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+              <div style="display: flex; align-items: baseline; gap: 8px;"><span style="font-size: 13px; color: #756B5C;">2024</span><span style="font-size: 13px; font-weight: 500;">440 přihlášek · hranice 59 %</span></div>
+              <div style="height: 6px; border-radius: 999px; background: #F1ECE3;"><div style="width: 100%; height: 6px; border-radius: 999px; background: #D6CBB6;"></div></div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+              <div style="display: flex; align-items: baseline; gap: 8px;"><span style="font-size: 13px; color: #756B5C;">2025</span><span style="font-size: 13px; font-weight: 500;">317 přihlášek · hranice 55 %</span></div>
+              <div style="height: 6px; border-radius: 999px; background: #F1ECE3;"><div style="width: 72%; height: 6px; border-radius: 999px; background: #D6CBB6;"></div></div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+              <div style="display: flex; align-items: baseline; gap: 8px;"><span style="font-size: 13px; color: #756B5C;">2026</span><span style="font-size: 13px; font-weight: 500;">253 přihlášek · hranice 42 %</span></div>
+              <div style="height: 6px; border-radius: 999px; background: #F1ECE3;"><div style="width: 58%; height: 6px; border-radius: 999px; background: #AD4F2A;"></div></div>
+            </div>
+          </div>
+          <div style="font-size: 13px; line-height: 1.45; color: #6B6259; margin-top: 8px;">Zájem tři roky po sobě klesá a s ním i hranice — dostat se sem je rok od roku snazší.</div>
+        </div>
+      </div>
+
+      <!-- obor 2: no cutoff (no JPZ) -->
+      <div style="border: 1px solid #E6DFD1; border-radius: 18px; padding: 24px; background: #FAF6EF;">
+        <div style="display: flex; justify-content: space-between; gap: 32px; margin-bottom: 16px;">
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div class="h" style="font-size: 22px; line-height: 1.25; font-weight: 500;">Mechanik opravář motorových vozidel</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+              <span style="padding: 4px 10px; border-radius: 10px; border: 1px solid #E6DFD1; background: #F1ECE3; font-size: 13px;">SOU s výučním listem</span>
+              <span style="padding: 4px 10px; border-radius: 10px; border: 1px solid #E6DFD1; background: #F1ECE3; font-size: 13px;">3 roky</span>
+              <span style="padding: 4px 10px; border-radius: 10px; border: 1px solid #E6DFD1; background: #F1ECE3; font-size: 13px;">výuční list</span>
+              <span style="padding: 4px 10px; border-radius: 10px; border: 1px solid #E6DFD1; background: #F1ECE3; font-size: 13px;">bez JPZ</span>
+              <span style="padding: 4px 10px; border-radius: 10px; border: 1px solid #E6DFD1; background: #F1ECE3; font-size: 13px; color: #756B5C;">23-68-H/01</span>
+            </div>
+          </div>
+          <div style="text-align: right; flex: none;">
+            <div class="h" style="font-size: 28px; line-height: 1.2; font-weight: 600; letter-spacing: -0.01em;">4,2×</div>
+            <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #756B5C;">uchazečů na místo</div>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; padding: 16px 0; border-top: 1px solid #E6DFD1; border-bottom: 1px solid #E6DFD1;">
+          <div><div style="font-size: 15px; font-weight: 500;">60</div><div style="font-size: 13px; color: #756B5C;">míst</div></div>
+          <div><div style="font-size: 15px; font-weight: 500;">250</div><div style="font-size: 13px; color: #756B5C;">přihlášek</div></div>
+          <div><div style="font-size: 15px; font-weight: 500;">59</div><div style="font-size: 13px; color: #756B5C;">přijatých</div></div>
+          <div><div style="font-size: 15px; font-weight: 500; color: #756B5C;">—</div><div style="font-size: 13px; color: #756B5C;">bez jednotné zkoušky</div></div>
+        </div>
+        <div style="padding-top: 16px; font-size: 13px; line-height: 1.45; color: #6B6259;">Učební obor bez jednotné přijímací zkoušky, takže žádná bodová hranice neexistuje — škola si dělá vlastní přijímací řízení.</div>
+      </div>
+
+      <!-- obor 3: discontinued -->
+      <div style="border: 1px dashed #D6CBB6; border-radius: 18px; padding: 24px; background: #F1ECE3;">
+        <div style="display: flex; justify-content: space-between; gap: 32px; align-items: flex-start;">
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div class="h" style="font-size: 22px; line-height: 1.25; font-weight: 500; color: #6B6259;">Autotronik — nástavba</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+              <span style="padding: 4px 10px; border-radius: 10px; border: 1px solid #D6CBB6; background: #FAF6EF; font-size: 13px; color: #6B6259;">Nástavby</span>
+              <span style="padding: 4px 10px; border-radius: 10px; border: 1px solid #D6CBB6; background: #FAF6EF; font-size: 13px; color: #756B5C;">39-41-L/51</span>
+            </div>
+            <div style="font-size: 13px; line-height: 1.45; color: #6B6259;">Naposledy otevřeno v roce 2024 (22 přihlášek, 1 přijatý). V letech 2025 a 2026 se neotevíralo.</div>
+          </div>
+          <span style="flex: none; padding: 4px 10px; border-radius: 10px; border: 1px dashed #D6CBB6; background: #FAF6EF; font-size: 13px; color: #756B5C;">neotevírá se</span>
+        </div>
+      </div>
+
+      <div style="text-align: center; padding: 8px;">
+        <button style="height: 54px; padding: 0 24px; border-radius: 14px; border: 1px solid #D6CBB6; background: #FAF6EF; font-family: inherit; font-size: 15px; font-weight: 600; color: #221A13; cursor: pointer;">Zobrazit dalších 5 oborů</button>
+      </div>
+    </div>
+
+    <!-- ============ KDE TO JE ============ -->
+    <h2 class="h" style="margin: 0 0 24px 0; font-size: 28px; line-height: 1.2; font-weight: 600; letter-spacing: -0.01em;">Kde to je</h2>
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-bottom: 48px;">
+      <div style="grid-column: span 2; height: 320px; border: 1px solid #E6DFD1; border-radius: 18px; background: #EFE9DC; position: relative; overflow: hidden;">
+        <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;">
+          <div style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 10px; border: 1.5px solid #AD4F2A; background: #F6E3D6;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#AD4F2A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            <span style="font-size: 13px; font-weight: 600;">Weilova 1270/4</span>
+          </div>
+        </div>
+        <div style="position: absolute; left: 16px; bottom: 16px; font-size: 11px; color: #756B5C;">© OpenStreetMap contributors</div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <div style="border: 1px solid #E6DFD1; border-radius: 18px; padding: 24px; display: flex; flex-direction: column; gap: 16px;">
+          <div>
+            <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #756B5C; margin-bottom: 4px;">Adresa</div>
+            <div style="font-size: 15px; line-height: 1.55;">Weilova 1270/4, Hostivař<br>102 00 Praha 10</div>
+          </div>
+          <div>
+            <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #756B5C; margin-bottom: 4px;">E-mail</div>
+            <a href="#" style="font-size: 15px;">jitka.rajdlova@skolahostivar.cz</a>
+          </div>
+          <div>
+            <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #756B5C; margin-bottom: 4px;">Web</div>
+            <a href="#" style="font-size: 15px;">skolahostivar.cz</a>
+          </div>
+          <div>
+            <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #756B5C; margin-bottom: 4px;">Ředitel/ka</div>
+            <div style="font-size: 15px; color: #756B5C;">Zatím nemáme</div>
+          </div>
+        </div>
+        <button style="height: 54px; border-radius: 14px; border: 1px solid #D6CBB6; background: #FAF6EF; font-family: inherit; font-size: 15px; font-weight: 600; color: #221A13; cursor: pointer;">Otevřít v Mapách Google</button>
+      </div>
+    </div>
+
+    <!-- ============ RECENZE ============ -->
+    <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px;">
+      <h2 class="h" style="margin: 0; font-size: 28px; line-height: 1.2; font-weight: 600; letter-spacing: -0.01em;">Recenze</h2>
+      <span style="font-size: 13px; color: #756B5C;">0 ověřených · 0 neověřených</span>
+    </div>
+    <div style="border: 1px solid #E6DFD1; border-radius: 18px; padding: 48px 24px; background: #FAF6EF; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 16px; margin-bottom: 48px;">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#D6CBB6" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+      <div style="display: flex; flex-direction: column; gap: 4px; max-width: 520px;">
+        <div class="h" style="font-size: 22px; line-height: 1.25; font-weight: 500;">O téhle škole zatím nikdo nenapsal</div>
+        <div style="font-size: 15px; line-height: 1.55; color: #6B6259;">Chodíš sem, chodil jsi sem, učíš tu nebo jsi rodič studenta? Napiš, jaké to tu doopravdy je. Stačilo ti otevřít dveře na dni otevřených dveří — i to je užitečné, jen to prosím napiš.</div>
+      </div>
+      <button style="height: 54px; padding: 0 24px; border-radius: 14px; border: 1px solid #D6CBB6; background: #FAF6EF; font-family: inherit; font-size: 15px; font-weight: 600; color: #221A13; cursor: pointer;">Napsat recenzi</button>
+      <div style="font-size: 13px; line-height: 1.45; color: #756B5C; max-width: 520px;">Recenze píšeme pod přezdívkou podle role („Student · 3. ročník“), ne pod jménem. Nevymýšlej si — o školu, kterou neznáš, se opřít nedá.</div>
+    </div>
+
+    <!-- ============ CO ZATÍM DOPLŇUJEME ============ -->
+    <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px;">
+      <h2 class="h" style="margin: 0; font-size: 28px; line-height: 1.2; font-weight: 600; letter-spacing: -0.01em;">Co zatím doplňujeme</h2>
+    </div>
+    <div style="font-size: 15px; line-height: 1.55; color: #6B6259; margin-bottom: 24px;">Tyhle údaje ještě nemáme ověřené. Radši tu nic nevymýšlíme — až je budeme mít z důvěryhodného zdroje, objeví se tady.</div>
+
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-bottom: 24px;">
+      <div style="border: 1px dashed #D6CBB6; border-radius: 18px; padding: 24px; background: #F1ECE3; display: flex; flex-direction: column; gap: 4px;">
+        <div style="font-size: 15px; font-weight: 600;">Školné a poplatky</div>
+        <div style="font-size: 13px; line-height: 1.45; color: #6B6259;">Veřejná škola — školné se neplatí. Ostatní poplatky zatím nemáme.</div>
+      </div>
+      <div style="border: 1px dashed #D6CBB6; border-radius: 18px; padding: 24px; background: #F1ECE3; display: flex; flex-direction: column; gap: 4px;">
+        <div style="font-size: 15px; font-weight: 600;">Obědy a ubytování</div>
+        <div style="font-size: 13px; line-height: 1.45; color: #6B6259;">Nemáme tuto informaci.</div>
+      </div>
+      <div style="border: 1px dashed #D6CBB6; border-radius: 18px; padding: 24px; background: #F1ECE3; display: flex; flex-direction: column; gap: 4px;">
+        <div style="font-size: 15px; font-weight: 600;">Kroužky a aktivity</div>
+        <div style="font-size: 13px; line-height: 1.45; color: #6B6259;">Nemáme tuto informaci.</div>
+      </div>
+      <div style="border: 1px dashed #D6CBB6; border-radius: 18px; padding: 24px; background: #F1ECE3; display: flex; flex-direction: column; gap: 4px;">
+        <div style="font-size: 15px; font-weight: 600;">Úspěšnost u maturity</div>
+        <div style="font-size: 13px; line-height: 1.45; color: #6B6259;">Nemáme tuto informaci.</div>
+      </div>
+      <div style="border: 1px dashed #D6CBB6; border-radius: 18px; padding: 24px; background: #F1ECE3; display: flex; flex-direction: column; gap: 4px;">
+        <div style="font-size: 15px; font-weight: 600;">Kam míří absolventi</div>
+        <div style="font-size: 13px; line-height: 1.45; color: #6B6259;">Nemáme tuto informaci.</div>
+      </div>
+      <div style="border: 1px dashed #D6CBB6; border-radius: 18px; padding: 24px; background: #F1ECE3; display: flex; flex-direction: column; gap: 4px;">
+        <div style="font-size: 15px; font-weight: 600;">Uplatnění po vyučení</div>
+        <div style="font-size: 13px; line-height: 1.45; color: #6B6259;">Nemáme tuto informaci.</div>
+      </div>
+      <div style="border: 1px dashed #D6CBB6; border-radius: 18px; padding: 24px; background: #F1ECE3; display: flex; flex-direction: column; gap: 4px;">
+        <div style="font-size: 15px; font-weight: 600;">Fotky školy</div>
+        <div style="font-size: 13px; line-height: 1.45; color: #6B6259;">Nemáme tuto informaci.</div>
+      </div>
+      <div style="border: 1px dashed #D6CBB6; border-radius: 18px; padding: 24px; background: #F1ECE3; display: flex; flex-direction: column; gap: 4px;">
+        <div style="font-size: 15px; font-weight: 600;">Video a prohlídka</div>
+        <div style="font-size: 13px; line-height: 1.45; color: #6B6259;">Nemáme tuto informaci.</div>
+      </div>
+    </div>
+
+    <!-- report -->
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px; border: 1px solid #E6DFD1; border-radius: 18px; padding: 24px; background: #FAF6EF; margin-bottom: 48px;">
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <div style="font-size: 16px; line-height: 1.55; font-weight: 600;">Něco tu nesedí?</div>
+        <div style="font-size: 15px; line-height: 1.55; color: #6B6259;">Znáš tuhle školu líp než my — když je něco špatně nebo chybí, dej vědět a opravíme to.</div>
+      </div>
+      <button style="flex: none; height: 54px; padding: 0 24px; border-radius: 14px; border: 1px solid #D6CBB6; background: #FAF6EF; font-family: inherit; font-size: 15px; font-weight: 600; color: #221A13; cursor: pointer;">Nahlásit chybu v údajích</button>
+    </div>
+
+    <!-- podobné školy -->
+    <h2 class="h" style="margin: 0 0 24px 0; font-size: 28px; line-height: 1.2; font-weight: 600; letter-spacing: -0.01em;">Podobné školy</h2>
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;">
+      <div style="border: 1px solid #E6DFD1; border-radius: 18px; padding: 24px; display: flex; flex-direction: column; gap: 8px;">
+        <div class="h" style="font-size: 22px; line-height: 1.25; font-weight: 500;">Vyšší odborná škola informačních studií a Střední škola elektrotechniky, multimédií a informatiky</div>
+        <div style="font-size: 13px; color: #6B6259;">Praha 9 · veřejná · hranice 30,8 %</div>
+      </div>
+      <div style="border: 1px solid #E6DFD1; border-radius: 18px; padding: 24px; display: flex; flex-direction: column; gap: 8px;">
+        <div class="h" style="font-size: 22px; line-height: 1.25; font-weight: 500;">Střední průmyslová škola elektrotechnická, Praha 2, Ječná 30</div>
+        <div style="font-size: 13px; color: #6B6259;">Praha 2 · veřejná · hranice 50,3 %</div>
+      </div>
+      <div style="border: 1px solid #E6DFD1; border-radius: 18px; padding: 24px; display: flex; flex-direction: column; gap: 8px;">
+        <div class="h" style="font-size: 22px; line-height: 1.25; font-weight: 500;">Střední škola elektrotechniky a strojírenství</div>
+        <div style="font-size: 13px; color: #6B6259;">Praha 10 · veřejná · hranice 36 %</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

@@ -90,6 +90,32 @@ export function removeFavorite(schoolId) {
   return request(`/api/favorites/${schoolId}`, { method: 'DELETE' });
 }
 
+export function fetchSchoolReviews(schoolId) {
+  return request(`/api/schools/${schoolId}/reviews`);
+}
+
+export function addSchoolReview(schoolId, { role, roleYear, oborNazev, body, showName }) {
+  return request(`/api/schools/${schoolId}/reviews`, {
+    method: 'POST',
+    body: JSON.stringify({ role, roleYear, oborNazev, body, showName }),
+  });
+}
+
+export function deleteReview(id) {
+  return request(`/api/reviews/${id}`, { method: 'DELETE' });
+}
+
+export function reportReview(id) {
+  return request(`/api/reviews/${id}/report`, { method: 'POST' });
+}
+
+export function reportSchoolData(schoolId, { field, message }) {
+  return request(`/api/schools/${schoolId}/report`, {
+    method: 'POST',
+    body: JSON.stringify({ field, message }),
+  });
+}
+
 /**
  * SCAFFOLDING: the backend route exists but no Stripe keys are configured, so
  * this answers 503 (`STRIPE_NOT_CONFIGURED`) until they are. The onboarding

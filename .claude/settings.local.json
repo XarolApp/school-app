@@ -9,7 +9,11 @@
       "Bash(curl -s -o /dev/null -w \"backend:%{http_code}\\\\n\" http://localhost:5000/)",
       "Bash(taskkill //F //PID 17528)",
       "Bash(npm run *)",
-      "Bash(xargs -0 -n1 echo)"
+      "Bash(xargs -0 -n1 echo)",
+      "Bash(nohup node server.js)",
+      "Bash(disown)",
+      "Bash(curl -s http://localhost:5001/)",
+      "Bash(curl -s http://localhost:5173)"
     ]
   }
 }

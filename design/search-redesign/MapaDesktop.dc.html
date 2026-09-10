@@ -1,0 +1,160 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=Public+Sans:wght@400;500;600&display=swap">
+  <style>
+    :root {
+      --bg:#FAF6EF; --surface2:#F1ECE3; --ink:#221A13; --ink2:#6B6259; --ink3:#756B5C;
+      --line:#E6DFD1; --line2:#D6CBB6; --acc:#AD4F2A; --acc-ink:#FAF6EF; --acc-soft:#F6E3D6;
+      --acc-line:#DFA98C; --ok:#4F7143; --ok-soft:#E6EDDE;
+      --sans:'Public Sans',system-ui,'Segoe UI',sans-serif;
+      --heading:'Lora',Georgia,'Times New Roman',serif;
+    }
+    body { margin:0; background:var(--bg); font-family:var(--sans); color:var(--ink2); font-size:16px; line-height:1.55; }
+    a { color:var(--acc); } a:hover { color:#8A3E20; }
+    h1,h2,h3 { font-family:var(--heading); color:var(--ink); margin:0; }
+    .caps { font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; margin:0; }
+    .cap { font-size:13px; line-height:1.45; color:var(--ink2); margin:0; }
+    .num { font-variant-numeric:tabular-nums; }
+    .pin { position:absolute; display:inline-flex; align-items:center; gap:4px; border-radius:999px;
+           padding:5px 10px; font-size:13px; font-weight:600; font-variant-numeric:tabular-nums;
+           background:var(--bg); border:1.5px solid var(--line2); color:var(--ink);
+           box-shadow:0 2px 6px rgba(34,26,19,0.12); white-space:nowrap; }
+  </style>
+</helmet>
+
+<div style="padding:32px 40px; display:flex; flex-direction:column; gap:20px;">
+
+  <div style="display:flex; align-items:baseline; gap:8px; flex-wrap:wrap;">
+    <h1 class="num" style="font-size:22px; font-weight:500; line-height:1.25;">23 škol z 60</h1>
+    <p class="cap">na mapě · zobrazená hodnota je průměrná hranice přijetí</p>
+    <div style="margin-left:auto; display:flex; border:1px solid var(--line2); border-radius:10px; overflow:hidden;">
+      <span style="padding:8px 14px; font-size:13px; font-weight:600; color:var(--ink);">Seznam</span>
+      <span style="padding:8px 14px; font-size:13px; font-weight:600; background:var(--acc); color:var(--acc-ink);">Mapa</span>
+    </div>
+  </div>
+
+  <div style="display:grid; grid-template-columns:minmax(0,1fr) 340px; gap:20px; align-items:stretch;">
+
+    <!-- ===== MAP ===== -->
+    <div style="position:relative; height:660px; border-radius:18px; overflow:hidden;
+                border:1px solid var(--line2); background:var(--surface2);">
+
+      <!-- schematic Prague: river + arterial roads (wireframe stand-in for OSM tiles) -->
+      <svg viewBox="0 0 820 660" style="position:absolute; inset:0; width:100%; height:100%;">
+        <rect width="820" height="660" fill="#F1ECE3"></rect>
+        <g stroke="#E6DFD1" stroke-width="2" fill="none">
+          <path d="M0 150 H820 M0 330 H820 M0 500 H820 M170 0 V660 M400 0 V660 M620 0 V660"></path>
+        </g>
+        <g stroke="#DED6C6" stroke-width="1" fill="none">
+          <path d="M0 70 H820 M0 240 H820 M0 415 H820 M0 580 H820 M85 0 V660 M285 0 V660 M510 0 V660 M715 0 V660"></path>
+        </g>
+        <path d="M360 -20 C 330 120, 430 210, 395 330 C 360 450, 450 540, 420 690"
+              stroke="#C9D6C0" stroke-width="26" fill="none" stroke-linecap="round"></path>
+        <path d="M360 -20 C 330 120, 430 210, 395 330 C 360 450, 450 540, 420 690"
+              stroke="#B7C9AC" stroke-width="2" fill="none" stroke-linecap="round"></path>
+        <text x="437" y="614" font-family="Lora, Georgia, serif" font-size="13" fill="#8FA383"
+              font-style="italic">Vltava</text>
+      </svg>
+
+      <!-- pins carry the cutoff value, per Redfin/Zillow price-pin pattern -->
+      <span class="pin" style="left:120px; top:140px;">31,5 %</span>
+      <span class="pin" style="left:236px; top:300px;">44,3 %</span>
+      <span class="pin" style="left:470px; top:96px;">79,7 %</span>
+      <span class="pin" style="left:592px; top:210px;">36 %</span>
+      <span class="pin" style="left:664px; top:420px;">22 %</span>
+      <span class="pin" style="left:150px; top:470px;">17 %</span>
+      <span class="pin" style="left:330px; top:520px;">50,5 %</span>
+      <!-- a school with no admission data — drawn as absence, never as a number -->
+      <span class="pin" style="left:520px; top:470px; color:var(--ink3); border-style:dashed;">bez dat</span>
+      <!-- selected -->
+      <span class="pin" style="left:452px; top:238px; background:var(--acc); border-color:var(--acc);
+                               color:var(--acc-ink); box-shadow:0 4px 12px rgba(173,79,42,0.35);">52 %</span>
+
+      <!-- zoom control -->
+      <div style="position:absolute; right:16px; top:16px; display:flex; flex-direction:column;
+                  border:1px solid var(--line2); border-radius:10px; overflow:hidden; background:var(--bg);">
+        <span style="padding:7px 11px; font-size:16px; font-weight:600; color:var(--ink);
+                     border-bottom:1px solid var(--line);">+</span>
+        <span style="padding:7px 11px; font-size:16px; font-weight:600; color:var(--ink);">−</span>
+      </div>
+
+      <!-- attribution: required by OpenStreetMap's licence -->
+      <p class="cap" style="position:absolute; right:10px; bottom:8px; font-size:10px; color:var(--ink3);
+                            background:rgba(250,246,239,0.86); padding:2px 6px; border-radius:6px;">
+        © OpenStreetMap contributors
+      </p>
+
+      <!-- selected-school card, floating over the map -->
+      <div style="position:absolute; left:16px; bottom:16px; width:330px; background:var(--bg);
+                  border:1px solid var(--line2); border-radius:18px; padding:14px 16px;
+                  display:flex; flex-direction:column; gap:8px; box-shadow:0 6px 20px rgba(34,26,19,0.14);">
+        <div>
+          <h3 style="font-size:18px; line-height:1.35; font-weight:500;">Anglicko-české gymnázium AMAZON s. r. o.</h3>
+          <p class="cap">Praha 1 · soukromá · maturitní</p>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1px; background:var(--line);
+                    border:1px solid var(--line); border-radius:8px; overflow:hidden;">
+          <div style="background:var(--bg); padding:7px 9px;">
+            <p class="num" style="font-size:15px; font-weight:600; color:var(--ink); margin:0;">52 %</p>
+            <p class="caps" style="color:var(--ink2); margin-top:2px; font-weight:400;">hranice</p></div>
+          <div style="background:var(--bg); padding:7px 9px;">
+            <p class="num" style="font-size:15px; font-weight:600; color:var(--ink); margin:0;">32,7 %</p>
+            <p class="caps" style="color:var(--ink2); margin-top:2px; font-weight:400;">přijato</p></div>
+          <div style="background:var(--bg); padding:7px 9px;">
+            <p class="num" style="font-size:15px; font-weight:600; color:var(--ink); margin:0;">120</p>
+            <p class="caps" style="color:var(--ink2); margin-top:2px; font-weight:400;">míst</p></div>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <span style="border-radius:14px; padding:8px 16px; font-size:13px; font-weight:600;
+                       background:var(--acc); color:var(--acc-ink);">Detail školy</span>
+          <span style="border-radius:14px; padding:8px 16px; font-size:13px; font-weight:600; color:var(--ink);
+                       border:1px solid var(--line2);">Uložit</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== LINKED LIST — the map is never inescapable ===== -->
+    <div style="display:flex; flex-direction:column; gap:10px; min-width:0;">
+      <p class="caps" style="color:var(--ink3);">Školy na mapě</p>
+
+      <div style="border:1.5px solid var(--acc); background:var(--acc-soft); border-radius:16px;
+                  padding:12px 14px; display:flex; flex-direction:column; gap:4px;">
+        <h3 style="font-size:15px; line-height:1.35; font-weight:600;">Anglicko-české gymnázium AMAZON</h3>
+        <p class="cap num">Praha 1 · hranice 52 % · přijato 32,7 %</p>
+      </div>
+
+      <div style="border:1px solid var(--line); border-radius:16px; padding:12px 14px;
+                  display:flex; flex-direction:column; gap:4px;">
+        <h3 style="font-size:15px; line-height:1.35; font-weight:600;">1. IT Gymnázium, s. r. o.</h3>
+        <p class="cap num">Praha 19 · hranice 79,7 % · přijato 16 %</p>
+      </div>
+
+      <div style="border:1px solid var(--line); border-radius:16px; padding:12px 14px;
+                  display:flex; flex-direction:column; gap:4px;">
+        <h3 style="font-size:15px; line-height:1.35; font-weight:600;">SOŠ uměleckořemeslná s. r. o.</h3>
+        <p class="cap num">Praha 9 · hranice 31,5 % · přijato 32,1 %</p>
+      </div>
+
+      <div style="border:1px solid var(--line); border-radius:16px; padding:12px 14px;
+                  display:flex; flex-direction:column; gap:4px;">
+        <h3 style="font-size:15px; line-height:1.35; font-weight:600;">Hotelová škola, Vršovická 43</h3>
+        <p class="cap">Praha 10 · o přijímačkách zatím nemáme data</p>
+      </div>
+
+      <p class="cap" style="font-size:12px; color:var(--ink3); margin-top:4px; line-height:1.45;">
+        Body na mapě ukazují průměrnou hranici přijetí. Školy bez dat mají čárkovaný štítek —
+        neznamená to, že jsou snadné nebo těžké.
+      </p>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

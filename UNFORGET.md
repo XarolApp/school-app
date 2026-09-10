@@ -15,6 +15,122 @@ BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 
 ---
 
+## Fix school suggestions
+- **Found:** 2026-09-09, user request
+- **Urgency:** medium
+
+User flagged this needs fixing — no further explanation given, user says
+they'll understand the context when it comes back up.
+
+---
+
+## School detail page §4 marginal (🟡) features not built
+- **Found:** 2026-09-08, school detail page rebuild
+- **Urgency:** low
+- **Effort:** each is its own small-to-medium feature
+- **Release/context:** feature-brainstorm.md §4; explicitly deferred per the
+  user's instruction to build 🔥/✅ only, skip 🟡
+
+- **Virtual 360° tour** — 🟡, expensive to produce; a school would have to
+  supply it, we have no pipeline to make one.
+- **Notable alumni** — 🟡, no data source and no way to verify a claim like
+  this without real risk of getting it wrong about a named person.
+- **School news / announcements feed** — 🟡, "only if schools maintain it" —
+  no school-side posting surface exists yet (that's §9, B2B/school-side).
+
+---
+
+## Q&A section (ask current students) deferred
+- **Found:** 2026-09-08, school detail page rebuild
+- **Urgency:** low
+- **Effort:** medium — schema/moderation mostly reusable from reviews
+- **Release/context:** feature-brainstorm.md §4 ✅; deferred per explicit user decision
+
+Reviews shipped for real (see CLAUDE.md → "User-generated content"); Q&A did
+not, on purpose — it doubles the moderation surface and needs current
+students actually answering to be worth anything, which reviews alone don't
+prove exists yet. When this gets built, reuse `school_reviews`'s moderation
+shape (word filter → held, report → held) rather than inventing a new one —
+a question/answer thread just needs one more table (`school_questions`,
+`school_answers`) following the same `requireAuth`-only, no-client-RLS-policy
+pattern as reviews.
+
+---
+
+## Review verification has no mechanism
+- **Found:** 2026-09-08, school detail page rebuild
+- **Urgency:** low
+- **Effort:** depends on which option — manual is trivial, the others are real features
+- **Release/context:** every review currently reads "Neověřeno"; `verified`
+  exists on `school_reviews` but nothing sets it to true yet
+
+Options to decide later, not decided now:
+1. **Manual** — you flip `verified` by hand in Supabase for reviews you have
+   some independent reason to trust. Zero engineering, does not scale.
+2. **School-domain e-mail** — a reviewer whose account email matches the
+   school's own domain (from `schools.website`) gets auto-verified. Cheap,
+   but only works for staff/students with a school email, not parents.
+3. **School-claimed profile** — ties into the §9 B2B "claimed profile badge"
+   feature: a school that has claimed its profile can verify specific
+   reviews itself. The most correct long-term answer, but depends on B2B
+   tooling that doesn't exist yet.
+
+---
+
+## Comparison view still does not exist
+- **Found:** 2026-09-08, school detail page rebuild
+- **Urgency:** medium — there are now two entry points feeding a selection
+  into nothing
+- **Effort:** medium (§5 of feature-brainstorm.md — its own small feature)
+- **Release/context:** feature-brainstorm.md §5, not yet scheduled
+
+`Search.jsx`'s "Porovnat N škol" button (`pages/Search.jsx`, in the sticky
+compare bar) has always been `onClick={() => {}}` — a real no-op, not a bug
+introduced now. The school detail page's new "Přidat k porovnání" action
+(`components/schoolDetail/SchoolActions.jsx`) adds a SECOND way to build a
+selection (`lib/searchPrefs.js`'s `toggleCompareSelection`/`getCompareSelection`,
+localStorage, same idiom as recently-viewed and saved filters) — but there is
+still no page that reads that selection and renders schools side by side.
+Building §5 means: a `/porovnani` route reading `getCompareSelection()`,
+fetching those schools, and rendering the "attributes as rows, options as
+columns" pattern already researched in `.claude/skills/mobbin-core-product-
+patterns/SKILL.md` §C.
+
+---
+
+## Maturita pass rate, VŠ placement, and six other §4 items have no data source
+- **Found:** 2026-09-08, school detail page rebuild
+- **Urgency:** low — all render as an honest "Nemáme tuto informaci." on the
+  school detail page (`components/schoolDetail/MissingDataGrid.jsx`), never a
+  fabricated value
+- **Effort:** varies a lot per item, see below
+- **Release/context:** feature-brainstorm.md §4 🔥/✅ items the user explicitly
+  asked to placeholder rather than skip
+
+- **Maturita pass rate** 🔥 and **VŠ placement (kam míří absolventi)** 🔥 —
+  Cermat publishes per-school maturita results as a downloadable file, same
+  shape as the JPZ admissions file already imported. **The user is sending
+  this file separately; do not build the import until it arrives** — when it
+  does, mirror `scripts/import-admission-data.js`'s pipeline (REDIZO-first
+  match, fuzzy fallback, per-school aggregation) rather than writing a new
+  one from scratch. VŠ placement specifically has NO known public per-school
+  dataset — even once the maturita file lands, that one section may stay a
+  placeholder.
+- **Tuition/školné at private and church schools** — public schools already
+  show a real, correct "no fee" line (inferred from `zrizovatel`, not
+  invented); private/church schools have no fee data at all. A cowork prompt
+  scraping each school's own website for a fee page is the plausible next
+  step — ask the user before running it (see `docs/sources/
+  platform_onboarding_research.md`-style caution around scraping claims).
+- **Obědy/ubytování, kroužky, ředitel/ka name** — same story: each school's
+  own website likely has this, but genuinely needs a per-school scrape, not
+  something derivable from data already held. A candidate n8n or cowork
+  workflow, not a code change.
+- **Employment outcomes for vocational schools** ✅ — no data source found;
+  unclear one exists publicly at all for Czech vocational schools.
+
+---
+
 ## Onboarding: email confirmation gate temporarily disabled
 
 - **Found:** 2026-09-05, user request
@@ -250,33 +366,135 @@ from until this exists.
 
 ---
 
-## Search page ships synthesized stand-in data
+## Search page ships synthesized stand-in data — mostly resolved 2026-09-08
 - **Found:** 2026-08-30, Claude Design import of `School Search.dc.html`
-- **Urgency:** high — blocks public release
-- **Risk of fixing now:** none technically; needs real data sources, not code
-- **Risk of NOT fixing:** a student could pick a school based on an invented
-  admission cut-off. The numbers are fabricated but attached to real Prague
-  school names, which is what makes them dangerous rather than merely wrong.
-- **Effort:** large — each field needs a column plus a scraper or geocoding pass
-- **Release/context:** **hard blocker for public launch**
-
-`frontend/src/pages/Search.jsx` implements the full Search design, but the
-`schools` table has no column for several fields the design shows. They are
-generated deterministically from `school.id` in a single block at the top of the
-file marked `⚠️ SYNTHETIC STAND-IN DATA`. Delete that block once real columns exist.
-
-Fields needing real data:
-- `admissionCutoff` — jednotná přijímací zkouška score ("hranice 2025")
-- `acceptanceRate` — % přijatých z přihlášených
-- `commuteMinutes` — dojezd MHD; needs school coords **and** a user home address
-- `hasTalentExam` — boolean
-- `schoolType` — veřejná / soukromá / církevní
+- **Resolved 2026-09-08:** `admissionCutoff`, `acceptanceRate`, `hasTalentExam`
+  and `schoolType` are now REAL — imported from Cermat's 2026 kolo1 results via
+  `scripts/import-admission-data.js` into `schools.admission_cutoff` /
+  `acceptance_rate` and the new `school_programs` table (maturita status,
+  zřizovatel, typ školy, JPZ requirement, jazyk studia, KKOV, kapacita — one
+  row per obor). `frontend/src/pages/Search.jsx` reads all of it for real now;
+  13 filters total, reorganized into an accordion (see the design canvas
+  linked below) so 13 checkbox groups never render flat/unweighted.
+- **Still synthetic:** only `commuteMinutes` and the `districtLabel` fallback
+  (used when a school has no real district). The commute filter/sort are
+  rendered visibly disabled ("zatím nedostupné"), not deleted, not silently
+  inert-looking — see the "Dojezd MHD needs a routing-API decision" entry below.
+- **Risk of NOT finishing:** none currently — nothing fabricated ships. The
+  original risk (a student choosing a school on an invented cutoff) no longer
+  applies to any filter or number rendered on the page.
 
 `differentiator` is deliberately NOT synthesized — it is derived from real
 `deriveFeatures()` output, because inventing editorial claims about named schools
 reads as researched fact in a way a number in a labelled cell does not.
 
-User decision (2026-08-30): ship as designed for now, fix before public release.
+Design canvas for the redesigned search + map:
+https://claude.ai/code/artifact/e2a398f2-e68d-4cda-8409-05070cf0937b
+
+---
+
+## Two schools still have no admission data
+- **Found:** 2026-09-08, first real Cermat import
+- **Urgency:** low — self-resolving
+- **Effort:** none needed unless still empty after all 5 years' files are in
+
+`Bezpečnostně právní akademie, s. r. o., střední škola` (REDIZO 691020515) and
+`Hotelová škola, Praha 10, Vršovická 43` (REDIZO 600004741) both have a stored
+REDIZO from `scripts/backfill-redizo.js`, so they match instantly on any future
+import — they simply had no rows in the 2026 kolo1 file (round-2-only
+admission, or some other reason not investigated). No action needed unless
+they're still empty after importing the remaining 4 years' files.
+
+---
+
+## Saved filter presets / recently viewed are localStorage-only
+- **Found:** 2026-09-08
+- **Urgency:** low
+- **Effort:** medium — needs a `data/users/<id>/...`-shaped table + RLS if moved to Supabase
+
+`frontend/src/lib/searchPrefs.js` stores recently-viewed school ids and saved
+filter presets in `localStorage`, per-device. This was a deliberate choice
+(matches the GDPR-minimisation stance already used for quiz answers), not an
+oversight — but it means a visitor loses this state on a different device or
+after a browser wipe. Revisit if/when account-backed state becomes the norm
+elsewhere in the app.
+
+---
+
+## Dojezd MHD needs a routing-API decision
+- **Found:** 2026-09-08
+- **Urgency:** medium — a 🔥-rated filter (feature-brainstorm.md §1) is currently disabled
+- **Effort:** medium (Google) to large (self-hosted)
+
+The commute filter and "Nejkratší dojezd" sort are shipped visibly disabled
+("zatím nedostupné") in `Search.jsx`, not deleted. Real MHD (public transit)
+time has no free option:
+- **Google Distance Matrix, transit mode** — not free, but the $200/mo Google
+  Cloud credit covers roughly 20,000 calls/month ≈ 330 users doing a full
+  60-school lookup before any real cost.
+- **Self-hosted OpenTripPlanner on PID's free GTFS feed** ([pid.cz/en/opendata](https://pid.cz/en/opendata/))
+  — free data, but real infrastructure to run and maintain.
+- Straight-line (haversine) distance is free but is NOT commute time and
+  would need its own honest labelling ("~X km vzdušnou čarou"), not reused as
+  a stand-in for "dojezd MHD".
+
+Needs the user's decision before building either path.
+
+---
+
+## Cermat import — resolved 2026-09-08, 3-year average is final (kolo 2 deliberately excluded)
+- **Resolved:** 2026-09-08
+
+Only 3 years of kolo1 data exist (2024/2025/2026 — earlier years aren't
+published/available); the import was run with all 3
+(`node scripts/import-admission-data.js PZ2024_kolo1_....xlsx
+PZ2025_kolo1_....xlsx PZ2026_kolo1_....xlsx`). 58/60 schools now have
+cutoff/acceptance averaged across 3 years, 697 `school_programs` rows written.
+This is the final state — there is no 4th/5th year to add.
+
+**Kolo 2 (2nd round) files were deliberately not requested or imported.**
+Kolo 2 only runs at schools that didn't fill up in kolo 1 — it's a
+leftover-capacity round, not a second sample of the same admission difficulty.
+Blending it in would (a) understate cutoffs in a way that reflects "how much
+capacity was left over" rather than "how hard is it to get in," and (b) do so
+inconsistently, since only some schools ever run a kolo 2 — making those
+schools look artificially easier relative to ones that filled up in round 1
+and have no kolo 2 data at all. Kolo 1 only is the correct, comparable signal.
+Do not add kolo 2 data back in without re-opening this decision explicitly.
+
+Still real, unresolved: 3 schools have no cutoff (2 have zero data at all —
+Bezpečnostně právní akademie s.r.o. and Hotelová škola Vršovická; one, Dívčí
+katolická střední škola, has acceptance data but no cutoff score in any of the
+3 files). All three render `—`, never a fabricated number. No action needed
+unless a future year's file still doesn't cover them.
+
+---
+
+## `frontend/src/api.js` defaults to the wrong backend port
+- **Found:** 2026-09-08
+- **Urgency:** low — harmless while `frontend/.env` is present and correct
+- **Effort:** trivial — one line
+
+`API_BASE_URL` in `frontend/src/api.js` falls back to `http://localhost:5000`
+when `VITE_API_BASE_URL` is unset. The real backend on this machine runs on
+**5001** — port 5000 is claimed by macOS's AirPlay Receiver (Control Center),
+not this app. As long as `frontend/.env` sets `VITE_API_BASE_URL` correctly
+this never bites, but the fallback itself is stale and would silently fail if
+that env var ever went missing.
+
+---
+
+## Backend payload size — school_programs nesting
+- **Found:** 2026-09-08
+- **Urgency:** low
+- **Effort:** revisit together with the existing "Backend pagination" item below
+
+`/api/schools` now returns each school with its full `school_programs` array
+nested (`select('*, school_programs(*)')` in `server.js`), adding roughly 250
+rows / ~50KB to the response at current data volume (1 year imported). This
+will grow proportionally as more years are imported (up to ~5x once all 5
+Cermat files are in). Acceptable today; revisit alongside pagination if it
+ever becomes a real page-load problem.
 
 ---
 
@@ -336,11 +554,16 @@ still aren't real:
 - **Effort:** small (verification) / medium (score display needs a real decision + possible rework)
 - **Release/context:** should resolve before a big visual polish pass on school-detail or results screens
 
-1. **Photo gallery verification** — `docs/sources/feature-brainstorm.md` (~line
-   93) claims school photos were "already scraped." If true, this changes the
-   imagery plan for school profile pages (cheaper to ship real photos in v1
-   than currently assumed). Verify against the actual `schools` table/scrape
-   output before finalizing imagery plans in DESIGN.md.
+1. **Photo gallery verification — RESOLVED FALSE, 2026-09-08.** `docs/sources/
+   feature-brainstorm.md`'s claim that school photos (and, separately, videos)
+   were "already scraped" is wrong. Checked directly against the live
+   `schools` table, `school_programs`, and the old laptop dataset — no photo
+   or video column/data exists anywhere, and the laptop build's own CLAUDE.md
+   said as much explicitly ("Nothing to bind a banner to... don't fake one
+   with a placeholder"). Director name is likewise not scraped. All three now
+   render as honest placeholders on the school detail page
+   (`MissingDataGrid.jsx`) instead of being treated as available. Do not
+   re-trust this brainstorm claim in a future session.
 2. **Score display resolution** — still undecided: percentages (user's
    preference) vs. criteria list + factor magnitudes (research + Mobbin
    patterns both point this way) vs. a plain band (what's actually shipped
@@ -431,16 +654,6 @@ back).
 
 `GET /api/schools` has no pagination. Fine today at ~60 rows; add it before the
 geographic-scope expansion mentioned in CLAUDE.md's "Geographic Scope for V1".
-
----
-
-## School Detail Pages — still minimal
-- **Found:** pre-2026-08-27
-- **Urgency:** low
-- **Effort:** medium
-- **Release/context:** revisit once the design tokens (done 2026-08-28) have had time to inform a real layout, and once the photo-gallery/score-display decisions above are resolved
-
-Currently minimal. Not broken, just not a finished surface yet.
 
 ---
 
@@ -575,6 +788,13 @@ Fold that fix into the redesign rather than patching it separately.
 
 *(Move items here with a date + one-line note when they're actually done, rather than deleting them.)*
 
+- **School Detail Pages — still minimal** — done 2026-09-08. Rebuilt from
+  feature-brainstorm.md §4: real per-obor breakdown with a 3-year Cermat
+  trend, a single static map pin, real reviews (see CLAUDE.md → "User-
+  generated content"), and honest placeholders for the eight §4 items with
+  no real data source. See CLAUDE.md's "What's Already Built" item 10 for
+  the full description, and the new entries above for what's still open
+  (Q&A, review verification, the comparison view, maturita data).
 - **App palette neutrals migrated to DESIGN.md's warm paper ramp** — done
   2026-09-04, in `frontend/src/design/tokens.js` (+ `npm run tokens`). The
   2026-08-28 pass had taken the accent and the fonts but left the neutrals on the

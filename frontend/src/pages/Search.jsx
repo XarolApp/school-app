@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { Search as SearchIcon, X } from 'lucide-react';
+import { Search as SearchIcon, X, ChevronDown } from 'lucide-react';
 import { fetchSchools, fetchFavorites } from '../api';
 import {
   buildIndex,
@@ -11,31 +11,33 @@ import {
   baseProgram,
   collectFacet,
   compareDistricts,
+  compareByCount,
 } from '../lib/schoolSearch';
 import { deriveFeatures, FOCUS_CATEGORIES } from '../lib/schoolFeatures';
 import { useAuth } from '../components/AuthContext';
 import FavoriteButton from '../components/FavoriteButton';
+import SchoolMap from '../components/SchoolMap';
+import StatInfo from '../components/StatInfo';
+import { getRecentSchoolIds } from '../lib/searchPrefs';
 import './search.css';
 
 /**
- * ⚠️ SYNTHETIC STAND-IN DATA — NOT REAL, REMOVE BEFORE PUBLIC RELEASE
+ * ⚠️ SYNTHETIC STAND-IN DATA — NOT REAL, tracked in UNFORGET.md
  *
- * The Search design needs fields the `schools` table does not have yet. Rather
- * than ship a half-built page, these are generated deterministically from the
- * school id so the whole UI is functional and reviewable.
+ * Everything about admissions (cutoff, acceptance, maturita, typ školy,
+ * zřizovatel, jazyk, KKOV, kapacita) is now real — either straight from
+ * `schools.admission_cutoff`/`acceptance_rate` or from the nested
+ * `school_programs` rows, both filled in by `scripts/import-admission-data.js`
+ * from Cermat's real yearly results. A school the import hasn't matched has
+ * these as `null`/`[]`, and this file must keep treating that as "no data" —
+ * never fabricate a value to fill the gap.
  *
- * These numbers are INVENTED. They are attached to REAL Prague school names.
- * Shipping them to real 9th-graders would mean a student could choose a school
- * on a fabricated admission cut-off. Tracked in UNFORGET.md → "Search page ships
- * synthesized stand-in data".
- *
- * Replace each field with a real column, then delete this block:
- *   admissionCutoff  jednotná přijímací zkouška score   (35.0–70.0)
- *   acceptanceRate   % přijatých z přihlášených          (19–82)
- *   commuteMinutes   dojezd MHD                          (16–46) — also needs a user home address
- *   hasTalentExam    boolean
- *   schoolType       veřejná / soukromá / církevní
- *   districtLabel    fallback "Praha N" only when the school has no real district
+ * Still invented:
+ *   commuteMinutes   dojezd MHD — needs a user home address + a routing API,
+ *                     neither built yet. Kept in `synth()` only so the parked,
+ *                     visibly-disabled UI has *something* to not-display; no
+ *                     filter, sort, or row card reads it anymore.
+ *   districtLabel     fallback "Praha N" only when the school has no real district
  */
 const SYNTHETIC = true;
 
@@ -62,18 +64,11 @@ function mulberry32(seed) {
   };
 }
 
-const round1 = (n) => Math.round(n * 10) / 10;
-
 function synth(school) {
   const rand = mulberry32(hashSeed(String(school.id)));
-  const admissionCutoff = round1(35 + rand() * 35); // 35.0–70.0
-  const acceptanceRate = Math.round(19 + rand() * 63); // 19–82
-  const commuteMinutes = Math.round(16 + rand() * 30); // 16–46
-  const hasTalentExam = rand() < 0.18;
-  const typeRoll = rand();
-  const schoolType = typeRoll < 0.82 ? 'veřejná' : typeRoll < 0.94 ? 'soukromá' : 'církevní';
+  const commuteMinutes = Math.round(16 + rand() * 30); // 16–46, unused except as a placeholder value
   const districtRoll = 1 + Math.floor(rand() * 22); // 1–22, used only as a fallback
-  return { admissionCutoff, acceptanceRate, commuteMinutes, hasTalentExam, schoolType, districtRoll };
+  return { commuteMinutes, districtRoll };
 }
 
 // Czech pluralization — three forms: 1 / 2–4 / 5+.
@@ -81,28 +76,44 @@ const plural = (n, one, few, many) => (n === 1 ? one : n >= 2 && n <= 4 ? few : 
 const skol = (n) => plural(n, 'škola', 'školy', 'škol');
 const skolGen = (n) => plural(n, 'školu', 'školy', 'škol');
 const obor = (n) => plural(n, 'obor', 'obory', 'oborů');
+const misto = (n) => plural(n, 'místo', 'místa', 'míst');
 const numCz = (v) => String(v).replace('.', ',');
+
+// admissionCutoff is an average POINTS score (Czech+Math combined out of a
+// fixed 100 = 50+50 max, halved from Cermat's raw 0–200 sum). 1 % SKÓR in
+// Cermat's file literally equals 1 point here — every student in the
+// aggregated file we import sits on that same 50+50 max, accommodated
+// students on a modified test are excluded from that file entirely — so
+// showing it as points instead of % loses nothing and is what a 15-year-old
+// already knows how to read. Always says "no data" rather than a fabricated
+// number for a school the import script hasn't matched yet.
+const cutoffLabel = (cutoff) =>
+  cutoff == null ? 'hranice přijetí zatím bez dat' : `hranice přijetí ${numCz(cutoff)} b.`;
 
 const SORTS = [
   { id: 'match', label: 'Nejvíc splněných kritérií', tradeoff: 'nebere ohled na dojezd' },
-  { id: 'travel', label: 'Nejkratší dojezd', tradeoff: 'může vynechat tvůj obor' },
   { id: 'cut', label: 'Nejnižší hranice přijetí', tradeoff: 'bezpečnější, ne nutně silnější škola' },
+  { id: 'acceptance', label: 'Největší šance na přijetí', tradeoff: 'podle loňské míry přijetí' },
 ];
 
 const UNMET_LABELS = {
   fields: 'filtr oboru',
   districts: 'filtr městské části',
-  travel: 'dojezd',
-  talent: 'podmínku bez talentové zkoušky',
+  ukonceni: 'filtr ukončení studia',
+  typySkoly: 'filtr typu školy',
+  zrizovatele: 'filtr zřizovatele',
+  jazyky: 'filtr jazyka výuky',
+  jpz: 'filtr přijímací zkoušky',
+  cutoffMax: 'horní hranici přijetí',
+  acceptanceMin: 'dolní hranici míry přijetí',
+  kapacitaMin: 'minimální kapacitu',
   q: 'hledaný text',
 };
 
 /**
  * A true, honest differentiator sentence composed from deriveFeatures()
  * output. Nothing here is invented — if a school's data doesn't tell us
- * anything, this returns null and the row simply omits the line. See
- * plan §2b: fabricated editorial prose about named schools reads as
- * researched fact, which a labelled placeholder number does not.
+ * anything, this returns null and the row simply omits the line.
  */
 function differentiatorFor(features) {
   const parts = [];
@@ -120,9 +131,47 @@ function differentiatorFor(features) {
   return parts.length ? parts.join(' ') : null;
 }
 
+/**
+ * Collapses a school's `school_programs` rows (one per obor) into the
+ * summary a filter predicate needs. Computed ONCE per school in buildRow(),
+ * never recomputed inside a filter predicate — with 13 filters, listFor()
+ * already runs ~50 times per keystroke to build option counts, so redoing
+ * this per predicate would mean ~50 passes over every school's programs.
+ *
+ * Every boolean here is "school has AT LEAST ONE obor matching X" — a school
+ * offering both maturita and a výuční list is true for both, which is why
+ * the per-option counts across a pair like ukončení studia sum to more than
+ * 60 (see the note rendered under that filter group).
+ */
+function summarizePrograms(school) {
+  const programs = school.school_programs ?? [];
+  return {
+    count: programs.length,
+    maturitni: programs.some((p) => p.maturitni === true),
+    nematuritni: programs.some((p) => p.maturitni === false),
+    jpzPovinna: programs.some((p) => p.jpz_povinna === true),
+    jpzNepovinna: programs.some((p) => p.jpz_povinna === false),
+    typy: [...new Set(programs.map((p) => p.typ_skoly).filter(Boolean))],
+    jazyky: [...new Set(programs.map((p) => p.jazyk_studia).filter(Boolean))],
+    kkov: [...new Set(programs.map((p) => p.kkov).filter(Boolean))],
+    zrizovatel: programs[0]?.zrizovatel ?? null,
+    kapacita: programs.some((p) => p.kapacita != null)
+      ? programs.reduce((sum, p) => sum + (p.kapacita || 0), 0)
+      : null,
+  };
+}
+
+function ukonceniText(p) {
+  if (p.maturitni && p.nematuritni) return 'maturitní i výuční list';
+  if (p.maturitni) return 'maturitní';
+  if (p.nematuritni) return 'výuční list';
+  return null;
+}
+
 function buildRow(school) {
   const features = deriveFeatures(school);
   const s = synth(school);
+  const p = summarizePrograms(school);
   const realDistrict = districtOf(school); // "Praha N" or null
   const districtLabel = realDistrict || `Praha ${s.districtRoll}`;
   const districtSynthesized = !realDistrict;
@@ -141,11 +190,13 @@ function buildRow(school) {
     districtSynthesized,
     progs,
     diff: differentiatorFor(features),
-    admissionCutoff: s.admissionCutoff,
-    acceptanceRate: s.acceptanceRate,
+    p,
+    // Real data, average % score across every obor and every year Cermat's
+    // file has been imported for — see import-admission-data.js. null means
+    // this school hasn't been matched to a Cermat row yet, not a 0.
+    admissionCutoff: school.admission_cutoff ?? null,
+    acceptanceRate: school.acceptance_rate ?? null,
     commuteMinutes: s.commuteMinutes,
-    hasTalentExam: s.hasTalentExam,
-    schoolType: s.schoolType,
   };
 }
 
@@ -153,11 +204,61 @@ const DEFAULT_FILTERS = {
   query: '',
   fields: [],
   districts: [],
-  maxMin: 60, // 60 == "bez omezení", slider range is 10–60
-  noTalent: false,
+  ukonceni: [], // 'maturitni' | 'nematuritni'
+  typySkoly: [],
+  zrizovatele: [],
+  jazyky: [],
+  jpz: [], // 'povinna' | 'nepovinna'
+  cutoffMax: 100, // 100 == "bez omezení"
+  acceptanceMin: 0, // 0 == "bez omezení"
+  kapacitaMin: 0, // 0 == "bez omezení"
   sort: 'match',
   page: 10,
 };
+
+// Small collapsible section used for every sidebar filter group — open by
+// default for the two groups that actually fork the decision (ukončení
+// studia, typ školy), collapsed with an active-count badge for the rest.
+// This is the fix for "13 flat checkbox groups" (a named anti-pattern): the
+// page never shows more than 2 fully-expanded groups at once.
+function FacetSection({ title, activeCount, defaultOpen, note, children }) {
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <div className="ss-facet-section">
+      <button
+        type="button"
+        className="ss-facet-section-head"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+      >
+        <ChevronDown size={14} aria-hidden="true" className={open ? 'is-open' : ''} />
+        <span className="ss-label-caps">{title}</span>
+        {activeCount > 0 && <span className="ss-facet-badge">{activeCount}</span>}
+      </button>
+      {open && (
+        <div className="ss-facet-section-body">
+          {children}
+          {note && <p className="ss-caption ss-facet-note">{note}</p>}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function CheckOption({ checked, label, count, onChange }) {
+  return (
+    <div className="ss-facet-row">
+      <label>
+        <input type="checkbox" checked={checked} onChange={onChange} />
+        {label}
+      </label>
+      <span className="ss-data-sm ss-facet-count">{count}</span>
+    </div>
+  );
+}
+
+// StatInfo (hover-to-reveal explanation) moved to components/StatInfo.jsx
+// so SchoolMap.jsx's popup card can reuse it too.
 
 function Search() {
   const [schools, setSchools] = useState([]);
@@ -166,6 +267,8 @@ function Search() {
   const [favorites, setFavorites] = useState(() => new Set());
   const [selected, setSelected] = useState(() => new Set());
   const [filters, setFilters] = useState(DEFAULT_FILTERS);
+  const [view, setView] = useState('list'); // 'list' | 'map'
+  const [selectedMapId, setSelectedMapId] = useState(null);
 
   const { isSignedIn, hasAccess } = useAuth();
 
@@ -187,6 +290,14 @@ function Search() {
   // Rows carry both the real fields and the synthetic stand-ins. Stable
   // across reloads because synth() is a pure function of school.id.
   const rows = useMemo(() => schools.map(buildRow), [schools]);
+
+  // Recently viewed — per-device only (localStorage, see searchPrefs.js),
+  // most-recent first. Only worth showing when nothing is filtered yet; once
+  // the visitor starts narrowing down, their own filtered list matters more.
+  const recentRows = useMemo(() => {
+    const byId = new Map(rows.map((r) => [r.id, r]));
+    return getRecentSchoolIds().map((id) => byId.get(id)).filter(Boolean);
+  }, [rows]);
 
   // Search index built over the same effective districts the rows use, so a
   // "praha 6" query and the district facet agree on what "Praha 6" means even
@@ -216,33 +327,90 @@ function Search() {
   const matchesQuery = (row) => {
     if (!hasQuery) return true;
     const entry = indexById.get(row.id);
-    return entry ? scoreSchool(entry, prepared) > 0 : false;
+    if (entry && scoreSchool(entry, prepared) > 0) return true;
+    // KKOV codes ("79-41-K") aren't in the fuzzy name/programs/location
+    // index — matched separately here as a plain substring so one search
+    // bar covers both a school name and an obor code, instead of two boxes.
+    const raw = filters.query.trim().toLowerCase();
+    return row.p.kkov.some((k) => k.toLowerCase().includes(raw));
   };
 
   const criteriaFor = (row, f) => {
     const out = [];
     if (f.fields.length) out.push({ k: 'fields', met: row.focus.some((x) => f.fields.includes(x)) });
     if (f.districts.length) out.push({ k: 'districts', met: f.districts.includes(row.districtLabel) });
-    if (f.maxMin < 60) out.push({ k: 'travel', met: row.commuteMinutes <= f.maxMin });
-    if (f.noTalent) out.push({ k: 'talent', met: !row.hasTalentExam });
+    if (f.ukonceni.length) {
+      out.push({
+        k: 'ukonceni',
+        met: f.ukonceni.some((v) => (v === 'maturitni' ? row.p.maturitni : row.p.nematuritni)),
+      });
+    }
+    if (f.typySkoly.length) {
+      out.push({ k: 'typySkoly', met: row.p.typy.some((t) => f.typySkoly.includes(t)) });
+    }
+    if (f.zrizovatele.length) {
+      out.push({ k: 'zrizovatele', met: row.p.zrizovatel != null && f.zrizovatele.includes(row.p.zrizovatel) });
+    }
+    if (f.jazyky.length) {
+      out.push({ k: 'jazyky', met: row.p.jazyky.some((j) => f.jazyky.includes(j)) });
+    }
+    if (f.jpz.length) {
+      out.push({
+        k: 'jpz',
+        met: f.jpz.some((v) => (v === 'povinna' ? row.p.jpzPovinna : row.p.jpzNepovinna)),
+      });
+    }
+    if (f.cutoffMax < 100) {
+      out.push({ k: 'cutoffMax', met: row.admissionCutoff != null && row.admissionCutoff <= f.cutoffMax });
+    }
+    if (f.acceptanceMin > 0) {
+      out.push({ k: 'acceptanceMin', met: row.acceptanceRate != null && row.acceptanceRate >= f.acceptanceMin });
+    }
+    if (f.kapacitaMin > 0) {
+      out.push({ k: 'kapacitaMin', met: row.p.kapacita != null && row.p.kapacita >= f.kapacitaMin });
+    }
     if (hasQuery) out.push({ k: 'q', met: matchesQuery(row) });
     return out;
   };
 
   const listFor = (f) => rows.filter((row) => criteriaFor(row, f).every((c) => c.met));
 
-  const sortRows = (list, sortId) => {
+  const sortRows = (list, sortId, f) => {
     const arr = list.slice();
     const byName = (a, b) => a.name.localeCompare(b.name, 'cs');
-    if (sortId === 'travel') arr.sort((a, b) => a.commuteMinutes - b.commuteMinutes || byName(a, b));
-    else if (sortId === 'cut') arr.sort((a, b) => a.admissionCutoff - b.admissionCutoff || byName(a, b));
-    else arr.sort((a, b) => a.commuteMinutes - b.commuteMinutes || byName(a, b));
+    // A school with no admission data yet sorts after every school that has
+    // some — never before, which "null - 35 = -35" would otherwise do.
+    const byCutoffAsc = (a, b) => {
+      if (a.admissionCutoff == null && b.admissionCutoff == null) return byName(a, b);
+      if (a.admissionCutoff == null) return 1;
+      if (b.admissionCutoff == null) return -1;
+      return a.admissionCutoff - b.admissionCutoff || byName(a, b);
+    };
+    const byAcceptanceDesc = (a, b) => {
+      if (a.acceptanceRate == null && b.acceptanceRate == null) return byName(a, b);
+      if (a.acceptanceRate == null) return 1;
+      if (b.acceptanceRate == null) return -1;
+      return b.acceptanceRate - a.acceptanceRate || byName(a, b);
+    };
+
+    if (sortId === 'cut') arr.sort(byCutoffAsc);
+    else if (sortId === 'acceptance') arr.sort(byAcceptanceDesc);
+    else {
+      // 'match' — most active criteria satisfied first (dead default now
+      // that commute is parked; previously defaulted to a commute sort with
+      // nothing behind it).
+      arr.sort((a, b) => {
+        const am = criteriaFor(a, f).filter((c) => c.met).length;
+        const bm = criteriaFor(b, f).filter((c) => c.met).length;
+        return bm - am || byCutoffAsc(a, b);
+      });
+    }
     return arr;
   };
 
   const total = rows.length;
   const matchedAll = listFor(filters);
-  const sortedAll = sortRows(matchedAll, filters.sort);
+  const sortedAll = sortRows(matchedAll, filters.sort, filters);
   const n = sortedAll.length;
 
   const setPatch = (patch) => setFilters((f) => ({ ...f, ...patch }));
@@ -255,11 +423,17 @@ function Search() {
     });
   };
 
-  // ---- facet options (district list built from real data, bug #2 fix: sorted numerically) ----
+  // ---- facet options ----
   const districtFacet = useMemo(
     () => collectFacet(rows, (row) => [row.districtLabel], compareDistricts),
     [rows]
   );
+  const typFacet = useMemo(() => collectFacet(rows, (row) => row.p.typy, compareByCount), [rows]);
+  const zrizovatelFacet = useMemo(
+    () => collectFacet(rows, (row) => (row.p.zrizovatel ? [row.p.zrizovatel] : []), compareByCount),
+    [rows]
+  );
+  const jazykFacet = useMemo(() => collectFacet(rows, (row) => row.p.jazyky, compareByCount), [rows]);
 
   const fieldOptions = FOCUS_CATEGORIES.map((c) => ({
     id: c.id,
@@ -275,16 +449,62 @@ function Search() {
     active: filters.districts.includes(d.value),
   }));
 
-  const talentCount = listFor({ ...filters, noTalent: true }).length;
-  const travelLabel = filters.maxMin >= 60 ? 'bez omezení' : `do ${filters.maxMin} minut`;
+  const ukonceniOptions = [
+    { value: 'maturitni', label: 'Maturitní', count: listFor({ ...filters, ukonceni: ['maturitni'] }).length },
+    { value: 'nematuritni', label: 'Výuční list', count: listFor({ ...filters, ukonceni: ['nematuritni'] }).length },
+  ];
+
+  const typOptions = typFacet
+    .map((t) => ({
+      value: t.value,
+      label: t.value,
+      checked: filters.typySkoly.includes(t.value),
+      count: listFor({ ...filters, typySkoly: [t.value] }).length,
+    }))
+    .filter((o) => o.count > 0 || o.checked);
+
+  const zrizovatelOptions = zrizovatelFacet
+    .map((z) => ({
+      value: z.value,
+      label: z.value,
+      checked: filters.zrizovatele.includes(z.value),
+      count: listFor({ ...filters, zrizovatele: [z.value] }).length,
+    }))
+    .filter((o) => o.count > 0 || o.checked);
+
+  const jazykOptions = jazykFacet
+    .map((j) => ({
+      value: j.value,
+      label: j.value,
+      checked: filters.jazyky.includes(j.value),
+      count: listFor({ ...filters, jazyky: [j.value] }).length,
+    }))
+    .filter((o) => o.count > 0 || o.checked);
+
+  const jpzOptions = [
+    { value: 'povinna', label: 'JPZ povinná', count: listFor({ ...filters, jpz: ['povinna'] }).length },
+    { value: 'nepovinna', label: 'JPZ nepovinná', count: listFor({ ...filters, jpz: ['nepovinna'] }).length },
+  ];
 
   const activeCriteriaCount = [
     filters.fields.length > 0,
     filters.districts.length > 0,
-    filters.maxMin < 60,
-    filters.noTalent,
+    filters.ukonceni.length > 0,
+    filters.typySkoly.length > 0,
+    filters.zrizovatele.length > 0,
+    filters.jazyky.length > 0,
+    filters.jpz.length > 0,
+    filters.cutoffMax < 100,
+    filters.acceptanceMin > 0,
+    filters.kapacitaMin > 0,
     hasQuery,
   ].filter(Boolean).length;
+
+  // Collapsed groups show how many of their own filters are active, per the
+  // "filter-count badge on the collapsed control" pattern.
+  const admissionsActiveCount =
+    (filters.cutoffMax < 100 ? 1 : 0) + (filters.acceptanceMin > 0 ? 1 : 0) + filters.jpz.length;
+  const moreActiveCount = filters.jazyky.length + (filters.kapacitaMin > 0 ? 1 : 0);
 
   const chips = [];
   filters.fields.forEach((id) => {
@@ -294,11 +514,41 @@ function Search() {
   filters.districts.forEach((d) =>
     chips.push({ key: `d-${d}`, label: d, onRemove: () => toggleIn('districts', d) })
   );
-  if (filters.maxMin < 60) {
-    chips.push({ key: 'travel', label: `Dojezd do ${filters.maxMin} min`, onRemove: () => setPatch({ maxMin: 60 }) });
+  filters.ukonceni.forEach((v) =>
+    chips.push({
+      key: `u-${v}`,
+      label: v === 'maturitni' ? 'Maturitní' : 'Výuční list',
+      onRemove: () => toggleIn('ukonceni', v),
+    })
+  );
+  filters.typySkoly.forEach((v) => chips.push({ key: `t-${v}`, label: v, onRemove: () => toggleIn('typySkoly', v) }));
+  filters.zrizovatele.forEach((v) =>
+    chips.push({ key: `z-${v}`, label: v, onRemove: () => toggleIn('zrizovatele', v) })
+  );
+  filters.jazyky.forEach((v) => chips.push({ key: `j-${v}`, label: v, onRemove: () => toggleIn('jazyky', v) }));
+  filters.jpz.forEach((v) =>
+    chips.push({
+      key: `p-${v}`,
+      label: v === 'povinna' ? 'JPZ povinná' : 'JPZ nepovinná',
+      onRemove: () => toggleIn('jpz', v),
+    })
+  );
+  if (filters.cutoffMax < 100) {
+    chips.push({ key: 'cutoffMax', label: `Hranice do ${filters.cutoffMax} b.`, onRemove: () => setPatch({ cutoffMax: 100 }) });
   }
-  if (filters.noTalent) {
-    chips.push({ key: 'talent', label: 'Bez talentové zkoušky', onRemove: () => setPatch({ noTalent: false }) });
+  if (filters.acceptanceMin > 0) {
+    chips.push({
+      key: 'acceptanceMin',
+      label: `Přijato aspoň ${filters.acceptanceMin} %`,
+      onRemove: () => setPatch({ acceptanceMin: 0 }),
+    });
+  }
+  if (filters.kapacitaMin > 0) {
+    chips.push({
+      key: 'kapacitaMin',
+      label: `Aspoň ${filters.kapacitaMin} ${misto(filters.kapacitaMin)}`,
+      onRemove: () => setPatch({ kapacitaMin: 0 }),
+    });
   }
   if (hasQuery) {
     chips.push({ key: 'q', label: `„${filters.query.trim()}“`, onRemove: () => setPatch({ query: '', page: 10 }) });
@@ -307,49 +557,98 @@ function Search() {
   const clearAll = () => setFilters(DEFAULT_FILTERS);
 
   // ---- empty-state: blame sentence + ranked relax options + near misses ----
-  const relaxRaw = [];
-  if (hasQuery) {
-    relaxRaw.push({
+  // Generic over every filter dimension — each one knows how to reset itself
+  // back to DEFAULT_FILTERS' value for that key, so this list stays short
+  // even as filters grow.
+  const fieldLabels = filters.fields.map((id) => FOCUS_CATEGORIES.find((x) => x.id === id)?.label).filter(Boolean);
+  const filterDefs = [
+    {
+      key: 'query',
+      active: hasQuery,
       blame: `hledaný text „${filters.query.trim()}“`,
       label: `Zrušit hledaný text „${filters.query.trim()}“`,
-      gainN: listFor({ ...filters, query: '' }).length,
-      onApply: () => setPatch({ query: '', page: 10 }),
-    });
-  }
-  if (filters.maxMin < 60) {
-    const relaxed = Math.min(60, filters.maxMin + 20);
-    relaxRaw.push({
-      blame: `dojezd do ${filters.maxMin} minut`,
-      label: `Dojezd do ${relaxed} minut místo ${filters.maxMin}`,
-      gainN: listFor({ ...filters, maxMin: relaxed }).length,
-      onApply: () => setPatch({ maxMin: relaxed }),
-    });
-  }
-  if (filters.districts.length) {
-    relaxRaw.push({
+      apply: () => setPatch({ query: '', page: 10 }),
+    },
+    {
+      key: 'districts',
+      active: filters.districts.length > 0,
       blame: `omezení na ${filters.districts.join(', ')}`,
-      label: `Zrušit omezení na ${filters.districts.join(', ')}`,
-      gainN: listFor({ ...filters, districts: [] }).length,
-      onApply: () => setPatch({ districts: [] }),
-    });
-  }
-  if (filters.noTalent) {
-    relaxRaw.push({
-      blame: 'podmínku bez talentové zkoušky',
-      label: 'Zrušit filtr bez talentové zkoušky',
-      gainN: listFor({ ...filters, noTalent: false }).length,
-      onApply: () => setPatch({ noTalent: false }),
-    });
-  }
-  if (filters.fields.length) {
-    const labels = filters.fields.map((id) => FOCUS_CATEGORIES.find((x) => x.id === id)?.label).filter(Boolean);
-    relaxRaw.push({
-      blame: `obor ${labels.join(', ')}`,
+      label: 'Zrušit omezení na městskou část',
+      apply: () => setPatch({ districts: [] }),
+    },
+    {
+      key: 'fields',
+      active: filters.fields.length > 0,
+      blame: `obor ${fieldLabels.join(', ')}`,
       label: 'Zrušit omezení oboru',
-      gainN: listFor({ ...filters, fields: [] }).length,
-      onApply: () => setPatch({ fields: [] }),
-    });
-  }
+      apply: () => setPatch({ fields: [] }),
+    },
+    {
+      key: 'ukonceni',
+      active: filters.ukonceni.length > 0,
+      blame: 'omezení ukončení studia',
+      label: 'Zrušit omezení ukončení studia',
+      apply: () => setPatch({ ukonceni: [] }),
+    },
+    {
+      key: 'typySkoly',
+      active: filters.typySkoly.length > 0,
+      blame: 'omezení typu školy',
+      label: 'Zrušit omezení typu školy',
+      apply: () => setPatch({ typySkoly: [] }),
+    },
+    {
+      key: 'zrizovatele',
+      active: filters.zrizovatele.length > 0,
+      blame: 'omezení zřizovatele',
+      label: 'Zrušit omezení zřizovatele',
+      apply: () => setPatch({ zrizovatele: [] }),
+    },
+    {
+      key: 'jazyky',
+      active: filters.jazyky.length > 0,
+      blame: 'omezení jazyka výuky',
+      label: 'Zrušit omezení jazyka výuky',
+      apply: () => setPatch({ jazyky: [] }),
+    },
+    {
+      key: 'jpz',
+      active: filters.jpz.length > 0,
+      blame: 'omezení přijímací zkoušky',
+      label: 'Zrušit omezení přijímací zkoušky',
+      apply: () => setPatch({ jpz: [] }),
+    },
+    {
+      key: 'cutoffMax',
+      active: filters.cutoffMax < 100,
+      blame: `hranici přijetí do ${filters.cutoffMax} b.`,
+      label: 'Zrušit horní hranici přijetí',
+      apply: () => setPatch({ cutoffMax: 100 }),
+    },
+    {
+      key: 'acceptanceMin',
+      active: filters.acceptanceMin > 0,
+      blame: `míru přijetí od ${filters.acceptanceMin} %`,
+      label: 'Zrušit dolní hranici míry přijetí',
+      apply: () => setPatch({ acceptanceMin: 0 }),
+    },
+    {
+      key: 'kapacitaMin',
+      active: filters.kapacitaMin > 0,
+      blame: `minimální kapacitu ${filters.kapacitaMin}`,
+      label: 'Zrušit minimální kapacitu',
+      apply: () => setPatch({ kapacitaMin: 0 }),
+    },
+  ];
+
+  const relaxRaw = filterDefs
+    .filter((d) => d.active)
+    .map((d) => ({
+      blame: d.blame,
+      label: d.label,
+      gainN: listFor({ ...filters, [d.key]: DEFAULT_FILTERS[d.key] }).length,
+      onApply: d.apply,
+    }));
   relaxRaw.sort((a, b) => b.gainN - a.gainN);
   const helpfulRelax = relaxRaw.filter((r) => r.gainN > n);
   const relaxOptions = helpfulRelax.map((r, i) => ({
@@ -376,7 +675,7 @@ function Search() {
     .map((x) => ({
       name: x.row.name,
       why:
-        `${x.row.districtLabel} · ${x.row.commuteMinutes} min MHD · hranice ${numCz(x.row.admissionCutoff)} bodu — ` +
+        `${x.row.districtLabel} · ${x.row.p.zrizovatel ?? 'zřizovatel neznámý'} · ${cutoffLabel(x.row.admissionCutoff)} — ` +
         `nesplňuje ${UNMET_LABELS[x.unmet[0].k]}`,
     }));
 
@@ -396,66 +695,63 @@ function Search() {
 
   const canFavorite = isSignedIn && hasAccess;
 
+  const handleMapSelect = useCallback((id) => setSelectedMapId(id), []);
+
   return (
     <div className="school-search">
       <h1 className="ss-headline-lg">Databáze škol</h1>
 
       <div className="ss-layout">
-        <aside className="ss-sidebar">
+        <aside className="ss-sidebar" id="ss-sidebar">
           <div className="ss-search-input-wrap">
             <SearchIcon aria-hidden="true" />
             <input
               type="search"
               className="ss-search-input"
-              placeholder="Hledat podle názvu nebo oboru"
+              placeholder="Hledat podle názvu, oboru nebo KKOV kódu"
               value={filters.query}
               onChange={(e) => setPatch({ query: e.target.value, page: 10 })}
               aria-label="Hledat školu"
             />
           </div>
 
-          <div className="ss-facet-group">
-            <p className="ss-label-caps">Obor a zaměření</p>
-            {fieldOptions.map((o) => (
-              <div className="ss-facet-row" key={o.id}>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={o.checked}
-                    onChange={() => toggleIn('fields', o.id)}
-                  />
-                  {o.label}
-                </label>
-                <span className="ss-data-sm ss-facet-count">{o.count}</span>
-              </div>
+          <FacetSection title="Ukončení studia" activeCount={filters.ukonceni.length} defaultOpen>
+            {ukonceniOptions.map((o) => (
+              <CheckOption
+                key={o.value}
+                checked={filters.ukonceni.includes(o.value)}
+                label={o.label}
+                count={o.count}
+                onChange={() => toggleIn('ukonceni', o.value)}
+              />
             ))}
-          </div>
+            {filters.ukonceni.length !== 1 && (
+              <p className="ss-caption ss-facet-note">
+                Řada škol nabízí obojí, proto je součet vyšší než {total}.
+              </p>
+            )}
+          </FacetSection>
 
           <hr className="ss-divider" />
 
-          <div className="ss-facet-group">
-            <p className="ss-label-caps">Dojezd MHD z domova</p>
-            <div className="ss-travel-head">
-              <span className="ss-body-sm">{travelLabel}</span>
-              <span className="ss-data-sm">{n} {skol(n)}</span>
+          <FacetSection title="Typ školy" activeCount={filters.typySkoly.length} defaultOpen>
+            <div className="ss-chip-group">
+              {typOptions.map((o) => (
+                <button
+                  key={o.value}
+                  type="button"
+                  className={`ss-district-toggle${o.checked ? ' is-active' : ''}`}
+                  onClick={() => toggleIn('typySkoly', o.value)}
+                >
+                  {o.label} <span>{o.count}</span>
+                </button>
+              ))}
             </div>
-            <input
-              type="range"
-              min="10"
-              max="60"
-              step="5"
-              value={filters.maxMin}
-              onChange={(e) => setPatch({ maxMin: Number(e.target.value) })}
-              className="ss-travel-slider"
-              aria-label="Maximální dojezd MHD"
-            />
-            <p className="ss-caption">Počet se přepočítá při tažení. Nic se nepotvrzuje.</p>
-          </div>
+          </FacetSection>
 
           <hr className="ss-divider" />
 
-          <div className="ss-facet-group">
-            <p className="ss-label-caps">Městská část</p>
+          <FacetSection title="Městská část" activeCount={filters.districts.length}>
             <div className="ss-chip-group">
               {districtOptions.map((d) => (
                 <button
@@ -468,32 +764,169 @@ function Search() {
                 </button>
               ))}
             </div>
-          </div>
+          </FacetSection>
 
           <hr className="ss-divider" />
 
-          <div className="ss-facet-group">
-            <p className="ss-label-caps">Přijímací zkouška</p>
-            <div className="ss-facet-row">
-              <label>
-                <input
-                  type="checkbox"
-                  checked={filters.noTalent}
-                  onChange={(e) => setPatch({ noTalent: e.target.checked })}
-                />
-                Jen školy bez talentové zkoušky
-              </label>
-              <span className="ss-data-sm ss-facet-count">{talentCount}</span>
+          <FacetSection title="Obor a zaměření" activeCount={filters.fields.length}>
+            {fieldOptions.map((o) => (
+              <CheckOption
+                key={o.id}
+                checked={o.checked}
+                label={o.label}
+                count={o.count}
+                onChange={() => toggleIn('fields', o.id)}
+              />
+            ))}
+          </FacetSection>
+
+          <hr className="ss-divider" />
+
+          <FacetSection title="Zřizovatel" activeCount={filters.zrizovatele.length}>
+            {zrizovatelOptions.map((o) => (
+              <CheckOption
+                key={o.value}
+                checked={o.checked}
+                label={o.label}
+                count={o.count}
+                onChange={() => toggleIn('zrizovatele', o.value)}
+              />
+            ))}
+          </FacetSection>
+
+          <hr className="ss-divider" />
+
+          <FacetSection title="Přijímačky a šance" activeCount={admissionsActiveCount}>
+            <div className="ss-facet-group">
+              <div className="ss-travel-head">
+                <span className="ss-body-sm">
+                  {filters.cutoffMax >= 100 ? 'bez omezení' : `do ${filters.cutoffMax} b.`}
+                </span>
+              </div>
+              <p className="ss-caption">Průměrná hranice přijetí nejvýš</p>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                step="5"
+                value={filters.cutoffMax}
+                onChange={(e) => setPatch({ cutoffMax: Number(e.target.value) })}
+                className="ss-travel-slider"
+                aria-label="Nejvyšší průměrná hranice přijetí"
+              />
             </div>
+
+            <div className="ss-facet-group">
+              <div className="ss-travel-head">
+                <span className="ss-body-sm">
+                  {filters.acceptanceMin <= 0 ? 'bez omezení' : `aspoň ${filters.acceptanceMin} %`}
+                </span>
+              </div>
+              <p className="ss-caption">Míra přijetí alespoň</p>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                step="5"
+                value={filters.acceptanceMin}
+                onChange={(e) => setPatch({ acceptanceMin: Number(e.target.value) })}
+                className="ss-travel-slider"
+                aria-label="Nejnižší míra přijetí"
+              />
+            </div>
+
+            {jpzOptions.map((o) => (
+              <CheckOption
+                key={o.value}
+                checked={filters.jpz.includes(o.value)}
+                label={o.label}
+                count={o.count}
+                onChange={() => toggleIn('jpz', o.value)}
+              />
+            ))}
+          </FacetSection>
+
+          <hr className="ss-divider" />
+
+          <FacetSection title="Další" activeCount={moreActiveCount}>
+            {jazykOptions.map((o) => (
+              <CheckOption
+                key={o.value}
+                checked={o.checked}
+                label={o.label}
+                count={o.count}
+                onChange={() => toggleIn('jazyky', o.value)}
+              />
+            ))}
+
+            <div className="ss-facet-group">
+              <div className="ss-travel-head">
+                <span className="ss-body-sm">
+                  {filters.kapacitaMin <= 0 ? 'bez omezení' : `aspoň ${filters.kapacitaMin}`}
+                </span>
+              </div>
+              <p className="ss-caption">Volných míst alespoň</p>
+              <input
+                type="range"
+                min="0"
+                max="150"
+                step="10"
+                value={filters.kapacitaMin}
+                onChange={(e) => setPatch({ kapacitaMin: Number(e.target.value) })}
+                className="ss-travel-slider"
+                aria-label="Nejmenší kapacita"
+              />
+            </div>
+
+          </FacetSection>
+
+          <hr className="ss-divider" />
+
+          {/* Parked, not deleted — real MHD commute time needs a routing API
+              we haven't wired (see UNFORGET.md). Visibly disabled rather than
+              silently doing nothing, per the plan's D5. */}
+          <div className="ss-facet-group ss-parked">
+            <div className="ss-parked-head">
+              <p className="ss-label-caps">Dojezd MHD</p>
+              <span className="ss-parked-badge">zatím nedostupné</span>
+            </div>
+            <input type="range" className="ss-travel-slider" disabled aria-label="Dojezd MHD (nedostupné)" />
+            <p className="ss-caption">
+              Skutečný čas dojezdu MHD zatím neumíme spočítat, tak ho radši neukazujeme.
+            </p>
           </div>
+
+          {/* Mobile-only — the sidebar stacks above the results at <860px, so
+              this is the live-count "commit" affordance: never a blind Apply,
+              always the current count, jumps straight to the list below. */}
+          <button
+            type="button"
+            className="ss-mobile-commit"
+            onClick={() => document.getElementById('ss-results')?.scrollIntoView({ behavior: 'smooth' })}
+          >
+            Zobrazit {n} {skol(n)}
+          </button>
         </aside>
 
-        <section className="ss-results">
+        <section className="ss-results" id="ss-results">
           {loading && <p className="ss-status">Načítám školy…</p>}
           {error && <p className="ss-status is-error">Školy se nepodařilo načíst: {error}</p>}
 
           {!loading && !error && (
             <>
+              {activeCriteriaCount === 0 && recentRows.length > 0 && view === 'list' && (
+                <div className="ss-recent">
+                  <p className="ss-label-caps">Naposledy zobrazené</p>
+                  <div className="ss-chip-group">
+                    {recentRows.map((r) => (
+                      <Link key={r.id} to={`/skoly/${r.id}`} className="ss-district-toggle">
+                        {r.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <div className="ss-results-head">
                 <div className="ss-count-row">
                   <h1 className="ss-headline-md">{n} {skol(n)} z {total}</h1>
@@ -502,6 +935,22 @@ function Search() {
                       ? `odpovídá ${activeCriteriaCount} ${plural(activeCriteriaCount, 'filtru', 'filtrům', 'filtrům')} · seznam se mění průběžně, nic se nepotvrzuje`
                       : 'bez filtrů · vyber obor nebo městskou část'}
                   </p>
+                  <div className="ss-view-toggle">
+                    <button
+                      type="button"
+                      className={view === 'list' ? 'is-active' : ''}
+                      onClick={() => setView('list')}
+                    >
+                      Seznam škol
+                    </button>
+                    <button
+                      type="button"
+                      className={view === 'map' ? 'is-active' : ''}
+                      onClick={() => setView('map')}
+                    >
+                      Mapa škol
+                    </button>
+                  </div>
                 </div>
                 <div className="ss-chips-row">
                   {chips.map((c) => (
@@ -534,10 +983,18 @@ function Search() {
                       <span className="ss-sort-tradeoff">{s.tradeoff}</span>
                     </button>
                   ))}
+                  <button type="button" className="ss-sort-toggle is-disabled" disabled aria-disabled="true">
+                    <span className="ss-sort-label">Nejkratší dojezd</span>
+                    <span className="ss-sort-tradeoff">zatím nedostupné</span>
+                  </button>
                 </div>
               </div>
 
-              {n === 0 && (
+              {view === 'map' && n > 0 && (
+                <SchoolMap rows={sortedAll} selectedId={selectedMapId} onSelect={handleMapSelect} />
+              )}
+
+              {view === 'list' && n === 0 && (
                 <div className="ss-empty">
                   <div className="ss-empty-head">
                     <h2 className="ss-headline-sm">Žádná škola nesplňuje všechny filtry současně</h2>
@@ -590,7 +1047,7 @@ function Search() {
                 </div>
               )}
 
-              {n > 0 && (
+              {view === 'list' && n > 0 && (
                 <div className="ss-list">
                   {shown.map((row) => {
                     const isSelected = selected.has(row.id);
@@ -598,6 +1055,8 @@ function Search() {
                     const rowCriteria = criteriaFor(row, filters);
                     const metCount = rowCriteria.filter((c) => c.met).length;
                     const metTotal = rowCriteria.length;
+                    const ukonceni = ukonceniText(row.p);
+                    const noAdmissionData = row.admissionCutoff == null && row.acceptanceRate == null;
                     return (
                       <div className={`ss-row${isSelected ? ' is-selected' : ''}`} key={row.id}>
                         <div className="ss-row-select">
@@ -613,7 +1072,10 @@ function Search() {
                             <div className="ss-row-title">
                               <h2 className="ss-headline-sm">{row.name}</h2>
                               <p className="ss-caption">
-                                {row.districtLabel} · {row.commuteMinutes} min MHD · {row.schoolType}
+                                {row.districtLabel}
+                                {row.p.zrizovatel ? ` · ${row.p.zrizovatel}` : ''}
+                                {ukonceni ? ` · ${ukonceni}` : ''}
+                                {row.p.count > 0 ? ` · ${row.p.count} ${obor(row.p.count)}` : ''}
                               </p>
                             </div>
                             {row.progs.length > 0 && (
@@ -626,22 +1088,43 @@ function Search() {
                             {row.diff && <p className="ss-row-diff ss-body-sm">{row.diff}</p>}
                             <div className="ss-stat-grid">
                               <div className="ss-stat-cell">
-                                <p className="ss-data-md">{numCz(row.admissionCutoff)} b.</p>
-                                <p className="ss-stat-label">hranice 2025</p>
+                                <p className="ss-data-md">
+                                  {row.admissionCutoff != null ? `${numCz(row.admissionCutoff)} b.` : '—'}
+                                </p>
+                                <p className="ss-stat-label">
+                                  průměrná hranice
+                                  <StatInfo text="Průměr z posledních 3 let (2024–2026). Nejnižší počet bodů z češtiny a matematiky (max. 100 — 50 + 50), které stačily na přijetí — je to hranice pro přijetí, ne průměrné skóre přijatých žáků. Průměr přes všechny obory školy; hranici pro konkrétní obor a rok najdeš po rozkliknutí školy. (Nové školy mohou mít kratší historii.)" />
+                                </p>
                               </div>
                               <div className="ss-stat-cell">
-                                <p className="ss-data-md">{row.acceptanceRate} %</p>
-                                <p className="ss-stat-label">přijato z přihlášených</p>
+                                <p className="ss-data-md">
+                                  {row.acceptanceRate != null ? `${numCz(row.acceptanceRate)} %` : '—'}
+                                </p>
+                                <p className="ss-stat-label">
+                                  přijato z přihlášených
+                                  <StatInfo text="Průměr z posledních 3 let (2024–2026): kolik procent uchazečů škola v posledním kole přijala, v průměru přes všechny obory. Podrobnosti po jednotlivých oborech a letech najdeš po rozkliknutí školy. (Nové školy mohou mít kratší historii.)" />
+                                </p>
                               </div>
                               <div className="ss-stat-cell">
-                                <p className="ss-data-md">{row.commuteMinutes} min</p>
-                                <p className="ss-stat-label">dojezd MHD</p>
+                                <p className="ss-data-md">{row.p.kapacita ?? '—'}</p>
+                                <p className="ss-stat-label">
+                                  volných míst
+                                  <StatInfo text="Celkový počet míst ve všech oborech, které škola otevírá pro aktuální rok." />
+                                </p>
                               </div>
                               <div className="ss-stat-cell">
                                 <p className="ss-data-md">{metTotal > 0 ? `${metCount} / ${metTotal}` : '—'}</p>
-                                <p className="ss-stat-label">splněných kritérií</p>
+                                <p className="ss-stat-label">
+                                  splněných kritérií
+                                  <StatInfo text="Kolik ze zvolených filtrů tahle škola splňuje." />
+                                </p>
                               </div>
                             </div>
+                            {noAdmissionData && (
+                              <p className="ss-caption ss-no-data-note">
+                                Tahle škola nebyla v prvním kole přijímaček 2026, takže o ní zatím čísla nemáme.
+                              </p>
+                            )}
                           </Link>
                         </div>
                         <div className="ss-row-actions">
@@ -670,7 +1153,7 @@ function Search() {
                 </div>
               )}
 
-              {rest > 0 && (
+              {view === 'list' && rest > 0 && (
                 <div className="ss-more">
                   <button
                     type="button"
@@ -685,7 +1168,7 @@ function Search() {
               {n > 0 && (
                 <p className="ss-caption ss-footnote">
                   {SYNTHETIC &&
-                    'Ukázková data: hranice přijetí, míra přijetí, dojezd MHD a typ školy jsou placeholder hodnoty, ne reálná data — viz UNFORGET.md.'}
+                    'Hranice přijetí, míra přijetí, typ školy, zřizovatel, jazyk výuky a kapacita jsou reálná data z Cermatu. Dojezd MHD je zatím vypnutý — viz UNFORGET.md.'}
                 </p>
               )}
             </>

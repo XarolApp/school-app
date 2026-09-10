@@ -1,0 +1,905 @@
+/* schoolDetail.css — styles for the /skoly/:id page, scoped under
+ * .school-detail. Every value is a var(--token) from tokens.css — never a
+ * hardcoded colour or radius (CLAUDE.md rule). One component maps to one
+ * block below (marked by section comments) so a future design tweak means
+ * editing one component + one block here, not a rewrite.
+ */
+
+.school-detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  padding-bottom: var(--space-xxl);
+}
+
+.sd-back {
+  font-family: var(--sans);
+  font-size: var(--fs-body-sm);
+  color: var(--acc);
+}
+.sd-back:hover {
+  color: var(--danger);
+}
+
+/* ---------- SectionNav ---------- */
+.sd-nav {
+  display: flex;
+  gap: var(--space-xs);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: var(--space-sm) 0;
+  overflow-x: auto;
+}
+.sd-nav a {
+  flex: none;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--r-chip);
+  font-family: var(--sans);
+  font-size: var(--fs-body-sm);
+  font-weight: 500;
+  color: var(--ink2);
+  white-space: nowrap;
+}
+.sd-nav a:hover {
+  background: var(--surface2);
+  color: var(--ink);
+}
+
+/* ---------- SchoolHero ---------- */
+.sd-hero {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-xl);
+}
+.sd-hero-main {
+  grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+.sd-title-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+.sd-address {
+  font-family: var(--sans);
+  font-size: var(--fs-body-md);
+  line-height: var(--lh-body-md);
+  color: var(--ink2);
+}
+.sd-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+.sd-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px var(--space-md);
+  border-radius: var(--r-chip);
+  border: 1px solid var(--line);
+  background: var(--surface2);
+  font-family: var(--sans);
+  font-size: var(--fs-caption);
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.sd-fact-tiles {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  /* overflow is intentionally visible, not hidden — a hover tooltip on the
+     first/last tile needs to escape this container. Corners are rounded on
+     the tiles themselves instead (below), which reads the same when the
+     grid is a single row. */
+  margin-top: var(--space-sm);
+}
+.sd-fact-tile {
+  background: var(--surface);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.sd-fact-tile:first-child {
+  border-radius: var(--r-card) 0 0 var(--r-card);
+}
+.sd-fact-tile:last-child {
+  border-radius: 0 var(--r-card) var(--r-card) 0;
+}
+.sd-fact-value {
+  font-family: var(--heading);
+  font-size: var(--fs-headline-md);
+  line-height: var(--lh-headline-md);
+  font-weight: var(--fw-headline-md);
+  letter-spacing: var(--ls-headline-md);
+  color: var(--ink);
+}
+.sd-fact-label {
+  font-family: var(--sans);
+  font-size: var(--fs-label-caps);
+  font-weight: var(--fw-label-caps);
+  letter-spacing: var(--ls-label-caps);
+  text-transform: uppercase;
+  color: var(--ink3);
+}
+.sd-fact-label-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+/* Hover-to-reveal info hint (InfoHint.jsx) — CSS-only tooltip, no click
+   state. Used both on the hero fact tiles and on each obor's own stats. */
+.sd-info-hint {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink3);
+  flex: none;
+  cursor: default;
+}
+.sd-info-hint:hover {
+  color: var(--acc);
+}
+.sd-info-hint-tip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  width: 240px;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--r-chip);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  box-shadow: 0 4px 16px rgba(34, 26, 19, 0.15);
+  font-family: var(--sans);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--ink2);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 150ms ease;
+  z-index: 30;
+  pointer-events: none;
+}
+.sd-info-hint:hover .sd-info-hint-tip {
+  opacity: 1;
+  visibility: visible;
+}
+.sd-provenance {
+  font-family: var(--sans);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  color: var(--ink3);
+}
+
+/* ---------- SchoolActions ---------- */
+.sd-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  padding: var(--space-lg);
+  background: var(--surface);
+  align-self: start;
+}
+.sd-actions .ss-btn {
+  height: 54px;
+  width: 100%;
+  justify-content: center;
+}
+.sd-actions-divider {
+  height: 1px;
+  background: var(--line);
+  margin: var(--space-sm) 0;
+}
+.sd-actions-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+.sd-actions-links a {
+  font-family: var(--sans);
+  font-size: var(--fs-body-sm);
+  font-weight: 500;
+  word-break: break-word;
+}
+
+/* ---------- CutoffExplainer ---------- */
+.sd-explainer {
+  display: flex;
+  gap: var(--space-md);
+  border: 1px solid var(--acc-line);
+  background: var(--acc-soft);
+  border-radius: var(--r-card);
+  padding: var(--space-lg);
+}
+.sd-explainer svg {
+  flex: none;
+  margin-top: 2px;
+}
+.sd-explainer-title {
+  font-family: var(--sans);
+  font-size: var(--fs-body-md);
+  line-height: var(--lh-body-md);
+  font-weight: 600;
+  color: var(--ink);
+}
+.sd-explainer-body {
+  font-family: var(--sans);
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-body-sm);
+  color: var(--ink2);
+  margin-top: 4px;
+}
+
+/* ---------- section headings ---------- */
+.sd-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xs);
+}
+.sd-section-title {
+  font-family: var(--heading);
+  font-size: var(--fs-headline-md);
+  line-height: var(--lh-headline-md);
+  font-weight: var(--fw-headline-md);
+  letter-spacing: var(--ls-headline-md);
+  color: var(--ink);
+  margin: 0;
+}
+.sd-section-meta {
+  font-family: var(--sans);
+  font-size: var(--fs-caption);
+  color: var(--ink3);
+  flex: none;
+}
+.sd-section-intro {
+  font-family: var(--sans);
+  font-size: var(--fs-body-md);
+  line-height: var(--lh-body-md);
+  color: var(--ink2);
+  margin: var(--space-xs) 0 var(--space-lg) 0;
+}
+
+/* ---------- ProgramList / ProgramCard ---------- */
+.sd-programs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+.sd-program-card {
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  padding: var(--space-lg);
+  background: var(--surface);
+}
+.sd-program-head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-xl);
+  margin-bottom: var(--space-md);
+}
+.sd-program-name {
+  font-family: var(--heading);
+  font-size: var(--fs-headline-sm);
+  line-height: var(--lh-headline-sm);
+  font-weight: var(--fw-headline-sm);
+  color: var(--ink);
+  margin: 0 0 var(--space-sm) 0;
+}
+.sd-program-ratio {
+  flex: none;
+  text-align: right;
+}
+.sd-program-ratio-value {
+  font-family: var(--heading);
+  font-size: var(--fs-headline-md);
+  font-weight: var(--fw-headline-md);
+  letter-spacing: var(--ls-headline-md);
+  color: var(--ink);
+}
+.sd-program-ratio-label {
+  font-family: var(--sans);
+  font-size: var(--fs-label-caps);
+  font-weight: var(--fw-label-caps);
+  letter-spacing: var(--ls-label-caps);
+  text-transform: uppercase;
+  color: var(--ink3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+.sd-program-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-md);
+  padding: var(--space-md) 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.sd-program-stat-value {
+  font-family: var(--sans);
+  font-size: var(--fs-label-md);
+  font-weight: var(--fw-label-md);
+  color: var(--ink);
+}
+.sd-program-stat-value.is-empty {
+  color: var(--ink3);
+}
+.sd-program-stat-label {
+  font-family: var(--sans);
+  font-size: var(--fs-caption);
+  color: var(--ink3);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.sd-program-note {
+  font-family: var(--sans);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  color: var(--ink2);
+  padding-top: var(--space-md);
+}
+
+.sd-program-trend-label {
+  font-family: var(--sans);
+  font-size: var(--fs-label-caps);
+  font-weight: var(--fw-label-caps);
+  letter-spacing: var(--ls-label-caps);
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: var(--space-sm);
+}
+.sd-trend-rows {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-md);
+}
+.sd-trend-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.sd-trend-year {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  font-family: var(--sans);
+  font-size: var(--fs-caption);
+}
+.sd-trend-year strong {
+  font-size: var(--fs-body-sm);
+  font-weight: 500;
+  color: var(--ink);
+}
+.sd-trend-bar-track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--surface2);
+}
+.sd-trend-bar-fill {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--line2);
+}
+.sd-trend-bar-fill.is-current {
+  background: var(--acc);
+}
+
+.sd-program-discontinued {
+  border: 1px dashed var(--line2);
+  background: var(--surface2);
+}
+.sd-program-discontinued .sd-program-name {
+  color: var(--ink2);
+}
+.sd-discontinued-badge {
+  flex: none;
+  padding: 4px var(--space-sm);
+  border-radius: var(--r-chip);
+  border: 1px dashed var(--line2);
+  background: var(--surface);
+  font-family: var(--sans);
+  font-size: var(--fs-caption);
+  color: var(--ink3);
+}
+
+.sd-programs-more {
+  text-align: center;
+  padding: var(--space-sm);
+}
+
+/* ---------- SchoolLocation ---------- */
+.sd-location {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-lg);
+}
+.sd-map {
+  grid-column: span 2;
+  position: relative;
+  height: 320px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  overflow: hidden;
+}
+.sd-location-side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+.sd-location-card {
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+.sd-location-field-label {
+  font-family: var(--sans);
+  font-size: var(--fs-label-caps);
+  font-weight: var(--fw-label-caps);
+  letter-spacing: var(--ls-label-caps);
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: 4px;
+}
+.sd-location-field-value {
+  font-family: var(--sans);
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-body-sm);
+  color: var(--ink);
+}
+.sd-location-field-value.is-placeholder {
+  color: var(--ink3);
+}
+
+/* ---------- MissingDataGrid ---------- */
+.sd-missing-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-md);
+}
+.sd-missing-card {
+  border: 1px dashed var(--line2);
+  border-radius: var(--r-card);
+  padding: var(--space-lg);
+  background: var(--surface2);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.sd-missing-card-title {
+  font-family: var(--sans);
+  font-size: var(--fs-body-sm);
+  font-weight: 600;
+  color: var(--ink);
+}
+.sd-missing-card-body {
+  font-family: var(--sans);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  color: var(--ink2);
+}
+
+/* ---------- ReportDataDialog ---------- */
+.sd-report-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  padding: var(--space-lg);
+  background: var(--surface);
+}
+.sd-report-title {
+  font-family: var(--sans);
+  font-size: var(--fs-body-md);
+  font-weight: 600;
+  color: var(--ink);
+}
+.sd-report-body {
+  font-family: var(--sans);
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-body-sm);
+  color: var(--ink2);
+}
+.sd-report-form {
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  padding: var(--space-lg);
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+.sd-textarea {
+  border: 1px solid var(--line2);
+  border-radius: var(--r-option);
+  padding: var(--space-md);
+  font-family: var(--sans);
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-body-sm);
+  color: var(--ink);
+  background: var(--surface);
+  resize: vertical;
+  min-height: 96px;
+}
+.sd-textarea::placeholder {
+  color: var(--ink3);
+}
+.sd-form-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+/* ---------- SchoolReviews ---------- */
+.sd-reviews-tabs {
+  display: flex;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-lg);
+}
+.sd-reviews-tab {
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--r-chip);
+  font-family: var(--sans);
+  font-size: var(--fs-body-sm);
+  font-weight: 500;
+  color: var(--ink2);
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+.sd-reviews-tab.is-active {
+  background: var(--surface2);
+  font-weight: 600;
+  color: var(--ink);
+}
+.sd-reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.sd-review-card {
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  padding: var(--space-lg);
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+.sd-review-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+.sd-review-who {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+.sd-review-name {
+  font-family: var(--sans);
+  font-size: var(--fs-body-sm);
+  font-weight: 600;
+  color: var(--ink);
+}
+.sd-review-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px var(--space-sm);
+  border-radius: var(--r-chip);
+  font-family: var(--sans);
+  font-size: var(--fs-caption);
+  font-weight: 500;
+}
+.sd-review-badge.is-verified {
+  border: 1px solid var(--line);
+  background: var(--surface2);
+  color: var(--ink);
+}
+.sd-review-badge.is-unverified {
+  border: 1px dashed var(--line2);
+  background: var(--surface2);
+  color: var(--ink2);
+}
+.sd-review-date {
+  flex: none;
+  font-family: var(--sans);
+  font-size: var(--fs-caption);
+  color: var(--ink3);
+}
+.sd-review-body {
+  font-family: var(--sans);
+  font-size: var(--fs-body-md);
+  line-height: var(--lh-body-md);
+  color: var(--ink);
+}
+.sd-review-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  border-top: 1px solid var(--line);
+  padding-top: var(--space-md);
+}
+.sd-review-obor {
+  font-family: var(--sans);
+  font-size: var(--fs-caption);
+  color: var(--ink3);
+}
+.sd-review-foot-actions {
+  display: flex;
+  gap: var(--space-md);
+}
+.sd-review-link-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--sans);
+  font-size: var(--fs-caption);
+  font-weight: 500;
+  color: var(--ink3);
+  cursor: pointer;
+}
+.sd-review-link-btn:hover {
+  color: var(--ink);
+}
+.sd-review-pending {
+  font-family: var(--sans);
+  font-size: var(--fs-caption);
+  color: var(--ink3);
+  font-style: italic;
+}
+
+.sd-reviews-empty {
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  padding: var(--space-xxl) var(--space-lg);
+  background: var(--surface);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+.sd-reviews-empty-title {
+  font-family: var(--heading);
+  font-size: var(--fs-headline-sm);
+  line-height: var(--lh-headline-sm);
+  font-weight: var(--fw-headline-sm);
+  color: var(--ink);
+}
+.sd-reviews-empty-body {
+  font-family: var(--sans);
+  font-size: var(--fs-body-md);
+  line-height: var(--lh-body-md);
+  color: var(--ink2);
+  max-width: 520px;
+}
+.sd-reviews-empty-note {
+  font-family: var(--sans);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  color: var(--ink3);
+  max-width: 520px;
+}
+
+/* ---------- ReviewForm ---------- */
+.sd-review-form {
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  padding: var(--space-lg);
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+.sd-review-form-title {
+  font-family: var(--heading);
+  font-size: var(--fs-headline-sm);
+  line-height: var(--lh-headline-sm);
+  font-weight: var(--fw-headline-sm);
+  color: var(--ink);
+  margin: 0;
+}
+.sd-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+.sd-form-field-label {
+  font-family: var(--sans);
+  font-size: var(--fs-label-caps);
+  font-weight: var(--fw-label-caps);
+  letter-spacing: var(--ls-label-caps);
+  text-transform: uppercase;
+  color: var(--ink3);
+}
+.sd-role-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+.sd-role-chip {
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--r-chip);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  font-family: var(--sans);
+  font-size: var(--fs-body-sm);
+  color: var(--ink);
+  cursor: pointer;
+}
+.sd-role-chip.is-selected {
+  border: 1.5px solid var(--acc);
+  background: var(--acc-soft);
+}
+.sd-form-hint {
+  font-family: var(--sans);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  color: var(--ink3);
+}
+.sd-name-opt-in {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  border: 1px solid var(--line);
+  background: var(--surface2);
+  border-radius: var(--r-option);
+  padding: var(--space-md);
+}
+.sd-name-opt-in-title {
+  font-family: var(--sans);
+  font-size: var(--fs-body-sm);
+  font-weight: 500;
+  color: var(--ink);
+}
+.sd-name-opt-in-body {
+  font-family: var(--sans);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  color: var(--ink2);
+  margin-top: 4px;
+}
+.sd-form-error {
+  font-family: var(--sans);
+  font-size: var(--fs-body-sm);
+  color: var(--danger);
+}
+.sd-form-signin-prompt {
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  padding: var(--space-lg);
+  background: var(--surface2);
+  text-align: center;
+  font-family: var(--sans);
+  font-size: var(--fs-body-md);
+  color: var(--ink2);
+}
+
+/* ---------- SimilarSchools ---------- */
+.sd-similar-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-md);
+}
+.sd-similar-card {
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  text-decoration: none;
+  color: inherit;
+}
+.sd-similar-card:hover {
+  border-color: var(--line2);
+  background: var(--surface2);
+}
+.sd-similar-name {
+  font-family: var(--heading);
+  font-size: var(--fs-headline-sm);
+  line-height: var(--lh-headline-sm);
+  font-weight: var(--fw-headline-sm);
+  color: var(--ink);
+}
+.sd-similar-meta {
+  font-family: var(--sans);
+  font-size: var(--fs-caption);
+  color: var(--ink2);
+}
+
+/* ---------- mobile ---------- */
+@media (max-width: 860px) {
+  .sd-hero {
+    grid-template-columns: 1fr;
+  }
+  .sd-hero-main {
+    grid-column: span 1;
+  }
+  .sd-fact-tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  /* 2×2 now, so the first/last-child corner rule from the single-row
+     desktop layout is wrong — redo it per actual corner. */
+  .sd-fact-tile:first-child {
+    border-radius: var(--r-card) 0 0 0;
+  }
+  .sd-fact-tile:last-child {
+    border-radius: 0 0 var(--r-card) 0;
+  }
+  .sd-fact-tile:nth-child(2) {
+    border-radius: 0 var(--r-card) 0 0;
+  }
+  .sd-fact-tile:nth-child(3) {
+    border-radius: 0 0 0 var(--r-card);
+  }
+  .sd-program-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .sd-trend-rows {
+    grid-template-columns: 1fr;
+  }
+  .sd-location {
+    grid-template-columns: 1fr;
+  }
+  .sd-map {
+    grid-column: span 1;
+    height: 240px;
+  }
+  .sd-missing-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .sd-similar-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* sticky bottom action bar replaces the inline action rail */
+  .sd-actions {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    flex-direction: row;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    z-index: 20;
+    padding: var(--space-md);
+  }
+  .sd-actions .ss-btn {
+    height: 48px;
+  }
+  .school-detail {
+    padding-bottom: 96px;
+  }
+}

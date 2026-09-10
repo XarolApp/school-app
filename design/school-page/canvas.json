@@ -1,0 +1,24 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 1440, "h": 3720, "title": "Stránka školy — desktop" },
+    { "file": "Recenze.dc.html", "x": 1560, "y": 0, "w": 880, "h": 1500, "title": "Recenze — až budou existovat" },
+    { "file": "Mobil.dc.html", "x": 2560, "y": 0, "w": 390, "h": 2320, "title": "Stránka školy — mobil" }
+  ],
+  "annotations": [
+    {
+      "id": "data-note",
+      "x": 0,
+      "y": -180,
+      "w": 700,
+      "text": "Všechna čísla jsou skutečná — Střední odborná škola automobilní, informatiky a Gymnázium (Praha 15), data z Cermatu 1. kolo 2024–2026.\n\nNic tu není vymyšlené: kde údaj nemáme, je napsáno „nemáme tuto informaci“ místo výplně."
+    },
+    {
+      "id": "reviews-note",
+      "x": 1560,
+      "y": -180,
+      "w": 700,
+      "text": "Recenze: výchozí stav je prázdný (nikdo zatím nepsal). Tenhle artboard ukazuje, jak sekce vypadá, až recenze budou.\n\nStudenti píší vždy pod rolí bez jména; jméno si můžou zvolit jen rodiče a učitelé (dospělí) — GDPR čl. 8, digitální věk souhlasu je v ČR 15 let."
+    }
+  ],
+  "launch": { "view": "canvas" }
+}

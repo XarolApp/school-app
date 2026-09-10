@@ -128,11 +128,16 @@ You need **two terminal tabs/panes** running at the same time (they don't share 
 npm install
 node server.js
 ```
-Starts on `http://localhost:5000`. Reads its config from `.env` (gitignored, never
-committed). Only `SUPABASE_URL` and `SUPABASE_KEY` are needed to boot. Everything else
-degrades gracefully: missing Stripe keys make `/api/checkout` answer 503, missing
-`OPENROUTER_API_KEY` makes `/api/questionnaire` answer 503, and missing
-`SUPABASE_SERVICE_ROLE_KEY` logs a warning (needed once RLS is on).
+Starts on `http://localhost:5000` by default — **on the MacBook, port 5000 is
+claimed by macOS's AirPlay Receiver (Control Center), not this app.** Set
+`PORT=5001` in `.env` and `VITE_API_BASE_URL=http://localhost:5001` in
+`frontend/.env` on this machine; both `.env` files are gitignored so this is a
+local-only override, not a code change. Reads its config from `.env`
+(gitignored, never committed). Only `SUPABASE_URL` and `SUPABASE_KEY` are
+needed to boot. Everything else degrades gracefully: missing Stripe keys make
+`/api/checkout` answer 503, missing `OPENROUTER_API_KEY` makes
+`/api/questionnaire` answer 503, and missing `SUPABASE_SERVICE_ROLE_KEY` logs
+a warning (needed once RLS is on).
 
 **Terminal 2 — Frontend** (from repo root, in a new tab):
 ```bash
@@ -206,10 +211,22 @@ both working end to end).
 
 | Table | What it holds |
 |---|---|
-| `schools` | id, created_at, name, location, programs, contact, website, latitude, longitude |
+| `schools` | id, created_at, name, location, programs, contact, website, latitude, longitude, `redizo`, `admission_cutoff`, `acceptance_rate`, `admission_data_updated_at` |
+| `school_programs` | one row per obor per school per year, from Cermat's real admission results — `typ_skoly`, `zrizovatel`, `maturitni`, `jpz_povinna`, `jazyk_studia`, `delka_studia`, `kkov`, `kapacita`, `prihlasky`, `prijati`, `cutoff`. No client RLS policy, same as `schools` — server.js only. Declared in `supabase-setup.sql` itself as of 2026-09-08 — it existed in the live database earlier than that (created directly by the import script), so this file didn't yet describe the real schema; fixed rather than left drifting. |
 | `users` | profile mirror of the private `auth.users`: email, name, `trial_expires_at`, `subscription_status`, Stripe ids |
 | `favorites` | `(user_id, school_id)` |
 | `questionnaire_runs` | one row per completed *standalone* questionnaire: answers, matches, `label`, `is_default`, `archived_at` |
+| `school_reviews` | one row per (school, user): `role`, `role_year`, `obor_nazev`, `body`, `show_name`, `verified`, `status`. No client RLS policy — server.js only, see "User-generated content" above. |
+| `review_reports` | `(review_id, user_id)` — one report per person per review |
+| `data_reports` | crowdsourced "Nahlásit chybu v údajích": `school_id`, `user_id`, `field`, `message`, read directly in Supabase |
+
+`schools.admission_cutoff` / `acceptance_rate` and every `school_programs` row
+come from `scripts/import-admission-data.js`, which parses Cermat's yearly
+jednotná přijímací zkouška results file and matches it to `schools` by REDIZO
+(exact) or fuzzy name matching (first run only — the matched REDIZO is saved
+back). See that script's header comment for the full pipeline, and
+`scripts/backfill-redizo.js` for the one-off manual-REDIZO pattern used on the
+handful of schools the fuzzy matcher couldn't place on its own.
 
 **Trial length is set by a database trigger, not by the signup form** — 3 days, matching
 `frontend/src/config/pricing.js`. If that number ever changes it must change in both
@@ -251,10 +268,13 @@ school-app/
 ├── lib/                        # server-side, standalone questionnaire only
 │   ├── questionnaire.js        # questions, validation, OpenRouter call, quota window
 │   ├── matching.js             # deterministic scoring (NOT the onboarding one)
-│   └── pragueDistricts.js      # full-precision správní obvody, point-in-polygon
+│   ├── pragueDistricts.js      # full-precision správní obvody, point-in-polygon
+│   └── reviewFilter.js         # word filter deciding published vs held on a new review
 ├── scripts/
 │   ├── geocode-schools.js      # one-time, fills schools.latitude/longitude
-│   └── build-district-map.js   # regenerates the district geometry
+│   ├── build-district-map.js   # regenerates the district geometry
+│   ├── import-admission-data.js  # yearly Cermat import → schools + school_programs
+│   └── backfill-redizo.js        # one-off manual REDIZO fixes for hard-to-fuzzy-match schools
 ├── schoool-app-laptop-progress/  # the older laptop build, kept for reference only
 ├── design/                     # the design system — see "Design system — design/ folder" below
 │   ├── DESIGN.md                # authoritative design spec — CHECK BEFORE any non-trivial visual change
@@ -281,6 +301,7 @@ school-app/
         ├── main.jsx
         ├── App.jsx               # route table — add new routes here
         ├── App.css / index.css / auth.css
+        ├── styles/ui.css         # shared ss-* primitives (type scale, buttons, stat grid) — any page
         ├── api.js                # fetch helpers, attaches the Supabase JWT
         ├── supabaseClient.js     # browser auth client (stubs out if unconfigured)
         ├── components/
@@ -289,13 +310,23 @@ school-app/
         │   ├── ProtectedRoute.jsx
         │   ├── AuthTabs.jsx / Captcha.jsx / PasswordInput.jsx / PasswordStrength.jsx
         │   ├── FavoriteButton.jsx / ToastContext.jsx
+        │   ├── SchoolMap.jsx     # search-page map: address search + radius filter + N pins
+        │   ├── schoolDetail/     # one component per school-detail-page section
+        │   │   ├── SchoolHero / SchoolActions / CutoffExplainer / SectionNav
+        │   │   ├── ProgramList + ProgramCard   # per-obor breakdown + 3-year Cermat trend
+        │   │   ├── SchoolLocation               # single static map pin, no search/radius UI
+        │   │   ├── SchoolReviews + ReviewCard + ReviewForm
+        │   │   └── MissingDataGrid / ReportDataDialog / SimilarSchools
         │   └── onboarding/
         ├── lib/
         │   ├── matching.js + schoolFeatures.js   # ONBOARDING quiz scoring
         │   ├── schoolSearch.js   # diacritics folding, typo tolerance, ranking
+        │   ├── schoolPrograms.js # groups school_programs into per-obor cards + 3-year trend
+        │   ├── searchPrefs.js    # localStorage: recently viewed, saved filters, compare selection
         │   ├── demoSchools.js / offerEntitlement.js
         └── pages/
             ├── Home.jsx / Search.jsx / SchoolDetail.jsx
+            ├── search.css / schoolDetail.css
             ├── Login.jsx / SignUp.jsx / ForgotPassword.jsx / ResetPassword.jsx
             ├── Settings.jsx
             ├── SubscriptionExpired.jsx   # trial-expired redirect target (/predplatne)
@@ -514,6 +545,47 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
      anniversary). **The backend is here; no UI is wired to it.** The onboarding quiz is
      a separate surface with its own scoring engine.
 
+10. **School detail page** (`frontend/src/pages/SchoolDetail.jsx` + one
+    component per section under `frontend/src/components/schoolDetail/`) —
+    rebuilt 2026-09-08 from feature-brainstorm.md §4. Real per-obor breakdown
+    with a 3-year Cermat trend (`frontend/src/lib/schoolPrograms.js`
+    aggregates `school.school_programs`, grouping duplicate rows per
+    obor+year the way the school-level average already does), a single
+    static map pin, and eight explicitly-labelled "co zatím doplňujeme"
+    placeholders for §4 items with no real data source (tuition/školné,
+    obědy/ubytování, kroužky, maturita pass rate, VŠ placement, employment
+    outcomes, photos, video) — never a fabricated value. Reviews are
+    described separately below. `Search.jsx`'s own "Porovnat" button is
+    still a no-op (§5, not built) — the detail page's "Přidat k porovnání"
+    only persists a selection (`lib/searchPrefs.js`) for whenever that view
+    exists.
+
+    **User-generated content — reviews.** Real, not a stub: any
+    email-confirmed account can write one (`requireAuth`, not
+    `requireAccess` — reviewing a school you already left needs no active
+    trial). Two identity rules enforced ONLY server-side, never trusted from
+    the client:
+    - A review is pseudonymous by role ("Student · 3. ročník", "Rodič
+      studenta", …) UNLESS the reviewer is `rodic` or `ucitel` AND opted in
+      to showing their first name. Never offered to `student` / `absolvent`
+      / `navstevnik`. This is a GDPR Art. 8 consequence, not a style choice:
+      the Czech digital age of consent is 15, and ŠkolaMatch's core users
+      are 14-15-year-old 9th graders, who cannot validly consent to
+      publishing their own name next to a public opinion about a named
+      school. `rodic`/`ucitel` are adults by definition; the other three
+      roles are not.
+    - The display name is resolved from `users.name` at READ time
+      (`server.js`'s `reviewDisplayName()`), never frozen into the stored
+      row — so revoking consent actually removes the name from every review
+      immediately (GDPR Art. 17), not just new ones.
+
+    Moderation is notice-and-action, not pre-approval: a word filter
+    (`lib/reviewFilter.js` — profanity + "names a specific teacher") holds a
+    review before it ever publishes; otherwise it's live immediately, and
+    one report (`POST /api/reviews/:id/report`) holds it out of public view
+    pending a manual look. `verified` exists on every review but nothing
+    sets it yet — see `UNFORGET.md`.
+
 ## What's NOT Built Yet (MVP Scope)
 
 **Status as of 2026-08-28:** Supabase connected, schools seeded (60), onboarding flow
@@ -524,7 +596,14 @@ applied (terracotta/moss live), developer-email bypass confirmed working.
 — that file is the single source of truth for "what's left," not this section.** See
 "Keeping This File Useful" below for why deferred work lives there now, not here.
 
-Explicitly OUT of MVP scope (post-launch): Reviews/ratings, open-ended AI chat assistant.
+Explicitly OUT of MVP scope (post-launch): open-ended AI chat assistant.
+
+**Reviews are IN, as of 2026-09-08** — this line used to list them as
+post-launch; that was overridden by an explicit decision, not superseded by
+drift. Real, user-written reviews now ship on the school detail page
+(`school_reviews` table, `server.js`'s Reviews section, `POST /api/schools/:id/reviews`
+et al., `components/schoolDetail/SchoolReviews.jsx`). Q&A (a related §4
+feature) is still deferred — see `UNFORGET.md`.
 
 **The mobile app is NOT out of scope — it is planned before public launch, and it is
 intended to be the PRIMARY surface.** (Corrected 2026-08-24; an earlier version of

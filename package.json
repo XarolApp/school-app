@@ -26,5 +26,8 @@
     "express": "^5.2.1",
     "express-rate-limit": "^8.6.2",
     "stripe": "^15.0.0"
+  },
+  "devDependencies": {
+    "xlsx": "^0.18.5"
   }
 }

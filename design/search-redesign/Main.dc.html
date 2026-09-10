@@ -1,0 +1,331 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=Public+Sans:wght@400;500;600&display=swap">
+  <style>
+    :root {
+      --bg:#FAF6EF; --surface2:#F1ECE3; --ink:#221A13; --ink2:#6B6259; --ink3:#756B5C;
+      --line:#E6DFD1; --line2:#D6CBB6; --acc:#AD4F2A; --acc-ink:#FAF6EF; --acc-soft:#F6E3D6;
+      --acc-line:#DFA98C; --ok:#4F7143; --ok-soft:#E6EDDE;
+      --sans:'Public Sans',system-ui,'Segoe UI',sans-serif;
+      --heading:'Lora',Georgia,'Times New Roman',serif;
+      --r-card:18px; --r-button:14px; --r-option:16px; --r-chip:10px;
+    }
+    body { margin:0; background:var(--bg); font-family:var(--sans); color:var(--ink2);
+           font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased; }
+    a { color:var(--acc); } a:hover { color:#8A3E20; }
+    h1,h2,h3 { font-family:var(--heading); color:var(--ink); margin:0; }
+    .caps { font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; margin:0; }
+    .cap { font-size:13px; line-height:1.45; color:var(--ink2); margin:0; }
+    .num { font-variant-numeric:tabular-nums; }
+  </style>
+</helmet>
+
+<div style="padding:32px 40px; display:flex; flex-direction:column; gap:24px;">
+
+  <div style="display:flex; flex-direction:column; gap:4px;">
+    <h1 style="font-size:28px; line-height:1.2; font-weight:600; letter-spacing:-0.01em;">Databáze škol</h1>
+    <p class="cap">60 pražských středních škol · data o přijímačkách z Cermatu 2026</p>
+  </div>
+
+  <div style="display:grid; grid-template-columns:240px minmax(0,1fr); gap:24px; align-items:start;">
+
+    <!-- ================= SIDEBAR ================= -->
+    <div style="display:flex; flex-direction:column; gap:20px;">
+
+      <div style="position:relative; display:flex; align-items:center;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#756B5C" stroke-width="2"
+             stroke-linecap="round" style="position:absolute; left:12px;">
+          <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path>
+        </svg>
+        <div style="width:100%; height:44px; padding:0 16px 0 36px; border-radius:14px;
+                    border:1px solid var(--line2); background:var(--surface2); color:var(--ink3);
+                    font-size:14px; display:flex; align-items:center; box-sizing:border-box;">
+          Hledat podle názvu nebo oboru
+        </div>
+      </div>
+
+      <!-- GROUP 1 — open -->
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#221A13" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+          <p class="caps" style="color:var(--ink);">Ukončení studia</p>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <label style="display:flex; align-items:center; gap:8px; min-height:30px; font-size:13px; color:var(--ink);">
+            <span style="width:16px; height:16px; border-radius:5px; border:1.5px solid var(--acc);
+                         background:var(--acc); display:flex; align-items:center; justify-content:center; flex:none;">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#FAF6EF" stroke-width="3.5"
+                   stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"></path></svg>
+            </span>
+            <span>Maturitní</span>
+            <span class="num" style="margin-left:auto; color:var(--ink3);">56</span>
+          </label>
+          <label style="display:flex; align-items:center; gap:8px; min-height:30px; font-size:13px; color:var(--ink);">
+            <span style="width:16px; height:16px; border-radius:5px; border:1.5px solid var(--line2); flex:none;"></span>
+            <span>Výuční list</span>
+            <span class="num" style="margin-left:auto; color:var(--ink3);">16</span>
+          </label>
+        </div>
+        <p class="cap" style="font-size:12px; color:var(--ink3); border-left:2px solid var(--line);
+                              padding-left:8px; line-height:1.4;">
+          14 škol nabízí obojí, proto je součet vyšší než 60.
+        </p>
+      </div>
+
+      <div style="height:1px; background:var(--line);"></div>
+
+      <!-- GROUP 2 — open -->
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#221A13" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+          <p class="caps" style="color:var(--ink);">Typ školy</p>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:6px;">
+          <span style="border:1.5px solid var(--acc); background:var(--acc-soft); border-radius:10px;
+                       padding:4px 8px; font-size:13px; color:var(--ink); display:inline-flex; gap:6px;">
+            Gymnázium 4leté <span class="num" style="color:var(--ink3);">23</span></span>
+          <span style="border:1px solid var(--line2); border-radius:10px; padding:4px 8px; font-size:13px;
+                       color:var(--ink); display:inline-flex; gap:6px;">SOŠ <span class="num" style="color:var(--ink3);">30</span></span>
+          <span style="border:1px solid var(--line2); border-radius:10px; padding:4px 8px; font-size:13px;
+                       color:var(--ink); display:inline-flex; gap:6px;">SOU s výučním listem <span class="num" style="color:var(--ink3);">15</span></span>
+          <span style="border:1px solid var(--line2); border-radius:10px; padding:4px 8px; font-size:13px;
+                       color:var(--ink); display:inline-flex; gap:6px;">Lyceum <span class="num" style="color:var(--ink3);">11</span></span>
+          <span style="border:1px solid var(--line2); border-radius:10px; padding:4px 8px; font-size:13px;
+                       color:var(--ink); display:inline-flex; gap:6px;">Nástavba <span class="num" style="color:var(--ink3);">12</span></span>
+          <span style="border:1px solid var(--line2); border-radius:10px; padding:4px 8px; font-size:13px;
+                       color:var(--ink); display:inline-flex; gap:6px;">Gymnázium 6leté <span class="num" style="color:var(--ink3);">6</span></span>
+          <span style="border:1px solid var(--line2); border-radius:10px; padding:4px 8px; font-size:13px;
+                       color:var(--ink); display:inline-flex; gap:6px;">Gymnázium 8leté <span class="num" style="color:var(--ink3);">3</span></span>
+        </div>
+      </div>
+
+      <div style="height:1px; background:var(--line);"></div>
+
+      <!-- COLLAPSED GROUPS with count badges -->
+      <div style="display:flex; flex-direction:column; gap:2px;">
+        <div style="display:flex; align-items:center; gap:8px; min-height:38px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#221A13" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+          <p class="caps" style="color:var(--ink);">Městská část</p>
+          <span class="num" style="margin-left:auto; background:var(--acc); color:var(--acc-ink); border-radius:999px;
+                       min-width:18px; height:18px; padding:0 5px; font-size:11px; font-weight:600;
+                       display:flex; align-items:center; justify-content:center;">2</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px; min-height:38px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#221A13" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+          <p class="caps" style="color:var(--ink);">Obor a zaměření</p>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px; min-height:38px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#221A13" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+          <p class="caps" style="color:var(--ink);">Zřizovatel</p>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px; min-height:38px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#221A13" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+          <p class="caps" style="color:var(--ink);">Přijímačky a šance</p>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px; min-height:38px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#221A13" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+          <p class="caps" style="color:var(--ink);">Další</p>
+          <span class="cap" style="margin-left:auto; font-size:11px; color:var(--ink3);">jazyk · místa · KKOV</span>
+        </div>
+      </div>
+
+      <div style="height:1px; background:var(--line);"></div>
+
+      <!-- DISABLED commute filter — visibly parked, honestly labelled -->
+      <div style="display:flex; flex-direction:column; gap:8px; opacity:0.55;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#756B5C" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="3" width="16" height="14" rx="3"></rect><path d="M8 21h8M9 17v4M15 17v4M4 11h16"></path>
+          </svg>
+          <p class="caps" style="color:var(--ink3);">Dojezd MHD</p>
+          <span class="cap" style="margin-left:auto; font-size:10px; letter-spacing:0.06em; text-transform:uppercase;
+                       border:1px dashed var(--line2); border-radius:999px; padding:2px 7px; color:var(--ink3);">
+            zatím nedostupné</span>
+        </div>
+        <div style="height:6px; background:var(--surface2); border-radius:999px; border:1px solid var(--line);"></div>
+        <p class="cap" style="font-size:12px; line-height:1.4; color:var(--ink3);">
+          Skutečný čas dojezdu MHD zatím neumíme spočítat, tak ho radši neukazujeme.
+        </p>
+      </div>
+    </div>
+
+    <!-- ================= RESULTS ================= -->
+    <div style="display:flex; flex-direction:column; gap:16px; min-width:0;">
+
+      <div style="display:flex; align-items:baseline; gap:8px; flex-wrap:wrap;">
+        <h2 class="num" style="font-size:22px; font-weight:500; line-height:1.25;">23 škol z 60</h2>
+        <p class="cap">odpovídá 3 filtrům · seznam se mění průběžně, nic se nepotvrzuje</p>
+      </div>
+
+      <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
+        <span style="display:inline-flex; align-items:center; gap:4px; border-radius:10px; padding:4px 8px;
+                     font-size:13px; background:var(--surface2); border:1px solid var(--line); color:var(--ink);">
+          Maturitní
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6B6259" stroke-width="2.5"
+               stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></span>
+        <span style="display:inline-flex; align-items:center; gap:4px; border-radius:10px; padding:4px 8px;
+                     font-size:13px; background:var(--surface2); border:1px solid var(--line); color:var(--ink);">
+          Gymnázium 4leté
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6B6259" stroke-width="2.5"
+               stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></span>
+        <span style="display:inline-flex; align-items:center; gap:4px; border-radius:10px; padding:4px 8px;
+                     font-size:13px; background:var(--surface2); border:1px solid var(--line); color:var(--ink);">
+          Praha 1, Praha 9
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6B6259" stroke-width="2.5"
+               stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></span>
+        <span style="font-size:13px; color:var(--acc); text-decoration:underline; margin-left:4px;">Zrušit všechny filtry</span>
+      </div>
+
+      <!-- sort + view toggle -->
+      <div style="display:flex; gap:8px; align-items:stretch;">
+        <div style="flex:1; min-width:160px; padding:8px 16px; border-radius:10px; border:1.5px solid var(--acc);
+                    background:var(--acc-soft);">
+          <span style="display:block; font-size:13px; font-weight:600; color:var(--ink);">Nejvíc splněných kritérií</span>
+          <span style="display:block; font-size:13px; color:var(--ink2);">nebere ohled na dojezd</span>
+        </div>
+        <div style="flex:1; min-width:160px; padding:8px 16px; border-radius:10px; border:1px solid var(--line2);">
+          <span style="display:block; font-size:13px; font-weight:600; color:var(--ink);">Nejnižší hranice přijetí</span>
+          <span style="display:block; font-size:13px; color:var(--ink2);">bezpečnější, ne nutně slabší škola</span>
+        </div>
+        <div style="flex:1; min-width:160px; padding:8px 16px; border-radius:10px; border:1px solid var(--line2);">
+          <span style="display:block; font-size:13px; font-weight:600; color:var(--ink);">Největší šance na přijetí</span>
+          <span style="display:block; font-size:13px; color:var(--ink2);">podle loňské míry přijetí</span>
+        </div>
+        <div style="display:flex; border:1px solid var(--line2); border-radius:10px; overflow:hidden; flex:none;">
+          <span style="padding:8px 14px; font-size:13px; font-weight:600; background:var(--acc); color:var(--acc-ink);">Seznam</span>
+          <span style="padding:8px 14px; font-size:13px; font-weight:600; color:var(--ink);">Mapa</span>
+        </div>
+      </div>
+
+      <!-- ROW 1 — a school offering BOTH maturita and výuční list -->
+      <div style="display:flex; gap:16px; padding:10px 16px; border-bottom:1px solid var(--line);">
+        <span style="width:16px; height:16px; border-radius:5px; border:1.5px solid var(--line2); flex:none; margin-top:4px;"></span>
+        <div style="display:flex; flex-direction:column; gap:8px; min-width:0; flex:1;">
+          <div>
+            <h3 style="font-size:18px; line-height:1.6; font-weight:500;">Střední odborná škola uměleckořemeslná s. r. o.</h3>
+            <p class="cap">Praha 9 · soukromá · maturitní i výuční list · 12 oborů</p>
+          </div>
+          <div style="display:flex; gap:6px; flex-wrap:wrap;">
+            <span style="border-radius:10px; padding:4px 8px; font-size:13px; background:var(--surface2);
+                         border:1px solid var(--line); color:var(--ink2);">Lyceum</span>
+            <span style="border-radius:10px; padding:4px 8px; font-size:13px; background:var(--surface2);
+                         border:1px solid var(--line); color:var(--ink2);">Umělecký kovář</span>
+            <span style="border-radius:10px; padding:4px 8px; font-size:13px; background:var(--surface2);
+                         border:1px solid var(--line); color:var(--ink2);">Zlatník a klenotník</span>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1px; background:var(--line);
+                      border:1px solid var(--line); border-radius:8px; overflow:hidden; max-width:520px;">
+            <div style="background:var(--bg); padding:8px 10px;">
+              <p class="num" style="font-size:15px; font-weight:600; color:var(--ink); margin:0;">31,5 %</p>
+              <p class="caps" style="color:var(--ink2); margin-top:2px; font-weight:400;">průměrná hranice</p></div>
+            <div style="background:var(--bg); padding:8px 10px;">
+              <p class="num" style="font-size:15px; font-weight:600; color:var(--ink); margin:0;">32,1 %</p>
+              <p class="caps" style="color:var(--ink2); margin-top:2px; font-weight:400;">přijato z přihlášených</p></div>
+            <div style="background:var(--bg); padding:8px 10px;">
+              <p class="num" style="font-size:15px; font-weight:600; color:var(--ink); margin:0;">133</p>
+              <p class="caps" style="color:var(--ink2); margin-top:2px; font-weight:400;">volných míst</p></div>
+            <div style="background:var(--bg); padding:8px 10px;">
+              <p class="num" style="font-size:15px; font-weight:600; color:var(--ink); margin:0;">3 / 3</p>
+              <p class="caps" style="color:var(--ink2); margin-top:2px; font-weight:400;">splněných kritérií</p></div>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px; flex:none;">
+          <span style="border-radius:14px; padding:8px 16px; font-size:13px; font-weight:600; color:var(--ink);
+                       border:1px solid var(--line2);">Detail</span>
+        </div>
+      </div>
+
+      <!-- ROW 2 -->
+      <div style="display:flex; gap:16px; padding:10px 16px; border-bottom:1px solid var(--line);">
+        <span style="width:16px; height:16px; border-radius:5px; border:1.5px solid var(--line2); flex:none; margin-top:4px;"></span>
+        <div style="display:flex; flex-direction:column; gap:8px; min-width:0; flex:1;">
+          <div>
+            <h3 style="font-size:18px; line-height:1.6; font-weight:500;">Anglicko-české gymnázium AMAZON s. r. o.</h3>
+            <p class="cap">Praha 1 · soukromá · maturitní · gymnázium 4leté</p>
+          </div>
+          <div style="display:flex; gap:6px; flex-wrap:wrap;">
+            <span style="border-radius:10px; padding:4px 8px; font-size:13px; background:var(--surface2);
+                         border:1px solid var(--line); color:var(--ink2);">Gymnázium</span>
+            <span style="border-radius:10px; padding:4px 8px; font-size:13px; background:var(--ok-soft);
+                         border:1px solid var(--ok); color:var(--ok);">Výuka vybraných předmětů v AJ</span>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1px; background:var(--line);
+                      border:1px solid var(--line); border-radius:8px; overflow:hidden; max-width:520px;">
+            <div style="background:var(--bg); padding:8px 10px;">
+              <p class="num" style="font-size:15px; font-weight:600; color:var(--ink); margin:0;">52 %</p>
+              <p class="caps" style="color:var(--ink2); margin-top:2px; font-weight:400;">průměrná hranice</p></div>
+            <div style="background:var(--bg); padding:8px 10px;">
+              <p class="num" style="font-size:15px; font-weight:600; color:var(--ink); margin:0;">32,7 %</p>
+              <p class="caps" style="color:var(--ink2); margin-top:2px; font-weight:400;">přijato z přihlášených</p></div>
+            <div style="background:var(--bg); padding:8px 10px;">
+              <p class="num" style="font-size:15px; font-weight:600; color:var(--ink); margin:0;">120</p>
+              <p class="caps" style="color:var(--ink2); margin-top:2px; font-weight:400;">volných míst</p></div>
+            <div style="background:var(--bg); padding:8px 10px;">
+              <p class="num" style="font-size:15px; font-weight:600; color:var(--ink); margin:0;">3 / 3</p>
+              <p class="caps" style="color:var(--ink2); margin-top:2px; font-weight:400;">splněných kritérií</p></div>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px; flex:none;">
+          <span style="border-radius:14px; padding:8px 16px; font-size:13px; font-weight:600; color:var(--ink);
+                       border:1px solid var(--line2);">Detail</span>
+        </div>
+      </div>
+
+      <!-- ROW 3 — the NO-DATA state, drawn deliberately -->
+      <div style="display:flex; gap:16px; padding:10px 16px; border-bottom:1px solid var(--line);">
+        <span style="width:16px; height:16px; border-radius:5px; border:1.5px solid var(--line2); flex:none; margin-top:4px;"></span>
+        <div style="display:flex; flex-direction:column; gap:8px; min-width:0; flex:1;">
+          <div>
+            <h3 style="font-size:18px; line-height:1.6; font-weight:500;">Hotelová škola, Praha 10, Vršovická 43</h3>
+            <p class="cap">Praha 10 · veřejná · maturitní</p>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1px; background:var(--line);
+                      border:1px solid var(--line); border-radius:8px; overflow:hidden; max-width:520px;">
+            <div style="background:var(--bg); padding:8px 10px;">
+              <p style="font-size:15px; font-weight:600; color:var(--ink3); margin:0;">—</p>
+              <p class="caps" style="color:var(--ink2); margin-top:2px; font-weight:400;">průměrná hranice</p></div>
+            <div style="background:var(--bg); padding:8px 10px;">
+              <p style="font-size:15px; font-weight:600; color:var(--ink3); margin:0;">—</p>
+              <p class="caps" style="color:var(--ink2); margin-top:2px; font-weight:400;">přijato z přihlášených</p></div>
+            <div style="background:var(--bg); padding:8px 10px;">
+              <p style="font-size:15px; font-weight:600; color:var(--ink3); margin:0;">—</p>
+              <p class="caps" style="color:var(--ink2); margin-top:2px; font-weight:400;">volných míst</p></div>
+            <div style="background:var(--bg); padding:8px 10px;">
+              <p class="num" style="font-size:15px; font-weight:600; color:var(--ink); margin:0;">2 / 3</p>
+              <p class="caps" style="color:var(--ink2); margin-top:2px; font-weight:400;">splněných kritérií</p></div>
+          </div>
+          <p class="cap" style="font-size:12px; border-left:2px solid var(--line2); padding-left:8px; line-height:1.4;">
+            Tahle škola nebyla v prvním kole přijímaček 2026, takže o ní zatím čísla nemáme.
+          </p>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px; flex:none;">
+          <span style="border-radius:14px; padding:8px 16px; font-size:13px; font-weight:600; color:var(--ink);
+                       border:1px solid var(--line2);">Detail</span>
+        </div>
+      </div>
+
+      <p class="cap" style="font-size:12px; color:var(--ink3);">
+        Hranice přijetí a míra přijetí jsou reálná data z Cermatu — průměr přes všechny obory školy.
+        U 2 z 60 škol zatím data nejsou.
+      </p>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

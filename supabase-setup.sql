@@ -169,6 +169,114 @@ create index if not exists questionnaire_runs_user_default_idx
 
 
 -- ----------------------------------------------------------------------------
+-- 3c. Per-obor admission data (school_programs)
+--
+-- One row per obor per school per year, from Cermat's real jednotná přijímací
+-- zkouška results (`scripts/import-admission-data.js`). Backs the per-obor
+-- breakdown on the school detail page — the school-level admission_cutoff /
+-- acceptance_rate columns above are an average across all of these, useful as
+-- a headline number but not for judging any single obor.
+--
+-- This table already existed in the live database (created by the import
+-- script before this file described it) — this block only makes the file
+-- describe reality, matching CLAUDE.md's claim that this file is the source
+-- of truth for the schema. `create table if not exists` makes this safe to
+-- run against a database that already has the table.
+-- ----------------------------------------------------------------------------
+
+create table if not exists public.school_programs (
+  id bigint generated always as identity primary key,
+  school_id bigint not null references public.schools (id) on delete cascade,
+  rok int not null,
+  kkov text,
+  obor_nazev text,
+  typ_skoly text,
+  zrizovatel text,
+  maturitni boolean,
+  jpz_povinna boolean,
+  jazyk_studia text,
+  delka_studia int,
+  forma_vzdelavani text,
+  kapacita int,
+  prihlasky int,
+  prijati int,
+  cutoff numeric
+);
+
+create index if not exists school_programs_school_id_idx
+  on public.school_programs (school_id);
+
+
+-- ----------------------------------------------------------------------------
+-- 3d. Reviews and reports
+--
+-- Reviews are real user-generated content, not a stub. Two GDPR-driven rules
+-- that only server.js enforces (never trust the browser for either):
+--
+--   1. `show_name` is meaningless unless role is 'rodic' or 'ucitel' — those
+--      are the only two roles that are adults by definition. A student or
+--      absolvent review is ALWAYS pseudonymous ("Student · 3. ročník"),
+--      because the Czech digital age of consent (GDPR Art. 8) is 15 and our
+--      core users are 14-15-year-old 9th graders, who cannot validly consent
+--      to publishing their own name next to an opinion about a named school.
+--   2. The display name itself is never stored here — see server.js's
+--      reviewDisplayName(), which resolves `users.name` at READ time. That is
+--      what makes revoking consent (switching back to pseudonymous) actually
+--      remove the name everywhere, per GDPR Art. 17, instead of leaving it
+--      frozen into every review already posted.
+--
+-- `status` is the moderation state: 'published' (default, shown immediately —
+-- a review only gets published this fast because posting is gated behind an
+-- email-confirmed account and a word filter), 'held' (a report or the word
+-- filter flagged it — hidden from everyone but its author until manually
+-- reviewed), 'hidden' (reserved for a manual takedown).
+-- ----------------------------------------------------------------------------
+
+create table if not exists public.school_reviews (
+  id bigint generated always as identity primary key,
+  school_id bigint not null references public.schools (id) on delete cascade,
+  user_id uuid not null references auth.users (id) on delete cascade,
+  role text not null check (role in ('student', 'absolvent', 'rodic', 'ucitel', 'navstevnik')),
+  role_year int check (role_year between 1 and 2100),
+  obor_nazev text check (char_length(obor_nazev) <= 120),
+  body text not null check (char_length(body) between 40 and 2000),
+  show_name boolean not null default false,
+  verified boolean not null default false,
+  status text not null default 'published' check (status in ('published', 'held', 'hidden')),
+  created_at timestamptz not null default now()
+);
+
+-- One review per person per school — not a technical limit, a product one:
+-- this is "what's it like to go here", not a comment thread.
+create unique index if not exists school_reviews_one_per_user
+  on public.school_reviews (school_id, user_id);
+
+create index if not exists school_reviews_school_idx
+  on public.school_reviews (school_id, status);
+
+-- One report per person per review — the primary key itself makes reporting
+-- idempotent, so clicking "Nahlásit" twice is harmless rather than an error.
+create table if not exists public.review_reports (
+  review_id bigint not null references public.school_reviews (id) on delete cascade,
+  user_id uuid not null references auth.users (id) on delete cascade,
+  created_at timestamptz not null default now(),
+  primary key (review_id, user_id)
+);
+
+-- Crowdsourced data-accuracy reports ("Nahlásit chybu v údajích") — a free
+-- correction channel, not a review. No status/moderation columns: these are
+-- read by a human (you) directly in Supabase, not rendered back to users.
+create table if not exists public.data_reports (
+  id bigint generated always as identity primary key,
+  school_id bigint not null references public.schools (id) on delete cascade,
+  user_id uuid not null references auth.users (id) on delete cascade,
+  field text,
+  message text not null check (char_length(message) between 10 and 1000),
+  created_at timestamptz not null default now()
+);
+
+
+-- ----------------------------------------------------------------------------
 -- 4. Does this account currently have access?
 --
 -- One definition, used by every policy below, so "is this person allowed in"
@@ -209,6 +317,10 @@ alter table public.users enable row level security;
 alter table public.favorites enable row level security;
 alter table public.schools enable row level security;
 alter table public.questionnaire_runs enable row level security;
+alter table public.school_programs enable row level security;
+alter table public.school_reviews enable row level security;
+alter table public.review_reports enable row level security;
+alter table public.data_reports enable row level security;
 
 -- --- users -------------------------------------------------------------------
 -- Read your own profile. Nothing else: there is deliberately no INSERT policy
@@ -277,6 +389,38 @@ create policy "delete own questionnaire runs"
 -- rather than a pin in the wrong place.
 alter table public.schools add column if not exists latitude double precision;
 alter table public.schools add column if not exists longitude double precision;
+
+-- Real admission data from Cermat's yearly jednotná přijímací zkouška results
+-- (data.cermat.cz), filled in by `scripts/import-admission-data.js`. Both
+-- numbers are averaged across every obor a school offers AND across every
+-- year's file the script has been given — never a single program's number,
+-- because Search.jsx shows one figure per school and a single-program cutoff
+-- would overstate how hard the easiest or hardest program at that school is.
+-- Null until the script runs; Search.jsx must treat null as "no data", never
+-- as 0, matching the zero-shame/never-fabricate rule already used for the
+-- synthetic stand-ins it replaces.
+alter table public.schools add column if not exists redizo text;
+alter table public.schools add column if not exists admission_cutoff numeric;
+alter table public.schools add column if not exists acceptance_rate numeric;
+alter table public.schools add column if not exists admission_data_updated_at timestamptz;
+
+-- --- school_programs -----------------------------------------------------------
+-- Same reasoning as schools directly above: RLS on, no policy at all. Every
+-- read goes through server.js's `.select('*, school_programs(*)')` running as
+-- service_role — the browser cannot query this table on its own either.
+
+-- --- school_reviews / review_reports / data_reports -----------------------------
+-- RLS on, no policies at all — one step further than questionnaire_runs (which
+-- at least allows a client SELECT). Every read and write for all three tables
+-- goes through server.js:
+--   * reading reviews needs the display-name resolution in
+--     reviewDisplayName() (never send a name for a review that isn't showing
+--     one — that logic cannot live in a client-readable policy)
+--   * writing a review needs the word-filter check before the row lands
+--   * reporting a review needs to also flip that review's status, which is
+--     two tables changing together
+-- A client-writable policy on any of these would let the browser bypass all
+-- three.
 
 
 -- ----------------------------------------------------------------------------

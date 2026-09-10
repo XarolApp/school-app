@@ -39,73 +39,11 @@
   }
 }
 
-/* ---------- local re-expression of the design's type scale ---------- */
-.school-search .ss-headline-lg {
-  font-family: var(--heading);
-  font-weight: var(--fw-headline-md);
-  font-size: var(--fs-headline-md);
-  line-height: var(--lh-headline-md);
-  color: var(--on-surface);
-  margin: 0;
-}
-.school-search .ss-headline-md {
-  font-family: var(--heading);
-  font-weight: var(--fw-headline-sm);
-  font-size: var(--fs-headline-sm);
-  line-height: var(--lh-headline-sm);
-  color: var(--on-surface);
-  margin: 0;
-}
-.school-search .ss-headline-sm {
-  font-family: var(--heading);
-  font-weight: var(--fw-headline-sm);
-  font-size: var(--fs-body-lg);
-  line-height: var(--lh-body-lg);
-  color: var(--on-surface);
-  margin: 0;
-}
-.school-search .ss-body-md {
-  font-family: var(--sans);
-  font-size: var(--fs-body-md);
-  line-height: var(--lh-body-md);
-  margin: 0;
-}
-.school-search .ss-body-sm {
-  font-family: var(--sans);
-  font-size: var(--fs-body-sm);
-  line-height: var(--lh-body-sm);
-  margin: 0;
-}
-.school-search .ss-caption {
-  font-family: var(--sans);
-  font-size: var(--fs-caption);
-  line-height: var(--lh-caption);
-  color: var(--text-muted);
-  margin: 0;
-}
-.school-search .ss-data-md {
-  font-family: var(--sans);
-  font-size: var(--fs-data-md);
-  line-height: var(--lh-data-md);
-  font-variant-numeric: tabular-nums;
-  color: var(--on-surface);
-  margin: 0;
-}
-.school-search .ss-data-sm {
-  font-family: var(--sans);
-  font-size: var(--fs-data-sm);
-  line-height: var(--lh-data-sm);
-  font-variant-numeric: tabular-nums;
-  margin: 0;
-}
-.school-search .ss-label-caps {
-  font-family: var(--sans);
-  font-size: var(--fs-label-caps);
-  font-weight: var(--fw-label-caps);
-  letter-spacing: var(--ls-label-caps);
-  text-transform: uppercase;
-  margin: 0;
-}
+/* The type scale (ss-headline-*, ss-body-*, ss-caption, ss-data-*,
+ * ss-label-caps) moved to ../styles/ui.css — those classes are shared with
+ * every page now, not just this one. They resolved purely from tokens.css's
+ * own global var() names already, so the move changed nothing about how they
+ * render here. */
 
 /* ---------- layout ---------- */
 .school-search {
@@ -245,6 +183,15 @@
 .ss-district-toggle span {
   color: var(--text-faint);
   font-variant-numeric: tabular-nums;
+}
+
+.ss-recent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+.ss-recent a.ss-district-toggle {
+  text-decoration: none;
 }
 
 /* ---------- results column ---------- */
@@ -419,41 +366,8 @@
   color: var(--text-muted);
 }
 
-.ss-btn {
-  appearance: none;
-  font: inherit;
-  cursor: pointer;
-  border-radius: var(--r-button);
-  padding: var(--space-sm) var(--space-md);
-  font-size: var(--fs-caption);
-  font-weight: 600;
-  border: 1px solid transparent;
-  transition: background var(--dur-state) var(--ease-out), border-color var(--dur-state) var(--ease-out), color var(--dur-state) var(--ease-out);
-}
-.ss-btn-primary {
-  background: var(--primary);
-  color: var(--primary-strong);
-}
-.ss-btn-primary:hover {
-  filter: brightness(0.95);
-}
-.ss-btn-secondary {
-  background: transparent;
-  color: var(--on-surface);
-  border-color: var(--border-strong);
-}
-.ss-btn-secondary:hover {
-  background: var(--surface-card);
-}
-.ss-btn-sm {
-  padding: var(--space-xs) var(--space-sm);
-  font-size: var(--fs-caption);
-}
-a.ss-btn {
-  display: inline-flex;
-  align-items: center;
-  text-decoration: none;
-}
+/* .ss-btn / .ss-btn-primary/-secondary/-sm / a.ss-btn moved to
+   ../styles/ui.css — shared across pages now. */
 
 .ss-clear-row {
   display: flex;
@@ -560,28 +474,70 @@ a.ss-btn {
   max-width: 66ch;
 }
 
-.ss-stat-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  overflow: hidden;
-  max-width: 520px;
+/* .ss-stat-grid / .ss-stat-cell moved to ../styles/ui.css — shared across
+   pages now. The <860px override below stays here: it's this page's own
+   row-card layout decision, not a shared rule. */
+
+/* Hover-to-reveal stat explanations — page-local (not moved to ui.css)
+   because this exact pattern (a decorative info glyph inside a label, shown
+   on hover, no click needed) is specific to these row cards being wrapped
+   in a <Link> — see the StatInfo comment in Search.jsx for why hover, not
+   tap. */
+/* ui.css's .ss-stat-grid sets overflow:hidden (needed there for its rounded-
+   corner background trick) which would otherwise clip the tooltip below —
+   overridden here, scoped to just this page's row-card grids, not
+   SchoolMap.jsx's popup card or anything else sharing the base rule. */
+.school-search .ss-row .ss-stat-grid,
+.school-search .sm-card-stats {
+  overflow: visible;
 }
-.ss-stat-cell {
+.school-search .ss-stat-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.school-search .ss-stat-info {
+  position: relative;
+  display: inline-flex;
+  color: var(--text-faint);
+}
+.school-search .ss-stat-info:hover {
+  color: var(--primary);
+}
+.school-search .ss-stat-tooltip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  width: 240px;
+
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--r-chip);
+  border: 1px solid var(--border-strong);
   background: var(--surface);
-  padding: var(--space-sm) var(--row-pad-dense);
+  box-shadow: 0 4px 16px rgba(34, 26, 19, 0.15);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--text-body);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 150ms ease;
+  z-index: 30;
+  pointer-events: none;
 }
-.ss-stat-cell .ss-data-md {
-  font-weight: 600;
+.school-search .ss-stat-info:hover .ss-stat-tooltip {
+  opacity: 1;
+  visibility: visible;
 }
-.ss-stat-cell .ss-stat-label {
-  font-size: var(--fs-label-caps);
-  line-height: 1.3;
-  color: var(--text-muted);
-  margin-top: 2px;
+/* placement="bottom" (SchoolMap.jsx's popup card) — opens downward instead
+   of upward, since that card scrolls its own overflow-y and would clip a
+   tooltip trying to escape past its top edge. */
+.school-search .ss-stat-info-bottom .ss-stat-tooltip {
+  bottom: auto;
+  top: calc(100% + 8px);
 }
 
 .ss-row-actions {
@@ -662,11 +618,161 @@ a.ss-btn {
     width: 100%;
     justify-content: flex-end;
   }
-  .ss-stat-grid {
+  .school-search .ss-stat-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     max-width: none;
   }
   .ss-compare-bar-inner {
     padding: var(--space-md);
+  }
+}
+
+/* ---------- accordion filter sections (13 filters, never all expanded) ---------- */
+.ss-facet-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+.ss-facet-section-head {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  cursor: pointer;
+  font: inherit;
+  min-height: 30px;
+  text-align: left;
+}
+.ss-facet-section-head svg {
+  color: var(--text-faint);
+  flex: none;
+  transition: transform var(--dur-state) var(--ease-out);
+}
+.ss-facet-section-head svg.is-open {
+  transform: rotate(180deg);
+}
+.ss-facet-section-head .ss-label-caps {
+  color: var(--on-surface);
+}
+.ss-facet-badge {
+  margin-left: auto;
+  background: var(--primary);
+  color: var(--primary-strong);
+  border-radius: 999px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-variant-numeric: tabular-nums;
+}
+.ss-facet-section-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding-left: 22px; /* aligns under the chevron+label, not the icon */
+}
+.ss-facet-note {
+  font-size: 12px;
+  color: var(--text-faint);
+  border-left: 2px solid var(--border);
+  padding-left: var(--space-sm);
+  line-height: 1.4;
+}
+
+/* ---------- parked / disabled filter (dojezd MHD) ---------- */
+.ss-parked {
+  opacity: 0.55;
+}
+.ss-parked-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+.ss-parked-badge {
+  margin-left: auto;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px dashed var(--border-strong);
+  border-radius: 999px;
+  padding: 2px 7px;
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+.ss-parked input[type='range'] {
+  pointer-events: none;
+}
+
+.ss-sort-toggle.is-disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.ss-sort-toggle.is-disabled .ss-sort-tradeoff {
+  color: var(--text-faint);
+}
+
+/* ---------- list / map view toggle ---------- */
+.ss-view-toggle {
+  margin-left: auto;
+  display: flex;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-chip);
+  overflow: hidden;
+  flex: none;
+}
+.ss-view-toggle button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  padding: var(--space-xs) var(--space-md);
+  cursor: pointer;
+  color: var(--on-surface);
+}
+.ss-view-toggle button.is-active {
+  background: var(--primary);
+  color: var(--primary-strong);
+}
+
+.ss-no-data-note {
+  font-size: 12px;
+  color: var(--text-faint);
+  border-left: 2px solid var(--border-strong);
+  padding-left: var(--space-sm);
+  line-height: 1.4;
+}
+
+/* ---------- mobile commit bar (never a blind Apply — always shows the live count) ---------- */
+.ss-mobile-commit {
+  display: none;
+}
+@media (max-width: 860px) {
+  .ss-mobile-commit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    appearance: none;
+    border: 0;
+    border-radius: var(--r-button);
+    background: var(--primary);
+    color: var(--primary-strong);
+    font: inherit;
+    font-size: var(--fs-body-md);
+    font-weight: 600;
+    min-height: 52px;
+    cursor: pointer;
+    position: sticky;
+    bottom: var(--space-md);
+    font-variant-numeric: tabular-nums;
+    box-shadow: 0 6px 20px rgba(34, 26, 19, 0.16);
   }
 }

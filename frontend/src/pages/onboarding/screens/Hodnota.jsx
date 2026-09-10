@@ -45,19 +45,19 @@ function Hodnota() {
   const without = parent
     ? [
         <>
-          Až <b>{hours} hodin</b> ztracených proklikáváním nepřehledných webů škol
+          Cca <b>{hours} odpolední</b> ztracených proklikáváním nepřehledných webů škol
         </>,
         <>{count} webů, každý jinak poskládaný</>,
         <>Poznámky na papíře nebo v deseti otevřených kartách</>,
         <>
-          4 roky života strávené na škole, která <b>nevyhovuje</b> vašemu dítěti
+          4 roky života strávené na škole, která <b>nemusí vyhovovat</b> vašemu dítěti
         </>,
       ]
     : [
         <>{count} webů, každý jinak poskládaný</>,
         <>Poznámky na papíře nebo v deseti otevřených kartách</>,
         <>
-          4 roky života strávené na škole, která ti <b>nevyhovuje</b>
+          4 roky života strávené na škole, která ti <b>nemusí vyhovovat</b>
         </>,
       ];
 
@@ -89,7 +89,7 @@ function Hodnota() {
               <p className="ob-eyebrow">{parent ? 'Co tím získá vaše dítě' : 'Co tím získáš'}</p>
               <h1 className="ob-title ob-pw-title">
                 {parent
-                  ? 'Pomůžeme vašemu dítěti vybrat školu, která se k němu doopravdy hodí'
+                  ? <>Pomůžeme vašemu dítěti vybrat školu, do které se <b>doopravdy</b> hodí</>
                   : `Ušetříš si asi ${hours} odpolední klikání po webech škol`}
               </h1>
             </div>

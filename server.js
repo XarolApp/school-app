@@ -13,6 +13,7 @@ const {
 } = require('./lib/questionnaire');
 const { scoreSchools } = require('./lib/matching');
 const { districtOfSchool } = require('./lib/pragueDistricts');
+const { shouldHold } = require('./lib/reviewFilter');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -96,6 +97,16 @@ const checkoutLimiter = rateLimit({
 const questionnaireLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   limit: 15,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  message: { error: 'Příliš mnoho pokusů. Zkus to prosím za hodinu.' },
+});
+
+// Posting/reporting reviews and data-corrections. Low limit on purpose — a
+// genuine student writes a handful of these ever, not fifteen an hour.
+const reviewLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  limit: 5,
   standardHeaders: 'draft-7',
   legacyHeaders: false,
   message: { error: 'Příliš mnoho pokusů. Zkus to prosím za hodinu.' },
@@ -299,10 +310,10 @@ app.patch('/api/me', requireAuth, async (req, res) => {
   res.json(data);
 });
 
-// GDPR erasure. Deleting the auth account cascades to public.users, favorites
-// and questionnaire_runs (all foreign-key it with ON DELETE CASCADE), so this
-// one call removes everything we hold. It needs the admin API, hence the
-// service key.
+// GDPR erasure. Deleting the auth account cascades to public.users, favorites,
+// questionnaire_runs, school_reviews, review_reports and data_reports (all
+// foreign-key it with ON DELETE CASCADE), so this one call removes everything
+// we hold. It needs the admin API, hence the service key.
 app.delete('/api/me', requireAuth, async (req, res) => {
   if (!SERVICE_KEY) {
     return res.status(503).json({ error: 'Mazání účtu není nastavené.' });
@@ -425,7 +436,7 @@ async function withMatchScores(userId, schools) {
 app.get('/api/schools', optionalAuth, async (req, res) => {
   const { data, error } = await supabase
     .from('schools')
-    .select('*')
+    .select('*, school_programs(*)')
     .order('name');
 
   if (error) return res.status(500).json({ error: error.message });
@@ -440,7 +451,7 @@ app.get('/api/schools/:id', optionalAuth, async (req, res) => {
 
   const { data, error } = await supabase
     .from('schools')
-    .select('*')
+    .select('*, school_programs(*)')
     .eq('id', id)
     .single();
 
@@ -496,6 +507,194 @@ app.delete('/api/favorites/:schoolId', requireAuth, async (req, res) => {
 
   if (error) return res.status(500).json({ error: error.message });
   res.status(204).end();
+});
+
+/* ---------------------------------------------------------------------------
+ * Reviews
+ *
+ * Real user-generated content, posted by any email-confirmed account
+ * (requireAuth only, never requireAccess — writing a review about a school
+ * you already left has nothing to do with an active trial or subscription).
+ *
+ * The identity rule lives entirely here, never in the browser: a review's
+ * `show_name` column only means anything when the reviewer's role is an
+ * adult one ('rodic' or 'ucitel') — see reviewDisplayName() below and the
+ * long comment on school_reviews in supabase-setup.sql for the GDPR Art. 8
+ * reasoning (Czech digital age of consent is 15; our core users are 14-15).
+ * ------------------------------------------------------------------------- */
+
+// Pseudonym unless the reviewer is an adult role AND opted in. First name
+// only, and resolved here at READ time (never stored) so switching back to
+// pseudonymous actually removes the name from every review immediately,
+// rather than leaving it frozen into rows already posted (GDPR Art. 17).
+function reviewDisplayName(row) {
+  const adultRole = row.role === 'rodic' || row.role === 'ucitel';
+  if (row.show_name && adultRole && row.users?.name) {
+    return row.users.name.trim().split(/\s+/)[0];
+  }
+  return null;
+}
+
+function toPublicReview(row, userId) {
+  return {
+    id: row.id,
+    role: row.role,
+    role_year: row.role_year,
+    obor_nazev: row.obor_nazev,
+    body: row.body,
+    display_name: reviewDisplayName(row),
+    verified: row.verified,
+    created_at: row.created_at,
+    is_mine: userId != null && row.user_id === userId,
+  };
+}
+
+const REVIEW_ROLES = ['student', 'absolvent', 'rodic', 'ucitel', 'navstevnik'];
+
+app.get('/api/schools/:id/reviews', optionalAuth, async (req, res) => {
+  const schoolId = Number(req.params.id);
+  if (!Number.isInteger(schoolId)) {
+    return res.status(400).json({ error: 'Neplatné ID školy.' });
+  }
+
+  // Signed-in callers also get their own held/hidden review back (so they can
+  // see "čeká na kontrolu" instead of it silently vanishing), never anyone
+  // else's non-published one.
+  let query = supabase
+    .from('school_reviews')
+    .select('id, role, role_year, obor_nazev, body, show_name, verified, status, created_at, user_id, users (name)')
+    .eq('school_id', schoolId)
+    .order('verified', { ascending: false })
+    .order('created_at', { ascending: false });
+
+  const { data, error } = await query;
+  if (error) return res.status(500).json({ error: error.message });
+
+  const visible = data.filter(
+    (row) => row.status === 'published' || (req.user && row.user_id === req.user.id)
+  );
+
+  res.json(visible.map((row) => toPublicReview(row, req.user?.id)));
+});
+
+app.post('/api/schools/:id/reviews', reviewLimiter, requireAuth, async (req, res) => {
+  const schoolId = Number(req.params.id);
+  if (!Number.isInteger(schoolId)) {
+    return res.status(400).json({ error: 'Neplatné ID školy.' });
+  }
+
+  const role = req.body?.role;
+  if (!REVIEW_ROLES.includes(role)) {
+    return res.status(400).json({ error: 'Neplatná role.' });
+  }
+
+  const body = typeof req.body?.body === 'string' ? req.body.body.trim() : '';
+  if (body.length < 40 || body.length > 2000) {
+    return res.status(400).json({ error: 'Recenze musí mít 40 až 2000 znaků.' });
+  }
+
+  const roleYear = req.body?.roleYear != null ? Number(req.body.roleYear) : null;
+  if (roleYear != null && (!Number.isInteger(roleYear) || roleYear < 1 || roleYear > 2100)) {
+    return res.status(400).json({ error: 'Neplatný rok.' });
+  }
+
+  const oborNazev = typeof req.body?.oborNazev === 'string' ? req.body.oborNazev.trim().slice(0, 120) : null;
+
+  // Never trust the client for this — only the two adult roles may EVER show
+  // a name, no matter what the request body says.
+  const adultRole = role === 'rodic' || role === 'ucitel';
+  const showName = adultRole && req.body?.showName === true;
+
+  const status = shouldHold(body) ? 'held' : 'published';
+
+  const { data, error } = await supabase
+    .from('school_reviews')
+    .insert({
+      school_id: schoolId,
+      user_id: req.user.id,
+      role,
+      role_year: roleYear,
+      obor_nazev: oborNazev || null,
+      body,
+      show_name: showName,
+      status,
+    })
+    .select('id, role, role_year, obor_nazev, body, show_name, verified, status, created_at, user_id, users (name)')
+    .single();
+
+  if (error) {
+    if (error.code === '23505') {
+      return res.status(409).json({ error: 'O téhle škole jsi už recenzi napsal/a.' });
+    }
+    return res.status(500).json({ error: error.message });
+  }
+
+  res.status(201).json(toPublicReview(data, req.user.id));
+});
+
+// Deleting your own review, like removing a favourite, must survive trial
+// expiry — requireAuth only.
+app.delete('/api/reviews/:id', requireAuth, async (req, res) => {
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id)) {
+    return res.status(400).json({ error: 'Neplatné ID recenze.' });
+  }
+
+  const { error } = await supabase
+    .from('school_reviews')
+    .delete()
+    .eq('id', id)
+    .eq('user_id', req.user.id);
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.status(204).end();
+});
+
+// The DSA notice-and-action path: one report is enough to hold a review out
+// of public view until a human looks at it. Idempotent — reporting twice is
+// harmless, not an error, thanks to the (review_id, user_id) primary key.
+app.post('/api/reviews/:id/report', reviewLimiter, requireAuth, async (req, res) => {
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id)) {
+    return res.status(400).json({ error: 'Neplatné ID recenze.' });
+  }
+
+  const { error: reportError } = await supabase
+    .from('review_reports')
+    .upsert({ review_id: id, user_id: req.user.id });
+
+  if (reportError) return res.status(500).json({ error: reportError.message });
+
+  const { error: holdError } = await supabase
+    .from('school_reviews')
+    .update({ status: 'held' })
+    .eq('id', id);
+
+  if (holdError) return res.status(500).json({ error: holdError.message });
+  res.status(204).end();
+});
+
+// "Nahlásit chybu v údajích" — crowdsourced data correction, separate from
+// reviews. Read directly in Supabase; nothing renders these back.
+app.post('/api/schools/:id/report', reviewLimiter, requireAuth, async (req, res) => {
+  const schoolId = Number(req.params.id);
+  if (!Number.isInteger(schoolId)) {
+    return res.status(400).json({ error: 'Neplatné ID školy.' });
+  }
+
+  const message = typeof req.body?.message === 'string' ? req.body.message.trim() : '';
+  if (message.length < 10 || message.length > 1000) {
+    return res.status(400).json({ error: 'Popis musí mít 10 až 1000 znaků.' });
+  }
+
+  const field = typeof req.body?.field === 'string' ? req.body.field.trim().slice(0, 100) : null;
+
+  const { error } = await supabase
+    .from('data_reports')
+    .insert({ school_id: schoolId, user_id: req.user.id, field, message });
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.status(201).json({ ok: true });
 });
 
 /* ---------------------------------------------------------------------------

@@ -13,6 +13,7 @@ import ResetPassword from './pages/ResetPassword';
 import Settings from './pages/Settings';
 import SubscriptionExpired from './pages/SubscriptionExpired';
 import OnboardingFlow from './pages/onboarding/OnboardingFlow';
+import './styles/ui.css';
 import './App.css';
 import './auth.css';
 

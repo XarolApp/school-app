@@ -1,0 +1,25 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 1280, "h": 1180, "title": "Seznam — desktop" },
+    { "file": "MapaDesktop.dc.html", "x": 1360, "y": 0, "w": 1280, "h": 900, "title": "Mapa — desktop" },
+    { "file": "FiltryMobil.dc.html", "x": 0, "y": 1300, "w": 390, "h": 920, "title": "Filtry — mobil" },
+    { "file": "MapaMobil.dc.html", "x": 470, "y": 1300, "w": 390, "h": 844, "title": "Mapa — mobil" }
+  ],
+  "annotations": [
+    {
+      "id": "ia-note",
+      "x": 0,
+      "y": -150,
+      "w": 560,
+      "text": "IA: 13 filtrů ve 2 otevřených + 5 sbalených skupinách.\nOtevřené jsou dvě, které rozhodují nejvíc: Ukončení studia (maturita vs. výuční list) a Typ školy.\nKaždá volba nese svůj počet škol, každá sbalená skupina svůj odznak s počtem aktivních filtrů."
+    },
+    {
+      "id": "data-note",
+      "x": 960,
+      "y": -150,
+      "w": 560,
+      "text": "Všechna čísla na plátně jsou skutečná — z Cermatu 2026 a z naší databáze.\nHotelová škola Vršovická je opravdový případ „bez dat\" (nebyla v 1. kole).\nDojezd MHD je záměrně vypnutý: skutečný čas neumíme spočítat bez placeného API."
+    }
+  ],
+  "launch": { "view": "canvas" }
+}

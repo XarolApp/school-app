@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=Public+Sans:wght@400;500;600&display=swap">
+  <style>
+    :root {
+      --bg:#FAF6EF; --surface2:#F1ECE3; --ink:#221A13; --ink2:#6B6259; --ink3:#756B5C;
+      --line:#E6DFD1; --line2:#D6CBB6; --acc:#AD4F2A; --acc-ink:#FAF6EF; --acc-soft:#F6E3D6;
+      --ok:#4F7143; --ok-soft:#E6EDDE;
+      --sans:'Public Sans',system-ui,'Segoe UI',sans-serif;
+      --heading:'Lora',Georgia,'Times New Roman',serif;
+    }
+    body { margin:0; background:var(--bg); font-family:var(--sans); color:var(--ink2); font-size:16px; line-height:1.55; }
+    a { color:var(--acc); } a:hover { color:#8A3E20; }
+    h1,h2,h3 { font-family:var(--heading); color:var(--ink); margin:0; }
+    .caps { font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; margin:0; }
+    .cap { font-size:13px; line-height:1.45; color:var(--ink2); margin:0; }
+    .num { font-variant-numeric:tabular-nums; }
+    .pin { position:absolute; display:inline-flex; align-items:center; border-radius:999px;
+           padding:6px 11px; font-size:13px; font-weight:600; font-variant-numeric:tabular-nums;
+           background:var(--bg); border:1.5px solid var(--line2); color:var(--ink);
+           box-shadow:0 2px 6px rgba(34,26,19,0.14); white-space:nowrap; min-height:32px; box-sizing:border-box; }
+  </style>
+</helmet>
+
+<div style="position:relative; width:390px; height:844px; overflow:hidden; background:var(--surface2);">
+
+  <!-- schematic Prague (wireframe stand-in for OSM tiles) -->
+  <svg viewBox="0 0 390 844" style="position:absolute; inset:0; width:100%; height:100%;">
+    <rect width="390" height="844" fill="#F1ECE3"></rect>
+    <g stroke="#E6DFD1" stroke-width="2" fill="none">
+      <path d="M0 190 H390 M0 420 H390 M0 640 H390 M110 0 V844 M250 0 V844"></path>
+    </g>
+    <g stroke="#DED6C6" stroke-width="1" fill="none">
+      <path d="M0 90 H390 M0 300 H390 M0 530 H390 M0 745 H390 M45 0 V844 M180 0 V844 M320 0 V844"></path>
+    </g>
+    <path d="M175 -20 C 150 160, 235 270, 200 430 C 165 590, 250 700, 215 880"
+          stroke="#C9D6C0" stroke-width="22" fill="none" stroke-linecap="round"></path>
+    <path d="M175 -20 C 150 160, 235 270, 200 430 C 165 590, 250 700, 215 880"
+          stroke="#B7C9AC" stroke-width="1.5" fill="none" stroke-linecap="round"></path>
+  </svg>
+
+  <!-- pins carry the cutoff value -->
+  <span class="pin" style="left:44px; top:150px;">31,5 %</span>
+  <span class="pin" style="left:250px; top:118px;">79,7 %</span>
+  <span class="pin" style="left:286px; top:300px;">22 %</span>
+  <span class="pin" style="left:60px; top:352px;">17 %</span>
+  <span class="pin" style="left:236px; top:452px; color:var(--ink3); border-style:dashed;">bez dat</span>
+  <span class="pin" style="left:96px; top:262px; background:var(--acc); border-color:var(--acc);
+                           color:var(--acc-ink); box-shadow:0 4px 12px rgba(173,79,42,0.4);">52 %</span>
+
+  <!-- top bar: count + escape hatch back to the list -->
+  <div style="position:absolute; left:0; right:0; top:0; padding:14px 16px;
+              display:flex; align-items:center; gap:10px;">
+    <div style="background:var(--bg); border:1px solid var(--line2); border-radius:999px; padding:9px 14px;
+                display:flex; align-items:center; gap:8px; box-shadow:0 2px 8px rgba(34,26,19,0.10);
+                min-height:44px; box-sizing:border-box;">
+      <span class="num" style="font-size:14px; font-weight:600; color:var(--ink);">23 škol</span>
+      <span class="num" style="background:var(--acc); color:var(--acc-ink); border-radius:999px; padding:1px 7px;
+                   font-size:11px; font-weight:600;">3 filtry</span>
+    </div>
+    <div style="margin-left:auto; display:flex; background:var(--bg); border:1px solid var(--line2);
+                border-radius:999px; overflow:hidden; box-shadow:0 2px 8px rgba(34,26,19,0.10);">
+      <span style="padding:11px 15px; font-size:14px; font-weight:600; color:var(--ink); min-height:44px;
+                   display:flex; align-items:center; box-sizing:border-box;">Seznam</span>
+      <span style="padding:11px 15px; font-size:14px; font-weight:600; background:var(--acc); color:var(--acc-ink);
+                   min-height:44px; display:flex; align-items:center; box-sizing:border-box;">Mapa</span>
+    </div>
+  </div>
+
+  <!-- attribution required by the OpenStreetMap licence -->
+  <p class="cap" style="position:absolute; right:10px; bottom:250px; font-size:10px; color:var(--ink3);
+                        background:rgba(250,246,239,0.86); padding:2px 6px; border-radius:6px;">
+    © OpenStreetMap contributors
+  </p>
+
+  <!-- bottom sheet for the selected pin -->
+  <div style="position:absolute; left:0; right:0; bottom:0; background:var(--bg);
+              border-top:1px solid var(--line2); border-radius:20px 20px 0 0; padding:10px 20px 24px;
+              display:flex; flex-direction:column; gap:12px; box-shadow:0 -6px 22px rgba(34,26,19,0.13);">
+    <div style="width:38px; height:4px; border-radius:999px; background:var(--line2); align-self:center;"></div>
+
+    <div>
+      <h3 style="font-size:19px; line-height:1.3; font-weight:500;">Anglicko-české gymnázium AMAZON s. r. o.</h3>
+      <p class="cap">Praha 1 · soukromá · maturitní · gymnázium 4leté</p>
+    </div>
+
+    <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1px; background:var(--line);
+                border:1px solid var(--line); border-radius:10px; overflow:hidden;">
+      <div style="background:var(--bg); padding:9px 10px;">
+        <p class="num" style="font-size:16px; font-weight:600; color:var(--ink); margin:0;">52 %</p>
+        <p class="caps" style="color:var(--ink2); margin-top:2px; font-weight:400;">hranice</p></div>
+      <div style="background:var(--bg); padding:9px 10px;">
+        <p class="num" style="font-size:16px; font-weight:600; color:var(--ink); margin:0;">32,7 %</p>
+        <p class="caps" style="color:var(--ink2); margin-top:2px; font-weight:400;">přijato</p></div>
+      <div style="background:var(--bg); padding:9px 10px;">
+        <p class="num" style="font-size:16px; font-weight:600; color:var(--ink); margin:0;">120</p>
+        <p class="caps" style="color:var(--ink2); margin-top:2px; font-weight:400;">míst</p></div>
+    </div>
+
+    <div style="display:flex; gap:10px;">
+      <div style="flex:1; min-height:48px; border-radius:14px; background:var(--acc); color:var(--acc-ink);
+                  display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:600;">
+        Detail školy</div>
+      <div style="min-height:48px; padding:0 18px; border-radius:14px; border:1px solid var(--line2);
+                  color:var(--ink); display:flex; align-items:center; justify-content:center;
+                  font-size:15px; font-weight:600;">Uložit</div>
+    </div>
+
+    <p class="cap" style="font-size:12px; color:var(--ink3); line-height:1.45;">
+      Číslo v bodu je průměrná hranice přijetí za všechny obory školy.
+    </p>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>
