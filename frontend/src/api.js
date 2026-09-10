@@ -117,6 +117,78 @@ export function reportSchoolData(schoolId, { field, message }) {
 }
 
 /**
+ * Comparison & decision tools (feature-brainstorm.md §5, plan 006).
+ * `fetchSharedShortlist` is the one exception — it is a public route, so it
+ * bypasses `request()`'s auth header entirely rather than sending a token
+ * that belongs to whoever happens to be signed in on this device.
+ */
+
+export function fetchPicks() {
+  return request('/api/picks');
+}
+
+export function savePicks(picks) {
+  return request('/api/picks', {
+    method: 'PUT',
+    body: JSON.stringify({ picks }),
+  });
+}
+
+export function removePick(schoolId) {
+  return request(`/api/picks/${schoolId}`, { method: 'DELETE' });
+}
+
+export function fetchNotes() {
+  return request('/api/notes');
+}
+
+export function saveNote(schoolId, body) {
+  return request(`/api/notes/${schoolId}`, {
+    method: 'PUT',
+    body: JSON.stringify({ body }),
+  });
+}
+
+export function deleteNote(schoolId) {
+  return request(`/api/notes/${schoolId}`, { method: 'DELETE' });
+}
+
+export function fetchDecisionProfile() {
+  return request('/api/decision-profile');
+}
+
+export function saveDecisionProfile({ jpzPoints, jpzSource }) {
+  return request('/api/decision-profile', {
+    method: 'PUT',
+    body: JSON.stringify({ jpzPoints, jpzSource }),
+  });
+}
+
+export function createShare({ includeNotes }) {
+  return request('/api/shares', {
+    method: 'POST',
+    body: JSON.stringify({ includeNotes }),
+  });
+}
+
+export function fetchShares() {
+  return request('/api/shares');
+}
+
+export function revokeShare(token) {
+  return request(`/api/shares/${token}`, { method: 'DELETE' });
+}
+
+export async function fetchSharedShortlist(token) {
+  const res = await fetch(`${API_BASE_URL}/api/shared/${token}`);
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new ApiError(body.error || `Požadavek selhal (${res.status})`, res.status, body.code);
+  }
+  return body;
+}
+
+/**
  * SCAFFOLDING: the backend route exists but no Stripe keys are configured, so
  * this answers 503 (`STRIPE_NOT_CONFIGURED`) until they are. The onboarding
  * paywall does not call this yet — it still runs mockStartSubscription below.

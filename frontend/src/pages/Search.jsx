@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Search as SearchIcon, X, ChevronDown } from 'lucide-react';
 import { fetchSchools, fetchFavorites } from '../api';
 import {
@@ -18,7 +18,7 @@ import { useAuth } from '../components/AuthContext';
 import FavoriteButton from '../components/FavoriteButton';
 import SchoolMap from '../components/SchoolMap';
 import StatInfo from '../components/StatInfo';
-import { getRecentSchoolIds } from '../lib/searchPrefs';
+import { getRecentSchoolIds, setCompareSelection } from '../lib/searchPrefs';
 import './search.css';
 
 /**
@@ -260,7 +260,12 @@ function CheckOption({ checked, label, count, onChange }) {
 // StatInfo (hover-to-reveal explanation) moved to components/StatInfo.jsx
 // so SchoolMap.jsx's popup card can reuse it too.
 
+// Same cap /sdileni and the comparison table both assume — a 5th column
+// stops being a comparison and starts being a spreadsheet.
+const COMPARE_LIMIT = 4;
+
 function Search() {
+  const navigate = useNavigate();
   const [schools, setSchools] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -687,10 +692,18 @@ function Search() {
   const toggleSelect = (id) => {
     setSelected((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
+      if (next.has(id)) {
+        next.delete(id);
+      } else if (next.size < COMPARE_LIMIT) {
+        next.add(id);
+      }
       return next;
     });
+  };
+
+  const handleCompare = () => {
+    setCompareSelection([...selected]);
+    navigate('/porovnani');
   };
 
   const canFavorite = isSignedIn && hasAccess;
@@ -1186,12 +1199,13 @@ function Search() {
       >
         <div className="ss-compare-bar-inner">
           <p className="ss-body-sm">
-            Vybráno k porovnání: {selected.size} {skol(selected.size)} · porovnání ukáže stejné řádky vedle sebe
+            Vybráno k porovnání: {selected.size} {skol(selected.size)} / {COMPARE_LIMIT} · porovnání ukáže stejné
+            řádky vedle sebe
           </p>
           <button type="button" className="ss-btn ss-btn-secondary" onClick={() => setSelected(new Set())}>
             Zrušit výběr
           </button>
-          <button type="button" className="ss-btn ss-btn-primary" onClick={() => {}}>
+          <button type="button" className="ss-btn ss-btn-primary" onClick={handleCompare}>
             Porovnat {selected.size} {skolGen(selected.size)}
           </button>
         </div>

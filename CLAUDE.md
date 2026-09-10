@@ -219,6 +219,11 @@ both working end to end).
 | `school_reviews` | one row per (school, user): `role`, `role_year`, `obor_nazev`, `body`, `show_name`, `verified`, `status`. No client RLS policy — server.js only, see "User-generated content" above. |
 | `review_reports` | `(review_id, user_id)` — one report per person per review |
 | `data_reports` | crowdsourced "Nahlásit chybu v údajích": `school_id`, `user_id`, `field`, `message`, read directly in Supabase |
+| `application_picks` | `(user_id, school_id)`, `priority` 1–3, optional `obor_kkov`/`obor_nazev` — the 3 schools a student is actually applying to, in binding DiPSy order. No client RLS policy — server.js only, delete-then-insert on every reorder. See plan 006 §1.1 for why this is a separate table from `favorites`. |
+| `school_notes` | `(user_id, school_id)`, free-text `body`, not limited to picked schools |
+| `decision_profile` | one row per user: `jpz_points`, `jpz_source` (`nanecisto`/`ostra`) — the single score the risk analysis compares against. Deliberately one nullable number, no per-subject breakdown (data-minimization for minors) |
+| `shortlist_shares` | revocable read-only share tokens: `token`, `user_id`, `include_notes`, `revoked_at` — powers `/sdileni/:token`, the narrow "share shortlist with parents" feature. Not the broader full-account share link, which is deferred — see `UNFORGET.md` |
+| `school_ai_summary` | one row per school: cached `pros`/`cons` (jsonb), `model`, `data_fingerprint`. Written by `scripts/generate-school-proscons.js`, **not generated per request** — see plan 006 §1.3 for why |
 
 `schools.admission_cutoff` / `acceptance_rate` and every `school_programs` row
 come from `scripts/import-admission-data.js`, which parses Cermat's yearly

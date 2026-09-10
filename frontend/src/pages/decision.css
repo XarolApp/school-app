@@ -1,0 +1,1033 @@
+/* decision.css — styles for /porovnani, /porovnani/matice, /prihlaska and
+ * /sdileni/:token (plans/006-comparison-decision-tools.md).
+ *
+ * `.decision-page` defines the same --primary/--text-faint/--border-strong/
+ * --surface/--text-body aliases `.school-search` does in search.css, purely
+ * so StatInfo.jsx's ss-stat-info/ss-stat-tooltip classes (shared, see
+ * search.css's comment on those selectors) render identically here without a
+ * second tooltip implementation to keep in sync.
+ */
+
+.decision-page,
+.dp-share-page {
+  --primary: var(--acc);
+  --text-faint: var(--ink3);
+  --border-strong: var(--line2);
+  --text-body: var(--ink2);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  color: var(--ink2);
+}
+
+.decision-page .h,
+.dp-share-page .h {
+  font-family: var(--heading);
+}
+
+/* ---------- header ---------- */
+.dp-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+}
+.dp-subtitle {
+  color: var(--ink2);
+  margin-top: var(--space-xs);
+  max-width: 66ch;
+}
+.dp-header-actions {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.dp-empty,
+.dp-empty-inline {
+  padding: var(--space-xl) 0;
+}
+
+/* ---------- tabs ---------- */
+.dp-tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--line);
+  overflow-x: auto;
+}
+.dp-tab {
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--fs-body-sm);
+  font-weight: 500;
+  color: var(--ink2);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  white-space: nowrap;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.dp-tab.is-active {
+  color: var(--ink);
+  font-weight: 600;
+  border-bottom-color: var(--acc);
+}
+.dp-tab-badge {
+  display: inline-block;
+  padding: 1px 7px;
+  border-radius: var(--r-chip);
+  background: var(--acc-soft);
+  color: var(--acc);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* ---------- pills (band tones) ---------- */
+.dp-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: var(--r-chip);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.dp-pill-ok {
+  background: var(--ok-soft);
+  color: var(--ok);
+}
+.dp-pill-accent {
+  background: var(--acc-soft);
+  color: var(--acc);
+}
+.dp-pill-danger {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+/* =====================================================================
+   COMPARISON TABLE (Porovnani.jsx)
+   ===================================================================== */
+
+.dp-table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  background: var(--surface);
+}
+
+.dp-table {
+  display: grid;
+  grid-template-columns: 200px repeat(var(--dp-cols, 3), minmax(200px, 1fr));
+  min-width: max-content;
+}
+
+.dp-table-head {
+  display: contents;
+}
+.dp-table-head-corner {
+  background: var(--surface2);
+  border-bottom: 1px solid var(--line2);
+  position: sticky;
+  left: 0;
+  z-index: 2;
+}
+.dp-table-head-cell {
+  padding: var(--space-md);
+  border-bottom: 1px solid var(--line2);
+  border-left: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  background: var(--surface);
+}
+.dp-table-head-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+.dp-table-head-name {
+  font-size: var(--fs-body-lg);
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.3;
+  text-decoration: none;
+}
+.dp-table-head-name:hover {
+  color: var(--acc);
+}
+.dp-table-head-remove {
+  appearance: none;
+  border: none;
+  background: none;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--ink3);
+  cursor: pointer;
+  padding: 0 2px;
+  flex: none;
+}
+.dp-table-head-remove:hover {
+  color: var(--danger);
+}
+
+.dp-table-section-title {
+  grid-column: 1 / -1;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--board, var(--surface2));
+  border-bottom: 1px solid var(--line);
+  border-top: 1px solid var(--line);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink3);
+}
+.dp-table-section-subtitle {
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: 400;
+  color: var(--ink3);
+}
+
+.dp-table-row {
+  display: contents;
+}
+.dp-table-row-label {
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: 1px solid var(--line);
+  font-size: var(--fs-body-sm);
+  color: var(--ink2);
+  background: var(--surface2);
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.dp-table-cell {
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+  font-size: var(--fs-body-md);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.dp-table-cell.is-best {
+  background: var(--ok-soft);
+}
+.dp-table-cell.is-muted {
+  color: var(--ink3);
+}
+.dp-best-tag {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ok);
+}
+
+.dp-table-row-proscons .dp-table-cell {
+  align-items: flex-start;
+  padding-top: var(--space-md);
+  padding-bottom: var(--space-md);
+}
+.dp-table-cell-proscons {
+  flex-direction: column;
+}
+
+.dp-proscons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  font-size: var(--fs-body-sm);
+}
+.dp-proscons-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.dp-proscons-list li {
+  display: flex;
+  gap: 8px;
+  line-height: 1.45;
+}
+.dp-proscons-sign {
+  flex: none;
+  font-weight: 700;
+}
+.dp-proscons-pros .dp-proscons-sign {
+  color: var(--ok);
+}
+.dp-proscons-cons .dp-proscons-sign {
+  color: var(--danger);
+}
+
+.dp-table-row-actions .dp-table-cell {
+  border-bottom: none;
+  padding-top: var(--space-md);
+  padding-bottom: var(--space-md);
+}
+.dp-btn-picked {
+  background: var(--ok-soft);
+  border-color: var(--ok);
+  color: var(--ok);
+}
+
+.dp-footnote {
+  color: var(--ink3);
+}
+
+.dp-goto-picks {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* =====================================================================
+   DECISION MATRIX (Matice.jsx)
+   ===================================================================== */
+
+.dp-matrix-layout {
+  display: grid;
+  grid-template-columns: minmax(320px, 440px) minmax(0, 1fr);
+  gap: var(--space-lg);
+  align-items: start;
+}
+
+.dp-matrix-weights {
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  background: var(--surface);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+.dp-matrix-weights-head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dp-criterion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+.dp-criterion.is-locked {
+  opacity: 0.55;
+}
+.dp-criterion-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+.dp-criterion-label {
+  font-size: var(--fs-body-sm);
+  font-weight: 600;
+  color: var(--ink);
+}
+.dp-criterion-note {
+  color: var(--ink3);
+}
+
+.dp-segmented {
+  display: flex;
+}
+.dp-segment {
+  flex: 1;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  border: 1px solid var(--line2);
+  border-left: none;
+  background: var(--surface);
+  color: var(--ink2);
+  cursor: pointer;
+  appearance: none;
+  font-family: inherit;
+}
+.dp-segment:first-child {
+  border-left: 1px solid var(--line2);
+  border-radius: var(--r-button) 0 0 var(--r-button);
+}
+.dp-segment:last-child {
+  border-radius: 0 var(--r-button) var(--r-button) 0;
+}
+.dp-segment.is-on {
+  background: var(--acc);
+  color: var(--acc-ink);
+  border-color: var(--acc);
+}
+.dp-segment:disabled {
+  cursor: not-allowed;
+  background: var(--surface2);
+}
+
+.dp-matrix-result {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.dp-matrix-result-card {
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  background: var(--surface);
+  overflow: hidden;
+}
+.dp-matrix-result-head {
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--line);
+  background: var(--surface2);
+}
+.dp-matrix-empty {
+  padding: var(--space-lg);
+  color: var(--ink3);
+}
+
+.dp-matrix-row {
+  display: flex;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  border-bottom: 1px solid var(--line);
+}
+.dp-matrix-row:last-child {
+  border-bottom: none;
+}
+.dp-matrix-rank {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--acc);
+  width: 32px;
+  flex: none;
+}
+.dp-matrix-row:nth-child(n + 2) .dp-matrix-rank {
+  color: var(--ink3);
+}
+.dp-matrix-row-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  min-width: 0;
+}
+.dp-matrix-row-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+.dp-matrix-name {
+  font-size: var(--fs-body-lg);
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+}
+.dp-matrix-name:hover {
+  color: var(--acc);
+}
+
+.dp-matrix-bar {
+  display: flex;
+  height: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--surface2);
+}
+.dp-matrix-bar-seg {
+  height: 100%;
+}
+.dp-matrix-bar-sance {
+  background: var(--acc);
+}
+.dp-matrix-bar-mista {
+  background: var(--ok);
+}
+.dp-matrix-bar-typ {
+  background: var(--acc-line);
+}
+.dp-matrix-bar-jazyky {
+  background: var(--ok-soft);
+}
+.dp-matrix-bar-skolne {
+  background: var(--line2);
+}
+
+.dp-matrix-callout {
+  display: flex;
+  gap: var(--space-md);
+  border: 1px solid var(--acc-line);
+  border-radius: var(--r-card);
+  background: var(--acc-soft);
+  padding: var(--space-lg);
+}
+.dp-matrix-callout-title {
+  font-weight: 600;
+  color: var(--ink);
+}
+.dp-matrix-callout p {
+  margin: 4px 0 var(--space-sm) 0;
+}
+
+@media (max-width: 900px) {
+  .dp-matrix-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =====================================================================
+   PŘIHLÁŠKA (Prihlaska.jsx / PickCard.jsx)
+   ===================================================================== */
+
+.dp-prihlaska-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: var(--space-lg);
+  align-items: start;
+}
+
+.dp-picks-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.dp-pick-card {
+  display: flex;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  border: 1px solid var(--line2);
+  border-radius: var(--r-card);
+  background: var(--surface);
+  box-shadow: var(--shadow, none);
+}
+.dp-pick-card.is-dragging {
+  opacity: 0.5;
+}
+
+.dp-pick-rank {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  flex: none;
+  width: 44px;
+}
+.dp-pick-rank-num {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--acc);
+  color: var(--acc-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 600;
+  font-family: var(--heading);
+}
+.dp-pick-reorder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.dp-pick-reorder button {
+  appearance: none;
+  border: none;
+  background: none;
+  color: var(--ink2);
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+}
+.dp-pick-reorder button:disabled {
+  color: var(--line2);
+  cursor: default;
+}
+.dp-pick-drag-handle {
+  color: var(--ink3);
+  cursor: grab;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.dp-pick-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  min-width: 0;
+}
+.dp-pick-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+.dp-pick-name {
+  margin: 0;
+  font-size: var(--fs-headline-sm);
+  font-weight: 600;
+  color: var(--ink);
+}
+.dp-pick-head-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex: none;
+}
+.dp-pick-remove {
+  appearance: none;
+  border: none;
+  background: none;
+  color: var(--ink3);
+  cursor: pointer;
+  display: flex;
+}
+.dp-pick-remove:hover {
+  color: var(--danger);
+}
+
+.dp-pick-obor {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--r-chip);
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  font-size: var(--fs-body-sm);
+}
+.dp-pick-obor-value {
+  flex: 1;
+  font-weight: 500;
+}
+.dp-pick-obor-change {
+  appearance: none;
+  border: none;
+  background: none;
+  color: var(--acc);
+  font-weight: 600;
+  font-size: var(--fs-caption);
+  cursor: pointer;
+}
+.dp-pick-obor-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 5;
+  min-width: 240px;
+  max-height: 240px;
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--line2);
+  border-radius: var(--r-chip);
+  box-shadow: 0 4px 16px rgba(34, 26, 19, 0.15);
+  display: flex;
+  flex-direction: column;
+  padding: 4px;
+}
+.dp-pick-obor-menu button {
+  appearance: none;
+  border: none;
+  background: none;
+  text-align: left;
+  padding: var(--space-sm);
+  font-size: var(--fs-body-sm);
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.dp-pick-obor-menu button:hover {
+  background: var(--surface2);
+}
+
+.dp-pick-stats {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-md);
+  border-radius: var(--r-chip);
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+.dp-pick-stats-ok {
+  background: var(--ok-soft);
+  border-color: var(--ok);
+}
+.dp-pick-stats-accent {
+  background: var(--acc-soft);
+  border-color: var(--acc-line);
+}
+.dp-pick-stats-danger {
+  background: var(--danger-soft);
+  border-color: var(--danger);
+}
+.dp-pick-stats-divider {
+  width: 1px;
+  align-self: stretch;
+  background: var(--line2);
+}
+.dp-pick-stats-note {
+  flex: 1;
+  min-width: 180px;
+  font-size: var(--fs-body-sm);
+  color: var(--ink);
+}
+
+.dp-note {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.dp-note-textarea {
+  font: inherit;
+  font-size: var(--fs-body-sm);
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--line2);
+  border-radius: var(--r-chip);
+  background: var(--surface);
+  color: var(--ink);
+  resize: vertical;
+}
+.dp-note-status {
+  font-size: 11px;
+  color: var(--ink3);
+  height: 14px;
+}
+
+.dp-link-btn {
+  appearance: none;
+  border: none;
+  background: none;
+  color: var(--acc);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  font: inherit;
+}
+
+/* ---------- rail ---------- */
+.dp-rail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  position: sticky;
+  top: var(--space-lg);
+}
+.dp-rail-card {
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  background: var(--surface);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+.dp-rail-card-accent {
+  border-color: var(--acc-line);
+  background: var(--acc-soft);
+}
+
+.dp-points-row {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: center;
+}
+.dp-points-field {
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--line2);
+  border-radius: var(--r-chip);
+  background: var(--surface);
+}
+.dp-points-input {
+  width: 100%;
+  border: none;
+  background: none;
+  font-family: var(--heading);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--ink);
+  appearance: textfield;
+}
+.dp-points-input::-webkit-outer-spin-button,
+.dp-points-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.dp-points-suffix {
+  font-size: var(--fs-body-sm);
+  color: var(--ink3);
+  white-space: nowrap;
+}
+.dp-points-source {
+  display: flex;
+  gap: var(--space-md);
+  font-size: var(--fs-body-sm);
+}
+.dp-points-source label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.dp-points-error {
+  color: var(--danger);
+  font-size: var(--fs-caption);
+}
+.dp-points-clear {
+  appearance: none;
+  border: none;
+  background: none;
+  color: var(--acc);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  align-self: flex-start;
+}
+
+.dp-risk-counts {
+  display: flex;
+  gap: var(--space-sm);
+}
+.dp-risk-count {
+  flex: 1;
+  text-align: center;
+  padding: var(--space-sm) 4px;
+  border-radius: var(--r-chip);
+  background: var(--surface);
+}
+.dp-risk-count-value {
+  font-family: var(--heading);
+  font-size: 24px;
+  font-weight: 600;
+}
+.dp-risk-count-label {
+  font-size: 11px;
+  font-weight: 600;
+}
+.dp-risk-count-ok .dp-risk-count-value,
+.dp-risk-count-ok .dp-risk-count-label {
+  color: var(--ok);
+}
+.dp-risk-count-accent .dp-risk-count-value,
+.dp-risk-count-accent .dp-risk-count-label {
+  color: var(--acc);
+}
+.dp-risk-count-danger .dp-risk-count-value,
+.dp-risk-count-danger .dp-risk-count-label {
+  color: var(--danger);
+}
+
+.dp-risk-verdict {
+  font-size: var(--fs-body-md);
+  color: var(--ink);
+  line-height: 1.5;
+}
+.dp-risk-caveat {
+  font-size: var(--fs-caption);
+  color: var(--ink3);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--acc-line);
+}
+
+.dp-share-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--fs-body-sm);
+}
+.dp-share-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.dp-share-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+@media (max-width: 900px) {
+  .dp-prihlaska-layout {
+    grid-template-columns: 1fr;
+  }
+  .dp-rail {
+    position: static;
+  }
+}
+
+/* =====================================================================
+   SHARE VIEW (SdileniView.jsx) — deliberately its own top-level surface,
+   not nested under .decision-page (it renders outside <Layout> — App.jsx).
+   ===================================================================== */
+
+.dp-share-page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 0 var(--space-xxl) 0;
+}
+.dp-share-topbar {
+  text-align: center;
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--line);
+  font-size: var(--fs-body-lg);
+  font-weight: 600;
+}
+.dp-share-header {
+  padding: var(--space-lg);
+  background: var(--surface2);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+.dp-share-notfound {
+  padding: var(--space-xxl) var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  align-items: flex-start;
+}
+
+.dp-share-risk {
+  margin: 0 var(--space-lg);
+  padding: var(--space-lg);
+  border: 1px solid var(--acc-line);
+  border-radius: var(--r-card);
+  background: var(--acc-soft);
+}
+
+.dp-share-picks {
+  padding: 0 var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+.dp-share-card {
+  display: flex;
+  gap: var(--space-md);
+  border: 1px solid var(--line2);
+  border-radius: var(--r-card);
+  background: var(--surface);
+  padding: var(--space-lg);
+}
+.dp-share-card-rank {
+  width: 34px;
+  height: 34px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--acc);
+  color: var(--acc-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 600;
+}
+.dp-share-card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  min-width: 0;
+}
+.dp-share-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+.dp-share-card-name {
+  font-size: var(--fs-body-lg);
+  font-weight: 600;
+  color: var(--ink);
+}
+.dp-share-card-stats {
+  display: flex;
+  gap: var(--space-lg);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--r-chip);
+  background: var(--surface2);
+}
+.dp-share-note {
+  padding: var(--space-sm) var(--space-md);
+  border-left: 3px solid var(--line2);
+  background: var(--surface2);
+  border-radius: 0 var(--r-chip) var(--r-chip) 0;
+}
+
+.dp-share-disclaimer,
+.dp-share-cta {
+  margin: 0 var(--space-lg);
+  padding: var(--space-lg);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  background: var(--surface2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+.dp-share-cta {
+  border-color: var(--acc-line);
+  background: var(--acc-soft);
+  align-items: flex-start;
+}
+.dp-share-footer {
+  text-align: center;
+  padding-top: var(--space-md);
+}
+
+/* =====================================================================
+   PRINT — used by all three /porovnani* / /prihlaska pages via the same
+   window.print() button; nav, tabs and interactive chrome disappear so the
+   printed sheet is just the content (feature-brainstorm.md §5 "Print/PDF
+   export").
+   ===================================================================== */
+@media print {
+  .app-nav,
+  .dp-tabs,
+  .dp-header-actions,
+  .dp-table-row-actions,
+  .dp-goto-picks,
+  .dp-pick-reorder,
+  .dp-pick-remove,
+  .dp-pick-obor-change,
+  .dp-note-status {
+    display: none !important;
+  }
+  .decision-page {
+    padding: 0;
+  }
+  .dp-pick-card,
+  .dp-share-card {
+    break-inside: avoid;
+  }
+  .dp-table-scroll {
+    overflow: visible;
+  }
+}

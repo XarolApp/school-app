@@ -15,6 +15,44 @@ BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 
 ---
 
+## AI feature prompts need real human editing, not just structural correctness
+- **Found:** 2026-09-10, user request while scoping plan 006's pros/cons generator
+- **Urgency:** medium — every AI-generated sentence a user reads is currently
+  running on a first-draft prompt
+- **Effort:** small per prompt, but needs a human (not Claude) reading the actual
+  outputs and judging tone, not just checking the JSON is well-formed
+- **Release/context:** applies to every current and planned AI touchpoint
+
+The user's explicit call: the prompts behind ŠkolaMatch's AI features have been
+written functionally (produce valid JSON, stay on-topic, don't hallucinate a
+school) but never hand-tuned by a human reading real output and deciding "this
+sentence sounds right for a 15-year-old" vs. "this sounds like a robot." That
+tuning pass hasn't happened yet for any of them, and it needs to before these
+are treated as finished, not just working.
+
+**Current AI touchpoints, in ascending order of how much attention they've had:**
+- `lib/questionnaire.js`'s `SYSTEM_PROMPT` (~line 399) — the onboarding quiz's
+  "why this school fits you" sentence. The most mature one; still worth a
+  fresh read now that real schools/data exist, not just the synthesized set it
+  was likely tuned against originally.
+- `scripts/generate-school-proscons.js` (plan 006, not yet built) — the pros/cons
+  prompt is specced in `plans/006-comparison-decision-tools.md` §5 with hard
+  constraints (Czech, tykání, only use provided numbers, never mention teachers/
+  reputation, a con must be a real tradeoff not a discouragement) but those
+  constraints were written by Claude reasoning about what *should* work, not
+  validated by a human reading actual model output. §7 of that plan already asks
+  the user to compare 3 models — **do the prompt-quality pass at the same time**,
+  not as a separate later step, since both require reading the same generated
+  Czech text.
+
+**What "done" looks like:** the user (or someone else fluent in the target
+register — Czech teenager, informal) reads real generated output for each
+feature and either approves it or rewrites the prompt directly. This is not a
+task Claude can close out alone — grading whether Czech phrasing lands right
+for a 15-year-old is exactly the kind of judgment call that started this list.
+
+---
+
 ## Fix school suggestions
 - **Found:** 2026-09-09, user request
 - **Urgency:** medium

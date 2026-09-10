@@ -496,15 +496,23 @@
   align-items: center;
   gap: 4px;
 }
-.school-search .ss-stat-info {
+/* .decision-page (pages/decision.css) reuses this block wholesale rather than
+   duplicating it — it defines the same --primary/--text-faint/--border-strong/
+   --surface/--text-body aliases search.css does, so StatInfo.jsx (and its
+   ss-stat-* classes) render identically on both surfaces without a second
+   implementation to keep in sync. */
+.school-search .ss-stat-info,
+.decision-page .ss-stat-info {
   position: relative;
   display: inline-flex;
   color: var(--text-faint);
 }
-.school-search .ss-stat-info:hover {
+.school-search .ss-stat-info:hover,
+.decision-page .ss-stat-info:hover {
   color: var(--primary);
 }
-.school-search .ss-stat-tooltip {
+.school-search .ss-stat-tooltip,
+.decision-page .ss-stat-tooltip {
   position: absolute;
   left: 50%;
   bottom: calc(100% + 8px);
@@ -529,14 +537,16 @@
   z-index: 9999;
   pointer-events: none;
 }
-.school-search .ss-stat-info:hover .ss-stat-tooltip {
+.school-search .ss-stat-info:hover .ss-stat-tooltip,
+.decision-page .ss-stat-info:hover .ss-stat-tooltip {
   opacity: 1;
   visibility: visible;
 }
 /* placement="bottom" (SchoolMap.jsx's popup card) — opens downward instead
    of upward, since that card scrolls its own overflow-y and would clip a
    tooltip trying to escape past its top edge. */
-.school-search .ss-stat-info-bottom .ss-stat-tooltip {
+.school-search .ss-stat-info-bottom .ss-stat-tooltip,
+.decision-page .ss-stat-info-bottom .ss-stat-tooltip {
   bottom: auto;
   top: calc(100% + 8px);
 }

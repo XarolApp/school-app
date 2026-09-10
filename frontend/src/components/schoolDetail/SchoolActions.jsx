@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Heart, GitCompare, Share2, Check } from 'lucide-react';
-import { addFavorite, removeFavorite } from '../../api';
+import { useEffect, useState } from 'react';
+import { Heart, GitCompare, Share2, Check, ListPlus } from 'lucide-react';
+import { addFavorite, removeFavorite, fetchPicks, savePicks } from '../../api';
 import { toggleCompareSelection, isInCompareSelection } from '../../lib/searchPrefs';
 import { useToast } from '../ToastContext';
 import { useAuth } from '../AuthContext';
@@ -20,8 +20,22 @@ function SchoolActions({ school, isFavorite, onFavoriteChange }) {
   const { toast } = useToast();
   const [saving, setSaving] = useState(false);
   const [compared, setCompared] = useState(() => isInCompareSelection(school.id));
+  const [pickIds, setPickIds] = useState(null); // null = not loaded yet
 
   const canFavorite = isSignedIn && hasAccess;
+
+  useEffect(() => {
+    if (!canFavorite) return;
+    let cancelled = false;
+    fetchPicks()
+      .then((picks) => {
+        if (!cancelled) setPickIds(new Set(picks.map((p) => p.school.id)));
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [canFavorite]);
 
   const handleSave = async () => {
     if (!canFavorite || saving) return;
@@ -48,6 +62,29 @@ function SchoolActions({ school, isFavorite, onFavoriteChange }) {
         ? 'Přidáno k porovnání'
         : 'Odebráno z porovnání'
     );
+  };
+
+  const isPicked = pickIds?.has(school.id) ?? false;
+
+  const handleTogglePick = async () => {
+    if (!canFavorite || pickIds === null) return;
+    const nextIds = isPicked ? [...pickIds].filter((id) => id !== school.id) : [...pickIds, school.id];
+
+    if (!isPicked && pickIds.size >= 3) {
+      toast('Do přihlášky patří nejvýš 3 školy — nejdřív jednu odeber na stránce Moje přihláška.', {
+        type: 'error',
+      });
+      return;
+    }
+
+    setPickIds(new Set(nextIds));
+    try {
+      await savePicks(nextIds.map((id) => ({ schoolId: id })));
+      toast(isPicked ? 'Odebráno z přihlášky' : 'Přidáno do přihlášky');
+    } catch (err) {
+      setPickIds(new Set(pickIds));
+      toast(err.message || 'Nepodařilo se upravit přihlášku.', { type: 'error' });
+    }
   };
 
   const handleShare = async () => {
@@ -80,6 +117,12 @@ function SchoolActions({ school, isFavorite, onFavoriteChange }) {
         {compared ? <Check size={16} aria-hidden="true" /> : <GitCompare size={16} aria-hidden="true" />}
         {compared ? 'K porovnání' : 'Přidat k porovnání'}
       </button>
+      {canFavorite && (
+        <button type="button" className="ss-btn ss-btn-secondary" onClick={handleTogglePick} disabled={pickIds === null}>
+          {isPicked ? <Check size={16} aria-hidden="true" /> : <ListPlus size={16} aria-hidden="true" />}
+          {isPicked ? 'V přihlášce' : 'Přidat do přihlášky'}
+        </button>
+      )}
       <button type="button" className="ss-btn ss-btn-secondary" onClick={handleShare}>
         <Share2 size={16} aria-hidden="true" />
         Sdílet školu

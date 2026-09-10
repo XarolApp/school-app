@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
+const crypto = require('crypto');
 require('dotenv').config();
 const { createClient } = require('@supabase/supabase-js');
 const {
@@ -107,6 +108,29 @@ const questionnaireLimiter = rateLimit({
 const reviewLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   limit: 5,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  message: { error: 'Příliš mnoho pokusů. Zkus to prosím za hodinu.' },
+});
+
+// Picks/notes/points writes are cheap DB operations, not AI calls — this just
+// stops a runaway client-side loop, not casual use (reordering 3 schools a
+// dozen times while deciding is normal).
+const decisionLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  limit: 60,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  message: { error: 'Příliš mnoho pokusů. Zkus to prosím za hodinu.' },
+});
+
+// GET /api/shared/:token has no auth at all, so this is what stops the token
+// space from being walked by brute force. 128-bit tokens make that infeasible
+// regardless, but a limiter costs nothing and removes the need to rely on that
+// alone.
+const shareLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  limit: 30,
   standardHeaders: 'draft-7',
   legacyHeaders: false,
   message: { error: 'Příliš mnoho pokusů. Zkus to prosím za hodinu.' },
@@ -405,10 +429,24 @@ function scoringRunQuery(userId, columns) {
  * Recomputed rather than stored: `scoreSchools` is pure arithmetic over rows we
  * already hold. No network call, no model, no cost.
  */
+/**
+ * Supabase returns a to-one join (school_ai_summary has school_id as its
+ * primary key) as an array anyway. Flattening it here means nothing
+ * downstream — the frontend included — has to know it was a join at all.
+ */
+function withFlatAiSummary(schools) {
+  return schools.map((school) => ({
+    ...school,
+    school_ai_summary: Array.isArray(school.school_ai_summary)
+      ? school.school_ai_summary[0] ?? null
+      : school.school_ai_summary ?? null,
+  }));
+}
+
 async function withMatchScores(userId, schools) {
   // District is attached first on purpose: the search page's district filter
   // needs it for every visitor, including one who is not signed in at all.
-  const located = withDistricts(schools);
+  const located = withFlatAiSummary(withDistricts(schools));
 
   if (!userId) return located;
 
@@ -436,7 +474,7 @@ async function withMatchScores(userId, schools) {
 app.get('/api/schools', optionalAuth, async (req, res) => {
   const { data, error } = await supabase
     .from('schools')
-    .select('*, school_programs(*)')
+    .select('*, school_programs(*), school_ai_summary(*)')
     .order('name');
 
   if (error) return res.status(500).json({ error: error.message });
@@ -451,7 +489,7 @@ app.get('/api/schools/:id', optionalAuth, async (req, res) => {
 
   const { data, error } = await supabase
     .from('schools')
-    .select('*, school_programs(*)')
+    .select('*, school_programs(*), school_ai_summary(*)')
     .eq('id', id)
     .single();
 
@@ -695,6 +733,280 @@ app.post('/api/schools/:id/report', reviewLimiter, requireAuth, async (req, res)
 
   if (error) return res.status(500).json({ error: error.message });
   res.status(201).json({ ok: true });
+});
+
+/* ---------------------------------------------------------------------------
+ * Comparison & decision tools (feature-brainstorm.md §5, plan 006)
+ *
+ * Three separate objects, deliberately not merged (see plan 006 §1.1):
+ *   - favorites (above) — long-lived "interested", no cap
+ *   - the compare SELECTION — localStorage only, lib/searchPrefs.js, never
+ *     touches this server
+ *   - application_picks (here) — the real, binding 3-school DiPSy order
+ *
+ * Access rule, same one CLAUDE.md states for every route: reading school rows
+ * needs requireAccess; managing/erasing the user's own data needs only
+ * requireAuth, so an expired trial never locks someone out of their own picks
+ * or notes.
+ * ------------------------------------------------------------------------- */
+
+app.get('/api/picks', requireAuth, requireAccess, async (req, res) => {
+  const { data, error } = await supabase
+    .from('application_picks')
+    .select('priority, obor_kkov, obor_nazev, schools (*, school_programs(*), school_ai_summary(*))')
+    .eq('user_id', req.user.id)
+    .order('priority', { ascending: true });
+
+  if (error) return res.status(500).json({ error: error.message });
+
+  const schools = await withMatchScores(req.user.id, data.map((row) => row.schools));
+  res.json(
+    data.map((row, i) => ({
+      priority: row.priority,
+      obor_kkov: row.obor_kkov,
+      obor_nazev: row.obor_nazev,
+      school: schools[i],
+    }))
+  );
+});
+
+// Whole-set replace, not a diff — at most 3 rows, and it makes reordering one
+// idempotent call with no intermediate half-swapped state. Same idiom as
+// import-admission-data.js's per-year school_programs write.
+app.put('/api/picks', decisionLimiter, requireAuth, requireAccess, async (req, res) => {
+  const picks = Array.isArray(req.body?.picks) ? req.body.picks : null;
+  if (!picks) {
+    return res.status(400).json({ error: 'Neplatný formát.' });
+  }
+  if (picks.length > 3) {
+    return res
+      .status(400)
+      .json({ error: 'Do přihlášky patří nejvýš 3 školy.', code: 'TOO_MANY_PICKS' });
+  }
+
+  const seen = new Set();
+  const rows = [];
+  for (const pick of picks) {
+    const schoolId = Number(pick?.schoolId);
+    if (!Number.isInteger(schoolId) || seen.has(schoolId)) {
+      return res.status(400).json({ error: 'Neplatné ID školy.' });
+    }
+    seen.add(schoolId);
+    rows.push({
+      user_id: req.user.id,
+      school_id: schoolId,
+      priority: rows.length + 1,
+      obor_kkov: typeof pick.oborKkov === 'string' ? pick.oborKkov.slice(0, 40) : null,
+      obor_nazev: typeof pick.oborNazev === 'string' ? pick.oborNazev.slice(0, 200) : null,
+    });
+  }
+
+  const { error: deleteError } = await supabase
+    .from('application_picks')
+    .delete()
+    .eq('user_id', req.user.id);
+  if (deleteError) return res.status(500).json({ error: deleteError.message });
+
+  if (rows.length) {
+    const { error: insertError } = await supabase.from('application_picks').insert(rows);
+    if (insertError) return res.status(500).json({ error: insertError.message });
+  }
+
+  res.status(200).json({ ok: true, count: rows.length });
+});
+
+app.delete('/api/picks/:schoolId', requireAuth, async (req, res) => {
+  const schoolId = Number(req.params.schoolId);
+  if (!Number.isInteger(schoolId)) {
+    return res.status(400).json({ error: 'Neplatné ID školy.' });
+  }
+
+  const { error } = await supabase
+    .from('application_picks')
+    .delete()
+    .eq('user_id', req.user.id)
+    .eq('school_id', schoolId);
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.status(204).end();
+});
+
+// --- notes -------------------------------------------------------------------
+
+app.get('/api/notes', requireAuth, async (req, res) => {
+  const { data, error } = await supabase
+    .from('school_notes')
+    .select('school_id, body, updated_at')
+    .eq('user_id', req.user.id);
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.json(data);
+});
+
+app.put('/api/notes/:schoolId', decisionLimiter, requireAuth, async (req, res) => {
+  const schoolId = Number(req.params.schoolId);
+  if (!Number.isInteger(schoolId)) {
+    return res.status(400).json({ error: 'Neplatné ID školy.' });
+  }
+
+  const body = typeof req.body?.body === 'string' ? req.body.body.trim() : '';
+  if (body.length > 2000) {
+    return res.status(400).json({ error: 'Poznámka je příliš dlouhá (max 2000 znaků).' });
+  }
+
+  const { error } = await supabase
+    .from('school_notes')
+    .upsert({ user_id: req.user.id, school_id: schoolId, body, updated_at: new Date().toISOString() });
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.status(200).json({ ok: true });
+});
+
+app.delete('/api/notes/:schoolId', requireAuth, async (req, res) => {
+  const schoolId = Number(req.params.schoolId);
+  if (!Number.isInteger(schoolId)) {
+    return res.status(400).json({ error: 'Neplatné ID školy.' });
+  }
+
+  const { error } = await supabase
+    .from('school_notes')
+    .delete()
+    .eq('user_id', req.user.id)
+    .eq('school_id', schoolId);
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.status(204).end();
+});
+
+// --- decision profile (JPZ points) --------------------------------------------
+
+app.get('/api/decision-profile', requireAuth, async (req, res) => {
+  const { data, error } = await supabase
+    .from('decision_profile')
+    .select('jpz_points, jpz_source, updated_at')
+    .eq('user_id', req.user.id)
+    .maybeSingle();
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.json(data || { jpz_points: null, jpz_source: null, updated_at: null });
+});
+
+app.put('/api/decision-profile', decisionLimiter, requireAuth, async (req, res) => {
+  const rawPoints = req.body?.jpzPoints;
+  const jpzPoints = rawPoints === null || rawPoints === undefined ? null : Number(rawPoints);
+  if (jpzPoints !== null && (Number.isNaN(jpzPoints) || jpzPoints < 0 || jpzPoints > 100)) {
+    return res.status(400).json({ error: 'Body musí být mezi 0 a 100.' });
+  }
+
+  const jpzSource = ['nanecisto', 'ostra'].includes(req.body?.jpzSource) ? req.body.jpzSource : null;
+
+  const { error } = await supabase.from('decision_profile').upsert({
+    user_id: req.user.id,
+    jpz_points: jpzPoints,
+    jpz_source: jpzPoints === null ? null : jpzSource,
+    updated_at: new Date().toISOString(),
+  });
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.status(200).json({ ok: true });
+});
+
+// --- share links ---------------------------------------------------------------
+//
+// GET /api/shared/:token is the only unauthenticated route in this file that
+// returns school data, so its response shape is a strict allowlist — see the
+// comment right on it. Never widen that select() without re-reading plan 006
+// §3.4.
+
+app.post('/api/shares', decisionLimiter, requireAuth, requireAccess, async (req, res) => {
+  const token = crypto.randomBytes(16).toString('base64url');
+  const includeNotes = req.body?.includeNotes === true;
+
+  const { error } = await supabase
+    .from('shortlist_shares')
+    .insert({ token, user_id: req.user.id, include_notes: includeNotes });
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.status(201).json({ token });
+});
+
+app.get('/api/shares', requireAuth, async (req, res) => {
+  const { data, error } = await supabase
+    .from('shortlist_shares')
+    .select('token, include_notes, created_at, revoked_at')
+    .eq('user_id', req.user.id)
+    .order('created_at', { ascending: false });
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.json(data);
+});
+
+app.delete('/api/shares/:token', requireAuth, async (req, res) => {
+  const { error } = await supabase
+    .from('shortlist_shares')
+    .delete()
+    .eq('user_id', req.user.id)
+    .eq('token', req.params.token);
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.status(204).end();
+});
+
+// No auth. The same 404 body fires for "token never existed" and "token was
+// revoked" — deliberately, so this endpoint cannot be used to distinguish the
+// two (a token oracle). Returns ONLY what a student chose to expose: their
+// first name, their 3 picks (with school + program data), their JPZ points,
+// and notes IF include_notes was set when the link was created. Never the
+// owner's email, id, trial/subscription status, favourites, or questionnaire
+// answers — this is a link a minor pastes into a family chat.
+app.get('/api/shared/:token', shareLimiter, async (req, res) => {
+  const { data: share, error: shareError } = await supabase
+    .from('shortlist_shares')
+    .select('user_id, include_notes')
+    .eq('token', req.params.token)
+    .is('revoked_at', null)
+    .maybeSingle();
+
+  if (shareError || !share) {
+    return res.status(404).json({ error: 'Odkaz nenalezen nebo byl zrušen.' });
+  }
+
+  const [{ data: profile }, { data: picks }, { data: decisionProfile }] = await Promise.all([
+    supabase.from('users').select('name').eq('id', share.user_id).single(),
+    supabase
+      .from('application_picks')
+      .select('priority, obor_kkov, obor_nazev, schools (*, school_programs(*))')
+      .eq('user_id', share.user_id)
+      .order('priority', { ascending: true }),
+    supabase
+      .from('decision_profile')
+      .select('jpz_points')
+      .eq('user_id', share.user_id)
+      .maybeSingle(),
+  ]);
+
+  let notesById = new Map();
+  if (share.include_notes) {
+    const { data: notes } = await supabase
+      .from('school_notes')
+      .select('school_id, body')
+      .eq('user_id', share.user_id);
+    notesById = new Map((notes || []).map((n) => [n.school_id, n.body]));
+  }
+
+  const firstName = (profile?.name || '').trim().split(/\s+/)[0] || null;
+
+  res.json({
+    firstName,
+    jpzPoints: decisionProfile?.jpz_points ?? null,
+    picks: (picks || []).map((row) => ({
+      priority: row.priority,
+      obor_kkov: row.obor_kkov,
+      obor_nazev: row.obor_nazev,
+      school: withDistricts([row.schools])[0],
+      note: share.include_notes ? notesById.get(row.schools.id) ?? null : null,
+    })),
+  });
 });
 
 /* ---------------------------------------------------------------------------

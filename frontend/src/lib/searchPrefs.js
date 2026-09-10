@@ -76,3 +76,14 @@ export function toggleCompareSelection(schoolId) {
   writeJSON(COMPARE_KEY, next);
   return next;
 }
+
+/**
+ * Whole-set replace — used when Search.jsx's own multi-select checkboxes
+ * (a Set built independently of this module) hand off to /porovnani, which
+ * reads this key. Caps at 4, same limit the checkboxes themselves enforce.
+ */
+export function setCompareSelection(schoolIds) {
+  const next = [...new Set(schoolIds)].slice(0, 4);
+  writeJSON(COMPARE_KEY, next);
+  return next;
+}
