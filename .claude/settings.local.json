@@ -13,7 +13,8 @@
       "Bash(nohup node server.js)",
       "Bash(disown)",
       "Bash(curl -s http://localhost:5001/)",
-      "Bash(curl -s http://localhost:5173)"
+      "Bash(curl -s http://localhost:5173)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }
