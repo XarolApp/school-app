@@ -1,0 +1,267 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Public+Sans:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; background: #FAF6EF; font-family: 'Public Sans', system-ui, 'Segoe UI', sans-serif; color: #221A13; }
+    .h { font-family: 'Lora', Georgia, 'Times New Roman', serif; }
+    .caps { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #756B5C; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 14px; padding: 9px 16px; font-size: 13px; font-weight: 600; }
+    .btn-p { background: #AD4F2A; color: #FAF6EF; border: 1px solid #AD4F2A; }
+    .btn-s { background: transparent; color: #221A13; border: 1px solid #D6CBB6; }
+    .pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 11px; border-radius: 10px; font-size: 12px; font-weight: 600; }
+  </style>
+</helmet>
+
+<div style="width: 1440px; background: #FAF6EF; padding: 0 0 64px 0;">
+
+  <div style="display: flex; align-items: center; justify-content: space-between; padding: 20px 64px; border-bottom: 1px solid #E6DFD1;">
+    <div class="h" style="font-size: 20px; font-weight: 600; letter-spacing: -0.01em;">ŠkolaMatch</div>
+    <div style="display: flex; gap: 32px; font-size: 15px; font-weight: 500; color: #6B6259;">
+      <span>Domů</span><span style="color: #221A13;">Školy</span><span>Najít školu</span><span>Přihlásit se</span>
+    </div>
+  </div>
+
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 64px;">
+
+    <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; padding: 32px 0 20px 0;">
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <h1 class="h" style="margin: 0; font-size: 38px; line-height: 1.14; font-weight: 600; letter-spacing: -0.015em;">Moje přihláška</h1>
+        <div style="font-size: 16px; line-height: 1.55; color: #6B6259; max-width: 66ch;">Tři školy v závazném pořadí — přesně tak, jak je zadáš do DiPSy. Pořadí měníš přetažením.</div>
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <div class="btn btn-s">🖨 Tisk / PDF</div>
+        <div class="btn btn-s">🔗 Sdílet s rodiči</div>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 4px; border-bottom: 1px solid #E6DFD1; margin-bottom: 28px;">
+      <div style="padding: 12px 20px; font-size: 15px; font-weight: 500; color: #6B6259;">Porovnání</div>
+      <div style="padding: 12px 20px; font-size: 15px; font-weight: 500; color: #6B6259;">Rozhodovací matice</div>
+      <div style="padding: 12px 20px; font-size: 15px; font-weight: 600; color: #221A13; border-bottom: 2px solid #AD4F2A; margin-bottom: -1px;">Moje přihláška <span style="display:inline-block; margin-left:6px; padding:1px 7px; border-radius:8px; background:#F6E3D6; color:#AD4F2A; font-size:11px; font-weight:600;">3/3</span></div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 32px; align-items: start;">
+
+      <!-- ============ LEFT: the three picks ============ -->
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+
+        <!-- PICK 1 -->
+        <div style="border: 1px solid #D6CBB6; border-radius: 18px; background: #FAF6EF; box-shadow: 0 1px 2px rgba(34,26,19,.05);">
+          <div style="display: flex; gap: 16px; padding: 20px;">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; flex: none; width: 44px;">
+              <div class="h" style="width: 44px; height: 44px; border-radius: 50%; background: #AD4F2A; color: #FAF6EF; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 600;">1</div>
+              <div style="color: #756B5C; font-size: 16px; letter-spacing: 2px; line-height: 1;">⠿</div>
+            </div>
+
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 12px;">
+              <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;">
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                  <div class="h" style="font-size: 22px; line-height: 1.25; font-weight: 600;">SPŠ elektrotechnická, Ječná</div>
+                  <div style="font-size: 14px; color: #6B6259;">Ječná 30, Praha 2 · veřejná škola</div>
+                </div>
+                <div class="pill" style="background:#E6EDDE; color:#4F7143;">● Jistota</div>
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 14px; background: #F1ECE3; border: 1px solid #E6DFD1;">
+                <span class="caps">Obor</span>
+                <div style="flex: 1; font-size: 14px; font-weight: 500;">Informační technologie (18-20-M/01)</div>
+                <span style="font-size: 13px; color: #AD4F2A; font-weight: 600;">Změnit ▾</span>
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 20px; padding: 12px 14px; border-radius: 14px; background: #E6EDDE; border: 1px solid #A8BF9B;">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                  <div class="caps" style="color:#4F7143;">Hranice oboru 2026</div>
+                  <div class="h" style="font-size: 20px; font-weight: 600; color: #4F7143;">41,5 b.</div>
+                </div>
+                <div style="width: 1px; height: 34px; background: #A8BF9B;"></div>
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                  <div class="caps" style="color:#4F7143;">Tvoje body</div>
+                  <div class="h" style="font-size: 20px; font-weight: 600; color: #4F7143;">58 b.</div>
+                </div>
+                <div style="flex: 1; font-size: 14px; line-height: 1.45; color: #221A13;">Máš <strong>o 16,5 bodu víc</strong>, než loni stačilo. Tohle je tvoje pojistka.</div>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 6px;">
+                <div class="caps">Moje poznámka</div>
+                <div style="font-size: 14px; line-height: 1.5; color: #221A13; padding: 12px 14px; border: 1px solid #E6DFD1; border-radius: 14px; background: #FAF6EF;">Byl jsem na dnu otevřených dveří 14. 1. — dílny vypadaly super, učitel na IT mi sedl. Dojezd 25 min tramvají.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PICK 2 -->
+        <div style="border: 1px solid #D6CBB6; border-radius: 18px; background: #FAF6EF; box-shadow: 0 1px 2px rgba(34,26,19,.05);">
+          <div style="display: flex; gap: 16px; padding: 20px;">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; flex: none; width: 44px;">
+              <div class="h" style="width: 44px; height: 44px; border-radius: 50%; background: #AD4F2A; color: #FAF6EF; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 600;">2</div>
+              <div style="color: #756B5C; font-size: 16px; letter-spacing: 2px; line-height: 1;">⠿</div>
+            </div>
+
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 12px;">
+              <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;">
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                  <div class="h" style="font-size: 22px; line-height: 1.25; font-weight: 600;">Gymnázium Na Zatlance</div>
+                  <div style="font-size: 14px; color: #6B6259;">Na Zatlance 11, Praha 5 · veřejná škola</div>
+                </div>
+                <div class="pill" style="background:#F6E3D6; color:#AD4F2A;">● Reálná šance</div>
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 14px; background: #F1ECE3; border: 1px solid #E6DFD1;">
+                <span class="caps">Obor</span>
+                <div style="flex: 1; font-size: 14px; font-weight: 500;">Gymnázium (79-41-K/41)</div>
+                <span style="font-size: 13px; color: #AD4F2A; font-weight: 600;">Změnit ▾</span>
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 20px; padding: 12px 14px; border-radius: 14px; background: #F6E3D6; border: 1px solid #DFA98C;">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                  <div class="caps" style="color:#AD4F2A;">Hranice oboru 2026</div>
+                  <div class="h" style="font-size: 20px; font-weight: 600; color: #AD4F2A;">55,1 b.</div>
+                </div>
+                <div style="width: 1px; height: 34px; background: #DFA98C;"></div>
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                  <div class="caps" style="color:#AD4F2A;">Tvoje body</div>
+                  <div class="h" style="font-size: 20px; font-weight: 600; color: #AD4F2A;">58 b.</div>
+                </div>
+                <div style="flex: 1; font-size: 14px; line-height: 1.45; color: #221A13;">Jsi <strong>o 2,9 bodu nad</strong> loňskou hranicí — vejdeš se, ale bez rezervy.</div>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 6px;">
+                <div class="caps">Moje poznámka</div>
+                <div style="font-size: 14px; line-height: 1.5; color: #756B5C; padding: 12px 14px; border: 1px dashed #D6CBB6; border-radius: 14px; background: #FAF6EF;">Napiš si sem, co tě u téhle školy napadlo — z dne otevřených dveří, od kamarádů, cokoliv.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PICK 3 -->
+        <div style="border: 1px solid #D6CBB6; border-radius: 18px; background: #FAF6EF; box-shadow: 0 1px 2px rgba(34,26,19,.05);">
+          <div style="display: flex; gap: 16px; padding: 20px;">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; flex: none; width: 44px;">
+              <div class="h" style="width: 44px; height: 44px; border-radius: 50%; background: #AD4F2A; color: #FAF6EF; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 600;">3</div>
+              <div style="color: #756B5C; font-size: 16px; letter-spacing: 2px; line-height: 1;">⠿</div>
+            </div>
+
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 12px;">
+              <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;">
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                  <div class="h" style="font-size: 22px; line-height: 1.25; font-weight: 600;">Gymnázium Jana Keplera</div>
+                  <div style="font-size: 14px; color: #6B6259;">Parléřova 2, Praha 6 · veřejná škola</div>
+                </div>
+                <div class="pill" style="background:#F5E2DC; color:#7A3020;">● Risk</div>
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 14px; background: #F1ECE3; border: 1px solid #E6DFD1;">
+                <span class="caps">Obor</span>
+                <div style="flex: 1; font-size: 14px; font-weight: 500;">Gymnázium (79-41-K/41)</div>
+                <span style="font-size: 13px; color: #AD4F2A; font-weight: 600;">Změnit ▾</span>
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 20px; padding: 12px 14px; border-radius: 14px; background: #F5E2DC; border: 1px solid #D9A092;">
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                  <div class="caps" style="color:#7A3020;">Hranice oboru 2026</div>
+                  <div class="h" style="font-size: 20px; font-weight: 600; color: #7A3020;">61,4 b.</div>
+                </div>
+                <div style="width: 1px; height: 34px; background: #D9A092;"></div>
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                  <div class="caps" style="color:#7A3020;">Tvoje body</div>
+                  <div class="h" style="font-size: 20px; font-weight: 600; color: #7A3020;">58 b.</div>
+                </div>
+                <div style="flex: 1; font-size: 14px; line-height: 1.45; color: #221A13;">Chybí ti <strong>3,4 bodu</strong> na loňskou hranici. Není to nemožné — hranice se rok od roku hýbe.</div>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 6px;">
+                <div class="caps">Moje poznámka</div>
+                <div style="font-size: 14px; line-height: 1.5; color: #221A13; padding: 12px 14px; border: 1px solid #E6DFD1; border-radius: 14px; background: #FAF6EF;">Máma tam chodila. Musel bych zamakat na matiku, ale chci to zkusit.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="font-size: 13px; line-height: 1.45; color: #756B5C; padding-top: 4px;">
+          Pořadí je závazné: DiPSy tě přijme na nejvýš postavenou školu, kam se dostaneš, a ostatní přihlášky tím zaniknou. Proto na 1. místo patří škola, kam se opravdu nejvíc chceš dostat — ne ta, kde máš největší šanci.
+        </div>
+      </div>
+
+      <!-- ============ RIGHT: rail ============ -->
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+
+        <!-- points input -->
+        <div style="border: 1px solid #E6DFD1; border-radius: 18px; background: #FAF6EF; overflow: hidden;">
+          <div style="padding: 16px 20px; border-bottom: 1px solid #E6DFD1; background: #F1ECE3;">
+            <div class="h" style="font-size: 18px; font-weight: 600;">Tvoje body z přijímaček</div>
+          </div>
+          <div style="padding: 20px; display: flex; flex-direction: column; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div style="flex: 1; display: flex; align-items: baseline; gap: 8px; padding: 12px 14px; border: 1px solid #D6CBB6; border-radius: 14px; background: #FAF6EF;">
+                <span class="h" style="font-size: 26px; font-weight: 600;">58</span>
+                <span style="font-size: 14px; color: #6B6259;">/ 100 b.</span>
+              </div>
+              <div class="btn btn-s" style="flex: none;">Uložit</div>
+            </div>
+            <div style="font-size: 13px; line-height: 1.45; color: #6B6259;">Průměr z češtiny a matematiky. Většina deváťáků si zkoušku nanečisto píše v září — zadej výsledek odtud.</div>
+            <div style="font-size: 13px; color: #AD4F2A; font-weight: 600;">Body ještě nemám →</div>
+          </div>
+        </div>
+
+        <!-- risk analysis -->
+        <div style="border: 1px solid #DFA98C; border-radius: 18px; background: #F6E3D6; overflow: hidden;">
+          <div style="padding: 16px 20px; border-bottom: 1px solid #DFA98C;">
+            <div class="h" style="font-size: 18px; font-weight: 600;">Rozbor tvých tří škol</div>
+          </div>
+          <div style="padding: 20px; display: flex; flex-direction: column; gap: 16px;">
+
+            <div style="display: flex; gap: 8px;">
+              <div style="flex: 1; display: flex; flex-direction: column; gap: 4px; align-items: center; padding: 12px 8px; border-radius: 14px; background: #E6EDDE;">
+                <div class="h" style="font-size: 24px; font-weight: 600; color: #4F7143;">1</div>
+                <div style="font-size: 11px; font-weight: 600; color: #4F7143; text-align: center;">Jistota</div>
+              </div>
+              <div style="flex: 1; display: flex; flex-direction: column; gap: 4px; align-items: center; padding: 12px 8px; border-radius: 14px; background: #FAF6EF;">
+                <div class="h" style="font-size: 24px; font-weight: 600; color: #AD4F2A;">1</div>
+                <div style="font-size: 11px; font-weight: 600; color: #AD4F2A; text-align: center;">Reálná</div>
+              </div>
+              <div style="flex: 1; display: flex; flex-direction: column; gap: 4px; align-items: center; padding: 12px 8px; border-radius: 14px; background: #F5E2DC;">
+                <div class="h" style="font-size: 24px; font-weight: 600; color: #7A3020;">1</div>
+                <div style="font-size: 11px; font-weight: 600; color: #7A3020; text-align: center;">Risk</div>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 10px; align-items: flex-start;">
+              <div style="font-size: 18px; line-height: 1.2;">✅</div>
+              <div style="font-size: 14px; line-height: 1.5;"><strong>Tohle je dobře rozložené.</strong> Máš jednu školu, kam se skoro jistě dostaneš, jednu reálnou a jednu, o kterou stojí za to zabojovat. Přesně takhle to má vypadat.</div>
+            </div>
+
+            <div style="height: 1px; background: #DFA98C;"></div>
+
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              <div class="caps" style="color: #AD4F2A;">Odhad, ne záruka</div>
+              <div style="font-size: 13px; line-height: 1.45; color: #6B6259;">Počítáme z loňské hranice tvého oboru. Ta se každý rok hýbe podle toho, kolik lidí se přihlásí a jak těžký byl test — ber to jako vodítko, ne jako slib.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- share -->
+        <div style="border: 1px solid #E6DFD1; border-radius: 18px; background: #FAF6EF; padding: 20px; display: flex; flex-direction: column; gap: 12px;">
+          <div class="h" style="font-size: 18px; font-weight: 600;">Ukázat rodičům</div>
+          <div style="font-size: 14px; line-height: 1.5; color: #6B6259;">Vytvoří odkaz, kde uvidí tvoje tři školy, pořadí a rozbor. Nemusí se nikam registrovat.</div>
+          <div style="display: flex; align-items: center; gap: 8px; font-size: 14px;">
+            <div style="width: 18px; height: 18px; border-radius: 5px; border: 1px solid #D6CBB6; background: #FAF6EF;"></div>
+            <span style="color: #6B6259;">Poslat i moje poznámky</span>
+          </div>
+          <div class="btn btn-p">Vytvořit odkaz</div>
+          <div style="font-size: 12px; color: #756B5C;">Odkaz můžeš kdykoliv zrušit.</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

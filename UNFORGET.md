@@ -77,12 +77,14 @@ Options to decide later, not decided now:
 
 ---
 
-## Comparison view still does not exist
+## Comparison view still does not exist — PLANNED 2026-09-10 as plan 006
 - **Found:** 2026-09-08, school detail page rebuild
 - **Urgency:** medium — there are now two entry points feeding a selection
   into nothing
 - **Effort:** medium (§5 of feature-brainstorm.md — its own small feature)
-- **Release/context:** feature-brainstorm.md §5, not yet scheduled
+- **Release/context:** feature-brainstorm.md §5 — now specced in
+  [`plans/006-comparison-decision-tools.md`](plans/006-comparison-decision-tools.md),
+  design canvas at https://claude.ai/code/artifact/688789aa-b54c-4a5e-b2b6-17b3ee775899
 
 `Search.jsx`'s "Porovnat N škol" button (`pages/Search.jsx`, in the sticky
 compare bar) has always been `onClick={() => {}}` — a real no-op, not a bug
@@ -95,6 +97,80 @@ Building §5 means: a `/porovnani` route reading `getCompareSelection()`,
 fetching those schools, and rendering the "attributes as rows, options as
 columns" pattern already researched in `.claude/skills/mobbin-core-product-
 patterns/SKILL.md` §C.
+
+**Status 2026-09-10:** planned in full, not yet implemented. Plan 006 covers
+every §5 row except the two carved out below.
+
+---
+
+## Full share-with-parent link — deferred until parent/child accounts are decided
+- **Found:** 2026-09-10, explicit user decision while scoping plan 006
+- **Urgency:** medium — it is the parent branch's whole conversion mechanic
+- **Effort:** large, and mostly NOT frontend work
+- **Release/context:** feature-brainstorm.md §5, the row below "Share shortlist
+  with parents"; deliberately excluded from
+  [`plans/006-comparison-decision-tools.md`](plans/006-comparison-decision-tools.md)
+
+Plan 006 ships the NARROW version: `/sdileni/:token` shows the student's three
+picks, their order, the risk analysis and (opt-in) their notes. That is the
+"Share shortlist with parents" 🔥 row and it is self-contained.
+
+The BROADER row — one link giving a parent read-only access to *everything* the
+student has done (all saved schools, questionnaire answers and results, match
+scores, every note) — **is deliberately not built**, at the user's explicit
+instruction, because it cannot be designed without first answering questions
+that are commercial, not technical:
+
+- **Who pays, and for what?** If a parent can see the full result set through a
+  share link with no account, the parent-branch paywall has nothing left to
+  sell. If they cannot, the link is worthless as a conversion mechanic. The
+  line between "enough to be worth opening" and "so much there is no reason to
+  pay" is a pricing decision, not an engineering one.
+- **How do a parent and a child sit on one plan?** `users` currently has no
+  concept of a linked account. feature-brainstorm.md §6 lists "Parent account
+  linked to student account" 🔥 and "Multiple children per parent account" ✅ —
+  both unbuilt. Does one purchase cover both people? Does the parent's
+  subscription grant the child access, or the reverse? `subscription_status`
+  lives on a single row today and has no answer for this.
+- **Does it flow both ways?** feature-brainstorm.md's own note says this ships
+  together with the reverse direction (a parent on the parent branch sending
+  the questionnaire to their child's device) because it is the same share-token
+  + cross-device-session plumbing pointed the other way. Building one half now
+  means writing that plumbing twice.
+- **GDPR.** A link exposing a minor's full questionnaire answers is a much
+  bigger disclosure than three school names. Worth checking against the Art. 8
+  work already recorded in the paywall legal entry above.
+
+Until this is resolved, the parent branch keeps the inert, explicitly-unbuilt
+"Poslat odkaz dítěti" control on the first quiz question plus the same-device
+"hand them the phone" nudge (`QuizQuestion.jsx`) — unchanged by plan 006.
+
+**Do not build this piecemeal.** Settle the pricing/account model first, then
+build both directions in one pass.
+
+---
+
+## Share link is copy-only — no email delivery
+- **Found:** 2026-09-10, user decision while scoping plan 006 ("Option A for
+  now, implement option B later")
+- **Urgency:** low — copying a link into WhatsApp is what teenagers actually do
+- **Effort:** small once an email provider exists
+- **Release/context:** [`plans/006-comparison-decision-tools.md`](plans/006-comparison-decision-tools.md) §8
+
+`POST /api/shares` returns a token the student copies. There is no "e-mail it to
+my parent" path, because the app has **no transactional email provider wired up
+at all** — Supabase Auth sends confirmation and reset mail through its own
+built-in sender, which is not a general-purpose send channel for app content.
+
+Adding email delivery means picking a provider (Resend/Postmark/SES) and adding
+the key to `.env`, which is the same prerequisite as the deadline-reminder
+emails in feature-brainstorm.md §3 and §11 — all of which are 🔥. **Do that once
+for all of them, not separately for this one feature.**
+
+Note the minors angle when it happens: sending mail to a parent's address that a
+15-year-old typed in is a disclosure of the child's data to an address nobody has
+verified belongs to a parent. A copy-link flow has no such problem, which is part
+of why it is a reasonable place to stop for now.
 
 ---
 

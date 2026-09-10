@@ -16,12 +16,23 @@ codebase audit (see "Not audited" below).
 | 003 | [Desktop breakpoint uses pre-redesign title sizes](003-fix-stale-breakpoint-title-sizes.md) | LOW-MED | S | Very low | TODO |
 | 004 | [Implement the "School Search" design on `/skoly`](004-search-design-import.md) | HIGH | L | Medium | DONE |
 | 005 | [Spacing & typography tokens: emit them, then adopt them site-wide](005-spacing-typography-migration.md) | HIGH | L | Medium | IN PROGRESS |
+| 006 | [Comparison & decision tools (feature-brainstorm §5)](006-comparison-decision-tools.md) | HIGH | L | Medium | TODO |
 
 > **004** was added 2026-08-30 by a separate `/improve plan <description>` run against
 > commit `5a8381c` — a targeted single-plan run, not part of the 2026-08-24 audit above.
 > It is independent of 001–003 (different files entirely). It ships **synthesized
 > stand-in data** for fields the `schools` table lacks; that is a deliberate,
 > user-approved pre-release tradeoff tracked in `UNFORGET.md` as a **hard launch blocker**.
+>
+> **006** was added 2026-09-10 by a `/plan-then-build` run against commit `1bf53fd`,
+> not part of any `/improve` audit. It is a **feature build**, not a fix: every
+> 🔥/✅ row of feature-brainstorm.md §5 except the full share-with-parent link
+> (carved out into `UNFORGET.md` — it depends on the parent/child account and
+> pricing model, which are unsettled). It is independent of 001–005 in code terms
+> (four new pages, five new tables, one new script), but it **consumes** 005's
+> spacing/type tokens, so if 005 changes a token name mid-flight, 006's
+> `decision.css` follows it. Design canvas:
+> https://claude.ai/code/artifact/688789aa-b54c-4a5e-b2b6-17b3ee775899
 >
 > **005** was added 2026-08-31, same variant, same base commit. It migrates the app onto
 > `design/system`'s real spacing and type scales. **It interacts with 003**: 003 fixes a

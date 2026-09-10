@@ -1,0 +1,40 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 1440, "h": 1800, "title": "Porovnání — desktop" },
+    { "file": "Matice.dc.html", "x": 1560, "y": 0, "w": 1440, "h": 1150, "title": "Rozhodovací matice" },
+    { "file": "Prihlaska.dc.html", "x": 3120, "y": 0, "w": 1440, "h": 1450, "title": "Moje přihláška" },
+    { "file": "Mobil.dc.html", "x": 0, "y": 1980, "w": 390, "h": 1500, "title": "Porovnání — mobil" },
+    { "file": "Sdileni.dc.html", "x": 520, "y": 1980, "w": 390, "h": 1700, "title": "Sdílení s rodiči" }
+  ],
+  "annotations": [
+    {
+      "id": "note-scope",
+      "x": 0,
+      "y": -190,
+      "w": 460,
+      "text": "feature-brainstorm.md §5 — porovnání a rozhodovací nástroje. Tři povrchy: /porovnani (tabulka + matice) a /prihlaska (3 volby, pořadí, rozbor rizika, poznámky, sdílení)."
+    },
+    {
+      "id": "note-data",
+      "x": 1560,
+      "y": -190,
+      "w": 460,
+      "text": "Matice je čistá matematika nad Cermat daty — žádná AI. Kritéria bez dat jsou zamčená a váhy se přepočítají mezi zbytek, takže chybějící údaj školu netrestá."
+    },
+    {
+      "id": "note-risk",
+      "x": 3120,
+      "y": -190,
+      "w": 460,
+      "text": "Rozbor rizika používá hranici KONKRÉTNÍHO OBORU (school_programs.cutoff), ne školní průměr — proto je u každé volby výběr oboru. Bez zadaných bodů se ukáže hranice bez verdiktu."
+    },
+    {
+      "id": "note-mobile",
+      "x": 1050,
+      "y": 1980,
+      "w": 420,
+      "text": "Mobil: první sloupec (názvy řádků) drží, školy se posouvají vodorovně. Další sloupec vždy vykukuje, aby bylo vidět, že jde posunout."
+    }
+  ],
+  "launch": { "view": "canvas" }
+}
