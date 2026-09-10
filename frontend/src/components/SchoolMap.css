@@ -12,7 +12,14 @@
   position: relative;
   height: 560px;
   border-radius: var(--r-card);
-  overflow: hidden;
+  /* NOT overflow: hidden — this box also holds the floating locate panel,
+     fullscreen button and detail card, and everything inside those
+     (including stat tooltips) must be able to paint outside .sm-wrap's own
+     bounds. The rounded-corner clip that used to live here is applied to
+     .sm-map below instead, which is the only child that actually needs it
+     (the Leaflet tiles). Losing overflow:hidden here doesn't un-round
+     .sm-wrap's own border — border-radius still shapes the border/background
+     regardless of overflow. */
   border: 1px solid var(--border-strong);
 }
 
@@ -25,10 +32,16 @@
   border-radius: 0;
   border: none;
 }
+.sm-wrap.is-fullscreen .sm-map {
+  border-radius: 0;
+}
 
 .sm-map {
   position: absolute;
   inset: 0;
+  /* The actual tile clip, moved here from .sm-wrap (see comment above). */
+  overflow: hidden;
+  border-radius: var(--r-card);
 }
 
 /* Leaflet's own CSS ships fine defaults for tiles/controls; only the custom
