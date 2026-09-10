@@ -541,6 +541,23 @@
   top: calc(100% + 8px);
 }
 
+/* Centering the tooltip under its icon (left: 50%; translateX(-50%)) breaks
+   down for the edge cells of a stat grid: the map's fullscreen card spans
+   almost the full viewport width, so the first cell's icon sits near the
+   viewport's left edge and a 240px-wide centered tooltip runs off-screen
+   (confirmed: -28px past the left edge). Edge cells anchor the tooltip to
+   their own icon edge instead of centering it, so it grows inward, toward
+   the middle of the grid, rather than toward the viewport edge. */
+.school-search .ss-stat-cell:first-child .ss-stat-tooltip {
+  left: 0;
+  transform: none;
+}
+.school-search .ss-stat-cell:last-child .ss-stat-tooltip {
+  left: auto;
+  right: 0;
+  transform: none;
+}
+
 .ss-row-actions {
   flex: none;
   display: flex;
