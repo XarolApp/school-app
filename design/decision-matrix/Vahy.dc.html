@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Public+Sans:wght@400;500;600&display=swap">
+  <style>
+    :root {
+      --bg: #FAF6EF; --surface: #FAF6EF; --surface2: #F1ECE3;
+      --ink: #221A13; --ink2: #6B6259; --ink3: #756B5C;
+      --line: #E6DFD1; --line2: #D6CBB6;
+      --acc: #AD4F2A; --acc-ink: #FAF6EF; --acc-soft: #F6E3D6; --acc-line: #DFA98C;
+      --ok: #4F7143; --ok-soft: #E6EDDE;
+      --sans: 'Public Sans', system-ui, 'Segoe UI', sans-serif;
+      --heading: 'Lora', Georgia, 'Times New Roman', serif;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #17130E; --surface: #1F1911; --surface2: #2A2216;
+        --ink: #F2ECE2; --ink2: #D8CFC2; --ink3: #B3A895;
+        --line: #362C1E; --line2: #4A3D2B;
+        --acc: #E08A5C; --acc-ink: #17130E; --acc-soft: #3A2617; --acc-line: #7A5540;
+        --ok: #8FB57E; --ok-soft: #24301F;
+      }
+    }
+    body { margin: 0; font-family: var(--sans); background: var(--bg); color: var(--ink); }
+    a { color: var(--acc); } a:hover { color: var(--ink); }
+    .crit { display: flex; flex-direction: column; gap: 8px; }
+    .crit-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+    .crit-label { font-size: 14px; font-weight: 600; color: var(--ink); }
+    .crit-state { font-size: 13px; color: var(--ink2); }
+    .seg-group { display: flex; }
+    .seg { flex: 1; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; border: 1px solid var(--line2); border-left: none; background: var(--surface); color: var(--ink2); font-family: inherit; box-sizing: border-box; }
+    .seg:first-child { border-left: 1px solid var(--line2); border-radius: 14px 0 0 14px; }
+    .seg:last-child { border-radius: 0 14px 14px 0; }
+    .seg.on { background: var(--acc); color: var(--acc-ink); border-color: var(--acc); }
+    .seg.off { background: var(--surface2); color: var(--ink3); }
+  </style>
+</helmet>
+
+<div style="width: 440px; box-sizing: border-box; background: var(--bg); padding: 16px; font-family: var(--sans);">
+  <div style="border: 1px solid var(--line); border-radius: 18px; background: var(--surface); padding: 24px; display: flex; flex-direction: column; gap: 24px;">
+
+    <div style="display: flex; flex-direction: column; gap: 4px;">
+      <div style="font-family: var(--heading); font-weight: 500; font-size: 18px; color: var(--ink);">Co je pro tebe důležité?</div>
+      <p style="font-size: 13px; color: var(--ink2); margin: 0; line-height: 1.5;">Nastav každé kritérium. Co necháš na „nezáleží“, se do výpočtu vůbec nepočítá.</p>
+    </div>
+
+    <!-- SHODA — the new criterion, visually lifted above the rest -->
+    <div style="padding: 16px; margin: -4px 0; border: 1px solid var(--acc-line); border-radius: 14px; background: var(--acc-soft); display: flex; flex-direction: column; gap: 8px;">
+      <div class="crit-head">
+        <span class="crit-label" style="display: inline-flex; align-items: center; gap: 6px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--acc);"><path d="M12 21s-7-4.5-9-9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c-2 4.5-9 9-9 9Z"></path></svg>
+          Shoda s tvým dotazníkem
+        </span>
+        <span class="crit-state" style="color: var(--acc); font-weight: 600;">Zásadní</span>
+      </div>
+      <div class="seg-group">
+        <div class="seg">Nezáleží</div>
+        <div class="seg">Trochu</div>
+        <div class="seg">Dost</div>
+        <div class="seg on">Zásadní</div>
+      </div>
+      <p style="font-size: 12px; color: var(--ink2); margin: 2px 0 0; line-height: 1.45;">Z tvých odpovědí v dotazníku. Ve výchozím nastavení váží nejvíc — tohle je jediné kritérium, které ví, co vlastně chceš.</p>
+    </div>
+
+    <div class="crit">
+      <div class="crit-head"><span class="crit-label">Šance na přijetí</span><span class="crit-state">Dost</span></div>
+      <div class="seg-group"><div class="seg">Nezáleží</div><div class="seg">Trochu</div><div class="seg on">Dost</div><div class="seg">Zásadní</div></div>
+    </div>
+
+    <div class="crit">
+      <div class="crit-head"><span class="crit-label">Počet míst</span><span class="crit-state">Dost</span></div>
+      <div class="seg-group"><div class="seg">Nezáleží</div><div class="seg">Trochu</div><div class="seg on">Dost</div><div class="seg">Zásadní</div></div>
+    </div>
+
+    <div class="crit">
+      <div class="crit-head"><span class="crit-label">Typ školy odpovídá mým plánům</span><span class="crit-state">Dost</span></div>
+      <div class="seg-group"><div class="seg">Nezáleží</div><div class="seg">Trochu</div><div class="seg on">Dost</div><div class="seg">Zásadní</div></div>
+    </div>
+
+    <div class="crit">
+      <div class="crit-head"><span class="crit-label">Nabídka jazyků</span><span class="crit-state">Trochu</span></div>
+      <div class="seg-group"><div class="seg">Nezáleží</div><div class="seg on">Trochu</div><div class="seg">Dost</div><div class="seg">Zásadní</div></div>
+    </div>
+
+    <div class="crit">
+      <div class="crit-head"><span class="crit-label">Bez školného</span><span class="crit-state">Trochu</span></div>
+      <div class="seg-group"><div class="seg">Nezáleží</div><div class="seg on">Trochu</div><div class="seg">Dost</div><div class="seg">Zásadní</div></div>
+    </div>
+
+    <div class="crit" style="opacity: .55;">
+      <div class="crit-head">
+        <span class="crit-label" style="display: inline-flex; align-items: center; gap: 6px;">Dojezd z domova
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        </span>
+        <span class="crit-state">Nemáme data</span>
+      </div>
+      <div class="seg-group"><div class="seg off">Nezáleží</div><div class="seg off">Trochu</div><div class="seg off">Dost</div><div class="seg off">Zásadní</div></div>
+      <p style="font-size: 12px; color: var(--ink3); margin: 0;">Na dojezdových časech MHD pracujeme.</p>
+    </div>
+
+    <div class="crit" style="opacity: .55;">
+      <div class="crit-head">
+        <span class="crit-label" style="display: inline-flex; align-items: center; gap: 6px;">Úspěšnost u maturity
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        </span>
+        <span class="crit-state">Nemáme data</span>
+      </div>
+      <div class="seg-group"><div class="seg off">Nezáleží</div><div class="seg off">Trochu</div><div class="seg off">Dost</div><div class="seg off">Zásadní</div></div>
+      <p style="font-size: 12px; color: var(--ink3); margin: 0;">Data o maturitě zatím nemáme.</p>
+    </div>
+
+  </div>
+
+  <!-- Variant: user has not completed the questionnaire -->
+  <div style="margin-top: 20px; border: 1px dashed var(--line2); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 10px;">
+    <div style="font-size: 11px; font-weight: 600; letter-spacing: .04em; color: var(--ink3);">STAV, KDYŽ DOTAZNÍK JEŠTĚ NENÍ VYPLNĚNÝ</div>
+    <div style="border: 1px solid var(--line); border-radius: 14px; background: var(--surface2); padding: 16px; display: flex; flex-direction: column; gap: 8px;">
+      <div class="crit-head">
+        <span class="crit-label" style="display: inline-flex; align-items: center; gap: 6px; color: var(--ink2);">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          Shoda s tvým dotazníkem
+        </span>
+        <span class="crit-state">Nevyplněno</span>
+      </div>
+      <div class="seg-group"><div class="seg off">Nezáleží</div><div class="seg off">Trochu</div><div class="seg off">Dost</div><div class="seg off">Zásadní</div></div>
+      <p style="font-size: 12px; color: var(--ink2); margin: 2px 0 0; line-height: 1.45;">Vyplň dotazník a matice začne počítat i s tím, co ti sedí — ne jen s čísly z Cermatu.</p>
+      <a href="#" style="font-size: 13px; font-weight: 600; text-decoration: none; align-self: flex-start;">Vyplnit dotazník →</a>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

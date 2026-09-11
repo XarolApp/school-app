@@ -1,0 +1,212 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Public+Sans:wght@400;500;600&display=swap">
+  <style>
+    :root {
+      --bg: #FAF6EF; --surface: #FAF6EF; --surface2: #F1ECE3;
+      --ink: #221A13; --ink2: #6B6259; --ink3: #756B5C;
+      --line: #E6DFD1; --line2: #D6CBB6;
+      --acc: #AD4F2A; --acc-ink: #FAF6EF; --acc-soft: #F6E3D6; --acc-line: #DFA98C;
+      --ok: #4F7143; --ok-soft: #E6EDDE;
+      --danger: #7A3020; --danger-soft: #F5E2DC;
+      --sans: 'Public Sans', system-ui, 'Segoe UI', sans-serif;
+      --heading: 'Lora', Georgia, 'Times New Roman', serif;
+      --r-card: 18px; --r-button: 14px; --r-chip: 10px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #17130E; --surface: #1F1911; --surface2: #2A2216;
+        --ink: #F2ECE2; --ink2: #D8CFC2; --ink3: #B3A895;
+        --line: #362C1E; --line2: #4A3D2B;
+        --acc: #E08A5C; --acc-ink: #17130E; --acc-soft: #3A2617; --acc-line: #7A5540;
+        --ok: #8FB57E; --ok-soft: #24301F;
+        --danger: #C97F6A; --danger-soft: #33201A;
+      }
+    }
+    body { margin: 0; font-family: var(--sans); background: var(--bg); color: var(--ink); }
+    a { color: var(--acc); } a:hover { color: var(--ink); }
+    .crit { display: grid; grid-template-columns: 210px minmax(0, 1fr) 68px; gap: 12px; align-items: center; }
+    .crit-label { font-size: 13px; color: var(--ink2); }
+    .track { height: 8px; border-radius: 8px; background: var(--surface2); overflow: hidden; }
+    .fill { height: 100%; border-radius: 8px; background: var(--acc); }
+    .wchip { font-size: 11px; font-weight: 600; letter-spacing: .02em; text-align: right; color: var(--ink3); }
+    .wchip.hi { color: var(--acc); }
+    .flag { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--danger); }
+  </style>
+</helmet>
+
+<div style="width: 840px; box-sizing: border-box; background: var(--bg); padding: 16px; font-family: var(--sans);">
+  <div style="border: 1px solid var(--line); border-radius: 18px; background: var(--surface); overflow: hidden;">
+
+    <div style="padding: 16px 24px; border-bottom: 1px solid var(--line); background: var(--surface2); display: flex; flex-direction: column; gap: 4px;">
+      <div style="font-family: var(--heading); font-weight: 500; font-size: 18px; color: var(--ink);">Pořadí podle tvých vah</div>
+      <div style="font-size: 13px; color: var(--ink2);">Delší proužek = škola je v tom kritériu lepší než ostatní porovnávané. Váhy nastavuješ ty.</div>
+    </div>
+
+    <!-- ============ RANK 1 ============ -->
+    <div style="display: flex; gap: 16px; padding: 24px; border-bottom: 1px solid var(--line);">
+      <div style="width: 36px; height: 36px; flex: none; border-radius: 10px; background: var(--acc); color: var(--acc-ink); display: flex; align-items: center; justify-content: center; font-family: var(--heading); font-size: 18px; font-weight: 600;">1</div>
+      <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 12px;">
+
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+          <a href="#" style="font-size: 18px; font-weight: 600; color: var(--ink); text-decoration: none;">Evropská akademie vzdělávání, SOŠ a SOU s. r. o.</a>
+          <span style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 10px; background: var(--acc-soft); color: var(--acc); font-size: 12px; font-weight: 600; white-space: nowrap;">Střední shoda · 62 %</span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 9px;">
+          <div class="crit">
+            <div class="crit-label" style="color: var(--ink); font-weight: 600;">Shoda s tvým dotazníkem</div>
+            <div class="track"><div class="fill" style="width: 45%;"></div></div>
+            <div class="wchip hi">ZÁSADNÍ</div>
+          </div>
+          <div class="crit">
+            <div class="crit-label">Šance na přijetí</div>
+            <div class="track"><div class="fill" style="width: 100%;"></div></div>
+            <div class="wchip">DOST</div>
+          </div>
+          <div class="crit">
+            <div class="crit-label">Počet míst</div>
+            <div class="track"><div class="fill" style="width: 100%;"></div></div>
+            <div class="wchip">DOST</div>
+          </div>
+          <div class="crit">
+            <div class="crit-label">Typ školy odpovídá mým plánům</div>
+            <div class="track"><div class="fill" style="width: 100%;"></div></div>
+            <div class="wchip">DOST</div>
+          </div>
+          <div class="crit">
+            <div class="crit-label">Nabídka jazyků</div>
+            <div class="track"><div class="fill" style="width: 50%;"></div></div>
+            <div class="wchip">TROCHU</div>
+          </div>
+          <div class="crit">
+            <div class="crit-label">Bez školného</div>
+            <div class="track"><div class="fill" style="width: 0%;"></div></div>
+            <div class="wchip">TROCHU</div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 8px; align-items: flex-start; padding: 10px 12px; border-radius: 10px; background: var(--surface2);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color: var(--ink3); flex: none; margin-top: 1px;"><circle cx="12" cy="12" r="9"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+          <div style="font-size: 13px; color: var(--ink2); line-height: 1.5;">Vede celkově — ale <strong style="color: var(--ink);">Akademie systémové gastronomie</strong> ti podle dotazníku sedí výrazně víc.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ RANK 2 ============ -->
+    <div style="display: flex; gap: 16px; padding: 24px; border-bottom: 1px solid var(--line);">
+      <div style="width: 36px; height: 36px; flex: none; border-radius: 10px; border: 1px solid var(--line2); color: var(--ink3); display: flex; align-items: center; justify-content: center; font-family: var(--heading); font-size: 18px; font-weight: 600;">2</div>
+      <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 12px;">
+
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+          <a href="#" style="font-size: 18px; font-weight: 600; color: var(--ink); text-decoration: none;">Akademie systémové gastronomie – SŠ s. r. o.</a>
+          <span style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 10px; background: var(--ok-soft); color: var(--ok); font-size: 12px; font-weight: 600; white-space: nowrap;">Silná shoda · 91 %</span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 9px;">
+          <div class="crit">
+            <div class="crit-label" style="color: var(--ink); font-weight: 600;">Shoda s tvým dotazníkem</div>
+            <div class="track"><div class="fill" style="width: 100%;"></div></div>
+            <div class="wchip hi">ZÁSADNÍ</div>
+          </div>
+          <div class="crit">
+            <div class="crit-label">Šance na přijetí</div>
+            <div class="track"><div class="fill" style="width: 28%;"></div></div>
+            <div class="wchip">DOST</div>
+          </div>
+          <div class="crit">
+            <div class="crit-label">Počet míst</div>
+            <div class="track"><div class="fill" style="width: 0%;"></div></div>
+            <div class="wchip">DOST</div>
+          </div>
+          <div class="crit">
+            <div class="crit-label">Typ školy odpovídá mým plánům</div>
+            <div class="track"><div class="fill" style="width: 100%;"></div></div>
+            <div class="wchip">DOST</div>
+          </div>
+          <div class="crit">
+            <div class="crit-label">Nabídka jazyků</div>
+            <div class="track"><div class="fill" style="width: 50%;"></div></div>
+            <div class="wchip">TROCHU</div>
+          </div>
+          <div class="crit">
+            <div class="crit-label">Bez školného</div>
+            <div class="track"><div class="fill" style="width: 0%;"></div></div>
+            <div class="wchip">TROCHU</div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 8px; align-items: flex-start; padding: 10px 12px; border-radius: 10px; background: var(--danger-soft);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color: var(--danger); flex: none; margin-top: 1px;"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+          <div style="font-size: 13px; color: var(--ink2); line-height: 1.5;">Sedí ti nejvíc ze všech — ale slabá místa jsou přesně v tom, na čem ti záleží: <strong style="color: var(--ink);">šance na přijetí</strong> a <strong style="color: var(--ink);">počet míst</strong> (24).</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ RANK 3 ============ -->
+    <div style="display: flex; gap: 16px; padding: 24px;">
+      <div style="width: 36px; height: 36px; flex: none; border-radius: 10px; border: 1px solid var(--line2); color: var(--ink3); display: flex; align-items: center; justify-content: center; font-family: var(--heading); font-size: 18px; font-weight: 600;">3</div>
+      <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 12px;">
+
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+          <a href="#" style="font-size: 18px; font-weight: 600; color: var(--ink); text-decoration: none;">SOU kadeřnické, Praha 8, Karlínské náměstí 8/225</a>
+          <span style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 10px; background: var(--surface2); color: var(--ink3); font-size: 12px; font-weight: 600; white-space: nowrap;">Slabá shoda · 38 %</span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 9px;">
+          <div class="crit">
+            <div class="crit-label" style="color: var(--ink); font-weight: 600;">Shoda s tvým dotazníkem</div>
+            <div class="track"><div class="fill" style="width: 0%;"></div></div>
+            <div class="wchip hi">ZÁSADNÍ</div>
+          </div>
+          <div class="crit">
+            <div class="crit-label">Šance na přijetí</div>
+            <div class="track"><div class="fill" style="width: 0%;"></div></div>
+            <div class="wchip">DOST</div>
+          </div>
+          <div class="crit">
+            <div class="crit-label">Počet míst</div>
+            <div class="track"><div class="fill" style="width: 89%;"></div></div>
+            <div class="wchip">DOST</div>
+          </div>
+          <div class="crit">
+            <div class="crit-label">Typ školy odpovídá mým plánům</div>
+            <div class="track"><div class="fill" style="width: 50%;"></div></div>
+            <div class="wchip">DOST</div>
+          </div>
+          <div class="crit">
+            <div class="crit-label">Nabídka jazyků</div>
+            <div class="track"><div class="fill" style="width: 0%;"></div></div>
+            <div class="wchip">TROCHU</div>
+          </div>
+          <div class="crit">
+            <div class="crit-label">Bez školného</div>
+            <div class="track"><div class="fill" style="width: 100%;"></div></div>
+            <div class="wchip">TROCHU</div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 8px; align-items: flex-start; padding: 10px 12px; border-radius: 10px; background: var(--danger-soft);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color: var(--danger); flex: none; margin-top: 1px;"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+          <div style="font-size: 13px; color: var(--ink2); line-height: 1.5;">Nejnižší shoda s dotazníkem ze všech tří — a shodu máš nastavenou jako zásadní.</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <p style="font-size: 13px; color: var(--ink2); line-height: 1.55; margin: 16px 0 0;">Výpočet je obyčejná matematika nad daty z Cermatu a tvého dotazníku — žádná AI. Proužky ukazují, jak si škola stojí <strong style="color: var(--ink);">proti ostatním porovnávaným</strong>, ne proti celé Praze. Kritéria, u kterých nemáme data pro všechny školy, se do součtu nezapočítávají.</p>
+</div>
+</x-dc>
+</body>
+</html>

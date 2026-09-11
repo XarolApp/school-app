@@ -1,0 +1,38 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 840, "h": 1240, "title": "Rozpis (A)" },
+    { "file": "Kompakt.dc.html", "x": 940, "y": 0, "w": 840, "h": 820, "title": "Kompakt (B)" },
+    { "file": "Vahy.dc.html", "x": 1880, "y": 0, "w": 440, "h": 1360, "title": "Váhy — postranní panel" }
+  ],
+  "annotations": [
+    {
+      "id": "co-se-meni",
+      "x": 0,
+      "y": -400,
+      "w": 840,
+      "text": "CO SE MĚNÍ OPROTI DNEŠKU\n\nDnešní skládaný proužek je pryč. Ukazoval šířku = výkon × váha, což míchá dvě různé věci do jedné délky — nejde z něj přečíst ani jedno. K tomu 5 barev bez legendy, z nichž tři v tmavém režimu skoro zmizí, a minimální šířka 2 % kreslila proužek i tam, kde škola má nulu.\n\nNově: popisek u každého kritéria (žádná legenda), délka = jen výkon proti ostatním porovnávaným, váha zvlášť jako text. Pořadí drží odznak #1/#2/#3 — žádné složené procento.\n\nA hlavně: Shoda s dotazníkem je nově plnohodnotné kritérium s výchozí váhou Zásadní. Dnes do matice nevstupuje vůbec."
+    },
+    {
+      "id": "note-rozpis",
+      "x": 0,
+      "y": -210,
+      "w": 380,
+      "text": "A — ROZPIS\n\nKaždé kritérium vlastní řádek s popiskem. Vidíš na první pohled, kde škola sílí a kde padá — a na čem ti záleží.\n\nTradeoff: je vysoký. U 4 škol se dost scrolluje.\n\nProužek na nule = nejhorší z porovnávaných. Prázdná dráha, ne 2% pahýl jako dnes."
+    },
+    {
+      "id": "note-kompakt",
+      "x": 940,
+      "y": -210,
+      "w": 380,
+      "text": "B — KOMPAKT\n\nMísto proužků věty: silné / slabé / pozor. Celé pořadí se vejde na obrazovku.\n\nTradeoff: detail je za klikem. Kdo chce porovnávat kritérium po kritériu, musí rozklikávat."
+    },
+    {
+      "id": "note-vahy",
+      "x": 1880,
+      "y": -210,
+      "w": 380,
+      "text": "VÁHY\n\nShoda s dotazníkem je vytažená nad ostatní a ve výchozím stavu na Zásadní.\n\nDole: stav, když dotazník ještě není vyplněný — kritérium je zamčené a nabízí ho vyplnit."
+    }
+  ],
+  "launch": { "view": "canvas" }
+}
