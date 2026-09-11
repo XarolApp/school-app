@@ -70,6 +70,10 @@ PRAVIDLA (dodržuj přesně):
    prázdné místo obecnou frází.
 4. Každá položka je JEDNA věta, max 90 znaků, česky.
 5. Vrať 2–3 klady a 2–3 zápory.
+6. NIKDY netvrď, že se čtenář/čtenářka na školu dostane nebo nedostane, ani
+   že "je přijatý/á". Nevíš, kolik bodů čtenář má — hranice přijetí je
+   průměr za školu/obor, ne predikce pro konkrétního člověka. Piš o škole
+   ("hranice je X bodů"), nikdy o čtenáři ("dostaneš se", "jsi přijatý").
 
 Odpověz JEN validním JSON, přesně v tomto tvaru, nic jiného:
 {"pros": ["věta", "věta"], "cons": ["věta", "věta"]}`;
@@ -109,21 +113,35 @@ function summarizeSchool(school) {
   return { latestYear, kapacita, prihlasky, oborCount, jazyky, trend };
 }
 
+// Pre-formats to Czech-locale strings so the model echoes numbers instead of
+// re-deciding decimal style itself — otherwise it mixes "78 bodů" (comma
+// locale, no decimal) with "39.4 %" (period) across a single run.
+const czNum = (v, digits = 1) => (v == null ? null : v.toLocaleString('cs-CZ', { maximumFractionDigits: digits }));
+
 function buildInputRecord(school, medians) {
   const summary = summarizeSchool(school);
+  // zrizovatel lives on school_programs (per obor per year), not on schools
+  // itself — take the most recent year's value, same source the frontend's
+  // lib/decisionMatrix.js and lib/comparisonRows.js use.
+  const programs = school.school_programs || [];
+  const latestYear = Math.max(0, ...programs.map((p) => p.rok || 0));
+  const zrizovatel = programs.find((p) => p.rok === latestYear && p.zrizovatel)?.zrizovatel
+    || programs.find((p) => p.zrizovatel)?.zrizovatel
+    || null;
+
   return {
     nazev: school.name,
-    zrizovatel: school.zrizovatel || null,
+    zrizovatel,
     typy_skoly: [...new Set((school.school_programs || []).map((r) => r.typ_skoly).filter(Boolean))],
-    hranice_prijeti_prumer: school.admission_cutoff,
-    mira_prijeti_prumer: school.acceptance_rate,
+    hranice_prijeti_prumer: czNum(school.admission_cutoff),
+    mira_prijeti_prumer: czNum(school.acceptance_rate) ? `${czNum(school.acceptance_rate)} %` : null,
     mista_aktualni_rok: summary.kapacita,
     prihlasky_aktualni_rok: summary.prihlasky,
     pocet_oboru: summary.oborCount,
     jazyky: summary.jazyky,
     trend_zajmu: summary.trend,
-    prazsky_median_hranice: medians.cutoff,
-    prazsky_median_miry_prijeti: medians.rate,
+    prazsky_median_hranice: czNum(medians.cutoff),
+    prazsky_median_miry_prijeti: czNum(medians.rate) ? `${czNum(medians.rate)} %` : null,
   };
 }
 
@@ -191,7 +209,7 @@ async function main() {
 
   const { data: schools, error } = await supabase
     .from('schools')
-    .select('id, name, zrizovatel, admission_cutoff, acceptance_rate, school_programs(*)')
+    .select('id, name, admission_cutoff, acceptance_rate, school_programs(*)')
     .order('name');
 
   if (error) {
