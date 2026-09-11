@@ -676,6 +676,79 @@ Update this section whenever new information is confirmed.
 - Codex verification complete: **No**
 - Public launch gate status: **BLOCKED** (post-beta review not started)
 
+## UNFORGET Integration Status
+
+Tracking the resolution of half-done items and blockers from `UNFORGET.md` before the Codex audit can begin.
+
+### Blocker 1 — Pricing Decisions
+
+- Status: **not finalized**
+- Required decisions:
+  - [ ] Season pass price (placeholder: 690 Kč)
+  - [ ] Monthly price (placeholder: 249 Kč)
+  - [ ] Trial length locked at 3 days
+  - [ ] Plan display order (Season first or Monthly first?)
+  - [ ] Refund window (EU baseline: 14 days)
+- Impact: **Blocks real Stripe integration**
+- Target completion: before Codex deep audit
+
+### Blocker 2 — Email Confirmation Flow
+
+- Status: **partially broken** (link returns to nowhere, unconfirmed users can access protected routes)
+- Issue: `CreateAccount.jsx` skips email-check wait
+- Solution options: Option A (redirect to next onboarding step) or Option B (re-add gate before real payment)
+- Impact: **Blocks Stripe go-live** (must prevent unconfirmed email at checkout)
+- Target completion: before Codex deep audit
+
+### Blocker 3 — AI Prompt Human Tuning
+
+- Status: **not started**
+- Requires:
+  - [ ] Read real output from `lib/questionnaire.js` SYSTEM_PROMPT (5+ schools minimum)
+  - [ ] Approve or rewrite prompt based on human review
+  - [ ] Read generated Czech from `scripts/generate-school-proscons.js` (5+ schools)
+  - [ ] Validate tone for 15-year-old audience
+- Impact: **AI-generated text reaches users unvetted** — needs one review pass before beta
+- Target completion: before Codex deep audit
+
+### Blocker 4 — School Suggestions Fix
+
+- Status: **flagged as needing work** (user noted this in prior context)
+- Impact: **P0 if affecting matching accuracy**
+- Target completion: before Codex deep audit
+
+### Legal / Compliance Blockers
+
+- Paywall contract capacity review: **mostly resolved** (Czech law favors minors 15+, but flag for lawyer review before Stripe)
+- Parental confirmation screen: **exists in onboarding flow**
+- Target completion: legal review before Stripe go-live
+
+### Data Gaps (Lower Priority, Not Blocking Launch)
+
+These exist but are not strikers before beta:
+
+| Data | Current | Gap | Impact |
+|---|---|---|---|
+| Maturita pass rates | 0% | Unknown source | P3 feature |
+| VŠ placement | 0% | Unknown source | P3 feature |
+| Employment outcomes | 0% | Unknown source | P3 feature |
+| Tuition (private schools) | 0% | Manual scrape needed | P3 feature |
+| Meals/accommodation | 0% | Unknown source | P3 feature |
+| Clubs/activities | 0% | Cermat lacks this | P3 feature |
+| Landing page photo | missing | Photo shoot needed | P2 conversion |
+| Ambient animation | missing | Design asset | P3 delight |
+
+### Gate Status
+
+**Can Codex audit start?**
+- [ ] Pricing finalized and locked
+- [ ] Email confirmation flow fixed
+- [ ] AI prompts human-tuned
+- [ ] School suggestions verified working
+- [ ] Legal blockers flagged/resolved
+
+**Status: BLOCKED** until all four items above are completed.
+
 ---
 
 # 25. Daily Log

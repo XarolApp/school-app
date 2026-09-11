@@ -642,7 +642,82 @@ Recruitment continues into Week 2.
 
 ---
 
-# 20. WEEK 1-2 BOUNDARY: CODEX DEEP AUDIT (MANDATORY LAUNCH GATE)
+# 20. WEEK 1-2 BOUNDARY: RESOLVE UNFORGET LAUNCH BLOCKERS
+
+**Status:** Critical path. These items are tracked in `UNFORGET.md` as half-done or decision-gated blockers. They must be resolved before the Codex audit.
+
+After completing Week 1 development, before Codex deep audit:
+
+## Blocker 1: Finalize Pricing Decisions (MANDATORY)
+
+**Tracked in:** `UNFORGET.md` under "Pricing decisions not yet finalized"  
+**Impact:** Blocks real Stripe integration
+
+Decide and lock down:
+
+1. **Exact prices** (currently placeholders in `frontend/src/config/pricing.js`)
+   - Season pass: 690 Kč?
+   - Monthly: 249 Kč?
+2. **Trial length** (currently 3 days, matching research recommendation but not final)
+3. **Plan display order** (Season first or Monthly first?)
+4. **Refund window** (currently 3 days placeholder — 14 days EU baseline is the real benchmark)
+
+Once decided, these values go into Stripe and lock in for launch.
+
+## Blocker 2: Email Confirmation Flow (MANDATORY before Stripe)
+
+**Tracked in:** `UNFORGET.md` under "Onboarding: email confirmation gate temporarily disabled"  
+**Impact:** Unconfirmed users can't use protected routes today, but the flow is broken
+
+Current state: `CreateAccount.jsx` skips the email-check wait, because the confirmation link has nowhere to return to. Fix before Stripe goes live:
+
+**Option A (if same-browser link click):** Make `/prihlaseni?potvrzeno=1` redirect into onboarding's next step instead of breaking the flow.  
+**Option B (robust):** Add a "check your email" gate again, but specifically before the real payment call, not blocking the whole flow.
+
+Either way: **Do not let an unconfirmed email reach the real Stripe checkout.**
+
+## Blocker 3: AI Prompt Human Tuning (MANDATORY for beta)
+
+**Tracked in:** `UNFORGET.md` under "AI feature prompts need real human editing"  
+**Impact:** AI-generated text reaches users; needs tone/voice validation
+
+Current prompts need a human-tuning pass (you, not Claude) reading real generated output:
+
+1. **`lib/questionnaire.js` SYSTEM_PROMPT** (~line 399) — onboarding's "why this school fits you" sentence  
+   - Read real output, approve or rewrite the prompt directly
+2. **`scripts/generate-school-proscons.js` prompt** — school pros/cons  
+   - If wiring Gemini 2.5 Flash (plan 006), do this tuning pass AT THE SAME TIME as the model comparison, not separately
+   - Read generated Czech text; validate it sounds right for a 15-year-old, not robotic
+
+**Done when:** You've read generated output from at least 5 schools and either approved the current prompt or rewritten it and re-run the generation.
+
+## Blocker 4: Fix Half-Done Items
+
+**Tracked in:** `UNFORGET.md` under "Fix school suggestions" and others
+
+Go through UNFORGET.md and identify any remaining items that are:
+- Marked as urgent
+- Blocking launch
+- Half-done (code exists, but incomplete or placeholder)
+
+Current open items worth flagging:
+- **School suggestions:** User flagged this needs fixing (context to be recalled when raising it)
+- **Legal review on paywall contract capacity:** Mostly resolved (Czech law favors minors at 15+), but flag the parental-confirmation screen when you get a Czech consumer-law lawyer's review before Stripe goes live
+
+## The Gate
+
+**Before Codex audit starts:**
+- [ ] Pricing finalized and locked (all values decided)
+- [ ] Email confirmation flow fixed (unconfirmed emails cannot reach Stripe)
+- [ ] AI prompts human-tuned (at least one pass reading real output)
+- [ ] UNFORGET half-done items identified and either fixed or documented
+- [ ] Any legal blockers flagged (paywall contract review scheduled, if needed)
+
+If any of these is NOT done, the Codex audit cannot start. These are decision/integration points, not feature work, but they unlock everything that follows.
+
+---
+
+# 21. WEEK 1-2 BOUNDARY: CODEX DEEP AUDIT (MANDATORY LAUNCH GATE)
 
 **Status:** Hard blocker. Stranger beta testing CANNOT begin until this is complete and all critical/high-severity findings are resolved.
 
@@ -689,7 +764,7 @@ Claude Code fixes them immediately. Codex verifies the fixes.
 
 ---
 
-# 21. Week 2 — Private Beta
+# 22. Week 2 — Private Beta
 
 Primary goal:
 
@@ -732,7 +807,7 @@ Ask structured questions:
 
 ---
 
-# 22. Week 2 Marketing
+# 23. Week 2 Marketing
 
 Marketing does NOT stop because you're in beta.
 
@@ -758,7 +833,7 @@ This means marketing gradually increases while development decreases.
 
 ---
 
-# 23. Week 2 Product Priorities
+# 24. Week 2 Product Priorities
 
 Fix:
 
@@ -778,7 +853,7 @@ Prioritize by:
 
 ---
 
-# 24. Week 3 — Soft Launch
+# 25. Week 3 — Soft Launch
 
 At this point:
 
@@ -802,7 +877,7 @@ Then move to the standard price.
 
 ---
 
-# 25. Week 3 Marketing
+# 26. Week 3 Marketing
 
 This becomes a serious acquisition week.
 
@@ -834,7 +909,7 @@ Start onboarding creators into the referral system.
 
 ---
 
-# 26. Week 3 Goal
+# 27. Week 3 Goal
 
 Do NOT demand a specific number like 1,000 visitors.
 
@@ -858,7 +933,7 @@ The exact numbers will determine what needs fixing.
 
 ---
 
-# 27. Week 3 Analytics Questions
+# 28. Week 3 Analytics Questions
 
 Every day inspect:
 
@@ -894,7 +969,7 @@ Your job is to improve the biggest bottleneck.
 
 ---
 
-# 28. WEEK 3-4 BOUNDARY: CODEX REGRESSION & SECURITY REVIEW (MANDATORY PRE-LAUNCH GATE)
+# 29. WEEK 3-4 BOUNDARY: CODEX REGRESSION & SECURITY REVIEW (MANDATORY PRE-LAUNCH GATE)
 
 **Status:** Hard blocker. Public launch CANNOT happen until this review is complete.
 
@@ -935,7 +1010,7 @@ A focused independent review of:
 
 ---
 
-# 29. Week 4 — Public Launch
+# 30. Week 4 — Public Launch
 
 Once:
 
@@ -958,7 +1033,7 @@ It does NOT mean:
 
 ---
 
-# 30. Marketing Engine After Launch
+# 31. Marketing Engine After Launch
 
 Use five major acquisition systems.
 
