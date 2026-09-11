@@ -57,6 +57,98 @@ yourself" instruction in Quick Start below.
 > MacBook setup checklist. Delete sections of it as they're resolved into this
 > file / `UNFORGET.md`.
 
+---
+
+## ŠkolaMatch Operational Roadmap — How Planning Works
+
+**Three files form the complete launch strategy. Use them together:**
+
+### 1. `docs/skolamatch-90-point-context.md`
+**What it is:** The business bible. 90 numbered founder decisions, constraints, and beliefs about the market, pricing, acquisition, monetization, and product direction.
+
+**When to use it:** When the AI needs to understand the business context, constraints, or strategic priorities. This is what shapes all recommendations.
+
+### 2. `docs/skolamatch-current-status.md`
+**What it is:** The living operational state. Current product %, marketing state, blockers, daily logs, decision log, and launch readiness checklist.
+
+**When to use it:** Before suggesting next steps, to verify that:
+- The work hasn't already been completed
+- No critical blocker is being skipped
+- We're building on current reality, not assumptions
+- The priority system (P0-P4) is being applied correctly
+
+**How I update it:** Every time you report progress (finished Stripe, got 5 testers, created 3 TikToks, etc.), I update this file immediately so the next plan starts from the new reality.
+
+### 3. `docs/skolamatch-full-launch-marketing-plan-v2.md`
+**What it is:** The detailed execution roadmap. Week 1-4 daily tasks, acquisition funnels, affiliate economics, content strategy, product positioning, revenue milestones.
+
+**When to use it:** When you ask "what should I do next" or "what should I work on today," this is the primary reference.
+
+### How These Work Together
+
+**When you ask: "What should we do next?"**
+
+I will:
+1. Read `skolamatch-current-status.md` to understand actual current state
+2. Check the launch plan to see what's scheduled next
+3. Verify that next task hasn't already been completed
+4. Cross-check against business constraints in the 90-point context
+5. Give you a specific executable task (not generic advice)
+
+**Example:**
+- Plan says: "Week 2, publish TikTok content"
+- Status says: "3 TikToks already published, 50 prospects reached"
+- I respond: "Next priority is getting 5–10 more beta testers. Contact 15 new prospects today using this message."
+
+---
+
+## Parallel Work Pattern — The "Don't Stare at Me" Rule
+
+**When you use `/plan-then-build` or give me any task that will take 20+ minutes:**
+
+I will:
+1. Execute the longer development/code task
+2. **Simultaneously identify manual work you can do in parallel** so you're not waiting idle
+3. Give you explicit instructions on what to do while I work
+
+**Example structure:**
+
+> "I'm going to spend 30 minutes implementing Stripe. While I do that, you can:
+> 
+> **Option A (15 min):** Write 3 TikTok video concepts about "choosing a secondary school"  
+> **Option B (20 min):** Create a spreadsheet of 20 Czech creators who make education content  
+> **Option C (25 min):** Draft a beta-tester recruitment message  
+> 
+> Pick one or rotate between them. You'll have something meaningful done by the time I finish."
+
+**Eligible parallel work (based on the launch plan):**
+- Content creation (TikTok scripts, hooks, video ideas)
+- Creator/influencer research and outreach
+- Parent community identification and messaging
+- Tutoring company research
+- School database expansion
+- Beta tester recruitment outreach
+- Affiliate system planning
+- Landing page copy drafting
+- Analytics setup planning
+
+**Why this matters:** The founder has ~5 hours/day. If the AI is coding for 30 minutes, those 30 minutes should not be "wait for the AI." They should be spent on high-leverage manual work (like actual creator outreach) that only the founder can do.
+
+---
+
+## The Rule: Always Read Status Before Planning
+
+Before making any recommendation about what to build or launch next, I will:
+
+1. **Read `docs/skolamatch-current-status.md`** to confirm actual state
+2. **Verify blockers** — is the biggest problem still what the plan says?
+3. **Check progress** — has priority been updated based on real results?
+4. **Identify gaps** — are we skipping something critical?
+
+If the status file is stale or unclear, I will ask the founder to update it, then plan from that reality.
+
+---
+
 ## The Problem This Solves
 
 In the Czech Republic, when 9th graders need to pick a high school (*střední škola*),
