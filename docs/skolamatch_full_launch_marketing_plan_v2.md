@@ -642,7 +642,54 @@ Recruitment continues into Week 2.
 
 ---
 
-# 20. Week 2 — Private Beta
+# 20. WEEK 1-2 BOUNDARY: CODEX DEEP AUDIT (MANDATORY LAUNCH GATE)
+
+**Status:** Hard blocker. Stranger beta testing CANNOT begin until this is complete and all critical/high-severity findings are resolved.
+
+After Day 6 (full fake-user testing), before Day 7 (beta recruitment):
+
+## What Codex Does (Independent Security Audit)
+
+An independent senior engineer/security auditor performs a comprehensive adversarial review of:
+
+- **Authentication:** registration, login, logout, password reset, email confirmation
+- **Authorization:** Supabase RLS, endpoint access control, premium vs free access
+- **Database security:** user data isolation, parent/child account logic, data exposure
+- **Payment security:** Stripe flow, season-pass entitlement logic, paywall bypasses, payment verification
+- **API endpoints:** input validation, XSS/injection, rate limiting, abuse vectors
+- **Secrets/environment:** exposed keys, config exposure, hardcoded values
+- **Client/server separation:** data leakage, improper trust boundaries
+- **User data:** account deletion, GDPR compliance, data handling
+- **Business logic:** onboarding/questionnaire correctness, school matching correctness, entitlement consistency
+- **AI features:** prompt injection, unsafe outputs, API security
+- **Error handling:** information leakage, stack traces, failure modes
+- **Account integrity:** race conditions, double-charging, permission inconsistencies
+- **Deployment/production:** database backups, monitoring, disaster recovery
+- **Edge cases & broken flows:** anything that could cause users to receive paid features without paying, anything that could expose another user's data, anything that could cause payment inconsistencies
+
+**Codex assumes nothing.** It actively attempts to break the application and does NOT assume Claude Code's implementation is correct.
+
+## The Gate
+
+**Prerequisite to start audit:**
+- Days 1-6 of Week 1 development complete
+- Fake-user testing complete
+- P0 blockers resolved (registration, login, questionnaire, matching, Stripe, paywall, analytics all functional)
+
+**Definition of "Pass":**
+- All critical-severity findings resolved or explicitly accepted by founder
+- All high-severity findings resolved or explicitly accepted by founder
+- Documentation of any remaining medium-severity findings
+- Codex verifies all critical/high fixes
+
+**If audit finds critical issues:**
+Claude Code fixes them immediately. Codex verifies the fixes.
+
+**Beta testing cannot start until the gate is passed.**
+
+---
+
+# 21. Week 2 — Private Beta
 
 Primary goal:
 
@@ -685,7 +732,7 @@ Ask structured questions:
 
 ---
 
-# 21. Week 2 Marketing
+# 22. Week 2 Marketing
 
 Marketing does NOT stop because you're in beta.
 
@@ -711,7 +758,7 @@ This means marketing gradually increases while development decreases.
 
 ---
 
-# 22. Week 2 Product Priorities
+# 23. Week 2 Product Priorities
 
 Fix:
 
@@ -731,7 +778,7 @@ Prioritize by:
 
 ---
 
-# 23. Week 3 — Soft Launch
+# 24. Week 3 — Soft Launch
 
 At this point:
 
@@ -755,7 +802,7 @@ Then move to the standard price.
 
 ---
 
-# 24. Week 3 Marketing
+# 25. Week 3 Marketing
 
 This becomes a serious acquisition week.
 
@@ -787,7 +834,7 @@ Start onboarding creators into the referral system.
 
 ---
 
-# 25. Week 3 Goal
+# 26. Week 3 Goal
 
 Do NOT demand a specific number like 1,000 visitors.
 
@@ -811,7 +858,7 @@ The exact numbers will determine what needs fixing.
 
 ---
 
-# 26. Week 3 Analytics Questions
+# 27. Week 3 Analytics Questions
 
 Every day inspect:
 
@@ -847,7 +894,48 @@ Your job is to improve the biggest bottleneck.
 
 ---
 
-# 27. Week 4 — Public Launch
+# 28. WEEK 3-4 BOUNDARY: CODEX REGRESSION & SECURITY REVIEW (MANDATORY PRE-LAUNCH GATE)
+
+**Status:** Hard blocker. Public launch CANNOT happen until this review is complete.
+
+After Week 3 beta period, before Week 4 public launch:
+
+## What Codex Does (Targeted Review)
+
+A focused independent review of:
+
+- **Beta period changes:** All code modifications, fixes, and new features added during beta
+- **Payment integrity:** Verify no new payment/entitlement bugs were introduced
+- **Security regression:** Check that fixes from the deep audit remain in place and are not undermined by new code
+- **Critical flow changes:** Any modifications to authentication, authorization, or user data handling
+- **Customer feedback fixes:** Security implications of bug fixes driven by beta feedback
+- **Deployment changes:** Any changes to production configuration, database setup, or infrastructure
+
+**This is NOT a full re-audit.** It's a targeted verification that:
+1. The deep audit findings remain fixed
+2. No new critical/high-severity issues were introduced
+3. The product is safe to launch publicly
+
+## The Gate
+
+**Prerequisite to start review:**
+- Week 3 soft launch complete
+- Beta feedback analyzed
+- Fixes and improvements deployed
+- Product stable
+
+**Definition of "Pass":**
+- No new critical-severity vulnerabilities found
+- No new high-severity vulnerabilities found
+- Deep audit critical/high findings still resolved
+- Any medium-severity findings from beta documented
+- Codex confirms safe to proceed to public launch
+
+**Public launch cannot proceed until this gate is passed.**
+
+---
+
+# 29. Week 4 — Public Launch
 
 Once:
 
@@ -870,7 +958,7 @@ It does NOT mean:
 
 ---
 
-# 28. Marketing Engine After Launch
+# 30. Marketing Engine After Launch
 
 Use five major acquisition systems.
 
@@ -896,7 +984,7 @@ Long-term search acquisition.
 
 ---
 
-# 29. Creator Strategy
+# 32. Creator Strategy
 
 Do not only target huge influencers.
 
@@ -916,7 +1004,7 @@ A creator with 10,000 relevant viewers can be more valuable than one with 200,00
 
 ---
 
-# 30. Creator Pitch
+# 33. Creator Pitch
 
 The core pitch:
 
@@ -928,7 +1016,7 @@ Do not write giant sales paragraphs.
 
 ---
 
-# 31. Parent Value Proposition
+# 34. Parent Value Proposition
 
 Do not sell:
 
@@ -950,7 +1038,7 @@ The product solves both.
 
 ---
 
-# 32. Student Value Proposition
+# 35. Student Value Proposition
 
 The student message is more emotional and direct:
 
@@ -967,7 +1055,7 @@ Student pain:
 
 ---
 
-# 33. Product Positioning
+# 36. Product Positioning
 
 Do not position the product as:
 
@@ -985,7 +1073,7 @@ The product experience is:
 
 ---
 
-# 34. Percentage Matching
+# 37. Percentage Matching
 
 Keep percentage matching.
 
@@ -1011,7 +1099,7 @@ Keep admission likelihood separate.
 
 ---
 
-# 35. Two Different Questions
+# 38. Two Different Questions
 
 The product should clearly distinguish:
 
@@ -1038,7 +1126,7 @@ Never let users interpret the matching score as admission probability.
 
 ---
 
-# 36. AI Features
+# 39. AI Features
 
 Current AI features are enough for launch:
 
@@ -1058,7 +1146,7 @@ The advantage is:
 
 ---
 
-# 37. Personalization
+# 40. Personalization
 
 The AI explanation should make the result feel personally relevant.
 
@@ -1085,7 +1173,7 @@ Personalization should increase trust, not create false certainty.
 
 ---
 
-# 38. School Partnerships
+# 41. School Partnerships
 
 Do NOT make school outreach the immediate bottleneck.
 
@@ -1113,7 +1201,7 @@ This makes outreach much easier than approaching schools with only an idea.
 
 ---
 
-# 39. Tutoring Partnerships
+# 42. Tutoring Partnerships
 
 Tutoring companies are potentially attractive because their customers already spend money on education.
 
@@ -1130,7 +1218,7 @@ Make it performance-based initially.
 
 ---
 
-# 40. SEO
+# 43. SEO
 
 SEO is a long-term acquisition channel.
 
@@ -1151,7 +1239,7 @@ Each page should provide genuinely useful structured information.
 
 ---
 
-# 41. Expansion Strategy
+# 44. Expansion Strategy
 
 Do NOT immediately build every city.
 
@@ -1165,7 +1253,7 @@ Expansion should become mostly a data-acquisition problem rather than a complete
 
 ---
 
-# 42. Revenue Milestones
+# 45. Revenue Milestones
 
 Track:
 
@@ -1207,7 +1295,7 @@ The first goal is proving:
 
 ---
 
-# 43. Revenue Math
+# 46. Revenue Math
 
 If the average season purchase is approximately 600 CZK:
 
@@ -1227,7 +1315,7 @@ Affiliate commissions, payment fees, taxes and future operating costs must be ac
 
 ---
 
-# 44. What to Optimize
+# 47. What to Optimize
 
 Do NOT optimize for:
 
@@ -1258,7 +1346,7 @@ The ultimate question is:
 
 ---
 
-# 45. Affiliate Unit Economics
+# 48. Affiliate Unit Economics
 
 For a 699 CZK sale with:
 
@@ -1282,7 +1370,7 @@ Do not destroy your margin before you know what converts.
 
 ---
 
-# 46. When to Increase Creator Commission
+# 49. When to Increase Creator Commission
 
 Increase commission only when the creator proves they can sell.
 
@@ -1308,7 +1396,7 @@ Not:
 
 ---
 
-# 47. Customer Referral System
+# 50. Customer Referral System
 
 After you have customers, add a referral system for users too.
 
@@ -1322,7 +1410,7 @@ Do not prioritize this before the basic product and creator affiliate system wor
 
 ---
 
-# 48. Trust Strategy
+# 51. Trust Strategy
 
 You are selling a high-stakes decision.
 
@@ -1351,7 +1439,7 @@ Say:
 
 ---
 
-# 49. Data Accuracy
+# 52. Data Accuracy
 
 For school data:
 
@@ -1369,7 +1457,7 @@ It should not silently invent facts.
 
 ---
 
-# 50. Product Development Rule
+# 53. Product Development Rule
 
 Before adding a feature, ask:
 
@@ -1385,7 +1473,7 @@ If the answer is “no” to all five:
 
 ---
 
-# 51. Current P0 Development
+# 54. Current P0 Development
 
 Finish these first:
 
@@ -1410,7 +1498,7 @@ Finish these first:
 
 ---
 
-# 52. P1 Development
+# 55. P1 Development
 
 Then:
 
@@ -1425,7 +1513,7 @@ Then:
 
 ---
 
-# 53. P2 Development
+# 56. P2 Development
 
 Later:
 
@@ -1441,7 +1529,7 @@ Do NOT allow P2 features to delay the launch.
 
 ---
 
-# 54. Launch Readiness Checklist
+# 57. Launch Readiness Checklist
 
 Before public launch, verify:
 
@@ -1494,7 +1582,7 @@ Before public launch, verify:
 
 ---
 
-# 55. The Operating Schedule After Launch
+# 58. The Operating Schedule After Launch
 
 Once live, use approximately:
 
@@ -1514,7 +1602,7 @@ If marketing starts working extremely well, temporarily shift even more time tow
 
 ---
 
-# 56. The Daily Dashboard
+# 59. The Daily Dashboard
 
 Every day record:
 
@@ -1540,7 +1628,7 @@ If you cannot answer that, the marketing system is not mature enough.
 
 ---
 
-# 57. First Marketing Content System
+# 60. First Marketing Content System
 
 Create content in five categories.
 
@@ -1568,7 +1656,7 @@ Rotate between these.
 
 ---
 
-# 58. TikTok Hook Examples
+# 61. TikTok Hook Examples
 
 Use short hooks such as:
 
@@ -1588,7 +1676,7 @@ Do not make every video an advertisement.
 
 ---
 
-# 59. Content-to-Product Funnel
+# 62. Content-to-Product Funnel
 
 The TikTok should not simply say:
 
@@ -1616,7 +1704,7 @@ Instead:
 
 ---
 
-# 60. Tester-to-Testimonial System
+# 63. Tester-to-Testimonial System
 
 After beta testing:
 
@@ -1638,7 +1726,7 @@ Do not pay people to claim they love the product.
 
 ---
 
-# 61. Product Demo Video
+# 64. Product Demo Video
 
 Create one short video for the landing page.
 
@@ -1662,7 +1750,7 @@ The purpose is:
 
 ---
 
-# 62. What You Should NOT Do in Week 1
+# 65. What You Should NOT Do in Week 1
 
 Do not spend the week:
 
@@ -1682,7 +1770,7 @@ The bottleneck is:
 
 ---
 
-# 63. Week 1 Marketing Is Real Work
+# 66. Week 1 Marketing Is Real Work
 
 The previous schedule was too development-heavy.
 
@@ -1741,7 +1829,7 @@ The important point is:
 
 ---
 
-# 64. Week 1 Marketing Deliverables
+# 67. Week 1 Marketing Deliverables
 
 By the end of Week 1 you should physically have:
 
@@ -1760,7 +1848,7 @@ By the end of Week 1 you should physically have:
 
 ---
 
-# 65. Day 1 — What You Should Do RIGHT NOW
+# 68. Day 1 — What You Should Do RIGHT NOW
 
 Do NOT start by making another random feature.
 
@@ -1837,7 +1925,7 @@ The objective is to start the machine.
 
 ---
 
-# 66. Day 1 Priority Order
+# 69. Day 1 Priority Order
 
 If you only remember one thing, follow this order:
 
@@ -1867,7 +1955,7 @@ If you only remember one thing, follow this order:
 
 ---
 
-# 67. The Overall Timeline
+# 70. The Overall Timeline
 
 ## Week 1
 
@@ -1895,7 +1983,7 @@ If you only remember one thing, follow this order:
 
 ---
 
-# 68. The Core Strategy in One Sentence
+# 71. The Core Strategy in One Sentence
 
 > **Do not spend the next month building in isolation; spend the next month turning the product from a demo into a measurable business by simultaneously finishing the minimum launchable product, recruiting real strangers, getting the first paying customers, and identifying which acquisition channels can profitably scale.**
 

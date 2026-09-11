@@ -650,6 +650,32 @@ Update this section whenever new information is confirmed.
 - Instagram: **not established**
 - Email list: **0**
 
+## Codex Audit Status
+
+### Deep Audit (MANDATORY GATE BEFORE BETA TESTING)
+
+- Status: **not started**
+- Scheduled after: Day 6 of Week 1 (fake-user testing complete)
+- Prerequisite: P0 launch blockers resolved
+- Date completed: —
+- Major findings: —
+- Critical-severity findings: **0 remaining**
+- High-severity findings: **0 remaining**
+- Medium-severity findings: none documented yet
+- Claude fixes completed: —
+- Codex verification complete: **No**
+- Beta entry gate status: **BLOCKED** (audit not started)
+
+### Pre-Launch Regression Review (MANDATORY GATE BEFORE PUBLIC LAUNCH)
+
+- Status: **not started**
+- Scheduled after: Week 3 beta period complete
+- Date completed: —
+- New vulnerabilities found: none yet
+- Deep audit fixes still in place: unknown (audit not done)
+- Codex verification complete: **No**
+- Public launch gate status: **BLOCKED** (post-beta review not started)
+
 ---
 
 # 25. Daily Log
