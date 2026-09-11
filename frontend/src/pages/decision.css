@@ -122,7 +122,13 @@
 .dp-table {
   display: grid;
   grid-template-columns: 200px repeat(var(--dp-cols, 3), minmax(200px, 1fr));
-  min-width: max-content;
+  /* NOT min-width: max-content — that measures the grid's UNCONSTRAINED
+     content width, which for a long school name forces the whole grid
+     (and every column) far wider than the viewport, creating both the
+     empty-looking columns and a forced horizontal scroll even with only
+     2-3 schools. minmax(200px, 1fr) already lets columns shrink to fit
+     the scroll container; min-width: 0 below on the cells is what lets
+     long names actually WRAP instead of pushing their column wider. */
 }
 
 .dp-table-head {
@@ -143,12 +149,17 @@
   flex-direction: column;
   gap: var(--space-xs);
   background: var(--surface);
+  /* Flex items default to min-width: auto, which refuses to shrink below
+     its content's natural (unwrapped) width — this is what was forcing
+     the column wide instead of letting the name wrap. */
+  min-width: 0;
 }
 .dp-table-head-top {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--space-sm);
+  min-width: 0;
 }
 .dp-table-head-name {
   font-size: var(--fs-body-lg);
@@ -156,6 +167,8 @@
   color: var(--ink);
   line-height: 1.3;
   text-decoration: none;
+  overflow-wrap: break-word;
+  min-width: 0;
 }
 .dp-table-head-name:hover {
   color: var(--acc);
@@ -222,6 +235,11 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  min-width: 0;
+}
+.dp-table-cell strong {
+  overflow-wrap: break-word;
+  min-width: 0;
 }
 .dp-table-cell.is-best {
   background: var(--ok-soft);
