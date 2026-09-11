@@ -18,7 +18,7 @@ import { useAuth } from '../components/AuthContext';
 import FavoriteButton from '../components/FavoriteButton';
 import SchoolMap from '../components/SchoolMap';
 import StatInfo from '../components/StatInfo';
-import { getRecentSchoolIds, setCompareSelection } from '../lib/searchPrefs';
+import { getRecentSchoolIds, getCompareSelection, setCompareSelection } from '../lib/searchPrefs';
 import './search.css';
 
 /**
@@ -270,7 +270,7 @@ function Search() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [favorites, setFavorites] = useState(() => new Set());
-  const [selected, setSelected] = useState(() => new Set());
+  const [selected, setSelected] = useState(() => new Set(getCompareSelection()));
   const [filters, setFilters] = useState(DEFAULT_FILTERS);
   const [view, setView] = useState('list'); // 'list' | 'map'
   const [selectedMapId, setSelectedMapId] = useState(null);

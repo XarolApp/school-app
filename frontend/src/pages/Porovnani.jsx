@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { fetchSchools, fetchPicks, savePicks } from '../api';
-import { getCompareSelection, toggleCompareSelection } from '../lib/searchPrefs';
+import { getCompareSelection, toggleCompareSelection, setCompareSelection } from '../lib/searchPrefs';
 import { buildComparisonRows } from '../lib/comparisonRows';
 import DecisionTabs from '../components/decision/DecisionTabs';
 import ProsCons from '../components/decision/ProsCons';
@@ -53,6 +53,10 @@ function Porovnani() {
   const handleRemove = (schoolId) => {
     const next = toggleCompareSelection(schoolId);
     setSelection(next);
+  };
+
+  const handleClearAll = () => {
+    setSelection(setCompareSelection([]));
   };
 
   const handleAddToPicks = async (school) => {
@@ -132,6 +136,9 @@ function Porovnani() {
           <Link to="/skoly" className="ss-btn ss-btn-secondary">
             Přidat školu
           </Link>
+          <button type="button" className="ss-btn ss-btn-secondary dp-clear-all" onClick={handleClearAll}>
+            Vymazat vše
+          </button>
         </div>
       </div>
 

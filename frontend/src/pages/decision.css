@@ -43,6 +43,13 @@
   display: flex;
   gap: var(--space-sm);
 }
+.dp-clear-all {
+  color: var(--ink2);
+  border-color: var(--border);
+}
+.dp-clear-all:hover {
+  color: var(--ink);
+}
 
 .dp-empty,
 .dp-empty-inline {

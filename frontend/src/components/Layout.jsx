@@ -14,6 +14,7 @@ function Layout() {
           <Link to="/">Domů</Link>
           <Link to="/skoly">Školy</Link>
           <Link to="/onboarding">Najít školu</Link>
+          <Link to="/porovnani">Porovnání</Link>
           {isSignedIn ? (
             <>
               <Link to="/nastaveni">Nastavení</Link>
