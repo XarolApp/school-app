@@ -175,6 +175,10 @@
   color: var(--danger);
 }
 
+.dp-table-section {
+  display: contents;
+}
+
 .dp-table-section-title {
   grid-column: 1 / -1;
   padding: var(--space-sm) var(--space-md);
