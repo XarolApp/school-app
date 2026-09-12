@@ -1,8 +1,46 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { supabase, setRememberMe } from '../supabaseClient';
-import { fetchMe, updateProfile } from '../api';
+import { fetchMe, updateProfile, saveOnboardingAnswers } from '../api';
+import { readOnboardingStash, clearOnboardingStash } from '../lib/pendingOnboardingAnswers';
 
 const AuthContext = createContext(null);
+
+// Module-level, not component state: getSession() and the first
+// onAuthStateChange firing can both resolve with the same fresh session, and
+// this guard is what stops that from posting the stash twice.
+let flushInFlight = false;
+
+/**
+ * Saves a stashed onboarding answer set to the account, once — and only if —
+ * this browser sees a session for the SAME email the stash was written under.
+ * That email check is what stops a shared/school computer from attaching
+ * student A's quiz answers to whichever account happens to sign in next.
+ *
+ * Never awaited by its caller: this must not delay setLoading(false) or block
+ * the auth-state effect. A failure (still unconfirmed, offline, server error)
+ * just leaves the stash for the next session to try again; only a 400 (the
+ * stash itself is malformed) or a successful/duplicate save clears it.
+ */
+async function flushOnboardingStash(activeSession) {
+  if (!activeSession || flushInFlight) return;
+  const stash = readOnboardingStash();
+  if (!stash) return;
+
+  const email = activeSession.user?.email?.toLowerCase();
+  if (!email || email !== stash.email) return;
+
+  flushInFlight = true;
+  try {
+    await saveOnboardingAnswers(stash.answers);
+    clearOnboardingStash();
+  } catch (err) {
+    if (err?.status === 400) clearOnboardingStash();
+    // 401/403 (not confirmed yet), 5xx, or a network error: keep the stash,
+    // the next session (or the next auth-state change) tries again.
+  } finally {
+    flushInFlight = false;
+  }
+}
 
 // Supabase reports auth failures in English. Map the ones users actually hit.
 const AUTH_ERRORS = [
@@ -51,6 +89,7 @@ export function AuthProvider({ children }) {
       setSession(data.session);
       await loadProfile(data.session);
       if (!cancelled) setLoading(false);
+      flushOnboardingStash(data.session);
     });
 
     const {
@@ -59,6 +98,7 @@ export function AuthProvider({ children }) {
       if (cancelled) return;
       setSession(nextSession);
       await loadProfile(nextSession);
+      flushOnboardingStash(nextSession);
     });
 
     return () => {
@@ -142,6 +182,7 @@ export function AuthProvider({ children }) {
   };
 
   const signOut = async () => {
+    clearOnboardingStash();
     await supabase.auth.signOut();
     setProfile(null);
   };
@@ -223,6 +264,7 @@ export function AuthProvider({ children }) {
   // are signed out too. Worth having after changing a password on a computer
   // you no longer trust.
   const signOutEverywhere = async () => {
+    clearOnboardingStash();
     const { error } = await supabase.auth.signOut({ scope: 'global' });
     setProfile(null);
     return error ? { error: translateAuthError(error.message) } : {};

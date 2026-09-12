@@ -6,6 +6,7 @@ import { useAuth } from '../../../components/AuthContext';
 import PasswordInput from '../../../components/PasswordInput';
 import PasswordStrength from '../../../components/PasswordStrength';
 import Captcha, { captchaEnabled } from '../../../components/Captcha';
+import { stashOnboardingAnswers } from '../../../lib/pendingOnboardingAnswers';
 
 /**
  * Account creation, inside the flow.
@@ -26,11 +27,14 @@ import Captcha, { captchaEnabled } from '../../../components/Captcha';
  * earning any". This screen sits well past that: quiz, reveal, summary,
  * commitment and social proof all come first.
  *
- * Quiz answers stay in sessionStorage and are NOT sent here. Nothing about a
- * minor is written to Supabase during onboarding beyond the account itself.
+ * Quiz answers stay in sessionStorage through the whole quiz and are not sent
+ * here directly — on successful signup they are stashed in localStorage
+ * (lib/pendingOnboardingAnswers.js) and saved to the account only once this
+ * browser sees a CONFIRMED session for this same email (AuthContext's flush).
+ * Nothing about a minor reaches Supabase before that point.
  */
 function CreateAccount() {
-  const { role, ranked, goNext, goBack, phase } = useOnboarding();
+  const { role, ranked, cleanedAnswers, goNext, goBack, phase } = useOnboarding();
   const matchCount = ranked?.length || 0;
   const { signUp } = useAuth();
   const parent = role === 'parent';
@@ -61,6 +65,15 @@ function CreateAccount() {
     if (result.error) {
       setError(result.error);
       return;
+    }
+
+    // Answers are stashed locally, not sent anywhere yet: there is no session
+    // until the confirmation link is clicked, and that link usually opens in
+    // a different tab/device than this one (see lib/pendingOnboardingAnswers.js).
+    // AuthContext flushes this stash to the server the next time this browser
+    // sees a confirmed session for this same email.
+    if (Object.keys(cleanedAnswers || {}).length) {
+      stashOnboardingAnswers(cleanedAnswers, email);
     }
 
     // Email confirmation is TEMPORARILY not gating the flow here. It used to

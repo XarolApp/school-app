@@ -307,7 +307,7 @@ both working end to end).
 | `school_programs` | one row per obor per school per year, from Cermat's real admission results — `typ_skoly`, `zrizovatel`, `maturitni`, `jpz_povinna`, `jazyk_studia`, `delka_studia`, `kkov`, `kapacita`, `prihlasky`, `prijati`, `cutoff`. No client RLS policy, same as `schools` — server.js only. Declared in `supabase-setup.sql` itself as of 2026-09-08 — it existed in the live database earlier than that (created directly by the import script), so this file didn't yet describe the real schema; fixed rather than left drifting. |
 | `users` | profile mirror of the private `auth.users`: email, name, `trial_expires_at`, `subscription_status`, Stripe ids |
 | `favorites` | `(user_id, school_id)` |
-| `questionnaire_runs` | one row per completed *standalone* questionnaire: answers, matches, `label`, `is_default`, `archived_at` |
+| `questionnaire_runs` | one row per completed *standalone* questionnaire: answers, matches, `label`, `is_default`, `archived_at`, `source` (`'questionnaire'` or `'onboarding'` — the latter written once per account from the onboarding quiz via `POST /api/me/onboarding-answers`, and excluded from the monthly quota count) |
 | `school_reviews` | one row per (school, user): `role`, `role_year`, `obor_nazev`, `body`, `show_name`, `verified`, `status`. No client RLS policy — server.js only, see "User-generated content" above. |
 | `review_reports` | `(review_id, user_id)` — one report per person per review |
 | `data_reports` | crowdsourced "Nahlásit chybu v údajích": `school_id`, `user_id`, `field`, `message`, read directly in Supabase |
@@ -576,8 +576,15 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
      URL (`/onboarding/:stepId`), routes registered outside `Layout` in `App.jsx`.
    - **Role fork** at screen 2 branches voice, proof, motion, price framing and
      question phrasing. Role in `localStorage`, switchable mid-flow without
-     losing answers. Quiz answers are client state (`sessionStorage`) only —
-     nothing about a minor is written to Supabase during onboarding.
+     losing answers. Quiz answers are client state (`sessionStorage`) through the
+     whole quiz — nothing about a minor reaches Supabase before there is an
+     account. Once `CreateAccount` creates one, answers move to a short-lived
+     localStorage stash (`lib/pendingOnboardingAnswers.js`) and are saved as a
+     `questionnaire_runs` row (`source: 'onboarding'`) only on a subsequent
+     confirmed sign-in, via `AuthContext`'s flush and `POST
+     /api/me/onboarding-answers` — see plan 008. This is what makes `match_score`
+     populate for accounts that signed up through onboarding rather than the
+     standalone questionnaire.
    - **Scoring:** `frontend/src/lib/matching.js` + `schoolFeatures.js`.
      Deterministic, auditable, no AI in the numbers. Features are derived from
      the only columns that exist (`name`, `location`, `programs`), each with a

@@ -35,10 +35,12 @@ function loadAnswers() {
  * The step id lives in the URL (/onboarding/:stepId) so the phone back button
  * behaves the way a 15-year-old expects instead of nuking the flow.
  *
- * Quiz answers stay CLIENT STATE (sessionStorage) all the way to the reveal.
- * Nothing about a minor is written to Supabase during onboarding — data
- * minimisation under GDPR Art. 8. Persist only if and when there is an account
- * to attach it to and a reason to keep it.
+ * Quiz answers stay CLIENT STATE (sessionStorage) through the whole flow —
+ * data minimisation under GDPR Art. 8: nothing about a minor reaches Supabase
+ * before there is an account to attach it to. Once one exists (CreateAccount),
+ * answers move to a short-lived localStorage stash and are saved to the
+ * account only on a subsequent CONFIRMED sign-in — see
+ * lib/pendingOnboardingAnswers.js and AuthContext's flush.
  */
 function OnboardingFlow() {
   const { stepId } = useParams();

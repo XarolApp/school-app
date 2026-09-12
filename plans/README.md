@@ -18,7 +18,7 @@ codebase audit (see "Not audited" below).
 | 005 | [Spacing & typography tokens: emit them, then adopt them site-wide](005-spacing-typography-migration.md) | HIGH | L | Medium | IN PROGRESS |
 | 006 | [Comparison & decision tools (feature-brainstorm §5)](006-comparison-decision-tools.md) | HIGH | L | Medium | TODO |
 | 007 | [Rozhodovací matice redesign + match score as a criterion](007-decision-matrix-redesign.md) | HIGH | M | Low | DONE |
-| 008 | [Save onboarding quiz answers to the account](008-save-onboarding-answers.md) | HIGH | M | Medium | TODO |
+| 008 | [Save onboarding quiz answers to the account](008-save-onboarding-answers.md) | HIGH | M | Medium | DONE |
 
 > **004** was added 2026-08-30 by a separate `/improve plan <description>` run against
 > commit `5a8381c` — a targeted single-plan run, not part of the 2026-08-24 audit above.
@@ -50,8 +50,21 @@ codebase audit (see "Not audited" below).
 > `shoda` criterion is locked for every account except one with a legacy row. 008
 > stashes onboarding answers at signup and saves them through a new endpoint on
 > first confirmed sign-in, so match scores populate everywhere `withMatchScores`
-> reads them (search, school detail, `/porovnani`, the matrix). Needs the founder to
-> re-run `supabase-setup.sql` once its schema change lands.
+> reads them (search, school detail, `/porovnani`, the matrix).
+>
+> **Correction, 2026-09-12:** 008 was marked DONE on landing, but its
+> `supabase-setup.sql` migration (the `source` column) was never actually run
+> against the live database — it sat in the file, unapplied, for a full day.
+> Every call to `readUsage` (which every `/api/questionnaire*` route makes)
+> was silently 500ing that whole time, which is also why the onboarding flush
+> had never produced a real `source: 'onboarding'` row despite 008's own
+> verification checklist claiming it had. Caught 2026-09-12 while building the
+> standalone `/dotaznik` page (the first thing to actually exercise
+> `GET /api/questionnaire`), fixed by running the migration for real. The code
+> was correct all along — only the schema step had been skipped — but the
+> onboarding flush specifically (stash → confirmed sign-in → saved row) still
+> has not been watched succeed end to end on a real account. Do that before
+> trusting 008's DONE status fully.
 >
 > **005** was added 2026-08-31, same variant, same base commit. It migrates the app onto
 > `design/system`'s real spacing and type scales. **It interacts with 003**: 003 fixes a

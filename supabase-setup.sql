@@ -167,6 +167,18 @@ create unique index if not exists questionnaire_runs_one_default_idx
 create index if not exists questionnaire_runs_user_default_idx
   on public.questionnaire_runs (user_id, is_default desc, created_at desc);
 
+-- Where a set of answers came from. 'onboarding' rows are written once, when a
+-- new account first signs in, from the onboarding quiz; they cost no AI call
+-- and must not count against the monthly questionnaire allowance.
+alter table public.questionnaire_runs
+  add column if not exists source text not null default 'questionnaire'
+  check (source in ('questionnaire', 'onboarding'));
+
+-- At most one onboarding set per account, so a double flush (two tabs, a
+-- retry) cannot create duplicates — the second insert simply conflicts.
+create unique index if not exists questionnaire_runs_one_onboarding_idx
+  on public.questionnaire_runs (user_id) where source = 'onboarding';
+
 
 -- ----------------------------------------------------------------------------
 -- 3c. Per-obor admission data (school_programs)

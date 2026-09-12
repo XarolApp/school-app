@@ -67,6 +67,15 @@ export function deleteAccount() {
   return request('/api/me', { method: 'DELETE' });
 }
 
+/** Saves the onboarding quiz's stashed answers to the account, once a session
+ *  is confirmed — see lib/pendingOnboardingAnswers.js and AuthContext's flush. */
+export function saveOnboardingAnswers(answers) {
+  return request('/api/me/onboarding-answers', {
+    method: 'POST',
+    body: JSON.stringify({ answers }),
+  });
+}
+
 export function fetchSchools() {
   return request('/api/schools');
 }

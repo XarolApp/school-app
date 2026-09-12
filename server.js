@@ -15,6 +15,11 @@ const {
 const { scoreSchools } = require('./lib/matching');
 const { districtOfSchool } = require('./lib/pragueDistricts');
 const { shouldHold } = require('./lib/reviewFilter');
+const {
+  validateOnboardingAnswers,
+  translateOnboardingAnswers,
+  isScoreable,
+} = require('./lib/onboardingAnswers');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -366,6 +371,68 @@ app.delete('/api/me', requireAuth, async (req, res) => {
   if (error) return res.status(500).json({ error: error.message });
 
   res.status(204).end();
+});
+
+/**
+ * Saves the ONBOARDING quiz's answers as a questionnaire_runs row, so an
+ * account that signed up through the onboarding flow gets a match_score
+ * everywhere withMatchScores reads one — search, school detail, /porovnani,
+ * the decision matrix — instead of nothing until it separately fills out the
+ * standalone questionnaire.
+ *
+ * `requireAuth` only, deliberately NOT `requireAccess`: this saves data the
+ * user already gave us during signup, not a new AI call gated by trial
+ * status. It also skips questionnaireLimiter and OPENROUTER_API_KEY — there is
+ * no model call on this path, just the same deterministic scoreSchools() the
+ * rest of the app already runs, so it has no cost to rate-limit and nothing to
+ * degrade when the AI key is unset. source: 'onboarding' keeps it out of
+ * readUsage's monthly count.
+ *
+ * Called once, right after a confirmed sign-in, by AuthContext's stash flush —
+ * see frontend's lib/pendingOnboardingAnswers.js for why it cannot simply run
+ * inside the onboarding flow itself (no session exists yet at that point).
+ */
+app.post('/api/me/onboarding-answers', requireAuth, async (req, res) => {
+  const validation = validateOnboardingAnswers(req.body?.answers);
+  if (!validation.ok) {
+    return res.status(400).json({ error: validation.error });
+  }
+
+  const translated = translateOnboardingAnswers(validation.answers);
+  if (!isScoreable(translated)) {
+    return res.status(200).json({ saved: false, reason: 'nothing_to_score' });
+  }
+
+  const { data: schools, error: schoolsError } = await supabase.from('schools').select('*');
+  if (schoolsError) return res.status(500).json({ error: schoolsError.message });
+  if (!schools?.length) {
+    return res.status(503).json({ error: 'V databázi zatím nejsou žádné školy.' });
+  }
+
+  const matches = scoreSchools(translated, withDistricts(schools))
+    .slice(0, 20)
+    .map(({ school_id, score }) => ({ school_id, score }));
+
+  const { error: insertError } = await supabase.from('questionnaire_runs').insert({
+    user_id: req.user.id,
+    answers: translated,
+    matches,
+    model: null,
+    label: 'Úvodní dotazník',
+    source: 'onboarding',
+    is_default: false,
+  });
+
+  if (insertError) {
+    // Unique violation on questionnaire_runs_one_onboarding_idx — a second tab
+    // or a retry flushed the same stash after the first save already landed.
+    if (insertError.code === '23505') {
+      return res.status(200).json({ saved: false, reason: 'already_saved' });
+    }
+    return res.status(500).json({ error: insertError.message });
+  }
+
+  res.status(201).json({ saved: true });
 });
 
 /* ---------------------------------------------------------------------------
@@ -1042,6 +1109,7 @@ async function readUsage(req) {
     .from('questionnaire_runs')
     .select('id', { count: 'exact', head: true })
     .eq('user_id', req.user.id)
+    .eq('source', 'questionnaire')
     .gte('created_at', period.start.toISOString());
 
   if (error) throw new Error(error.message);
