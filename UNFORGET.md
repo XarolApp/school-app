@@ -15,6 +15,48 @@ BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 
 ---
 
+## Rozhodovací matice needs a real human review pass
+- **Found:** 2026-09-12, user request right after the tooltip/confirm-dialog/
+  "jak to funguje" additions landed
+- **Urgency:** medium — the tool is live and usable, but nobody has actually
+  sat with it and judged whether it's *right*, only whether it runs
+- **Effort:** unknown until someone actually does the review — could be "looks
+  fine" or could be a real redesign, depending on what falls out
+- **Release/context:** applies to `/porovnani/matice` (`Matice.jsx`,
+  `decisionMatrix.js`, `decision.css`) as it stands after plan 007 and
+  today's tooltip/explainer/confirm-dialog additions
+
+The user's explicit ask: take a proper look at the whole matrix, not just
+whether each individual piece works. Three things named specifically:
+
+1. **How well the tool actually behaves** — does the ranking feel right when
+   you actually use it with real schools and real weights? Does the Zásadní
+   confirm-dialog guard feel helpful or annoying in practice? Does the
+   "gap"/"weak spot" callout logic (`gapNote`/`weakNote` in `Matice.jsx`)
+   trigger at sensible moments, or does it fire too often / too rarely /
+   with confusing phrasing?
+2. **Are the explanatory notes good enough** — the per-criterion tooltips
+   (`CRITERIA[].tooltip` in `decisionMatrix.js`) and the new "Jak to funguje?"
+   panel were written by Claude reasoning about what should be clear, never
+   checked against an actual person reading them cold. Same category of gap
+   as the "AI feature prompts need real human editing" entry above, but for
+   UI copy instead of AI-generated prose.
+3. **Do things like "typ školy" actually match your real plans** — the `typ`
+   criterion ("Typ školy odpovídá mým plánům") is explicitly a crude
+   placeholder today: it only checks whether the school offers a maturitní
+   obor, because there's no real "what are you planning" input yet (see its
+   comment in `decisionMatrix.js`). Worth asking, criterion by criterion,
+   whether what's actually being measured matches what the label promises,
+   or whether some of them are placeholders that have quietly become
+   permanent.
+
+**What "done" looks like:** the user (or someone else) actually uses the
+matrix with real comparisons for a while, and either signs off on it as-is or
+comes back with specific things to fix — not a generic "looks fine" without
+having exercised it.
+
+---
+
 ## AI feature prompts need real human editing, not just structural correctness
 - **Found:** 2026-09-10, user request while scoping plan 006's pros/cons generator
 - **Urgency:** medium — every AI-generated sentence a user reads is currently

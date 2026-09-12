@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Heart, Info, Lock, TriangleAlert } from 'lucide-react';
+import { ChevronDown, Heart, Info, Lock, TriangleAlert } from 'lucide-react';
 import { fetchSchools, fetchPicks } from '../api';
 import { getCompareSelection } from '../lib/searchPrefs';
 import { useAuth } from '../components/AuthContext';
@@ -130,6 +130,7 @@ function Matice() {
   // Set to the level the user just clicked while the "are you sure" prompt for
   // moving shoda off Zásadní is open; null when no prompt is showing.
   const [confirmShodaLevel, setConfirmShodaLevel] = useState(null);
+  const [howOpen, setHowOpen] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -165,10 +166,12 @@ function Matice() {
 
   // Shoda defaults to Zásadní because it is the one criterion here that knows
   // the student's own answers, not just hard data about the school — moving
-  // it down is a real decision, not a misclick, so it gets a confirmation
-  // instead of applying instantly like every other criterion.
+  // it OFF Zásadní is a real decision, not a misclick, so that one transition
+  // gets a confirmation. Any other change (nezalezi -> trochu, dost -> trochu,
+  // clicking the level that's already selected, ...) applies instantly like
+  // every other criterion — only leaving zasadni is guarded.
   const handleShodaClick = (level) => {
-    if (level === 'zasadni') {
+    if (level === weights.shoda || weights.shoda !== 'zasadni') {
       setWeight('shoda', level);
       return;
     }
@@ -211,6 +214,44 @@ function Matice() {
             Řekni, co je pro tebe důležité. Přepočítáme školy podle tvých vah — ne podle našeho pořadí.
           </p>
         </div>
+      </div>
+
+      <div className="dp-how">
+        <button
+          type="button"
+          className="dp-how-toggle"
+          aria-expanded={howOpen}
+          onClick={() => setHowOpen((v) => !v)}
+        >
+          <ChevronDown size={16} aria-hidden="true" className={howOpen ? 'is-open' : ''} />
+          Jak to funguje?
+        </button>
+        {howOpen && (
+          <div className="dp-how-body">
+            <p>
+              Pro každé kritérium spočítáme, jak si každá porovnávaná škola vede <strong>vůči ostatním
+              vybraným školám</strong> — ne vůči celé Praze. Nejlepší z porovnávaných dostane nejdelší
+              proužek, nejhorší nejkratší (nebo prázdný, u opravdu nuly).
+            </p>
+            <p>
+              Ty pak řekneš, jak moc na každém kritériu záleží — <strong>Nezáleží</strong> (nepočítá se
+              vůbec), <strong>Trochu</strong>, <strong>Dost</strong> nebo <strong>Zásadní</strong>. Kritérium
+              nastavené na Zásadní má na výsledné pořadí přibližně{' '}
+              <strong>třikrát větší váhu</strong> než kritérium na Trochu — čím výš váhu nastavíš, tím víc to
+              kritérium posouvá pořadí školy nahoru nebo dolů.
+            </p>
+            <p>
+              Škola s nejvyšším součtem (proužek × váha, sečteno přes všechna kritéria) skončí na prvním
+              místě. Kritérium, u kterého chybí data pro alespoň jednu z porovnávaných škol, se do součtu
+              vůbec nezapočítává — u nikoho, aby to nikoho nezvýhodnilo ani neznevýhodnilo.
+            </p>
+            <p>
+              Žádná AI v tom nefiguruje — je to obyčejná matematika nad daty z Cermatu (a nad tvým
+              dotazníkem, pokud ho máš vyplněný). Pořadí se přepočítá okamžitě po každé změně váhy, takže
+              si klidně zkoušej různá nastavení.
+            </p>
+          </div>
+        )}
       </div>
 
       <DecisionTabs pickCount={pickCount} />
