@@ -40,6 +40,7 @@ function Layout() {
           <Link to="/porovnani">Porovnání</Link>
           {isSignedIn ? (
             <>
+              <Link to="/dotaznik">Dotazník</Link>
               <Link to="/nastaveni">Nastavení</Link>
               <button type="button" className="navbar-signout" onClick={signOut}>
                 Odhlásit se

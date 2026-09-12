@@ -15,6 +15,7 @@ import SubscriptionExpired from './pages/SubscriptionExpired';
 import Porovnani from './pages/Porovnani';
 import Matice from './pages/Matice';
 import Prihlaska from './pages/Prihlaska';
+import Questionnaire from './pages/Questionnaire';
 import SdileniView from './pages/SdileniView';
 import OnboardingFlow from './pages/onboarding/OnboardingFlow';
 import './styles/ui.css';
@@ -55,6 +56,10 @@ function App() {
               <Route path="/porovnani/matice" element={<Matice />} />
               <Route element={<ProtectedRoute />}>
                 <Route path="/prihlaska" element={<Prihlaska />} />
+                {/* The standalone AI questionnaire (server-side lib/questionnaire.js) —
+                    separate from the onboarding quiz. Protected the same way /prihlaska
+                    is: the backend route itself also requires requireAccess. */}
+                <Route path="/dotaznik" element={<Questionnaire />} />
               </Route>
 
               <Route path="/prihlaseni" element={<Login />} />

@@ -76,6 +76,23 @@ export function saveOnboardingAnswers(answers) {
   });
 }
 
+/**
+ * The standalone AI questionnaire (server-side lib/questionnaire.js) — a
+ * separate surface from the onboarding quiz, see CLAUDE.md. GET returns the
+ * question set plus the account's active/default run; POST submits new
+ * answers, costs one of the monthly AI calls, and becomes the new default.
+ */
+export function fetchQuestionnaire() {
+  return request('/api/questionnaire');
+}
+
+export function submitQuestionnaire(answers) {
+  return request('/api/questionnaire', {
+    method: 'POST',
+    body: JSON.stringify({ answers }),
+  });
+}
+
 export function fetchSchools() {
   return request('/api/schools');
 }

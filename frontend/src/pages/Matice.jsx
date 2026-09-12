@@ -4,6 +4,7 @@ import { Heart, Info, Lock, TriangleAlert } from 'lucide-react';
 import { fetchSchools, fetchPicks } from '../api';
 import { getCompareSelection } from '../lib/searchPrefs';
 import { useAuth } from '../components/AuthContext';
+import StatInfo from '../components/StatInfo';
 import {
   CRITERIA,
   scoreByWeights,
@@ -126,6 +127,9 @@ function Matice() {
   const [pickCount, setPickCount] = useState(0);
   const [weights, setWeights] = useState(defaultWeights);
   const [loading, setLoading] = useState(true);
+  // Set to the level the user just clicked while the "are you sure" prompt for
+  // moving shoda off Zásadní is open; null when no prompt is showing.
+  const [confirmShodaLevel, setConfirmShodaLevel] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -157,6 +161,23 @@ function Matice() {
 
   const setWeight = (criterionId, level) => {
     setWeights((prev) => ({ ...prev, [criterionId]: level }));
+  };
+
+  // Shoda defaults to Zásadní because it is the one criterion here that knows
+  // the student's own answers, not just hard data about the school — moving
+  // it down is a real decision, not a misclick, so it gets a confirmation
+  // instead of applying instantly like every other criterion.
+  const handleShodaClick = (level) => {
+    if (level === 'zasadni') {
+      setWeight('shoda', level);
+      return;
+    }
+    setConfirmShodaLevel(level);
+  };
+
+  const confirmShodaChange = () => {
+    setWeight('shoda', confirmShodaLevel);
+    setConfirmShodaLevel(null);
   };
 
   if (loading) {
@@ -208,6 +229,7 @@ function Matice() {
               <span className="dp-criterion-label">
                 <Heart size={15} aria-hidden="true" />
                 {shodaCriterion.label}
+                <StatInfo text={shodaCriterion.tooltip} />
               </span>
               <span className="ss-caption dp-criterion-state">
                 {matchAvailable ? LEVEL_LABEL[weights.shoda] : 'Nevyplněno'}
@@ -220,7 +242,7 @@ function Matice() {
                   key={level.key}
                   className={`dp-segment${matchAvailable && weights.shoda === level.key ? ' is-on' : ''}`}
                   disabled={!matchAvailable}
-                  onClick={() => setWeight('shoda', level.key)}
+                  onClick={() => handleShodaClick(level.key)}
                 >
                   {level.label}
                 </button>
@@ -228,7 +250,8 @@ function Matice() {
             </div>
             {matchAvailable ? (
               <p className="ss-caption dp-criterion-note">
-                Z tvých odpovědí v dotazníku. Ve výchozím nastavení váží nejvíc.
+                Z tvých odpovědí v dotazníku. <strong>Doporučujeme nechat na „Zásadní“</strong> — je to
+                pravděpodobně nejdůležitější kritérium z celé matice, protože jediné zná tebe, ne jen školu.
               </p>
             ) : isSignedIn ? (
               <p className="ss-caption dp-criterion-note">
@@ -246,6 +269,7 @@ function Matice() {
               <div className="dp-criterion-head">
                 <span className="dp-criterion-label">
                   {c.label} {!c.available && <Lock size={13} aria-hidden="true" />}
+                  <StatInfo text={c.tooltip} />
                 </span>
                 <span className="ss-caption">
                   {c.available ? LEVEL_LABEL[weights[c.id]] : 'Nemáme data'}
@@ -306,6 +330,7 @@ function Matice() {
                             <div className="dp-crit-row" key={b.criterionId}>
                               <div className={`dp-crit-label${b.criterionId === 'shoda' ? ' is-featured' : ''}`}>
                                 {b.label}
+                                <StatInfo text={CRITERIA.find((c) => c.id === b.criterionId)?.tooltip} />
                               </div>
                               <div className="dp-crit-track">
                                 <div className="dp-crit-fill" style={{ width: `${b.raw * 100}%` }} />
@@ -348,6 +373,37 @@ function Matice() {
           </p>
         </div>
       </div>
+
+      {confirmShodaLevel && (
+        <div className="dp-confirm-backdrop" role="presentation" onClick={() => setConfirmShodaLevel(null)}>
+          <div
+            className="dp-confirm-dialog"
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="dp-confirm-title"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="dp-confirm-icon">
+              <TriangleAlert size={20} aria-hidden="true" />
+            </div>
+            <div className="ss-headline-sm h" id="dp-confirm-title">
+              Opravdu chceš přepnout shodu na „{LEVEL_LABEL[confirmShodaLevel]}“?
+            </div>
+            <p className="ss-body-sm">
+              Doporučujeme nechat shodu s dotazníkem na <strong>Zásadní</strong> — je to jediné kritérium tady,
+              které vychází z tvých vlastních odpovědí, ne jen z dat o škole.
+            </p>
+            <div className="dp-confirm-actions">
+              <button type="button" className="ss-btn ss-btn-secondary" onClick={() => setConfirmShodaLevel(null)}>
+                Nechat na Zásadní
+              </button>
+              <button type="button" className="ss-btn ss-btn-primary" onClick={confirmShodaChange}>
+                Přepnout na „{LEVEL_LABEL[confirmShodaLevel]}“
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

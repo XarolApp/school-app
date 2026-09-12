@@ -23,23 +23,56 @@ export const WEAK_THRESHOLD = 0.35;
 export const MATCH_GAP = 15;
 
 export const CRITERIA = [
-  { id: 'shoda', label: 'Shoda s tvým dotazníkem', available: true },
-  { id: 'sance', label: 'Šance na přijetí', available: true },
-  { id: 'mista', label: 'Počet míst', available: true },
-  { id: 'typ', label: 'Typ školy odpovídá mým plánům', available: true },
-  { id: 'jazyky', label: 'Nabídka jazyků', available: true },
-  { id: 'skolne', label: 'Bez školného', available: true },
+  {
+    id: 'shoda',
+    label: 'Shoda s tvým dotazníkem',
+    available: true,
+    tooltip:
+      'Procento z tvého dotazníku — jak dobře škola odpovídá tvým zájmům, plánům a preferencím. Doporučujeme nechat na „Zásadní“: je to jediné kritérium tady, které zná i tvoje odpovědi, ne jen tvrdá data o škole.',
+  },
+  {
+    id: 'sance',
+    label: 'Šance na přijetí',
+    available: true,
+    tooltip: 'Z bodové hranice přijetí za poslední rok (Cermat) — nižší hranice = snazší se dostat.',
+  },
+  {
+    id: 'mista',
+    label: 'Počet míst',
+    available: true,
+    tooltip: 'Kapacita oborů školy pro aktuální rok — víc míst obvykle znamená víc konkurzní volnosti.',
+  },
+  {
+    id: 'typ',
+    label: 'Typ školy odpovídá mým plánům',
+    available: true,
+    tooltip: 'Zjednodušený signál z toho, jestli škola nabízí maturitní obor — zatím nevíme, co přesně plánuješ ty.',
+  },
+  {
+    id: 'jazyky',
+    label: 'Nabídka jazyků',
+    available: true,
+    tooltip: 'Počet různých jazyků vyučovaných napříč obory školy.',
+  },
+  {
+    id: 'skolne',
+    label: 'Bez školného',
+    available: true,
+    tooltip: 'Jestli je škola veřejná (bez školného) nebo soukromá/církevní.',
+  },
   {
     id: 'dojezd',
     label: 'Dojezd z domova',
     available: false,
     unavailableNote: 'Na dojezdových časech MHD pracujeme.',
+    tooltip: 'Zatím nepočítáme — na dojezdových časech MHD pracujeme.',
   },
   {
     id: 'maturita',
     label: 'Úspěšnost u maturity',
     available: false,
     unavailableNote: 'Data o maturitě zatím nemáme.',
+    tooltip: 'Zatím nepočítáme — data o úspěšnosti u maturity nemáme.',
   },
 ];
 

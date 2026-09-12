@@ -1,0 +1,134 @@
+/* questionnaire.css — /dotaznik (Questionnaire.jsx). Reuses auth.css's .field/
+ * .field-label/.field-hint/.input primitives rather than inventing a second
+ * form vocabulary; only the option-chip and match-list styles are new here.
+ */
+
+.qz-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  max-width: 640px;
+  color: var(--ink2);
+}
+
+.qz-subtitle {
+  color: var(--ink2);
+  max-width: 66ch;
+}
+
+.qz-notice {
+  padding: var(--space-md);
+  border-radius: var(--r-button);
+  background: var(--surface2);
+  color: var(--ink2);
+  font-size: var(--fs-caption);
+}
+.qz-notice code {
+  font-family: monospace;
+  background: var(--surface);
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+
+.qz-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.qz-question {
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--line);
+}
+
+.qz-optional {
+  color: var(--ink3);
+  font-weight: 400;
+}
+
+.qz-textarea {
+  min-height: 88px;
+  resize: vertical;
+}
+
+.qz-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.qz-option {
+  padding: 8px 14px;
+  border-radius: var(--r-chip);
+  border: 1px solid var(--line2);
+  background: var(--surface);
+  color: var(--ink2);
+  font-size: var(--fs-body-sm);
+  cursor: pointer;
+}
+.qz-option:hover {
+  border-color: var(--acc-line);
+}
+.qz-option.is-on {
+  background: var(--acc);
+  border-color: var(--acc);
+  color: var(--acc-ink);
+}
+
+.qz-error {
+  color: var(--danger);
+  font-size: var(--fs-caption);
+}
+
+.qz-result {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  border-radius: var(--r-card);
+  border: 1px solid var(--ok-soft);
+  background: var(--ok-soft);
+}
+.qz-result-head {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  color: var(--ok);
+}
+.qz-result-head svg {
+  flex: none;
+  margin-top: 2px;
+}
+.qz-result-head span {
+  color: var(--ink);
+}
+
+.qz-matches {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.qz-match-row {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: var(--space-sm);
+  align-items: baseline;
+  padding: var(--space-sm) 0;
+  border-top: 1px solid var(--line);
+}
+.qz-match-score {
+  font-weight: 700;
+  color: var(--acc);
+}
+.qz-match-name {
+  font-weight: 600;
+  color: var(--ink);
+}
+.qz-match-reason {
+  grid-column: 2;
+  margin: 0;
+  color: var(--ink2);
+}
