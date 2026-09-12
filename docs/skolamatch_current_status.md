@@ -623,18 +623,41 @@ Update this section whenever new information is confirmed.
 
 - Overall: **~75%**
 - Database: **~75%**
-- Questionnaire: **~75%**
+- Questionnaire: **~80%** — standalone questionnaire (`lib/questionnaire.js`)
+  now has a real page (`/dotaznik`, 2026-09-12), where before the backend
+  existed with no UI wired to it at all. Onboarding quiz (separate engine)
+  unchanged.
+- Matching / decision tools: rozhodovací matice (`/porovnani/matice`) got
+  hover explainers on every criterion, a plain-language "Jak to funguje?"
+  panel, and a confirm-guard so the match-score criterion can't be
+  accidentally de-prioritized (2026-09-12). **Not yet human-reviewed** — see
+  `UNFORGET.md`'s "Rozhodovací matice needs a real human review pass".
 - AI: **partial**
 - DiPSy: **~25%**
-- Stripe: **0%**
-- Accounts/authentication: **partial**
+- Stripe: **0%** — confirmed still scaffolding-only (`/api/checkout` answers
+  503 `STRIPE_NOT_CONFIGURED` with no keys set), unchanged.
+- Accounts/authentication: **partial** — a real bug was found and fixed
+  2026-09-12: the `questionnaire_runs.source` column (added by plan 008's
+  migration) had never actually been applied to the live database, so every
+  authenticated call to `/api/questionnaire` (and the onboarding-answers save
+  route) was silently 500ing. Migration is applied now; **the onboarding
+  flush itself (stash → confirmed sign-in → saved row) still hasn't been
+  watched succeed end to end on a real account** — do that before trusting
+  match_score population from onboarding signups.
 - Parent/child: **not finished**
-- Analytics: **not finished**
+- Analytics: **not finished** — confirmed 2026-09-12, zero analytics/tracking
+  code anywhere in the frontend or backend (no PostHog/GA/Mixpanel/etc.).
 - Security review: **not finished**
 - Deployment: **not finalized**
 - Privacy/cookies: **not finalized**
 - Reminders/timeline/countdown: **not finished**
 - Visual assets/demo video: **not finished**
+- **New gap found 2026-09-12** (not in the original 75% estimate): no surface
+  lets a student express wanting a *selective* school (hard to get into, so
+  classmates are more likely to be there on merit) as a distinct, opposite
+  preference from "maximize my admission chance." Every current scoring
+  engine and filter treats lower cutoff / higher acceptance rate as
+  universally better. Full writeup in `UNFORGET.md`.
 
 ## Marketing
 
@@ -694,11 +717,20 @@ Tracking the resolution of half-done items and blockers from `UNFORGET.md` befor
 
 ### Blocker 2 — Email Confirmation Flow
 
-- Status: **partially broken** (link returns to nowhere, unconfirmed users can access protected routes)
-- Issue: `CreateAccount.jsx` skips email-check wait
-- Solution options: Option A (redirect to next onboarding step) or Option B (re-add gate before real payment)
-- Impact: **Blocks Stripe go-live** (must prevent unconfirmed email at checkout)
-- Target completion: before Codex deep audit
+- Status: **resolved** — corrected 2026-09-12. This was verified live, not
+  just read in code: signed up with a real test account
+  (`vojtech.kadlec@montetrida.cz`), the confirmation link worked, and
+  `ProtectedRoute` correctly blocked every protected route with a "Potvrď
+  svůj e-mail" notice until it was clicked — matching `requireAuth`'s
+  server-side rejection of unconfirmed tokens (403 `EMAIL_NOT_CONFIRMED`).
+  Sign-in after confirming worked and triggered plan 008's flush correctly.
+  Whatever broke this originally appears to have been fixed since this entry
+  was written; leaving the old text below struck through rather than
+  deleting, since we don't know which prior session fixed it.
+- ~~Issue: `CreateAccount.jsx` skips email-check wait~~
+- ~~Solution options: Option A (redirect to next onboarding step) or Option B (re-add gate before real payment)~~
+- Impact: no longer blocks Stripe go-live on this front
+- Target completion: done
 
 ### Blocker 3 — AI Prompt Human Tuning
 
@@ -738,6 +770,35 @@ These exist but are not strikers before beta:
 | Landing page photo | missing | Photo shoot needed | P2 conversion |
 | Ambient animation | missing | Design asset | P3 delight |
 
+### Day 1 P0 Audit (launch plan §12 "DAY 1 — Launch Audit + Critical Path")
+
+Run 2026-09-12 against the real codebase, not assumed from the roadmap.
+
+| P0 question | Answer | Evidence |
+|---|---|---|
+| Can a stranger register? | **Yes** | Verified live this session — real signup with email confirmation |
+| Can a stranger log in? | **Yes** | Verified live this session |
+| Does questionnaire work? | **Yes** | Both standalone (`/dotaznik`, new 2026-09-12) and onboarding quiz produce results |
+| Does matching work? | **Yes** | Deterministic scoring, both engines |
+| Does the result make sense? | **Partially** | Works mechanically; AI explanation prompt unreviewed (Blocker 3), matrix unreviewed by a human (UNFORGET) |
+| Does the school database work? | **Yes, partial coverage** | 60/~214 Prague schools, real Cermat data |
+| Are all school pages usable? | **Yes** | Rebuilt 2026-09-08, honest placeholders for missing data |
+| Does payment work? | **No — P0 blocker** | `/api/checkout` still answers 503 `STRIPE_NOT_CONFIGURED`, confirmed in code this session |
+| Does payment unlock the product? | **No real payment exists to unlock with** | Trial access works (DB trigger + `requireAccess`); paid unlock is entirely unbuilt |
+| Is premium access secure? | **Yes, for what exists** | Server-side `requireAccess` + RLS; nothing paid to bypass yet since Stripe isn't wired |
+| Does analytics work? | **No — confirmed 0%** | Grepped for PostHog/GA/Mixpanel/etc. — nothing anywhere in the codebase |
+| Can the product be deployed? | **No deployment config exists** | No Dockerfile/vercel.json/netlify.toml/Procfile/fly.toml found anywhere in the repo |
+| Are basic legal/privacy requirements handled? | **No — P0 gap** | No privacy policy / terms page or route found anywhere in the frontend |
+| Are emails working? | **Yes, for auth** | Confirmation + reset emails verified working live this session. No other transactional emails (e.g. the mandatory day-2 trial reminder from CLAUDE.md's pricing section) exist yet |
+
+**Net result:** the product itself (signup → questionnaire → matching →
+school browsing) is genuinely further along than the "no deployment, no
+payment, no analytics, no legal pages" gaps suggest — but those four gaps are
+real P0s that block a stranger from safely using and paying, and none of
+them were on today's radar before this audit. **Payment, deployment, and
+legal pages are the three biggest blockers found today** — bigger than
+anything product-polish related.
+
 ### Gate Status
 
 **Can Codex audit start?**
@@ -755,7 +816,40 @@ These exist but are not strikers before beta:
 
 Keep this concise.
 
-## Day 1
+## Day 1 (2026-09-12)
+- Status: In progress — development only so far, no marketing work logged yet today
+- Completed:
+  - Fixed mobile nav overflow (hamburger menu below 768px)
+  - Rozhodovací matice redesign (plan 007): labelled per-criterion rows, match
+    score as a criterion, rank badges, weak-spot callouts
+  - Plan 008: onboarding quiz answers now save to the account on first
+    confirmed sign-in (via a localStorage stash + flush), so match_score can
+    populate from an onboarding signup, not just the standalone questionnaire
+  - Built `/dotaznik` — the standalone questionnaire had a backend
+    (`lib/questionnaire.js`) but no frontend page anywhere on `main` until today
+  - Matrix: hover tooltips per criterion, "Jak to funguje?" explainer panel,
+    confirm-guard on de-prioritizing the match-score criterion
+- Marketing: none yet today
+- Bugs: found and fixed a real P0-adjacent one — `questionnaire_runs.source`
+  column (part of plan 008's schema) had never been applied to the live
+  Supabase project despite the plan being marked DONE, so every
+  `/api/questionnaire*` call was silently failing with a blank 500. Root
+  cause: a migration written but never run. Fixed; see `plans/README.md`'s
+  correction note on plan 008.
+- Decisions: none new
+- Blockers:
+  - Onboarding-flush end-to-end still unverified on a real account (see above)
+  - Rozhodovací matice needs a human review pass before it's trusted as "done"
+  - New: "selectivity as a preference" is missing across the whole product
+    (questionnaire, onboarding quiz, matrix, search/filters, comparison) —
+    see `UNFORGET.md`
+- Next step: this file's own Day 1 checklist (§12 "DAY 1 — Launch Audit +
+  Critical Path" in the launch plan) hasn't been run yet — the work above was
+  reactive (bug fixes + a UI gap the founder pointed out), not the audit
+  itself. Do the audit next: walk through every P0 question in that section
+  against the real app and record answers here.
+
+## Day 2
 - Status: Not yet logged
 - Completed:
 - Marketing:

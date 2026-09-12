@@ -15,6 +15,60 @@ BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 
 ---
 
+## "Selectivity" is missing as its own preference — we only ever model admission ease as good
+- **Found:** 2026-09-12, user request
+- **Urgency:** high — this is a real, systemic gap in how the whole product frames
+  admission difficulty, not a cosmetic one
+- **Effort:** medium-large — it's one new concept, but it touches many surfaces
+  (see list below), each of which currently hardcodes the opposite assumption
+- **Release/context:** `admission_cutoff` / `acceptance_rate` (from Cermat data,
+  `schools` table) is the underlying data; every place that reads it today only
+  ever treats a *lower* cutoff / *higher* acceptance rate as strictly better
+
+The user's point: right now every surface that touches admission difficulty
+assumes "easier to get in = better for everyone." That's wrong for a real
+chunk of students. Some students specifically want a school that's **hard**
+to get into — not for prestige, but because a high cutoff filters the
+classroom: the harder the school is to enter, the fewer classmates got there
+by accident, and the more likely you are to be surrounded by people who are
+actually academically serious. That's a real, opposite preference from
+"maximize my chance of getting in," and the product currently has no way to
+express it — it only ever optimizes toward "easier."
+
+**Concretely, where this assumption is currently baked in one-directionally:**
+- `frontend/src/lib/decisionMatrix.js`'s `sance` criterion (rozhodovací
+  matice) — explicitly inverts the cutoff score ("Lower cutoff = easier =
+  better, so invert") with no way to flip that direction.
+- `lib/questionnaire.js` — no question anywhere asks about wanting a
+  selective vs. accessible school; `matching.js` (server-side scorer) has no
+  dimension for it at all.
+- `frontend/src/lib/matching.js` + `schoolFeatures.js` (onboarding quiz
+  engine) — same gap, no selectivity dimension.
+- `Search.jsx` / school list filters — cutoff/acceptance rate are shown as
+  stats and used in one of the sort options ("Nejnižší hranice přijetí" /
+  "Největší šance na přijetí" — see the sort tab copy in Search.jsx), always
+  framed as "easier is the good direction." No "hardest to get into" sort.
+- Comparison table / `/porovnani` — shows the raw numbers but has no framing
+  either way, and definitely no way to weight toward "more selective is
+  better."
+- School detail page (`CutoffExplainer` component) — checked: its copy is
+  neutral (explains "minimum, not average"), doesn't assume a direction. Not
+  part of the problem, but also not part of any future fix — it's a separate,
+  correct explainer.
+
+**What "done" looks like:** a real preference — e.g. "Chci školu, kam se
+dostanou jen fakt šikovní" vs. "Chci mít co nejvyšší šanci se dostat" vs. "Je
+mi to jedno" — exists as an actual input the student can set, and every one
+of the surfaces above (questionnaire, onboarding quiz, matrix, search sort/
+filter, comparison) respects the direction the student actually wants,
+instead of all of them silently agreeing that low cutoff is always the win.
+This needs product/UX thinking first (how to phrase it so it doesn't read as
+elitist or shaming to a 15-year-old — see the zero-shame rule in
+CLAUDE.md/the onboarding agent), then the same change propagated through
+every scoring engine and UI listed above.
+
+---
+
 ## Rozhodovací matice needs a real human review pass
 - **Found:** 2026-09-12, user request right after the tooltip/confirm-dialog/
   "jak to funguje" additions landed
