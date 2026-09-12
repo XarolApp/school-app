@@ -1,8 +1,17 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Heart, Info, Lock, TriangleAlert } from 'lucide-react';
 import { fetchSchools, fetchPicks } from '../api';
 import { getCompareSelection } from '../lib/searchPrefs';
-import { CRITERIA, scoreByWeights } from '../lib/decisionMatrix';
+import { useAuth } from '../components/AuthContext';
+import {
+  CRITERIA,
+  scoreByWeights,
+  hasMatchScores,
+  matchBand,
+  weakSpots,
+  MATCH_GAP,
+} from '../lib/decisionMatrix';
 import DecisionTabs from '../components/decision/DecisionTabs';
 import './decision.css';
 
@@ -13,10 +22,105 @@ const LEVELS = [
   { key: 'zasadni', label: 'Zásadní' },
 ];
 
-const defaultWeights = () => Object.fromEntries(CRITERIA.filter((c) => c.available).map((c) => [c.id, 'dost']));
+const LEVEL_LABEL = Object.fromEntries(LEVELS.map((l) => [l.key, l.label]));
+
+const defaultWeights = () =>
+  Object.fromEntries(
+    CRITERIA.filter((c) => c.available).map((c) => [c.id, c.id === 'shoda' ? 'zasadni' : 'dost'])
+  );
+
+/** Lowercases just the first character — Czech sentences read as one clause,
+ *  not as a list of capitalized criterion names. */
+function lowerFirst(text) {
+  return text.charAt(0).toLowerCase() + text.slice(1);
+}
+
+/** Wraps each label in <strong> and joins them the Czech way ("a" / "a, b a c"),
+ *  returning React nodes rather than a string since joinCz itself is plain text. */
+function strongJoinCz(labels) {
+  const nodes = labels.map((label, i) => <strong key={i}>{lowerFirst(label)}</strong>);
+  if (nodes.length <= 1) return nodes;
+  if (nodes.length === 2) return [nodes[0], ' a ', nodes[1]];
+  const out = [];
+  nodes.slice(0, -1).forEach((node, i) => {
+    out.push(node);
+    out.push(i < nodes.length - 2 ? ', ' : ' a ');
+  });
+  out.push(nodes[nodes.length - 1]);
+  return out;
+}
+
+/** Rank-1-only note when a different compared school fits the questionnaire
+ *  notably better — the whole reason match_score belongs in this matrix. */
+function gapNote(row, index, ranked) {
+  if (index !== 0) return null;
+  const shoda = row.breakdown.find((b) => b.criterionId === 'shoda');
+  if (!shoda) return null;
+
+  const best = ranked.reduce((acc, r) =>
+    (r.school.match_score ?? -1) > (acc.school.match_score ?? -1) ? r : acc
+  );
+  if (best.school.id === row.school.id) return null;
+
+  const gap = (best.school.match_score ?? 0) - (row.school.match_score ?? 0);
+  if (gap < MATCH_GAP) return null;
+
+  return (
+    <div className="dp-matrix-note">
+      <Info size={16} aria-hidden="true" />
+      <div>
+        Vede celkově — ale <strong>{best.school.name}</strong> ti podle dotazníku sedí výrazně víc.
+      </div>
+    </div>
+  );
+}
+
+/** Weak-spot warning: criteria the user marked important where this school
+ *  underperforms the rest of the compared set. */
+function weakNote(row, ranked) {
+  const weak = weakSpots(row.breakdown);
+  if (!weak.length) return null;
+
+  if (weak.length === 1 && weak[0].criterionId === 'shoda') {
+    const b = weak[0];
+    const start =
+      b.raw === 0
+        ? 'Nejnižší shoda s dotazníkem z porovnávaných škol — a '
+        : 'Shoda s dotazníkem tu vychází slabě — a ';
+    const end = b.weightKey === 'zasadni' ? 'shodu máš nastavenou jako zásadní.' : 'na shodě ti dost záleží.';
+    return (
+      <div className="dp-matrix-note is-warn">
+        <TriangleAlert size={16} aria-hidden="true" />
+        <div>
+          {start}
+          {end}
+        </div>
+      </div>
+    );
+  }
+
+  const topMatch = ranked.reduce((acc, r) =>
+    (r.school.match_score ?? -1) > (acc.school.match_score ?? -1) ? r : acc
+  );
+  const hasShoda = row.breakdown.some((b) => b.criterionId === 'shoda');
+  const prefix =
+    hasShoda && topMatch.school.id === row.school.id
+      ? 'Sedí ti nejvíc ze všech — ale slabá místa'
+      : 'Slabá místa';
+
+  return (
+    <div className="dp-matrix-note is-warn">
+      <TriangleAlert size={16} aria-hidden="true" />
+      <div>
+        {prefix} jsou přesně v tom, na čem ti záleží: {strongJoinCz(weak.map((b) => b.label))}.
+      </div>
+    </div>
+  );
+}
 
 function Matice() {
   const navigate = useNavigate();
+  const { isSignedIn } = useAuth();
   const [allSchools, setAllSchools] = useState([]);
   const [selection] = useState(() => getCompareSelection());
   const [pickCount, setPickCount] = useState(0);
@@ -47,16 +151,12 @@ function Matice() {
     return selection.map((id) => byId.get(id)).filter(Boolean);
   }, [allSchools, selection]);
 
+  const matchAvailable = hasMatchScores(schools);
+
   const ranked = useMemo(() => (schools.length ? scoreByWeights(schools, weights) : []), [schools, weights]);
 
   const setWeight = (criterionId, level) => {
     setWeights((prev) => ({ ...prev, [criterionId]: level }));
-  };
-
-  const bestCriteria = (breakdown) => {
-    if (!breakdown.length) return null;
-    const max = Math.max(...breakdown.map((b) => b.weighted));
-    return breakdown.filter((b) => b.weighted === max && b.weighted > 0).map((b) => b.label);
   };
 
   if (loading) {
@@ -78,6 +178,9 @@ function Matice() {
     );
   }
 
+  const otherCriteria = CRITERIA.filter((c) => c.id !== 'shoda');
+  const shodaCriterion = CRITERIA.find((c) => c.id === 'shoda');
+
   return (
     <div className="decision-page">
       <div className="dp-header">
@@ -96,18 +199,56 @@ function Matice() {
           <div className="dp-matrix-weights-head">
             <div className="ss-headline-sm h">Co je pro tebe důležité?</div>
             <p className="ss-caption">
-              Nastav každé kritérium. Co necháš na „nezáleží", se do výpočtu vůbec nepočítá.
+              Nastav každé kritérium. Co necháš na „nezáleží“, se do výpočtu vůbec nepočítá.
             </p>
           </div>
 
-          {CRITERIA.map((c) => (
+          <div className={`dp-criterion dp-criterion-featured${!matchAvailable ? ' is-locked' : ''}`}>
+            <div className="dp-criterion-head">
+              <span className="dp-criterion-label">
+                <Heart size={15} aria-hidden="true" />
+                {shodaCriterion.label}
+              </span>
+              <span className="ss-caption dp-criterion-state">
+                {matchAvailable ? LEVEL_LABEL[weights.shoda] : 'Nevyplněno'}
+              </span>
+            </div>
+            <div className="dp-segmented">
+              {LEVELS.map((level) => (
+                <button
+                  type="button"
+                  key={level.key}
+                  className={`dp-segment${matchAvailable && weights.shoda === level.key ? ' is-on' : ''}`}
+                  disabled={!matchAvailable}
+                  onClick={() => setWeight('shoda', level.key)}
+                >
+                  {level.label}
+                </button>
+              ))}
+            </div>
+            {matchAvailable ? (
+              <p className="ss-caption dp-criterion-note">
+                Z tvých odpovědí v dotazníku. Ve výchozím nastavení váží nejvíc.
+              </p>
+            ) : isSignedIn ? (
+              <p className="ss-caption dp-criterion-note">
+                Shodu počítáme z úvodního dotazníku. Jakmile ho máš uložený u účtu, doplní se tady sama.
+              </p>
+            ) : (
+              <p className="ss-caption dp-criterion-note">
+                Shodu počítáme z tvého dotazníku. <Link to="/prihlaseni">Přihlas se</Link> a doplní se sama.
+              </p>
+            )}
+          </div>
+
+          {otherCriteria.map((c) => (
             <div className={`dp-criterion${!c.available ? ' is-locked' : ''}`} key={c.id}>
               <div className="dp-criterion-head">
                 <span className="dp-criterion-label">
-                  {c.label} {!c.available && <span aria-hidden="true">🔒</span>}
+                  {c.label} {!c.available && <Lock size={13} aria-hidden="true" />}
                 </span>
                 <span className="ss-caption">
-                  {c.available ? LEVELS.find((l) => l.key === weights[c.id])?.label : 'Nemáme data'}
+                  {c.available ? LEVEL_LABEL[weights[c.id]] : 'Nemáme data'}
                 </span>
               </div>
               <div className="dp-segmented">
@@ -132,41 +273,53 @@ function Matice() {
           <div className="dp-matrix-result-card">
             <div className="dp-matrix-result-head">
               <div className="ss-headline-sm h">Pořadí podle tvých vah</div>
+              <p className="ss-caption dp-matrix-result-sub">
+                Delší proužek = škola je v tom kritériu lepší než ostatní porovnávané. Váhy nastavuješ ty.
+              </p>
             </div>
 
             {ranked.every((r) => r.score == null) ? (
               <p className="ss-body-md dp-matrix-empty">
-                Nastav aspoň jedno kritérium na víc než „nezáleží" a spočítáme pořadí.
+                Nastav aspoň jedno kritérium na víc než „nezáleží“ a spočítáme pořadí.
               </p>
             ) : (
               ranked.map((r, i) => {
-                const best = bestCriteria(r.breakdown);
+                const band = typeof r.school.match_score === 'number' ? matchBand(r.school.match_score) : null;
                 return (
                   <div className="dp-matrix-row" key={r.school.id}>
-                    <div className="dp-matrix-rank h">{i + 1}.</div>
+                    <div className={`dp-matrix-rank-badge${i === 0 ? ' is-first' : ''}`}>{i + 1}</div>
                     <div className="dp-matrix-row-body">
                       <div className="dp-matrix-row-head">
                         <Link to={`/skoly/${r.school.id}`} className="h dp-matrix-name">
                           {r.school.name}
                         </Link>
-                        {best && (
-                          <span className="ss-caption">
-                            Nejlepší podle: <strong>{best.join(', ')}</strong>
+                        {band && (
+                          <span className={`dp-match-chip dp-match-chip-${band.tone}`}>
+                            {band.label} · {Math.round(r.school.match_score)} %
                           </span>
                         )}
                       </div>
+
                       {r.breakdown.length > 0 && (
-                        <div className="dp-matrix-bar">
+                        <div className="dp-crit-list">
                           {r.breakdown.map((b) => (
-                            <div
-                              key={b.criterionId}
-                              className={`dp-matrix-bar-seg dp-matrix-bar-${b.criterionId}`}
-                              style={{ width: `${Math.max(b.weighted * 100, 2)}%` }}
-                              title={`${b.label}: ${Math.round(b.weighted * 100)}%`}
-                            />
+                            <div className="dp-crit-row" key={b.criterionId}>
+                              <div className={`dp-crit-label${b.criterionId === 'shoda' ? ' is-featured' : ''}`}>
+                                {b.label}
+                              </div>
+                              <div className="dp-crit-track">
+                                <div className="dp-crit-fill" style={{ width: `${b.raw * 100}%` }} />
+                              </div>
+                              <div className={`dp-crit-weight${b.weightKey === 'zasadni' ? ' is-hi' : ''}`}>
+                                {LEVEL_LABEL[b.weightKey]}
+                              </div>
+                            </div>
                           ))}
                         </div>
                       )}
+
+                      {gapNote(r, i, ranked)}
+                      {weakNote(r, ranked)}
                     </div>
                   </div>
                 );
@@ -189,9 +342,9 @@ function Matice() {
           </div>
 
           <p className="ss-caption">
-            Výpočet je obyčejná matematika nad daty z Cermatu — žádná AI. Kritéria, u kterých nemáme data pro
-            všechny porovnávané školy, se do součtu nezapočítávají a váhy se přepočítají mezi zbytek, takže
-            chybějící údaj nikdy školu netrestá.
+            Výpočet je obyčejná matematika nad daty z Cermatu a tvého dotazníku — žádná AI. Proužky ukazují, jak
+            si škola stojí proti ostatním porovnávaným, ne proti celé Praze. Kritéria, u kterých nemáme data pro
+            všechny porovnávané školy, se do součtu nezapočítávají.
           </p>
         </div>
       </div>

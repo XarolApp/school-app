@@ -368,6 +368,25 @@
   color: var(--ink3);
 }
 
+.dp-criterion-featured {
+  padding: var(--space-md);
+  border: 1px solid var(--acc-line);
+  border-radius: var(--r-button);
+  background: var(--acc-soft);
+}
+.dp-criterion-featured .dp-criterion-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.dp-criterion-featured .dp-criterion-label svg {
+  color: var(--acc);
+}
+.dp-criterion-featured:not(.is-locked) .dp-criterion-state {
+  color: var(--acc);
+  font-weight: 600;
+}
+
 .dp-segmented {
   display: flex;
 }
@@ -421,6 +440,9 @@
   border-bottom: 1px solid var(--line);
   background: var(--surface2);
 }
+.dp-matrix-result-sub {
+  margin-top: 4px;
+}
 .dp-matrix-empty {
   padding: var(--space-lg);
   color: var(--ink3);
@@ -435,21 +457,31 @@
 .dp-matrix-row:last-child {
   border-bottom: none;
 }
-.dp-matrix-rank {
-  font-size: 28px;
-  font-weight: 600;
-  color: var(--acc);
-  width: 32px;
+.dp-matrix-rank-badge {
+  width: 36px;
+  height: 36px;
   flex: none;
-}
-.dp-matrix-row:nth-child(n + 2) .dp-matrix-rank {
+  box-sizing: border-box;
+  border-radius: var(--r-chip);
+  border: 1px solid var(--line2);
   color: var(--ink3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--heading);
+  font-size: 18px;
+  font-weight: 600;
+}
+.dp-matrix-rank-badge.is-first {
+  background: var(--acc);
+  border-color: var(--acc);
+  color: var(--acc-ink);
 }
 .dp-matrix-row-body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap: 12px;
   min-width: 0;
 }
 .dp-matrix-row-head {
@@ -469,30 +501,94 @@
   color: var(--acc);
 }
 
-.dp-matrix-bar {
-  display: flex;
-  height: 10px;
-  border-radius: 10px;
-  overflow: hidden;
+.dp-match-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: var(--r-chip);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.dp-match-chip-ok {
+  background: var(--ok-soft);
+  color: var(--ok);
+}
+.dp-match-chip-acc {
+  background: var(--acc-soft);
+  color: var(--acc);
+}
+.dp-match-chip-neutral {
   background: var(--surface2);
+  color: var(--ink3);
 }
-.dp-matrix-bar-seg {
+
+.dp-crit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.dp-crit-row {
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr) 68px;
+  gap: 12px;
+  align-items: center;
+}
+.dp-crit-label {
+  font-size: var(--fs-caption);
+  color: var(--ink2);
+}
+.dp-crit-label.is-featured {
+  color: var(--ink);
+  font-weight: 600;
+}
+.dp-crit-track {
+  height: 8px;
+  border-radius: 8px;
+  background: var(--surface2);
+  overflow: hidden;
+}
+.dp-crit-fill {
   height: 100%;
-}
-.dp-matrix-bar-sance {
+  border-radius: 8px;
   background: var(--acc);
 }
-.dp-matrix-bar-mista {
-  background: var(--ok);
+.dp-crit-weight {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  text-align: right;
+  color: var(--ink3);
 }
-.dp-matrix-bar-typ {
-  background: var(--acc-line);
+.dp-crit-weight.is-hi {
+  color: var(--acc);
 }
-.dp-matrix-bar-jazyky {
-  background: var(--ok-soft);
+
+.dp-matrix-note {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  border-radius: var(--r-chip);
+  background: var(--surface2);
+  font-size: var(--fs-caption);
+  line-height: 1.5;
+  color: var(--ink2);
 }
-.dp-matrix-bar-skolne {
-  background: var(--line2);
+.dp-matrix-note svg {
+  flex: none;
+  margin-top: 1px;
+  color: var(--ink3);
+}
+.dp-matrix-note strong {
+  color: var(--ink);
+}
+.dp-matrix-note.is-warn {
+  background: var(--danger-soft);
+}
+.dp-matrix-note.is-warn svg {
+  color: var(--danger);
 }
 
 .dp-matrix-callout {
@@ -514,6 +610,23 @@
 @media (max-width: 900px) {
   .dp-matrix-layout {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .dp-crit-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: 'label weight' 'track track';
+    row-gap: 6px;
+  }
+  .dp-crit-label {
+    grid-area: label;
+  }
+  .dp-crit-weight {
+    grid-area: weight;
+  }
+  .dp-crit-track {
+    grid-area: track;
   }
 }
 

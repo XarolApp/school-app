@@ -17,6 +17,8 @@ codebase audit (see "Not audited" below).
 | 004 | [Implement the "School Search" design on `/skoly`](004-search-design-import.md) | HIGH | L | Medium | DONE |
 | 005 | [Spacing & typography tokens: emit them, then adopt them site-wide](005-spacing-typography-migration.md) | HIGH | L | Medium | IN PROGRESS |
 | 006 | [Comparison & decision tools (feature-brainstorm §5)](006-comparison-decision-tools.md) | HIGH | L | Medium | TODO |
+| 007 | [Rozhodovací matice redesign + match score as a criterion](007-decision-matrix-redesign.md) | HIGH | M | Low | DONE |
+| 008 | [Save onboarding quiz answers to the account](008-save-onboarding-answers.md) | HIGH | M | Medium | TODO |
 
 > **004** was added 2026-08-30 by a separate `/improve plan <description>` run against
 > commit `5a8381c` — a targeted single-plan run, not part of the 2026-08-24 audit above.
@@ -33,6 +35,23 @@ codebase audit (see "Not audited" below).
 > spacing/type tokens, so if 005 changes a token name mid-flight, 006's
 > `decision.css` follows it. Design canvas:
 > https://claude.ai/code/artifact/688789aa-b54c-4a5e-b2b6-17b3ee775899
+>
+> **007** was added 2026-09-11 by a `/plan-then-build` run against commit `a5741d9`,
+> triggered by the founder being unable to read the matrix's stacked bar (it drew
+> `raw × weight` as one length, painted a 2% stub for a zero score, and used five
+> colours with no legend). It replaces the bar with labelled per-criterion rows and
+> adds the questionnaire `match_score` as a criterion, defaulting to `zasadni`.
+> Independent of 006 in code terms (only touches `Matice.jsx` / `decisionMatrix.js` /
+> `decision.css`, which 006 already created). Design canvas:
+> https://claude.ai/code/artifact/56e40c3c-2e79-400b-ba8d-d48d157b3f69
+>
+> **008** was added 2026-09-11, same variant, same base commit, as a direct
+> consequence of 007: nothing on `main` writes `questionnaire_runs`, so the new
+> `shoda` criterion is locked for every account except one with a legacy row. 008
+> stashes onboarding answers at signup and saves them through a new endpoint on
+> first confirmed sign-in, so match scores populate everywhere `withMatchScores`
+> reads them (search, school detail, `/porovnani`, the matrix). Needs the founder to
+> re-run `supabase-setup.sql` once its schema change lands.
 >
 > **005** was added 2026-08-31, same variant, same base commit. It migrates the app onto
 > `design/system`'s real spacing and type scales. **It interacts with 003**: 003 fixes a

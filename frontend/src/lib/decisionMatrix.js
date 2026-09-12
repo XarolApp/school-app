@@ -2,7 +2,9 @@
  * Weighted decision matrix (feature-brainstorm.md §5 "Weighted decision
  * matrix"). Pure arithmetic over data already on the school row — same rule
  * as lib/matching.js: the model never produces a number, only the AI-written
- * pros/cons sentences do, and those are separate (school_ai_summary).
+ * pros/cons sentences do, and those are separate (school_ai_summary). This
+ * also reads `match_score` (the questionnaire result, attached server-side by
+ * withMatchScores) as one more criterion — still no AI in the number itself.
  *
  * Every raw score is normalized 0–1 relative to the schools ACTUALLY being
  * compared, not to all of Prague — this is a relative ranking of the
@@ -13,7 +15,15 @@ import { summarizeCurrentYear, groupProgramsByObor } from './schoolPrograms';
 
 export const WEIGHTS = { nezalezi: 0, trochu: 1, dost: 2, zasadni: 3 };
 
+// A weak criterion the user marked at least "dost" is worth flagging in a
+// callout — below this, "sedí ti" would be dishonest.
+export const WEAK_THRESHOLD = 0.35;
+// How many percentage points of match_score gap counts as "notably better",
+// for the rank-1 gap callout.
+export const MATCH_GAP = 15;
+
 export const CRITERIA = [
+  { id: 'shoda', label: 'Shoda s tvým dotazníkem', available: true },
   { id: 'sance', label: 'Šance na přijetí', available: true },
   { id: 'mista', label: 'Počet míst', available: true },
   { id: 'typ', label: 'Typ školy odpovídá mým plánům', available: true },
@@ -44,6 +54,11 @@ function minMax(values) {
 
 function rawForCriterion(id, schools) {
   switch (id) {
+    case 'shoda': {
+      const values = schools.map((s) => (typeof s.match_score === 'number' ? s.match_score : null));
+      const scale = minMax(values);
+      return values.map((v) => scale(v));
+    }
     case 'sance': {
       // Lower cutoff = easier = better, so invert.
       const scale = minMax(schools.map((s) => s.admission_cutoff));
@@ -120,8 +135,9 @@ export function scoreByWeights(schools, weightsById) {
 
     const breakdown = usableCriteria.map((c) => {
       const raw = perCriterionRaw.get(c.id)[i];
-      const weight = WEIGHTS[weightsById[c.id]] / totalWeight;
-      return { criterionId: c.id, label: c.label, raw, weighted: raw * weight };
+      const weightKey = weightsById[c.id];
+      const weight = WEIGHTS[weightKey] / totalWeight;
+      return { criterionId: c.id, label: c.label, raw, weightKey, weighted: raw * weight };
     });
 
     const score = breakdown.reduce((sum, b) => sum + b.weighted, 0);
@@ -129,4 +145,34 @@ export function scoreByWeights(schools, weightsById) {
   });
 
   return results.sort((a, b) => (b.score ?? -1) - (a.score ?? -1));
+}
+
+/** Whether every compared school carries a real match_score — the criterion
+ *  is all-or-nothing per account (withMatchScores in server.js), so this is
+ *  really "is the signed-in user's account scored", not a per-school check. */
+export function hasMatchScores(schools) {
+  return schools.length > 0 && schools.every((s) => typeof s.match_score === 'number');
+}
+
+/** Presentation-only band for the match_score chip — never fed back into the
+ *  weighted math, which uses the raw percentage via minMax above. */
+export function matchBand(score) {
+  if (score >= 75) return { label: 'Silná shoda', tone: 'ok' };
+  if (score >= 45) return { label: 'Střední shoda', tone: 'acc' };
+  return { label: 'Slabá shoda', tone: 'neutral' };
+}
+
+/** Criteria the user marked at least "dost" important where this school
+ *  scores under WEAK_THRESHOLD — the raw material for the weak-spot callout. */
+export function weakSpots(breakdown) {
+  return breakdown.filter(
+    (b) => (b.weightKey === 'dost' || b.weightKey === 'zasadni') && b.raw < WEAK_THRESHOLD
+  );
+}
+
+/** Czech list joining: "a" / "a a b" / "a, b a c". */
+export function joinCz(items) {
+  if (items.length <= 1) return items.join('');
+  if (items.length === 2) return `${items[0]} a ${items[1]}`;
+  return `${items.slice(0, -1).join(', ')} a ${items[items.length - 1]}`;
 }
