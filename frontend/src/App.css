@@ -5,6 +5,7 @@
 }
 
 .navbar {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -19,14 +20,70 @@
   color: var(--text-h);
 }
 
+.navbar-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-button);
+  background: var(--surface);
+  color: var(--text-h);
+  cursor: pointer;
+  appearance: none;
+}
+
 .navbar-links {
   display: flex;
+  align-items: center;
   gap: var(--space-lg);
 }
 
 .navbar-links a {
   text-decoration: none;
   color: var(--text-h);
+}
+
+/* Below this width the links no longer fit one row (confirmed: 113px of
+   horizontal page overflow at 375px before this rule existed) — collapse them
+   behind a hamburger toggle instead of letting the row overflow the viewport.
+   Matches DESIGN.md's own single-column breakpoint (below 768px). */
+@media (max-width: 768px) {
+  .navbar-toggle {
+    display: flex;
+  }
+
+  .navbar-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    padding: var(--space-sm) var(--space-lg) var(--space-md);
+    z-index: 20;
+  }
+
+  .navbar-links.is-open {
+    display: flex;
+  }
+
+  .navbar-links a,
+  .navbar-links .navbar-signout {
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .navbar-links a:last-child,
+  .navbar-links .navbar-signout:last-child {
+    border-bottom: none;
+  }
 }
 
 .app-content {

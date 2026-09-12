@@ -804,6 +804,67 @@ equivalents), these should eventually be replaced by the real template
 components rather than the other way around. Not started — sequence this after
 the spacing/typography migration lands and is verified stable.
 
+## Top nav bar overflows horizontally on mobile
+- **Found:** 2026-09-12, while browser-verifying plan 007's decision-matrix redesign
+- **Urgency:** medium — affects every page, not just the matrix
+- **Release/context:** already spun off as its own session (task_c7de19a6)
+
+`.navbar` / `.navbar-links` in `App.css` have zero responsive handling — no
+wrap, no hamburger menu. Confirmed 113px of horizontal page overflow at 375px
+width on both `/` and `/porovnani/matice`, so this is nav-wide, not specific to
+any one page. The "Porovnání" link added 2026-09-11 made the row one item
+longer but did not cause the underlying gap — the nav had no mobile handling
+before that either. See "Responsive design beyond the fixed 1280px desktop
+width" below for the broader context this sits inside.
+
+## Onboarding Reveal ranking can disagree with the server match %
+- **Found:** 2026-09-11/12, while building plan 008 (save onboarding answers)
+- **Urgency:** low
+- **Release/context:** accepted tradeoff, not a bug to silently fix
+
+Two independently-built scoring engines exist by design (see CLAUDE.md): the
+onboarding quiz's `frontend/src/lib/matching.js` (band-only, runs in the
+browser, scores the Reveal screen) and the server's `lib/matching.js`
+(percentage-based, scores everything post-signup: search, school detail,
+`/porovnani`, the decision matrix). Plan 008 translates onboarding answers into
+the server engine's input shape so match_score is available at all after
+signup, but it does not and cannot make the two engines agree pointwise — a
+school ranked #1 on Reveal could show a lower % than #2 once the server engine
+scores the same translated answers. Consider unifying onto one engine if this
+ever causes a support question.
+
+## Onboarding `sport` focus has no server-side matching area
+- **Found:** 2026-09-11/12, building `lib/onboardingAnswers.js` (plan 008)
+- **Urgency:** low
+- **Release/context:** dropped silently on save, not surfaced to the user
+
+The onboarding quiz's `focus` question offers `sport` as an option
+(`frontend/src/lib/schoolFeatures.js` FOCUS_CATEGORIES), but the server
+matching engine's `AREA_KEYWORDS` (`lib/matching.js`) has no `sport` entry —
+there's no keyword family in the scraped `programs` text to match it against.
+`lib/onboardingAnswers.js`'s translation table drops `sport` rather than
+mapping it to something misleading. Add a `sport` area + keywords to
+`lib/matching.js` if sport-focused schools start mattering enough to justify it
+(the database currently has very few, if any).
+
+## Onboarding answers only reach the account on the signup device
+- **Found:** 2026-09-11/12, building plan 008 (save onboarding answers)
+- **Urgency:** low
+- **Release/context:** a known limit of the localStorage-stash design, not a bug
+
+`CreateAccount.jsx` stashes quiz answers in `localStorage`
+(`lib/pendingOnboardingAnswers.js`) because there is no session yet to save
+them under. `AuthContext` flushes that stash to the server the next time this
+*same browser* sees a confirmed session for the *same email*. If a student
+signs up on their phone but confirms and first signs in on a different
+device/browser, the stash never reaches that second device and their match
+score never populates from the quiz (they'd need to redo the standalone
+questionnaire, or the stash silently expires after 7 days). This resolves
+itself naturally if/when the existing "email confirmation gate temporarily
+disabled" item (elsewhere in this file) is fixed the way it already proposes —
+resuming onboarding in the confirming tab, rather than redirecting to generic
+Login — since that keeps everything on one device throughout.
+
 ## Responsive design beyond the fixed 1280px desktop width
 - **Found:** 2026-08-31, alongside widening `.app-content` to 1280px
 - **Urgency:** medium
