@@ -1017,12 +1017,13 @@ back).
 
 ## Backend pagination
 - **Found:** pre-2026-08-27
-- **Urgency:** low — not urgent at ~60 schools
+- **Urgency:** low — not urgent at 224 schools (updated 2026-09-13 after the
+  Prague database expansion; still far under the 1000-row cliff)
 - **Risk of NOT fixing:** Supabase's PostgREST silently truncates at 1000 rows — a silent data-loss bug once the school count crosses that, not an error
 - **Effort:** small
 - **Release/context:** must fix before expanding past Prague to other Czech cities
 
-`GET /api/schools` has no pagination. Fine today at ~60 rows; add it before the
+`GET /api/schools` has no pagination. Fine today at 224 rows; add it before the
 geographic-scope expansion mentioned in CLAUDE.md's "Geographic Scope for V1".
 
 ---

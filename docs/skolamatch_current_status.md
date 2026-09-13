@@ -287,11 +287,25 @@ The product is not publicly launched yet.
 
 ## Database
 
-- 60 schools currently built into the database.
-- Prague target: approximately 214 schools.
-- Remaining schools need scraping.
-- Some information, such as open days, requires manual work or smarter scraping.
-- Core school information is roughly 75% complete.
+- **224 schools now in the database (2026-09-13)** — up from 60. Expanded via
+  `scripts/import-missing-schools.js` (new script), using REDIZO/name/programs
+  already present in the Cermat admission files plus official name+address from
+  MŠMT's public school registry API (isv.gov.cz/rssz — found by inspecting its
+  own search UI's network requests, not scraped/guessed). All 164 new schools
+  geocoded (`scripts/geocode-schools.js`) and matched into `school_programs` /
+  `admission_cutoff` / `acceptance_rate` by re-running
+  `scripts/import-admission-data.js` against the same 3 Cermat files — no new
+  matching logic needed, since the new schools now carry a stored REDIZO.
+  2,372 total `school_programs` rows.
+- Prague target was approximately 214 — **exceeded** (224).
+- **Not from this pass:** `contact` and `website` are null for all 164 new
+  schools — neither Cermat nor the official registry publishes those, and
+  nothing was fabricated to fill them in. Same honest-gap pattern as the school
+  detail page's other placeholders. Getting these needs a different source
+  (school websites directly, or reviving something like the old
+  atlasskolstvi.cz scrape) — not done, not urgent, but worth tracking.
+- Core school-level facts (name, location, programs, admission stats) are now
+  essentially complete for Prague; contact/website remain the real gap.
 - Historical CERMAT data comes from official files.
 - Database should be kept updated.
 
@@ -866,23 +880,38 @@ Keep this concise.
   itself. Do the audit next: walk through every P0 question in that section
   against the real app and record answers here.
 
-## Day 2
-- Status: Not yet logged
+## Day 2 (2026-09-13)
+- Status: Development-heavy day; marketing again fell short of the plan's ~2h/day target
 - Completed:
-- Marketing:
-- Bugs:
-- Decisions:
+  - Deployed to production: Railway (backend, EU West, Node bumped to 22+ for
+    Supabase realtime's WebSocket requirement) + Vercel (frontend). Full smoke
+    test passed live: signup, email confirmation, sign-in, `/dotaznik`,
+    `/skoly`, school detail, `/porovnani/matice`.
+  - Plan 009: real Stripe payments implemented for both plans (code done,
+    **not yet tested** — see UNFORGET.md's maximum-urgency warning before any
+    live key goes in). Season pass built as a Stripe subscription with a 3-day
+    trial + absolute `cancel_at` so it still charges exactly once.
+  - Prague school database expanded from 60 → 224 schools (target was ~214),
+    via a new official-registry-backed script — see "Database" section above.
+- Marketing: rebrand decision made (ŠkolaMatch → "Kam na střední?" → landed on
+  "Střední na míru" after two rounds of collision-checking — Kam na střední's
+  domain was taken, Školio collided with an existing school-management SaaS).
+  Not yet executed in the codebase. No content published, no creator/parent
+  outreach sent today — this is the second day running marketing hours went
+  to something not on the Week 1 plan's checklist.
+- Bugs: none new (yesterday's `questionnaire_runs.source` bug stays fixed)
+- Decisions: new brand name locked in ("Střední na míru"); Stripe test-mode
+  account will be the founder's own, since he's under 18 and can't legally
+  hold a live one — going live needs a parent/guardian or an s.r.o.
 - Blockers:
-- Next step:
-
-## Day 2
-- Status: Not yet logged
-- Completed:
-- Marketing:
-- Bugs:
-- Decisions:
-- Blockers:
-- Next step:
+  - Railway is on a 30-day trial ($4.99 credit) — must upgrade before ~2026-10-13
+  - Stripe payment code is untested — deep manual review required before trusting it, per UNFORGET.md
+  - Rebrand decided but not executed anywhere in the codebase yet
+  - Marketing outreach (creator/parent contacts, content, TikTok/IG accounts) still at zero across two days
+- Next step: per the launch plan's Day 3 (§14), Stripe testing is now the
+  priority development task; marketing needs to actually execute the Day
+  1/Day 2 checklist items that have been skipped twice — content + outreach,
+  not more planning
 
 Continue adding days.
 
