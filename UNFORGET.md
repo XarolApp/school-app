@@ -15,6 +15,59 @@ BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 
 ---
 
+## 🚨🚨🚨 STOP. DO NOT GO LIVE WITH STRIPE UNTIL THIS IS DONE. 🚨🚨🚨
+- **Found:** 2026-09-13, founder request, explicit and urgent
+- **Urgency:** MAXIMUM — this is the single highest-consequence item in this
+  entire file. Everything else in UNFORGET.md is a product/UX gap. This one is
+  "real families get charged real money incorrectly and we get sued for it."
+- **Effort:** a real testing session, not a quick look — hours, not minutes
+- **Release/context:** plan 009 (`plans/009-stripe-payments.md`), the whole
+  payment surface: `server.js`'s `/api/checkout`, `/api/subscription/cancel`,
+  `handleStripeWebhook`, and every place `subscription_status` /
+  `access_expires_at` get written or read
+
+**The founder's own words, verbatim reasoning, kept because it matters:** a bug
+almost anywhere else in this app is annoying. A bug in the payment path is not —
+if a family gets **double-charged**, or charged after they cancelled, or charged
+a wrong amount, that is not a bug report, that is a **lawsuit risk**, real money
+taken from real parents' cards without consent. This is categorically different
+from every other item in this file and must be treated that way.
+
+**Before a single real (`sk_live_`) key ever goes into Railway, do ALL of this —
+not a spot check, an actual deep review:**
+
+- [ ] Re-read plan 009 §10 (Verification) top to bottom and personally run
+  **every single row of that table** against Stripe test mode + the Stripe CLI's
+  test-clock feature (`stripe listen`, test cards, advancing a test clock past
+  the 3-day trial and past `cancel_at`) — not just "it looked fine in the
+  dashboard."
+- [ ] Specifically hammer on the **double-charge scenarios**: does clicking
+  "buy" twice in a row ever create two subscriptions for one person? Does a
+  webhook retry (Stripe resends on any non-200 response) ever cause a second
+  write that bills twice? Does cancelling *during* the exact moment a webhook is
+  in flight leave the account in a state where it still gets charged anyway?
+- [ ] Specifically verify **cancellation actually stops future money movement**
+  — cancel a season pass during its trial and confirm in the Stripe dashboard,
+  not just the app UI, that no invoice is scheduled. Cancel a monthly plan and
+  confirm the *next* renewal genuinely does not fire.
+- [ ] Verify the season pass's `cancel_at` truly fires and truly stops the
+  subscription — an account that silently keeps recurring after the season
+  ended is the inverse failure (quieter, but still a real-money bug).
+- [ ] Have a second person (ideally an adult who will eventually own the real
+  Stripe account per plan 009 §11) look at the flow with fresh eyes before real
+  money is ever involved. A founder who has stared at this code for hours will
+  miss things a stranger won't.
+- [ ] Only after all of the above: read plan 009 §11's "before real money"
+  checklist (adult account owner, trade licence, VAT, refund process, legal
+  pages) — that list is necessary but is NOT a substitute for this technical
+  review. Passing §11 and skipping this checklist is not safe to launch on.
+
+**This item does not get removed from this file until it has actually been done,
+not until it has been remembered.** Checking a box above without actually running
+the test it describes defeats the entire point of writing this down.
+
+---
+
 ## Pricing logic, discounts and offers need a proper pass — not just the one-time offer
 - **Found:** 2026-09-13, while planning Stripe (plan 009)
 - **Urgency:** medium — nothing is broken or live, but it blocks charging at full
