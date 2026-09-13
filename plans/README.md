@@ -19,7 +19,7 @@ codebase audit (see "Not audited" below).
 | 006 | [Comparison & decision tools (feature-brainstorm §5)](006-comparison-decision-tools.md) | HIGH | L | Medium | TODO |
 | 007 | [Rozhodovací matice redesign + match score as a criterion](007-decision-matrix-redesign.md) | HIGH | M | Low | DONE |
 | 008 | [Save onboarding quiz answers to the account](008-save-onboarding-answers.md) | HIGH | M | Medium | DONE |
-| 009 | [Stripe payments — both plans, real money](009-stripe-payments.md) | HIGH | L | High | TODO |
+| 009 | [Stripe payments — both plans, real money](009-stripe-payments.md) | HIGH | L | High | CODE DONE — untested |
 
 > **004** was added 2026-08-30 by a separate `/improve plan <description>` run against
 > commit `5a8381c` — a targeted single-plan run, not part of the 2026-08-24 audit above.
