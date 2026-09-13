@@ -19,6 +19,7 @@ codebase audit (see "Not audited" below).
 | 006 | [Comparison & decision tools (feature-brainstorm §5)](006-comparison-decision-tools.md) | HIGH | L | Medium | TODO |
 | 007 | [Rozhodovací matice redesign + match score as a criterion](007-decision-matrix-redesign.md) | HIGH | M | Low | DONE |
 | 008 | [Save onboarding quiz answers to the account](008-save-onboarding-answers.md) | HIGH | M | Medium | DONE |
+| 009 | [Stripe payments — both plans, real money](009-stripe-payments.md) | HIGH | L | High | TODO |
 
 > **004** was added 2026-08-30 by a separate `/improve plan <description>` run against
 > commit `5a8381c` — a targeted single-plan run, not part of the 2026-08-24 audit above.
@@ -65,6 +66,25 @@ codebase audit (see "Not audited" below).
 > onboarding flush specifically (stash → confirmed sign-in → saved row) still
 > has not been watched succeed end to end on a real account. Do that before
 > trusting 008's DONE status fully.
+>
+> **009** was added 2026-09-13 by a `/plan-then-build` run against commit `d436994`,
+> the day after the app went live on Railway + Vercel. It replaces the payment
+> scaffolding with real Stripe Checkout for both plans, plus the one-click
+> cancellation endpoint that `pricing.js` names as blocking for recurring billing.
+> Two findings shaped it and are worth knowing without reading the whole plan.
+> **First:** the season pass is sold as a one-time payment but is implemented as a
+> Stripe *subscription* with a 3-day trial and an absolute `cancel_at` — because a
+> real one-time charge happens immediately and cannot express the "card saved,
+> nothing charged for 3 days, then 690 Kč" flow the approved paywall already
+> promises. It still charges exactly once and then expires. **Second:**
+> `hasPaidStatus('season')` returns true forever and nothing anywhere recorded when
+> a season pass ends, so 009 adds `users.access_expires_at` and makes access
+> self-enforcing rather than webhook-dependent. It also **disables** the one-time
+> 30% offer (localStorage entitlement, so the "jen teď" claim was false in
+> practice) — deferred to `UNFORGET.md` along with the wider pricing questions.
+> Everything is built against Stripe **test mode**: the founder is under 18 and
+> cannot legally hold a Stripe account, so going live is gated on a parent/guardian
+> or an s.r.o. owning it. No code change is needed to go live — only swapping keys.
 >
 > **005** was added 2026-08-31, same variant, same base commit. It migrates the app onto
 > `design/system`'s real spacing and type scales. **It interacts with 003**: 003 fixes a

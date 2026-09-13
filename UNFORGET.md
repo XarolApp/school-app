@@ -15,6 +15,51 @@ BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 
 ---
 
+## Pricing logic, discounts and offers need a proper pass — not just the one-time offer
+- **Found:** 2026-09-13, while planning Stripe (plan 009)
+- **Urgency:** medium — nothing is broken or live, but it blocks charging at full
+  intent, and one piece of it (the offer) had to be switched off to ship payments
+- **Effort:** medium — part product decision, part backend work
+- **Release/context:** `frontend/src/config/pricing.js`,
+  `frontend/src/lib/offerEntitlement.js`, plan 009 §7
+
+Plan 009 **disables the one-time 30% first-view offer** (`ONE_TIME_OFFER_ENABLED
+= false`) rather than shipping it, because its entitlement was a localStorage
+stub: clearing cookies or opening an incognito window resurfaced it, which makes
+the "jen teď, jednorázově" claim false in practice. Shown to minors that is a DSA
+Art. 25 dark-pattern problem, not a rough edge. The prototype code is kept, not
+deleted.
+
+But the founder's own framing was broader than that one flag: **the pricing model
+as a whole is not yet what they want.** Things in this area that are known-unsettled:
+
+- **The one-time offer itself** — needs a real server-side entitlement before it
+  can be honestly shown: `one_time_offers(user_id pk, offer_id, granted_at,
+  expires_at, consumed_at)` plus `POST /api/offers/one-time/claim` and
+  `GET /api/offers/one-time/status`, with the server as the only thing that decides
+  eligibility. The sketch is already written in `offerEntitlement.js`'s header.
+- **The actual prices** — 249 Kč monthly / 690 Kč season are still explicitly
+  marked `PLACEHOLDER` in `pricing.js`. They have never been set as real numbers.
+- **`REFUND_GUARANTEE_DAYS = 3`** — a testing placeholder the founder picked, not
+  a committed number. 14 days (the EU distance-selling floor) is the benchmark it
+  was meant to be reconsidered against, and arguably applies regardless.
+- **Discount / affiliate mechanics generally** — the launch plan leans on
+  influencer affiliates paid on realized revenue, but there is no promo-code,
+  referral-attribution or affiliate-payout concept anywhere in the code or in
+  `pricing.js`. Stripe supports promotion codes natively; nothing uses them.
+- **Parent + child on one plan** — already carved out of plan 006 for the same
+  reason and still unresolved; it interacts directly with what a "plan" even means
+  here.
+
+**What "done" looks like:** a deliberate sit-down on the pricing model — real
+numbers, whether discounts/promo codes exist at all and in what form, how
+affiliates get attributed and paid, and what the refund window actually is —
+followed by the server-side entitlement if the one-time offer survives that
+conversation. Until then payments ship at full price with no offer, which is the
+honest default.
+
+---
+
 ## Railway backend is on a 30-day trial — will go offline if not upgraded
 - **Found:** 2026-09-13, during first production deployment
 - **Urgency:** high, but not urgent yet — 30-day runway, must not be forgotten
