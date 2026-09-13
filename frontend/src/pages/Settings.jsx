@@ -5,17 +5,21 @@ import Captcha, { captchaEnabled } from '../components/Captcha';
 import PasswordInput from '../components/PasswordInput';
 import PasswordStrength from '../components/PasswordStrength';
 import { useToast } from '../components/ToastContext';
-import { deleteAccount } from '../api';
+import { deleteAccount, cancelSubscription } from '../api';
 import { supabase, getRememberMe, setRememberMe } from '../supabaseClient';
 
 const SUBSCRIPTION_LABELS = {
   trialing: 'Zkušební období',
   active: 'Aktivní předplatné',
+  season: 'Sezónní přístup',
   past_due: 'Platba neproběhla',
   canceled: 'Zrušené předplatné',
   expired: 'Zkušební období skončilo',
   developer: 'Vývojářský účet',
 };
+
+const formatCzDateLong = (iso) =>
+  new Date(iso).toLocaleDateString('cs-CZ', { day: 'numeric', month: 'long', year: 'numeric' });
 
 function Settings() {
   const {
@@ -31,12 +35,13 @@ function Settings() {
     updateName,
     signOut,
     signOutEverywhere,
+    refreshProfile,
   } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
   // Only one form is open at a time, so the page stays a readable summary
-  // instead of a wall of inputs: 'password' | 'email' | 'delete' | null.
+  // instead of a wall of inputs: 'password' | 'email' | 'delete' | 'cancel' | null.
   const [openForm, setOpenForm] = useState(null);
   const [name, setName] = useState('');
   const [nameSaved, setNameSaved] = useState(false);
@@ -216,6 +221,34 @@ function Settings() {
 
   const status = profile?.subscription_status;
   const statusLabel = SUBSCRIPTION_LABELS[status] || 'Neznámý stav';
+
+  // A cancel button is only meaningful when there is something Stripe would
+  // otherwise keep billing: a recurring monthly plan, or a season pass still
+  // inside its 3-day trial (cancelling there prevents the charge outright). A
+  // season pass that has already been charged has nothing recurring to stop —
+  // cancellationTerms() in pricing.js already says so ("není co rušit").
+  const canCancel =
+    (profile?.plan_id === 'monthly' && (status === 'active' || status === 'past_due')) ||
+    (status === 'trialing' && Boolean(profile?.stripe_subscription_id));
+
+  const handleCancelSubscription = async () => {
+    setError(null);
+    setBusy(true);
+    try {
+      const { cancelled, accessUntil } = await cancelSubscription();
+      await refreshProfile();
+      setOpenForm(null);
+      toast(
+        cancelled === 'immediately'
+          ? 'Zrušeno. Nic ti nebude strženo.'
+          : `Zrušeno. Přístup ti běží do ${formatCzDateLong(accessUntil)}.`
+      );
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setBusy(false);
+    }
+  };
 
   return (
     <div className="page page-settings">
@@ -546,6 +579,12 @@ function Settings() {
                     </strong>
                   </>
                 )}
+                {profile?.access_expires_at && (status === 'active' || status === 'season') && (
+                  <>
+                    {' — přístup do '}
+                    <strong>{formatCzDateLong(profile.access_expires_at)}</strong>
+                  </>
+                )}
               </span>
             </div>
             {isDeveloper ? (
@@ -558,6 +597,53 @@ function Settings() {
               )
             )}
           </div>
+
+          {canCancel &&
+            (openForm === 'cancel' ? (
+              <div className="settings-form settings-form-inset">
+                {error && (
+                  <div className="notice notice-error" role="alert">
+                    <p className="notice-text">{error}</p>
+                  </div>
+                )}
+                <p className="settings-section-text">
+                  {status === 'trialing'
+                    ? 'Zrušíš teď, ve zkušební době — nic ti nebude strženo.'
+                    : 'Opravdu chceš předplatné zrušit? Přístup ti zůstane do konce už zaplaceného období, pak se neobnoví.'}
+                </p>
+                <div className="settings-form-actions">
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={handleCancelSubscription}
+                    disabled={busy}
+                  >
+                    {busy && <span className="btn-spinner" aria-hidden="true" />}
+                    {busy ? 'Ruším…' : 'Ano, zrušit'}
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-ghost"
+                    onClick={() => {
+                      setOpenForm(null);
+                      setError(null);
+                    }}
+                  >
+                    Nechat běžet
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="settings-row-actions">
+                <button
+                  type="button"
+                  className="btn btn-secondary btn-sm"
+                  onClick={() => openSection('cancel')}
+                >
+                  Zrušit předplatné
+                </button>
+              </div>
+            ))}
         </section>
 
         {/* --- Smazání účtu ---------------------------------------------- */}

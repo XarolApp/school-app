@@ -10,7 +10,7 @@ import {
   refundTerms,
   trialChargeDate,
 } from '../../../config/pricing';
-import { mockStartSubscription } from '../../../api';
+import { createCheckoutSession } from '../../../api';
 import { useOnboarding } from '../useOnboarding';
 import { Icon, PayCta, PayStepChrome, useHandoffShare } from './paywallKit';
 
@@ -20,12 +20,12 @@ import { Icon, PayCta, PayStepChrome, useHandoffShare } from './paywallKit';
  * Deliberately NOT numbered in the step chrome: a counter still ticking while
  * the card form is open reads as "there is more after this".
  *
- * PAYMENTS ARE MOCKED (PAYMENTS_MOCKED). The card fields are rendered inert and
- * labelled as such, and nothing is typed into React state. This is not
- * laziness — a real-looking card input that posts nowhere is the one thing that
- * cannot be walked back with a parent, and card data must never touch this app
- * at all: the live version embeds Stripe's own hosted fields here, which is
- * also what makes "kartu nevidíme ani neukládáme" true rather than aspirational.
+ * PAYMENTS (plan 009): a real Stripe Checkout session is created server-side
+ * and the browser is redirected to Stripe's own hosted page — card data never
+ * enters this app's state, which is what makes "kartu nevidíme ani
+ * neukládáme" true rather than aspirational. `PAYMENTS_MOCKED` stays as a dev
+ * fallback: with no Stripe keys configured, the button is disabled with an
+ * honest note instead of crashing.
  *
  * CONSENT (§0.4, ruling C-8's parental-confirmation requirement):
  *  - Nothing is pre-ticked, ever.
@@ -43,7 +43,7 @@ import { Icon, PayCta, PayStepChrome, useHandoffShare } from './paywallKit';
  * Source: design/paywall-multipage-extract4/{Platba,WebPlatba,ParentPlatba}.
  */
 function Platba() {
-  const { role, goNext, goToStep, planId, setPurchased } = useOnboarding();
+  const { role, goToStep, planId } = useOnboarding();
   const parent = role === 'parent';
   const voice = parent ? 'parent' : 'student';
   const plan = getPlan(planId);
@@ -51,6 +51,7 @@ function Platba() {
 
   const [confirmed, setConfirmed] = useState(false);
   const [working, setWorking] = useState(false);
+  const [error, setError] = useState(null);
 
   const chargeLabel = useMemo(
     () => (plan.hasTrial ? formatCzDate(trialChargeDate(new Date())) : null),
@@ -62,10 +63,23 @@ function Platba() {
   const backStep = plan.hasTrial ? 'zkusebni' : 'plan';
 
   const submit = async () => {
+    setError(null);
     setWorking(true);
-    await mockStartSubscription({ planId: plan.id, priceCzk: plan.priceCzk, role });
-    setPurchased(true);
-    goNext();
+    try {
+      const { url } = await createCheckoutSession({ planId: plan.id, returnTo: '/skoly' });
+      // Full navigation on purpose — Stripe's hosted checkout page is not part
+      // of this SPA. Purchase is confirmed by the webhook, not by anything
+      // that happens client-side here, so there is no goNext()/setPurchased()
+      // on this path: the account updates once Stripe tells our backend it did.
+      window.location.href = url;
+    } catch (err) {
+      setWorking(false);
+      setError(
+        err.code === 'STRIPE_NOT_CONFIGURED'
+          ? 'Platby zatím nejsou spuštěné. Zkus to prosím později.'
+          : err.message || 'Platbu se nepodařilo zahájit. Zkus to prosím znovu.'
+      );
+    }
   };
 
   const summary = (
@@ -128,39 +142,15 @@ function Platba() {
                 </span>
               </div>
 
-              {/* Inert on purpose while PAYMENTS_MOCKED is true — see the file
-                  header. Card data never enters this app's state. */}
-              <input
-                className="ob-pw-field"
-                type="text"
-                inputMode="numeric"
-                placeholder="Číslo karty"
-                aria-label="Číslo karty"
-                autoComplete="off"
-                disabled
-              />
-              <div className="ob-pw-field-pair">
-                <input
-                  className="ob-pw-field"
-                  type="text"
-                  placeholder="MM / RR"
-                  aria-label="Platnost karty"
-                  autoComplete="off"
-                  disabled
-                />
-                <input
-                  className="ob-pw-field"
-                  type="text"
-                  placeholder="CVC"
-                  aria-label="Kód CVC"
-                  autoComplete="off"
-                  disabled
-                />
-              </div>
+              {/* No card fields here at all: clicking "Začít používat" below
+                  redirects to Stripe's own hosted checkout page, where the
+                  card is actually entered. Rendering a lookalike form here
+                  that posts nowhere would be a false trust signal — the one
+                  thing that cannot be walked back with a parent. */}
               <p className="ob-pw-fine">
                 {parent
-                  ? 'Kartu zadáváte do formuláře Stripe. My ji nevidíme ani neukládáme — dostaneme jen potvrzení, že platba prošla.'
-                  : 'Kartu zadáváš do formuláře Stripe. My ji nevidíme ani neukládáme — dostaneme jen potvrzení, že platba prošla.'}
+                  ? 'Kartu zadáváte na zabezpečené stránce Stripe, kam vás za chvíli přesměrujeme. My ji nevidíme ani neukládáme — dostaneme jen potvrzení, že platba prošla.'
+                  : 'Kartu zadáváš na zabezpečené stránce Stripe, kam tě za chvíli přesměrujeme. My ji nevidíme ani neukládáme — dostaneme jen potvrzení, že platba prošla.'}
               </p>
             </div>
 
@@ -203,8 +193,13 @@ function Platba() {
             <div className="ob-pw-summary-wide">{summary}</div>
 
             <div className="ob-pw-foot">
+              {error && (
+                <div className="notice notice-error" role="alert">
+                  <p className="notice-text">{error}</p>
+                </div>
+              )}
               <PayCta onClick={submit} disabled={!confirmed || working}>
-                {working ? 'Zpracováváme…' : 'Začít používat'}
+                {working ? 'Přesměrovávám na Stripe…' : 'Začít používat'}
               </PayCta>
               {!confirmed && (
                 <p className="ob-microcopy ob-pw-centered">

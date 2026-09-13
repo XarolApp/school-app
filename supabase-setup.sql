@@ -76,6 +76,16 @@ alter table public.users drop constraint if exists users_subscription_status_che
 alter table public.users add constraint users_subscription_status_check
   check (subscription_status in ('trialing', 'active', 'season', 'past_due', 'canceled', 'expired', 'developer'));
 
+-- Plan 009 (Stripe payments): access_expires_at makes paid access
+-- self-enforcing rather than webhook-dependent. Without it, hasPaidStatus()
+-- treats 'season'/'active' as permanently paid, so a single missed webhook
+-- (they do get missed) would grant free access forever with nothing to
+-- notice. plan_id records which plan is active, needed by the UI to decide
+-- whether a cancel button is even meaningful. See server.js's
+-- paidAccessActive() and plan 009 §3/§4.5.
+alter table public.users add column if not exists access_expires_at timestamptz;
+alter table public.users add column if not exists plan_id text;
+
 
 -- ----------------------------------------------------------------------------
 -- 3. Favourites

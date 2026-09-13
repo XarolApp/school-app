@@ -26,7 +26,7 @@
  * treat the offer shown by this stub as a UI prototype, not a live promise.
  */
 
-import { ONE_TIME_OFFER } from '../config/pricing';
+import { ONE_TIME_OFFER, ONE_TIME_OFFER_ENABLED } from '../config/pricing';
 
 const STORAGE_KEY = 'skolamatch.oneTimeOffer.v1'; // STUB ONLY — see header.
 
@@ -54,6 +54,9 @@ function write(state) {
  * @returns {{eligible:boolean, expiresAt:number|null, consumed:boolean}}
  */
 export function claimOneTimeOffer() {
+  if (!ONE_TIME_OFFER_ENABLED) {
+    return { eligible: false, expiresAt: null, consumed: false };
+  }
   const existing = read();
   if (existing) {
     return {
@@ -69,6 +72,9 @@ export function claimOneTimeOffer() {
 
 /** Read-only check — never grants. */
 export function getOneTimeOfferStatus() {
+  if (!ONE_TIME_OFFER_ENABLED) {
+    return { eligible: false, expiresAt: null, consumed: false, granted: false };
+  }
   const state = read();
   if (!state) return { eligible: false, expiresAt: null, consumed: false, granted: false };
   return {

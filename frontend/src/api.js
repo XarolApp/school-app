@@ -215,12 +215,27 @@ export async function fetchSharedShortlist(token) {
 }
 
 /**
- * SCAFFOLDING: the backend route exists but no Stripe keys are configured, so
- * this answers 503 (`STRIPE_NOT_CONFIGURED`) until they are. The onboarding
- * paywall does not call this yet — it still runs mockStartSubscription below.
+ * Creates a real Stripe Checkout session (plan 009). Answers 503
+ * (`STRIPE_NOT_CONFIGURED`) if the backend's Stripe env vars aren't set.
+ * `returnTo` is where the user lands after a successful payment, before the
+ * account has necessarily updated yet — see SubscriptionExpired.jsx's
+ * platba=ok handling.
  */
-export function createCheckoutSession() {
-  return request('/api/checkout', { method: 'POST' });
+export function createCheckoutSession({ planId, returnTo } = {}) {
+  return request('/api/checkout', {
+    method: 'POST',
+    body: JSON.stringify({ planId, returnTo }),
+  });
+}
+
+/**
+ * Cancels the caller's Stripe subscription (plan 009). During a season pass's
+ * 3-day trial this cancels immediately (nothing has been charged yet); once
+ * paid, it schedules cancellation for the end of the current period. Returns
+ * `{ cancelled: 'immediately' | 'at_period_end', accessUntil: string|null }`.
+ */
+export function cancelSubscription() {
+  return request('/api/subscription/cancel', { method: 'POST' });
 }
 
 /**
@@ -245,25 +260,3 @@ export async function fetchSchoolsForMatching() {
   }
 }
 
-/**
- * MOCKED CHECKOUT — still the only purchase path the onboarding paywall uses.
- *
- * TODO(payments): replace with createCheckoutSession() above once Stripe keys
- * are configured and the season-pass plan has a real one-time price. The client
- * must never see or handle card data.
- */
-export function mockStartSubscription({ planId, priceCzk, role, offerApplied }) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        ok: true,
-        mocked: true,
-        planId,
-        priceCzk,
-        role,
-        offerApplied: Boolean(offerApplied),
-        startedAt: new Date().toISOString(),
-      });
-    }, 900);
-  });
-}

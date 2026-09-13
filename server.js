@@ -67,9 +67,79 @@ function isDeveloperEmail(email) {
 }
 
 // One definition of "this account is paid up", used by both the middleware and
-// /api/me. 'season' is the one-time season pass; nothing writes it yet.
+// /api/me. 'season' is the one-time season pass, billed as a Stripe subscription
+// with a 3-day trial and an absolute cancel_at (see plan 009) so it still ends up
+// charging exactly once.
 function hasPaidStatus(status) {
   return status === 'active' || status === 'season' || status === 'developer';
+}
+
+// A paid status alone is not enough: hasPaidStatus('season') would otherwise
+// return true forever, with nothing recording when that season pass actually
+// ends. If a single webhook is ever missed, access must not silently become
+// permanent — so access_expires_at makes expiry self-enforcing instead of
+// webhook-dependent. 'developer' never expires; a legacy row with a paid status
+// but no access_expires_at (pre-migration) is treated as still active rather
+// than retroactively locked out.
+function paidAccessActive(profile) {
+  if (!hasPaidStatus(profile.subscription_status)) return false;
+  if (profile.subscription_status === 'developer') return true;
+  if (!profile.access_expires_at) return true;
+  return new Date(profile.access_expires_at) > new Date();
+}
+
+/**
+ * End of the access window for a season pass: 31 March 23:59:59 Europe/Prague,
+ * the first one strictly more than 30 days after `from`.
+ *
+ * The 30-day floor guards against the charge landing after cancel_at: the
+ * charge fires ~3 days after checkout (the trial), so a purchase made in late
+ * March would otherwise compute a cancel_at before the charge ever happens,
+ * and Stripe would cancel the subscription before it billed. If the naive
+ * "next March 31" is under 30 days out, roll to the following year instead.
+ *
+ * Buying in April yields ~11 months of access — accepted as-is; the product is
+ * seasonal (Sept-March) so this is a non-case in practice.
+ */
+function seasonEndsAt(from = new Date()) {
+  const year = from.getFullYear();
+  let end = new Date(Date.UTC(year, 2, 31, 22, 59, 59)); // 23:59:59 CET/CEST, UTC+1/2
+  const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
+  if (end.getTime() - from.getTime() < THIRTY_DAYS_MS) {
+    end = new Date(Date.UTC(year + 1, 2, 31, 22, 59, 59));
+  }
+  return end;
+}
+
+// Access ends at whichever comes first: a scheduled cancellation, or the end of
+// the period actually paid for. Both are optional on a Stripe subscription
+// object depending on its state, so either side of the min() can be absent.
+function accessEndsAt(sub) {
+  const cancelAt = sub.cancel_at ? sub.cancel_at * 1000 : null;
+  const periodEnd = sub.current_period_end ? sub.current_period_end * 1000 : null;
+  const ms =
+    cancelAt && periodEnd ? Math.min(cancelAt, periodEnd) : cancelAt ?? periodEnd;
+  return ms ? new Date(ms).toISOString() : null;
+}
+
+// Maps Stripe's subscription status onto our own subscription_status values.
+// planId matters only for 'active': a season pass in its paid (post-trial)
+// state is 'season', not 'active', because hasPaidStatus() and the UI both
+// need to tell "one-time, already fully paid" apart from "recurring, still
+// billing every month".
+function mapStripeStatus(stripeStatus, planId) {
+  switch (stripeStatus) {
+    case 'trialing':
+      return 'trialing';
+    case 'active':
+      return planId === 'season' ? 'season' : 'active';
+    case 'past_due':
+    case 'unpaid':
+      return 'past_due';
+    default:
+      // incomplete, incomplete_expired, canceled, paused
+      return 'canceled';
+  }
 }
 
 app.use(cors({ origin: FRONTEND_URL }));
@@ -214,7 +284,7 @@ async function requireAccess(req, res, next) {
 
   const { data: profile, error } = await supabase
     .from('users')
-    .select('trial_expires_at, subscription_status, created_at')
+    .select('trial_expires_at, subscription_status, access_expires_at, created_at')
     .eq('id', req.user.id)
     .single();
 
@@ -224,7 +294,7 @@ async function requireAccess(req, res, next) {
 
   const trialActive = new Date(profile.trial_expires_at) > new Date();
 
-  if (!trialActive && !hasPaidStatus(profile.subscription_status)) {
+  if (!trialActive && !paidAccessActive(profile)) {
     // 402 Payment Required — the frontend turns this into the paywall screen.
     return res.status(402).json({
       error: 'Zkušební období skončilo.',
@@ -261,7 +331,8 @@ app.get('/test-db', async (req, res) => {
  * ------------------------------------------------------------------------- */
 
 const PROFILE_COLUMNS =
-  'id, email, name, created_at, trial_expires_at, subscription_status, stripe_subscription_id';
+  'id, email, name, created_at, trial_expires_at, subscription_status, ' +
+  'stripe_subscription_id, access_expires_at, plan_id';
 
 app.get('/api/me', requireAuth, async (req, res) => {
   let { data: profile, error } = await supabase
@@ -299,7 +370,7 @@ app.get('/api/me', requireAuth, async (req, res) => {
 
   const isDeveloper = profile.subscription_status === 'developer';
   const trialActive = new Date(profile.trial_expires_at) > new Date();
-  const subscribed = hasPaidStatus(profile.subscription_status);
+  const subscribed = paidAccessActive(profile);
 
   res.json({
     ...profile,
@@ -1473,19 +1544,43 @@ app.patch('/api/questionnaire/runs/:id/archive', requireAuth, async (req, res) =
 });
 
 /* ---------------------------------------------------------------------------
- * Payments
+ * Payments — plan 009. Both plans are Stripe subscriptions.
  *
- * ⚠️ SCAFFOLDING. No live Stripe keys are configured and none of this has been
- * tested end-to-end. Both routes return 503 until the three STRIPE_* env vars
- * are set. The onboarding paywall does NOT call /api/checkout yet — it still
- * runs a mocked purchase (see frontend/src/config/pricing.js).
+ * The season pass is SOLD as a one-time payment but IMPLEMENTED as a
+ * subscription with a 3-day trial and an absolute cancel_at: a real one-time
+ * charge happens immediately and cannot express "card saved, nothing charged
+ * for 3 days, then auto-charge, then never again" — the flow the paywall
+ * already promises. See plan 009 §1 for the full reasoning.
  *
- * Only subscription-mode sessions are created here. The one-time season pass
- * ('season' in subscription_status) has no purchase path yet.
+ * Built and tested against Stripe TEST MODE. Going live needs an adult-owned
+ * Stripe account (the founder is under 18) — no code change, only swapping
+ * env vars from sk_test_ to sk_live_. See plan 009 §11.
  * ------------------------------------------------------------------------- */
 
+const PLAN_PRICE_ENV = {
+  season: 'STRIPE_PRICE_ID_SEASON',
+  monthly: 'STRIPE_PRICE_ID_MONTHLY',
+};
+
+// Open-redirect guard: success_url embeds this, so it must never be able to
+// carry the user off this domain. Relative paths only.
+function sanitizeReturnTo(returnTo) {
+  if (typeof returnTo === 'string' && /^\/[A-Za-z0-9\-_/]*$/.test(returnTo)) {
+    return returnTo;
+  }
+  return '/skoly';
+}
+
 app.post('/api/checkout', checkoutLimiter, requireAuth, async (req, res) => {
-  if (!stripe || !process.env.STRIPE_PRICE_ID) {
+  const { planId, returnTo } = req.body || {};
+
+  if (planId !== 'season' && planId !== 'monthly') {
+    return res.status(400).json({ error: 'Neplatný plán.' });
+  }
+
+  const priceId = process.env[PLAN_PRICE_ENV[planId]];
+
+  if (!stripe || !priceId) {
     return res.status(503).json({
       error: 'Platby zatím nejsou nastavené.',
       code: 'STRIPE_NOT_CONFIGURED',
@@ -1498,19 +1593,74 @@ app.post('/api/checkout', checkoutLimiter, requireAuth, async (req, res) => {
     .eq('id', req.user.id)
     .single();
 
+  const safeReturnTo = sanitizeReturnTo(returnTo);
+
   try {
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
-      line_items: [{ price: process.env.STRIPE_PRICE_ID, quantity: 1 }],
+      line_items: [{ price: priceId, quantity: 1 }],
       customer: profile?.stripe_customer_id || undefined,
       customer_email: profile?.stripe_customer_id ? undefined : req.user.email,
-      success_url: `${FRONTEND_URL}/?platba=ok`,
+      success_url: `${FRONTEND_URL}${safeReturnTo}?platba=ok`,
       cancel_url: `${FRONTEND_URL}/predplatne`,
       // Ties the Stripe session back to our account when the webhook fires.
       client_reference_id: req.user.id,
+      subscription_data: {
+        metadata: { plan_id: planId, app_user_id: req.user.id },
+        // Must stay in sync with TRIAL_DAYS in frontend/src/config/pricing.js
+        // and with the 3-day trial the DB trigger grants on signup — this is
+        // the third place that number lives.
+        ...(planId === 'season' ? { trial_period_days: 3 } : {}),
+      },
     });
 
     res.json({ url: session.url });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// requireAuth only, deliberately NOT requireAccess: an account whose access has
+// already lapsed is exactly the account that most needs to be able to cancel
+// (e.g. a season pass mid-trial). Never write subscription_status here — the
+// webhook is the only writer of payment state; this only tells Stripe what to
+// do and lets that flow back through the webhook like every other change.
+app.post('/api/subscription/cancel', requireAuth, async (req, res) => {
+  if (!stripe) {
+    return res.status(503).json({
+      error: 'Platby zatím nejsou nastavené.',
+      code: 'STRIPE_NOT_CONFIGURED',
+    });
+  }
+
+  const { data: profile } = await supabase
+    .from('users')
+    .select('stripe_subscription_id, plan_id')
+    .eq('id', req.user.id)
+    .single();
+
+  if (!profile?.stripe_subscription_id) {
+    return res.status(400).json({ error: 'Žádné aktivní předplatné k zrušení.' });
+  }
+
+  try {
+    const sub = await stripe.subscriptions.retrieve(profile.stripe_subscription_id);
+
+    if (sub.status === 'trialing') {
+      // Still in the free trial — nothing has been charged, so cancel outright
+      // rather than waiting for a period end that would otherwise trigger the
+      // very charge the user is trying to avoid.
+      await stripe.subscriptions.cancel(profile.stripe_subscription_id);
+      return res.json({ cancelled: 'immediately', accessUntil: null });
+    }
+
+    const updated = await stripe.subscriptions.update(profile.stripe_subscription_id, {
+      cancel_at_period_end: true,
+    });
+    const accessUntil = updated.current_period_end
+      ? new Date(updated.current_period_end * 1000).toISOString()
+      : null;
+    res.json({ cancelled: 'at_period_end', accessUntil });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -1536,26 +1686,75 @@ async function handleStripeWebhook(req, res) {
 
   const object = event.data.object;
 
-  if (event.type === 'checkout.session.completed') {
-    await supabase
-      .from('users')
-      .update({
-        subscription_status: 'active',
-        stripe_customer_id: object.customer,
-        stripe_subscription_id: object.subscription,
-      })
-      .eq('id', object.client_reference_id);
-  }
+  try {
+    if (event.type === 'checkout.session.completed') {
+      const subscriptionId = object.subscription;
+      let sub = await stripe.subscriptions.retrieve(subscriptionId);
+      const planId = sub.metadata?.plan_id;
 
-  if (
-    event.type === 'customer.subscription.updated' ||
-    event.type === 'customer.subscription.deleted'
-  ) {
-    const status = object.status === 'active' ? 'active' : 'canceled';
-    await supabase
-      .from('users')
-      .update({ subscription_status: status })
-      .eq('stripe_customer_id', object.customer);
+      // Season pass: pin the absolute end date now, from the webhook, not from
+      // the Checkout session params — subscription_data.cancel_at support
+      // varies by pinned Stripe API version, this path is deterministic on all
+      // of them. cancel_at (not cancel_at_period_end) is required here: during
+      // the trial the "current period" IS the trial, so cancel_at_period_end
+      // would cancel the subscription at trial end and the customer would
+      // never be charged at all.
+      if (planId === 'season') {
+        sub = await stripe.subscriptions.update(subscriptionId, {
+          cancel_at: Math.floor(seasonEndsAt().getTime() / 1000),
+        });
+      }
+
+      await supabase
+        .from('users')
+        .update({
+          subscription_status: mapStripeStatus(sub.status, planId),
+          stripe_customer_id: object.customer,
+          stripe_subscription_id: subscriptionId,
+          plan_id: planId,
+          access_expires_at: accessEndsAt(sub),
+        })
+        .eq('id', object.client_reference_id);
+    }
+
+    if (event.type === 'customer.subscription.updated') {
+      const planId = object.metadata?.plan_id;
+      await supabase
+        .from('users')
+        .update({
+          subscription_status: mapStripeStatus(object.status, planId),
+          access_expires_at: accessEndsAt(object),
+        })
+        .eq('stripe_subscription_id', object.id);
+    }
+
+    if (event.type === 'customer.subscription.deleted') {
+      await supabase
+        .from('users')
+        .update({
+          subscription_status: 'expired',
+          access_expires_at: new Date().toISOString(),
+        })
+        .eq('stripe_subscription_id', object.id);
+    }
+
+    if (event.type === 'invoice.payment_failed') {
+      // Leave access_expires_at alone — Stripe retries the charge automatically,
+      // and revoking access on the first failure would lock out someone whose
+      // card just needs a retry (a temporary decline, an expired card mid-retry
+      // window, etc).
+      await supabase
+        .from('users')
+        .update({ subscription_status: 'past_due' })
+        .eq('stripe_customer_id', object.customer);
+    }
+  } catch (err) {
+    // Stripe retries on any non-2xx, and every write above is an idempotent
+    // absolute-value UPDATE, so surfacing the failure as a 500 (not silently
+    // 200-ing it) is what makes that retry actually useful instead of masking
+    // a real problem.
+    console.error(`Stripe webhook handling failed (${event.type}):`, err.message);
+    return res.status(500).json({ error: 'Webhook handling failed.' });
   }
 
   res.json({ received: true });

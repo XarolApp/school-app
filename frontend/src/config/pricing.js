@@ -130,8 +130,14 @@ export const TRIAL_REMINDER_IMPLEMENTED = false;
  * deep, it takes effect without a support conversation, and it sends a
  * confirmation. Until then the paywall says out loud that we do not promise it.
  * BLOCKING for real billing on the recurring plan.
+ *
+ * TRUE as of plan 009: Settings.jsx has a one-click "Zrušit předplatné" button
+ * (one screen deep, no support conversation) calling POST
+ * /api/subscription/cancel, which takes effect immediately during a trial or
+ * schedules cancel_at_period_end otherwise, and confirms via a toast naming
+ * the exact date access ends.
  */
-export const ONE_STEP_CANCELLATION_IMPLEMENTED = false;
+export const ONE_STEP_CANCELLATION_IMPLEMENTED = true;
 
 /**
  * Refund window for the ONE-TIME plan, in days.
@@ -261,15 +267,29 @@ export const ONE_TIME_OFFER = {
   planId: 'season', // applies to the one-time seasonal price
 };
 
+/**
+ * OFF for real payments (plan 009). The entitlement behind this offer
+ * (lib/offerEntitlement.js) is a localStorage stub: clearing cookies or
+ * opening an incognito window resurfaces it, which makes the "jen teď,
+ * jednorázově" claim false in practice. Shown to minors that is a DSA Art. 25
+ * dark-pattern problem, not a rough edge — so it stays off until a real
+ * server-side entitlement exists (sketch already written in that file's
+ * header; tracked in UNFORGET.md along with the wider pricing-model pass).
+ * Every consumer of ONE_TIME_OFFER below must check this flag and degrade to
+ * "full price, no countdown" — never to a broken or empty element.
+ */
+export const ONE_TIME_OFFER_ENABLED = false;
+
 // --- PAYMENTS ----------------------------------------------------------------
 /**
- * No payment provider is integrated. The checkout button simulates success.
- * While this is true the paywall MUST say so on screen — a "Platba zabezpečená
- * přes Stripe" badge sitting over a fake button is a false trust signal, and a
- * false trust signal is the one thing that cannot be walked back with a parent.
- * Flip to false only once a real Stripe Checkout session is created server-side.
+ * FALSE as of plan 009: real Stripe Checkout sessions are created server-side
+ * for both plans. Built and verified against Stripe TEST MODE — the founder is
+ * under 18 and cannot legally hold a Stripe account, so going live needs a
+ * parent/guardian (or an s.r.o. with an adult jednatel) to own it. That is an
+ * account-ownership change, not a code change: only the env vars move from
+ * sk_test_... to sk_live_....
  */
-export const PAYMENTS_MOCKED = true;
+export const PAYMENTS_MOCKED = false;
 
 // --- Helpers -----------------------------------------------------------------
 export function getPlan(planId) {
@@ -346,7 +366,7 @@ export function formatCzk(amount) {
 }
 
 export function discountedPriceCzk(plan) {
-  if (plan.id !== ONE_TIME_OFFER.planId) return plan.priceCzk;
+  if (!ONE_TIME_OFFER_ENABLED || plan.id !== ONE_TIME_OFFER.planId) return plan.priceCzk;
   return Math.round(plan.priceCzk * (1 - ONE_TIME_OFFER.discountPercent / 100));
 }
 

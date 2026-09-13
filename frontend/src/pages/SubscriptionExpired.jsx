@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { Navigate, useSearchParams } from 'react-router-dom';
 import { Check } from 'lucide-react';
 import { useAuth } from '../components/AuthContext';
 import { createCheckoutSession } from '../api';
-import { trialDaysPhrase } from '../config/pricing';
+import { DEFAULT_PLAN_ID, PLANS, formatCzk, getPlan, planCopy, trialDaysPhrase } from '../config/pricing';
 
 // Four short parallel claims — a checkmark each reads faster than a bullet and
 // says "included", which a bullet does not.
@@ -15,10 +15,47 @@ const BENEFITS = [
   'Zrušit můžeš kdykoli',
 ];
 
+// Webhooks are asynchronous: the browser can land back here from Stripe
+// *before* our own database has been updated, and a user seeing "zkušební
+// období skončilo" again right after paying would reasonably conclude the
+// payment failed. This polls fetchMe (via refreshProfile) briefly instead of
+// claiming failure — it very likely succeeded and is just mid-flight.
+function usePostCheckoutVerification(hasAccess, refreshProfile) {
+  const [searchParams] = useSearchParams();
+  const [verifying, setVerifying] = useState(searchParams.get('platba') === 'ok');
+  const [gaveUp, setGaveUp] = useState(false);
+  const attemptsRef = useRef(0);
+
+  useEffect(() => {
+    if (!verifying || hasAccess) return;
+
+    const interval = setInterval(async () => {
+      attemptsRef.current += 1;
+      await refreshProfile();
+      if (attemptsRef.current >= 5) {
+        clearInterval(interval);
+        setVerifying(false);
+        setGaveUp(true);
+      }
+    }, 2000);
+
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [verifying, hasAccess]);
+
+  useEffect(() => {
+    if (hasAccess) setVerifying(false);
+  }, [hasAccess]);
+
+  return { verifying, gaveUp };
+}
+
 function Paywall() {
-  const { loading, isSignedIn, hasAccess, profile, signOut } = useAuth();
+  const { loading, isSignedIn, hasAccess, profile, signOut, refreshProfile } = useAuth();
+  const [planId, setPlanId] = useState(DEFAULT_PLAN_ID);
   const [error, setError] = useState(null);
   const [redirecting, setRedirecting] = useState(false);
+  const { verifying, gaveUp } = usePostCheckoutVerification(hasAccess, refreshProfile);
 
   if (loading) {
     return (
@@ -31,11 +68,27 @@ function Paywall() {
   if (!isSignedIn) return <Navigate to="/prihlaseni" replace />;
   if (hasAccess) return <Navigate to="/skoly" replace />;
 
+  if (verifying) {
+    return (
+      <div className="page page-paywall">
+        <div className="auth-layout">
+          <div className="page-header">
+            <p className="eyebrow">Platba přijata</p>
+            <h1>Ověřujeme platbu…</h1>
+            <p className="lede">Za pár vteřin tě přesměrujeme k hledání škol.</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const plan = getPlan(planId);
+
   const handleSubscribe = async () => {
     setError(null);
     setRedirecting(true);
     try {
-      const { url } = await createCheckoutSession();
+      const { url } = await createCheckoutSession({ planId, returnTo: '/predplatne' });
       window.location.href = url;
     } catch (err) {
       setRedirecting(false);
@@ -73,11 +126,38 @@ function Paywall() {
             ))}
           </ul>
 
+          {gaveUp && (
+            <div className="notice" role="status">
+              <p className="notice-text">
+                Platba se zpracovává. Za chvíli obnov stránku — pokud se nic nezmění, ozvi se nám.
+              </p>
+            </div>
+          )}
+
           {error && (
             <div className="notice notice-error" role="alert">
               <p className="notice-text">{error}</p>
             </div>
           )}
+
+          <div className="plan-picker">
+            {PLANS.map((p) => (
+              <label key={p.id} className={`plan-picker-option${planId === p.id ? ' is-selected' : ''}`}>
+                <input
+                  type="radio"
+                  name="plan"
+                  value={p.id}
+                  checked={planId === p.id}
+                  onChange={() => setPlanId(p.id)}
+                />
+                <span className="plan-picker-name">{p.name}</span>
+                <span className="plan-picker-price">
+                  {formatCzk(p.priceCzk)} {p.priceSuffix}
+                </span>
+                <span className="plan-picker-terms">{planCopy(p, 'student', 'terms')}</span>
+              </label>
+            ))}
+          </div>
 
           <button
             type="button"
@@ -86,7 +166,7 @@ function Paywall() {
             disabled={redirecting}
           >
             {redirecting && <span className="btn-spinner" aria-hidden="true" />}
-            {redirecting ? 'Přesměrovávám…' : 'Aktivovat předplatné'}
+            {redirecting ? 'Přesměrovávám…' : plan.ctaLabel.student}
           </button>
         </div>
 
