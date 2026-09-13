@@ -68,6 +68,43 @@ the test it describes defeats the entire point of writing this down.
 
 ---
 
+## Rebrand: "ŠkolaMatch" → "Kam na střední?" — decided, not yet executed
+- **Found:** 2026-09-13, founder decision
+- **Urgency:** medium — doesn't block current work (Stripe test-mode products,
+  deployment) since none of that depends on the brand name, but should happen
+  before real users/schools see the product, and definitely before the domain
+  purchase or the Stripe business name are finalized
+- **Effort:** medium — mostly find-and-replace, but touches many surfaces and
+  needs a careful pass, not a blind sed
+- **Release/context:** the name "ŠkolaMatch" was always a placeholder (CLAUDE.md
+  says so explicitly). Founder considered "Moje střední", "Škola pro mě", "Vyber
+  si školu", "Kam dál?", "Škola na míru" and settled on **"Kam na střední?"** —
+  it's literally the question the target user (a 9th grader or parent) already
+  has in mind, reads naturally in speech for word-of-mouth/creator-driven
+  acquisition, and doesn't lock the product into one narrow framing the way
+  "Moje střední" would.
+
+**What "done" looks like — surfaces that need the rename:**
+- `CLAUDE.md` — "branded **ŠkolaMatch**" and every other mention throughout
+  (this file references the name dozens of times as the project's identity)
+- Every doc in `docs/` (`skolamatch_current_status.md`,
+  `skolamatch_90_point_context.md`, `skolamatch_full_launch_marketing_plan_v2.md`)
+  — filenames themselves reference the old name, worth considering whether to
+  rename the files too or just their content, given they're referenced by path
+  elsewhere
+- User-facing copy in the frontend (page titles, `index.html`, any literal
+  "ŠkolaMatch" string in onboarding/paywall copy — grep for it, don't assume
+  the list above is exhaustive)
+- The eventual custom domain purchase (founder is buying one specifically to
+  drop the `.vercel.app` suffix — should reflect the new name, not the old one)
+- The Stripe business name, once an adult owns the account and it goes live
+  (not urgent today — test mode doesn't care what anything is called)
+- `plans/README.md` / `UNFORGET.md`'s own historical entries can keep saying
+  "ŠkolaMatch" where they're describing past decisions — this is a rename of
+  the *current* identity, not a rewrite of history
+
+---
+
 ## Pricing logic, discounts and offers need a proper pass — not just the one-time offer
 - **Found:** 2026-09-13, while planning Stripe (plan 009)
 - **Urgency:** medium — nothing is broken or live, but it blocks charging at full
