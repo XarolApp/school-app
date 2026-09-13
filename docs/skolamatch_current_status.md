@@ -829,7 +829,9 @@ anything product-polish related.
 Keep this concise.
 
 ## Day 1 (2026-09-12)
-- Status: In progress — development only so far, no marketing work logged yet today
+- Status: Development work logged here; marketing work done in parallel via
+  ChatGPT (the founder's separate marketing workflow), corrected into this
+  log 2026-09-13 after being wrongly recorded as "none yet"
 - Completed:
   - Fixed mobile nav overflow (hamburger menu below 768px)
   - Rozhodovací matice redesign (plan 007): labelled per-criterion rows, match
@@ -841,7 +843,10 @@ Keep this concise.
     (`lib/questionnaire.js`) but no frontend page anywhere on `main` until today
   - Matrix: hover tooltips per criterion, "Jak to funguje?" explainer panel,
     confirm-guard on de-prioritizing the match-score criterion
-- Marketing: none yet today
+- Marketing: built a spreadsheet of 25 Prague elementary schools with contact
+  emails, for a B2C beta-recruitment strategy — one outreach email to each
+  school asking them to forward a beta-test invite to their 9th graders.
+  Not yet sent (site wasn't deployed yet at the time).
 - Bugs: found and fixed a real P0-adjacent one — `questionnaire_runs.source`
   column (part of plan 008's schema) had never been applied to the live
   Supabase project despite the plan being marked DONE, so every
