@@ -648,7 +648,19 @@ Update this section whenever new information is confirmed.
 - Analytics: **not finished** — confirmed 2026-09-12, zero analytics/tracking
   code anywhere in the frontend or backend (no PostHog/GA/Mixpanel/etc.).
 - Security review: **not finished**
-- Deployment: **not finalized**
+- Deployment: **done** — live as of 2026-09-13. Backend on Railway
+  (`https://school-app-production-be43.up.railway.app`, EU West, Node 22+ —
+  had to bump from the initial `>=20` engines constraint since
+  `@supabase/realtime-js` needs native WebSocket, only present in Node 22+).
+  Frontend on Vercel (`https://school-app-xarolapp.vercel.app`). Supabase
+  Auth redirect URLs updated to include the Vercel domain. Cloudflare
+  Turnstile widget's allowed-hostnames list updated to include the Vercel
+  domain (was localhost-only, silently failed on production until fixed).
+  Full smoke test passed on the live site 2026-09-13: signup, email
+  confirmation, sign-in, `/dotaznik`, `/skoly`, school detail, `/porovnani/matice`.
+  **Still open:** Railway is on a 30-day trial ($4.99 credit) — must upgrade
+  to a paid plan before ~2026-10-13 or the backend goes offline entirely, see
+  `UNFORGET.md`.
 - Privacy/cookies: **not finalized**
 - Reminders/timeline/countdown: **not finished**
 - Visual assets/demo video: **not finished**
