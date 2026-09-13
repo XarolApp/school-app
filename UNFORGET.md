@@ -15,6 +15,31 @@ BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 
 ---
 
+## Railway backend is on a 30-day trial — will go offline if not upgraded
+- **Found:** 2026-09-13, during first production deployment
+- **Urgency:** high, but not urgent yet — 30-day runway, must not be forgotten
+- **Effort:** small — it's a billing decision + a few clicks, not engineering work
+- **Release/context:** the backend (`school-app` service on Railway, project
+  `perceptive-friendship`) was deployed 2026-09-13 on Railway's free/trial
+  tier — **"Limited Trial Plan," 30 days remaining, $4.99 in credits
+  remaining.** Per Railway's own copy: "Your trial expires in 30 days or when
+  you are out of credits. Upgrade to keep your services online."
+
+If this isn't upgraded to the **Hobby plan** (or another paid tier) before
+the trial/credits run out, the production backend goes offline —
+**everything breaks**: `/api/schools`, auth (via `server.js`'s
+`requireAuth`), favorites, questionnaire, reviews, the whole site. This is
+not a "nice to fix eventually" item — it's a hard cutoff date.
+
+**What "done" looks like:** before ~2026-10-13 (30 days from deploy, sooner
+if the $4.99 credit runs out faster from real usage), either upgrade Railway
+to Hobby (railway.app → Settings → Plans → Upgrade), or migrate the backend
+elsewhere. Set a reminder outside this file too (calendar, phone) — a
+30-day-out item is exactly the kind of thing that's easy to lose track of
+between now and launch.
+
+---
+
 ## "Selectivity" is missing as its own preference — we only ever model admission ease as good
 - **Found:** 2026-09-12, user request
 - **Urgency:** high — this is a real, systemic gap in how the whole product frames
