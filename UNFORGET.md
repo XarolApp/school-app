@@ -150,6 +150,74 @@ honest default.
 
 ---
 
+## School database: 3 likely duplicate rows + ~8-11 genuinely missing schools found
+- **Found:** 2026-09-14, comparing our 224 schools against atlasskolstvi.cz's 214
+- **Urgency:** medium — doesn't break anything, but duplicate rows would look
+  bad on the search page (two identical-looking cards) and the missing schools
+  are real gaps in coverage
+- **Effort:** small — mostly verification + a few targeted deletes/inserts,
+  not a rebuild
+- **Release/context:** `scripts/diff-atlas-schools.js` +
+  `scripts/atlas-prague-schools.json` (new, committed 2026-09-14)
+
+Ran a name-fuzzy-match audit between our `schools` table and
+atlasskolstvi.cz's Prague listing, using the same matching logic as
+`import-admission-data.js`. Verified with a REDIZO/address cross-check
+(`schools.redizo` query), not just fuzzy-name guessing:
+
+**Confirmed duplicate-looking rows (verified via query, different REDIZOs, byte-identical name+address):**
+- `Obchodní akademie, Praha 3, Kubelíkova 37` — ids 38 (redizo 600006573,
+  from the original 2026-08-06 seed) and 88 (redizo 600004929, from the
+  2026-09-13 expansion)
+- `Obchodní akademie a Gymnázium Bubeneč` — ids 49 (redizo 600004520) and 121
+  (redizo 600005721)
+- `Anglo-německá obchodní akademie a. s.` / `Anglo - německá obchodní
+  akademie a.s.` — ids 45 (redizo 600005941) and 196 (redizo 691001111)
+- Plus one genuine REDIZO collision: ids 5 and 36 share redizo 600004741
+  despite **different names** (`Střední škola gastronomická a hotelová s. r.
+  o.` vs `Hotelová škola, Praha 10, Vršovická 43`) — worth checking whether
+  this is one school that was renamed (REDIZOs persist across renames) and
+  got inserted twice under both names.
+
+**Not necessarily bugs** — Czech schools commonly register multiple REDIZOs
+(one per obor-offering "škola" record) under one legal entity at one address,
+so two REDIZOs sharing a name+address *can* be legitimate. But it reads as a
+duplicate to a user browsing the search page regardless of the legal nuance,
+so it's worth a human decision either way, not an automatic delete.
+
+**Genuinely missing from our database** (verified by address, not just name,
+for the "Obchodní akademie" cluster where fuzzy-name matching alone produced
+wrong pairings):
+- Obchodní akademie Dušní (Dušní 1083/7, Praha 1)
+- Obchodní akademie Vinohradská (Vinohradská 1971/38, Praha 2)
+- Obchodní akademie Hovorčovická (U Vinohradského hřbitova 2471/3, Praha 3)
+
+**Flagged by the fuzzy matcher as unmatched, NOT yet individually address-verified**
+(worth a closer look before assuming they're really missing):
+- Akademie VŠEM – střední škola, s. r. o.
+- Gymnázium Čakovice, Praha 9, nám. 25. března 100
+- Gymnázium Na Pražačce, Praha 3, Nad Ohradou 23
+- Gymnázium, Praha 2, Botičská 1
+- Gymnázium, Praha 4, Budějovická 680
+- Gymnázium, Praha 4, Na Vítězné pláni 1160
+- Meridian česko-britská mateřská škola, základní škola a gymnázium s. r. o.
+- Střední pedagogická škola SRAZ s. r. o.
+
+**In our database but not on atlasskolstvi.cz's list** — mostly small/new
+private schools (several `Gymnázium FOSTRA *` variants, `1. IT Gymnázium`,
+`Gymnázium ARTION`, etc.) that appeared in the Cermat JPZ data. Cermat is
+authoritative for "this school currently runs entrance exams," so the more
+likely explanation is atlasskolstvi.cz is simply behind, not that these
+schools are wrong — but not independently confirmed.
+
+**What "done" looks like:** decide what to do with the 3 duplicate-row pairs
+(merge/delete one of each pair, or confirm they're legitimately separate
+REDIZOs and leave both), and run the official registry lookup
+(`isv.gov.cz/rssz` — see `scripts/import-missing-schools.js`) for the 11
+"missing" names above to get their real REDIZO and add them if genuine.
+
+---
+
 ## Railway backend is on a 30-day trial — will go offline if not upgraded
 - **Found:** 2026-09-13, during first production deployment
 - **Urgency:** high, but not urgent yet — 30-day runway, must not be forgotten
