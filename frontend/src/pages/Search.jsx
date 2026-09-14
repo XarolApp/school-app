@@ -213,8 +213,13 @@ const DEFAULT_FILTERS = {
   acceptanceMin: 0, // 0 == "bez omezení"
   kapacitaMin: 0, // 0 == "bez omezení"
   sort: 'match',
-  page: 10,
 };
+
+// Real numbered pages, not a growing "load more" cap — each page is a fixed
+// slice of the SAME already-filtered-and-sorted list (`sortedAll` below), so
+// page 1 and page 5 always agree with the current sort/filter combination.
+// Never re-filter or re-sort per page.
+const PAGE_SIZE = 40;
 
 // Small collapsible section used for every sidebar filter group — open by
 // default for the two groups that actually fork the decision (ukončení
@@ -272,6 +277,7 @@ function Search() {
   const [favorites, setFavorites] = useState(() => new Set());
   const [selected, setSelected] = useState(() => new Set(getCompareSelection()));
   const [filters, setFilters] = useState(DEFAULT_FILTERS);
+  const [currentPage, setCurrentPage] = useState(1);
   const [view, setView] = useState('list'); // 'list' | 'map'
   const [selectedMapId, setSelectedMapId] = useState(null);
 
@@ -291,6 +297,14 @@ function Search() {
       .then((rows) => setFavorites(new Set(rows.map((r) => r.school_id ?? r.id))))
       .catch(() => {});
   }, [isSignedIn, hasAccess]);
+
+  // Any change to filters (a new checkbox, a slider drag, a sort switch, a
+  // typed query) changes which schools are in the list and/or their order —
+  // staying on page 5 of a now-8-result list would show nothing. setFilters
+  // always produces a new object, so this fires on every real filter change.
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filters]);
 
   // Rows carry both the real fields and the synthetic stand-ins. Stable
   // across reloads because synth() is a pure function of school.id.
@@ -556,7 +570,7 @@ function Search() {
     });
   }
   if (hasQuery) {
-    chips.push({ key: 'q', label: `„${filters.query.trim()}“`, onRemove: () => setPatch({ query: '', page: 10 }) });
+    chips.push({ key: 'q', label: `„${filters.query.trim()}“`, onRemove: () => setPatch({ query: '' }) });
   }
 
   const clearAll = () => setFilters(DEFAULT_FILTERS);
@@ -572,7 +586,7 @@ function Search() {
       active: hasQuery,
       blame: `hledaný text „${filters.query.trim()}“`,
       label: `Zrušit hledaný text „${filters.query.trim()}“`,
-      apply: () => setPatch({ query: '', page: 10 }),
+      apply: () => setPatch({ query: '' }),
     },
     {
       key: 'districts',
@@ -685,9 +699,37 @@ function Search() {
     }));
 
   // ---- pagination ----
-  const shown = sortedAll.slice(0, filters.page);
-  const rest = n - shown.length;
-  const moreLabel = rest === 1 ? 'Zobrazit další školu' : `Zobrazit dalších ${rest} ${skolGen(rest)}`;
+  // sortedAll is already the full filtered+sorted list (computed above, once,
+  // before any slicing) — pagination only ever slices it, never re-derives
+  // it, so page 1 and page 6 can never disagree about order or membership.
+  const totalPages = Math.max(1, Math.ceil(n / PAGE_SIZE));
+  // Defensive clamp only — the [filters] effect above already resets to 1 on
+  // every filter change, this just guards the render itself against a stale
+  // currentPage from, e.g., the schools list finishing a reload with fewer
+  // rows than before.
+  const safePage = Math.min(currentPage, totalPages);
+  const shown = sortedAll.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+
+  const goToPage = (page) => {
+    const clamped = Math.min(Math.max(1, page), totalPages);
+    setCurrentPage(clamped);
+    document.getElementById('ss-results')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  // Compact page-number list: always show first, last, current, and one
+  // neighbour on each side; everything else collapses to a single "…" per
+  // gap so the control stays a fixed, glanceable width even at 20+ pages.
+  const pageNumbers = useMemo(() => {
+    if (totalPages <= 1) return [];
+    const pages = new Set([1, totalPages, safePage, safePage - 1, safePage + 1]);
+    const sorted = [...pages].filter((p) => p >= 1 && p <= totalPages).sort((a, b) => a - b);
+    const out = [];
+    sorted.forEach((p, i) => {
+      if (i > 0 && p - sorted[i - 1] > 1) out.push('…');
+      out.push(p);
+    });
+    return out;
+  }, [totalPages, safePage]);
 
   const toggleSelect = (id) => {
     setSelected((prev) => {
@@ -723,7 +765,7 @@ function Search() {
               className="ss-search-input"
               placeholder="Hledat podle názvu, oboru nebo KKOV kódu"
               value={filters.query}
-              onChange={(e) => setPatch({ query: e.target.value, page: 10 })}
+              onChange={(e) => setPatch({ query: e.target.value })}
               aria-label="Hledat školu"
             />
           </div>
@@ -1166,16 +1208,50 @@ function Search() {
                 </div>
               )}
 
-              {view === 'list' && rest > 0 && (
-                <div className="ss-more">
-                  <button
-                    type="button"
-                    className="ss-btn ss-btn-secondary"
-                    onClick={() => setPatch({ page: filters.page + 10 })}
-                  >
-                    {moreLabel}
-                  </button>
-                </div>
+              {view === 'list' && totalPages > 1 && (
+                <nav className="ss-pager" aria-label="Stránkování výsledků">
+                  <p className="ss-caption ss-pager-status">
+                    Strana {safePage} z {totalPages}
+                  </p>
+                  <div className="ss-pager-controls">
+                    <button
+                      type="button"
+                      className="ss-btn ss-btn-secondary ss-btn-sm ss-pager-nav"
+                      onClick={() => goToPage(safePage - 1)}
+                      disabled={safePage === 1}
+                    >
+                      Předchozí
+                    </button>
+                    <div className="ss-pager-numbers">
+                      {pageNumbers.map((p, i) =>
+                        p === '…' ? (
+                          <span className="ss-pager-ellipsis" key={`ellipsis-${i}`} aria-hidden="true">
+                            …
+                          </span>
+                        ) : (
+                          <button
+                            key={p}
+                            type="button"
+                            className={`ss-pager-number${p === safePage ? ' is-active' : ''}`}
+                            onClick={() => goToPage(p)}
+                            aria-current={p === safePage ? 'page' : undefined}
+                            aria-label={`Strana ${p}`}
+                          >
+                            {p}
+                          </button>
+                        )
+                      )}
+                    </div>
+                    <button
+                      type="button"
+                      className="ss-btn ss-btn-secondary ss-btn-sm ss-pager-nav"
+                      onClick={() => goToPage(safePage + 1)}
+                      disabled={safePage === totalPages}
+                    >
+                      Další
+                    </button>
+                  </div>
+                </nav>
               )}
 
               {n > 0 && (

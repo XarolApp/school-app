@@ -596,6 +596,64 @@
   padding: var(--space-sm) 0;
 }
 
+.ss-pager {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-md) 0;
+}
+
+.ss-pager-status {
+  color: var(--ink2);
+}
+
+.ss-pager-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.ss-pager-numbers {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.ss-pager-number {
+  min-width: 32px;
+  height: 32px;
+  padding: 0 6px;
+  border: 1px solid transparent;
+  border-radius: var(--r-chip);
+  background: transparent;
+  color: var(--ink);
+  font-size: var(--fs-body-sm);
+  cursor: pointer;
+}
+
+.ss-pager-number:hover {
+  border-color: var(--border);
+}
+
+.ss-pager-number.is-active {
+  background: var(--acc);
+  color: var(--surface);
+  font-weight: 600;
+}
+
+.ss-pager-ellipsis {
+  padding: 0 4px;
+  color: var(--ink2);
+}
+
+.ss-pager-nav:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
 .ss-footnote {
   padding-top: var(--space-sm);
 }
