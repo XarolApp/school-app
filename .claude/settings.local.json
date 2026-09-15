@@ -18,7 +18,11 @@
       "Bash(git config *)",
       "Bash(git push *)",
       "Bash(git reset *)",
-      "Bash(gh auth *)"
+      "Bash(gh auth *)",
+      "Bash(mkdir -p /Users/vojtechkadlec/Developer/school-app/scripts/data)",
+      "Bash(mv PZ*.xlsx scripts/data/)",
+      "Bash(node scripts/import-admission-data.js scripts/data/PZ2024_kolo1_skolobory_vysledky.xlsx scripts/data/PZ2025_kolo1_skolobory_vysledky.xlsx scripts/data/PZ2026_kolo1_skolobory_vysledky.xlsx)",
+      "Bash(git commit -m 'Organize Cermat admission data files and restore school_programs for corrected REDIZOs *)"
     ]
   }
 }
