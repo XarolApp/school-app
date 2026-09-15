@@ -10,3 +10,7 @@ dist/
 # Generated Claude Design canvas payloads (~2.4MB each, regenerable from
 # the .dc.html artboards + canvas.json beside them via the design skill helper).
 design/**/skolamatch-*.html
+
+# Firecrawl scrape cache — several MB of scraped school websites, regenerable
+# via scripts/scrape-schools.js. See docs/firecrawl-extraction-task.md.
+scripts/data/scraped-schools/

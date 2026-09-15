@@ -370,6 +370,32 @@ create table if not exists public.school_ai_summary (
 );
 
 
+-- Cached per-school "school life" details, scraped from each school's own
+-- website and extracted by Claude (scripts/scrape-schools.js +
+-- scripts/extract-school-details.js) — fills the six MissingDataGrid.jsx
+-- placeholder cards. Same pattern as school_ai_summary directly above: one
+-- row per school, a model column, never regenerated on a page load. Every
+-- text column is nullable and stays null when the source pages don't say —
+-- never a guessed or invented value, per the extraction script's own rules.
+create table if not exists public.school_extracted_details (
+  school_id bigint primary key references public.schools (id) on delete cascade,
+  skolne_poplatky text,
+  obedy_ubytovani text,
+  krouzky_aktivity text,
+  maturita_uspesnost text,
+  vs_uplatneni text,
+  uplatneni_po_vyuceni text,
+  source_urls jsonb,
+  model text,
+  extracted_at timestamptz not null default now()
+);
+
+alter table public.school_extracted_details enable row level security;
+-- No client policy — same reasoning as school_ai_summary: this is
+-- scraped/AI-derived school data, read only through server.js's service-role
+-- key, never directly by the browser.
+
+
 -- ----------------------------------------------------------------------------
 -- 4. Does this account currently have access?
 --
