@@ -143,12 +143,12 @@ cache is the seam between them.
 - Write one row per school to the new Supabase table (see schema below) —
   upsert on `school_id`, so a rerun with an improved prompt overwrites
   cleanly rather than duplicating.
-- Needs `ANTHROPIC_API_KEY` in `.env` — add to `.env.example`. Pick a
-  reasonably capable current Claude model for extraction quality (check
-  what's current — this repo's `OPENROUTER_MODEL` env var currently defaults
-  to `anthropic/claude-sonnet-5` as a hint of what "current" meant when this
-  was written, but verify rather than trust that blindly, since models move
-  fast).
+- Needs `ANTHROPIC_API_KEY` in `.env` — add to `.env.example`. **Use Claude
+  Haiku 4.5** (`claude-3-5-haiku-20241022`) for extraction — it is excellent at
+  structured extraction, cheap (~$3 for full run), and fast. If extraction
+  quality is poor (too many false positives), re-run Phase 2 with Claude Sonnet 5
+  (`claude-3-5-sonnet-20241022`, still only ~$15 for full run and notably better
+  at the "return null" discipline).
 - Uses the `SUPABASE_SERVICE_ROLE_KEY` to write, same as every other script
   in `scripts/` — RLS blocks anything else.
 - Print a summary: N schools processed, and for each, which of the 6 fields
@@ -220,7 +220,6 @@ Ask the user directly. In particular, check with them before you:
   propose a sensible default (e.g. up to ~20 pages per school site) and
   confirm rather than silently picking a number that could be slow or
   expensive across ~200 schools.
-- Pick the exact Claude model for extraction.
 - Do anything that would touch `frontend/` or `server.js`.
 
 When done, tell the user exactly how to run both phases (the two npm/node
