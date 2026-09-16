@@ -57,6 +57,17 @@ function SchoolDetail() {
   // of "what this school offers now".
   const orderedEntries = [...currentEntries, ...discontinuedEntries];
   const zrizovatel = programEntries.find((e) => e.zrizovatel)?.zrizovatel ?? null;
+  const extracted = Array.isArray(school.school_extracted_details)
+    ? school.school_extracted_details[0]
+    : school.school_extracted_details;
+  const hasExtractedData = extracted && [
+    extracted.skolne_poplatky,
+    extracted.obedy_ubytovani,
+    extracted.krouzky_aktivity,
+    extracted.maturita_uspesnost,
+    extracted.vs_uplatneni,
+    extracted.uplatneni_po_vyuceni,
+  ].some(Boolean);
 
   return (
     <div className="school-detail page">
@@ -91,13 +102,16 @@ function SchoolDetail() {
 
       <div>
         <div className="sd-section-head">
-          <h2 className="sd-section-title">Co zatím doplňujeme</h2>
+          <h2 className="sd-section-title">
+            {hasExtractedData ? 'Praktické informace' : 'Co zatím doplňujeme'}
+          </h2>
         </div>
         <p className="sd-section-intro">
-          Tyhle údaje ještě nemáme ověřené. Radši tu nic nevymýšlíme — až je
-          budeme mít z důvěryhodného zdroje, objeví se tady.
+          {hasExtractedData
+            ? 'Údaje níže jsou automaticky sesbírané z webu školy — ověřte si je prosím přímo u školy před podáním přihlášky.'
+            : 'Tyhle údaje ještě nemáme ověřené. Radši tu nic nevymýšlíme — až je budeme mít z důvěryhodného zdroje, objeví se tady.'}
         </p>
-        <MissingDataGrid zrizovatel={zrizovatel} />
+        <MissingDataGrid zrizovatel={zrizovatel} extracted={extracted} />
       </div>
 
       <ReportDataDialog schoolId={school.id} />

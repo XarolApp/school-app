@@ -17,14 +17,15 @@ function tuitionBody(zrizovatel) {
   return 'Nemáme tuto informaci.';
 }
 
-function MissingDataGrid({ zrizovatel }) {
+function MissingDataGrid({ zrizovatel, extracted }) {
+  const e = extracted || {};
   const cards = [
-    { title: 'Školné a poplatky', body: tuitionBody(zrizovatel) },
-    { title: 'Obědy a ubytování', body: 'Nemáme tuto informaci.' },
-    { title: 'Kroužky a aktivity', body: 'Nemáme tuto informaci.' },
-    { title: 'Úspěšnost u maturity', body: 'Nemáme tuto informaci.' },
-    { title: 'Kam míří absolventi', body: 'Nemáme tuto informaci.' },
-    { title: 'Uplatnění po vyučení', body: 'Nemáme tuto informaci.' },
+    { title: 'Školné a poplatky', body: e.skolne_poplatky || tuitionBody(zrizovatel) },
+    { title: 'Obědy a ubytování', body: e.obedy_ubytovani || 'Nemáme tuto informaci.' },
+    { title: 'Kroužky a aktivity', body: e.krouzky_aktivity || 'Nemáme tuto informaci.' },
+    { title: 'Úspěšnost u maturity', body: e.maturita_uspesnost || 'Nemáme tuto informaci.' },
+    { title: 'Kam míří absolventi', body: e.vs_uplatneni || 'Nemáme tuto informaci.' },
+    { title: 'Uplatnění po vyučení', body: e.uplatneni_po_vyuceni || 'Nemáme tuto informaci.' },
     { title: 'Fotky školy', body: 'Nemáme tuto informaci.' },
     { title: 'Video a prohlídka', body: 'Nemáme tuto informaci.' },
   ];

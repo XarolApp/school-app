@@ -627,7 +627,7 @@ app.get('/api/schools/:id', optionalAuth, async (req, res) => {
 
   const { data, error } = await supabase
     .from('schools')
-    .select('*, school_programs(*), school_ai_summary(*)')
+    .select('*, school_programs(*), school_ai_summary(*), school_extracted_details(*)')
     .eq('id', id)
     .single();
 
