@@ -24,10 +24,15 @@ function groupKey(row) {
   return [row.kkov, row.obor_nazev, row.typ_skoly, row.delka_studia, row.jazyk_studia].join('|');
 }
 
+function sumKnown(values) {
+  const known = values.filter((value) => value != null);
+  return known.length ? known.reduce((sum, value) => sum + value, 0) : null;
+}
+
 function aggregateYear(rows) {
-  const kapacita = rows.reduce((sum, r) => sum + (r.kapacita || 0), 0) || null;
-  const prihlasky = rows.reduce((sum, r) => sum + (r.prihlasky || 0), 0) || null;
-  const prijati = rows.reduce((sum, r) => sum + (r.prijati || 0), 0) || null;
+  const kapacita = sumKnown(rows.map((r) => r.kapacita));
+  const prihlasky = sumKnown(rows.map((r) => r.prihlasky));
+  const prijati = sumKnown(rows.map((r) => r.prijati));
   const cutoffs = rows.map((r) => r.cutoff).filter((c) => c != null);
   const cutoff = cutoffs.length
     ? Math.round((cutoffs.reduce((s, c) => s + c, 0) / cutoffs.length) * 10) / 10
@@ -71,7 +76,7 @@ export function groupProgramsByObor(school) {
     const latest = years[latestYear];
 
     const ratio =
-      latest.kapacita && latest.prihlasky ? Math.round((latest.prihlasky / latest.kapacita) * 10) / 10 : null;
+      latest.kapacita > 0 && latest.prihlasky != null ? Math.round((latest.prihlasky / latest.kapacita) * 10) / 10 : null;
 
     // An obor that ran in an earlier year but is absent from the newest year
     // in the dataset — the real case is a nástavba offered in 2024 and not
@@ -141,9 +146,9 @@ function buildTrend(years, presentYearsDesc) {
  */
 export function summarizeCurrentYear(entries) {
   const current = entries.filter((e) => !e.isDiscontinued);
-  const kapacita = current.reduce((sum, e) => sum + (e.latest.kapacita || 0), 0) || null;
-  const prihlasky = current.reduce((sum, e) => sum + (e.latest.prihlasky || 0), 0) || null;
-  const ratio = kapacita && prihlasky ? Math.round((prihlasky / kapacita) * 10) / 10 : null;
+  const kapacita = sumKnown(current.map((e) => e.latest.kapacita));
+  const prihlasky = sumKnown(current.map((e) => e.latest.prihlasky));
+  const ratio = kapacita > 0 && prihlasky != null ? Math.round((prihlasky / kapacita) * 10) / 10 : null;
   const year = current[0]?.latestYear ?? null;
   return { kapacita, prihlasky, ratio, year, oborCount: current.length };
 }

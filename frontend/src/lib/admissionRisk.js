@@ -25,7 +25,10 @@ export function cutoffForPick(pick, school) {
   if (pick.obor_kkov || pick.obor_nazev) {
     const entries = groupProgramsByObor(school);
     const match = entries.find(
-      (e) => (pick.obor_kkov && e.kkov === pick.obor_kkov) || (pick.obor_nazev && e.oborNazev === pick.obor_nazev)
+      // Different programs can share a name (e.g. four- and six-year
+      // Gymnázium). A matching name must not override a different KKOV.
+      (e) => (!pick.obor_kkov || e.kkov === pick.obor_kkov)
+        && (!pick.obor_nazev || e.oborNazev === pick.obor_nazev)
     );
     if (match && match.latest.cutoff != null) {
       return { cutoff: match.latest.cutoff, source: 'obor', year: match.latestYear };
@@ -72,8 +75,8 @@ export function analyseSet(picks, studentPoints) {
 
   const known = bands.filter((b) => b.band).length;
   let verdict = 'vyvazene';
-  if (known === 0) {
-    verdict = 'bezBodu';
+  if (known < picks.length) {
+    verdict = 'chybiHranice';
   } else if (counts.risk === known) {
     verdict = 'vseRisk';
   } else if (counts.jistota === known) {
@@ -92,4 +95,5 @@ export const VERDICT_COPY = {
   bezJistoty: 'Chybí ti záložní škola, kam se dostaneš skoro jistě.',
   neuplne: 'Zatím nemáš vybrané všechny 3 školy.',
   bezBodu: 'Zadej svoje body a spočítáme rozbor.',
+  chybiHranice: 'U některých škol chybí hranice přijetí. Rozbor všech tří zatím nemůžeme dokončit.',
 };

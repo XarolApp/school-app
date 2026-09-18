@@ -71,9 +71,9 @@ function App() {
               <Route path="/nove-heslo" element={<ResetPassword />} />
               <Route path="/predplatne" element={<SubscriptionExpired />} />
 
-              <Route element={<ProtectedRoute />}>
-                <Route path="/nastaveni" element={<Settings />} />
-              </Route>
+              {/* Settings checks sign-in itself. Billing cancellation and
+                  account erasure must stay available after access expires. */}
+              <Route path="/nastaveni" element={<Settings />} />
             </Route>
           </Routes>
         </ToastProvider>
