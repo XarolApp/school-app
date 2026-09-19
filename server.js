@@ -6,11 +6,10 @@ require('dotenv').config();
 const { createClient } = require('@supabase/supabase-js');
 const {
   QUESTIONS,
-  MONTHLY_LIMIT,
+  REASON_COUNT,
   DEFAULT_MODEL,
   validateAnswers,
   requestMatches,
-  usagePeriod,
 } = require('./lib/questionnaire');
 const { scoreSchools } = require('./lib/matching');
 const { districtOfSchool } = require('./lib/pragueDistricts');
@@ -456,8 +455,8 @@ app.delete('/api/me', requireAuth, async (req, res) => {
  * status. It also skips questionnaireLimiter and OPENROUTER_API_KEY — there is
  * no model call on this path, just the same deterministic scoreSchools() the
  * rest of the app already runs, so it has no cost to rate-limit and nothing to
- * degrade when the AI key is unset. source: 'onboarding' keeps it out of
- * readUsage's monthly count.
+ * degrade when the AI key is unset. source: 'onboarding' marks where the run
+ * came from.
  *
  * Called once, right after a confirmed sign-in, by AuthContext's stash flush —
  * see frontend's lib/pendingOnboardingAnswers.js for why it cannot simply run
@@ -484,15 +483,19 @@ app.post('/api/me/onboarding-answers', requireAuth, async (req, res) => {
     .slice(0, 20)
     .map(({ school_id, score }) => ({ school_id, score }));
 
-  const { error: insertError } = await supabase.from('questionnaire_runs').insert({
-    user_id: req.user.id,
-    answers: translated,
-    matches,
-    model: null,
-    label: 'Úvodní dotazník',
-    source: 'onboarding',
-    is_default: false,
-  });
+  const { data: run, error: insertError } = await supabase
+    .from('questionnaire_runs')
+    .insert({
+      user_id: req.user.id,
+      answers: translated,
+      matches,
+      model: null,
+      label: 'Úvodní dotazník',
+      source: 'onboarding',
+      is_default: false,
+    })
+    .select('id')
+    .single();
 
   if (insertError) {
     // Unique violation on questionnaire_runs_one_onboarding_idx — a second tab
@@ -501,6 +504,16 @@ app.post('/api/me/onboarding-answers', requireAuth, async (req, res) => {
       return res.status(200).json({ saved: false, reason: 'already_saved' });
     }
     return res.status(500).json({ error: insertError.message });
+  }
+
+  // The onboarding run is the account's first, so it becomes the default that
+  // drives match percentages everywhere. Without the explicit flag it only
+  // looked default because scoringRunQuery falls back to "newest" when nothing
+  // is flagged — which stops being true the moment a second run exists.
+  try {
+    await setDefaultRun(req.user.id, run.id);
+  } catch (err) {
+    console.error('onboarding run saved but could not be flagged default:', err.message);
   }
 
   res.status(201).json({ saved: true });
@@ -573,12 +586,68 @@ function scoringRunQuery(userId, columns) {
  * downstream — the frontend included — has to know it was a join at all.
  */
 function withFlatAiSummary(schools) {
-  return schools.map((school) => ({
-    ...school,
-    school_ai_summary: Array.isArray(school.school_ai_summary)
-      ? school.school_ai_summary[0] ?? null
-      : school.school_ai_summary ?? null,
-  }));
+  return schools.map((school) => {
+    if (!('school_ai_summary' in school)) return school;
+    return {
+      ...school,
+      school_ai_summary: Array.isArray(school.school_ai_summary)
+        ? school.school_ai_summary[0] ?? null
+        : school.school_ai_summary ?? null,
+    };
+  });
+}
+
+// PostgREST caps a response at 1000 rows and truncates SILENTLY, so any
+// full-table read has to page explicitly. `name` is not unique (the database
+// still holds known duplicate rows), so `id` is the tiebreaker — without it
+// paging can drop or repeat a row at a page boundary.
+const SUPABASE_PAGE_SIZE = 1000;
+
+async function fetchAllSchools(select) {
+  const rows = [];
+  for (let from = 0; ; from += SUPABASE_PAGE_SIZE) {
+    const { data, error } = await supabase
+      .from('schools')
+      .select(select)
+      .order('name')
+      .order('id')
+      .range(from, from + SUPABASE_PAGE_SIZE - 1);
+    if (error) throw error;
+    rows.push(...data);
+    if (data.length < SUPABASE_PAGE_SIZE) break;
+  }
+  return rows;
+}
+
+const LIST_PROGRAM_FIELDS = [
+  'maturitni', 'jpz_povinna', 'typ_skoly', 'jazyk_studia',
+  'kkov', 'zrizovatel', 'kapacita',
+];
+
+/**
+ * One entry per distinct obor, carrying only the fields the list pages read.
+ * Collapsing the years matters beyond payload size: summing `kapacita` over
+ * the raw rows counts the same obor once per imported year, which overstated
+ * capacity for 211 of 223 schools.
+ *
+ * The obor key matches frontend/src/lib/schoolPrograms.js so both sides agree
+ * on what "one obor" means.
+ */
+function slimProgramsForList(programs) {
+  const rows = programs ?? [];
+  const latestYear = Math.max(0, ...rows.map((row) => row.rok ?? 0));
+  const byObor = new Map();
+  for (const row of rows) {
+    // A program absent from the latest year is historical, not current capacity.
+    if ((row.rok ?? 0) !== latestYear) continue;
+    const key = [row.kkov, row.obor_nazev, row.typ_skoly, row.delka_studia, row.jazyk_studia].join('|');
+    const prev = byObor.get(key);
+    if (!prev) byObor.set(key, { ...row });
+    else if (row.kapacita != null) prev.kapacita = (prev.kapacita ?? 0) + row.kapacita;
+  }
+  return [...byObor.values()].map((row) =>
+    Object.fromEntries(LIST_PROGRAM_FIELDS.map((f) => [f, row[f]]))
+  );
 }
 
 async function withMatchScores(userId, schools) {
@@ -609,14 +678,38 @@ async function withMatchScores(userId, schools) {
   }));
 }
 
-app.get('/api/schools', optionalAuth, async (req, res) => {
-  const { data, error } = await supabase
-    .from('schools')
-    .select('*, school_programs(*), school_ai_summary(*)')
-    .order('name');
+const LIST_SELECT = '*, school_programs(*)';
+const FULL_SELECT = '*, school_programs(*), school_ai_summary(*)';
 
-  if (error) return res.status(500).json({ error: error.message });
-  res.json(await withMatchScores(req.user?.id, data));
+app.get('/api/schools', optionalAuth, async (req, res) => {
+  // ?ids=1,2,3 — the comparison surfaces need full per-obor rows (the risk
+  // analysis reads per-obor cutoffs) and the cached pros/cons, but only for
+  // the handful of schools a student actually selected.
+  if (req.query.ids !== undefined) {
+    const parts = String(req.query.ids).split(',');
+    const ids = parts.map(Number);
+    if (
+      !parts.length ||
+      parts.length > 50 ||
+      parts.some((part) => part.trim() === '') ||
+      ids.some((n) => !Number.isInteger(n) || n <= 0)
+    ) {
+      return res.status(400).json({ error: 'Neplatný parametr ids.' });
+    }
+    const { data, error } = await supabase.from('schools').select(FULL_SELECT).in('id', ids);
+    if (error) return res.status(500).json({ error: error.message });
+    return res.json(await withMatchScores(req.user?.id, data));
+  }
+
+  let rows;
+  try {
+    rows = await fetchAllSchools(LIST_SELECT);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+
+  const slim = rows.map((s) => ({ ...s, school_programs: slimProgramsForList(s.school_programs) }));
+  res.json(await withMatchScores(req.user?.id, slim));
 });
 
 app.get('/api/schools/:id', optionalAuth, async (req, res) => {
@@ -1156,44 +1249,11 @@ app.get('/api/shared/:token', shareLimiter, async (req, res) => {
  * without any server call. The two scoring engines are deliberately separate.
  * ------------------------------------------------------------------------- */
 
-// Developers are exempt so the feature stays testable without burning a real
-// month's allowance every time something changes.
-function isUnlimited(req) {
-  return req.profile?.subscription_status === 'developer';
-}
-
-/**
- * How much of the current allowance period is left.
- *
- * The period runs from the account's signup anniversary, not the first of the
- * calendar month. Counted from stored rows rather than a column, so there is no
- * counter that can drift and nothing to reset on a schedule.
- */
-async function readUsage(req) {
-  if (isUnlimited(req)) {
-    return { used: 0, limit: null, remaining: null, unlimited: true, resetsAt: null };
-  }
-
-  const period = usagePeriod(req.profile?.created_at);
-
-  const { count, error } = await supabase
-    .from('questionnaire_runs')
-    .select('id', { count: 'exact', head: true })
-    .eq('user_id', req.user.id)
-    .eq('source', 'questionnaire')
-    .gte('created_at', period.start.toISOString());
-
-  if (error) throw new Error(error.message);
-
-  const used = count ?? 0;
-  return {
-    used,
-    limit: MONTHLY_LIMIT,
-    remaining: Math.max(0, MONTHLY_LIMIT - used),
-    unlimited: false,
-    resetsAt: period.end.toISOString(),
-  };
-}
+// Submissions are deliberately unlimited (a run costs a fraction of a cent, and
+// requireAccess + questionnaireLimiter already bound who can call it and how
+// fast). The `usage` key stays in the responses so the frontend contract does
+// not change shape; it always reports unlimited.
+const UNLIMITED_USAGE = { used: 0, limit: null, remaining: null, unlimited: true, resetsAt: null };
 
 /**
  * Turns a stored questionnaire_runs row into the shape the results screen
@@ -1204,26 +1264,21 @@ async function readUsage(req) {
  * ends up rescoring and the other showing frozen numbers for the same set.
  */
 async function buildRunResult(run) {
-  // Schools are joined in here rather than stored on the run, so a school that
-  // was renamed or re-scraped shows its current details instead of a stale copy.
-  const ids = run.matches.map((match) => match.school_id);
-  const { data: schools } = await supabase.from('schools').select('*').in('id', ids);
+  // Every school is scored, not just the ones stored on the run: the ranking
+  // the student sees ("celé pořadí") covers the whole database, and it is the
+  // same arithmetic /api/schools uses for match_score, so one school cannot read
+  // 71% here and 64% in search. Schools are read fresh for the same reason —
+  // a renamed or re-scraped school shows its current details.
+  const schools = withDistricts(await fetchAllSchools('*'));
+  const byId = new Map(schools.map((school) => [school.id, school]));
 
-  const located = withDistricts(schools || []);
-  const byId = new Map(located.map((school) => [school.id, school]));
-  // A school deleted since the run would otherwise render as an empty card.
-  const present = run.matches.filter((match) => byId.has(match.school_id));
-
-  // Scored again from the school rows just fetched, for the same reason those
-  // rows are fetched at all: one school reading 71% here and 64% in search is a
-  // contradiction the student can see. The run itself is not rewritten — what
-  // is stored stays the historical record of what it saw.
-  const rescored = new Map(
-    scoreSchools(
-      run.answers,
-      present.map((match) => byId.get(match.school_id))
-    ).map((match) => [match.school_id, match])
+  // Sentences are only ever written for the run's stored top matches, so they
+  // are looked up by school_id, never by position.
+  const storedReason = new Map(
+    (run.matches || []).map((match) => [match.school_id, match.reason || ''])
   );
+
+  const ranked = scoreSchools(run.answers, schools).sort((a, b) => b.score - a.score);
 
   return {
     id: run.id,
@@ -1231,18 +1286,24 @@ async function buildRunResult(run) {
     created_at: run.created_at,
     is_default: Boolean(run.is_default),
     archived_at: run.archived_at ?? null,
+    source: run.source ?? 'questionnaire',
+    // null = the run was scored without a model, so no match carries a sentence.
+    model: run.model ?? null,
     answers: run.answers,
-    // The stored set of schools is kept as it is — only those have an AI
-    // sentence — but re-sorted by the fresh score, otherwise rank 1 can show a
-    // lower percentage than rank 2. `reason` comes from the stored match and the
-    // new score from a lookup by school_id, never by position.
-    matches: present
-      .map((match) => ({
-        ...match,
-        ...rescored.get(match.school_id),
-        school: byId.get(match.school_id),
-      }))
-      .sort((a, b) => b.score - a.score),
+    // The top of the list carries the full school row and the reasons behind
+    // the score; the tail only needs a name, a district and a number, which
+    // keeps a 223-school response small.
+    matches: ranked.map((match, index) => {
+      const school = byId.get(match.school_id);
+      if (index < REASON_COUNT) {
+        return { ...match, reason: storedReason.get(match.school_id) || '', school };
+      }
+      return {
+        school_id: match.school_id,
+        score: match.score,
+        school: { id: school.id, name: school.name, district: school.district },
+      };
+    }),
   };
 }
 
@@ -1250,27 +1311,27 @@ async function buildRunResult(run) {
 // answer is, and it is the one the validator uses.
 app.get('/api/questionnaire', requireAuth, requireAccess, async (req, res) => {
   try {
-    const usage = await readUsage(req);
-
     // Re-reading existing results is free and unmetered — a database read, not
     // an AI call. Only submitting new answers costs anything.
-    const { data: active } = await scoringRunQuery(
+    const { data: active, error: activeError } = await scoringRunQuery(
       req.user.id,
-      'id, label, answers, matches, created_at, is_default'
+      'id, label, answers, matches, created_at, is_default, model, source'
     );
+    if (activeError) throw activeError;
 
     // The full set list, for the history page. `matches` is deliberately left
     // out: nothing in the list shows a percentage, so there is no second number
     // that could disagree with the one on the results page.
-    const { data: runs } = await supabase
+    const { data: runs, error: runsError } = await supabase
       .from('questionnaire_runs')
-      .select('id, label, created_at, is_default, archived_at, answers')
+      .select('id, label, created_at, is_default, archived_at, answers, source')
       .eq('user_id', req.user.id)
       .order('created_at', { ascending: false });
+    if (runsError) throw runsError;
 
     res.json({
       questions: QUESTIONS,
-      usage,
+      usage: UNLIMITED_USAGE,
       // Named `active` rather than `latest`: with a default set it is no longer
       // necessarily the newest one.
       active: active ? await buildRunResult(active) : null,
@@ -1288,54 +1349,28 @@ app.post(
   requireAuth,
   requireAccess,
   async (req, res) => {
-    if (!OPENROUTER_API_KEY) {
-      return res.status(503).json({
-        error: 'Dotazník zatím není nastavený.',
-        code: 'AI_NOT_CONFIGURED',
-      });
-    }
-
     const validation = validateAnswers(req.body?.answers);
     if (!validation.ok) {
       return res.status(400).json({ error: validation.error });
     }
 
-    let usage;
-    try {
-      usage = await readUsage(req);
-    } catch (err) {
-      return res.status(500).json({ error: err.message });
-    }
-
-    // Checked here and nowhere else that matters. The frontend hides the button
-    // when the allowance runs out, but that is only to explain — this is what
-    // actually stops the call from happening.
-    if (!usage.unlimited && usage.remaining <= 0) {
-      return res.status(429).json({
-        error: `Tento měsíc jsi dotazník využil ${usage.used}× z ${usage.limit}. Další pokusy budou k dispozici od prvního dne dalšího měsíce.`,
-        code: 'QUOTA_EXCEEDED',
-        usage,
-      });
-    }
-
     // Full rows, not just the fields the prompt uses: the same objects are
     // handed back to the frontend as result cards, and they must match the
     // shape GET returns or the two paths render differently.
-    const { data: schools, error: schoolsError } = await supabase
-      .from('schools')
-      .select('*')
-      .order('name');
-
-    if (schoolsError) {
-      return res.status(500).json({ error: schoolsError.message });
+    let schools;
+    try {
+      schools = await fetchAllSchools('*');
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
     }
-    if (!schools?.length) {
+    if (!schools.length) {
       return res.status(503).json({ error: 'V databázi zatím nejsou žádné školy.' });
     }
 
     let matches;
+    let aiUsed;
     try {
-      ({ matches } = await requestMatches({
+      ({ matches, aiUsed } = await requestMatches({
         answers: validation.answers,
         schools,
         apiKey: OPENROUTER_API_KEY,
@@ -1359,7 +1394,9 @@ app.post(
         user_id: req.user.id,
         answers: validation.answers,
         matches,
-        model: OPENROUTER_MODEL,
+        // null means "scores only" — the results screen reads it to explain a
+        // missing sentence, so never store a model name the model never saw.
+        model: aiUsed ? OPENROUTER_MODEL : null,
       })
       .select('id, created_at')
       .single();
@@ -1384,12 +1421,13 @@ app.post(
         is_default: true,
         archived_at: null,
         answers: validation.answers,
+        model: aiUsed ? OPENROUTER_MODEL : null,
         matches: matches.map((match) => ({
           ...match,
           school: byId.get(match.school_id),
         })),
       },
-      usage: await readUsage(req),
+      usage: UNLIMITED_USAGE,
     });
   }
 );
@@ -1401,7 +1439,7 @@ app.post(
  * whose trial has lapsed still has to be able to tidy up and erase its own
  * answers — the same reasoning behind the DELETE policy in supabase-setup.sql.
  *
- * None of them touch readUsage: they are database writes, not AI calls.
+ * None of them are AI calls: they are plain database writes.
  * Every one scopes its write with `.eq('user_id', req.user.id)`, which is what
  * stops an id belonging to somebody else's account from being touched.
  * ------------------------------------------------------------------------- */
@@ -1439,12 +1477,14 @@ async function ownRun(userId, rawId, columns = 'id, is_default, archived_at') {
   const id = Number(rawId);
   if (!Number.isInteger(id)) return null;
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('questionnaire_runs')
     .select(columns)
     .eq('id', id)
     .eq('user_id', userId)
     .maybeSingle();
+
+  if (error) throw error;
 
   return data ?? null;
 }
@@ -1454,7 +1494,7 @@ app.get('/api/questionnaire/runs/:id', requireAuth, requireAccess, async (req, r
     const run = await ownRun(
       req.user.id,
       req.params.id,
-      'id, label, answers, matches, created_at, is_default, archived_at'
+      'id, label, answers, matches, created_at, is_default, archived_at, model, source'
     );
     if (!run) return res.status(404).json({ error: 'Tato sada odpovědí neexistuje.' });
 

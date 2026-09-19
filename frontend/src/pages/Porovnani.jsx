@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { fetchSchools, fetchPicks, savePicks } from '../api';
+import { fetchSchoolsByIds, fetchPicks, savePicks } from '../api';
 import { getCompareSelection, toggleCompareSelection, setCompareSelection } from '../lib/searchPrefs';
 import { buildComparisonRows } from '../lib/comparisonRows';
 import DecisionTabs from '../components/decision/DecisionTabs';
@@ -22,16 +22,22 @@ function Porovnani() {
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    fetchSchools()
-      .then((data) => {
-        if (!cancelled) setAllSchools(Array.isArray(data) ? data : []);
-      })
-      .catch((err) => {
-        if (!cancelled) setError(err.message || 'Nepodařilo se načíst školy.');
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
+    setError(null);
+    if (selection.length === 0) {
+      setAllSchools([]);
+      setLoading(false);
+    } else {
+      fetchSchoolsByIds(selection)
+        .then((data) => {
+          if (!cancelled) setAllSchools(Array.isArray(data) ? data : []);
+        })
+        .catch((err) => {
+          if (!cancelled) setError(err.message || 'Nepodařilo se načíst školy.');
+        })
+        .finally(() => {
+          if (!cancelled) setLoading(false);
+        });
+    }
     fetchPicks()
       .then((picks) => {
         if (!cancelled) setPicks(picks);
@@ -43,7 +49,7 @@ function Porovnani() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [selection]);
 
   const schools = useMemo(() => {
     const byId = new Map(allSchools.map((s) => [s.id, s]));

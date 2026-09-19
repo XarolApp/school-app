@@ -152,3 +152,61 @@ a.ss-btn {
   color: var(--ink2);
   margin-top: 2px;
 }
+
+/* ---------- confirm dialog (components/ConfirmDialog.jsx) ---------- */
+.ss-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  background: color-mix(in srgb, var(--ink) 45%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg);
+  z-index: 1000;
+}
+.ss-dialog {
+  width: 100%;
+  max-width: 560px;
+  max-height: calc(100vh - 2 * var(--space-lg));
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  padding: var(--space-xl);
+  box-shadow: var(--shadow);
+}
+.ss-dialog-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  color: var(--ink3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ss-dialog-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  color: var(--ink2);
+}
+.ss-dialog-actions {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  margin-top: var(--space-sm);
+}
+@media (max-width: 560px) {
+  .ss-dialog {
+    padding: var(--space-lg);
+  }
+  .ss-dialog-actions .ss-btn {
+    flex: 1 1 100%;
+  }
+}

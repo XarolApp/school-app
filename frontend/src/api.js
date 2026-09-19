@@ -77,10 +77,11 @@ export function saveOnboardingAnswers(answers) {
 }
 
 /**
- * The standalone AI questionnaire (server-side lib/questionnaire.js) — a
- * separate surface from the onboarding quiz, see CLAUDE.md. GET returns the
- * question set plus the account's active/default run; POST submits new
- * answers, costs one of the monthly AI calls, and becomes the new default.
+ * The standalone questionnaire (server-side lib/questionnaire.js) — a separate
+ * surface from the onboarding quiz, see CLAUDE.md. GET returns the question set,
+ * the account's active/default run and its full run history; POST submits new
+ * answers (unlimited; scores always, AI sentences when a model is reachable) and
+ * the new run becomes the default.
  */
 export function fetchQuestionnaire() {
   return request('/api/questionnaire');
@@ -93,8 +94,42 @@ export function submitQuestionnaire(answers) {
   });
 }
 
+export function renameQuestionnaireRun(id, label) {
+  return request(`/api/questionnaire/runs/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify({ label }),
+  });
+}
+
+export function setDefaultQuestionnaireRun(id) {
+  return request(`/api/questionnaire/runs/${id}/default`, { method: 'PUT' });
+}
+
+export function archiveQuestionnaireRun(id, archived) {
+  return request(`/api/questionnaire/runs/${id}/archive`, {
+    method: 'PATCH',
+    body: JSON.stringify({ archived }),
+  });
+}
+
+// Returns a SLIMMED shape: each school's school_programs is collapsed to one
+// entry per obor (latest year only) carrying just the fields list pages read
+// (maturitni, jpz_povinna, typ_skoly, jazyk_studia, kkov, zrizovatel,
+// kapacita) — no per-year rows, no school_ai_summary. Anything needing full
+// per-obor history or pros/cons should use fetchSchoolsByIds instead.
 export function fetchSchools() {
   return request('/api/schools');
+}
+
+/**
+ * Full rows — every per-obor program row and the cached pros/cons — for a
+ * short list of schools. `fetchSchools()` returns a slimmed list shape that
+ * deliberately omits both; anything doing per-obor or pros/cons work has to
+ * come through here.
+ */
+export function fetchSchoolsByIds(ids) {
+  if (!ids.length) return Promise.resolve([]);
+  return request(`/api/schools?ids=${ids.join(',')}`);
 }
 
 export function fetchSchool(id) {

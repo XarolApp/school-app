@@ -88,9 +88,12 @@ function minMax(values) {
 function rawForCriterion(id, schools) {
   switch (id) {
     case 'shoda': {
-      const values = schools.map((s) => (typeof s.match_score === 'number' ? s.match_score : null));
-      const scale = minMax(values);
-      return values.map((v) => scale(v));
+      // Absolute, not min-maxed across the compared set. Relative scaling made
+      // the weakest of the compared schools score zero however good it was —
+      // comparing the 1st, 2nd and 3rd best schools in the database left the
+      // 3rd with an empty bar. This criterion is the one number that already
+      // means something on its own scale, so it is used as it is.
+      return schools.map((s) => (typeof s.match_score === 'number' ? s.match_score / 100 : null));
     }
     case 'sance': {
       // Lower cutoff = easier = better, so invert.
@@ -188,10 +191,15 @@ export function hasMatchScores(schools) {
 }
 
 /** Presentation-only band for the match_score chip — never fed back into the
- *  weighted math, which uses the raw percentage via minMax above. */
+ *  weighted math, which uses the percentage directly above.
+ *
+ *  Thresholds sit where they do because match_score is the curved display score
+ *  (lib/matching.js displayScore), not the raw weighted average: a typical
+ *  median school lands near 45 and only a school matching almost everything
+ *  reaches the 90s. Moving the curve means revisiting these two numbers. */
 export function matchBand(score) {
-  if (score >= 75) return { label: 'Silná shoda', tone: 'ok' };
-  if (score >= 45) return { label: 'Střední shoda', tone: 'acc' };
+  if (score >= 85) return { label: 'Silná shoda', tone: 'ok' };
+  if (score >= 60) return { label: 'Střední shoda', tone: 'acc' };
   return { label: 'Slabá shoda', tone: 'neutral' };
 }
 
