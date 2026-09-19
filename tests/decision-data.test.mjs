@@ -24,6 +24,13 @@ after(async () => {
 const { cutoffForPick, analyseSet } = await vite.ssrLoadModule('/src/lib/admissionRisk.js');
 const { groupProgramsByObor, summarizeCurrentYear } = await vite.ssrLoadModule('/src/lib/schoolPrograms.js');
 const { setCompareSelection, getCompareSelection, toggleCompareSelection } = await vite.ssrLoadModule('/src/lib/searchPrefs.js');
+const { escapeHtml } = await vite.ssrLoadModule('/src/lib/escapeHtml.js');
+
+test('Leaflet labels keep HTML and attributes as literal text', () => {
+  assert.equal(escapeHtml('<img src=x onerror="alert(1)">'), '&lt;img src=x onerror=&quot;alert(1)&quot;&gt;');
+  assert.equal(escapeHtml('Škola & "umění"'), 'Škola &amp; &quot;umění&quot;');
+  assert.equal(escapeHtml("A'B"), 'A&#39;B');
+});
 
 test('adding a fifth comparison school is rejected without losing existing selections', () => {
   const descriptor = Object.getOwnPropertyDescriptor(globalThis, 'localStorage');

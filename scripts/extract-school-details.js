@@ -141,11 +141,11 @@ function looksLikeFiller(text) {
 // way a model's attention can — better to under-fill than mislabel.
 const FIELD_GUARDS = {
   maturita_uspesnost: (text) => /matur/i.test(text) && (/\d/.test(text) || /%/.test(text)),
-  vs_uplatneni: (text) => /vysok(á|ou|é|ých)?\s*škol|univerzit|\bVŠ\b/i.test(text),
+  vs_uplatneni: (text) => /vysok(á|ou|é|ých)?\s*škol|univerzit|(?<![\p{L}\p{N}_])VŠ(?![\p{L}\p{N}_])/iu.test(text),
 };
 
 function isVocationalSchool(typySkoly) {
-  return typySkoly.some((t) => /odborn|učiliště|\bSOU\b|\bSOŠ\b/i.test(t || ''));
+  return typySkoly.some((t) => /odborn|učiliště|(?<![\p{L}\p{N}_])(?:SOU|SOŠ)(?![\p{L}\p{N}_])/iu.test(t || ''));
 }
 
 function loadManifest() {

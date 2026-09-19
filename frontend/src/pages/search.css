@@ -862,3 +862,10 @@
     box-shadow: 0 6px 20px rgba(34, 26, 19, 0.16);
   }
 }
+
+/* Match percentage in the result row's stat grid. Moss is reserved for match
+   strength across the app (design/tokens.js semantic rule 2), so it carries
+   the number here exactly as it does on /dotaznik. */
+.ss-match-score {
+  color: var(--ok);
+}

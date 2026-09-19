@@ -182,7 +182,7 @@ async function main() {
     inserted += 1;
   }
 
-  console.log(`\n${dryRun ? '[dry run] Would insert' : 'Inserted'} ${dryRun ? missing.length - skippedNoAddress - failures.length : inserted} school(s).`);
+  console.log(`\n${dryRun ? '[dry run] Would insert' : 'Inserted'} ${dryRun ? missing.length - failures.length : inserted} school(s).`);
   if (skippedNoAddress > 0) {
     console.log(`${skippedNoAddress} skipped — no address found in the registry (likely closed or a data mismatch).`);
   }

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import L from 'leaflet';
+import { escapeHtml } from '../../lib/escapeHtml';
 import 'leaflet/dist/leaflet.css';
 import '../SchoolMap.css';
 
@@ -35,7 +36,7 @@ function SchoolLocation({ school }) {
     const label =
       school.admission_cutoff != null ? `${String(school.admission_cutoff).replace('.', ',')} b.` : school.name;
     const icon = L.divIcon({
-      html: `<span class="sm-pin"><span class="sm-pin-name">${school.name.replace(/"/g, '&quot;')}</span><span class="sm-pin-pct">${label}</span></span>`,
+      html: `<span class="sm-pin"><span class="sm-pin-name">${escapeHtml(school.name)}</span><span class="sm-pin-pct">${escapeHtml(label)}</span></span>`,
       className: 'sm-pin-wrap',
       iconSize: null,
     });

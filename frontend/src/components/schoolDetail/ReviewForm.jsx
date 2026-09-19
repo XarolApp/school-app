@@ -68,9 +68,9 @@ function ReviewForm({ schoolId, onSubmitted }) {
       setOborNazev('');
       setShowName(false);
       toast(
-        review.display_name || review.verified
-          ? 'Recenze zveřejněna'
-          : 'Recenze uložena — pokud čeká na kontrolu, uvidíš to jen ty'
+        review.status === 'held'
+          ? 'Recenze čeká na kontrolu — zatím ji vidíš jen ty'
+          : 'Recenze zveřejněna'
       );
     } catch (err) {
       setError(err.message || 'Recenzi se nepodařilo uložit.');

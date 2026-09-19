@@ -106,7 +106,7 @@ function Login() {
             <div className="notice notice-success">
               <span className="notice-title">E-mail potvrzen</span>
               <p className="notice-text">
-                Účet je aktivní. Přihlas se a zkušební období se rozjede.
+                Účet je aktivní. Teď se můžeš přihlásit.
               </p>
             </div>
           )}

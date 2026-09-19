@@ -91,6 +91,7 @@ const cutoffLabel = (cutoff) =>
   cutoff == null ? 'hranice přijetí zatím bez dat' : `hranice přijetí ${numCz(cutoff)} b.`;
 
 const SORTS = [
+  { id: 'shoda', label: 'Nejlepší shoda', tradeoff: 'podle tvého dotazníku' },
   { id: 'match', label: 'Nejvíc splněných kritérií', tradeoff: 'nebere ohled na dojezd' },
   { id: 'cut', label: 'Nejnižší hranice přijetí', tradeoff: 'bezpečnější, ne nutně silnější škola' },
   { id: 'acceptance', label: 'Největší šance na přijetí', tradeoff: 'podle loňské míry přijetí' },
@@ -212,7 +213,10 @@ const DEFAULT_FILTERS = {
   cutoffMax: 100, // 100 == "bez omezení"
   acceptanceMin: 0, // 0 == "bez omezení"
   kapacitaMin: 0, // 0 == "bez omezení"
-  sort: 'match',
+  // 'shoda' when the account has a questionnaire behind it; Search falls back
+  // to 'match' at render time when no school carries a match_score, so a signed
+  // -out visitor never lands on a sort with nothing to sort by.
+  sort: 'shoda',
 };
 
 // Real numbered pages, not a growing "load more" cap — each page is a fixed
@@ -309,6 +313,18 @@ function Search() {
   // Rows carry both the real fields and the synthetic stand-ins. Stable
   // across reloads because synth() is a pure function of school.id.
   const rows = useMemo(() => schools.map(buildRow), [schools]);
+
+  // match_score only exists for a signed-in account that has a questionnaire
+  // behind it (server.js attaches it from the default run). Without one there
+  // is nothing to show in the stat cell and nothing to sort by, so both the
+  // column and the "Nejlepší shoda" sort disappear rather than rendering "—"
+  // on all 223 rows.
+  const hasMatch = useMemo(
+    () => rows.some((r) => typeof r.school.match_score === 'number'),
+    [rows]
+  );
+  const sortOptions = useMemo(() => (hasMatch ? SORTS : SORTS.filter((s) => s.id !== 'shoda')), [hasMatch]);
+  const activeSort = !hasMatch && filters.sort === 'shoda' ? 'match' : filters.sort;
 
   // Recently viewed — per-device only (localStorage, see searchPrefs.js),
   // most-recent first. Only worth showing when nothing is filtered yet; once
@@ -412,7 +428,13 @@ function Search() {
       return b.acceptanceRate - a.acceptanceRate || byName(a, b);
     };
 
-    if (sortId === 'cut') arr.sort(byCutoffAsc);
+    if (sortId === 'shoda') {
+      arr.sort((a, b) => {
+        const am = a.school.match_score ?? -1;
+        const bm = b.school.match_score ?? -1;
+        return bm - am || byName(a, b);
+      });
+    } else if (sortId === 'cut') arr.sort(byCutoffAsc);
     else if (sortId === 'acceptance') arr.sort(byAcceptanceDesc);
     else {
       // 'match' — most active criteria satisfied first (dead default now
@@ -429,7 +451,7 @@ function Search() {
 
   const total = rows.length;
   const matchedAll = listFor(filters);
-  const sortedAll = sortRows(matchedAll, filters.sort, filters);
+  const sortedAll = sortRows(matchedAll, activeSort, filters);
   const n = sortedAll.length;
 
   const setPatch = (patch) => setFilters((f) => ({ ...f, ...patch }));
@@ -1027,11 +1049,11 @@ function Search() {
               <div className="ss-sort-row">
                 <p className="ss-label-caps">Řadit</p>
                 <div className="ss-sort-options">
-                  {SORTS.map((s) => (
+                  {sortOptions.map((s) => (
                     <button
                       key={s.id}
                       type="button"
-                      className={`ss-sort-toggle${filters.sort === s.id ? ' is-active' : ''}`}
+                      className={`ss-sort-toggle${activeSort === s.id ? ' is-active' : ''}`}
                       onClick={() => setPatch({ sort: s.id })}
                     >
                       <span className="ss-sort-label">{s.label}</span>
@@ -1167,13 +1189,23 @@ function Search() {
                                   <StatInfo text="Celkový počet míst ve všech oborech, které škola otevírá pro aktuální rok." />
                                 </p>
                               </div>
-                              <div className="ss-stat-cell">
-                                <p className="ss-data-md">{metTotal > 0 ? `${metCount} / ${metTotal}` : '—'}</p>
-                                <p className="ss-stat-label">
-                                  splněných kritérií
-                                  <StatInfo text="Kolik ze zvolených filtrů tahle škola splňuje." />
-                                </p>
-                              </div>
+                              {hasMatch ? (
+                                <div className="ss-stat-cell">
+                                  <p className="ss-data-md ss-match-score">{row.school.match_score} %</p>
+                                  <p className="ss-stat-label">
+                                    shoda s tebou
+                                    <StatInfo text="Jak moc tahle škola sedí tvým odpovědím z dotazníku. Počítá se z toho, co jsi zadal — obory, typ školy, předměty, městské části a zbytek — ne z názoru školy. 100 % by znamenalo, že škola sedí úplně všemu." />
+                                  </p>
+                                </div>
+                              ) : (
+                                <div className="ss-stat-cell">
+                                  <p className="ss-data-md">{metTotal > 0 ? `${metCount} / ${metTotal}` : '—'}</p>
+                                  <p className="ss-stat-label">
+                                    splněných kritérií
+                                    <StatInfo text="Kolik ze zvolených filtrů tahle škola splňuje." />
+                                  </p>
+                                </div>
+                              )}
                             </div>
                             {noAdmissionData && (
                               <p className="ss-caption ss-no-data-note">

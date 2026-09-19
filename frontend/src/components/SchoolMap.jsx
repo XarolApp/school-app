@@ -4,6 +4,7 @@ import { Maximize2, Minimize2 } from 'lucide-react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import StatInfo from './StatInfo';
+import { escapeHtml } from '../lib/escapeHtml';
 import './SchoolMap.css';
 
 const PRAGUE_CENTER = [50.0755, 14.4378];
@@ -42,12 +43,12 @@ function shortSchoolName(name) {
 function pinHtml(row, isSelected) {
   const label = row.admissionCutoff != null ? `${row.admissionCutoff} b.` : 'bez dat';
   const noData = row.admissionCutoff == null;
-  const shortName = shortSchoolName(row.name).replace(/"/g, '&quot;');
-  const fullName = row.name.replace(/"/g, '&quot;');
+  const shortName = escapeHtml(shortSchoolName(row.name));
+  const fullName = escapeHtml(row.name);
   return (
     `<span class="sm-pin${isSelected ? ' is-selected' : ''}${noData ? ' is-nodata' : ''}" title="${fullName}">` +
     `<span class="sm-pin-name">${shortName}</span>` +
-    `<span class="sm-pin-pct">${label}</span>` +
+    `<span class="sm-pin-pct">${escapeHtml(label)}</span>` +
     `</span>`
   );
 }

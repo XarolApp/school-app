@@ -65,8 +65,8 @@ function SignUp() {
             <span className="notice-title">Potvrď svůj e-mail</span>
             <p className="notice-text">
               Poslali jsme odkaz na {form.email}. Klikni na něj a účet se
-              aktivuje i s tvým sedmidenním zkušebním obdobím. Bez potvrzení se
-              do databáze škol nedostaneš.
+              aktivuje i s tvým {trialDaysPhrase()} zkušebním obdobím. Bez
+              potvrzení se do databáze škol nedostaneš.
             </p>
             <p className="notice-text">
               Nepřišel? Zkontroluj složku se spamem — odkaz umíme poslat znovu
