@@ -68,6 +68,22 @@ the test it describes defeats the entire point of writing this down.
 
 ---
 
+## Review questionnaire after Claude Code finishes
+- **Found:** 2026-09-19, founder instruction during the full-repository review
+- **Urgency:** medium
+- **Risk of fixing now:** Claude Code is actively changing the questionnaire; overlapping edits could overwrite unfinished work.
+- **Risk of NOT fixing:** the current questionnaire changes remain outside the completed review coverage.
+- **Effort:** medium
+- **Release/context:** follow-up to the repository review; wait for Claude Code's task to finish.
+
+Do not edit or judge the unfinished questionnaire changes. Once Claude Code is
+done, review its final diff and the full questionnaire path together: frontend
+questionnaire/results/history, related API helpers and routes, scoring and saved
+runs, plus shared components changed by that task. The founder explicitly asked
+for this follow-up; it is not covered by reviewing the rest of the repository.
+
+---
+
 ## Rebrand: "ŠkolaMatch" → "Kam na střední?" — decided, not yet executed
 - **Found:** 2026-09-13, founder decision
 - **Urgency:** medium — doesn't block current work (Stripe test-mode products,

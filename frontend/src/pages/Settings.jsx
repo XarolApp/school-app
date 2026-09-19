@@ -229,7 +229,10 @@ function Settings() {
   // cancellationTerms() in pricing.js already says so ("není co rušit").
   const canCancel =
     (profile?.plan_id === 'monthly' && (status === 'active' || status === 'past_due')) ||
-    (status === 'trialing' && Boolean(profile?.stripe_subscription_id));
+    (status === 'trialing' && (
+      Boolean(profile?.stripe_subscription_id) ||
+      (profile?.plan_id === 'season' && Boolean(profile?.season_charge_due_at))
+    ));
 
   const handleCancelSubscription = async () => {
     setError(null);

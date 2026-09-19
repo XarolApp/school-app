@@ -13,7 +13,9 @@ function Porovnani() {
   const { toast } = useToast();
   const [allSchools, setAllSchools] = useState([]);
   const [selection, setSelection] = useState(() => getCompareSelection());
-  const [pickIds, setPickIds] = useState(new Set());
+  const [picks, setPicks] = useState([]);
+  const [savingPick, setSavingPick] = useState(false);
+  const pickIds = new Set(picks.map((pick) => pick.school.id));
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -32,7 +34,7 @@ function Porovnani() {
       });
     fetchPicks()
       .then((picks) => {
-        if (!cancelled) setPickIds(new Set(picks.map((p) => p.school.id)));
+        if (!cancelled) setPicks(picks);
       })
       .catch(() => {
         // Signed out or expired — picks simply stay empty, the compare page
@@ -60,14 +62,23 @@ function Porovnani() {
   };
 
   const handleAddToPicks = async (school) => {
+    if (savingPick) return;
+    const serializePick = (pick) => ({
+      schoolId: pick.school.id,
+      oborKkov: pick.obor_kkov,
+      oborNazev: pick.obor_nazev,
+    });
     if (pickIds.has(school.id)) {
       // Toggle off.
-      const nextIds = [...pickIds].filter((id) => id !== school.id);
+      const nextPicks = picks.filter((pick) => pick.school.id !== school.id);
+      setSavingPick(true);
       try {
-        await savePicks(nextIds.map((id) => ({ schoolId: id })));
-        setPickIds(new Set(nextIds));
+        await savePicks(nextPicks.map(serializePick));
+        setPicks(nextPicks);
       } catch (err) {
         toast(err.message || 'Nepodařilo se upravit přihlášku.', { type: 'error' });
+      } finally {
+        setSavingPick(false);
       }
       return;
     }
@@ -75,10 +86,11 @@ function Porovnani() {
       toast('Do přihlášky patří nejvýš 3 školy — nejdřív jednu odeber na záložce Moje přihláška.', { type: 'error' });
       return;
     }
+    setSavingPick(true);
     try {
-      const nextIds = [...pickIds, school.id];
-      await savePicks(nextIds.map((id) => ({ schoolId: id })));
-      setPickIds(new Set(nextIds));
+      const nextPicks = [...picks, { school }];
+      await savePicks(nextPicks.map(serializePick));
+      setPicks(nextPicks);
       toast(`${school.name} přidána do přihlášky.`);
     } catch (err) {
       if (err.code === 'TOO_MANY_PICKS') {
@@ -88,6 +100,8 @@ function Porovnani() {
       } else {
         toast(err.message || 'Nepodařilo se upravit přihlášku.', { type: 'error' });
       }
+    } finally {
+      setSavingPick(false);
     }
   };
 
@@ -218,6 +232,7 @@ function Porovnani() {
                   type="button"
                   className={`ss-btn ss-btn-sm${pickIds.has(school.id) ? ' dp-btn-picked' : ' ss-btn-primary'}`}
                   onClick={() => handleAddToPicks(school)}
+                  disabled={savingPick}
                 >
                   {pickIds.has(school.id) ? '✓ V přihlášce' : 'Přidat do přihlášky'}
                 </button>

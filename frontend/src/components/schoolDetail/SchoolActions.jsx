@@ -20,7 +20,8 @@ function SchoolActions({ school, isFavorite, onFavoriteChange }) {
   const { toast } = useToast();
   const [saving, setSaving] = useState(false);
   const [compared, setCompared] = useState(() => isInCompareSelection(school.id));
-  const [pickIds, setPickIds] = useState(null); // null = not loaded yet
+  const [picks, setPicks] = useState(null); // null = not loaded yet
+  const [savingPick, setSavingPick] = useState(false);
 
   const canFavorite = isSignedIn && hasAccess;
 
@@ -29,7 +30,7 @@ function SchoolActions({ school, isFavorite, onFavoriteChange }) {
     let cancelled = false;
     fetchPicks()
       .then((picks) => {
-        if (!cancelled) setPickIds(new Set(picks.map((p) => p.school.id)));
+        if (!cancelled) setPicks(picks);
       })
       .catch(() => {});
     return () => {
@@ -55,35 +56,42 @@ function SchoolActions({ school, isFavorite, onFavoriteChange }) {
   };
 
   const handleCompare = () => {
-    const next = toggleCompareSelection(school.id);
-    setCompared(next.includes(school.id));
-    toast(
-      next.includes(school.id)
-        ? 'Přidáno k porovnání'
-        : 'Odebráno z porovnání'
-    );
+    try {
+      const next = toggleCompareSelection(school.id);
+      setCompared(next.includes(school.id));
+      toast(next.includes(school.id) ? 'Přidáno k porovnání' : 'Odebráno z porovnání');
+    } catch (err) {
+      toast(err.message, { type: 'error' });
+    }
   };
 
-  const isPicked = pickIds?.has(school.id) ?? false;
+  const isPicked = picks?.some((pick) => pick.school.id === school.id) ?? false;
 
   const handleTogglePick = async () => {
-    if (!canFavorite || pickIds === null) return;
-    const nextIds = isPicked ? [...pickIds].filter((id) => id !== school.id) : [...pickIds, school.id];
+    if (!canFavorite || picks === null || savingPick) return;
+    const nextPicks = isPicked ? picks.filter((pick) => pick.school.id !== school.id) : [...picks, { school }];
 
-    if (!isPicked && pickIds.size >= 3) {
+    if (!isPicked && picks.length >= 3) {
       toast('Do přihlášky patří nejvýš 3 školy — nejdřív jednu odeber na stránce Moje přihláška.', {
         type: 'error',
       });
       return;
     }
 
-    setPickIds(new Set(nextIds));
+    setPicks(nextPicks);
+    setSavingPick(true);
     try {
-      await savePicks(nextIds.map((id) => ({ schoolId: id })));
+      await savePicks(nextPicks.map((pick) => ({
+        schoolId: pick.school.id,
+        oborKkov: pick.obor_kkov,
+        oborNazev: pick.obor_nazev,
+      })));
       toast(isPicked ? 'Odebráno z přihlášky' : 'Přidáno do přihlášky');
     } catch (err) {
-      setPickIds(new Set(pickIds));
+      setPicks(picks);
       toast(err.message || 'Nepodařilo se upravit přihlášku.', { type: 'error' });
+    } finally {
+      setSavingPick(false);
     }
   };
 
@@ -118,7 +126,7 @@ function SchoolActions({ school, isFavorite, onFavoriteChange }) {
         {compared ? 'K porovnání' : 'Přidat k porovnání'}
       </button>
       {canFavorite && (
-        <button type="button" className="ss-btn ss-btn-secondary" onClick={handleTogglePick} disabled={pickIds === null}>
+        <button type="button" className="ss-btn ss-btn-secondary" onClick={handleTogglePick} disabled={picks === null || savingPick}>
           {isPicked ? <Check size={16} aria-hidden="true" /> : <ListPlus size={16} aria-hidden="true" />}
           {isPicked ? 'V přihlášce' : 'Přidat do přihlášky'}
         </button>

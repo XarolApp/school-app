@@ -23,6 +23,26 @@ after(async () => {
 
 const { cutoffForPick, analyseSet } = await vite.ssrLoadModule('/src/lib/admissionRisk.js');
 const { groupProgramsByObor, summarizeCurrentYear } = await vite.ssrLoadModule('/src/lib/schoolPrograms.js');
+const { setCompareSelection, getCompareSelection, toggleCompareSelection } = await vite.ssrLoadModule('/src/lib/searchPrefs.js');
+
+test('adding a fifth comparison school is rejected without losing existing selections', () => {
+  const descriptor = Object.getOwnPropertyDescriptor(globalThis, 'localStorage');
+  const storage = new Map();
+  Object.defineProperty(globalThis, 'localStorage', { configurable: true, value: {
+    getItem: (key) => storage.get(key) ?? null,
+    setItem: (key, value) => storage.set(key, value),
+  } });
+  try {
+    setCompareSelection([1, 2, 3, 4]);
+    assert.throws(() => toggleCompareSelection(5), /4 školy/);
+    assert.deepEqual(getCompareSelection(), [1, 2, 3, 4]);
+    assert.deepEqual(toggleCompareSelection(2), [1, 3, 4]);
+    assert.deepEqual(toggleCompareSelection(5), [1, 3, 4, 5]);
+  } finally {
+    if (descriptor) Object.defineProperty(globalThis, 'localStorage', descriptor);
+    else delete globalThis.localStorage;
+  }
+});
 
 test('a selected four-year program does not use the same-name six-year cutoff', () => {
   const school = {

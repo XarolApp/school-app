@@ -72,6 +72,9 @@ export function isInCompareSelection(schoolId) {
 
 export function toggleCompareSelection(schoolId) {
   const ids = getCompareSelection();
+  if (!ids.includes(schoolId) && ids.length >= 4) {
+    throw new Error('Porovnat můžeš nejvýš 4 školy. Nejdřív jednu odeber.');
+  }
   const next = ids.includes(schoolId) ? ids.filter((id) => id !== schoolId) : [...ids, schoolId];
   writeJSON(COMPARE_KEY, next);
   return next;

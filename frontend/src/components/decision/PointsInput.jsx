@@ -35,12 +35,14 @@ function PointsInput({ profile, onSaved }) {
   };
 
   const handleClear = async () => {
-    setPoints('');
     setError(null);
     setSaving(true);
     try {
       await saveDecisionProfile({ jpzPoints: null, jpzSource: null });
+      setPoints('');
       onSaved?.({ jpz_points: null, jpz_source: null });
+    } catch (err) {
+      setError(err.message || 'Nepodařilo se uložit.');
     } finally {
       setSaving(false);
     }
@@ -88,8 +90,8 @@ function PointsInput({ profile, onSaved }) {
       {error && <p className="dp-points-error">{error}</p>}
 
       <p className="ss-caption">
-        Průměr z češtiny a matematiky. Většina deváťáků si zkoušku nanečisto píše v září — zadej výsledek odtud, nebo
-        z ostré zkoušky, jakmile ji máš.
+        Součet bodů z češtiny a matematiky (nejvýš 50 + 50 bodů). Zadej výsledek ze zkoušky nanečisto,
+        nebo z ostré zkoušky, jakmile ho máš.
       </p>
 
       {hasPoints && (

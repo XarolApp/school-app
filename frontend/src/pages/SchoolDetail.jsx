@@ -26,23 +26,32 @@ function SchoolDetail() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    let cancelled = false;
     setLoading(true);
+    setError(null);
     fetchSchool(id)
       .then((s) => {
+        if (cancelled) return;
         setSchool(s);
         recordRecentSchool(s.id);
       })
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
+      .catch((err) => { if (!cancelled) setError(err.message); })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
   }, [id]);
 
   // Favourites need a signed-in account with access; anonymous visitors simply
   // do not see the star.
   useEffect(() => {
+    let cancelled = false;
+    setIsFavorite(false);
     if (!isSignedIn || !hasAccess) return;
     fetchFavorites()
-      .then((rows) => setIsFavorite(rows.some((row) => String(row.id) === String(id))))
-      .catch(() => setIsFavorite(false));
+      .then((rows) => {
+        if (!cancelled) setIsFavorite(rows.some((row) => String(row.id) === String(id)));
+      })
+      .catch(() => { if (!cancelled) setIsFavorite(false); });
+    return () => { cancelled = true; };
   }, [id, isSignedIn, hasAccess]);
 
   if (loading) return <div className="page"><p>Načítám…</p></div>;

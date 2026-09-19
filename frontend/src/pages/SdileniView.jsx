@@ -22,6 +22,8 @@ function SdileniView() {
 
   useEffect(() => {
     let cancelled = false;
+    setLoading(true);
+    setError(null);
     fetchSharedShortlist(token)
       .then((result) => {
         if (!cancelled) setData(result);
