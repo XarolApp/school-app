@@ -1,0 +1,42 @@
+{
+  "pages": [
+    { "id": "page-1", "name": "Round 1 — abstract marks" },
+    { "id": "page-2", "name": "Round 2 — explanatory" }
+  ],
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 880, "h": 980, "title": "01 Háček", "page": "page-1" },
+    { "file": "Mira.dc.html", "x": 0, "y": 1100, "w": 560, "h": 640, "title": "02 Míra", "page": "page-1" },
+    { "file": "Litera.dc.html", "x": 640, "y": 1100, "w": 560, "h": 640, "title": "03 Litera Š", "page": "page-1" },
+    { "file": "Zapad.dc.html", "x": 1280, "y": 1100, "w": 560, "h": 640, "title": "04 Zapadnout", "page": "page-1" },
+    { "file": "Oblouk.dc.html", "x": 0, "y": 1860, "w": 560, "h": 640, "title": "05 Oblouk", "page": "page-1" },
+    { "file": "Hledacek.dc.html", "x": 640, "y": 1860, "w": 560, "h": 640, "title": "06 Hledáček", "page": "page-1" },
+    { "file": "Cesta.dc.html", "x": 1280, "y": 1860, "w": 560, "h": 640, "title": "07 Cesta", "page": "page-1" },
+
+    { "file": "Poradi.dc.html", "x": 0, "y": 0, "w": 560, "h": 640, "title": "08 Pořadí", "page": "page-2" },
+    { "file": "Shoda.dc.html", "x": 640, "y": 0, "w": 560, "h": 640, "title": "09 Shoda", "page": "page-2" },
+    { "file": "Visacka.dc.html", "x": 1280, "y": 0, "w": 560, "h": 640, "title": "10 Visačka", "page": "page-2" },
+    { "file": "TaPrava.dc.html", "x": 0, "y": 760, "w": 560, "h": 640, "title": "11 Ta pravá", "page": "page-2" },
+    { "file": "Trychtyr.dc.html", "x": 640, "y": 760, "w": 560, "h": 640, "title": "12 Ze 224 jedna", "page": "page-2" },
+    { "file": "Spendlik.dc.html", "x": 1280, "y": 760, "w": 560, "h": 640, "title": "13 Špendlík", "page": "page-2" },
+    { "file": "Logotyp.dc.html", "x": 0, "y": 1520, "w": 880, "h": 960, "title": "14 Logotyp", "page": "page-2" }
+  ],
+  "annotations": [
+    {
+      "id": "brief",
+      "x": 960,
+      "y": 40,
+      "w": 320,
+      "page": "page-1",
+      "text": "Round 1 — abstract brand marks.\n\nEvery mark shown at 40px circle-cropped (e-mail avatar), 32px (favicon) and 16px (browser tab).\n\nRound 2 is on the next page: same tokens, but the mark explains what the product does."
+    },
+    {
+      "id": "round2",
+      "x": 960,
+      "y": 1560,
+      "w": 340,
+      "page": "page-2",
+      "text": "Round 2 — the mark explains the product.\n\nThese trade some abstraction for legibility of meaning: ranking, match score, narrowing down, tailoring, place. Two of them carry real text.\n\nHonest trade-off: explanatory marks carry more elements, so most of these are weaker at 16px than round one. Each board says where it breaks."
+    }
+  ],
+  "launch": { "view": "canvas", "page": "page-2" }
+}

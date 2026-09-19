@@ -1050,6 +1050,125 @@ session.
 
 ---
 
+## Logo design concepts — save direction references for later
+- **Found:** 2026-09-17, user request to remember across sessions
+- **Urgency:** low — visual reference only, no code dependency
+- **Effort:** n/a — just documentation
+- **Release/context:** branding direction, to be revisited later
+
+User created 14 logo concept artboards (canvas-based design system, Concepts 01–14) across two design rounds (abstract marks, explanatory marks). Each tested at multiple sizes (40px email avatar, 32px favicon, 16px browser tab) with variants for light/dark backgrounds.
+
+**Key reference to maintain:**
+- Concept 14 (Logotyp) — the wordmark + measuring-line system, with three square-mark variants (E: "na míru" text, F: single "m" letter, G: dark-mode versions) designed specifically for email profile pictures and Chrome site logos.
+- Instagram saved posts and personal notes per school — the user plans to track research/inspiration per school using Instagram saves + custom notes. This is a personal reference system outside the codebase; mention it back in future sessions when the branding gets revisited.
+
+**Do not delete the logo design files.** They live as `.dc.html` artboards in `design/logo-concepts/` (moved out of the repo root 2026-09-19) and are registered in `design/logo-concepts/canvas.json`. Refer back to them when the time comes to finalize the visual identity.
+
+---
+
+## Questionnaire runs saved without AI sentences never get them — and `.env` pins the old model
+- **Found:** 2026-09-19, building plan 011
+- **Urgency:** medium — bites the moment OpenRouter credits are added
+- **Effort:** small-medium (one endpoint + a button), plus a one-line `.env` edit
+- **Release/context:** `lib/questionnaire.js` `requestMatches`, `POST /api/questionnaire`
+
+Two separate things, both surfaced by making the AI optional:
+
+1. **Sentences are generated at submission time only.** A run submitted while
+   OpenRouter has no credits is saved with real percentages and empty `reason`
+   fields, and nothing ever backfills them — the results screen says so honestly
+   ("U téhle sady chybí slovní zdůvodnění") rather than promising it will fill in.
+   Once credits exist, every run made before that stays sentence-less unless the
+   student retakes the questionnaire, which the UI deliberately discourages. A
+   `POST /api/questionnaire/runs/:id/reasons` that re-asks the model for the top
+   10 of an *existing* run (no re-scoring, no new run) would close the gap.
+   Onboarding runs (`source: 'onboarding'`) never had sentences at all.
+2. **The real `.env` still sets `OPENROUTER_MODEL=anthropic/claude-sonnet-5`**,
+   which overrides the new Gemini 2.5 Flash Lite default in code and in
+   `.env.example`. Sonnet costs ~$0.11/user/month at 10 runs vs ~$0.005 — small
+   either way, but it is not the choice that was made. Edit that line (or delete
+   it) when credits are added. Deliberately not edited by Claude: `.env` is off
+   limits.
+
+---
+
+## Matice.jsx should adopt the shared ConfirmDialog
+- **Found:** 2026-09-19, plan 011
+- **Urgency:** low
+- **Effort:** trivial once its review pass is done
+
+`components/ConfirmDialog.jsx` (+ `.ss-dialog-*` in `styles/ui.css`) was extracted
+for `/dotaznik`'s two dialogs from the markup `Matice.jsx` already carried
+(`.dp-confirm-*` in `decision.css`). Matice was left untouched on purpose because
+it is still awaiting its human review pass (see "Rozhodovací matice needs a real
+human review pass"), so the same dialog now exists twice. Swap it over, and delete
+the `.dp-confirm-*` block, as part of that review.
+
+---
+
+## Questionnaire form options still use a solid accent fill when selected
+- **Found:** 2026-09-19, plan 011
+- **Urgency:** low
+- **Effort:** small
+
+`.qz-option.is-on` in `pages/questionnaire.css` fills the chosen option solid
+terracotta. `tokens.js`'s semantic rule 3 says selection is a 1.5px accent border
++ `accentSoft` fill, never a solid accent fill. Left alone because plan 011
+scoped the design work to results / history / dialogs and kept the question form
+unchanged. Fix when the form itself is redesigned.
+
+---
+
+## Match percentage: curve exponent and band thresholds are a first guess
+- **Found:** 2026-09-19, reworking the match scale
+- **Urgency:** low — the shape is measured and sane, but nobody has used it for real yet
+- **Effort:** small (two constants), but needs real users to judge
+- **Release/context:** `lib/matching.js` `displayScore` / `DISPLAY_EXPONENT`,
+  `frontend/src/lib/decisionMatrix.js` `matchBand` and `MATCH_GAP`
+
+The displayed match percentage is now `100 * (1 - (1 - raw/100)^1.4)` — an
+absolute, monotone curve over the raw weighted average, never relative to the
+other results. 1.4 was chosen by measuring five student profiles against the
+real 223-school database: it lifts a typical best match from ~80 to ~90, keeps
+the bottom of the list visibly low, and leaves only genuinely near-perfect
+schools (raw >= 98) at 100 %. Rejected alternatives and why, so they are not
+re-proposed: normalising against the best available school made every student's
+top result read 98 % whether it covered nearly everything or barely half;
+multiplier-plus-clamp produced 83 schools tied at "100 %" for a humanities
+profile; a plain gamma curve inflated the worst school in the database to 28 %.
+
+Still to check against real usage:
+- **The exponent.** 1.4 is a judgement call, not a derived constant.
+- **`matchBand` thresholds** (85 / 60) were moved up to suit the curve. They are
+  arithmetic guesses about where "silná" and "střední" should sit.
+- **`MATCH_GAP = 15`** (what counts as "notably better" in the matrix) was tuned
+  against the old raw scale. The curve compresses the top, so a 15-point gap is
+  now a bigger real difference than it was and the callout will fire less often.
+
+**Measured floor, worth keeping:** the worst best-match any answer combination
+can produce is about **59 %** (raw 47) — found by sampling ~9,000 answer sets
+plus hill-climbing, so it is an empirical bound, not a proof. No student should
+ever see a top result below roughly 59 %, and one meaningfully lower is a signal
+that something in the scorer or the data has broken.
+
+---
+
+## Two district adjacency tables now exist and must agree
+- **Found:** 2026-09-19
+- **Urgency:** low
+- **Effort:** small
+
+`lib/pragueDistricts.js` gained `CORE_ADJACENCY` / `OUTER_TO_CORE` /
+`districtHops` so the server scorer can grade the `casti` dimension by distance
+(same district 1.0, neighbour 0.65, two away 0.35, further 0.2) instead of the
+old all-or-nothing rule that cost an otherwise perfect school 20 of 113 weight
+for being one district over. `frontend/src/lib/schoolFeatures.js` already had a
+byte-identical copy driving "Podobné školy". They are duplicated deliberately
+(server CommonJS vs browser ESM) but nothing enforces that they stay in step —
+edit one, edit the other.
+
+---
+
 ## Waiting on the user (not a coding task)
 - **Found:** 2026-08-25
 - **Urgency:** none — explicitly deferred by the user's own choice
