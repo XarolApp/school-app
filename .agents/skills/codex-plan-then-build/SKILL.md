@@ -1,6 +1,6 @@
 ---
 name: codex-plan-then-build
-description: Use a GPT-6 Astra planning pass, a lower-cost implementation pass, and a separate review pass for complex repository work shared with Claude Code.
+description: Use the standard GPT-6 Astra plan, Claude Sonnet implementation, and GPT-5.6 Sol review workflow for complex repository work shared with Claude Code.
 ---
 
 # Codex plan then build
@@ -12,13 +12,14 @@ end-to-end.
 Read `docs/workflows/plan-then-build-collaboration.md` first. The canonical
 workflow is shared with Claude Code.
 
-## Codex model gates
+## Standard model gates
 
 - Planning: `gpt-6-astra`, effort `xhigh`.
-- Implementation: `gpt-5.6-terra`, effort `medium`, unless Claude Sonnet is doing
-  the implementation.
-- Review: `gpt-5.6-sol`, effort `high`; use `gpt-6-astra` for payment, security,
-  schema, or release-critical review.
+- Implementation: Claude Sonnet.
+- Review: `gpt-5.6-sol`, effort `high`; use `gpt-6-astra` only for payment,
+  security, schema, or release-critical review.
+
+The normal sequence is always **Astra plans → Sonnet builds → Sol reviews**.
 
 Before planning, confirm the active model and effort. Before implementing, confirm
 that the model changed from the planner. If the model cannot be confirmed, stop

@@ -6,17 +6,15 @@ single local component change.
 
 ## Roles
 
-1. **Planner — GPT-6 Astra (Codex, `xhigh`) or Claude Opus.** Inspect the current
-   repository and write a handoff-ready plan. Choose one planner, never two
-   competing plans.
-2. **Implementer — GPT-5.6 Terra (`medium`) or Claude Sonnet.** Read the approved
-   plan and implement it. Do not re-architect silently.
-3. **Reviewer — GPT-5.6 Sol (`high`) for normal deep review, GPT-6 Astra (`high` or
-   `xhigh`) for payment, security, schema, or release-critical work.** Review the
-   diff and running behavior after implementation.
+1. **Planner — GPT-6 Astra (Codex, `xhigh`).** Inspect the current repository and
+   write a handoff-ready plan. Use one planner, never two competing plans.
+2. **Implementer — Claude Sonnet.** Read the approved plan and implement it. Do
+   not re-architect silently.
+3. **Reviewer — GPT-5.6 Sol (`high`).** Review the diff and running behavior after
+   implementation. Escalate to Astra only for payment, security, schema, or
+   release-critical findings.
 
-The default cost/quality path is **Astra plan → Sonnet or Terra build → Sol
-review**. Use Astra again for the review when a missed defect would be expensive.
+The standard path is **Astra plan → Sonnet build → Sol review**.
 
 ## The handoff artifact
 
