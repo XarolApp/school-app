@@ -1,5 +1,5 @@
 ---
-name: plan-then-build-collab
+name: claude-plan-then-build
 description: Shared plan-then-build handoff for Claude Code working with Codex in this repository.
 ---
 
