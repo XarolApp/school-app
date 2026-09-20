@@ -1234,7 +1234,7 @@
    export").
    ===================================================================== */
 @media print {
-  .app-nav,
+  .navbar,
   .dp-tabs,
   .dp-header-actions,
   .dp-table-row-actions,

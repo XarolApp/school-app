@@ -37,7 +37,7 @@ function Home() {
           <p className="ls-eyebrow">Pro deváťáky a jejich rodiče</p>
           <h1 className="ls-title">Vyber si školu podle sebe</h1>
           <p className="ls-lede">
-            Odpovíš na dvacet otázek o tom, co tě zajímá, kam dojedeš a jak se ti učí.
+            Odpovíš na deset otázek o tom, co tě zajímá, kam dojedeš a jak se ti učí.
             Pak uvidíš školy, které tomu odpovídají — a u každé napsané, čím konkrétně.
           </p>
           <div className="ls-ctas">
@@ -49,7 +49,7 @@ function Home() {
             </Link>
           </div>
           <p className="ls-fineprint">
-            Dotazník je zdarma. Platí se až za podrobné srovnání.
+            Základní výsledek a databáze škol jsou zdarma. Placený přístup odemyká podrobné srovnání.
           </p>
         </div>
 
@@ -77,10 +77,10 @@ function Home() {
           </p>
         </article>
         <article className="ls-card">
-          <h2 className="ls-card-title">Beze skóre</h2>
+          <h2 className="ls-card-title">Srozumitelná shoda</h2>
           <p className="ls-card-body">
-            Nedáváme školám známky ani ti neříkáme, jak dobrý jsi kandidát. Ukazujeme
-            fakta a jak sedí k tomu, co jsi napsal.
+            Procento shody počítáme z tvých odpovědí. Není to známka školy ani záruka
+            přijetí — ukazuje, jak škola sedí tomu, co jsi napsal.
           </p>
         </article>
       </section>

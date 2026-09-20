@@ -36,23 +36,23 @@ from every other item in this file and must be treated that way.
 **Before a single real (`sk_live_`) key ever goes into Railway, do ALL of this —
 not a spot check, an actual deep review:**
 
-- [ ] Re-read plan 009 §10 (Verification) top to bottom and personally run
-  **every single row of that table** against Stripe test mode + the Stripe CLI's
-  test-clock feature (`stripe listen`, test cards, advancing a test clock past
-  the 3-day trial and past `cancel_at`) — not just "it looked fine in the
-  dashboard."
+- [ ] Write and run a verification matrix for the **current** implementation
+  (plan 009's subscription-based season design is superseded): Stripe test mode
+  + CLI, SetupIntent completion, advancing past `season_charge_due_at`, the
+  off-session PaymentIntent, webhook retries and access expiry — not just "it
+  looked fine in the dashboard."
 - [ ] Specifically hammer on the **double-charge scenarios**: does clicking
   "buy" twice in a row ever create two subscriptions for one person? Does a
   webhook retry (Stripe resends on any non-200 response) ever cause a second
   write that bills twice? Does cancelling *during* the exact moment a webhook is
   in flight leave the account in a state where it still gets charged anyway?
 - [ ] Specifically verify **cancellation actually stops future money movement**
-  — cancel a season pass during its trial and confirm in the Stripe dashboard,
-  not just the app UI, that no invoice is scheduled. Cancel a monthly plan and
-  confirm the *next* renewal genuinely does not fire.
-- [ ] Verify the season pass's `cancel_at` truly fires and truly stops the
-  subscription — an account that silently keeps recurring after the season
-  ended is the inverse failure (quieter, but still a real-money bug).
+  — cancel a season pass during its trial, confirm `season_charge_due_at` is
+  cleared, then run the scheduler and prove no PaymentIntent is created. Cancel
+  a monthly plan and confirm the next renewal genuinely does not fire.
+- [ ] Verify the season scheduler creates exactly one PaymentIntent, survives a
+  process restart/database retry through its stable idempotency key, and grants
+  access only through the intended March 31 boundary.
 - [ ] Have a second person (ideally an adult who will eventually own the real
   Stripe account per plan 009 §11) look at the flow with fresh eyes before real
   money is ever involved. A founder who has stared at this code for hours will
@@ -65,22 +65,6 @@ not a spot check, an actual deep review:**
 **This item does not get removed from this file until it has actually been done,
 not until it has been remembered.** Checking a box above without actually running
 the test it describes defeats the entire point of writing this down.
-
----
-
-## Review questionnaire after Claude Code finishes
-- **Found:** 2026-09-19, founder instruction during the full-repository review
-- **Urgency:** medium
-- **Risk of fixing now:** Claude Code is actively changing the questionnaire; overlapping edits could overwrite unfinished work.
-- **Risk of NOT fixing:** the current questionnaire changes remain outside the completed review coverage.
-- **Effort:** medium
-- **Release/context:** follow-up to the repository review; wait for Claude Code's task to finish.
-
-Do not edit or judge the unfinished questionnaire changes. Once Claude Code is
-done, review its final diff and the full questionnaire path together: frontend
-questionnaire/results/history, related API helpers and routes, scoring and saved
-runs, plus shared components changed by that task. The founder explicitly asked
-for this follow-up; it is not covered by reviewing the rest of the repository.
 
 ---
 
@@ -126,15 +110,14 @@ for this follow-up; it is not covered by reviewing the rest of the repository.
 - **Urgency:** medium — nothing is broken or live, but it blocks charging at full
   intent, and one piece of it (the offer) had to be switched off to ship payments
 - **Effort:** medium — part product decision, part backend work
-- **Release/context:** `frontend/src/config/pricing.js`,
-  `frontend/src/lib/offerEntitlement.js`, plan 009 §7
+- **Release/context:** `frontend/src/config/pricing.js`, plan 009 §7
 
 Plan 009 **disables the one-time 30% first-view offer** (`ONE_TIME_OFFER_ENABLED
 = false`) rather than shipping it, because its entitlement was a localStorage
 stub: clearing cookies or opening an incognito window resurfaced it, which makes
 the "jen teď, jednorázově" claim false in practice. Shown to minors that is a DSA
-Art. 25 dark-pattern problem, not a rough edge. The prototype code is kept, not
-deleted.
+Art. 25 dark-pattern problem, not a rough edge. The unused localStorage prototype
+was removed on 2026-09-19; the disabled offer constants remain as the product decision.
 
 But the founder's own framing was broader than that one flag: **the pricing model
 as a whole is not yet what they want.** Things in this area that are known-unsettled:
@@ -143,7 +126,8 @@ as a whole is not yet what they want.** Things in this area that are known-unset
   can be honestly shown: `one_time_offers(user_id pk, offer_id, granted_at,
   expires_at, consumed_at)` plus `POST /api/offers/one-time/claim` and
   `GET /api/offers/one-time/status`, with the server as the only thing that decides
-  eligibility. The sketch is already written in `offerEntitlement.js`'s header.
+  eligibility. This needs a fresh implementation if the offer survives the product
+  decision; there is no client entitlement module to revive.
 - **The actual prices** — 249 Kč monthly / 690 Kč season are still explicitly
   marked `PLACEHOLDER` in `pricing.js`. They have never been set as real numbers.
 - **`REFUND_GUARANTEE_DAYS = 3`** — a testing placeholder the founder picked, not
@@ -370,6 +354,12 @@ sentence sounds right for a 15-year-old" vs. "this sounds like a robot." That
 tuning pass hasn't happened yet for any of them, and it needs to before these
 are treated as finished, not just working.
 
+**Added 2026-09-19 (plan 011):** the questionnaire's default model moved from
+Claude Sonnet 5 to **Gemini 2.5 Flash Lite** (~20x cheaper). Its Czech has never
+been read by a human, and the output is shown to 14-15-year-olds — so this pass
+now has a second reason to happen, and the model choice itself should be judged
+in the same sitting (`OPENROUTER_MODEL` swaps it with no code change).
+
 **Current AI touchpoints, in ascending order of how much attention they've had:**
 - `lib/questionnaire.js`'s `SYSTEM_PROMPT` (~line 399) — the onboarding quiz's
   "why this school fits you" sentence. The most mature one; still worth a
@@ -585,52 +575,13 @@ of why it is a reasonable place to stop for now.
 
 ---
 
-## Onboarding: email confirmation gate temporarily disabled
-
-- **Found:** 2026-09-05, user request
-- **Urgency:** low now — no real charges happen yet (Paywall is fully mocked) —
-  high before Stripe goes live
-- **Release/context:** blocks nothing today; must be re-solved before real payments
-
-`CreateAccount.jsx` (`frontend/src/pages/onboarding/screens/CreateAccount.jsx`)
-used to block on a "check your email" screen after signup, because Supabase
-issues no session until the confirmation link is clicked. That screen was a
-dead end: the confirmation link opens in whatever tab/device the email client
-uses, and there is no cross-context browser API for one tab to hand control
-back to a specific other tab — "return to the same onboarding tab" is not
-something a web page can do, regardless of implementation effort. The
-confirmation link redirected to `/prihlaseni?potvrzeno=1` (generic Login),
-dropping the user out of the onboarding flow entirely.
-
-**Current state:** `CreateAccount.jsx` now calls `goNext()` immediately after
-`signUp()` succeeds, regardless of `needsEmailConfirmation`. This is safe
-today because `Paywall.jsx` right after it is fully mocked and calls nothing
-protected — no `requireAuth`-gated route is hit unconfirmed. Server-side,
-`requireAuth` in `server.js` still checks `email_confirmed_at` and rejects
-unconfirmed tokens on every protected route (favorites, questionnaire, real
-checkout) — that enforcement is untouched. So today: an account is created,
-the flow continues, but the user simply won't be able to use anything
-protected until they eventually click the confirmation link (whenever, no
-longer blocking).
-
-**What needs to happen before Stripe goes live:** either (a) change
-`emailRedirectTo` in `AuthContext.jsx`'s `signUp`/`resendConfirmation` to
-redirect into `/onboarding/<next-step>` instead of `/prihlaseni` when the
-signup happened inside onboarding — this only helps when the same browser
-opens the link (common case, not guaranteed) — or (b) require confirmation
-again before the real checkout call specifically, with a clear in-flow
-"check your email to unlock payment" moment instead of the old full-flow
-block. Either way, don't let a real charge process for an unconfirmed email.
-
----
-
 ## Legal check on the paywall — one real open question, one resolved
 
 - **Found:** 2026-09-05, checking `onboarding-architect.md`'s legal constraints
   (§0.4) against primary sources rather than secondary commentary
 - **Urgency:** medium now, high before real money moves
-- **Release/context:** must be resolved before Stripe goes live (the current
-  checkout is mocked)
+- **Release/context:** must be resolved before Stripe goes live (checkout is
+  implemented but live keys are not approved)
 
 **Resolved, favorably — GDPR Art. 8 age of consent.** `onboarding-architect.md`
 assumed the EU default (16) applies. It does not: **Czech law lowered it to 15**
@@ -648,8 +599,8 @@ deliberately vague, and no source found states whether a 690 Kč purchase falls
 inside or outside that line for a 15-year-old.
 ([Dostupný advokát](https://dostupnyadvokat.cz/en/blog/rights-and-responsibilities-for-children))
 
-The onboarding-v2 paywall design (`design/onboarding-v2/Paywall.dc.html`) already
-has a parental-confirmation checkbox before the mocked charge, per ruling C-8.
+The onboarding-v2 paywall has a parental-confirmation checkbox before the Stripe
+redirect, per ruling C-8.
 **That checkbox is a UX safeguard, not a legal fix** — it doesn't transfer
 contractual capacity. If the card actually charged is the parent's own, this is
 moot. If a minor could ever complete checkout with their own card/account
@@ -719,9 +670,9 @@ placeholders in `frontend/src/config/pricing.js`:
 - **Release/context:** blocks Stripe go-live alongside the pricing decisions above
 
 1. **One-time discount offer — judgement deliberately postponed.** The user asked
-   for it to be left out of the multi-page paywall and revisited later. It still
-   exists in code (`ONE_TIME_OFFER` in `pricing.js`, `lib/offerEntitlement.js`,
-   ruling C-9) and is *not* being deleted. The open question is whether a 15-minute
+   for it to be left out of the multi-page paywall and revisited later. Its disabled
+   configuration remains in `pricing.js` (ruling C-9); the unsafe localStorage
+   entitlement prototype was deleted as dead code. The open question is whether a 15-minute
    countdown belongs on a paywall aimed at minors at all: the Mobbin survey files
    manufactured countdowns as its headline anti-pattern, and
    `pricing_research.md` §4 puts countdown-plus-minors in the DSA Art. 25 zone.
@@ -746,16 +697,11 @@ placeholders in `frontend/src/config/pricing.js`:
    exact combination §4 flags. Built per the user's explicit instruction. Revisit if
    the DFA is adopted, or if a Czech consumer-law review ever happens.
 
-4. **Trial moves from Měsíční to Sezónní** (proposed 2026-09-05, awaiting approval
-   of the design). Today `pricing.js` has `hasTrial: true` on `monthly` and `false`
-   on `season`, which is backwards on two counts: research §2 says trials belong on
-   the longer commitment so users can't trial-hop the cheap tier, and `pricing.js`'s
-   own `REFUND_GUARANTEE_DAYS` comment complains that the pre-selected season plan
-   has no exit at all. A trial solves that better than a refund window. Each plan
-   then keeps an exit of its own shape: season = 3 days to change your mind,
-   monthly = cancel whenever. **Flipping these two flags also needs the checkout to
-   support a one-time charge with a delayed start**, which the subscription-mode-only
-   `/api/checkout` cannot do yet (see Stripe integration below).
+4. **Trial placement — resolved in code, still needs real-user validation.** The
+   trial is on Sezónní and Měsíční has no trial. Season Checkout saves the payment
+   method and the server schedules one PaymentIntent three days later; monthly is
+   a normal recurring subscription. Do not flip the flags independently of those
+   backend semantics.
 
 5. **`/api/schools*` must be gated once the free tier is gone.** CLAUDE.md records
    it as *deliberately* ungated because the onboarding quiz reads school data before
@@ -778,23 +724,18 @@ placeholders in `frontend/src/config/pricing.js`:
 
 ---
 
-## Stripe integration
-- **Found:** 2026-08-27 merge, deferred explicitly by user 2026-08-28
-- **Urgency:** high, but explicitly gated on user decision
-- **Risk of fixing now:** user said "not just now" — do not start without them raising it again
-- **Risk of NOT fixing:** the paywall stays mocked indefinitely; no real revenue
-- **Effort:** medium — routes exist as scaffolding, need real keys + testing
-- **Release/context:** blocks real payments, blocks trial-reminder-email and cancellation-screen below (both assume a real subscription to act on)
+## Stripe live activation and end-to-end verification
+- **Found:** 2026-08-27; implementation completed in test-mode code 2026-09-19
+- **Urgency:** high before launch
+- **Risk of NOT fixing:** no real revenue, or real-money failures if keys are enabled prematurely
+- **Effort:** medium — account/product setup plus the full test matrix at the top of this file
+- **Release/context:** blocks real payments and the trial reminder below
 
-Create the Stripe product, pick real prices (see pricing decisions above), add
-`STRIPE_SECRET_KEY` / `STRIPE_PRICE_ID` / `STRIPE_WEBHOOK_SECRET` to `.env`,
-uncomment the real checkout logic in `/api/checkout` and the webhook handler.
-Also needs a one-time-mode path for the season pass — checkout is
-subscription-mode only today, and `'season'` status has nowhere to be written
-from until this exists.
-
-**Do not start this without the user explicitly re-raising it** — they said
-"I don't want to connect Stripe just now" on 2026-08-28.
+Checkout, cancellation, webhooks and the season one-time scheduler are implemented.
+What remains is operational and verification work: choose final prices, create the
+adult-owned Stripe account and monthly Price, configure test keys/webhook secret,
+run every test-mode scenario, then add live keys only after the legal/reminder/refund
+blockers are resolved. The season plan deliberately has no Stripe Price.
 
 ---
 
@@ -938,20 +879,6 @@ that env var ever went missing.
 
 ---
 
-## Backend payload size — school_programs nesting
-- **Found:** 2026-09-08
-- **Urgency:** low
-- **Effort:** revisit together with the existing "Backend pagination" item below
-
-`/api/schools` now returns each school with its full `school_programs` array
-nested (`select('*, school_programs(*)')` in `server.js`), adding roughly 250
-rows / ~50KB to the response at current data volume (1 year imported). This
-will grow proportionally as more years are imported (up to ~5x once all 5
-Cermat files are in). Acceptable today; revisit alongside pagination if it
-ever becomes a real page-load problem.
-
----
-
 ## Paywall mockup promises that outran the product
 - **Found:** 2026-08-24, comparing `docs/sources/design_system.md` mockup against real config
 - **Urgency:** high for the two payment-screen items (false trust signals), low for the rest
@@ -1018,7 +945,12 @@ still aren't real:
    render as honest placeholders on the school detail page
    (`MissingDataGrid.jsx`) instead of being treated as available. Do not
    re-trust this brainstorm claim in a future session.
-2. **Score display resolution** — still undecided: percentages (user's
+2. **Score display resolution** — **RESOLVED 2026-09-19 for the standalone
+   questionnaire only (`/dotaznik`): percentages**, per the founder's
+   explicit call (with ~220 schools, bands would lump huge groups together and
+   lose the 98 % vs 83 % difference). Still open for school-detail surfaces;
+   the onboarding quiz stays band-only on purpose. Original note follows —
+   still undecided: percentages (user's
    preference) vs. criteria list + factor magnitudes (research + Mobbin
    patterns both point this way) vs. a plain band (what's actually shipped
    in the onboarding quiz today, per matching.js's own hard rule against fake
@@ -1218,30 +1150,32 @@ back).
 
 ---
 
-## Backend pagination
-- **Found:** pre-2026-08-27
-- **Urgency:** low — not urgent at 224 schools (updated 2026-09-13 after the
-  Prague database expansion; still far under the 1000-row cliff)
-- **Risk of NOT fixing:** Supabase's PostgREST silently truncates at 1000 rows — a silent data-loss bug once the school count crosses that, not an error
-- **Effort:** small
-- **Release/context:** must fix before expanding past Prague to other Czech cities
+## True `?limit=&offset=` pagination — needed at national scale, not built
+- **Found:** pre-2026-08-27; narrowed to this scope 2026-09-17 (plan 010)
+- **Urgency:** low — not urgent at 223 schools, only matters past ~1300
+  (national scale, once the product expands past Prague)
+- **Effort:** large — real server-side filtering, sorting and facet counting,
+  which means rewriting the core of `Search.jsx` and moving onboarding-quiz
+  scoring off the client
+- **Release/context:** must exist before expanding past Prague to other Czech
+  cities (CLAUDE.md's "Geographic Scope for V1")
 
-`GET /api/schools` has no pagination. Fine today at 224 rows; add it before the
-geographic-scope expansion mentioned in CLAUDE.md's "Geographic Scope for V1".
+Plan 010 (below, Resolved) fixed the two problems that were bundled under the
+old "Backend pagination" entry: the silent 1000-row truncation cliff, and the
+843 KB payload every list page downloaded. What's left is genuine `?limit=
+&offset=` with server-side filtering/sorting/facets — deliberately not built
+now because `Search.jsx` does all 13 filters, per-option counts and sorting
+client-side, and the onboarding quiz scores the whole catalogue in the
+browser. Building this means rearchitecting both, which isn't worth it while
+Prague-only and pre-launch.
+
+**If this gets built:** `withMatchScores` (server.js) must survive whatever
+query replaces `fetchAllSchools`/`LIST_SELECT` — see CLAUDE.md's `/api/schools*`
+trap note. It already survives plan 010 unmodified because the server scorer
+only reads the `programs` text column, never the nested `school_programs`
+join; keep that property true of any future rewrite too.
 
 ---
-
-## Onboarding paywall not connected to real access state
-- **Found:** 2026-08-27 merge
-- **Urgency:** medium, gated on the Stripe decision above
-- **Effort:** medium — this is the actual seam between the onboarding flow and the real auth/payment layer
-- **Release/context:** the single biggest remaining gap between "functionally complete demo" and "real product"
-
-The onboarding's purchase button still calls `mockStartSubscription`, and the
-one-time-offer entitlement (`lib/offerEntitlement.js`) is a localStorage stub
-explicitly marked not production-safe. Connecting this to real Stripe checkout
-and real trial/access state is blocked on the Stripe decision above — don't
-start this independently of that.
 
 ## `ObKit.jsx` / `auth.css` primitives predate the real design-system template
 - **Found:** 2026-08-31 (file-mtime comparison, at user's request)
@@ -1405,9 +1339,8 @@ Fold that fix into the redesign rather than patching it separately.
 
 1. **No hero photograph.** `.ls-photo` is a labelled dashed placeholder. DESIGN.md
    calls for real photography of real people, not illustration, and no asset
-   exists — `frontend/src/assets/hero.png` is an abstract purple 3D shape left
-   over from the retired design system, in a hue DESIGN.md explicitly bans, so it
-   cannot be used. Hidden below 900px, so mobile is unaffected.
+   exists. The unrelated abstract purple starter asset was removed as dead code.
+   Hidden below 900px, so mobile is unaffected.
 2. **The ambient idle animation is not implemented.** DESIGN.md's "Motion —
    landing page" section specifies exactly one slow, contained idle loop
    (CSS keyframes on `transform`/`opacity`, Linear/Stripe register — never a
@@ -1422,6 +1355,70 @@ Fold that fix into the redesign rather than patching it separately.
 ## Resolved
 
 *(Move items here with a date + one-line note when they're actually done, rather than deleting them.)*
+
+- **Questionnaire results, run history, unlimited runs, AI-optional** — done
+  2026-09-19 (plan 011, `plans/011-questionnaire-results-history.md`). `/dotaznik`
+  was a flat list of 8 rows that ignored most of what its backend already
+  supported. Now: a results screen (top 10 with reasoning, expandable to the
+  full current school ranking), a run history (rename, set as default, archive — the backend's two
+  409 refusals are shown up front as a disabled button, not after the click), and
+  two confirm dialogs (before retaking; after submitting, offering to keep the
+  previous run as default). Backend: submitting no longer 503s without an
+  OpenRouter key — scores are computed and saved regardless, and a failed or
+  absent AI call degrades to empty sentences; the monthly quota (and its dead
+  helpers) is gone, the burst limiter and `requireAccess` stay; the onboarding run
+  is now flagged default explicitly instead of only looking default by way of the
+  "newest wins" fallback; `model` and `source` are exposed on runs so the UI can
+  tell why a sentence is missing. Cost was measured before removing the cap:
+  ~1.5k input / ~0.8k output tokens per run, ~$0.0005 on Gemini 2.5 Flash Lite.
+  Verified against a stateful mock of the API (the real authenticated routes
+  could not be exercised without a login — see the follow-up above) at 1280px
+  and 375px, with and without AI, including empty state, expand, rename, archive,
+  set-default and both dialogs.
+
+- **Questionnaire follow-up review after Claude Code** — done 2026-09-19/20.
+  Reviewed the final component/API/server/scoring path, added deterministic
+  validation and no-AI tests, restored the promised Prague map, corrected skip
+  copy, hardened database failures, and verified form/results/history at 390px
+  and 1280px with no horizontal overflow.
+
+- **Onboarding email-confirmation handoff** — done 2026-09-19. Signup now pauses
+  on a clear confirmation screen; the confirmation URL carries a validated local
+  `/onboarding/plan` continuation through Login, so an unconfirmed account never
+  reaches a checkout call that can only answer 401.
+
+- **Onboarding paywall to access/payment seam** — connected in code 2026-09-19.
+  `Platba.jsx` calls `/api/checkout`; webhooks write access state; the unsafe
+  localStorage one-time-offer entitlement was removed. Live activation and the
+  full real-money verification remain open above.
+
+- **`/api/schools` payload slimming + 1000-row truncation cliff** — done
+  2026-09-17 (plan 010, `plans/010-schools-payload-slimming.md`). The list
+  endpoint used to nest every raw `school_programs` row (2372 rows across 223
+  schools, one row per obor per imported year) plus `school_ai_summary`,
+  measured at **843 KB per load** on six surfaces including the onboarding
+  quiz on phones. It now collapses `school_programs` to one entry per obor
+  (latest year only) carrying just the 7 fields list pages actually read
+  (`maturitni`, `jpz_povinna`, `typ_skoly`, `jazyk_studia`, `kkov`,
+  `zrizovatel`, `kapacita`) — **measured 215 KB, a 75% cut**, with zero
+  rewrite of `Search.jsx`'s client-side filtering/sorting/facets. A new
+  `GET /api/schools?ids=1,2,3` (≤50 ids) returns full per-obor rows +
+  `school_ai_summary` for `/porovnani` and `/porovnani/matice`, which only
+  ever need a handful of schools. `fetchAllSchools()` also pages the
+  underlying query in 1000-row chunks so PostgREST's silent truncation cliff
+  can't bite once the school count grows past Prague — verified by
+  temporarily lowering the page size to 50 and confirming all 223 rows came
+  back with no duplicates across the boundary. `withMatchScores` needed no
+  changes: the server scorer only ever reads the `programs` text column, not
+  the nested join, exactly as CLAUDE.md's `/api/schools*` warning assumes.
+  **Side effect, intentional:** summing `kapacita` over the old nested rows
+  double/triple-counted capacity for schools with multiple imported years —
+  **211 of 223 schools** had an inflated "volných míst" number feeding the
+  "Aspoň N míst" search filter. Collapsing to one row per obor fixed this;
+  verified live against a school's own detail page (Evropská akademie:
+  90+30+10 = 130 míst 2026, matching what search now shows, vs. the old
+  summed-across-years figure). If capacity-filter results look different from
+  before, this is why — not a regression.
 
 - **School Detail Pages — still minimal** — done 2026-09-08. Rebuilt from
   feature-brainstorm.md §4: real per-obor breakdown with a 3-year Cermat

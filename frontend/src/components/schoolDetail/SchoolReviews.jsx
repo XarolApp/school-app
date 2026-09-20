@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { MessageSquare } from 'lucide-react';
 import { fetchSchoolReviews } from '../../api';
 import ReviewCard from './ReviewCard';
@@ -6,15 +6,31 @@ import ReviewForm from './ReviewForm';
 
 function SchoolReviews({ schoolId }) {
   const [reviews, setReviews] = useState(null);
+  const [error, setError] = useState(null);
   const [tab, setTab] = useState('all');
+  const requestRef = useRef(0);
 
-  const load = () => {
+  const load = useCallback(() => {
+    const requestId = ++requestRef.current;
+    setError(null);
+    setReviews(null);
     fetchSchoolReviews(schoolId)
-      .then(setReviews)
-      .catch(() => setReviews([]));
-  };
+      .then((rows) => {
+        if (requestRef.current === requestId) setReviews(rows);
+      })
+      .catch((err) => {
+        if (requestRef.current !== requestId) return;
+        setError(err.message || 'Recenze se nepodařilo načíst.');
+        setReviews([]);
+      });
+  }, [schoolId]);
 
-  useEffect(load, [schoolId]);
+  useEffect(() => {
+    setReviews(null);
+    setTab('all');
+    load();
+    return () => { requestRef.current += 1; };
+  }, [load]);
 
   if (reviews === null) return null;
 
@@ -28,12 +44,21 @@ function SchoolReviews({ schoolId }) {
     <div id="recenze">
       <div className="sd-section-head">
         <h2 className="sd-section-title">Recenze</h2>
-        <span className="sd-section-meta">
-          {verifiedCount} ověřených · {unverifiedCount} neověřených
-        </span>
+        {!error && (
+          <span className="sd-section-meta">
+            {verifiedCount} ověřených · {unverifiedCount} neověřených
+          </span>
+        )}
       </div>
 
-      {published.length === 0 ? (
+      {error ? (
+        <div className="notice notice-error" role="alert">
+          <p className="notice-text">{error}</p>
+          <button type="button" className="btn btn-secondary btn-sm" onClick={load}>
+            Zkusit načíst znovu
+          </button>
+        </div>
+      ) : published.length === 0 ? (
         <div className="sd-reviews-empty">
           <MessageSquare size={32} strokeWidth={1.4} color="var(--line2)" aria-hidden="true" />
           <div className="sd-reviews-empty-title">O téhle škole zatím nikdo nenapsal</div>

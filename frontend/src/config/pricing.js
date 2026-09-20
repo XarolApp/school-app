@@ -24,8 +24,9 @@
  *     a parent and produces six chances to churn.
  *
  * The test axis is COMMITMENT SHAPE, not duration:
- *   Sezónní přístup — one-time payment, covers the whole Sept-March season
- *   Měsíční        — recurring, cancel any time, with a 3-day free trial
+ *   Sezónní přístup — one-time payment after a 3-day free trial, covers the
+ *                     whole Sept-March season
+ *   Měsíční        — recurring, cancel any time, without a trial
  *
  * Pre-selected: SEZÓNNÍ PŘÍSTUP (one-time). This flipped from the first build
  * (which pre-selected Měsíční) after the follow-up research came back:
@@ -151,9 +152,8 @@ export const ONE_STEP_CANCELLATION_IMPLEMENTED = true;
  * The same section names the one-time model's core psychological weakness for
  * an unknown brand: "the money's gone if it disappoints."
  *
- * Now that Sezónní přístup is the pre-selected default (C-8 third revision),
- * the default plan has no exit at all — no trial, no cancellation, nothing.
- * A stated refund window is the only thing that can absorb that.
+ * Sezónní přístup now has a pre-charge trial, but an explicit refund window
+ * still matters after its one-time charge has happened.
  *
  * 3 = a TESTING placeholder the user chose (2026-08-24), not a committed
  * number. 14 (the EU distance-selling floor) remains the benchmark to
@@ -268,13 +268,11 @@ export const ONE_TIME_OFFER = {
 };
 
 /**
- * OFF for real payments (plan 009). The entitlement behind this offer
- * (lib/offerEntitlement.js) is a localStorage stub: clearing cookies or
- * opening an incognito window resurfaces it, which makes the "jen teď,
+ * OFF for real payments (plan 009). A client-side entitlement can be reset by
+ * clearing cookies or opening an incognito window, which makes the "jen teď,
  * jednorázově" claim false in practice. Shown to minors that is a DSA Art. 25
- * dark-pattern problem, not a rough edge — so it stays off until a real
- * server-side entitlement exists (sketch already written in that file's
- * header; tracked in UNFORGET.md along with the wider pricing-model pass).
+ * dark-pattern problem, not a rough edge — so it stays off until eligibility
+ * and expiry are issued and enforced server-side (tracked in UNFORGET.md).
  * Every consumer of ONE_TIME_OFFER below must check this flag and degrade to
  * "full price, no countdown" — never to a broken or empty element.
  */

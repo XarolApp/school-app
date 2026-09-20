@@ -11,7 +11,7 @@
  * be drawn, not omitted").
  */
 
-import { summarizeCurrentYear, groupProgramsByObor } from './schoolPrograms';
+import { summarizeCurrentYear, groupProgramsByObor, latestProgramValue } from './schoolPrograms';
 
 const numCz = (v, digits = 1) => (v == null ? null : v.toLocaleString('cs-CZ', { maximumFractionDigits: digits }));
 
@@ -90,7 +90,7 @@ export function buildComparisonRows(schools) {
       {
         id: 'zrizovatel',
         label: 'Zřizovatel',
-        values: schools.map((s) => ({ text: s.zrizovatel || '—', isBest: false })),
+        values: schools.map((s) => ({ text: latestProgramValue(s, 'zrizovatel') || '—', isBest: false })),
       },
       {
         id: 'ukonceni',
@@ -123,7 +123,7 @@ export function buildComparisonRows(schools) {
         id: 'skolne',
         label: 'Školné',
         values: schools.map((s) => {
-          const zrizovatel = (s.zrizovatel || '').toLowerCase();
+          const zrizovatel = (latestProgramValue(s, 'zrizovatel') || '').toLowerCase();
           if (!zrizovatel) return { text: '—', isBest: false };
           const isPublic = !zrizovatel.includes('soukrom') && !zrizovatel.includes('církev');
           return { text: isPublic ? 'Bez školného' : 'Placená škola', isBest: false };

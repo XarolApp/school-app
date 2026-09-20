@@ -85,6 +85,11 @@ function median(nums) {
   return sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
 }
 
+function sumKnown(values) {
+  const known = values.filter((value) => value != null && !Number.isNaN(Number(value)));
+  return known.length ? known.reduce((sum, value) => sum + Number(value), 0) : null;
+}
+
 /** Minimal obor grouping — mirrors frontend/src/lib/schoolPrograms.js's logic
  *  just enough to get a current-year summary and a 2-point trend, without
  *  importing an ES module into this CommonJS script. */
@@ -94,8 +99,8 @@ function summarizeSchool(school) {
   const latestYear = years[years.length - 1];
   const latestRows = rows.filter((r) => r.rok === latestYear);
 
-  const kapacita = latestRows.reduce((sum, r) => sum + (r.kapacita || 0), 0) || null;
-  const prihlasky = latestRows.reduce((sum, r) => sum + (r.prihlasky || 0), 0) || null;
+  const kapacita = sumKnown(latestRows.map((r) => r.kapacita));
+  const prihlasky = sumKnown(latestRows.map((r) => r.prihlasky));
   const oborCount = new Set(latestRows.map((r) => r.kkov || r.obor_nazev)).size;
   const jazyky = [...new Set(rows.map((r) => r.jazyk_studia).filter(Boolean))];
 
@@ -103,8 +108,8 @@ function summarizeSchool(school) {
   if (years.length >= 2) {
     const oldestYear = years[0];
     const oldestRows = rows.filter((r) => r.rok === oldestYear);
-    const oldestPrihlasky = oldestRows.reduce((sum, r) => sum + (r.prihlasky || 0), 0);
-    if (oldestPrihlasky && prihlasky) {
+    const oldestPrihlasky = sumKnown(oldestRows.map((r) => r.prihlasky));
+    if (oldestPrihlasky > 0 && prihlasky != null) {
       const pct = Math.round(((prihlasky - oldestPrihlasky) / oldestPrihlasky) * 100);
       trend = Math.abs(pct) < 10 ? 'stabilní' : pct > 0 ? 'rostoucí zájem' : 'klesající zájem';
     }
@@ -222,9 +227,13 @@ async function main() {
     rate: median(schools.map((s) => s.acceptance_rate)),
   };
 
-  const { data: existing } = await supabase
+  const { data: existing, error: existingError } = await supabase
     .from('school_ai_summary')
     .select('school_id, data_fingerprint');
+  if (existingError) {
+    console.error('Could not read existing summaries:', existingError.message);
+    process.exit(1);
+  }
   const existingBySchool = new Map((existing || []).map((row) => [row.school_id, row.data_fingerprint]));
 
   let targets = schools;

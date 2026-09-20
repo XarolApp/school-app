@@ -8,7 +8,7 @@ function ResetPassword() {
   const [form, setForm] = useState({ password: '', confirm: '' });
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
-  const { loading, isSignedIn, updatePassword } = useAuth();
+  const { loading, isSignedIn, isPasswordRecovery, updatePassword } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -49,9 +49,10 @@ function ResetPassword() {
     );
   }
 
-  // Clicking the emailed link signs the user in with a short-lived recovery
-  // session. No session here means the link was never used, or has expired.
-  if (!isSignedIn) {
+  // A normal signed-in session is not proof that the recovery link was used.
+  // Supabase emits PASSWORD_RECOVERY specifically for that redirect; requiring
+  // it here keeps this public route from bypassing Settings' reauthentication.
+  if (!isSignedIn || !isPasswordRecovery) {
     return (
       <div className="page page-auth">
         <div className="auth-layout">

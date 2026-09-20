@@ -20,7 +20,12 @@ function Login() {
   const location = useLocation();
   const [searchParams] = useSearchParams();
 
-  const destination = location.state?.from?.pathname || '/skoly';
+  const requestedDestination = searchParams.get('next');
+  const safeDestination =
+    requestedDestination?.startsWith('/') && !requestedDestination.startsWith('//')
+      ? requestedDestination
+      : null;
+  const destination = location.state?.from?.pathname || safeDestination || '/skoly';
   const justConfirmed = searchParams.get('potvrzeno') === '1';
 
   const handleChange = (e) => {

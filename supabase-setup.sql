@@ -10,6 +10,26 @@
 
 
 -- ----------------------------------------------------------------------------
+-- 0. School catalogue
+--
+-- Every product table below references public.schools, so a fresh project
+-- must create the catalogue before those foreign keys are declared. Existing
+-- projects are unaffected; the later ALTER statements add the admission and
+-- coordinate columns introduced after the original catalogue.
+-- ----------------------------------------------------------------------------
+
+create table if not exists public.schools (
+  id bigint generated always as identity primary key,
+  created_at timestamptz not null default now(),
+  name text not null,
+  location text,
+  programs text,
+  contact text,
+  website text
+);
+
+
+-- ----------------------------------------------------------------------------
 -- 1. Profile table
 --
 -- Supabase already stores the account (email + hashed password) in the private
@@ -86,6 +106,21 @@ alter table public.users add constraint users_subscription_status_check
 alter table public.users add column if not exists access_expires_at timestamptz;
 alter table public.users add column if not exists plan_id text;
 
+-- Plan 009 revision: season pass moved from a subscription+trial hack to a
+-- genuine one-time charge (mode:'setup' + a later PaymentIntent), because
+-- Stripe discloses recurring-billing terms on any subscription-mode Checkout
+-- session regardless of custom_text, which contradicted the "one-time"
+-- promise. stripe_payment_method_id is the card saved during checkout, kept
+-- until the scheduled charge fires; season_charge_due_at is when
+-- chargeDueSeasonPasses() (server.js) is allowed to bill it, and is cleared
+-- once billed or cancelled. Monthly is unaffected — still a real subscription.
+alter table public.users add column if not exists stripe_payment_method_id text;
+alter table public.users add column if not exists season_charge_due_at timestamptz;
+-- Identifies the setup event already applied to this account. Stripe retries
+-- webhooks, including after a user has cancelled; retaining this value makes
+-- the same event a no-op instead of silently scheduling the charge again.
+alter table public.users add column if not exists stripe_setup_intent_id text;
+
 
 -- ----------------------------------------------------------------------------
 -- 3. Favourites
@@ -110,11 +145,9 @@ create table if not exists public.favorites (
 -- the *default*: the one whose answers decide the match percentage shown on
 -- every school across the app. See the is_default notes below.
 --
--- This table is also the quota: "how many runs this month" is a count of rows,
--- which means the limit cannot be dodged by clearing localStorage or replaying
--- a request. There is deliberately no client INSERT policy — only server.js,
--- running as service_role, may add a row, and it does so only after it has
--- checked the quota itself.
+-- There is deliberately no client INSERT policy — only server.js, running as
+-- service_role, may add a row. Submissions are currently unlimited but still
+-- rate-limited at the API boundary.
 -- ----------------------------------------------------------------------------
 
 create table if not exists public.questionnaire_runs (
@@ -159,11 +192,9 @@ alter table public.questionnaire_runs
 alter table public.questionnaire_runs
   add column if not exists is_default boolean not null default false;
 
--- Hidden from the list without being destroyed. Deliberately not a DELETE:
--- the quota is a count of rows since the period start, so deleting sets would
--- refund allowance and make the monthly limit worth nothing. Archiving keeps
--- the row counted and keeps a mis-click reversible; genuinely erasing answers
--- is what account deletion is for.
+-- Hidden from the main results without being destroyed. Archiving keeps a
+-- mis-click reversible; genuinely erasing answers is what account deletion is
+-- for.
 alter table public.questionnaire_runs
   add column if not exists archived_at timestamptz;
 
@@ -178,8 +209,7 @@ create index if not exists questionnaire_runs_user_default_idx
   on public.questionnaire_runs (user_id, is_default desc, created_at desc);
 
 -- Where a set of answers came from. 'onboarding' rows are written once, when a
--- new account first signs in, from the onboarding quiz; they cost no AI call
--- and must not count against the monthly questionnaire allowance.
+-- new account first signs in, from the onboarding quiz; they make no AI call.
 alter table public.questionnaire_runs
   add column if not exists source text not null default 'questionnaire'
   check (source in ('questionnaire', 'onboarding'));
@@ -419,7 +449,16 @@ as $$
     where u.id = uid
       and (
         u.trial_expires_at > now()
-        or u.subscription_status in ('active', 'season', 'developer')
+        or u.subscription_status = 'developer'
+        or (
+          u.subscription_status in ('active', 'season')
+          and (u.access_expires_at is null or u.access_expires_at > now())
+        )
+        or (
+          u.subscription_status = 'past_due'
+          and u.access_expires_at is not null
+          and u.access_expires_at > now()
+        )
       )
   );
 $$;

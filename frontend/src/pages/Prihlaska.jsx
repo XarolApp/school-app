@@ -90,9 +90,15 @@ function Prihlaska() {
     try {
       const { token } = await createShare({ includeNotes });
       const url = `${window.location.origin}/sdileni/${token}`;
-      await navigator.clipboard?.writeText(url).catch(() => {});
-      toast('Odkaz zkopírován do schránky.');
       setShares((prev) => [{ token, include_notes: includeNotes, created_at: new Date().toISOString() }, ...prev]);
+
+      try {
+        if (!navigator.clipboard?.writeText) throw new Error('Clipboard API is unavailable');
+        await navigator.clipboard.writeText(url);
+        toast('Odkaz zkopírován do schránky.');
+      } catch {
+        toast('Odkaz byl vytvořen, ale nepodařilo se ho zkopírovat.', { type: 'error' });
+      }
     } catch (err) {
       toast(err.message || 'Nepodařilo se vytvořit odkaz.', { type: 'error' });
     }

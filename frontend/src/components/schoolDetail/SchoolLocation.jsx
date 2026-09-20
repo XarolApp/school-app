@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import L from 'leaflet';
 import { escapeHtml } from '../../lib/escapeHtml';
+import { parseSchoolContact } from '../../lib/schoolContact';
 import 'leaflet/dist/leaflet.css';
 import '../SchoolMap.css';
 
@@ -52,6 +53,7 @@ function SchoolLocation({ school }) {
   const streetViewUrl = hasCoords
     ? `https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${school.latitude},${school.longitude}`
     : null;
+  const contacts = parseSchoolContact(school.contact);
 
   return (
     <div className="sd-location" id="kde-to-je">
@@ -82,11 +84,21 @@ function SchoolLocation({ school }) {
             <div className="sd-location-field-value">{school.location}</div>
           </div>
           <div>
-            <div className="sd-location-field-label">E-mail</div>
-            {school.contact ? (
-              <a className="sd-location-field-value" href={`mailto:${school.contact}`}>
-                {school.contact}
-              </a>
+            <div className="sd-location-field-label">Kontakt</div>
+            {contacts.length > 0 ? (
+              <div className="sd-actions-links">
+                {contacts.map((contact, index) =>
+                  contact.href ? (
+                    <a className="sd-location-field-value" href={contact.href} key={`${contact.type}-${contact.label}-${index}`}>
+                      {contact.label}
+                    </a>
+                  ) : (
+                    <span className="sd-location-field-value" key={`${contact.type}-${contact.label}-${index}`}>
+                      {contact.label}
+                    </span>
+                  ),
+                )}
+              </div>
             ) : (
               <div className="sd-location-field-value is-placeholder">Nemáme tuto informaci.</div>
             )}

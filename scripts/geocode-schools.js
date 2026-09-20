@@ -89,21 +89,28 @@ async function geocode(location) {
       countrycodes: 'cz',
     })}`;
 
-    const response = await fetch(url, {
-      headers: {
-        // Nominatim rejects requests without something identifying behind them.
-        'User-Agent': `skolamatch-geocoder/1.0 (+${
-          process.env.FRONTEND_URL || 'http://localhost:5173'
-        })`,
-      },
-    });
+    let results;
+    try {
+      const response = await fetch(url, {
+        headers: {
+          // Nominatim rejects requests without something identifying behind them.
+          'User-Agent': `skolamatch-geocoder/1.0 (+${
+            process.env.FRONTEND_URL || 'http://localhost:5173'
+          })`,
+        },
+      });
 
-    if (!response.ok) {
-      throw new Error(`Nominatim returned ${response.status}`);
+      if (!response.ok) {
+        throw new Error(`Nominatim returned ${response.status}`);
+      }
+
+      results = await response.json();
+    } finally {
+      // The one-request-per-second policy applies to failed responses too.
+      // Without this finally block a 429/5xx would make the next school's
+      // request fire immediately and turn a transient failure into a burst.
+      await sleep(DELAY_MS);
     }
-
-    const results = await response.json();
-    await sleep(DELAY_MS);
 
     if (results.length > 0) {
       return {

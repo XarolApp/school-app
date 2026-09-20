@@ -52,11 +52,14 @@
     cursor: pointer;
   }
   .phone {
-    width: 390px;
-    height: 844px;
+    --device-w: 390px;
+    --device-h: 844px;
+    --bezel: 14px;
+    width: calc(var(--device-w) + var(--bezel) * 2);
+    height: calc(var(--device-h) + var(--bezel) * 2);
     background: #000;
     border-radius: 55px;
-    padding: 14px;
+    padding: var(--bezel);
     box-shadow:
       0 0 0 2px #3a3940,
       0 30px 60px -12px rgba(0,0,0,.6),
@@ -82,8 +85,8 @@
     z-index: 5;
   }
   iframe {
-    width: 390px;
-    height: 844px;
+    width: var(--device-w);
+    height: var(--device-h);
     border: none;
     display: block;
     /* iOS-style status bar area is left to the app itself */

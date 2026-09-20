@@ -66,10 +66,7 @@ function Hodnota() {
         `Všech ${count} škol na jednom místě seřazených podle preferencí vašeho dítěte`,
         'U každé napsané, proč se hodí právě jemu',
         'Srovnání škol vedle sebe na jedné obrazovce',
-        // Forward-looking: the one-click handoff is designed, not built. Kept as
-        // a plain sentence with no control attached, so nothing here pretends to
-        // be a button that sends something.
-        'Dítě vám jedním kliknutím pošle uložené školy i výsledky dotazníku',
+        'Dítě vám může nasdílet vybrané školy a pořadí přihlášky',
       ]
     : [
         `Všech ${count} škol na jednom místě seřazených podle tvých preferencí`,

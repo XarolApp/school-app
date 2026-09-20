@@ -57,10 +57,9 @@ export function deleteFilterPreset(name) {
 
 /**
  * The comparison SELECTION — which school ids are queued up to compare.
- * Deliberately separate from the comparison VIEW, which does not exist yet
- * (Search.jsx's "Porovnat" button is still a no-op — see UNFORGET.md).
- * Reading this from the school detail page persists a selection made there
- * across navigation, ready for whenever the view is built.
+ * Deliberately separate from the comparison view itself. Persisting it here
+ * lets Search, school detail, /porovnani and /matice hand the same shortlist
+ * to one another across navigation.
  */
 export function getCompareSelection() {
   return readJSON(COMPARE_KEY, []);

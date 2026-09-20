@@ -116,7 +116,7 @@ const UNMET_LABELS = {
  * output. Nothing here is invented — if a school's data doesn't tell us
  * anything, this returns null and the row simply omits the line.
  */
-function differentiatorFor(features) {
+function differentiatorFor(features, structuredProgramCount) {
   const parts = [];
   if (features.focusKnown && features.focus.length) {
     const labels = features.focus
@@ -124,8 +124,13 @@ function differentiatorFor(features) {
       .filter(Boolean);
     if (labels.length) parts.push(`Zaměření: ${labels.join(', ')}.`);
   }
-  if (features.breadth > 1) {
-    parts.push(`Nabízí ${features.breadth} ${obor(features.breadth)} v rámci školy.`);
+  // Prefer the current structured admission rows. `features.breadth` comes
+  // from the older free-text `schools.programs` field and can contain a
+  // different number, which previously made one card say e.g. "11 oborů" and
+  // "Nabízí 10 oborů" at the same time.
+  const breadth = structuredProgramCount || features.breadth;
+  if (breadth > 1) {
+    parts.push(`Nabízí ${breadth} ${obor(breadth)} v rámci školy.`);
   }
   if (features.language) parts.push('Výuka klade důraz na jazyky.');
   if (features.practice) parts.push('Součástí výuky je odborná praxe.');
@@ -190,7 +195,7 @@ function buildRow(school) {
     districtLabel,
     districtSynthesized,
     progs,
-    diff: differentiatorFor(features),
+    diff: differentiatorFor(features, p.count),
     p,
     // Real data, average % score across every obor and every year Cermat's
     // file has been imported for — see import-admission-data.js. null means

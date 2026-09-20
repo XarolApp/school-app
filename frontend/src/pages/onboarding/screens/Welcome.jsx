@@ -53,7 +53,7 @@ function Welcome() {
 
         <ul className="ob-welcome-trust">
           <li>
-            <strong>60 pražských škol</strong>Gymnázia, odborné i učební obory
+            <strong>Pražské střední školy</strong>Gymnázia, odborné i učební obory
           </li>
           <li>
             <strong>Veřejné rejstříky</strong>Data z veřejných zdrojů, u každého čísla rok

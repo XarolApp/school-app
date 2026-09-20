@@ -147,8 +147,8 @@
 }
 
 /* Photography placeholder. DESIGN.md calls for real photography of real people;
-   no asset exists yet (the repo's hero.png is from the retired purple system).
-   Deliberately reads as an empty slot rather than pretending to be art. */
+   no suitable asset exists yet. Deliberately reads as an empty slot rather
+   than pretending to be art. */
 .ls-photo {
   height: 380px;
   border-radius: var(--r-card);

@@ -29,6 +29,23 @@ function sumKnown(values) {
   return known.length ? known.reduce((sum, value) => sum + value, 0) : null;
 }
 
+/** Reads a program-level school fact from the newest year that supplies it.
+ *  Fields such as `zrizovatel` do not exist on the `schools` table itself;
+ *  callers must not silently read `school.zrizovatel` and treat the resulting
+ *  undefined value as missing data. */
+export function latestProgramValue(school, field) {
+  const rows = (school.school_programs ?? []).filter(
+    (row) => row[field] !== null && row[field] !== undefined && row[field] !== ''
+  );
+  if (!rows.length) return null;
+
+  const latest = rows.reduce((best, row) => {
+    if (!best) return row;
+    return Number(row.rok ?? -Infinity) > Number(best.rok ?? -Infinity) ? row : best;
+  }, null);
+  return latest[field];
+}
+
 function aggregateYear(rows) {
   const kapacita = sumKnown(rows.map((r) => r.kapacita));
   const prihlasky = sumKnown(rows.map((r) => r.prihlasky));

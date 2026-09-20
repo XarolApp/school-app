@@ -330,6 +330,7 @@ function SchoolMap({ rows, selectedId, onSelect }) {
               <p className="ss-stat-label">
                 hranice
                 <StatInfo
+                  placement="bottom"
                   text="Průměr z posledních 3 let (2024–2026). Nejnižší počet bodů z češtiny a matematiky (max. 100 — 50 + 50), které stačily na přijetí — je to hranice pro přijetí, ne průměrné skóre přijatých žáků. Průměr přes všechny obory školy; hranici pro konkrétní obor a rok najdeš po rozkliknutí školy. (Nové školy mohou mít kratší historii.)"
                 />
               </p>
@@ -341,6 +342,7 @@ function SchoolMap({ rows, selectedId, onSelect }) {
               <p className="ss-stat-label">
                 přijato
                 <StatInfo
+                  placement="bottom"
                   text="Průměr z posledních 3 let (2024–2026): kolik procent uchazečů škola v posledním kole přijala, v průměru přes všechny obory. Podrobnosti po jednotlivých oborech a letech najdeš po rozkliknutí školy. (Nové školy mohou mít kratší historii.)"
                 />
               </p>
@@ -349,7 +351,10 @@ function SchoolMap({ rows, selectedId, onSelect }) {
               <p className="ss-data-md">{selectedRow.p.kapacita ?? '—'}</p>
               <p className="ss-stat-label">
                 míst
-                <StatInfo text="Celkový počet míst ve všech oborech, které škola otevírá pro aktuální rok." />
+                <StatInfo
+                  placement="bottom"
+                  text="Celkový počet míst ve všech oborech, které škola otevírá pro aktuální rok."
+                />
               </p>
             </div>
           </div>

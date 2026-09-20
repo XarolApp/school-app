@@ -188,7 +188,7 @@ function RunRow({ run, isCurrent, total, busy, onSetDefault, onArchive, onRename
               autoFocus
               onChange={(e) => setDraft(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === 'Enter') save();
+                if (e.key === 'Enter' && !busy) save();
                 if (e.key === 'Escape') setEditing(false);
               }}
             />
@@ -284,7 +284,7 @@ function History({ runs, currentId, total, error, busyId, onBack, onSetDefault, 
             run={run}
             isCurrent={run.id === currentId}
             total={total}
-            busy={busyId === run.id}
+            busy={busyId !== null}
             onSetDefault={onSetDefault}
             onArchive={onArchive}
             onRename={onRename}
@@ -635,6 +635,7 @@ function Questionnaire() {
           busy={switching}
           onCancel={keepPrevious}
           onConfirm={() => setAfterSubmit(null)}
+          onDismiss={() => setAfterSubmit(null)}
         >
           <p className="ss-body-md">
             Nová sada je teď výchozí, takže procenta shody u škol, v porovnání i v matici počítáme z ní. Jestli ti

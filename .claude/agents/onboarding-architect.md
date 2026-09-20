@@ -592,7 +592,7 @@ When you receive a task:
 
 **4. Build it real.**
 - Czech user-facing copy, always. No English placeholders, no lorem ipsum.
-- Match existing conventions in `frontend/src/` — React function components, React Router routes registered in [App.jsx](frontend/src/App.jsx), page components in `frontend/src/pages/`, shared UI in `frontend/src/components/`.
+- Match existing conventions in `frontend/src/` — React function components, React Router routes registered in [App.jsx](../../frontend/src/App.jsx), page components in `frontend/src/pages/`, shared UI in `frontend/src/components/`.
 - Onboarding is a distinct flow: prefer `frontend/src/pages/onboarding/` with a step controller over bolting steps onto existing pages.
 - Quiz answers are client state until the reveal; persist to Supabase only when there's a reason to, and collect the minimum the scoring engine consumes (0.4).
 - **Scoring is deterministic math. Claude writes the Czech explanation sentences, never the percentages.** (CLAUDE.md, §1.8 trust engine.)

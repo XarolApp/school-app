@@ -575,25 +575,8 @@
   gap: var(--space-sm);
   align-items: flex-end;
 }
-.ss-save-btn {
-  appearance: none;
-  border: 0;
-  background: transparent;
-  padding: 0;
-  font: inherit;
-  font-size: var(--fs-caption);
-  color: var(--text-muted);
-  cursor: pointer;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-.ss-save-btn.is-active,
 .school-search .favorite-star.is-active {
   color: var(--primary);
-}
-
-.ss-more {
-  padding: var(--space-sm) 0;
 }
 
 .ss-pager {

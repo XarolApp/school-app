@@ -81,6 +81,11 @@ function hasPaidStatus(status) {
 // but no access_expires_at (pre-migration) is treated as still active rather
 // than retroactively locked out.
 function paidAccessActive(profile) {
+  if (profile.subscription_status === 'past_due') {
+    return Boolean(
+      profile.access_expires_at && new Date(profile.access_expires_at) > new Date()
+    );
+  }
   if (!hasPaidStatus(profile.subscription_status)) return false;
   if (profile.subscription_status === 'developer') return true;
   if (!profile.access_expires_at) return true;
@@ -102,10 +107,11 @@ function paidAccessActive(profile) {
  */
 function seasonEndsAt(from = new Date()) {
   const year = from.getFullYear();
-  let end = new Date(Date.UTC(year, 2, 31, 22, 59, 59)); // 23:59:59 CET/CEST, UTC+1/2
+  // March 31 is after Prague's last-Sunday-of-March DST transition (UTC+2).
+  let end = new Date(Date.UTC(year, 2, 31, 21, 59, 59));
   const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
   if (end.getTime() - from.getTime() < THIRTY_DAYS_MS) {
-    end = new Date(Date.UTC(year + 1, 2, 31, 22, 59, 59));
+    end = new Date(Date.UTC(year + 1, 2, 31, 21, 59, 59));
   }
   return end;
 }
@@ -310,7 +316,7 @@ async function requireAccess(req, res, next) {
  * ------------------------------------------------------------------------- */
 
 app.get('/', (req, res) => {
-  res.json({ message: 'School App Backend is running!' });
+  res.json({ status: 'ok' });
 });
 
 app.get('/test-db', async (req, res) => {
@@ -331,7 +337,7 @@ app.get('/test-db', async (req, res) => {
 
 const PROFILE_COLUMNS =
   'id, email, name, created_at, trial_expires_at, subscription_status, ' +
-  'stripe_subscription_id, access_expires_at, plan_id';
+  'stripe_subscription_id, access_expires_at, plan_id, season_charge_due_at';
 
 app.get('/api/me', requireAuth, async (req, res) => {
   let { data: profile, error } = await supabase
@@ -418,22 +424,32 @@ app.delete('/api/me', requireAuth, async (req, res) => {
     return res.status(503).json({ error: 'Mazání účtu není nastavené.' });
   }
 
-  const { data: profile } = await supabase
+  const { data: profile, error: profileError } = await supabase
     .from('users')
     .select('stripe_subscription_id')
     .eq('id', req.user.id)
     .single();
 
+  if (profileError) return res.status(500).json({ error: 'Nepodařilo se ověřit předplatné. Zkus to prosím znovu.' });
+
   // Cancel before deleting: once the account is gone the webhook can no longer
   // match the customer back to a row, and the card would keep being charged
   // for a subscription nobody can see or cancel.
-  if (stripe && profile?.stripe_subscription_id) {
+  if (profile?.stripe_subscription_id) {
+    if (!stripe) return res.status(503).json({ error: 'Zrušení předplatného není nastavené. Účet zatím nebyl smazán.' });
     try {
-      await stripe.subscriptions.cancel(profile.stripe_subscription_id);
+      const subscription = await stripe.subscriptions.retrieve(profile.stripe_subscription_id);
+      if (!['canceled', 'incomplete_expired'].includes(subscription.status)) {
+        await stripe.subscriptions.cancel(profile.stripe_subscription_id);
+      }
     } catch (err) {
-      // An already-cancelled or unknown subscription must not block erasure —
-      // the user asked for their data to be gone and that is the stronger duty.
-      console.error('Stripe cancel during account deletion failed:', err.message);
+      // A confirmed missing subscription cannot charge again. Network/auth/API
+      // failures do not prove that: retain the account mapping so cancellation
+      // can be retried rather than orphaning an active subscription.
+      if (err.type !== 'StripeInvalidRequestError' || err.code !== 'resource_missing') {
+        console.error('Stripe cancel during account deletion failed:', err.message);
+        return res.status(502).json({ error: 'Předplatné se nepodařilo zrušit. Účet zatím nebyl smazán; zkus to prosím znovu.' });
+      }
     }
   }
 
@@ -724,7 +740,8 @@ app.get('/api/schools/:id', optionalAuth, async (req, res) => {
     .eq('id', id)
     .single();
 
-  if (error) return res.status(404).json({ error: error.message });
+  if (error?.code === 'PGRST116') return res.status(404).json({ error: 'Škola nebyla nalezena.' });
+  if (error) return res.status(500).json({ error: error.message });
 
   const [school] = await withMatchScores(req.user?.id, [data]);
   res.json(school);
@@ -813,9 +830,27 @@ function toPublicReview(row, userId) {
     body: row.body,
     display_name: reviewDisplayName(row),
     verified: row.verified,
+    status: row.status,
     created_at: row.created_at,
     is_mine: userId != null && row.user_id === userId,
   };
+}
+
+// school_reviews.user_id references auth.users, not public.users, so PostgREST
+// cannot embed public profile names through that foreign key. Read only the
+// opt-in adult authors' profiles, then keep the existing first-name policy.
+async function withReviewNames(rows) {
+  const authorIds = [...new Set(rows
+    .filter((row) => row.show_name && (row.role === 'rodic' || row.role === 'ucitel'))
+    .map((row) => row.user_id))];
+  if (!authorIds.length) return rows;
+  const { data, error } = await supabase.from('users').select('id, name').in('id', authorIds);
+  if (error) {
+    console.error('Review display names could not be loaded:', error.message);
+    return rows; // Names are optional; never fail a successfully saved review.
+  }
+  const names = new Map((data || []).map((profile) => [profile.id, profile.name]));
+  return rows.map((row) => ({ ...row, users: { name: names.get(row.user_id) } }));
 }
 
 const REVIEW_ROLES = ['student', 'absolvent', 'rodic', 'ucitel', 'navstevnik'];
@@ -831,7 +866,7 @@ app.get('/api/schools/:id/reviews', optionalAuth, async (req, res) => {
   // else's non-published one.
   let query = supabase
     .from('school_reviews')
-    .select('id, role, role_year, obor_nazev, body, show_name, verified, status, created_at, user_id, users (name)')
+    .select('id, role, role_year, obor_nazev, body, show_name, verified, status, created_at, user_id')
     .eq('school_id', schoolId)
     .order('verified', { ascending: false })
     .order('created_at', { ascending: false });
@@ -843,7 +878,7 @@ app.get('/api/schools/:id/reviews', optionalAuth, async (req, res) => {
     (row) => row.status === 'published' || (req.user && row.user_id === req.user.id)
   );
 
-  res.json(visible.map((row) => toPublicReview(row, req.user?.id)));
+  res.json((await withReviewNames(visible)).map((row) => toPublicReview(row, req.user?.id)));
 });
 
 app.post('/api/schools/:id/reviews', reviewLimiter, requireAuth, async (req, res) => {
@@ -888,7 +923,7 @@ app.post('/api/schools/:id/reviews', reviewLimiter, requireAuth, async (req, res
       show_name: showName,
       status,
     })
-    .select('id, role, role_year, obor_nazev, body, show_name, verified, status, created_at, user_id, users (name)')
+    .select('id, role, role_year, obor_nazev, body, show_name, verified, status, created_at, user_id')
     .single();
 
   if (error) {
@@ -898,7 +933,8 @@ app.post('/api/schools/:id/reviews', reviewLimiter, requireAuth, async (req, res
     return res.status(500).json({ error: error.message });
   }
 
-  res.status(201).json(toPublicReview(data, req.user.id));
+  const [review] = await withReviewNames([data]);
+  res.status(201).json(toPublicReview(review, req.user.id));
 });
 
 // Deleting your own review, like removing a favourite, must survive trial
@@ -1198,11 +1234,14 @@ app.get('/api/shared/:token', shareLimiter, async (req, res) => {
     .is('revoked_at', null)
     .maybeSingle();
 
-  if (shareError || !share) {
+  if (shareError) {
+    return res.status(500).json({ error: 'Sdílený výběr se nepodařilo načíst.' });
+  }
+  if (!share) {
     return res.status(404).json({ error: 'Odkaz nenalezen nebo byl zrušen.' });
   }
 
-  const [{ data: profile }, { data: picks }, { data: decisionProfile }] = await Promise.all([
+  const [profileResult, picksResult, decisionResult] = await Promise.all([
     supabase.from('users').select('name').eq('id', share.user_id).single(),
     supabase
       .from('application_picks')
@@ -1215,13 +1254,22 @@ app.get('/api/shared/:token', shareLimiter, async (req, res) => {
       .eq('user_id', share.user_id)
       .maybeSingle(),
   ]);
+  if (profileResult.error || picksResult.error || decisionResult.error) {
+    return res.status(500).json({ error: 'Sdílený výběr se nepodařilo načíst.' });
+  }
+  const profile = profileResult.data;
+  const picks = picksResult.data;
+  const decisionProfile = decisionResult.data;
 
   let notesById = new Map();
   if (share.include_notes) {
-    const { data: notes } = await supabase
+    const { data: notes, error: notesError } = await supabase
       .from('school_notes')
       .select('school_id, body')
       .eq('user_id', share.user_id);
+    if (notesError) {
+      return res.status(500).json({ error: 'Sdílený výběr se nepodařilo načíst.' });
+    }
     notesById = new Map((notes || []).map((n) => [n.school_id, n.body]));
   }
 
@@ -1409,7 +1457,14 @@ app.post(
     // questionnaire and finding the percentages unchanged would read as the
     // submission not having worked. Choosing an *older* set is the explicit
     // action, done from the set list.
-    await setDefaultRun(req.user.id, run.id);
+    try {
+      await setDefaultRun(req.user.id, run.id);
+    } catch (err) {
+      console.error('questionnaire run saved but could not be flagged default:', err.message);
+      return res.status(500).json({
+        error: 'Výsledky se uložily, ale nepodařilo se je nastavit jako výchozí. Zkus to prosím znovu.',
+      });
+    }
 
     const byId = new Map(schools.map((school) => [school.id, school]));
 
@@ -1516,7 +1571,12 @@ app.patch('/api/questionnaire/runs/:id', requireAuth, async (req, res) => {
     return res.status(400).json({ error: `Název může mít nejvýš ${LABEL_MAX} znaků.` });
   }
 
-  const run = await ownRun(req.user.id, req.params.id);
+  let run;
+  try {
+    run = await ownRun(req.user.id, req.params.id);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
   if (!run) return res.status(404).json({ error: 'Tato sada odpovědí neexistuje.' });
 
   // Clearing the name is a real choice, not a validation failure: the set falls
@@ -1534,7 +1594,12 @@ app.patch('/api/questionnaire/runs/:id', requireAuth, async (req, res) => {
 });
 
 app.put('/api/questionnaire/runs/:id/default', requireAuth, async (req, res) => {
-  const run = await ownRun(req.user.id, req.params.id);
+  let run;
+  try {
+    run = await ownRun(req.user.id, req.params.id);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
   if (!run) return res.status(404).json({ error: 'Tato sada odpovědí neexistuje.' });
 
   // An archived set is excluded from the resolver, so flagging one would leave
@@ -1558,7 +1623,12 @@ app.patch('/api/questionnaire/runs/:id/archive', requireAuth, async (req, res) =
     return res.status(400).json({ error: 'Chybí příznak archivace.' });
   }
 
-  const run = await ownRun(req.user.id, req.params.id);
+  let run;
+  try {
+    run = await ownRun(req.user.id, req.params.id);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
   if (!run) return res.status(404).json({ error: 'Tato sada odpovědí neexistuje.' });
 
   // Refused rather than silently repointing scoring at another set. Archiving
@@ -1584,18 +1654,42 @@ app.patch('/api/questionnaire/runs/:id/archive', requireAuth, async (req, res) =
 });
 
 /* ---------------------------------------------------------------------------
- * Payments — plan 009. Both plans are Stripe subscriptions.
+ * Payments — plan 009, revised.
  *
- * The season pass is SOLD as a one-time payment but IMPLEMENTED as a
- * subscription with a 3-day trial and an absolute cancel_at: a real one-time
- * charge happens immediately and cannot express "card saved, nothing charged
- * for 3 days, then auto-charge, then never again" — the flow the paywall
- * already promises. See plan 009 §1 for the full reasoning.
+ * Monthly is a real Stripe subscription (mode: 'subscription') — genuinely
+ * recurring, so Stripe's own "recurring" checkout disclosure is accurate and
+ * fine to show.
+ *
+ * Season is SOLD as a one-time payment and is now IMPLEMENTED as one too —
+ * no subscription object exists for it at all. An earlier version tried to
+ * get there via subscription + trial_period_days + an absolute cancel_at,
+ * but Stripe's Checkout page discloses recurring-billing terms itself on any
+ * mode:'subscription' session (required disclosure, not something
+ * custom_text can hide), which would have shown "recurring" language and
+ * directly contradicted what the app promises. Instead:
+ *   1. Checkout runs in mode: 'setup' — collects and saves a card, charges
+ *      nothing, creates no subscription. Nothing recurring is ever disclosed.
+ *   2. The webhook below stores the saved payment method and a
+ *      season_charge_due_at timestamp (SEASON_TRIAL_DAYS out).
+ *   3. chargeDueSeasonPasses() polls hourly and fires one true one-time
+ *      PaymentIntent per due account, off_session, once — see that function.
+ * Access during the trial window is unaffected by any of this: requireAccess
+ * already grants access purely from trial_expires_at (the DB-trigger trial),
+ * independent of subscription_status — see that function above.
  *
  * Built and tested against Stripe TEST MODE. Going live needs an adult-owned
  * Stripe account (the founder is under 18) — no code change, only swapping
  * env vars from sk_test_ to sk_live_. See plan 009 §11.
  * ------------------------------------------------------------------------- */
+
+// PLACEHOLDER — must mirror SEASON_PRICE_CZK in frontend/src/config/pricing.js.
+// This is now the 2nd place this number lives (was previously encoded only as
+// a Stripe Price; season no longer has one). Change both together.
+const SEASON_PRICE_CZK = 690;
+
+// Must mirror TRIAL_DAYS in frontend/src/config/pricing.js and the DB
+// trigger's trial window — same duplication the old trial_period_days had.
+const SEASON_TRIAL_DAYS = 3;
 
 const PLAN_PRICE_ENV = {
   season: 'STRIPE_PRICE_ID_SEASON',
@@ -1618,22 +1712,57 @@ app.post('/api/checkout', checkoutLimiter, requireAuth, async (req, res) => {
     return res.status(400).json({ error: 'Neplatný plán.' });
   }
 
-  const priceId = process.env[PLAN_PRICE_ENV[planId]];
-
-  if (!stripe || !priceId) {
+  if (!stripe) {
     return res.status(503).json({
       error: 'Platby zatím nejsou nastavené.',
       code: 'STRIPE_NOT_CONFIGURED',
     });
   }
 
-  const { data: profile } = await supabase
+  const { data: profile, error: profileError } = await supabase
     .from('users')
     .select('stripe_customer_id, email')
     .eq('id', req.user.id)
     .single();
 
+  if (profileError) {
+    return res.status(500).json({ error: 'Nepodařilo se ověřit platební profil. Zkus to prosím znovu.' });
+  }
+
   const safeReturnTo = sanitizeReturnTo(returnTo);
+
+  // Season: no Stripe Price, no subscription — mode:'setup' just saves a card.
+  // See the block comment above for why this replaced the subscription+trial
+  // approach.
+  if (planId === 'season') {
+    try {
+      const session = await stripe.checkout.sessions.create({
+        mode: 'setup',
+        customer: profile?.stripe_customer_id || undefined,
+        customer_email: profile?.stripe_customer_id ? undefined : req.user.email,
+        success_url: `${FRONTEND_URL}${safeReturnTo}?platba=ok`,
+        cancel_url: `${FRONTEND_URL}/predplatne`,
+        client_reference_id: req.user.id,
+        metadata: { plan_id: 'season', app_user_id: req.user.id },
+        custom_text: {
+          submit: {
+            message: `Uložíme jen platební metodu, nic se nestrhává hned. Za ${SEASON_TRIAL_DAYS} dny proběhne jednorázová platba ${SEASON_PRICE_CZK} Kč za celou sezónu (září–březen) — pak už nic dalšího.`,
+          },
+        },
+      });
+      return res.json({ url: session.url });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  }
+
+  const priceId = process.env[PLAN_PRICE_ENV[planId]];
+  if (!priceId) {
+    return res.status(503).json({
+      error: 'Platby zatím nejsou nastavené.',
+      code: 'STRIPE_NOT_CONFIGURED',
+    });
+  }
 
   try {
     const session = await stripe.checkout.sessions.create({
@@ -1647,10 +1776,6 @@ app.post('/api/checkout', checkoutLimiter, requireAuth, async (req, res) => {
       client_reference_id: req.user.id,
       subscription_data: {
         metadata: { plan_id: planId, app_user_id: req.user.id },
-        // Must stay in sync with TRIAL_DAYS in frontend/src/config/pricing.js
-        // and with the 3-day trial the DB trigger grants on signup — this is
-        // the third place that number lives.
-        ...(planId === 'season' ? { trial_period_days: 3 } : {}),
       },
     });
 
@@ -1662,9 +1787,10 @@ app.post('/api/checkout', checkoutLimiter, requireAuth, async (req, res) => {
 
 // requireAuth only, deliberately NOT requireAccess: an account whose access has
 // already lapsed is exactly the account that most needs to be able to cancel
-// (e.g. a season pass mid-trial). Never write subscription_status here — the
-// webhook is the only writer of payment state; this only tells Stripe what to
-// do and lets that flow back through the webhook like every other change.
+// (e.g. a season pass mid-trial). Season pass exception aside (below), never
+// write subscription_status here — the webhook is otherwise the only writer
+// of payment state; this only tells Stripe what to do and lets that flow back
+// through the webhook like every other change.
 app.post('/api/subscription/cancel', requireAuth, async (req, res) => {
   if (!stripe) {
     return res.status(503).json({
@@ -1673,11 +1799,34 @@ app.post('/api/subscription/cancel', requireAuth, async (req, res) => {
     });
   }
 
-  const { data: profile } = await supabase
+  const { data: profile, error: profileError } = await supabase
     .from('users')
-    .select('stripe_subscription_id, plan_id')
+    .select('stripe_subscription_id, plan_id, subscription_status')
     .eq('id', req.user.id)
     .single();
+
+  if (profileError) return res.status(500).json({ error: 'Nepodařilo se ověřit předplatné. Zkus to prosím znovu.' });
+
+  // Season, pre-charge: there is no Stripe subscription to cancel (mode:
+  // 'setup' never created one) — only a scheduled future charge. Clearing
+  // season_charge_due_at is what stops chargeDueSeasonPasses() from ever
+  // picking this account up. This is the one place other than the webhook
+  // that writes subscription_status, because there is no Stripe event to
+  // react to here — the whole point is that nothing happened on Stripe's side
+  // yet.
+  if (profile?.plan_id === 'season' && profile.subscription_status === 'trialing') {
+    const { error } = await supabase
+      .from('users')
+      .update({
+        plan_id: null,
+        subscription_status: 'canceled',
+        season_charge_due_at: null,
+        stripe_payment_method_id: null,
+      })
+      .eq('id', req.user.id);
+    if (error) return res.status(500).json({ error: 'Předplatné se nepodařilo zrušit. Zkus to prosím znovu.' });
+    return res.json({ cancelled: 'immediately', accessUntil: null });
+  }
 
   if (!profile?.stripe_subscription_id) {
     return res.status(400).json({ error: 'Žádné aktivní předplatné k zrušení.' });
@@ -1727,23 +1876,47 @@ async function handleStripeWebhook(req, res) {
   const object = event.data.object;
 
   try {
-    if (event.type === 'checkout.session.completed') {
-      const subscriptionId = object.subscription;
-      let sub = await stripe.subscriptions.retrieve(subscriptionId);
-      const planId = sub.metadata?.plan_id;
+    // Season: mode:'setup' sessions have no subscription — they only save a
+    // payment method for chargeDueSeasonPasses() to bill later. Handled first
+    // and separately because object.subscription is absent here.
+    if (event.type === 'checkout.session.completed' && object.mode === 'setup') {
+      const { data: currentProfile, error: profileError } = await supabase
+        .from('users')
+        .select('stripe_setup_intent_id')
+        .eq('id', object.client_reference_id)
+        .single();
+      if (profileError) throw profileError;
 
-      // Season pass: pin the absolute end date now, from the webhook, not from
-      // the Checkout session params — subscription_data.cancel_at support
-      // varies by pinned Stripe API version, this path is deterministic on all
-      // of them. cancel_at (not cancel_at_period_end) is required here: during
-      // the trial the "current period" IS the trial, so cancel_at_period_end
-      // would cancel the subscription at trial end and the customer would
-      // never be charged at all.
-      if (planId === 'season') {
-        sub = await stripe.subscriptions.update(subscriptionId, {
-          cancel_at: Math.floor(seasonEndsAt().getTime() / 1000),
-        });
+      // A retry of the same signed event must not restart a trial the user has
+      // since cancelled. A genuinely new checkout has a new SetupIntent and is
+      // allowed to schedule a new season purchase.
+      if (currentProfile?.stripe_setup_intent_id !== object.setup_intent) {
+        const setupIntent = await stripe.setupIntents.retrieve(object.setup_intent);
+        const checkoutCompletedAt = Number.isFinite(object.created)
+          ? object.created * 1000
+          : Date.now();
+        const dueAt = new Date(checkoutCompletedAt + SEASON_TRIAL_DAYS * 24 * 60 * 60 * 1000);
+
+        await supabase
+          .from('users')
+          .update({
+            subscription_status: 'trialing',
+            trial_expires_at: dueAt.toISOString(),
+            stripe_customer_id: object.customer,
+            stripe_payment_method_id: setupIntent.payment_method,
+            stripe_setup_intent_id: object.setup_intent,
+            plan_id: 'season',
+            season_charge_due_at: dueAt.toISOString(),
+          })
+          .eq('id', object.client_reference_id)
+          .throwOnError();
       }
+    }
+
+    if (event.type === 'checkout.session.completed' && object.mode === 'subscription') {
+      const subscriptionId = object.subscription;
+      const sub = await stripe.subscriptions.retrieve(subscriptionId);
+      const planId = sub.metadata?.plan_id;
 
       await supabase
         .from('users')
@@ -1754,7 +1927,41 @@ async function handleStripeWebhook(req, res) {
           plan_id: planId,
           access_expires_at: accessEndsAt(sub),
         })
-        .eq('id', object.client_reference_id);
+        .eq('id', object.client_reference_id)
+        .throwOnError();
+    }
+
+    // Season's one-time charge, fired from chargeDueSeasonPasses() below. Kept
+    // as a webhook handler too (not just the synchronous result of that
+    // function's own stripe.paymentIntents.create call) in case Stripe settles
+    // the PaymentIntent asynchronously (e.g. a bank taking a moment on an
+    // off-session charge) — this is the defense-in-depth path, the synchronous
+    // one is the common case.
+    if (event.type === 'payment_intent.succeeded' && object.metadata?.plan_id === 'season') {
+      const userId = object.metadata?.app_user_id;
+      if (userId) {
+        const paidAt = Number.isFinite(object.created) ? new Date(object.created * 1000) : new Date();
+        await supabase
+          .from('users')
+          .update({
+            subscription_status: 'season',
+            access_expires_at: seasonEndsAt(paidAt).toISOString(),
+            season_charge_due_at: null,
+          })
+          .eq('id', userId)
+          .throwOnError();
+      }
+    }
+
+    if (event.type === 'payment_intent.payment_failed' && object.metadata?.plan_id === 'season') {
+      const userId = object.metadata?.app_user_id;
+      if (userId) {
+        await supabase
+          .from('users')
+          .update({ subscription_status: 'past_due' })
+          .eq('id', userId)
+          .throwOnError();
+      }
     }
 
     if (event.type === 'customer.subscription.updated') {
@@ -1765,7 +1972,8 @@ async function handleStripeWebhook(req, res) {
           subscription_status: mapStripeStatus(object.status, planId),
           access_expires_at: accessEndsAt(object),
         })
-        .eq('stripe_subscription_id', object.id);
+        .eq('stripe_subscription_id', object.id)
+        .throwOnError();
     }
 
     if (event.type === 'customer.subscription.deleted') {
@@ -1775,7 +1983,8 @@ async function handleStripeWebhook(req, res) {
           subscription_status: 'expired',
           access_expires_at: new Date().toISOString(),
         })
-        .eq('stripe_subscription_id', object.id);
+        .eq('stripe_subscription_id', object.id)
+        .throwOnError();
     }
 
     if (event.type === 'invoice.payment_failed') {
@@ -1783,10 +1992,16 @@ async function handleStripeWebhook(req, res) {
       // and revoking access on the first failure would lock out someone whose
       // card just needs a retry (a temporary decline, an expired card mid-retry
       // window, etc).
-      await supabase
+      let failedInvoiceUpdate = supabase
         .from('users')
-        .update({ subscription_status: 'past_due' })
-        .eq('stripe_customer_id', object.customer);
+        .update({ subscription_status: 'past_due' });
+      // A customer can have an old and a replacement subscription. Match the
+      // invoice's subscription whenever Stripe supplies it so a late failure
+      // from the old one cannot downgrade the new plan.
+      failedInvoiceUpdate = object.subscription
+        ? failedInvoiceUpdate.eq('stripe_subscription_id', object.subscription)
+        : failedInvoiceUpdate.eq('stripe_customer_id', object.customer);
+      await failedInvoiceUpdate.throwOnError();
     }
   } catch (err) {
     // Stripe retries on any non-2xx, and every write above is an idempotent
@@ -1798,6 +2013,104 @@ async function handleStripeWebhook(req, res) {
   }
 
   res.json({ received: true });
+}
+
+/**
+ * Fires the season pass's one, genuine one-time charge for every account
+ * whose season_charge_due_at has arrived. This is the piece that makes
+ * mode:'setup' + a later charge actually equivalent to "trial, then bill
+ * once" — see the block comment above the /api/checkout route for why this
+ * replaced a subscription-based approach.
+ *
+ * off_session + confirm:true resolves synchronously in the common case (a
+ * normal card, no fresh authentication challenge), so success/failure is
+ * usually handled right here; payment_intent.succeeded / .payment_failed in
+ * the webhook above are the fallback for the rare case where Stripe settles
+ * it asynchronously instead.
+ *
+ * Polled on an interval rather than a real cron because this app has no
+ * separate worker/scheduler infra yet — the Node process is already
+ * always-on. Revisit if this ever needs to survive the process restarting
+ * mid-hour without missing a run (Supabase pg_cron calling a dedicated route
+ * would be the natural upgrade).
+ */
+async function chargeDueSeasonPasses() {
+  if (!stripe) return;
+
+  const { data: due, error } = await supabase
+    .from('users')
+    .select('id, stripe_customer_id, stripe_payment_method_id, season_charge_due_at')
+    .eq('plan_id', 'season')
+    .eq('subscription_status', 'trialing')
+    .not('stripe_payment_method_id', 'is', null)
+    .lte('season_charge_due_at', new Date().toISOString());
+
+  if (error) {
+    console.error('chargeDueSeasonPasses: failed to fetch due accounts:', error.message);
+    return;
+  }
+
+  for (const user of due || []) {
+    let intent;
+    try {
+      intent = await stripe.paymentIntents.create(
+        {
+          amount: SEASON_PRICE_CZK * 100, // CZK is not zero-decimal — amount is in haléře.
+          currency: 'czk',
+          customer: user.stripe_customer_id,
+          payment_method: user.stripe_payment_method_id,
+          off_session: true,
+          confirm: true,
+          metadata: { plan_id: 'season', app_user_id: user.id },
+        },
+        {
+          // Stable across process restarts, overlapping server instances and
+          // database-update retries. A later checkout has a different due_at,
+          // so it still creates a genuinely new purchase.
+          idempotencyKey: `season:${user.id}:${user.season_charge_due_at}`,
+        }
+      );
+
+    } catch (err) {
+      // Card declined, expired, off-session auth required and refused, etc.
+      console.error(`chargeDueSeasonPasses: charge failed for user ${user.id}:`, err.message);
+      const { error: updateError } = await supabase
+        .from('users')
+        .update({ subscription_status: 'past_due' })
+        .eq('id', user.id);
+      if (updateError) {
+        console.error(`chargeDueSeasonPasses: could not mark user ${user.id} past due:`, updateError.message);
+      }
+      continue;
+    }
+
+    if (intent.status === 'succeeded') {
+      try {
+        const paidAt = Number.isFinite(intent.created) ? new Date(intent.created * 1000) : new Date();
+        await supabase
+          .from('users')
+          .update({
+            subscription_status: 'season',
+            access_expires_at: seasonEndsAt(paidAt).toISOString(),
+            season_charge_due_at: null,
+          })
+          .eq('id', user.id)
+          .throwOnError();
+      } catch (err) {
+        // The charge succeeded. Leave Stripe's stable idempotency key and the
+        // webhook to retry the database write; never mislabel a paid account as
+        // past due just because this local write failed.
+        console.error(`chargeDueSeasonPasses: paid user ${user.id} but could not save access:`, err.message);
+      }
+    }
+    // Any other status (e.g. requires_action) is left for the webhook to
+    // resolve once Stripe settles it, rather than guessed at here.
+  }
+}
+
+if (stripe) {
+  chargeDueSeasonPasses(); // catch anything due while the server was down
+  setInterval(chargeDueSeasonPasses, 60 * 60 * 1000);
 }
 
 app.listen(PORT, () => {

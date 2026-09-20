@@ -76,17 +76,19 @@ const TRUST = {
   student: [
     { icon: 'shield', lead: 'První školu jsi viděl zdarma.', rest: 'Nekupuješ nic naslepo — víš přesně, jak výsledek vypadá.' },
     { icon: 'check', lead: 'Pořadí počítá matematika', rest: 'z tvých odpovědí. Ne náhoda a ne reklama — školy si u nás pozici nekoupí.' },
-    { icon: 'lock', lead: 'Odpovědi zůstávají u tebe', rest: 'v prohlížeči. Neprodáváme je a nepředáváme školám.' },
+    { icon: 'lock', lead: 'Odpovědi používáme jen pro tvůj výsledek.', rest: 'Po přihlášení je uložíme k účtu. Neprodáváme je a nepředáváme školám.' },
   ],
   parent: [
     { icon: 'shield', lead: 'Nejlepší shodu jste viděli zdarma.', rest: 'Nekupujete nic naslepo — víte přesně, jak výsledek vypadá.' },
     { icon: 'check', lead: 'Pořadí je deterministický výpočet', rest: 'z odpovědí, u každé školy rozepsaný. Školy si u nás pozici nekoupí.' },
-    { icon: 'lock', lead: 'Odpovědi zůstávají ve vašem prohlížeči.', rest: 'Neprodáváme je a nepředáváme školám.' },
+    { icon: 'lock', lead: 'Odpovědi používáme jen pro váš výsledek.', rest: 'Po přihlášení je uložíme k účtu. Neprodáváme je a nepředáváme školám.' },
   ],
 };
 
-const REASSURANCE = [
-  'Dnes se z karty nestrhne nic. Ukážeme přesné datum první platby.',
+const reassuranceFor = (plan) => [
+  plan.hasTrial
+    ? 'Dnes se z karty nestrhne nic. Ukážeme přesné datum první platby.'
+    : `Dnes se strhne ${formatCzk(plan.priceCzk)} za první měsíc.`,
   'Platební údaje nevidíme ani neukládáme.',
   'Ceny jsou včetně DPH. Žádné skryté poplatky.',
 ];
@@ -263,7 +265,7 @@ function Plan() {
               <PayCta onClick={onContinue}>{planCopy(plan, voice, 'ctaLabel')}</PayCta>
 
               <ul className="ob-pw-chips">
-                {REASSURANCE.map((line) => (
+                {reassuranceFor(plan).map((line) => (
                   <li key={line}>
                     <Icon.check size={14} className="ob-pw-ic is-ok" />
                     <span>{line}</span>

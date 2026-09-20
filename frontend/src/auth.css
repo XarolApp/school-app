@@ -594,10 +594,6 @@
   cursor: pointer;
 }
 
-.favorite-star.is-favorite {
-  color: var(--acc);
-}
-
 .favorite-star-icon {
   width: 20px;
   height: 20px;
@@ -668,15 +664,6 @@
 .toast-close svg {
   width: 16px;
   height: 16px;
-}
-
-/* --- Misc ------------------------------------------------------------------ */
-
-.detail-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-md);
 }
 
 .navbar-signout {

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ChevronDown, Heart, Info, Lock, TriangleAlert } from 'lucide-react';
-import { fetchSchools, fetchPicks } from '../api';
+import { fetchSchoolsByIds, fetchPicks } from '../api';
 import { getCompareSelection } from '../lib/searchPrefs';
 import { useAuth } from '../components/AuthContext';
 import StatInfo from '../components/StatInfo';
@@ -127,6 +127,7 @@ function Matice() {
   const [pickCount, setPickCount] = useState(0);
   const [weights, setWeights] = useState(defaultWeights);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   // Set to the level the user just clicked while the "are you sure" prompt for
   // moving shoda off Zásadní is open; null when no prompt is showing.
   const [confirmShodaLevel, setConfirmShodaLevel] = useState(null);
@@ -134,9 +135,14 @@ function Matice() {
 
   useEffect(() => {
     let cancelled = false;
-    fetchSchools()
+    setLoading(true);
+    setError(null);
+    fetchSchoolsByIds(selection)
       .then((data) => {
         if (!cancelled) setAllSchools(Array.isArray(data) ? data : []);
+      })
+      .catch((err) => {
+        if (!cancelled) setError(err.message || 'Nepodařilo se načíst školy.');
       })
       .finally(() => {
         if (!cancelled) setLoading(false);
@@ -149,7 +155,7 @@ function Matice() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [selection]);
 
   const schools = useMemo(() => {
     const byId = new Map(allSchools.map((s) => [s.id, s]));
@@ -187,6 +193,14 @@ function Matice() {
     return (
       <div className="decision-page">
         <p className="ss-body-md">Načítám…</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="decision-page">
+        <p className="ss-body-md">{error}</p>
       </div>
     );
   }

@@ -8,11 +8,21 @@ import { useEffect, useRef } from 'react';
  * Matice.jsx still carries its own copy of this markup (`dp-confirm-*`); it is
  * left alone until that screen's review pass — see UNFORGET.md.
  */
-function ConfirmDialog({ icon, title, children, cancelLabel, confirmLabel, onCancel, onConfirm, busy = false }) {
+function ConfirmDialog({
+  icon,
+  title,
+  children,
+  cancelLabel,
+  confirmLabel,
+  onCancel,
+  onConfirm,
+  onDismiss = onCancel,
+  busy = false,
+}) {
   const cancelRef = useRef(null);
-  const onCancelRef = useRef(onCancel);
+  const onDismissRef = useRef(onDismiss);
   const busyRef = useRef(busy);
-  onCancelRef.current = onCancel;
+  onDismissRef.current = onDismiss;
   busyRef.current = busy;
 
   // Mount-only: a parent passing a fresh onCancel every render must not
@@ -20,7 +30,7 @@ function ConfirmDialog({ icon, title, children, cancelLabel, confirmLabel, onCan
   useEffect(() => {
     cancelRef.current?.focus();
     const onKey = (e) => {
-      if (e.key === 'Escape' && !busyRef.current) onCancelRef.current();
+      if (e.key === 'Escape' && !busyRef.current) onDismissRef.current();
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
@@ -31,7 +41,7 @@ function ConfirmDialog({ icon, title, children, cancelLabel, confirmLabel, onCan
       className="ss-dialog-backdrop"
       role="presentation"
       onClick={() => {
-        if (!busy) onCancel();
+        if (!busy) onDismiss();
       }}
     >
       <div

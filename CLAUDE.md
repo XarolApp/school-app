@@ -63,12 +63,12 @@ yourself" instruction in Quick Start below.
 
 **Three files form the complete launch strategy. Use them together:**
 
-### 1. `docs/skolamatch-90-point-context.md`
+### 1. `docs/skolamatch_90_point_context.md`
 **What it is:** The business bible. 90 numbered founder decisions, constraints, and beliefs about the market, pricing, acquisition, monetization, and product direction.
 
 **When to use it:** When the AI needs to understand the business context, constraints, or strategic priorities. This is what shapes all recommendations.
 
-### 2. `docs/skolamatch-current-status.md`
+### 2. `docs/skolamatch_current_status.md`
 **What it is:** The living operational state. Current product %, marketing state, blockers, daily logs, decision log, and launch readiness checklist.
 
 **When to use it:** Before suggesting next steps, to verify that:
@@ -79,7 +79,7 @@ yourself" instruction in Quick Start below.
 
 **How I update it:** Every time you report progress (finished Stripe, got 5 testers, created 3 TikToks, etc.), I update this file immediately so the next plan starts from the new reality.
 
-### 3. `docs/skolamatch-full-launch-marketing-plan-v2.md`
+### 3. `docs/skolamatch_full_launch_marketing_plan_v2.md`
 **What it is:** The detailed execution roadmap. Week 1-4 daily tasks, acquisition funnels, affiliate economics, content strategy, product positioning, revenue milestones.
 
 **When to use it:** When you ask "what should I do next" or "what should I work on today," this is the primary reference.
@@ -89,7 +89,7 @@ yourself" instruction in Quick Start below.
 **When you ask: "What should we do next?"**
 
 I will:
-1. Read `skolamatch-current-status.md` to understand actual current state
+1. Read `skolamatch_current_status.md` to understand actual current state
 2. Check the launch plan to see what's scheduled next
 3. Verify that next task hasn't already been completed
 4. Cross-check against business constraints in the 90-point context
@@ -140,7 +140,7 @@ I will:
 
 Before making any recommendation about what to build or launch next, I will:
 
-1. **Read `docs/skolamatch-current-status.md`** to confirm actual state
+1. **Read `docs/skolamatch_current_status.md`** to confirm actual state
 2. **Verify blockers** — is the biggest problem still what the plan says?
 3. **Check progress** — has priority been updated based on real results?
 4. **Identify gaps** — are we skipping something critical?
@@ -194,7 +194,7 @@ remains a full second surface (see "Platform Strategy"). It:
   reasoning, and `docs/sources/pricing_research.md` for both research passes.
   Already implemented in `frontend/src/config/pricing.js`.
 - **Parental confirmation required at payment on the student branch.** New requirement
-  from the same research — before the (mocked) charge completes, the student-side
+  from the same research — before Stripe Checkout opens, the student-side
   paywall must show an explicit parental-confirmation checkpoint, not a silent charge
   on a parent's saved method. Real UI, not a stub — see C-8.
 - **3-day free trial**, then billing begins. A day-2 reminder email is **mandatory**
@@ -228,7 +228,8 @@ local-only override, not a code change. Reads its config from `.env`
 (gitignored, never committed). Only `SUPABASE_URL` and `SUPABASE_KEY` are
 needed to boot. Everything else degrades gracefully: missing Stripe keys make
 `/api/checkout` answer 503, missing `OPENROUTER_API_KEY` makes
-`/api/questionnaire` answer 503, and missing `SUPABASE_SERVICE_ROLE_KEY` logs
+`/api/questionnaire` still scores and saves runs (only the AI sentences are
+left empty), and missing `SUPABASE_SERVICE_ROLE_KEY` logs
 a warning (needed once RLS is on).
 
 **Terminal 2 — Frontend** (from repo root, in a new tab):
@@ -263,11 +264,14 @@ themselves. Use the browser pane / preview tools for this.
 - **Frontend linting:** `oxlint` (`npm run lint` inside `frontend/`) — not ESLint
 - **Icons:** `lucide-react`, named imports only (never the barrel import — that is
   what makes it tree-shakeable)
-- **AI:** Claude Sonnet via OpenRouter — writes the *explanation sentence* on the
+- **AI:** Gemini 2.5 Flash Lite via OpenRouter (default; `OPENROUTER_MODEL` overrides) — writes the *explanation sentence* on the
   standalone questionnaire only. Scoring is plain JS on both surfaces; the AI never
   produces a number
 - **Scraping:** n8n + Firecrawl + Gemini 2.5 Flash Lite (external workflow, not in this repo)
-- **Payments:** Stripe — routes exist as **scaffolding only**, no live keys, untested
+- **Payments:** Stripe Checkout + webhooks are implemented and covered by deterministic
+  boundary tests. Monthly uses a subscription; season uses Setup mode followed by one
+  scheduled PaymentIntent after the trial. Live keys and real-money end-to-end testing
+  are still blocked by the checklist at the top of `UNFORGET.md`.
 - **Mobile app:** planned before public launch, framework not yet chosen. Intended
   primary surface — see "Platform Strategy" directly below.
 
@@ -307,7 +311,7 @@ both working end to end).
 | `school_programs` | one row per obor per school per year, from Cermat's real admission results — `typ_skoly`, `zrizovatel`, `maturitni`, `jpz_povinna`, `jazyk_studia`, `delka_studia`, `kkov`, `kapacita`, `prihlasky`, `prijati`, `cutoff`. No client RLS policy, same as `schools` — server.js only. Declared in `supabase-setup.sql` itself as of 2026-09-08 — it existed in the live database earlier than that (created directly by the import script), so this file didn't yet describe the real schema; fixed rather than left drifting. |
 | `users` | profile mirror of the private `auth.users`: email, name, `trial_expires_at`, `subscription_status`, Stripe ids |
 | `favorites` | `(user_id, school_id)` |
-| `questionnaire_runs` | one row per completed *standalone* questionnaire: answers, matches, `label`, `is_default`, `archived_at`, `source` (`'questionnaire'` or `'onboarding'` — the latter written once per account from the onboarding quiz via `POST /api/me/onboarding-answers`, and excluded from the monthly quota count) |
+| `questionnaire_runs` | one row per completed *standalone* questionnaire: answers, matches, `label`, `is_default`, `archived_at`, `source` (`'questionnaire'` or `'onboarding'` — the latter written once per account from the onboarding quiz via `POST /api/me/onboarding-answers`) |
 | `school_reviews` | one row per (school, user): `role`, `role_year`, `obor_nazev`, `body`, `show_name`, `verified`, `status`. No client RLS policy — server.js only, see "User-generated content" above. |
 | `review_reports` | `(review_id, user_id)` — one report per person per review |
 | `data_reports` | crowdsourced "Nahlásit chybu v údajích": `school_id`, `user_id`, `field`, `message`, read directly in Supabase |
@@ -330,9 +334,8 @@ handful of schools the fuzzy matcher couldn't place on its own.
 places, or the paywall promises a window the database does not grant.
 
 `subscription_status` accepts `trialing / active / season / past_due / canceled /
-expired / developer`. `'season'` is the one-time season pass — **schema-ready but
-nothing writes it yet**, because `/api/checkout` only creates subscription-mode Stripe
-sessions.
+expired / developer`. `'season'` is written after the season pass's scheduled one-time
+PaymentIntent succeeds; monthly subscriptions write `'active'` through Stripe webhooks.
 
 **RLS is enabled on all four tables** by that file (changed from disabled — this was a
 deliberate adoption, not a drift):
@@ -363,7 +366,7 @@ school-app/
 ├── package.json                # backend deps
 ├── supabase-setup.sql          # schema + RLS, idempotent, SOURCE OF TRUTH
 ├── lib/                        # server-side, standalone questionnaire only
-│   ├── questionnaire.js        # questions, validation, OpenRouter call, quota window
+│   ├── questionnaire.js        # questions, validation, OpenRouter call
 │   ├── matching.js             # deterministic scoring (NOT the onboarding one)
 │   ├── pragueDistricts.js      # full-precision správní obvody, point-in-polygon
 │   └── reviewFilter.js         # word filter deciding published vs held on a new review
@@ -420,7 +423,7 @@ school-app/
         │   ├── schoolSearch.js   # diacritics folding, typo tolerance, ranking
         │   ├── schoolPrograms.js # groups school_programs into per-obor cards + 3-year trend
         │   ├── searchPrefs.js    # localStorage: recently viewed, saved filters, compare selection
-        │   ├── demoSchools.js / offerEntitlement.js
+        │   ├── demoSchools.js / pendingOnboardingAnswers.js
         └── pages/
             ├── Home.jsx / Search.jsx / SchoolDetail.jsx
             ├── search.css / schoolDetail.css
@@ -445,6 +448,14 @@ a duplicate — do not merge them:**
 - `frontend/src/lib/matching.js` scores the onboarding quiz, entirely in the browser,
   with no server call. `lib/matching.js` (repo root) scores the standalone
   questionnaire server-side. They were built independently and are not interchangeable.
+- **The percentage every surface shows is `displayScore()` in `lib/matching.js`**, a
+  fixed curve over the raw weighted average (`100 * (1 - (1 - raw/100)^1.4)`), applied
+  once inside `scoreSchools` so search, `/dotaznik`, `/porovnani` and the matrix can
+  never disagree. It is absolute, never relative to the other results — see that
+  function's comment for the alternatives that were rejected and why. The raw average
+  is still returned as `raw_score` for debugging. Match percentages are attached to
+  `/api/schools` by `withMatchScores` from the account's default questionnaire run, so
+  they exist only for a signed-in account that has one.
 
 **Before building or editing ANY frontend UI (components, pages, styling, layout —
 not just onboarding), read [`docs/sources/claude_code_ui_ux_guide.md`](docs/sources/claude_code_ui_ux_guide.md) first.**
@@ -597,9 +608,10 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
      pre-selected, 3-day trial)** and **Sezónní přístup (one-time)**. Weekly was
      dropped mid-build per `docs/sources/pricing_research.md` — do not add it back.
    - **Parental confirmation** step on the student-branch checkout before the
-     (mocked) charge. Real UI, not a stub.
-   - **One-time offer** entitlement is a dev stub in `lib/offerEntitlement.js`
-     using localStorage, with a header explaining why that is NOT production safe.
+     Stripe redirect. Real UI, not a stub.
+   - **One-time offer is disabled.** The unsafe localStorage entitlement prototype was
+     removed; reintroducing the offer requires a server-side entitlement (tracked in
+     `UNFORGET.md`).
    - **Social proof** (`config/socialProof.js`) is deliberately empty — no invented
      user counts or testimonials. Proof screens fall back to methodology claims
      that are true today, and switch over automatically when real data is added.
@@ -645,8 +657,16 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
      ranking. Wired into `Search.jsx`.
    - Favourites with optimistic toggling and toast confirmation.
    - The server-side questionnaire (`lib/questionnaire.js` + `lib/matching.js`, multiple
-     saved answer sets with one marked default, monthly quota anchored to the signup
-     anniversary). **The backend is here; no UI is wired to it.** The onboarding quiz is
+     saved answer sets with one marked default, **unlimited runs** — the monthly quota
+     was removed 2026-09-19 because a run costs a fraction of a cent; `requireAccess`
+     and `questionnaireLimiter` still bound who can call it and how fast). The UI is
+     `/dotaznik` (`pages/Questionnaire.jsx`, plan 011): results with the top 10 and
+     reasoning, run history (rename / set default / archive), and two confirm dialogs.
+     A new run always becomes the default; the onboarding run is flagged default
+     explicitly. Scores are computed in code and always saved; the per-school
+     sentences (top 10 only) are written at submission time, and a run saved without
+     them (no key, no credits) never gets them later — the UI falls back to the
+     scorer's own `signals`. Percentages, not bands, on this surface. The onboarding quiz is
      a separate surface with its own scoring engine.
 
 10. **School detail page** (`frontend/src/pages/SchoolDetail.jsx` + one
@@ -721,16 +741,22 @@ Nothing built now should assume web is the only client. See "Platform Strategy".
 These are standing architectural facts about the current codebase — not TODOs. Anything
 actionable that follows from them lives in [`UNFORGET.md`](UNFORGET.md) instead.
 
-- **Paywall is still mocked** — the onboarding's purchase button calls `mockStartSubscription`
-  and `lib/offerEntitlement.js` uses localStorage (not production-safe). This is deliberate
-  and current; see `UNFORGET.md` for the Stripe integration item and why it's gated on the
-  user re-raising it.
+- **Payments are wired but not live-ready.** The onboarding purchase button creates a
+  real Stripe Checkout session when keys are configured. Prices remain placeholders,
+  the day-2 reminder and refund process are not implemented, and the complete test-mode
+  matrix in `UNFORGET.md` must pass before any live key is used.
 - **`/api/schools*` is intentionally ungated**, unlike every other data route. The
   onboarding quiz reads school data before any account exists, so gating it would break
   the funnel at its widest point. RLS still blocks the browser from reading the table
   directly, so `server.js` remains the only way in. Gating this is tied to the paywall
   connection work in `UNFORGET.md` — remember `withMatchScores` must survive whatever
   query replaces it, or every percentage in the app disappears with nothing logged.
+- **`GET /api/schools` returns a SLIMMED shape** (plan 010, 2026-09-17): each school's
+  `school_programs` is collapsed to one entry per obor (latest year only), carrying just
+  the fields list pages read — no per-year history, no `school_ai_summary`. Full per-obor
+  rows (every year, plus cached pros/cons) come from `GET /api/schools/:id` or
+  `GET /api/schools?ids=1,2,3` (≤50 ids) — used by `/porovnani` and the decision matrix,
+  which only ever need a handful of schools at a time.
 - **`cd` matters.** `server.js` lives at repo root, not in `frontend/`. Running it from
   inside `frontend/` throws `Cannot find module '.../frontend/server.js'`.
 - **`.env` is real and gitignored** — never read it into chat output, never commit it,
@@ -845,7 +871,7 @@ for a desktop layout (or the reverse) is a research error, not a shortcut.
 
 ## Geographic Scope for V1
 
-Prague only, targeting ~50-60 schools initially. Expansion to other Czech cities
+Prague only, currently holding 223 schools. Expansion to other Czech cities
 planned for later phases once the Prague version is validated with real users.
 
 ---
@@ -857,15 +883,15 @@ planned for later phases once the Prague version is validated with real users.
 The earlier laptop build was cloned to `schoool-app-laptop-progress/` and its
 infrastructure grafted onto this codebase. The direction was deliberate: **keep the
 23-screen onboarding flow as the product's spine, and layer the laptop's real auth,
-Stripe scaffolding and RLS schema on top of it** — not the other way round.
+payment and RLS infrastructure on top of it** — not the other way round.
 
 **What came across:** Supabase Auth (with CAPTCHA, password strength, reset flow, email
 confirmation), the RLS schema, rate limiting, favourites, smart search, the server-side
-questionnaire engine, and Stripe checkout/webhook routes as scaffolding.
+questionnaire engine, and Stripe checkout/webhook routes.
 
-**What deliberately did not:** the laptop's own questionnaire UI, its forest/teal design
-system, and its map/match-score components. Those are coupled to a questionnaire surface
-we are not merging.
+**What deliberately did not:** the laptop's forest/teal design system. The standalone
+questionnaire concept was later rebuilt in the current design at `/dotaznik`; it is not a
+byte-for-byte merge of the old UI.
 
 **What was reconciled rather than copied:** the schema's trial trigger was changed from
 7 days to 3 to match the researched pricing decision, and `subscription_status` gained a
@@ -874,9 +900,9 @@ we are not merging.
 `schoool-app-laptop-progress/` is kept as read-only reference. Nothing imports from it.
 Delete it once you are confident nothing else is needed from there.
 
-**The seam that is still open:** the onboarding paywall creates a real account (trial
-starts, server-side) but the purchase itself is still mocked. Closing that gap is MVP
-item #4 and #5.
+**The payment seam is connected in code:** onboarding creates the account, requires email
+confirmation, and opens Stripe Checkout. Live activation remains blocked on real prices,
+keys, reminder/refund/legal work and the full test-mode verification in `UNFORGET.md`.
 
 ---
 

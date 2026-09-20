@@ -4,6 +4,24 @@ import { fetchMe, updateProfile, saveOnboardingAnswers } from '../api';
 import { readOnboardingStash, clearOnboardingStash } from '../lib/pendingOnboardingAnswers';
 
 const AuthContext = createContext(null);
+const PASSWORD_RECOVERY_KEY = 'skolamatch.password-recovery';
+
+function readPasswordRecovery() {
+  try {
+    return sessionStorage.getItem(PASSWORD_RECOVERY_KEY) === 'true';
+  } catch {
+    return false;
+  }
+}
+
+function rememberPasswordRecovery(active) {
+  try {
+    if (active) sessionStorage.setItem(PASSWORD_RECOVERY_KEY, 'true');
+    else sessionStorage.removeItem(PASSWORD_RECOVERY_KEY);
+  } catch {
+    // The in-memory state still protects the route when storage is unavailable.
+  }
+}
 
 // Module-level, not component state: getSession() and the first
 // onAuthStateChange firing can both resolve with the same fresh session, and
@@ -66,6 +84,7 @@ export function AuthProvider({ children }) {
   const [session, setSession] = useState(null);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isPasswordRecovery, setIsPasswordRecovery] = useState(readPasswordRecovery);
 
   const loadProfile = useCallback(async (activeSession) => {
     if (!activeSession) {
@@ -94,8 +113,15 @@ export function AuthProvider({ children }) {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, nextSession) => {
+    } = supabase.auth.onAuthStateChange(async (event, nextSession) => {
       if (cancelled) return;
+      if (event === 'PASSWORD_RECOVERY') {
+        rememberPasswordRecovery(true);
+        setIsPasswordRecovery(true);
+      } else if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
+        rememberPasswordRecovery(false);
+        setIsPasswordRecovery(false);
+      }
       setSession(nextSession);
       await loadProfile(nextSession);
       flushOnboardingStash(nextSession);
@@ -107,7 +133,7 @@ export function AuthProvider({ children }) {
     };
   }, [loadProfile]);
 
-  const signUp = async (email, password, name, { captchaToken } = {}) => {
+  const signUp = async (email, password, name, { captchaToken, emailRedirectTo } = {}) => {
     // The name rides along in user metadata so the database trigger can copy
     // it into the profile row it creates. The trial length is set there too —
     // deliberately not here, where it could be tampered with.
@@ -116,7 +142,7 @@ export function AuthProvider({ children }) {
       password,
       options: {
         data: { name },
-        emailRedirectTo: `${window.location.origin}/prihlaseni?potvrzeno=1`,
+        emailRedirectTo: emailRedirectTo || `${window.location.origin}/prihlaseni?potvrzeno=1`,
         captchaToken,
       },
     });
@@ -183,6 +209,8 @@ export function AuthProvider({ children }) {
 
   const signOut = async () => {
     clearOnboardingStash();
+    rememberPasswordRecovery(false);
+    setIsPasswordRecovery(false);
     await supabase.auth.signOut();
     setProfile(null);
   };
@@ -199,7 +227,10 @@ export function AuthProvider({ children }) {
 
   const updatePassword = async (password) => {
     const { error } = await supabase.auth.updateUser({ password });
-    return error ? { error: translateAuthError(error.message) } : {};
+    if (error) return { error: translateAuthError(error.message) };
+    rememberPasswordRecovery(false);
+    setIsPasswordRecovery(false);
+    return {};
   };
 
   // Proves the person at the keyboard is the account owner, not someone who
@@ -266,8 +297,9 @@ export function AuthProvider({ children }) {
   const signOutEverywhere = async () => {
     clearOnboardingStash();
     const { error } = await supabase.auth.signOut({ scope: 'global' });
+    if (error) return { error: translateAuthError(error.message) };
     setProfile(null);
-    return error ? { error: translateAuthError(error.message) } : {};
+    return {};
   };
 
   const value = {
@@ -276,6 +308,7 @@ export function AuthProvider({ children }) {
     profile,
     loading,
     isSignedIn: Boolean(session),
+    isPasswordRecovery,
     emailConfirmed: Boolean(session?.user?.email_confirmed_at),
     hasAccess: Boolean(profile?.hasAccess),
     isDeveloper: Boolean(profile?.isDeveloper),

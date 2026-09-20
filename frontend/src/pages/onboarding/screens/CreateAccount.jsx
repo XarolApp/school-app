@@ -48,6 +48,7 @@ function CreateAccount() {
   const [captchaKey, setCaptchaKey] = useState(0);
   const [error, setError] = useState(null);
   const [busy, setBusy] = useState(false);
+  const [awaitingConfirmation, setAwaitingConfirmation] = useState(false);
 
   const submit = async (event) => {
     event.preventDefault();
@@ -56,7 +57,14 @@ function CreateAccount() {
     setBusy(true);
     setError(null);
 
-    const result = await signUp(email, password, name, { captchaToken });
+    const resumePath = '/onboarding/plan';
+    const confirmationUrl = new URL('/prihlaseni', window.location.origin);
+    confirmationUrl.searchParams.set('potvrzeno', '1');
+    confirmationUrl.searchParams.set('next', resumePath);
+    const result = await signUp(email, password, name, {
+      captchaToken,
+      emailRedirectTo: confirmationUrl.toString(),
+    });
 
     setBusy(false);
     setCaptchaToken(null);
@@ -76,19 +84,39 @@ function CreateAccount() {
       stashOnboardingAnswers(cleanedAnswers, email);
     }
 
-    // Email confirmation is TEMPORARILY not gating the flow here. It used to
-    // stop the user on a "check your email" screen — but the confirmation
-    // link opens in whatever tab/device the email client uses, which has no
-    // way back to this exact onboarding tab (there is no cross-context API
-    // for one tab to hand control to another). Confirming is still required
-    // before real money moves (server.js's requireAuth still checks
-    // email_confirmed_at for every protected route) — Paywall here is fully
-    // mocked and calls nothing protected, so continuing the flow unconfirmed
-    // is safe for now. See UNFORGET.md for the real fix this is standing in
-    // for: redirect confirmation back into /onboarding instead of /prihlaseni,
-    // with a resumable step id.
+    // Real checkout requires a confirmed Supabase session. Advancing without
+    // one strands the user at the payment button with a 401, so pause here.
+    // The confirmation link carries a validated internal continuation through
+    // Login and returns this browser to plan selection after sign-in.
+    if (result.needsEmailConfirmation) {
+      setAwaitingConfirmation(true);
+      return;
+    }
+
     goNext();
   };
+
+  if (awaitingConfirmation) {
+    return (
+      <ObScreen onBack={() => setAwaitingConfirmation(false)} phase={phase}>
+        <h1 className="ob-title">Potvrď svůj e-mail</h1>
+        <div className="notice">
+          <span className="notice-title">Odkaz jsme poslali na {email}</span>
+          <p className="notice-text">
+            Klikni na něj a potom se přihlas. Vrátíme tě rovnou k výběru plánu;
+            bez potvrzeného účtu platbu nespustíme.
+          </p>
+          <p className="notice-text">
+            Když zprávu nevidíš, zkontroluj spam. Nový odkaz můžeš poslat z
+            přihlašovací stránky.
+          </p>
+        </div>
+        <Link to="/prihlaseni?next=/onboarding/plan" className="ob-btn ob-btn-secondary">
+          Přejít na přihlášení
+        </Link>
+      </ObScreen>
+    );
+  }
 
   return (
     <ObScreen

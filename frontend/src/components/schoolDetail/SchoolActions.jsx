@@ -4,6 +4,7 @@ import { addFavorite, removeFavorite, fetchPicks, savePicks } from '../../api';
 import { toggleCompareSelection, isInCompareSelection } from '../../lib/searchPrefs';
 import { useToast } from '../ToastContext';
 import { useAuth } from '../AuthContext';
+import { parseSchoolContact } from '../../lib/schoolContact';
 
 /**
  * The three primary actions on a school page. Accent fill goes on exactly
@@ -22,6 +23,7 @@ function SchoolActions({ school, isFavorite, onFavoriteChange }) {
   const [compared, setCompared] = useState(() => isInCompareSelection(school.id));
   const [picks, setPicks] = useState(null); // null = not loaded yet
   const [savingPick, setSavingPick] = useState(false);
+  const contacts = parseSchoolContact(school.contact);
 
   const canFavorite = isSignedIn && hasAccess;
 
@@ -143,7 +145,15 @@ function SchoolActions({ school, isFavorite, onFavoriteChange }) {
             {school.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}
           </a>
         )}
-        {school.contact && <a href={`mailto:${school.contact}`}>{school.contact}</a>}
+        {contacts.map((contact, index) =>
+          contact.href ? (
+            <a href={contact.href} key={`${contact.type}-${contact.label}-${index}`}>
+              {contact.label}
+            </a>
+          ) : (
+            <span key={`${contact.type}-${contact.label}-${index}`}>{contact.label}</span>
+          ),
+        )}
       </div>
     </div>
   );

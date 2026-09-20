@@ -199,9 +199,14 @@ function Settings() {
   };
 
   const handleSignOutEverywhere = async () => {
+    setError(null);
     setBusy(true);
-    await signOutEverywhere();
+    const result = await signOutEverywhere();
     setBusy(false);
+    if (result.error) {
+      setError(result.error);
+      return;
+    }
     navigate('/prihlaseni', { replace: true });
   };
 

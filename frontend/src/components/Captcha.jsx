@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // Cloudflare Turnstile. Chosen over reCAPTCHA because it is free at any volume,
 // needs no cookie banner, and usually solves itself without showing the user a
@@ -47,6 +47,8 @@ function Captcha({ onVerify, resetKey = 0 }) {
   const containerRef = useRef(null);
   const widgetIdRef = useRef(null);
   const onVerifyRef = useRef(onVerify);
+  const [loadError, setLoadError] = useState(null);
+  const [retryKey, setRetryKey] = useState(0);
 
   // Kept in a ref so an inline arrow function in the parent does not tear down
   // and re-render the widget on every keystroke.
@@ -58,6 +60,7 @@ function Captcha({ onVerify, resetKey = 0 }) {
     if (!captchaEnabled) return undefined;
 
     let cancelled = false;
+    setLoadError(null);
 
     loadTurnstile()
       .then((turnstile) => {
@@ -65,18 +68,25 @@ function Captcha({ onVerify, resetKey = 0 }) {
         widgetIdRef.current = turnstile.render(containerRef.current, {
           sitekey: SITE_KEY,
           theme: 'auto',
-          callback: (token) => onVerifyRef.current(token),
+          callback: (token) => {
+            setLoadError(null);
+            onVerifyRef.current(token);
+          },
           // A token expires after a few minutes. Clearing it means a form left
           // open in a tab asks for a fresh challenge instead of submitting a
           // stale one and failing with a confusing error.
           'expired-callback': () => onVerifyRef.current(null),
-          'error-callback': () => onVerifyRef.current(null),
+          'error-callback': () => {
+            setLoadError('Ověření se nepodařilo dokončit. Zkus ho načíst znovu.');
+            onVerifyRef.current(null);
+          },
         });
       })
-      .catch(() => {
-        // Cloudflare being unreachable should not strand the user on a form
-        // that can never submit; the parent falls back to no token.
-        if (!cancelled) onVerifyRef.current(null);
+      .catch((err) => {
+        if (!cancelled) {
+          setLoadError(err.message || 'Ověření se nepodařilo načíst.');
+          onVerifyRef.current(null);
+        }
       });
 
     return () => {
@@ -86,11 +96,27 @@ function Captcha({ onVerify, resetKey = 0 }) {
         widgetIdRef.current = null;
       }
     };
-  }, [resetKey]);
+  }, [resetKey, retryKey]);
 
   if (!captchaEnabled) return null;
 
-  return <div className="captcha-field" ref={containerRef} />;
+  return (
+    <div className="captcha-field">
+      <div ref={containerRef} />
+      {loadError && (
+        <div className="notice notice-error" role="alert">
+          <p className="notice-text">{loadError}</p>
+          <button
+            type="button"
+            className="btn btn-secondary btn-sm"
+            onClick={() => setRetryKey((key) => key + 1)}
+          >
+            Zkusit ověření znovu
+          </button>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default Captcha;

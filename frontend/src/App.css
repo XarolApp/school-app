@@ -111,12 +111,6 @@
   }
 }
 
-.home-actions {
-  display: flex;
-  gap: var(--space-md);
-  margin-top: var(--space-lg);
-}
-
 .btn {
   display: inline-block;
   padding: var(--space-sm) var(--space-lg);
@@ -137,57 +131,6 @@
 .btn-secondary {
   border-color: var(--border);
   color: var(--text-h);
-}
-
-.search-filters {
-  display: flex;
-  gap: var(--space-md);
-  margin-bottom: var(--space-lg);
-}
-
-.search-filters input {
-  padding: var(--space-sm) var(--space-md);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-}
-
-.school-list {
-  list-style: none;
-  padding: 0;
-  display: grid;
-  gap: var(--space-md);
-}
-
-.school-card {
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: var(--space-md);
-}
-
-.school-card a {
-  text-decoration: none;
-  color: inherit;
-}
-
-.signup-form {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-  max-width: 360px;
-}
-
-.signup-form label {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
-  font-weight: 600;
-}
-
-.signup-form input {
-  padding: var(--space-sm) var(--space-md);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  font-weight: 400;
 }
 
 .error {

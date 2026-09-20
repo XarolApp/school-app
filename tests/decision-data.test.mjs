@@ -25,11 +25,27 @@ const { cutoffForPick, analyseSet } = await vite.ssrLoadModule('/src/lib/admissi
 const { groupProgramsByObor, summarizeCurrentYear } = await vite.ssrLoadModule('/src/lib/schoolPrograms.js');
 const { setCompareSelection, getCompareSelection, toggleCompareSelection } = await vite.ssrLoadModule('/src/lib/searchPrefs.js');
 const { escapeHtml } = await vite.ssrLoadModule('/src/lib/escapeHtml.js');
+const { parseSchoolContact } = await vite.ssrLoadModule('/src/lib/schoolContact.js');
+const { buildComparisonRows } = await vite.ssrLoadModule('/src/lib/comparisonRows.js');
+const { scoreByWeights } = await vite.ssrLoadModule('/src/lib/decisionMatrix.js');
 
 test('Leaflet labels keep HTML and attributes as literal text', () => {
   assert.equal(escapeHtml('<img src=x onerror="alert(1)">'), '&lt;img src=x onerror=&quot;alert(1)&quot;&gt;');
   assert.equal(escapeHtml('Škola & "umění"'), 'Škola &amp; &quot;umění&quot;');
   assert.equal(escapeHtml("A'B"), 'A&#39;B');
+});
+
+test('mixed school contacts produce separate email and phone links', () => {
+  assert.deepEqual(parseSchoolContact('perina@gopat.cz, 272 941 932'), [
+    { type: 'email', label: 'perina@gopat.cz', href: 'mailto:perina@gopat.cz' },
+    { type: 'phone', label: '272 941 932', href: 'tel:272941932' },
+  ]);
+  assert.deepEqual(parseSchoolContact('Telefon: +420 123 456 789'), [
+    { type: 'phone', label: 'Telefon: +420 123 456 789', href: 'tel:+420123456789' },
+  ]);
+  assert.deepEqual(parseSchoolContact('sekretariát'), [
+    { type: 'other', label: 'sekretariát', href: null },
+  ]);
 });
 
 test('adding a fifth comparison school is rejected without losing existing selections', () => {
@@ -100,4 +116,35 @@ test('known zero applicants gives zero applicants per place', () => {
   ] });
   assert.equal(entries[0].ratio, 0);
   assert.equal(summarizeCurrentYear(entries).ratio, 0);
+});
+
+test('decision tools read the founder from the newest school program year', () => {
+  const schools = [
+    {
+      id: 1,
+      school_programs: [
+        { rok: 2025, zrizovatel: 'Soukromý', kkov: 'x' },
+        { rok: 2026, zrizovatel: 'Hlavní město Praha', kkov: 'x' },
+      ],
+    },
+    {
+      id: 2,
+      school_programs: [{ rok: 2026, zrizovatel: 'Soukromý', kkov: 'y' }],
+    },
+  ];
+
+  const schoolRows = buildComparisonRows(schools).find((section) => section.id === 'skola').rows;
+  assert.deepEqual(
+    schoolRows.find((row) => row.id === 'zrizovatel').values.map((value) => value.text),
+    ['Hlavní město Praha', 'Soukromý']
+  );
+  assert.deepEqual(
+    schoolRows.find((row) => row.id === 'skolne').values.map((value) => value.text),
+    ['Bez školného', 'Placená škola']
+  );
+
+  const ranked = scoreByWeights(schools, { skolne: 'zasadni' });
+  assert.equal(ranked[0].school.id, 1);
+  assert.equal(ranked[0].breakdown[0].raw, 1);
+  assert.equal(ranked[1].breakdown[0].raw, 0);
 });

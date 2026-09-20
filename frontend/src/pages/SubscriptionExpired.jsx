@@ -8,11 +8,11 @@ import { DEFAULT_PLAN_ID, PLANS, formatCzk, getPlan, planCopy, trialDaysPhrase }
 // Four short parallel claims — a checkmark each reads faster than a bullet and
 // says "included", which a bullet does not.
 const BENEFITS = [
-  'Všech 60 pražských středních škol s detaily',
+  'Pražské střední školy s podrobnými údaji',
   'Filtrování podle oboru a městské části',
   'Dotazník, který ti školy seřadí podle shody',
   'Uložené oblíbené školy na jednom místě',
-  'Zrušit můžeš kdykoli',
+  'Podmínky platby uvidíš předem',
 ];
 
 // Webhooks are asynchronous: the browser can land back here from Stripe
@@ -104,11 +104,12 @@ function Paywall() {
     <div className="page page-paywall">
       <div className="auth-layout">
         <div className="page-header">
-          <p className="eyebrow">Zkušební období skončilo</p>
+          <p className="eyebrow">Přístup není aktivní</p>
           <h1>Pokračuj v hledání školy</h1>
           <p className="lede">
-            Tvých {trialDaysPhrase()} zdarma uplynulo. S předplatným máš dál přístup k celé
-            databázi pražských středních škol i ke svým uloženým favoritům.
+            Vyber si další přístup k celé databázi pražských středních škol i ke svým
+            uloženým favoritům. Sezónní plán nabízí {trialDaysPhrase()} zdarma před
+            jednorázovou platbou.
           </p>
         </div>
 

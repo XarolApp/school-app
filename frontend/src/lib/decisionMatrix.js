@@ -11,7 +11,7 @@
  * shortlist on screen, not an absolute grade.
  */
 
-import { summarizeCurrentYear, groupProgramsByObor } from './schoolPrograms';
+import { summarizeCurrentYear, groupProgramsByObor, latestProgramValue } from './schoolPrograms';
 
 export const WEIGHTS = { nezalezi: 0, trochu: 1, dost: 2, zasadni: 3 };
 
@@ -129,7 +129,7 @@ function rawForCriterion(id, schools) {
     }
     case 'skolne': {
       return schools.map((s) => {
-        const zrizovatel = (s.zrizovatel || '').toLowerCase();
+        const zrizovatel = (latestProgramValue(s, 'zrizovatel') || '').toLowerCase();
         if (!zrizovatel) return null;
         const isPrivate = zrizovatel.includes('soukrom') || zrizovatel.includes('církev');
         return isPrivate ? 0 : 1;
