@@ -1,6 +1,6 @@
 /**
  * Generates cached pros/cons text per school for the comparison view
- * (plans/006-comparison-decision-tools.md §5).
+ * (archive/plans/006-comparison-decision-tools.md §5).
  *
  *   node scripts/generate-school-proscons.js --dry-run [--limit 5] [--model ...]
  *   node scripts/generate-school-proscons.js [--force]

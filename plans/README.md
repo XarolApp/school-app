@@ -11,14 +11,14 @@ codebase audit (see "Not audited" below).
 
 | # | Plan | Impact | Effort | Risk | Status |
 |---|---|---|---|---|---|
-| 001 | [Fix mobile preview harness clipping 28px](001-fix-mobile-preview-clipping.md) | HIGH | S | Very low | TODO |
-| 002 | [Paywall sticky CTA block eats up to 57% of screen](002-fix-paywall-sticky-cluster.md) | HIGH | M | Medium | TODO |
-| 003 | [Desktop breakpoint uses pre-redesign title sizes](003-fix-stale-breakpoint-title-sizes.md) | LOW-MED | S | Very low | TODO |
-| 004 | [Implement the "School Search" design on `/skoly`](004-search-design-import.md) | HIGH | L | Medium | DONE |
-| 005 | [Spacing & typography tokens: emit them, then adopt them site-wide](005-spacing-typography-migration.md) | HIGH | L | Medium | IN PROGRESS |
-| 006 | [Comparison & decision tools (feature-brainstorm §5)](006-comparison-decision-tools.md) | HIGH | L | Medium | TODO |
-| 007 | [Rozhodovací matice redesign + match score as a criterion](007-decision-matrix-redesign.md) | HIGH | M | Low | DONE |
-| 008 | [Save onboarding quiz answers to the account](008-save-onboarding-answers.md) | HIGH | M | Medium | DONE |
+| 001 | [Fix mobile preview harness clipping 28px](../archive/plans/001-fix-mobile-preview-clipping.md) | HIGH | S | Very low | TODO |
+| 002 | [Paywall sticky CTA block eats up to 57% of screen](../archive/plans/002-fix-paywall-sticky-cluster.md) | HIGH | M | Medium | TODO |
+| 003 | [Desktop breakpoint uses pre-redesign title sizes](../archive/plans/003-fix-stale-breakpoint-title-sizes.md) | LOW-MED | S | Very low | TODO |
+| 004 | [Implement the "School Search" design on `/skoly`](../archive/plans/004-search-design-import.md) | HIGH | L | Medium | DONE |
+| 005 | [Spacing & typography tokens: emit them, then adopt them site-wide](../archive/plans/005-spacing-typography-migration.md) | HIGH | L | Medium | IN PROGRESS |
+| 006 | [Comparison & decision tools (feature-brainstorm §5)](../archive/plans/006-comparison-decision-tools.md) | HIGH | L | Medium | TODO |
+| 007 | [Rozhodovací matice redesign + match score as a criterion](../archive/plans/007-decision-matrix-redesign.md) | HIGH | M | Low | DONE |
+| 008 | [Save onboarding quiz answers to the account](../archive/plans/008-save-onboarding-answers.md) | HIGH | M | Medium | DONE |
 | 009 | [Stripe payments — both plans, real money](009-stripe-payments.md) | HIGH | L | High | CODE DONE — untested |
 
 > **004** was added 2026-08-30 by a separate `/improve plan <description>` run against

@@ -4,7 +4,7 @@
 
 **Machine: the MacBook, as of 2026-09-06.** The move that was announced (and then
 didn't happen) on 2026-08-31 has now actually happened — the Windows laptop is no
-longer the working machine. `CONTEXT-HANDOFF.md`'s "MacBook setup checklist" is
+longer the working machine. The archived `archive/context/CONTEXT-HANDOFF.md` contained the
 **active, do-it-now work** on a fresh MacBook session, not dormant reference —
 run through it if `node_modules`, `.env`, or a working `npm run dev` aren't
 already confirmed present.
@@ -48,7 +48,7 @@ that corrupted the MSIX package. That was a property of that hardware, not this
 one. On the MacBook, use the Browser pane normally for the "verify in the browser
 yourself" instruction in Quick Start below.
 
-> `CONTEXT-HANDOFF.md` records what was in flight at the machine switch —
+> The archived `archive/context/CONTEXT-HANDOFF.md` records what was in flight at the machine switch —
 > notably the **new 5-screen paywall flow (`hodnota → cesta → plan → zkusebni →
 > platba`), built 2026-09-05/06, that has never been visually verified in a real
 > browser.** That's the first thing to check on this machine, now that the
@@ -467,7 +467,7 @@ bolted on. This is a standing instruction, not a one-time read — re-check it w
 frontend task starts a new session or touches a part of the UI you haven't touched yet
 this session.
 
-`docs/sources/onboarding.md` is archival only — its content is fully merged into
+`archive/docs/sources/onboarding.md` is archival only — its content is fully merged into
 `.claude/agents/onboarding-architect.md`. No need to read it directly; consult the
 agent file instead when the task is onboarding/quiz/paywall-specific.
 

@@ -51,7 +51,7 @@ function App() {
                   localStorage (lib/searchPrefs.js) and /api/schools is
                   ungated, so an anonymous visitor can compare. Only
                   /prihlaska writes to the database, so it alone needs an
-                  account. See plans/006-comparison-decision-tools.md §1.2. */}
+                  account. See archive/plans/006-comparison-decision-tools.md §1.2. */}
               <Route path="/porovnani" element={<Porovnani />} />
               <Route path="/porovnani/matice" element={<Matice />} />
               <Route element={<ProtectedRoute />}>

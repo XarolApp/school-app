@@ -13,6 +13,23 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
+## Audit follow-up: current-state documents need deliberate consolidation
+- **Found:** 2026-09-20 during the repository cleanup review
+- **Urgency:** Medium — resolve before relying on the repository docs as an agent handoff
+- **Risk fixing now:** Editing instruction and source-of-truth documents casually could change future agent behavior, erase useful historical context, or hide a real product decision.
+- **Risk NOT fixing:** Agents can load conflicting or stale guidance and plan from incorrect product status, especially around payments, design provenance, and completed work.
+- **Effort:** Medium; requires a focused documentation pass and one source-of-truth decision
+- **Release/context:** Documentation reliability, future Claude Code/Codex collaboration, and launch planning
+
+Potentially dangerous cleanup is intentionally deferred until it can be reviewed as a
+single change:
+
+- Reconcile `AGENTS.md` and `CLAUDE.md`. They are large, partly duplicated instruction files with differences, and `AGENTS.md` is currently untracked. Consolidate to one concise current project guide without losing the operational rules.
+- Review stale `PROJECT-OVERVIEW.md`, the near-empty root `README.md`, `docs/skolamatch-current-status.md`, and `plans/README.md`; decide which is authoritative before rewriting or deleting anything.
+- Mark or replace `plans/009-stripe-payments.md`, which describes a materially superseded payment architecture. Keep the payment safety warning until the current implementation has its own verified plan.
+- Decide whether the design provenance copies under `design/system/uploads/` and `design/Logo Concepts Refinement Request/uploads/` should remain, be normalized, or be archived. They may be useful source material even where they duplicate current design files.
+- Review `.codex/agents/onboarding-architect.toml` and the imported `.agents/skills/` copies before committing or adapting them; they can affect how future agents act and currently include local/tool-specific assumptions.
+
 ---
 
 ## 🚨🚨🚨 STOP. DO NOT GO LIVE WITH STRIPE UNTIL THIS IS DONE. 🚨🚨🚨
@@ -366,7 +383,7 @@ in the same sitting (`OPENROUTER_MODEL` swaps it with no code change).
   fresh read now that real schools/data exist, not just the synthesized set it
   was likely tuned against originally.
 - `scripts/generate-school-proscons.js` (plan 006, not yet built) — the pros/cons
-  prompt is specced in `plans/006-comparison-decision-tools.md` §5 with hard
+  prompt is specced in `archive/plans/006-comparison-decision-tools.md` §5 with hard
   constraints (Czech, tykání, only use provided numbers, never mention teachers/
   reputation, a con must be a real tradeoff not a discouragement) but those
   constraints were written by Claude reasoning about what *should* work, not
@@ -451,7 +468,7 @@ Options to decide later, not decided now:
   into nothing
 - **Effort:** medium (§5 of feature-brainstorm.md — its own small feature)
 - **Release/context:** feature-brainstorm.md §5 — now specced in
-  [`plans/006-comparison-decision-tools.md`](plans/006-comparison-decision-tools.md),
+  [`archive/plans/006-comparison-decision-tools.md`](archive/plans/006-comparison-decision-tools.md),
   design canvas at https://claude.ai/code/artifact/688789aa-b54c-4a5e-b2b6-17b3ee775899
 
 `Search.jsx`'s "Porovnat N škol" button (`pages/Search.jsx`, in the sticky
@@ -477,7 +494,7 @@ every §5 row except the two carved out below.
 - **Effort:** large, and mostly NOT frontend work
 - **Release/context:** feature-brainstorm.md §5, the row below "Share shortlist
   with parents"; deliberately excluded from
-  [`plans/006-comparison-decision-tools.md`](plans/006-comparison-decision-tools.md)
+  [`archive/plans/006-comparison-decision-tools.md`](archive/plans/006-comparison-decision-tools.md)
 
 Plan 006 ships the NARROW version: `/sdileni/:token` shows the student's three
 picks, their order, the risk analysis and (opt-in) their notes. That is the
@@ -523,7 +540,7 @@ build both directions in one pass.
   now, implement option B later")
 - **Urgency:** low — copying a link into WhatsApp is what teenagers actually do
 - **Effort:** small once an email provider exists
-- **Release/context:** [`plans/006-comparison-decision-tools.md`](plans/006-comparison-decision-tools.md) §8
+- **Release/context:** [`archive/plans/006-comparison-decision-tools.md`](archive/plans/006-comparison-decision-tools.md) §8
 
 `POST /api/shares` returns a token the student copies. There is no "e-mail it to
 my parent" path, because the app has **no transactional email provider wired up
@@ -1357,7 +1374,7 @@ Fold that fix into the redesign rather than patching it separately.
 *(Move items here with a date + one-line note when they're actually done, rather than deleting them.)*
 
 - **Questionnaire results, run history, unlimited runs, AI-optional** — done
-  2026-09-19 (plan 011, `plans/011-questionnaire-results-history.md`). `/dotaznik`
+  2026-09-19 (plan 011, `archive/plans/011-questionnaire-results-history.md`). `/dotaznik`
   was a flat list of 8 rows that ignored most of what its backend already
   supported. Now: a results screen (top 10 with reasoning, expandable to the
   full current school ranking), a run history (rename, set as default, archive — the backend's two
@@ -1393,7 +1410,7 @@ Fold that fix into the redesign rather than patching it separately.
   full real-money verification remain open above.
 
 - **`/api/schools` payload slimming + 1000-row truncation cliff** — done
-  2026-09-17 (plan 010, `plans/010-schools-payload-slimming.md`). The list
+  2026-09-17 (plan 010, `archive/plans/010-schools-payload-slimming.md`). The list
   endpoint used to nest every raw `school_programs` row (2372 rows across 223
   schools, one row per obor per imported year) plus `school_ai_summary`,
   measured at **843 KB per load** on six surfaces including the onboarding
@@ -1461,7 +1478,7 @@ Fold that fix into the redesign rather than patching it separately.
   build succeeds, and three consecutive `npm run tokens` runs are byte-identical.
   `onboarding.css` was deliberately excluded and is **still open above** — see
   "onboarding.css still on the old spacing/type scale". Two deliberate deviations
-  from the plan as written are recorded in `CONTEXT-HANDOFF.md` (`search.css` 26px →
+ from the plan as written are recorded in `archive/context/CONTEXT-HANDOFF.md` (`search.css` 26px →
   28px to preserve a heading level, and `.ss-row` → `--row-pad-dense` per DESIGN.md's
   density rule).
 - **Reorganized design files into `design/` folder** — done 2026-08-31.

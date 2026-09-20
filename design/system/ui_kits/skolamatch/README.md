@@ -9,7 +9,7 @@ system's own components (`Button`, `Input`, `Checkbox`, `OptionRow`, `Card`, `Ch
 | File | Screen | Notes |
 |---|---|---|
 | `Landing.jsx` | Úvodní stránka | Airy marketing register: Display 72, flush-left, one primary CTA. The ambient loop specified in DESIGN.md is deliberately **not** implemented (gated behind a separate pass). |
-| ~~`Search.jsx`~~ | ~~Databáze škol~~ | **Removed 2026-08-31** — superseded by the real, richer implementation at `frontend/src/pages/Search.jsx` (built from a separate, more detailed Claude Design wireframe with working filters/facets/sorting, not this mockup's static hardcoded list). See `plans/004-search-design-import.md`. |
+| ~~`Search.jsx`~~ | ~~Databáze škol~~ | **Removed 2026-08-31** — superseded by the real, richer implementation at `frontend/src/pages/Search.jsx` (built from a separate, more detailed Claude Design wireframe with working filters/facets/sorting, not this mockup's static hardcoded list). See `archive/plans/004-search-design-import.md`. |
 | `Questionnaire.jsx` | Dotazník | `OptionRow` single- and multi-select, pill progress. No header chrome, no entrance animation, no reveal drama. |
 | `Results.jsx` | Moje shody | `MatchIndicator` per card — met/unmet criteria, no score, no percentage. |
 | `SchoolDetail.jsx` | Detail školy | Data rows with tabular figures; interpretation inline, tooltip only for the DiPSy abbreviation. |
