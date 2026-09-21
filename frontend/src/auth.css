@@ -28,6 +28,11 @@
   gap: var(--space-sm);
   margin-bottom: var(--space-sm);
 }
+.page-header h1,
+.page-header .lede,
+.page-header .eyebrow {
+  margin: 0; /* the flex gap already spaces them; global h1 margins doubled it */
+}
 
 .eyebrow {
   font-size: var(--fs-label-caps);
@@ -480,4 +485,16 @@
   clip: rect(0 0 0 0);
   white-space: nowrap;
   border: 0;
+}
+
+/* Narrow: put a row's action under its value instead of squeezing it beside a
+   long e-mail address. */
+@media (max-width: 480px) {
+  .settings-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .settings-row > .btn {
+    align-self: flex-start;
+  }
 }

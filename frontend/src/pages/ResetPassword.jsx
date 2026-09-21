@@ -56,8 +56,11 @@ function ResetPassword() {
     return (
       <div className="page page-auth">
         <div className="auth-layout">
+          <div className="page-header">
+            <p className="eyebrow">Obnova hesla</p>
+            <h1>Odkaz už neplatí</h1>
+          </div>
           <div className="notice notice-error" role="alert">
-            <span className="notice-title">Odkaz už neplatí</span>
             <p className="notice-text">
               Odkaz pro obnovu hesla vypršel nebo byl už použit. Nech si poslat
               nový.
@@ -84,7 +87,7 @@ function ResetPassword() {
 
         <form onSubmit={handleSubmit} className="panel panel-lg auth-form">
           {error && (
-            <div className="notice notice-error" role="alert">
+            <div className="notice notice-error" role="alert" id="new-password-error">
               <p className="notice-text">{error}</p>
             </div>
           )}
@@ -98,6 +101,8 @@ function ResetPassword() {
               name="password"
               autoComplete="new-password"
               minLength={8}
+              aria-invalid={error ? 'true' : undefined}
+              aria-describedby={error ? 'new-password-error' : 'new-password-hint'}
               value={form.password}
               onChange={handleChange}
               required
@@ -105,7 +110,7 @@ function ResetPassword() {
             {form.password ? (
               <PasswordStrength password={form.password} />
             ) : (
-              <span className="field-hint">Alespoň 8 znaků.</span>
+              <span className="field-hint" id="new-password-hint">Alespoň 8 znaků.</span>
             )}
           </div>
 
@@ -118,6 +123,8 @@ function ResetPassword() {
               name="confirm"
               autoComplete="new-password"
               minLength={8}
+              aria-invalid={error === 'Hesla se neshodují.' ? 'true' : undefined}
+              aria-describedby={error === 'Hesla se neshodují.' ? 'new-password-error' : undefined}
               value={form.confirm}
               onChange={handleChange}
               required

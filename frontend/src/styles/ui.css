@@ -272,6 +272,7 @@ dialog.ss-dialog::backdrop {
   border-radius: var(--r-button);
   border: 1px solid transparent;
   cursor: pointer;
+  text-decoration: none; /* a.btn: this used to come from App.css */
 }
 
 .btn:disabled {

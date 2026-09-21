@@ -1,6 +1,7 @@
 # 012 — Consolidate the existing UI system
 
-**Status:** PROPOSED — browser audit and implementation handoff only; not approved or implemented.
+**Status:** IMPLEMENTED 2026-09-21 (Claude Sonnet), awaiting Sol/high review. Chunks 1–4 committed and pushed. Verified in the running app (390/320/1440 widths): search mobile layout, filter sheet open/Escape/commit + focus, empty search in list and map, query-only relaxation, detail bar (81px vs 214px before) on `/skoly/32` and `/skoly/219`, toast at top, hint disclosure (no nested links), missing-school and loading states, expired-reset fallback, login/signup shell. `npm run lint`, `npm run build`, root `npm test` (44 pass), `git diff --check` clean.
+**Not verified (outstanding):** signed-in Settings layout and focus flow (source-only), ConfirmDialog in the questionnaire (source-only; `onCancel`/`onDismiss` props unchanged), entitled detail action set, controlled offline/slow-network run, iOS keyboard/safe-area, 200% zoom, dark theme, screen reader. `Matice.jsx` confirm dialog still deferred. Commit `223b535` also swept in another agent's uncommitted `pricing.js`/`Settings.jsx` edits; a correcting commit was blocked, so that is left for the owner to sort out.
 **Date:** 2026-09-21. **Baseline:** `main`, HEAD `0be882f`, plus the existing local working tree.
 **Workflow:** GPT-6 Astra, `xhigh` plans → Claude Sonnet implements → GPT-5.6 Sol, `high` reviews. The founder confirmed the planning model and effort.
 **Impact:** High. **Effort:** Medium–large, split into four bounded implementation commits. **Risk:** Medium, mainly shared CSS and dialog consumers.

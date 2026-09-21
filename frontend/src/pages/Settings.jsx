@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../components/AuthContext';
 import Captcha, { captchaEnabled } from '../components/Captcha';
@@ -43,6 +43,20 @@ function Settings() {
   // Only one form is open at a time, so the page stays a readable summary
   // instead of a wall of inputs: 'password' | 'email' | 'delete' | 'cancel' | null.
   const [openForm, setOpenForm] = useState(null);
+  const openerRef = useRef(null);
+  const lastSection = useRef(null);
+
+  // Opening a section moves focus to its first field; closing it returns focus
+  // to the "Změnit" button that opened it (if that section had one).
+  useEffect(() => {
+    if (openForm) {
+      lastSection.current = openForm;
+      document.querySelector(`#settings-form-${openForm} input`)?.focus();
+    } else if (lastSection.current && openerRef.current?.isConnected) {
+      openerRef.current.focus();
+      lastSection.current = null;
+    }
+  }, [openForm]);
   const [name, setName] = useState('');
   const [nameSaved, setNameSaved] = useState(false);
   const [remember, setRemember] = useState(getRememberMe);
@@ -90,7 +104,8 @@ function Settings() {
     setCaptchaKey((key) => key + 1);
   };
 
-  const openSection = (section) => {
+  const openSection = (section, opener) => {
+    if (opener) openerRef.current = opener;
     setOpenForm((current) => (current === section ? null : section));
     setError(null);
     setSuccess(null);
@@ -265,7 +280,7 @@ function Settings() {
           <p className="eyebrow">Účet</p>
           <h1>Nastavení</h1>
           <p className="lede">
-            Uprav svůj profil, zabezpečení účtu a vzhled aplikace.
+            Uprav svůj profil a zabezpečení účtu.
           </p>
         </div>
 
@@ -330,14 +345,17 @@ function Settings() {
             <button
               type="button"
               className="btn btn-secondary btn-sm"
-              onClick={() => openSection('email')}
+              onClick={(e) => openSection('email', e.currentTarget)}
+              aria-label="Změnit e-mail"
+              aria-expanded={openForm === 'email'}
+              aria-controls="settings-form-email"
             >
               Změnit
             </button>
           </div>
 
           {openForm === 'email' && (
-            <form onSubmit={handleChangeEmail} className="settings-form settings-form-inset">
+            <form id="settings-form-email" onSubmit={handleChangeEmail} className="settings-form settings-form-inset">
               {error && (
                 <div className="notice notice-error" role="alert">
                   <p className="notice-text">{error}</p>
@@ -427,7 +445,10 @@ function Settings() {
             <button
               type="button"
               className="btn btn-secondary btn-sm"
-              onClick={() => openSection('password')}
+              onClick={(e) => openSection('password', e.currentTarget)}
+              aria-label="Změnit heslo"
+              aria-expanded={openForm === 'password'}
+              aria-controls="settings-form-password"
             >
               Změnit
             </button>
@@ -435,6 +456,7 @@ function Settings() {
 
           {openForm === 'password' && (
             <form
+              id="settings-form-password"
               onSubmit={handleChangePassword}
               className="settings-form settings-form-inset"
             >

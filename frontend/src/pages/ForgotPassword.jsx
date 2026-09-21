@@ -42,8 +42,11 @@ function ForgotPassword() {
     return (
       <div className="page page-auth">
         <div className="auth-layout">
-          <div className="notice">
-            <span className="notice-title">Zkontroluj svůj e-mail</span>
+          <div className="page-header">
+            <p className="eyebrow">Obnova hesla</p>
+            <h1>Zkontroluj svůj e-mail</h1>
+          </div>
+          <div className="notice" role="status">
             <p className="notice-text">
               Pokud na {email} existuje účet, poslali jsme na něj odkaz pro
               nastavení nového hesla. Platí 10 minut.
@@ -71,7 +74,7 @@ function ForgotPassword() {
 
         <form onSubmit={handleSubmit} className="panel panel-lg auth-form">
           {error && (
-            <div className="notice notice-error" role="alert">
+            <div className="notice notice-error" role="alert" id="reset-error">
               <p className="notice-text">{error}</p>
             </div>
           )}
@@ -86,6 +89,8 @@ function ForgotPassword() {
               type="email"
               name="email"
               autoComplete="email"
+              aria-invalid={error ? 'true' : undefined}
+              aria-describedby={error ? 'reset-error' : undefined}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
