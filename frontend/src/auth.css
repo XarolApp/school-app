@@ -111,24 +111,8 @@
   margin-top: var(--space-xs);
 }
 
-.input {
-  width: 100%;
-  padding: var(--space-md);
-  font: inherit;
-  font-size: var(--fs-label-md);
-  color: var(--ink);
-  background: var(--surface);
-  border: 1px solid var(--line2);
-  border-radius: var(--r-button);
-}
-
-.input:focus {
-  outline: none;
-  border-color: var(--acc);
-  box-shadow: 0 0 0 4px var(--acc-soft);
-}
-
 .checkbox-row {
+  min-height: 44px;
   display: flex;
   align-items: flex-start;
   gap: var(--space-sm);
@@ -228,144 +212,6 @@
   color: var(--ok);
 }
 
-/* --- Buttons --------------------------------------------------------------- */
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-sm);
-  padding: var(--space-md) var(--space-lg);
-  font: inherit;
-  font-size: var(--fs-body-md);
-  font-weight: 600;
-  border-radius: var(--r-button);
-  border: 1px solid transparent;
-  cursor: pointer;
-}
-
-.btn:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-
-.btn-block {
-  width: 100%;
-}
-
-.btn-sm {
-  padding: var(--space-sm) var(--space-md);
-  font-size: var(--fs-body-sm);
-}
-
-/* The design system's Button `lg`, for marketing surfaces (currently the
-   landing hero). `.btn`'s own padding is already the 16px/24px that size
-   specifies, so only the type size changes. */
-.btn-lg {
-  font-size: var(--fs-body-lg);
-}
-
-.btn-primary {
-  background: var(--acc);
-  color: var(--acc-ink);
-}
-
-.btn-secondary {
-  background: var(--surface);
-  color: var(--ink);
-  border-color: var(--line2);
-}
-
-.btn-ghost,
-.link-button {
-  background: none;
-  border: none;
-  padding: 0;
-  font: inherit;
-  color: var(--acc);
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-.btn-danger {
-  background: var(--danger);
-  color: var(--surface);
-}
-
-.btn-danger-ghost {
-  background: none;
-  color: var(--danger);
-  border-color: var(--danger);
-}
-
-/* Constant rate, because an endless rotation with an eased curve visibly
-   pulses once per revolution. */
-.btn-spinner {
-  width: 16px;
-  height: 16px;
-  border-radius: 999px;
-  border: 2px solid currentColor;
-  border-top-color: transparent;
-  animation: btn-spin 0.7s linear infinite;
-}
-
-@keyframes btn-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* The global reduced-motion rule collapses animations to near-zero, which for
-   an infinite rotation means a ring frozen mid-turn — i.e. a permanently
-   broken-looking button. The label already carries the state, so hide it. */
-@media (prefers-reduced-motion: reduce) {
-  .btn-spinner {
-    display: none;
-  }
-}
-
-/* --- Notices --------------------------------------------------------------- */
-
-.notice {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
-  padding: var(--space-md);
-  border-radius: var(--r-chip);
-  border: 1px solid var(--line);
-  background: var(--surface2);
-}
-
-.notice-title {
-  font-weight: 600;
-  font-size: var(--fs-body-sm);
-  color: var(--ink);
-}
-
-.notice-text {
-  font-size: var(--fs-body-sm);
-  line-height: 1.5;
-  color: var(--ink2);
-}
-
-.notice-error {
-  border-color: var(--danger);
-  background: var(--danger-soft);
-}
-
-.notice-error .notice-title {
-  color: var(--danger);
-}
-
-.notice-success {
-  border-color: var(--ok);
-  background: var(--ok-soft);
-}
-
-.notice-success .notice-title {
-  color: var(--ok);
-}
-
 /* --- Auth tabs ------------------------------------------------------------- */
 
 .auth-tabs {
@@ -378,6 +224,11 @@
 }
 
 .auth-tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  text-decoration: none;
   position: relative;
   z-index: 1;
   padding: var(--space-sm);
@@ -598,72 +449,6 @@
   width: 20px;
   height: 20px;
   fill: currentColor;
-}
-
-/* --- Toasts ---------------------------------------------------------------- */
-
-/* Bottom-centre: top-right is where this app's own nav sits. Always mounted so
-   aria-live has somewhere to put a message, hence pointer-events: none —
-   otherwise it would swallow clicks along the bottom edge of every page. */
-.toast-viewport {
-  position: fixed;
-  left: 50%;
-  bottom: 24px;
-  transform: translateX(-50%);
-  z-index: 100;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-  width: min(420px, calc(100vw - 32px));
-  pointer-events: none;
-}
-
-.toast {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  padding: var(--space-md);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--r-chip);
-  box-shadow: var(--shadow);
-  pointer-events: auto;
-}
-
-.toast-icon {
-  flex: none;
-  width: 18px;
-  height: 18px;
-  color: var(--ok);
-}
-
-.toast.is-error .toast-icon {
-  color: var(--danger);
-}
-
-.toast-message {
-  flex: 1;
-  font-size: var(--fs-body-sm);
-  color: var(--ink);
-}
-
-.toast-close {
-  flex: none;
-  display: grid;
-  place-items: center;
-  width: 24px;
-  height: 24px;
-  padding: 0;
-  color: var(--ink3);
-  background: none;
-  border: none;
-  border-radius: var(--r-chip);
-  cursor: pointer;
-}
-
-.toast-close svg {
-  width: 16px;
-  height: 16px;
 }
 
 .navbar-signout {

@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { useAuth } from './AuthContext';
 
@@ -7,6 +7,7 @@ function Layout() {
   const { isSignedIn, signOut, trialDaysLeft, hasAccess } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
+  const toggleRef = useRef(null);
 
   // A route change is the clearest signal the visitor is done with the menu —
   // closing it here means every nav link can stay a plain <Link>, no per-link
@@ -15,15 +16,32 @@ function Layout() {
     setMenuOpen(false);
   }, [location.pathname]);
 
+  // Escape closes the disclosure and hands focus back to its trigger.
+  useEffect(() => {
+    if (!menuOpen) return undefined;
+    const onKey = (e) => {
+      if (e.key === 'Escape') {
+        setMenuOpen(false);
+        toggleRef.current?.focus();
+      }
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [menuOpen]);
+
   return (
     <div className="app-shell">
-      <nav className="navbar">
+      <a href="#obsah" className="skip-link">
+        Přeskočit na obsah
+      </a>
+      <nav className="navbar" aria-label="Hlavní navigace">
         <Link to="/" className="navbar-brand">
           ŠkolaMatch
         </Link>
 
         <button
           type="button"
+          ref={toggleRef}
           className="navbar-toggle"
           aria-expanded={menuOpen}
           aria-controls="navbar-links"
@@ -34,20 +52,20 @@ function Layout() {
         </button>
 
         <div id="navbar-links" className={`navbar-links${menuOpen ? ' is-open' : ''}`}>
-          <Link to="/">Domů</Link>
-          <Link to="/skoly">Školy</Link>
-          <Link to="/onboarding">Najít školu</Link>
-          <Link to="/porovnani">Porovnání</Link>
+          <NavLink to="/" end>Domů</NavLink>
+          <NavLink to="/skoly">Školy</NavLink>
+          <NavLink to="/onboarding" end>Najít školu</NavLink>
+          <NavLink to="/porovnani">Porovnání</NavLink>
           {isSignedIn ? (
             <>
-              <Link to="/dotaznik">Dotazník</Link>
-              <Link to="/nastaveni">Nastavení</Link>
+              <NavLink to="/dotaznik">Dotazník</NavLink>
+              <NavLink to="/nastaveni">Nastavení</NavLink>
               <button type="button" className="navbar-signout" onClick={signOut}>
                 Odhlásit se
               </button>
             </>
           ) : (
-            <Link to="/prihlaseni">Přihlásit se</Link>
+            <NavLink to="/prihlaseni">Přihlásit se</NavLink>
           )}
         </div>
       </nav>
@@ -59,7 +77,7 @@ function Layout() {
         </p>
       )}
 
-      <main className="app-content">
+      <main id="obsah" className="app-content" tabIndex={-1}>
         <Outlet />
       </main>
     </div>

@@ -17,30 +17,27 @@ function AuthTabs() {
   const isLogin = location.pathname === '/prihlaseni';
 
   return (
-    <div
+    <nav
       className="auth-tabs"
-      role="tablist"
-      aria-label="Přepínač přihlášení a registrace"
+      aria-label="Přihlášení a registrace"
       style={{ '--tab-index': isLogin ? 0 : 1 }}
     >
       <span className="tab-thumb" aria-hidden="true" />
       <Link
         to="/prihlaseni"
-        role="tab"
-        aria-selected={isLogin}
+        aria-current={isLogin ? 'page' : undefined}
         className={isLogin ? 'auth-tab is-active' : 'auth-tab'}
       >
         Přihlásit se
       </Link>
       <Link
         to="/registrace"
-        role="tab"
-        aria-selected={!isLogin}
+        aria-current={!isLogin ? 'page' : undefined}
         className={!isLogin ? 'auth-tab is-active' : 'auth-tab'}
       >
         Vytvořit účet
       </Link>
-    </div>
+    </nav>
   );
 }
 

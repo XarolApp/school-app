@@ -24,8 +24,8 @@
   display: none;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border: 1px solid var(--border);
   border-radius: var(--r-button);
   background: var(--surface);
@@ -43,6 +43,10 @@
 .navbar-links a {
   text-decoration: none;
   color: var(--text-h);
+}
+.navbar-links a[aria-current='page'] {
+  color: var(--acc);
+  font-weight: 600;
 }
 
 /* Below this width the links no longer fit one row (confirmed: 113px of
@@ -76,7 +80,7 @@
 
   .navbar-links a,
   .navbar-links .navbar-signout {
-    padding: var(--space-sm) 0;
+    padding: var(--space-md) 0;
     border-bottom: 1px solid var(--border);
   }
 
@@ -109,28 +113,6 @@
   .app-content {
     padding: var(--page-margin-sm);
   }
-}
-
-.btn {
-  display: inline-block;
-  padding: var(--space-sm) var(--space-lg);
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: 600;
-  cursor: pointer;
-  border: 2px solid transparent;
-}
-
-.btn-primary {
-  /* No literal fallbacks: tokens.css always defines these, and #fff/#333 are
-     exactly the two values DESIGN.md forbids outright. */
-  background: var(--accent-bg);
-  color: var(--accent);
-}
-
-.btn-secondary {
-  border-color: var(--border);
-  color: var(--text-h);
 }
 
 .error {

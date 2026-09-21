@@ -91,6 +91,7 @@
   cursor: pointer;
   border-radius: var(--r-button);
   padding: var(--space-sm) var(--space-md);
+  min-height: 44px;
   font-size: var(--fs-caption);
   font-weight: 600;
   border: 1px solid transparent;
@@ -121,6 +122,10 @@
 .ss-btn-sm {
   padding: var(--space-xs) var(--space-sm);
   font-size: var(--fs-caption);
+}
+.ss-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 a.ss-btn {
   display: inline-flex;
@@ -153,30 +158,30 @@ a.ss-btn {
   margin-top: 2px;
 }
 
-/* ---------- confirm dialog (components/ConfirmDialog.jsx) ---------- */
-.ss-dialog-backdrop {
-  position: fixed;
-  inset: 0;
-  background: color-mix(in srgb, var(--ink) 45%, transparent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-lg);
-  z-index: 1000;
-}
-.ss-dialog {
-  width: 100%;
+/* ---------- modal (components/Modal.jsx — native <dialog>) ---------- */
+dialog.ss-dialog {
+  width: calc(100% - 2 * var(--space-lg));
   max-width: 560px;
   max-height: calc(100vh - 2 * var(--space-lg));
+  max-height: calc(100dvh - 2 * var(--space-lg));
+  margin: auto;
+  padding: 0;
   overflow-y: auto;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow);
+}
+.ss-dialog-panel {
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--r-card);
   padding: var(--space-xl);
-  box-shadow: var(--shadow);
+  padding-bottom: max(var(--space-xl), env(safe-area-inset-bottom, 0px));
+}
+dialog.ss-dialog::backdrop {
+  background: color-mix(in srgb, var(--ink) 45%, transparent);
 }
 .ss-dialog-icon {
   width: 44px;
@@ -203,10 +208,283 @@ a.ss-btn {
   margin-top: var(--space-sm);
 }
 @media (max-width: 560px) {
-  .ss-dialog {
+  .ss-dialog-panel {
     padding: var(--space-lg);
   }
   .ss-dialog-actions .ss-btn {
     flex: 1 1 100%;
   }
+}
+
+/* ---------- form controls, buttons, notices, toasts (moved from auth.css, plan 012) ---------- */
+
+.input {
+  width: 100%;
+  padding: var(--space-md);
+  font: inherit;
+  font-size: var(--fs-body-md); /* 16px: below this iOS zooms on focus */
+  min-height: 44px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line2);
+  border-radius: var(--r-button);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--acc);
+  box-shadow: 0 0 0 4px var(--acc-soft);
+}
+.input:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.input[aria-invalid='true'] {
+  border-color: var(--danger);
+}
+
+/* One focus ring for every keyboard-reachable control that has none of its own. */
+.ss-btn:focus-visible,
+.btn:focus-visible,
+.link-button:focus-visible,
+.toast-close:focus-visible,
+.navbar-toggle:focus-visible,
+.navbar-signout:focus-visible,
+.skip-link:focus-visible,
+.auth-tab:focus-visible {
+  outline: 2px solid var(--acc);
+  outline-offset: 2px;
+}
+
+/* --- Buttons --------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  font: inherit;
+  font-size: var(--fs-body-md);
+  font-weight: 600;
+  min-height: 44px;
+  border-radius: var(--r-button);
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.btn-sm {
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--fs-body-sm);
+}
+
+/* The design system's Button `lg`, for marketing surfaces (currently the
+   landing hero). `.btn`'s own padding is already the 16px/24px that size
+   specifies, so only the type size changes. */
+.btn-lg {
+  font-size: var(--fs-body-lg);
+}
+
+.btn-primary {
+  background: var(--acc);
+  color: var(--acc-ink);
+}
+
+.btn-secondary {
+  background: var(--surface);
+  color: var(--ink);
+  border-color: var(--line2);
+}
+
+.btn-ghost,
+.link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: var(--acc);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: var(--surface);
+}
+
+.btn-danger-ghost {
+  background: none;
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+/* Constant rate, because an endless rotation with an eased curve visibly
+   pulses once per revolution. */
+.btn-spinner {
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  animation: btn-spin 0.7s linear infinite;
+}
+
+@keyframes btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* The global reduced-motion rule collapses animations to near-zero, which for
+   an infinite rotation means a ring frozen mid-turn — i.e. a permanently
+   broken-looking button. The label already carries the state, so hide it. */
+@media (prefers-reduced-motion: reduce) {
+  .btn-spinner {
+    display: none;
+  }
+}
+
+/* --- Notices --------------------------------------------------------------- */
+
+.notice {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: var(--space-md);
+  border-radius: var(--r-chip);
+  border: 1px solid var(--line);
+  background: var(--surface2);
+}
+
+.notice-title {
+  font-weight: 600;
+  font-size: var(--fs-body-sm);
+  color: var(--ink);
+}
+
+.notice-text {
+  font-size: var(--fs-body-sm);
+  line-height: 1.5;
+  color: var(--ink2);
+}
+
+.notice-error {
+  border-color: var(--danger);
+  background: var(--danger-soft);
+}
+
+.notice-error .notice-title {
+  color: var(--danger);
+}
+
+.notice-success {
+  border-color: var(--ok);
+  background: var(--ok-soft);
+}
+
+.notice-success .notice-title {
+  color: var(--ok);
+}
+
+/* --- Toasts ---------------------------------------------------------------- */
+
+/* Bottom-centre on desktop; at phone width it moves to the top so it never
+   covers the fixed bottom action bars (search compare tray, school detail
+   actions). Always mounted so aria-live has somewhere to put a message, hence
+   pointer-events: none — otherwise it would swallow clicks along the edge. */
+.toast-viewport {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  width: min(420px, calc(100vw - 32px));
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-chip);
+  box-shadow: var(--shadow);
+  pointer-events: auto;
+}
+
+.toast-icon {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--ok);
+}
+
+.toast.is-error .toast-icon {
+  color: var(--danger);
+}
+
+.toast-message {
+  flex: 1;
+  font-size: var(--fs-body-sm);
+  color: var(--ink);
+}
+
+.toast-close {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: -10px -10px -10px 0;
+  padding: 0;
+  color: var(--ink3);
+  background: none;
+  border: none;
+  border-radius: var(--r-chip);
+  cursor: pointer;
+}
+
+.toast-close svg {
+  width: 16px;
+  height: 16px;
+}
+.toast-message {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 860px) {
+  .toast-viewport {
+    bottom: auto;
+    top: calc(12px + env(safe-area-inset-top, 0px));
+  }
+}
+
+
+/* ---------- skip link ---------- */
+.skip-link {
+  position: absolute;
+  left: var(--space-md);
+  top: -100px;
+  z-index: 1100;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--line2);
+  border-radius: var(--r-button);
+}
+.skip-link:focus {
+  top: var(--space-sm);
 }
