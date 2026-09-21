@@ -53,6 +53,7 @@ function usePostCheckoutVerification(hasAccess, refreshProfile) {
 function Paywall() {
   const { loading, isSignedIn, hasAccess, profile, signOut, refreshProfile } = useAuth();
   const [planId, setPlanId] = useState(DEFAULT_PLAN_ID);
+  const [paymentConsent, setPaymentConsent] = useState(false);
   const [error, setError] = useState(null);
   const [redirecting, setRedirecting] = useState(false);
   const { verifying, gaveUp } = usePostCheckoutVerification(hasAccess, refreshProfile);
@@ -88,7 +89,7 @@ function Paywall() {
     setError(null);
     setRedirecting(true);
     try {
-      const { url } = await createCheckoutSession({ planId, returnTo: '/predplatne' });
+      const { url } = await createCheckoutSession({ planId, returnTo: '/predplatne', paymentConsent });
       window.location.href = url;
     } catch (err) {
       setRedirecting(false);
@@ -160,11 +161,20 @@ function Paywall() {
             ))}
           </div>
 
+          <label className="checkbox-row">
+            <input
+              type="checkbox"
+              checked={paymentConsent}
+              onChange={(e) => setPaymentConsent(e.target.checked)}
+            />
+            <span>Potvrzuji, že je mi 18 let, nebo že o této platbě ví můj rodič či zákonný zástupce.</span>
+          </label>
+
           <button
             type="button"
             className="btn btn-primary btn-block"
             onClick={handleSubscribe}
-            disabled={redirecting}
+            disabled={redirecting || !paymentConsent}
           >
             {redirecting && <span className="btn-spinner" aria-hidden="true" />}
             {redirecting ? 'Přesměrovávám…' : plan.ctaLabel.student}

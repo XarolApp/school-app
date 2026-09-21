@@ -909,7 +909,10 @@ app.post('/api/schools/:id/reviews', reviewLimiter, requireAuth, async (req, res
   const adultRole = role === 'rodic' || role === 'ucitel';
   const showName = adultRole && req.body?.showName === true;
 
-  const status = shouldHold(body) ? 'held' : 'published';
+  // Only self-declared adult roles may publish immediately. Other reviewers
+  // need a human check because the form can contain personal data the basic
+  // word filter does not catch.
+  const status = !adultRole || shouldHold(body) ? 'held' : 'published';
 
   const { data, error } = await supabase
     .from('school_reviews')
@@ -1221,11 +1224,9 @@ app.delete('/api/shares/:token', requireAuth, async (req, res) => {
 
 // No auth. The same 404 body fires for "token never existed" and "token was
 // revoked" — deliberately, so this endpoint cannot be used to distinguish the
-// two (a token oracle). Returns ONLY what a student chose to expose: their
-// first name, their 3 picks (with school + program data), their JPZ points,
-// and notes IF include_notes was set when the link was created. Never the
-// owner's email, id, trial/subscription status, favourites, or questionnaire
-// answers — this is a link a minor pastes into a family chat.
+// two (a token oracle). Returns only the selected schools and programmes, plus
+// notes if explicitly included. Never return the owner's name, email, id, JPZ
+// points, trial/subscription status, favourites, or questionnaire answers.
 app.get('/api/shared/:token', shareLimiter, async (req, res) => {
   const { data: share, error: shareError } = await supabase
     .from('shortlist_shares')
@@ -1241,25 +1242,15 @@ app.get('/api/shared/:token', shareLimiter, async (req, res) => {
     return res.status(404).json({ error: 'Odkaz nenalezen nebo byl zrušen.' });
   }
 
-  const [profileResult, picksResult, decisionResult] = await Promise.all([
-    supabase.from('users').select('name').eq('id', share.user_id).single(),
-    supabase
-      .from('application_picks')
-      .select('priority, obor_kkov, obor_nazev, schools (*, school_programs(*))')
-      .eq('user_id', share.user_id)
-      .order('priority', { ascending: true }),
-    supabase
-      .from('decision_profile')
-      .select('jpz_points')
-      .eq('user_id', share.user_id)
-      .maybeSingle(),
-  ]);
-  if (profileResult.error || picksResult.error || decisionResult.error) {
+  const picksResult = await supabase
+    .from('application_picks')
+    .select('priority, obor_kkov, obor_nazev, schools (*, school_programs(*))')
+    .eq('user_id', share.user_id)
+    .order('priority', { ascending: true });
+  if (picksResult.error) {
     return res.status(500).json({ error: 'Sdílený výběr se nepodařilo načíst.' });
   }
-  const profile = profileResult.data;
   const picks = picksResult.data;
-  const decisionProfile = decisionResult.data;
 
   let notesById = new Map();
   if (share.include_notes) {
@@ -1273,11 +1264,7 @@ app.get('/api/shared/:token', shareLimiter, async (req, res) => {
     notesById = new Map((notes || []).map((n) => [n.school_id, n.body]));
   }
 
-  const firstName = (profile?.name || '').trim().split(/\s+/)[0] || null;
-
   res.json({
-    firstName,
-    jpzPoints: decisionProfile?.jpz_points ?? null,
     picks: (picks || []).map((row) => ({
       priority: row.priority,
       obor_kkov: row.obor_kkov,
@@ -1706,10 +1693,13 @@ function sanitizeReturnTo(returnTo) {
 }
 
 app.post('/api/checkout', checkoutLimiter, requireAuth, async (req, res) => {
-  const { planId, returnTo } = req.body || {};
+  const { planId, returnTo, paymentConsent } = req.body || {};
 
   if (planId !== 'season' && planId !== 'monthly') {
     return res.status(400).json({ error: 'Neplatný plán.' });
+  }
+  if (paymentConsent !== true) {
+    return res.status(400).json({ error: 'Před pokračováním potvrď souhlas s platbou.' });
   }
 
   if (!stripe) {

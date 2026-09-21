@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { fetchSharedShortlist } from '../api';
-import { cutoffForPick, bandFor, BANDS } from '../lib/admissionRisk';
-import RiskSummary from '../components/decision/RiskSummary';
+import { cutoffForPick } from '../lib/admissionRisk';
 import './decision.css';
 
 const numCz = (v) => (v == null ? null : v.toLocaleString('cs-CZ', { maximumFractionDigits: 1 }));
@@ -62,7 +61,7 @@ function SdileniView() {
     );
   }
 
-  const { firstName, jpzPoints, picks } = data;
+  const { picks } = data;
 
   return (
     <div className="dp-share-page">
@@ -70,23 +69,16 @@ function SdileniView() {
 
       <div className="dp-share-header">
         <div className="ss-label-caps">Sdílený přehled</div>
-        <h1 className="ss-headline-md h">{firstName ? `${firstName}ovy tři školy` : 'Tři vybrané školy'}</h1>
+        <h1 className="ss-headline-md h">Tři vybrané školy</h1>
         <p className="ss-body-md">
-          Takhle si {firstName || 'student/ka'} seřadil/a přihlášku. Pořadí je závazné — přijmou ho/ji na nejvýš
-          postavenou školu, kam se dostane.
+          Tohle je pořadí přihlášek. Přijetí proběhne na nejvýš postavenou školu, kam se uchazeč/ka dostane.
         </p>
         <p className="ss-caption">Jen ke čtení.</p>
-      </div>
-
-      <div className="dp-share-risk">
-        <RiskSummary picks={picks.map((p) => ({ ...p, school: p.school }))} studentPoints={jpzPoints} />
       </div>
 
       <div className="dp-share-picks">
         {picks.map((pick) => {
           const { cutoff, source } = cutoffForPick(pick, pick.school);
-          const band = bandFor({ studentPoints: jpzPoints, cutoff });
-          const tone = band ? BANDS[band].tone : null;
 
           return (
             <div className="dp-share-card" key={pick.school.id}>
@@ -94,7 +86,6 @@ function SdileniView() {
               <div className="dp-share-card-body">
                 <div className="dp-share-card-head">
                   <div className="h dp-share-card-name">{pick.school.name}</div>
-                  {tone && <span className={`dp-pill dp-pill-${tone}`}>{BANDS[band].label}</span>}
                 </div>
                 <div className="ss-caption">
                   {pick.school.location}
@@ -106,10 +97,6 @@ function SdileniView() {
                     <div className="ss-label-caps">Hranice</div>
                     <div className="ss-body-md">{cutoff != null ? `${numCz(cutoff)} b.` : '—'}</div>
                   </div>
-                  <div>
-                    <div className="ss-label-caps">Body</div>
-                    <div className="ss-body-md">{jpzPoints != null ? `${numCz(jpzPoints)} b.` : '—'}</div>
-                  </div>
                 </div>
                 {source === 'skola' && cutoff != null && (
                   <p className="ss-caption">Bez vybraného oboru jde o průměr celé školy.</p>
@@ -117,7 +104,7 @@ function SdileniView() {
 
                 {pick.note && (
                   <div className="dp-share-note">
-                    <div className="ss-label-caps">{firstName || 'Poznámka'}ova poznámka</div>
+                    <div className="ss-label-caps">Poznámka</div>
                     <p className="ss-body-sm">{pick.note}</p>
                   </div>
                 )}
@@ -146,7 +133,7 @@ function SdileniView() {
       </div>
 
       <p className="ss-caption dp-share-footer">
-        Tento odkaz vytvořil/a {firstName || 'student/ka'} a může ho kdykoliv zrušit.
+        Tento odkaz může jeho autor/ka kdykoliv zrušit.
       </p>
     </div>
   );

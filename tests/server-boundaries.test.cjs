@@ -162,9 +162,16 @@ test('questionnaire reads surface database failures', async () => {
 
 test('checkout does not continue with an unreadable billing profile', async () => {
   const h = harness({ result: () => ({ data: null, error: { message: 'database unavailable' } }) });
-  const res = await h.call('post', '/api/checkout', { body: { planId: 'season' } });
+  const res = await h.call('post', '/api/checkout', { body: { planId: 'season', paymentConsent: true } });
   assert.equal(res.statusCode, 500);
   assert.match(res.body.error, /platební profil/);
+});
+
+test('checkout requires a payment acknowledgement', async () => {
+  const h = harness();
+  const res = await h.call('post', '/api/checkout', { body: { planId: 'season' } });
+  assert.equal(res.statusCode, 400);
+  assert.match(res.body.error, /souhlas s platbou/);
 });
 
 test('webhook database failures are not acknowledged as successful', async () => {

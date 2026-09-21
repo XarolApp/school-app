@@ -66,7 +66,7 @@ function Platba() {
     setError(null);
     setWorking(true);
     try {
-      const { url } = await createCheckoutSession({ planId: plan.id, returnTo: '/skoly' });
+      const { url } = await createCheckoutSession({ planId: plan.id, returnTo: '/skoly', paymentConsent: confirmed });
       // Full navigation on purpose — Stripe's hosted checkout page is not part
       // of this SPA. Purchase is confirmed by the webhook, not by anything
       // that happens client-side here, so there is no goNext()/setPurchased()

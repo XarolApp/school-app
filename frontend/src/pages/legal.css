@@ -1,0 +1,9 @@
+.legal { max-width: 720px; margin: 0 auto; padding: 24px 16px 64px; color: var(--ink); line-height: 1.6; }
+.legal h1 { font-family: var(--heading); margin: 0 0 4px; }
+.legal h2 { font-size: 1.15rem; margin: 32px 0 8px; }
+.legal ul { padding-left: 20px; }
+.legal li { margin-bottom: 8px; }
+.legal-meta { color: var(--ink2); margin: 0 0 24px; }
+.legal-draft { background: var(--accent-bg); border: 1px solid var(--accent); border-radius: var(--r-card); padding: 12px 16px; margin: 0 0 24px; }
+.app-footer { display: flex; gap: 16px; justify-content: center; padding: 24px 16px; font-size: 0.875rem; color: var(--ink2); }
+.app-footer a { color: inherit; }
