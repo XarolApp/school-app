@@ -59,6 +59,7 @@ function Layout() {
           {isSignedIn ? (
             <>
               <NavLink to="/dotaznik">Dotazník</NavLink>
+              {import.meta.env.DEV && <NavLink to="/onboarding/plan">Předplatné (test)</NavLink>}
               <NavLink to="/nastaveni">Nastavení</NavLink>
               <button type="button" className="navbar-signout" onClick={signOut}>
                 Odhlásit se

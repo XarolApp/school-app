@@ -337,7 +337,7 @@ app.get('/test-db', async (req, res) => {
 
 const PROFILE_COLUMNS =
   'id, email, name, created_at, trial_expires_at, subscription_status, ' +
-  'stripe_subscription_id, access_expires_at, plan_id, season_charge_due_at';
+  'stripe_subscription_id, access_expires_at, plan_id, season_charge_due_at, cancel_at_period_end';
 
 app.get('/api/me', requireAuth, async (req, res) => {
   let { data: profile, error } = await supabase
@@ -383,7 +383,7 @@ app.get('/api/me', requireAuth, async (req, res) => {
     trialActive,
     subscribed,
     hasAccess: trialActive || subscribed,
-    trialDaysLeft: trialActive
+    trialDaysLeft: trialActive && !subscribed
       ? Math.ceil((new Date(profile.trial_expires_at) - new Date()) / 86400000)
       : 0,
   });
@@ -1682,7 +1682,7 @@ app.patch('/api/questionnaire/runs/:id/archive', requireAuth, async (req, res) =
  * env vars from sk_test_ to sk_live_. See plan 009 §11.
  * ------------------------------------------------------------------------- */
 
-// PLACEHOLDER — must mirror SEASON_PRICE_CZK in frontend/src/config/pricing.js.
+// Locked 2026-09-21. Must mirror SEASON_PRICE_CZK in frontend/src/config/pricing.js.
 // This is now the 2nd place this number lives (was previously encoded only as
 // a Stripe Price; season no longer has one). Change both together.
 const SEASON_PRICE_CZK = 690;
@@ -1738,6 +1738,7 @@ app.post('/api/checkout', checkoutLimiter, requireAuth, async (req, res) => {
     try {
       const session = await stripe.checkout.sessions.create({
         mode: 'setup',
+        currency: 'czk',
         customer: profile?.stripe_customer_id || undefined,
         customer_email: profile?.stripe_customer_id ? undefined : req.user.email,
         success_url: `${FRONTEND_URL}${safeReturnTo}?platba=ok`,
@@ -1971,6 +1972,7 @@ async function handleStripeWebhook(req, res) {
         .update({
           subscription_status: mapStripeStatus(object.status, planId),
           access_expires_at: accessEndsAt(object),
+          cancel_at_period_end: Boolean(object.cancel_at_period_end || object.cancel_at),
         })
         .eq('stripe_subscription_id', object.id)
         .throwOnError();

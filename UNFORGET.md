@@ -807,6 +807,18 @@ blockers are resolved. The season plan deliberately has no Stripe Price.
   the whole flow is legal before charging real users. Not a coding task, but
   blocks going live regardless of what else is done.
 
+## Supabase email is capped at 2/hour — custom SMTP needed before launch
+- **Found:** 2026-09-21, hit while creating test accounts
+- **Urgency:** high — launch blocker
+- **Effort:** small — pick a provider, paste SMTP credentials into Supabase
+- **Release/context:** Supabase's built-in mailer is fixed at 2 emails/hour and its rate limit cannot be edited without a custom SMTP provider (or a Send Email hook). Signup confirmation and password-reset emails all go through it, so at launch only ~2 people per hour could confirm an account. Set up a real provider (Resend, Brevo, Postmark…) under Authentication → SMTP, on the stredninamiru.cz domain with SPF/DKIM. The same provider will carry the mandatory trial-reminder email. For testing meanwhile: `node scripts/reset-test-account.js <email>` resets an account's paywall state without signing up again.
+
+## Subscription cancellation flow — polish still owed
+- **Found:** 2026-09-21, Stripe test session
+- **Urgency:** medium — before real billing
+- **Effort:** small–medium
+- **Release/context:** cancelling works end to end (`/api/subscription/cancel` plus an inline "ano, zrušit" confirm in Settings). Still owed: (1) a real cancellation flow/page as the EU one-step-cancellation research describes (dated confirmation, what happens to access, symmetrical exit copy, a confirmation email); (2) cancellation of a monthly plan sets `users.cancel_at_period_end`, and Settings now shows "Zrušeno — nic se neobnoví" — verify that against the webhook on a fresh account.
+
 ---
 
 ## Search page ships synthesized stand-in data — mostly resolved 2026-09-08

@@ -121,6 +121,9 @@ alter table public.users add column if not exists season_charge_due_at timestamp
 -- the same event a no-op instead of silently scheduling the charge again.
 alter table public.users add column if not exists stripe_setup_intent_id text;
 
+-- True once the user has cancelled but access still runs to access_expires_at.
+alter table public.users add column if not exists cancel_at_period_end boolean not null default false;
+
 
 -- ----------------------------------------------------------------------------
 -- 3. Favourites
