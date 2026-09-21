@@ -167,7 +167,7 @@ function Paywall() {
               checked={paymentConsent}
               onChange={(e) => setPaymentConsent(e.target.checked)}
             />
-            <span>Potvrzuji, že je mi 18 let, nebo že o této platbě ví můj rodič či zákonný zástupce.</span>
+            <span>Potvrzuji, že je mi 18 let, nebo že s touto platbou souhlasí můj rodič či zákonný zástupce.</span>
           </label>
 
           <button
@@ -177,7 +177,7 @@ function Paywall() {
             disabled={redirecting || !paymentConsent}
           >
             {redirecting && <span className="btn-spinner" aria-hidden="true" />}
-            {redirecting ? 'Přesměrovávám…' : plan.ctaLabel.student}
+            {redirecting ? 'Přesměrovávám…' : 'Objednat s povinností platby'}
           </button>
         </div>
 

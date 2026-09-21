@@ -21,17 +21,25 @@ BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 - **Effort:** Small–medium
 - **Release/context:** `DELETE /api/me` deletes the Stripe customer BEFORE the user row, so any charge attempted afterwards fails (`resource_missing`) and cannot succeed. Only the microsecond window remains.
 
-## Refund process for the 14-day statutory withdrawal (Terms §4)
-- **Found:** 2026-09-21, founder decision: no waiver checkbox, no "3-day" promise — customers simply keep the full statutory 14-day withdrawal right
-- **Urgency:** Launch blocker — the terms promise it, so a working process must exist before real money
-- **Risk of fixing now:** None
-- **Risk of NOT fixing:** A customer withdraws and nobody refunds → chargeback, consumer complaint (ČOI)
-- **Effort:** Small — support e-mail inbox + a written how-to: refund in the Stripe dashboard, cancel the subscription, set the account to canceled; optionally a model withdrawal form linked from the terms
-- **Release/context:** `Legal.jsx` Terms §4; `REFUND_GUARANTEE_DAYS` stays 0 (no separate paywall promise)
+## Launch legal checklist — no lawyer, so transparency by default (2026-09-21)
+- **Found:** 2026-09-21, founder cannot afford a lawyer before launch; legal pages rewritten with no lawyer placeholders and the most consumer-friendly option wherever the law leaves a choice
+- **Urgency:** Launch blockers (each item below)
+- **Risk of NOT fixing:** ČOI fines (up to 5 M Kč for consumer-law breaches), GDPR complaints to ÚOOÚ, refund disputes
+- **Effort:** Small to medium each; most are operational, not code
+- **Release/context:** `Legal.jsx` (Terms + Privacy), Stripe dashboard, an inbox for the operator e-mail
 
-Open `[OVĚŘIT]` inside §4: the legal duty to provide a model withdrawal form, and whether we may
-deduct a proportionate amount for service already used during the 14 days (we currently do NOT —
-simplest and safest for the customer). Whoever holds the live Stripe keys must be able to issue refunds.
+Before real money, do ALL of these:
+1. **Operator facts** — fill every `[DOPLNIT]` in `Legal.jsx`: adult/company name, IČO, address, e-mail, VAT payer or not, Supabase region, e-mail provider. Then set `DRAFT = false`. The same adult must own the live Stripe account and keys.
+2. **Withdrawal process (Terms §6)** — one inbox that gets the operator e-mail; on a request: refund in the Stripe dashboard within 14 days, cancel the subscription, set the account to canceled. Same for the "minor paid without parent consent → full refund" promise (§7). `REFUND_GUARANTEE_DAYS` stays 0.
+3. **Withdrawal button (Czech §1830a, EU Directive 2023/2673)** — mandatory online withdrawal function for distance contracts concluded through an online interface; EU date was 19 June 2026, the Czech law was still passing the Senate in July 2026 (check status before launch). Spec: a "Odstoupit od smlouvy" button visible in Settings during the 14 days → confirm details → confirm button → e-mail confirmation. Build it, or ship only after checking whether it is in force.
+4. **Contract confirmation e-mail on a durable medium** — order confirmation with the terms and the withdrawal form after checkout (Stripe's setup-mode session sends nothing). Needs the custom SMTP provider first.
+5. **Custom SMTP + re-enable Supabase e-mail confirmation** (existing entries).
+6. **Processor agreements (DPAs)** — accept the standard online DPAs of Supabase, Stripe, Vercel, Railway, OpenRouter, Cloudflare; keep a simple record of processing activities (Art. 30) and a data-breach plan (notify ÚOOÚ within 72 h).
+7. **Order button** now reads "Objednat s povinností platby" (Platba.jsx, SubscriptionExpired.jsx) — do not rename it back.
+8. **Inactive accounts** are not auto-deleted (stated honestly in the policy); add an automatic rule later.
+9. **Season charge vs account deletion** — mostly closed by deleting the Stripe customer before the user row; only a microsecond window remains.
+10. **Accessibility Act** — micro-enterprises are exempt; revisit if the company grows.
+11. **Re-check the law before launch** — the withdrawal-button status, ČOI ADR details, and the age-of-consent rule (15) can change.
 
 ## Privacy policy + terms — Codex fact-check and open placeholders
 - **Found:** 2026-09-21, drafted from what the code actually does; 14-day withdrawal right added 2026-09-21

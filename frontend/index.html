@@ -12,17 +12,8 @@
          of that typeface's identity, not a rendering default — and it read
          as odd rather than characterful. Lora keeps the same warm, editorial
          serif register with conventional letterforms. Both OFL, both carry
-         full Czech diacritics. DESIGN.md's eventual target is self-hosted
-         .woff2 files; no font binaries have been supplied yet, so this loads
-         from the Google Fonts CDN in the meantime (same substitution the
-         design system's own token files make) — swap for local @font-face
-         rules once the files exist. See src/design/tokens.js. -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Public+Sans:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
+         full Czech diacritics. Self-hosted through @fontsource (imported in
+         src/main.jsx) so no visitor IP is sent to Google. See src/design/tokens.js. -->
 
     <title>ŠkolaMatch</title>
   </head>

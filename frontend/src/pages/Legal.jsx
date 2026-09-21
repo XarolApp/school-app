@@ -1,6 +1,6 @@
 import './legal.css';
 
-// Legal-review drafts. Flip to false only after the lawyer review in UNFORGET.md.
+// Shown until the operator facts marked [DOPLNIT] are filled in. Set to false before launch.
 const DRAFT = true;
 
 function LegalPage({ title, updated, children }) {
@@ -8,8 +8,7 @@ function LegalPage({ title, updated, children }) {
     <article className="legal">
       {DRAFT && (
         <p className="legal-draft" role="note">
-          Pracovní návrh — dosud neprošel právní kontrolou. Místa označená [DOPLNIT] a [OVĚŘIT] jsou
-          otevřená.
+          Pracovní verze — údaje označené [DOPLNIT] (provozovatel, e-mail, DPH) se doplní před spuštěním.
         </p>
       )}
       <h1>{title}</h1>
@@ -24,103 +23,120 @@ export function Privacy() {
     <LegalPage title="Zásady ochrany osobních údajů" updated="21. 9. 2026">
       <h2>1. Kdo je správce</h2>
       <p>
-        Správcem osobních údajů je [DOPLNIT: jméno / firma, IČO, adresa sídla — musí to být dospělá
-        osoba nebo právnická osoba], e-mail: [DOPLNIT]. Provozujeme službu ŠkolaMatch (web
-        stredninamiru.cz).
+        Správcem osobních údajů je [DOPLNIT: jméno / firma, IČO, adresa sídla], e-mail:
+        [DOPLNIT]. Provozujeme službu ŠkolaMatch (web stredninamiru.cz). Pověřence pro ochranu
+        osobních údajů nemáme; se vším se obracej na uvedený e-mail.
       </p>
 
-      <h2>2. Jaké údaje zpracováváme a proč</h2>
+      <h2>2. Jaké údaje zpracováváme, proč a na jakém základě</h2>
       <ul>
         <li>
-          <strong>Účet:</strong> e-mail, jméno (které zadáš při registraci) a heslo. Heslo ukládá
-          pouze zabezpečená autentizační služba v zahašované podobě; my ho nikdy nevidíme.
-          Důvod: poskytnout ti účet a přihlášení (plnění smlouvy).
+          <strong>Účet:</strong> e-mail, jméno (které zadáš při registraci), heslo a okamžik, kdy
+          jsi potvrdil(a) podmínky. Heslo ukládá jen zabezpečená autentizační služba v zahašované
+          podobě; my ho nevidíme. Účel: vytvořit ti účet a umožnit přihlášení. Základ: plnění
+          smlouvy.
         </li>
         <li>
-          <strong>Odpovědi v dotazníku a výsledky:</strong> co odpovíš v úvodním i samostatném
-          dotazníku a jaké školy ti vyšly. Důvod: doporučit ti školy a ukázat ti je znovu
-          (plnění smlouvy). Před vytvořením účtu zůstávají odpovědi jen v tvém prohlížeči.
+          <strong>Odpovědi v dotazníku a výsledky:</strong> co odpovíš v úvodním a samostatném
+          dotazníku, včetně volné poznámky, a jaké školy ti vyšly. Účel: doporučit ti školy a ukázat
+          je znovu. Základ: plnění smlouvy. Před vytvořením účtu zůstávají odpovědi jen v tvém
+          prohlížeči.
         </li>
         <li>
-          <strong>Tvé práce s aplikací:</strong> oblíbené školy, pořadí přihlášek, poznámky ke
-          školám, počet bodů z přijímacích zkoušek (pokud ho zadáš), odkazy pro sdílení
-          seznamu rodičům. Důvod: poskytnout tyto funkce (plnění smlouvy).
+          <strong>Tvoje práce s aplikací:</strong> oblíbené školy, pořadí přihlášek, poznámky,
+          počet bodů z přijímacích zkoušek (jen pokud ho zadáš), odkazy pro sdílení seznamu
+          rodičům. Účel: poskytnout tyto funkce. Základ: plnění smlouvy.
         </li>
         <li>
-          <strong>Recenze a hlášení chyb:</strong> text recenze, tvoje role (např. student,
-          rodič) a případná hlášení. Recenze je veřejná, ale zobrazuje se jen podle role (např.
-          „Student · 3. ročník“). Jméno se u recenze ukáže pouze rodiči nebo učiteli, který to
-          sám zapne. Důvod: souhlas a oprávněný zájem na moderaci.
+          <strong>Recenze a hlášení chyb:</strong> text recenze, tvoje role (např. student, rodič)
+          a případná hlášení. Recenze je veřejná, ale ukazuje se jen s rolí (např. „Student · 3.
+          ročník“), ne se jménem. Jméno u recenze ukážeme jen rodiči nebo učiteli, který to sám
+          zapne. Účel: provoz recenzí a jejich moderace. Základ: oprávněný zájem na bezpečném
+          a slušném obsahu; zveřejnění recenze je tvoje dobrovolná volba.
         </li>
         <li>
-          <strong>Předplatné a platby:</strong> stav předplatného, zvolený tarif, data trvání a
-          identifikátory zákazníka u platební brány. <strong>Číslo karty nikdy nevidíme ani
-          neukládáme</strong> — zadáváš ho přímo u společnosti Stripe. Důvod: plnění smlouvy a
-          zákonné povinnosti (účetnictví).
+          <strong>Předplatné a platby:</strong> zvolený tarif, stav předplatného, data platby a
+          identifikátory zákazníka u platební brány. <strong>Číslo karty nevidíme ani
+          neukládáme</strong> — zadáváš ho přímo u společnosti Stripe. Účel: zpracovat platbu a
+          vést předplatné. Základ: plnění smlouvy a zákonná povinnost (účetnictví a daně).
         </li>
         <li>
-          <strong>Technické údaje:</strong> IP adresa a údaje prohlížeče při ověření proti botům
-          a při provozu serverů. Důvod: bezpečnost služby (oprávněný zájem).
+          <strong>Technické údaje:</strong> IP adresa a údaje prohlížeče při provozu serverů a při
+          ověření proti robotům. Účel: bezpečnost a fungování služby. Základ: oprávněný zájem.
         </li>
       </ul>
       <p>
-        Nepoužíváme reklamní ani analytické cookies ani sledovací nástroje třetích stran
-        [OVĚŘIT před spuštěním, pokud se cokoli přidá].
+        Údaje, které zadáváš, nám dáváš dobrovolně; bez e-mailu a hesla ale účet vytvořit nelze,
+        a bez platebních údajů nelze koupit placený tarif.
       </p>
 
-      <h2>3. Komu údaje předáváme (zpracovatelé)</h2>
+      <h2>3. Automatické hodnocení škol</h2>
+      <p>
+        Pořadí škol vypočítáme automaticky z tvých odpovědí (jde o profilování). Slouží jen jako
+        pomůcka: nemá žádné právní účinky, nikdo podle něj o tobě nerozhoduje a o přijetí na školu
+        rozhoduje výhradně škola.
+      </p>
+
+      <h2>4. Komu údaje předáváme (zpracovatelé)</h2>
       <ul>
-        <li>Supabase — databáze a přihlašování; data jsou uložena v regionu [OVĚŘIT: EU/region projektu].</li>
-        <li>Stripe — platby (Stripe Payments Europe, Ltd. a spřízněné společnosti; možný přenos mimo EU na základě standardních smluvních doložek).</li>
+        <li>Supabase — databáze a přihlašování. Region uložení dat: [DOPLNIT: region projektu].</li>
+        <li>Stripe — platby (Stripe Payments Europe, Ltd. a spřízněné společnosti). Může docházet k přenosu mimo EU na základě standardních smluvních doložek.</li>
         <li>
           OpenRouter a poskytovatel jazykového modelu (Google Gemini) — píší krátké vysvětlení,
-          proč se ti škola hodí. Odesíláme jen odpovědi z dotazníku a názvy a údaje vybraných
-          škol. Jméno, e-mail ani volná poznámka z dotazníku se do tohoto požadavku nevkládají.
-          Přenos mimo EU [OVĚŘIT: poskytovatele modelu a mechanismus přenosu].
+          proč se ti škola hodí. Posíláme jen výběrové odpovědi z dotazníku a údaje o vybraných
+          školách. Jméno, e-mail ani volnou poznámku z dotazníku neposíláme. Data mohou být
+          zpracována mimo EU (např. v USA) na základě standardních smluvních doložek.
         </li>
-        <li>Cloudflare Turnstile — ochrana formulářů proti robotům.</li>
-        <li>Google Fonts — načtení písem v prohlížeči; při načtení může Google obdržet technické údaje spojení.</li>
-        <li>Vercel a Railway — provoz webu a serveru [OVĚŘIT: skutečné produkční hostování a všechny podobné služby].</li>
-        <li>Poskytovatel e-mailů pro potvrzení registrace a obnovu hesla: [DOPLNIT].</li>
+        <li>Cloudflare — ochrana formulářů proti robotům (Turnstile); zpracovává technické údaje spojení.</li>
+        <li>Vercel a Railway — provoz webu a serveru.</li>
+        <li>OpenStreetMap (OpenStreetMap Foundation) — podkladové mapy a vyhledání adresy na mapě škol. Při zobrazení mapy vidí poskytovatel tvou IP adresu a při hledání i text adresy, který zadáš.</li>
+        <li>Poskytovatel e-mailů (potvrzení registrace, obnova hesla): [DOPLNIT].</li>
       </ul>
-      <p>Údaje neprodáváme a nepředáváme školám ani inzerentům.</p>
-
-      <h2>4. Děti a nezletilí</h2>
       <p>
-        Službu využívají hlavně žáci 9. tříd. Podle českého práva může souhlas se zpracováním
-        osobních údajů dát dítě samo od 15 let; mladší potřebuje souhlas rodiče. Při registraci
-        proto potvrzuješ, že ti je alespoň 15 let, nebo že máš souhlas rodiče či zákonného
-        zástupce; okamžik přijetí podmínek si ukládáme. Věk ani totožnost rodiče dále neověřujeme
-        [OVĚŘIT: dostatečnost tohoto postupu]. Před platbou vyžadujeme samostatné potvrzení v objednávce;
-        nejde o ověření totožnosti ani rodičovského vztahu.
+        Údaje neprodáváme, nepředáváme školám ani inzerentům a nepoužíváme je k reklamě. Zákon nás
+        může zavázat vydat údaje orgánům veřejné moci.
       </p>
 
-      <h2>5. Jak dlouho údaje uchováváme</h2>
+      <h2>5. Děti a nezletilí</h2>
       <p>
-        Po dobu existence účtu. Účet a vše výše popsané můžeš kdykoli smazat v Nastavení. Smaže se tím
-        také tvé předplatné, uloženou platební metodu u Stripe a všechny tvé recenze. Záznamy o proběhlých platbách může Stripe a my
-        uchovávat po dobu, kterou vyžaduje účetní a daňový zákon [OVĚŘIT: délka]. Neaktivní účty
-        [OVĚŘIT / ROZHODNOUT: zatím se automaticky nemažou].
+        Službu používají hlavně žáci 9. tříd. Podle českého práva může souhlas se zpracováním
+        osobních údajů u online služeb dát dítě samo od 15 let. <strong>Je-li ti méně než 15 let,
+        požádej rodiče nebo zákonného zástupce, ať s vytvořením účtu souhlasí</strong> (nejlépe ať
+        ho vytvoří s tebou). Při registraci proto potvrzuješ, že ti je alespoň 15 let, nebo že
+        máš takový souhlas; okamžik potvrzení si ukládáme. Věk ani totožnost rodiče neověřujeme
+        — spoléháme na tvé prohlášení. Sbíráme jen údaje nezbytné pro službu, nic neprodáváme
+        a nic nepoužíváme k reklamě. Pokud rodič zjistí, že účet vytvořilo dítě mladší 15 let
+        bez jeho souhlasu, napiš nám a účet i všechna data smažeme.
       </p>
 
-      <h2>6. Tvá práva</h2>
+      <h2>6. Jak dlouho údaje uchováváme</h2>
+      <ul>
+        <li>Údaje z účtu, dotazníků a tvých seznamů: po dobu existence účtu. Účet můžeš kdykoli smazat v Nastavení a smaže se tím vše výše popsané, včetně tvého předplatného, uložené platební metody a zákazníka u Stripe a všech tvých recenzí.</li>
+        <li>Neaktivní účty se zatím automaticky nemažou. Kdykoli je můžeš smazat sám/sama nebo nás o to požádat e-mailem.</li>
+        <li>Záznamy o proběhlých platbách a související účetní doklady musíme uchovávat po dobu, kterou předepisují účetní a daňové předpisy (typicky 5 až 10 let); ty se smazáním účtu neruší.</li>
+      </ul>
+
+      <h2>7. Tvá práva</h2>
       <p>
         Máš právo na přístup ke svým údajům, jejich opravu, výmaz, omezení zpracování,
-        přenositelnost a právo vznést námitku. Výmaz i opravu jména zvládneš přímo v Nastavení;
-        s ostatním nám napiš na [DOPLNIT: e-mail]. Pokud máš pocit, že s údaji nakládáme špatně,
-        můžeš podat stížnost u Úřadu pro ochranu osobních údajů (uoou.gov.cz).
+        přenositelnost a právo vznést námitku proti zpracování na základě oprávněného zájmu.
+        Souhlas, který jsi dal(a), můžeš kdykoli odvolat. Jméno opravíš a účet smažeš přímo v
+        Nastavení; s ostatním napiš na [DOPLNIT: e-mail], odpovíme do 30 dnů. Máš také právo podat
+        stížnost u Úřadu pro ochranu osobních údajů (uoou.gov.cz).
       </p>
 
-      <h2>7. Prohlížeč a úložiště</h2>
+      <h2>8. Cookies a úložiště v prohlížeči</h2>
       <p>
-        V prohlížeči ukládáme přihlašovací relaci a volbu „zapamatovat si mě“, rozpracované odpovědi
-        z dotazníku, vybranou roli a nastavení hledání a porovnání. Po registraci z onboardingu může
-        prohlížeč až 7 dní uchovat e-mail a odpovědi, aby je po potvrzení e-mailu uložil ke správnému účtu.
-        Nejde o sledování napříč weby.
+        Web nepoužívá reklamní, analytické ani sledovací cookies ani nástroje třetích stran ke
+        sledování. Písma načítáme z našeho serveru. V prohlížeči ukládáme jen to, co ke službě
+        potřebuješ, a proto to nevyžaduje souhlas: přihlašovací relaci a volbu „zůstat
+        přihlášený“, rozpracované odpovědi z dotazníku, vybranou roli a nastavení hledání a
+        porovnání. Po registraci z úvodního dotazníku může prohlížeč až 7 dní uchovat e-mail a
+        odpovědi, aby je po potvrzení e-mailu uložil ke správnému účtu.
       </p>
 
-      <h2>8. Změny</h2>
-      <p>Když zásady podstatně změníme, upozorníme tě v aplikaci nebo e-mailem.</p>
+      <h2>9. Změny</h2>
+      <p>O podstatné změně těchto zásad tě budeme předem informovat v aplikaci nebo e-mailem.</p>
     </LegalPage>
   );
 }
@@ -128,92 +144,142 @@ export function Privacy() {
 export function Terms() {
   return (
     <LegalPage title="Obchodní podmínky" updated="21. 9. 2026">
-      <h2>1. Provozovatel</h2>
+      <h2>1. Provozovatel a kontakt</h2>
       <p>
-        Službu ŠkolaMatch (stredninamiru.cz) provozuje [DOPLNIT: jméno / firma, IČO, adresa,
-        e-mail, případně DIČ a zápis v rejstříku]. Uzavřením smlouvy souhlasíš s těmito podmínkami
-        a se{' '}
-        <a href="/ochrana-osobnich-udaju">Zásadami ochrany osobních údajů</a>.
+        Službu ŠkolaMatch (stredninamiru.cz) provozuje [DOPLNIT: jméno / firma, IČO, adresa sídla,
+        DIČ, zápis v rejstříku], e-mail: [DOPLNIT] (tento e-mail slouží pro všechny žádosti,
+        reklamace, odstoupení od smlouvy i nahlášení nevhodného obsahu). Uzavřením smlouvy
+        souhlasíš s těmito podmínkami a se{' '}
+        <a href="/ochrana-osobnich-udaju">Zásadami ochrany osobních údajů</a>. Smlouva se uzavírá
+        v českém jazyce.
       </p>
 
       <h2>2. Co služba je</h2>
       <p>
         Přehled středních škol v Praze, dotazník, který školy seřadí podle tvých odpovědí, a
-        nástroje pro porovnání a plánování přihlášek. Výsledky jsou pomůcka k rozhodnutí, ne
-        záruka přijetí ani doporučení jediné správné školy. Údaje o školách pocházejí z
-        veřejných zdrojů (např. výsledky jednotné přijímací zkoušky od CERMAT) a mohou být
-        neúplné nebo zastaralé — důležité údaje si vždy ověř u školy.
+        nástroje pro porovnání a plánování přihlášek. Výsledky jsou pomůcka k rozhodnutí, nikoli
+        záruka přijetí ani doporučení jediné správné školy. Údaje o školách pocházejí z veřejných
+        zdrojů (např. výsledky jednotné přijímací zkoušky od CERMAT) a mohou být neúplné nebo
+        zastaralé — důležité údaje si vždy ověř přímo u školy.
       </p>
 
-      <h2>3. Zkušební doba a tarify</h2>
+      <h2>3. Objednávka a uzavření smlouvy</h2>
+      <ol>
+        <li>Vytvoříš si účet (a potvrdíš věk a souhlas s podmínkami).</li>
+        <li>Vybereš tarif, uvidíš shrnutí: cenu, kdy a kolik se ti strhne a jak tarif zrušit.</li>
+        <li>Potvrdíš, že je ti 18 let nebo že s platbou souhlasí tvůj rodič či zákonný zástupce.</li>
+        <li>Stiskneš tlačítko <strong>„Objednat s povinností platby“</strong> a na stránce Stripe zadáš kartu.</li>
+      </ol>
+      <p>
+        Smlouva je uzavřena stisknutím tohoto tlačítka a dokončením kroku u Stripe. Chyby ve
+        vyplněných údajích můžeš před odesláním opravit tlačítkem Zpět. Znění těchto podmínek si
+        můžeš kdykoli zobrazit na této stránce.
+      </p>
+
+      <h2>4. Tarify a ceny</h2>
       <ul>
         <li>
-          <strong>Sezónní přístup — 690 Kč jednorázově.</strong> Začíná 3denní zkušební dobou. Při
-          zahájení se ti karta jen uloží, nic se neúčtuje. Po 3 dnech (v den uvedený při
-          objednávce) se z karty jednorázově strhne 690 Kč a přístup trvá do konce března
-          [DOPLNIT: rok]. Potom automaticky skončí, nic se neobnovuje.
+          <strong>Sezónní přístup — 690 Kč jednorázově.</strong> Začíná 3denní zkušební dobou.
+          Při objednávce se ti karta jen uloží a nic se neúčtuje. Po 3 dnech (v den uvedený při
+          objednávce) se z karty jednou strhne 690 Kč. Přístup pak trvá do 31. března; platíš-li
+          méně než 30 dní před tímto datem, trvá do 31. března následujícího roku. Poté skončí a
+          nic se neobnovuje. Neposíláme připomínku před strháním — datum a částku vidíš při
+          objednávce.
         </li>
         <li>
-          <strong>Měsíční — 249 Kč měsíčně.</strong> Bez zkušební doby, platba se opakuje každý měsíc,
-          dokud předplatné nezrušíš.
+          <strong>Měsíční — 249 Kč měsíčně.</strong> Bez zkušební doby. Platíš hned a platba se
+          opakuje každý měsíc ve stejný den, dokud předplatné nezrušíš. Změnu ceny oznámíme
+          nejméně 30 dní předem a můžeš předplatné před ní zrušit.
         </li>
       </ul>
-      <p>Ceny jsou uvedeny včetně DPH [OVĚŘIT: zda je provozovatel plátcem DPH].</p>
+      <p>
+        Ceny jsou konečné, včetně DPH, pokud jsme jeho plátci [DOPLNIT: plátce / neplátce DPH].
+        Platí se kartou přes Stripe v českých korunách.
+      </p>
 
-      <h2>4. Zrušení a vrácení peněz</h2>
+      <h2>5. Zrušení předplatného</h2>
       <ul>
-        <li>Měsíční předplatné zrušíš kdykoli v Nastavení; přístup běží do konce zaplaceného měsíce a dál se nic neúčtuje.</li>
-        <li>
-          Sezónní přístup můžeš zrušit během 3denní zkušební doby — pak se karta pouze ověří, nic se neúčtuje.
-        </li>
-        <li>
-          <strong>Odstoupení od smlouvy do 14 dnů:</strong> Jako spotřebitel můžeš od smlouvy odstoupit do 14 dnů
-          od jejího uzavření, a to bez udání důvodu. Stačí nám to oznámit na [DOPLNIT: e-mail]. Zaplacené peníze
-          ti vrátíme nejpozději do 14 dnů od oznámení, stejným způsobem, jakým jsi platil(a). Nevyžadujeme,
-          aby ses tohoto práva vzdal(a). Tím nejsou dotčena tvá další zákonná práva [OVĚŘIT: vzorový formulář
-          pro odstoupení a případná úhrada za již poskytnutou službu — viz UNFORGET.md].
-        </li>
+        <li>Měsíční předplatné zrušíš kdykoli v Nastavení jedním tlačítkem. Přístup běží do konce už zaplaceného měsíce a další platba se neúčtuje.</li>
+        <li>Sezónní přístup můžeš zrušit v Nastavení během 3denní zkušební doby — pak se nestrhne nic. Po strhnutí se neobnovuje, není co rušit.</li>
       </ul>
 
-      <h2>5. Nezletilí</h2>
+      <h2>6. Odstoupení od smlouvy a vrácení peněz</h2>
       <p>
-        Pokud je ti méně než 18 let, může předplatné objednat jen s výslovným souhlasem rodiče nebo
-        zákonného zástupce, který se také ujistí, že platba proběhne z jeho karty nebo s jeho
-        vědomím. Při objednávce po tobě potvrzení rodiče vyžadujeme [OVĚŘIT: znění a
-        vymahatelnost potvrzení].
+        Jako spotřebitel můžeš od smlouvy <strong>odstoupit do 14 dnů bez udání důvodu</strong> a
+        my ti zaplacené peníze v plné výši vrátíme. Nevyžadujeme, aby ses tohoto práva vzdal(a),
+        a nic neúčtujeme za dobu, kdy jsi službu už používal(a).
+      </p>
+      <ul>
+        <li>Lhůta běží 14 dní od uzavření smlouvy. U sezónního přístupu ji ještě prodlužujeme: poběží nejméně 14 dní od strhnutí platby.</li>
+        <li>Stačí napsat na [DOPLNIT: e-mail], že odstupuješ; můžeš použít formulář níže, ale nemusíš.</li>
+        <li>Peníze vrátíme nejpozději do 14 dnů od tvého oznámení, stejným způsobem, jakým jsi platil(a). Přístup skončí okamžikem odstoupení a předplatné zrušíme.</li>
+      </ul>
+      <p className="legal-form">
+        <strong>Vzorový formulář pro odstoupení od smlouvy</strong><br />
+        Adresát: [DOPLNIT: jméno provozovatele, adresa, e-mail]<br />
+        Oznamuji, že tímto odstupuji od smlouvy o poskytnutí služby ŠkolaMatch (tarif:
+        ……………).<br />
+        Datum objednávky: …………… E-mail účtu: ……………<br />
+        Jméno spotřebitele: …………… Datum: …………… (podpis, pokud podáváš písemně)
       </p>
 
-      <h2>6. Pravidla pro obsah od uživatelů</h2>
+      <h2>7. Nezletilí</h2>
       <p>
-        Recenze musí být pravdivé, slušné a nesmí obsahovat osobní údaje třetích osob ani jména
-        konkrétních učitelů. Recenze, které porušují pravidla, můžeme skrýt nebo smazat.
-        Nevhodný obsah můžeš nahlásit přímo u recenze.
+        Pokud je ti méně než 18 let, je při objednávce potřeba souhlas rodiče nebo zákonného
+        zástupce; potvrzuješ ho zaškrtnutím políčka před platbou. Neověřujeme ho — spoléháme na
+        tvé prohlášení. <strong>Pokud nezletilý zaplatil bez souhlasu zákonného zástupce, vrátíme
+        na jeho žádost celou zaplacenou částku</strong> — stačí napsat na [DOPLNIT: e-mail], bez ohledu
+        na 14denní lhůtu.
       </p>
 
-      <h2>7. Odpovědnost</h2>
+      <h2>8. Reklamace a vady služby</h2>
       <p>
-        Službu poskytujeme tak, jak je, a snažíme se o správnost údajů, ale neodpovídáme za
-        rozhodnutí o volbě školy ani za škodu z nepřesných údajů, v rozsahu, v jakém to zákon
-        dovoluje [OVĚŘIT: limity odpovědnosti vůči spotřebitelům]. Tím nejsou dotčena tvá
-        zákonná práva spotřebitele.
+        Když služba nefunguje, jak má, napiš nám na [DOPLNIT: e-mail]. Vadu odstraníme bez
+        zbytečného odkladu, nejpozději do 30 dnů. Pokud se to nepodaří, máš právo na přiměřenou
+        slevu z ceny, nebo na odstoupení od smlouvy s vrácením peněz. Tím nejsou dotčena tvá
+        další zákonná práva spotřebitele.
       </p>
 
-      <h2>8. Ukončení a smazání účtu</h2>
+      <h2>9. Obsah od uživatelů a moderace</h2>
       <p>
-        Účet můžeš kdykoli smazat v Nastavení. Účet můžeme zablokovat při závažném porušení
-        podmínek nebo zneužití služby.
+        Recenze musí být pravdivé, slušné a nesmí obsahovat osobní údaje třetích osob, kontaktní
+        údaje ani jména konkrétních učitelů. <strong>Recenze nejsou ověřené</strong> — jde o
+        subjektivní názory autorů, ne o naše tvrzení. Nové recenze procházejí automatickým filtrem;
+        recenze od žáků, absolventů a návštěvníků před zveřejněním ručně kontrolujeme. Nevhodný
+        obsah můžeš nahlásit tlačítkem u recenze nebo e-mailem [DOPLNIT: e-mail]. Recenzi, která
+        porušuje pravidla, můžeme skrýt nebo smazat; na tvou žádost ti důvod sdělíme a rozhodnutí
+        znovu posoudíme.
       </p>
 
-      <h2>9. Reklamace a spory</h2>
+      <h2>10. Odpovědnost</h2>
       <p>
-        Reklamace pošli na [DOPLNIT: e-mail]; vyřídíme ji nejpozději do 30 dnů. Spotřebitelské
-        spory lze řešit mimosoudně u České obchodní inspekce (coi.gov.cz).
+        Snažíme se, aby údaje byly správné, ale jsou informativní a nemůžeme zaručit jejich
+        úplnost ani aktuálnost; o volbě školy rozhoduješ ty. Tím není dotčena naše odpovědnost,
+        kterou nelze podle zákona vyloučit (např. za škodu způsobenou úmyslně nebo z hrubé
+        nedbalosti) ani tvá zákonná práva spotřebitele.
       </p>
 
-      <h2>10. Závěrečná ustanovení</h2>
+      <h2>11. Ukončení a smazání účtu</h2>
       <p>
-        Vztah se řídí českým právem. Podmínky můžeme měnit; o podstatné změně tě předem
-        upozorníme a u již zaplaceného tarifu se změna bez tvého souhlasu neuplatní.
+        Účet můžeš kdykoli smazat v Nastavení; předplatné se tím zruší a další platba neproběhne.
+        Účet můžeme zablokovat při závažném porušení podmínek nebo zneužití služby a oznámíme ti
+        to i s důvodem.
+      </p>
+
+      <h2>12. Řešení sporů</h2>
+      <p>
+        Nejprve nám napiš na [DOPLNIT: e-mail], vyřídíme to do 30 dnů. Pokud se nedohodneme, můžeš
+        se obrátit na subjekt mimosoudního řešení spotřebitelských sporů: Česká obchodní inspekce,
+        Štěpánská 567/15, 120 00 Praha 2, adr.coi.cz. Dozor nad dodržováním spotřebitelských
+        předpisů vykonává také ČOI.
+      </p>
+
+      <h2>13. Změny podmínek a závěr</h2>
+      <p>
+        Vztah se řídí právem České republiky; tím nejsou dotčena práva spotřebitele podle
+        právních předpisů státu jeho bydliště. Podmínky můžeme měnit; o změně tě informujeme
+        nejméně 30 dní předem a u již zaplaceného období se změna neuplatní. U měsíčního tarifu
+        můžeš před účinností změny předplatné zrušit.
       </p>
     </LegalPage>
   );

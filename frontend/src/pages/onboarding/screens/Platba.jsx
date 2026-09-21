@@ -166,7 +166,7 @@ function Platba() {
                 <span>
                   {parent
                     ? 'Potvrzuji, že jsem rodič nebo zákonný zástupce a s touto platbou souhlasím.'
-                    : 'Potvrzuji, že je mi 18 let, nebo že o téhle platbě ví můj rodič či zákonný zástupce.'}
+                    : 'Potvrzuji, že je mi 18 let, nebo že s touto platbou souhlasí můj rodič či zákonný zástupce.'}
                 </span>
               </label>
               <span className="ob-pw-rule" />
@@ -199,7 +199,7 @@ function Platba() {
                 </div>
               )}
               <PayCta onClick={submit} disabled={!confirmed || working}>
-                {working ? 'Přesměrovávám na Stripe…' : 'Začít používat'}
+                {working ? 'Přesměrovávám na Stripe…' : 'Objednat s povinností platby'}
               </PayCta>
               {!confirmed && (
                 <p className="ob-microcopy ob-pw-centered">
