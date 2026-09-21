@@ -1,3 +1,7 @@
+# graphify
+
+When the user invokes `/graphify`, use the installed Graphify skill before doing anything else. For repository questions, prefer the existing `graphify-out/` graph as a navigation aid, then read the source files needed for the answer.
+
 # School Selection App — Project Context
 
 ## ⚠️ Current working setup — read this first
@@ -360,7 +364,7 @@ school-app/
 ├── .env                        # backend secrets — gitignored, never commit
 ├── .env.example                # documents every backend var
 ├── .gitignore
-├── CLAUDE.md                   # this file
+├── AGENTS.md                   # this file
 ├── README.md                   # currently near-empty
 ├── server.js                   # Express backend, root-level
 ├── package.json                # backend deps
@@ -468,7 +472,7 @@ frontend task starts a new session or touches a part of the UI you haven't touch
 this session.
 
 `archive/docs/sources/onboarding.md` is archival only — its content is fully merged into
-`.claude/agents/onboarding-architect.md`. No need to read it directly; consult the
+`.codex/agents/onboarding-architect.toml`. No need to read it directly; consult the
 agent file instead when the task is onboarding/quiz/paywall-specific.
 
 **Before proposing new features, scope additions, or a build-order decision, read
@@ -480,7 +484,7 @@ admissions process, monetization, growth/virality, B2B, legal/GDPR, and a recomm
 rating) from scratch, and prevents suggesting something already marked ❌ with a stated
 reason (e.g. leaderboards, social feeds, display ads — all explicitly rejected as
 harmful or low-value for a minors-focused product). If a task touches "what should we
-build next" in any form, this file is the first thing to check, not CLAUDE.md's shorter
+build next" in any form, this file is the first thing to check, not AGENTS.md's shorter
 MVP list — that list is the current build target; this file is the full backlog behind it.
 
 **Design tokens live in JS, not CSS — this is deliberate and load-bearing.**
@@ -558,7 +562,7 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
    - `api.js` fetch helper with graceful "Failed to fetch" error handling
    - Verified working on localhost:5173
 
-5. **Onboarding agent** (`.claude/agents/onboarding-architect.md`) — a scoped subagent
+5. **Onboarding agent** (`.codex/agents/onboarding-architect.toml`) — a scoped subagent
    for onboarding, quiz flow, paywall, pricing and conversion work only. Merges
    `claude_code_ui_ux_guide.md` (psychological principles) and `onboarding.md`
    (onboarding structure) into one non-conflicting instruction set, with explicit

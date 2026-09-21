@@ -24,7 +24,7 @@ BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 Potentially dangerous cleanup is intentionally deferred until it can be reviewed as a
 single change:
 
-- Reconcile `AGENTS.md` and `CLAUDE.md`. They are large, partly duplicated instruction files with differences, and `AGENTS.md` is currently untracked. Consolidate to one concise current project guide without losing the operational rules.
+- ~~Reconcile `AGENTS.md` and `CLAUDE.md`.~~ Done 2026-09-21: synchronized current guidance, separated only agent-specific paths/invocation notes, and removed obsolete historical sections.
 - Review stale `PROJECT-OVERVIEW.md`, the near-empty root `README.md`, `docs/skolamatch-current-status.md`, and `plans/README.md`; decide which is authoritative before rewriting or deleting anything.
 - Mark or replace `plans/009-stripe-payments.md`, which describes a materially superseded payment architecture. Keep the payment safety warning until the current implementation has its own verified plan.
 - Decide whether the design provenance copies under `design/system/uploads/` and `design/Logo Concepts Refinement Request/uploads/` should remain, be normalized, or be archived. They may be useful source material even where they duplicate current design files.
