@@ -20,6 +20,9 @@ codebase audit (see "Not audited" below).
 | 007 | [Rozhodovací matice redesign + match score as a criterion](../archive/plans/007-decision-matrix-redesign.md) | HIGH | M | Low | DONE |
 | 008 | [Save onboarding quiz answers to the account](../archive/plans/008-save-onboarding-answers.md) | HIGH | M | Medium | DONE |
 | 009 | [Stripe payments — both plans, real money](009-stripe-payments.md) | HIGH | L | High | CODE DONE — untested |
+| 012 | [Consolidate the existing UI system](012-ui-system-consolidation.md) | HIGH | M–L | Medium | PROPOSED — awaiting approval |
+
+> **012** was added 2026-09-21 through `/codex-plan-then-build`, following a running-browser audit of search, school detail and auth, with source-only coverage of signed-in settings/dialogs. It improves the existing UI without changing colors or installing shadcn/Tailwind. Its scope and status are independent of the historical audit below; that older status table has not been re-audited here.
 
 > **004** was added 2026-08-30 by a separate `/improve plan <description>` run against
 > commit `5a8381c` — a targeted single-plan run, not part of the 2026-08-24 audit above.

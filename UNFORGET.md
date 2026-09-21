@@ -13,6 +13,37 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
+## UI consolidation plan 012 — implementation and signed-in verification pending
+- **Found:** 2026-09-21, browser-first UI audit with `/codex-plan-then-build`
+- **Urgency:** High for mobile search/detail usability; implement after plan approval
+- **Risk of fixing now:** Shared CSS and dialog behavior affect questionnaire/onboarding consumers; an unbounded library migration would enlarge the change substantially.
+- **Risk of NOT fixing:** Mobile filters delay results, detail contact links crowd the fixed action bar, empty map results lose recovery, and dialog focus behavior remains incomplete.
+- **Effort:** Medium–large, four bounded implementation chunks
+- **Release/context:** Existing search, school detail, auth, settings and shared UI quality
+
+The handoff is [plan 012](plans/012-ui-system-consolidation.md). It includes exact
+files, resolved design decisions, browser evidence and verification requirements.
+It is **proposed, not implemented**. Colors and UI dependencies remain unchanged.
+Signed-in settings and confirmation dialogs were inspected in source only because
+the audit browser was anonymous; their visual/keyboard checks must be completed
+with a suitable development/test session during implementation. Keep the matrix's
+separate confirmation migration under its existing review gate below.
+
+## Search map labels overlap; map resize needs a separate check
+- **Found:** 2026-09-21, plan 012 browser audit of `/skoly` map view
+- **Urgency:** Medium — map usability on mobile/tablet
+- **Risk of fixing now:** Marker grouping/selection and Leaflet sizing require a focused map check and could distract from the existing-system consolidation.
+- **Risk of NOT fixing:** Dense results are difficult to identify; viewport changes can leave part of the map without tiles.
+- **Effort:** Medium; reproduce sizing separately before deciding the label solution
+- **Release/context:** Search map; deliberately outside plan 012 except for zero-result recovery
+
+With 223 schools at 768×1024, many full-name labels overlapped into a dense pile.
+Changing viewport size also left partially filled map tiles. Inspect
+`frontend/src/components/SchoolMap.jsx` marker labels and container resize handling;
+verify `invalidateSize` on actual layout changes before choosing a clustering or
+selected-label design. Do not infer that this needs a replacement map library.
+Recheck filtered results, selected school, fullscreen and mobile/desktop transitions.
+
 ## Audit follow-up: current-state documents need deliberate consolidation
 - **Found:** 2026-09-20 during the repository cleanup review
 - **Urgency:** Medium — resolve before relying on the repository docs as an agent handoff
