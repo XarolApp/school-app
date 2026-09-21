@@ -108,7 +108,7 @@ I will:
 
 ## Parallel Work Pattern — The "Don't Stare at Me" Rule
 
-**When you use `/plan-then-build` or give me any task that will take 20+ minutes:**
+**When you use `/claude-only-plan-then-build` or give me any task that will take 20+ minutes:**
 
 I will:
 1. Execute the longer development/code task
