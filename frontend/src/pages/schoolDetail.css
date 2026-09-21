@@ -177,6 +177,9 @@
   opacity: 1;
   visibility: visible;
 }
+@media (max-width: 600px) {
+  .sd-info-hint-tip { left: auto; right: 0; transform: none; max-width: calc(100vw - 32px); }
+}
 .sd-provenance {
   font-family: var(--sans);
   font-size: var(--fs-caption);

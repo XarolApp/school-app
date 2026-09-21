@@ -521,6 +521,10 @@
   opacity: 1;
   visibility: visible;
 }
+@media (max-width: 600px) {
+  .school-search .ss-stat-tooltip,
+  .decision-page .ss-stat-tooltip { left: auto; right: 0; transform: none; }
+}
 /* placement="bottom" (SchoolMap.jsx's popup card) — opens downward instead
    of upward, since that card scrolls its own overflow-y and would clip a
    tooltip trying to escape past its top edge. */

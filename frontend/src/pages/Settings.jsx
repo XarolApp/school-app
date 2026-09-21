@@ -51,7 +51,7 @@ function Settings() {
   useEffect(() => {
     if (openForm) {
       lastSection.current = openForm;
-      document.querySelector(`#settings-form-${openForm} input`)?.focus();
+      document.querySelector(`#settings-form-${openForm} input, #settings-form-${openForm} button`)?.focus();
     } else if (lastSection.current && openerRef.current?.isConnected) {
       openerRef.current.focus();
       lastSection.current = null;
@@ -630,7 +630,7 @@ function Settings() {
 
           {canCancel &&
             (openForm === 'cancel' ? (
-              <div className="settings-form settings-form-inset">
+              <div id="settings-form-cancel" className="settings-form settings-form-inset">
                 {error && (
                   <div className="notice notice-error" role="alert">
                     <p className="notice-text">{error}</p>
@@ -668,7 +668,7 @@ function Settings() {
                 <button
                   type="button"
                   className="btn btn-secondary btn-sm"
-                  onClick={() => openSection('cancel')}
+                  onClick={(e) => openSection('cancel', e.currentTarget)}
                 >
                   Zrušit předplatné
                 </button>
@@ -687,7 +687,7 @@ function Settings() {
           </div>
 
           {openForm === 'delete' ? (
-            <form onSubmit={handleDelete} className="settings-form settings-form-inset">
+            <form id="settings-form-delete" onSubmit={handleDelete} className="settings-form settings-form-inset">
               {error && (
                 <div className="notice notice-error" role="alert">
                   <p className="notice-text">{error}</p>
@@ -739,7 +739,7 @@ function Settings() {
             <button
               type="button"
               className="btn btn-danger-ghost"
-              onClick={() => openSection('delete')}
+              onClick={(e) => openSection('delete', e.currentTarget)}
             >
               Smazat účet
             </button>

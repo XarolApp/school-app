@@ -262,6 +262,9 @@ function Search() {
   const compareBarRef = useRef(null);
   // Crossing to desktop drops the sheet but keeps every filter value.
   const sheetOpen = filterOpen && isMobile;
+  useEffect(() => {
+    if (!isMobile) setFilterOpen(false);
+  }, [isMobile]);
 
   const { isSignedIn, hasAccess } = useAuth();
 

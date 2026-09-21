@@ -89,7 +89,6 @@ function ForgotPassword() {
               type="email"
               name="email"
               autoComplete="email"
-              aria-invalid={error ? 'true' : undefined}
               aria-describedby={error ? 'reset-error' : undefined}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
