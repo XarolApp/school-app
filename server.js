@@ -337,7 +337,27 @@ app.get('/test-db', async (req, res) => {
 
 const PROFILE_COLUMNS =
   'id, email, name, created_at, trial_expires_at, subscription_status, ' +
-  'stripe_subscription_id, access_expires_at, plan_id, season_charge_due_at, cancel_at_period_end';
+  'stripe_subscription_id, access_expires_at, plan_id, season_charge_due_at, cancel_at_period_end, ' +
+  'plan_started_at, last_paid_at';
+
+const WITHDRAWAL_DAYS = 14;
+
+// The 14 days run from the later of "contract concluded" and "money taken", so a
+// season pass (charged 3 days after checkout) still gets a full 14 days after the charge.
+function withdrawalWindowEnd(profile) {
+  const times = [profile.plan_started_at, profile.last_paid_at]
+    .filter(Boolean)
+    .map((value) => new Date(value).getTime());
+  return times.length ? new Date(Math.max(...times) + WITHDRAWAL_DAYS * 86400000) : null;
+}
+
+function canWithdraw(profile) {
+  const planLive =
+    (profile.plan_id === 'season' && ['trialing', 'season'].includes(profile.subscription_status)) ||
+    (profile.plan_id === 'monthly' && ['active', 'past_due'].includes(profile.subscription_status));
+  const end = withdrawalWindowEnd(profile);
+  return planLive && Boolean(end) && end > new Date();
+}
 
 app.get('/api/me', requireAuth, async (req, res) => {
   let { data: profile, error } = await supabase
@@ -382,6 +402,8 @@ app.get('/api/me', requireAuth, async (req, res) => {
     isDeveloper,
     trialActive,
     subscribed,
+    canWithdraw: canWithdraw(profile),
+    withdrawalEndsAt: withdrawalWindowEnd(profile),
     hasAccess: trialActive || subscribed,
     trialDaysLeft: trialActive && !subscribed
       ? Math.ceil((new Date(profile.trial_expires_at) - new Date()) / 86400000)
@@ -1875,6 +1897,84 @@ app.post('/api/subscription/cancel', requireAuth, async (req, res) => {
   }
 });
 
+/**
+ * Statutory 14-day withdrawal (Terms §6). No reason asked, no deduction for use:
+ * stops all billing, refunds everything paid for this plan, ends access. Safe to
+ * retry — the Stripe cancel is skipped once cancelled and each refund carries a
+ * stable idempotency key, so a failure halfway can simply be repeated.
+ */
+app.post('/api/subscription/withdraw', checkoutLimiter, requireAuth, async (req, res) => {
+  if (!stripe) {
+    return res.status(503).json({ error: 'Platby zatím nejsou nastavené.', code: 'STRIPE_NOT_CONFIGURED' });
+  }
+
+  const { data: profile, error: profileError } = await supabase
+    .from('users')
+    .select(
+      'stripe_customer_id, stripe_subscription_id, plan_id, subscription_status, ' +
+        'plan_started_at, last_paid_at'
+    )
+    .eq('id', req.user.id)
+    .single();
+  if (profileError) return res.status(500).json({ error: 'Nepodařilo se ověřit předplatné. Zkus to prosím znovu.' });
+
+  if (!canWithdraw(profile)) {
+    return res.status(400).json({
+      code: 'NOT_WITHDRAWABLE',
+      error: 'Lhůta 14 dní už uplynula nebo není od čeho odstoupit. Napiš nám prosím e-mailem.',
+    });
+  }
+
+  try {
+    if (profile.stripe_subscription_id) {
+      const sub = await stripe.subscriptions.retrieve(profile.stripe_subscription_id);
+      if (!['canceled', 'incomplete_expired'].includes(sub.status)) {
+        await stripe.subscriptions.cancel(profile.stripe_subscription_id);
+      }
+    }
+
+    let refundedHaleru = 0;
+    if (profile.stripe_customer_id) {
+      const since = Math.floor(new Date(profile.plan_started_at).getTime() / 1000) - 3600;
+      const payments = await stripe.paymentIntents.list({
+        customer: profile.stripe_customer_id,
+        created: { gte: since },
+        limit: 100,
+      });
+      for (const intent of payments.data) {
+        if (intent.status !== 'succeeded') continue;
+        try {
+          const refund = await stripe.refunds.create(
+            { payment_intent: intent.id, reason: 'requested_by_customer' },
+            { idempotencyKey: `withdraw:${intent.id}` }
+          );
+          refundedHaleru += refund.amount;
+        } catch (err) {
+          if (err.code !== 'charge_already_refunded') throw err;
+        }
+      }
+    }
+
+    const { error } = await supabase
+      .from('users')
+      .update({
+        plan_id: null,
+        subscription_status: 'canceled',
+        access_expires_at: new Date().toISOString(),
+        season_charge_due_at: null,
+        stripe_payment_method_id: null,
+        cancel_at_period_end: false,
+      })
+      .eq('id', req.user.id);
+    if (error) throw error;
+
+    res.json({ withdrawn: true, refundedCzk: refundedHaleru / 100, at: new Date().toISOString() });
+  } catch (err) {
+    console.error('Withdrawal failed:', err.message);
+    res.status(502).json({ error: 'Odstoupení se nepodařilo dokončit. Zkus to prosím znovu; nic se nestrhne dvakrát.' });
+  }
+});
+
 // Subscription state is only ever written here, from a Stripe-signed event.
 // Nothing the browser sends can grant itself access.
 async function handleStripeWebhook(req, res) {
@@ -1927,6 +2027,7 @@ async function handleStripeWebhook(req, res) {
             stripe_setup_intent_id: object.setup_intent,
             plan_id: 'season',
             season_charge_due_at: dueAt.toISOString(),
+            plan_started_at: new Date(checkoutCompletedAt).toISOString(),
           })
           .eq('id', object.client_reference_id)
           .throwOnError();
@@ -1946,6 +2047,8 @@ async function handleStripeWebhook(req, res) {
           stripe_subscription_id: subscriptionId,
           plan_id: planId,
           access_expires_at: accessEndsAt(sub),
+          plan_started_at: new Date(sub.start_date * 1000).toISOString(),
+          last_paid_at: new Date(sub.start_date * 1000).toISOString(),
         })
         .eq('id', object.client_reference_id)
         .throwOnError();
@@ -1967,6 +2070,7 @@ async function handleStripeWebhook(req, res) {
             subscription_status: 'season',
             access_expires_at: seasonEndsAt(paidAt).toISOString(),
             season_charge_due_at: null,
+            last_paid_at: paidAt.toISOString(),
           })
           .eq('id', userId)
           .throwOnError();
@@ -2114,6 +2218,7 @@ async function chargeDueSeasonPasses() {
             subscription_status: 'season',
             access_expires_at: seasonEndsAt(paidAt).toISOString(),
             season_charge_due_at: null,
+            last_paid_at: paidAt.toISOString(),
           })
           .eq('id', user.id)
           .throwOnError();

@@ -5,7 +5,8 @@ import Captcha, { captchaEnabled } from '../components/Captcha';
 import PasswordInput from '../components/PasswordInput';
 import PasswordStrength from '../components/PasswordStrength';
 import { useToast } from '../components/ToastContext';
-import { deleteAccount, cancelSubscription } from '../api';
+import { deleteAccount, cancelSubscription, withdrawFromContract } from '../api';
+import { getPlan } from '../config/pricing';
 import { supabase, getRememberMe, setRememberMe } from '../supabaseClient';
 
 const SUBSCRIPTION_LABELS = {
@@ -265,6 +266,28 @@ function Settings() {
         cancelled === 'immediately'
           ? 'Zrušeno. Nic ti nebude strženo.'
           : `Zrušeno. Přístup ti běží do ${formatCzDateLong(accessUntil)}.`
+      );
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const handleWithdraw = async () => {
+    setError(null);
+    setBusy(true);
+    try {
+      const { refundedCzk, at } = await withdrawFromContract();
+      await refreshProfile();
+      setOpenForm(null);
+      setSuccess(
+        `Odstoupení od smlouvy jsme přijali ${new Date(at).toLocaleString('cs-CZ')}. ` +
+          'Předplatné je zrušené a přístup skončil. ' +
+          (refundedCzk > 0
+            ? `Vrátili jsme ti ${refundedCzk} Kč; na kartě se objeví do několika pracovních dnů. `
+            : 'Nic ti nebylo strženo, není co vracet. ') +
+          'Toto potvrzení si můžeš uložit nebo vyfotit.'
       );
     } catch (err) {
       setError(err.message);
@@ -671,6 +694,61 @@ function Settings() {
                   onClick={(e) => openSection('cancel', e.currentTarget)}
                 >
                   Zrušit předplatné
+                </button>
+              </div>
+            ))}
+
+          {profile?.canWithdraw &&
+            (openForm === 'withdraw' ? (
+              <div id="settings-form-withdraw" className="settings-form settings-form-inset">
+                {error && (
+                  <div className="notice notice-error" role="alert">
+                    <p className="notice-text">{error}</p>
+                  </div>
+                )}
+                <p className="settings-section-text">
+                  Potvrď odstoupení od smlouvy. Zaplacenou částku ti vrátíme celou, předplatné se zruší
+                  a přístup skončí hned.
+                </p>
+                <ul className="settings-section-text">
+                  <li>E-mail účtu: <strong>{profile.email}</strong></li>
+                  <li>Tarif: <strong>{getPlan(profile.plan_id).name}</strong></li>
+                  <li>Smlouva uzavřena: <strong>{formatCzDateLong(profile.plan_started_at)}</strong></li>
+                </ul>
+                <div className="settings-form-actions">
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={handleWithdraw}
+                    disabled={busy}
+                  >
+                    {busy && <span className="btn-spinner" aria-hidden="true" />}
+                    {busy ? 'Odstupuji…' : 'Potvrdit odstoupení od smlouvy'}
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-ghost"
+                    onClick={() => {
+                      setOpenForm(null);
+                      setError(null);
+                    }}
+                  >
+                    Ne, ponechat
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="settings-row-actions">
+                <p className="settings-section-text">
+                  Do {formatCzDateLong(profile.withdrawalEndsAt)} můžeš od smlouvy odstoupit bez udání
+                  důvodu a dostaneš zpět celou zaplacenou částku.
+                </p>
+                <button
+                  type="button"
+                  className="btn btn-secondary btn-sm"
+                  onClick={(e) => openSection('withdraw', e.currentTarget)}
+                >
+                  Odstoupit od smlouvy
                 </button>
               </div>
             ))}

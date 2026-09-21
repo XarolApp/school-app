@@ -269,6 +269,10 @@ export function createCheckoutSession({ planId, returnTo, paymentConsent } = {})
  * paid, it schedules cancellation for the end of the current period. Returns
  * `{ cancelled: 'immediately' | 'at_period_end', accessUntil: string|null }`.
  */
+export function withdrawFromContract() {
+  return request('/api/subscription/withdraw', { method: 'POST' });
+}
+
 export function cancelSubscription() {
   return request('/api/subscription/cancel', { method: 'POST' });
 }

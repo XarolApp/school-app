@@ -31,15 +31,16 @@ BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 Before real money, do ALL of these:
 1. **Operator facts** — fill every `[DOPLNIT]` in `Legal.jsx`: adult/company name, IČO, address, e-mail, VAT payer or not, Supabase region, e-mail provider. Then set `DRAFT = false`. The same adult must own the live Stripe account and keys.
 2. **Withdrawal process (Terms §6)** — one inbox that gets the operator e-mail; on a request: refund in the Stripe dashboard within 14 days, cancel the subscription, set the account to canceled. Same for the "minor paid without parent consent → full refund" promise (§7). `REFUND_GUARANTEE_DAYS` stays 0.
-3. **Withdrawal button (Czech §1830a, EU Directive 2023/2673)** — mandatory online withdrawal function for distance contracts concluded through an online interface; EU date was 19 June 2026, the Czech law was still passing the Senate in July 2026 (check status before launch). Spec: a "Odstoupit od smlouvy" button visible in Settings during the 14 days → confirm details → confirm button → e-mail confirmation. Build it, or ship only after checking whether it is in force.
+3. **Withdrawal button — BUILT 2026-09-21** (`POST /api/subscription/withdraw`, Settings → "Odstoupit od smlouvy", two-step). Stops billing, refunds every payment made since the plan started (idempotent, safe to retry), ends access. Window = 14 days from the later of contract start and payment (`plan_started_at`, `last_paid_at`). Still to do: (a) run the SQL for those two columns; (b) test in Stripe test mode for monthly, season before charge and season after charge; (c) in the Stripe dashboard turn ON "Email customers about refunds" (Settings → Customer emails) so a refund receipt is sent; (d) the legal "confirmation of receipt on a durable medium" e-mail still depends on SMTP (item 4); (e) check whether the Czech §1830a is in force at launch — the button already exists, wording may need adjusting.
 4. **Contract confirmation e-mail on a durable medium** — order confirmation with the terms and the withdrawal form after checkout (Stripe's setup-mode session sends nothing). Needs the custom SMTP provider first.
 5. **Custom SMTP + re-enable Supabase e-mail confirmation** (existing entries).
 6. **Processor agreements (DPAs)** — accept the standard online DPAs of Supabase, Stripe, Vercel, Railway, OpenRouter, Cloudflare; keep a simple record of processing activities (Art. 30) and a data-breach plan (notify ÚOOÚ within 72 h).
 7. **Order button** now reads "Objednat s povinností platby" (Platba.jsx, SubscriptionExpired.jsx) — do not rename it back.
 8. **Inactive accounts** are not auto-deleted (stated honestly in the policy); add an automatic rule later.
-9. **Season charge vs account deletion** — mostly closed by deleting the Stripe customer before the user row; only a microsecond window remains.
-10. **Accessibility Act** — micro-enterprises are exempt; revisit if the company grows.
-11. **Re-check the law before launch** — the withdrawal-button status, ČOI ADR details, and the age-of-consent rule (15) can change.
+9. **Refund abuse by minors:** the minors clause (Terms §7) gives a full refund within 30 days of payment and only a pro-rata refund of the unused period afterwards, so buying a season pass and refunding it after the March DiPSy deadline returns almost nothing. The pro-rata refund is a manual process (Stripe dashboard); an automatic calculation is not built.
+10. **Season charge vs account deletion** — mostly closed by deleting the Stripe customer before the user row; only a microsecond window remains.
+11. **Accessibility Act** — micro-enterprises are exempt; revisit if the company grows.
+12. **Re-check the law before launch** — the withdrawal-button status, ČOI ADR details, and the age-of-consent rule (15) can change.
 
 ## Privacy policy + terms — Codex fact-check and open placeholders
 - **Found:** 2026-09-21, drafted from what the code actually does; 14-day withdrawal right added 2026-09-21

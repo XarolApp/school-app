@@ -121,6 +121,12 @@ alter table public.users add column if not exists season_charge_due_at timestamp
 -- the same event a no-op instead of silently scheduling the charge again.
 alter table public.users add column if not exists stripe_setup_intent_id text;
 
+-- Statutory 14-day withdrawal (Terms §6): plan_started_at is when the contract
+-- was concluded (checkout completed), last_paid_at when the money was actually
+-- taken (season: the scheduled charge). The window runs 14 days from the later.
+alter table public.users add column if not exists plan_started_at timestamptz;
+alter table public.users add column if not exists last_paid_at timestamptz;
+
 -- True once the user has cancelled but access still runs to access_expires_at.
 alter table public.users add column if not exists cancel_at_period_end boolean not null default false;
 

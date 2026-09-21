@@ -211,8 +211,8 @@ export function Terms() {
       </p>
       <ul>
         <li>Lhůta běží 14 dní od uzavření smlouvy. U sezónního přístupu ji ještě prodlužujeme: poběží nejméně 14 dní od strhnutí platby.</li>
-        <li>Stačí napsat na [DOPLNIT: e-mail], že odstupuješ; můžeš použít formulář níže, ale nemusíš.</li>
-        <li>Peníze vrátíme nejpozději do 14 dnů od tvého oznámení, stejným způsobem, jakým jsi platil(a). Přístup skončí okamžikem odstoupení a předplatné zrušíme.</li>
+        <li>Odstoupit můžeš jedním tlačítkem v <strong>Nastavení</strong> (dvoukrokově — nejdřív zkontroluješ údaje, pak odstoupení potvrdíš) nebo e-mailem na [DOPLNIT: e-mail]; formulář níže můžeš použít, ale nemusíš.</li>
+        <li>Při odstoupení tlačítkem v Nastavení vrátíme peníze automaticky ihned; na kartě se objeví obvykle do několika pracovních dnů. Při odstoupení e-mailem je vrátíme nejpozději do 14 dnů od oznámení. Vždy stejným způsobem, jakým jsi platil(a). Přístup skončí okamžikem odstoupení a předplatné zrušíme.</li>
       </ul>
       <p className="legal-form">
         <strong>Vzorový formulář pro odstoupení od smlouvy</strong><br />
@@ -227,9 +227,11 @@ export function Terms() {
       <p>
         Pokud je ti méně než 18 let, je při objednávce potřeba souhlas rodiče nebo zákonného
         zástupce; potvrzuješ ho zaškrtnutím políčka před platbou. Neověřujeme ho — spoléháme na
-        tvé prohlášení. <strong>Pokud nezletilý zaplatil bez souhlasu zákonného zástupce, vrátíme
-        na jeho žádost celou zaplacenou částku</strong> — stačí napsat na [DOPLNIT: e-mail], bez ohledu
-        na 14denní lhůtu.
+        tvé prohlášení. Pokud nezletilý zaplatil bez souhlasu zákonného zástupce, může
+        zákonný zástupce napsat na [DOPLNIT: e-mail]. Do 30 dnů od platby vrátíme celou zaplacenou
+        částku; později vrátíme poměrnou část ceny za dosud nevyužité období (u sezónního
+        přístupu do 31. března, u měsíčního za zbytek zaplaceného měsíce), protože už využitou
+        službu nelze vrátit. Přístup pak skončí.
       </p>
 
       <h2>8. Reklamace a vady služby</h2>
