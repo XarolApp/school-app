@@ -233,7 +233,7 @@ function Settings() {
   // season pass that has already been charged has nothing recurring to stop —
   // cancellationTerms() in pricing.js already says so ("není co rušit").
   const canCancel =
-    (profile?.plan_id === 'monthly' && (status === 'active' || status === 'past_due')) ||
+    (profile?.plan_id === 'monthly' && !profile?.cancel_at_period_end && (status === 'active' || status === 'past_due')) ||
     (status === 'trialing' && (
       Boolean(profile?.stripe_subscription_id) ||
       (profile?.plan_id === 'season' && Boolean(profile?.season_charge_due_at))
@@ -573,7 +573,7 @@ function Settings() {
             <div className="settings-row-body">
               <span className="settings-row-label">Stav</span>
               <span className="settings-row-value">
-                {statusLabel}
+                {profile?.cancel_at_period_end && status === 'active' ? 'Zrušeno — nic se neobnoví' : statusLabel}
                 {status === 'trialing' && (
                   <>
                     {' — zbývá '}

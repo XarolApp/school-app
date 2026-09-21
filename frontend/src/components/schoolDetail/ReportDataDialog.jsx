@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { AlertTriangle } from 'lucide-react';
 import { reportSchoolData } from '../../api';
 import { useToast } from '../ToastContext';
@@ -16,6 +16,19 @@ function ReportDataDialog({ schoolId }) {
   const [message, setMessage] = useState('');
   const [sending, setSending] = useState(false);
   const [error, setError] = useState(null);
+  const openRef = useRef(null);
+  const textRef = useRef(null);
+  const fieldId = useId();
+  const hintId = `${fieldId}-hint`;
+  const errorId = `${fieldId}-error`;
+  const wasOpen = useRef(false);
+
+  // Focus the field on open, the opener again on close.
+  useEffect(() => {
+    if (open) textRef.current?.focus();
+    else if (wasOpen.current) openRef.current?.focus();
+    wasOpen.current = open;
+  }, [open]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -50,6 +63,7 @@ function ReportDataDialog({ schoolId }) {
         </div>
         <button
           type="button"
+          ref={openRef}
           className="ss-btn ss-btn-secondary"
           onClick={() => (isSignedIn ? setOpen(true) : toast('Nejdřív se přihlas.', { type: 'error' }))}
         >
@@ -62,14 +76,27 @@ function ReportDataDialog({ schoolId }) {
 
   return (
     <form className="sd-report-form" onSubmit={handleSubmit}>
+      <label htmlFor={fieldId} className="sd-form-field-label">
+        Co je špatně nebo chybí?
+      </label>
       <textarea
+        id={fieldId}
+        ref={textRef}
         className="sd-textarea"
-        placeholder="Co je špatně nebo chybí?"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         maxLength={1000}
+        aria-describedby={error ? `${hintId} ${errorId}` : hintId}
+        aria-invalid={error ? 'true' : undefined}
       />
-      {error && <p className="sd-form-error">{error}</p>}
+      <p id={hintId} className="sd-form-hint">
+        Napiš aspoň 10 znaků. Hlášení čteme ručně, nikomu se nezobrazí.
+      </p>
+      {error && (
+        <p id={errorId} className="sd-form-error" role="alert">
+          {error}
+        </p>
+      )}
       <div className="sd-form-actions">
         <button type="submit" className="ss-btn ss-btn-primary" disabled={sending}>
           {sending ? 'Odesílám…' : 'Odeslat'}

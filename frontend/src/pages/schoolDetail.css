@@ -144,7 +144,8 @@
   flex: none;
   cursor: default;
 }
-.sd-info-hint:hover {
+.sd-info-hint:hover,
+.sd-info-hint.is-open {
   color: var(--acc);
 }
 .sd-info-hint-tip {
@@ -171,7 +172,8 @@
   z-index: 30;
   pointer-events: none;
 }
-.sd-info-hint:hover .sd-info-hint-tip {
+.sd-info-hint:hover .sd-info-hint-tip,
+.sd-info-hint.is-open .sd-info-hint-tip {
   opacity: 1;
   visibility: visible;
 }
@@ -192,6 +194,10 @@
   padding: var(--space-lg);
   background: var(--surface);
   align-self: start;
+}
+.sd-actions-primary,
+.sd-actions-secondary {
+  display: contents;
 }
 .sd-actions .ss-btn {
   height: 54px;
@@ -882,24 +888,42 @@
     grid-template-columns: 1fr;
   }
 
-  /* sticky bottom action bar replaces the inline action rail */
+  /* The rail dissolves: primary actions become a fixed two-column bottom bar,
+     secondary ones flow under the hero, contact links stay in "Kde to je". */
   .sd-actions {
+    display: contents;
+  }
+  .sd-actions-primary {
     position: fixed;
     left: 0;
     right: 0;
     bottom: 0;
-    flex-direction: row;
-    border-radius: 0;
-    border-left: none;
-    border-right: none;
-    border-bottom: none;
     z-index: 20;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-sm);
     padding: var(--space-md);
+    padding-bottom: max(var(--space-md), env(safe-area-inset-bottom, 0px));
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+  }
+  .sd-actions-secondary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+  .sd-actions-secondary .ss-btn {
+    flex: 1 1 180px;
   }
   .sd-actions .ss-btn {
-    height: 48px;
+    height: auto;
+    min-height: 48px;
+  }
+  .sd-actions .sd-actions-divider,
+  .sd-actions .sd-actions-links {
+    display: none;
   }
   .school-detail {
-    padding-bottom: 96px;
+    padding-bottom: calc(var(--space-xl) + var(--bottom-bar-space, 0px));
   }
 }

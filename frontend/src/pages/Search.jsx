@@ -1041,6 +1041,7 @@ function Search() {
                               </div>
                             )}
                             {row.diff && <p className="ss-row-diff ss-body-sm">{row.diff}</p>}
+                          </Link>
                             <div className="ss-stat-grid">
                               <div className="ss-stat-cell">
                                 <p className="ss-data-md">
@@ -1090,7 +1091,6 @@ function Search() {
                                 Tahle škola nebyla v prvním kole přijímaček 2026, takže o ní zatím čísla nemáme.
                               </p>
                             )}
-                          </Link>
                         </div>
                         <div className="ss-row-actions">
                           <Link to={`/skoly/${row.id}`} className="ss-btn ss-btn-secondary ss-btn-sm">

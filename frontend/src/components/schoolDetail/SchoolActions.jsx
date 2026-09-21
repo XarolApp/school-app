@@ -16,7 +16,7 @@ import { parseSchoolContact } from '../../lib/schoolContact';
  * rows; this needs a full labelled button, so the logic is repeated rather
  * than the component reused).
  */
-function SchoolActions({ school, isFavorite, onFavoriteChange }) {
+function SchoolActions({ school, isFavorite, onFavoriteChange, barRef }) {
   const { isSignedIn, hasAccess } = useAuth();
   const { toast } = useToast();
   const [saving, setSaving] = useState(false);
@@ -115,28 +115,43 @@ function SchoolActions({ school, isFavorite, onFavoriteChange }) {
     }
   };
 
+  const compareButton = (
+    <button type="button" className="ss-btn ss-btn-secondary" onClick={handleCompare}>
+      {compared ? <Check size={16} aria-hidden="true" /> : <GitCompare size={16} aria-hidden="true" />}
+      {compared ? 'K porovnání' : 'Přidat k porovnání'}
+    </button>
+  );
+  const shareButton = (
+    <button type="button" className="ss-btn ss-btn-secondary" onClick={handleShare}>
+      <Share2 size={16} aria-hidden="true" />
+      Sdílet školu
+    </button>
+  );
+
+  // Desktop shows one rail in this order. On mobile the "primary" group is the
+  // fixed bottom bar — two actions, never more — and "secondary" flows under
+  // the hero. Without favourite access the bar is compare + share.
   return (
     <div className="sd-actions">
+      <div className="sd-actions-primary" ref={barRef}>
+        {canFavorite && (
+          <button type="button" className="ss-btn ss-btn-primary" onClick={handleSave} disabled={saving}>
+            <Heart size={16} aria-hidden="true" fill={isFavorite ? 'currentColor' : 'none'} />
+            {isFavorite ? 'Uloženo' : 'Uložit do oblíbených'}
+          </button>
+        )}
+        {compareButton}
+        {!canFavorite && shareButton}
+      </div>
       {canFavorite && (
-        <button type="button" className="ss-btn ss-btn-primary" onClick={handleSave} disabled={saving}>
-          <Heart size={16} aria-hidden="true" fill={isFavorite ? 'currentColor' : 'none'} />
-          {isFavorite ? 'Uloženo' : 'Uložit do oblíbených'}
-        </button>
+        <div className="sd-actions-secondary">
+          <button type="button" className="ss-btn ss-btn-secondary" onClick={handleTogglePick} disabled={picks === null || savingPick}>
+            {isPicked ? <Check size={16} aria-hidden="true" /> : <ListPlus size={16} aria-hidden="true" />}
+            {isPicked ? 'V přihlášce' : 'Přidat do přihlášky'}
+          </button>
+          {shareButton}
+        </div>
       )}
-      <button type="button" className="ss-btn ss-btn-secondary" onClick={handleCompare}>
-        {compared ? <Check size={16} aria-hidden="true" /> : <GitCompare size={16} aria-hidden="true" />}
-        {compared ? 'K porovnání' : 'Přidat k porovnání'}
-      </button>
-      {canFavorite && (
-        <button type="button" className="ss-btn ss-btn-secondary" onClick={handleTogglePick} disabled={picks === null || savingPick}>
-          {isPicked ? <Check size={16} aria-hidden="true" /> : <ListPlus size={16} aria-hidden="true" />}
-          {isPicked ? 'V přihlášce' : 'Přidat do přihlášky'}
-        </button>
-      )}
-      <button type="button" className="ss-btn ss-btn-secondary" onClick={handleShare}>
-        <Share2 size={16} aria-hidden="true" />
-        Sdílet školu
-      </button>
 
       <div className="sd-actions-divider" />
       <div className="sd-actions-links">

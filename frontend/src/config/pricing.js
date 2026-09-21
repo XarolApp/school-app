@@ -5,9 +5,7 @@
  * Nothing about money may be hardcoded in a component. If you need a number
  * here that does not exist, add it here first.
  *
- * !!! ALL PRICES BELOW ARE PLACEHOLDERS !!!
- * The user has not fixed final pricing (confirmed 2026-08-23). Change the
- * constants in this file and every price surface updates.
+ * Prices locked 2026-09-21: season 690 Kč (one-time), monthly 249 Kč.
  *
  * ---------------------------------------------------------------------------
  * PLAN STRUCTURE — ruling C-8, third and current revision (2026-08-23)
@@ -56,9 +54,9 @@
  * copy you write for it, not as a discount/decoy tier.
  */
 
-// --- PLACEHOLDER PRICES (Kč) -------------------------------------------------
-const MONTHLY_PRICE_CZK = 249; // PLACEHOLDER
-const SEASON_PRICE_CZK = 690; // PLACEHOLDER — one-time, whole season
+// --- PRICES (Kč) — locked 2026-09-21 ---
+const MONTHLY_PRICE_CZK = 249;
+const SEASON_PRICE_CZK = 690; // one-time, whole season
 
 /** Sept-March application window, used only for the honest daily breakdown. */
 const SEASON_DAYS = 212;

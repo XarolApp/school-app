@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { fetchSchool, fetchFavorites } from '../api';
 import { useAuth } from '../components/AuthContext';
@@ -15,6 +15,8 @@ import SchoolReviews from '../components/schoolDetail/SchoolReviews';
 import MissingDataGrid from '../components/schoolDetail/MissingDataGrid';
 import ReportDataDialog from '../components/schoolDetail/ReportDataDialog';
 import SimilarSchools from '../components/schoolDetail/SimilarSchools';
+import AsyncState from '../components/AsyncState';
+import useBottomBarSpace from '../lib/useBottomBarSpace';
 import './schoolDetail.css';
 
 function SchoolDetail() {
@@ -24,21 +26,26 @@ function SchoolDetail() {
   const [isFavorite, setIsFavorite] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [loadTick, setLoadTick] = useState(0);
+  const pageRef = useRef(null);
+  const barRef = useRef(null);
+  useBottomBarSpace(barRef, pageRef, !!school);
 
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
     setError(null);
+    setSchool(null);
     fetchSchool(id)
       .then((s) => {
         if (cancelled) return;
         setSchool(s);
         recordRecentSchool(s.id);
       })
-      .catch((err) => { if (!cancelled) setError(err.message); })
+      .catch((err) => { if (!cancelled) setError(err); })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
-  }, [id]);
+  }, [id, loadTick]);
 
   // Favourites need a signed-in account with access; anonymous visitors simply
   // do not see the star.
@@ -54,9 +61,34 @@ function SchoolDetail() {
     return () => { cancelled = true; };
   }, [id, isSignedIn, hasAccess]);
 
-  if (loading) return <div className="page"><p>Načítám…</p></div>;
-  if (error) return <div className="page"><p className="error">Školu se nepodařilo načíst: {error}</p></div>;
-  if (!school) return <div className="page"><p>Škola nenalezena.</p></div>;
+  if (loading || error || !school) {
+    const notFound = !loading && (error ? error.status === 404 : !school);
+    return (
+      <div className="school-detail page">
+        <Link to="/skoly" className="sd-back">&larr; Zpět na výpis</Link>
+        {loading ? (
+          <AsyncState kind="loading" title="Načítám školu…" />
+        ) : notFound ? (
+          <AsyncState
+            kind="empty"
+            title="Tuhle školu jsme nenašli"
+            action={<Link to="/skoly" className="ss-btn ss-btn-primary">Zpět na školy</Link>}
+          >
+            Odkaz může být starý nebo škola už v databázi není.
+          </AsyncState>
+        ) : (
+          <AsyncState
+            kind="error"
+            title="Školu se nepodařilo načíst"
+            onRetry={() => setLoadTick((t) => t + 1)}
+            action={<Link to="/skoly" className="ss-btn ss-btn-secondary">Zpět na školy</Link>}
+          >
+            Zkontroluj připojení a zkus to znovu. ({error?.message})
+          </AsyncState>
+        )}
+      </div>
+    );
+  }
 
   const programEntries = groupProgramsByObor(school);
   const currentEntries = programEntries.filter((e) => !e.isDiscontinued);
@@ -79,12 +111,12 @@ function SchoolDetail() {
   ].some(Boolean);
 
   return (
-    <div className="school-detail page">
+    <div className="school-detail page" ref={pageRef}>
       <Link to="/skoly" className="sd-back">&larr; Zpět na výpis</Link>
 
       <div className="sd-hero">
         <SchoolHero school={school} programEntries={programEntries} />
-        <SchoolActions school={school} isFavorite={isFavorite} onFavoriteChange={setIsFavorite} />
+        <SchoolActions school={school} isFavorite={isFavorite} onFavoriteChange={setIsFavorite} barRef={barRef} />
       </div>
 
       <SectionNav />

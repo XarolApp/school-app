@@ -75,12 +75,14 @@ function SchoolReviews({ schoolId }) {
       ) : (
         <>
           <div className="sd-reviews-tabs">
-            <button type="button" className={`sd-reviews-tab${tab === 'all' ? ' is-active' : ''}`} onClick={() => setTab('all')}>
+            <button type="button" className={`sd-reviews-tab${tab === 'all' ? ' is-active' : ''}`}
+              aria-pressed={tab === 'all'} onClick={() => setTab('all')}>
               Všechny {published.length}
             </button>
             <button
               type="button"
               className={`sd-reviews-tab${tab === 'verified' ? ' is-active' : ''}`}
+              aria-pressed={tab === 'verified'}
               onClick={() => setTab('verified')}
             >
               Ověřené {verifiedCount}
@@ -88,6 +90,7 @@ function SchoolReviews({ schoolId }) {
             <button
               type="button"
               className={`sd-reviews-tab${tab === 'unverified' ? ' is-active' : ''}`}
+              aria-pressed={tab === 'unverified'}
               onClick={() => setTab('unverified')}
             >
               Neověřené {unverifiedCount}

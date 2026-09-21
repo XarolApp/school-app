@@ -483,7 +483,9 @@
   color: var(--text-faint);
 }
 .school-search .ss-stat-info:hover,
-.decision-page .ss-stat-info:hover {
+.decision-page .ss-stat-info:hover,
+.school-search .ss-stat-info.is-open,
+.decision-page .ss-stat-info.is-open {
   color: var(--primary);
 }
 .school-search .ss-stat-tooltip,
@@ -513,7 +515,9 @@
   pointer-events: none;
 }
 .school-search .ss-stat-info:hover .ss-stat-tooltip,
-.decision-page .ss-stat-info:hover .ss-stat-tooltip {
+.decision-page .ss-stat-info:hover .ss-stat-tooltip,
+.school-search .ss-stat-info.is-open .ss-stat-tooltip,
+.decision-page .ss-stat-info.is-open .ss-stat-tooltip {
   opacity: 1;
   visibility: visible;
 }

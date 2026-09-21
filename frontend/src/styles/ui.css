@@ -520,3 +520,27 @@ dialog.ss-dialog::backdrop {
     animation: none;
   }
 }
+
+/* ---------- hint button (components/Hint.jsx) ---------- */
+.hint-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 50%;
+}
+/* Visually tiny icon, 44px touch target. */
+.hint-btn::after {
+  content: '';
+  position: absolute;
+  inset: -16px;
+}
+.hint-btn:focus-visible {
+  outline: 2px solid var(--acc);
+  outline-offset: 2px;
+}
