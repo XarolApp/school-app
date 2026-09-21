@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState, useCallback } from 'react';
+import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search as SearchIcon, X, ChevronDown } from 'lucide-react';
+import { Search as SearchIcon, X, SlidersHorizontal } from 'lucide-react';
 import { fetchSchools, fetchFavorites } from '../api';
 import {
   buildIndex,
@@ -18,6 +18,11 @@ import { useAuth } from '../components/AuthContext';
 import FavoriteButton from '../components/FavoriteButton';
 import SchoolMap from '../components/SchoolMap';
 import StatInfo from '../components/StatInfo';
+import SearchFilters from '../components/SearchFilters';
+import Modal from '../components/Modal';
+import AsyncState from '../components/AsyncState';
+import useMediaQuery from '../lib/useMediaQuery';
+import useBottomBarSpace from '../lib/useBottomBarSpace';
 import { getRecentSchoolIds, getCompareSelection, setCompareSelection } from '../lib/searchPrefs';
 import './search.css';
 
@@ -230,47 +235,6 @@ const DEFAULT_FILTERS = {
 // Never re-filter or re-sort per page.
 const PAGE_SIZE = 40;
 
-// Small collapsible section used for every sidebar filter group — open by
-// default for the two groups that actually fork the decision (ukončení
-// studia, typ školy), collapsed with an active-count badge for the rest.
-// This is the fix for "13 flat checkbox groups" (a named anti-pattern): the
-// page never shows more than 2 fully-expanded groups at once.
-function FacetSection({ title, activeCount, defaultOpen, note, children }) {
-  const [open, setOpen] = useState(defaultOpen);
-  return (
-    <div className="ss-facet-section">
-      <button
-        type="button"
-        className="ss-facet-section-head"
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
-      >
-        <ChevronDown size={14} aria-hidden="true" className={open ? 'is-open' : ''} />
-        <span className="ss-label-caps">{title}</span>
-        {activeCount > 0 && <span className="ss-facet-badge">{activeCount}</span>}
-      </button>
-      {open && (
-        <div className="ss-facet-section-body">
-          {children}
-          {note && <p className="ss-caption ss-facet-note">{note}</p>}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function CheckOption({ checked, label, count, onChange }) {
-  return (
-    <div className="ss-facet-row">
-      <label>
-        <input type="checkbox" checked={checked} onChange={onChange} />
-        {label}
-      </label>
-      <span className="ss-data-sm ss-facet-count">{count}</span>
-    </div>
-  );
-}
-
 // StatInfo (hover-to-reveal explanation) moved to components/StatInfo.jsx
 // so SchoolMap.jsx's popup card can reuse it too.
 
@@ -289,16 +253,31 @@ function Search() {
   const [currentPage, setCurrentPage] = useState(1);
   const [view, setView] = useState('list'); // 'list' | 'map'
   const [selectedMapId, setSelectedMapId] = useState(null);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const isMobile = useMediaQuery('(max-width: 860px)');
+  const filterTriggerRef = useRef(null);
+  const filterReturnRef = useRef(null);
+  const resultsHeadingRef = useRef(null);
+  const pageRef = useRef(null);
+  const compareBarRef = useRef(null);
+  // Crossing to desktop drops the sheet but keeps every filter value.
+  const sheetOpen = filterOpen && isMobile;
 
   const { isSignedIn, hasAccess } = useAuth();
 
+  const [loadTick, setLoadTick] = useState(0);
   useEffect(() => {
+    let cancelled = false;
     setLoading(true);
+    setError(null);
     fetchSchools()
-      .then(setSchools)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, []);
+      .then((list) => !cancelled && setSchools(list))
+      .catch((err) => !cancelled && setError(err.message))
+      .finally(() => !cancelled && setLoading(false));
+    return () => {
+      cancelled = true;
+    };
+  }, [loadTick]);
 
   useEffect(() => {
     if (!isSignedIn || !hasAccess) return;
@@ -364,18 +343,27 @@ function Search() {
   // actual token to match against.
   const hasQuery = prepared.tokens.length > 0;
 
-  const matchesQuery = (row) => {
-    if (!hasQuery) return true;
+  // The query a filter set is evaluated against comes from THAT set, not from
+  // the current page state — otherwise a hypothetical "same filters, no query"
+  // (empty-state relaxation) would still be scored against the typed query.
+  const currentCtx = { prepared, hasQuery, raw: filters.query.trim().toLowerCase() };
+  const queryCtx = (q) => {
+    if (q === filters.query) return currentCtx;
+    const pq = prepareQuery(q);
+    return { prepared: pq, hasQuery: pq.tokens.length > 0, raw: q.trim().toLowerCase() };
+  };
+
+  const matchesQuery = (row, ctx) => {
+    if (!ctx.hasQuery) return true;
     const entry = indexById.get(row.id);
-    if (entry && scoreSchool(entry, prepared) > 0) return true;
+    if (entry && scoreSchool(entry, ctx.prepared) > 0) return true;
     // KKOV codes ("79-41-K") aren't in the fuzzy name/programs/location
     // index — matched separately here as a plain substring so one search
     // bar covers both a school name and an obor code, instead of two boxes.
-    const raw = filters.query.trim().toLowerCase();
-    return row.p.kkov.some((k) => k.toLowerCase().includes(raw));
+    return row.p.kkov.some((k) => k.toLowerCase().includes(ctx.raw));
   };
 
-  const criteriaFor = (row, f) => {
+  const criteriaFor = (row, f, ctx = queryCtx(f.query)) => {
     const out = [];
     if (f.fields.length) out.push({ k: 'fields', met: row.focus.some((x) => f.fields.includes(x)) });
     if (f.districts.length) out.push({ k: 'districts', met: f.districts.includes(row.districtLabel) });
@@ -409,11 +397,14 @@ function Search() {
     if (f.kapacitaMin > 0) {
       out.push({ k: 'kapacitaMin', met: row.p.kapacita != null && row.p.kapacita >= f.kapacitaMin });
     }
-    if (hasQuery) out.push({ k: 'q', met: matchesQuery(row) });
+    if (ctx.hasQuery) out.push({ k: 'q', met: matchesQuery(row, ctx) });
     return out;
   };
 
-  const listFor = (f) => rows.filter((row) => criteriaFor(row, f).every((c) => c.met));
+  const listFor = (f) => {
+    const ctx = queryCtx(f.query);
+    return rows.filter((row) => criteriaFor(row, f, ctx).every((c) => c.met));
+  };
 
   const sortRows = (list, sortId, f) => {
     const arr = list.slice();
@@ -779,220 +770,88 @@ function Search() {
 
   const handleMapSelect = useCallback((id) => setSelectedMapId(id), []);
 
+  useBottomBarSpace(compareBarRef, pageRef, selected.size > 0);
+
+  const openFilters = () => {
+    filterReturnRef.current = filterTriggerRef.current;
+    setFilterOpen(true);
+  };
+  const closeFilters = () => setFilterOpen(false);
+  const showResults = () => {
+    filterReturnRef.current = resultsHeadingRef.current;
+    setFilterOpen(false);
+  };
+  const activeFacetCount = activeCriteriaCount - (hasQuery ? 1 : 0);
+  const currentSort = sortOptions.find((o) => o.id === activeSort);
+
+  const filtersEl = (
+    <SearchFilters
+      filters={filters}
+      setPatch={setPatch}
+      toggleIn={toggleIn}
+      total={total}
+      ukonceniOptions={ukonceniOptions}
+      typOptions={typOptions}
+      districtOptions={districtOptions}
+      fieldOptions={fieldOptions}
+      zrizovatelOptions={zrizovatelOptions}
+      jpzOptions={jpzOptions}
+      jazykOptions={jazykOptions}
+      admissionsActiveCount={admissionsActiveCount}
+      moreActiveCount={moreActiveCount}
+    />
+  );
+
   return (
-    <div className="school-search">
+    <div className="school-search" ref={pageRef}>
       <h1 className="ss-headline-lg">Databáze škol</h1>
 
+      <div className="ss-search-input-wrap">
+        <SearchIcon aria-hidden="true" />
+        <input
+          type="search"
+          className="ss-search-input"
+          placeholder="Hledat podle názvu, oboru nebo KKOV kódu"
+          value={filters.query}
+          onChange={(e) => setPatch({ query: e.target.value })}
+          aria-label="Hledat školu"
+        />
+      </div>
+
       <div className="ss-layout">
-        <aside className="ss-sidebar" id="ss-sidebar">
-          <div className="ss-search-input-wrap">
-            <SearchIcon aria-hidden="true" />
-            <input
-              type="search"
-              className="ss-search-input"
-              placeholder="Hledat podle názvu, oboru nebo KKOV kódu"
-              value={filters.query}
-              onChange={(e) => setPatch({ query: e.target.value })}
-              aria-label="Hledat školu"
-            />
-          </div>
+        {!isMobile && (
+          <aside className="ss-sidebar" id="ss-sidebar" aria-label="Filtry">
+            {filtersEl}
+          </aside>
+        )}
 
-          <FacetSection title="Ukončení studia" activeCount={filters.ukonceni.length} defaultOpen>
-            {ukonceniOptions.map((o) => (
-              <CheckOption
-                key={o.value}
-                checked={filters.ukonceni.includes(o.value)}
-                label={o.label}
-                count={o.count}
-                onChange={() => toggleIn('ukonceni', o.value)}
-              />
-            ))}
-            {filters.ukonceni.length !== 1 && (
-              <p className="ss-caption ss-facet-note">
-                Řada škol nabízí obojí, proto je součet vyšší než {total}.
-              </p>
-            )}
-          </FacetSection>
-
-          <hr className="ss-divider" />
-
-          <FacetSection title="Typ školy" activeCount={filters.typySkoly.length} defaultOpen>
-            <div className="ss-chip-group">
-              {typOptions.map((o) => (
-                <button
-                  key={o.value}
-                  type="button"
-                  className={`ss-district-toggle${o.checked ? ' is-active' : ''}`}
-                  onClick={() => toggleIn('typySkoly', o.value)}
-                >
-                  {o.label} <span>{o.count}</span>
-                </button>
-              ))}
-            </div>
-          </FacetSection>
-
-          <hr className="ss-divider" />
-
-          <FacetSection title="Městská část" activeCount={filters.districts.length}>
-            <div className="ss-chip-group">
-              {districtOptions.map((d) => (
-                <button
-                  key={d.value}
-                  type="button"
-                  className={`ss-district-toggle${d.active ? ' is-active' : ''}`}
-                  onClick={() => toggleIn('districts', d.value)}
-                >
-                  {d.label} <span>{d.count}</span>
-                </button>
-              ))}
-            </div>
-          </FacetSection>
-
-          <hr className="ss-divider" />
-
-          <FacetSection title="Obor a zaměření" activeCount={filters.fields.length}>
-            {fieldOptions.map((o) => (
-              <CheckOption
-                key={o.id}
-                checked={o.checked}
-                label={o.label}
-                count={o.count}
-                onChange={() => toggleIn('fields', o.id)}
-              />
-            ))}
-          </FacetSection>
-
-          <hr className="ss-divider" />
-
-          <FacetSection title="Zřizovatel" activeCount={filters.zrizovatele.length}>
-            {zrizovatelOptions.map((o) => (
-              <CheckOption
-                key={o.value}
-                checked={o.checked}
-                label={o.label}
-                count={o.count}
-                onChange={() => toggleIn('zrizovatele', o.value)}
-              />
-            ))}
-          </FacetSection>
-
-          <hr className="ss-divider" />
-
-          <FacetSection title="Přijímačky a šance" activeCount={admissionsActiveCount}>
-            <div className="ss-facet-group">
-              <div className="ss-travel-head">
-                <span className="ss-body-sm">
-                  {filters.cutoffMax >= 100 ? 'bez omezení' : `do ${filters.cutoffMax} b.`}
-                </span>
-              </div>
-              <p className="ss-caption">Průměrná hranice přijetí nejvýš</p>
-              <input
-                type="range"
-                min="0"
-                max="100"
-                step="5"
-                value={filters.cutoffMax}
-                onChange={(e) => setPatch({ cutoffMax: Number(e.target.value) })}
-                className="ss-travel-slider"
-                aria-label="Nejvyšší průměrná hranice přijetí"
-              />
-            </div>
-
-            <div className="ss-facet-group">
-              <div className="ss-travel-head">
-                <span className="ss-body-sm">
-                  {filters.acceptanceMin <= 0 ? 'bez omezení' : `aspoň ${filters.acceptanceMin} %`}
-                </span>
-              </div>
-              <p className="ss-caption">Míra přijetí alespoň</p>
-              <input
-                type="range"
-                min="0"
-                max="100"
-                step="5"
-                value={filters.acceptanceMin}
-                onChange={(e) => setPatch({ acceptanceMin: Number(e.target.value) })}
-                className="ss-travel-slider"
-                aria-label="Nejnižší míra přijetí"
-              />
-            </div>
-
-            {jpzOptions.map((o) => (
-              <CheckOption
-                key={o.value}
-                checked={filters.jpz.includes(o.value)}
-                label={o.label}
-                count={o.count}
-                onChange={() => toggleIn('jpz', o.value)}
-              />
-            ))}
-          </FacetSection>
-
-          <hr className="ss-divider" />
-
-          <FacetSection title="Další" activeCount={moreActiveCount}>
-            {jazykOptions.map((o) => (
-              <CheckOption
-                key={o.value}
-                checked={o.checked}
-                label={o.label}
-                count={o.count}
-                onChange={() => toggleIn('jazyky', o.value)}
-              />
-            ))}
-
-            <div className="ss-facet-group">
-              <div className="ss-travel-head">
-                <span className="ss-body-sm">
-                  {filters.kapacitaMin <= 0 ? 'bez omezení' : `aspoň ${filters.kapacitaMin}`}
-                </span>
-              </div>
-              <p className="ss-caption">Volných míst alespoň</p>
-              <input
-                type="range"
-                min="0"
-                max="150"
-                step="10"
-                value={filters.kapacitaMin}
-                onChange={(e) => setPatch({ kapacitaMin: Number(e.target.value) })}
-                className="ss-travel-slider"
-                aria-label="Nejmenší kapacita"
-              />
-            </div>
-
-          </FacetSection>
-
-          <hr className="ss-divider" />
-
-          {/* Parked, not deleted — real MHD commute time needs a routing API
-              we haven't wired (see UNFORGET.md). Visibly disabled rather than
-              silently doing nothing, per the plan's D5. */}
-          <div className="ss-facet-group ss-parked">
-            <div className="ss-parked-head">
-              <p className="ss-label-caps">Dojezd MHD</p>
-              <span className="ss-parked-badge">zatím nedostupné</span>
-            </div>
-            <input type="range" className="ss-travel-slider" disabled aria-label="Dojezd MHD (nedostupné)" />
-            <p className="ss-caption">
-              Skutečný čas dojezdu MHD zatím neumíme spočítat, tak ho radši neukazujeme.
-            </p>
-          </div>
-
-          {/* Mobile-only — the sidebar stacks above the results at <860px, so
-              this is the live-count "commit" affordance: never a blind Apply,
-              always the current count, jumps straight to the list below. */}
-          <button
-            type="button"
-            className="ss-mobile-commit"
-            onClick={() => document.getElementById('ss-results')?.scrollIntoView({ behavior: 'smooth' })}
-          >
+        <Modal
+          open={sheetOpen}
+          title="Filtry"
+          onDismiss={closeFilters}
+          returnFocusRef={filterReturnRef}
+          className="ss-filter-sheet"
+        >
+          <button type="button" className="ss-sheet-close" onClick={closeFilters} aria-label="Zavřít filtry">
+            <X size={20} aria-hidden="true" />
+          </button>
+          {filtersEl}
+          <button type="button" className="ss-mobile-commit" onClick={showResults}>
             Zobrazit {n} {skol(n)}
           </button>
-        </aside>
+        </Modal>
 
         <section className="ss-results" id="ss-results">
-          {loading && <p className="ss-status">Načítám školy…</p>}
-          {error && <p className="ss-status is-error">Školy se nepodařilo načíst: {error}</p>}
+          {loading && <AsyncState kind="loading" title="Načítám školy…" />}
+          {error && !loading && (
+            <AsyncState
+              kind="error"
+              title="Školy se nepodařilo načíst"
+              onRetry={() => setLoadTick((t) => t + 1)}
+            >
+              Zkontroluj připojení a zkus to znovu. Tvoje filtry zůstanou, jak jsou. ({error})
+            </AsyncState>
+          )}
 
           {!loading && !error && (
             <>
@@ -1011,28 +870,24 @@ function Search() {
 
               <div className="ss-results-head">
                 <div className="ss-count-row">
-                  <h1 className="ss-headline-md">{n} {skol(n)} z {total}</h1>
+                  <button
+                    type="button"
+                    ref={filterTriggerRef}
+                    className="ss-btn ss-btn-secondary ss-filter-trigger"
+                    onClick={openFilters}
+                  >
+                    <SlidersHorizontal size={16} aria-hidden="true" />
+                    Filtry
+                    {activeFacetCount > 0 && <span className="ss-facet-badge">{activeFacetCount}</span>}
+                  </button>
+                  <h2 className="ss-headline-md" ref={resultsHeadingRef} tabIndex={-1}>
+                    {n} {skol(n)} z {total}
+                  </h2>
                   <p className="ss-caption">
                     {activeCriteriaCount
-                      ? `odpovídá ${activeCriteriaCount} ${plural(activeCriteriaCount, 'filtru', 'filtrům', 'filtrům')} · seznam se mění průběžně, nic se nepotvrzuje`
+                      ? `odpovídá ${activeCriteriaCount} ${plural(activeCriteriaCount, 'filtru', 'filtrům', 'filtrům')} · seznam se mění průběžně`
                       : 'bez filtrů · vyber obor nebo městskou část'}
                   </p>
-                  <div className="ss-view-toggle">
-                    <button
-                      type="button"
-                      className={view === 'list' ? 'is-active' : ''}
-                      onClick={() => setView('list')}
-                    >
-                      Seznam škol
-                    </button>
-                    <button
-                      type="button"
-                      className={view === 'map' ? 'is-active' : ''}
-                      onClick={() => setView('map')}
-                    >
-                      Mapa škol
-                    </button>
-                  </div>
                 </div>
                 <div className="ss-chips-row">
                   {chips.map((c) => (
@@ -1052,31 +907,49 @@ function Search() {
               </div>
 
               <div className="ss-sort-row">
-                <p className="ss-label-caps">Řadit</p>
-                <div className="ss-sort-options">
-                  {sortOptions.map((s) => (
-                    <button
-                      key={s.id}
-                      type="button"
-                      className={`ss-sort-toggle${activeSort === s.id ? ' is-active' : ''}`}
-                      onClick={() => setPatch({ sort: s.id })}
-                    >
-                      <span className="ss-sort-label">{s.label}</span>
-                      <span className="ss-sort-tradeoff">{s.tradeoff}</span>
-                    </button>
-                  ))}
-                  <button type="button" className="ss-sort-toggle is-disabled" disabled aria-disabled="true">
-                    <span className="ss-sort-label">Nejkratší dojezd</span>
-                    <span className="ss-sort-tradeoff">zatím nedostupné</span>
+                <label className="ss-sort-select">
+                  <span className="ss-label-caps">Řadit</span>
+                  <select
+                    className="input"
+                    value={activeSort}
+                    onChange={(e) => setPatch({ sort: e.target.value })}
+                  >
+                    {sortOptions.map((o) => (
+                      <option key={o.id} value={o.id}>
+                        {o.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <div className="ss-view-toggle">
+                  <button
+                    type="button"
+                    className={view === 'list' ? 'is-active' : ''}
+                    aria-pressed={view === 'list'}
+                    onClick={() => setView('list')}
+                  >
+                    Seznam škol
+                  </button>
+                  <button
+                    type="button"
+                    className={view === 'map' ? 'is-active' : ''}
+                    aria-pressed={view === 'map'}
+                    onClick={() => setView('map')}
+                  >
+                    Mapa škol
                   </button>
                 </div>
+                <p className="ss-caption ss-sort-note">
+                  {currentSort?.tradeoff ? `${currentSort.label}: ${currentSort.tradeoff}.` : null} Řazení podle dojezdu
+                  MHD zatím není k dispozici.
+                </p>
               </div>
 
               {view === 'map' && n > 0 && (
                 <SchoolMap rows={sortedAll} selectedId={selectedMapId} onSelect={handleMapSelect} />
               )}
 
-              {view === 'list' && n === 0 && (
+              {n === 0 && (
                 <div className="ss-empty">
                   <div className="ss-empty-head">
                     <h2 className="ss-headline-sm">Žádná škola nesplňuje všechny filtry současně</h2>
@@ -1112,7 +985,7 @@ function Search() {
                     <button type="button" className="ss-btn ss-btn-secondary" onClick={clearAll}>
                       Zrušit všechny filtry ({total} {skol(total)})
                     </button>
-                    <p className="ss-caption">Filtry v levém panelu zůstávají nastavené, dokud je nezrušíš.</p>
+                    <p className="ss-caption">Filtry zůstávají nastavené, dokud je nezrušíš.</p>
                   </div>
 
                   {nearMisses.length > 0 && (
@@ -1294,7 +1167,7 @@ function Search() {
               {n > 0 && (
                 <p className="ss-caption ss-footnote">
                   {SYNTHETIC &&
-                    'Hranice přijetí, míra přijetí, typ školy, zřizovatel, jazyk výuky a kapacita jsou reálná data z Cermatu. Dojezd MHD je zatím vypnutý — viz UNFORGET.md.'}
+                    'Hranice přijetí, míra přijetí, typ školy, zřizovatel, jazyk výuky a kapacita jsou reálná data z Cermatu. Dojezd MHD zatím neumíme spočítat, proto ho nezobrazujeme.'}
                 </p>
               )}
             </>
@@ -1302,27 +1175,22 @@ function Search() {
         </section>
       </div>
 
-      <div
-        className="ss-compare-bar"
-        style={{
-          transform: selected.size > 0 ? 'translateY(0)' : 'translateY(100%)',
-          opacity: selected.size > 0 ? 1 : 0,
-          pointerEvents: selected.size > 0 ? 'auto' : 'none',
-        }}
-      >
-        <div className="ss-compare-bar-inner">
-          <p className="ss-body-sm">
-            Vybráno k porovnání: {selected.size} {skol(selected.size)} / {COMPARE_LIMIT} · porovnání ukáže stejné
-            řádky vedle sebe
-          </p>
-          <button type="button" className="ss-btn ss-btn-secondary" onClick={() => setSelected(new Set())}>
-            Zrušit výběr
-          </button>
-          <button type="button" className="ss-btn ss-btn-primary" onClick={handleCompare}>
-            Porovnat {selected.size} {skolGen(selected.size)}
-          </button>
+      {selected.size > 0 && (
+        <div className="ss-compare-bar" ref={compareBarRef}>
+          <div className="ss-compare-bar-inner">
+            <p className="ss-body-sm">
+              Vybráno k porovnání: {selected.size} {skol(selected.size)} / {COMPARE_LIMIT} · porovnání ukáže stejné
+              řádky vedle sebe
+            </p>
+            <button type="button" className="ss-btn ss-btn-secondary" onClick={() => setSelected(new Set())}>
+              Zrušit výběr
+            </button>
+            <button type="button" className="ss-btn ss-btn-primary" onClick={handleCompare}>
+              Porovnat {selected.size} {skolGen(selected.size)}
+            </button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

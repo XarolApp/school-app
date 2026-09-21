@@ -47,7 +47,8 @@
 
 /* ---------- layout ---------- */
 .school-search {
-  padding-bottom: 88px; /* room for the sticky compare bar */
+  /* room for the fixed compare bar — measured by useBottomBarSpace */
+  padding-bottom: calc(var(--space-xl) + var(--bottom-bar-space, 0px));
 }
 
 .ss-layout {
@@ -83,6 +84,8 @@
   position: relative;
   display: flex;
   align-items: center;
+  max-width: 720px;
+  margin: var(--space-sm) 0 var(--space-md);
 }
 .ss-search-input-wrap svg {
   position: absolute;
@@ -261,54 +264,26 @@
 
 .ss-sort-row {
   display: flex;
-  align-items: stretch;
+  align-items: flex-end;
   gap: var(--space-sm);
   padding: var(--space-sm) 0;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
   flex-wrap: wrap;
 }
-.ss-sort-row > .ss-label-caps {
-  color: var(--text-faint);
-  align-self: center;
-  flex: none;
-}
-.ss-sort-options {
+.ss-sort-select {
   display: flex;
-  gap: var(--space-sm);
-  flex: 1;
-  min-width: 0;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: var(--space-xs);
+  flex: 1 1 140px;
+  max-width: 320px;
 }
-.ss-sort-toggle {
-  appearance: none;
-  font: inherit;
-  cursor: pointer;
-  text-align: left;
-  flex: 1;
-  min-width: 160px;
-  padding: var(--space-sm) var(--space-md);
-  border-radius: var(--r-chip);
-  transition: background var(--dur-state) var(--ease-out), border-color var(--dur-state) var(--ease-out);
-  border: 1px solid var(--border-strong);
-  background: transparent;
+.ss-sort-select .ss-label-caps {
+  color: var(--text-faint);
 }
-.ss-sort-toggle.is-active {
-  border: 1.5px solid var(--primary);
-  background: var(--primary-subtle);
-}
-.ss-sort-toggle .ss-sort-label {
-  display: block;
-  font-size: var(--fs-caption);
-  font-weight: 600;
-  color: var(--on-surface);
-}
-.ss-sort-toggle .ss-sort-tradeoff {
-  display: block;
-  font-size: var(--fs-caption);
-  line-height: 1.35;
-  color: var(--text-muted);
-  margin-top: 2px;
+.ss-sort-note {
+  flex: 1 1 100%;
+  margin: 0;
 }
 
 /* ---------- empty state ---------- */
@@ -650,8 +625,7 @@
   z-index: 40;
   background: var(--surface);
   border-top: 1px solid var(--border-strong);
-  will-change: transform;
-  transition: transform 250ms var(--ease-out), opacity 200ms var(--ease-out);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 .ss-compare-bar-inner {
   max-width: var(--content-max);
@@ -665,7 +639,8 @@
 .ss-compare-bar-inner p {
   flex: 1;
   color: var(--text-muted);
-  min-width: 200px;
+  min-width: 0;
+  flex-basis: 220px;
 }
 
 /* ---------- loading / error ---------- */
@@ -779,17 +754,8 @@
   pointer-events: none;
 }
 
-.ss-sort-toggle.is-disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-.ss-sort-toggle.is-disabled .ss-sort-tradeoff {
-  color: var(--text-faint);
-}
-
 /* ---------- list / map view toggle ---------- */
 .ss-view-toggle {
-  margin-left: auto;
   display: flex;
   border: 1px solid var(--border-strong);
   border-radius: var(--r-chip);
@@ -804,6 +770,7 @@
   font-size: var(--fs-caption);
   font-weight: 600;
   padding: var(--space-xs) var(--space-md);
+  min-height: 44px;
   cursor: pointer;
   color: var(--on-surface);
 }
@@ -822,27 +789,71 @@
 
 /* ---------- mobile commit bar (never a blind Apply — always shows the live count) ---------- */
 .ss-mobile-commit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  appearance: none;
+  border: 0;
+  border-radius: var(--r-button);
+  background: var(--primary);
+  color: var(--primary-strong);
+  font: inherit;
+  font-size: var(--fs-body-md);
+  font-weight: 600;
+  min-height: 52px;
+  cursor: pointer;
+  position: sticky;
+  bottom: 0;
+  font-variant-numeric: tabular-nums;
+  box-shadow: 0 6px 20px rgba(34, 26, 19, 0.16);
+}
+.ss-mobile-commit:focus-visible {
+  outline: 2px solid var(--acc);
+  outline-offset: 2px;
+}
+
+/* The filter sheet (a Modal): the same facet tree the desktop sidebar shows. */
+.ss-filter-sheet .ss-dialog-panel {
+  gap: var(--space-lg);
+}
+.ss-sheet-close {
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  border-radius: var(--r-button);
+}
+.ss-sheet-close:focus-visible {
+  outline: 2px solid var(--acc);
+  outline-offset: 2px;
+}
+@media (max-width: 560px) {
+  dialog.ss-filter-sheet {
+    width: 100%;
+    max-width: none;
+    height: 100vh;
+    height: 100dvh;
+    max-height: none;
+    border-radius: 0;
+    border: 0;
+  }
+}
+
+/* Only offered where the sidebar is not: at <=860px the facets live in the sheet. */
+.ss-btn.ss-filter-trigger {
   display: none;
 }
 @media (max-width: 860px) {
-  .ss-mobile-commit {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    appearance: none;
-    border: 0;
-    border-radius: var(--r-button);
-    background: var(--primary);
-    color: var(--primary-strong);
-    font: inherit;
-    font-size: var(--fs-body-md);
-    font-weight: 600;
-    min-height: 52px;
-    cursor: pointer;
-    position: sticky;
-    bottom: var(--space-md);
-    font-variant-numeric: tabular-nums;
-    box-shadow: 0 6px 20px rgba(34, 26, 19, 0.16);
+  .ss-btn.ss-filter-trigger {
+    display: inline-flex;
   }
 }
 
