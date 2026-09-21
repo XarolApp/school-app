@@ -813,6 +813,12 @@ blockers are resolved. The season plan deliberately has no Stripe Price.
 - **Effort:** small — pick a provider, paste SMTP credentials into Supabase
 - **Release/context:** Supabase's built-in mailer is fixed at 2 emails/hour and its rate limit cannot be edited without a custom SMTP provider (or a Send Email hook). Signup confirmation and password-reset emails all go through it, so at launch only ~2 people per hour could confirm an account. Set up a real provider (Resend, Brevo, Postmark…) under Authentication → SMTP, on the stredninamiru.cz domain with SPF/DKIM. The same provider will carry the mandatory trial-reminder email. For testing meanwhile: `node scripts/reset-test-account.js <email>` resets an account's paywall state without signing up again.
 
+## Two open checkout sessions can both be paid (double-click edge case)
+- **Found:** 2026-09-21, Stripe verification run
+- **Urgency:** low-medium — needs a deliberate second payment in a second tab
+- **Effort:** small
+- **Release/context:** `/api/checkout` now refuses (409 `ALREADY_SUBSCRIBED`) any account that already has a live or scheduled plan, which closes the "reach the paywall again and buy twice" hole. What it cannot stop is two sessions created *before* either is paid (double-click, two tabs) and then both completed. The webhook would attach the second subscription over the first. Fix if wanted: in `checkout.session.completed`, if the account already has a different live `stripe_subscription_id`, cancel the newer subscription and refund it.
+
 ## Subscription cancellation flow — polish still owed
 - **Found:** 2026-09-21, Stripe test session
 - **Urgency:** medium — before real billing

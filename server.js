@@ -1721,12 +1721,25 @@ app.post('/api/checkout', checkoutLimiter, requireAuth, async (req, res) => {
 
   const { data: profile, error: profileError } = await supabase
     .from('users')
-    .select('stripe_customer_id, email')
+    .select(
+      'stripe_customer_id, email, subscription_status, access_expires_at, plan_id, season_charge_due_at, cancel_at_period_end'
+    )
     .eq('id', req.user.id)
     .single();
 
   if (profileError) {
     return res.status(500).json({ error: 'Nepodařilo se ověřit platební profil. Zkus to prosím znovu.' });
+  }
+
+  // Never sell to an account that already has a live plan — that is how one
+  // person ends up paying twice. A monthly plan already cancelled at period end
+  // may buy again; everything else paid or scheduled may not.
+  const seasonScheduled = profile.plan_id === 'season' && Boolean(profile.season_charge_due_at);
+  if ((paidAccessActive(profile) && !profile.cancel_at_period_end) || seasonScheduled) {
+    return res.status(409).json({
+      error: 'Už máš aktivní plán. Spravuj ho v Nastavení.',
+      code: 'ALREADY_SUBSCRIBED',
+    });
   }
 
   const safeReturnTo = sanitizeReturnTo(returnTo);
