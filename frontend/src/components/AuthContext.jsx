@@ -141,7 +141,7 @@ export function AuthProvider({ children }) {
       email,
       password,
       options: {
-        data: { name },
+        data: { name, accepted_terms_at: new Date().toISOString() },
         emailRedirectTo: emailRedirectTo || `${window.location.origin}/prihlaseni?potvrzeno=1`,
         captchaToken,
       },

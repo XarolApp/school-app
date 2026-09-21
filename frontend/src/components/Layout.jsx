@@ -81,6 +81,11 @@ function Layout() {
       <main id="obsah" className="app-content" tabIndex={-1}>
         <Outlet />
       </main>
+
+      <footer className="app-footer">
+        <Link to="/obchodni-podminky">Obchodní podmínky</Link>
+        <Link to="/ochrana-osobnich-udaju">Ochrana osobních údajů</Link>
+      </footer>
     </div>
   );
 }

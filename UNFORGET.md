@@ -13,6 +13,65 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
+## Season charge vs account deletion — residual race (mostly closed)
+- **Found:** 2026-09-21, Codex handoff
+- **Urgency:** Low
+- **Risk of fixing now:** Needs an atomic claim on the user row; not worth complexity yet.
+- **Risk of NOT fixing:** A scheduler run that already created the PaymentIntent a split second before deletion still charges once; refundable manually.
+- **Effort:** Small–medium
+- **Release/context:** `DELETE /api/me` deletes the Stripe customer BEFORE the user row, so any charge attempted afterwards fails (`resource_missing`) and cannot succeed. Only the microsecond window remains.
+
+## Refund process for the 14-day statutory withdrawal (Terms §4)
+- **Found:** 2026-09-21, founder decision: no waiver checkbox, no "3-day" promise — customers simply keep the full statutory 14-day withdrawal right
+- **Urgency:** Launch blocker — the terms promise it, so a working process must exist before real money
+- **Risk of fixing now:** None
+- **Risk of NOT fixing:** A customer withdraws and nobody refunds → chargeback, consumer complaint (ČOI)
+- **Effort:** Small — support e-mail inbox + a written how-to: refund in the Stripe dashboard, cancel the subscription, set the account to canceled; optionally a model withdrawal form linked from the terms
+- **Release/context:** `Legal.jsx` Terms §4; `REFUND_GUARANTEE_DAYS` stays 0 (no separate paywall promise)
+
+Open `[OVĚŘIT]` inside §4: the legal duty to provide a model withdrawal form, and whether we may
+deduct a proportionate amount for service already used during the 14 days (we currently do NOT —
+simplest and safest for the customer). Whoever holds the live Stripe keys must be able to issue refunds.
+
+## Privacy policy + terms — Codex fact-check and open placeholders
+- **Found:** 2026-09-21, drafted from what the code actually does; 14-day withdrawal right added 2026-09-21
+- **Urgency:** Medium — Codex review and placeholder fill before launch
+- **Risk of fixing now:** None; the 14-day withdrawal right is EU law, not a promise — we're just stating it clearly
+- **Risk of NOT fixing:** Selling with incomplete terms (operator info missing) or undeclared processors
+- **Effort:** Small — fill `[DOPLNIT]` placeholders, Codex fact-check, launch ready (no lawyer needed for the 14-day statement itself — it's the law)
+- **Release/context:** `frontend/src/pages/Legal.jsx` (routes `/obchodni-podminky`, `/ochrana-osobnich-udaju`, footer links in `Layout.jsx`). Account deletion now deletes Stripe customer. Signup has age/consent checkbox.
+
+Set `DRAFT = false` in `Legal.jsx` after Codex report and placeholders filled.
+- **OPERATOR — add BEFORE LAUNCH:** name/firma, IČO, address, e-mail, VAT status. Must be an adult or company. Placeholders `[DOPLNIT]` in both pages; same adult holds live Stripe keys.
+- **14-day withdrawal right:** now stated plainly as EU law (no checkbox, no digital-exemption attempt). Compliant as-is; users have the right, most won't use it. Codex should verify the wording matches the Directive.
+- **Minors:** signup has required checkbox "15+ or parental consent, I accept terms" and stores `accepted_terms_at`. Self-declaration only (not verified by age); this is a reasonable baseline for a student product, but a lawyer should confirm before real-money launch. The checkbox is not trying to remove consumer protections, just documenting consent.
+- **OpenRouter/Gemini:** Codex to verify quiz answers can't carry personal data to the model (policy says name/email never sent).
+- **Supabase region, inactive-account retention, SMTP provider name, payment data retention** — fill from actual setup.
+
+## Production test of the season-pass scheduled charge
+- **Found:** 2026-09-21, after the first live-site test-mode purchase
+- **Urgency:** Launch blocker — must pass before live Stripe keys
+- **Risk of fixing now:** None; deferred only to prioritise legal pages.
+- **Risk of NOT fixing:** The webhook and card-save path is proven on production, but the Railway scheduler charging 690 Kč when `season_charge_due_at` arrives has only been proven locally.
+- **Effort:** Small — set `season_charge_due_at` to a past time for the test account in Supabase, wait for the scheduler, confirm exactly one 690 Kč test charge, `season` status, access until 31 March
+- **Release/context:** Stripe test-mode matrix; run on production (Railway) with `sk_test_*` keys
+
+The test account `vojtech.kadlec@montetrida.cz` currently holds a saved SetupIntent with a
+charge due 2026-09-24 (the scheduler will charge it on its own then — the test can just
+observe that). Also re-run the no-double-charge check after a Railway restart.
+
+## Re-enable Supabase email confirmation before production
+- **Found:** 2026-09-21, Stripe test-mode testing on the live site
+- **Urgency:** Launch blocker — must be done before any real-money launch
+- **Risk of fixing now:** Re-enabling during testing brings back the 2-emails/hour cap and blocks fresh test signups.
+- **Risk of NOT fixing:** Anyone can start a trial (and a paid plan) on an email they don't own; `requireAuth` in `server.js` relies on `email_confirmed_at`, which Supabase sets instantly when confirmation is off, so the trial/abuse guard silently stops working.
+- **Effort:** Small — dashboard toggle (Authentication → Providers → Email → "Confirm email"), but only after custom SMTP is set up (see the SMTP entry)
+- **Release/context:** Pre-launch checklist, together with custom SMTP and live Stripe keys
+
+Email confirmation is deliberately switched OFF in the Supabase dashboard while
+testing payments. No code was changed — turn the toggle back on and re-test
+signup → confirm → login before launch.
+
 ## UI consolidation plan 012 — implementation and signed-in verification pending
 - **Found:** 2026-09-21, browser-first UI audit with `/codex-plan-then-build`
 - **Urgency:** High for mobile search/detail usability; implement after plan approval

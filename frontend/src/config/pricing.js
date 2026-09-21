@@ -163,7 +163,7 @@ export const ONE_STEP_CANCELLATION_IMPLEMENTED = true;
  * refund process behind it is not safe. Do not flip PAYMENTS_MOCKED to false
  * until BOTH the final number is chosen AND a working refund process exists.
  */
-export const REFUND_GUARANTEE_DAYS = 3;
+export const REFUND_GUARANTEE_DAYS = 0; // Refund guarantee removed 2026-09-21; using statutory 14-day withdrawal right instead
 
 // --- PLANS -------------------------------------------------------------------
 /**

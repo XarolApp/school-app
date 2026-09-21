@@ -426,7 +426,7 @@ app.delete('/api/me', requireAuth, async (req, res) => {
 
   const { data: profile, error: profileError } = await supabase
     .from('users')
-    .select('stripe_subscription_id')
+    .select('stripe_subscription_id, stripe_customer_id')
     .eq('id', req.user.id)
     .single();
 
@@ -449,6 +449,22 @@ app.delete('/api/me', requireAuth, async (req, res) => {
       if (err.type !== 'StripeInvalidRequestError' || err.code !== 'resource_missing') {
         console.error('Stripe cancel during account deletion failed:', err.message);
         return res.status(502).json({ error: 'Předplatné se nepodařilo zrušit. Účet zatím nebyl smazán; zkus to prosím znovu.' });
+      }
+    }
+  }
+
+  // Deleting the Stripe customer removes the saved card and their personal data
+  // at Stripe (payment records Stripe must keep by law remain there). Same
+  // retry-safe rule as above: on a real failure keep the account so this can be
+  // retried, because once the row is gone we can no longer find the customer.
+  if (profile?.stripe_customer_id) {
+    if (!stripe) return res.status(503).json({ error: 'Smazání platebních údajů není nastavené. Účet zatím nebyl smazán.' });
+    try {
+      await stripe.customers.del(profile.stripe_customer_id);
+    } catch (err) {
+      if (err.type !== 'StripeInvalidRequestError' || err.code !== 'resource_missing') {
+        console.error('Stripe customer delete during account deletion failed:', err.message);
+        return res.status(502).json({ error: 'Platební údaje se nepodařilo smazat. Účet zatím nebyl smazán; zkus to prosím znovu.' });
       }
     }
   }

@@ -6,6 +6,7 @@ import { useAuth } from '../../../components/AuthContext';
 import PasswordInput from '../../../components/PasswordInput';
 import PasswordStrength from '../../../components/PasswordStrength';
 import Captcha, { captchaEnabled } from '../../../components/Captcha';
+import ConsentCheckbox from '../../../components/ConsentCheckbox';
 import { stashOnboardingAnswers } from '../../../lib/pendingOnboardingAnswers';
 
 /**
@@ -43,6 +44,7 @@ function CreateAccount() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [captchaToken, setCaptchaToken] = useState(null);
+  const [consent, setConsent] = useState(false);
   // A Turnstile token is single-use, so the widget is re-challenged after every
   // failed submit.
   const [captchaKey, setCaptchaKey] = useState(0);
@@ -199,6 +201,8 @@ function CreateAccount() {
           />
           <PasswordStrength password={password} />
         </div>
+
+        <ConsentCheckbox id="signup-consent" checked={consent} onChange={setConsent} />
 
         <Captcha onVerify={setCaptchaToken} resetKey={captchaKey} />
       </form>

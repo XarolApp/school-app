@@ -167,9 +167,11 @@ export function Terms() {
           Sezónní přístup můžeš zrušit během 3denní zkušební doby — pak se karta pouze ověří, nic se neúčtuje.
         </li>
         <li>
-          <strong>[OVĚŘIT S PRÁVNÍKEM: odstoupení a vrácení peněz]</strong> Dokud nebude hotový proces vrácení
-          peněz a právně ověřené znění pro digitální službu, neslibujeme nad rámec platných zákonných práv konkrétní
-          lhůtu ani postup.
+          <strong>Odstoupení od smlouvy do 14 dnů:</strong> Jako spotřebitel můžeš od smlouvy odstoupit do 14 dnů
+          od jejího uzavření, a to bez udání důvodu. Stačí nám to oznámit na [DOPLNIT: e-mail]. Zaplacené peníze
+          ti vrátíme nejpozději do 14 dnů od oznámení, stejným způsobem, jakým jsi platil(a). Nevyžadujeme,
+          aby ses tohoto práva vzdal(a). Tím nejsou dotčena tvá další zákonná práva [OVĚŘIT: vzorový formulář
+          pro odstoupení a případná úhrada za již poskytnutou službu — viz UNFORGET.md].
         </li>
       </ul>
 

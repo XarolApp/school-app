@@ -16,6 +16,7 @@ import Porovnani from './pages/Porovnani';
 import Matice from './pages/Matice';
 import Prihlaska from './pages/Prihlaska';
 import Questionnaire from './pages/Questionnaire';
+import { Privacy, Terms } from './pages/Legal';
 import SdileniView from './pages/SdileniView';
 import OnboardingFlow from './pages/onboarding/OnboardingFlow';
 import './styles/ui.css';
@@ -45,6 +46,8 @@ function App() {
             <Route element={<Layout />}>
               <Route path="/" element={<Home />} />
               <Route path="/skoly" element={<Search />} />
+              <Route path="/ochrana-osobnich-udaju" element={<Privacy />} />
+              <Route path="/obchodni-podminky" element={<Terms />} />
               <Route path="/skoly/:id" element={<SchoolDetail />} />
 
               {/* /porovnani works signed out — the compare selection is

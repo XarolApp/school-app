@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../components/AuthContext';
 import AuthTabs from '../components/AuthTabs';
 import Captcha, { captchaEnabled } from '../components/Captcha';
+import ConsentCheckbox from '../components/ConsentCheckbox';
 import PasswordInput from '../components/PasswordInput';
 import PasswordStrength from '../components/PasswordStrength';
 import { trialDaysPhrase } from '../config/pricing';
@@ -13,6 +14,7 @@ function SignUp() {
   const [submitting, setSubmitting] = useState(false);
   const [awaitingConfirmation, setAwaitingConfirmation] = useState(false);
   const [captchaToken, setCaptchaToken] = useState(null);
+  const [consent, setConsent] = useState(false);
   const [captchaKey, setCaptchaKey] = useState(0);
   const { signUp } = useAuth();
   const navigate = useNavigate();
@@ -27,6 +29,11 @@ function SignUp() {
 
     if (form.password.length < 8) {
       setError('Heslo musí mít alespoň 8 znaků.');
+      return;
+    }
+
+    if (!consent) {
+      setError('Potvrď prosím věk a souhlas s podmínkami.');
       return;
     }
 
@@ -156,6 +163,8 @@ function SignUp() {
               <span className="field-hint">Alespoň 8 znaků.</span>
             )}
           </div>
+
+          <ConsentCheckbox id="signup-consent" checked={consent} onChange={setConsent} />
 
           <Captcha onVerify={setCaptchaToken} resetKey={captchaKey} />
 
