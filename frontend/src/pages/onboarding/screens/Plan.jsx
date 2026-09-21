@@ -90,7 +90,7 @@ const reassuranceFor = (plan) => [
     ? 'Dnes se z karty nestrhne nic. Ukážeme přesné datum první platby.'
     : `Dnes se strhne ${formatCzk(plan.priceCzk)} za první měsíc.`,
   'Platební údaje nevidíme ani neukládáme.',
-  'Ceny jsou včetně DPH. Žádné skryté poplatky.',
+  'Ceny jsou konečné. Žádné skryté poplatky.',
 ];
 
 function PlanCard({ plan, selected, onSelect, voice, savings }) {

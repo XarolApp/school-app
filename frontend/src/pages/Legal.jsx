@@ -99,12 +99,13 @@ export function Privacy() {
 
       <h2>5. Děti a nezletilí</h2>
       <p>
-        Službu používají hlavně žáci 9. tříd. Podle českého práva může souhlas se zpracováním
-        osobních údajů u online služeb dát dítě samo od 15 let. <strong>Je-li ti méně než 15 let,
-        požádej rodiče nebo zákonného zástupce, ať s vytvořením účtu souhlasí</strong> (nejlépe ať
-        ho vytvoří s tebou). Při registraci proto potvrzuješ, že ti je alespoň 15 let, nebo že
-        máš takový souhlas; okamžik potvrzení si ukládáme. Věk ani totožnost rodiče neověřujeme
-        — spoléháme na tvé prohlášení. Sbíráme jen údaje nezbytné pro službu, nic neprodáváme
+        Službu používají hlavně žáci 9. tříd. Údaje o tobě zpracováváme kvůli plnění smlouvy o
+        službě (viz výše), ne na základě souhlasu. Nezletilý ale uzavírá smlouvu jen v rozsahu,
+        který odpovídá jeho věku, a proto chceme, aby o účtu věděl zákonný zástupce.
+        <strong>Je-li ti méně než 15 let, vytvoř účet společně s rodičem nebo zákonným
+        zástupcem.</strong> Při registraci potvrzuješ, že ti je alespoň 15 let, nebo že o účtu
+        víš s rodičem; okamžik potvrzení si ukládáme. Věk ani totožnost rodiče neověřujeme —
+        spoléháme na tvé prohlášení. Sbíráme jen údaje nezbytné pro službu, nic neprodáváme
         a nic nepoužíváme k reklamě. Pokud rodič zjistí, že účet vytvořilo dítě mladší 15 let
         bez jeho souhlasu, napiš nám a účet i všechna data smažeme.
       </p>
@@ -149,8 +150,8 @@ export function Terms() {
         Službu ŠkolaMatch (stredninamiru.cz) provozuje [DOPLNIT: jméno / firma, IČO, adresa sídla,
         DIČ, zápis v rejstříku], e-mail: [DOPLNIT] (tento e-mail slouží pro všechny žádosti,
         reklamace, odstoupení od smlouvy i nahlášení nevhodného obsahu). Uzavřením smlouvy
-        souhlasíš s těmito podmínkami a se{' '}
-        <a href="/ochrana-osobnich-udaju">Zásadami ochrany osobních údajů</a>. Smlouva se uzavírá
+        souhlasíš s těmito podmínkami a bereš na vědomí{' '}
+        <a href="/ochrana-osobnich-udaju">Zásady ochrany osobních údajů</a>. Smlouva se uzavírá
         v českém jazyce.
       </p>
 
@@ -167,7 +168,7 @@ export function Terms() {
       <ol>
         <li>Vytvoříš si účet (a potvrdíš věk a souhlas s podmínkami).</li>
         <li>Vybereš tarif, uvidíš shrnutí: cenu, kdy a kolik se ti strhne a jak tarif zrušit.</li>
-        <li>Potvrdíš, že je ti 18 let nebo že s platbou souhlasí tvůj rodič či zákonný zástupce.</li>
+        <li>Potvrdíš věk: u měsíčního předplatného, že je ti 18 let; u sezónního přístupu, že je ti 18 let nebo že s platbou souhlasí tvůj rodič či zákonný zástupce.</li>
         <li>Stiskneš tlačítko <strong>„Objednat s povinností platby“</strong> a na stránce Stripe zadáš kartu.</li>
       </ol>
       <p>
@@ -225,13 +226,15 @@ export function Terms() {
 
       <h2>7. Nezletilí</h2>
       <p>
-        Pokud je ti méně než 18 let, je při objednávce potřeba souhlas rodiče nebo zákonného
-        zástupce; potvrzuješ ho zaškrtnutím políčka před platbou. Neověřujeme ho — spoléháme na
-        tvé prohlášení. Pokud nezletilý zaplatil bez souhlasu zákonného zástupce, může
-        zákonný zástupce napsat na [DOPLNIT: e-mail]. Do 30 dnů od platby vrátíme celou zaplacenou
-        částku; později vrátíme poměrnou část ceny za dosud nevyužité období (u sezónního
-        přístupu do 31. března, u měsíčního za zbytek zaplaceného měsíce), protože už využitou
-        službu nelze vrátit. Přístup pak skončí.
+        <strong>Měsíční předplatné</strong> (opakované platby) může objednat jen zletilá osoba; nezletilý
+        ať požádá rodiče, aby ho objednal ze svého účtu. <strong>Sezónní přístup</strong> (jedna platba)
+        může objednat i nezletilý, pokud s platbou souhlasí jeho rodič či zákonný zástupce; potvrzuje
+        to zaškrtnutím políčka před platbou. Věk ani souhlas neověřujeme — spoléháme na prohlášení.
+        Pokud nezletilý zaplatil bez souhlasu zákonného zástupce, může zákonný zástupce napsat na
+        [DOPLNIT: e-mail]. Do 30 dnů od platby vrátíme celou zaplacenou částku; později vrátíme
+        poměrnou část ceny za dosud nevyužité období (u sezónního přístupu do 31. března, u
+        měsíčního za zbytek zaplaceného měsíce), protože už využitou službu nelze vrátit. Přístup
+        pak skončí.
       </p>
 
       <h2>8. Reklamace a vady služby</h2>
@@ -246,11 +249,29 @@ export function Terms() {
       <p>
         Recenze musí být pravdivé, slušné a nesmí obsahovat osobní údaje třetích osob, kontaktní
         údaje ani jména konkrétních učitelů. <strong>Recenze nejsou ověřené</strong> — jde o
-        subjektivní názory autorů, ne o naše tvrzení. Nové recenze procházejí automatickým filtrem;
-        recenze od žáků, absolventů a návštěvníků před zveřejněním ručně kontrolujeme. Nevhodný
-        obsah můžeš nahlásit tlačítkem u recenze nebo e-mailem [DOPLNIT: e-mail]. Recenzi, která
-        porušuje pravidla, můžeme skrýt nebo smazat; na tvou žádost ti důvod sdělíme a rozhodnutí
-        znovu posoudíme.
+        subjektivní názory autorů, ne o naše tvrzení.
+      </p>
+      <p>
+        <strong>Jak moderujeme:</strong> Nové recenze prochází automatickým filtrem (vulgarismy,
+        možná jména učitelů). Recenze od studentů, absolventů a návštěvníků kontroluje před
+        zveřejněním člověk, protože mohou obsahovat osobní údaje. <strong>Jedno nahlášení stačí, aby
+        se recenze skryla do kontroly</strong>; konečné rozhodnutí dělá člověk. Recenzi můžeme
+        skrýt nebo smazat, pokud porušuje pravidla nebo zákon.
+      </p>
+      <p>
+        <strong>Když recenzi omezíme,</strong> autor se důvod dozví hned u své recenze v aplikaci:
+        jaké omezení jsme uložili, proč, zda bylo automatické, a jak se může bránit (napsat na
+        [DOPLNIT: e-mail], rozhodnutí znovu posoudíme).
+      </p>
+      <p>
+        <strong>Nahlášení nevhodného obsahu:</strong> tlačítkem „Nahlásit“ u recenze (napiš, proč je
+        nevhodná nebo nezákonná, a potvrď dobrou víru) nebo e-mailem na [DOPLNIT: e-mail]. Příjem
+        oznámení potvrdíme v aplikaci; výsledek ti sdělíme na tvůj e-mail, jakmile budeme moci
+        e-maily odesílat [DOPLNIT: po zprovoznění e-mailů upravit].
+      </p>
+      <p>
+        <strong>Kontaktní místo pro uživatele i orgány dozoru</strong> (čl. 11 a 12 nařízení o
+        digitálních službách): [DOPLNIT: e-mail]. Komunikovat s námi můžeš česky nebo anglicky.
       </p>
 
       <h2>10. Odpovědnost</h2>

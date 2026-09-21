@@ -930,3 +930,6 @@
     padding-bottom: calc(var(--space-xl) + var(--bottom-bar-space, 0px));
   }
 }
+
+.sd-review-report { display: grid; gap: 8px; margin-top: 12px; }
+.sd-review-report textarea { width: 100%; }

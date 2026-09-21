@@ -166,7 +166,9 @@ function Platba() {
                 <span>
                   {parent
                     ? 'Potvrzuji, že jsem rodič nebo zákonný zástupce a s touto platbou souhlasím.'
-                    : 'Potvrzuji, že je mi 18 let, nebo že s touto platbou souhlasí můj rodič či zákonný zástupce.'}
+                    : plan.billing === 'recurring'
+                      ? 'Potvrzuji, že je mi 18 let. Opakované měsíční platby může objednat jen zletilá osoba — jinak pošli odkaz rodiči.'
+                      : 'Potvrzuji, že je mi 18 let, nebo že s touto platbou souhlasí můj rodič či zákonný zástupce.'}
                 </span>
               </label>
               <span className="ob-pw-rule" />
@@ -206,6 +208,11 @@ function Platba() {
                   Tlačítko se odemkne po zaškrtnutí potvrzení.
                 </p>
               )}
+              <p className="ob-microcopy ob-pw-centered">
+                Objednáním souhlasíš s{' '}
+                <a href="/obchodni-podminky" target="_blank" rel="noreferrer">obchodními podmínkami</a>
+                {' '}včetně práva odstoupit do 14 dnů.
+              </p>
 
               <ul className="ob-pw-chips ob-pw-chips-quiet">
                 <li>
@@ -222,7 +229,7 @@ function Platba() {
                 )}
                 <li>
                   <Icon.check size={14} className="ob-pw-ic is-ok" />
-                  <span>Ceny jsou včetně DPH.</span>
+                  <span>Ceny jsou konečné.</span>
                 </li>
               </ul>
 

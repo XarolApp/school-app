@@ -166,8 +166,11 @@ export function deleteReview(id) {
   return request(`/api/reviews/${id}`, { method: 'DELETE' });
 }
 
-export function reportReview(id) {
-  return request(`/api/reviews/${id}/report`, { method: 'POST' });
+export function reportReview(id, { reason, goodFaith }) {
+  return request(`/api/reviews/${id}/report`, {
+    method: 'POST',
+    body: JSON.stringify({ reason, goodFaith }),
+  });
 }
 
 export function reportSchoolData(schoolId, { field, message }) {

@@ -167,7 +167,11 @@ function Paywall() {
               checked={paymentConsent}
               onChange={(e) => setPaymentConsent(e.target.checked)}
             />
-            <span>Potvrzuji, že je mi 18 let, nebo že s touto platbou souhlasí můj rodič či zákonný zástupce.</span>
+            <span>
+              {plan.billing === 'recurring'
+                ? 'Potvrzuji, že je mi 18 let. Opakované měsíční platby může objednat jen zletilá osoba — jinak požádej rodiče.'
+                : 'Potvrzuji, že je mi 18 let, nebo že s touto platbou souhlasí můj rodič či zákonný zástupce.'}
+            </span>
           </label>
 
           <button
@@ -179,6 +183,10 @@ function Paywall() {
             {redirecting && <span className="btn-spinner" aria-hidden="true" />}
             {redirecting ? 'Přesměrovávám…' : 'Objednat s povinností platby'}
           </button>
+          <p className="auth-footnote">
+            Objednáním souhlasíš s <a href="/obchodni-podminky" target="_blank" rel="noreferrer">obchodními podmínkami</a>{' '}
+            včetně práva odstoupit do 14 dnů.
+          </p>
         </div>
 
         <p className="auth-footnote">

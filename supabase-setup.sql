@@ -127,6 +127,10 @@ alter table public.users add column if not exists stripe_setup_intent_id text;
 alter table public.users add column if not exists plan_started_at timestamptz;
 alter table public.users add column if not exists last_paid_at timestamptz;
 
+-- DSA Art. 16/17: why a review was held (shown to its author) and what a reporter said.
+alter table public.school_reviews add column if not exists moderation_reason text;
+alter table public.review_reports add column if not exists reason text;
+
 -- True once the user has cancelled but access still runs to access_expires_at.
 alter table public.users add column if not exists cancel_at_period_end boolean not null default false;
 

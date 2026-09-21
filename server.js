@@ -871,8 +871,22 @@ function toPublicReview(row, userId) {
     status: row.status,
     created_at: row.created_at,
     is_mine: userId != null && row.user_id === userId,
+    // DSA Art. 17 statement of reasons — shown only to the author.
+    moderation_reason:
+      userId != null && row.user_id === userId && row.status !== 'published'
+        ? MODERATION_REASONS[row.moderation_reason] || null
+        : null,
   };
 }
+
+const MODERATION_REASONS = {
+  pre_moderation:
+    'Omezení: recenze zatím není veřejná. Důvod: recenze od studentů, absolventů a návštěvníků kontrolujeme ručně před zveřejněním, protože mohou obsahovat osobní údaje. Rozhodnutí je lidské, ne automatické. Zveřejníme ji po kontrole; námitku nebo dotaz pošli na e-mail z obchodních podmínek.',
+  filter:
+    'Omezení: recenze zatím není veřejná. Důvod: automatický filtr našel v textu vulgarismus nebo možné jméno učitele, což podmínky zakazují. Recenzi posoudí člověk a zveřejní ji, nebo ti napíše, co upravit. Námitku pošli na e-mail z obchodních podmínek.',
+  reported:
+    'Omezení: recenze je skrytá do kontroly. Důvod: někdo ji nahlásil jako nevhodnou nebo nezákonnou. Rozhodnutí je automatické (jedno nahlášení stačí ke skrytí), definitivní posouzení provede člověk. Námitku pošli na e-mail z obchodních podmínek.',
+};
 
 // school_reviews.user_id references auth.users, not public.users, so PostgREST
 // cannot embed public profile names through that foreign key. Read only the
@@ -904,7 +918,7 @@ app.get('/api/schools/:id/reviews', optionalAuth, async (req, res) => {
   // else's non-published one.
   let query = supabase
     .from('school_reviews')
-    .select('id, role, role_year, obor_nazev, body, show_name, verified, status, created_at, user_id')
+    .select('id, role, role_year, obor_nazev, body, show_name, verified, status, created_at, user_id, moderation_reason')
     .eq('school_id', schoolId)
     .order('verified', { ascending: false })
     .order('created_at', { ascending: false });
@@ -950,7 +964,8 @@ app.post('/api/schools/:id/reviews', reviewLimiter, requireAuth, async (req, res
   // Only self-declared adult roles may publish immediately. Other reviewers
   // need a human check because the form can contain personal data the basic
   // word filter does not catch.
-  const status = !adultRole || shouldHold(body) ? 'held' : 'published';
+  const moderationReason = !adultRole ? 'pre_moderation' : shouldHold(body) ? 'filter' : null;
+  const status = moderationReason ? 'held' : 'published';
 
   const { data, error } = await supabase
     .from('school_reviews')
@@ -963,8 +978,9 @@ app.post('/api/schools/:id/reviews', reviewLimiter, requireAuth, async (req, res
       body,
       show_name: showName,
       status,
+      moderation_reason: moderationReason,
     })
-    .select('id, role, role_year, obor_nazev, body, show_name, verified, status, created_at, user_id')
+    .select('id, role, role_year, obor_nazev, body, show_name, verified, status, created_at, user_id, moderation_reason')
     .single();
 
   if (error) {
@@ -1005,19 +1021,25 @@ app.post('/api/reviews/:id/report', reviewLimiter, requireAuth, async (req, res)
     return res.status(400).json({ error: 'Neplatné ID recenze.' });
   }
 
+  // DSA Art. 16: a notice must say why, and be made in good faith.
+  const reason = typeof req.body?.reason === 'string' ? req.body.reason.trim() : '';
+  if (reason.length < 10 || reason.length > 500 || req.body?.goodFaith !== true) {
+    return res.status(400).json({ error: 'Napiš, proč je recenze nevhodná (10 až 500 znaků), a potvrď, že oznámení podáváš v dobré víře.' });
+  }
+
   const { error: reportError } = await supabase
     .from('review_reports')
-    .upsert({ review_id: id, user_id: req.user.id });
+    .upsert({ review_id: id, user_id: req.user.id, reason });
 
   if (reportError) return res.status(500).json({ error: reportError.message });
 
   const { error: holdError } = await supabase
     .from('school_reviews')
-    .update({ status: 'held' })
+    .update({ status: 'held', moderation_reason: 'reported' })
     .eq('id', id);
 
   if (holdError) return res.status(500).json({ error: holdError.message });
-  res.status(204).end();
+  res.status(200).json({ received: true });
 });
 
 // "Nahlásit chybu v údajích" — crowdsourced data correction, separate from

@@ -13,9 +13,9 @@ export default function ConsentCheckbox({ id, checked, onChange }) {
         <a href="/obchodni-podminky" target="_blank" rel="noreferrer">
           obchodními podmínkami
         </a>{' '}
-        a{' '}
+        beru na vědomí{' '}
         <a href="/ochrana-osobnich-udaju" target="_blank" rel="noreferrer">
-          zásadami ochrany osobních údajů
+          zásady ochrany osobních údajů
         </a>
         .
       </span>
