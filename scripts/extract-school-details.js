@@ -1,7 +1,7 @@
 /**
  * Phase 2 of the school-detail extraction pipeline (docs/firecrawl-extraction-task.md).
  *
- * Reads the markdown cached by scripts/scrape-schools.js and asks Claude to
+ * Reads the markdown cached by scripts/scrape-schools.js and asks an AI model to
  * pull out six "school life" fields, writing results to
  * public.school_extracted_details. Re-runnable without ever re-scraping —
  * that's the whole point of the two-phase split, so a prompt tweak or a
@@ -17,12 +17,10 @@
  * Generic non-answers ("many clubs are offered") are rejected client-side
  * (looksLikeFiller) and treated as null rather than trusted.
  *
- * Goes through OpenRouter (OPENROUTER_API_KEY), same as
- * generate-school-proscons.js, rather than a direct Anthropic key — one
- * fewer key to provision, at the same routing this repo already uses
- * elsewhere. MODEL: Claude Haiku 4.5 by default — cheap, fast, good at
- * structured extraction. If quality is poor (too many false positives /
- * filler), re-run with --model anthropic/claude-sonnet-5.
+ * Uses either Google Gemini (GOOGLE_GEMINI_API_KEYS) or OpenRouter
+ * (OPENROUTER_API_KEY). Google Gemini is checked first — set both keys to choose.
+ * Supports multiple comma-separated Google API keys for round-robin load balancing
+ * across accounts (avoids 3 RPM per-key rate limit).
  */
 
 require('dotenv').config();
@@ -32,24 +30,31 @@ const { createClient } = require('@supabase/supabase-js');
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
-const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
 if (!supabaseUrl || !serviceKey) {
   console.error('Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY in the root .env.');
   process.exit(1);
 }
-if (!OPENROUTER_API_KEY) {
-  console.error('Missing OPENROUTER_API_KEY in the root .env.');
+
+const GOOGLE_GEMINI_API_KEYS = (process.env.GOOGLE_GEMINI_API_KEYS || '').split(',').filter(Boolean);
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
+
+if (!GOOGLE_GEMINI_API_KEYS.length && !OPENROUTER_API_KEY) {
+  console.error('Missing both GOOGLE_GEMINI_API_KEYS and OPENROUTER_API_KEY in the root .env. Set at least one.');
   process.exit(1);
 }
+
+const USE_GOOGLE = GOOGLE_GEMINI_API_KEYS.length > 0;
+console.log(`Using ${USE_GOOGLE ? 'Google Gemini API' : 'OpenRouter'} for extraction.\n`);
 
 const supabase = createClient(supabaseUrl, serviceKey);
 
 const DATA_DIR = path.join(__dirname, 'data', 'scraped-schools');
 const MANIFEST_PATH = path.join(DATA_DIR, '_manifest.json');
 
-const DEFAULT_MODEL = process.env.OPENROUTER_EXTRACT_MODEL || 'anthropic/claude-haiku-4.5';
+const DEFAULT_MODEL = USE_GOOGLE
+  ? (process.env.GOOGLE_GEMINI_MODEL || 'gemini-2.5-flash')
+  : (process.env.OPENROUTER_EXTRACT_MODEL || 'anthropic/claude-haiku-4.5');
 
 const FIELDS = [
   ['skolne_poplatky', 'Školné a poplatky — tuition/fees. Only relevant for PRIVATE schools (public/state schools are legally free — do not fill this in as "zdarma"/"free" unless the site is a private school explicitly stating a price).'],
@@ -156,12 +161,29 @@ function loadManifest() {
   return JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
 }
 
+let googleKeyIndex = 0;
+
+function getGoogleKey() {
+  if (!GOOGLE_GEMINI_API_KEYS.length) return null;
+  const key = GOOGLE_GEMINI_API_KEYS[googleKeyIndex % GOOGLE_GEMINI_API_KEYS.length];
+  googleKeyIndex += 1;
+  return key;
+}
+
 async function callModel(text, model, typySkoly) {
   const typeContext = typySkoly.length
     ? `Typ školy (z admission dat): ${typySkoly.join(', ')}${isVocationalSchool(typySkoly) ? '' : ' — TOTO NENÍ učňovská/odborná škola, takže "uplatneni_po_vyuceni" musí být null.'}\n\n`
     : '';
 
-  const response = await fetch(OPENROUTER_URL, {
+  if (USE_GOOGLE) {
+    return callGoogleGemini(text, model, typeContext);
+  } else {
+    return callOpenRouter(text, model, typeContext);
+  }
+}
+
+async function callOpenRouter(text, model, typeContext) {
+  const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${OPENROUTER_API_KEY}`,
@@ -195,6 +217,87 @@ async function callModel(text, model, typySkoly) {
   }
 
   return JSON.parse(toolCall.function.arguments);
+}
+
+async function callGoogleGemini(text, model, typeContext) {
+  const apiKey = getGoogleKey();
+  if (!apiKey) throw new Error('No Google Gemini API key available');
+
+  const googleModel = process.env.GOOGLE_GEMINI_MODEL || 'gemini-2.5-flash';
+
+  const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${googleModel}:generateContent?key=${apiKey}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      system_instruction: { parts: { text: SYSTEM_PROMPT } },
+      contents: {
+        parts: [
+          {
+            text: `${typeContext}Text webu školy (více stránek oddělených "---"):\n\n${text.slice(0, 150_000)}`,
+          },
+        ],
+      },
+      tools: [
+        {
+          function_declarations: [
+            {
+              name: 'extract_school_details',
+              description: 'Record the six school-life fields found in the provided page text, or null for any field with no real evidence.',
+              parameters: {
+                type: 'OBJECT',
+                properties: Object.fromEntries([
+                  ...FIELDS.map(([key]) => [
+                    key,
+                    {
+                      type: 'STRING',
+                      description: 'A short factual answer in Czech, quoting or closely paraphrasing the source text. null if not found.',
+                    },
+                  ]),
+                  ['source_urls', {
+                    type: 'OBJECT',
+                    description: 'Map of field name -> source URL (from the ## headings in the input) for every non-null field above. Omit keys for null fields.',
+                    additionalProperties: { type: 'STRING' },
+                  }],
+                ]),
+                required: [...FIELDS.map(([key]) => key), 'source_urls'],
+              },
+            },
+          ],
+        },
+      ],
+      tool_config: {
+        function_calling_config: {
+          mode: 'ANY',
+          allowed_function_names: ['extract_school_details'],
+        },
+      },
+      generation_config: {
+        temperature: 0,
+        max_output_tokens: 1500,
+      },
+    }),
+    signal: AbortSignal.timeout(120_000),
+  });
+
+  if (!response.ok) {
+    const detail = await response.text().catch(() => '');
+    throw new Error(`Google Gemini ${response.status}: ${detail.slice(0, 300)}`);
+  }
+
+  const payload = await response.json();
+
+  if (payload.error) {
+    throw new Error(`Google Gemini API error: ${payload.error.message}`);
+  }
+
+  const toolCall = payload?.candidates?.[0]?.content?.parts?.find((p) => p.functionCall);
+  if (!toolCall?.functionCall) {
+    throw new Error('Model did not return a function call');
+  }
+
+  return toolCall.functionCall.args || {};
 }
 
 async function extractSchool(schoolId, model, typySkoly) {

@@ -1,0 +1,29 @@
+{
+  "skill_name": "design-md-planner",
+  "evals": [
+    {
+      "id": 0,
+      "name": "vague-brief-pushback",
+      "prompt": "im building a habit tracking app for people in recovery, its called Anchor. i want a design system for it — something modern and clean. can you set up a DESIGN.md so claude doesnt keep giving me random colors every time i ask it to build a screen",
+      "expected_output": "A DESIGN.md that lints clean, built on a specific named aesthetic direction rather than 'modern and clean'. The vague brief should be converted into a concrete choice (either by asking, or by committing to a named direction and stating the tradeoff). No indigo/violet primary, no Inter-by-default, no untinted greys, no uniform rounded-2xl+shadow. Prose should explain WHY each choice was made, with a sourced color referent.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 1,
+      "name": "codify-existing-slop",
+      "prompt": "we have a react dashboard at evals/fixtures/slop-app and honestly it looks like every other AI-generated app. can you look at what we've actually got in there and write us a proper DESIGN.md — but fix the parts that are generic, dont just write down what's already there",
+      "expected_output": "Extracts the real tokens from tailwind.config.js and the hardcoded values in Dashboard.jsx (including the inline #6366F1 that duplicates the theme's primary). Names the slop explicitly — indigo primary, slate-900 navy dark mode, Inter, gradient text, glassmorphism, rounded-2xl+shadow-lg everywhere, emoji, stock semantic colors. Proposes specific replacements rather than codifying the existing choices. Produces a DESIGN.md that lints clean.",
+      "files": ["evals/fixtures/slop-app/tailwind.config.js", "evals/fixtures/slop-app/src/Dashboard.jsx"],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "name": "constrained-brief-dense-tool",
+      "prompt": "need a design system written up for an internal tool my team uses all day — it's a claims triage queue for an insurance company, adjusters live in it 8 hours a day and mostly work through big tables. has to be dark mode, has to be WCAG AA, and our brand color is locked as #7A2E2E (oxblood, it's from the parent company). write it as a DESIGN.md file",
+      "expected_output": "Honors all three hard constraints: dark mode, WCAG AA, and the mandated #7A2E2E brand color (which must appear in the tokens, adjusted for dark-mode legibility rather than replaced). Chooses a density-appropriate direction (Terminal Precision / Utility Dense) rather than a generous editorial one. Dark background must not be navy slate-900. Mono with tabular figures for numeric table columns. Lints clean with zero contrast warnings.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}
