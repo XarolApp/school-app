@@ -44,6 +44,15 @@ What to check:
 4. Idempotency: is a double-click / retried `/withdraw` call provably safe (no double refund, no double DB write)?
 5. The `since` buffer (`-3600` seconds) on the PaymentIntent list query — is an hour enough slack, and could it accidentally pull in an unrelated older charge on the same Stripe customer if they ever had a previous, separate plan?
 
+## Accessibility follow-ups from 2026-09-22 legal audit
+- **Found:** 2026-09-22, founder-requested legal/compliance checklist review
+- **Urgency:** Low — not legally required at micro-enterprise size (see existing Accessibility Act entry), good practice only
+- **Effort:** Small
+- **Release/context:** whenever real school photos are added; design tokens for color
+
+1. **Alt text** — no real `<img>` tags exist yet (checked: only a code comment references adding one). The moment real school photos ship, every one needs descriptive `alt` text.
+2. **Color contrast** — not verified. Run the actual rendered colors from `frontend/src/design/tokens.js` through a contrast checker (e.g. WebAIM) before or shortly after launch, especially text-on-terracotta/moss accent combinations.
+
 ## Launch legal checklist — no lawyer, so transparency by default (2026-09-21)
 - **Found:** 2026-09-21, founder cannot afford a lawyer before launch; legal pages rewritten with no lawyer placeholders and the most consumer-friendly option wherever the law leaves a choice
 - **Urgency:** Launch blockers (each item below)
