@@ -53,7 +53,7 @@ const DATA_DIR = path.join(__dirname, 'data', 'scraped-schools');
 const MANIFEST_PATH = path.join(DATA_DIR, '_manifest.json');
 
 const DEFAULT_MODEL = USE_GOOGLE
-  ? (process.env.GOOGLE_GEMINI_MODEL || 'gemini-2.5-flash')
+  ? (process.env.GOOGLE_GEMINI_MODEL || 'gemini-3.6-flash')
   : (process.env.OPENROUTER_EXTRACT_MODEL || 'anthropic/claude-haiku-4.5');
 
 const FIELDS = [
