@@ -1389,7 +1389,11 @@ async function buildRunResult(run) {
   // same arithmetic /api/schools uses for match_score, so one school cannot read
   // 71% here and 64% in search. Schools are read fresh for the same reason —
   // a renamed or re-scraped school shows its current details.
-  const schools = withDistricts(await fetchAllSchools('*'));
+  //
+  // school_programs(*) joined so matching.js can classify a school's type
+  // (gymnázium/lyceum/trade) from Cermat's own typ_skoly, not by guessing
+  // from the free-text programs blob — see matching.js's isGymnasium et al.
+  const schools = withDistricts(await fetchAllSchools('*, school_programs(*)'));
   const byId = new Map(schools.map((school) => [school.id, school]));
 
   // Sentences are only ever written for the run's stored top matches, so they
@@ -1479,7 +1483,7 @@ app.post(
     // shape GET returns or the two paths render differently.
     let schools;
     try {
-      schools = await fetchAllSchools('*');
+      schools = await fetchAllSchools('*, school_programs(*)');
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }
