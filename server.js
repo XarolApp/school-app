@@ -1043,7 +1043,7 @@ app.post('/api/reviews/:id/report', reviewLimiter, optionalAuth, async (req, res
   // signed-in users.
   const reportRow = { review_id: id, user_id: req.user?.id ?? null, reason };
   const { error: reportError } = req.user
-    ? await supabase.from('review_reports').upsert(reportRow)
+    ? await supabase.from('review_reports').upsert(reportRow, { onConflict: 'review_id,user_id' })
     : await supabase.from('review_reports').insert(reportRow);
 
   if (reportError) return res.status(500).json({ error: reportError.message });

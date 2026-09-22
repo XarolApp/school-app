@@ -328,10 +328,15 @@ create table if not exists public.review_reports (
   primary key (review_id, user_id)
 );
 -- Anonymous reporters (DSA Art. 16: notice-and-action must be open to anyone,
--- not just accounts) have a null user_id. Postgres treats each null as
--- distinct for the primary key, so anonymous reports never collide with each
--- other or with a signed-in report — only a signed-in reporter is deduped.
+-- not just accounts) have a null user_id. A primary key column can't be
+-- nullable in Postgres, so the PK is replaced with an id + a partial unique
+-- index that only dedupes signed-in reporters (a null user_id never matches
+-- another null, so anonymous reports are never blocked by it).
+alter table public.review_reports drop constraint if exists review_reports_pkey;
+alter table public.review_reports add column if not exists id bigint generated always as identity primary key;
 alter table public.review_reports alter column user_id drop not null;
+create unique index if not exists review_reports_review_user_key
+  on public.review_reports (review_id, user_id) where user_id is not null;
 
 -- Crowdsourced data-accuracy reports ("Nahlásit chybu v údajích") — a free
 -- correction channel, not a review. No status/moderation columns: these are
