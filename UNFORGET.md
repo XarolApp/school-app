@@ -21,6 +21,15 @@ BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 - **Effort:** Small–medium
 - **Release/context:** `DELETE /api/me` deletes the Stripe customer BEFORE the user row, so any charge attempted afterwards fails (`resource_missing`) and cannot succeed. Only the microsecond window remains.
 
+## Monthly plan: auto-stop billing at 31 March (proposed 2026-09-22)
+- **Found:** 2026-09-22, founder idea during minors/legal discussion — not yet built
+- **Urgency:** Medium — legal upside (bounds a minor's commitment, closer to season's fixed-term shape, strengthens the §31 maturity-presumption argument) and product upside (removes "forgot to cancel" fear, likely nudges marginal monthly buyers toward season since the real ceiling becomes visible: up to ~1743 Kč worst case vs 690 Kč locked in)
+- **Risk of fixing now:** None; deferred only by founder choice to finish the current legal batch first
+- **Effort:** Medium — Stripe subscription needs `cancel_at` set to 31 March at creation (mirrors how the season scheduler already bounds its charge), copy changes in `pricing.js`, paywall screens, and `Legal.jsx` Terms §4/§7, and a decision on whether/how a user can resubscribe after March
+- **Release/context:** `server.js` checkout session creation for `plan_id: 'monthly'`; `frontend/src/config/pricing.js`; `Legal.jsx`
+
+Also decide: does this apply retroactively to subscriptions already running, or only new ones from the day it ships?
+
 ## Launch legal checklist — no lawyer, so transparency by default (2026-09-21)
 - **Found:** 2026-09-21, founder cannot afford a lawyer before launch; legal pages rewritten with no lawyer placeholders and the most consumer-friendly option wherever the law leaves a choice
 - **Urgency:** Launch blockers (each item below)
