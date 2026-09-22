@@ -451,6 +451,19 @@ create table if not exists public.school_extracted_details (
   extracted_at timestamptz not null default now()
 );
 
+-- Structured, queryable versions of two of the free-text fields above —
+-- scripts/extract-school-details.js's NUMERIC_FIELDS. Additive, not a
+-- replacement: skolne_poplatky/maturita_uspesnost keep the nuance a bare
+-- number can't ("20% sourozenecká sleva"), these two exist so
+-- lib/decisionMatrix.js can actually score against them.
+alter table public.school_extracted_details add column if not exists tuition_czk_per_year integer;
+alter table public.school_extracted_details add column if not exists maturita_pass_rate_pct numeric;
+alter table public.school_extracted_details add column if not exists zacatek_hodin smallint;
+alter table public.school_extracted_details add column if not exists ma_dodatecne_pozadavky boolean;
+alter table public.school_extracted_details add column if not exists pripijimaci_pozadavky_detail text;
+alter table public.school_extracted_details add column if not exists alternativni_pedagogika boolean;
+alter table public.school_extracted_details add column if not exists vyukovy_styl_detail text;
+
 alter table public.school_extracted_details enable row level security;
 -- No client policy — same reasoning as school_ai_summary: this is
 -- scraped/AI-derived school data, read only through server.js's service-role

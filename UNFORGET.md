@@ -13,6 +13,79 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
+## Structured school-details extraction — expanded 2026-09-22, not yet run for real
+- **Found:** 2026-09-22, founder asked to expand the Firecrawl extraction pipeline
+  beyond tuition/maturita to admission requirements, teaching style and start time.
+- **Effort:** small–medium, mostly done.
+- **Release/context:** `scripts/extract-school-details.js` now extracts, alongside
+  the original 6 free-text fields: `tuition_czk_per_year`, `maturita_pass_rate_pct`,
+  `zacatek_hodin` (NUMERIC_FIELDS), `ma_dodatecne_pozadavky`,
+  `alternativni_pedagogika` (BOOLEAN_FIELDS), plus two new free-text detail fields
+  (`pripijimaci_pozadavky_detail`, `vyukovy_styl_detail`). Same anti-fabrication
+  discipline as the original 6 (explicit-evidence-only, `NUMERIC_BOUNDS` plausibility
+  checks). Verified via `--dry-run` against 11+ real cached schools — plausible
+  values throughout, correct `false` (not a default `true`) where a school
+  genuinely has no extra requirements or alternative pedagogy.
+- **Not done yet:**
+  1. **SQL not run against the live database.** `supabase-setup.sql` has the 5 new
+     `alter table ... add column if not exists` statements (tuition_czk_per_year,
+     maturita_pass_rate_pct, zacatek_hodin, ma_dodatecne_pozadavky,
+     pripijimaci_pozadavky_detail, alternativni_pedagogika, vyukovy_styl_detail —
+     7 total across both rounds). Run these in the Supabase SQL Editor before the
+     real (non-dry-run) extraction can write anything.
+  2. **Real extraction batch not run.** Only `--dry-run` has been exercised so far
+     (bounded by OpenRouter credits running out mid-batch — see next item). 64 of
+     206 cached schools were still unextracted as of 2026-09-22.
+  3. **OpenRouter ran out of credits mid-dry-run** (`402: in_flight_budget_exhausted`).
+     Either top up OpenRouter, or set `GOOGLE_GEMINI_API_KEYS` in `.env` (currently
+     unset despite `.env.example` documenting it) — the script already prefers
+     Gemini when that key is present.
+  4. **Not wired into scoring yet.** `lib/decisionMatrix.js`'s `maturita` criterion
+     still sits `available: false`; `skolne` is still the crude public/private
+     boolean, not scaled against `tuition_czk_per_year`. Do this only after the real
+     extraction has run and there's actual data to test the criteria against —
+     wiring in ahead of real data risks a criterion that always reads "no data".
+  5. **Minor prompt-quality observation, not a fabrication:** one dry-run sample
+     returned `pripijimaci_pozadavky_detail = "Web neuvádí konkrétní požadavky na
+     přijímací řízení. Zmíňuje se přijímací zkouška, ale bez detailů."` — the model
+     narrating its own uncertainty in prose rather than returning `null`. Not wrong
+     (it's honest, not fabricated), but not clean data either — passed `looksLikeFiller`
+     because it's long enough and doesn't match the generic-phrase regexes. Worth a
+     small prompt tweak later ("if you would describe this as 'not specified',
+     return null instead") if it turns out to be common at full-batch scale.
+
+## Structured extraction — deliberately NOT pursued: hodiny za předmět (hours per subject)
+- **Found:** 2026-09-22, founder asked about extracting weekly hours per subject
+  alongside tuition/admission/pedagogy — considered and rejected, logging the
+  reasoning so it isn't silently re-proposed later.
+- **Why not:** (1) school **marketing** websites (what's scraped today) essentially
+  never publish a weekly-hours-per-subject table — that lives in the official ŠVP
+  (školní vzdělávací program) curriculum document, a different source entirely,
+  not part of the current Firecrawl scrape target. (2) Even if found, it isn't one
+  number per school — it varies by obor/year/subject, so it doesn't fit
+  `school_extracted_details`'s one-row-per-school shape; it would need something
+  closer to a new `school_programs`-shaped table (per-obor granularity), a real
+  project of its own. (3) Pushed to "give a number," a model is far more likely to
+  fabricate a plausible standard-curriculum hour count than admit it doesn't know
+  — the exact failure mode this whole pipeline exists to avoid.
+- **Revisit if:** there's a specific plan to scrape/parse official ŠVP curriculum
+  PDFs as a separate source, at which point this would be its own extraction
+  pipeline and its own table, not an addition to `school_extracted_details`.
+
+## `zacatek` questionnaire dimension still can't use zacatek_hodin once extracted
+- **Found:** 2026-09-22, spotted while scoping the structured-extraction expansion.
+- **Urgency:** Low — informational field for now, not blocking anything.
+- **Release/context:** the questionnaire's `zacatek` question (`lib/questionnaire.js`
+  QUESTIONS) only ever asks "does start time matter to you?" (`nezalezi`/`zalezi`
+  — see `lib/matching.js`'s own header comment, already documenting this as a
+  zero-weight no-op). It never collects *which* start time a student prefers.
+  `zacatek_hodin` (newly extracted) will make a real fact available for display on
+  the school detail page immediately, but turning it into an actual scored
+  dimension needs the question itself to change — new answer options like "co
+  nejdřív"/"nevadí mi později"/a specific hour — which is an onboarding/
+  questionnaire UI change, not just a backend/extraction one. Two separate pieces
+  of work; don't assume finishing the extraction finishes the scoring integration.
+
 ## Beta access code — BUILT 2026-09-22
 - **Found:** 2026-09-22, founder wants to onboard partner-school beta testers without collecting individual emails
 - **Effort:** small, done

@@ -2,7 +2,8 @@
  * Phase 2 of the school-detail extraction pipeline (docs/firecrawl-extraction-task.md).
  *
  * Reads the markdown cached by scripts/scrape-schools.js and asks an AI model to
- * pull out six "school life" fields, writing results to
+ * pull out a set of "school life" fields — free text (FIELDS), structured
+ * numbers (NUMERIC_FIELDS) and booleans (BOOLEAN_FIELDS) — writing results to
  * public.school_extracted_details. Re-runnable without ever re-scraping —
  * that's the whole point of the two-phase split, so a prompt tweak or a
  * model swap costs no Firecrawl credits.
@@ -67,13 +68,52 @@ const FIELDS = [
   ['maturita_uspesnost', 'Úspěšnost u maturity — ONLY an actual maturita (school-leaving exam) pass rate or statistic, e.g. "95 % úspěšnost u maturity". Do NOT use this field for competition wins, awards, or other student achievements unrelated to the maturita exam itself — those do not belong here even if impressive.'],
   ['vs_uplatneni', 'Kam míří absolventi — ONLY university/college placement: which universities graduates commonly attend, or what share continues to higher education. Do NOT use this field for career outcomes, startups founded, or jobs held — those are not university placement.'],
   ['uplatneni_po_vyuceni', 'Uplatnění po vyučení — post-vocational-training employment outcomes. ONLY applicable to vocational schools (SOU/SOŠ/učiliště) that train students for a trade or profession. If this school is an academic gymnázium with no vocational/apprenticeship track, this field MUST be null.'],
+  ['pripijimaci_pozadavky_detail', 'Popis přijímacích požadavků NAD RÁMEC jednotné přijímací zkoušky (JPZ/CERMAT) — např. talentová zkouška, pohovor, portfolio, vlastní písemný test z jazyka. Pokud škola bere jen JPZ a nic dalšího nezmiňuje, null. Neopisuj samotnou JPZ, jen to NAVÍC.'],
+  ['vyukovy_styl_detail', 'Popis výukového stylu, POUZE pokud web explicitně pojmenovává alternativní pedagogický přístup (Montessori, Waldorfská pedagogika, Daltonský plán, program Začít spolu, apod.) nebo jasně popisuje, čím se výuka odlišuje od běžné. Neopisuj obecné fráze o "moderní výuce" nebo "individuálním přístupu" — to není konkrétní.'],
+];
+
+// Structured, queryable versions of some of the fields above — a value the
+// decision matrix / questionnaire can actually score against, not prose a
+// person has to read. Kept separate from FIELDS (rather than replacing the
+// free-text ones) because prose can state nuance a bare value can't ("20%
+// sourozenecká sleva") — this is additive, not a replacement.
+const NUMERIC_FIELDS = [
+  [
+    'tuition_czk_per_year',
+    'Roční školné v Kč, jako celé číslo. Pokud web uvádí částku za pololetí/měsíc, přepočti ji na CELÝ ROK (vynásob 2, resp. 10-12 podle toho, kolik měsíců školního roku pokrývá). Pokud škola nabízí víc programů s různou cenou, použij tu NEJNIŽŠÍ uvedenou. Pouze pro soukromé školy — veřejné/státní školy jsou ze zákona bez školného, takže null.',
+  ],
+  [
+    'maturita_pass_rate_pct',
+    'Úspěšnost u maturitní zkoušky v procentech, jako číslo 0-100 (např. "95 % studentů uspělo" -> 95). NEPOUŽÍVEJ pro jiné statistiky (přijímačky, soutěže, umístění). Musí to být explicitně uvedené číslo o maturitě, ne odhad.',
+  ],
+  [
+    'zacatek_hodin',
+    'Hodina, kdy typicky začíná výuka, jako celé číslo 6-12 (např. "výuka začíná v 8:00" -> 8). Pouze pokud web tuto informaci explicitně uvádí (často v sekci pro rodiče/uchazeče nebo v řádu školy) — jinak null, nikdy neodhaduj běžný čas.',
+  ],
+];
+
+// A fixed yes/no signal is enough for matching — WHICH specific admission
+// test or WHICH named pedagogy is display-only detail, already captured
+// above in pripijimaci_pozadavky_detail / vyukovy_styl_detail. Splitting
+// into per-type flags (talent exam vs. interview vs. portfolio; Montessori
+// vs. Waldorf vs. ...) is deferred until real data shows it's worth the
+// extra columns — see UNFORGET.md.
+const BOOLEAN_FIELDS = [
+  [
+    'ma_dodatecne_pozadavky',
+    'true, pokud škola vyžaduje NĚCO NAD RÁMEC jednotné přijímací zkoušky (talentovka, pohovor, portfolio, vlastní test). false, pokud web explicitně říká, že rozhoduje jen JPZ / prospěch, nebo o žádných dalších požadavcích nemluví. Vrať null jen pokud text o přijímacím řízení vůbec nemluví.',
+  ],
+  [
+    'alternativni_pedagogika',
+    'true, pokud web explicitně pojmenovává alternativní pedagogický přístup (Montessori, Waldorf, Dalton, Začít spolu, apod.). false, pokud jasně popisuje běžnou/tradiční výuku. null, pokud web se o stylu výuky vůbec nezmiňuje.',
+  ],
 ];
 
 const EXTRACT_TOOL = {
   type: 'function',
   function: {
     name: 'extract_school_details',
-    description: 'Record the six school-life fields found in the provided page text, or null for any field with no real evidence.',
+    description: 'Record the school-life fields (plus structured numbers and booleans) found in the provided page text, or null for any field with no real evidence.',
     parameters: {
       type: 'object',
       properties: Object.fromEntries([
@@ -84,19 +124,39 @@ const EXTRACT_TOOL = {
             description: 'A short factual answer in Czech, quoting or closely paraphrasing the source text. null if not found.',
           },
         ]),
+        ...NUMERIC_FIELDS.map(([key, description]) => [
+          key,
+          { type: ['number', 'null'], description },
+        ]),
+        ...BOOLEAN_FIELDS.map(([key, description]) => [
+          key,
+          { type: ['boolean', 'null'], description },
+        ]),
         ['source_urls', {
           type: 'object',
           description: 'Map of field name -> source URL (from the ## headings in the input) for every non-null field above. Omit keys for null fields.',
           additionalProperties: { type: 'string' },
         }],
       ]),
-      required: [...FIELDS.map(([key]) => key), 'source_urls'],
+      required: [
+        ...FIELDS.map(([key]) => key),
+        ...NUMERIC_FIELDS.map(([key]) => key),
+        ...BOOLEAN_FIELDS.map(([key]) => key),
+        'source_urls',
+      ],
     },
   },
 };
 
-const SYSTEM_PROMPT = `Jsi asistent, který z textu webu střední školy extrahuje šest konkrétních
-informací pro českého deváťáka vybírajícího si školu.
+const SYSTEM_PROMPT = `Jsi asistent, který z textu webu střední školy extrahuje konkrétní
+informace pro českého deváťáka vybírajícího si školu — jako text
+(volnou větou) i jako čísla a true/false hodnoty (tuition_czk_per_year,
+maturita_pass_rate_pct, zacatek_hodin, ma_dodatecne_pozadavky,
+alternativni_pedagogika). Stejné pravidlo "nikdy nic nevymýšlej" platí pro
+čísla a true/false úplně stejně jako pro text: vrať null, pokud web
+neuvádí danou informaci jasně a explicitně, nikdy neodhaduj ani
+nedopočítávej z nepřímých náznaků. Výjimka je jen přepočet pololetní/
+měsíční částky na celoroční — to je aritmetika, ne odhad.
 
 NEJDŮLEŽITĚJŠÍ PRAVIDLO: Pokud text neobsahuje jasný důkaz pro danou položku,
 vrať pro ni null. NIKDY nic nevymýšlej, neodhaduj ani nedosazuj obecně
@@ -209,7 +269,7 @@ async function callOpenRouter(text, model, typeContext) {
     body: JSON.stringify({
       model,
       temperature: 0,
-      max_tokens: 1500,
+      max_tokens: 2000,
       tools: [EXTRACT_TOOL],
       tool_choice: { type: 'function', function: { name: 'extract_school_details' } },
       messages: [
@@ -238,7 +298,7 @@ async function callGoogleGemini(text, model, typeContext) {
   const apiKey = getGoogleKey();
   if (!apiKey) throw new Error('No Google Gemini API key available');
 
-  const googleModel = process.env.GOOGLE_GEMINI_MODEL || 'gemini-2.5-flash';
+  const googleModel = process.env.GOOGLE_GEMINI_MODEL || 'gemini-3.6-flash';
 
   const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${googleModel}:generateContent?key=${apiKey}`, {
     method: 'POST',
@@ -259,7 +319,7 @@ async function callGoogleGemini(text, model, typeContext) {
           function_declarations: [
             {
               name: 'extract_school_details',
-              description: 'Record the six school-life fields found in the provided page text, or null for any field with no real evidence.',
+              description: 'Record the school-life fields (plus structured numbers and booleans) found in the provided page text, or null for any field with no real evidence.',
               parameters: {
                 type: 'OBJECT',
                 properties: Object.fromEntries([
@@ -271,12 +331,25 @@ async function callGoogleGemini(text, model, typeContext) {
                       nullable: true,
                     },
                   ]),
+                  ...NUMERIC_FIELDS.map(([key, description]) => [
+                    key,
+                    { type: 'NUMBER', description, nullable: true },
+                  ]),
+                  ...BOOLEAN_FIELDS.map(([key, description]) => [
+                    key,
+                    { type: 'BOOLEAN', description, nullable: true },
+                  ]),
                   ['source_urls', {
                     type: 'STRING',
                     description: 'JSON string: field name -> source URL for every non-null field. E.g. {"skolne_poplatky": "https://..."}',
                   }],
                 ]),
-                required: [...FIELDS.map(([key]) => key), 'source_urls'],
+                required: [
+                  ...FIELDS.map(([key]) => key),
+                  ...NUMERIC_FIELDS.map(([key]) => key),
+                  ...BOOLEAN_FIELDS.map(([key]) => key),
+                  'source_urls',
+                ],
               },
             },
           ],
@@ -290,7 +363,7 @@ async function callGoogleGemini(text, model, typeContext) {
       },
       generation_config: {
         temperature: 0,
-        max_output_tokens: 1500,
+        max_output_tokens: 2000,
       },
     }),
     signal: AbortSignal.timeout(120_000),
@@ -324,6 +397,16 @@ async function callGoogleGemini(text, model, typeContext) {
   return args;
 }
 
+// Plausible-range checks — a model asked for "the number" will sometimes
+// invent a round, wrong one (seen in testing: a 100% maturita pass rate with
+// nothing in the source backing it) rather than admit null. This can't catch
+// every fabrication, but it rejects the physically implausible ones.
+const NUMERIC_BOUNDS = {
+  tuition_czk_per_year: (v) => v > 0 && v <= 500_000,
+  maturita_pass_rate_pct: (v) => v >= 0 && v <= 100,
+  zacatek_hodin: (v) => v >= 6 && v <= 12,
+};
+
 async function extractSchool(schoolId, model, typySkoly) {
   const filePath = path.join(DATA_DIR, `${schoolId}.md`);
   const text = fs.readFileSync(filePath, 'utf8');
@@ -340,6 +423,26 @@ async function extractSchool(schoolId, model, typySkoly) {
 
     if (typeof value === 'string' && value.trim() && !looksLikeFiller(value) && passesGuard && allowedField) {
       cleaned[key] = value.trim().slice(0, 1000);
+      if (raw.source_urls?.[key]) sourceUrls[key] = raw.source_urls[key];
+    } else {
+      cleaned[key] = null;
+    }
+  }
+
+  for (const [key] of NUMERIC_FIELDS) {
+    const value = raw[key];
+    if (typeof value === 'number' && Number.isFinite(value) && NUMERIC_BOUNDS[key](value)) {
+      cleaned[key] = Math.round(value);
+      if (raw.source_urls?.[key]) sourceUrls[key] = raw.source_urls[key];
+    } else {
+      cleaned[key] = null;
+    }
+  }
+
+  for (const [key] of BOOLEAN_FIELDS) {
+    const value = raw[key];
+    if (typeof value === 'boolean') {
+      cleaned[key] = value;
       if (raw.source_urls?.[key]) sourceUrls[key] = raw.source_urls[key];
     } else {
       cleaned[key] = null;
@@ -363,6 +466,21 @@ async function main() {
   let schoolIds = Object.keys(manifest);
   if (onlySchoolId) schoolIds = schoolIds.filter((id) => String(id) === String(onlySchoolId));
   if (limit) schoolIds = schoolIds.slice(0, limit);
+
+  // Skip schools already extracted (unless --school-id specified to force re-extract)
+  if (!onlySchoolId) {
+    const { data: extracted, error: extractedError } = await supabase
+      .from('school_extracted_details')
+      .select('school_id');
+    if (!extractedError && extracted) {
+      const extractedIds = new Set(extracted.map((row) => String(row.school_id)));
+      const before = schoolIds.length;
+      schoolIds = schoolIds.filter((id) => !extractedIds.has(id));
+      if (schoolIds.length < before) {
+        console.log(`Skipping ${before - schoolIds.length} already-extracted schools.\n`);
+      }
+    }
+  }
 
   console.log(`Model: ${model}${dryRun ? ' (dry run — nothing written)' : ''}`);
   console.log(`${schoolIds.length} cached schools to process.\n`);
@@ -389,8 +507,17 @@ async function main() {
     const typySkoly = typesById.get(String(schoolId)) || [];
     try {
       const result = await extractSchool(schoolId, model, typySkoly);
-      const foundCount = FIELDS.filter(([key]) => result[key] != null).length;
-      console.log(`${name}: ${foundCount}/${FIELDS.length} fields found`);
+      const allFields = [...FIELDS, ...NUMERIC_FIELDS, ...BOOLEAN_FIELDS];
+      const foundCount = allFields.filter(([key]) => result[key] != null).length;
+      console.log(`${name}: ${foundCount}/${allFields.length} fields found`);
+      for (const [key] of [...NUMERIC_FIELDS, ...BOOLEAN_FIELDS]) {
+        if (result[key] != null) console.log(`    ${key} = ${result[key]}`);
+      }
+      if (dryRun) {
+        for (const key of ['pripijimaci_pozadavky_detail', 'vyukovy_styl_detail']) {
+          if (result[key]) console.log(`    ${key} = "${result[key].slice(0, 120)}"`);
+        }
+      }
 
       if (!dryRun) {
         const { source_urls, ...fields } = result;
