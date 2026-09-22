@@ -14,6 +14,7 @@ import {
   MATCH_GAP,
 } from '../lib/decisionMatrix';
 import DecisionTabs from '../components/decision/DecisionTabs';
+import ConfirmDialog from '../components/ConfirmDialog';
 import './decision.css';
 
 const LEVELS = [
@@ -430,34 +431,19 @@ function Matice() {
       </div>
 
       {confirmShodaLevel && (
-        <div className="dp-confirm-backdrop" role="presentation" onClick={() => setConfirmShodaLevel(null)}>
-          <div
-            className="dp-confirm-dialog"
-            role="alertdialog"
-            aria-modal="true"
-            aria-labelledby="dp-confirm-title"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="dp-confirm-icon">
-              <TriangleAlert size={20} aria-hidden="true" />
-            </div>
-            <div className="ss-headline-sm h" id="dp-confirm-title">
-              Opravdu chceš přepnout shodu na „{LEVEL_LABEL[confirmShodaLevel]}“?
-            </div>
-            <p className="ss-body-sm">
-              Doporučujeme nechat shodu s dotazníkem na <strong>Zásadní</strong> — je to jediné kritérium tady,
-              které vychází z tvých vlastních odpovědí, ne jen z dat o škole.
-            </p>
-            <div className="dp-confirm-actions">
-              <button type="button" className="ss-btn ss-btn-secondary" onClick={() => setConfirmShodaLevel(null)}>
-                Nechat na Zásadní
-              </button>
-              <button type="button" className="ss-btn ss-btn-primary" onClick={confirmShodaChange}>
-                Přepnout na „{LEVEL_LABEL[confirmShodaLevel]}“
-              </button>
-            </div>
-          </div>
-        </div>
+        <ConfirmDialog
+          icon={<TriangleAlert size={22} aria-hidden="true" />}
+          title={`Opravdu chceš přepnout shodu na „${LEVEL_LABEL[confirmShodaLevel]}“?`}
+          cancelLabel="Nechat na Zásadní"
+          confirmLabel={`Přepnout na „${LEVEL_LABEL[confirmShodaLevel]}“`}
+          onCancel={() => setConfirmShodaLevel(null)}
+          onConfirm={confirmShodaChange}
+        >
+          <p className="ss-body-sm">
+            Doporučujeme nechat shodu s dotazníkem na <strong>Zásadní</strong> — je to jediné kritérium tady,
+            které vychází z tvých vlastních odpovědí, ne jen z dat o škole.
+          </p>
+        </ConfirmDialog>
       )}
     </div>
   );

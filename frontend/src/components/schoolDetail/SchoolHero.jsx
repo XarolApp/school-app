@@ -1,5 +1,6 @@
 import { summarizeCurrentYear } from '../../lib/schoolPrograms';
 import { oborWord } from '../../lib/pluralCz';
+import { matchBand } from '../../lib/decisionMatrix';
 import InfoHint from './InfoHint';
 
 function ukonceniLabel(entries) {
@@ -40,6 +41,7 @@ function SchoolHero({ school, programEntries }) {
   const zrizovatel = programEntries.find((e) => e.zrizovatel)?.zrizovatel ?? null;
   const ukonceni = ukonceniLabel(programEntries);
   const current = summarizeCurrentYear(programEntries);
+  const band = typeof school.match_score === 'number' ? matchBand(school.match_score) : null;
 
   return (
     <div className="sd-hero-main">
@@ -49,6 +51,11 @@ function SchoolHero({ school, programEntries }) {
       </div>
 
       <div className="sd-chips">
+        {band && (
+          <span className={`sd-match-chip sd-match-chip-${band.tone}`}>
+            {band.label} · {Math.round(school.match_score)} % shoda s tebou
+          </span>
+        )}
         {school.district && <span className="sd-chip">{school.district}</span>}
         {zrizovatel && <span className="sd-chip">{zrizovatel}</span>}
         {ukonceni && <span className="sd-chip">{ukonceni}</span>}

@@ -653,49 +653,6 @@
   }
 }
 
-/* ---------- "are you sure" prompt for moving shoda off Zásadní ---------- */
-.dp-confirm-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(34, 26, 19, 0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-lg);
-  z-index: 1000;
-}
-.dp-confirm-dialog {
-  width: 100%;
-  max-width: 420px;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-  background: var(--surface);
-  border: 1px solid var(--line2);
-  border-radius: var(--r-card);
-  padding: var(--space-lg);
-  box-shadow: 0 12px 32px rgba(34, 26, 19, 0.25);
-}
-.dp-confirm-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--danger-soft);
-  color: var(--danger);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.dp-confirm-actions {
-  display: flex;
-  gap: var(--space-sm);
-  flex-wrap: wrap;
-  margin-top: var(--space-xs);
-}
-.dp-confirm-actions .ss-btn {
-  flex: 1;
-}
-
 @media (max-width: 560px) {
   .dp-crit-row {
     grid-template-columns: minmax(0, 1fr) auto;

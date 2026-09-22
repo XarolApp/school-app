@@ -86,6 +86,30 @@
   color: var(--ink);
 }
 
+/* Same band/tone as the decision matrix's dp-match-chip (lib/decisionMatrix's
+   matchBand) — one shared meaning for "shoda s tebou" everywhere it appears. */
+.sd-match-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px var(--space-md);
+  border-radius: var(--r-chip);
+  font-family: var(--sans);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+}
+.sd-match-chip-ok {
+  background: var(--ok-soft);
+  color: var(--ok);
+}
+.sd-match-chip-acc {
+  background: var(--acc-soft);
+  color: var(--acc);
+}
+.sd-match-chip-neutral {
+  background: var(--surface2);
+  color: var(--ink3);
+}
+
 .sd-fact-tiles {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
