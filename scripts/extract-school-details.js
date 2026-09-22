@@ -37,15 +37,19 @@ if (!supabaseUrl || !serviceKey) {
 }
 
 const GOOGLE_GEMINI_API_KEYS = (process.env.GOOGLE_GEMINI_API_KEYS || '').split(',').filter(Boolean);
-const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
+const OPENROUTER_API_KEYS = (process.env.OPENROUTER_API_KEYS || process.env.OPENROUTER_API_KEY || '').split(',').filter(Boolean);
 
-if (!GOOGLE_GEMINI_API_KEYS.length && !OPENROUTER_API_KEY) {
-  console.error('Missing both GOOGLE_GEMINI_API_KEYS and OPENROUTER_API_KEY in the root .env. Set at least one.');
+if (!GOOGLE_GEMINI_API_KEYS.length && !OPENROUTER_API_KEYS.length) {
+  console.error('Missing both GOOGLE_GEMINI_API_KEYS and OPENROUTER_API_KEY(S) in the root .env. Set at least one.');
   process.exit(1);
 }
 
 const USE_GOOGLE = GOOGLE_GEMINI_API_KEYS.length > 0;
-console.log(`Using ${USE_GOOGLE ? 'Google Gemini API' : 'OpenRouter'} for extraction.\n`);
+if (USE_GOOGLE) {
+  console.log(`Using Google Gemini API (${GOOGLE_GEMINI_API_KEYS.length} key(s)).\n`);
+} else {
+  console.log(`Using OpenRouter (${OPENROUTER_API_KEYS.length} key(s)).\n`);
+}
 
 const supabase = createClient(supabaseUrl, serviceKey);
 
@@ -162,11 +166,19 @@ function loadManifest() {
 }
 
 let googleKeyIndex = 0;
+let openrouterKeyIndex = 0;
 
 function getGoogleKey() {
   if (!GOOGLE_GEMINI_API_KEYS.length) return null;
   const key = GOOGLE_GEMINI_API_KEYS[googleKeyIndex % GOOGLE_GEMINI_API_KEYS.length];
   googleKeyIndex += 1;
+  return key;
+}
+
+function getOpenRouterKey() {
+  if (!OPENROUTER_API_KEYS.length) return null;
+  const key = OPENROUTER_API_KEYS[openrouterKeyIndex % OPENROUTER_API_KEYS.length];
+  openrouterKeyIndex += 1;
   return key;
 }
 
@@ -183,10 +195,13 @@ async function callModel(text, model, typySkoly) {
 }
 
 async function callOpenRouter(text, model, typeContext) {
+  const apiKey = getOpenRouterKey();
+  if (!apiKey) throw new Error('No OpenRouter API key available');
+
   const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${OPENROUTER_API_KEY}`,
+      Authorization: `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
       'HTTP-Referer': process.env.FRONTEND_URL || 'http://localhost:5173',
       'X-Title': 'SkolaMatch',
