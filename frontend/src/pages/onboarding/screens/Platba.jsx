@@ -49,7 +49,6 @@ function Platba() {
   const plan = getPlan(planId);
   const { share, note } = useHandoffShare(role);
 
-  const [confirmed, setConfirmed] = useState(false);
   const [working, setWorking] = useState(false);
   const [error, setError] = useState(null);
 
@@ -66,7 +65,7 @@ function Platba() {
     setError(null);
     setWorking(true);
     try {
-      const { url } = await createCheckoutSession({ planId: plan.id, returnTo: '/skoly', paymentConsent: confirmed });
+      const { url } = await createCheckoutSession({ planId: plan.id, returnTo: '/skoly' });
       // Full navigation on purpose — Stripe's hosted checkout page is not part
       // of this SPA. Purchase is confirmed by the webhook, not by anything
       // that happens client-side here, so there is no goNext()/setPurchased()
@@ -155,23 +154,7 @@ function Platba() {
             </div>
 
             <div className="ob-pw-card ob-pw-consent">
-              <span className="ob-pw-caps">{parent ? 'Souhlas' : 'Věk a souhlas'}</span>
-              <label className="ob-check">
-                <input
-                  type="checkbox"
-                  checked={confirmed}
-                  disabled={working}
-                  onChange={(e) => setConfirmed(e.target.checked)}
-                />
-                <span>
-                  {parent
-                    ? 'Potvrzuji, že jsem rodič nebo zákonný zástupce a s touto platbou souhlasím.'
-                    : plan.billing === 'recurring'
-                      ? 'Potvrzuji, že je mi 18 let. Opakované měsíční platby může objednat jen zletilá osoba — jinak pošli odkaz rodiči.'
-                      : 'Potvrzuji, že je mi 18 let, nebo že s touto platbou souhlasí můj rodič či zákonný zástupce.'}
-                </span>
-              </label>
-              <span className="ob-pw-rule" />
+              <span className="ob-pw-caps">Rodina</span>
               <div className="ob-pw-handoff">
                 {parent ? (
                   <>
@@ -200,14 +183,9 @@ function Platba() {
                   <p className="notice-text">{error}</p>
                 </div>
               )}
-              <PayCta onClick={submit} disabled={!confirmed || working}>
+              <PayCta onClick={submit} disabled={working}>
                 {working ? 'Přesměrovávám na Stripe…' : 'Objednat s povinností platby'}
               </PayCta>
-              {!confirmed && (
-                <p className="ob-microcopy ob-pw-centered">
-                  Tlačítko se odemkne po zaškrtnutí potvrzení.
-                </p>
-              )}
               <p className="ob-microcopy ob-pw-centered">
                 Objednáním souhlasíš s{' '}
                 <a href="/obchodni-podminky" target="_blank" rel="noreferrer">obchodními podmínkami</a>

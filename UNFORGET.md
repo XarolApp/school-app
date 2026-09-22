@@ -30,6 +30,20 @@ BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 
 Also decide: does this apply retroactively to subscriptions already running, or only new ones from the day it ships?
 
+## Codex review requested: refund/withdrawal payment-tracking logic (2026-09-22)
+- **Found:** 2026-09-22, founder asked for independent verification before relying on it
+- **Urgency:** High — this is money-moving code (automatic Stripe refunds)
+- **Risk of fixing now:** None; review only
+- **Effort:** Small — read-only review
+- **Release/context:** `server.js` — `withdrawalWindowEnd()`, `canWithdraw()`, `POST /api/subscription/withdraw`, and every webhook handler that writes `plan_started_at` / `last_paid_at`
+
+What to check:
+1. Is `plan_started_at` / `last_paid_at` actually set correctly on every path that creates a charge — `checkout.session.completed` (both `mode: 'setup'` and `mode: 'subscription'`), `payment_intent.succeeded` (webhook AND the synchronous result inside `chargeDueSeasonPasses()`)? Any path that charges money but skips these columns would let `canWithdraw()` silently return false when it should be true, or silently leave a stale date after a retry.
+2. `WITHDRAWAL_DAYS` is now 30 (was 14) — is the 14-day statutory minimum still satisfied for every case, including a monthly renewal (which does NOT get a fresh window — is that actually correct per the general 14-day withdrawal rule, or does an extended 30-day *policy* window change that)?
+3. `POST /api/subscription/withdraw`'s refund loop lists every Stripe PaymentIntent since `plan_started_at` and refunds all succeeded ones. For monthly, could this ever run when MORE than one charge exists inside the 30-day window (e.g. a plan changed mid-cycle, a manual re-bill), and if so would it over-refund?
+4. Idempotency: is a double-click / retried `/withdraw` call provably safe (no double refund, no double DB write)?
+5. The `since` buffer (`-3600` seconds) on the PaymentIntent list query — is an hour enough slack, and could it accidentally pull in an unrelated older charge on the same Stripe customer if they ever had a previous, separate plan?
+
 ## Launch legal checklist — no lawyer, so transparency by default (2026-09-21)
 - **Found:** 2026-09-21, founder cannot afford a lawyer before launch; legal pages rewritten with no lawyer placeholders and the most consumer-friendly option wherever the law leaves a choice
 - **Urgency:** Launch blockers (each item below)
@@ -49,12 +63,14 @@ Before real money, do ALL of these:
    - **Season-pass pre-charge reminder** — not a legal requirement, but see the existing UNFORGET entry on Supabase's 2/hour cap; bundle this mailer work with that one.
 5. **Custom SMTP + re-enable Supabase e-mail confirmation** (existing entries).
 6. **Processor agreements (DPAs)** — accept the standard online DPAs of Supabase, Stripe, Vercel, Railway, OpenRouter, Cloudflare; keep a simple record of processing activities (Art. 30) and a data-breach plan (notify ÚOOÚ within 72 h).
-7. **Order button** now reads "Objednat s povinností platby" (Platba.jsx, SubscriptionExpired.jsx) — do not rename it back.
+7. **Order button** now reads "Objednat s povinností platby" (Platba.jsx, SubscriptionExpired.jsx) — do not rename it back. **2026-09-22: the payment checkbox is removed entirely** (both screens, both plans) — founder decision: since self-attestation gave no real legal protection anyway (a lying minor's claim survives §581 regardless of what was ticked), keep the friction-free checkout and rely on the refund promise (item 9) instead. `paymentConsent` is gone from `api.js`/`server.js`/tests.
 8. **Inactive accounts** are not auto-deleted (stated honestly in the policy); add an automatic rule later.
-9. **Minors (Cowork file 02):** monthly (recurring) plan now requires an 18+ attestation; students are told to send the link to a parent. Season (one-off) keeps "18 or parent agrees". Best fix once SMTP exists: parent confirms by e-mail link (store timestamp + e-mail) and the student/parent flows carry `payer = parent`. Also: **Refund abuse by minors:** the minors clause (Terms §7) gives a full refund within 30 days of payment and only a pro-rata refund of the unused period afterwards, so buying a season pass and refunding it after the March DiPSy deadline returns almost nothing. The pro-rata refund is a manual process (Stripe dashboard); an automatic calculation is not built.
+9. **Minors, both plans, 2026-09-22 decision:** founder chose to let under-18s buy either plan and treat the refund promise as the mitigation instead of gating by age. Both plans now carry the same rule (Terms §7): no age/consent check at checkout, full refund within 30 days of payment if a parent objects, pro-rata after that. **Known residual risk, accepted deliberately:** an adult can falsely claim to have been a minor to invoke this refund path; there is no way to disprove it. The self-service withdrawal button (item 3) now uses a 30-day window for everyone (see below), which delivers the "full refund within 30 days" half automatically; the pro-rata-after-30-days half stays a manual Stripe-dashboard calculation — for a monthly plan, pro-rate only the days remaining in the CURRENT billing cycle, never earlier already-billed months (those were already delivered and had their own closed window).
+   - **Refund abuse by minors:** the season-pass "use it all season then refund near the end" loophole is closed by the 30-day/pro-rata structure — refunding after the DiPSy deadline returns almost nothing.
+   - **Still open, logged 2026-09-21:** a genuine device-handoff parent-consent flow (parent clicks pay on their own device via a link the student shares) would be strictly better than what exists now — it makes the parent the real contracting party and would resolve the underlying §31 contract-capacity question, not just the refund cost. Not built; revisit once there's appetite for a bigger feature.
 10. **Season charge vs account deletion** — mostly closed by deleting the Stripe customer before the user row; only a microsecond window remains.
 11. **Accessibility Act** — micro-enterprises are exempt; revisit if the company grows.
-12. **DSA follow-ups (Cowork file 06):** review authors see the statement of reasons in-app (Art. 17); report form asks for reason + good faith (Art. 16). Missing: a report is still login-only; receipt/outcome e-mails to the reporter and the author need SMTP; Art. 11 contact point in Terms §9 needs the operator e-mail; DSC in Czechia will be ČTÚ (Czech implementing law still pending).
+12. **DSA follow-ups (Cowork file 06):** review authors see the statement of reasons in-app (Art. 17); report form asks for reason + good faith (Art. 16). **2026-09-22: reporting no longer requires an account** — `POST /api/reviews/:id/report` is `optionalAuth`, `review_reports.user_id` is nullable (run the SQL below), anonymous reports still rate-limited by IP via `reviewLimiter`. Still missing: receipt/outcome e-mails to the reporter and the author need SMTP; Art. 11 contact point in Terms §9 needs the operator e-mail; DSC in Czechia will be ČTÚ (Czech implementing law still pending).
 13. **Re-check the law before launch** — the withdrawal-button status (now known: 1 Jan 2027), ČOI ADR details, and the age-of-consent rule (15) can change.
 
 ## Privacy policy + terms — Codex fact-check and open placeholders

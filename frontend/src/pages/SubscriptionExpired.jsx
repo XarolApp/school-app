@@ -53,7 +53,6 @@ function usePostCheckoutVerification(hasAccess, refreshProfile) {
 function Paywall() {
   const { loading, isSignedIn, hasAccess, profile, signOut, refreshProfile } = useAuth();
   const [planId, setPlanId] = useState(DEFAULT_PLAN_ID);
-  const [paymentConsent, setPaymentConsent] = useState(false);
   const [error, setError] = useState(null);
   const [redirecting, setRedirecting] = useState(false);
   const { verifying, gaveUp } = usePostCheckoutVerification(hasAccess, refreshProfile);
@@ -89,7 +88,7 @@ function Paywall() {
     setError(null);
     setRedirecting(true);
     try {
-      const { url } = await createCheckoutSession({ planId, returnTo: '/predplatne', paymentConsent });
+      const { url } = await createCheckoutSession({ planId, returnTo: '/predplatne' });
       window.location.href = url;
     } catch (err) {
       setRedirecting(false);
@@ -161,24 +160,11 @@ function Paywall() {
             ))}
           </div>
 
-          <label className="checkbox-row">
-            <input
-              type="checkbox"
-              checked={paymentConsent}
-              onChange={(e) => setPaymentConsent(e.target.checked)}
-            />
-            <span>
-              {plan.billing === 'recurring'
-                ? 'Potvrzuji, že je mi 18 let. Opakované měsíční platby může objednat jen zletilá osoba — jinak požádej rodiče.'
-                : 'Potvrzuji, že je mi 18 let, nebo že s touto platbou souhlasí můj rodič či zákonný zástupce.'}
-            </span>
-          </label>
-
           <button
             type="button"
             className="btn btn-primary btn-block"
             onClick={handleSubscribe}
-            disabled={redirecting || !paymentConsent}
+            disabled={redirecting}
           >
             {redirecting && <span className="btn-spinner" aria-hidden="true" />}
             {redirecting ? 'Přesměrovávám…' : 'Objednat s povinností platby'}

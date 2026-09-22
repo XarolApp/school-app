@@ -340,7 +340,14 @@ const PROFILE_COLUMNS =
   'stripe_subscription_id, access_expires_at, plan_id, season_charge_due_at, cancel_at_period_end, ' +
   'plan_started_at, last_paid_at';
 
-const WITHDRAWAL_DAYS = 14;
+// 14 days is the statutory minimum for everyone (§1829). Extended to 30 here
+// so the SAME self-service button also delivers the "full refund within 30
+// days" half of the minors' promise (Terms §7) — we can no longer tell a
+// minor from an adult buyer (no attestation is collected at checkout), so one
+// wider window applied to everyone is simpler and never under-delivers the
+// statutory right. Only the pro-rata-after-30-days half of that promise stays
+// a manual Stripe-dashboard process — see UNFORGET.md.
+const WITHDRAWAL_DAYS = 30;
 
 // The 14 days run from the later of "contract concluded" and "money taken", so a
 // season pass (charged 3 days after checkout) still gets a full 14 days after the charge.
@@ -1015,7 +1022,10 @@ app.delete('/api/reviews/:id', requireAuth, async (req, res) => {
 // The DSA notice-and-action path: one report is enough to hold a review out
 // of public view until a human looks at it. Idempotent — reporting twice is
 // harmless, not an error, thanks to the (review_id, user_id) primary key.
-app.post('/api/reviews/:id/report', reviewLimiter, requireAuth, async (req, res) => {
+// DSA Art. 16: notice-and-action must be usable by anyone, not just an
+// account holder — optionalAuth, not requireAuth. reviewLimiter is IP-based,
+// so an anonymous flood is still bounded.
+app.post('/api/reviews/:id/report', reviewLimiter, optionalAuth, async (req, res) => {
   const id = Number(req.params.id);
   if (!Number.isInteger(id)) {
     return res.status(400).json({ error: 'Neplatné ID recenze.' });
@@ -1027,9 +1037,14 @@ app.post('/api/reviews/:id/report', reviewLimiter, requireAuth, async (req, res)
     return res.status(400).json({ error: 'Napiš, proč je recenze nevhodná (10 až 500 znaků), a potvrď, že oznámení podáváš v dobré víře.' });
   }
 
-  const { error: reportError } = await supabase
-    .from('review_reports')
-    .upsert({ review_id: id, user_id: req.user.id, reason });
+  // Signed-in reports upsert (one report per person, idempotent). An
+  // anonymous report has no user_id to dedupe on, so it always inserts;
+  // the primary key still rejects an exact (review_id, user_id) repeat for
+  // signed-in users.
+  const reportRow = { review_id: id, user_id: req.user?.id ?? null, reason };
+  const { error: reportError } = req.user
+    ? await supabase.from('review_reports').upsert(reportRow)
+    : await supabase.from('review_reports').insert(reportRow);
 
   if (reportError) return res.status(500).json({ error: reportError.message });
 
@@ -1753,13 +1768,10 @@ function sanitizeReturnTo(returnTo) {
 }
 
 app.post('/api/checkout', checkoutLimiter, requireAuth, async (req, res) => {
-  const { planId, returnTo, paymentConsent } = req.body || {};
+  const { planId, returnTo } = req.body || {};
 
   if (planId !== 'season' && planId !== 'monthly') {
     return res.status(400).json({ error: 'Neplatný plán.' });
-  }
-  if (paymentConsent !== true) {
-    return res.status(400).json({ error: 'Před pokračováním potvrď souhlas s platbou.' });
   }
 
   if (!stripe) {

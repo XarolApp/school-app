@@ -323,10 +323,15 @@ create index if not exists school_reviews_school_idx
 -- idempotent, so clicking "Nahlásit" twice is harmless rather than an error.
 create table if not exists public.review_reports (
   review_id bigint not null references public.school_reviews (id) on delete cascade,
-  user_id uuid not null references auth.users (id) on delete cascade,
+  user_id uuid references auth.users (id) on delete cascade,
   created_at timestamptz not null default now(),
   primary key (review_id, user_id)
 );
+-- Anonymous reporters (DSA Art. 16: notice-and-action must be open to anyone,
+-- not just accounts) have a null user_id. Postgres treats each null as
+-- distinct for the primary key, so anonymous reports never collide with each
+-- other or with a signed-in report — only a signed-in reporter is deduped.
+alter table public.review_reports alter column user_id drop not null;
 
 -- Crowdsourced data-accuracy reports ("Nahlásit chybu v údajích") — a free
 -- correction channel, not a review. No status/moderation columns: these are

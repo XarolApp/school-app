@@ -168,7 +168,6 @@ export function Terms() {
       <ol>
         <li>Vytvoříš si účet (a potvrdíš věk a souhlas s podmínkami).</li>
         <li>Vybereš tarif, uvidíš shrnutí: cenu, kdy a kolik se ti strhne a jak tarif zrušit.</li>
-        <li>Potvrdíš věk: u měsíčního předplatného, že je ti 18 let; u sezónního přístupu, že je ti 18 let nebo že s platbou souhlasí tvůj rodič či zákonný zástupce.</li>
         <li>Stiskneš tlačítko <strong>„Objednat s povinností platby“</strong> a na stránce Stripe zadáš kartu.</li>
       </ol>
       <p>
@@ -226,15 +225,16 @@ export function Terms() {
 
       <h2>7. Nezletilí</h2>
       <p>
-        <strong>Měsíční předplatné</strong> (opakované platby) může objednat jen zletilá osoba; nezletilý
-        ať požádá rodiče, aby ho objednal ze svého účtu. <strong>Sezónní přístup</strong> (jedna platba)
-        může objednat i nezletilý, pokud s platbou souhlasí jeho rodič či zákonný zástupce; potvrzuje
-        to zaškrtnutím políčka před platbou. Věk ani souhlas neověřujeme — spoléháme na prohlášení.
+        Oba tarify může objednat i nezletilý; předpokládáme, že o platbě ví a souhlasí s ní jeho
+        rodič nebo zákonný zástupce. Věk ani souhlas při objednávce neověřujeme.
+      </p>
+      <p>
         Pokud nezletilý zaplatil bez souhlasu zákonného zástupce, může zákonný zástupce napsat na
-        [DOPLNIT: e-mail]. Do 30 dnů od platby vrátíme celou zaplacenou částku; později vrátíme
-        poměrnou část ceny za dosud nevyužité období (u sezónního přístupu do 31. března, u
-        měsíčního za zbytek zaplaceného měsíce), protože už využitou službu nelze vrátit. Přístup
-        pak skončí.
+        [DOPLNIT: e-mail]. Do 30 dnů od platby vrátíme celou zaplacenou částku. Později vrátíme
+        jen nevyužitou část: u sezónního přístupu poměrnou část ceny za období do 31. března, u
+        měsíčního předplatného poměrnou část zbylých dnů v právě běžícím měsíci — dřívější měsíce
+        se nevrací, protože byly už poskytnuté a nejde je vzít zpět. Přístup pak skončí. Odstoupit
+        (§6) a totéž do 30 dnů kdykoli i sám/sama snadno vyřídíš tlačítkem v Nastavení.
       </p>
 
       <h2>8. Reklamace a vady služby</h2>

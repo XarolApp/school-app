@@ -259,10 +259,10 @@ export async function fetchSharedShortlist(token) {
  * account has necessarily updated yet — see SubscriptionExpired.jsx's
  * platba=ok handling.
  */
-export function createCheckoutSession({ planId, returnTo, paymentConsent } = {}) {
+export function createCheckoutSession({ planId, returnTo } = {}) {
   return request('/api/checkout', {
     method: 'POST',
-    body: JSON.stringify({ planId, returnTo, paymentConsent }),
+    body: JSON.stringify({ planId, returnTo }),
   });
 }
 
