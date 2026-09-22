@@ -272,6 +272,13 @@ export function createCheckoutSession({ planId, returnTo } = {}) {
  * paid, it schedules cancellation for the end of the current period. Returns
  * `{ cancelled: 'immediately' | 'at_period_end', accessUntil: string|null }`.
  */
+export function redeemBetaCode(code) {
+  return request('/api/me/redeem-beta-code', {
+    method: 'POST',
+    body: JSON.stringify({ code }),
+  });
+}
+
 export function withdrawFromContract() {
   return request('/api/subscription/withdraw', { method: 'POST' });
 }

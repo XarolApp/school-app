@@ -5,7 +5,7 @@ import Captcha, { captchaEnabled } from '../components/Captcha';
 import PasswordInput from '../components/PasswordInput';
 import PasswordStrength from '../components/PasswordStrength';
 import { useToast } from '../components/ToastContext';
-import { deleteAccount, cancelSubscription, withdrawFromContract } from '../api';
+import { deleteAccount, cancelSubscription, withdrawFromContract, redeemBetaCode } from '../api';
 import { getPlan } from '../config/pricing';
 import { supabase, getRememberMe, setRememberMe } from '../supabaseClient';
 
@@ -17,6 +17,7 @@ const SUBSCRIPTION_LABELS = {
   canceled: 'Zrušené předplatné',
   expired: 'Zkušební období skončilo',
   developer: 'Vývojářský účet',
+  beta: 'Beta tester',
 };
 
 const formatCzDateLong = (iso) =>
@@ -73,6 +74,10 @@ function Settings() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+
+  const [betaCode, setBetaCode] = useState('');
+  const [betaBusy, setBetaBusy] = useState(false);
+  const [betaError, setBetaError] = useState(null);
 
   if (loading) {
     return (
@@ -271,6 +276,23 @@ function Settings() {
       setError(err.message);
     } finally {
       setBusy(false);
+    }
+  };
+
+
+  const handleRedeemBeta = async (e) => {
+    e.preventDefault();
+    setBetaError(null);
+    setBetaBusy(true);
+    try {
+      await redeemBetaCode(betaCode.trim());
+      await refreshProfile();
+      setBetaCode('');
+      toast('Beta přístup aktivován — nic neplatíš.');
+    } catch (err) {
+      setBetaError(err.message);
+    } finally {
+      setBetaBusy(false);
     }
   };
 
@@ -640,8 +662,8 @@ function Settings() {
                 )}
               </span>
             </div>
-            {isDeveloper ? (
-              <span className="badge">Vývojář</span>
+            {isDeveloper || status === 'beta' ? (
+              <span className="badge">{isDeveloper ? 'Vývojář' : 'Beta tester'}</span>
             ) : (
               !hasAccess && (
                 <Link to="/predplatne" className="btn btn-primary btn-sm">
@@ -650,6 +672,33 @@ function Settings() {
               )
             )}
           </div>
+
+          {!isDeveloper && status !== 'beta' && (
+            <form className="settings-form-inset" onSubmit={handleRedeemBeta}>
+              {betaError && (
+                <div className="notice notice-error" role="alert">
+                  <p className="notice-text">{betaError}</p>
+                </div>
+              )}
+              <label className="settings-section-text" htmlFor="beta-code">
+                Máš kód pro beta testování?
+              </label>
+              <div className="settings-form-actions">
+                <input
+                  id="beta-code"
+                  className="input"
+                  type="text"
+                  value={betaCode}
+                  onChange={(e) => setBetaCode(e.target.value)}
+                  placeholder="Kód od školy"
+                  disabled={betaBusy}
+                />
+                <button type="submit" className="btn btn-secondary btn-sm" disabled={betaBusy || !betaCode.trim()}>
+                  {betaBusy ? 'Ověřuji…' : 'Aktivovat'}
+                </button>
+              </div>
+            </form>
+          )}
 
           {canCancel &&
             (openForm === 'cancel' ? (

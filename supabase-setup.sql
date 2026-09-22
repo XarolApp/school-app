@@ -131,6 +131,14 @@ alter table public.users add column if not exists last_paid_at timestamptz;
 alter table public.school_reviews add column if not exists moderation_reason text;
 alter table public.review_reports add column if not exists reason text;
 
+-- 'beta' behaves exactly like 'developer' (never expires) but is granted by a
+-- shared code (see server.js redeemBetaCode), not an email allowlist — for
+-- beta-testing partner schools where collecting individual emails up front
+-- isn't practical.
+alter table public.users drop constraint if exists users_subscription_status_check;
+alter table public.users add constraint users_subscription_status_check
+  check (subscription_status in ('trialing', 'active', 'season', 'past_due', 'canceled', 'expired', 'developer', 'beta'));
+
 -- True once the user has cancelled but access still runs to access_expires_at.
 alter table public.users add column if not exists cancel_at_period_end boolean not null default false;
 

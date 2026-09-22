@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Navigate, useSearchParams } from 'react-router-dom';
 import { Check } from 'lucide-react';
 import { useAuth } from '../components/AuthContext';
-import { createCheckoutSession } from '../api';
+import { createCheckoutSession, redeemBetaCode } from '../api';
 import { DEFAULT_PLAN_ID, PLANS, formatCzk, getPlan, planCopy, trialDaysPhrase } from '../config/pricing';
 
 // Four short parallel claims — a checkmark each reads faster than a bullet and
@@ -55,6 +55,9 @@ function Paywall() {
   const [planId, setPlanId] = useState(DEFAULT_PLAN_ID);
   const [error, setError] = useState(null);
   const [redirecting, setRedirecting] = useState(false);
+  const [betaCode, setBetaCode] = useState('');
+  const [betaBusy, setBetaBusy] = useState(false);
+  const [betaError, setBetaError] = useState(null);
   const { verifying, gaveUp } = usePostCheckoutVerification(hasAccess, refreshProfile);
 
   if (loading) {
@@ -83,6 +86,19 @@ function Paywall() {
   }
 
   const plan = getPlan(planId);
+
+  const handleRedeemBeta = async (e) => {
+    e.preventDefault();
+    setBetaError(null);
+    setBetaBusy(true);
+    try {
+      await redeemBetaCode(betaCode.trim());
+      await refreshProfile();
+    } catch (err) {
+      setBetaError(err.message);
+      setBetaBusy(false);
+    }
+  };
 
   const handleSubscribe = async () => {
     setError(null);
@@ -173,6 +189,27 @@ function Paywall() {
             Objednáním souhlasíš s <a href="/obchodni-podminky" target="_blank" rel="noreferrer">obchodními podmínkami</a>{' '}
             včetně práva odstoupit do 14 dnů.
           </p>
+
+          <form className="auth-footnote" onSubmit={handleRedeemBeta}>
+            {betaError && (
+              <div className="notice notice-error" role="alert">
+                <p className="notice-text">{betaError}</p>
+              </div>
+            )}
+            <label htmlFor="beta-code">Máš kód pro beta testování od školy?</label>
+            <input
+              id="beta-code"
+              className="input"
+              type="text"
+              value={betaCode}
+              onChange={(e) => setBetaCode(e.target.value)}
+              placeholder="Kód od školy"
+              disabled={betaBusy}
+            />
+            <button type="submit" className="btn btn-secondary btn-sm" disabled={betaBusy || !betaCode.trim()}>
+              {betaBusy ? 'Ověřuji…' : 'Aktivovat bez placení'}
+            </button>
+          </form>
         </div>
 
         <p className="auth-footnote">

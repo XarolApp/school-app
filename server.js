@@ -70,7 +70,7 @@ function isDeveloperEmail(email) {
 // with a 3-day trial and an absolute cancel_at (see plan 009) so it still ends up
 // charging exactly once.
 function hasPaidStatus(status) {
-  return status === 'active' || status === 'season' || status === 'developer';
+  return status === 'active' || status === 'season' || status === 'developer' || status === 'beta';
 }
 
 // A paid status alone is not enough: hasPaidStatus('season') would otherwise
@@ -87,7 +87,7 @@ function paidAccessActive(profile) {
     );
   }
   if (!hasPaidStatus(profile.subscription_status)) return false;
-  if (profile.subscription_status === 'developer') return true;
+  if (profile.subscription_status === 'developer' || profile.subscription_status === 'beta') return true;
   if (!profile.access_expires_at) return true;
   return new Date(profile.access_expires_at) > new Date();
 }
@@ -171,6 +171,16 @@ const checkoutLimiter = rateLimit({
   standardHeaders: 'draft-7',
   legacyHeaders: false,
   message: { error: 'Příliš mnoho pokusů o platbu. Zkus to prosím později.' },
+});
+
+// A shared code is guessable in a way per-user credentials aren't — keep this
+// tight regardless of who's calling.
+const betaCodeLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  limit: 5,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  message: { error: 'Příliš mnoho pokusů. Zkus to prosím za hodinu.' },
 });
 
 // Every questionnaire submission is a paid AI call. This guards the *rate*;
@@ -1766,6 +1776,30 @@ function sanitizeReturnTo(returnTo) {
   }
   return '/skoly';
 }
+
+// One shared code (BETA_ACCESS_CODE, set in .env) unlocks full access for
+// beta testers without collecting their emails up front — a school can hand
+// this one code to every student. Whoever already has a paid/developer
+// status is left alone (never downgrades a real customer).
+const BETA_ACCESS_CODE = process.env.BETA_ACCESS_CODE || '';
+
+app.post('/api/me/redeem-beta-code', betaCodeLimiter, requireAuth, async (req, res) => {
+  if (!BETA_ACCESS_CODE) {
+    return res.status(503).json({ error: 'Beta přístup zatím není nastavený.' });
+  }
+  const code = typeof req.body?.code === 'string' ? req.body.code.trim() : '';
+  if (!code || code !== BETA_ACCESS_CODE) {
+    return res.status(400).json({ error: 'Neplatný kód.' });
+  }
+
+  const { error } = await supabase
+    .from('users')
+    .update({ subscription_status: 'beta' })
+    .eq('id', req.user.id);
+  if (error) return res.status(500).json({ error: error.message });
+
+  res.status(204).end();
+});
 
 app.post('/api/checkout', checkoutLimiter, requireAuth, async (req, res) => {
   const { planId, returnTo } = req.body || {};
