@@ -253,12 +253,12 @@ async function callGoogleGemini(text, model, typeContext) {
                     {
                       type: 'STRING',
                       description: 'A short factual answer in Czech, quoting or closely paraphrasing the source text. null if not found.',
+                      nullable: true,
                     },
                   ]),
                   ['source_urls', {
-                    type: 'OBJECT',
-                    description: 'Map of field name -> source URL (from the ## headings in the input) for every non-null field above. Omit keys for null fields.',
-                    additionalProperties: { type: 'STRING' },
+                    type: 'STRING',
+                    description: 'JSON string: field name -> source URL for every non-null field. E.g. {"skolne_poplatky": "https://..."}',
                   }],
                 ]),
                 required: [...FIELDS.map(([key]) => key), 'source_urls'],
@@ -297,7 +297,16 @@ async function callGoogleGemini(text, model, typeContext) {
     throw new Error('Model did not return a function call');
   }
 
-  return toolCall.functionCall.args || {};
+  const args = toolCall.functionCall.args || {};
+  // Parse source_urls if it came as a string
+  if (typeof args.source_urls === 'string') {
+    try {
+      args.source_urls = JSON.parse(args.source_urls);
+    } catch {
+      args.source_urls = {};
+    }
+  }
+  return args;
 }
 
 async function extractSchool(schoolId, model, typySkoly) {
