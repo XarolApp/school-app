@@ -80,12 +80,18 @@ function main() {
       redizo: String(r[COL.redizo] || '').trim(),
       name: r[COL.nazev],
       rok: r[COL.rok],
+      prihlaseni: Number(r[COL.prihlaseni]) || 0,
       konali: Number(r[COL.konali]) || 0,
+      uspeli: Number(r[COL.uspeli]) || 0,
       passRate: r[COL.podilUspesnych],
     }))
-    .filter((r) => r.redizo && typeof r.passRate === 'number' && r.konali > 0);
+    // Cermat's own "PODÍL ÚSPĚŠNÝCH (%)" is USPĚLI / PŘIHLÁŠENI (passed over
+    // REGISTERED, not over KONALI = actually sat the exam) — a no-show counts
+    // against the rate. Filter and report against prihlaseni to match the %
+    // exactly, otherwise the written sentence's own numbers don't multiply out.
+    .filter((r) => r.redizo && typeof r.passRate === 'number' && r.prihlaseni > 0);
 
-  console.log(`${results.length} have a usable pass rate (konali > 0, numeric %).`);
+  console.log(`${results.length} have a usable pass rate (prihlaseni > 0, numeric %).`);
 
   runImport(results);
 }
@@ -114,7 +120,7 @@ async function runImport(results) {
     rowsToUpsert.push({
       school_id: school.id,
       maturita_pass_rate_pct: pct,
-      maturita_uspesnost: `${pct} % maturantů uspělo u společné části maturity (jaro ${r.rok}, ${r.konali} konalo zkoušku) — zdroj: Cermat.`,
+      maturita_uspesnost: `${pct} % (${r.uspeli} z ${r.prihlaseni} přihlášených) uspělo u společné části maturity (jaro ${r.rok}) — zdroj: Cermat.`,
     });
   }
 
