@@ -13,6 +13,30 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
+## Two schools have a website but can't be scraped by either scraper
+- **Found:** 2026-09-23, while chasing the 17 schools missing from Phase 1's
+  markdown cache. Of the 4 with a stored `website`, 2 couldn't be recovered by
+  either `scrape-schools.js` (Firecrawl — out of credits at the time) or
+  `scrape-schools-free.js` (plain fetch + Turndown), for reasons independent of
+  which scraper is used:
+  - **ID 15**, Akademie systémové gastronomie (`akademiesg.cz`) — the site
+    returns `HTTP 403` even with a real browser User-Agent, i.e. it blocks
+    non-interactive requests outright. Firecrawl (with credits) might get past
+    this via its headless-browser rendering; the free scraper cannot.
+  - **ID 94**, Gymnázium Postupická (`postupicka.cz`) — the site itself returns
+    `HTTP 500`. This is broken on the school's end, not a scraping problem; no
+    scraper will succeed until they fix their server.
+  - (The 3rd of the original 4, ID 199 Gymnázium Livingston, was recovered — its
+    issue was an invalid/self-signed TLS cert, fixed by re-running
+    `scrape-schools-free.js` once with `NODE_TLS_REJECT_UNAUTHORIZED=0`.)
+- **Founder said they can get this data manually** for these two schools
+  (skolne/obědy/kroužky/maturita/uplatnění — whatever's findable by visiting the
+  site directly in a browser, where a human can click through a bot-check that
+  a scraper can't). If done, the values can be written directly into
+  `school_extracted_details` for school_id 15 and 94 (or a small one-off script
+  can insert them) — no code change needed, this isn't blocked on tooling.
+- **Not done yet:** manual lookup itself.
+
 ## Structured school-details extraction — expanded 2026-09-22, not yet run for real
 - **Found:** 2026-09-22, founder asked to expand the Firecrawl extraction pipeline
   beyond tuition/maturita to admission requirements, teaching style and start time.

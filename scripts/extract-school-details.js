@@ -467,11 +467,16 @@ async function main() {
   if (onlySchoolId) schoolIds = schoolIds.filter((id) => String(id) === String(onlySchoolId));
   if (limit) schoolIds = schoolIds.slice(0, limit);
 
-  // Skip schools already extracted (unless --school-id specified to force re-extract)
+  // Skip schools already extracted (unless --school-id specified to force re-extract).
+  // model IS NULL means the row is a stub written by something else entirely
+  // (e.g. import-maturita-data.js's upsert, which only ever sets the two
+  // maturita columns) rather than a real Phase 2 pass — those still need
+  // extracting, so they must not count as "already extracted".
   if (!onlySchoolId) {
     const { data: extracted, error: extractedError } = await supabase
       .from('school_extracted_details')
-      .select('school_id');
+      .select('school_id')
+      .not('model', 'is', null);
     if (!extractedError && extracted) {
       const extractedIds = new Set(extracted.map((row) => String(row.school_id)));
       const before = schoolIds.length;
