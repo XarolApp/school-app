@@ -13,6 +13,14 @@
 
 import { summarizeCurrentYear, groupProgramsByObor, latestProgramValue } from './schoolPrograms';
 
+// school_extracted_details comes back as an array from Supabase's nested
+// select (one row per school) — same normalization SchoolDetail.jsx already
+// does for the single-school page.
+function extractedOf(school) {
+  const e = school.school_extracted_details;
+  return Array.isArray(e) ? e[0] : e;
+}
+
 export const WEIGHTS = { nezalezi: 0, trochu: 1, dost: 2, zasadni: 3 };
 
 // A weak criterion the user marked at least "dost" is worth flagging in a
@@ -61,6 +69,12 @@ export const CRITERIA = [
     tooltip: 'Jestli je škola veřejná (bez školného) nebo soukromá/církevní.',
   },
   {
+    id: 'vyse_skolneho',
+    label: 'Výše školného',
+    available: true,
+    tooltip: 'Roční školné v Kč — veřejné školy počítáme jako 0 Kč (ze zákona), u soukromých/církevních jde o částku sesbíranou z webu školy. Funguje jen když ji známe u všech porovnávaných škol.',
+  },
+  {
     id: 'dojezd',
     label: 'Dojezd z domova',
     available: false,
@@ -70,9 +84,8 @@ export const CRITERIA = [
   {
     id: 'maturita',
     label: 'Úspěšnost u maturity',
-    available: false,
-    unavailableNote: 'Data o maturitě zatím nemáme.',
-    tooltip: 'Zatím nepočítáme — data o úspěšnosti u maturity nemáme.',
+    available: true,
+    tooltip: 'Úspěšnost u maturitní zkoušky v procentech, sesbíraná z webu školy. Funguje jen když ji známe u všech porovnávaných škol — zatím ji máme jen pro menšinu škol.',
   },
 ];
 
@@ -134,6 +147,27 @@ function rawForCriterion(id, schools) {
         const isPrivate = zrizovatel.includes('soukrom') || zrizovatel.includes('církev');
         return isPrivate ? 0 : 1;
       });
+    }
+    case 'vyse_skolneho': {
+      // Public schools are 0 Kč by law (školský zákon) — a real, known fact,
+      // not "we don't know the amount". Only a private/church school with no
+      // extracted number is genuinely unknown.
+      const amounts = schools.map((s) => {
+        const zrizovatel = (latestProgramValue(s, 'zrizovatel') || '').toLowerCase();
+        if (zrizovatel && !zrizovatel.includes('soukrom') && !zrizovatel.includes('církev')) return 0;
+        return extractedOf(s)?.tuition_czk_per_year ?? null;
+      });
+      const scale = minMax(amounts);
+      // Lower tuition = better, so invert.
+      return amounts.map((v) => {
+        const scaled = scale(v);
+        return scaled == null ? null : 1 - scaled;
+      });
+    }
+    case 'maturita': {
+      const rates = schools.map((s) => extractedOf(s)?.maturita_pass_rate_pct ?? null);
+      const scale = minMax(rates);
+      return rates.map((v) => scale(v));
     }
     default:
       return schools.map(() => null);

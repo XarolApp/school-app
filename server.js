@@ -750,7 +750,9 @@ async function withMatchScores(userId, schools) {
 }
 
 const LIST_SELECT = '*, school_programs(*)';
-const FULL_SELECT = '*, school_programs(*), school_ai_summary(*)';
+// school_extracted_details joined so /porovnani's decision matrix can score
+// maturita_pass_rate_pct / tuition_czk_per_year, not just the pros/cons text.
+const FULL_SELECT = '*, school_programs(*), school_ai_summary(*), school_extracted_details(*)';
 
 app.get('/api/schools', optionalAuth, async (req, res) => {
   // ?ids=1,2,3 — the comparison surfaces need full per-obor rows (the risk
