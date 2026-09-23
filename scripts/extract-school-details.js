@@ -180,6 +180,19 @@ souvisí s tématem obecně. Konkrétně:
 - "skolne_poplatky" / "tuition_czk_per_year" = POUZE školné STŘEDNÍ školy
   (SŠ), o kterou se hlásí deváťák. Pokud web patří i vyšší odborné škole
   (VOŠ), ceny a stránky VOŠ úplně ignoruj — školné VOŠ sem NEPATŘÍ.
+  Škola níže může mít VÍCE oborů (viz "Obory školy" na začátku) s RŮZNÝM
+  školným. Než cokoliv vyplníš:
+  - Pokud web uvádí JEDNU částku a je jasné, že platí pro VŠECHNY obory
+    školy (nebo škola má jen jeden obor), vyplň "tuition_czk_per_year"
+    touto částkou a do "skolne_poplatky" napiš i výslovně "(stejné pro
+    všechny obory)".
+  - Pokud web uvádí RŮZNÉ částky pro RŮZNÉ obory, "skolne_poplatky" napiš
+    jako přehled obor→cena (to text unese), ale "tuition_czk_per_year"
+    NECH null — jedno číslo by zkreslilo srovnání, když se ceny liší.
+  - Pokud web uvádí cenu jen pro JEDEN konkrétní obor a mlčí o ostatních
+    oborech školy, totéž: "skolne_poplatky" ať cenu i obor jmenuje, ale
+    "tuition_czk_per_year" NECH null — neplatí to prokazatelně pro celou
+    školu.
 - "uplatneni_po_vyuceni" = POUZE pro učňovské/odborné školy (SOU/SOŠ) s
   výučním listem. Pokud je škola akademické gymnázium bez učňovského oboru,
   toto pole VŽDY vrať jako null, i kdyby text obsahoval nějaké zmínky o
@@ -246,15 +259,19 @@ function getOpenRouterKey() {
   return key;
 }
 
-async function callModel(text, model, typySkoly) {
+async function callModel(text, model, typySkoly, obory) {
   const typeContext = typySkoly.length
     ? `Typ školy (z admission dat): ${typySkoly.join(', ')}${isVocationalSchool(typySkoly) ? '' : ' — TOTO NENÍ učňovská/odborná škola, takže "uplatneni_po_vyuceni" musí být null.'}\n\n`
     : '';
+  const oboryContext = obory.length
+    ? `Obory školy (z admission dat, ${obory.length} ${obory.length === 1 ? 'obor' : 'obory/oborů'}): ${obory.join(', ')}\n\n`
+    : '';
 
+  const context = typeContext + oboryContext;
   if (USE_GOOGLE) {
-    return callGoogleGemini(text, model, typeContext);
+    return callGoogleGemini(text, model, context);
   } else {
-    return callOpenRouter(text, model, typeContext);
+    return callOpenRouter(text, model, context);
   }
 }
 
@@ -274,6 +291,10 @@ async function callOpenRouter(text, model, typeContext) {
       model,
       temperature: 0,
       max_tokens: 2000,
+      // Extraction is mechanical (find-and-copy, not multi-step reasoning),
+      // so the cheapest effort tier a reasoning model supports is enough —
+      // only applies when the model actually has a reasoning_effort knob.
+      reasoning_effort: process.env.OPENROUTER_EXTRACT_EFFORT || 'low',
       tools: [EXTRACT_TOOL],
       tool_choice: { type: 'function', function: { name: 'extract_school_details' } },
       messages: [
@@ -411,11 +432,11 @@ const NUMERIC_BOUNDS = {
   zacatek_hodin: (v) => v >= 6 && v <= 12,
 };
 
-async function extractSchool(schoolId, model, typySkoly) {
+async function extractSchool(schoolId, model, typySkoly, obory) {
   const filePath = path.join(DATA_DIR, `${schoolId}.md`);
   const text = fs.readFileSync(filePath, 'utf8');
 
-  const raw = await callModel(text, model, typySkoly);
+  const raw = await callModel(text, model, typySkoly, obory);
   const vocational = isVocationalSchool(typySkoly);
   const cleaned = {};
   const sourceUrls = {};
@@ -513,7 +534,7 @@ async function main() {
 
   const { data: schools, error } = await supabase
     .from('schools')
-    .select('id, name, school_programs(typ_skoly, zrizovatel)')
+    .select('id, name, school_programs(typ_skoly, zrizovatel, obor_nazev)')
     .in('id', schoolIds);
   if (error) {
     console.error('Could not read schools:', error.message);
@@ -522,6 +543,9 @@ async function main() {
   const namesById = new Map(schools.map((s) => [String(s.id), s.name]));
   const typesById = new Map(
     schools.map((s) => [String(s.id), [...new Set((s.school_programs || []).map((p) => p.typ_skoly).filter(Boolean))]])
+  );
+  const oboryById = new Map(
+    schools.map((s) => [String(s.id), [...new Set((s.school_programs || []).map((p) => p.obor_nazev).filter(Boolean))]])
   );
 
   const publicIds = new Set(schools.filter(isPublicSchool).map((s) => String(s.id)));
@@ -541,8 +565,9 @@ async function main() {
   for (const schoolId of schoolIds) {
     const name = namesById.get(String(schoolId)) || `#${schoolId}`;
     const typySkoly = typesById.get(String(schoolId)) || [];
+    const obory = oboryById.get(String(schoolId)) || [];
     try {
-      const result = await extractSchool(schoolId, model, typySkoly);
+      const result = await extractSchool(schoolId, model, typySkoly, obory);
       if (publicIds.has(String(schoolId))) stripPublicTuition(result);
       const allFields = [...FIELDS, ...NUMERIC_FIELDS, ...BOOLEAN_FIELDS];
       const foundCount = allFields.filter(([key]) => result[key] != null).length;
