@@ -181,16 +181,23 @@ souvisí s tématem obecně. Konkrétně:
   (SŠ), o kterou se hlásí deváťák. Pokud web patří i vyšší odborné škole
   (VOŠ), ceny a stránky VOŠ úplně ignoruj — školné VOŠ sem NEPATŘÍ.
   Škola níže může mít VÍCE oborů (viz "Obory školy" na začátku) s RŮZNÝM
-  školným. Než cokoliv vyplníš:
-  - Pokud web uvádí JEDNU částku a je jasné, že platí pro VŠECHNY obory
-    školy (nebo škola má jen jeden obor), vyplň "tuition_czk_per_year"
+  školným. DŮLEŽITÉ: seznam oborů z admission dat (viz "Obory školy" výše)
+  je NEúplný ukazatel — školy často nabízí víc placených programů/větví
+  (např. dvě různé maturitní větve pod stejným úředním oborem, jako
+  bilingvní/mezinárodní program vs. běžný), než kolik ukazuje oficiální
+  klasifikace. Řiď se vždy tím, co skutečně píše WEB školy, ne počtem
+  oborů z admission dat. Než cokoliv vyplníš:
+  - Pokud web uvádí JEDNU částku a nikde nenaznačuje, že by pro jinou
+    větev/program/obor platila jiná cena, vyplň "tuition_czk_per_year"
     touto částkou a do "skolne_poplatky" napiš i výslovně "(stejné pro
     všechny obory)".
-  - Pokud web uvádí RŮZNÉ částky pro RŮZNÉ obory, "skolne_poplatky" napiš
-    jako přehled obor→cena (to text unese), ale "tuition_czk_per_year"
-    NECH null — jedno číslo by zkreslilo srovnání, když se ceny liší.
-  - Pokud web uvádí cenu jen pro JEDEN konkrétní obor a mlčí o ostatních
-    oborech školy, totéž: "skolne_poplatky" ať cenu i obor jmenuje, ale
+  - Pokud web uvádí RŮZNÉ částky pro RŮZNÉ obory/větve/programy (i kdyby
+    admission data ukazovala jen jeden formální obor), "skolne_poplatky"
+    napiš jako přehled obor/větev→cena (to text unese), ale
+    "tuition_czk_per_year" NECH null — jedno číslo by zkreslilo srovnání,
+    když se ceny liší.
+  - Pokud web uvádí cenu jen pro JEDEN konkrétní obor/větev a mlčí o
+    ostatních, totéž: "skolne_poplatky" ať cenu i obor/větev jmenuje, ale
     "tuition_czk_per_year" NECH null — neplatí to prokazatelně pro celou
     školu.
 - "uplatneni_po_vyuceni" = POUZE pro učňovské/odborné školy (SOU/SOŠ) s
