@@ -45,9 +45,16 @@ If it clearly qualifies, say in one line what makes it qualify and continue.
   | Class | Effort |
   |---|---|
   | implementation-shaped work | medium |
-  | debugging-shaped work | high |
-  | architecture-shaped work | xhigh |
-  | genuinely extreme (rewrites, migrations, platform-scale) | max |
+  | review or debugging-shaped work (including a task the implementer already failed on) | low |
+  | architecture/planning-shaped work | medium |
+  | hard debugging, wide refactors, math/science/security-heavy work | high |
+  | long unattended runs (30+ min): migrations, multi-repo changes | xhigh |
+  | genuinely extreme (full rewrites, platform-scale) | max |
+
+  Per the 2026-09-23 benchmark data: Opus 5.5 low outscored a higher-effort
+  predecessor on bug-catching, and Opus 5.5 medium outscored Opus's own max on
+  planning benchmarks — more effort does not always help, so don't raise effort
+  by reflex. See the table in `CLAUDE.md`/`AGENTS.md` for the full reasoning.
 
   Tell the user to run `/effort <tier>` if the current one doesn't already match. Don't
   repeat the instruction if it's already right.

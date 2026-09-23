@@ -20,20 +20,33 @@ Do not claim that the project instructions themselves can inspect the model pick
 Run the `model-gate` skill before these tasks when it is available; its instructions
 are also mirrored in `docs/workflows/model-gate.md`.
 
-| Task | Codex | Claude |
-|---|---|---|
-| Tiny, straightforward edit: typo, label rename, one obvious CSS value | GPT-6 Luna low | Claude 4.5 Haiku |
-| Routine coding or focused fix: one component bug, small API/UI change, clear requirements | GPT-6 Luna max | Claude Opus 5.5 low |
-| Larger implementation: several related components, requirements settled | GPT-6 Sol high | Claude Opus 5.5 medium |
-| Complex planning or code review: multi-file tradeoffs, unclear behavior, involved diff | GPT-6 Sol xhigh | Claude Opus 5.5 high with fallback |
-| Deep planning or high-stakes review: payments, auth/security, schema, deletion, launch | GPT-6 Astra high | Claude Opus 5.5 high with fallback |
+Claude-only: this file only routes within Claude Code. Codex/GPT routing (when that
+tool is used) lives in the `.agents/skills/codex-*` skills, not here.
 
-For the plan-then-build workflow, planning and execution are separate stages. The
-implementer executes the approved plan. For complex execution use GPT-6 Sol high
-or Claude Opus 5.5 medium, according to which platform is available; use the table's
-larger-implementation row. Use the dedicated plan-then-build skill for stage gates.
-These recommendations follow the founder-provided benchmark graph and are practical
-starting points, not universal performance guarantees.
+| Task | Claude | Why |
+|---|---|---|
+| Tiny, mechanical edit: typo, label rename, one obvious CSS value, boilerplate | Claude Haiku 4.5 | Anthropic's own guidance names exactly this class as Haiku work |
+| Everyday coding from a detailed plan: add an endpoint, build a component to spec, write tests, fix a known bug | Claude Sonnet 5, medium | Default-tier implementation work |
+| Larger multi-file implementation; fixing failing tests after an implementation | Claude Sonnet 5, high (Claude Code default) | |
+| Code review, and debugging (including a task Sonnet already failed on) | Claude Opus 5.5, low | Opus 5.5 at its lowest effort caught more known bugs than a higher-effort predecessor at high — more effort did not help this task shape |
+| Planning / architecture design | Claude Opus 5.5, medium | Benchmarked above Opus's own max effort on this task shape — more effort did not help here either |
+| Hard debugging, refactors touching many parts of the codebase; math/science/security-heavy work (auth audits, algorithm design) | Claude Opus 5.5, high | This is the task shape where more effort does help |
+| Long unattended runs over ~30 minutes: migrations, multi-repo changes | Claude Opus 5.5, xhigh | Anthropic designed this effort tier for exactly this |
+
+Avoid: Opus 5.5 at `max` for routine use — it adds a small intelligence gain over
+`xhigh` for a large cost increase, so reserve it for genuinely extreme cases (full
+rewrites, large migrations, platform-scale work), not by reflex. Avoid Fast mode for
+cost reasons unless latency specifically matters.
+
+Rule: start at the row's stated effort. Raise effort only after a real failure on
+the task, not by reflex — several of the rows above are ones where a *higher* effort
+level scored the same or worse on the benchmarked task shape.
+
+For the plan-then-build workflow, planning and execution are separate stages: plan at
+Opus 5.5 medium (the planning row above), then execute at Sonnet 5 medium/high per
+the implementation rows. Use the dedicated plan-then-build skill for stage gates.
+These recommendations follow the founder-provided benchmark data (dated 2026-09-23)
+and are practical starting points, not universal performance guarantees.
 
 ## ⚠️ Current working setup — read this first
 
