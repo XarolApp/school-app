@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "school-app-local": {
+      "source": {
+        "source": "directory",
+        "path": "./"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "model-gate@school-app-local": true
+  }
+}

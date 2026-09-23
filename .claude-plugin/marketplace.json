@@ -1,0 +1,16 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "school-app-local",
+  "description": "Repository-local Claude Code plugins for ŠkolaMatch.",
+  "owner": {
+    "name": "Vojtěch Kadlec"
+  },
+  "plugins": [
+    {
+      "name": "model-gate",
+      "description": "Model/effort confirmation gate before substantial work.",
+      "source": "./plugins/model-gate",
+      "category": "productivity"
+    }
+  ]
+}

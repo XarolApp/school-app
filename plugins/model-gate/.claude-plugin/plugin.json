@@ -1,0 +1,9 @@
+{
+  "name": "model-gate",
+  "version": "1.0.0",
+  "description": "Asks for model and effort confirmation, per the AGENTS.md/CLAUDE.md model table, before code changes, plans, reviews, browser audits or other substantial work. Cannot read the model picker; asks the user instead.",
+  "author": {
+    "name": "Vojtěch Kadlec"
+  },
+  "hooks": "./hooks/hooks.json"
+}
