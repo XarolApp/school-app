@@ -9,7 +9,8 @@
  * model swap costs no Firecrawl credits.
  *
  *   node scripts/extract-school-details.js --dry-run [--limit N] [--school-id ID]
- *   node scripts/extract-school-details.js [--limit N] [--school-id ID]
+ *   node scripts/extract-school-details.js [--limit N] [--school-id ID[,ID...]]
+ *   node scripts/extract-school-details.js --fix-public-tuition [--dry-run]
  *
  * NEVER FABRICATE: the model is instructed to return null for anything it
  * can't find real evidence for. A wrong "yes this school has a dorm" is
@@ -176,6 +177,9 @@ souvisí s tématem obecně. Konkrétně:
 - "vs_uplatneni" = POUZE kam absolventi jdou studovat (vysoké školy, obory,
   podíl pokračujících). Založené startupy, zaměstnání nebo kariérní úspěchy
   tam NEPATŘÍ.
+- "skolne_poplatky" / "tuition_czk_per_year" = POUZE školné STŘEDNÍ školy
+  (SŠ), o kterou se hlásí deváťák. Pokud web patří i vyšší odborné škole
+  (VOŠ), ceny a stránky VOŠ úplně ignoruj — školné VOŠ sem NEPATŘÍ.
 - "uplatneni_po_vyuceni" = POUZE pro učňovské/odborné školy (SOU/SOŠ) s
   výučním listem. Pokud je škola akademické gymnázium bez učňovského oboru,
   toto pole VŽDY vrať jako null, i kdyby text obsahoval nějaké zmínky o
@@ -452,19 +456,36 @@ async function extractSchool(schoolId, model, typySkoly) {
   return { ...cleaned, source_urls: sourceUrls };
 }
 
+// Public SŠ tuition is zero by law, so a price found for a public school is
+// something else: a VOŠ on the same site, a prep course, a club fee. A company
+// name overrides Cermat's zrizovatel (seen: an s. r. o. labelled public).
+function isPublicSchool(school) {
+  if (/s\.\s?r\.\s?o\.|o\.\s?p\.\s?s\.|a\.\s?s\./i.test(school.name)) return false;
+  const z = (school.school_programs || []).map((p) => p.zrizovatel).filter(Boolean);
+  return z.length > 0 && z.every((v) => v === 'veřejné/státní');
+}
+
+function stripPublicTuition(row) {
+  row.tuition_czk_per_year = null;
+  if (row.skolne_poplatky && /\d\s*(,-)?\s*Kč/.test(row.skolne_poplatky)) row.skolne_poplatky = null;
+  return row;
+}
+
 async function main() {
   const args = process.argv.slice(2);
   const dryRun = args.includes('--dry-run');
+  if (args.includes('--fix-public-tuition')) return fixPublicTuition(dryRun);
   const limitArg = args.indexOf('--limit');
   const limit = limitArg !== -1 ? Number(args[limitArg + 1]) : null;
   const schoolIdArg = args.indexOf('--school-id');
   const onlySchoolId = schoolIdArg !== -1 ? args[schoolIdArg + 1] : null;
+  const onlySchoolIds = onlySchoolId ? onlySchoolId.split(',').map((id) => id.trim()) : null;
   const modelArg = args.indexOf('--model');
   const model = modelArg !== -1 ? args[modelArg + 1] : DEFAULT_MODEL;
 
   const manifest = loadManifest();
   let schoolIds = Object.keys(manifest);
-  if (onlySchoolId) schoolIds = schoolIds.filter((id) => String(id) === String(onlySchoolId));
+  if (onlySchoolIds) schoolIds = schoolIds.filter((id) => onlySchoolIds.includes(String(id)));
   if (limit) schoolIds = schoolIds.slice(0, limit);
 
   // Skip schools already extracted (unless --school-id specified to force re-extract).
@@ -492,7 +513,7 @@ async function main() {
 
   const { data: schools, error } = await supabase
     .from('schools')
-    .select('id, name, school_programs(typ_skoly)')
+    .select('id, name, school_programs(typ_skoly, zrizovatel)')
     .in('id', schoolIds);
   if (error) {
     console.error('Could not read schools:', error.message);
@@ -503,6 +524,16 @@ async function main() {
     schools.map((s) => [String(s.id), [...new Set((s.school_programs || []).map((p) => p.typ_skoly).filter(Boolean))]])
   );
 
+  const publicIds = new Set(schools.filter(isPublicSchool).map((s) => String(s.id)));
+
+  // Cermat's official maturita figures must survive a re-extraction.
+  const { data: cermatRows } = await supabase
+    .from('school_extracted_details')
+    .select('school_id')
+    .in('school_id', schoolIds)
+    .ilike('maturita_uspesnost', '%zdroj: Cermat%');
+  const cermatIds = new Set((cermatRows || []).map((r) => String(r.school_id)));
+
   let processed = 0;
   let failed = 0;
   const failures = [];
@@ -512,6 +543,7 @@ async function main() {
     const typySkoly = typesById.get(String(schoolId)) || [];
     try {
       const result = await extractSchool(schoolId, model, typySkoly);
+      if (publicIds.has(String(schoolId))) stripPublicTuition(result);
       const allFields = [...FIELDS, ...NUMERIC_FIELDS, ...BOOLEAN_FIELDS];
       const foundCount = allFields.filter(([key]) => result[key] != null).length;
       console.log(`${name}: ${foundCount}/${allFields.length} fields found`);
@@ -526,6 +558,10 @@ async function main() {
 
       if (!dryRun) {
         const { source_urls, ...fields } = result;
+        if (cermatIds.has(String(schoolId))) {
+          delete fields.maturita_pass_rate_pct;
+          delete fields.maturita_uspesnost;
+        }
         const { error: upsertError } = await supabase.from('school_extracted_details').upsert({
           school_id: Number(schoolId),
           ...fields,
@@ -549,6 +585,30 @@ async function main() {
     failures.forEach((f) => console.log(`  - ${f}`));
   }
   if (dryRun) console.log('--dry-run: nothing written to Supabase.');
+}
+
+// Applies stripPublicTuition to rows already stored, without re-running the
+// model — a re-extraction is nondeterministic and loses fields it found before.
+async function fixPublicTuition(dryRun) {
+  const { data: schools, error } = await supabase.from('schools').select('id, name, school_programs(zrizovatel)');
+  if (error) throw new Error(error.message);
+  const publicIds = new Set(schools.filter(isPublicSchool).map((s) => s.id));
+  const { data: rows, error: rowsError } = await supabase
+    .from('school_extracted_details')
+    .select('school_id, tuition_czk_per_year, skolne_poplatky');
+  if (rowsError) throw new Error(rowsError.message);
+  for (const row of rows.filter((r) => publicIds.has(r.school_id))) {
+    const before = { ...row };
+    stripPublicTuition(row);
+    if (before.tuition_czk_per_year === row.tuition_czk_per_year && before.skolne_poplatky === row.skolne_poplatky) continue;
+    console.log(`school ${row.school_id}: tuition ${before.tuition_czk_per_year} -> null${before.skolne_poplatky !== row.skolne_poplatky ? ', text cleared' : ''}`);
+    if (dryRun) continue;
+    const { error: updateError } = await supabase
+      .from('school_extracted_details')
+      .update({ tuition_czk_per_year: row.tuition_czk_per_year, skolne_poplatky: row.skolne_poplatky })
+      .eq('school_id', row.school_id);
+    if (updateError) throw new Error(updateError.message);
+  }
 }
 
 main().catch((err) => {
