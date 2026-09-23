@@ -37,11 +37,12 @@ function FactTile({ value, label, note }) {
  * "identity, price, 3-4 disqualifying facts above the fold" pattern already
  * used elsewhere in this app's design guide.
  */
-function SchoolHero({ school, programEntries }) {
+function SchoolHero({ school, programEntries, extracted }) {
   const zrizovatel = programEntries.find((e) => e.zrizovatel)?.zrizovatel ?? null;
   const ukonceni = ukonceniLabel(programEntries);
   const current = summarizeCurrentYear(programEntries);
   const band = typeof school.match_score === 'number' ? matchBand(school.match_score) : null;
+  const zacatekHodin = extracted?.zacatek_hodin;
 
   return (
     <div className="sd-hero-main">
@@ -64,6 +65,9 @@ function SchoolHero({ school, programEntries }) {
             {current.oborCount} {oborWord(current.oborCount)}
             {current.year ? ` pro ${current.year}` : ''}
           </span>
+        )}
+        {typeof zacatekHodin === 'number' && (
+          <span className="sd-chip">Výuka od {zacatekHodin}:00</span>
         )}
       </div>
 

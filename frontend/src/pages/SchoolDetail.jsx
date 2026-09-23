@@ -101,21 +101,30 @@ function SchoolDetail() {
   const extracted = Array.isArray(school.school_extracted_details)
     ? school.school_extracted_details[0]
     : school.school_extracted_details;
-  const hasExtractedData = extracted && [
-    extracted.skolne_poplatky,
-    extracted.obedy_ubytovani,
-    extracted.krouzky_aktivity,
-    extracted.maturita_uspesnost,
-    extracted.vs_uplatneni,
-    extracted.uplatneni_po_vyuceni,
-  ].some(Boolean);
+  const hasExtractedData = extracted && (
+    [
+      extracted.skolne_poplatky,
+      extracted.obedy_ubytovani,
+      extracted.krouzky_aktivity,
+      extracted.maturita_uspesnost,
+      extracted.vs_uplatneni,
+      extracted.uplatneni_po_vyuceni,
+      extracted.pripijimaci_pozadavky_detail,
+      extracted.vyukovy_styl_detail,
+    ].some(Boolean)
+    // A confirmed false is real practical info too (MissingDataGrid's
+    // pripijimaciBody/vyukovyStylBody render it as a fact, not a gap) —
+    // .some(Boolean) alone would miss it since false is falsy.
+    || extracted.ma_dodatecne_pozadavky === false
+    || extracted.alternativni_pedagogika === false
+  );
 
   return (
     <div className="school-detail page" ref={pageRef}>
       <Link to="/skoly" className="sd-back">&larr; Zpět na výpis</Link>
 
       <div className="sd-hero">
-        <SchoolHero school={school} programEntries={programEntries} />
+        <SchoolHero school={school} programEntries={programEntries} extracted={extracted} />
         <SchoolActions school={school} isFavorite={isFavorite} onFavoriteChange={setIsFavorite} barRef={barRef} />
       </div>
 

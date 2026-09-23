@@ -17,6 +17,21 @@ function tuitionBody(zrizovatel) {
   return 'Nemáme tuto informaci.';
 }
 
+// Same "correct inference beats invented text" rule as tuitionBody() above —
+// ma_dodatecne_pozadavky/alternativni_pedagogika are real false answers the
+// extraction found explicit evidence for, not silence to pad over.
+function pripijimaciBody(e) {
+  if (e.pripijimaci_pozadavky_detail) return e.pripijimaci_pozadavky_detail;
+  if (e.ma_dodatecne_pozadavky === false) return 'Podle webu školy jen jednotná přijímací zkouška (JPZ) — nic navíc.';
+  return 'Nemáme tuto informaci.';
+}
+
+function vyukovyStylBody(e) {
+  if (e.vyukovy_styl_detail) return e.vyukovy_styl_detail;
+  if (e.alternativni_pedagogika === false) return 'Web nezmiňuje žádný alternativní pedagogický přístup (Montessori, Waldorf a podobně).';
+  return 'Nemáme tuto informaci.';
+}
+
 function MissingDataGrid({ zrizovatel, extracted }) {
   const e = extracted || {};
   const cards = [
@@ -26,6 +41,8 @@ function MissingDataGrid({ zrizovatel, extracted }) {
     { title: 'Úspěšnost u maturity', body: e.maturita_uspesnost || 'Nemáme tuto informaci.' },
     { title: 'Kam míří absolventi', body: e.vs_uplatneni || 'Nemáme tuto informaci.' },
     { title: 'Uplatnění po vyučení', body: e.uplatneni_po_vyuceni || 'Nemáme tuto informaci.' },
+    { title: 'Přijímací požadavky navíc', body: pripijimaciBody(e) },
+    { title: 'Styl výuky', body: vyukovyStylBody(e) },
     { title: 'Fotky školy', body: 'Nemáme tuto informaci.' },
     { title: 'Video a prohlídka', body: 'Nemáme tuto informaci.' },
   ];
