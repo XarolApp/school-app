@@ -37,6 +37,43 @@ BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
   can insert them) — no code change needed, this isn't blocked on tooling.
 - **Not done yet:** manual lookup itself.
 
+## tuition_czk_per_year sometimes prices the wrong program level (VOŠ, not SŠ)
+- **Found:** 2026-09-23, while auditing the Cermat maturita import for the
+  arithmetic bug above and checking whether the same class of mistake existed
+  elsewhere. Found a different, real issue: 16 schools in the database are
+  combined institutions (name contains "Vyšší odborná škola" AND a "Střední
+  ___ škola") — a VOŠ (post-secondary, ISCED 5, what a Cermat maturita-holder
+  applies to AFTER finishing SŠ) bolted onto an SŠ (secondary, what a 9th
+  grader applies to — the only thing this app is for). Phase 2 extraction has
+  no instruction to prefer the SŠ-level tuition page when a school has both,
+  so on at least 5 of the 16 it picked up the VOŠ figure instead:
+  - **ID 89** (Vyšší odborná škola uměleckoprůmyslová a Střední
+    uměleckoprůmyslová škola) — `tuition_czk_per_year = 5000`, `source_urls`
+    literally `.../vyssi-odborna-skola/skolne/`.
+  - **ID 74** (VOŠ a SPŠ dopravní, Masná 18) — 3000, source URL has `page=...vos`.
+  - **ID 125** (VOŠ pedagogická a sociální, SOŠ pedagogická a Gymnázium) — 3000,
+    source URL literally `uhrada-skolneho-ve-vos...`; the extracted
+    `skolne_poplatky` sentence itself says "pro obor vzdělání Předškolní a
+    mimoškolní..." at VOŠ level.
+  - **ID 158** (VOŠ zdravotnická a Střední zdravotnická škola) — 3000, its own
+    text says "Při studiu vyšší odborné školy zdravotnické je školné 3.000...".
+  - **ID 67** (VOŠ grafická a SPŠ grafická) — 2500, unclear source (no
+    `source_urls` entry saved) but the low figure matches the VOŠ pattern of
+    the other four, not typical SŠ private tuition.
+  - The other 11 combined-name schools either have no `tuition_czk_per_year`
+    at all (not fabricated, just not found) or weren't checked in detail yet.
+- **Why this matters:** these numbers feed `lib/decisionMatrix.js`'s tuition
+  criterion directly. A 9th grader comparing schools by cost would see e.g.
+  "3 000 Kč/rok" for a school whose actual SŠ track may be free (public) or a
+  different private price entirely — the VOŠ figure is real but answers the
+  wrong question.
+- **Not done yet:** either (a) add an explicit instruction to the extraction
+  prompt to only extract SŠ-level tuition and ignore VOŠ-only pricing pages
+  when a school offers both, then re-run extraction on all 16 combined-name
+  schools, or (b) manually null out `tuition_czk_per_year` for the 5 confirmed
+  wrong ones until re-extracted correctly. Re-extraction (a) is the real fix
+  since it also protects any future combined-institution school.
+
 ## Two of the 223 Prague schools are structurally unlike the rest — one may not belong in the database at all
 - **Found:** 2026-09-23, while tracking down the 14 schools with no `website`
   stored (websites were found and scraped for 12 of the 14 — see the schools
