@@ -37,6 +37,31 @@ BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
   can insert them) — no code change needed, this isn't blocked on tooling.
 - **Not done yet:** manual lookup itself.
 
+## Two of the 223 Prague schools are structurally unlike the rest — one may not belong in the database at all
+- **Found:** 2026-09-23, while tracking down the 14 schools with no `website`
+  stored (websites were found and scraped for 12 of the 14 — see the schools
+  table for `id` in 115, 127, 145, 176, 204, 211, 215, 216, 217, 218, 222, 226).
+  The other 2 are different in kind, not just missing data:
+  - **ID 189**, "Střední odborné učiliště" (REDIZO 651036101, address Soudní
+    988/1, Nusle) is **Vězeňská služba ČR's (Prison Service) internal
+    vocational school**, run by the Ministry of Justice, teaching people
+    currently serving prison sentences across 9 in-prison training centres. It
+    has no public website and cannot have one that matters to this app — a 9th
+    grader cannot apply here. Worth deciding whether this belongs in the
+    `schools` table at all, or should be filtered out / flagged as not a real
+    V9 option, since it will otherwise sit forever as "missing data" that isn't
+    actually missing, just inapplicable.
+  - **ID 227**, "Klinická univerzitní škola EduVia" (REDIZO 691020035,
+    Kolovraty) is a **brand-new school founded by Charles University's Faculty
+    of Education, opening for its first cohort in the 2026/2027 school year.**
+    It has no website of its own yet — only a subpage on the faculty's site
+    (`eduvia.pedf.cuni.cz`), which is about the founding, not a normal school
+    site with admissions/tuition/programs content a scraper could usefully
+    read. This one genuinely will get a real site eventually; re-check in a
+    future term rather than treating the current gap as a scraping failure.
+- **Not done yet:** a decision on ID 189 (exclude vs. keep-and-label), and a
+  reminder to re-check ID 227 once EduVia's own site exists.
+
 ## Structured school-details extraction — expanded 2026-09-22, not yet run for real
 - **Found:** 2026-09-22, founder asked to expand the Firecrawl extraction pipeline
   beyond tuition/maturita to admission requirements, teaching style and start time.
