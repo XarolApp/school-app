@@ -1,6 +1,6 @@
 ---
 name: codex-plan-then-build
-description: Use the standard GPT-6 Astra plan, Claude Sonnet implementation, and GPT-5.6 Sol review workflow for complex repository work shared with Claude Code.
+description: Use the shared Claude Opus 5.5 planning, GPT-6 Luna max or Sol high implementation, and Sol high review workflow for complex repository work.
 ---
 
 # Codex plan then build
@@ -10,20 +10,26 @@ high-cost-to-undo work. For a small feature or bug fix, use one suitable model
 end-to-end.
 
 Read `docs/workflows/plan-then-build-collaboration.md` first. The canonical
-workflow is shared with Claude Code.
+workflow is shared with Claude Code; use its task table when choosing between
+Luna max and Sol high or setting effort.
 
 ## Standard model gates
 
-- Planning: `gpt-6-astra`, effort `xhigh`.
-- Implementation: Claude Sonnet.
-- Review: `gpt-5.6-sol`, effort `high`; use `gpt-6-astra` only for payment,
-  security, schema, or release-critical review.
+- Planning: Claude Opus 5.5, `high` by default; use `xhigh` for architecture-heavy
+  decisions.
+- Implementation: GPT-6 Sol high by default for work that justified a planning
+  pass; use GPT-6 Luna max if the approved implementation is straightforward and
+  minimizing cost is the priority.
+- Review: GPT-6 Sol high; escalate payment, security, schema, or release-critical
+  review to Claude Opus 5.5 high with fallback.
 
-The normal sequence is always **Astra plans → Sonnet builds → Sol reviews**.
+The normal sequence is **Opus 5.5 plans → Sol high builds → Sol high reviews**.
+Keep review independent by starting a fresh pass against the plan and diff.
 
-Before planning, confirm the active model and effort. Before implementing, confirm
-that the model changed from the planner. If the model cannot be confirmed, stop
-before editing.
+Before planning, confirm Claude Opus 5.5 and its effort. Before implementing,
+confirm the model changed to Sol high (or Luna max for a straightforward plan).
+Before reviewing, confirm Sol high is selected and start an independent pass. If a
+stage's model cannot be confirmed, stop before that stage.
 
 ## Required plan contents
 

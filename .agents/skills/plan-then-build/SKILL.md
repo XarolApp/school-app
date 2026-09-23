@@ -1,15 +1,14 @@
 ---
 name: plan-then-build
-description: Split a genuinely complex task into an Opus planning pass and a Sonnet implementation pass to save cost without losing depth on the hard part. Invoke manually (/plan-then-build) when about to start architecture-level work — schema design, multi-system changes, tradeoff-heavy decisions. Gates itself on both ends: refuses to run on a task that's too simple for the split, and refuses to implement until it confirms the model was actually switched. Do not use for a single feature within existing architecture, a straightforward bug fix, or anything one model could finish start-to-finish alone.
+description: Split complex work into a Claude Opus 5.5 planning pass, GPT-6 Luna max or Sol high implementation, and Sol high review. Use for architecture-level changes, not routine fixes.
 ---
 
 # Plan-then-build
 
-Opus is better at architecture and tradeoff reasoning; Sonnet is cheaper and just as
-capable at *implementing a spec someone else already thought through*. This skill turns
-that split into a repeatable four-phase procedure instead of something to remember to do
-manually — and it enforces the two checks that make the split actually pay off: don't
-split trivial work, and don't skip the model switch.
+Use Claude Opus 5.5 for complex planning, GPT-6 Luna max for value-focused
+implementation, and GPT-6 Sol high for independent review. This follows the supplied
+benchmark chart; use Sol high for implementation when its small score increase is
+worth the extra cost. This skill enforces the complexity gate and model switches.
 
 There is no tool that can change the active model or effort level — `/model` and
 `/effort` are slash commands, not tool calls. Every checkpoint below that needs a model
@@ -28,7 +27,7 @@ Before doing anything else, judge the task itself against this line:
   reasonably do start to finish without a separate planning pass first.
 
 If the task isn't complex enough, say so plainly, name the model to use instead (usually
-Sonnet — the same model this skill would hand off to anyway, so splitting adds a step
+GPT-6 Luna max — the same model this skill would hand off to anyway, so splitting adds a step
 for zero benefit), and **stop here.** Do not enter plan mode, do not touch the plan file,
 do not call `ExitPlanMode`.
 
@@ -39,10 +38,8 @@ If it clearly qualifies, say in one line what makes it qualify and continue.
 
 ## Phase 0.5 — Model and effort check, before planning starts
 
-- **Model:** confirm the session is actually on an Opus-tier model right now. If it
-  isn't (still on Sonnet, or on Haiku), say so and tell the user to run `/model` to
-  switch to Opus first. **Do not enter plan mode on the wrong model** — wait for
-  confirmation.
+- **Model:** confirm Claude Opus 5.5 is selected. If not, stop before planning and
+  ask the user to switch to it or use the Codex-only workflow if Claude is unavailable.
 - **Effort:** name the effort tier the task calls for, using this scale:
 
   | Class | Effort |
@@ -57,7 +54,7 @@ If it clearly qualifies, say in one line what makes it qualify and continue.
 
 Only move to Phase 1 once both are confirmed (or the user says they've made the switch).
 
-## Phase 1 — Plan (Opus side)
+## Phase 1 — Plan (Claude Opus 5.5)
 
 Enter plan mode (`EnterPlanMode` if not already active) and write a plan that is
 **handoff-ready** — meaning a different, cheaper model must be able to execute it without
@@ -79,22 +76,19 @@ means.
 Once the plan is approved, the last thing this phase does is print a short, plain
 message — nothing else:
 
-> Plan approved and saved to `<path>`. Run `/model Codex-sonnet-5` and `/effort medium`
-> (adjust if the plan itself calls for more), then tell me to continue — I'll implement
-> it from the plan.
+> Plan approved and saved to `<path>`. Switch to GPT-6 Luna max by default, or GPT-6
+> Sol high if the task warrants its modest score increase, then continue.
 
 No attempt to detect or force the switch. Just the instruction, then stop and wait.
 
-## Phase 3 — Implement (Sonnet side)
+## Phase 3 — Implement (GPT-6 Luna max or Sol high)
 
 This phase has its own gate, run every time — never skip it because Phase 2 already gave
 the instruction:
 
-- **Confirm the model actually changed before writing a single line.** If the session is
-  still on the Opus-tier model the plan was written on, say so — "Still on Opus — run
-  `/model Codex-sonnet-5` first" — and **do not start implementing.** This is a hard
-  stop: the entire point of the split is cost, and executing the implementation phase on
-  Opus defeats it even if the plan is perfect.
+- **Confirm the model actually changed before writing a single line.** Use Luna max by
+  default or Sol high when justified. Avoid GPT-5.6 Terra for this workflow because the
+  supplied graph shows it dominated by cheaper or more capable options.
 - Once confirmed, follow the plan literally. Don't re-derive or second-guess the
   architecture decisions it already made.
 - If execution reveals the plan is incomplete or wrong somewhere that matters — a step

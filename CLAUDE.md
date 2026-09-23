@@ -1,5 +1,36 @@
 # School Selection App — Project Context
 
+## Model selection before substantial work
+
+Before starting a coding task, plan, review, or other substantial work, classify the
+requested task using the table below and check whether the active model and effort
+match. Use a reliable model/effort indicator supplied by the current product session
+when available. Do not infer the selected model from this file, previous turns, or
+the task's title. If the active model cannot be reliably observed, ask the user to
+confirm or switch before beginning work that depends on a specific model. For a
+simple question that does not depend on a model choice, answer normally.
+
+If the selected model is a poor fit, state the recommended model and effort and wait
+for the user to switch before executing the task or producing the requested work.
+Do not claim that the project instructions themselves can inspect the model picker.
+Run the `model-gate` skill before these tasks when it is available; its instructions
+are also mirrored in `docs/workflows/model-gate.md`.
+
+| Task | Codex | Claude |
+|---|---|---|
+| Tiny, straightforward edit: typo, label rename, one obvious CSS value | GPT-6 Luna low | Claude 4.5 Haiku |
+| Routine coding or focused fix: one component bug, small API/UI change, clear requirements | GPT-6 Luna max | Claude Opus 5.5 low |
+| Larger implementation: several related components, requirements settled | GPT-6 Sol high | Claude Opus 5.5 medium |
+| Complex planning or code review: multi-file tradeoffs, unclear behavior, involved diff | GPT-6 Sol xhigh | Claude Opus 5.5 high with fallback |
+| Deep planning or high-stakes review: payments, auth/security, schema, deletion, launch | GPT-6 Astra high | Claude Opus 5.5 high with fallback |
+
+For the plan-then-build workflow, planning and execution are separate stages. The
+implementer executes the approved plan. For complex execution use GPT-6 Sol high
+or Claude Opus 5.5 medium, according to which platform is available; use the table's
+larger-implementation row. Use the dedicated plan-then-build skill for stage gates.
+These recommendations follow the founder-provided benchmark graph and are practical
+starting points, not universal performance guarantees.
+
 ## ⚠️ Current working setup — read this first
 
 **Machine: the MacBook, as of 2026-09-06.** The move that was announced (and then

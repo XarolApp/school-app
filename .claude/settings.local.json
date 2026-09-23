@@ -22,7 +22,15 @@
       "Bash(mkdir -p /Users/vojtechkadlec/Developer/school-app/scripts/data)",
       "Bash(mv PZ*.xlsx scripts/data/)",
       "Bash(node scripts/import-admission-data.js scripts/data/PZ2024_kolo1_skolobory_vysledky.xlsx scripts/data/PZ2025_kolo1_skolobory_vysledky.xlsx scripts/data/PZ2026_kolo1_skolobory_vysledky.xlsx)",
-      "Bash(git commit -m 'Organize Cermat admission data files and restore school_programs for corrected REDIZOs *)"
+      "Bash(git commit -m 'Organize Cermat admission data files and restore school_programs for corrected REDIZOs *)",
+      "Bash(OPENROUTER_EXTRACT_MODEL=google/gemini-2.5-flash GOOGLE_GEMINI_API_KEYS= node scripts/extract-school-details.js)",
+      "Bash(node -e ' *)",
+      "Bash(tee extraction-resume.log)",
+      "Bash(tee extraction-updated-key.log)",
+      "Bash(cat)",
+      "Read(//tmp/**)",
+      "Bash(GOOGLE_GEMINI_API_KEYS=\"\" OPENROUTER_EXTRACT_MODEL=google/gemini-2.5-flash node scripts/extract-school-details.js)",
+      "Bash(OPENROUTER_EXTRACT_MODEL=openai/gpt-4o-mini node scripts/extract-school-details.js)"
     ]
   }
 }

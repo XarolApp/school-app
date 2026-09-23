@@ -6,15 +6,45 @@ single local component change.
 
 ## Roles
 
-1. **Planner — GPT-6 Astra (Codex, `xhigh`).** Inspect the current repository and
-   write a handoff-ready plan. Use one planner, never two competing plans.
-2. **Implementer — Claude Sonnet.** Read the approved plan and implement it. Do
-   not re-architect silently.
-3. **Reviewer — GPT-5.6 Sol (`high`).** Review the diff and running behavior after
-   implementation. Escalate to Astra only for payment, security, schema, or
-   release-critical findings.
+1. **Planner — Claude Opus 5.5 (`high`; `xhigh` for architecture-heavy decisions).**
+   Inspect the current repository and write a handoff-ready plan. Use one planner,
+   never two competing plans. The supplied benchmark places Opus 5.5 high above
+   nearby Astra choices at lower estimated task cost.
+2. **Implementer — GPT-6 Sol high by default for an approved plan.** Use Luna max
+   when the implementation is straightforward and the lowest cost is the priority.
+   Read the approved plan and implement it. Do not re-architect silently.
+3. **Reviewer — GPT-6 Sol high.** Review the diff and running behavior after
+   implementation. Escalate payment, security, schema, or release-critical findings
+   to Claude Opus 5.5 high with fallback.
 
-The standard path is **Astra plan → Sonnet build → Sol review**.
+The standard shared path is **Opus 5.5 plans → Sol high builds → Sol high reviews**.
+The same model can do both stages, but keep the review independent: start a fresh
+review pass and inspect the implementation against the plan and diff.
+
+## Model and effort guide
+
+Choose the model on the side you can use. The recommendations below follow the
+founder's supplied intelligence-versus-cost graph only; they are approximate task
+guidance, not guarantees for every repository or prompt.
+
+| Task | Codex | Claude |
+|---|---|---|
+| Tiny, straightforward edits: typo, label, one obvious CSS value | GPT-6 Luna low | Claude 4.5 Haiku |
+| Routine coding and focused fixes: one component bug, a small API/UI adjustment, a clear change with known behavior | GPT-6 Luna max | Claude Opus 5.5 low |
+| Larger implementation: several related components or a feature within an established design, with clear requirements | GPT-6 Sol high | Claude Opus 5.5 medium |
+| Complex planning or code review: multi-file tradeoffs, unclear behavior, or checking an involved feature diff | GPT-6 Sol xhigh | Claude Opus 5.5 high with fallback |
+| Deep planning or high-stakes review: payments, auth/security, schema changes, deletion flows, launch-critical work | GPT-6 Astra high | Claude Opus 5.5 high with fallback |
+
+The graph makes GPT-5.6 Terra and Claude Sonnet 5 poor value for this user's
+workload, so they are not recommended in this guide. Use Luna low only for genuinely
+small work; use Luna max as the regular Codex implementation choice. Use Opus low
+for routine Claude Code changes, medium for larger implementation, and high for the
+hardest Claude-only work.
+
+For complex shared work, use **Opus 5.5 high plans → Sol high builds → Sol high
+reviews**. The Codex-only fallback is **Astra high/xhigh plans → Sol xhigh builds
+→ Sol high reviews**. Use Luna max when a planned implementation is straightforward
+enough that its lower cost is more important than Sol's higher chart score.
 
 ## The handoff artifact
 
