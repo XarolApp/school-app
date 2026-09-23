@@ -32,13 +32,23 @@ function vyukovyStylBody(e) {
   return 'Nemáme tuto informaci.';
 }
 
+// Same fallback rule: import-maturita-data.js writes maturita_pass_rate_pct
+// straight to Supabase, but a school it never matched (not in Cermat's file)
+// can still have a number here from Phase 2's own website extraction, with
+// no paired sentence — don't show "no data" when a real number exists.
+function maturitaBody(e) {
+  if (e.maturita_uspesnost) return e.maturita_uspesnost;
+  if (e.maturita_pass_rate_pct != null) return `${e.maturita_pass_rate_pct} % úspěšnost u maturity (dle webu školy).`;
+  return 'Nemáme tuto informaci.';
+}
+
 function MissingDataGrid({ zrizovatel, extracted }) {
   const e = extracted || {};
   const cards = [
     { title: 'Školné a poplatky', body: e.skolne_poplatky || tuitionBody(zrizovatel) },
     { title: 'Obědy a ubytování', body: e.obedy_ubytovani || 'Nemáme tuto informaci.' },
     { title: 'Kroužky a aktivity', body: e.krouzky_aktivity || 'Nemáme tuto informaci.' },
-    { title: 'Úspěšnost u maturity', body: e.maturita_uspesnost || 'Nemáme tuto informaci.' },
+    { title: 'Úspěšnost u maturity', body: maturitaBody(e) },
     { title: 'Kam míří absolventi', body: e.vs_uplatneni || 'Nemáme tuto informaci.' },
     { title: 'Uplatnění po vyučení', body: e.uplatneni_po_vyuceni || 'Nemáme tuto informaci.' },
     { title: 'Přijímací požadavky navíc', body: pripijimaciBody(e) },
