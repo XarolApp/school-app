@@ -1,8 +1,7 @@
 # 014: Colour themes (Značka default + 3 options) and a light/dark switch
 
-**Status:** APPROVED FOR BUILD, 2026-09-24. Planned by Claude Opus 5.5 (medium) against
-commit `e412200`. Implementer: Codex (GPT-6 Luna max). Reviewer: Claude Opus 5.5 low
-(diff + running app).
+**Status:** IMPLEMENTED, 2026-09-24. Code and automated checks are complete; signed-in
+browser checks await the founder's Supabase migration. Implementation commits are on `main`.
 
 **Visual reference:** https://claude.ai/artifact/KziG32Ki2KCagBrM5eZE1G (the three
 directions on the /skoly page). **Design source of truth:** `design/DESIGN.md`, which

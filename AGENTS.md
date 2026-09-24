@@ -357,7 +357,7 @@ both working end to end).
 |---|---|
 | `schools` | id, created_at, name, location, programs, contact, website, latitude, longitude, `redizo`, `admission_cutoff`, `acceptance_rate`, `admission_data_updated_at` |
 | `school_programs` | one row per obor per school per year, from Cermat's real admission results — `typ_skoly`, `zrizovatel`, `maturitni`, `jpz_povinna`, `jazyk_studia`, `delka_studia`, `kkov`, `kapacita`, `prihlasky`, `prijati`, `cutoff`. No client RLS policy, same as `schools` — server.js only. Declared in `supabase-setup.sql` itself as of 2026-09-08 — it existed in the live database earlier than that (created directly by the import script), so this file didn't yet describe the real schema; fixed rather than left drifting. |
-| `users` | profile mirror of the private `auth.users`: email, name, `trial_expires_at`, `subscription_status`, Stripe ids |
+| `users` | profile mirror of the private `auth.users`: email, name, `trial_expires_at`, `subscription_status`, `theme_palette`, `theme_mode`, Stripe ids |
 | `favorites` | `(user_id, school_id)` |
 | `questionnaire_runs` | one row per completed *standalone* questionnaire: answers, matches, `label`, `is_default`, `archived_at`, `source` (`'questionnaire'` or `'onboarding'` — the latter written once per account from the onboarding quiz via `POST /api/me/onboarding-answers`) |
 | `school_reviews` | one row per (school, user): `role`, `role_year`, `obor_nazev`, `body`, `show_name`, `verified`, `status`. No client RLS policy — server.js only, see "User-generated content" above. |
@@ -544,11 +544,8 @@ system portable to the mobile app (see "Platform Strategy").
   and legacy aliases (`--text`, `--accent-bg`, …) that the existing stylesheets
   already consume, which is why the palette swap didn't require rewriting
   `onboarding.css`'s 1,200 lines. Prefer the new names in anything new.
-- Fonts (Fraunces + Public Sans, per `DESIGN.md`) load from Google Fonts in
-  `index.html`, pending self-hosted `.woff2` files. Fixed 2026-08-31 — this line
-  previously said Newsreader + Hanken Grotesk, which was stale: DESIGN.md and
-  `tokens.js`'s own comments already specified Fraunces + Public Sans, but the
-  actual `webOnly` export and `index.html` hadn't been updated to match.
+- Fonts (Archivo Narrow + Archivo, per `design/DESIGN.md`) load from the Google
+  Fonts stylesheet link in `frontend/index.html`.
 - **Never hardcode a colour or radius** in a component or stylesheet.
 
 **Mobile preview:** `http://localhost:5173/mobile-preview.html` renders the live
@@ -762,7 +759,8 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
 
 **Status as of 2026-08-28:** Supabase connected, schools seeded (60), onboarding flow
 complete with district map and claim-framing signup, auth ported and wired, design tokens
-applied (terracotta/moss live), developer-email bypass confirmed working.
+applied; see "Design tokens — tokens.js" below for the current palette and font state,
+developer-email bypass confirmed working.
 
 **Every remaining task, decision, and deferred item is tracked in [`UNFORGET.md`](UNFORGET.md)
 — that file is the single source of truth for "what's left," not this section.** See
@@ -820,31 +818,16 @@ fonts, spacing, radii, etc.) as JavaScript constants, in `frontend/src/design/to
 JS, not CSS, deliberately: React Native can import a JS module but cannot read CSS
 variables — this is what makes the visual system portable to the mobile app later.
 
-**Current state (as of 2026-09-05):** matches `design/DESIGN.md` in full — terracotta
-`#AD4F2A` / moss `#4F7143`, the warm paper neutral ramp (`#FAF6EF` / `#F1ECE3` /
-`#221A13` …), and **Lora + Public Sans**. Lora replaced Fraunces in both files
-2026-09-05: Fraunces' curled/swash "J" is a deliberate part of that typeface's
-identity at every optical size and weight (not a rendering default — tuning the
-`SOFT`/`opsz` variable axes was tried first and did not fix it), and it read as an
-odd glyph rather than characterful. Lora keeps the same warm, editorial serif
-register with conventional letterforms; it has no `SOFT`/`WONK`/`opsz` axes, so the
-old variable-font tuning is gone from the type scale, not carried forward as dead
-weight. **No `#FFFFFF` or `#000000` anywhere** —
-DESIGN.md forbids both outright and the palette now honours that; `--surface` and
-`--bg` are deliberately the *same* value, because raised content separates by
-hairline rather than by a brighter fill. Neutrals were migrated 2026-09-04 (they had
-been left on the older cooler ramp by the 2026-08-28 accent-only pass). Fonts fixed
-site-wide 2026-08-31 — `index.html`
-and `tokens.js`'s `webOnly` export had drifted from DESIGN.md's own spec). `tokens.css`
-is auto-generated from `tokens.js` via `npm run tokens` (from `frontend/`) — **never
-hand-edit `tokens.css`.** Re-run that command after any future change to `tokens.js`.
+**Current state (as of 2026-09-24):** the default palette is Značka, with Smrk,
+Zvýrazňovač and Terakota available as user themes. `palettes` in `tokens.js` is the
+source of truth; generated CSS applies them through `data-palette` and `data-theme`.
+The account choice is stored in `users.theme_palette` and `users.theme_mode`. Fonts are
+Archivo Narrow + Archivo. Theme rules: `design/DESIGN.md` → Colors → Themes.
+`tokens.css` is auto-generated with `npm run tokens` from `frontend/` — **never
+hand-edit it.** Re-run that command after any future change to `tokens.js`.
 
-**Spacing and type-size tokens do not exist in CSS yet** — `tokens.js`'s `space` object
-uses different numbers (`4/8/12/16/24/32`) than `design/system/tokens/spacing.css`'s
-documented scale (`4/8/16/24/32/48/64`), and neither is exposed as a CSS custom
-property that stylesheets actually consume — `App.css`, `auth.css`, and
-`onboarding.css` all hardcode raw pixel values today. Migrating the whole app onto the
-design system's real scale is tracked in `UNFORGET.md` as a standing task, not done yet.
+Spacing and type-scale tokens are also generated as CSS variables from `tokens.js`;
+this theme plan does not change them.
 
 ---
 
