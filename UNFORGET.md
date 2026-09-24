@@ -13,6 +13,19 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
+## Theme picker step in onboarding — deferred until themes ship in Settings
+- **Decided:** 2026-09-24, founder. Colour themes (Značka default, Smrk,
+  Zvýrazňovač, Terakota) plus a system/light/dark mode setting are built first in
+  Nastavení → Vzhled only, per `plans/014-colour-themes.md`. The founder also wants a
+  "Vyber si barvy" step in the onboarding flow, so the student customises the app
+  early (IKEA effect, `docs/sources/claude_code_ui_ux_guide.md` video 2).
+- **Not done yet:** the onboarding step. It is an onboarding change, so design it
+  through the `onboarding-architect` agent: where in the 23-screen flow it sits (it
+  must not delay the quiz or the paywall), whether it appears for the parent branch
+  too, and how the choice made before an account exists is saved (a local choice that
+  plan 014's first sign-in sync then writes to the account).
+- **Depends on:** plan 014 being built and verified.
+
 ## Two schools have a website but can't be scraped by either scraper
 - **Found:** 2026-09-23, while chasing the 17 schools missing from Phase 1's
   markdown cache. Of the 4 with a stored `website`, 2 couldn't be recovered by

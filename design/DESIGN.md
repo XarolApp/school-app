@@ -4,85 +4,85 @@ name: ŠkolaMatch
 description: A high school selection tool for Czech 9th graders and their parents — a searchable school database, an AI-matched questionnaire, and a paywall, built to feel like a trusted advisor rather than an institution grading you.
 
 colors:
-  primary: "#AD4F2A"
-  primary-strong: "#8A3E20"
-  primary-subtle: "#F6E3D6"
-  secondary: "#6B6259"
-  tertiary: "#4F7143"
-  tertiary-subtle: "#E6EDDE"
-  neutral: "#F1ECE3"
-  surface: "#FAF6EF"
-  on-surface: "#221A13"
-  on-surface-faint: "#756B5C"
-  border: "#E6DFD1"
-  border-strong: "#D6CBB6"
-  error: "#7A3020"
-  error-subtle: "#F5E2DC"
+  primary: "#1C58A3"
+  primary-strong: "#16467F"
+  primary-subtle: "#E1EAF6"
+  secondary: "#4B525B"
+  tertiary: "#2C7340"
+  tertiary-subtle: "#E0EFE3"
+  neutral: "#EAEDEF"
+  surface: "#F5F6F7"
+  on-surface: "#15191E"
+  on-surface-faint: "#5F6670"
+  border: "#DCE0E4"
+  border-strong: "#C4CBD2"
+  error: "#B0271F"
+  error-subtle: "#F7E1DF"
 
 typography:
   display:
-    fontFamily: Lora
+    fontFamily: Archivo Narrow
     fontSize: 72px
     fontWeight: 600
     lineHeight: 1.06
     letterSpacing: -0.02em
   headline-lg:
-    fontFamily: Lora
+    fontFamily: Archivo Narrow
     fontSize: 38px
     fontWeight: 600
     lineHeight: 1.14
     letterSpacing: -0.015em
   headline-md:
-    fontFamily: Lora
+    fontFamily: Archivo Narrow
     fontSize: 28px
     fontWeight: 600
     lineHeight: 1.2
     letterSpacing: -0.01em
   headline-sm:
-    fontFamily: Lora
+    fontFamily: Archivo Narrow
     fontSize: 22px
     fontWeight: 500
     lineHeight: 1.25
   body-lg:
-    fontFamily: Public Sans
+    fontFamily: Archivo
     fontSize: 18px
     fontWeight: 400
     lineHeight: 1.6
   body-md:
-    fontFamily: Public Sans
+    fontFamily: Archivo
     fontSize: 16px
     fontWeight: 400
     lineHeight: 1.55
   body-sm:
-    fontFamily: Public Sans
+    fontFamily: Archivo
     fontSize: 14px
     fontWeight: 400
     lineHeight: 1.5
   caption:
-    fontFamily: Public Sans
+    fontFamily: Archivo
     fontSize: 13px
     fontWeight: 400
     lineHeight: 1.45
   label-caps:
-    fontFamily: Public Sans
+    fontFamily: Archivo
     fontSize: 11px
     fontWeight: 600
     lineHeight: 1.3
     letterSpacing: 0.08em
   label-md:
-    fontFamily: Public Sans
+    fontFamily: Archivo
     fontSize: 15px
     fontWeight: 600
     lineHeight: 1
     letterSpacing: 0
   data-md:
-    fontFamily: Public Sans
+    fontFamily: Archivo
     fontSize: 15px
     fontWeight: 500
     lineHeight: 1.4
     fontFeature: "'tnum' 1"
   data-sm:
-    fontFamily: Public Sans
+    fontFamily: Archivo
     fontSize: 13px
     fontWeight: 500
     lineHeight: 1.4
@@ -199,6 +199,17 @@ components:
 # ŠkolaMatch
 
 ## Overview — read this before anything else
+
+> **Third revision, 2026-09-24: colour and type changed, everything else kept.**
+> The cream paper + warm serif + terracotta combination of the second version had
+> become one of the most recognisable looks of AI-generated sites, and it made the
+> product read as "vibe coded" even where the layout was right. The founder compared
+> three directions rendered on the real /skoly page
+> (https://claude.ai/artifact/KziG32Ki2KCagBrM5eZE1G) and chose **Značka** as the
+> default, with the other directions kept as user-selectable colour themes (see
+> Colors → Themes). The research, the metaphor rules, the match-indicator reasoning,
+> the motion rules and the anti-references below all still apply unchanged; only the
+> palette, the typefaces and the prose that named them were rewritten.
 
 This is the **second** DESIGN.md written for ŠkolaMatch. The first one — Archival
 Institutional crossed with Soft Technical, navy primary, monospace numerics, hairline
@@ -317,63 +328,86 @@ congruent with a stated position. (The claim that "62–90% of judgements are co
 alone" is untraceable marketing folklore, not a real finding — it does not appear
 anywhere in this file for that reason.)
 
-- **Primary (#AD4F2A):** *The colour of Prague's terracotta rooftops at golden hour* —
-  warm, confident, distinctly Czech rather than borrowed from any fintech's brand
-  book. Desaturated deliberately: full-saturation terracotta reads as decorative;
-  this value is pulled down until it reads as a decision made under the same
-  restraint Monzo applies to its coral. Its **only** jobs are the primary CTA, the
-  questionnaire's selection state, and the logo. It is banned from body text, from
-  long-form reading surfaces, and from dense browsing screens — the exact rule
-  Monzo's own brand book states for its accent. White text on this fill holds
-  4.96:1 (`button-primary`); as text on Surface it holds 4.96:1 in the other
-  direction, so a rare small-label use stays AA-safe, but the standing rule is:
-  reach for weight and space before reaching for Primary.
-- **Primary-strong (#8A3E20):** The same terracotta, darker — hover and active
-  states only.
-- **Primary-subtle (#F6E3D6):** A wash of Primary, used only as the fill behind a
-  selected option row, paired with a 1.5px Primary border. Never a solid Primary
-  fill on interface chrome — that would read as a button, not a considered choice.
-- **Secondary (#6B6259):** Warm graphite — metadata, captions, unselected chip text.
-  Holds 5.54:1 on Surface.
-- **Tertiary (#4F7143):** *A muted, warm-leaning moss green* — sourced the way Air
-  Bank (`#99CC33`/`#497D00`, the KPMG-surveyed Czech CX leader in a category where
-  every incumbent bank is blue) and Wise (`#9FE870`/`#163300`) source theirs: bright
-  hue plus dark anchor, not a stock alert green. Its **only** job is marking a
-  strong match — never a generic success toast, a decorative checkmark, or
-  confirmation copy. Holds 5.16:1 on Surface and 4.64:1 on its own subtle wash.
-- **Tertiary-subtle (#E6EDDE):** Wash of Tertiary, used only behind a match
-  indicator.
-- **Neutral (#F1ECE3) and Surface (#FAF6EF):** Two warm paper values a half-step
-  apart. This is the one piece of *actual evidence* in the whole colour picture:
-  Rello & Bigham (ASSETS 2017, n=341, 89 with dyslexia) tested ten background
-  colours against black text and found **warm backgrounds — peach, orange, yellow —
-  read significantly faster than cool ones**, with the same ordering in both
-  dyslexic and control groups. That is a readability finding, not a trust finding —
-  it is cited here for exactly that and no more. Surface is the page and any raised
-  content; Neutral sits a half-step down for cards and rows. Neither is white:
-  R≠G≠B in both.
-- **On-surface (#221A13):** Near-black with real warmth, not `#000000`. This is the
-  layer that actually does the credibility work — every brand in the research table
-  (Wise `#163300`, Ethos `#054742`, Mailchimp `#231E15`, Anthropic `#141413`) pairs
-  a warm accent with a very dark, warm anchor rather than relying on the accent
-  itself to seem serious. Holds 15.9:1 on Surface.
-- **On-surface-faint (#756B5C):** Placeholder and disabled text. Holds 4.86:1 on
-  Surface — clears the linter's 4.5:1 floor with real margin.
-- **Border (#E6DFD1) and Border-strong (#D6CBB6):** Hairline rules, used for
-  division, never to frame a card as a box — see Elevation.
-- **Error (#7A3020):** A muted brick-red, deliberately **not** "a teacher's red
-  pen" — that framing is gone from this system entirely, per the metaphor
-  discussion above. It means "this needs fixing" (a required field, a failed
-  payment), never "this is wrong about you." Derived from the same warm family as
-  Primary rather than a stock alert red — closer in hue to Primary than a
-  typical error/accent pair, which is intentional: this system has one warm
-  family, not two competing ones. Holds 8.28:1 on Surface.
-- **Error-subtle (#F5E2DC):** Wash of Error, fill behind an invalid input — always
-  paired with an icon and written message, never colour alone.
+**The referent: Czech tourist trail markings (turistické značení).** The white–blue–white
+stripe painted on trees, the one every Czech child has followed on a school trip. It is
+the most familiar local sign for *this is the way, you are not lost*, which is the exact
+feeling a 15-year-old choosing between 223 schools is missing. It is a sign you follow
+by choice, never an instrument that grades you, so it obeys the metaphor rule above.
+The colours are the KČT trail colours, pulled down in chroma until they read as a
+product rather than as paint: blue for the path you take next, green for "this fits
+what you asked for", red only for something that needs fixing.
 
-Every neutral carries a small warm chroma; none is `R=G=B`. Primary, Tertiary, and
-Error were each built as short ramps with chroma peaking mid-lightness and a hue
-bend across the ramp, so each reads as a material rather than a flat swatch.
+- **Primary (#1C58A3), trail blue:** the next action. Primary CTA, the questionnaire's
+  selection state, the active filter's badge, links where a link is the action. Never
+  body text, never decoration, never a large fill behind content. Surface text on it
+  holds 6.5:1. Blue is the most common trust colour there is, which is exactly why it
+  is not allowed to carry the identity on its own: the trail story, the condensed
+  signage type and the restraint do that. A generic "trust blue" used everywhere would
+  be the median answer this system exists to avoid.
+- **Primary-strong (#16467F):** hover and pressed states only.
+- **Primary-subtle (#E1EAF6):** the wash behind a selected option row or a selected
+  school, always paired with a 1.5px Primary border. Never a solid Primary fill on
+  interface chrome.
+- **Secondary (#4B525B):** blue-leaning graphite for metadata and captions, 7.3:1.
+- **Tertiary (#2C7340), trail green:** match strength and nothing else, exactly the
+  job moss had in the previous version. 4.85:1 on its own wash, and readable as plain
+  text on the page, because 30+ stylesheet rules use it as text.
+- **Tertiary-subtle (#E0EFE3):** the wash behind a match indicator.
+- **Neutral (#EAEDEF) and Surface (#F5F6F7):** a cool, faintly blue-grey paper, the
+  colour of a trail sign's enamel, not of cream stock. This deliberately gives up the
+  Rello & Bigham warm-background reading advantage the previous version cited; that
+  study measured reading speed on long passages, and this product's screens are
+  scanned rather than read. Long-form reading surfaces (reviews, the privacy policy)
+  keep body text at 65–70ch to compensate. Neither value is white; R≠G≠B in both.
+- **On-surface (#15191E):** near-black carrying a trace of the blue, 16.3:1. This is
+  still the layer doing the credibility work.
+- **On-surface-faint (#5F6670):** placeholder, disabled and tertiary text. 4.8:1 on
+  Surface and 4.5:1 on Neutral, the tighter of the two.
+- **Border (#DCE0E4) and Border-strong (#C4CBD2):** hairlines. Division, not boxes.
+- **Error (#B0271F), trail red:** "this needs fixing" (a required field, a failed
+  payment), never "this is wrong about you". Always with an icon and a written
+  message. 6.2:1.
+- **Error-subtle (#F7E1DF):** wash behind an invalid input.
+
+Every neutral carries a small blue chroma; none is `R=G=B`, and neither `#FFFFFF` nor
+`#000000` appears anywhere. The logo mark is the one place the trail stripe appears
+literally, as a small white–blue–white flag; it is never used as a decorative band,
+a card rail or a section divider.
+
+### Themes: the palette is user-selectable
+
+Značka is the default. Three other palettes ship as colour themes the student picks in
+Nastavení → Vzhled, each in light and dark, alongside a mode setting (system, light,
+dark). The choice is saved to the account. This is the IKEA-effect finding from
+`docs/sources/claude_code_ui_ux_guide.md` (people value what they customised), applied
+to something cheap to offer because every colour is already a token.
+
+| Theme | Referent | Primary | Match (tertiary) | Gives up |
+|---|---|---|---|---|
+| **Značka** (default) | Czech trail markings | trail blue `#1C58A3` | trail green `#2C7340` | trendiness |
+| **Smrk** | Šumava spruce, birch resin | spruce `#1D5842` | resin amber `#855A13` | energy |
+| **Zvýrazňovač** | a student's highlighter | ink `#151412` (buttons are solid ink) | highlighter olive `#6B5300` on yellow `#F9E27E` | calm; yellow must stay rare |
+| **Terakota** | the previous version's palette, kept for people who liked it | terracotta `#AD4F2A` | moss `#4F7143` | the AI-cluster look, knowingly |
+
+Rules that make themes safe:
+
+1. **Themes change colour tokens only.** Type, spacing, radius, shadow shape and every
+   component are identical across themes. A theme that needs its own CSS rule is not a
+   theme, it is a fork; express the difference as a token or drop it. (This is why
+   Zvýrazňovač's marker-underline under key numbers, shown in the concept, did not
+   survive into the theme.)
+2. **Every theme fills every token**, in light and dark, and every text pair passes
+   WCAG AA 4.5:1: ink, ink2 and ink3 on bg/surface/surface2, accentInk on accent,
+   accent on bg, ok on bg/surface2/okSoft, danger on bg/dangerSoft, ink on accentSoft.
+   All eight combinations were checked numerically on 2026-09-24.
+3. **Semantic roles hold across themes.** Primary is always the next action, tertiary
+   is always match strength, error is always "needs fixing". A theme can change what
+   the colour is, never what it means.
+4. **No component may hardcode a colour.** A literal hex or rgba in a stylesheet is
+   now a bug in three extra themes, not a style nit.
+
+The exact values for all four themes live in `frontend/src/design/tokens.js`
+(`palettes`), which is the source of truth for the web app and the future mobile app.
 
 ### Mobbin references — colour and warmth in production
 
@@ -389,28 +423,23 @@ bend across the ramp, so each reads as a material rather than a flat swatch.
 
 ### Dark mode
 
-Both themes are first-class — this is a decision app people return to over days,
-sometimes at night, and light-only would be a real gap. Dark mode is a **separate
-design**, not an inversion: chroma is pulled down roughly 15–20% from the light
-values, nothing is pure black, and elevation logic inverts (raised surfaces get
-*lighter*).
+Both modes are first-class, per theme. Dark is a separate design, not an inversion:
+chroma pulled down, nothing pure black, and elevation inverts (raised surfaces get
+*lighter*). Značka dark:
 
 ```
-bg:               #17130E   (near-black, warm-tinted — never #000)
-surface-raised:   #1F1911
-surface-overlay:  #2A2216
-on-surface:       #F2ECE2   (not pure white)
-on-surface-faint: #B3A895
-border:           #362C1E
-primary (dark):   #E08A5C   (lifted + desaturated — #AD4F2A sinks into a dark
-                              ground and stops reading as interactive)
-tertiary (dark):  #8FB57E   (lifted Tertiary, same reasoning)
-error (dark):     #C97F6A   (lifted Error, same reasoning)
+bg:               #131518   (near-black with the trail blue's trace, not navy-slate)
+surface-raised:   #1A1D21
+surface-overlay:  #22262B
+on-surface:       #E7EAEE
+on-surface-faint: #939BA5
+border:           #2A2F35
+primary (dark):   #7FA8E6   (lifted and desaturated; #1C58A3 sinks into a dark ground)
+tertiary (dark):  #7DC08E
+error (dark):     #EE8A80
 ```
 
-Specified here as the design decision; wiring a dark `components` block is an
-implementation task, since the DESIGN.md schema has no first-class per-theme
-component variant.
+The other themes' dark values are in `tokens.js`.
 
 ## Typography
 
@@ -421,32 +450,26 @@ the first pass and it buys nothing here." Tabular alignment is available in a no
 sans via `'tnum'`; a code-editor typeface is not required to make a column of grades
 line up.
 
-**Lora** carries the voice — display and every headline. This replaces Fraunces
-(2026-09-05): Fraunces' J is a stylized swash/curl at every optical size and
-weight — a deliberate part of that typeface's identity, not a rendering default —
-and in practice it read as an odd glyph rather than a characterful one, badly
-enough that it had to go. Before Fraunces, the slot held Newsreader, dropped for a
-different reason: locked at weight 400 everywhere, it read as hushed and
-document-like once paired with hairline structure. Lora is a warm, sturdy
-editorial serif with conventional letterforms and real italics — it keeps the same
-warm-but-authoritative register the family before it was chosen for, without
-either predecessor's specific failure. It is a static family, not a variable font:
-no `SOFT`/`WONK`/`opsz` axes exist to tune, so weight alone (500–600, per the scale
-below) carries what the axis engagement used to. Full Czech diacritic support.
-Fallback: `Lora, Georgia, "Times New Roman", serif`. SIL Open Font License,
-self-hosted target (currently Google Fonts CDN, per `index.html` — see CLAUDE.md's
-"Design tokens — tokens.js" section for the live implementation state).
+**Archivo Narrow** carries the voice: display, every headline, school names in
+lists. **Archivo** carries the apparatus: body, labels, buttons, captions and data.
+One family in two widths, chosen for the same reason the trail signs use a condensed
+grotesque: a narrow face says a lot in little width, stays legible at a glance, and
+sounds certain without shouting. On a 390px phone, a condensed heading fits a long
+Czech school name on two lines where a serif needed three.
 
-**Public Sans** carries the apparatus — body, labels, buttons, captions, and now
-data. Chosen specifically because its own design brief (USWDS) targets "neutral,
-legible, institutionally credible" without reading cold — it is the sans the
-DESIGN.md format's own spec examples use, and it is not Inter, which would make the
-Lora pairing read as an accident rather than a decision. Two weights only — 400
-for reading, 600 for anything scanned rather than read. Tabular figures
-(`'tnum' 1`) on `data-md`/`data-sm` so a column of grade thresholds aligns without
-reaching for a different typeface family to do it. Full Czech diacritic support.
-Fallback: `"Public Sans", system-ui, "Segoe UI", sans-serif`. SIL Open Font
-License, self-hosted.
+This replaces Lora + Public Sans (2026-09-24). The serif was part of the cream-paper
+look the founder rejected, and pairing it with a neutral sans had become a template
+rather than a decision. Using one superfamily in two widths is a deliberate exception
+to the "pair across classifications" habit: the contrast between the two roles comes
+from width and weight, not from a second family, which also halves the font download.
+Two weights only, 400 for reading and 700 for anything scanned, with 600 allowed for
+headline sizes where 700 closes up the counters. Tabular figures (`'tnum' 1`) on
+`data-md`/`data-sm`. Full Czech diacritic support in both widths. Fallbacks:
+`"Archivo Narrow", "Arial Narrow", system-ui, sans-serif` and
+`Archivo, system-ui, "Segoe UI", sans-serif`. SIL Open Font License, loaded from
+Google Fonts until self-hosted.
+
+Themes never change typefaces (Colors → Themes, rule 1).
 
 The scale runs 11 → 72px. Tracking is optical: −0.02em at Display, easing toward
 neutral through body, +0.08em on uppercase labels. Line-height moves inversely with
@@ -705,13 +728,15 @@ When the user explicitly says to build them:
 
 ## Do's and Don'ts
 
-- **Do** treat Primary (`#AD4F2A`) as CTA/selection/logo only — never body text,
-  never a dense browsing screen. This is Monzo's own stated rule for their accent
-  and it is the load-bearing discipline of this whole palette.
-- **Don't** reintroduce navy, indigo-violet (`#6366F1`–`#9333EA`), or any prior
-  accent from either previous version. Both were replaced for sourced reasons; see
-  Colors.
-- **Do** keep Tertiary (`#4F7143`) exclusively on match-strength signals. A second
+- **Do** treat Primary (trail blue `#1C58A3`, or the active theme's primary) as
+  next-action/selection only. Never body text, never decoration. This is Monzo's own
+  stated rule for their accent and it is the load-bearing discipline of every theme.
+- **Don't** introduce navy-slate darks, indigo-violet (`#6366F1`–`#9333EA`), or a
+  fifth theme without filling every token in both modes and passing the contrast
+  pairs in Colors → Themes. Terakota survives only as an opt-in theme, never as a
+  default.
+- **Do** keep Tertiary (trail green `#2C7340`, or the active theme's tertiary)
+  exclusively on match-strength signals. A second
   use anywhere — a generic success toast, a decorative checkmark — destroys the one
   signal it carries.
 - **Don't** write a result, a label, or a headline that evaluates the student.
@@ -742,7 +767,7 @@ When the user explicitly says to build them:
   section labels. NN/g's research names this specifically as a teen repellent, and
   the market evidence (Greenlight's "kids" framing vs. Step's direct address) backs
   it up directly.
-- **Do** use `data-md`/`data-sm` (Public Sans, tabular figures) for every grade,
+- **Do** use `data-md`/`data-sm` (Archivo, tabular figures) for every grade,
   cutoff score, deadline, and DiPSy round number. No monospace anywhere in this
   system — see Typography.
 - **Do** limit motion to **press/tap feedback** confirming an action, or a **layout
