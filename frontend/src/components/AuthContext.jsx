@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { supabase, setRememberMe } from '../supabaseClient';
 import { fetchMe, updateProfile, saveOnboardingAnswers } from '../api';
+import { applyTheme } from '../lib/theme';
 import { readOnboardingStash, clearOnboardingStash } from '../lib/pendingOnboardingAnswers';
 
 const AuthContext = createContext(null);
@@ -92,7 +93,9 @@ export function AuthProvider({ children }) {
       return;
     }
     try {
-      setProfile(await fetchMe());
+      const profile = await fetchMe();
+      applyTheme(profile.theme_palette, profile.theme_mode);
+      setProfile(profile);
     } catch {
       // A missing profile should not blank the app; the user stays signed in
       // and protected routes fall back to treating them as without access.

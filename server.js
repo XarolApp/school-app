@@ -348,7 +348,7 @@ app.get('/test-db', async (req, res) => {
 const PROFILE_COLUMNS =
   'id, email, name, created_at, trial_expires_at, subscription_status, ' +
   'stripe_subscription_id, access_expires_at, plan_id, season_charge_due_at, cancel_at_period_end, ' +
-  'plan_started_at, last_paid_at';
+  'plan_started_at, last_paid_at, theme_palette, theme_mode';
 
 // 14 days is the statutory minimum for everyone (§1829). Extended to 30 here
 // so the SAME self-service button also delivers the "full refund within 30
@@ -428,26 +428,52 @@ app.get('/api/me', requireAuth, async (req, res) => {
   });
 });
 
-// The only profile field a user may change about themselves. Everything else on
-// the row — the trial window, the subscription status, the Stripe ids — decides
-// whether they have paid, so it is writable only by the Stripe webhook and the
-// signup trigger. Accepting `req.body` wholesale here would hand out the
-// product for free, which is also why RLS grants the browser no UPDATE policy.
+// Only a user's name and appearance preferences are self-editable. Billing
+// fields decide whether they have paid, so they remain writable only by the
+// Stripe webhook and signup trigger. Accepting `req.body` wholesale here would
+// hand out the product for free, which is also why RLS grants no browser UPDATE.
 app.patch('/api/me', requireAuth, async (req, res) => {
-  if (typeof req.body?.name !== 'string') {
-    return res.status(400).json({ error: 'Chybí jméno.' });
+  const body = req.body || {};
+  const update = {};
+  const hasName = Object.hasOwn(body, 'name');
+  const hasPalette = Object.hasOwn(body, 'theme_palette');
+  const hasMode = Object.hasOwn(body, 'theme_mode');
+
+  if (!hasName && !hasPalette && !hasMode) {
+    return res.status(400).json({ error: 'Není co uložit.' });
   }
 
-  const name = req.body.name.trim();
-  if (name.length < 2 || name.length > 80) {
-    return res.status(400).json({ error: 'Jméno musí mít 2 až 80 znaků.' });
+  if (hasName) {
+    if (typeof body.name !== 'string') {
+      return res.status(400).json({ error: 'Chybí jméno.' });
+    }
+
+    const name = body.name.trim();
+    if (name.length < 2 || name.length > 80) {
+      return res.status(400).json({ error: 'Jméno musí mít 2 až 80 znaků.' });
+    }
+    update.name = name;
+  }
+
+  if (hasPalette) {
+    if (!['znacka', 'smrk', 'zvyraznovac', 'terakota'].includes(body.theme_palette)) {
+      return res.status(400).json({ error: 'Neplatný vzhled.' });
+    }
+    update.theme_palette = body.theme_palette;
+  }
+
+  if (hasMode) {
+    if (!['system', 'light', 'dark'].includes(body.theme_mode)) {
+      return res.status(400).json({ error: 'Neplatný vzhled.' });
+    }
+    update.theme_mode = body.theme_mode;
   }
 
   const { data, error } = await supabase
     .from('users')
-    .update({ name })
+    .update(update)
     .eq('id', req.user.id)
-    .select('id, name')
+    .select('id, name, theme_palette, theme_mode')
     .single();
 
   if (error) return res.status(500).json({ error: error.message });

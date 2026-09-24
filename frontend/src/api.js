@@ -56,10 +56,15 @@ export function fetchMe() {
   return request('/api/me');
 }
 
-export function updateProfile({ name }) {
+export function updateProfile({ name, themePalette, themeMode }) {
+  const body = {};
+  if (name !== undefined) body.name = name;
+  if (themePalette !== undefined) body.theme_palette = themePalette;
+  if (themeMode !== undefined) body.theme_mode = themeMode;
+
   return request('/api/me', {
     method: 'PATCH',
-    body: JSON.stringify({ name }),
+    body: JSON.stringify(body),
   });
 }
 

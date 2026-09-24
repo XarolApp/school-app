@@ -130,6 +130,44 @@ test('health check keeps the documented machine-readable response', async () => 
   assert.deepEqual(Object.keys(res.body), ['status']);
 });
 
+test('profile PATCH accepts palette, mode, and name-only updates with validation', async () => {
+  const validPatch = async (body) => {
+    const h = harness({ result: () => ({ data: { id: 'user-test' }, error: null }) });
+    const res = await h.call('patch', '/api/me', { body });
+    const query = h.queries.find((item) => item.table === 'users');
+    const update = query?.calls.find(([method]) => method === 'update')?.[1];
+    return { h, res, update };
+  };
+
+  const palette = await validPatch({ theme_palette: 'smrk' });
+  assert.equal(palette.res.statusCode, 200);
+  assert.deepEqual({ ...palette.update }, { theme_palette: 'smrk' });
+  assert.equal(
+    palette.h.queries[0].calls.find(([method]) => method === 'select')[1],
+    'id, name, theme_palette, theme_mode'
+  );
+
+  const mode = await validPatch({ theme_mode: 'dark' });
+  assert.equal(mode.res.statusCode, 200);
+  assert.deepEqual({ ...mode.update }, { theme_mode: 'dark' });
+
+  const invalidPalette = await validPatch({ theme_palette: 'violet' });
+  assert.equal(invalidPalette.res.statusCode, 400);
+  assert.equal(invalidPalette.res.body.error, 'Neplatný vzhled.');
+
+  const invalidMode = await validPatch({ theme_mode: 'automatic' });
+  assert.equal(invalidMode.res.statusCode, 400);
+  assert.equal(invalidMode.res.body.error, 'Neplatný vzhled.');
+
+  const empty = await validPatch({});
+  assert.equal(empty.res.statusCode, 400);
+  assert.equal(empty.res.body.error, 'Není co uložit.');
+
+  const name = await validPatch({ name: '  Ada  ' });
+  assert.equal(name.res.statusCode, 200);
+  assert.deepEqual({ ...name.update }, { name: 'Ada' });
+});
+
 test('empty and non-positive school id lists are rejected', async () => {
   for (const ids of ['', '1,', ',1', '0', '-2']) {
     const res = await harness().call('get', '/api/schools', { query: { ids } });
