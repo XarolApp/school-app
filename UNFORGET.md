@@ -13,6 +13,14 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
+## Structure scraped school-life details — 2026-09-24
+- **Found:** 2026-09-24, while adding queryable school-detail values derived from existing prose.
+- **Urgency:** Medium — matching cannot use these fields until columns are applied and values are extracted.
+- **Risk of fixing now:** Writes must wait for review of the 10-school dry-run; the script supports --force and should not be run broadly before that approval.
+- **Risk of NOT fixing:** the six values remain unavailable to matching.
+- **Effort:** Small — apply the six idempotent SQL statements, approve the dry-run, then run the extraction.
+- **Not done yet:** Opus review, applying the six columns, and approved data extraction; no live SQL or data writes were made.
+
 ## /skoly redesign (plan 013): untested checks + one founder call — 2026-09-24
 - **Found:** 2026-09-24, Claude review of plan 013 (`9d9026b`). The redesigned /skoly
   page is built and measured, but three of the plan's browser checks were never run.

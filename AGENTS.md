@@ -368,6 +368,7 @@ both working end to end).
 | `decision_profile` | one row per user: `jpz_points`, `jpz_source` (`nanecisto`/`ostra`) — the single score the risk analysis compares against. Deliberately one nullable number, no per-subject breakdown (data-minimization for minors) |
 | `shortlist_shares` | revocable read-only share tokens: `token`, `user_id`, `include_notes`, `revoked_at` — powers `/sdileni/:token`, the narrow "share shortlist with parents" feature. Not the broader full-account share link, which is deferred — see `UNFORGET.md` |
 | `school_ai_summary` | one row per school: cached `pros`/`cons` (jsonb), `model`, `data_fingerprint`. Written by `scripts/generate-school-proscons.js`, **not generated per request** — see plan 006 §1.3 for why |
+| `school_extracted_details` | one row per school: scraped prose plus nullable structured values. `scripts/extract-school-details.js --structure` derives six new fields from stored prose first, then cached markdown only for missing/non-answer text; it updates only those six columns and skips existing values unless `--force`. Apply its six additive SQL statements before real writes; extraction remains approval-gated after the 10-school dry run. |
 
 `schools.admission_cutoff` / `acceptance_rate` and every `school_programs` row
 come from `scripts/import-admission-data.js`, which parses Cermat's yearly

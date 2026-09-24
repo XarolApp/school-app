@@ -474,6 +474,15 @@ alter table public.school_extracted_details add column if not exists pripijimaci
 alter table public.school_extracted_details add column if not exists alternativni_pedagogika boolean;
 alter table public.school_extracted_details add column if not exists vyukovy_styl_detail text;
 
+-- Structured, queryable values derived from the stored free-text fields by
+-- scripts/extract-school-details.js --structure. Null means no explicit evidence.
+alter table public.school_extracted_details add column if not exists ma_jidelnu boolean;
+alter table public.school_extracted_details add column if not exists ma_koleje boolean;
+alter table public.school_extracted_details add column if not exists krouzky_kategorie text[];
+alter table public.school_extracted_details add column if not exists pocet_krouzku integer;
+alter table public.school_extracted_details add column if not exists vyukovy_styl_tagy text[];
+alter table public.school_extracted_details add column if not exists vs_pokracuje_pct numeric;
+
 alter table public.school_extracted_details enable row level security;
 -- No client policy — same reasoning as school_ai_summary: this is
 -- scraped/AI-derived school data, read only through server.js's service-role
