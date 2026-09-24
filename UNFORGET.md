@@ -1853,3 +1853,26 @@ Fold that fix into the redesign rather than patching it separately.
   `DEVELOPER_EMAILS` allowlist, auto-promotion to `subscription_status:
   'developer'` on first `/api/me` call); just needed a backend restart to pick
   up the `.env` addition.
+
+## Public-transit travel time to school (commute questions deferred until this exists) — 2026-09-24
+- **Found:** 2026-09-24, questionnaire brainstorm. "How far will you commute" and "do transit connections matter" were approved as good questions but cut from the first build: nothing in the app knows how long a bus/tram/metro ride to a school takes (`SchoolMap.jsx` only does straight-line radius).
+- **Urgency:** Medium — a real differentiator for a Prague school picker, but not a launch blocker.
+- **Effort:** Small — one-off precompute script + one lookup table.
+- **Plan (cheapest):** precompute a district×school matrix instead of live per-user routing. 22 správní obvody (`lib/pragueDistricts.js`) × 223 schools = 4,906 elements, fixed weekday arrival ~7:30. Google Routes API `computeRouteMatrix` TRANSIT: 100 elements/request → ~50 requests; $5–10 per 1,000 elements with 5,000–10,000 free/month, so likely $0 (verify which tier transit bills under). Store minutes in a table, score by time bucket. Re-run each December when PID timetables change.
+- **Check first:** Google Maps ToS restricts storing/caching API results beyond a short window — confirm before persisting durations. Fallback with no such restriction: OpenTripPlanner self-hosted on PID's open GTFS (free data, costs hosting), or Golemio API.
+- **Not done yet:** everything above; no questions were added to the questionnaire for this.
+
+## Open-ended "Ještě něco bys dodal?" question — decide how (or whether) to use it — 2026-09-24
+- **Found:** 2026-09-24, questionnaire rebuild brainstorm. The founder wants a free-text last question ("Ještě něco bys dodal?") but it is undecided what the answer would DO.
+- **Urgency:** Low — the questionnaire works without it; decide before building the new question set, not before launch.
+- **Effort:** Small if display-only, Medium if it feeds scoring.
+- **Options to decide between:** (a) store and show it back to the student only; (b) pass it to the AI explanation sentence as extra context (cheap, no scoring impact); (c) have the AI parse it into structured preferences/weights (powerful, but the AI would then influence numbers, which contradicts the "AI explains, never scores" rule in CLAUDE.md); (d) drop the question.
+- **Constraints to remember:** free text from 14–15-year-olds is personal data of minors (GDPR minimisation, retention, deletion on account erasure); needs a length cap and a prompt-injection-safe way into any AI call; the same text would feed every future rerun.
+- **Not done yet:** the decision itself.
+
+## Offer a "fast questionnaire" and a "full questionnaire" — 2026-09-24
+- **Found:** 2026-09-24, same session. With the question list growing well past the current ~10, a short path and a long path are wanted.
+- **Urgency:** Medium — decide together with the weighted-questions redesign, since which questions are "fast" depends on which ones carry the most weight.
+- **Effort:** Medium.
+- **To decide:** which questions belong in the fast version (likely the ones that most change the ranking: school type, interests, location, and any weight-setting questions); whether a fast run can be upgraded to a full one later without starting over; how results show lower confidence for a fast run (the scorer already drops unanswered components and renormalises weights, so a skip never lowers a score, but the ranking is less differentiated); and whether the onboarding quiz, `/dotaznik` or both get the choice.
+- **Not done yet:** everything above.
