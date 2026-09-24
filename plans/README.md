@@ -21,6 +21,7 @@ codebase audit (see "Not audited" below).
 | 008 | [Save onboarding quiz answers to the account](../archive/plans/008-save-onboarding-answers.md) | HIGH | M | Medium | DONE |
 | 009 | [Stripe payments — both plans, real money](009-stripe-payments.md) | HIGH | L | High | CODE DONE — untested |
 | 012 | [Consolidate the existing UI system](012-ui-system-consolidation.md) | HIGH | M–L | Medium | PROPOSED — awaiting approval |
+| 013 | [`/skoly` redesign: one calm, scannable list](013-skoly-calm-list.md) | HIGH | M–L | Medium | APPROVED — ready for Codex build |
 
 > **012** was added 2026-09-21 through `/codex-plan-then-build`, following a running-browser audit of search, school detail and auth, with source-only coverage of signed-in settings/dialogs. It improves the existing UI without changing colors or installing shadcn/Tailwind. Its scope and status are independent of the historical audit below; that older status table has not been re-audited here.
 
