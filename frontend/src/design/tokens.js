@@ -9,16 +9,15 @@
  * anything in `onboarding.css`. It CAN import a plain JS module.
  *
  * So every colour, size, radius and font lives here as plain data. The web app
- * derives its CSS custom properties from this file (see `applyTokens` below and
+ * derives its CSS custom properties from this file (see `gen-tokens-css.mjs` and
  * `design/tokens.css`), and a future React Native app imports the same objects
  * into `StyleSheet.create()`. One source of truth, two renderers.
  *
  * RULES:
  *   - Never hardcode a colour or radius in a component or in CSS. Add it here.
- *   - Keep every value a primitive (string/number). No CSS-only syntax such as
- *     `calc()`, `var()`, media queries or multi-value shadows in the *palette*
- *     objects — React Native cannot parse those. Web-only values are isolated
- *     in `webOnly` at the bottom and must not be imported by the app.
+ *   - Keep palette values as primitive strings/numbers. `shadow` is the
+ *     specified CSS shadow string; React Native should map it to native shadow
+ *     properties rather than importing the CSS representation.
  *
  * Source: Claude Design project "Seven-screen system launch" (2026-08-24).
  * Full extraction notes + the list of mockup claims we deliberately did NOT
@@ -26,19 +25,10 @@
  */
 
 // --- Typography --------------------------------------------------------------
-// Lora (serif) for headings, Public Sans (sans) for body/UI.
-// Both OFL-licensed via Google Fonts, both carry full Czech diacritics.
-// On React Native these become the loaded font-family names; the fallback
-// stacks below are web-only and are appended in tokens.css, not here.
-//
-// Changed from Fraunces 2026-09-05: Fraunces' J is a stylized swash-like
-// curl by design (its wonky, characterful serif is the point of the
-// typeface), not a rendering default that a size/axis tweak can fix — it
-// looks that way at every optical size and weight. Lora keeps the same
-// warm, editorial serif register but with conventional letterforms.
+// Archivo Narrow headings, Archivo body/UI. Both carry Czech diacritics.
 export const fonts = {
-  heading: 'Lora',
-  body: 'Public Sans',
+  heading: 'Archivo Narrow',
+  body: 'Archivo',
   mono: 'ui-monospace',
 };
 
@@ -51,8 +41,7 @@ export const fonts = {
  * converted to px, since an em value means something different at every
  * font-size. A tracking of exactly 0 is stored as the number 0.
  *
- * `variation` (SOFT/opsz) was Fraunces-specific optical-axis tuning; Lora has
- * no such axes, so those fields are gone rather than kept as dead no-ops.
+ * No font-specific optical-axis fields are needed for Archivo Narrow or Archivo.
  */
 export const type = {
   display: { size: 72, lineHeight: 1.06, weight: '600', tracking: '-0.02em', family: 'heading' },
@@ -69,91 +58,33 @@ export const type = {
   dataSm: { size: 13, lineHeight: 1.4, weight: '500', tracking: 0, family: 'body' },
 };
 
-// --- Palette -----------------------------------------------------------------
-/**
- * Light theme — the warm-paper palette from design/DESIGN.md → Colour.
- *
- * Every neutral carries a small warm chroma; **none is R=G=B, and neither
- * `#FFFFFF` nor `#000000` appears anywhere** (DESIGN.md → Do/Don't, explicit).
- * The evidence behind the warmth is Rello & Bigham (ASSETS 2017, n=341): warm
- * backgrounds measured significantly faster to read than cool ones. That is a
- * readability finding and is cited for nothing more.
- *
- * The three-step surface scale maps onto DESIGN.md's two named paper values
- * exactly as that file defines them — "Surface is the page and any raised
- * content; Neutral sits a half-step down for cards and rows":
- *
- *   bg       #FAF6EF  Surface — the page
- *   surface  #FAF6EF  Surface — raised content (same value on purpose)
- *   surface2 #F1ECE3  Neutral — rows, wells, recessed fills
- *
- * `surface` deliberately does NOT sit lighter than `bg`. Raised content is
- * separated by a hairline, not by a brighter fill — DESIGN.md → Elevation
- * ("hairline over shadow"; borders do the structural work). Lifting it would
- * mean inventing a paper value the system does not have, and the only value
- * above Surface is white, which the system forbids.
- *
- * Accent is terracotta (#AD4F2A), match-strength green is moss (#4F7143).
- * `accentInk` is Surface rather than white for the same no-pure-white reason;
- * it holds ~5.3:1 on the terracotta fill.
- */
-export const light = {
-  bg: '#FAF6EF',
-  surface: '#FAF6EF',
-  surface2: '#F1ECE3',
-  ink: '#221A13',
-  ink2: '#6B6259',
-  ink3: '#756B5C',
-  line: '#E6DFD1',
-  line2: '#D6CBB6',
-  accent: '#AD4F2A',
-  accentInk: '#FAF6EF',
-  accentSoft: '#F6E3D6',
-  accentLine: '#DFA98C',
-  ok: '#4F7143',
-  okSoft: '#E6EDDE',
-  danger: '#7A3020',
-  dangerSoft: '#F5E2DC',
-  board: '#EFE9DC',
-  frost: 'rgba(250,246,239,0.82)',
-  glow: 'rgba(173,79,42,0.12)',
+// Values and the rules every theme must satisfy: design/DESIGN.md → Colors →
+// Themes. Contrast verified for all 8 combinations 2026-09-24; don't edit
+// values without re-running the pairs listed there.
+export const palettes = {
+  znacka: {
+    light: { bg:'#F5F6F7', surface:'#F5F6F7', surface2:'#EAEDEF', ink:'#15191E', ink2:'#4B525B', ink3:'#5F6670', line:'#DCE0E4', line2:'#C4CBD2', accent:'#1C58A3', accentInk:'#F5F6F7', accentSoft:'#E1EAF6', accentLine:'#8FB0DA', ok:'#2C7340', okSoft:'#E0EFE3', danger:'#B0271F', dangerSoft:'#F7E1DF', board:'#E6EAED', frost:'rgba(245,246,247,0.82)', glow:'rgba(28,88,163,0.12)', shadow:'0 1px 2px rgba(21,25,30,.05), 0 18px 40px -20px rgba(21,25,30,.18)' },
+    dark:  { bg:'#131518', surface:'#1A1D21', surface2:'#22262B', ink:'#E7EAEE', ink2:'#B8BFC8', ink3:'#939BA5', line:'#2A2F35', line2:'#3A4047', accent:'#7FA8E6', accentInk:'#10151C', accentSoft:'#1D2B3F', accentLine:'#3F5F8C', ok:'#7DC08E', okSoft:'#1B2E21', danger:'#EE8A80', dangerSoft:'#3A1F1C', board:'#0E1012', frost:'rgba(26,29,33,0.78)', glow:'rgba(127,168,230,0.15)', shadow:'0 1px 2px rgba(14,16,18,.40), 0 18px 40px -20px rgba(14,16,18,.60)' },
+  },
+  smrk: {
+    light: { bg:'#F3F5F2', surface:'#F3F5F2', surface2:'#E6ECE7', ink:'#14201A', ink2:'#475650', ink3:'#5C6A63', line:'#D7DFD9', line2:'#BFCAC2', accent:'#1D5842', accentInk:'#F3F5F2', accentSoft:'#DAE9E0', accentLine:'#8DB5A2', ok:'#855A13', okSoft:'#F4E7CF', danger:'#9A2E22', dangerSoft:'#F4DFDA', board:'#E3E9E4', frost:'rgba(243,245,242,0.82)', glow:'rgba(29,88,66,0.12)', shadow:'0 1px 2px rgba(20,32,26,.05), 0 18px 40px -20px rgba(20,32,26,.18)' },
+    dark:  { bg:'#0F1613', surface:'#151E1A', surface2:'#1C2722', ink:'#E3EAE5', ink2:'#AEBBB3', ink3:'#8E9C95', line:'#243029', line2:'#344239', accent:'#86C2A5', accentInk:'#0F1613', accentSoft:'#1A3027', accentLine:'#3E6B57', ok:'#E1B770', okSoft:'#33291A', danger:'#E9907F', dangerSoft:'#3A201B', board:'#0A0F0D', frost:'rgba(21,30,26,0.78)', glow:'rgba(134,194,165,0.15)', shadow:'0 1px 2px rgba(10,15,13,.40), 0 18px 40px -20px rgba(10,15,13,.60)' },
+  },
+  zvyraznovac: {
+    light: { bg:'#FAFAF8', surface:'#FAFAF8', surface2:'#EFEEEA', ink:'#151412', ink2:'#4E4B45', ink3:'#6A675F', line:'#E3E1DA', line2:'#CDCAC0', accent:'#151412', accentInk:'#FAFAF8', accentSoft:'#FBEFB8', accentLine:'#D9B52E', ok:'#6B5300', okSoft:'#F9E27E', danger:'#B3301D', dangerSoft:'#F8E0DA', board:'#ECEBE6', frost:'rgba(250,250,248,0.82)', glow:'rgba(246,207,63,0.25)', shadow:'0 1px 2px rgba(21,20,18,.05), 0 18px 40px -20px rgba(21,20,18,.18)' },
+    dark:  { bg:'#161512', surface:'#1D1B18', surface2:'#25231F', ink:'#F0EDE5', ink2:'#BDB8AD', ink3:'#9C978E', line:'#2D2A25', line2:'#3D3A33', accent:'#F6CF3F', accentInk:'#161512', accentSoft:'#3A3217', accentLine:'#8C7628', ok:'#F6CF3F', okSoft:'#3A3217', danger:'#F0957F', dangerSoft:'#3B211B', board:'#100F0D', frost:'rgba(29,27,24,0.78)', glow:'rgba(246,207,63,0.15)', shadow:'0 1px 2px rgba(16,15,13,.40), 0 18px 40px -20px rgba(16,15,13,.60)' },
+  },
+  terakota: {
+    light: { bg:'#FAF6EF', surface:'#FAF6EF', surface2:'#F1ECE3', ink:'#221A13', ink2:'#6B6259', ink3:'#6F6557', line:'#E6DFD1', line2:'#D6CBB6', accent:'#AD4F2A', accentInk:'#FAF6EF', accentSoft:'#F6E3D6', accentLine:'#DFA98C', ok:'#4F7143', okSoft:'#E6EDDE', danger:'#7A3020', dangerSoft:'#F5E2DC', board:'#EFE9DC', frost:'rgba(250,246,239,0.82)', glow:'rgba(173,79,42,0.12)', shadow:'0 1px 2px rgba(34,26,19,.05), 0 18px 40px -20px rgba(34,26,19,.18)' },
+    dark:  { bg:'#17130E', surface:'#1F1911', surface2:'#2A2216', ink:'#F2ECE2', ink2:'#D8CFC2', ink3:'#B3A895', line:'#362C1E', line2:'#4A3D2B', accent:'#E08A5C', accentInk:'#17130E', accentSoft:'#3A2617', accentLine:'#7A5540', ok:'#8FB57E', okSoft:'#24301F', danger:'#C97F6A', dangerSoft:'#33201A', board:'#100D09', frost:'rgba(31,25,17,0.78)', glow:'rgba(224,138,92,0.15)', shadow:'0 1px 2px rgba(16,13,9,.40), 0 18px 40px -20px rgba(16,13,9,.60)' },
+  },
 };
 
-/**
- * Dark theme — DESIGN.md → Dark mode. A separate design, not an inversion:
- * chroma pulled down ~15–20%, nothing pure black, and elevation inverts
- * (raised surfaces get *lighter*, which is why `surface` > `bg` here while
- * they are equal in light).
- *
- * Accent, ok and danger are all lifted and desaturated — the light values
- * sink into a dark ground and stop reading as interactive.
- *
- * `ink2` and `line2` are the two values DESIGN.md's dark block does not name;
- * both are interpolated within its own ramp (ink2 between on-surface and
- * on-surface-faint, line2 a step above border) rather than carried over from
- * the retired cool palette.
- */
-export const dark = {
-  bg: '#17130E',
-  surface: '#1F1911',
-  surface2: '#2A2216',
-  ink: '#F2ECE2',
-  ink2: '#D8CFC2',
-  ink3: '#B3A895',
-  line: '#362C1E',
-  line2: '#4A3D2B',
-  accent: '#E08A5C',
-  accentInk: '#17130E',
-  accentSoft: '#3A2617',
-  accentLine: '#7A5540',
-  ok: '#8FB57E',
-  okSoft: '#24301F',
-  danger: '#C97F6A',
-  dangerSoft: '#33201A',
-  board: '#100D09',
-  frost: 'rgba(31,25,17,0.78)',
-  glow: 'rgba(224,138,92,0.15)',
-};
+export const PALETTE_IDS = ['znacka', 'smrk', 'zvyraznovac', 'terakota'];
+export const DEFAULT_PALETTE = 'znacka';
+// Back-compat for anything importing the old names (and the future RN app):
+export const light = palettes.znacka.light;
+export const dark = palettes.znacka.dark;
 
 // --- Geometry ----------------------------------------------------------------
 /** Spacing scale — matches design/system/tokens/spacing.css exactly (8pt grid). */
@@ -208,15 +139,9 @@ export const selection = {
  * RN needs its own elevation/shadow handling.
  */
 export const webOnly = {
-  fontStackHeading: "'Lora', Georgia, 'Times New Roman', serif",
-  fontStackBody: "'Public Sans', system-ui, 'Segoe UI', sans-serif",
+  fontStackHeading: "'Archivo Narrow', 'Arial Narrow', system-ui, sans-serif",
+  fontStackBody: "'Archivo', system-ui, 'Segoe UI', sans-serif",
   fontStackMono: 'ui-monospace, Consolas, monospace',
-  // Tinted with the theme's own near-black (#221A13 / #17130E) rather than a
-  // neutral or pure black — a cool grey shadow over warm paper greys the paper.
-  shadow: {
-    light: '0 1px 2px rgba(34,26,19,.05), 0 18px 40px -20px rgba(34,26,19,.18)',
-    dark: '0 1px 2px rgba(9,7,5,.5), 0 20px 44px -20px rgba(9,7,5,.75)',
-  },
 };
 
 // --- Web bridge --------------------------------------------------------------
@@ -229,11 +154,10 @@ export const webOnly = {
  * 1,200-line rewrite. The legacy aliases are a compatibility layer — prefer the
  * new names in anything you write from here on.
  *
- * @param {object} p one of `light` / `dark`
+ * @param {object} p one light or dark palette object
  * @returns {Record<string,string>}
  */
 export function cssVars(p) {
-  const isDark = p === dark;
   return {
     // new names
     '--bg': p.bg,
@@ -255,7 +179,7 @@ export function cssVars(p) {
     '--board': p.board,
     '--frost': p.frost,
     '--glow': p.glow,
-    '--shadow': isDark ? webOnly.shadow.dark : webOnly.shadow.light,
+    '--shadow': p.shadow,
 
     // legacy aliases consumed by existing CSS
     '--text': p.ink2,

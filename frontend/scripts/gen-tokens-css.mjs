@@ -1,54 +1,58 @@
 /**
  * Generates src/design/tokens.css from src/design/tokens.js.
  *
- * tokens.js is the single source of truth (it is the file a future React Native
- * app imports). This script projects it into CSS custom properties for the web
- * app, so the two can never drift.
- *
- * Run after changing any token:   npm run tokens
+ * tokens.js is the single source of truth for the four palettes and their two
+ * modes. Run after changing any token: npm run tokens
  */
 import { writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
-import { light, dark, cssVarsText, staticVarsText } from '../src/design/tokens.js';
+import {
+  DEFAULT_PALETTE,
+  PALETTE_IDS,
+  palettes,
+  cssVarsText,
+  staticVarsText,
+} from '../src/design/tokens.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const out = resolve(here, '../src/design/tokens.css');
+const indent = (text, spaces = 2) => text.split('\n').map((line) => line ? `${' '.repeat(spaces)}${line}` : '').join('\n');
+const paletteIds = PALETTE_IDS.filter((id) => id !== DEFAULT_PALETTE);
+const lightRules = paletteIds.map((id) =>
+  `:root[data-palette='${id}'] {\n${cssVarsText(palettes[id].light)}\n}`
+).join('\n\n');
+const systemDarkRules = PALETTE_IDS.map((id) => {
+  const selector = id === DEFAULT_PALETTE
+    ? ":root:not([data-theme='light'])"
+    : `:root[data-palette='${id}']:not([data-theme='light'])`;
+  return `${selector} {\n  color-scheme: dark;\n${indent(cssVarsText(palettes[id].dark), 2)}\n}`;
+}).join('\n\n');
+const explicitDarkRules = PALETTE_IDS.map((id) => {
+  const selector = id === DEFAULT_PALETTE
+    ? ":root[data-theme='dark']"
+    : `:root[data-palette='${id}'][data-theme='dark']`;
+  return `${selector} {\n  color-scheme: dark;\n${cssVarsText(palettes[id].dark)}\n}`;
+}).join('\n\n');
 
 const css = `/* AUTO-GENERATED from src/design/tokens.js — do not edit by hand.
- * Regenerate with:  npm run tokens
- *
- * Both new token names and the legacy aliases the existing stylesheets consume
- * are emitted here, so onboarding.css / App.css pick up the palette unchanged.
- *
- * Theme-independent tokens (spacing, layout, type) come from staticVarsText()
- * and are emitted ONCE in the first :root block, not per palette/theme block —
- * they don't vary by light/dark.
+ * Regenerate with: npm run tokens
+ * Theme-independent tokens are emitted once in the first :root block.
  */
 
 :root {
 ${staticVarsText()}
-${cssVarsText(light)}
+  color-scheme: light;
+${cssVarsText(palettes[DEFAULT_PALETTE].light)}
 }
+
+${lightRules}
 
 @media (prefers-color-scheme: dark) {
-  :root {
-${cssVarsText(dark)
-  .split('\n')
-  .map((l) => '  ' + l)
-  .join('\n')}
-  }
+${indent(systemDarkRules)}
 }
 
-/* Explicit override hooks — let a future in-app theme switch force a mode
-   regardless of the OS setting. */
-:root[data-theme='light'] {
-${cssVarsText(light)}
-}
-
-:root[data-theme='dark'] {
-${cssVarsText(dark)}
-}
+${explicitDarkRules}
 `;
 
 writeFileSync(out, css, 'utf8');

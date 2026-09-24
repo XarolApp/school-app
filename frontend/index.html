@@ -5,15 +5,26 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Design system faces: Lora (serif headings) + Public Sans (sans
-         body/UI), per DESIGN.md's Typography section. Lora replaces the
-         earlier Fraunces choice (2026-09-05): Fraunces' J is a deliberate
-         stylized swash/curl at every optical size and weight — a core part
-         of that typeface's identity, not a rendering default — and it read
-         as odd rather than characterful. Lora keeps the same warm, editorial
-         serif register with conventional letterforms. Both OFL, both carry
-         full Czech diacritics. Self-hosted through @fontsource (imported in
-         src/main.jsx) so no visitor IP is sent to Google. See src/design/tokens.js. -->
+    <script>
+      try {
+        const cached = JSON.parse(localStorage.getItem('skolamatch.theme') || 'null');
+        const palettes = ['znacka', 'smrk', 'zvyraznovac', 'terakota'];
+        const modes = ['system', 'light', 'dark'];
+        const palette = palettes.includes(cached?.palette) ? cached.palette : 'znacka';
+        const mode = modes.includes(cached?.mode) ? cached.mode : 'system';
+        if (palette === 'znacka') document.documentElement.removeAttribute('data-palette');
+        else document.documentElement.setAttribute('data-palette', palette);
+        if (mode === 'system') document.documentElement.removeAttribute('data-theme');
+        else document.documentElement.setAttribute('data-theme', mode);
+      } catch {}
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;600;700&family=Archivo:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
     <title>ŠkolaMatch</title>
   </head>
