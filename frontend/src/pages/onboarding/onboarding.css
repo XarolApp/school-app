@@ -1757,11 +1757,7 @@
    structural differences — the Cesta rail rotates to horizontal, and the
    single column splits into main + side.
 
-   Colours and radii are tokens only. The mockups inline hex values are the
-   current token values (they were colour-matched during design), so they map
-   1:1: #FAF6EF --bg, #F1ECE3 --surface2, #221A13 --ink, #6B6259 --ink2,
-   #E6DFD1 --line, #D6CBB6 --line2, #AD4F2A --acc, #F6E3D6 --acc-soft,
-   #DFA98C --acc-line, #4F7143 --ok, #E6EDDE --ok-soft.
+   Colours and radii come from design tokens only.
    =========================================================================== */
 .ob-pw {
   display: flex;
@@ -1834,7 +1830,7 @@
 .ob-pw-card.is-raised {
   border: 2px solid var(--acc);
   background: var(--acc-soft);
-  box-shadow: 0 6px 18px rgba(34, 26, 19, 0.07);
+  box-shadow: var(--shadow);
 }
 
 .ob-pw-caps {
@@ -2153,7 +2149,7 @@
 .ob-pw-plan.is-selected {
   border-color: var(--acc);
   background: var(--acc-soft);
-  box-shadow: 0 6px 18px rgba(34, 26, 19, 0.07);
+  box-shadow: var(--shadow);
 }
 
 /* Overlaps the card border on purpose so it reads as attached to this plan

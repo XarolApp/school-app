@@ -819,7 +819,7 @@
   background: var(--surface);
   border: 1px solid var(--line2);
   border-radius: var(--r-chip);
-  box-shadow: 0 4px 16px rgba(34, 26, 19, 0.15);
+  box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
   padding: 4px;

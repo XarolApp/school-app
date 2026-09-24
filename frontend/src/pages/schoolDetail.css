@@ -182,7 +182,7 @@
   border-radius: var(--r-chip);
   border: 1px solid var(--line);
   background: var(--surface);
-  box-shadow: 0 4px 16px rgba(34, 26, 19, 0.15);
+  box-shadow: var(--shadow);
   font-family: var(--sans);
   font-size: var(--fs-caption);
   line-height: var(--lh-caption);

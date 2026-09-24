@@ -1024,7 +1024,7 @@
   border-radius: var(--r-chip);
   border: 1px solid var(--border-strong);
   background: var(--surface);
-  box-shadow: 0 4px 16px rgba(34, 26, 19, 0.15);
+  box-shadow: var(--shadow);
   font-size: var(--fs-caption);
   line-height: var(--lh-caption);
   font-weight: 400;
@@ -1447,7 +1447,7 @@
   position: sticky;
   bottom: 0;
   font-variant-numeric: tabular-nums;
-  box-shadow: 0 6px 20px rgba(34, 26, 19, 0.16);
+  box-shadow: var(--shadow);
 }
 .ss-mobile-commit:focus-visible {
   outline: 2px solid var(--acc);

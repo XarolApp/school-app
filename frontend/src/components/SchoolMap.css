@@ -63,7 +63,7 @@
   background: var(--surface);
   border: 1.5px solid var(--border-strong);
   color: var(--on-surface);
-  box-shadow: 0 2px 6px rgba(34, 26, 19, 0.12);
+  box-shadow: var(--shadow);
   white-space: nowrap;
   max-width: 150px;
   text-overflow: ellipsis;
@@ -90,7 +90,7 @@
 .sm-pin.is-selected {
   background: var(--primary);
   border-color: var(--primary);
-  box-shadow: 0 4px 12px rgba(173, 79, 42, 0.35);
+  box-shadow: var(--shadow);
 }
 .sm-pin.is-selected .sm-pin-name,
 .sm-pin.is-selected .sm-pin-pct {
@@ -107,7 +107,7 @@
   background: var(--surface);
   border: 2px solid var(--primary);
   font-size: 16px;
-  box-shadow: 0 3px 10px rgba(34, 26, 19, 0.2);
+  box-shadow: var(--shadow);
   transform: translate(-50%, -50%);
 }
 
@@ -127,7 +127,7 @@
   justify-content: center;
   color: var(--on-surface);
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(34, 26, 19, 0.1);
+  box-shadow: var(--shadow);
 }
 .sm-fullscreen-btn:hover {
   background: var(--surface-card);
@@ -146,7 +146,7 @@
   border: 1px solid var(--border-strong);
   border-radius: var(--r-card);
   padding: var(--space-sm);
-  box-shadow: 0 2px 8px rgba(34, 26, 19, 0.1);
+  box-shadow: var(--shadow);
   max-height: calc(100% - 2 * var(--space-md));
   overflow-y: auto;
 }
@@ -187,7 +187,7 @@
   color: var(--text-faint);
 }
 .sm-address-error {
-  color: var(--danger, #b3402a);
+  color: var(--danger);
 }
 
 .sm-radius-control {
@@ -244,7 +244,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
-  box-shadow: 0 6px 20px rgba(34, 26, 19, 0.18);
+  box-shadow: var(--shadow);
 }
 .sm-card-head {
   display: flex;
