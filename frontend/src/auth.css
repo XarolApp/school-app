@@ -487,6 +487,145 @@
   border: 0;
 }
 
+.settings-theme-group {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.settings-theme-group + .settings-theme-group {
+  margin-top: var(--space-md);
+}
+
+.settings-theme-group legend {
+  margin-bottom: var(--space-sm);
+  padding: 0;
+}
+
+.theme-palette-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-sm);
+}
+
+.theme-palette-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line2);
+  border-radius: var(--r-option);
+  cursor: pointer;
+}
+
+.theme-palette-card:has(input:checked) {
+  background: var(--acc-soft);
+  border: 1.5px solid var(--acc);
+}
+
+.theme-palette-card:has(input:focus-visible),
+.settings-theme-mode-control label:has(input:focus-visible) {
+  outline: 2px solid var(--acc);
+  outline-offset: 2px;
+}
+
+.theme-palette-copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  min-width: 0;
+}
+
+.theme-palette-name {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  color: var(--ink);
+  font-size: var(--fs-label-md);
+  font-weight: var(--fw-label-md);
+  line-height: var(--lh-label-md);
+}
+
+.theme-palette-name svg {
+  flex: none;
+  color: var(--acc);
+}
+
+.theme-palette-description {
+  color: var(--ink2);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+}
+
+.theme-palette-preview {
+  display: flex;
+  flex: none;
+  gap: var(--space-xs);
+}
+
+.theme-palette-swatch {
+  display: block;
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+}
+
+.theme-palette-swatch-ok {
+  display: grid;
+  place-items: center;
+}
+
+.theme-palette-swatch-dot {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.settings-theme-mode-control {
+  display: flex;
+  width: fit-content;
+  max-width: 100%;
+  height: 36px;
+  border: 1px solid var(--line2);
+  border-radius: var(--r-chip);
+  overflow: hidden;
+}
+
+.settings-theme-mode-control label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xs) var(--space-md);
+  color: var(--ink);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.settings-theme-mode-control label.is-active {
+  color: var(--surface);
+  background: var(--ink);
+}
+
+.settings-theme-hint {
+  margin-top: var(--space-xs);
+  color: var(--ink3);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+}
+
+@media (max-width: 599px) {
+  .theme-palette-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Narrow: put a row's action under its value instead of squeezing it beside a
    long e-mail address. */
 @media (max-width: 480px) {

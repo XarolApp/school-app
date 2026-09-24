@@ -1,13 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Check } from 'lucide-react';
 import { useAuth } from '../components/AuthContext';
 import Captcha, { captchaEnabled } from '../components/Captcha';
 import PasswordInput from '../components/PasswordInput';
 import PasswordStrength from '../components/PasswordStrength';
 import { useToast } from '../components/ToastContext';
-import { deleteAccount, cancelSubscription, withdrawFromContract, redeemBetaCode } from '../api';
+import { deleteAccount, cancelSubscription, withdrawFromContract, redeemBetaCode, updateProfile } from '../api';
 import { getPlan } from '../config/pricing';
 import { supabase, getRememberMe, setRememberMe } from '../supabaseClient';
+import { DEFAULT_PALETTE, PALETTE_IDS, palettes } from '../design/tokens';
+import { applyTheme, MODES, readCachedTheme } from '../lib/theme';
 
 const SUBSCRIPTION_LABELS = {
   trialing: 'Zkušební období',
@@ -19,6 +22,19 @@ const SUBSCRIPTION_LABELS = {
   developer: 'Vývojářský účet',
   beta: 'Beta tester',
 };
+
+const THEME_PALETTE_COPY = {
+  znacka: { name: 'Značka', description: 'Modrá jako turistická značka. Výchozí.' },
+  smrk: { name: 'Smrk', description: 'Tmavě zelená, klidná.' },
+  zvyraznovac: { name: 'Zvýrazňovač', description: 'Černá a žlutá jako zvýrazňovač.' },
+  terakota: { name: 'Terakota', description: 'Teplá cihlová, původní barvy ŠkolaMatch.' },
+};
+
+const THEME_MODE_COPY = [
+  { id: 'system', label: 'Podle zařízení' },
+  { id: 'light', label: 'Světlý' },
+  { id: 'dark', label: 'Tmavý' },
+];
 
 const formatCzDateLong = (iso) =>
   new Date(iso).toLocaleDateString('cs-CZ', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -78,6 +94,53 @@ function Settings() {
   const [betaCode, setBetaCode] = useState('');
   const [betaBusy, setBetaBusy] = useState(false);
   const [betaError, setBetaError] = useState(null);
+
+  const [cachedTheme] = useState(readCachedTheme);
+  const profileTheme = {
+    palette: PALETTE_IDS.includes(profile?.theme_palette) ? profile.theme_palette : cachedTheme.palette,
+    mode: MODES.includes(profile?.theme_mode) ? profile.theme_mode : cachedTheme.mode,
+  };
+  const [themePalette, setThemePalette] = useState(() => profileTheme.palette);
+  const [themeMode, setThemeMode] = useState(() => profileTheme.mode);
+  const [systemMode, setSystemMode] = useState(() =>
+    window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  );
+  const savedThemeRef = useRef(profileTheme);
+  const chosenThemeRef = useRef(profileTheme);
+  const themeChangeRevisionRef = useRef(0);
+  const themeSaveQueueRef = useRef(Promise.resolve());
+  const profileIdRef = useRef(profile?.id ?? null);
+
+  useEffect(() => {
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+    const updateSystemMode = () => setSystemMode(media.matches ? 'dark' : 'light');
+    updateSystemMode();
+    media.addEventListener('change', updateSystemMode);
+    return () => media.removeEventListener('change', updateSystemMode);
+  }, []);
+
+  useEffect(() => {
+    if (!profile) return;
+    const nextTheme = {
+      palette: PALETTE_IDS.includes(profile.theme_palette) ? profile.theme_palette : DEFAULT_PALETTE,
+      mode: MODES.includes(profile.theme_mode) ? profile.theme_mode : 'system',
+    };
+
+    if (profile.id !== profileIdRef.current) {
+      profileIdRef.current = profile.id;
+      themeChangeRevisionRef.current = 0;
+      themeSaveQueueRef.current = Promise.resolve();
+      savedThemeRef.current = nextTheme;
+      chosenThemeRef.current = nextTheme;
+      setThemePalette(nextTheme.palette);
+      setThemeMode(nextTheme.mode);
+    } else if (themeChangeRevisionRef.current === 0) {
+      savedThemeRef.current = nextTheme;
+      chosenThemeRef.current = nextTheme;
+      setThemePalette(nextTheme.palette);
+      setThemeMode(nextTheme.mode);
+    }
+  }, [profile, profile?.id, profile?.theme_palette, profile?.theme_mode]);
 
   if (loading) {
     return (
@@ -247,6 +310,7 @@ function Settings() {
 
   const status = profile?.subscription_status;
   const statusLabel = SUBSCRIPTION_LABELS[status] || 'Neznámý stav';
+  const effectiveMode = themeMode === 'system' ? systemMode : themeMode;
 
   // A cancel button is only meaningful when there is something Stripe would
   // otherwise keep billing: a recurring monthly plan, or a season pass still
@@ -294,6 +358,51 @@ function Settings() {
     } finally {
       setBetaBusy(false);
     }
+  };
+
+  const saveThemePreference = (field, value) => {
+    const revision = themeChangeRevisionRef.current + 1;
+    themeChangeRevisionRef.current = revision;
+    const nextTheme = { ...chosenThemeRef.current, [field]: value };
+    chosenThemeRef.current = nextTheme;
+    setThemePalette(nextTheme.palette);
+    setThemeMode(nextTheme.mode);
+    applyTheme(nextTheme.palette, nextTheme.mode);
+
+    const save = themeSaveQueueRef.current.catch(() => {}).then(async () => {
+      try {
+        const updated = await updateProfile(
+          field === 'palette' ? { themePalette: value } : { themeMode: value }
+        );
+        const saved = savedThemeRef.current;
+        savedThemeRef.current = {
+          palette: PALETTE_IDS.includes(updated?.theme_palette) ? updated.theme_palette : saved.palette,
+          mode: MODES.includes(updated?.theme_mode) ? updated.theme_mode : saved.mode,
+        };
+
+        if (revision !== themeChangeRevisionRef.current) return;
+        chosenThemeRef.current = { ...savedThemeRef.current };
+        setThemePalette(chosenThemeRef.current.palette);
+        setThemeMode(chosenThemeRef.current.mode);
+        await refreshProfile();
+        if (revision !== themeChangeRevisionRef.current) {
+          applyTheme(chosenThemeRef.current.palette, chosenThemeRef.current.mode);
+        }
+      } catch {
+        if (revision !== themeChangeRevisionRef.current) return;
+        const saved = { ...savedThemeRef.current };
+        chosenThemeRef.current = saved;
+        setThemePalette(saved.palette);
+        setThemeMode(saved.mode);
+        applyTheme(saved.palette, saved.mode);
+        toast('Vzhled se nepodařilo uložit. Zkus to prosím znovu.', { type: 'error' });
+        await refreshProfile();
+        if (revision !== themeChangeRevisionRef.current) {
+          applyTheme(chosenThemeRef.current.palette, chosenThemeRef.current.mode);
+        }
+      }
+    });
+    themeSaveQueueRef.current = save;
   };
 
   const handleWithdraw = async () => {
@@ -469,6 +578,84 @@ function Settings() {
               </div>
             </div>
           )}
+        </section>
+
+        {/* --- Vzhled ---------------------------------------------------- */}
+        <section className="panel panel-lg settings-section">
+          <div className="settings-section-head">
+            <h2 className="settings-section-title">Vzhled</h2>
+            <p className="settings-section-text">
+              Barvy a režim se uloží k tvému účtu, takže je uvidíš na každém zařízení.
+            </p>
+          </div>
+
+          <fieldset className="settings-theme-group">
+            <legend className="field-label">Barvy</legend>
+            <div className="theme-palette-grid">
+              {PALETTE_IDS.map((id) => {
+                const colors = palettes[id][effectiveMode];
+                const copy = THEME_PALETTE_COPY[id];
+                const selected = themePalette === id;
+                return (
+                  <label className="theme-palette-card" key={id}>
+                    <input
+                      className="sr-only"
+                      type="radio"
+                      name="theme-palette"
+                      value={id}
+                      checked={selected}
+                      onChange={() => saveThemePreference('palette', id)}
+                    />
+                    <span className="theme-palette-copy">
+                      <span className="theme-palette-name">
+                        {copy.name}
+                        {selected && <Check size={16} aria-hidden="true" />}
+                      </span>
+                      <span className="theme-palette-description">{copy.description}</span>
+                    </span>
+                    <span className="theme-palette-preview" aria-hidden="true">
+                      <span
+                        className="theme-palette-swatch"
+                        style={{ backgroundColor: colors.bg, border: `1px solid ${colors.line2}` }}
+                      />
+                      <span
+                        className="theme-palette-swatch"
+                        style={{ backgroundColor: colors.accent }}
+                      />
+                      <span
+                        className="theme-palette-swatch theme-palette-swatch-ok"
+                        style={{ backgroundColor: colors.okSoft }}
+                      >
+                        <span className="theme-palette-swatch-dot" style={{ backgroundColor: colors.ok }} />
+                      </span>
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
+          </fieldset>
+
+          <fieldset className="settings-theme-group">
+            <legend className="field-label">Režim</legend>
+            <div className="settings-theme-mode-control" role="radiogroup" aria-label="Režim">
+              {THEME_MODE_COPY.map(({ id, label }) => (
+                <label className={themeMode === id ? 'is-active' : ''} key={id}>
+                  <input
+                    className="sr-only"
+                    type="radio"
+                    name="theme-mode"
+                    value={id}
+                    checked={themeMode === id}
+                    onChange={() => saveThemePreference('mode', id)}
+                  />
+                  {label}
+                </label>
+              ))}
+            </div>
+            <p className="settings-theme-hint">
+              „Podle zařízení“ se řídí nastavením telefonu nebo počítače.
+            </p>
+          </fieldset>
         </section>
 
         {/* --- Zabezpečení ----------------------------------------------- */}
