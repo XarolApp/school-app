@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search as SearchIcon, X, SlidersHorizontal } from 'lucide-react';
+import { Search as SearchIcon, X, SlidersHorizontal, ChevronDown } from 'lucide-react';
 import { fetchSchools, fetchFavorites } from '../api';
 import {
   buildIndex,
@@ -18,7 +18,14 @@ import { useAuth } from '../components/AuthContext';
 import FavoriteButton from '../components/FavoriteButton';
 import SchoolMap from '../components/SchoolMap';
 import StatInfo from '../components/StatInfo';
-import SearchFilters from '../components/SearchFilters';
+import SearchFilters, {
+  AdmissionsGroup,
+  DistrictGroup,
+  FieldGroup,
+  TypGroup,
+  UkonceniGroup,
+} from '../components/SearchFilters';
+import FilterPopover from '../components/FilterPopover';
 import Modal from '../components/Modal';
 import AsyncState from '../components/AsyncState';
 import useMediaQuery from '../lib/useMediaQuery';
@@ -253,17 +260,19 @@ function Search() {
   const [currentPage, setCurrentPage] = useState(1);
   const [view, setView] = useState('list'); // 'list' | 'map'
   const [selectedMapId, setSelectedMapId] = useState(null);
-  const [filterOpen, setFilterOpen] = useState(false);
+  const [sheet, setSheet] = useState(null);
+  const [openPopover, setOpenPopover] = useState(null);
   const isMobile = useMediaQuery('(max-width: 860px)');
   const filterTriggerRef = useRef(null);
   const filterReturnRef = useRef(null);
+  const searchInputRef = useRef(null);
   const resultsHeadingRef = useRef(null);
   const pageRef = useRef(null);
   const compareBarRef = useRef(null);
-  // Crossing to desktop drops the sheet but keeps every filter value.
-  const sheetOpen = filterOpen && isMobile;
+
   useEffect(() => {
-    if (!isMobile) setFilterOpen(false);
+    if (isMobile) setOpenPopover(null);
+    else setSheet((current) => (current === 'all' ? current : null));
   }, [isMobile]);
 
   const { isSignedIn, hasAccess } = useAuth();
@@ -775,15 +784,6 @@ function Search() {
 
   useBottomBarSpace(compareBarRef, pageRef, selected.size > 0);
 
-  const openFilters = () => {
-    filterReturnRef.current = filterTriggerRef.current;
-    setFilterOpen(true);
-  };
-  const closeFilters = () => setFilterOpen(false);
-  const showResults = () => {
-    filterReturnRef.current = resultsHeadingRef.current;
-    setFilterOpen(false);
-  };
   const activeFacetCount = activeCriteriaCount - (hasQuery ? 1 : 0);
   const currentSort = sortOptions.find((o) => o.id === activeSort);
 
@@ -805,46 +805,187 @@ function Search() {
     />
   );
 
+  const filterGroups = [
+    {
+      id: 'fields',
+      label: 'Zaměření',
+      activeCount: filters.fields.length,
+      onClear: () => setPatch({ fields: [] }),
+      content: <FieldGroup fieldOptions={fieldOptions} toggleIn={toggleIn} />,
+    },
+    {
+      id: 'districts',
+      label: 'Městská část',
+      activeCount: filters.districts.length,
+      onClear: () => setPatch({ districts: [] }),
+      content: <DistrictGroup districtOptions={districtOptions} toggleIn={toggleIn} />,
+    },
+    {
+      id: 'ukonceni',
+      label: 'Maturita / výuční list',
+      activeCount: filters.ukonceni.length,
+      onClear: () => setPatch({ ukonceni: [] }),
+      content: (
+        <UkonceniGroup
+          filters={filters}
+          ukonceniOptions={ukonceniOptions}
+          toggleIn={toggleIn}
+          total={total}
+        />
+      ),
+    },
+    {
+      id: 'typ',
+      label: 'Typ školy',
+      activeCount: filters.typySkoly.length,
+      onClear: () => setPatch({ typySkoly: [] }),
+      content: <TypGroup typOptions={typOptions} toggleIn={toggleIn} />,
+    },
+    {
+      id: 'admissions',
+      label: 'Šance na přijetí',
+      activeCount: admissionsActiveCount,
+      onClear: () => setPatch({ cutoffMax: 100, acceptanceMin: 0, jpz: [] }),
+      content: (
+        <AdmissionsGroup
+          filters={filters}
+          setPatch={setPatch}
+          jpzOptions={jpzOptions}
+          toggleIn={toggleIn}
+        />
+      ),
+    },
+  ];
+  const activeSheetGroup = filterGroups.find((group) => group.id === sheet);
+
+  const openAllFilters = () => {
+    filterReturnRef.current = filterTriggerRef.current;
+    setSheet('all');
+  };
+  const openMobileFilter = (groupId, event) => {
+    filterReturnRef.current = event.currentTarget;
+    setSheet(groupId);
+  };
+  const closeFilters = () => setSheet(null);
+  const showResults = () => {
+    filterReturnRef.current = resultsHeadingRef.current ?? filterTriggerRef.current;
+    setSheet(null);
+  };
+
+  const allFiltersButton = (
+    <button
+      type="button"
+      ref={filterTriggerRef}
+      className={`ss-fbtn ss-fbtn-all${activeFacetCount > 0 ? ' is-set' : ''}`}
+      aria-expanded={sheet === 'all'}
+      aria-haspopup="dialog"
+      onClick={openAllFilters}
+    >
+      <SlidersHorizontal size={16} aria-hidden="true" />
+      {isMobile ? 'Filtry' : 'Všechny filtry'}
+      {activeFacetCount > 0 && <span className="ss-facet-badge">{activeFacetCount}</span>}
+    </button>
+  );
+
+  const mobileGroupButton = (group) => (
+    <button
+      key={group.id}
+      type="button"
+      className={`ss-fbtn${group.activeCount > 0 ? ' is-set' : ''}`}
+      aria-expanded={sheet === group.id}
+      aria-haspopup="dialog"
+      onClick={(event) => openMobileFilter(group.id, event)}
+    >
+      {group.label}
+      {group.activeCount > 0 && <span className="ss-facet-badge">{group.activeCount}</span>}
+      <span className={`ss-fbtn-chevron${sheet === group.id ? ' is-open' : ''}`} aria-hidden="true">
+        <ChevronDown size={14} />
+      </span>
+    </button>
+  );
+
+  const filterBar = (
+    <div className="ss-filterbar-scroll">
+      <div className="ss-filterbar">
+        {isMobile ? (
+          <>
+            {allFiltersButton}
+            {filterGroups.map(mobileGroupButton)}
+          </>
+        ) : (
+          <>
+            {filterGroups.map((group) => (
+              <FilterPopover
+                key={group.id}
+                id={group.id}
+                label={group.label}
+                activeCount={group.activeCount}
+                open={openPopover === group.id}
+                onOpenChange={(open) => setOpenPopover(open ? group.id : null)}
+                onClear={group.onClear}
+                resultCount={n}
+              >
+                {group.content}
+              </FilterPopover>
+            ))}
+            {allFiltersButton}
+          </>
+        )}
+      </div>
+    </div>
+  );
+
   return (
     <div className="school-search" ref={pageRef}>
       <h1 className="ss-headline-lg">Databáze škol</h1>
 
-      <div className="ss-search-input-wrap">
-        <SearchIcon aria-hidden="true" />
-        <input
-          type="search"
-          className="ss-search-input"
-          placeholder="Hledat podle názvu, oboru nebo KKOV kódu"
-          value={filters.query}
-          onChange={(e) => setPatch({ query: e.target.value })}
-          aria-label="Hledat školu"
-        />
+      <div className="ss-search-controls">
+        <div className="ss-search-input-wrap">
+          <SearchIcon aria-hidden="true" />
+          <input
+            ref={searchInputRef}
+            type="search"
+            className="ss-search-input"
+            placeholder="Název školy, obor nebo třeba „gympl“"
+            value={filters.query}
+            onChange={(e) => setPatch({ query: e.target.value })}
+            aria-label="Hledat školu"
+          />
+          {filters.query && (
+            <button
+              type="button"
+              className="ss-search-clear"
+              aria-label="Vymazat hledání"
+              onClick={() => {
+                setPatch({ query: '' });
+                searchInputRef.current?.focus();
+              }}
+            >
+              <X size={18} aria-hidden="true" />
+            </button>
+          )}
+        </div>
+
+        {filterBar}
       </div>
 
-      <div className="ss-layout">
-        {!isMobile && (
-          <aside className="ss-sidebar" id="ss-sidebar" aria-label="Filtry">
-            {filtersEl}
-          </aside>
-        )}
+      <Modal
+        open={sheet !== null}
+        title={sheet === 'all' ? 'Filtry' : activeSheetGroup?.label ?? 'Filtry'}
+        onDismiss={closeFilters}
+        returnFocusRef={filterReturnRef}
+        className="ss-filter-sheet"
+      >
+        <button type="button" className="ss-sheet-close" onClick={closeFilters} aria-label="Zavřít filtry">
+          <X size={20} aria-hidden="true" />
+        </button>
+        {sheet === 'all' ? filtersEl : activeSheetGroup?.content}
+        <button type="button" className="ss-mobile-commit" onClick={showResults}>
+          Zobrazit {n} {skol(n)}
+        </button>
+      </Modal>
 
-        <Modal
-          open={sheetOpen}
-          title="Filtry"
-          onDismiss={closeFilters}
-          returnFocusRef={filterReturnRef}
-          className="ss-filter-sheet"
-        >
-          <button type="button" className="ss-sheet-close" onClick={closeFilters} aria-label="Zavřít filtry">
-            <X size={20} aria-hidden="true" />
-          </button>
-          {filtersEl}
-          <button type="button" className="ss-mobile-commit" onClick={showResults}>
-            Zobrazit {n} {skol(n)}
-          </button>
-        </Modal>
-
-        <section className="ss-results" id="ss-results">
+      <section className="ss-results" id="ss-results">
           {loading && <AsyncState kind="loading" title="Načítám školy…" />}
           {error && !loading && (
             <AsyncState
@@ -873,16 +1014,6 @@ function Search() {
 
               <div className="ss-results-head">
                 <div className="ss-count-row">
-                  <button
-                    type="button"
-                    ref={filterTriggerRef}
-                    className="ss-btn ss-btn-secondary ss-filter-trigger"
-                    onClick={openFilters}
-                  >
-                    <SlidersHorizontal size={16} aria-hidden="true" />
-                    Filtry
-                    {activeFacetCount > 0 && <span className="ss-facet-badge">{activeFacetCount}</span>}
-                  </button>
                   <h2 className="ss-headline-md" ref={resultsHeadingRef} tabIndex={-1}>
                     {n} {skol(n)} z {total}
                   </h2>
@@ -1175,8 +1306,7 @@ function Search() {
               )}
             </>
           )}
-        </section>
-      </div>
+      </section>
 
       {selected.size > 0 && (
         <div className="ss-compare-bar" ref={compareBarRef}>
