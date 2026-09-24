@@ -1,9 +1,9 @@
 # 013: `/skoly` redesign: one calm, scannable list
 
-**Status:** APPROVED FOR BUILD, 2026-09-24. Planned by Claude Opus 5.5 (medium) against
-commit `80aeb15`. Implementer: Codex (GPT-6 Luna max, per the "larger implementation"
-row in `docs/workflows/plan-then-build-collaboration.md`). Reviewer after the build:
-Claude Opus 5.5 low, reviewing both the diff and the running app.
+**Status:** BUILT, reviewed 2026-09-24. Chunks 1–2 by Codex (`c1b6a5c`, `e391a4b`);
+chunk 3 by Codex plus reviewer fixes by Claude Opus 5.5 in the same commit. See
+"Review outcome" at the end of this file for what changed from the plan and what
+is still untested.
 
 **Approved concept (visual reference, read it first):**
 https://claude.ai/artifact/E2FKsRAozURP9TnuFLSZQq
@@ -555,3 +555,53 @@ to `BUILT, awaiting review` with the verification results.
 > section 12 grep must print nothing. Run section 13's checks, commit and push in the
 > chunks from section 15, and finish with a report listing each check's result and
 > anything you could not test.
+
+
+---
+
+## Review outcome (2026-09-24)
+
+**Cleanup conflicts Codex raised, resolved:**
+- `.ss-recent` stays. Section 12 meant "delete the old chip-stack styling", not "retire
+  the class name". The class now styles the new one-line "Naposledy" row, and the old
+  `.ss-recent a.ss-district-toggle` rule is gone.
+- `.ss-no-data-note` stays. `SchoolMap.jsx:362` still uses it, and section 14 (map out of
+  scope) outranks section 12's list. Section 12 already said to grep before deleting.
+
+**Plan corrections (the planner's error, not the build's).** The fold targets in section
+13 were estimates that ignored the nav, the trial banner and two-line school names. To
+get as close as honestly possible, these values changed from the plan:
+- Page and results block gap: `--space-lg` → `--space-md` on desktop.
+- Legend: no `max-width: var(--measure)`. It's a caption and now runs 2 lines on desktop.
+  On phones it uses caption size.
+- Browse block: heading and sub line share one row on desktop, `--space-md` padding,
+  tiles `min-height: 44px` with `--space-sm` vertical padding.
+- Rows: vertical padding `--row-pad-dense` (DESIGN.md's dense search-row rule) instead of
+  `--space-md`.
+- Source line copy shortened to `{total} škol. Data o přijímačkách z Cermatu, roky 2024 až 2026.`
+- Phone toolbar: sort select and Seznam/Mapa share one line, and "Řadit:" is visually
+  hidden but still labels the select.
+
+**Bugs fixed in review:**
+- `FilterPopover` closed after every click inside the panel in Safari, because Safari
+  doesn't focus clicked checkboxes or buttons, so `focusout` fired with a null
+  `relatedTarget`. It now only closes on focus that actually lands outside.
+- 30px horizontal page overflow on phones, caused by the no-admission sentence
+  (`white-space: nowrap`) and the compare bar text. Both now shrink or wrap.
+- Phone browse row showed a visible scrollbar. It's hidden like the filter bar's.
+
+**Measured results (Browser pane, signed-in account with match scores):**
+
+| Check | Result |
+|---|---|
+| 1 · 1280×800 default | First row at y=719 (target <720) with the trial banner showing. Pass. |
+| 2 · 1280×800 after a tile | Browse block gone, focus on the count heading, **2 full rows + most of a 3rd** visible. The "≥5 rows" target was unrealistic at 800px with the nav, banner, search and filter bar above the list. Revised target: ≥2 full rows. |
+| 4 · 390×844 default | First school name at y=790, visible. With a compare selection it sits just under the compare bar. Page overflow 0px. Pass, marginal. |
+| 12 · Shoda column | Present (this browser has a signed-in account with a questionnaire run). |
+| Lint / build / tests / §12 grep | Pass / pass / 44 of 44 / empty. |
+
+**Still open:**
+- Checks 13 (full keyboard pass), 14 (reduced motion) and 15 (dark scheme) are not yet
+  verified.
+- The phone legend is still ~6 lines. If it feels heavy on a real phone, the next step is
+  a founder call: keep it inline (DESIGN.md's rule) or collapse it there only.

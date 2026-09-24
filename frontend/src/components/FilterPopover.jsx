@@ -27,8 +27,14 @@ function FilterPopover({ id, label, activeCount, open, onOpenChange, onClear, re
     const closeOnOutsidePointer = (event) => {
       if (!rootRef.current?.contains(event.target)) onOpenChangeRef.current(false);
     };
+    // relatedTarget is null when focus goes nowhere, which is what Safari does on
+    // every click of a checkbox or button inside the panel. Outside clicks are
+    // already handled by the pointerdown listener, so only react to focus that
+    // actually lands on another element (Tab / Shift+Tab out of the panel).
     const closeOnFocusOut = (event) => {
-      if (!rootRef.current?.contains(event.relatedTarget)) onOpenChangeRef.current(false);
+      if (event.relatedTarget && !rootRef.current?.contains(event.relatedTarget)) {
+        onOpenChangeRef.current(false);
+      }
     };
     const closeOnEscape = (event) => {
       if (event.key !== 'Escape') return;

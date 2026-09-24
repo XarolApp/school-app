@@ -22,21 +22,10 @@
   --tertiary: var(--ok);
   --error: var(--danger);
 
-  /* --space-* now inherited from tokens.css (plan 005) — the values were
-     already identical, so nothing shifts. Motion tokens stay page-local. */
-  --dur-state: 150ms;
-  --ease-out: cubic-bezier(0, 0, 0.2, 1);
-
   display: flex;
   flex-direction: column;
-  gap: var(--space-lg);
+  gap: var(--space-md);
   color: var(--text-body);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .school-search {
-    --dur-state: 0ms;
-  }
 }
 
 /* The type scale (ss-headline-*, ss-body-*, ss-caption, ss-data-*,
@@ -176,10 +165,11 @@
 }
 
 .ss-browse {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-  padding: var(--space-lg);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--space-sm) var(--space-md);
+  padding: var(--space-md);
   border-radius: var(--r-card);
   background: var(--surface2);
 }
@@ -196,6 +186,7 @@
 }
 
 .ss-browse-grid {
+  grid-column: 1 / -1;
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: var(--space-sm);
@@ -206,8 +197,8 @@
   align-items: center;
   gap: 10px;
   min-width: 0;
-  min-height: 48px;
-  padding: 10px 14px;
+  min-height: 44px;
+  padding: var(--space-sm) 12px;
   border: 1px solid var(--line);
   border-radius: var(--r-chip);
   background: var(--surface);
@@ -296,7 +287,6 @@
   display: flex;
   align-items: flex-start;
   gap: var(--space-sm);
-  max-width: var(--measure);
   margin: 0;
   color: var(--ink2);
 }
@@ -337,6 +327,10 @@
   white-space: nowrap;
   cursor: pointer;
   transition: transform 100ms ease-out, border-color 150ms ease-out, background-color 150ms ease-out;
+}
+
+.school-search .ss-btn {
+  transition: none;
 }
 
 .ss-fbtn.is-set {
@@ -570,7 +564,7 @@
   font-size: var(--fs-caption);
   line-height: 1.3;
   color: var(--on-surface);
-  transition: background var(--dur-state) var(--ease-out), border-color var(--dur-state) var(--ease-out);
+  transition: none;
   border: 1px solid var(--border-strong);
   background: transparent;
 }
@@ -583,15 +577,11 @@
   font-variant-numeric: tabular-nums;
 }
 
-.ss-recent {
-  display: block;
-}
-
 /* ---------- results column ---------- */
 .ss-results {
   display: flex;
   flex-direction: column;
-  gap: var(--space-lg);
+  gap: var(--space-md);
   min-width: 0;
 }
 
@@ -611,10 +601,19 @@
   }
 
   .ss-browse {
-    padding: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .school-search .ss-source-line,
+  .school-search .ss-legend {
+    font-size: var(--fs-caption);
+    line-height: var(--lh-caption);
   }
 
   .ss-browse-grid {
+    scrollbar-width: none;
     display: flex;
     margin-inline: calc(var(--page-margin-sm) * -1);
     overflow-x: auto;
@@ -629,6 +628,31 @@
 
   .ss-toolbar-controls {
     margin-left: 0;
+    width: 100%;
+    gap: var(--space-sm);
+  }
+
+  .ss-sort-select {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .ss-sort-select > span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .ss-sort-input {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .ss-browse-grid::-webkit-scrollbar {
+    display: none;
   }
 
   .ss-results {
@@ -643,24 +667,15 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ss-browse-tile:active {
+  .ss-row,
+  .ss-browse-tile {
+    transition: none;
+  }
+
+  .ss-browse-tile:active,
+  .ss-fbtn:active {
     transform: none;
   }
-}
-
-.ss-results-head {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-}
-.ss-count-row {
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-sm);
-  flex-wrap: wrap;
-}
-.ss-count-row h1 {
-  font-variant-numeric: tabular-nums;
 }
 
 .ss-chips-row {
@@ -711,23 +726,7 @@
   flex-direction: column;
   gap: var(--space-lg);
   padding: var(--space-sm) 0 0;
-  max-width: 720px;
-  animation: ss-panel-in 200ms var(--ease-out) both;
-}
-@keyframes ss-panel-in {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .ss-empty {
-    animation: none;
-  }
+  max-width: var(--measure);
 }
 .ss-empty-head {
   display: flex;
@@ -788,100 +787,205 @@
 .ss-list {
   display: flex;
   flex-direction: column;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-/* Vertical padding uses --row-pad-dense (10px), not --space-md. DESIGN.md →
-   Layout is explicit that "search, filter, and compare screens stay dense —
-   8–12px row padding", and the design system ships --row-pad-dense for exactly
-   this case. Horizontal padding stays on the spacing scale. */
+.ss-list-head,
 .ss-row {
-  display: flex;
-  gap: var(--space-md);
-  padding: var(--row-pad-dense) var(--space-md);
-  margin: 0 calc(var(--space-md) * -1);
-  border-bottom: 1px solid var(--border);
-  border-radius: var(--r-card);
-  transition: background var(--dur-state) var(--ease-out);
+  display: grid;
+  grid-template-columns: 20px minmax(0, 2fr) minmax(0, 1.3fr) 80px 72px 64px 40px;
+  column-gap: var(--space-md);
+  align-items: center;
+}
+
+.ss-list-head.has-score,
+.ss-list.has-score .ss-row {
+  grid-template-columns: 20px minmax(0, 2fr) minmax(0, 1.3fr) 76px 80px 72px 64px 40px;
+}
+
+.ss-list-head {
+  font: var(--fw-label-caps) var(--fs-label-caps)/var(--lh-label-caps) var(--sans);
+  letter-spacing: var(--ls-label-caps);
+  text-transform: uppercase;
+  color: var(--ink3);
+  padding: var(--space-sm) 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.ss-header-numeric {
+  text-align: right;
+}
+
+.ss-row {
+  position: relative;
+  padding: var(--row-pad-dense) 12px;
+  border-bottom: 1px solid var(--line);
+  transition: background-color 120ms ease-out;
   background: transparent;
 }
+
 .ss-row.is-selected {
-  background: var(--surface-card);
+  background: var(--acc-soft);
 }
+
 @media (hover: hover) and (pointer: fine) {
   .ss-row:hover {
-    background: var(--surface-card);
+    background: var(--surface2);
   }
 }
 
-.ss-row-select {
-  flex: none;
-  padding-top: var(--space-xs);
+.ss-row-foot {
+  display: contents;
 }
+
+.ss-row-select {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+}
+
 .ss-row-select input {
   width: 18px;
   height: 18px;
-  accent-color: var(--primary);
+  accent-color: var(--acc);
   cursor: pointer;
 }
 
-.ss-row-body {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-}
-.ss-row-link {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-  text-decoration: none;
-  color: inherit;
-}
-.ss-row-title {
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-sm);
-  flex-wrap: wrap;
-}
-.ss-row-title h2 {
-  font-size: var(--fs-body-lg);
+.ss-row-select input:disabled {
+  cursor: default;
 }
 
-.ss-row-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-xs);
+.ss-row-select input:focus-visible,
+.ss-row-favorite button:focus-visible {
+  outline: 2px solid var(--acc);
+  outline-offset: 2px;
 }
+
+.ss-row-select > span {
+  display: none;
+}
+
+.ss-cell-school {
+  min-width: 0;
+}
+
+.ss-row-name {
+  min-width: 0;
+  margin: 0;
+  font: 600 var(--fs-body-lg)/1.3 var(--heading);
+  color: var(--ink);
+}
+
+.ss-row-link {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  color: inherit;
+  text-decoration: none;
+}
+
+.ss-row-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.ss-row-link:focus-visible {
+  outline: none;
+}
+
+.ss-row:has(.ss-row-link:focus-visible) {
+  outline: 2px solid var(--acc);
+  outline-offset: -2px;
+}
+
+.ss-row-meta {
+  margin-top: var(--space-xs);
+  color: var(--ink2);
+}
+
+.ss-cell-obory {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 0;
+}
+
 .ss-row-chip {
   display: inline-flex;
+  max-width: 100%;
+  overflow: hidden;
   border-radius: var(--r-chip);
   padding: var(--space-xs) var(--space-sm);
-  font-size: var(--fs-caption);
-  background: var(--surface-card);
-  border: 1px solid var(--border);
-  color: var(--text-body);
+  background: var(--surface2);
+  color: var(--ink2);
+  font: var(--fs-data-sm)/var(--lh-data-sm) var(--sans);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.ss-row-diff {
-  color: var(--text-body);
-  max-width: 66ch;
+.ss-row-extra {
+  color: var(--ink3);
+  white-space: nowrap;
 }
 
-/* .ss-stat-grid / .ss-stat-cell moved to ../styles/ui.css — shared across
-   pages now. The <860px override below stays here: it's this page's own
-   row-card layout decision, not a shared rule. */
+.ss-cell-score {
+  text-align: right;
+}
 
-/* Hover-to-reveal stat explanations — page-local (not moved to ui.css)
-   because this exact pattern (a decorative info glyph inside a label, shown
-   on hover, no click needed) is specific to these row cards being wrapped
-   in a <Link> — see the StatInfo comment in Search.jsx for why hover, not
-   tap. */
-/* ui.css's .ss-stat-grid sets overflow:hidden (needed there for its rounded-
-   corner background trick) which would otherwise clip the tooltip below —
-   overridden here, scoped to just this page's row-card grids, not
-   SchoolMap.jsx's popup card or anything else sharing the base rule. */
-.school-search .ss-row .ss-stat-grid,
+.ss-match-score {
+  display: inline-block;
+  padding: 6px 8px;
+  border-radius: var(--r-chip);
+  background: var(--ok-soft);
+  color: var(--ok);
+  font: 600 var(--fs-data-md)/1 var(--sans);
+  font-variant-numeric: tabular-nums;
+}
+
+.ss-row-numbers {
+  display: contents;
+}
+
+.ss-cell-number {
+  min-width: 0;
+  text-align: right;
+}
+
+.ss-cell-number > .ss-data-md {
+  display: block;
+}
+
+.ss-number-label {
+  display: none;
+}
+
+.ss-cell-missing {
+  color: var(--ink3);
+}
+
+.ss-cell-no-admission {
+  grid-column: span 2;
+  text-align: left;
+}
+
+.ss-row-favorite {
+  position: relative;
+  z-index: 1;
+  justify-self: end;
+}
+
+.ss-row-favorite .favorite-star {
+  border-radius: var(--r-chip);
+}
+
+/* Keep the shared map popup's stat grid and tooltip presentation intact. */
 .school-search .sm-card-stats {
   overflow: visible;
 }
@@ -970,13 +1074,6 @@
   transform: none;
 }
 
-.ss-row-actions {
-  flex: none;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-  align-items: flex-end;
-}
 .school-search .favorite-star.is-active {
   color: var(--primary);
 }
@@ -1052,7 +1149,6 @@
   z-index: 40;
   background: var(--surface);
   border-top: 1px solid var(--border-strong);
-  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 .ss-compare-bar-inner {
   max-width: var(--content-max);
@@ -1061,13 +1157,34 @@
   display: flex;
   align-items: center;
   gap: var(--space-lg);
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 .ss-compare-bar-inner p {
   flex: 1;
   color: var(--text-muted);
   min-width: 0;
   flex-basis: 220px;
+  margin: 0;
+}
+
+.ss-compare-clear {
+  appearance: none;
+  flex: none;
+  margin-left: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink2);
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.ss-compare-clear:focus-visible {
+  outline: 2px solid var(--acc);
+  outline-offset: 2px;
 }
 
 /* ---------- loading / error ---------- */
@@ -1080,21 +1197,152 @@
 }
 
 @media (max-width: 480px) {
-  .ss-row {
-    flex-wrap: wrap;
-  }
-  .ss-row-actions {
-    flex-direction: row;
-    align-items: center;
-    width: 100%;
-    justify-content: flex-end;
-  }
   .school-search .ss-stat-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     max-width: none;
   }
+}
+
+@media (min-width: 861px) and (max-width: 1099px) {
+  .ss-list-head,
+  .ss-row {
+    grid-template-columns: 20px minmax(0, 2fr) 80px 72px 64px 40px;
+  }
+
+  .ss-list-head.has-score,
+  .ss-list.has-score .ss-row {
+    grid-template-columns: 20px minmax(0, 2fr) 76px 80px 72px 64px 40px;
+  }
+
+  .ss-cell-obory {
+    display: none;
+  }
+}
+
+@media (max-width: 860px) {
+  .ss-list-head {
+    display: none;
+  }
+
+  .ss-row,
+  .ss-list.has-score .ss-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'name score'
+      'meta meta'
+      'nums nums'
+      'chips chips'
+      'foot foot';
+    row-gap: var(--space-xs);
+    padding: var(--space-md) 0;
+  }
+
+  .ss-row:not(.has-score) {
+    grid-template-areas:
+      'name name'
+      'meta meta'
+      'nums nums'
+      'chips chips'
+      'foot foot';
+  }
+
+  .ss-row-foot {
+    grid-area: foot;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: var(--space-sm);
+  }
+
+  .ss-row-select {
+    grid-area: auto;
+    align-self: center;
+    gap: var(--space-sm);
+    width: fit-content;
+  }
+
+  .ss-row-select > span {
+    display: inline;
+    color: var(--ink2);
+    font: var(--fs-caption)/var(--lh-caption) var(--sans);
+  }
+
+  .ss-cell-school {
+    grid-area: name;
+  }
+
+  .ss-row-name {
+    font: 600 var(--fs-body-md)/1.3 var(--heading);
+  }
+
+  .ss-row-meta {
+    grid-area: meta;
+    margin-top: 0;
+  }
+
+  .ss-cell-obory {
+    grid-area: chips;
+  }
+
+  .ss-cell-score {
+    grid-area: score;
+    align-self: start;
+  }
+
+  .ss-row-numbers {
+    grid-area: nums;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-lg);
+    margin-top: var(--space-sm);
+  }
+
+  .ss-cell-number {
+    text-align: left;
+  }
+
+  .ss-cell-no-admission {
+    grid-column: auto;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .ss-number-label {
+    display: block;
+    color: var(--ink3);
+  }
+
+  .ss-row-favorite {
+    grid-area: foot;
+    align-self: center;
+    justify-self: end;
+  }
+
   .ss-compare-bar-inner {
-    padding: var(--space-md);
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--page-margin-sm)
+      calc(var(--space-sm) + env(safe-area-inset-bottom, 0px));
+  }
+
+  .ss-compare-bar-inner p {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ss-compare-clear {
+    margin-left: 0;
+    font-size: var(--fs-body-sm);
+  }
+
+  .school-search .ss-compare-action {
+    min-height: 36px;
+    padding: var(--space-xs) var(--space-sm);
+    font-size: var(--fs-caption);
   }
 }
 
@@ -1120,7 +1368,7 @@
 .ss-facet-section-head svg {
   color: var(--text-faint);
   flex: none;
-  transition: transform var(--dur-state) var(--ease-out);
+  transition: none;
 }
 .ss-facet-section-head svg.is-open {
   transform: rotate(180deg);
@@ -1239,11 +1487,4 @@
     border-radius: 0;
     border: 0;
   }
-}
-
-/* Match percentage in the result row's stat grid. Moss is reserved for match
-   strength across the app (design/tokens.js semantic rule 2), so it carries
-   the number here exactly as it does on /dotaznik. */
-.ss-match-score {
-  color: var(--ok);
 }

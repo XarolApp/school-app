@@ -33,7 +33,6 @@ import { deriveFeatures, FOCUS_CATEGORIES } from '../lib/schoolFeatures';
 import { useAuth } from '../components/AuthContext';
 import FavoriteButton from '../components/FavoriteButton';
 import SchoolMap from '../components/SchoolMap';
-import StatInfo from '../components/StatInfo';
 import SearchFilters, {
   AdmissionsGroup,
   DistrictGroup,
@@ -61,14 +60,8 @@ import './search.css';
  * never fabricate a value to fill the gap.
  *
  * Still invented:
- *   commuteMinutes   dojezd MHD — needs a user home address + a routing API,
- *                     neither built yet. Kept in `synth()` only so the parked,
- *                     visibly-disabled UI has *something* to not-display; no
- *                     filter, sort, or row card reads it anymore.
  *   districtLabel     fallback "Praha N" only when the school has no real district
  */
-const SYNTHETIC = true;
-
 // FNV-1a style string hash — small, deterministic, no external dependency.
 function hashSeed(str) {
   let h = 2166136261;
@@ -94,16 +87,14 @@ function mulberry32(seed) {
 
 function synth(school) {
   const rand = mulberry32(hashSeed(String(school.id)));
-  const commuteMinutes = Math.round(16 + rand() * 30); // 16–46, unused except as a placeholder value
   const districtRoll = 1 + Math.floor(rand() * 22); // 1–22, used only as a fallback
-  return { commuteMinutes, districtRoll };
+  return { districtRoll };
 }
 
 // Czech pluralization — three forms: 1 / 2–4 / 5+.
 const plural = (n, one, few, many) => (n === 1 ? one : n >= 2 && n <= 4 ? few : many);
 const skol = (n) => plural(n, 'škola', 'školy', 'škol');
 const skolGen = (n) => plural(n, 'školu', 'školy', 'škol');
-const obor = (n) => plural(n, 'obor', 'obory', 'oborů');
 const misto = (n) => plural(n, 'místo', 'místa', 'míst');
 const numCz = (v) => String(v).replace('.', ',');
 
@@ -117,6 +108,13 @@ const numCz = (v) => String(v).replace('.', ',');
 // number for a school the import script hasn't matched yet.
 const cutoffLabel = (cutoff) =>
   cutoff == null ? 'hranice přijetí zatím bez dat' : `hranice přijetí ${numCz(cutoff)} b.`;
+
+function zrizovatelLabel(value) {
+  if (value === 'veřejné/státní') return 'veřejná';
+  if (value === 'soukromé') return 'soukromá';
+  if (value === 'církevní') return 'církevní';
+  return value;
+}
 
 const SORTS = [
   { id: 'shoda', label: 'Nejlepší shoda', tradeoff: 'podle tvého dotazníku' },
@@ -151,32 +149,6 @@ const UNMET_LABELS = {
   kapacitaMin: 'minimální kapacitu',
   q: 'hledaný text',
 };
-
-/**
- * A true, honest differentiator sentence composed from deriveFeatures()
- * output. Nothing here is invented — if a school's data doesn't tell us
- * anything, this returns null and the row simply omits the line.
- */
-function differentiatorFor(features, structuredProgramCount) {
-  const parts = [];
-  if (features.focusKnown && features.focus.length) {
-    const labels = features.focus
-      .map((id) => FOCUS_CATEGORIES.find((c) => c.id === id)?.label)
-      .filter(Boolean);
-    if (labels.length) parts.push(`Zaměření: ${labels.join(', ')}.`);
-  }
-  // Prefer the current structured admission rows. `features.breadth` comes
-  // from the older free-text `schools.programs` field and can contain a
-  // different number, which previously made one card say e.g. "11 oborů" and
-  // "Nabízí 10 oborů" at the same time.
-  const breadth = structuredProgramCount || features.breadth;
-  if (breadth > 1) {
-    parts.push(`Nabízí ${breadth} ${obor(breadth)} v rámci školy.`);
-  }
-  if (features.language) parts.push('Výuka klade důraz na jazyky.');
-  if (features.practice) parts.push('Součástí výuky je odborná praxe.');
-  return parts.length ? parts.join(' ') : null;
-}
 
 /**
  * Collapses a school's `school_programs` rows (one per obor) into the
@@ -223,9 +195,7 @@ function buildRow(school) {
   const districtLabel = realDistrict || `Praha ${s.districtRoll}`;
   const districtSynthesized = !realDistrict;
 
-  const progs = [...new Set(splitPrograms(school.programs || '').map(baseProgram))]
-    .filter(Boolean)
-    .slice(0, 3);
+  const allProgs = [...new Set(splitPrograms(school.programs || '').map(baseProgram))].filter(Boolean);
 
   return {
     id: school.id,
@@ -235,15 +205,14 @@ function buildRow(school) {
     focus: features.focus,
     districtLabel,
     districtSynthesized,
-    progs,
-    diff: differentiatorFor(features, p.count),
+    progs: allProgs.slice(0, 2),
+    progTotal: allProgs.length,
     p,
     // Real data, average % score across every obor and every year Cermat's
     // file has been imported for — see import-admission-data.js. null means
     // this school hasn't been matched to a Cermat row yet, not a 0.
     admissionCutoff: school.admission_cutoff ?? null,
     acceptanceRate: school.acceptance_rate ?? null,
-    commuteMinutes: s.commuteMinutes,
   };
 }
 
@@ -270,9 +239,6 @@ const DEFAULT_FILTERS = {
 // page 1 and page 5 always agree with the current sort/filter combination.
 // Never re-filter or re-sort per page.
 const PAGE_SIZE = 40;
-
-// StatInfo (hover-to-reveal explanation) moved to components/StatInfo.jsx
-// so SchoolMap.jsx's popup card can reuse it too.
 
 // Same cap /sdileni and the comparison table both assume — a 5th column
 // stops being a comparison and starts being a spreadsheet.
@@ -808,6 +774,7 @@ function Search() {
   useBottomBarSpace(compareBarRef, pageRef, selected.size > 0);
 
   const activeFacetCount = activeCriteriaCount - (hasQuery ? 1 : 0);
+  const hasScore = hasMatch || activeCriteriaCount > 0;
   const filtersEl = (
     <SearchFilters
       filters={filters}
@@ -963,13 +930,13 @@ function Search() {
           <h1 className="ss-headline-lg">Střední školy v Praze</h1>
           {!loading && !error && (
             <p className="ss-body-md ss-source-line">
-              {total} {skol(total)}. Hranice a počty přijatých jsou z výsledků přijímaček Cermatu za roky 2024 až 2026.
+              {total} {skol(total)}. Data o přijímačkách z Cermatu, roky 2024 až 2026.
             </p>
           )}
         </div>
         {!loading && !error && activeCriteriaCount === 0 && recentRows.length > 0 && view === 'list' && (
           <div className="ss-recent" aria-label="Naposledy zobrazené školy">
-            <span>Naposledy:</span>
+            <span>Naposledy:</span>{' '}
             {recentRows.slice(0, 3).map((row, index) => (
               <span className="ss-recent-item" key={row.id}>
                 {index > 0 && ', '}
@@ -1198,119 +1165,136 @@ function Search() {
               )}
 
               {view === 'list' && n > 0 && (
-                <div className="ss-list">
-                  {shown.map((row) => {
-                    const isSelected = selected.has(row.id);
-                    const isFavorite = favorites.has(row.id);
-                    const rowCriteria = criteriaFor(row, filters);
-                    const metCount = rowCriteria.filter((c) => c.met).length;
-                    const metTotal = rowCriteria.length;
-                    const ukonceni = ukonceniText(row.p);
-                    const noAdmissionData = row.admissionCutoff == null && row.acceptanceRate == null;
-                    return (
-                      <div className={`ss-row${isSelected ? ' is-selected' : ''}`} key={row.id}>
-                        <div className="ss-row-select">
-                          <input
-                            type="checkbox"
-                            checked={isSelected}
-                            onChange={() => toggleSelect(row.id)}
-                            aria-label={`Vybrat ${row.name} k porovnání`}
-                          />
-                        </div>
-                        <div className="ss-row-body">
-                          <Link to={`/skoly/${row.id}`} className="ss-row-link">
-                            <div className="ss-row-title">
-                              <h2 className="ss-headline-sm">{row.name}</h2>
-                              <p className="ss-caption">
-                                {row.districtLabel}
-                                {row.p.zrizovatel ? ` · ${row.p.zrizovatel}` : ''}
-                                {ukonceni ? ` · ${ukonceni}` : ''}
-                                {row.p.count > 0 ? ` · ${row.p.count} ${obor(row.p.count)}` : ''}
-                              </p>
-                            </div>
-                            {row.progs.length > 0 && (
-                              <div className="ss-row-chips">
-                                {row.progs.map((p) => (
-                                  <span className="ss-row-chip" key={p}>{p}</span>
-                                ))}
-                              </div>
-                            )}
-                            {row.diff && <p className="ss-row-diff ss-body-sm">{row.diff}</p>}
-                          </Link>
-                            <div className="ss-stat-grid">
-                              <div className="ss-stat-cell">
-                                <p className="ss-data-md">
-                                  {row.admissionCutoff != null ? `${numCz(row.admissionCutoff)} b.` : '—'}
-                                </p>
-                                <p className="ss-stat-label">
-                                  průměrná hranice
-                                  <StatInfo text="Průměr z posledních 3 let (2024–2026). Nejnižší počet bodů z češtiny a matematiky (max. 100 — 50 + 50), které stačily na přijetí — je to hranice pro přijetí, ne průměrné skóre přijatých žáků. Průměr přes všechny obory školy; hranici pro konkrétní obor a rok najdeš po rozkliknutí školy. (Nové školy mohou mít kratší historii.)" />
-                                </p>
-                              </div>
-                              <div className="ss-stat-cell">
-                                <p className="ss-data-md">
-                                  {row.acceptanceRate != null ? `${numCz(row.acceptanceRate)} %` : '—'}
-                                </p>
-                                <p className="ss-stat-label">
-                                  přijato z přihlášených
-                                  <StatInfo text="Průměr z posledních 3 let (2024–2026): kolik procent uchazečů škola v posledním kole přijala, v průměru přes všechny obory. Podrobnosti po jednotlivých oborech a letech najdeš po rozkliknutí školy. (Nové školy mohou mít kratší historii.)" />
-                                </p>
-                              </div>
-                              <div className="ss-stat-cell">
-                                <p className="ss-data-md">{row.p.kapacita ?? '—'}</p>
-                                <p className="ss-stat-label">
-                                  volných míst
-                                  <StatInfo text="Celkový počet míst ve všech oborech, které škola otevírá pro aktuální rok." />
-                                </p>
-                              </div>
+                <>
+                  <div className={`ss-list-head${hasScore ? ' has-score' : ''}`} aria-hidden="true">
+                    <span />
+                    <span>Škola</span>
+                    <span className="ss-cell-obory">Obory</span>
+                    {hasScore && <span className="ss-header-numeric">{hasMatch ? 'Shoda' : 'Splňuje'}</span>}
+                    <span className="ss-header-numeric">Hranice</span>
+                    <span className="ss-header-numeric">Přijato</span>
+                    <span className="ss-header-numeric">Míst</span>
+                    <span />
+                  </div>
+                  <ul className={`ss-list${hasScore ? ' has-score' : ''}`}>
+                    {shown.map((row) => {
+                      const isSelected = selected.has(row.id);
+                      const isFavorite = favorites.has(row.id);
+                      const rowCriteria = criteriaFor(row, filters);
+                      const metCount = rowCriteria.filter((criterion) => criterion.met).length;
+                      const metTotal = rowCriteria.length;
+                      const ukonceni = ukonceniText(row.p);
+                      const noAdmissionData = row.admissionCutoff == null && row.acceptanceRate == null;
+                      const extra = Math.max(row.p.count, row.progTotal) - row.progs.length;
+                      const schoolMeta = [
+                        row.districtLabel,
+                        zrizovatelLabel(row.p.zrizovatel),
+                        ukonceni,
+                      ].filter(Boolean).join(' · ');
+                      const compareDisabled = selected.size >= COMPARE_LIMIT && !isSelected;
+
+                      return (
+                        <li className={`ss-row${isSelected ? ' is-selected' : ''}${hasScore ? ' has-score' : ''}`} key={row.id}>
+                          <div className="ss-row-foot">
+                            <label className="ss-row-select">
+                              <input
+                                type="checkbox"
+                                checked={isSelected}
+                                disabled={compareDisabled}
+                                title={compareDisabled ? `Porovnat jde nejvýš ${COMPARE_LIMIT} školy.` : undefined}
+                                onChange={() => toggleSelect(row.id)}
+                                aria-label={`Vybrat ${row.name} k porovnání`}
+                              />
+                              <span>Porovnat</span>
+                            </label>
+                          </div>
+
+                          <div className="ss-cell-school">
+                            <h3 className="ss-row-name">
+                              <Link to={`/skoly/${row.id}`} className="ss-row-link" title={row.name}>
+                                {row.name}
+                              </Link>
+                            </h3>
+                            <p className="ss-caption ss-row-meta">{schoolMeta}</p>
+                          </div>
+
+                          <div className="ss-cell-obory">
+                            {row.progs.map((program) => (
+                              <span className="ss-row-chip ss-data-sm" key={program} title={program}>
+                                {program}
+                              </span>
+                            ))}
+                            {extra > 0 && <span className="ss-caption ss-row-extra">+ {extra}</span>}
+                          </div>
+
+                          {hasScore && (
+                            <div className="ss-cell-score">
                               {hasMatch ? (
-                                <div className="ss-stat-cell">
-                                  <p className="ss-data-md ss-match-score">{row.school.match_score} %</p>
-                                  <p className="ss-stat-label">
-                                    shoda s tebou
-                                    <StatInfo text="Jak moc tahle škola sedí tvým odpovědím z dotazníku. Počítá se z toho, co jsi zadal — obory, typ školy, předměty, městské části a zbytek — ne z názoru školy. 100 % by znamenalo, že škola sedí úplně všemu." />
-                                  </p>
-                                </div>
+                                typeof row.school.match_score === 'number' ? (
+                                  <span className="ss-match-score">{row.school.match_score} %</span>
+                                ) : (
+                                  <span className="ss-caption ss-cell-missing">bez dat</span>
+                                )
                               ) : (
-                                <div className="ss-stat-cell">
-                                  <p className="ss-data-md">{metTotal > 0 ? `${metCount} / ${metTotal}` : '—'}</p>
-                                  <p className="ss-stat-label">
-                                    splněných kritérií
-                                    <StatInfo text="Kolik ze zvolených filtrů tahle škola splňuje." />
-                                  </p>
-                                </div>
+                                <span className="ss-data-md">{metCount} z {metTotal}</span>
                               )}
                             </div>
-                            {noAdmissionData && (
-                              <p className="ss-caption ss-no-data-note">
-                                Tahle škola nebyla v prvním kole přijímaček 2026, takže o ní zatím čísla nemáme.
-                              </p>
-                            )}
-                        </div>
-                        <div className="ss-row-actions">
-                          <Link to={`/skoly/${row.id}`} className="ss-btn ss-btn-secondary ss-btn-sm">
-                            Detail
-                          </Link>
-                          {canFavorite && (
-                            <FavoriteButton
-                              schoolId={row.id}
-                              isFavorite={isFavorite}
-                              onChange={(next) =>
-                                setFavorites((prev) => {
-                                  const nextSet = new Set(prev);
-                                  if (next) nextSet.add(row.id);
-                                  else nextSet.delete(row.id);
-                                  return nextSet;
-                                })
-                              }
-                              className="ss-favorite"
-                            />
                           )}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
+
+                          <div className="ss-row-numbers">
+                            {noAdmissionData ? (
+                              <span className="ss-caption ss-cell-missing ss-cell-no-admission">
+                                Nebyla v prvním kole přijímaček 2026, čísla zatím nemáme.
+                              </span>
+                            ) : (
+                              <div className="ss-cell-number ss-cell-cutoff">
+                                <span className="ss-data-md">
+                                  <span className="sr-only">hranice přijetí </span>
+                                  {row.admissionCutoff != null ? `${numCz(row.admissionCutoff)} b.` : <span className="ss-caption ss-cell-missing">bez dat</span>}
+                                </span>
+                                <span className="ss-caption ss-number-label">hranice</span>
+                              </div>
+                            )}
+                            {!noAdmissionData && (
+                              <div className="ss-cell-number ss-cell-acceptance">
+                                <span className="ss-data-md">
+                                  <span className="sr-only">přijato </span>
+                                  {row.acceptanceRate != null ? `${Math.round(row.acceptanceRate)} %` : <span className="ss-caption ss-cell-missing">bez dat</span>}
+                                </span>
+                                <span className="ss-caption ss-number-label">přijato</span>
+                              </div>
+                            )}
+                            <div className="ss-cell-number ss-cell-places">
+                              <span className="ss-data-md">
+                                <span className="sr-only">volných míst </span>
+                                {row.p.kapacita != null ? row.p.kapacita : <span className="ss-caption ss-cell-missing">bez dat</span>}
+                              </span>
+                              <span className="ss-caption ss-number-label">míst</span>
+                            </div>
+                          </div>
+
+                          <div className="ss-row-favorite">
+                            {canFavorite && (
+                              <FavoriteButton
+                                schoolId={row.id}
+                                isFavorite={isFavorite}
+                                onChange={(next) =>
+                                  setFavorites((prev) => {
+                                    const nextSet = new Set(prev);
+                                    if (next) nextSet.add(row.id);
+                                    else nextSet.delete(row.id);
+                                    return nextSet;
+                                  })
+                                }
+                              />
+                            )}
+                          </div>
+
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </>
               )}
 
               {view === 'list' && totalPages > 1 && (
@@ -1361,8 +1345,7 @@ function Search() {
 
               {n > 0 && (
                 <p className="ss-caption ss-footnote">
-                  {SYNTHETIC &&
-                    'Hranice přijetí, míra přijetí, typ školy, zřizovatel, jazyk výuky a kapacita jsou reálná data z Cermatu. Dojezd MHD zatím neumíme spočítat, proto ho nezobrazujeme.'}
+                  Hranice, míra přijetí, typ školy, zřizovatel, jazyk výuky a počet míst jsou reálná data z Cermatu.
                 </p>
               )}
             </>
@@ -1373,14 +1356,23 @@ function Search() {
         <div className="ss-compare-bar" ref={compareBarRef}>
           <div className="ss-compare-bar-inner">
             <p className="ss-body-sm">
-              Vybráno k porovnání: {selected.size} {skol(selected.size)} / {COMPARE_LIMIT} · porovnání ukáže stejné
-              řádky vedle sebe
+              {isMobile ? (
+                <strong>{selected.size} {plural(selected.size, 'vybraná škola', 'vybrané školy', 'vybraných škol')}</strong>
+              ) : (
+                <>
+                  <strong>{selected.size} {skol(selected.size)}</strong> k porovnání (max. {COMPARE_LIMIT})
+                </>
+              )}
             </p>
-            <button type="button" className="ss-btn ss-btn-secondary" onClick={() => setSelected(new Set())}>
-              Zrušit výběr
+            <button
+              type="button"
+              className="ss-compare-clear"
+              onClick={() => setSelected(new Set())}
+            >
+              {isMobile ? 'Zrušit' : 'Zrušit výběr'}
             </button>
-            <button type="button" className="ss-btn ss-btn-primary" onClick={handleCompare}>
-              Porovnat {selected.size} {skolGen(selected.size)}
+            <button type="button" className="ss-btn ss-btn-primary ss-compare-action" onClick={handleCompare}>
+              Porovnat
             </button>
           </div>
         </div>
