@@ -13,6 +13,28 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
+## /skoly redesign (plan 013): untested checks + one founder call — 2026-09-24
+- **Found:** 2026-09-24, Claude review of plan 013 (`9d9026b`). The redesigned /skoly
+  page is built and measured, but three of the plan's browser checks were never run.
+- **Not tested yet:**
+  - **Keyboard-only pass** (plan 013 §13 check 13). Tab order search → filter buttons →
+    field tiles → sort → Seznam/Mapa → rows (checkbox, name, star) → pagination, with a
+    visible focus ring on every stop. The anonymous session showed no favourite star, so
+    the star stop is untested too.
+  - **Reduced motion** (check 14). With `prefers-reduced-motion: reduce` emulated, no
+    popover animation, chevron rotation, row background transition or press scale.
+  - **Dark scheme** (check 15). With `prefers-color-scheme: dark` emulated, everything
+    readable and nothing left in a light-only colour. Re-run this after plan 014 lands,
+    because 014 changes every colour anyway.
+- **Founder call needed:** on a 390px phone the legend above the list ("Hranice je…
+  Přijato je… Míst je… Shoda říká…") is still ~6 lines (113px). Options: (a) keep it
+  always visible, which is DESIGN.md's rule that consequential interpretation stays
+  inline, or (b) on phones only, collapse it to a one-line "Jak číst čísla" toggle.
+  Judge it on a real phone, not the emulator.
+- **Known marginal:** with schools selected for comparison, the fixed compare bar covers
+  the first school name on a 390×844 phone (name at y=790, bar at y=791). Not a bug, but
+  worth a look during the phone check above.
+
 ## Theme picker step in onboarding — deferred until themes ship in Settings
 - **Decided:** 2026-09-24, founder. Colour themes (Značka default, Smrk,
   Zvýrazňovač, Terakota) plus a system/light/dark mode setting are built first in
