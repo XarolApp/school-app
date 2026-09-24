@@ -1,0 +1,27 @@
+{
+  "repeatedLineFraction": 0.4,
+  "repeatedLineMinPages": 3,
+  "highScore": 8,
+  "lowScore": 2,
+  "urlTitleScore": 5,
+  "maxBodyHitsPerGroup": 3,
+  "longPageChars": 15000,
+  "targetChars": 40000,
+  "hardMaxChars": 150000,
+  "fallbackMinChars": 2000,
+  "fallbackMaxReduction": 0.97,
+  "groups": {
+    "tuition_fees": ["skolne", "poplat", "cenik", "cena", "platb", "uhrad", "kc", "korun", "stipendi", "sleva", "splatk"],
+    "meals_boarding": ["jidel", "obed", "stravov", "strava", "svacin", "internat", "domov mladeze", "ubytov", "kolej", "luzk"],
+    "clubs_activities": ["krouzk", "zajmov", "volnocas", "aktivit", "klub", "sport", "kurz", "lyzar", "adaptacni", "exkurz", "zahranicni", "vymenn", "erasmus", "soutez", "olympiad", "pevecky", "divadl", "robot"],
+    "maturita": ["maturit", "statni maturit", "profilova", "didakticky test", "prospel", "uspesnost", "vysledky"],
+    "university_graduates": ["absolvent", "uplatneni", "vysok", "univerzit", "vs", "pokracovani ve studiu", "prijato", "kam odchazi"],
+    "apprenticeship_jobs": ["vyucni list", "vyucen", "ucebni obor", "ucen", "praxe", "odborny vycvik", "zamestnavatel", "firm", "partner", "nabor", "uplatneni na trhu"],
+    "start_time": ["zacatek vyucovani", "zvoneni", "rozvrh", "vyucovaci hodin", "prvni hodina", "casovy harmonogram"],
+    "admissions": ["prijimac", "prijimaci rizeni", "uchazec", "pro uchazece", "prihlask", "kriteri", "talentov", "zkousk", "pohovor", "portfolio", "jednotna prijimaci", "cermat", "kolo", "termin", "den otevrenych dveri", "dod"],
+    "teaching_style": ["montessori", "waldorf", "dalton", "freinet", "scio", "alternativ", "pedagog", "metod", "vyuk", "projektov", "badatel", "vzdelavaci program", "svp", "skolni vzdelavaci program", "bilingv", "dvojjazyc", "profil skoly", "o skole", "koncepce", "filozofi", "hodnoceni", "slovni hodnoceni", "zacit spolu"],
+    "school_profile": ["o skole", "obory", "studijni obor", "zamereni", "charakteristik"]
+  },
+  "importantPages": ["vyrocni zprava", "skolni vzdelavaci program", "svp", "prijimaci rizeni", "skolni rad", "cenik"],
+  "negativePages": ["aktuality", "novinky", "clanek", "galerie", "fotogalerie", "foto", "video", "kontakt", "gdpr", "ochrana osobnich udaju", "cookies", "prohlaseni o pristupnosti", "uredni deska", "verejne zakazky", "rozpocet", "sitemap", "login", "prihlaseni", "archiv", "kalendar akci"]
+}

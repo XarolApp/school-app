@@ -14,6 +14,7 @@ design/**/skolamatch-*.html
 # Firecrawl scrape cache — several MB of scraped school websites, regenerable
 # via scripts/scrape-schools.js. See docs/firecrawl-extraction-task.md.
 scripts/data/scraped-schools/
+scripts/data/filtered-schools/
 
 # graphify output (generated)
 graphify-out/

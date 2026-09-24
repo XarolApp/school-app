@@ -9,6 +9,7 @@
  * model swap costs no Firecrawl credits.
  *
  *   node scripts/extract-school-details.js --dry-run [--limit N] [--school-id ID]
+ *   node scripts/extract-school-details.js --input-dir scripts/data/filtered-schools --dry-run --school-id ID
  *   node scripts/extract-school-details.js [--limit N] [--school-id ID[,ID...]]
  *   node scripts/extract-school-details.js --fix-public-tuition [--dry-run]
  *   node scripts/extract-school-details.js --structure --dry-run [--limit N] [--school-id ID[,ID...]]
@@ -57,8 +58,11 @@ if (USE_GOOGLE) {
 
 const supabase = createClient(supabaseUrl, serviceKey);
 
-const DATA_DIR = path.join(__dirname, 'data', 'scraped-schools');
-const MANIFEST_PATH = path.join(DATA_DIR, '_manifest.json');
+const SCRAPED_DATA_DIR = path.join(__dirname, 'data', 'scraped-schools');
+const inputDirArg = process.argv.indexOf('--input-dir');
+if (inputDirArg !== -1 && (!process.argv[inputDirArg + 1] || process.argv[inputDirArg + 1].startsWith('--'))) throw new Error('--input-dir needs a path');
+const DATA_DIR = path.resolve(inputDirArg !== -1 ? process.argv[inputDirArg + 1] : process.env.EXTRACT_INPUT_DIR || SCRAPED_DATA_DIR);
+const MANIFEST_PATH = path.join(SCRAPED_DATA_DIR, '_manifest.json');
 
 const DEFAULT_MODEL = USE_GOOGLE
   ? (process.env.GOOGLE_GEMINI_MODEL || 'gemini-3.6-flash')
