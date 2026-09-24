@@ -1,6 +1,22 @@
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search as SearchIcon, X, SlidersHorizontal, ChevronDown } from 'lucide-react';
+import {
+  Search as SearchIcon,
+  X,
+  SlidersHorizontal,
+  ChevronDown,
+  Monitor,
+  FlaskConical,
+  ChartColumn,
+  BookOpen,
+  Palette,
+  HeartPulse,
+  Users,
+  ChefHat,
+  Dumbbell,
+  Wrench,
+  Info,
+} from 'lucide-react';
 import { fetchSchools, fetchFavorites } from '../api';
 import {
   buildIndex,
@@ -108,6 +124,19 @@ const SORTS = [
   { id: 'cut', label: 'Nejnižší hranice přijetí', tradeoff: 'bezpečnější, ne nutně silnější škola' },
   { id: 'acceptance', label: 'Největší šance na přijetí', tradeoff: 'podle loňské míry přijetí' },
 ];
+
+const FIELD_ICONS = {
+  it: Monitor,
+  prirodni: FlaskConical,
+  ekonomie: ChartColumn,
+  humanitni: BookOpen,
+  umeni: Palette,
+  zdravotnictvi: HeartPulse,
+  pedagogika: Users,
+  gastro: ChefHat,
+  sport: Dumbbell,
+  remeslo: Wrench,
+};
 
 const UNMET_LABELS = {
   fields: 'filtr oboru',
@@ -599,10 +628,6 @@ function Search() {
       onRemove: () => setPatch({ kapacitaMin: 0 }),
     });
   }
-  if (hasQuery) {
-    chips.push({ key: 'q', label: `„${filters.query.trim()}“`, onRemove: () => setPatch({ query: '' }) });
-  }
-
   const clearAll = () => setFilters(DEFAULT_FILTERS);
 
   // ---- empty-state: blame sentence + ranked relax options + near misses ----
@@ -707,10 +732,10 @@ function Search() {
     onApply: r.onApply,
   }));
 
-  let blameSentence = 'Žádný jednotlivý filtr to sám neuvolní — zruš celou kombinaci a začni od jednoho kritéria.';
+  let blameSentence = 'Žádný jednotlivý filtr to sám neuvolní. Zruš celou kombinaci a začni od jednoho kritéria.';
   if (helpfulRelax.length) {
     const worst = helpfulRelax[0];
-    blameSentence = `Nejvíc omezuje ${worst.blame} — bez něj by odpovídalo ${worst.gainN} ${skolGen(worst.gainN)} z ${total}.`;
+    blameSentence = `Nejvíc omezuje ${worst.blame}. Bez něj by odpovídalo ${worst.gainN} ${skolGen(worst.gainN)} z ${total}.`;
   }
 
   const nearMisses = rows
@@ -723,9 +748,7 @@ function Search() {
     .slice(0, 3)
     .map((x) => ({
       name: x.row.name,
-      why:
-        `${x.row.districtLabel} · ${x.row.p.zrizovatel ?? 'zřizovatel neznámý'} · ${cutoffLabel(x.row.admissionCutoff)} — ` +
-        `nesplňuje ${UNMET_LABELS[x.unmet[0].k]}`,
+      why: `${x.row.districtLabel} · ${x.row.p.zrizovatel ?? 'zřizovatel neznámý'} · ${cutoffLabel(x.row.admissionCutoff)}. Nesplňuje ${UNMET_LABELS[x.unmet[0].k]}.`,
     }));
 
   // ---- pagination ----
@@ -785,8 +808,6 @@ function Search() {
   useBottomBarSpace(compareBarRef, pageRef, selected.size > 0);
 
   const activeFacetCount = activeCriteriaCount - (hasQuery ? 1 : 0);
-  const currentSort = sortOptions.find((o) => o.id === activeSort);
-
   const filtersEl = (
     <SearchFilters
       filters={filters}
@@ -937,7 +958,29 @@ function Search() {
 
   return (
     <div className="school-search" ref={pageRef}>
-      <h1 className="ss-headline-lg">Databáze škol</h1>
+      <header className="ss-page-header">
+        <div className="ss-page-title-source">
+          <h1 className="ss-headline-lg">Střední školy v Praze</h1>
+          {!loading && !error && (
+            <p className="ss-body-md ss-source-line">
+              {total} {skol(total)}. Hranice a počty přijatých jsou z výsledků přijímaček Cermatu za roky 2024 až 2026.
+            </p>
+          )}
+        </div>
+        {!loading && !error && activeCriteriaCount === 0 && recentRows.length > 0 && view === 'list' && (
+          <div className="ss-recent" aria-label="Naposledy zobrazené školy">
+            <span>Naposledy:</span>
+            {recentRows.slice(0, 3).map((row, index) => (
+              <span className="ss-recent-item" key={row.id}>
+                {index > 0 && ', '}
+                <Link to={`/skoly/${row.id}`} title={row.name}>
+                  {row.name}
+                </Link>
+              </span>
+            ))}
+          </div>
+        )}
+      </header>
 
       <div className="ss-search-controls">
         <div className="ss-search-input-wrap">
@@ -967,6 +1010,21 @@ function Search() {
         </div>
 
         {filterBar}
+        {chips.length > 0 && (
+          <div className="ss-chips-row">
+            {chips.map((chip) => (
+              <span className="ss-chip" key={chip.key}>
+                {chip.label}
+                <button type="button" onClick={chip.onRemove} aria-label={`Odebrat filtr ${chip.label}`}>
+                  <X size={13} aria-hidden="true" />
+                </button>
+              </span>
+            ))}
+            <button type="button" className="ss-clear-all" onClick={clearAll}>
+              Zrušit vše
+            </button>
+          </div>
+        )}
       </div>
 
       <Modal
@@ -985,6 +1043,35 @@ function Search() {
         </button>
       </Modal>
 
+      {!loading && !error && activeCriteriaCount === 0 && view === 'list' && (
+        <section className="ss-browse" aria-labelledby="ss-browse-title">
+          <h2 id="ss-browse-title">Nevíš, kde začít? Vyber zaměření.</h2>
+          <p className="ss-body-sm">
+            Zúží seznam na školy s obory v té oblasti. Další filtry můžeš přidat potom.
+          </p>
+          <div className="ss-browse-grid">
+            {fieldOptions.map((option) => {
+              const FieldIcon = FIELD_ICONS[option.id];
+              return (
+                <button
+                  type="button"
+                  className="ss-browse-tile"
+                  key={option.id}
+                  onClick={() => {
+                    toggleIn('fields', option.id);
+                    resultsHeadingRef.current?.focus();
+                  }}
+                >
+                  {FieldIcon && <FieldIcon size={18} aria-hidden="true" />}
+                  <span>{option.label}</span>
+                  <span className="ss-data-sm">{option.count}</span>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
       <section className="ss-results" id="ss-results">
           {loading && <AsyncState kind="loading" title="Načítám školy…" />}
           {error && !loading && (
@@ -999,52 +1086,16 @@ function Search() {
 
           {!loading && !error && (
             <>
-              {activeCriteriaCount === 0 && recentRows.length > 0 && view === 'list' && (
-                <div className="ss-recent">
-                  <p className="ss-label-caps">Naposledy zobrazené</p>
-                  <div className="ss-chip-group">
-                    {recentRows.map((r) => (
-                      <Link key={r.id} to={`/skoly/${r.id}`} className="ss-district-toggle">
-                        {r.name}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              <div className="ss-results-head">
-                <div className="ss-count-row">
-                  <h2 className="ss-headline-md" ref={resultsHeadingRef} tabIndex={-1}>
-                    {n} {skol(n)} z {total}
-                  </h2>
-                  <p className="ss-caption">
-                    {activeCriteriaCount
-                      ? `odpovídá ${activeCriteriaCount} ${plural(activeCriteriaCount, 'filtru', 'filtrům', 'filtrům')} · seznam se mění průběžně`
-                      : 'bez filtrů · vyber obor nebo městskou část'}
-                  </p>
-                </div>
-                <div className="ss-chips-row">
-                  {chips.map((c) => (
-                    <span className="ss-chip" key={c.key}>
-                      {c.label}
-                      <button type="button" onClick={c.onRemove} aria-label={`Odebrat filtr ${c.label}`}>
-                        <X size={13} aria-hidden="true" />
-                      </button>
-                    </span>
-                  ))}
-                  {chips.length > 0 && (
-                    <button type="button" className="ss-clear-all" onClick={clearAll}>
-                      Zrušit všechny filtry
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              <div className="ss-sort-row">
-                <label className="ss-sort-select">
-                  <span className="ss-label-caps">Řadit</span>
+              <div className="ss-toolbar">
+                <h2 className="ss-headline-sm ss-toolbar-count" ref={resultsHeadingRef} tabIndex={-1}>
+                  {n} {skol(n)}
+                  {n !== total && <span className="ss-body-sm"> z {total}</span>}
+                </h2>
+                <div className="ss-toolbar-controls">
+                  <label className="ss-sort-select">
+                    <span className="ss-body-sm">Řadit:</span>
                   <select
-                    className="input"
+                    className="ss-sort-input"
                     value={activeSort}
                     onChange={(e) => setPatch({ sort: e.target.value })}
                   >
@@ -1054,30 +1105,40 @@ function Search() {
                       </option>
                     ))}
                   </select>
-                </label>
-                <div className="ss-view-toggle">
-                  <button
-                    type="button"
-                    className={view === 'list' ? 'is-active' : ''}
-                    aria-pressed={view === 'list'}
-                    onClick={() => setView('list')}
-                  >
-                    Seznam škol
-                  </button>
-                  <button
-                    type="button"
-                    className={view === 'map' ? 'is-active' : ''}
-                    aria-pressed={view === 'map'}
-                    onClick={() => setView('map')}
-                  >
-                    Mapa škol
-                  </button>
+                  </label>
+                  <div className="ss-view-toggle">
+                    <button
+                      type="button"
+                      className={view === 'list' ? 'is-active' : ''}
+                      aria-pressed={view === 'list'}
+                      onClick={() => setView('list')}
+                    >
+                      Seznam
+                    </button>
+                    <button
+                      type="button"
+                      className={view === 'map' ? 'is-active' : ''}
+                      aria-pressed={view === 'map'}
+                      onClick={() => setView('map')}
+                    >
+                      Mapa
+                    </button>
+                  </div>
                 </div>
-                <p className="ss-caption ss-sort-note">
-                  {currentSort?.tradeoff ? `${currentSort.label}: ${currentSort.tradeoff}.` : null} Řazení podle dojezdu
-                  MHD zatím není k dispozici.
-                </p>
               </div>
+
+              {view === 'list' && n > 0 && (
+                <p className="ss-legend ss-body-sm">
+                  <Info size={16} aria-hidden="true" />
+                  <span>
+                    {activeSort === 'cut' && <>Řazeno od nejnižší hranice: bezpečnější volba, ne nutně lepší škola. </>}
+                    {activeSort === 'acceptance' && <>Řazeno podle loňské míry přijetí. </>}
+                    <strong>Hranice</strong> je nejnižší počet bodů z přijímaček (max. 100), se kterým se dalo dostat, průměr za 3 roky přes všechny obory. <strong>Přijato</strong> je podíl přijatých ze všech přihlášených. <strong>Míst</strong> je počet míst, která škola letos otevírá.
+                    {hasMatch && <> <strong>Shoda</strong> říká, jak škola sedí na tvoje odpovědi z dotazníku, ne jak je dobrá.</>}
+                    {!hasMatch && activeCriteriaCount > 0 && <> <strong>Splňuje</strong> je počet tvých filtrů, které škola splňuje.</>}
+                  </span>
+                </p>
+              )}
 
               {view === 'map' && n > 0 && (
                 <SchoolMap rows={sortedAll} selectedId={selectedMapId} onSelect={handleMapSelect} />
