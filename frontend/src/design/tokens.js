@@ -63,20 +63,20 @@ export const type = {
 // values without re-running the pairs listed there.
 export const palettes = {
   znacka: {
-    light: { bg:'#F5F6F7', surface:'#F5F6F7', surface2:'#EAEDEF', ink:'#15191E', ink2:'#4B525B', ink3:'#5F6670', line:'#DCE0E4', line2:'#C4CBD2', accent:'#1C58A3', accentInk:'#F5F6F7', accentSoft:'#E1EAF6', accentLine:'#8FB0DA', ok:'#2C7340', okSoft:'#E0EFE3', danger:'#B0271F', dangerSoft:'#F7E1DF', board:'#E6EAED', frost:'rgba(245,246,247,0.82)', glow:'rgba(28,88,163,0.12)', shadow:'0 1px 2px rgba(21,25,30,.05), 0 18px 40px -20px rgba(21,25,30,.18)' },
-    dark:  { bg:'#131518', surface:'#1A1D21', surface2:'#22262B', ink:'#E7EAEE', ink2:'#B8BFC8', ink3:'#939BA5', line:'#2A2F35', line2:'#3A4047', accent:'#7FA8E6', accentInk:'#10151C', accentSoft:'#1D2B3F', accentLine:'#3F5F8C', ok:'#7DC08E', okSoft:'#1B2E21', danger:'#EE8A80', dangerSoft:'#3A1F1C', board:'#0E1012', frost:'rgba(26,29,33,0.78)', glow:'rgba(127,168,230,0.15)', shadow:'0 1px 2px rgba(14,16,18,.40), 0 18px 40px -20px rgba(14,16,18,.60)' },
+    light: { bg:'#F5F6F7', surface:'#F5F6F7', surface2:'#EAEDEF', ink:'#15191E', ink2:'#4B525B', ink3:'#5F6670', line:'#DCE0E4', line2:'#C4CBD2', accent:'#1C58A3', accentInk:'#F5F6F7', accentSoft:'#E1EAF6', accentLine:'#8FB0DA', ok:'#2C7340', okSoft:'#E0EFE3', matchFill:'#2C7340', matchInk:'#F5F6F7', danger:'#B0271F', dangerSoft:'#F7E1DF', board:'#E6EAED', frost:'rgba(245,246,247,0.82)', glow:'rgba(28,88,163,0.12)', shadow:'0 1px 2px rgba(21,25,30,.05), 0 18px 40px -20px rgba(21,25,30,.18)' },
+    dark:  { bg:'#131518', surface:'#1A1D21', surface2:'#22262B', ink:'#E7EAEE', ink2:'#B8BFC8', ink3:'#939BA5', line:'#2A2F35', line2:'#3A4047', accent:'#7FA8E6', accentInk:'#10151C', accentSoft:'#1D2B3F', accentLine:'#3F5F8C', ok:'#7DC08E', okSoft:'#1B2E21', matchFill:'#7DC08E', matchInk:'#131518', danger:'#EE8A80', dangerSoft:'#3A1F1C', board:'#0E1012', frost:'rgba(26,29,33,0.78)', glow:'rgba(127,168,230,0.15)', shadow:'0 1px 2px rgba(14,16,18,.40), 0 18px 40px -20px rgba(14,16,18,.60)' },
   },
   smrk: {
-    light: { bg:'#F3F5F2', surface:'#F3F5F2', surface2:'#E6ECE7', ink:'#14201A', ink2:'#475650', ink3:'#5C6A63', line:'#D7DFD9', line2:'#BFCAC2', accent:'#1D5842', accentInk:'#F3F5F2', accentSoft:'#DAE9E0', accentLine:'#8DB5A2', ok:'#855A13', okSoft:'#F4E7CF', danger:'#9A2E22', dangerSoft:'#F4DFDA', board:'#E3E9E4', frost:'rgba(243,245,242,0.82)', glow:'rgba(29,88,66,0.12)', shadow:'0 1px 2px rgba(20,32,26,.05), 0 18px 40px -20px rgba(20,32,26,.18)' },
-    dark:  { bg:'#0F1613', surface:'#151E1A', surface2:'#1C2722', ink:'#E3EAE5', ink2:'#AEBBB3', ink3:'#8E9C95', line:'#243029', line2:'#344239', accent:'#86C2A5', accentInk:'#0F1613', accentSoft:'#1A3027', accentLine:'#3E6B57', ok:'#E1B770', okSoft:'#33291A', danger:'#E9907F', dangerSoft:'#3A201B', board:'#0A0F0D', frost:'rgba(21,30,26,0.78)', glow:'rgba(134,194,165,0.15)', shadow:'0 1px 2px rgba(10,15,13,.40), 0 18px 40px -20px rgba(10,15,13,.60)' },
+    light: { bg:'#F3F5F2', surface:'#F3F5F2', surface2:'#E6ECE7', ink:'#14201A', ink2:'#475650', ink3:'#5C6A63', line:'#D7DFD9', line2:'#BFCAC2', accent:'#1D5842', accentInk:'#F3F5F2', accentSoft:'#DAE9E0', accentLine:'#8DB5A2', ok:'#855A13', okSoft:'#F4E7CF', matchFill:'#855A13', matchInk:'#F3F5F2', danger:'#9A2E22', dangerSoft:'#F4DFDA', board:'#E3E9E4', frost:'rgba(243,245,242,0.82)', glow:'rgba(29,88,66,0.12)', shadow:'0 1px 2px rgba(20,32,26,.05), 0 18px 40px -20px rgba(20,32,26,.18)' },
+    dark:  { bg:'#0F1613', surface:'#151E1A', surface2:'#1C2722', ink:'#E3EAE5', ink2:'#AEBBB3', ink3:'#8E9C95', line:'#243029', line2:'#344239', accent:'#86C2A5', accentInk:'#0F1613', accentSoft:'#1A3027', accentLine:'#3E6B57', ok:'#E1B770', okSoft:'#33291A', matchFill:'#E1B770', matchInk:'#0F1613', danger:'#E9907F', dangerSoft:'#3A201B', board:'#0A0F0D', frost:'rgba(21,30,26,0.78)', glow:'rgba(134,194,165,0.15)', shadow:'0 1px 2px rgba(10,15,13,.40), 0 18px 40px -20px rgba(10,15,13,.60)' },
   },
   zvyraznovac: {
-    light: { bg:'#FAFAF8', surface:'#FAFAF8', surface2:'#EFEEEA', ink:'#151412', ink2:'#4E4B45', ink3:'#6A675F', line:'#E3E1DA', line2:'#CDCAC0', accent:'#151412', accentInk:'#FAFAF8', accentSoft:'#FBEFB8', accentLine:'#D9B52E', ok:'#6B5300', okSoft:'#F9E27E', danger:'#B3301D', dangerSoft:'#F8E0DA', board:'#ECEBE6', frost:'rgba(250,250,248,0.82)', glow:'rgba(246,207,63,0.25)', shadow:'0 1px 2px rgba(21,20,18,.05), 0 18px 40px -20px rgba(21,20,18,.18)' },
-    dark:  { bg:'#161512', surface:'#1D1B18', surface2:'#25231F', ink:'#F0EDE5', ink2:'#BDB8AD', ink3:'#9C978E', line:'#2D2A25', line2:'#3D3A33', accent:'#F6CF3F', accentInk:'#161512', accentSoft:'#3A3217', accentLine:'#8C7628', ok:'#F6CF3F', okSoft:'#3A3217', danger:'#F0957F', dangerSoft:'#3B211B', board:'#100F0D', frost:'rgba(29,27,24,0.78)', glow:'rgba(246,207,63,0.15)', shadow:'0 1px 2px rgba(16,15,13,.40), 0 18px 40px -20px rgba(16,15,13,.60)' },
+    light: { bg:'#FAFAF8', surface:'#FAFAF8', surface2:'#EFEEEA', ink:'#151412', ink2:'#4E4B45', ink3:'#6A675F', line:'#E3E1DA', line2:'#CDCAC0', accent:'#151412', accentInk:'#FAFAF8', accentSoft:'#FBEFB8', accentLine:'#D9B52E', ok:'#6B5300', okSoft:'#F9E27E', matchFill:'#F6CF3F', matchInk:'#151412', danger:'#B3301D', dangerSoft:'#F8E0DA', board:'#ECEBE6', frost:'rgba(250,250,248,0.82)', glow:'rgba(246,207,63,0.25)', shadow:'0 1px 2px rgba(21,20,18,.05), 0 18px 40px -20px rgba(21,20,18,.18)' },
+    dark:  { bg:'#161512', surface:'#1D1B18', surface2:'#25231F', ink:'#F0EDE5', ink2:'#BDB8AD', ink3:'#9C978E', line:'#2D2A25', line2:'#3D3A33', accent:'#F6CF3F', accentInk:'#161512', accentSoft:'#3A3217', accentLine:'#8C7628', ok:'#F6CF3F', okSoft:'#3A3217', matchFill:'#F6CF3F', matchInk:'#161512', danger:'#F0957F', dangerSoft:'#3B211B', board:'#100F0D', frost:'rgba(29,27,24,0.78)', glow:'rgba(246,207,63,0.15)', shadow:'0 1px 2px rgba(16,15,13,.40), 0 18px 40px -20px rgba(16,15,13,.60)' },
   },
   terakota: {
-    light: { bg:'#FAF6EF', surface:'#FAF6EF', surface2:'#F1ECE3', ink:'#221A13', ink2:'#6B6259', ink3:'#6F6557', line:'#E6DFD1', line2:'#D6CBB6', accent:'#AD4F2A', accentInk:'#FAF6EF', accentSoft:'#F6E3D6', accentLine:'#DFA98C', ok:'#4F7143', okSoft:'#E6EDDE', danger:'#7A3020', dangerSoft:'#F5E2DC', board:'#EFE9DC', frost:'rgba(250,246,239,0.82)', glow:'rgba(173,79,42,0.12)', shadow:'0 1px 2px rgba(34,26,19,.05), 0 18px 40px -20px rgba(34,26,19,.18)' },
-    dark:  { bg:'#17130E', surface:'#1F1911', surface2:'#2A2216', ink:'#F2ECE2', ink2:'#D8CFC2', ink3:'#B3A895', line:'#362C1E', line2:'#4A3D2B', accent:'#E08A5C', accentInk:'#17130E', accentSoft:'#3A2617', accentLine:'#7A5540', ok:'#8FB57E', okSoft:'#24301F', danger:'#C97F6A', dangerSoft:'#33201A', board:'#100D09', frost:'rgba(31,25,17,0.78)', glow:'rgba(224,138,92,0.15)', shadow:'0 1px 2px rgba(16,13,9,.40), 0 18px 40px -20px rgba(16,13,9,.60)' },
+    light: { bg:'#FAF6EF', surface:'#FAF6EF', surface2:'#F1ECE3', ink:'#221A13', ink2:'#6B6259', ink3:'#6F6557', line:'#E6DFD1', line2:'#D6CBB6', accent:'#AD4F2A', accentInk:'#FAF6EF', accentSoft:'#F6E3D6', accentLine:'#DFA98C', ok:'#4F7143', okSoft:'#E6EDDE', matchFill:'#4F7143', matchInk:'#FAF6EF', danger:'#7A3020', dangerSoft:'#F5E2DC', board:'#EFE9DC', frost:'rgba(250,246,239,0.82)', glow:'rgba(173,79,42,0.12)', shadow:'0 1px 2px rgba(34,26,19,.05), 0 18px 40px -20px rgba(34,26,19,.18)' },
+    dark:  { bg:'#17130E', surface:'#1F1911', surface2:'#2A2216', ink:'#F2ECE2', ink2:'#D8CFC2', ink3:'#B3A895', line:'#362C1E', line2:'#4A3D2B', accent:'#E08A5C', accentInk:'#17130E', accentSoft:'#3A2617', accentLine:'#7A5540', ok:'#8FB57E', okSoft:'#24301F', matchFill:'#8FB57E', matchInk:'#17130E', danger:'#C97F6A', dangerSoft:'#33201A', board:'#100D09', frost:'rgba(31,25,17,0.78)', glow:'rgba(224,138,92,0.15)', shadow:'0 1px 2px rgba(16,13,9,.40), 0 18px 40px -20px rgba(16,13,9,.60)' },
   },
 };
 
@@ -120,10 +120,10 @@ export const size = {
  * These are not decoration, they are the rules that make the system cohere.
  * Documented here because they are easy to violate silently:
  *
- *   1. `accent` carries exactly ONE thing per screen — the primary action, or
- *      the result. Never decoration, never two things at once.
- *   2. `ok` (green) appears ONLY on match strength. Never generic success,
- *      never decorative checkmarks.
+ *   1. Solid `accent` carries exactly ONE thing per screen. `accentSoft` may
+ *      additionally tint one guidance area per screen (DESIGN.md → Primary-subtle).
+ *   2. `ok` (green) appears ONLY on match strength, in three strength levels
+ *      (DESIGN.md → Tertiary). Never generic success, never decorative checkmarks.
  *   3. Selection = 1.5px `accent` border + `accentSoft` fill. NEVER a solid
  *      accent fill. Unselected = 1px `line` on `surface`.
  *   4. Hairline over shadow. Borders do the structural work.
@@ -174,6 +174,8 @@ export function cssVars(p) {
     '--acc-line': p.accentLine,
     '--ok': p.ok,
     '--ok-soft': p.okSoft,
+    '--match-fill': p.matchFill,
+    '--match-ink': p.matchInk,
     '--danger': p.danger,
     '--danger-soft': p.dangerSoft,
     '--board': p.board,

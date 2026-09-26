@@ -73,6 +73,8 @@
   --acc-line: #8FB0DA;
   --ok: #2C7340;
   --ok-soft: #E0EFE3;
+  --match-fill: #2C7340;
+  --match-ink: #F5F6F7;
   --danger: #B0271F;
   --danger-soft: #F7E1DF;
   --board: #E6EAED;
@@ -112,6 +114,8 @@
   --acc-line: #8DB5A2;
   --ok: #855A13;
   --ok-soft: #F4E7CF;
+  --match-fill: #855A13;
+  --match-ink: #F3F5F2;
   --danger: #9A2E22;
   --danger-soft: #F4DFDA;
   --board: #E3E9E4;
@@ -151,6 +155,8 @@
   --acc-line: #D9B52E;
   --ok: #6B5300;
   --ok-soft: #F9E27E;
+  --match-fill: #F6CF3F;
+  --match-ink: #151412;
   --danger: #B3301D;
   --danger-soft: #F8E0DA;
   --board: #ECEBE6;
@@ -190,6 +196,8 @@
   --acc-line: #DFA98C;
   --ok: #4F7143;
   --ok-soft: #E6EDDE;
+  --match-fill: #4F7143;
+  --match-ink: #FAF6EF;
   --danger: #7A3020;
   --danger-soft: #F5E2DC;
   --board: #EFE9DC;
@@ -231,6 +239,8 @@
       --acc-line: #3F5F8C;
       --ok: #7DC08E;
       --ok-soft: #1B2E21;
+      --match-fill: #7DC08E;
+      --match-ink: #131518;
       --danger: #EE8A80;
       --danger-soft: #3A1F1C;
       --board: #0E1012;
@@ -271,6 +281,8 @@
       --acc-line: #3E6B57;
       --ok: #E1B770;
       --ok-soft: #33291A;
+      --match-fill: #E1B770;
+      --match-ink: #0F1613;
       --danger: #E9907F;
       --danger-soft: #3A201B;
       --board: #0A0F0D;
@@ -311,6 +323,8 @@
       --acc-line: #8C7628;
       --ok: #F6CF3F;
       --ok-soft: #3A3217;
+      --match-fill: #F6CF3F;
+      --match-ink: #161512;
       --danger: #F0957F;
       --danger-soft: #3B211B;
       --board: #100F0D;
@@ -351,6 +365,8 @@
       --acc-line: #7A5540;
       --ok: #8FB57E;
       --ok-soft: #24301F;
+      --match-fill: #8FB57E;
+      --match-ink: #17130E;
       --danger: #C97F6A;
       --danger-soft: #33201A;
       --board: #100D09;
@@ -392,6 +408,8 @@
   --acc-line: #3F5F8C;
   --ok: #7DC08E;
   --ok-soft: #1B2E21;
+  --match-fill: #7DC08E;
+  --match-ink: #131518;
   --danger: #EE8A80;
   --danger-soft: #3A1F1C;
   --board: #0E1012;
@@ -432,6 +450,8 @@
   --acc-line: #3E6B57;
   --ok: #E1B770;
   --ok-soft: #33291A;
+  --match-fill: #E1B770;
+  --match-ink: #0F1613;
   --danger: #E9907F;
   --danger-soft: #3A201B;
   --board: #0A0F0D;
@@ -472,6 +492,8 @@
   --acc-line: #8C7628;
   --ok: #F6CF3F;
   --ok-soft: #3A3217;
+  --match-fill: #F6CF3F;
+  --match-ink: #161512;
   --danger: #F0957F;
   --danger-soft: #3B211B;
   --board: #100F0D;
@@ -512,6 +534,8 @@
   --acc-line: #7A5540;
   --ok: #8FB57E;
   --ok-soft: #24301F;
+  --match-fill: #8FB57E;
+  --match-ink: #17130E;
   --danger: #C97F6A;
   --danger-soft: #33201A;
   --board: #100D09;
