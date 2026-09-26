@@ -76,3 +76,22 @@ test('budget trimming drops keyword filler before a fee paragraph whose group is
     Object.assign(config, old);
   }
 });
+
+test('keeps a keyword-less page and paragraph that state a price', () => {
+  const oldMinimum = config.fallbackMinChars;
+  const oldReduction = config.fallbackMaxReduction;
+  config.fallbackMinChars = 0;
+  config.fallbackMaxReduction = 1;
+  try {
+    const source = [
+      '## PAGE-URL: https://example.cz/\n\n# Škola\n\nO naší škole.\n\nProgramy:\n\n- **tuition fees**: 89 000 CZK/year',
+      '## PAGE-URL: https://example.cz/financovani-studia\n\nVýše příspěvku na studium činí vždy na začátku pololetí 23 450,- Kč.',
+    ].join('\n\n---\n\n');
+    const result = filterSchool(source);
+    assert.match(result.text, /89 000 CZK/);
+    assert.match(result.text, /23 450,- Kč/);
+  } finally {
+    config.fallbackMinChars = oldMinimum;
+    config.fallbackMaxReduction = oldReduction;
+  }
+});

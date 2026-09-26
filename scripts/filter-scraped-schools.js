@@ -16,7 +16,9 @@ const exactWords = new Set(['vs', 'svp', 'kc', 'dod']);
 const timePattern = /\b(?:[6-9]|1[0-2])[:.][0-5]\d\b/;
 // A paragraph carrying an amount, a percentage or a time is what the extractor
 // actually needs; trimming must drop these last, never by keyword count alone.
-const factPattern = /\d\s*(?:Kč|%|korun)|\b(?:[6-9]|1[0-2])[:.][0-5]\d\b/i;
+const factPattern = /\d[\s,.\-]*(?:Kč|CZK|%|korun)|\b(?:[6-9]|1[0-2])[:.][0-5]\d\b/i;
+// A page stating a price is kept even when no keyword hits (e.g. "příspěvek na studium").
+const moneyPattern = /\d[\s,.\-]*(?:Kč|CZK|korun)/i;
 const imagePattern = /!\[[^\]]*\]\([^)]*\)/g;
 
 function normalize(value) {
@@ -86,7 +88,7 @@ function isNoise(line) {
 
 function protectedLine(line) {
   const text = normalize(line);
-  return /\b\d[\d\s,.]*\s*(?:kc|korun|%)\b/.test(text)
+  return /\b\d[\d\s,.\-]*\s*(?:kc|czk|korun|%)\b/.test(text)
     || /\d\s*%/.test(text)
     || timePattern.test(text)
     || Object.keys(groupHits(text)).length > 0;
@@ -139,7 +141,7 @@ function compactParagraphs(body) {
   let heading = -1;
   for (let i = 0; i < blocks.length; i += 1) {
     if (/^#{1,6}\s/m.test(blocks[i])) heading = i;
-    if (!Object.keys(groupHits(blocks[i])).length) continue;
+    if (!Object.keys(groupHits(blocks[i])).length && !factPattern.test(blocks[i])) continue;
     keep.add(i);
     if (i > 0) keep.add(i - 1);
     if (i + 1 < blocks.length) keep.add(i + 1);
@@ -233,7 +235,7 @@ function filterSchool(original) {
   const pages = cleaned.map((page, index) => {
     const facts = pageScore(page);
     const home = index === 0;
-    const keep = home || facts.important || (facts.score >= config.lowScore && !(facts.negative && !Object.keys(facts.locationHits).length && facts.score < config.highScore));
+    const keep = home || facts.important || moneyPattern.test(page.body) || (facts.score >= config.lowScore && !(facts.negative && !Object.keys(facts.locationHits).length && facts.score < config.highScore));
     const compact = compactParagraphs(page.body);
     const output = home || page.body.length > config.longPageChars || facts.score < config.highScore ? compact : page.body;
     return { ...page, ...facts, home, keep, compact, output };
