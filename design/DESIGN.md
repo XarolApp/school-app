@@ -347,12 +347,24 @@ what you asked for", red only for something that needs fixing.
 - **Primary-strong (#16467F):** hover and pressed states only.
 - **Primary-subtle (#E1EAF6):** the wash behind a selected option row or a selected
   school, always paired with a 1.5px Primary border. Never a solid Primary fill on
-  interface chrome.
+  interface chrome. Its one other job: it may tint **one guidance area per screen**
+  (on `/skoly`, the "Nevíš, kde začít?" block), the place a student who doesn't know
+  what to do next should look first. Icons inside that area may take Primary. Added
+  2026-09-26 (plan 015) because a strict "accent on one element only" rule left the
+  1280px desktop almost colourless; the phone never had that problem because the same
+  few coloured elements fill a small screen. Solid Primary is still one thing per
+  screen.
 - **Secondary (#4B525B):** blue-leaning graphite for metadata and captions, 7.3:1.
 - **Tertiary (#2C7340), trail green:** match strength and nothing else, exactly the
   job moss had in the previous version. 4.85:1 on its own wash, and readable as plain
   text on the page, because 30+ stylesheet rules use it as text.
 - **Tertiary-subtle (#E0EFE3):** the wash behind a match indicator.
+- **Match strength has three levels** (plan 015): 85 % and up is a solid badge
+  (`matchFill` with `matchInk` text, per theme, so Zvýrazňovač can use its real
+  highlighter yellow), 70–84 % is the Tertiary-subtle wash with Tertiary text, and
+  under 70 % is Tertiary text in a 1px Border-strong outline. Colour lands on the best
+  fits instead of sitting evenly on every row. The number is always shown, so the
+  level is never colour alone.
 - **Neutral (#EAEDEF) and Surface (#F5F6F7):** a cool, faintly blue-grey paper, the
   colour of a trail sign's enamel, not of cream stock. This deliberately gives up the
   Rello & Bigham warm-background reading advantage the previous version cited; that
@@ -729,7 +741,8 @@ When the user explicitly says to build them:
 ## Do's and Don'ts
 
 - **Do** treat Primary (trail blue `#1C58A3`, or the active theme's primary) as
-  next-action/selection only. Never body text, never decoration. This is Monzo's own
+  next-action/selection only, plus the icons inside the one Primary-subtle guidance
+  area a screen may have. Never body text, never decoration. This is Monzo's own
   stated rule for their accent and it is the load-bearing discipline of every theme.
 - **Don't** introduce navy-slate darks, indigo-violet (`#6366F1`–`#9333EA`), or a
   fifth theme without filling every token in both modes and passing the contrast
