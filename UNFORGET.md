@@ -77,9 +77,9 @@ then `node scripts/generate-school-proscons.js --force`. Not run yet, deliberate
 
 ## Structure scraped school-life details — extracted 2026-09-26, follow-ups open
 - **Done:** the six columns were written 2026-09-26 for all 219 cached schools (Luna low, flex, no `--force`). Paired 20-school dry run first: 5 of 6 fields identical, teaching-style tags differed by one tag on 2 schools. Outputs in `reports/structure-v3/` (untracked).
-- **Coverage:** `ma_jidelnu` 50, `ma_koleje` 6, `krouzky_kategorie` 189 (110 with a category), `vyukovy_styl_tagy` 77, `vs_pokracuje_pct` 4, `pocet_krouzku` 0 (schools almost never state a club count; the one hit, school 197, was a per-club fee and was cleared).
+- **Coverage (after the 2026-09-26 rule fix):** `ma_jidelnu` 108, `ma_koleje` 6, `krouzky_kategorie` 189, `vyukovy_styl_tagy` 79, `vs_pokracuje_pct` 4, `pocet_krouzku` 0. The keyword validator was vetoing correct model answers (63 lunches, 163 club categories); a model value whose quote is verbatim in the source is now accepted for lunch and club categories (not dorm-canteen quotes). Backup of the pre-fix six columns: `reports/structure-v3/backup-six-columns.json`.
 - **Recommendation, not yet applied:** score on `ma_jidelnu`, `krouzky_kategorie`, `vyukovy_styl_tagy`; display-only for `ma_koleje` and `vs_pokracuje_pct`; skip `pocet_krouzku`. Wire into matching.
-- **Still open:** `ma_jidelnu` may be too strict (schools 19, 82, 95 look like they should pass) — not checked; schools 26 and 47 have junk cached pages and 26, 42, 43 have no applicant pages (scraper issue, separate from extraction).
+- **Still open — broken scrapes (Firecrawl out of credits 2026-09-26, re-scrape blocked):** `schools.website` already corrected for 26 → https://spszem.cz/ (www. is a parked page), 142 → https://www.hotelova-skola.cz/, 47 → https://gymnazium.truhla.cz/ (truhla.cz is a hub), 157 → https://cszs.mojezdravka.cz/. After topping up Firecrawl: `node scripts/scrape-schools.js --school-id ID --force` for 26, 142, 47, 157, 226 (edupage JS site), 145 (1-page landing); then `node scripts/filter-scraped-schools.js --school ID`, then base + `--structure` extraction for those ids. School 98 (ssgh.cz) sits behind a bot-check page — fill manually, do not bypass.
 - **Effort:** Small–Medium.
 
 ## /skoly redesign (plan 013): untested checks + one founder call — 2026-09-24

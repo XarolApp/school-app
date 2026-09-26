@@ -638,7 +638,8 @@ function deriveActivityCategories(text) {
 }
 
 function deriveActivityCount(text) {
-  const candidates = splitEvidenceChunks(text).flatMap((quote) => activityCountsInQuote(quote).map((count) => ({ ...count, quote })));
+  // A price line ("Příspěvek za 1 kroužek činí 2450 Kč") states a fee per club, not a count.
+  const candidates = splitEvidenceChunks(text).filter((quote) => !/\d\s*(?:,-|\.-)?\s*(?:Kč|CZK)|příspěvek|poplat/i.test(quote)).flatMap((quote) => activityCountsInQuote(quote).map((count) => ({ ...count, quote })));
   const distinct = [...new Map(candidates.map((item) => [item.value, item])).values()];
   if (distinct.length !== 1 || !NUMERIC_BOUNDS.pocet_krouzku(distinct[0]?.value)) return null;
   return distinct[0];
@@ -1051,7 +1052,16 @@ function cleanStructureResult(raw, sources, requestedFields) {
   for (const [field] of STRUCTURE_BOOLEAN_FIELDS) {
     if (!active.has(field)) continue;
     const sourceText = sources[field]?.usedText || '';
-    const derived = field === 'ma_jidelnu' ? deriveDining(sourceText) : deriveDormitory(sourceText);
+    let derived = field === 'ma_jidelnu' ? deriveDining(sourceText) : deriveDormitory(sourceText);
+    // The keyword rule misses plain wording ("Obědy dodává Goodlunch", "Žákovský oběd stojí 53 Kč").
+    // A model "true" still counts when its quote is verbatim in the source and the rule found no
+    // partial-scope or conflicting statement — the quote check is the anti-fabrication guarantee.
+    const modelQuote = evidence[field];
+    if (field === 'ma_jidelnu' && derived.value === null && !derived.quote && raw?.[field] === true
+      && quoteIsInSource(modelQuote, sourceText) && !hasPartialDiningScope(modelQuote) && !looksLikeNoDataAnswer(modelQuote)
+      && !/domov\w* mládeže|domova|internát/i.test(modelQuote)) { // a dorm canteen serves boarders only
+      derived = { value: true, quote: modelQuote, note: 'model quote ověřen ve zdroji' };
+    }
     if (derived.value === null) {
       setStructureNull(output, nullReasons, field, derived.reason);
       if (field === 'ma_jidelnu' && derived.quote && hasPartialDiningScope(derived.quote)) {
@@ -1086,6 +1096,16 @@ function cleanStructureResult(raw, sources, requestedFields) {
         }
       }
       const derived = deriveActivityCategories(source.usedText);
+      // Same rule as lunch: a model category backed by a verbatim source quote is kept
+      // even when the keyword list misses the wording ("Theatre", "Music Ensemble").
+      for (const category of requested) {
+        const quotes = (evidence.krouzky_kategorie?.[category] || []).filter((quote) => quoteIsInSource(quote, source.usedText));
+        if (allowed.has(category) && category !== 'jine' && quotes.length && !derived.categories.includes(category)) {
+          derived.categories.push(category);
+          (derived.evidence ||= {})[category] = quotes;
+          notes.push('Kept krouzky_kategorie ' + category + ': model quote verified in source.');
+        }
+      }
       output.krouzky_kategorie = derived.categories;
       validatedEvidence.krouzky_kategorie = derived.evidence;
       for (const category of derived.categories) {
