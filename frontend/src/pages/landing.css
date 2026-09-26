@@ -108,9 +108,7 @@
 /* ---------- placeholders (motion + photo + screenshot) ----------
    Read as labelled empty slots, never as art. Each carries its own brief. */
 
-.ls-motion,
-.ls-photo,
-.ls-shot {
+.ls-photo {
   margin: 0;
   position: relative;
   display: flex;
@@ -132,15 +130,13 @@
   color: var(--acc);
 }
 
-.ls-slot-brief,
-.ls-slot-storyboard {
+.ls-slot-brief {
   font-size: var(--fs-caption);
   line-height: var(--lh-caption);
   color: var(--ink3);
   max-width: 44ch;
 }
 
-.ls-slot-storyboard { margin: 0; padding-left: 1.2em; }
 
 /* ---------- 1. hero ---------- */
 
@@ -161,27 +157,11 @@
 
 .ls-ctas .ls-textlink { margin-top: 0; }
 
-/* Phone-shaped slot: the hero demo is the mobile flow, since that is where
-   most visitors arrive from. */
-.ls-motion--phone {
-  background: none;
-  border: 0;
-  padding: 0;
-  align-items: center;
-}
-
-.ls-phone {
-  width: min(300px, 100%);
-  aspect-ratio: 390 / 780;
-  border-radius: 40px;
-  border: 1px dashed var(--line2);
-  background: var(--surface2);
-  box-shadow: var(--shadow);
-  padding: var(--space-lg);
+/* Hero phone loop (components/landing/ProductScreens.jsx). */
+.ls-hero-visual {
+  margin: 0;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: var(--space-xs);
+  justify-content: center;
 }
 
 /* ---------- 2. facts ---------- */
@@ -264,12 +244,7 @@
 
 /* ---------- 5. demo ---------- */
 
-.ls-motion--wide {
-  aspect-ratio: 16 / 9;
-  justify-content: flex-end;
-  gap: var(--space-sm);
-  padding: var(--space-xl);
-}
+.ls-demo-frame { margin: 0; }
 
 /* ---------- 6. steps — alternating rows ---------- */
 
@@ -289,6 +264,7 @@
   align-items: center;
 }
 
+.ls-step:nth-child(even) { grid-template-columns: 7fr 5fr; }
 .ls-step:nth-child(even) .ls-step-copy { order: 2; }
 
 .ls-step-num {
@@ -302,7 +278,12 @@
   margin-bottom: var(--space-sm);
 }
 
-.ls-shot { aspect-ratio: 4 / 3; }
+.ls-shot {
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+}
 
 /* ---------- 7. bento — one lead tile, four supporting ---------- */
 
@@ -332,8 +313,6 @@
 
 .ls-shot--inset {
   margin-top: auto;
-  aspect-ratio: 16 / 10;
-  border-radius: calc(var(--r-card) - 8px);
 }
 
 /* ---------- 8. roles ---------- */
@@ -620,6 +599,7 @@
   .ls-faq,
   .ls-founder { grid-template-columns: 1fr; }
 
+  .ls-step:nth-child(even) { grid-template-columns: 1fr; }
   .ls-step:nth-child(even) .ls-step-copy { order: 0; }
 
   .ls-facts { grid-template-columns: 1fr 1fr; }
@@ -627,7 +607,6 @@
   .ls-fact:nth-child(n + 3) { border-top: 1px solid var(--line); }
 
   .ls-photo--tall { min-height: 280px; }
-  .ls-motion--wide { aspect-ratio: 4 / 5; padding: var(--space-lg); }
   .ls-faq-head { position: static; }
   .ls-honesty,
   .ls-final { padding: var(--space-xl) var(--space-lg); }

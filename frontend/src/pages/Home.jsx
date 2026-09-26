@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { trialDaysPhrase } from '../config/pricing';
 import { QUESTIONS } from './onboarding/quizQuestions';
+import { DemoLoop, PhoneLoop, ScreenShot, useScreenData } from '../components/landing/ProductScreens';
 import './landing.css';
 
 /**
@@ -10,11 +11,10 @@ import './landing.css';
  * One offer, one action: every primary button goes to /onboarding. Browsing
  * the database stays a demoted text link (hybrid paywall, ruling C-7).
  *
- * Two kinds of placeholder are deliberate, not missing work:
- * - `.ls-motion` slots: where the product-demo motion graphic will go. Built
- *   later in the separate animation pass (DESIGN.md → "ANIMATION BUILD
- *   INSTRUCTION"), never hand-written here. Each slot's caption is its brief.
- * - `.ls-photo` slots: real photography of real people, per DESIGN.md.
+ * Product visuals (hero phone loop, demo loop, step screenshots) are coded
+ * screens from components/landing/ProductScreens.jsx, built from live data.
+ * `.ls-photo` slots are deliberate placeholders: real photography of real
+ * people, per DESIGN.md — not something to generate.
  *
  * No testimonials, user counts or ratings: config/socialProof.js is empty on
  * purpose. Proof here is methodology and data sources, which are true today.
@@ -33,22 +33,22 @@ const STEPS = [
   {
     title: 'Odpovíš na pár otázek',
     body: 'Co tě baví, kam se vidíš za pět let, jestli tě táhne gympl nebo odborka a kam po Praze dojedeš. Otázku, kterou nevíš, přeskočíš — výsledek tím nezhoršíš.',
-    shot: 'Obrazovka otázky · „Co tě baví nejvíc?“ s vybranou odpovědí',
+    shot: 'question',
   },
   {
     title: 'Uvidíš školy seřazené podle shody',
     body: 'U každé školy je napsané, podle čeho sedí: obor, vzdálenost, jazyky, praxe. Když něco nesedí, stojí to tam taky.',
-    shot: 'Výsledky · seznam škol s procentem shody a důvody',
+    shot: 'results',
   },
   {
     title: 'Projdeš si detail každé školy',
     body: 'Obory, počet míst, kolik lidí se hlásilo a kolik jich vzali, hranice přijetí za poslední tři roky. U každého čísla je rok a zdroj.',
-    shot: 'Detail školy · karta oboru s grafem hranice přijetí',
+    shot: 'detail',
   },
   {
     title: 'Seřadíš si tři přihlášky',
     body: 'Vybereš tři školy v pořadí, ve kterém je dáš na přihlášku, a uvidíš, kde je tvoje skóre z přijímaček proti loňské hranici.',
-    shot: 'Přihláška · tři školy v pořadí s porovnáním skóre',
+    shot: 'prihlaska',
   },
 ];
 
@@ -139,6 +139,7 @@ function useReveal() {
 
 function Home() {
   const rootRef = useReveal();
+  const screenData = useScreenData();
   return (
     <div ref={rootRef} className="page page-home">
       {/* ---------- 1. hero ---------- */}
@@ -162,14 +163,8 @@ function Home() {
           <p className="ls-fineprint">Bez registrace · asi 4 minuty · přeskočit můžeš cokoli</p>
         </div>
 
-        <figure className="ls-motion ls-motion--phone" aria-hidden="true">
-          <div className="ls-phone">
-            <span className="ls-slot-tag">Motion · hero</span>
-            <span className="ls-slot-brief">
-              Smyčka 8–10 s: odpověď v dotazníku → seznam škol se seřadí → otevře se detail
-              školy. Skutečné obrazovky, žádné ilustrace.
-            </span>
-          </div>
+        <figure className="ls-hero-visual" aria-hidden="true">
+          <PhoneLoop />
         </figure>
       </section>
 
@@ -220,15 +215,8 @@ function Home() {
           <p className="ls-eyebrow">Jak to vypadá</p>
           <h2 className="ls-h2">Od první otázky po hotové přihlášky</h2>
         </div>
-        <figure className="ls-motion ls-motion--wide" aria-hidden="true" data-reveal>
-          <span className="ls-slot-tag">Motion · produktové demo, 16 : 9</span>
-          <ol className="ls-slot-storyboard">
-            <li>Dotazník na telefonu, 2–3 odpovědi</li>
-            <li>Výsledky na notebooku, školy seřazené podle shody</li>
-            <li>Detail školy, graf hranice přijetí za 3 roky</li>
-            <li>Porovnání dvou škol vedle sebe</li>
-            <li>Tři přihlášky seřazené v pořadí</li>
-          </ol>
+        <figure className="ls-demo-frame" data-reveal aria-label="Ukázka aplikace po krocích">
+          <DemoLoop />
         </figure>
       </section>
 
@@ -247,8 +235,7 @@ function Home() {
                 <p className="ls-body">{s.body}</p>
               </div>
               <figure className="ls-shot" aria-hidden="true">
-                <span className="ls-slot-tag">Snímek obrazovky</span>
-                <span className="ls-slot-brief">{s.shot}</span>
+                <ScreenShot screen={s.shot} data={screenData} />
               </figure>
             </li>
           ))}
@@ -269,8 +256,7 @@ function Home() {
               přihlášek. Vidíš, jestli se na obor dostává snáz, nebo hůř.
             </p>
             <figure className="ls-shot ls-shot--inset" aria-hidden="true">
-              <span className="ls-slot-tag">Snímek obrazovky</span>
-              <span className="ls-slot-brief">Karta oboru s tříletým trendem hranice</span>
+              <ScreenShot screen="detail" data={screenData} />
             </figure>
           </article>
           <article className="ls-tile" data-reveal style={{ '--i': 1 }}>

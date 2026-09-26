@@ -1,0 +1,390 @@
+/* Coded app screens for the landing page. Prefix `pm-`. Theme tokens only.
+   All inner sizes are em, so one --pm-fs per context scales a whole screen. */
+
+.pm-screen {
+  --ease: cubic-bezier(0.23, 1, 0.32, 1);
+  font-size: var(--pm-fs, 13px);
+  color: var(--ink);
+  background: var(--surface);
+  padding: 1.4em;
+  box-sizing: border-box;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9em;
+  text-align: left;
+}
+
+.pm-screen b { color: var(--text-h); }
+.pm-screen small { color: var(--ink3); font-size: 0.82em; }
+
+.pm-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.15em;
+}
+
+.pm-head b { font-family: var(--heading); font-size: 1.3em; }
+.pm-head em,
+.pm-pill {
+  font-style: normal;
+  font-size: 0.6em;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  border: 1px solid var(--line2);
+  border-radius: 999px;
+  padding: 0.25em 0.8em;
+  white-space: nowrap;
+}
+
+.pm-track {
+  display: block;
+  height: 0.45em;
+  border-radius: 999px;
+  background: var(--track);
+  overflow: hidden;
+}
+
+.pm-fill {
+  display: block;
+  height: 100%;
+  width: var(--w);
+  border-radius: inherit;
+  background: var(--match-fill);
+  transform-origin: left;
+}
+
+.pm-rank {
+  display: grid;
+  place-items: center;
+  width: 2em;
+  height: 2em;
+  flex: none;
+  border-radius: 50%;
+  background: var(--surface2);
+  font-size: 0.9em;
+  font-weight: 700;
+  color: var(--ink2);
+}
+
+.pm-row-name { min-width: 0; display: flex; flex-direction: column; gap: 0.1em; }
+.pm-row-name b {
+  font-size: 0.95em;
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ---------- question ---------- */
+
+.pm-q-top { display: flex; align-items: center; gap: 0.8em; font-size: 0.8em; color: var(--ink3); }
+.pm-q-progress { flex: 1; }
+.pm-q-progress .pm-fill { background: var(--acc); }
+.pm-q-title { margin: 0.4em 0 0; font-family: var(--heading); font-size: 1.9em; font-weight: 600; line-height: 1.05; color: var(--text-h); }
+.pm-q-hint { margin: 0; font-size: 0.9em; line-height: 1.4; color: var(--ink2); }
+.pm-q-options { display: flex; flex-wrap: wrap; gap: 0.5em; }
+
+.pm-opt {
+  padding: 0.6em 0.95em;
+  border-radius: 999px;
+  border: 1px solid var(--line2);
+  background: var(--surface);
+  font-size: 0.9em;
+  font-weight: 500;
+}
+
+.pm-opt--pick { background: var(--acc); border-color: var(--acc); color: var(--acc-ink); }
+
+.pm-q-next {
+  margin-top: auto;
+  align-self: stretch;
+  text-align: center;
+  padding: 0.9em;
+  border-radius: 0.9em;
+  background: var(--acc);
+  color: var(--acc-ink);
+  font-weight: 600;
+}
+
+/* ---------- results ---------- */
+
+.pm-rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.3em; }
+
+.pm-row {
+  display: grid;
+  grid-template-columns: auto 1fr 32%;
+  align-items: center;
+  gap: 0.8em;
+  padding: 0.7em;
+  border-radius: 0.9em;
+}
+
+.pm-row--open { background: var(--surface2); }
+.pm-row--open .pm-rank { background: var(--match-fill); color: var(--match-ink); }
+.pm-row-match { display: flex; align-items: center; gap: 0.6em; }
+.pm-row-match .pm-track { flex: 1; }
+.pm-row-match b { font-size: 0.85em; font-variant-numeric: tabular-nums; min-width: 2.8em; text-align: right; }
+
+.pm-why { grid-column: 2 / -1; display: flex; flex-wrap: wrap; gap: 0.35em; }
+.pm-why i {
+  font-style: normal;
+  font-size: 0.75em;
+  font-weight: 600;
+  padding: 0.3em 0.75em;
+  border-radius: 999px;
+  background: var(--acc-soft);
+  color: var(--acc);
+}
+
+/* ---------- detail ---------- */
+
+.pm-det-name { font-family: var(--heading); font-size: 1.45em; line-height: 1.1; }
+.pm-det-obor { margin-top: -0.6em; }
+.pm-chart { width: 100%; max-width: 30em; height: auto; margin-inline: auto; overflow: visible; }
+.pm-chart-grid { stroke: var(--line); stroke-dasharray: 3 4; }
+.pm-chart-line { fill: none; stroke: var(--acc); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.pm-chart-pt circle { fill: var(--surface); stroke: var(--acc); stroke-width: 3; }
+.pm-chart-pt text { font-size: 12px; font-weight: 700; fill: var(--text-h); text-anchor: middle; }
+.pm-chart-year { font-size: 10px; fill: var(--ink3); text-anchor: middle; }
+
+.pm-stats { display: grid; grid-template-columns: repeat(3, 1fr); margin: 0; border: 1px solid var(--line); border-radius: 0.9em; }
+.pm-stats div { padding: 0.6em 0.8em; }
+.pm-stats div + div { border-left: 1px solid var(--line); }
+.pm-stats dt { font-size: 0.65em; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink3); }
+.pm-stats dd { margin: 0.15em 0 0; font-size: 1.25em; font-weight: 600; color: var(--text-h); font-variant-numeric: tabular-nums; }
+
+.pm-det-note { margin: 0; font-size: 0.85em; line-height: 1.4; color: var(--ink2); }
+
+.pm-skel {
+  height: 1.2em;
+  border-radius: 0.5em;
+  background: linear-gradient(90deg, var(--surface2), var(--line), var(--surface2)) 0 0 / 200% 100%;
+  animation: pm-shimmer 1.4s linear infinite;
+}
+.pm-skel--short { width: 55%; }
+.pm-skel--chart { flex: 1; min-height: 6em; }
+@keyframes pm-shimmer { to { background-position: -200% 0; } }
+
+/* ---------- compare ---------- */
+
+.pm-cmp-grid { display: grid; grid-template-columns: 1fr 1.3fr 1.3fr; font-size: 0.9em; }
+.pm-cmp-grid > b {
+  padding: 0 0.6em 0.7em;
+  font-size: 0.9em;
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.pm-cmp-row { display: contents; }
+.pm-cmp-row span { padding: 0.65em 0.6em; border-top: 1px solid var(--line); }
+.pm-cmp-row span:first-child { padding-left: 0; color: var(--ink3); }
+.pm-cmp-row span:not(:first-child) { font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* ---------- přihláška ---------- */
+
+.pm-app-score {
+  margin: 0;
+  padding: 0.8em 1em;
+  border-radius: 0.9em;
+  background: var(--acc-soft);
+  color: var(--ink2);
+  display: flex;
+  justify-content: space-between;
+}
+.pm-app-score b { color: var(--acc); font-variant-numeric: tabular-nums; }
+.pm-app-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.5em; }
+.pm-app-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.8em;
+  padding: 0.8em;
+  border: 1px solid var(--line);
+  border-radius: 0.9em;
+}
+.pm-pill--ok { color: var(--acc); border-color: var(--acc-line); }
+
+/* ================= frames ================= */
+
+.pm-window {
+  width: 100%;
+  border-radius: var(--r-card);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.pm-chrome {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--line);
+}
+.pm-chrome i { width: 9px; height: 9px; border-radius: 50%; background: var(--line2); }
+.pm-url {
+  margin: 0 auto;
+  padding: 3px 40px;
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 12px;
+  color: var(--ink3);
+}
+
+.pm-viewport { container-type: inline-size; flex: 1; }
+.pm-viewport .pm-screen { --pm-fs: clamp(10px, 2.3cqi, 15px); }
+
+/* Phone. */
+.pm-phone {
+  position: relative;
+  width: min(300px, 100%);
+  aspect-ratio: 390 / 800;
+  margin-inline: auto;
+  padding: 10px;
+  border-radius: 44px;
+  background: var(--ink);
+  box-shadow: var(--shadow), 0 40px 80px -30px var(--glow);
+}
+.pm-notch {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  translate: -50% 0;
+  width: 28%;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--ink);
+  z-index: 3;
+}
+
+/* ================= loops ================= */
+
+.pm-loop { position: relative; display: flex; flex-direction: column; height: 100%; }
+.pm-loop--phone { border-radius: 34px; overflow: hidden; background: var(--surface); }
+.pm-stack { position: relative; flex: 1; container-type: inline-size; overflow: hidden; }
+.pm-loop--phone .pm-screen { --pm-fs: 4.9cqi; padding-top: 4.6em; gap: 1.1em; }
+.pm-loop--phone .pm-row { padding: 0.8em 0.7em; grid-template-columns: auto 1fr; row-gap: 0.45em; }
+.pm-loop--phone .pm-row-match { grid-column: 2; }
+.pm-loop--phone .pm-row:nth-child(n + 5) { display: none; }
+.pm-loop--demo .pm-stack { aspect-ratio: 16 / 8.2; background: var(--bg); }
+.pm-loop--demo .pm-scene { display: flex; align-items: center; justify-content: center; }
+.pm-loop--demo .pm-screen {
+  --pm-fs: min(1.6cqi, 17px);
+  height: auto;
+  width: 44em;
+  max-width: 88%;
+  border-radius: 1.2em;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+.pm-scene {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(6%);
+  transition:
+    opacity 450ms var(--ease, ease),
+    transform 600ms cubic-bezier(0.23, 1, 0.32, 1),
+    visibility 0s 600ms;
+}
+.pm-scene.is-past { transform: translateX(-6%); }
+.pm-scene.is-active { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+
+/* Progress bars double as the loop's clock (see Loop in ProductScreens.jsx). */
+.pm-steps { display: flex; gap: 6px; }
+.pm-loop--phone .pm-steps { position: absolute; top: 44px; left: 18px; right: 18px; z-index: 2; }
+.pm-loop--demo .pm-steps { padding: 12px 16px 16px; gap: 12px; background: var(--surface); border-top: 1px solid var(--line); }
+
+.pm-step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: left;
+  color: var(--ink3);
+}
+button.pm-step { cursor: pointer; }
+button.pm-step:focus-visible { outline: 2px solid var(--acc); outline-offset: 4px; border-radius: 4px; }
+.pm-step-label { font-size: 13px; font-weight: 600; transition: color 200ms ease; }
+.pm-step.is-active .pm-step-label { color: var(--text-h); }
+@media (hover: hover) and (pointer: fine) {
+  button.pm-step:hover .pm-step-label { color: var(--acc); }
+}
+
+.pm-step-bar { display: block; height: 3px; border-radius: 3px; background: var(--line2); overflow: hidden; }
+.pm-step-fill { display: block; height: 100%; background: var(--acc); transform-origin: left; transform: scaleX(0); }
+.pm-step.is-done .pm-step-fill { transform: scaleX(1); }
+.pm-running .pm-step.is-active .pm-step-fill { animation: pm-clock var(--dur, 4.2s) linear forwards; }
+.pm-loop--phone { --dur: 3.6s; }
+.pm-loop:not(.pm-running) .pm-step.is-active .pm-step-fill { transform: scaleX(1); }
+@keyframes pm-clock { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* ================= in-screen motion =================
+   Plays under .pm-play (active loop scene) or .is-in (Home's scroll reveal).
+   Keyframes start from the "empty" state; the resting state is the finished
+   one, so nothing is ever stuck invisible. */
+
+:is(.pm-play, .is-in) .pm-row,
+:is(.pm-play, .is-in) .pm-app-item,
+:is(.pm-play, .is-in) .pm-cmp-row span {
+  animation: pm-rise 600ms var(--ease) both;
+  animation-delay: calc(150ms + var(--i, 0) * 90ms);
+}
+
+:is(.pm-play, .is-in) .pm-fill {
+  animation: pm-grow 1100ms var(--ease) both;
+  animation-delay: calc(350ms + var(--i, 0) * 90ms);
+}
+
+:is(.pm-play, .is-in) .pm-why { animation: pm-fade 500ms ease both 900ms; }
+
+:is(.pm-play, .is-in) .pm-chart-line {
+  stroke-dasharray: 1;
+  animation: pm-draw 1500ms cubic-bezier(0.65, 0, 0.35, 1) both 250ms;
+}
+
+:is(.pm-play, .is-in) .pm-chart-pt {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pm-pop 450ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation-delay: calc(350ms + var(--i) * 550ms);
+}
+
+/* Question: the loop "taps" two options in sequence, then Continue. */
+.pm-play .pm-opt--pick { animation: pm-pick 300ms var(--ease) both; animation-delay: calc(900ms + var(--pick) * 700ms); }
+.pm-play .pm-q-next { animation: pm-press 400ms var(--ease) both 2700ms; }
+
+@keyframes pm-rise { from { opacity: 0; transform: translateY(0.8em); } }
+@keyframes pm-fade { from { opacity: 0; } }
+@keyframes pm-grow { from { transform: scaleX(0); } }
+@keyframes pm-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes pm-pop { from { opacity: 0; transform: scale(0.4); } }
+@keyframes pm-pick {
+  0% { background: var(--surface); border-color: var(--line2); color: var(--ink); transform: scale(1); }
+  45% { transform: scale(0.94); }
+  100% { background: var(--acc); border-color: var(--acc); color: var(--acc-ink); transform: scale(1); }
+}
+@keyframes pm-press { 50% { transform: scale(0.96); filter: brightness(1.1); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .pm-screen *,
+  .pm-scene { animation: none !important; transition: none !important; }
+  .pm-skel { animation: none; }
+}
