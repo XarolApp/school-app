@@ -1213,3 +1213,29 @@
     overflow: visible;
   }
 }
+
+/* Phone: the 200px label column left room for barely one school, cut mid-word.
+   A narrow label column plus 152px school columns shows 1.5 schools, which
+   also signals that the table scrolls sideways. */
+@media (max-width: 600px) {
+  .dp-table {
+    grid-template-columns: 96px repeat(var(--dp-cols, 3), minmax(152px, 1fr));
+  }
+  .dp-table-row-label {
+    padding: var(--space-sm);
+    font-size: var(--fs-caption);
+    line-height: var(--lh-caption);
+    overflow-wrap: anywhere;
+  }
+  .dp-table-head-cell,
+  .dp-table-cell {
+    padding: var(--space-sm) 12px;
+  }
+  .dp-table-head-name {
+    font-size: var(--fs-body-md);
+  }
+  .dp-table-cell {
+    flex-wrap: wrap;
+    gap: 2px 6px;
+  }
+}
