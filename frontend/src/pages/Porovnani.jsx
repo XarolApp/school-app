@@ -208,7 +208,7 @@ function Porovnani() {
                   {row.values.map((v, i) => (
                     <div className={`dp-table-cell${v.isBest ? ' is-best' : ''}${v.isMuted ? ' is-muted' : ''}`} key={schools[i].id}>
                       <strong>{v.text}</strong>
-                      {v.isBest && <span className="dp-best-tag">nejlepší</span>}
+                      {v.tag && <span className="dp-best-tag">{v.tag}</span>}
                     </div>
                   ))}
                 </div>

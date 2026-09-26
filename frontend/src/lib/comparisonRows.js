@@ -31,14 +31,17 @@ function bestIndex(values, { lowerIsBetter = false } = {}) {
   return distinct > 1 ? bestI : -1;
 }
 
-function row(id, label, values, formatted, bestI, info) {
+// `extremeTag` names the extreme factually ("nejnižší", "nejvíc"), never
+// "nejlepší": a lower hranice means easier to get in, not a better school.
+function row(id, label, values, formatted, bestI, info, extremeTag = null) {
   return {
     id,
     label,
     info,
     values: values.map((v, i) => ({
-      text: v == null ? '—' : formatted[i],
+      text: v == null ? 'bez dat' : formatted[i],
       isBest: i === bestI,
+      tag: i === bestI ? extremeTag : null,
     })),
   };
 }
@@ -61,17 +64,20 @@ export function buildComparisonRows(schools) {
         cutoffs,
         cutoffs.map((v) => `${numCz(v)} b.`),
         bestIndex(cutoffs, { lowerIsBetter: true }),
-        'Průměr z posledních 3 let, přes všechny obory školy.'
+        'Průměr z posledních 3 let, přes všechny obory školy.',
+        'nejnižší'
       ),
       row(
         'prijato',
         'Přijato z přihlášených',
         rates,
         rates.map((v) => `${numCz(v)} %`),
-        bestIndex(rates)
+        bestIndex(rates),
+        undefined,
+        'nejvyšší'
       ),
-      row('naMisto', 'Uchazečů na místo', ratios, ratios.map((v) => `${numCz(v)}×`), bestIndex(ratios, { lowerIsBetter: true })),
-      row('mist', `Míst v roce ${summaries.find((s) => s.year)?.year ?? ''}`, kapacity, kapacity.map((v) => `${v}`), bestIndex(kapacity)),
+      row('naMisto', 'Uchazečů na místo', ratios, ratios.map((v) => `${numCz(v)}×`), bestIndex(ratios, { lowerIsBetter: true }), undefined, 'nejméně'),
+      row('mist', `Míst v roce ${summaries.find((s) => s.year)?.year ?? ''}`, kapacity, kapacity.map((v) => `${v}`), bestIndex(kapacity), undefined, 'nejvíc'),
     ],
   };
 
