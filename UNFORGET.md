@@ -64,14 +64,12 @@ when regenerated.
 `node scripts/generate-school-proscons.js --dry-run --limit 5` to eyeball the wording,
 then `node scripts/generate-school-proscons.js --force`. Not run yet, deliberately.
 
-## Structure scraped school-life details — 2026-09-24
-- **Found:** 2026-09-24, while adding queryable school-detail values derived from existing prose.
-- **Urgency:** Medium — matching cannot use these fields until columns are applied and values are extracted.
-- **Updated:** 2026-09-26. The user ran the six-column SQL. The extractor now uses explicit numeric club counts, deterministic category evidence, and stricter whole-school lunch/accommodation rules. The requested Luna xhigh paired dry run is blocked: two xhigh attempts failed while reading Supabase (`fetch failed`); two earlier low-effort attempts reached OpenRouter but got HTTP 401 because the API key is expired. No model outputs exist, so stability and observed coverage remain unmeasured.
-- **Risk of fixing now:** Data writes must wait for review of the repeated 20-school dry run and explicit user approval; `--force` bypasses the populated-column guard.
-- **Risk of NOT fixing:** the six values remain unavailable to matching.
-- **Effort:** Small — review the report, explicitly approve the data run, then run the extraction without `--force`.
-- **Not done yet:** a successful paired dry run after restoring Supabase/provider connectivity, Opus review of the complete v2 report, and approved data extraction. The columns are already present. No SQL was applied and no school data was written in this follow-up.
+## Structure scraped school-life details — extracted 2026-09-26, follow-ups open
+- **Done:** the six columns were written 2026-09-26 for all 219 cached schools (Luna low, flex, no `--force`). Paired 20-school dry run first: 5 of 6 fields identical, teaching-style tags differed by one tag on 2 schools. Outputs in `reports/structure-v3/` (untracked).
+- **Coverage:** `ma_jidelnu` 50, `ma_koleje` 6, `krouzky_kategorie` 189 (110 with a category), `vyukovy_styl_tagy` 77, `vs_pokracuje_pct` 4, `pocet_krouzku` 0 (schools almost never state a club count; the one hit, school 197, was a per-club fee and was cleared).
+- **Recommendation, not yet applied:** score on `ma_jidelnu`, `krouzky_kategorie`, `vyukovy_styl_tagy`; display-only for `ma_koleje` and `vs_pokracuje_pct`; skip `pocet_krouzku`. Wire into matching.
+- **Still open:** `ma_jidelnu` may be too strict (schools 19, 82, 95 look like they should pass) — not checked; schools 26 and 47 have junk cached pages and 26, 42, 43 have no applicant pages (scraper issue, separate from extraction).
+- **Effort:** Small–Medium.
 
 ## /skoly redesign (plan 013): untested checks + one founder call — 2026-09-24
 - **Found:** 2026-09-24, Claude review of plan 013 (`9d9026b`). The redesigned /skoly
