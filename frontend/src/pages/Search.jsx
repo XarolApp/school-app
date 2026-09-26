@@ -97,6 +97,7 @@ const skol = (n) => plural(n, 'škola', 'školy', 'škol');
 const skolGen = (n) => plural(n, 'školu', 'školy', 'škol');
 const misto = (n) => plural(n, 'místo', 'místa', 'míst');
 const numCz = (v) => String(v).replace('.', ',');
+const matchLevel = (score) => (score >= 85 ? 'is-strong' : score >= 70 ? 'is-mid' : 'is-low');
 
 // admissionCutoff is an average POINTS score (Czech+Math combined out of a
 // fixed 100 = 50+50 max, halved from Cermat's raw 0–200 sum). 1 % SKÓR in
@@ -1172,7 +1173,7 @@ function Search() {
                     <span className="ss-cell-obory">Obory</span>
                     {hasScore && <span className="ss-header-numeric">{hasMatch ? 'Shoda' : 'Splňuje'}</span>}
                     <span className="ss-header-numeric">Hranice</span>
-                    <span className="ss-header-numeric">Přijato</span>
+                    <span className="ss-header-center">Přijato</span>
                     <span className="ss-header-numeric">Míst</span>
                     <span />
                   </div>
@@ -1231,7 +1232,7 @@ function Search() {
                             <div className="ss-cell-score">
                               {hasMatch ? (
                                 typeof row.school.match_score === 'number' ? (
-                                  <span className="ss-match-score">{row.school.match_score} %</span>
+                                  <span className={`ss-match-score ${matchLevel(row.school.match_score)}`}>{row.school.match_score} %</span>
                                 ) : (
                                   <span className="ss-caption ss-cell-missing">bez dat</span>
                                 )
@@ -1261,6 +1262,11 @@ function Search() {
                                   <span className="sr-only">přijato </span>
                                   {row.acceptanceRate != null ? `${Math.round(row.acceptanceRate)} %` : <span className="ss-caption ss-cell-missing">bez dat</span>}
                                 </span>
+                                {row.acceptanceRate != null && (
+                                  <span className="ss-accept-bar" aria-hidden="true">
+                                    <span style={{ width: `${Math.min(100, Math.round(row.acceptanceRate))}%` }} />
+                                  </span>
+                                )}
                                 <span className="ss-caption ss-number-label">přijato</span>
                               </div>
                             )}

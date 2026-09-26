@@ -171,7 +171,7 @@
   gap: var(--space-sm) var(--space-md);
   padding: var(--space-md);
   border-radius: var(--r-card);
-  background: var(--surface2);
+  background: var(--acc-soft);
 }
 
 .ss-browse h2 {
@@ -199,7 +199,7 @@
   min-width: 0;
   min-height: 44px;
   padding: var(--space-sm) 12px;
-  border: 1px solid var(--line);
+  border: 1px solid transparent;
   border-radius: var(--r-chip);
   background: var(--surface);
   color: var(--ink);
@@ -211,7 +211,7 @@
 
 .ss-browse-tile > svg {
   flex: none;
-  color: var(--ink2);
+  color: var(--acc);
 }
 
 .ss-browse-tile > span:nth-child(2) {
@@ -234,7 +234,7 @@
 
 @media (hover: hover) and (pointer: fine) {
   .ss-browse-tile:hover {
-    border-color: var(--line2);
+    border-color: var(--acc-line);
   }
 }
 
@@ -293,7 +293,7 @@
 
 .ss-legend svg {
   flex: none;
-  color: var(--ink3);
+  color: var(--acc);
 }
 
 .ss-legend strong {
@@ -795,14 +795,14 @@
 .ss-list-head,
 .ss-row {
   display: grid;
-  grid-template-columns: 20px minmax(0, 2fr) minmax(0, 1.3fr) 80px 72px 64px 40px;
+  grid-template-columns: 20px minmax(0, 2fr) minmax(0, 1.3fr) 80px 112px 64px 40px;
   column-gap: var(--space-md);
   align-items: center;
 }
 
 .ss-list-head.has-score,
 .ss-list.has-score .ss-row {
-  grid-template-columns: 20px minmax(0, 2fr) minmax(0, 1.3fr) 76px 80px 72px 64px 40px;
+  grid-template-columns: 20px minmax(0, 2fr) minmax(0, 1.3fr) 76px 80px 112px 64px 40px;
 }
 
 .ss-list-head {
@@ -816,6 +816,10 @@
 
 .ss-header-numeric {
   text-align: right;
+}
+
+.ss-header-center {
+  text-align: center;
 }
 
 .ss-row {
@@ -949,6 +953,9 @@
   font-variant-numeric: tabular-nums;
 }
 
+.ss-match-score.is-strong { background: var(--match-fill); color: var(--match-ink); }
+.ss-match-score.is-low    { background: transparent; box-shadow: inset 0 0 0 1px var(--line2); }
+
 .ss-row-numbers {
   display: contents;
 }
@@ -960,6 +967,31 @@
 
 .ss-cell-number > .ss-data-md {
   display: block;
+}
+
+.ss-cell-acceptance {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  text-align: left;
+}
+
+.ss-cell-acceptance > .ss-data-md { display: inline; }
+
+.ss-accept-bar {
+  flex: none;
+  width: 40px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.ss-accept-bar > span {
+  display: block;
+  height: 100%;
+  background: var(--acc-line);
 }
 
 .ss-number-label {
@@ -1206,12 +1238,12 @@
 @media (min-width: 861px) and (max-width: 1099px) {
   .ss-list-head,
   .ss-row {
-    grid-template-columns: 20px minmax(0, 2fr) 80px 72px 64px 40px;
+    grid-template-columns: 20px minmax(0, 2fr) 80px 112px 64px 40px;
   }
 
   .ss-list-head.has-score,
   .ss-list.has-score .ss-row {
-    grid-template-columns: 20px minmax(0, 2fr) 76px 80px 72px 64px 40px;
+    grid-template-columns: 20px minmax(0, 2fr) 76px 80px 112px 64px 40px;
   }
 
   .ss-cell-obory {
@@ -1301,6 +1333,15 @@
 
   .ss-cell-number {
     text-align: left;
+  }
+
+  .ss-cell-acceptance {
+    display: block;
+    text-align: left;
+  }
+
+  .ss-accept-bar {
+    display: none;
   }
 
   .ss-cell-no-admission {
@@ -1417,8 +1458,9 @@
   color: var(--on-surface);
 }
 .ss-view-toggle button.is-active {
-  background: var(--ink);
-  color: var(--surface);
+  background: var(--acc-soft);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1.5px var(--acc);
 }
 
 .ss-no-data-note {
