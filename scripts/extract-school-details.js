@@ -59,9 +59,13 @@ if (USE_GOOGLE) {
 const supabase = createClient(supabaseUrl, serviceKey);
 
 const SCRAPED_DATA_DIR = path.join(__dirname, 'data', 'scraped-schools');
+// Default input is the filtered markdown (scripts/filter-scraped-schools.js), not the raw
+// scrape: same facts, ~59% fewer tokens, and nothing lost to the 150k cut. Re-run the
+// filter after every new scrape. --input-dir scripts/data/scraped-schools reads the raw files.
+const FILTERED_DATA_DIR = path.join(__dirname, 'data', 'filtered-schools');
 const inputDirArg = process.argv.indexOf('--input-dir');
 if (inputDirArg !== -1 && (!process.argv[inputDirArg + 1] || process.argv[inputDirArg + 1].startsWith('--'))) throw new Error('--input-dir needs a path');
-const DATA_DIR = path.resolve(inputDirArg !== -1 ? process.argv[inputDirArg + 1] : process.env.EXTRACT_INPUT_DIR || SCRAPED_DATA_DIR);
+const DATA_DIR = path.resolve(inputDirArg !== -1 ? process.argv[inputDirArg + 1] : process.env.EXTRACT_INPUT_DIR || FILTERED_DATA_DIR);
 const MANIFEST_PATH = path.join(SCRAPED_DATA_DIR, '_manifest.json');
 
 const DEFAULT_MODEL = USE_GOOGLE

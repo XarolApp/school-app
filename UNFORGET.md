@@ -13,6 +13,14 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
+## Audit the 2026-09-26 re-extraction's new values — 2026-09-26
+- **Found:** 2026-09-26, after the full base re-extraction (219 schools, Luna low, filtered markdown).
+- **Urgency:** Medium — `tuition_czk_per_year` and `maturita_pass_rate_pct` rank schools in the decision matrix, so one invented number moves a school up or down.
+- **What was checked:** only the LOSSES (fields the new run left empty). Real misses were restored (tuition 113/127/196/203, Waldorf 172, clubs 66/198, extra requirements 45/88). The rest are logged in `reports/api-comparison/lost-values.json` (local and untracked, because it holds database rows; full pre-run backup in `backup-before-full-run.json`).
+- **Not checked:** the 397 newly filled and 491 changed fields. Known case: school 148's model output once filled a tuition number while saying other programmes cost differently.
+- **To do:** re-run the earlier verification (tuition consistent with `skolne_poplatky` incl. monthly×10/12 and sibling discounts; no public school with a tuition number; maturita % only from maturita statements, not admission success rates) over all rows, then eyeball whatever it flags.
+- **Effort:** Small — one local script, no API cost.
+
 ## Mobile layout checks still owed (375×812) — 2026-09-26
 
 Done already and not repeated here: top of `/skoly` (list, toolbar, sort sheet
