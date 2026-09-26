@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Heart, GitCompare, Share2, Check, ListPlus } from 'lucide-react';
+import { Bookmark, Scale, Share2, Check, ListPlus } from 'lucide-react';
 import { addFavorite, removeFavorite, fetchPicks, savePicks } from '../../api';
 import { toggleCompareSelection, isInCompareSelection } from '../../lib/searchPrefs';
 import { useToast } from '../ToastContext';
@@ -48,7 +48,6 @@ function SchoolActions({ school, isFavorite, onFavoriteChange, barRef }) {
     try {
       if (next) await addFavorite(school.id);
       else await removeFavorite(school.id);
-      toast(next ? 'Přidáno do oblíbených' : 'Odebráno z oblíbených');
     } catch {
       onFavoriteChange(!next);
       toast('Uložení se nepodařilo', { type: 'error' });
@@ -61,7 +60,6 @@ function SchoolActions({ school, isFavorite, onFavoriteChange, barRef }) {
     try {
       const next = toggleCompareSelection(school.id);
       setCompared(next.includes(school.id));
-      toast(next.includes(school.id) ? 'Přidáno k porovnání' : 'Odebráno z porovnání');
     } catch (err) {
       toast(err.message, { type: 'error' });
     }
@@ -117,7 +115,7 @@ function SchoolActions({ school, isFavorite, onFavoriteChange, barRef }) {
 
   const compareButton = (
     <button type="button" className="ss-btn ss-btn-secondary" onClick={handleCompare}>
-      {compared ? <Check size={16} aria-hidden="true" /> : <GitCompare size={16} aria-hidden="true" />}
+      <Scale size={16} aria-hidden="true" />
       {compared ? 'K porovnání' : 'Přidat k porovnání'}
     </button>
   );
@@ -136,8 +134,8 @@ function SchoolActions({ school, isFavorite, onFavoriteChange, barRef }) {
       <div className="sd-actions-primary" ref={barRef}>
         {canFavorite && (
           <button type="button" className="ss-btn ss-btn-primary" onClick={handleSave} disabled={saving}>
-            <Heart size={16} aria-hidden="true" fill={isFavorite ? 'currentColor' : 'none'} />
-            {isFavorite ? 'Uloženo' : 'Uložit do oblíbených'}
+            <Bookmark size={16} aria-hidden="true" fill={isFavorite ? 'currentColor' : 'none'} />
+            {isFavorite ? 'Uloženo' : 'Uložit'}
           </button>
         )}
         {compareButton}

@@ -2,7 +2,7 @@ const SECTIONS = [
   { id: 'obory', label: 'Obory a přijímačky' },
   { id: 'kde-to-je', label: 'Kde to je' },
   { id: 'recenze', label: 'Recenze' },
-  { id: 'doplnujeme', label: 'Co doplňujeme' },
+  { id: 'doplnujeme', label: 'Praktické info' },
 ];
 
 function SectionNav() {

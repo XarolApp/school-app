@@ -160,7 +160,7 @@
 }
 .sd-fact-label-row {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 4px;
 }
 /* Hover-to-reveal info hint (InfoHint.jsx) — CSS-only tooltip, no click
@@ -208,7 +208,17 @@
   visibility: visible;
 }
 @media (max-width: 600px) {
-  .sd-info-hint-tip { left: auto; right: 0; transform: none; max-width: calc(100vw - 32px); }
+  /* Pinned to the viewport, not the icon: an icon near either edge pushed the
+     bubble off-screen. Sits above the fixed action bar. */
+  .sd-info-hint-tip {
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+    width: auto;
+    transform: none;
+    z-index: 30;
+  }
 }
 .sd-provenance {
   font-family: var(--sans);
