@@ -14,8 +14,9 @@ function ukonceniLabel(entries) {
 
 // Czech decimal comma, matching every other number in the app (Search.jsx's
 // numCz, ProgramCard's numCz) — "46,9 %", never "46.9 %".
+const NO_DATA = 'bez dat';
 function fmt(value, unit) {
-  return value == null ? '—' : `${String(value).replace('.', ',')}${unit}`;
+  return value == null ? NO_DATA : `${String(value).replace('.', ',')}${unit}`;
 }
 
 // A fact tile with a hover-to-reveal explanation (CSS-only tooltip, see
@@ -23,7 +24,7 @@ function fmt(value, unit) {
 function FactTile({ value, label, note }) {
   return (
     <div className="sd-fact-tile">
-      <div className="sd-fact-value">{value}</div>
+      <div className={`sd-fact-value${value === NO_DATA ? ' is-empty' : ''}`}>{value}</div>
       <div className="sd-fact-label-row">
         <span className="sd-fact-label">{label}</span>
         <InfoHint text={note} />

@@ -67,21 +67,21 @@ function ProgramCard({ entry }) {
 
       <div className="sd-program-stats">
         <div>
-          <div className="sd-program-stat-value">{y.kapacita ?? '—'}</div>
+          <div className={`sd-program-stat-value${y.kapacita == null ? ' is-empty' : ''}`}>{y.kapacita ?? 'bez dat'}</div>
           <div className="sd-program-stat-label">
             míst
             <InfoHint text={`Kolik míst tento obor otevírá pro rok ${entry.latestYear}.`} />
           </div>
         </div>
         <div>
-          <div className="sd-program-stat-value">{y.prihlasky ?? '—'}</div>
+          <div className={`sd-program-stat-value${y.prihlasky == null ? ' is-empty' : ''}`}>{y.prihlasky ?? 'bez dat'}</div>
           <div className="sd-program-stat-label">
             přihlášek
             <InfoHint text={`Kolik uchazečů si v roce ${entry.latestYear} podalo přihlášku právě na tento obor.`} />
           </div>
         </div>
         <div>
-          <div className="sd-program-stat-value">{y.prijati ?? '—'}</div>
+          <div className={`sd-program-stat-value${y.prijati == null ? ' is-empty' : ''}`}>{y.prijati ?? 'bez dat'}</div>
           <div className="sd-program-stat-label">
             přijatých
             <InfoHint text={`Kolik uchazečů bylo do tohoto oboru v roce ${entry.latestYear} skutečně přijato.`} />
@@ -89,7 +89,7 @@ function ProgramCard({ entry }) {
         </div>
         <div>
           <div className={`sd-program-stat-value${y.cutoff == null ? ' is-empty' : ''}`}>
-            {y.cutoff != null ? `${numCz(y.cutoff)} b.` : '—'}
+            {y.cutoff != null ? `${numCz(y.cutoff)} b.` : 'bez dat'}
           </div>
           <div className="sd-program-stat-label">
             {y.cutoff != null ? `hranice ${entry.latestYear}` : 'bez jednotné zkoušky'}

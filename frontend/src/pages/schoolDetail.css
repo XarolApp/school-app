@@ -144,6 +144,12 @@
   letter-spacing: var(--ls-headline-md);
   color: var(--ink);
 }
+.sd-fact-value.is-empty {
+  font-family: var(--sans);
+  font-size: var(--fs-body-sm);
+  font-weight: 500;
+  color: var(--ink3);
+}
 .sd-fact-label {
   font-family: var(--sans);
   font-size: var(--fs-label-caps);
