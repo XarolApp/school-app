@@ -22,6 +22,17 @@ BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 - **Confirmed:** Tester email verification remains required; in-app feedback renews access for 48 hours. The external form never renews access.
 - **Implementation constraint:** Leave the program disabled until a valid future cutoff is configured. Do not invent a deadline or ship a placeholder external-form link. Add the real form link when provided; explain that only in-app feedback renews access.
 
+## Landing page A/B test: two variants committed, both still to be tweaked — 2026-09-26
+- **Found:** 2026-09-26. The founder will tweak both pages before the test starts.
+- **Urgency:** Medium — no test can run until the points below are done.
+- **Variant A:** `frontend/src/pages/Home.jsx` at `/` (the live page): long scroll, coded app screens (`components/landing/ProductScreens.jsx`), no new dependencies.
+- **Variant B:** `frontend/src/pages/landing2/` at `/nova`: a scroll-driven 3D map of Prague built from the real schools (three.js + GSAP + Lenis, loaded only on that route).
+- **Not built — the split itself:** nothing sends visitors to one variant or the other. The repo has no analytics either. Needed: (1) random assignment kept per visitor, (2) counting visits per variant, (3) counting clicks on "Začít dotazník" and finished onboarding per variant.
+- **B is desktop-only.** Built without a phone layout, and the TikTok/Instagram traffic this product depends on is mostly phones. Either send only desktop visitors to the test or give B a phone version first; otherwise B loses for the wrong reason.
+- **If B wins:** DESIGN.md's "Motion — landing page" rules (WebGL discouraged, one ambient loop) were deliberately ignored for B and need updating. Also remove the DEV-only `window.__l2scene` handle in `landing2/Landing.jsx`.
+- **Also open (variant A only):** the founder quote and the "asi 4 minuty" claim (entry above).
+- **Effort:** Medium for the split and tracking; Small for the tweaks.
+
 ## Landing page: two unverified pieces of copy — 2026-09-26
 - **Found:** 2026-09-26, landing rebuild (commit `7240e30`, `frontend/src/pages/Home.jsx`).
 - **Urgency:** Medium — both are shown publicly on the first page a parent sees.
