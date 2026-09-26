@@ -296,13 +296,18 @@ souvisí s tématem obecně. Konkrétně:
   - Pokud web uvádí JEDNU částku a nikde nenaznačuje, že by pro jinou
     větev/program/obor platila jiná cena, vyplň "tuition_czk_per_year"
     touto částkou a do "skolne_poplatky" napiš i výslovně "(stejné pro
-    všechny obory)".
+    všechny obory)". To platí, i když má škola v admission datech víc
+    oborů — cena uvedená bez vazby na konkrétní obor platí pro školu.
+    Sourozenecká sleva, jednorázový zápisný/registrační poplatek nebo
+    splátkový kalendář NEJSOU "různé ceny" — vyplň základní roční školné.
+    Měsíční/pololetní částku přepočti na rok jen když web uvádí, za kolik
+    měsíců/pololetí se platí (jinak null).
   - Pokud web uvádí RŮZNÉ částky pro RŮZNÉ obory/větve/programy (i kdyby
     admission data ukazovala jen jeden formální obor), "skolne_poplatky"
     napiš jako přehled obor/větev→cena (to text unese), ale
     "tuition_czk_per_year" NECH null — jedno číslo by zkreslilo srovnání,
     když se ceny liší.
-  - Pokud web uvádí cenu jen pro JEDEN konkrétní obor/větev a mlčí o
+  - Pokud web cenu VÝSLOVNĚ váže k JEDNOMU pojmenovanému oboru/větvi a mlčí o
     ostatních, totéž: "skolne_poplatky" ať cenu i obor/větev jmenuje, ale
     "tuition_czk_per_year" NECH null — neplatí to prokazatelně pro celou
     školu.
@@ -324,18 +329,18 @@ const STRUCTURE_SYSTEM_PROMPT = [
   'Když chybí přímý důkaz, vraťte null; nikdy neodhadujte. Každý důkaz musí být přesný citát ze vstupu, ne parafráze.',
   '',
   'Pravidla:',
-  '- ma_jidelnu=true jen když text výslovně potvrzuje školní jídelnu nebo zajištěné/dostupné školní obědy.',
-  '  false jen při výslovném tvrzení, že škola jídelnu ani školní stravování neposkytuje; samotná absence informace není false.',
+  '- ma_jidelnu znamená, že studenti mohou dostat oběd prostřednictvím školy.',
+  '  true při vlastní jídelně nebo obědech výslovně zajištěných jinde pro studenty této školy; false jen při výslovném tvrzení, že škola stravování/obědy neposkytuje.',
+  '  Pouhé „nemáme vlastní jídelnu“ neznamená false. Pokud se oběd týká jen jednoho oboru či jedné budovy vícedílné školy, vraťte null.',
   '- ma_koleje=true jen pro vlastní internát/domov mládeže školy nebo konkrétně pojmenovaný partnerský domov, kam škola studenty přímo směruje.',
   '  Samotné „ubytování v blízkém DM“, název města, obecné doporučení někam zavolat ani existence internátů v daném městě nestačí.',
-  '  false jen při výslovném potvrzení, že škola žádné vlastní ani zprostředkované ubytování nenabízí.',
-  '- krouzky_kategorie: použijte jen pevné enum hodnoty a jen pro konkrétně pojmenovaný kroužek nebo program.',
-  '  Obecné školní akce, výlety, exkurze ani soutěže samy o sobě nejsou důkazem kategorie.',
-  '  Pojmenované programy jako Erasmus+, EPAS nebo studentský parlament zařaďte podle tématu; pokud se nevejdou jinam, použijte jine.',
-  '  Ke každé vrácené kategorii uveďte přesné názvy z textu.',
+  '  false jen při výslovném popření ubytování pro studenty obecně; „nemá vlastní internát“ následované seznamem městských internátů není ani true, ani false.',
+  '- krouzky_kategorie: rozhodují jen explicitní slova pojmenovávající doménu aktivity; exkurze, akce, projekty a školní výlety bez domény nedokládají kategorii.',
+  '  Sportovní kurzy nebo pojmenovaný sport (např. turnaj ve florbalu) dokládají sport; jednorázová obecná akce ne. Olympiáda dokládá veda_debata jen tehdy, když je uveden její obor.',
+  '  Zařaďte jen kategorie z pevné množiny a ke každé uveďte přesný citát.',
   '  Pokud text o kroužcích/aktivitách existuje, ale nejmenuje nic zařaditelného, vraťte []; null znamená, že žádný takový text ve vstupu není.',
-  '- pocet_krouzku vyplňte pouze explicitním číslem nebo počtem konkrétně vyjmenovaných kroužků.',
-  '  Při počítání seznamu vraťte v evidence jeden přesný úryvek pro každou započítanou položku. Nepočítejte školní akce ani odhadem.',
+  '- pocet_krouzku vyplňte pouze tehdy, když text sám uvádí číselný počet kroužků/klubů/aktivit; nikdy nepočítejte položky v seznamu.',
+  '  U „více než N“ vraťte N a citujte přesnou frázi. Seznam aktivit, akcí ani highlightů není počet.',
   '- vyukovy_styl_tagy: pouze explicitní důkazy pro pevné enum hodnoty.',
   '  „Moderní výuka“, „kvalitní výuka“ a podobné marketingové fráze nic nedokazují.',
   '  Ke každému tagu uveďte přesný citát; bez prokazatelných tagů vraťte null.',
@@ -425,8 +430,9 @@ function hasTargetEvidence(targetField, text) {
   if (!TARGET_TEXT_MATCHERS[targetField]?.test(folded)) return false;
   if (targetField === 'ma_jidelnu') return hasExplicitDiningEvidence(text, true) || hasExplicitDiningEvidence(text, false);
   if (targetField === 'ma_koleje') return isConcreteDormEvidence(text) || hasExplicitDormDenial(text);
-  if (targetField === 'krouzky_kategorie') return /(?:krouz\w*|klub\w*|zajmov\w*|volnocasov\w*|studentsk\w*\s+parlament|erasmus|\bepas\b|robotick\w*|debat\w*\s+klub|diplomatick\w*\s+forum|pravo na vlastni oci|socialni site a media)/i.test(folded);
-  if (targetField === 'pocet_krouzku') return hasExplicitActivityCount(text) || hasCountableClubList(text);
+  if (targetField === 'krouzky_kategorie') return /krouz|klub|zajmov|volnocas|aktivit|erasmus|\bepas\b|studentsk\w*\s+parlament/i.test(folded)
+    || STRUCTURE_ARRAY_ENUMS.krouzky_kategorie.values.some((category) => hasConcreteCategoryEvidence(category, text));
+  if (targetField === 'pocet_krouzku') return hasExplicitActivityCount(text);
   if (targetField === 'vyukovy_styl_tagy') return hasExplicitTeachingStyleEvidence(text);
   if (targetField === 'vs_pokracuje_pct') return /\b\d{1,3}(?:[,.]\d+)?\s*(?:%|procent\w*)/.test(folded) && /vysok|univerzit|\bvs\b|pokrac|absolvent/.test(folded);
   return false;
@@ -499,17 +505,13 @@ function quoteIsInSource(quote, source) {
 }
 
 const CLUB_CATEGORY_EVIDENCE = {
-  sport: /florbal|fotbal|volejbal|basketbal|tenis|atletik|plav|hokej|fitness|posilovn|joga|pilates|parkour|lezen|bojov|stolni tenis|ping.?pong|tanec|sach/i,
-  umeni_hudba_divadlo: /vytvar|atelier|hudeb|hudba|sbor|zpev|divadl|herec|fotograf|kresl|malov|keramik|muzik|orchestr/i,
-  technika_robotika_it: /robot|program|informat|pocitac|\bit\b|technick|elektron|modelar|3d tisk|auto.?cad|archicad/i,
-  jazyky: /jazyk|anglict|nemcin|francouz|spanel|rustin|konverzac/i,
-  veda_debata: /vedeck|prirodoved|chemick|fyzik|biolog|debata|debatn|diskuz|olympiad/i,
-  jine: /studentsk\w*\s+(?:parlament|casopis|radio|organizac)|erasmus|\bepas\b|pravo na vlastni oci|socialni site a media|diplomatick\w* forum|dobrovolnick\w*|charitativ\w*|adopce na dalku|pojmenovan\w*\s+program/i,
+  sport: /sportovn\w*\s+(?:kurz\w*|krouz\w*|klub\w*|trenink\w*|oddil\w*)|\b(?:florbal|fotbal|volejbal|basketbal|tenis|atletik\w*|plav\w*|hokej|fitness|posilovn\w*|jog\w*|pilates|parkour|lezen\w*|bojov\w*|stolni tenis|ping.?pong|tanec\w*|sach\w*)\b/i,
+  umeni_hudba_divadlo: /\b(?:sbor\w*|zpev\w*|divadl\w*|herectv\w*|orchestr\w*|muzikoterapi\w*)\b|\b(?:vytvar\w*|kreativ\w*|hudeb\w*|fotograf\w*|kreslen\w*|malovan\w*|keramik\w*).{0,35}(?:atelier\w*|kurz\w*|krouz\w*|klub\w*|soutez\w*|vystav\w*)|\b(?:atelier\w*|kurz\w*|krouz\w*|klub\w*|soutez\w*).{0,35}(?:vytvar\w*|kreativ\w*|hudeb\w*|fotograf\w*|kreslen\w*|malovan\w*|keramik\w*)/i,
+  technika_robotika_it: /\b(?:robot\w*|programovan\w*|informat\w*|pocitac\w*|it klub\w*|technick\w* kurz\w*|elektronik\w*|modelar\w*|3d tisk\w*|auto.?cad|archicad)\b/i,
+  jazyky: /\bnepovinn\w*.{0,25}(?:anglictin\w*|nemcin\w*|francouzstin\w*|spanelstin\w*|rustin\w*)|\b(?:jazykov\w*\s+(?:kurz\w*|krouz\w*|klub\w*)|(?:kurz\w*|krouz\w*|klub\w*|konverzac\w*).{0,30}(?:anglictin\w*|nemcin\w*|francouzstin\w*|spanelstin\w*|rustin\w*)|(?:anglictin\w*|nemcin\w*|francouzstin\w*|spanelstin\w*|rustin\w*).{0,30}(?:kurz\w*|krouz\w*|klub\w*|konverzac\w*))\b/i,
+  veda_debata: /\b(?:vedeck\w*|prirodoved\w*|chemick\w* pokus\w*|fyzikaln\w* pokus\w*|biologick\w* pokus\w*|debat\w*|diskuz\w*)\b|\b(?:chemick\w*|fyzikaln\w*|matematick\w*|biologick\w*|dejepisn\w*|geografick\w*|informatick\w*|jazykov\w*|anglictin\w*|cesk\w*)\s+olympiad\w*|\bolympiad\w*\s+(?:z|v)\s+(?:matemat\w*|chem\w*|fyzik\w*|biolog\w*|dejepis\w*|geograf\w*|informat\w*|cesk\w*|anglictin\w*)/i,
+  jine: /studentsk\w*\s+(?:parlament|casopis|radio)|erasmus|\bepas\b|pravo na vlastni oci|socialni site a media|diplomatick\w* forum|dobrovolnick\w*|charitativn\w*|adopce na dalku/i,
 };
-const CONCRETE_CLUB_EVIDENCE = new RegExp(
-  Object.values(CLUB_CATEGORY_EVIDENCE).map((pattern) => pattern.source).join('|'),
-  'i'
-);
 const STYLE_TAG_EVIDENCE = {
   projektova_vyuka: /projekt\w*.{0,30}vyuk|vyuk\w*.{0,40}(?:formou projekt|projekt\w*)/i,
   tradicni_vyklad: /tradicn\w*\s+(?:vyuk|vyklad)|frontaln\w*|vykladov\w*|vyklad ucitele/i,
@@ -518,9 +520,6 @@ const STYLE_TAG_EVIDENCE = {
   individualni_pristup: /individualn\w*.{0,25}(?:pristup|podpor|vyuk|studijn\w* plan|plan)/i,
   skupinova_prace: /skupinov\w*\s+(?:prac|vyuk)|mal(?:ych|e)\s+(?:pracovn\w*\s+)?skupin|tymov\w*\s+prac/i,
 };
-
-const ONE_OFF_ACTIVITY = /turnaj|soutez|vystav|vylet|exkurz|ples|imatrikul|zvonen|lyzak|pulmaraton/i;
-const PROGRAM_CONTEXT = /krouz|klub|kurz|liga|oddil|atelier|galerie|studentsk|erasmus|\bepas\b|program|nepovinn/i;
 
 function hasExplicitTeachingStyleEvidence(text) {
   return Object.keys(STYLE_TAG_EVIDENCE).some((tag) => hasExplicitStyleTag(tag, text));
@@ -536,61 +535,109 @@ function hasExplicitStyleTag(tag, text) {
 
 function hasConcreteCategoryEvidence(category, quote) {
   const folded = foldForRules(quote);
-  if (!CLUB_CATEGORY_EVIDENCE[category]?.test(folded)) return false;
-  return !ONE_OFF_ACTIVITY.test(folded) || PROGRAM_CONTEXT.test(folded);
+  return Boolean(CLUB_CATEGORY_EVIDENCE[category]?.test(folded));
 }
 
-function isCountableActivityName(text) {
+function activityCountsInQuote(text) {
   const folded = foldForRules(text);
-  return CONCRETE_CLUB_EVIDENCE.test(folded) && (!ONE_OFF_ACTIVITY.test(folded) || PROGRAM_CONTEXT.test(folded));
-}
-
-function explicitCountInQuote(text, value) {
-  const folded = foldForRules(text);
-  const countPattern = /\b(\d{1,3})\s*(?:zajmovych\s+)?(?:krouz\w*|klub\w*|aktivit\w*)\b|(?:krouz\w*|klub\w*|aktivit\w*)\s*(?::|je|jsou|bylo|nabizi\w*|celkem|v nabidce)\s*(?:celkem\s*)?(\d{1,3})\b/g;
-  const matches = [...folded.matchAll(countPattern)];
-  return matches.some((match) => Number(match[1] || match[2]) === value);
+  const counts = [];
+  const direct = /\b(\d{1,3})\s*(?:zajmovych\s+)?(?:krouz\w*|klub\w*|aktivit\w*)\b/g;
+  const afterNoun = /(?:krouz\w*|klub\w*|aktivit\w*)\s*(?::|je|jsou|bylo|nabizi\w*|v nabidce)\s*(?:celkem\s*)?(\d{1,3})\b/g;
+  const greaterThan = /\b(?:vice|vic)\s+nez\s+(\d{1,3})\s+(?:zajmovych\s+)?(?:krouz\w*|klub\w*|aktivit\w*)\b/g;
+  for (const match of folded.matchAll(direct)) counts.push({ value: Number(match[1]), moreThan: false });
+  for (const match of folded.matchAll(afterNoun)) counts.push({ value: Number(match[1]), moreThan: false });
+  for (const match of folded.matchAll(greaterThan)) counts.push({ value: Number(match[1]), moreThan: true });
+  return counts;
 }
 
 function hasExplicitActivityCount(text) {
-  const folded = foldForRules(text);
-  return /\b\d{1,3}\s*(?:zajmovych\s+)?(?:krouz\w*|klub\w*|aktivit\w*)\b|(?:krouz\w*|klub\w*|aktivit\w*)\s*(?::|je|jsou|bylo|nabizi\w*|celkem|v nabidce)\s*(?:celkem\s*)?\d{1,3}\b/.test(folded);
-}
-
-function hasCountableClubList(text) {
-  const value = String(text || '').replace(/\s+/g, ' ').trim();
-  if (!value || value.length > 1000) return false;
-  const lines = String(text || '').split(/\r?\n/).filter((line) => /^\s*(?:[-*•]|\d+[.)])\s+\S/.test(line));
-  const items = lines.length >= 2
-    ? lines.map((line) => line.replace(/^\s*(?:[-*•]|\d+[.)])\s+/, '').trim())
-    : value.replace(/^[^:]{0,80}:\s*/, '').split(/[;,]\s*/).map((item) => item.replace(/[.!?]+$/, '').trim());
-  return items.length >= 2 && items.length <= 30 && items.every((item) => item.length >= 3 && item.length <= 90 && isCountableActivityName(item));
+  return activityCountsInQuote(text).length > 0;
 }
 
 function isConcreteDormEvidence(text) {
   const folded = foldForRules(text);
-  const own = /vlastn\w*.{0,35}(?:internat|domov mladeze|ubytovna|kolej)|(?:internat|domov mladeze|ubytovna|kolej).{0,35}vlastn\w*/.test(folded);
-  const ownDenied = /(?:vlastn\w*.{0,50}(?:nema|nenabizi|neposkytuje|neni)|(?:nema|nenabizi|neposkytuje|neni).{0,50}vlastn\w*|bez.{0,30}vlastn\w*)/.test(folded);
-  if (own && !ownDenied) return true;
-  const dormAddress = /(?:domov mladeze|internat|ubytovna|kolej).{0,100}(?:ulici|ul\.|tride|namesti|cislo popisne|\b(?:na|v)\s+[a-z-]{4,}\s+\d{1,4}\b|\b\d{1,4}\/\d{1,4}\b)|(?:ulici|ul\.|tride|namesti).{0,60}(?:domov mladeze|internat|ubytovna|kolej)/.test(folded);
-  const namedDorm = /(?:Domov mládeže|Internát|Ubytovna|Kolej)\s+[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][\p{L}-]{2,}/u.test(text);
-  const dormName = dormAddress || namedDorm;
-  const directed = /(?:ubytovani.{0,60}(?:lze sjednat|dostup|poskyt|zajist|mozne)|doporucuje|partner|zprostredkuj|zajistuje|je moznost ubytovani)/.test(folded);
-  return dormName && directed;
+  const own = /vlastn\w*.{0,35}(?:internat|domov\w* mladeze|ubytovna|kolej)|(?:internat|domov\w* mladeze|ubytovna|kolej).{0,35}vlastn\w*/.test(folded);
+  const ownOnlyDenial = /(?:nema|nenabizi|neposkytuje|bez).{0,45}vlastn\w*.{0,35}(?:internat|domov\w* mladeze|ubytovna|kolej)|vlastn\w*.{0,35}(?:internat|domov\w* mladeze|ubytovna|kolej).{0,45}(?:nema|nenabizi|neposkytuje)/.test(folded);
+  if (own && !ownOnlyDenial) return true;
+  const namedDorm = /(?:domov\w* mladeze|internat|ubytovna|kolej)\s+[a-z][\p{L}-]{2,}/iu.test(foldForRules(text))
+    || /(?:domov\w* mladeze|internat|ubytovna|kolej).{0,100}(?:ulici|ul\.|tride|namesti|\b\d{1,4}\b)/.test(folded);
+  const namedPartner = /partner\w*.{0,45}(?:domov\w* mladeze|internat|ubytovna|kolej)/.test(folded);
+  const directed = namedPartner || /ubytovani.{0,70}(?:lze sjednat|skola.{0,35}(?:zajist|doporuc|zprostredkuj)|partner)|(?:skola|partner).{0,70}(?:doporuc|zajist|zprostredkuj|smlouv).{0,60}(?:domov\w* mladeze|internat|ubytovna|kolej)/.test(folded);
+  return namedDorm && directed;
 }
 
 function hasExplicitDormDenial(text) {
   const folded = foldForRules(text);
-  return /(?:nema|nenabizi|neposkytuje)\s+(?:vubec\s+)?(?:zadne?\s+)?(?:ubytovani|internat|domov mladeze|ubytovna|kolej)|(?:zadne ubytovani|zadny internat|zadny domov mladeze|zadna ubytovna)\s+(?:neni|nejsou|skola nema)/.test(folded);
+  const globalDenial = /(?:skola.{0,20})?(?:nema|nenabizi|neposkytuje|nezajistuje)\s+(?:vubec\s+)?(?:zadne?\s+)?(?:skolni\s+)?ubytovani|(?:skolni\s+)?ubytovani.{0,35}(?:neni nabizeno|neni zajisteno|se neposkytuje)|(?:zadne ubytovani|zadny internat|zadny domov\w* mladeze|zadna ubytovna)\s+(?:neni|nejsou|skola nema)/.test(folded);
+  const schoolDeniesAllLodging = /skola.{0,25}ubytovani.{0,25}(?:nema|nenabizi|neposkytuje|nezajistuje)|vlastn\w*\s+ubytovani.{0,35}skola.{0,25}(?:nema|nenabizi|neposkytuje|nezajistuje)/.test(folded);
+  return globalDenial || schoolDeniesAllLodging;
 }
 
+function hasPartialDiningScope(text) {
+  const folded = foldForRules(text);
+  return /\b(?:u|pro)\s+(?:student\w*\s+)?obor(?:u|e|y)?\b|\b(?:u|pro)\s+(?:student\w*\s+)?pobock\w*\b|\b(?:pouze|jen)\s+(?:v|pro)\s+(?:budov\w*|pavilon\w*|pracovist\w*)\b|\bv\s+jedne\s+z\s+(?:vice|dve|tri)\s+budov\b/.test(folded);
+}
+
+// ma_jidelnu means students can get lunch through the school: on-site or
+// explicitly arranged elsewhere. “No own canteen” alone is not a denial.
+// Keep the own/elsewhere distinction in validation output; the DB stays boolean-only.
 function hasExplicitDiningEvidence(text, value) {
   const folded = foldForRules(text);
-  const noCanteen = /(?:nema|nenabizi|neprovozuje|bez)\s+(?:vlastni\s+)?(?:skolni\s+)?(?:jideln\w*|menz\w*|kantyn\w*)/.test(folded);
-  const noMeals = /(?:neposkytuje|nezajistuje|nema|nevari)\s+(?:skolni\s+)?(?:stravovan\w*|obed\w*)|(?:stravovan\w*|obed\w*).{0,35}(?:neni zajisten|nejsou zajisten|se neposkytuj|se nevar)/.test(folded);
-  const hasMeals = /(?:skola\s+)?(?:ma|provozuje|nabizi|zajistuje).{0,50}(?:jideln\w*|menz\w*|kantyn\w*|stravovan\w*|obed\w*)|(?:jideln\w*|menz\w*|kantyn\w*).{0,50}(?:v budov|v areal|pro zak|fung|k dispozic|samoobsluhou|nachaz|\bje\b)|(?:stravovan\w*|obed\w*).{0,60}(?:je|jsou|zaji|dostup|poskyt|nabiz|k dispozic|\d+[^a-z]{0,8}kc)|(?:je|jsou|zaji|dostup|poskyt|nabiz).{0,60}(?:stravovan\w*|obed\w*)/.test(folded);
-  if (value === false) return noCanteen || noMeals;
-  return hasMeals && !noMeals && !looksLikeNoDataAnswer(text);
+  const noMeals = /(?:skola.{0,25})?(?:neposkytuje|nezajistuje|nema|nevari)\s+(?:zadne\s+)?(?:skolni\s+)?(?:stravovan\w*|obed\w*)|(?:stravovan\w*|obed\w*).{0,35}(?:neni zajisten|nejsou zajisten|se neposkytuj|se nevar)/.test(folded);
+  if (value === false) return noMeals;
+  if (noMeals || looksLikeNoDataAnswer(text)) return false;
+  const canteen = /(?:skola.{0,30})?(?:ma|provozuje|nabizi|zajistuje).{0,45}(?:skolni\s+)?(?:jideln\w*|menz\w*|kantyn\w*)|(?:skolni\s+)?(?:jideln\w*|menz\w*|kantyn\w*).{0,50}(?:v budov|v areal|pro zak|fung|k dispozic|samoobsluhou|nachaz)|(?:v areal\w*|vedle).{0,60}(?:je|funguje|nachaz\w*).{0,30}(?:jideln\w*|menz\w*|kantyn\w*)/.test(folded);
+  const schoolLunches = /(?:obedy|stravovan\w*).{0,45}(?:dostup|zaji|poskyt|nabiz|je|jsou)|(?:dostup|zaji|poskyt|nabiz).{0,45}(?:obedy|stravovan\w*)/.test(folded);
+  const elsewhere = /(?:obedy|stravovan\w*).{0,100}(?:zajist|dostup|poskyt|nabiz).{0,100}(?:blizk\w*|partnersk\w*|jine skole|v\s+[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]{2,}|mimo skolu)|(?:blizk\w*|partnersk\w*|jine skole).{0,80}(?:jideln\w*|obedy|stravovan\w*)/.test(folded);
+  const atSchool = /(?:obedy|stravovan\w*).{0,50}(?:v budov\w* skol|v areal\w* skol|na skole)|(?:v budov\w* skol|v areal\w* skol|na skole).{0,50}(?:obedy|stravovan\w*)/.test(folded);
+  return (canteen || schoolLunches && (elsewhere || atSchool)) && !looksLikeNoDataAnswer(text);
+}
+
+function deriveDining(text) {
+  const quotes = splitEvidenceChunks(text);
+  const partialQuote = quotes.find(hasPartialDiningScope);
+  if (partialQuote) return { value: null, quote: partialQuote, reason: 'lunch statement is limited to one school track/building' };
+  const positives = quotes.filter((quote) => hasExplicitDiningEvidence(quote, true));
+  const negatives = quotes.filter((quote) => hasExplicitDiningEvidence(quote, false));
+  if (positives.length && negatives.length) return { value: null, quote: [...positives, ...negatives].join(' / '), reason: 'conflicting whole-school lunch evidence' };
+  if (positives.length) {
+    const quote = positives[0];
+    const elsewhere = /blizk\w*|partnersk\w*|jine skole|mimo skolu|vedle/.test(foldForRules(quote));
+    return { value: true, quote, note: elsewhere ? 'zajištěno jinde' : 'vlastní jídelna' };
+  }
+  if (negatives.length) return { value: false, quote: negatives[0] };
+  return { value: null, quote: null, reason: 'no explicit whole-school meal evidence' };
+}
+
+function deriveDormitory(text) {
+  const quotes = splitEvidenceChunks(text);
+  const positives = quotes.filter(isConcreteDormEvidence);
+  const negatives = quotes.filter(hasExplicitDormDenial);
+  if (positives.length && negatives.length) return { value: null, quote: [...positives, ...negatives].join(' / '), reason: 'conflicting accommodation evidence' };
+  if (positives.length) return { value: true, quote: positives[0] };
+  if (negatives.length) return { value: false, quote: negatives[0] };
+  return { value: null, quote: null, reason: 'no explicit school-arranged accommodation evidence' };
+}
+
+function deriveActivityCategories(text) {
+  const quotes = splitEvidenceChunks(text);
+  const evidence = {};
+  const categories = [];
+  for (const category of STRUCTURE_ARRAY_ENUMS.krouzky_kategorie.values) {
+    const quote = quotes.find((chunk) => hasConcreteCategoryEvidence(category, chunk));
+    if (quote) {
+      categories.push(category);
+      evidence[category] = [quote];
+    }
+  }
+  return { categories, evidence };
+}
+
+function deriveActivityCount(text) {
+  const candidates = splitEvidenceChunks(text).flatMap((quote) => activityCountsInQuote(quote).map((count) => ({ ...count, quote })));
+  const distinct = [...new Map(candidates.map((item) => [item.value, item])).values()];
+  if (distinct.length !== 1 || !NUMERIC_BOUNDS.pocet_krouzku(distinct[0]?.value)) return null;
+  return distinct[0];
 }
 
 function projectedStructureCandidates(sourceInputs, sourcePresence = {}) {
@@ -600,10 +647,10 @@ function projectedStructureCandidates(sourceInputs, sourcePresence = {}) {
   const clubs = sourceInputs.krouzky_kategorie || '';
   const style = sourceInputs.vyukovy_styl_tagy || '';
   const university = sourceInputs.vs_pokracuje_pct || '';
-  result.ma_jidelnu = hasExplicitDiningEvidence(dining, true) || hasExplicitDiningEvidence(dining, false);
-  result.ma_koleje = isConcreteDormEvidence(dormitory) || hasExplicitDormDenial(dormitory);
+  result.ma_jidelnu = deriveDining(dining).value !== null;
+  result.ma_koleje = deriveDormitory(dormitory).value !== null;
   result.krouzky_kategorie = sourcePresence.krouzky_kategorie ?? hasSourceText(clubs);
-  result.pocet_krouzku = hasExplicitActivityCount(sourceInputs.pocet_krouzku || '') || hasCountableClubList(sourceInputs.pocet_krouzku || '');
+  result.pocet_krouzku = Boolean(deriveActivityCount(sourceInputs.pocet_krouzku || ''));
   result.vyukovy_styl_tagy = hasExplicitTeachingStyleEvidence(style);
   result.vs_pokracuje_pct = /\b\d{1,3}(?:[,.]\d+)?\s*(?:%|procent\w*)/.test(foldForRules(university)) && /vysok|univerzit|\bvs\b|pokrac|absolvent/.test(foldForRules(university));
   return result;
@@ -663,6 +710,13 @@ async function callModel(text, model, typySkoly, obory) {
   }
 }
 
+// OPENROUTER_EXTRACT_PROVIDER=openai/flex pins the half-price flex route. No fallbacks:
+// a busy flex route should fail loudly, not silently bill full price.
+function providerPin() {
+  const p = process.env.OPENROUTER_EXTRACT_PROVIDER;
+  return p ? { provider: { order: [p], allow_fallbacks: false } } : {};
+}
+
 async function callOpenRouter(text, model, typeContext) {
   const apiKey = getOpenRouterKey();
   if (!apiKey) throw new Error('No OpenRouter API key available');
@@ -683,6 +737,7 @@ async function callOpenRouter(text, model, typeContext) {
       // so the cheapest effort tier a reasoning model supports is enough —
       // only applies when the model actually has a reasoning_effort knob.
       reasoning_effort: process.env.OPENROUTER_EXTRACT_EFFORT || 'low',
+      ...providerPin(),
       tools: [EXTRACT_TOOL],
       tool_choice: { type: 'function', function: { name: 'extract_school_details' } },
       messages: [
@@ -861,6 +916,7 @@ async function callStructureModelOnce(userPrompt, model) {
       temperature: 0,
       max_tokens: 2500,
       reasoning_effort: process.env.OPENROUTER_EXTRACT_EFFORT || 'low',
+      ...providerPin(),
       tools: [STRUCTURE_TOOL],
       tool_choice: { type: 'function', function: { name: 'extract_school_structure' } },
       messages: [
@@ -979,30 +1035,36 @@ function hasUniversityPercentEvidence(text, value) {
   return percentages.some((number) => number === value) && /vysok|univerzit|\bvs\b|pokrac|absolvent/.test(folded);
 }
 
-function isClubListItem(quote, source) {
-  if (!quoteIsInSource(quote, source)) return false;
-  const item = quote.trim().replace(/^(?:[-*•]|\d+[.)])\s*/, '').replace(/[.!?;:,]+$/, '').trim();
-  return item.length >= 2 && item.length <= 100 && !/[,\n;!?]/.test(item) && isCountableActivityName(item);
-}
-
 function cleanStructureResult(raw, sources, requestedFields) {
   const output = {};
   const nullReasons = {};
   const notes = [];
   const active = new Set(requestedFields);
   const evidence = raw?.evidence || {};
+  const validatedEvidence = {};
+  const modelOutput = Object.fromEntries(STRUCTURE_FIELDS.map((field) => [field, raw?.[field] ?? null]));
 
   for (const [field] of STRUCTURE_BOOLEAN_FIELDS) {
     if (!active.has(field)) continue;
     const sourceText = sources[field]?.usedText || '';
-    const quote = evidence[field];
-    const value = raw?.[field];
-    if (typeof value !== 'boolean') setStructureNull(output, nullReasons, field, 'model did not return an explicit boolean');
-    else if (!quoteIsInSource(quote, sourceText)) setStructureNull(output, nullReasons, field, 'no exact, verifiable source quote was returned');
-    else if (field === 'ma_jidelnu' && !hasExplicitDiningEvidence(quote, value)) setStructureNull(output, nullReasons, field, 'quoted text does not explicitly support the canteen/meal value');
-    else if (field === 'ma_koleje' && (value ? !isConcreteDormEvidence(quote) : !hasExplicitDormDenial(quote))) {
-      setStructureNull(output, nullReasons, field, 'quote does not explicitly name an own/partner dormitory or deny all school-arranged accommodation');
-    } else output[field] = value;
+    const derived = field === 'ma_jidelnu' ? deriveDining(sourceText) : deriveDormitory(sourceText);
+    if (derived.value === null) {
+      setStructureNull(output, nullReasons, field, derived.reason);
+      if (field === 'ma_jidelnu' && derived.quote && hasPartialDiningScope(derived.quote)) {
+        notes.push('Nulled ma_jidelnu: evidence applies only to one track/building: „' + derived.quote + '“.');
+      }
+    }
+    else {
+      output[field] = derived.value;
+      if (derived.quote) validatedEvidence[field] = derived.quote;
+      if (field === 'ma_jidelnu') {
+        validatedEvidence.ma_jidelnu_case = derived.note;
+        notes.push('ma_jidelnu case: ' + derived.note);
+      }
+    }
+    if (raw?.[field] != null && raw[field] !== derived.value) {
+      notes.push('Dropped model ' + field + '=' + JSON.stringify(raw[field]) + '; deterministic source rule returned ' + JSON.stringify(derived.value) + '.');
+    }
   }
 
   if (active.has('krouzky_kategorie')) {
@@ -1012,34 +1074,35 @@ function cleanStructureResult(raw, sources, requestedFields) {
     } else {
       const allowed = new Set(STRUCTURE_ARRAY_ENUMS.krouzky_kategorie.values);
       const requested = Array.isArray(raw?.krouzky_kategorie) ? raw.krouzky_kategorie : [];
-      const valid = [];
       for (const category of requested) {
         if (!allowed.has(category)) {
           notes.push('Dropped unsupported krouzky_kategorie value: ' + String(category));
-          continue;
+        } else if (!hasConcreteCategoryEvidence(category, source.usedText)) {
+          notes.push('Dropped krouzky_kategorie ' + category + ': source has no explicit activity-domain wording for this category.');
         }
-        const quotes = evidence.krouzky_kategorie?.[category];
-        const supported = Array.isArray(quotes) && quotes.some((quote) => quoteIsInSource(quote, source.usedText) && hasConcreteCategoryEvidence(category, quote));
-        if (supported && !valid.includes(category)) valid.push(category);
-        else notes.push('Dropped krouzky_kategorie ' + category + ': no matching concrete, quoted activity survived evidence checks');
       }
-      output.krouzky_kategorie = valid;
-      if (!valid.length) notes.push('Kept krouzky_kategorie=[] because clubs/activities text exists but names no verified category.');
+      const derived = deriveActivityCategories(source.usedText);
+      output.krouzky_kategorie = derived.categories;
+      validatedEvidence.krouzky_kategorie = derived.evidence;
+      for (const category of derived.categories) {
+        if (!requested.includes(category)) notes.push('Kept krouzky_kategorie ' + category + ': explicit domain wording in source text.');
+      }
+      if (!derived.categories.length) notes.push('Kept krouzky_kategorie=[] because activity text exists but names no explicit category domain.');
     }
   }
 
   if (active.has('pocet_krouzku')) {
     const sourceText = sources.pocet_krouzku?.usedText || '';
-    const value = raw?.pocet_krouzku;
-    const quotes = Array.isArray(evidence.pocet_krouzku) ? evidence.pocet_krouzku : [];
-    const exactQuotes = [...new Set(quotes.filter((quote) => quoteIsInSource(quote, sourceText)))];
-    const explicitNumber = exactQuotes.some((quote) => explicitCountInQuote(quote, value));
-    const countedList = Number.isInteger(value) && exactQuotes.length === value && exactQuotes.every((quote) => isClubListItem(quote, sourceText));
-    if (typeof value !== 'number' || !NUMERIC_BOUNDS.pocet_krouzku(value)) {
-      setStructureNull(output, nullReasons, 'pocet_krouzku', 'no plausible explicit count from 0 to 200 or countable club list');
-    } else if (!explicitNumber && !countedList) {
-      setStructureNull(output, nullReasons, 'pocet_krouzku', 'count lacks an exact numeric source phrase or one verifiable quote per listed club');
-    } else output.pocet_krouzku = value;
+    const count = deriveActivityCount(sourceText);
+    if (!count) setStructureNull(output, nullReasons, 'pocet_krouzku', 'no unambiguous explicit numeric count from 0 to 200; lists are never counted');
+    else {
+      output.pocet_krouzku = count.value;
+      validatedEvidence.pocet_krouzku = count.quote;
+      if (count.moreThan) notes.push('pocet_krouzku: source says „více než ' + count.value + '“; storing the stated lower bound ' + count.value + '.');
+      if (raw?.pocet_krouzku != null && raw.pocet_krouzku !== count.value) {
+        notes.push('Dropped model pocet_krouzku=' + JSON.stringify(raw.pocet_krouzku) + '; only the explicit source count ' + count.value + ' is supported.');
+      }
+    }
   }
 
   if (active.has('vyukovy_styl_tagy')) {
@@ -1057,7 +1120,10 @@ function cleanStructureResult(raw, sources, requestedFields) {
         }
         const quotes = evidence.vyukovy_styl_tagy?.[tag];
         const supported = Array.isArray(quotes) && quotes.some((quote) => quoteIsInSource(quote, source.usedText) && hasExplicitStyleTag(tag, quote));
-        if (supported && !valid.includes(tag)) valid.push(tag);
+        if (supported && !valid.includes(tag)) {
+          valid.push(tag);
+          (validatedEvidence.vyukovy_styl_tagy ||= {})[tag] = quotes.filter((quote) => quoteIsInSource(quote, source.usedText) && hasExplicitStyleTag(tag, quote));
+        }
         else notes.push('Dropped vyukovy_styl_tagy ' + tag + ': no exact quote matching its explicit evidence rule');
       }
       if (valid.length) output.vyukovy_styl_tagy = valid;
@@ -1073,10 +1139,13 @@ function cleanStructureResult(raw, sources, requestedFields) {
       setStructureNull(output, nullReasons, 'vs_pokracuje_pct', 'no numeric percentage within 0–100');
     } else if (!quoteIsInSource(quote, sourceText) || !hasUniversityPercentEvidence(quote, value)) {
       setStructureNull(output, nullReasons, 'vs_pokracuje_pct', 'no exact quote with the same explicit university-continuation percentage');
-    } else output.vs_pokracuje_pct = value;
+    } else {
+      output.vs_pokracuje_pct = value;
+      validatedEvidence.vs_pokracuje_pct = quote;
+    }
   }
 
-  return { output, nullReasons, notes };
+  return { output, nullReasons, notes, validatedEvidence, modelOutput, modelEvidence: evidence };
 }
 
 function reportClip(text, limit = MAX_STORED_INPUT_CHARS) {
@@ -1094,6 +1163,11 @@ function printStructureReport(school, sources, result, skipped, error) {
     }
     if (source.fallbackReason) console.log('  fallback ' + targetField + ': ' + source.fallbackReason);
     console.log('  input ' + targetField + ' <- ' + source.sourceField + ' (' + source.origin + '): ' + JSON.stringify(reportClip(source.usedText)));
+  }
+  if (result && !error) {
+    console.log('  model output: ' + JSON.stringify(result.modelOutput));
+    console.log('  model evidence: ' + JSON.stringify(result.modelEvidence));
+    console.log('  validated evidence: ' + JSON.stringify(result.validatedEvidence));
   }
   console.log('  structured output:');
   for (const field of STRUCTURE_FIELDS) {
@@ -1175,6 +1249,8 @@ async function runStructureMode(args) {
   let processed = 0;
   let skipped = 0;
   let failed = 0;
+  const modelCoverage = Object.fromEntries(STRUCTURE_FIELDS.map((field) => [field, 0]));
+  const validatedCoverage = Object.fromEntries(STRUCTURE_FIELDS.map((field) => [field, 0]));
   for (const id of schoolIds) {
     const school = schoolById.get(String(id)) || { id, name: null };
     const row = detailById.get(String(id)) || null;
@@ -1194,6 +1270,10 @@ async function runStructureMode(args) {
     try {
       const raw = await callStructureModel(formatStructureUserPrompt(sources, requestedFields), model);
       result = cleanStructureResult(raw, sources, requestedFields);
+      for (const field of requestedFields) {
+        if (raw?.[field] != null) modelCoverage[field] += 1;
+        if (result.output[field] != null) validatedCoverage[field] += 1;
+      }
       const patch = {};
       for (const field of requestedFields) {
         if (force || result.output[field] != null) patch[field] = result.output[field];
@@ -1221,6 +1301,10 @@ async function runStructureMode(args) {
   }
 
   console.log('\nProcessed ' + processed + ', skipped ' + skipped + ', failed ' + failed + ', of ' + schoolIds.length + ' targeted.');
+  console.log('Model-returned non-null values:');
+  for (const field of STRUCTURE_FIELDS) console.log('  ' + field + ': ' + modelCoverage[field] + '/' + processed);
+  console.log('Validated non-null outputs:');
+  for (const field of STRUCTURE_FIELDS) console.log('  ' + field + ': ' + validatedCoverage[field] + '/' + processed);
   if (dryRun) console.log('--dry-run: nothing written to Supabase.');
 }
 
@@ -1305,6 +1389,11 @@ async function main() {
       const allFields = [...FIELDS, ...NUMERIC_FIELDS, ...BOOLEAN_FIELDS];
       const foundCount = allFields.filter(([key]) => result[key] != null).length;
       console.log(`${name}: ${foundCount}/${allFields.length} fields found`);
+      // Full result per school, for offline comparisons (e.g. original vs filtered input).
+      if (process.env.EXTRACT_DUMP_DIR) {
+        fs.mkdirSync(process.env.EXTRACT_DUMP_DIR, { recursive: true });
+        fs.writeFileSync(path.join(process.env.EXTRACT_DUMP_DIR, `${schoolId}.json`), JSON.stringify(result, null, 2));
+      }
       for (const [key] of [...NUMERIC_FIELDS, ...BOOLEAN_FIELDS]) {
         if (result[key] != null) console.log(`    ${key} = ${result[key]}`);
       }
