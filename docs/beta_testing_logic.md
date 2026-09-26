@@ -1,7 +1,14 @@
 # Beta Testing Program — Logic Spec (for implementation)
 
-**Status:** design only, nothing here is implemented yet. Handed to whichever
-AI/session builds it — do not skip straight to code without reading this in full.
+**Status:** the full program below is not implemented yet. A legacy shared-code
+beta bypass already exists and must be replaced, not left alongside this logic.
+Implementation plan: [`plans/016-beta-testing-program.md`](../plans/016-beta-testing-program.md)
+(2026-09-26). Read this spec in full before building.
+
+**Confirmed 2026-09-26:** tester email verification remains required. The founder
+has deferred the exact program end date and external feedback form URL; those
+questions are recorded in `UNFORGET.md`. Leave enrollment disabled until a future
+cutoff is configured, and do not ship a placeholder external form link.
 
 **Context:** first beta school confirmed interest (2026-09-22). User has ~7 days
 to have this working. Multiple schools will receive links and reshare them to
@@ -21,11 +28,9 @@ unlimited access with no feedback loop.
 - Landing page at that route: short intro + "Sign up to start testing" CTA.
   The code travels with the user into signup (query param → sessionStorage,
   same pattern already used for `pendingOnboardingAnswers.js`).
-- Signup itself is a **real individual account** (reuse existing
-  Supabase Auth signup — email confirmation can likely be skipped/relaxed for
-  testers, since the goal is frictionless access, not identity verification —
-  flag this as a decision for the user if it conflicts with existing
-  `requireAuth` behavior).
+- Signup itself is a **real individual account** (reuse existing Supabase Auth
+  signup). **Email confirmation remains required for testers**, confirmed by
+  the founder on 2026-09-26; preserve existing `requireAuth` behavior.
 - On successful signup, the account is marked as a tester and tagged with the
   school code it came from (see data model below). This is what lets feedback
   be attributed back to a school.
@@ -135,10 +140,8 @@ one-time).
 - **Duplicate signups:** no special tester handling needed — the existing
   duplicate-account detection (per `CLAUDE.md`, "Duplicate signups are
   surfaced, not hidden") applies as-is.
-- **Email confirmation for testers:** flagged above in §1 as a decision the
-  user should confirm explicitly before building — relaxing it speeds up
-  onboarding but changes an existing security assumption (`requireAuth`
-  currently rejects unconfirmed emails everywhere).
+- **Email confirmation for testers — resolved 2026-09-26:** keep it required.
+  `requireAuth` must continue rejecting unconfirmed emails everywhere.
 - **Never let a tester reach a real Stripe charge.** This is the one hard
   rule — verify it explicitly once built, not just assumed from the flag.
 

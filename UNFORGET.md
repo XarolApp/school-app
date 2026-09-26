@@ -13,6 +13,15 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
+## Beta program: end date and external feedback form URL pending — 2026-09-26
+- **Found:** 2026-09-26, planning implementation of `docs/beta_testing_logic.md`.
+- **Urgency:** High — the hard end date is required before distributing working beta invitations.
+- **Effort:** Small — founder decision and configuration.
+- **Release/context:** School beta launch. The founder explicitly deferred these answers on 2026-09-26.
+- **Pending question:** What exact date and time (Europe/Prague) should the beta program end, and what is the external feedback form URL?
+- **Confirmed:** Tester email verification remains required; in-app feedback renews access for 48 hours. The external form never renews access.
+- **Implementation constraint:** Leave the program disabled until a valid future cutoff is configured. Do not invent a deadline or ship a placeholder external-form link. Add the real form link when provided; explain that only in-app feedback renews access.
+
 ## Landing page: two unverified pieces of copy — 2026-09-26
 - **Found:** 2026-09-26, landing rebuild (commit `7240e30`, `frontend/src/pages/Home.jsx`).
 - **Urgency:** Medium — both are shown publicly on the first page a parent sees.
