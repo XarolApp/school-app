@@ -37,10 +37,9 @@ function FavoriteButton({ schoolId, isFavorite, onChange, className = '' }) {
       } else {
         await removeFavorite(schoolId);
       }
-      // Confirmed only after the call succeeds. The optimistic update above
-      // already moved the star, so announcing before this point would sometimes
-      // congratulate the user on a save that then rolled back.
-      toast(next ? 'Škola uložena' : 'Odebráno z uložených');
+      // No success toast: the filled bookmark is the confirmation. Only a
+      // failure is announced (below), because a silent snap-back looks like
+      // the click never happened.
     } catch {
       onChange(!next);
       // The star silently snapping back is indistinguishable from never having

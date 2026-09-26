@@ -283,17 +283,21 @@
 }
 
 .ss-saved-first {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: var(--space-sm);
+  gap: 6px;
   color: var(--ink2);
+  font: 400 var(--fs-caption)/1.25 var(--sans);
+  letter-spacing: normal;
+  text-transform: none;
   cursor: pointer;
-  white-space: nowrap;
 }
 
 .ss-saved-first input {
-  width: 18px;
-  height: 18px;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin: 0;
   accent-color: var(--acc);
 }
 
@@ -609,6 +613,8 @@
   min-height: 30px;
 }
 .ss-facet-row label {
+  flex: 1;
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: var(--space-sm);
@@ -884,14 +890,14 @@
 .ss-list-head,
 .ss-row {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1.3fr) 80px 112px 64px 88px;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1.3fr) 80px 112px 48px 136px;
   column-gap: var(--space-md);
   align-items: center;
 }
 
 .ss-list-head.has-score,
 .ss-list.has-score .ss-row {
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1.3fr) 76px 80px 112px 64px 88px;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1.3fr) 76px 80px 112px 48px 136px;
 }
 
 .ss-list-head {
@@ -919,9 +925,7 @@
   background: transparent;
 }
 
-.ss-row.is-selected {
-  background: var(--acc-soft);
-}
+
 
 @media (hover: hover) and (pointer: fine) {
   .ss-row:hover {
@@ -1332,12 +1336,12 @@
 @media (min-width: 861px) and (max-width: 1099px) {
   .ss-list-head,
   .ss-row {
-    grid-template-columns: minmax(0, 2fr) 80px 112px 64px 88px;
+    grid-template-columns: minmax(0, 2fr) 80px 112px 48px 136px;
   }
 
   .ss-list-head.has-score,
   .ss-list.has-score .ss-row {
-    grid-template-columns: minmax(0, 2fr) 76px 80px 112px 64px 88px;
+    grid-template-columns: minmax(0, 2fr) 76px 80px 112px 48px 136px;
   }
 
   .ss-cell-obory {

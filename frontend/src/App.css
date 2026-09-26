@@ -92,6 +92,10 @@
 
 .app-content {
   flex: 1;
+  /* The legal footer must stay reachable but never show up mid-screen while a
+     page is still loading (it used to flash, then get covered). A viewport of
+     content always pushes it below the fold. */
+  min-height: 100svh;
   padding: var(--page-margin);
   max-width: var(--content-max);
   width: 100%;

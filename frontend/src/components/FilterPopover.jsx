@@ -32,7 +32,11 @@ function FilterPopover({ id, label, activeCount, open, onOpenChange, onClear, re
     // already handled by the pointerdown listener, so only react to focus that
     // actually lands on another element (Tab / Shift+Tab out of the panel).
     const closeOnFocusOut = (event) => {
-      if (event.relatedTarget && !rootRef.current?.contains(event.relatedTarget)) {
+      // A click on non-focusable text (an option's label) hands focus to the
+      // nearest tabindex="-1" ancestor (<main>), which Tab can never reach, so
+      // it is never a real "focus left the panel".
+      const to = event.relatedTarget;
+      if (to && !rootRef.current?.contains(to) && to.getAttribute('tabindex') !== '-1') {
         onOpenChangeRef.current(false);
       }
     };

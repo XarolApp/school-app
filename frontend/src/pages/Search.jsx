@@ -800,6 +800,13 @@ function Search() {
 
   const canFavorite = isSignedIn && hasAccess;
 
+  const savedFirstToggle = canFavorite && favorites.size > 0 && (
+    <label className="ss-saved-first">
+      <input type="checkbox" checked={savedFirst} onChange={(e) => setSavedFirst(e.target.checked)} />
+      Zobrazovat uložené školy nahoře
+    </label>
+  );
+
   const compareToggle = (row, isSelected, disabled) => (
     <button
       type="button"
@@ -1054,6 +1061,7 @@ function Search() {
                 {group.content}
               </FilterPopover>
             ))}
+            {allFiltersButton}
           </>
         )}
       </div>
@@ -1196,12 +1204,7 @@ function Search() {
                   {n !== total && <span className="ss-body-sm"> z {total}</span>}
                 </h2>
                 <div className="ss-toolbar-controls">
-                  {view === 'list' && canFavorite && favorites.size > 0 && (
-                    <label className="ss-saved-first">
-                      <input type="checkbox" checked={savedFirst} onChange={(e) => setSavedFirst(e.target.checked)} />
-                      <span className="ss-body-sm">Uložené nahoře</span>
-                    </label>
-                  )}
+                  {view === 'list' && isMobile && savedFirstToggle}
                   {view === 'list' && sortControl}
                   <div className="ss-view-toggle">
                     <button
@@ -1306,14 +1309,14 @@ function Search() {
 
               {view === 'list' && n > 0 && (
                 <>
-                  <div className={`ss-list-head${hasScore ? ' has-score' : ''}`} aria-hidden="true">
-                    <span>Škola</span>
-                    <span className="ss-cell-obory">Obory</span>
-                    {hasScore && <span className="ss-header-numeric">{hasMatch ? 'Shoda' : 'Splňuje'}</span>}
-                    <span className="ss-header-numeric">Hranice</span>
-                    <span className="ss-header-center">Přijato</span>
-                    <span className="ss-header-numeric">Míst</span>
-                    <span />
+                  <div className={`ss-list-head${hasScore ? ' has-score' : ''}`}>
+                    <span aria-hidden="true">Škola</span>
+                    <span className="ss-cell-obory" aria-hidden="true">Obory</span>
+                    {hasScore && <span className="ss-header-numeric" aria-hidden="true">{hasMatch ? 'Shoda' : 'Splňuje'}</span>}
+                    <span className="ss-header-numeric" aria-hidden="true">Hranice</span>
+                    <span className="ss-header-center" aria-hidden="true">Přijato</span>
+                    <span className="ss-header-numeric" aria-hidden="true">Míst</span>
+                    <span>{savedFirstToggle}</span>
                   </div>
                   <ul className={`ss-list${hasScore ? ' has-score' : ''}`}>
                     {shown.map((row) => {

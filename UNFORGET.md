@@ -13,6 +13,20 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
+## Regenerate school pros/cons with --force (wording fix) — 2026-09-26
+
+Cached `school_ai_summary` pros/cons still say things like "Škola má pouze 19 míst
+pro aktuální rok." The generator fed the model fields named `mista_aktualni_rok` /
+`prihlasky_aktualni_rok`, and it echoed that wording, but those numbers are from the
+past admission round (2026). The field names were fixed in
+`scripts/generate-school-proscons.js` (commit 6836ab0: `rok_prijimacek`,
+`mista_v_prijimackach`, `prihlasky_v_prijimackach`), but existing rows only change
+when regenerated.
+
+**To do (founder go-ahead, costs API credits):**
+`node scripts/generate-school-proscons.js --dry-run --limit 5` to eyeball the wording,
+then `node scripts/generate-school-proscons.js --force`. Not run yet, deliberately.
+
 ## Structure scraped school-life details — 2026-09-24
 - **Found:** 2026-09-24, while adding queryable school-detail values derived from existing prose.
 - **Urgency:** Medium — matching cannot use these fields until columns are applied and values are extracted.
