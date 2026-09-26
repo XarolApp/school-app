@@ -1,106 +1,428 @@
+import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { trialDaysPhrase } from '../config/pricing';
+import { QUESTIONS } from './onboarding/quizQuestions';
 import './landing.css';
 
 /**
- * Home / úvodní stránka.
+ * Home / úvodní stránka — long-form landing (rebuilt 2026-09-26).
  *
- * Ported from `design/system/ui_kits/skolamatch/Landing.jsx` — the Claude Design
- * mockup built against `design/DESIGN.md`. Layout, hierarchy and Czech copy are
- * the mockup's; see `landing.css` for why the colour tokens are the app's own
- * rather than the design system's.
+ * One offer, one action: every primary button goes to /onboarding. Browsing
+ * the database stays a demoted text link (hybrid paywall, ruling C-7).
  *
- * Two things in the mockup are deliberately NOT carried over:
+ * Two kinds of placeholder are deliberate, not missing work:
+ * - `.ls-motion` slots: where the product-demo motion graphic will go. Built
+ *   later in the separate animation pass (DESIGN.md → "ANIMATION BUILD
+ *   INSTRUCTION"), never hand-written here. Each slot's caption is its brief.
+ * - `.ls-photo` slots: real photography of real people, per DESIGN.md.
  *
- * - Its `Header`, `Page` and the outer max-width wrapper, which duplicate what
- *   `components/Layout.jsx` and `.app-content` already provide. The mockup is a
- *   standalone click-through and has to draw its own chrome; this page is
- *   rendered inside the real shell.
- * - The ambient idle animation DESIGN.md specifies under "Motion — landing
- *   page". The mockup omits it too, on purpose, as its own README records.
- *
- * The quiz is the primary intake, not a feature buried in a menu, so it is the
- * first CTA; browsing is secondary but stays free forever (hybrid paywall,
- * ruling C-7) because it is the directory promise and the organic/SEO surface.
+ * No testimonials, user counts or ratings: config/socialProof.js is empty on
+ * purpose. Proof here is methodology and data sources, which are true today.
  */
+
+const QUESTION_COUNT = QUESTIONS.length;
+
+const FACTS = [
+  { value: '223', label: 'pražských středních škol v databázi' },
+  { value: String(QUESTION_COUNT), label: 'otázek v dotazníku, asi 4 minuty' },
+  { value: '3 roky', label: 'hranic přijetí u každého oboru' },
+  { value: '0 Kč', label: 'za základní výsledek a databázi škol' },
+];
+
+const STEPS = [
+  {
+    title: 'Odpovíš na pár otázek',
+    body: 'Co tě baví, kam se vidíš za pět let, jestli tě táhne gympl nebo odborka a kam po Praze dojedeš. Otázku, kterou nevíš, přeskočíš — výsledek tím nezhoršíš.',
+    shot: 'Obrazovka otázky · „Co tě baví nejvíc?“ s vybranou odpovědí',
+  },
+  {
+    title: 'Uvidíš školy seřazené podle shody',
+    body: 'U každé školy je napsané, podle čeho sedí: obor, vzdálenost, jazyky, praxe. Když něco nesedí, stojí to tam taky.',
+    shot: 'Výsledky · seznam škol s procentem shody a důvody',
+  },
+  {
+    title: 'Projdeš si detail každé školy',
+    body: 'Obory, počet míst, kolik lidí se hlásilo a kolik jich vzali, hranice přijetí za poslední tři roky. U každého čísla je rok a zdroj.',
+    shot: 'Detail školy · karta oboru s grafem hranice přijetí',
+  },
+  {
+    title: 'Seřadíš si tři přihlášky',
+    body: 'Vybereš tři školy v pořadí, ve kterém je dáš na přihlášku, a uvidíš, kde je tvoje skóre z přijímaček proti loňské hranici.',
+    shot: 'Přihláška · tři školy v pořadí s porovnáním skóre',
+  },
+];
+
+const FAQ = [
+  {
+    q: 'Co je ŠkolaMatch?',
+    a: 'Průvodce výběrem střední školy v Praze. Databáze všech škol s obory a výsledky přijímaček na jednom místě, a dotazník, který z nich vybere ty, které sedí tomu, co hledáš.',
+  },
+  {
+    q: 'Kolik to stojí?',
+    a: `Dotazník, základní výsledek a celá databáze škol jsou zdarma. Placený přístup odemyká podrobné porovnání, rozhodovací matici a plánování přihlášek. Prvních ${trialDaysPhrase()} je zdarma a zrušit se to dá jedním kliknutím v nastavení.`,
+  },
+  {
+    q: 'Odkud máte data o školách?',
+    a: 'Obory, kapacity a hranice přijetí jsou z veřejných výsledků jednotné přijímací zkoušky (Cermat) a z rejstříku škol MŠMT. U každého čísla uvádíme rok. Když najdeš chybu, u školy je tlačítko „Nahlásit chybu v údajích“.',
+  },
+  {
+    q: 'Znamená vysoké procento shody, že mě vezmou?',
+    a: 'Ne. Shoda říká, jak škola odpovídá tomu, co jsi napsal v dotazníku. O přijetí rozhodují přijímačky a známky. Proto u škol zvlášť ukazujeme hranice přijetí z minulých let.',
+  },
+  {
+    q: 'Platí mi školy za lepší umístění?',
+    a: 'Ne. Pořadí počítá pevný vzorec z tvých odpovědí a z veřejných dat. Nikdo si v něm nemůže koupit místo.',
+  },
+  {
+    q: 'Co se děje s mými odpověďmi?',
+    a: 'Během dotazníku zůstávají jen v tvém prohlížeči. Uložíme je až ve chvíli, kdy si založíš účet, a smazat je můžeš kdykoli i s celým účtem.',
+  },
+  {
+    q: 'Je to jen pro Prahu?',
+    a: 'Zatím ano, všech 223 pražských středních škol. Další kraje přidáme, až bude Praha fungovat tak, jak má.',
+  },
+  {
+    q: 'Můžu to vyplnit jako rodič?',
+    a: 'Ano. Na začátku dotazníku si vyberete, jestli ho vyplňuje student, nebo rodič, a otázky se tomu přizpůsobí. Výsledek pak můžete sdílet odkazem.',
+  },
+];
+
+/** The one sanctioned scroll effect: words go from muted to full ink as the
+ *  section enters view. Stagger is CSS (transition-delay per word), so this
+ *  only flips one class. Reduced motion shows the finished state. */
+function Statement({ text }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !('IntersectionObserver' in window)) {
+      el?.classList.add('is-in');
+      return undefined;
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.classList.add('is-in');
+          io.disconnect();
+        }
+      },
+      { rootMargin: '0px 0px -30% 0px' },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <p ref={ref} className="ls-statement">
+      {text.split(' ').map((word, i) => (
+        <span key={i} style={{ '--i': i }}>
+          {word}{' '}
+        </span>
+      ))}
+    </p>
+  );
+}
+
 function Home() {
   return (
     <div className="page page-home">
+      {/* ---------- 1. hero ---------- */}
       <section className="ls-hero">
-        {/* The single ambient idle loop from DESIGN.md's "Motion — landing page".
-            Purely decorative and out of the accessibility tree; see landing.css
-            for the containment, reduced-motion and mobile rules. */}
-        <div className="ls-ambient" aria-hidden="true">
-          <span className="ls-bloom" />
-        </div>
-
         <div className="ls-hero-copy">
-          <p className="ls-eyebrow">Pro deváťáky a jejich rodiče</p>
-          <h1 className="ls-title">Vyber si školu podle sebe</h1>
+          <p className="ls-eyebrow">Výběr střední školy · Praha</p>
+          <h1 className="ls-title">Najdi střední školu, která ti opravdu sedí</h1>
           <p className="ls-lede">
-            Odpovíš na deset otázek o tom, co tě zajímá, kam dojedeš a jak se ti učí.
-            Pak uvidíš školy, které tomu odpovídají — a u každé napsané, čím konkrétně.
+            ŠkolaMatch dává všech 223 pražských středních škol na jedno místo. Odpovíš na{' '}
+            {QUESTION_COUNT} otázek a uvidíš, které školy odpovídají tomu, co tě baví, kam
+            dojedeš a jak se ti učí — a u každé proč.
           </p>
           <div className="ls-ctas">
             <Link to="/onboarding" className="btn btn-primary btn-lg">
-              Začít dotazník
+              Začít dotazník zdarma
             </Link>
-            <Link to="/skoly" className="btn btn-secondary btn-lg">
-              Prohlédnout databázi škol
+            <Link to="/skoly" className="ls-textlink">
+              nebo si projdi databázi škol →
             </Link>
           </div>
-          <p className="ls-fineprint">
-            Základní výsledek a databáze škol jsou zdarma. Placený přístup odemyká podrobné srovnání.
-          </p>
+          <p className="ls-fineprint">Bez registrace · asi 4 minuty · přeskočit můžeš cokoli</p>
         </div>
 
-        {/* Placeholder, not a missing image — see .ls-photo in landing.css. */}
-        <div className="ls-photo" aria-hidden="true">
-          <span className="ls-photo-label">Fotografie · reální lidé, teplý tón</span>
-        </div>
+        <figure className="ls-motion ls-motion--phone" aria-hidden="true">
+          <div className="ls-phone">
+            <span className="ls-slot-tag">Motion · hero</span>
+            <span className="ls-slot-brief">
+              Smyčka 8–10 s: odpověď v dotazníku → seznam škol se seřadí → otevře se detail
+              školy. Skutečné obrazovky, žádné ilustrace.
+            </span>
+          </div>
+        </figure>
       </section>
 
-      <hr className="ls-rule" />
+      {/* ---------- 2. facts ---------- */}
+      <dl className="ls-facts">
+        {FACTS.map((f) => (
+          <div key={f.label} className="ls-fact">
+            <dt className="ls-fact-value">{f.value}</dt>
+            <dd className="ls-fact-label">{f.label}</dd>
+          </div>
+        ))}
+      </dl>
 
-      <section className="ls-features">
-        <article className="ls-card">
-          <h2 className="ls-card-title">Podle tvých kritérií</h2>
-          <p className="ls-card-body">
-            U každé školy je napsané, které z věcí, co jsi označil jako důležité, škola
-            nabízí — a které ne.
-          </p>
-        </article>
-        <article className="ls-card">
-          <h2 className="ls-card-title">Čísla se zdrojem</h2>
-          <p className="ls-card-body">
-            Hranice přijetí, počet míst a obory pocházejí z veřejných rejstříků. U každého
-            čísla je rok.
-          </p>
-        </article>
-        <article className="ls-card">
-          <h2 className="ls-card-title">Srozumitelná shoda</h2>
-          <p className="ls-card-body">
-            Procento shody počítáme z tvých odpovědí. Není to známka školy ani záruka
-            přijetí — ukazuje, jak škola sedí tomu, co jsi napsal.
-          </p>
-        </article>
-      </section>
-
-      <footer>
-        <hr className="ls-rule" />
-        <div className="ls-footer-row">
-          <div>
-            <span className="ls-wordmark">ŠkolaMatch</span>
-            <p className="ls-footer-note">
-              Data o oborech a hranicích přijetí přebíráme z veřejných rejstříků MŠMT a
-              z výsledků jednotné přijímací zkoušky. U každého čísla uvádíme rok a zdroj.
+      {/* ---------- 3. problem ---------- */}
+      <section className="ls-split">
+        <div>
+          <p className="ls-eyebrow">Jak se to dělá dnes</p>
+          <h2 className="ls-h2">Třicet otevřených záložek a pořád nevíš</h2>
+          <div className="ls-prose">
+            <p>
+              Katalog škol existuje, ale ukáže ti jen dlouhý seznam. Podrobnosti hledáš
+              zvlášť na webu každé školy, hranice přijetí v tabulkách Cermatu a zbytek se
+              dozvíš od známých.
+            </p>
+            <p>
+              A přitom jde o rozhodnutí na čtyři roky, které musíš udělat do
+              termínu přihlášek, v době, kdy tě čekají i přijímačky.
             </p>
           </div>
-          <nav className="ls-footer-links">
-            <Link to="/skoly">Databáze škol</Link>
-            <Link to="/onboarding">Jak to funguje</Link>
-            <Link to="/predplatne">Ceník</Link>
-          </nav>
         </div>
+        <figure className="ls-photo ls-photo--tall">
+          <span className="ls-slot-tag">Fotografie</span>
+          <span className="ls-slot-brief">
+            Student u stolu večer, notebook s mnoha záložkami, sešit s poznámkami. Skutečný
+            člověk, přirozené světlo, ne stock.
+          </span>
+        </figure>
+      </section>
+
+      {/* ---------- 4. statement ---------- */}
+      <section className="ls-statement-wrap">
+        <Statement text="Všechny školy na jednom místě. Seřazené podle toho, co chceš ty, ne podle toho, kdo má hezčí web." />
+      </section>
+
+      {/* ---------- 5. product demo ---------- */}
+      <section className="ls-demo">
+        <div className="ls-section-head">
+          <p className="ls-eyebrow">Jak to vypadá</p>
+          <h2 className="ls-h2">Od první otázky po hotové přihlášky</h2>
+        </div>
+        <figure className="ls-motion ls-motion--wide" aria-hidden="true">
+          <span className="ls-slot-tag">Motion · produktové demo, 16 : 9</span>
+          <ol className="ls-slot-storyboard">
+            <li>Dotazník na telefonu, 2–3 odpovědi</li>
+            <li>Výsledky na notebooku, školy seřazené podle shody</li>
+            <li>Detail školy, graf hranice přijetí za 3 roky</li>
+            <li>Porovnání dvou škol vedle sebe</li>
+            <li>Tři přihlášky seřazené v pořadí</li>
+          </ol>
+        </figure>
+      </section>
+
+      {/* ---------- 6. how it works ---------- */}
+      <section className="ls-steps">
+        <div className="ls-section-head">
+          <p className="ls-eyebrow">Postup</p>
+          <h2 className="ls-h2">Čtyři kroky, žádné hádání</h2>
+        </div>
+        <ol className="ls-step-list">
+          {STEPS.map((s, i) => (
+            <li key={s.title} className="ls-step">
+              <div className="ls-step-copy">
+                <span className="ls-step-num">{String(i + 1).padStart(2, '0')}</span>
+                <h3 className="ls-h3">{s.title}</h3>
+                <p className="ls-body">{s.body}</p>
+              </div>
+              <figure className="ls-shot" aria-hidden="true">
+                <span className="ls-slot-tag">Snímek obrazovky</span>
+                <span className="ls-slot-brief">{s.shot}</span>
+              </figure>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {/* ---------- 7. features (bento, 1 large + 4 small) ---------- */}
+      <section className="ls-bento-wrap">
+        <div className="ls-section-head">
+          <p className="ls-eyebrow">Co v tom najdeš</p>
+          <h2 className="ls-h2">Všechno, co se jinak hledá po kouskách</h2>
+        </div>
+        <div className="ls-bento">
+          <article className="ls-tile ls-tile--lead">
+            <h3 className="ls-h3">Hranice přijetí u každého oboru</h3>
+            <p className="ls-body">
+              Kolik bodů stačilo loni, předloni i před třemi lety, kolik bylo míst a kolik
+              přihlášek. Vidíš, jestli se na obor dostává snáz, nebo hůř.
+            </p>
+            <figure className="ls-shot ls-shot--inset" aria-hidden="true">
+              <span className="ls-slot-tag">Snímek obrazovky</span>
+              <span className="ls-slot-brief">Karta oboru s tříletým trendem hranice</span>
+            </figure>
+          </article>
+          <article className="ls-tile">
+            <h3 className="ls-h3">Porovnání vedle sebe</h3>
+            <p className="ls-body">Až čtyři školy v jedné tabulce, stejné údaje na stejném řádku.</p>
+          </article>
+          <article className="ls-tile">
+            <h3 className="ls-h3">Mapa a dojezd</h3>
+            <p className="ls-body">Vybereš městské části, kam dojedeš, a vzdálenost se promítne do shody.</p>
+          </article>
+          <article className="ls-tile">
+            <h3 className="ls-h3">Recenze od studentů</h3>
+            <p className="ls-body">Psané lidmi, kteří na škole jsou nebo byli. Anonymně podle role.</p>
+          </article>
+          <article className="ls-tile">
+            <h3 className="ls-h3">Sdílení s rodiči</h3>
+            <p className="ls-body">Jeden odkaz, jen pro čtení. Kdykoli ho zase zrušíš.</p>
+          </article>
+        </div>
+      </section>
+
+      {/* ---------- 8. two audiences ---------- */}
+      <section className="ls-roles">
+        <article className="ls-role">
+          <figure className="ls-photo ls-photo--role">
+            <span className="ls-slot-tag">Fotografie</span>
+            <span className="ls-slot-brief">Deváťák s telefonem, venku nebo v tramvaji</span>
+          </figure>
+          <p className="ls-eyebrow">Pro studenty</p>
+          <h2 className="ls-h3">Vyber si podle sebe</h2>
+          <p className="ls-body">
+            Nemusíš vědět, čím chceš být. Stačí vědět, co tě baví víc a co míň. Zbytek
+            dopočítáme a ukážeme, proč vychází zrovna tahle škola.
+          </p>
+          <Link to="/onboarding" className="ls-textlink">Začít jako student →</Link>
+        </article>
+        <article className="ls-role">
+          <figure className="ls-photo ls-photo--role">
+            <span className="ls-slot-tag">Fotografie</span>
+            <span className="ls-slot-brief">Rodič s dítětem u notebooku, doma u stolu</span>
+          </figure>
+          <p className="ls-eyebrow">Pro rodiče</p>
+          <h2 className="ls-h3">Mějte přehled, ne další starost</h2>
+          <p className="ls-body">
+            Data ze stejných zdrojů, jaké používají školy, na jednom místě. Výsledek vašeho
+            dítěte si můžete otevřít na vlastním počítači a projít v klidu.
+          </p>
+          <Link to="/onboarding" className="ls-textlink">Začít jako rodič →</Link>
+        </article>
+      </section>
+
+      {/* ---------- 9. honesty ---------- */}
+      <section className="ls-honesty">
+        <div className="ls-section-head">
+          <p className="ls-eyebrow">Na rovinu</p>
+          <h2 className="ls-h2">Co ŠkolaMatch umí a co ne</h2>
+        </div>
+        <div className="ls-honesty-grid">
+          <div>
+            <h3 className="ls-list-title">Je to</h3>
+            <ul className="ls-list ls-list--yes">
+              <li>Přehled všech pražských středních škol s veřejnými daty</li>
+              <li>Pořadí podle tvých odpovědí, s vysvětlením u každé školy</li>
+              <li>Pomůcka pro rozhodnutí, které nakonec děláš ty</li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="ls-list-title">Není to</h3>
+            <ul className="ls-list ls-list--no">
+              <li>Záruka přijetí ani odhad tvých šancí na zkoušce</li>
+              <li>Žebříček nejlepších škol</li>
+              <li>Reklama, za kterou si školy platí</li>
+            </ul>
+          </div>
+        </div>
+        <p className="ls-source">
+          Zdroje: výsledky jednotné přijímací zkoušky (Cermat), rejstřík škol a školských
+          zařízení (MŠMT). U každého čísla v aplikaci uvádíme rok.
+        </p>
+      </section>
+
+      {/* ---------- 10. founder ---------- */}
+      <section className="ls-founder">
+        <figure className="ls-photo ls-photo--portrait">
+          <span className="ls-slot-tag">Portrét</span>
+          <span className="ls-slot-brief">Zakladatel, neformálně</span>
+        </figure>
+        <blockquote className="ls-founder-quote">
+          {/* TODO(founder): replace with the founder's own words and name. */}
+          <p>
+            „[Návrh textu] Sám jsem si střední vybíral z tabulek a doslechu. ŠkolaMatch je
+            nástroj, který jsem tehdy chtěl mít.“
+          </p>
+          <footer>[Jméno], zakladatel ŠkolaMatch</footer>
+        </blockquote>
+      </section>
+
+      {/* ---------- 11. pricing summary ---------- */}
+      <section className="ls-price">
+        <div>
+          <p className="ls-eyebrow">Cena</p>
+          <h2 className="ls-h2">Začátek je zdarma</h2>
+          <p className="ls-body">
+            Dotazník, výsledek a databázi škol používáš bez placení. Podrobné nástroje pro
+            rozhodování si můžeš {trialDaysPhrase()} vyzkoušet zdarma.
+          </p>
+        </div>
+        <div className="ls-price-cols">
+          <div className="ls-price-col">
+            <h3 className="ls-list-title">Zdarma</h3>
+            <ul className="ls-list">
+              <li>Dotazník a výsledek se shodou</li>
+              <li>Databáze všech 223 škol</li>
+              <li>Detail školy s hranicemi přijetí</li>
+            </ul>
+          </div>
+          <div className="ls-price-col ls-price-col--paid">
+            <h3 className="ls-list-title">Plný přístup</h3>
+            <ul className="ls-list">
+              <li>Porovnání a rozhodovací matice</li>
+              <li>Plán tří přihlášek se skóre</li>
+              <li>Poznámky a sdílení s rodiči</li>
+            </ul>
+            <p className="ls-fineprint">
+              Prvních {trialDaysPhrase()} zdarma · zrušení jedním kliknutím
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ---------- 12. FAQ ---------- */}
+      <section className="ls-faq">
+        <div className="ls-faq-head">
+          <p className="ls-eyebrow">Otázky</p>
+          <h2 className="ls-h2">Na co se lidé ptají</h2>
+        </div>
+        <div className="ls-faq-list">
+          {FAQ.map((item) => (
+            <details key={item.q} className="ls-faq-item">
+              <summary>{item.q}</summary>
+              <p>{item.a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      {/* ---------- 13. final CTA ---------- */}
+      <section className="ls-final">
+        <h2 className="ls-final-title">Za čtyři minuty víš, kde začít hledat</h2>
+        <Link to="/onboarding" className="btn btn-primary btn-lg">
+          Začít dotazník zdarma
+        </Link>
+        <p className="ls-fineprint">Bez registrace · {QUESTION_COUNT} otázek · přeskočit můžeš cokoli</p>
+      </section>
+
+      <footer className="ls-footer">
+        <div>
+          <span className="ls-wordmark">ŠkolaMatch</span>
+          <p className="ls-footer-note">
+            Data o oborech a hranicích přijetí přebíráme z veřejných rejstříků MŠMT a
+            z výsledků jednotné přijímací zkoušky. U každého čísla uvádíme rok a zdroj.
+          </p>
+        </div>
+        <nav className="ls-footer-links" aria-label="Patička">
+          <Link to="/skoly">Databáze škol</Link>
+          <Link to="/onboarding">Dotazník</Link>
+          <Link to="/predplatne">Ceník</Link>
+        </nav>
       </footer>
     </div>
   );
