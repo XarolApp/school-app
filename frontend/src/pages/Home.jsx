@@ -87,32 +87,12 @@ const FAQ = [
   },
 ];
 
-/** The one sanctioned scroll effect: words go from muted to full ink as the
- *  section enters view. Stagger is CSS (transition-delay per word), so this
- *  only flips one class. Reduced motion shows the finished state. */
+/** Words go from muted to full ink in reading order. Driven by useReveal()
+ *  like every other section (it adds `.is-in`); the per-word stagger is CSS.
+ *  Reduced motion shows the finished state. */
 function Statement({ text }) {
-  const ref = useRef(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || !('IntersectionObserver' in window)) {
-      el?.classList.add('is-in');
-      return undefined;
-    }
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          el.classList.add('is-in');
-          io.disconnect();
-        }
-      },
-      { rootMargin: '0px 0px -30% 0px' },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
   return (
-    <p ref={ref} className="ls-statement">
+    <p className="ls-statement" data-reveal>
       {text.split(' ').map((word, i) => (
         <span key={i} style={{ '--i': i }}>
           {word}{' '}
@@ -122,9 +102,45 @@ function Statement({ text }) {
   );
 }
 
+/** Scroll reveal for everything marked `data-reveal`: one observer, each
+ *  element fades up once and is then unobserved. `.js-reveal` is added here,
+ *  so without JS (or IntersectionObserver) nothing is ever hidden. */
+function useReveal() {
+  const ref = useRef(null);
+  useEffect(() => {
+    const root = ref.current;
+    if (!root || !('IntersectionObserver' in window)) return undefined;
+    root.classList.add('js-reveal');
+    const pending = new Set(root.querySelectorAll('[data-reveal]'));
+    // A fast fling can jump an element from below the fold to above it
+    // between two frames, and the observer never fires for it. So every
+    // callback (and scrollend) sweeps: anything whose top is above the
+    // viewport's bottom edge is revealed.
+    const sweep = () => {
+      for (const el of pending) {
+        if (el.getBoundingClientRect().top < window.innerHeight * 0.88) {
+          el.classList.add('is-in');
+          pending.delete(el);
+          io.unobserve(el);
+        }
+      }
+      if (!pending.size) window.removeEventListener('scrollend', sweep);
+    };
+    const io = new IntersectionObserver(sweep, { rootMargin: '0px 0px -12% 0px' });
+    pending.forEach((el) => io.observe(el));
+    window.addEventListener('scrollend', sweep);
+    return () => {
+      io.disconnect();
+      window.removeEventListener('scrollend', sweep);
+    };
+  }, []);
+  return ref;
+}
+
 function Home() {
+  const rootRef = useReveal();
   return (
-    <div className="page page-home">
+    <div ref={rootRef} className="page page-home">
       {/* ---------- 1. hero ---------- */}
       <section className="ls-hero">
         <div className="ls-hero-copy">
@@ -160,7 +176,7 @@ function Home() {
       {/* ---------- 2. facts ---------- */}
       <dl className="ls-facts">
         {FACTS.map((f) => (
-          <div key={f.label} className="ls-fact">
+          <div key={f.label} className="ls-fact" data-reveal style={{ '--i': FACTS.indexOf(f) }}>
             <dt className="ls-fact-value">{f.value}</dt>
             <dd className="ls-fact-label">{f.label}</dd>
           </div>
@@ -168,7 +184,7 @@ function Home() {
       </dl>
 
       {/* ---------- 3. problem ---------- */}
-      <section className="ls-split">
+      <section className="ls-split" data-reveal>
         <div>
           <p className="ls-eyebrow">Jak se to dělá dnes</p>
           <h2 className="ls-h2">Třicet otevřených záložek a pořád nevíš</h2>
@@ -204,7 +220,7 @@ function Home() {
           <p className="ls-eyebrow">Jak to vypadá</p>
           <h2 className="ls-h2">Od první otázky po hotové přihlášky</h2>
         </div>
-        <figure className="ls-motion ls-motion--wide" aria-hidden="true">
+        <figure className="ls-motion ls-motion--wide" aria-hidden="true" data-reveal>
           <span className="ls-slot-tag">Motion · produktové demo, 16 : 9</span>
           <ol className="ls-slot-storyboard">
             <li>Dotazník na telefonu, 2–3 odpovědi</li>
@@ -224,7 +240,7 @@ function Home() {
         </div>
         <ol className="ls-step-list">
           {STEPS.map((s, i) => (
-            <li key={s.title} className="ls-step">
+            <li key={s.title} className="ls-step" data-reveal>
               <div className="ls-step-copy">
                 <span className="ls-step-num">{String(i + 1).padStart(2, '0')}</span>
                 <h3 className="ls-h3">{s.title}</h3>
@@ -246,7 +262,7 @@ function Home() {
           <h2 className="ls-h2">Všechno, co se jinak hledá po kouskách</h2>
         </div>
         <div className="ls-bento">
-          <article className="ls-tile ls-tile--lead">
+          <article className="ls-tile ls-tile--lead" data-reveal style={{ '--i': 0 }}>
             <h3 className="ls-h3">Hranice přijetí u každého oboru</h3>
             <p className="ls-body">
               Kolik bodů stačilo loni, předloni i před třemi lety, kolik bylo míst a kolik
@@ -257,19 +273,19 @@ function Home() {
               <span className="ls-slot-brief">Karta oboru s tříletým trendem hranice</span>
             </figure>
           </article>
-          <article className="ls-tile">
+          <article className="ls-tile" data-reveal style={{ '--i': 1 }}>
             <h3 className="ls-h3">Porovnání vedle sebe</h3>
             <p className="ls-body">Až čtyři školy v jedné tabulce, stejné údaje na stejném řádku.</p>
           </article>
-          <article className="ls-tile">
+          <article className="ls-tile" data-reveal style={{ '--i': 2 }}>
             <h3 className="ls-h3">Mapa a dojezd</h3>
             <p className="ls-body">Vybereš městské části, kam dojedeš, a vzdálenost se promítne do shody.</p>
           </article>
-          <article className="ls-tile">
+          <article className="ls-tile" data-reveal style={{ '--i': 3 }}>
             <h3 className="ls-h3">Recenze od studentů</h3>
             <p className="ls-body">Psané lidmi, kteří na škole jsou nebo byli. Anonymně podle role.</p>
           </article>
-          <article className="ls-tile">
+          <article className="ls-tile" data-reveal style={{ '--i': 4 }}>
             <h3 className="ls-h3">Sdílení s rodiči</h3>
             <p className="ls-body">Jeden odkaz, jen pro čtení. Kdykoli ho zase zrušíš.</p>
           </article>
@@ -278,7 +294,7 @@ function Home() {
 
       {/* ---------- 8. two audiences ---------- */}
       <section className="ls-roles">
-        <article className="ls-role">
+        <article className="ls-role" data-reveal style={{ '--i': 0 }}>
           <figure className="ls-photo ls-photo--role">
             <span className="ls-slot-tag">Fotografie</span>
             <span className="ls-slot-brief">Deváťák s telefonem, venku nebo v tramvaji</span>
@@ -291,7 +307,7 @@ function Home() {
           </p>
           <Link to="/onboarding" className="ls-textlink">Začít jako student →</Link>
         </article>
-        <article className="ls-role">
+        <article className="ls-role" data-reveal style={{ '--i': 1 }}>
           <figure className="ls-photo ls-photo--role">
             <span className="ls-slot-tag">Fotografie</span>
             <span className="ls-slot-brief">Rodič s dítětem u notebooku, doma u stolu</span>
@@ -307,7 +323,7 @@ function Home() {
       </section>
 
       {/* ---------- 9. honesty ---------- */}
-      <section className="ls-honesty">
+      <section className="ls-honesty" data-reveal>
         <div className="ls-section-head">
           <p className="ls-eyebrow">Na rovinu</p>
           <h2 className="ls-h2">Co ŠkolaMatch umí a co ne</h2>
@@ -337,7 +353,7 @@ function Home() {
       </section>
 
       {/* ---------- 10. founder ---------- */}
-      <section className="ls-founder">
+      <section className="ls-founder" data-reveal>
         <figure className="ls-photo ls-photo--portrait">
           <span className="ls-slot-tag">Portrét</span>
           <span className="ls-slot-brief">Zakladatel, neformálně</span>
@@ -362,7 +378,7 @@ function Home() {
             rozhodování si můžeš {trialDaysPhrase()} vyzkoušet zdarma.
           </p>
         </div>
-        <div className="ls-price-cols">
+        <div className="ls-price-cols" data-reveal>
           <div className="ls-price-col">
             <h3 className="ls-list-title">Zdarma</h3>
             <ul className="ls-list">
@@ -393,7 +409,7 @@ function Home() {
         </div>
         <div className="ls-faq-list">
           {FAQ.map((item) => (
-            <details key={item.q} className="ls-faq-item">
+            <details key={item.q} className="ls-faq-item" data-reveal style={{ '--i': FAQ.indexOf(item) }}>
               <summary>{item.q}</summary>
               <p>{item.a}</p>
             </details>
@@ -402,7 +418,7 @@ function Home() {
       </section>
 
       {/* ---------- 13. final CTA ---------- */}
-      <section className="ls-final">
+      <section className="ls-final" data-reveal>
         <h2 className="ls-final-title">Za čtyři minuty víš, kde začít hledat</h2>
         <Link to="/onboarding" className="btn btn-primary btn-lg">
           Začít dotazník zdarma
