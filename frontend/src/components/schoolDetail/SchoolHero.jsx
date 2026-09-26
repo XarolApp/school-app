@@ -75,12 +75,12 @@ function SchoolHero({ school, programEntries, extracted }) {
         <FactTile
           value={fmt(school.admission_cutoff, ' b.')}
           label="Průměrná hranice"
-          note="Průměr z posledních 3 let (2024–2026), přes všechny obory školy. Je to nejnižší počet bodů z češtiny a matematiky (max. 100 — 50 + 50), který stačil na přijetí — je to spodní hranice pro přijetí, ne průměrné skóre, které přijatí uchazeči skutečně měli. Přesnou hranici pro konkrétní obor a rok najdeš u jednotlivých oborů níž. (Nové školy mohou mít kratší historii.)"
+          note="Průměr z posledních 3 let (2024–2026), přes všechny obory školy. Je to nejnižší počet bodů z češtiny a matematiky (max. 100, tedy 50 + 50), který stačil na přijetí. Je to spodní hranice pro přijetí, ne průměrné skóre, které přijatí uchazeči skutečně měli. Přesnou hranici pro konkrétní obor a rok najdeš u jednotlivých oborů níž. (Nové školy mohou mít kratší historii.)"
         />
         <FactTile
           value={fmt(school.acceptance_rate, ' %')}
           label="Přijato z přihlášených"
-          note="Průměr z posledních 3 let (2024–2026), přes všechny obory školy. Je to kolik procent uchazečů škola v posledním kole přijala — u jednotlivých oborů se to může dost lišit, podrobnosti najdeš níž. (Nové školy mohou mít kratší historii.)"
+          note="Průměr z posledních 3 let (2024–2026), přes všechny obory školy. Je to kolik procent uchazečů škola v posledním kole přijala. U jednotlivých oborů se to může dost lišit, podrobnosti najdeš níž. (Nové školy mohou mít kratší historii.)"
         />
         <FactTile
           value={fmt(current.kapacita, '')}
@@ -90,7 +90,7 @@ function SchoolHero({ school, programEntries, extracted }) {
         <FactTile
           value={fmt(current.ratio, '×')}
           label="Uchazečů na místo"
-          note="Průměr z posledních 3 let (2024–2026), přes všechny obory školy. Je to kolik uchazečů si podalo přihlášku na jedno volné místo — konkurence se obor od oboru liší, podrobnosti najdeš níž. (Nové školy mohou mít kratší historii.)"
+          note="Průměr z posledních 3 let (2024–2026), přes všechny obory školy. Je to kolik uchazečů si podalo přihlášku na jedno volné místo. Konkurence se obor od oboru liší, podrobnosti najdeš níž. (Nové školy mohou mít kratší historii.)"
         />
       </div>
       <div className="sd-provenance">

@@ -1438,9 +1438,10 @@
 /* ---------- list / map view toggle ---------- */
 .ss-view-toggle {
   display: flex;
+  gap: 2px;
+  padding: 2px;
   border: 1px solid var(--border-strong);
   border-radius: var(--r-chip);
-  overflow: hidden;
   flex: none;
   height: 36px;
 }
@@ -1456,6 +1457,9 @@
   height: 100%;
   cursor: pointer;
   color: var(--on-surface);
+  /* Inset by the container's 2px padding + 1px border so the selected state's
+     own rounded outline sits concentric inside the outer one. */
+  border-radius: calc(var(--r-chip) - 3px);
 }
 .ss-view-toggle button.is-active {
   background: var(--acc-soft);

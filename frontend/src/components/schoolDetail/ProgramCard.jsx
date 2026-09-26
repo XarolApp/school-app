@@ -96,8 +96,8 @@ function ProgramCard({ entry }) {
             <InfoHint
               text={
                 y.cutoff != null
-                  ? `Nejnižší počet bodů z češtiny a matematiky (max. 100 — 50 + 50), který v roce ${entry.latestYear} stačil na přijetí přímo do tohoto oboru — je to jeho vlastní hranice, ne průměr celé školy.`
-                  : `Tento obor nemá jednotnou přijímací zkoušku (JPZ) — přijímá se jinak, např. talentovou zkouškou, takže tu není bodová hranice.`
+                  ? `Nejnižší počet bodů z češtiny a matematiky (max. 100, tedy 50 + 50), který v roce ${entry.latestYear} stačil na přijetí přímo do tohoto oboru. Je to jeho vlastní hranice, ne průměr celé školy.`
+                  : `Tento obor nemá jednotnou přijímací zkoušku (JPZ). Přijímá se jinak, např. talentovou zkouškou, takže tu není bodová hranice.`
               }
             />
           </div>

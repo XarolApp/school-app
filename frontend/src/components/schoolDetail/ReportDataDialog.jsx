@@ -57,7 +57,7 @@ function ReportDataDialog({ schoolId }) {
         <div>
           <div className="sd-report-title">Něco tu nesedí?</div>
           <div className="sd-report-body">
-            Znáš tuhle školu líp než my — když je něco špatně nebo chybí, dej
+            Znáš tuhle školu líp než my. Když je něco špatně nebo chybí, dej
             vědět a opravíme to.
           </div>
         </div>

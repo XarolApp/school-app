@@ -29,7 +29,7 @@ const EMPTY_INFO = 'Nemáme tuto informaci.';
  */
 function tuitionBody(zrizovatel) {
   if (zrizovatel === 'veřejné/státní') {
-    return 'Veřejná škola — školné se neplatí. Ostatní poplatky (např. na pomůcky) zatím nemáme.';
+    return 'Veřejná škola, školné se neplatí. Ostatní poplatky (např. na pomůcky) zatím nemáme.';
   }
   return EMPTY_INFO;
 }
@@ -39,7 +39,7 @@ function tuitionBody(zrizovatel) {
 // extraction found explicit evidence for, not silence to pad over.
 function pripijimaciBody(e) {
   if (e.pripijimaci_pozadavky_detail) return e.pripijimaci_pozadavky_detail;
-  if (e.ma_dodatecne_pozadavky === false) return 'Podle webu školy jen jednotná přijímací zkouška (JPZ) — nic navíc.';
+  if (e.ma_dodatecne_pozadavky === false) return 'Podle webu školy jen jednotná přijímací zkouška (JPZ), nic navíc.';
   return EMPTY_INFO;
 }
 

@@ -140,7 +140,7 @@ function SchoolDetail() {
           </span>
         </div>
         <p className="sd-section-intro">
-          Každý obor má vlastní přijímačky a vlastní hranici — průměr školy
+          Každý obor má vlastní přijímačky a vlastní hranici. Průměr školy
           nahoře je jen orientační.
         </p>
         <ProgramList entries={orderedEntries} />
@@ -159,7 +159,7 @@ function SchoolDetail() {
         <p className="sd-section-intro">
           {hasExtractedData
             ? 'Údaje níže jsme automaticky sesbírali z webu školy. Před podáním přihlášky si je ověř přímo u školy.'
-            : 'Tyhle údaje ještě nemáme ověřené. Radši tu nic nevymýšlíme — až je budeme mít z důvěryhodného zdroje, objeví se tady.'}
+            : 'Tyhle údaje ještě nemáme ověřené. Radši tu nic nevymýšlíme. Až je budeme mít z důvěryhodného zdroje, objeví se tady.'}
         </p>
         <MissingDataGrid zrizovatel={zrizovatel} extracted={extracted} />
       </div>

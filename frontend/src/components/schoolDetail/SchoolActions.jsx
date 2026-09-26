@@ -74,7 +74,7 @@ function SchoolActions({ school, isFavorite, onFavoriteChange, barRef }) {
     const nextPicks = isPicked ? picks.filter((pick) => pick.school.id !== school.id) : [...picks, { school }];
 
     if (!isPicked && picks.length >= 3) {
-      toast('Do přihlášky patří nejvýš 3 školy — nejdřív jednu odeber na stránce Moje přihláška.', {
+      toast('Do přihlášky patří nejvýš 3 školy. Nejdřív jednu odeber na stránce Moje přihláška.', {
         type: 'error',
       });
       return;

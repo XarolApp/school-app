@@ -64,8 +64,8 @@ function SchoolReviews({ schoolId }) {
           <div className="sd-reviews-empty-title">O téhle škole zatím nikdo nenapsal</div>
           <div className="sd-reviews-empty-body">
             Chodíš sem, chodil jsi sem, učíš tu nebo jsi rodič studenta? Napiš,
-            jaké to tu doopravdy je. Stačilo ti otevřít dveře na dni otevřených
-            dveří — i to je užitečné, jen to prosím napiš.
+            jaké to tu doopravdy je. Byl jsi tu jen na dni otevřených dveří?
+            I to je užitečné, jen to prosím napiš.
           </div>
           <div className="sd-reviews-empty-note">
             Recenze píšeme pod přezdívkou podle role, ne pod jménem. Nepiš si

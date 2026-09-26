@@ -40,7 +40,7 @@ function ReviewForm({ schoolId, onSubmitted }) {
   if (!emailConfirmed) {
     return (
       <div className="sd-form-signin-prompt">
-        Nejdřív si potvrď e-mail — teprve pak můžeš psát recenze.
+        Nejdřív si potvrď e-mail, teprve pak můžeš psát recenze.
       </div>
     );
   }
@@ -69,7 +69,7 @@ function ReviewForm({ schoolId, onSubmitted }) {
       setShowName(false);
       toast(
         review.status === 'held'
-          ? 'Recenze čeká na kontrolu — zatím ji vidíš jen ty'
+          ? 'Recenze čeká na kontrolu. Zatím ji vidíš jen ty'
           : 'Recenze zveřejněna'
       );
     } catch (err) {
@@ -125,7 +125,7 @@ function ReviewForm({ schoolId, onSubmitted }) {
           maxLength={2000}
         />
         <p className="sd-form-hint">
-          Piš jen o tom, co sám znáš. Nepiš jména učitelů ani spolužáků — takové
+          Piš jen o tom, co sám znáš. Nepiš jména učitelů ani spolužáků. Takové
           recenze automaticky pozdržíme.
         </p>
       </div>
