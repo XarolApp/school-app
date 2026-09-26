@@ -20,6 +20,12 @@ model varies on its own, so run 3's differences can be judged against that noise
 
 `RUN = <fill in: orig-a | orig-b | filtered>`
 
+**Input folder** (wherever this file says `<input folder>`):
+- `RUN = filtered` → `scripts/data/filtered-schools/`
+- `RUN = orig-a` or `orig-b` → `scripts/data/scraped-schools/`
+
+Before starting, state the RUN and input folder you'll use in one line.
+
 You are replacing one API call per school in `scripts/extract-school-details.js`.
 Do exactly what that call does, by hand, for these 15 school IDs:
 
