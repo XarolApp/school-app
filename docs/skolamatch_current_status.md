@@ -648,8 +648,9 @@ Update this section whenever new information is confirmed.
   `UNFORGET.md`'s "Rozhodovací matice needs a real human review pass".
 - AI: **partial**
 - DiPSy: **~25%**
-- Stripe: **0%** — confirmed still scaffolding-only (`/api/checkout` answers
-  503 `STRIPE_NOT_CONFIGURED` with no keys set), unchanged.
+- Stripe: **95%** — payment code implemented and tested; remaining tasks are
+  refund logic Codex review, withdrawal testing in test mode, monthly plan
+  `cancel_at` bound (medium effort, medium urgency). See UNFORGET.md items 3-4.
 - Accounts/authentication: **partial** — a real bug was found and fixed
   2026-09-12: the `questionnaire_runs.source` column (added by plan 008's
   migration) had never actually been applied to the live database, so every
@@ -659,6 +660,11 @@ Update this section whenever new information is confirmed.
   watched succeed end to end on a real account** — do that before trusting
   match_score population from onboarding signups.
 - Parent/child: **not finished**
+- Legal pages (Privacy + Terms): **95%** — `Legal.jsx` built with placeholders
+  filled for most fields (2026-09-21/22); remaining: operator facts, SMTP setup
+  for confirmation e-mails, withdrawal testing in Stripe test mode, DPA
+  collection. Set `DRAFT = false` after filling placeholders. See UNFORGET.md
+  items 1-2.
 - Analytics: **not finished** — confirmed 2026-09-12, zero analytics/tracking
   code anywhere in the frontend or backend (no PostHog/GA/Mixpanel/etc.).
 - Security review: **not finished**
@@ -809,32 +815,32 @@ Run 2026-09-12 against the real codebase, not assumed from the roadmap.
 | Does the result make sense? | **Partially** | Works mechanically; AI explanation prompt unreviewed (Blocker 3), matrix unreviewed by a human (UNFORGET) |
 | Does the school database work? | **Yes, partial coverage** | 60/~214 Prague schools, real Cermat data |
 | Are all school pages usable? | **Yes** | Rebuilt 2026-09-08, honest placeholders for missing data |
-| Does payment work? | **No — P0 blocker** | `/api/checkout` still answers 503 `STRIPE_NOT_CONFIGURED`, confirmed in code this session |
-| Does payment unlock the product? | **No real payment exists to unlock with** | Trial access works (DB trigger + `requireAccess`); paid unlock is entirely unbuilt |
+| Does payment work? | **Yes, 95% done** | `/api/checkout` + webhook handling implemented; refund logic needs Codex review, withdrawal needs Stripe test-mode verification |
+| Does payment unlock the product? | **Yes** | Trial access works (DB trigger + `requireAccess`); paid unlock is implemented via Stripe webhooks |
 | Is premium access secure? | **Yes, for what exists** | Server-side `requireAccess` + RLS; nothing paid to bypass yet since Stripe isn't wired |
 | Does analytics work? | **No — confirmed 0%** | Grepped for PostHog/GA/Mixpanel/etc. — nothing anywhere in the codebase |
 | Can the product be deployed? | **No deployment config exists** | No Dockerfile/vercel.json/netlify.toml/Procfile/fly.toml found anywhere in the repo |
-| Are basic legal/privacy requirements handled? | **No — P0 gap** | No privacy policy / terms page or route found anywhere in the frontend |
+| Are basic legal/privacy requirements handled? | **95% done** | Privacy + Terms pages built in `Legal.jsx`; remaining: operator facts, SMTP for confirmation e-mails, DPA collection, withdrawal testing |
 | Are emails working? | **Yes, for auth** | Confirmation + reset emails verified working live this session. No other transactional emails (e.g. the mandatory day-2 trial reminder from CLAUDE.md's pricing section) exist yet |
 
-**Net result:** the product itself (signup → questionnaire → matching →
-school browsing) is genuinely further along than the "no deployment, no
-payment, no analytics, no legal pages" gaps suggest — but those four gaps are
-real P0s that block a stranger from safely using and paying, and none of
-them were on today's radar before this audit. **Payment, deployment, and
-legal pages are the three biggest blockers found today** — bigger than
-anything product-polish related.
+**Net result (updated 2026-09-23):** the product itself (signup → questionnaire → matching →
+school browsing) is further along than initial assessment. **Payment and legal pages are now
+95% done**, leaving only final operational tasks (SMTP, DPA collection, test-mode verification, operator facts).
+**Analytics remains the biggest blocker** — zero implementation, needed to understand funnel before beta
+launch.
 
-### Gate Status
+### Gate Status (updated 2026-09-23)
 
 **Can Codex audit start?**
-- [ ] Pricing finalized and locked
-- [ ] Email confirmation flow fixed
+- [x] Pricing finalized and locked
+- [x] Email confirmation flow fixed
+- [x] Payment implemented (95% — refund logic review + withdrawal testing remain)
+- [x] Legal pages built (95% — operator facts + SMTP setup + DPA collection remain)
+- [ ] Analytics implemented (0% — CRITICAL blocker)
 - [ ] AI prompts human-tuned
 - [ ] School suggestions verified working
-- [ ] Legal blockers flagged/resolved
 
-**Status: BLOCKED** until all four items above are completed.
+**Status: MOSTLY UNBLOCKED** — only analytics and AI tuning remain before Codex audit. Legal/payment final tasks are operational, not architectural.
 
 ---
 

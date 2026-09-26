@@ -6,18 +6,18 @@ single local component change.
 
 ## Roles
 
-1. **Planner — Claude Opus 5.5 (`high`; `xhigh` for architecture-heavy decisions).**
-   Inspect the current repository and write a handoff-ready plan. Use one planner,
-   never two competing plans. The supplied benchmark places Opus 5.5 high above
-   nearby Astra choices at lower estimated task cost.
-2. **Implementer — GPT-6 Sol high by default for an approved plan.** Use Luna max
-   when the implementation is straightforward and the lowest cost is the priority.
+1. **Planner — GPT-6 Astra (`high`) or Claude Opus 5.5 (`medium`).** Inspect the
+   current repository and write a handoff-ready plan. Use one planner, never two
+   competing plans.
+2. **Implementer — GPT-6 Luna high for everyday planned coding, Luna max for larger
+   implementations, or Claude Sonnet 5 medium/high when using Claude Code.**
    Read the approved plan and implement it. Do not re-architect silently.
-3. **Reviewer — GPT-6 Sol high.** Review the diff and running behavior after
-   implementation. Escalate payment, security, schema, or release-critical findings
-   to Claude Opus 5.5 high with fallback.
+3. **Reviewer — GPT-6 Sol high or Claude Opus 5.5 low.** Review the diff and running
+   behavior after implementation. Escalate hard debugging, payment, security, schema,
+   or release-critical findings to Astra high or Opus high.
 
-The standard shared path is **Opus 5.5 plans → Sol high builds → Sol high reviews**.
+The standard shared path is **Astra high plans → Luna high/max builds → Sol high
+reviews**, or **Opus medium plans → Sonnet medium/high builds → Opus low reviews**.
 The same model can do both stages, but keep the review independent: start a fresh
 review pass and inspect the implementation against the plan and diff.
 
@@ -29,22 +29,20 @@ guidance, not guarantees for every repository or prompt.
 
 | Task | Codex | Claude |
 |---|---|---|
-| Tiny, straightforward edits: typo, label, one obvious CSS value | GPT-6 Luna low | Claude 4.5 Haiku |
-| Routine coding and focused fixes: one component bug, a small API/UI adjustment, a clear change with known behavior | GPT-6 Luna max | Claude Opus 5.5 low |
-| Larger implementation: several related components or a feature within an established design, with clear requirements | GPT-6 Sol high | Claude Opus 5.5 medium |
-| Complex planning or code review: multi-file tradeoffs, unclear behavior, or checking an involved feature diff | GPT-6 Sol xhigh | Claude Opus 5.5 high with fallback |
-| Deep planning or high-stakes review: payments, auth/security, schema changes, deletion flows, launch-critical work | GPT-6 Astra high | Claude Opus 5.5 high with fallback |
+| Mechanical edits | GPT-6 Luna medium | Claude Haiku 4.5 |
+| Everyday planned coding | GPT-6 Luna high | Claude Sonnet 5 medium |
+| Larger implementation | GPT-6 Luna max | Claude Sonnet 5 high |
+| Medium debugging or focused review | GPT-6 Sol high | Claude Opus 5.5 low |
+| Detailed planning or architecture | GPT-6 Astra high | Claude Opus 5.5 medium |
+| Hard debugging or security review | GPT-6 Astra high | Claude Opus 5.5 high |
 
-The graph makes GPT-5.6 Terra and Claude Sonnet 5 poor value for this user's
-workload, so they are not recommended in this guide. Use Luna low only for genuinely
-small work; use Luna max as the regular Codex implementation choice. Use Opus low
-for routine Claude Code changes, medium for larger implementation, and high for the
-hardest Claude-only work.
+The September 23 routing guide supersedes the earlier graph-only table. It recommends
+Sonnet 5 for implementation because subscription quota and coding behavior differ from
+API cost-per-task charts. GPT-5.6 Terra remains excluded. Keep Fast mode off.
 
-For complex shared work, use **Opus 5.5 high plans → Sol high builds → Sol high
-reviews**. The Codex-only fallback is **Astra high/xhigh plans → Sol xhigh builds
-→ Sol high reviews**. Use Luna max when a planned implementation is straightforward
-enough that its lower cost is more important than Sol's higher chart score.
+For complex shared work, use **Astra high plans → Luna high/max builds → Sol high
+reviews**, or **Opus medium plans → Sonnet medium/high builds → Opus low reviews**.
+Use the hard-debugging row for security, payment, schema, and release-critical work.
 
 ## The handoff artifact
 

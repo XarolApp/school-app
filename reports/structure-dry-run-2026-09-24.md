@@ -161,8 +161,8 @@ These are local evidence-rule projections over cached records, not model-run cou
 
 **Validation notes**
 
-- ropped krouzky_kategorie veda_debata: no matching concrete, quoted activity survived evidence checks
-- ropped vyukovy_styl_tagy projektova_vyuka: no exact quote matching its explicit evidence rule
+- Dropped krouzky_kategorie veda_debata: no matching concrete, quoted activity survived evidence checks
+- Dropped vyukovy_styl_tagy projektova_vyuka: no exact quote matching its explicit evidence rule
 
 ### 16 — ART ECON – Gymnázium a Střední odborná škola Praha, s. r. o.
 
@@ -235,7 +235,7 @@ These are local evidence-rule projections over cached records, not model-run cou
 
 **Validation notes**
 
-- ept krouzky_kategorie=[] because clubs/activities text exists but names no verified category.
+- Kept krouzky_kategorie=[] because clubs/activities text exists but names no verified category.
 
 ### 19 — Střední průmyslová škola stavební Josefa Gočára, Praha 4, Družstevní ochoz 3
 
@@ -378,7 +378,7 @@ These are local evidence-rule projections over cached records, not model-run cou
 
 **Validation notes**
 
-- ropped vyukovy_styl_tagy praxe_dilny: no exact quote matching its explicit evidence rule
+- Dropped vyukovy_styl_tagy praxe_dilny: no exact quote matching its explicit evidence rule
 
 ### 26 — Střední průmyslová škola zeměměřická a Geografické gymnázium Praha
 

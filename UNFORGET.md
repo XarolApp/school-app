@@ -13,6 +13,13 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
+## Landing page: two unverified pieces of copy — 2026-09-26
+- **Found:** 2026-09-26, landing rebuild (commit `7240e30`, `frontend/src/pages/Home.jsx`).
+- **Urgency:** Medium — both are shown publicly on the first page a parent sees.
+- **Founder quote (section 10):** the quote text and the name are my draft, marked `[Návrh textu]` / `[Jméno]` with a `TODO(founder)` comment. Replace them with your own words and name, or delete the section. Don't ship brackets.
+- **"asi 4 minuty":** an estimate for the 8-question quiz, not measured. It appears in 3 places: the hero fineprint, the `FACTS` strip, and the final CTA title ("Za čtyři minuty…"). Time a few real runs (student and parent branch), then fix all 3 or drop the number.
+- **Effort:** Small.
+
 ## Audit the 2026-09-26 re-extraction's new values — 2026-09-26
 - **Found:** 2026-09-26, after the full base re-extraction (219 schools, Luna low, filtered markdown).
 - **Urgency:** Medium — `tuition_czk_per_year` and `maturita_pass_rate_pct` rank schools in the decision matrix, so one invented number moves a school up or down.
@@ -59,10 +66,11 @@ then `node scripts/generate-school-proscons.js --force`. Not run yet, deliberate
 ## Structure scraped school-life details — 2026-09-24
 - **Found:** 2026-09-24, while adding queryable school-detail values derived from existing prose.
 - **Urgency:** Medium — matching cannot use these fields until columns are applied and values are extracted.
-- **Risk of fixing now:** Writes must wait for review of the 10-school dry-run; the script supports --force and should not be run broadly before that approval.
+- **Updated:** 2026-09-26. The user ran the six-column SQL. The extractor now uses explicit numeric club counts, deterministic category evidence, and stricter whole-school lunch/accommodation rules. The requested Luna xhigh paired dry run is blocked: two xhigh attempts failed while reading Supabase (`fetch failed`); two earlier low-effort attempts reached OpenRouter but got HTTP 401 because the API key is expired. No model outputs exist, so stability and observed coverage remain unmeasured.
+- **Risk of fixing now:** Data writes must wait for review of the repeated 20-school dry run and explicit user approval; `--force` bypasses the populated-column guard.
 - **Risk of NOT fixing:** the six values remain unavailable to matching.
-- **Effort:** Small — apply the six idempotent SQL statements, approve the dry-run, then run the extraction.
-- **Not done yet:** Opus review, applying the six columns, and approved data extraction; no live SQL or data writes were made.
+- **Effort:** Small — review the report, explicitly approve the data run, then run the extraction without `--force`.
+- **Not done yet:** a successful paired dry run after restoring Supabase/provider connectivity, Opus review of the complete v2 report, and approved data extraction. The columns are already present. No SQL was applied and no school data was written in this follow-up.
 
 ## /skoly redesign (plan 013): untested checks + one founder call — 2026-09-24
 - **Found:** 2026-09-24, Claude review of plan 013 (`9d9026b`). The redesigned /skoly
