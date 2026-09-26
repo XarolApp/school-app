@@ -140,8 +140,11 @@ function buildInputRecord(school, medians) {
     typy_skoly: [...new Set((school.school_programs || []).map((r) => r.typ_skoly).filter(Boolean))],
     hranice_prijeti_prumer: czNum(school.admission_cutoff),
     mira_prijeti_prumer: czNum(school.acceptance_rate) ? `${czNum(school.acceptance_rate)} %` : null,
-    mista_aktualni_rok: summary.kapacita,
-    prihlasky_aktualni_rok: summary.prihlasky,
+    // Named by the admission round they come from, not "aktuální rok": these
+    // are past numbers, and the model repeated the key's wording verbatim.
+    rok_prijimacek: summary.latestYear,
+    mista_v_prijimackach: summary.kapacita,
+    prihlasky_v_prijimackach: summary.prihlasky,
     pocet_oboru: summary.oborCount,
     jazyky: summary.jazyky,
     trend_zajmu: summary.trend,

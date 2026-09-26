@@ -6,6 +6,7 @@ import {
   SlidersHorizontal,
   ChevronDown,
   Check,
+  Scale,
   Monitor,
   FlaskConical,
   ChartColumn,
@@ -40,6 +41,8 @@ import SearchFilters, {
   FieldGroup,
   TypGroup,
   UkonceniGroup,
+  ZrizovatelGroup,
+  DalsiGroup,
 } from '../components/SearchFilters';
 import FilterPopover from '../components/FilterPopover';
 import Modal from '../components/Modal';
@@ -119,10 +122,10 @@ function zrizovatelLabel(value) {
 }
 
 const SORTS = [
-  { id: 'shoda', label: 'Nejlepší shoda', tradeoff: 'podle tvého dotazníku' },
-  { id: 'match', label: 'Nejvíc splněných kritérií', tradeoff: 'nebere ohled na dojezd' },
-  { id: 'cut', label: 'Nejnižší hranice přijetí', tradeoff: 'bezpečnější, ne nutně silnější škola' },
-  { id: 'acceptance', label: 'Největší šance na přijetí', tradeoff: 'podle loňské míry přijetí' },
+  { id: 'shoda', label: 'Nejlepší shoda', short: 'Nejlepší shoda', tradeoff: 'podle tvého dotazníku' },
+  { id: 'match', label: 'Nejvíc splněných kritérií', short: 'Nejvíc kritérií', tradeoff: 'nebere ohled na dojezd' },
+  { id: 'cut', label: 'Nejnižší hranice přijetí', short: 'Nejnižší hranice', tradeoff: 'bezpečnější, ne nutně silnější škola' },
+  { id: 'acceptance', label: 'Největší šance na přijetí', short: 'Největší šance', tradeoff: 'podle loňské míry přijetí' },
 ];
 
 const FIELD_ICONS = {
@@ -252,6 +255,23 @@ function Search() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [favorites, setFavorites] = useState(() => new Set());
+  // Per-device preference, default on. Storage can throw (private mode), so
+  // it only ever falls back to the default.
+  const [savedFirst, setSavedFirstState] = useState(() => {
+    try {
+      return localStorage.getItem('skolamatch.savedFirst') !== '0';
+    } catch {
+      return true;
+    }
+  });
+  const setSavedFirst = (on) => {
+    setSavedFirstState(on);
+    try {
+      localStorage.setItem('skolamatch.savedFirst', on ? '1' : '0');
+    } catch {
+      /* preference just won't survive a reload */
+    }
+  };
   const [selected, setSelected] = useState(() => new Set(getCompareSelection()));
   const [filters, setFilters] = useState(DEFAULT_FILTERS);
   const [currentPage, setCurrentPage] = useState(1);
@@ -456,7 +476,13 @@ function Search() {
 
   const total = rows.length;
   const matchedAll = listFor(filters);
-  const sortedAll = sortRows(matchedAll, activeSort, filters);
+  const sortedByChoice = sortRows(matchedAll, activeSort, filters);
+  // Saved schools lead the list (sort order kept inside each half) unless the
+  // student switched it off.
+  const sortedAll =
+    savedFirst && favorites.size > 0
+      ? [...sortedByChoice.filter((r) => favorites.has(r.id)), ...sortedByChoice.filter((r) => !favorites.has(r.id))]
+      : sortedByChoice;
   const n = sortedAll.length;
 
   const setPatch = (patch) => setFilters((f) => ({ ...f, ...patch }));
@@ -764,12 +790,43 @@ function Search() {
     });
   };
 
-  const handleCompare = () => {
+  // Persist on every change, not only on "Porovnat": otherwise "Zrušit výběr"
+  // is undone by the next reload, which re-reads the stale stored selection.
+  useEffect(() => {
     setCompareSelection([...selected]);
-    navigate('/porovnani');
-  };
+  }, [selected]);
+
+  const handleCompare = () => navigate('/porovnani');
 
   const canFavorite = isSignedIn && hasAccess;
+
+  const compareToggle = (row, isSelected, disabled) => (
+    <button
+      type="button"
+      className={`ss-icon-toggle${isSelected ? ' is-active' : ''}`}
+      aria-pressed={isSelected}
+      disabled={disabled}
+      title={disabled ? `Porovnat jde nejvýš ${COMPARE_LIMIT} školy.` : isSelected ? 'Odebrat z porovnání' : 'Přidat k porovnání'}
+      aria-label={`${isSelected ? 'Odebrat z porovnání' : 'Přidat k porovnání'}: ${row.name}`}
+      onClick={() => toggleSelect(row.id)}
+    >
+      <Scale size={18} aria-hidden="true" />
+    </button>
+  );
+  const favoriteToggle = (row, isFavorite) => (
+    <FavoriteButton
+      schoolId={row.id}
+      isFavorite={isFavorite}
+      onChange={(next) =>
+        setFavorites((prev) => {
+          const nextSet = new Set(prev);
+          if (next) nextSet.add(row.id);
+          else nextSet.delete(row.id);
+          return nextSet;
+        })
+      }
+    />
+  );
 
   const handleMapSelect = useCallback((id) => setSelectedMapId(id), []);
 
@@ -845,6 +902,20 @@ function Search() {
         />
       ),
     },
+    {
+      id: 'zrizovatel',
+      label: 'Zřizovatel',
+      activeCount: filters.zrizovatele.length,
+      onClear: () => setPatch({ zrizovatele: [] }),
+      content: <ZrizovatelGroup zrizovatelOptions={zrizovatelOptions} toggleIn={toggleIn} />,
+    },
+    {
+      id: 'dalsi',
+      label: 'Další',
+      activeCount: moreActiveCount,
+      onClear: () => setPatch({ jazyky: [], kapacitaMin: 0 }),
+      content: <DalsiGroup filters={filters} setPatch={setPatch} jazykOptions={jazykOptions} toggleIn={toggleIn} />,
+    },
   ];
   const activeSheetGroup = filterGroups.find((group) => group.id === sheet);
 
@@ -863,7 +934,7 @@ function Search() {
   };
 
   const activeSortLabel = sortOptions.find((o) => o.id === activeSort)?.label ?? sortOptions[0].label;
-  const closeSort = () => (isMobile ? showResults() : setOpenPopover(null));
+  const closeSort = showResults;
   const sortList = (
     <div className="ss-sort-options" role="radiogroup" aria-label="Řadit">
       {sortOptions.map((o) => (
@@ -872,9 +943,7 @@ function Search() {
           className={`ss-sort-option${activeSort === o.id ? ' is-active' : ''}`}
           // detail > 0 = a real click; arrow keys change the radio without closing.
           onClick={(event) => {
-            if (event.detail === 0) return;
-            event.currentTarget.closest('.ss-filter-popover')?.querySelector('.ss-fbtn')?.focus();
-            closeSort();
+            if (event.detail > 0) closeSort();
           }}
         >
           <input
@@ -912,17 +981,21 @@ function Search() {
       </span>
     </button>
   ) : (
-    <FilterPopover
-      id="sort"
-      label="Řadit"
-      trigger={sortTrigger}
-      footer={false}
-      activeCount={0}
-      open={openPopover === 'sort'}
-      onOpenChange={(open) => setOpenPopover(open ? 'sort' : null)}
-    >
-      {sortList}
-    </FilterPopover>
+    <div className="ss-sort-chips" role="radiogroup" aria-label="Řadit">
+      <span className="ss-sort-prefix">Řadit:</span>
+      {sortOptions.map((o) => (
+        <button
+          key={o.id}
+          type="button"
+          role="radio"
+          aria-checked={activeSort === o.id}
+          className={`ss-fbtn${activeSort === o.id ? ' is-on' : ''}`}
+          onClick={() => setPatch({ sort: o.id })}
+        >
+          {o.short}
+        </button>
+      ))}
+    </div>
   );
 
   const allFiltersButton = (
@@ -981,7 +1054,6 @@ function Search() {
                 {group.content}
               </FilterPopover>
             ))}
-            {allFiltersButton}
           </>
         )}
       </div>
@@ -1075,7 +1147,7 @@ function Search() {
         </button>
       </Modal>
 
-      {!loading && !error && activeCriteriaCount === 0 && (
+      {!loading && !error && activeCriteriaCount === 0 && view === 'list' && (
         <section className="ss-browse" aria-labelledby="ss-browse-title">
           <h2 id="ss-browse-title">Nevíš, kde začít? Vyber zaměření.</h2>
           <p className="ss-body-sm">
@@ -1124,6 +1196,12 @@ function Search() {
                   {n !== total && <span className="ss-body-sm"> z {total}</span>}
                 </h2>
                 <div className="ss-toolbar-controls">
+                  {view === 'list' && canFavorite && favorites.size > 0 && (
+                    <label className="ss-saved-first">
+                      <input type="checkbox" checked={savedFirst} onChange={(e) => setSavedFirst(e.target.checked)} />
+                      <span className="ss-body-sm">Uložené nahoře</span>
+                    </label>
+                  )}
                   {view === 'list' && sortControl}
                   <div className="ss-view-toggle">
                     <button
@@ -1152,7 +1230,7 @@ function Search() {
                   <span>
                     {activeSort === 'cut' && <>Řazeno od nejnižší hranice: bezpečnější volba, ne nutně lepší škola. </>}
                     {activeSort === 'acceptance' && <>Řazeno podle loňské míry přijetí. </>}
-                    <strong>Hranice</strong> je nejnižší počet bodů z přijímaček (max. 100), se kterým se dalo dostat, průměr za 3 roky přes všechny obory. <strong>Přijato</strong> je podíl přijatých ze všech přihlášených. <strong>Míst</strong> je počet míst, která škola letos otevírá.
+                    <strong>Hranice</strong> je nejnižší počet bodů z přijímaček (max. 100), se kterým se dalo dostat, průměr za 3 roky přes všechny obory. <strong>Přijato</strong> je podíl přijatých ze všech přihlášených. <strong>Míst</strong> je počet míst, která škola otevírala v přijímačkách 2026.
                     {hasMatch && <> <strong>Shoda</strong> říká, jak škola sedí na tvoje odpovědi z dotazníku, ne jak je dobrá.</>}
                     {!hasMatch && activeCriteriaCount > 0 && <> <strong>Splňuje</strong> je počet tvých filtrů, které škola splňuje.</>}
                   </span>
@@ -1160,7 +1238,17 @@ function Search() {
               )}
 
               {view === 'map' && n > 0 && (
-                <SchoolMap rows={sortedAll} selectedId={selectedMapId} onSelect={handleMapSelect} />
+                <SchoolMap
+                  rows={sortedAll}
+                  selectedId={selectedMapId}
+                  onSelect={handleMapSelect}
+                  renderCardActions={(row) => (
+                    <>
+                      {compareToggle(row, selected.has(row.id), selected.size >= COMPARE_LIMIT && !selected.has(row.id))}
+                      {canFavorite && favoriteToggle(row, favorites.has(row.id))}
+                    </>
+                  )}
+                />
               )}
 
               {n === 0 && (
@@ -1219,7 +1307,6 @@ function Search() {
               {view === 'list' && n > 0 && (
                 <>
                   <div className={`ss-list-head${hasScore ? ' has-score' : ''}`} aria-hidden="true">
-                    <span />
                     <span>Škola</span>
                     <span className="ss-cell-obory">Obory</span>
                     {hasScore && <span className="ss-header-numeric">{hasMatch ? 'Shoda' : 'Splňuje'}</span>}
@@ -1247,20 +1334,6 @@ function Search() {
 
                       return (
                         <li className={`ss-row${isSelected ? ' is-selected' : ''}${hasScore ? ' has-score' : ''}`} key={row.id}>
-                          <div className="ss-row-foot">
-                            <label className="ss-row-select">
-                              <input
-                                type="checkbox"
-                                checked={isSelected}
-                                disabled={compareDisabled}
-                                title={compareDisabled ? `Porovnat jde nejvýš ${COMPARE_LIMIT} školy.` : undefined}
-                                onChange={() => toggleSelect(row.id)}
-                                aria-label={`Vybrat ${row.name} k porovnání`}
-                              />
-                              <span>Porovnat</span>
-                            </label>
-                          </div>
-
                           <div className="ss-cell-school">
                             <h3 className="ss-row-name">
                               <Link to={`/skoly/${row.id}`} className="ss-row-link" title={row.name}>
@@ -1330,21 +1403,9 @@ function Search() {
                             </div>
                           </div>
 
-                          <div className="ss-row-favorite">
-                            {canFavorite && (
-                              <FavoriteButton
-                                schoolId={row.id}
-                                isFavorite={isFavorite}
-                                onChange={(next) =>
-                                  setFavorites((prev) => {
-                                    const nextSet = new Set(prev);
-                                    if (next) nextSet.add(row.id);
-                                    else nextSet.delete(row.id);
-                                    return nextSet;
-                                  })
-                                }
-                              />
-                            )}
+                          <div className="ss-row-actions">
+                            {compareToggle(row, isSelected, compareDisabled)}
+                            {canFavorite && favoriteToggle(row, isFavorite)}
                           </div>
 
                         </li>

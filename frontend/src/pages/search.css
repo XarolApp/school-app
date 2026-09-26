@@ -260,9 +260,41 @@
 
 .ss-toolbar-controls {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   align-items: center;
-  gap: var(--space-md);
+  gap: var(--space-sm) var(--space-md);
   margin-left: auto;
+}
+
+.ss-sort-chips {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ss-sort-chips .ss-sort-prefix {
+  margin-right: 2px;
+}
+
+.ss-fbtn.is-on {
+  border: 1.5px solid var(--acc);
+  background: var(--acc-soft);
+}
+
+.ss-saved-first {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  color: var(--ink2);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.ss-saved-first input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--acc);
 }
 
 .ss-sort-prefix {
@@ -693,6 +725,10 @@
     gap: var(--space-sm);
   }
 
+  .ss-saved-first {
+    flex-basis: 100%;
+  }
+
   .ss-sort-trigger {
     flex: 1;
     min-width: 0;
@@ -848,14 +884,14 @@
 .ss-list-head,
 .ss-row {
   display: grid;
-  grid-template-columns: 20px minmax(0, 2fr) minmax(0, 1.3fr) 80px 112px 64px 40px;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1.3fr) 80px 112px 64px 88px;
   column-gap: var(--space-md);
   align-items: center;
 }
 
 .ss-list-head.has-score,
 .ss-list.has-score .ss-row {
-  grid-template-columns: 20px minmax(0, 2fr) minmax(0, 1.3fr) 76px 80px 112px 64px 40px;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1.3fr) 76px 80px 112px 64px 88px;
 }
 
 .ss-list-head {
@@ -891,39 +927,6 @@
   .ss-row:hover {
     background: var(--surface2);
   }
-}
-
-.ss-row-foot {
-  display: contents;
-}
-
-.ss-row-select {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  min-height: 44px;
-}
-
-.ss-row-select input {
-  width: 18px;
-  height: 18px;
-  accent-color: var(--acc);
-  cursor: pointer;
-}
-
-.ss-row-select input:disabled {
-  cursor: default;
-}
-
-.ss-row-select input:focus-visible,
-.ss-row-favorite button:focus-visible {
-  outline: 2px solid var(--acc);
-  outline-offset: 2px;
-}
-
-.ss-row-select > span {
-  display: none;
 }
 
 .ss-cell-school {
@@ -1060,13 +1063,51 @@
   text-align: left;
 }
 
-.ss-row-favorite {
+.ss-row-actions {
   position: relative;
   z-index: 1;
+  display: flex;
+  gap: var(--space-sm);
   justify-self: end;
 }
 
-.ss-row-favorite .favorite-star {
+.ss-icon-toggle {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--r-chip);
+  background: var(--surface);
+  color: var(--ink3);
+  cursor: pointer;
+}
+
+.ss-icon-toggle.is-active {
+  border: 1.5px solid var(--acc);
+  background: var(--acc-soft);
+  color: var(--ink);
+}
+
+.ss-icon-toggle:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.ss-icon-toggle:focus-visible,
+.ss-row-actions .favorite-star:focus-visible {
+  outline: 2px solid var(--acc);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ss-icon-toggle:not(:disabled):hover {
+    border-color: var(--ink3);
+  }
+}
+
+.school-search .favorite-star {
   border-radius: var(--r-chip);
 }
 
@@ -1291,12 +1332,12 @@
 @media (min-width: 861px) and (max-width: 1099px) {
   .ss-list-head,
   .ss-row {
-    grid-template-columns: 20px minmax(0, 2fr) 80px 112px 64px 40px;
+    grid-template-columns: minmax(0, 2fr) 80px 112px 64px 88px;
   }
 
   .ss-list-head.has-score,
   .ss-list.has-score .ss-row {
-    grid-template-columns: 20px minmax(0, 2fr) 76px 80px 112px 64px 40px;
+    grid-template-columns: minmax(0, 2fr) 76px 80px 112px 64px 88px;
   }
 
   .ss-cell-obory {
@@ -1329,29 +1370,6 @@
       'nums nums'
       'chips chips'
       'foot foot';
-  }
-
-  .ss-row-foot {
-    grid-area: foot;
-    position: relative;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: var(--space-sm);
-  }
-
-  .ss-row-select {
-    grid-area: auto;
-    align-self: center;
-    gap: var(--space-sm);
-    width: fit-content;
-  }
-
-  .ss-row-select > span {
-    display: inline;
-    color: var(--ink2);
-    font: var(--fs-caption)/var(--lh-caption) var(--sans);
   }
 
   .ss-cell-school {
@@ -1408,10 +1426,9 @@
     color: var(--ink3);
   }
 
-  .ss-row-favorite {
+  .ss-row-actions {
     grid-area: foot;
-    align-self: center;
-    justify-self: end;
+    margin-top: var(--space-sm);
   }
 
   .ss-compare-bar-inner {

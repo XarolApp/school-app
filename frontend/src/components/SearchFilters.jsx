@@ -160,6 +160,57 @@ export function AdmissionsGroup({ filters, setPatch, jpzOptions, toggleIn }) {
   );
 }
 
+export function ZrizovatelGroup({ zrizovatelOptions, toggleIn }) {
+  return (
+    <>
+      {zrizovatelOptions.map((option) => (
+        <CheckOption
+          key={option.value}
+          checked={option.checked}
+          label={option.label}
+          count={option.count}
+          onChange={() => toggleIn('zrizovatele', option.value)}
+        />
+      ))}
+    </>
+  );
+}
+
+export function DalsiGroup({ filters, setPatch, jazykOptions, toggleIn }) {
+  return (
+    <>
+      {jazykOptions.map((option) => (
+        <CheckOption
+          key={option.value}
+          checked={option.checked}
+          label={option.label}
+          count={option.count}
+          onChange={() => toggleIn('jazyky', option.value)}
+        />
+      ))}
+
+      <div className="ss-facet-group">
+        <div className="ss-travel-head">
+          <span className="ss-body-sm">
+            {filters.kapacitaMin <= 0 ? 'bez omezení' : `aspoň ${filters.kapacitaMin}`}
+          </span>
+        </div>
+        <p className="ss-caption">Počet míst alespoň</p>
+        <input
+          type="range"
+          min="0"
+          max="150"
+          step="10"
+          value={filters.kapacitaMin}
+          onChange={(event) => setPatch({ kapacitaMin: Number(event.target.value) })}
+          className="ss-travel-slider"
+          aria-label="Nejmenší kapacita"
+        />
+      </div>
+    </>
+  );
+}
+
 function SearchFilters({
   filters,
   setPatch,
@@ -218,48 +269,13 @@ function SearchFilters({
       <hr className="ss-divider" />
 
       <FacetSection title="Zřizovatel" activeCount={filters.zrizovatele.length}>
-        {zrizovatelOptions.map((option) => (
-          <CheckOption
-            key={option.value}
-            checked={option.checked}
-            label={option.label}
-            count={option.count}
-            onChange={() => toggleIn('zrizovatele', option.value)}
-          />
-        ))}
+        <ZrizovatelGroup zrizovatelOptions={zrizovatelOptions} toggleIn={toggleIn} />
       </FacetSection>
 
       <hr className="ss-divider" />
 
       <FacetSection title="Další" activeCount={moreActiveCount}>
-        {jazykOptions.map((option) => (
-          <CheckOption
-            key={option.value}
-            checked={option.checked}
-            label={option.label}
-            count={option.count}
-            onChange={() => toggleIn('jazyky', option.value)}
-          />
-        ))}
-
-        <div className="ss-facet-group">
-          <div className="ss-travel-head">
-            <span className="ss-body-sm">
-              {filters.kapacitaMin <= 0 ? 'bez omezení' : `aspoň ${filters.kapacitaMin}`}
-            </span>
-          </div>
-          <p className="ss-caption">Volných míst alespoň</p>
-          <input
-            type="range"
-            min="0"
-            max="150"
-            step="10"
-            value={filters.kapacitaMin}
-            onChange={(event) => setPatch({ kapacitaMin: Number(event.target.value) })}
-            className="ss-travel-slider"
-            aria-label="Nejmenší kapacita"
-          />
-        </div>
+        <DalsiGroup filters={filters} setPatch={setPatch} jazykOptions={jazykOptions} toggleIn={toggleIn} />
       </FacetSection>
     </>
   );

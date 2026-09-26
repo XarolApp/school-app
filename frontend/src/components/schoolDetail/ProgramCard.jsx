@@ -70,7 +70,7 @@ function ProgramCard({ entry }) {
           <div className={`sd-program-stat-value${y.kapacita == null ? ' is-empty' : ''}`}>{y.kapacita ?? 'bez dat'}</div>
           <div className="sd-program-stat-label">
             míst
-            <InfoHint text={`Kolik míst tento obor otevírá pro rok ${entry.latestYear}.`} />
+            <InfoHint text={`Kolik míst tento obor otevíral v přijímačkách ${entry.latestYear}.`} />
           </div>
         </div>
         <div>

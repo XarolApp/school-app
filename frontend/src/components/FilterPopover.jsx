@@ -3,9 +3,7 @@ import { ChevronDown } from 'lucide-react';
 
 const skol = (count) => (count === 1 ? 'škola' : count >= 2 && count <= 4 ? 'školy' : 'škol');
 
-// `trigger` replaces the button text (label stays the dialog's name); `footer={false}`
-// drops Vymazat/Zobrazit for a popover whose choice applies immediately (sort).
-function FilterPopover({ id, label, trigger, footer = true, activeCount, open, onOpenChange, onClear, resultCount, children }) {
+function FilterPopover({ id, label, activeCount, open, onOpenChange, onClear, resultCount, children }) {
   const panelId = `${useId()}-panel`;
   const rootRef = useRef(null);
   const panelRef = useRef(null);
@@ -21,11 +19,8 @@ function FilterPopover({ id, label, trigger, footer = true, activeCount, open, o
     const panel = panelRef.current;
     if (panel) {
       setAlignRight(panel.getBoundingClientRect().right > window.innerWidth - 16);
-      (
-        panel.querySelector('.ss-filter-popover-body input[type="radio"]:checked') ??
-        panel.querySelector(
-          '.ss-filter-popover-body input:not(:disabled), .ss-filter-popover-body button:not(:disabled), .ss-filter-popover-body [tabindex]:not([tabindex="-1"])'
-        )
+      panel.querySelector(
+        '.ss-filter-popover-body input:not(:disabled), .ss-filter-popover-body button:not(:disabled), .ss-filter-popover-body [tabindex]:not([tabindex="-1"])'
       )?.focus();
     }
 
@@ -73,7 +68,7 @@ function FilterPopover({ id, label, trigger, footer = true, activeCount, open, o
         aria-haspopup="dialog"
         onClick={() => onOpenChange(!open)}
       >
-        {trigger ?? label}
+        {label}
         {activeCount > 0 && <span className="ss-facet-badge">{activeCount}</span>}
         <ChevronDown className={`ss-fbtn-chevron${open ? ' is-open' : ''}`} size={14} aria-hidden="true" />
       </button>
@@ -81,7 +76,6 @@ function FilterPopover({ id, label, trigger, footer = true, activeCount, open, o
       {open && (
         <div className="ss-filter-popover-panel" id={panelId} ref={panelRef} role="dialog" aria-label={label}>
           <div className="ss-filter-popover-body">{children}</div>
-          {footer && (
           <div className="ss-filter-popover-footer">
             <button
               type="button"
@@ -99,7 +93,6 @@ function FilterPopover({ id, label, trigger, footer = true, activeCount, open, o
               Zobrazit {resultCount} {skol(resultCount)}
             </button>
           </div>
-          )}
         </div>
       )}
     </div>

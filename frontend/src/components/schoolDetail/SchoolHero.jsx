@@ -86,7 +86,7 @@ function SchoolHero({ school, programEntries, extracted }) {
         <FactTile
           value={fmt(current.kapacita, '')}
           label={current.year ? `Míst ${current.year}` : 'Míst'}
-          note={`Celkový počet míst ve všech oborech, které škola otevírá pro rok ${current.year ?? 'letos'}. Obory, které se už neotevírají, se do tohoto čísla nepočítají.`}
+          note={`Kolik míst škola otevírala ve všech oborech v přijímačkách ${current.year ?? ''}. Na další rok se počet může změnit. Obory, které se už neotevírají, se do čísla nepočítají.`}
         />
         <FactTile
           value={fmt(current.ratio, '×')}

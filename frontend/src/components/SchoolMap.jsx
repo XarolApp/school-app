@@ -75,7 +75,7 @@ function homePinHtml() {
  * their own stacking context) — matching 1000 is what keeps our UI visible
  * all the time, not just mid-animation.
  */
-function SchoolMap({ rows, selectedId, onSelect }) {
+function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
   const markersRef = useRef(new Map());
@@ -213,7 +213,7 @@ function SchoolMap({ rows, selectedId, onSelect }) {
     setAddressError(null);
     navigator.geolocation.getCurrentPosition(
       (pos) => setHomeFromCoords(pos.coords.latitude, pos.coords.longitude),
-      () => setAddressError('Polohu se nepodařilo zjistit — zkus zadat adresu ručně.')
+      () => setAddressError('Polohu se nepodařilo zjistit, zkus zadat adresu ručně.')
     );
   };
 
@@ -298,7 +298,7 @@ function SchoolMap({ rows, selectedId, onSelect }) {
               aria-label="Maximální vzdálenost v kilometrech"
             />
             <p className="ss-caption sm-privacy-note">
-              Vzdušná čára, ne skutečná trasa MHD — zobrazuje {visibleRows.length} {visibleRows.length === 1 ? 'školu' : 'škol'}.
+              Vzdušná čára, ne skutečná trasa MHD. Zobrazuje {visibleRows.length} {visibleRows.length === 1 ? 'školu' : 'škol'}.
             </p>
           </div>
         )}
@@ -325,35 +325,53 @@ function SchoolMap({ rows, selectedId, onSelect }) {
           <div className="ss-stat-grid sm-card-stats">
             <div className="ss-stat-cell">
               <p className="ss-data-md">
-                {selectedRow.admissionCutoff != null ? `${selectedRow.admissionCutoff} b.` : '—'}
+                {selectedRow.admissionCutoff != null ? `${String(selectedRow.admissionCutoff).replace('.', ',')} b.` : 'bez dat'}
               </p>
               <p className="ss-stat-label">
                 hranice
                 <StatInfo
                   placement="bottom"
-                  text="Průměr z posledních 3 let (2024–2026). Nejnižší počet bodů z češtiny a matematiky (max. 100 — 50 + 50), které stačily na přijetí — je to hranice pro přijetí, ne průměrné skóre přijatých žáků. Průměr přes všechny obory školy; hranici pro konkrétní obor a rok najdeš po rozkliknutí školy. (Nové školy mohou mít kratší historii.)"
+                  text="Průměr z let 2024 až 2026. Nejnižší počet bodů z češtiny a matematiky (max. 100, tedy 50 + 50), který stačil na přijetí. Je to hranice pro přijetí, ne průměrné skóre přijatých. Průměr přes všechny obory školy; hranici pro konkrétní obor a rok najdeš v detailu školy. (Nové školy mohou mít kratší historii.)"
                 />
               </p>
             </div>
             <div className="ss-stat-cell">
               <p className="ss-data-md">
-                {selectedRow.acceptanceRate != null ? `${selectedRow.acceptanceRate} %` : '—'}
+                {selectedRow.acceptanceRate != null ? `${Math.round(selectedRow.acceptanceRate)} %` : 'bez dat'}
               </p>
               <p className="ss-stat-label">
                 přijato
                 <StatInfo
                   placement="bottom"
-                  text="Průměr z posledních 3 let (2024–2026): kolik procent uchazečů škola v posledním kole přijala, v průměru přes všechny obory. Podrobnosti po jednotlivých oborech a letech najdeš po rozkliknutí školy. (Nové školy mohou mít kratší historii.)"
+                  text="Průměr z let 2024 až 2026: kolik procent uchazečů škola v posledním kole přijala, v průměru přes všechny obory. Podrobnosti po jednotlivých oborech a letech najdeš po rozkliknutí školy. (Nové školy mohou mít kratší historii.)"
                 />
               </p>
             </div>
             <div className="ss-stat-cell">
-              <p className="ss-data-md">{selectedRow.p.kapacita ?? '—'}</p>
+              <p className="ss-data-md">{selectedRow.p.kapacita ?? 'bez dat'}</p>
               <p className="ss-stat-label">
                 míst
                 <StatInfo
                   placement="bottom"
-                  text="Celkový počet míst ve všech oborech, které škola otevírá pro aktuální rok."
+                  text="Kolik míst škola otevírala ve všech oborech v přijímačkách 2026. Na další rok se počet může změnit."
+                />
+              </p>
+            </div>
+            <div className="ss-stat-cell">
+              {typeof selectedRow.school?.match_score === 'number' ? (
+                <p className="ss-data-md">
+                  <span className={`ss-match-score ${selectedRow.school.match_score >= 85 ? 'is-strong' : selectedRow.school.match_score >= 70 ? 'is-mid' : 'is-low'}`}>
+                    {selectedRow.school.match_score} %
+                  </span>
+                </p>
+              ) : (
+                <p className="ss-data-md ss-cell-missing">bez dat</p>
+              )}
+              <p className="ss-stat-label">
+                shoda
+                <StatInfo
+                  placement="bottom"
+                  text="Jak škola sedí na tvoje odpovědi z dotazníku, ne jak je dobrá. Bez vyplněného dotazníku ji nespočítáme."
                 />
               </p>
             </div>
@@ -367,6 +385,7 @@ function SchoolMap({ rows, selectedId, onSelect }) {
             <Link to={`/skoly/${selectedRow.id}`} className="ss-btn ss-btn-primary ss-btn-sm">
               Detail školy
             </Link>
+            {renderCardActions && <div className="sm-card-toggles">{renderCardActions(selectedRow)}</div>}
           </div>
         </div>
       )}

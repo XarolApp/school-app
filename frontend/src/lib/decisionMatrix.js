@@ -48,7 +48,7 @@ export const CRITERIA = [
     id: 'mista',
     label: 'Počet míst',
     available: true,
-    tooltip: 'Kapacita oborů školy pro aktuální rok — víc míst obvykle znamená víc konkurzní volnosti.',
+    tooltip: 'Kolik míst škola otevírala v posledních přijímačkách. Víc míst obvykle znamená menší tlak na body.',
   },
   {
     id: 'typ',

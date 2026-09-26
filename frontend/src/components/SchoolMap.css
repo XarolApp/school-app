@@ -10,6 +10,9 @@
 
 .sm-wrap {
   position: relative;
+  /* Contain Leaflet's panes (z-index 200-1000) so the map can never paint
+     over the page's own filter popovers or the fixed compare bar. */
+  isolation: isolate;
   height: 560px;
   border-radius: var(--r-card);
   /* NOT overflow: hidden — this box also holds the floating locate panel,
@@ -269,7 +272,14 @@
 }
 .sm-card-actions {
   display: flex;
+  align-items: center;
   gap: var(--space-sm);
+}
+
+.sm-card-toggles {
+  display: flex;
+  gap: var(--space-sm);
+  margin-left: auto;
 }
 
 @media (max-width: 860px) {

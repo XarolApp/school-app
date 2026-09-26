@@ -1,17 +1,10 @@
 import { useState } from 'react';
+import { Bookmark } from 'lucide-react';
 import { addFavorite, removeFavorite } from '../api';
 import { useToast } from './ToastContext';
 
-function StarIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="favorite-star-icon" aria-hidden="true">
-      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-    </svg>
-  );
-}
-
 /**
- * Floating star toggle used on school cards (search results, questionnaire
+ * Save (bookmark) toggle used on school cards (search results, questionnaire
  * matches). Meant to sit as a SIBLING of the card's own Link, not nested
  * inside it — a <button> inside an <a> is invalid HTML and double-fires on
  * some screen readers. `stopPropagation` below is a second line of defence
@@ -47,7 +40,7 @@ function FavoriteButton({ schoolId, isFavorite, onChange, className = '' }) {
       // Confirmed only after the call succeeds. The optimistic update above
       // already moved the star, so announcing before this point would sometimes
       // congratulate the user on a save that then rolled back.
-      toast(next ? 'Přidáno do oblíbených' : 'Odebráno z oblíbených');
+      toast(next ? 'Škola uložena' : 'Odebráno z uložených');
     } catch {
       onChange(!next);
       // The star silently snapping back is indistinguishable from never having
@@ -56,8 +49,8 @@ function FavoriteButton({ schoolId, isFavorite, onChange, className = '' }) {
       // a row reappear.
       toast(
         next
-          ? 'Školu se nepodařilo přidat do oblíbených'
-          : 'Školu se nepodařilo odebrat z oblíbených',
+          ? 'Školu se nepodařilo uložit'
+          : 'Školu se nepodařilo odebrat z uložených',
         { type: 'error' }
       );
     } finally {
@@ -73,10 +66,11 @@ function FavoriteButton({ schoolId, isFavorite, onChange, className = '' }) {
       onAnimationEnd={() => setPopping(false)}
       disabled={saving}
       aria-pressed={isFavorite}
-      aria-label={isFavorite ? 'Odebrat z oblíbených' : 'Přidat mezi oblíbené'}
+      aria-label={isFavorite ? 'Odebrat z uložených' : 'Uložit školu'}
+      title={isFavorite ? 'Odebrat z uložených' : 'Uložit školu'}
       data-pop={popping ? '' : undefined}
     >
-      <StarIcon />
+      <Bookmark size={18} fill={isFavorite ? 'currentColor' : 'none'} aria-hidden="true" />
     </button>
   );
 }
