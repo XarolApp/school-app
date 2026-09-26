@@ -6,7 +6,7 @@
   "urlTitleScore": 5,
   "maxBodyHitsPerGroup": 3,
   "longPageChars": 15000,
-  "targetChars": 40000,
+  "targetChars": 150000,
   "hardMaxChars": 150000,
   "fallbackMinChars": 2000,
   "fallbackMaxReduction": 0.97,

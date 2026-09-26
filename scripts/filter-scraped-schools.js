@@ -14,6 +14,10 @@ const outputDir = path.join(__dirname, 'data', 'filtered-schools');
 const pageSeparator = '\n\n---\n\n';
 const exactWords = new Set(['vs', 'svp', 'kc', 'dod']);
 const timePattern = /\b(?:[6-9]|1[0-2])[:.][0-5]\d\b/;
+// A paragraph carrying an amount, a percentage or a time is what the extractor
+// actually needs; trimming must drop these last, never by keyword count alone.
+const factPattern = /\d\s*(?:Kč|%|korun)|\b(?:[6-9]|1[0-2])[:.][0-5]\d\b/i;
+const imagePattern = /!\[[^\]]*\]\([^)]*\)/g;
 
 function normalize(value) {
   return value
@@ -107,8 +111,10 @@ function cleanBoilerplate(pages) {
         if (keptProtected.has(normalized)) continue;
         keptProtected.add(normalized);
       }
-      if (!line.trim() && !lines.at(-1)?.trim()) continue;
-      lines.push(line);
+      const text = line.replace(imagePattern, '');
+      if (line.trim() && !text.trim()) continue;
+      if (!text.trim() && !lines.at(-1)?.trim()) continue;
+      lines.push(text);
     }
     return { ...page, body: lines.join('\n').trim() };
   });
@@ -162,7 +168,7 @@ function fitBudget(pages, budget) {
   }
   // Retain at least one paragraph per page while there is room for it.
   const blocks = pages.filter((page) => page.keep).flatMap((page) =>
-    page.output.split(/\n\s*\n/).map((value, index) => ({ page, value, index, rank: Object.keys(groupHits(value)).length * 10 + page.score }))
+    page.output.split(/\n\s*\n/).map((value, index) => ({ page, value, index, rank: (factPattern.test(value) ? 100 : 0) + Object.keys(groupHits(value)).length * 10 + page.score }))
   );
   for (const block of blocks.sort((a, b) => a.rank - b.rank)) {
     const parts = block.page.output.split(/\n\s*\n/);
@@ -172,7 +178,8 @@ function fitBudget(pages, budget) {
     text = render(pages);
     if (text.length <= budget) return text;
   }
-  for (const page of pages.filter((page) => page.keep && !page.home && !page.important).sort((a, b) => a.score - b.score)) {
+  const pageRank = (page) => (factPattern.test(page.output) ? 1000 : 0) + page.score;
+  for (const page of pages.filter((page) => page.keep && !page.home && !page.important).sort((a, b) => pageRank(a) - pageRank(b))) {
     page.keep = false;
     text = render(pages);
     if (text.length <= budget) return text;
@@ -203,7 +210,7 @@ function rescueMissingGroups(pages, originals, groups) {
     const candidates = originals.flatMap((page, index) => page.body.split(/\n\s*\n/).map((block) => {
       const plain = block.replace(/!?\[[^\]]*\]\([^)]*\)/g, '').replace(/[#*+-]/g, '').trim();
       if (block.length > 3000 || plain.length < 30 || !groupHits(block)[group]) return null;
-      const value = /\d\s*(?:Kč|%|korun)|\b[6-9][:.][0-5]\d\b/i.test(block) ? 100 : 0;
+      const value = factPattern.test(block) ? 100 : 0;
       return { index, block: block.trim(), rank: value + Math.min(plain.length, 200) / 10 + pages[index].score / 10 };
     }).filter(Boolean));
     const best = candidates.sort((a, b) => b.rank - a.rank)[0];
@@ -330,7 +337,7 @@ function main(args = process.argv.slice(2)) {
     },
     schools,
   };
-  if (!dryRun) fs.writeFileSync(path.join(outputDir, '_report.json'), JSON.stringify(report, null, 2) + '\n');
+  if (!dryRun && !school) fs.writeFileSync(path.join(outputDir, '_report.json'), JSON.stringify(report, null, 2) + '\n');
   if (!verbose) console.table(schools.map((row) => ({ school: row.filename, before: row.originalChars, after: row.filteredChars, reduction: `${row.reductionPct}%`, pages: `${row.pagesKept}/${row.pagesTotal}`, groups: row.keywordGroupsFound.length, flags: row.flags.join(',') || '-' })));
   console.log(`Total: ${originalChars} → ${filteredChars} chars (${report.totals.reductionPct}% reduction; ~${report.totals.originalEstimatedTokens} → ~${report.totals.filteredEstimatedTokens} tokens).`);
   console.log(`Flagged schools: ${report.totals.flaggedSchools.join(', ') || 'none'}`);

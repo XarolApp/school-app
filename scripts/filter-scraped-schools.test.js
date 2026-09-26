@@ -48,3 +48,31 @@ test('rescues a factual fee paragraph when the size budget drops its page', () =
     config.targetChars = oldTarget;
   }
 });
+
+test('strips inline images, including data URIs, from kept lines', () => {
+  const oldMinimum = config.fallbackMinChars;
+  config.fallbackMinChars = 0;
+  try {
+    const source = '## PAGE-URL: https://example.cz/\n\n# Škola\n\nObědy ve školní jídelně ![logo](data:image/png;base64,AAAABBBBCCCC) každý den.';
+    const result = filterSchool(source);
+    assert.doesNotMatch(result.text, /data:image|!\[/);
+    assert.match(result.text, /Obědy ve školní jídelně/);
+  } finally {
+    config.fallbackMinChars = oldMinimum;
+  }
+});
+
+test('budget trimming drops keyword filler before a fee paragraph whose group is still present elsewhere', () => {
+  const old = { ...config };
+  const filler = 'Cena sportovního kurzu a platby za výlety se upřesní.';
+  const fee = 'Školné činí 48 000 Kč ročně.';
+  const source = `## PAGE-URL: https://example.cz/\n\n# Škola\n\n${filler}\n\n${fee}\n\n${filler} Znovu.`;
+  Object.assign(config, { fallbackMinChars: 0, fallbackMaxReduction: 1, targetChars: source.length - 20 });
+  try {
+    const result = filterSchool(source);
+    assert.match(result.text, /48 000 Kč/);
+    assert.ok(result.text.length <= config.targetChars);
+  } finally {
+    Object.assign(config, old);
+  }
+});
