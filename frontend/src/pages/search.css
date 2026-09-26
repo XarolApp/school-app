@@ -1361,8 +1361,7 @@
       'name score'
       'meta meta'
       'nums nums'
-      'chips chips'
-      'foot foot';
+      'chips foot';
     row-gap: var(--space-xs);
     padding: var(--space-md) 0;
   }
@@ -1372,8 +1371,7 @@
       'name name'
       'meta meta'
       'nums nums'
-      'chips chips'
-      'foot foot';
+      'chips foot';
   }
 
   .ss-cell-school {
@@ -1415,6 +1413,10 @@
     text-align: left;
   }
 
+  .ss-cell-acceptance > .ss-data-md {
+    display: block;
+  }
+
   .ss-accept-bar {
     display: none;
   }
@@ -1432,7 +1434,7 @@
 
   .ss-row-actions {
     grid-area: foot;
-    margin-top: var(--space-sm);
+    align-self: end;
   }
 
   .ss-compare-bar-inner {
