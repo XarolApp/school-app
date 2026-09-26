@@ -5,6 +5,7 @@ import {
   X,
   SlidersHorizontal,
   ChevronDown,
+  Check,
   Monitor,
   FlaskConical,
   ChartColumn,
@@ -861,6 +862,69 @@ function Search() {
     setSheet(null);
   };
 
+  const activeSortLabel = sortOptions.find((o) => o.id === activeSort)?.label ?? sortOptions[0].label;
+  const closeSort = () => (isMobile ? showResults() : setOpenPopover(null));
+  const sortList = (
+    <div className="ss-sort-options" role="radiogroup" aria-label="Řadit">
+      {sortOptions.map((o) => (
+        <label
+          key={o.id}
+          className={`ss-sort-option${activeSort === o.id ? ' is-active' : ''}`}
+          // detail > 0 = a real click; arrow keys change the radio without closing.
+          onClick={(event) => {
+            if (event.detail === 0) return;
+            event.currentTarget.closest('.ss-filter-popover')?.querySelector('.ss-fbtn')?.focus();
+            closeSort();
+          }}
+        >
+          <input
+            type="radio"
+            name="ss-sort"
+            value={o.id}
+            checked={activeSort === o.id}
+            onChange={() => setPatch({ sort: o.id })}
+          />
+          <span className="ss-sort-option-check" aria-hidden="true">
+            {activeSort === o.id && <Check size={16} />}
+          </span>
+          <span className="ss-sort-option-label">{o.label}</span>
+          <span className="ss-sort-option-note">{o.tradeoff}</span>
+        </label>
+      ))}
+    </div>
+  );
+  const sortTrigger = (
+    <span>
+      <span className="ss-sort-prefix">Řadit:</span> {activeSortLabel}
+    </span>
+  );
+  const sortControl = isMobile ? (
+    <button
+      type="button"
+      className="ss-fbtn ss-sort-trigger"
+      aria-expanded={sheet === 'sort'}
+      aria-haspopup="dialog"
+      onClick={(event) => openMobileFilter('sort', event)}
+    >
+      {sortTrigger}
+      <span className={`ss-fbtn-chevron${sheet === 'sort' ? ' is-open' : ''}`} aria-hidden="true">
+        <ChevronDown size={14} />
+      </span>
+    </button>
+  ) : (
+    <FilterPopover
+      id="sort"
+      label="Řadit"
+      trigger={sortTrigger}
+      footer={false}
+      activeCount={0}
+      open={openPopover === 'sort'}
+      onOpenChange={(open) => setOpenPopover(open ? 'sort' : null)}
+    >
+      {sortList}
+    </FilterPopover>
+  );
+
   const allFiltersButton = (
     <button
       type="button"
@@ -997,7 +1061,7 @@ function Search() {
 
       <Modal
         open={sheet !== null}
-        title={sheet === 'all' ? 'Filtry' : activeSheetGroup?.label ?? 'Filtry'}
+        title={sheet === 'all' ? 'Filtry' : sheet === 'sort' ? 'Řadit' : activeSheetGroup?.label ?? 'Filtry'}
         onDismiss={closeFilters}
         returnFocusRef={filterReturnRef}
         className="ss-filter-sheet"
@@ -1005,13 +1069,13 @@ function Search() {
         <button type="button" className="ss-sheet-close" onClick={closeFilters} aria-label="Zavřít filtry">
           <X size={20} aria-hidden="true" />
         </button>
-        {sheet === 'all' ? filtersEl : activeSheetGroup?.content}
+        {sheet === 'all' ? filtersEl : sheet === 'sort' ? sortList : activeSheetGroup?.content}
         <button type="button" className="ss-mobile-commit" onClick={showResults}>
           Zobrazit {n} {skol(n)}
         </button>
       </Modal>
 
-      {!loading && !error && activeCriteriaCount === 0 && view === 'list' && (
+      {!loading && !error && activeCriteriaCount === 0 && (
         <section className="ss-browse" aria-labelledby="ss-browse-title">
           <h2 id="ss-browse-title">Nevíš, kde začít? Vyber zaměření.</h2>
           <p className="ss-body-sm">
@@ -1060,20 +1124,7 @@ function Search() {
                   {n !== total && <span className="ss-body-sm"> z {total}</span>}
                 </h2>
                 <div className="ss-toolbar-controls">
-                  <label className="ss-sort-select">
-                    <span className="ss-body-sm">Řadit:</span>
-                  <select
-                    className="ss-sort-input"
-                    value={activeSort}
-                    onChange={(e) => setPatch({ sort: e.target.value })}
-                  >
-                    {sortOptions.map((o) => (
-                      <option key={o.id} value={o.id}>
-                        {o.label}
-                      </option>
-                    ))}
-                  </select>
-                  </label>
+                  {view === 'list' && sortControl}
                   <div className="ss-view-toggle">
                     <button
                       type="button"

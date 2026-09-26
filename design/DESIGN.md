@@ -376,6 +376,13 @@ what you asked for", red only for something that needs fixing.
 - **On-surface-faint (#5F6670):** placeholder, disabled and tertiary text. 4.8:1 on
   Surface and 4.5:1 on Neutral, the tighter of the two.
 - **Border (#DCE0E4) and Border-strong (#C4CBD2):** hairlines. Division, not boxes.
+- **Track (#BFC3C5):** the empty part of every bar (Přijato on `/skoly`, the per-obor
+  trend on the detail page, the decision matrix). Surface-2 pulled 20% toward ink, per
+  theme, so it stays visible on both the page and a card; the fill (Primary, or
+  Secondary for past years in a trend) holds at least 3:1 against it in all 8
+  combinations. Bars are data marks, so a Primary fill there does not count against
+  the one-solid-Primary-per-screen rule. Added 2026-09-26 after the old Border/Neutral
+  tracks all but disappeared.
 - **Error (#B0271F), trail red:** "this needs fixing" (a required field, a failed
   payment), never "this is wrong about you". Always with an icon and a written
   message. 6.2:1.

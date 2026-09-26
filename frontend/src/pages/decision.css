@@ -585,7 +585,7 @@
 .dp-crit-track {
   height: 8px;
   border-radius: 8px;
-  background: var(--surface2);
+  background: var(--track);
   overflow: hidden;
 }
 .dp-crit-fill {

@@ -429,12 +429,12 @@
 .sd-trend-bar-track {
   height: 6px;
   border-radius: 999px;
-  background: var(--surface2);
+  background: var(--track);
 }
 .sd-trend-bar-fill {
   height: 6px;
   border-radius: 999px;
-  background: var(--line2);
+  background: var(--ink2);
 }
 .sd-trend-bar-fill.is-current {
   background: var(--acc);
