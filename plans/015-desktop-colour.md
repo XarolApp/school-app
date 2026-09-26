@@ -1,6 +1,6 @@
 # 015: More colour on desktop /skoly and on Praktické informace
 
-**Status:** PLANNED, 2026-09-26, against `f23bab6`. Approved by the founder from the
+**Status:** BUILT and reviewed, 2026-09-26 (13c3d1e, 4e0444c, 81ec180). Planned against `f23bab6`. Approved by the founder from the
 concept, with two decisions: keep the Přijato bar, collapse the empty cards.
 
 **Visual reference:** https://claude.ai/artifact/HNjMAttNGL3TfPTnqB9y7V (toggle
