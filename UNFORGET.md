@@ -13,6 +13,27 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
+## Mobile layout checks still owed (375×812) — 2026-09-26
+
+Done already and not repeated here: top of `/skoly` (list, toolbar, sort sheet
+trigger, compare bar, map toolbar), top of the school detail page (hero, fact
+tiles, action bar, tooltip position), top of `/porovnani` (table widths).
+Screenshots of anything below the first screen came back blank in the Browser pane,
+so those parts were only checked by measuring positions, or not at all:
+
+- **School detail, below the fold:** obor cards + trend bars, "Kde to je" map,
+  reviews list and review form, one-column Praktické informace (5c887ab/604514b),
+  report-error dialog, similar schools, and an info tooltip actually shown.
+- **`/skoly` on phone:** the sort bottom sheet opened; the filter sheet with the new
+  Zřizovatel and Další groups; the map card with 4 stat cells plus the compare/save
+  buttons; the compare bar sitting over the map.
+- **`/porovnani` below the fold:** Škola section and pros/cons rows at 96px + 152px
+  columns; the Rozhodovací matice and Moje přihláška tabs on phone.
+- **Tablet width 601–860px:** nothing checked at this width after the 2026-09-26
+  changes (practical-info grid is 2 columns there, list rows switch layout at 860).
+- **Other pages never checked on phone this session:** `/nastaveni` (Vzhled theme
+  cards), `/dotaznik`, home, sign-in/up.
+
 ## Regenerate school pros/cons with --force (wording fix) — 2026-09-26
 
 Cached `school_ai_summary` pros/cons still say things like "Škola má pouze 19 míst
