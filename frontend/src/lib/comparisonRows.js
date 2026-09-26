@@ -13,7 +13,7 @@
 
 import { summarizeCurrentYear, groupProgramsByObor, latestProgramValue } from './schoolPrograms';
 
-const numCz = (v, digits = 1) => (v == null ? null : v.toLocaleString('cs-CZ', { maximumFractionDigits: digits }));
+export const numCz = (v, digits = 1) => (v == null ? null : v.toLocaleString('cs-CZ', { maximumFractionDigits: digits }));
 
 function bestIndex(values, { lowerIsBetter = false } = {}) {
   let bestI = -1;

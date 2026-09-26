@@ -508,9 +508,10 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--space-md);
+  align-items: start;
 }
 .sd-missing-card {
-  border: 1px dashed var(--line2);
+  border: 0;
   border-radius: var(--r-card);
   padding: var(--space-lg);
   background: var(--surface2);
@@ -519,10 +520,20 @@
   gap: 4px;
 }
 .sd-missing-card-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
   font-family: var(--sans);
   font-size: var(--fs-body-sm);
   font-weight: 600;
   color: var(--ink);
+}
+.sd-missing-card-title > svg { flex: none; color: var(--acc); }
+.sd-card-figure {
+  font: 700 var(--fs-headline-md)/1 var(--heading);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  margin: 2px 0 var(--space-xs);
 }
 .sd-missing-card-body {
   font-family: var(--sans);
@@ -530,6 +541,33 @@
   line-height: var(--lh-caption);
   color: var(--ink2);
 }
+.sd-missing-card-body.is-clamped {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+  overflow: hidden;
+}
+.sd-missing-card-toggle {
+  align-self: flex-start;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--fs-caption);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+.sd-missing-line {
+  margin: var(--space-md) 0 0;
+  padding: 12px var(--space-md);
+  border: 1px dashed var(--line2);
+  border-radius: var(--r-chip);
+  color: var(--ink2);
+  font-size: var(--fs-body-sm);
+}
+.sd-missing-line strong { color: var(--ink); font-weight: 600; }
 
 /* ---------- ReportDataDialog ---------- */
 .sd-report-row {
