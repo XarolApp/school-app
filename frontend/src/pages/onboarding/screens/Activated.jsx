@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ObScreen } from '../../../components/onboarding/ObKit';
 import { PAYMENTS_MOCKED } from '../../../config/pricing';
+import { useAuth } from '../../../components/AuthContext';
 import { useOnboarding } from '../useOnboarding';
 
 /**
@@ -38,6 +39,8 @@ const TASKS = {
 
 function Activated() {
   const { role, purchased } = useOnboarding();
+  const { profile } = useAuth();
+  const isTester = profile?.isTester === true;
   const parent = role === 'parent';
   const [done, setDone] = useState([]);
   const tasks = parent ? TASKS.parent : TASKS.student;
@@ -49,7 +52,11 @@ function Activated() {
     <ObScreen chrome={false}>
       <div className="ob-done">
         <h1 className="ob-title">
-          {purchased
+          {isTester
+            ? parent
+              ? 'Ukázku jste dokončili'
+              : 'Ukázku máš za sebou'
+            : purchased
             ? parent
               ? 'Hotovo — máte odemčeno'
               : 'Hotovo — máš odemčeno'
@@ -58,7 +65,11 @@ function Activated() {
               : 'Vítej'}
         </h1>
         <p className="ob-lead">
-          {parent
+          {isTester
+            ? parent
+              ? 'Děkujeme za vyzkoušení. Ukázka nic nestrhla a beta přístup tím nevznikl ani se neprodloužil. Pokračujte ve zkoušení škol nebo nám pošlete zpětnou vazbu.'
+              : 'Díky za vyzkoušení. Ukázka nic nestrhla a beta přístup tím nevznikl ani se neprodloužil. Pokračuj ve zkoušení škol nebo nám pošli zpětnou vazbu.'
+            : parent
             ? 'Tady je šest kroků, které dávají smysl udělat jako první. Není to povinnost ani soutěž.'
             : 'Tady je šest věcí, které dává smysl udělat jako první. Nic z toho není povinnost.'}
         </p>
@@ -86,6 +97,11 @@ function Activated() {
           <Link to="/skoly" className="ob-btn ob-btn-primary">
             {parent ? 'Přejít na školy' : 'Jdu na to'}
           </Link>
+          {isTester && (
+            <Link to="/nastaveni" className="ob-btn ob-btn-secondary">
+              Napsat zpětnou vazbu
+            </Link>
+          )}
         </div>
 
         {PAYMENTS_MOCKED && purchased && (

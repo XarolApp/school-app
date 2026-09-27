@@ -43,58 +43,24 @@ create table if not exists public.users (
   name text,
   trial_expires_at timestamptz not null,
   subscription_status text not null default 'trialing'
-    check (subscription_status in ('trialing', 'active', 'season', 'past_due', 'canceled', 'expired', 'developer')),
+    check (subscription_status in ('trialing', 'active', 'season', 'past_due', 'canceled', 'expired', 'developer', 'beta')),
   stripe_customer_id text,
   stripe_subscription_id text,
   created_at timestamptz not null default now()
 );
 
-
 -- ----------------------------------------------------------------------------
 -- 2. Trial length is set by the database, not the client
 --
 -- If the browser sent trial_expires_at, a user could give themselves a trial
--- expiring in the year 2099. This trigger fires automatically whenever
--- Supabase Auth creates an account, so the 3 days is not negotiable.
+-- expiring in the year 2099. The signup trigger in the beta block below keeps
+-- this server-controlled for both normal and beta accounts.
 --
 -- 3 days, not 7: the trial length is a researched product decision recorded in
 -- CLAUDE.md and frontend/src/config/pricing.js. If it ever changes, it must
 -- change in both places or the paywall copy will promise a window the database
 -- does not grant.
 -- ----------------------------------------------------------------------------
-
-create or replace function public.handle_new_user()
-returns trigger
-language plpgsql
-security definer
-set search_path = public
-as $$
-begin
-  insert into public.users (id, email, name, trial_expires_at, subscription_status)
-  values (
-    new.id,
-    new.email,
-    nullif(new.raw_user_meta_data ->> 'name', ''),
-    now() + interval '3 days',
-    'trialing'
-  );
-  return new;
-end;
-$$;
-
-drop trigger if exists on_auth_user_created on auth.users;
-
-create trigger on_auth_user_created
-  after insert on auth.users
-  for each row
-  execute function public.handle_new_user();
-
-
--- Re-running this file on an existing database: widen the allowed statuses so
--- 'developer' is accepted. Safe to run repeatedly.
-alter table public.users drop constraint if exists users_subscription_status_check;
-alter table public.users add constraint users_subscription_status_check
-  check (subscription_status in ('trialing', 'active', 'season', 'past_due', 'canceled', 'expired', 'developer'));
 
 -- Plan 009 (Stripe payments): access_expires_at makes paid access
 -- self-enforcing rather than webhook-dependent. Without it, hasPaidStatus()
@@ -126,18 +92,6 @@ alter table public.users add column if not exists stripe_setup_intent_id text;
 -- taken (season: the scheduled charge). The window runs 14 days from the later.
 alter table public.users add column if not exists plan_started_at timestamptz;
 alter table public.users add column if not exists last_paid_at timestamptz;
-
--- DSA Art. 16/17: why a review was held (shown to its author) and what a reporter said.
-alter table public.school_reviews add column if not exists moderation_reason text;
-alter table public.review_reports add column if not exists reason text;
-
--- 'beta' behaves exactly like 'developer' (never expires) but is granted by a
--- shared code (see server.js redeemBetaCode), not an email allowlist — for
--- beta-testing partner schools where collecting individual emails up front
--- isn't practical.
-alter table public.users drop constraint if exists users_subscription_status_check;
-alter table public.users add constraint users_subscription_status_check
-  check (subscription_status in ('trialing', 'active', 'season', 'past_due', 'canceled', 'expired', 'developer', 'beta'));
 
 -- True once the user has cancelled but access still runs to access_expires_at.
 alter table public.users add column if not exists cancel_at_period_end boolean not null default false;
@@ -356,6 +310,10 @@ alter table public.review_reports alter column user_id drop not null;
 create unique index if not exists review_reports_review_user_key
   on public.review_reports (review_id, user_id) where user_id is not null;
 
+-- DSA Art. 16/17: why a review was held (shown to its author) and what a reporter said.
+alter table public.school_reviews add column if not exists moderation_reason text;
+alter table public.review_reports add column if not exists reason text;
+
 -- Crowdsourced data-accuracy reports ("Nahlásit chybu v údajích") — a free
 -- correction channel, not a review. No status/moderation columns: these are
 -- read by a human (you) directly in Supabase, not rendered back to users.
@@ -490,41 +448,300 @@ alter table public.school_extracted_details enable row level security;
 
 
 -- ----------------------------------------------------------------------------
--- 4. Does this account currently have access?
+-- BETA TESTING MIGRATION BLOCK
 --
--- One definition, used by every policy below, so "is this person allowed in"
--- can never drift between tables.
+-- Re-runnable on an existing installation after the base schema above. The
+-- seeded cutoff remains NULL, so enrollment and access stay disabled until
+-- the program owner configures a real end time. Keep all beta schema, trigger,
+-- access and feedback logic together here so this block can be run on its own.
 -- ----------------------------------------------------------------------------
 
--- 'developer' is a permanent grant with no expiry, used for your own test
--- accounts. It is only ever set by server.js from the DEVELOPER_EMAILS
--- allowlist — there is no way for a signup form to ask for it.
+create table if not exists public.beta_schools (
+  code text primary key check (code ~ '^[A-Z0-9][A-Z0-9_-]{2,31}$'),
+  school_name text not null check (
+    school_name = btrim(school_name) and char_length(school_name) between 1 and 160
+  ),
+  created_at timestamptz not null default now()
+);
+
+create table if not exists public.beta_program_settings (
+  singleton boolean primary key default true check (singleton),
+  ends_at timestamptz,
+  access_hours integer not null default 48 check (access_hours between 1 and 168),
+  feedback_form_url text check (
+    feedback_form_url is null or feedback_form_url ~* '^https://[^[:space:]]+$'
+  )
+);
+
+insert into public.beta_program_settings (singleton)
+values (true)
+on conflict (singleton) do nothing;
+
+alter table public.users
+  add column if not exists tester_school_code text references public.beta_schools(code),
+  add column if not exists tester_access_until timestamptz,
+  add column if not exists tester_guidance_seen_at timestamptz;
+
+create table if not exists public.beta_feedback (
+  id bigint generated always as identity primary key,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  school_code text references public.beta_schools(code),
+  type text not null check (type in ('bug', 'idea', 'comment')),
+  page_url text not null check (
+    char_length(page_url) between 1 and 512
+    and left(page_url, 1) = '/'
+    and left(page_url, 2) <> '//'
+    and position('?' in page_url) = 0
+    and position('#' in page_url) = 0
+    and position('://' in page_url) = 0
+    and page_url !~ '[[:cntrl:]]'
+  ),
+  message text not null check (
+    message = btrim(message) and char_length(message) between 10 and 4000
+  ),
+  created_at timestamptz not null default now()
+);
+
+create index if not exists beta_feedback_user_created_idx
+  on public.beta_feedback (user_id, created_at desc);
+
+-- Correct earlier installations that permitted beta but used an incomplete
+-- constraint. Fresh installs already include beta in the table declaration.
+alter table public.users drop constraint if exists users_subscription_status_check;
+alter table public.users add constraint users_subscription_status_check
+  check (subscription_status in ('trialing', 'active', 'season', 'past_due', 'canceled', 'expired', 'developer', 'beta'));
+
+-- The retired shared-code endpoint could turn a paid account into beta. Stop
+-- if any such profile still has billing state; inspect it before proceeding.
+do $$
+declare
+  unsafe_beta_accounts integer;
+begin
+  select count(*) into unsafe_beta_accounts
+  from public.users
+  where subscription_status = 'beta'
+    and (
+      stripe_customer_id is not null
+      or stripe_subscription_id is not null
+      or stripe_payment_method_id is not null
+      or stripe_setup_intent_id is not null
+      or season_charge_due_at is not null
+    );
+  if unsafe_beta_accounts > 0 then
+    raise exception 'Resolve % legacy beta billing profiles before applying the beta migration.', unsafe_beta_accounts
+      using errcode = '55000';
+  end if;
+end;
+$$;
+
+-- One-time backfill. Re-applying the block never restarts an existing tester.
+update public.users u
+set tester_access_until = now() + make_interval(hours => s.access_hours)
+from public.beta_program_settings s
+where s.singleton = true
+  and u.subscription_status = 'beta'
+  and u.tester_access_until is null;
+
+-- Auth confirmation remains mandatory in Supabase and server.js. The trigger
+-- stores an unconfirmed account as beta, but no authenticated access is granted
+-- until auth.users.email_confirmed_at is set.
+create or replace function public.handle_new_user()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  beta_code text;
+  beta_hours integer;
+  beta_ends_at timestamptz;
+  beta_exists boolean;
+  beta_invite_supplied boolean;
+begin
+  beta_invite_supplied := coalesce(new.raw_user_meta_data ? 'beta_school_code', false);
+  if beta_invite_supplied then
+    if jsonb_typeof(new.raw_user_meta_data -> 'beta_school_code') <> 'string'
+      or btrim(coalesce(new.raw_user_meta_data ->> 'beta_school_code', '')) = '' then
+      raise exception 'Beta invitation is invalid.' using errcode = '22023';
+    end if;
+    beta_code := upper(btrim(new.raw_user_meta_data ->> 'beta_school_code'));
+    if beta_code !~ '^[A-Z0-9][A-Z0-9_-]{2,31}$' then
+      raise exception 'Beta invitation is invalid.' using errcode = '22023';
+    end if;
+
+    select s.ends_at, s.access_hours
+      into beta_ends_at, beta_hours
+      from public.beta_program_settings s
+      where s.singleton = true
+      for share;
+    if not found or beta_ends_at is null or beta_ends_at <= clock_timestamp() then
+      raise exception 'Beta program is closed.' using errcode = '55000';
+    end if;
+
+    select exists(select 1 from public.beta_schools s where s.code = beta_code)
+      into beta_exists;
+    if not beta_exists then
+      raise exception 'Beta invitation is invalid.' using errcode = '22023';
+    end if;
+
+    insert into public.users (
+      id, email, name, trial_expires_at, subscription_status,
+      tester_school_code, tester_access_until
+    ) values (
+      new.id, new.email, nullif(new.raw_user_meta_data ->> 'name', ''),
+      clock_timestamp(), 'beta', beta_code,
+      clock_timestamp() + make_interval(hours => beta_hours)
+    );
+  else
+    insert into public.users (id, email, name, trial_expires_at, subscription_status)
+    values (
+      new.id,
+      new.email,
+      nullif(new.raw_user_meta_data ->> 'name', ''),
+      clock_timestamp() + interval '3 days',
+      'trialing'
+    );
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists on_auth_user_created on auth.users;
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row
+  execute function public.handle_new_user();
+
+-- RLS uses one access function. Beta takes an exclusive CASE branch so a
+-- signup trial, paid state or developer address cannot extend tester access.
 create or replace function public.has_access(uid uuid)
 returns boolean
 language sql
 stable
 security definer
-set search_path = public
+set search_path = public, pg_temp
 as $$
   select exists (
     select 1
     from public.users u
     where u.id = uid
-      and (
-        u.trial_expires_at > now()
-        or u.subscription_status = 'developer'
-        or (
-          u.subscription_status in ('active', 'season')
-          and (u.access_expires_at is null or u.access_expires_at > now())
-        )
-        or (
-          u.subscription_status = 'past_due'
-          and u.access_expires_at is not null
-          and u.access_expires_at > now()
-        )
-      )
+      and case
+        when u.subscription_status = 'beta' then
+          u.tester_access_until > now()
+          and exists (
+            select 1 from public.beta_program_settings s
+            where s.singleton = true and s.ends_at > now()
+          )
+          and exists (
+            select 1 from auth.users a
+            where a.id = u.id and a.email_confirmed_at is not null
+          )
+        else
+          u.trial_expires_at > now()
+          or u.subscription_status = 'developer'
+          or (
+            u.subscription_status in ('active', 'season')
+            and (u.access_expires_at is null or u.access_expires_at > now())
+          )
+          or (
+            u.subscription_status = 'past_due'
+            and u.access_expires_at is not null
+            and u.access_expires_at > now()
+          )
+        end
   );
 $$;
+
+-- Feedback and renewal commit together. Locking the profile serializes reports;
+-- the timestamp is taken after that lock, and the cutoff row is held stable.
+create or replace function public.submit_beta_feedback(
+  p_user_id uuid,
+  p_type text,
+  p_page_url text,
+  p_message text
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+declare
+  profile_status text;
+  school_code text;
+  program_ends_at timestamptz;
+  access_hours integer;
+  accepted_at timestamptz;
+  feedback_id bigint;
+  renewed_until timestamptz;
+  clean_message text;
+begin
+  select u.subscription_status, u.tester_school_code
+    into profile_status, school_code
+    from public.users u
+    join auth.users a on a.id = u.id and a.email_confirmed_at is not null
+    where u.id = p_user_id
+    for update of u;
+  if not found or profile_status <> 'beta' then
+    raise exception 'A confirmed beta tester account is required.' using errcode = '42501';
+  end if;
+
+  select s.ends_at, s.access_hours
+    into program_ends_at, access_hours
+    from public.beta_program_settings s
+    where s.singleton = true
+    for share;
+  if not found or program_ends_at is null or program_ends_at <= clock_timestamp() then
+    raise exception 'The beta program has ended.' using errcode = '55000';
+  end if;
+
+  clean_message := btrim(coalesce(p_message, ''));
+  if p_type is null
+    or p_type not in ('bug', 'idea', 'comment')
+    or char_length(clean_message) not between 10 and 4000
+    or p_page_url is null
+    or char_length(p_page_url) not between 1 and 512
+    or left(p_page_url, 1) <> '/'
+    or left(p_page_url, 2) = '//'
+    or position('?' in p_page_url) > 0
+    or position('#' in p_page_url) > 0
+    or position('://' in p_page_url) > 0
+    or p_page_url ~ '[[:cntrl:]]' then
+    raise exception 'Feedback is invalid.' using errcode = '22023';
+  end if;
+
+  accepted_at := clock_timestamp();
+  if accepted_at >= program_ends_at then
+    raise exception 'The beta program has ended.' using errcode = '55000';
+  end if;
+  renewed_until := accepted_at + make_interval(hours => access_hours);
+
+  insert into public.beta_feedback (user_id, school_code, type, page_url, message)
+  values (p_user_id, school_code, p_type, p_page_url, clean_message)
+  returning id into feedback_id;
+
+  update public.users
+    set tester_access_until = renewed_until
+    where id = p_user_id and subscription_status = 'beta';
+  if not found then
+    raise exception 'Beta tester profile changed.' using errcode = '40001';
+  end if;
+
+  return jsonb_build_object(
+    'id', feedback_id,
+    'testerAccessUntil', renewed_until,
+    'serverNow', accepted_at
+  );
+end;
+$$;
+
+revoke all on function public.submit_beta_feedback(uuid, text, text, text) from public, anon, authenticated;
+grant execute on function public.submit_beta_feedback(uuid, text, text, text) to service_role;
+
+alter table public.beta_schools enable row level security;
+alter table public.beta_program_settings enable row level security;
+alter table public.beta_feedback enable row level security;
+
+-- END BETA TESTING MIGRATION BLOCK
 
 
 -- ----------------------------------------------------------------------------
@@ -558,6 +775,10 @@ drop policy if exists "read own profile" on public.users;
 create policy "read own profile"
   on public.users for select
   using (auth.uid() = id);
+
+-- Beta invitation metadata/configuration and submitted feedback are visible
+-- only to the server's service-role API, just like reviews and reports below.
+-- In particular, school attribution cannot be changed from a browser client.
 
 -- --- favorites ---------------------------------------------------------------
 -- Your own rows only, and only while your account has access.

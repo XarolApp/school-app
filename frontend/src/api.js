@@ -42,6 +42,15 @@ async function request(path, options = {}) {
   const body = await res.json().catch(() => ({}));
 
   if (!res.ok) {
+    if (
+      res.status === 402 &&
+      (body.code === 'BETA_ACCESS_EXPIRED' || body.code === 'BETA_PROGRAM_ENDED') &&
+      session?.user?.id
+    ) {
+      window.dispatchEvent(new CustomEvent('skolamatch:beta-access-expired', {
+        detail: { userId: session.user.id, code: body.code },
+      }));
+    }
     throw new ApiError(
       body.error || `Požadavek selhal (${res.status})`,
       res.status,
@@ -54,6 +63,21 @@ async function request(path, options = {}) {
 
 export function fetchMe() {
   return request('/api/me');
+}
+
+export function fetchBetaSchool(code) {
+  return request(`/api/beta/schools/${encodeURIComponent(code)}`);
+}
+
+export function submitBetaFeedback({ type, pageUrl, message }) {
+  return request('/api/beta/feedback', {
+    method: 'POST',
+    body: JSON.stringify({ type, page_url: pageUrl, message }),
+  });
+}
+
+export function acknowledgeBetaGuidance() {
+  return request('/api/beta/guidance-seen', { method: 'POST', body: JSON.stringify({}) });
 }
 
 export function updateProfile({ name, themePalette, themeMode }) {
@@ -271,23 +295,16 @@ export function createCheckoutSession({ planId, returnTo } = {}) {
   });
 }
 
+export function withdrawFromContract() {
+  return request('/api/subscription/withdraw', { method: 'POST' });
+}
+
 /**
  * Cancels the caller's Stripe subscription (plan 009). During a season pass's
  * 3-day trial this cancels immediately (nothing has been charged yet); once
  * paid, it schedules cancellation for the end of the current period. Returns
  * `{ cancelled: 'immediately' | 'at_period_end', accessUntil: string|null }`.
  */
-export function redeemBetaCode(code) {
-  return request('/api/me/redeem-beta-code', {
-    method: 'POST',
-    body: JSON.stringify({ code }),
-  });
-}
-
-export function withdrawFromContract() {
-  return request('/api/subscription/withdraw', { method: 'POST' });
-}
-
 export function cancelSubscription() {
   return request('/api/subscription/cancel', { method: 'POST' });
 }

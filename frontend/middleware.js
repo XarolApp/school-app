@@ -16,6 +16,8 @@
 
 const COOKIE_NAME = 'sm_access';
 const MAX_AGE_SECONDS = 60 * 60 * 24 * 180; // 180 days
+const BETA_CODE_PATTERN = /^[A-Z0-9][A-Z0-9_-]{2,31}$/;
+const BETA_LOOKUP_TIMEOUT_MS = 3500;
 
 function gatePage(wrongKey) {
   const html = `<!doctype html>
@@ -49,7 +51,95 @@ function gatePage(wrongKey) {
   });
 }
 
-export default function middleware(request) {
+function betaInvitationPage(status, unavailable = false) {
+  const heading = unavailable ? 'Pozvánku teď nejde ověřit' : 'Tato pozvánka neplatí';
+  const detail = unavailable
+    ? 'Obnov stránku za chvíli nebo požádej školu o pomoc.'
+    : 'Zkontroluj odkaz nebo požádej školu o novou pozvánku.';
+  const html = `<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>ŠkolaMatch — beta pozvánka</title>
+<style>
+  body { font-family: system-ui, sans-serif; background: #FAF6EF; color: #221A13; display: flex; min-height: 100vh; align-items: center; justify-content: center; margin: 0; padding: 16px; }
+  main { background: #fff; padding: 32px; border-radius: 12px; max-width: 440px; width: 100%; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+  h1 { font-size: 1.2rem; margin: 0 0 12px; }
+  p { line-height: 1.55; margin: 0; }
+</style>
+</head>
+<body><main><h1>${heading}</h1><p>${detail}</p></main></body>
+</html>`;
+  return new Response(html, {
+    status,
+    headers: {
+      'Content-Type': 'text/html; charset=utf-8',
+      'Cache-Control': 'no-store',
+      'X-Robots-Tag': 'noindex, nofollow',
+    },
+  });
+}
+
+export function betaInvitationCode(pathname) {
+  const match = /^\/beta\/([^/]+)\/?$/.exec(pathname);
+  if (!match) return null;
+  let rawCode;
+  try {
+    rawCode = decodeURIComponent(match[1]);
+  } catch {
+    return '';
+  }
+  const code = rawCode.trim().toUpperCase();
+  return BETA_CODE_PATTERN.test(code) ? code : '';
+}
+
+export function betaApiUrl(code) {
+  const configuredOrigin = process.env.VITE_API_BASE_URL;
+  if (!configuredOrigin) return null;
+  try {
+    const base = new URL(configuredOrigin);
+    const isLocalHttp = base.protocol === 'http:' &&
+      ['localhost', '127.0.0.1', '[::1]'].includes(base.hostname);
+    if (
+      (!isLocalHttp && base.protocol !== 'https:') ||
+      base.username || base.password || base.pathname !== '/' ||
+      base.search || base.hash
+    ) return null;
+    return new URL(`/api/beta/schools/${encodeURIComponent(code)}`, base.origin);
+  } catch {
+    return null;
+  }
+}
+
+export async function lookupBetaInvitation(code) {
+  const endpoint = betaApiUrl(code);
+  if (!endpoint) return 'unavailable';
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), BETA_LOOKUP_TIMEOUT_MS);
+  try {
+    const response = await fetch(endpoint, {
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      cache: 'no-store',
+      redirect: 'error',
+      signal: controller.signal,
+    });
+    if (response.status === 404) return 'invalid';
+    if (!response.ok) return 'unavailable';
+    const result = await response.json();
+    return result?.code === code && typeof result?.school_name === 'string'
+      ? 'valid'
+      : 'invalid';
+  } catch {
+    return 'unavailable';
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+export default async function middleware(request) {
   const accessKey = process.env.SITE_ACCESS_KEY;
   if (!accessKey) return; // not configured — do not lock anyone out by accident
 
@@ -74,6 +164,23 @@ export default function middleware(request) {
     .includes(`${COOKIE_NAME}=${accessKey}`);
 
   if (hasValidCookie) return;
+
+  const betaCode = betaInvitationCode(url.pathname);
+  if (betaCode !== null) {
+    if (!betaCode) return betaInvitationPage(404);
+    const result = await lookupBetaInvitation(betaCode);
+    if (result === 'invalid') return betaInvitationPage(404);
+    if (result !== 'valid') return betaInvitationPage(503, true);
+
+    return new Response(null, {
+      status: 302,
+      headers: {
+        Location: url.pathname + url.search,
+        'Set-Cookie': `${COOKIE_NAME}=${accessKey}; Path=/; Max-Age=${MAX_AGE_SECONDS}; HttpOnly; Secure; SameSite=Lax`,
+        'Cache-Control': 'no-store',
+      },
+    });
+  }
 
   return gatePage(Boolean(suppliedKey));
 }

@@ -252,20 +252,9 @@ then `node scripts/generate-school-proscons.js --force`. Not run yet, deliberate
   questionnaire UI change, not just a backend/extraction one. Two separate pieces
   of work; don't assume finishing the extraction finishes the scoring integration.
 
-## Beta access code — BUILT 2026-09-22
-- **Found:** 2026-09-22, founder wants to onboard partner-school beta testers without collecting individual emails
-- **Effort:** small, done
-- **Release/context:** `BETA_ACCESS_CODE` env var (server.js `POST /api/me/redeem-beta-code`, `betaCodeLimiter` — 5/hour, shared-secret so kept tight); new `subscription_status = 'beta'` (schema constraint updated, treated exactly like `developer` — never expires — in `hasPaidStatus`/`paidAccessActive`). Redemption form lives on both Settings and the paywall page (`SubscriptionExpired.jsx`), so a tester whose 3-day trial lapses can still get in with the code.
-
-**To run this SQL** in Supabase before it works:
-```sql
-alter table public.users drop constraint if exists users_subscription_status_check;
-alter table public.users add constraint users_subscription_status_check
-  check (subscription_status in ('trialing', 'active', 'season', 'past_due', 'canceled', 'expired', 'developer', 'beta'));
-```
-Then set `BETA_ACCESS_CODE` in Railway's environment variables (pick any secret string) and give it to schools — combine with the `SITE_ACCESS_KEY` link (from the earlier access-gate work) as the actual beta invite: `stredninamiru.cz/?key=<site key>`, then once signed up, the beta code in Settings or on the paywall page.
-
-**Not built:** any way to see how many people have redeemed the code, or to revoke/rotate it without changing it for everyone still using it. Fine for a single small beta cohort; revisit if this needs to scale to many schools with different codes.
+## Shared beta access code — retired 2026-09-26
+- **Status:** Replaced by plan 016's school-specific invitation links, required email confirmation, rolling access renewal through in-app feedback, and a configured program cutoff.
+- **Compatibility:** `POST /api/me/redeem-beta-code` now returns `410`; remove any remaining references to `BETA_ACCESS_CODE` when updating deployment settings. The beta migration and settings are not applied to the live database yet.
 
 ## Season charge vs account deletion — residual race (mostly closed)
 - **Found:** 2026-09-21, Codex handoff

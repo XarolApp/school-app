@@ -1,16 +1,19 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { fetchSchoolsForMatching } from '../../api';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { fetchSchoolsForMatching, saveOnboardingAnswers } from '../../api';
 import { rankSchools } from '../../lib/matching';
-import { RoleSwitch } from '../../components/onboarding/ObKit';
+import { ObScreen, RoleSwitch } from '../../components/onboarding/ObKit';
+import { useAuth } from '../../components/AuthContext';
 import { OnboardingContext } from './useOnboarding';
 import { PHASES, STEPS, stepIndexById } from './steps';
 import { DEFAULT_PLAN_ID } from '../../config/pricing';
-import { cleanAnswers, initialAnswers } from './quizQuestions';
+import { cleanAnswers, initialAnswers, QUESTIONS } from './quizQuestions';
 import './onboarding.css';
 
 const ROLE_KEY = 'skolamatch.role';
 const ANSWERS_KEY = 'skolamatch.onboarding.answers';
+const PAYWALL_STEP_IDS = new Set(['hodnota', 'cesta', 'ucet', 'plan', 'zkusebni', 'platba']);
+const FINAL_QUESTION_INDEX = QUESTIONS.length - 1;
 
 function loadRole() {
   try {
@@ -35,16 +38,26 @@ function loadAnswers() {
  * The step id lives in the URL (/onboarding/:stepId) so the phone back button
  * behaves the way a 15-year-old expects instead of nuking the flow.
  *
- * Quiz answers stay CLIENT STATE (sessionStorage) through the whole flow —
- * data minimisation under GDPR Art. 8: nothing about a minor reaches Supabase
- * before there is an account to attach it to. Once one exists (CreateAccount),
- * answers move to a short-lived localStorage stash and are saved to the
- * account only on a subsequent CONFIRMED sign-in — see
- * lib/pendingOnboardingAnswers.js and AuthContext's flush.
+ * Quiz answers stay in sessionStorage during the flow. A signed-in tester's
+ * completed answers are saved only after they advance from the final question;
+ * normal signup keeps its email-bound localStorage stash until confirmation
+ * (lib/pendingOnboardingAnswers.js and AuthContext's flush).
  */
 function OnboardingFlow() {
   const { stepId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const { loading, isSignedIn, user, profile, profileLoading, profileError, refreshProfile } = useAuth();
+  const isTester = profile?.isTester === true;
+  const betaPreviewRequested = new URLSearchParams(location.search).get('betaPreview') === '1';
+  const betaPreview =
+    betaPreviewRequested &&
+    isTester &&
+    isSignedIn &&
+    !loading &&
+    !profileLoading &&
+    !profileError &&
+    Boolean(profile);
 
   const [role, setRoleState] = useState(loadRole);
   const [answers, setAnswers] = useState(() => loadAnswers() || initialAnswers());
@@ -60,6 +73,15 @@ function OnboardingFlow() {
   // component: the trial rail and the order summary both have to read the same
   // choice. Pre-selected per ruling C-8.
   const [planId, setPlanId] = useState(DEFAULT_PLAN_ID);
+  const [quizSave, setQuizSave] = useState({
+    status: 'idle',
+    userId: null,
+    error: null,
+    completionReached: false,
+  });
+  const quizSaveInFlight = useRef(null);
+  const currentUserId = useRef(user?.id ?? null);
+  currentUserId.current = user?.id ?? null;
 
   // Load the catalogue once, early and in the background, so the reveal never
   // waits on the network after the labour-illusion screen has already run.
@@ -88,6 +110,12 @@ function OnboardingFlow() {
 
   const stepIndex = stepIndexById(stepId);
 
+  const profileResolved = !loading && isSignedIn && !profileLoading && !profileError && Boolean(profile);
+  const holdTesterPreviewRoute =
+    betaPreviewRequested &&
+    PAYWALL_STEP_IDS.has(stepId) &&
+    (loading || (isSignedIn && (profileLoading || profileError || isTester)));
+
   // Unknown or missing step -> start at the beginning.
   useEffect(() => {
     if (stepIndex === -1) navigate(`/onboarding/${STEPS[0].id}`, { replace: true });
@@ -95,8 +123,10 @@ function OnboardingFlow() {
 
   // The role fork gates everything after it: voice, proof, motion, pricing.
   useEffect(() => {
-    if (stepIndex > 1 && !role) navigate('/onboarding/role', { replace: true });
-  }, [stepIndex, role, navigate]);
+    if (stepIndex > 1 && !role && !holdTesterPreviewRoute) {
+      navigate('/onboarding/role', { replace: true });
+    }
+  }, [stepIndex, role, navigate, holdTesterPreviewRoute]);
 
   const setRole = useCallback((next) => {
     setRoleState(next);
@@ -112,32 +142,122 @@ function OnboardingFlow() {
   }, []);
 
   const goTo = useCallback(
-    (index) => {
-      const clamped = Math.max(0, Math.min(STEPS.length - 1, index));
-      navigate(`/onboarding/${STEPS[clamped].id}`);
+    (index, { includeBetaPreview = false, replace = false } = {}) => {
+      let clamped = Math.max(0, Math.min(STEPS.length - 1, index));
+      if ((betaPreview || (betaPreviewRequested && isTester && isSignedIn)) && STEPS[clamped]?.id === 'ucet') {
+        clamped = stepIndexById('plan');
+      }
+      const preservePreview = isTester && isSignedIn && (betaPreviewRequested || includeBetaPreview);
+      navigate(
+        `/onboarding/${STEPS[clamped].id}${preservePreview ? '?betaPreview=1' : ''}`,
+        { replace }
+      );
       window.scrollTo({ top: 0, behavior: 'auto' });
     },
-    [navigate]
+    [navigate, betaPreview, betaPreviewRequested, isTester, isSignedIn]
   );
 
-  const goNext = useCallback(() => goTo(stepIndex + 1), [goTo, stepIndex]);
+  const goNext = useCallback(() => {
+    const currentStep = STEPS[stepIndex];
+    if (
+      currentStep?.questionIndex === FINAL_QUESTION_INDEX &&
+      isSignedIn &&
+      user?.id &&
+      !betaPreviewRequested
+    ) {
+      setQuizSave({ status: 'pending', userId: user.id, error: null, completionReached: false });
+    }
+    goTo(stepIndex + 1);
+  }, [goTo, stepIndex, isSignedIn, user?.id, betaPreviewRequested]);
   const goBack = useCallback(() => {
     if (stepIndex <= 0) navigate('/');
+    else if (betaPreview && STEPS[stepIndex - 1]?.id === 'ucet') goTo(stepIndexById('cesta'));
     else goTo(stepIndex - 1);
-  }, [goTo, stepIndex, navigate]);
+  }, [goTo, stepIndex, navigate, betaPreview]);
 
   /** Jump to a named step. The paywall screens branch (a plan without a trial
    *  skips the trial rail entirely), and importing steps.js from a screen would
    *  close an import cycle, so the id->index lookup lives here. */
   const goToStep = useCallback(
-    (id) => {
+    (id, options) => {
       const idx = stepIndexById(id);
-      if (idx !== -1) goTo(idx);
+      if (idx !== -1) goTo(idx, options);
     },
     [goTo]
   );
 
   const cleaned = useMemo(() => cleanAnswers(answers), [answers]);
+
+  const startBetaPreview = useCallback(
+    (id = 'hodnota') => {
+      const idx = stepIndexById(id);
+      if (isTester && isSignedIn && idx !== -1) goTo(idx, { includeBetaPreview: true });
+    },
+    [goTo, isTester, isSignedIn]
+  );
+
+  const leaveBetaPreview = useCallback(() => navigate('/skoly'), [navigate]);
+
+  // Only the final quiz action marks completion. This effect runs on the next
+  // screen, after React has committed the final answer (including a same-event
+  // skip/clear), and is never triggered by a direct preview URL.
+  useEffect(() => {
+    if (quizSave.status !== 'pending' || !quizSave.userId) return;
+    if (!quizSave.completionReached) {
+      if (STEPS[stepIndex]?.questionIndex === FINAL_QUESTION_INDEX) return;
+      setQuizSave({ ...quizSave, completionReached: true });
+      return;
+    }
+    if (loading || profileLoading || profileError) return;
+    if (user?.id !== quizSave.userId || !isSignedIn) {
+      if (user?.id !== quizSave.userId) setQuizSave({ status: 'idle', userId: null, error: null });
+      return;
+    }
+    if (profile?.isTester !== true) {
+      setQuizSave({ status: 'idle', userId: null, error: null });
+      return;
+    }
+    if (quizSaveInFlight.current === quizSave.userId) return;
+
+    quizSaveInFlight.current = quizSave.userId;
+    setQuizSave({ ...quizSave, status: 'saving' });
+    saveOnboardingAnswers(cleaned)
+      .then(() => {
+        if (currentUserId.current !== quizSave.userId) {
+          setQuizSave({ status: 'idle', userId: null, error: null });
+          return;
+        }
+        // Both already_saved and nothing_to_score are terminal successes from
+        // this one-run-per-account endpoint.
+        setQuizSave({ status: 'saved', userId: quizSave.userId, error: null });
+      })
+      .catch((err) => {
+        if (currentUserId.current === quizSave.userId) {
+          setQuizSave({ status: 'error', userId: quizSave.userId, error: err.message || 'Uložení se nezdařilo.' });
+        } else {
+          setQuizSave({ status: 'idle', userId: null, error: null });
+        }
+      })
+      .finally(() => {
+        if (quizSaveInFlight.current === quizSave.userId) quizSaveInFlight.current = null;
+      });
+  }, [quizSave, stepIndex, loading, profileLoading, profileError, user?.id, profile?.isTester, isSignedIn, cleaned]);
+
+  const retryQuizSave = useCallback(() => {
+    if (quizSave.userId === user?.id && profileError) {
+      setQuizSave({ ...quizSave, status: 'pending', error: null });
+      refreshProfile();
+    } else if (quizSave.status === 'error' && user?.id === quizSave.userId) {
+      setQuizSave({ ...quizSave, status: 'pending', error: null });
+    }
+  }, [quizSave, user?.id, profileError, refreshProfile]);
+
+  // Keep navigation intent through browser back and every in-flow jump. A URL
+  // marker never grants preview access: only the server-derived tester profile
+  // can make it active.
+  useEffect(() => {
+    if (betaPreview && stepId === 'ucet') goToStep('plan');
+  }, [betaPreview, stepId, goToStep]);
 
   const ranked = useMemo(
     () => (schools.length ? rankSchools(schools, cleaned, role || 'student') : []),
@@ -176,6 +296,14 @@ function OnboardingFlow() {
       goBack,
       goTo,
       goToStep,
+      isTester,
+      betaPreview,
+      profileResolved,
+      profileResolving: loading || profileLoading,
+      profileError,
+      refreshProfile,
+      startBetaPreview,
+      leaveBetaPreview,
     }),
     [
       role,
@@ -198,6 +326,15 @@ function OnboardingFlow() {
       goBack,
       goTo,
       goToStep,
+      isTester,
+      betaPreview,
+      profileResolved,
+      loading,
+      profileLoading,
+      profileError,
+      refreshProfile,
+      startBetaPreview,
+      leaveBetaPreview,
     ]
   );
 
@@ -205,6 +342,120 @@ function OnboardingFlow() {
 
   const step = STEPS[stepIndex];
   const Screen = step.component;
+  const quizSaveNotice =
+    (quizSave.status === 'error' || (quizSave.status === 'pending' && profileError)) &&
+    quizSave.userId === user?.id ? (
+    <div className="notice" role="alert">
+      <span className="notice-title">
+        {profileError ? 'Tester účet se nepodařilo ověřit' : 'Výsledky dotazníku se zatím neuložily'}
+      </span>
+      <p className="notice-text">
+        {profileError
+          ? 'Profil je potřeba znovu načíst, než půjde výsledky bezpečně uložit.'
+          : `${quizSave.error} Můžeš to zkusit znovu.`}
+      </p>
+      <button type="button" className="ob-btn ob-btn-secondary" onClick={retryQuizSave}>Zkusit znovu</button>
+    </div>
+  ) : null;
+
+  if (betaPreviewRequested && (loading || (isSignedIn && profileLoading))) {
+    return (
+      <div className={`ob-root ob-role-${role || 'none'}`} data-step={step.id}>
+        <ObScreen chrome={false}>
+          <h1 className="ob-title">Ověřujeme tester účet</h1>
+          <p className="ob-hint">Chvilku prosím počkej, než zpřístupníme bezpečnou ukázku.</p>
+        </ObScreen>
+      </div>
+    );
+  }
+
+  if (betaPreviewRequested && isSignedIn && profileError && PAYWALL_STEP_IDS.has(step.id)) {
+    return (
+      <div className={`ob-root ob-role-${role || 'none'}`} data-step={step.id}>
+        <ObScreen chrome={false}>
+          <h1 className="ob-title">Ověření tester účtu se nezdařilo</h1>
+          <p className="ob-hint">Ukázku neotevřeme, dokud se nepodaří bezpečně načíst účet.</p>
+          <button type="button" className="ob-btn ob-btn-secondary" onClick={refreshProfile}>Zkusit znovu</button>
+        </ObScreen>
+      </div>
+    );
+  }
+
+  if (betaPreview && PAYWALL_STEP_IDS.has(step.id) && !role) {
+    return (
+      <div className="ob-root ob-role-none" data-step={step.id}>
+        {quizSaveNotice}
+        <ObScreen chrome={false}>
+          <div className="ob-fork">
+            <h1 className="ob-title">Kdo bude ukázku procházet?</h1>
+            <p className="ob-lead">Podle volby upravíme oslovení v ukázkových obrazovkách.</p>
+            <div className="ob-fork-cards">
+              <button type="button" className="ob-fork-card" onClick={() => setRole('student')}>
+                <strong>Jsem student</strong>
+                <span className="ob-fork-sub">Procházím výběr školy pro sebe.</span>
+              </button>
+              <button type="button" className="ob-fork-card" onClick={() => setRole('parent')}>
+                <strong>Jsem rodič</strong>
+                <span className="ob-fork-sub">Procházím výběr školy pro své dítě.</span>
+              </button>
+            </div>
+          </div>
+        </ObScreen>
+      </div>
+    );
+  }
+
+  if (isTester && isSignedIn && PAYWALL_STEP_IDS.has(step.id) && !profileResolved) {
+    return (
+      <div className={`ob-root ob-role-${role || 'none'}`} data-step={step.id}>
+        {quizSaveNotice}
+        <ObScreen chrome={false}>
+          <h1 className="ob-title">Ověřujeme tester účet</h1>
+          <p className="ob-hint">
+            {profileError
+              ? 'Účet se nepodařilo ověřit. Zkus načíst profil znovu.'
+              : 'Chvilku prosím počkej, než zpřístupníme bezpečnou ukázku.'}
+          </p>
+          {profileError && <button type="button" className="ob-btn ob-btn-secondary" onClick={refreshProfile}>Zkusit znovu</button>}
+        </ObScreen>
+      </div>
+    );
+  }
+
+  if (isTester && profileResolved && PAYWALL_STEP_IDS.has(step.id) && !betaPreview) {
+    const parent = role === 'parent';
+    return (
+      <div className={`ob-root ob-role-${role || 'none'}`} data-step={step.id}>
+        {quizSaveNotice}
+        <ObScreen chrome={false}>
+          <div className="ob-fork">
+            <h1 className="ob-title">
+              {parent ? 'Děkujeme, že testujete ŠkolaMatch' : 'Díky, že testuješ ŠkolaMatch'}
+            </h1>
+            <p className="ob-lead">
+              {parent
+                ? 'Výběr škol máte hotový. Platební obrazovky si můžete bezpečně prohlédnout jako ukázku.'
+                : 'Výběr škol máš hotový. Platební obrazovky si můžeš bezpečně prohlédnout jako ukázku.'}
+            </p>
+            <div className="ob-fork-cards">
+              <button type="button" className="ob-fork-card" onClick={leaveBetaPreview}>
+                <strong>Pokračovat v testování</strong>
+                <span className="ob-fork-sub">Vrátit se ke školám. Za testovací účet se nic neplatí.</span>
+              </button>
+              <button
+                type="button"
+                className="ob-fork-card"
+                onClick={() => startBetaPreview(step.id === 'ucet' ? 'plan' : step.id)}
+              >
+                <strong>Prohlédnout si ukázkové obrazovky</strong>
+                <span className="ob-fork-sub">Ceny a platební podmínky se na beta účet nevztahují.</span>
+              </button>
+            </div>
+          </div>
+        </ObScreen>
+      </div>
+    );
+  }
 
   return (
     <OnboardingContext.Provider value={value}>
@@ -214,6 +465,13 @@ function OnboardingFlow() {
             <RoleSwitch role={role} onSwitch={setRole} />
           </div>
         )}
+        {betaPreview && PAYWALL_STEP_IDS.has(step.id) && (
+          <div className="ob-mock-note" role="status">
+            Ukázka pro beta testery: zobrazené ceny a platební podmínky jsou jen příklad. Na tento účet se nevztahují a nic se nestrhne.{' '}
+            <button type="button" className="ob-inline-link" onClick={leaveBetaPreview}>Zpět ke školám</button>
+          </div>
+        )}
+        {quizSaveNotice}
         <Screen step={step} />
       </div>
     </OnboardingContext.Provider>

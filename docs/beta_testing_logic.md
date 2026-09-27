@@ -1,9 +1,11 @@
 # Beta Testing Program — Logic Spec (for implementation)
 
-**Status:** the full program below is not implemented yet. A legacy shared-code
-beta bypass already exists and must be replaced, not left alongside this logic.
-Implementation plan: [`plans/016-beta-testing-program.md`](../plans/016-beta-testing-program.md)
-(2026-09-26). Read this spec in full before building.
+**Status:** the implementation is in the codebase (2026-09-26); live database
+migration, disposable-database transaction verification, deployment and cohort
+configuration are still pending. The program remains disabled while its cutoff
+is `NULL`. See the rollout checklist in
+[`plans/016-beta-testing-program.md`](../plans/016-beta-testing-program.md) and
+[`docs/beta_testing_operations.md`](beta_testing_operations.md).
 
 **Confirmed 2026-09-26:** tester email verification remains required. The founder
 has deferred the exact program end date and external feedback form URL; those

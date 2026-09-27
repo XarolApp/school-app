@@ -28,16 +28,28 @@ import { stashOnboardingAnswers } from '../../../lib/pendingOnboardingAnswers';
  * earning any". This screen sits well past that: quiz, reveal, summary,
  * commitment and social proof all come first.
  *
- * Quiz answers stay in sessionStorage through the whole quiz and are not sent
- * here directly — on successful signup they are stashed in localStorage
- * (lib/pendingOnboardingAnswers.js) and saved to the account only once this
- * browser sees a CONFIRMED session for this same email (AuthContext's flush).
- * Nothing about a minor reaches Supabase before that point.
+ * Normal signup keeps quiz answers in sessionStorage, then stashes them in
+ * localStorage until this browser sees a CONFIRMED session for that same
+ * email. Signed-in beta testers bypass signup and save their completed quiz
+ * at the final-question transition in OnboardingFlow.
  */
 function CreateAccount() {
-  const { role, ranked, cleanedAnswers, goNext, goBack, phase } = useOnboarding();
+  const {
+    role,
+    ranked,
+    cleanedAnswers,
+    goNext,
+    goBack,
+    phase,
+    isTester,
+    profileResolved,
+    profileError,
+    refreshProfile,
+    startBetaPreview,
+    leaveBetaPreview,
+  } = useOnboarding();
   const matchCount = ranked?.length || 0;
-  const { signUp } = useAuth();
+  const { signUp, isSignedIn, user } = useAuth();
   const parent = role === 'parent';
 
   const [name, setName] = useState('');
@@ -51,6 +63,53 @@ function CreateAccount() {
   const [error, setError] = useState(null);
   const [busy, setBusy] = useState(false);
   const [awaitingConfirmation, setAwaitingConfirmation] = useState(false);
+
+  // Wait for the signed-in account to resolve before ever showing signup.
+  if (isSignedIn && user && !profileResolved) {
+    return (
+      <ObScreen chrome={false}>
+        <h1 className="ob-title">Ověřujeme účet</h1>
+        <p className="ob-hint">
+          {profileError
+            ? 'Účet se nepodařilo ověřit. Před pokračováním načti profil znovu.'
+            : 'Chvilku prosím počkej, než ověříme účet.'}
+        </p>
+        {profileError && (
+          <button type="button" className="ob-btn ob-btn-secondary" onClick={refreshProfile}>
+            Zkusit znovu
+          </button>
+        )}
+      </ObScreen>
+    );
+  }
+
+  // A tester already has a confirmed account. Never invite them to create a
+  // second one if this step is opened directly or the preview marker is lost.
+  if (isTester && isSignedIn && user) {
+    return (
+      <ObScreen chrome={false}>
+        <h1 className="ob-title">{parent ? 'Už máte tester účet' : 'Už máš tester účet'}</h1>
+        <p className="ob-hint">
+          {parent
+            ? 'Nový účet nepotřebujete. Můžete pokračovat bez registrace a platby.'
+            : 'Nový účet nepotřebuješ. Můžeš pokračovat bez registrace a platby.'}
+        </p>
+        <div className="ob-actions">
+          <button
+            type="button"
+            className="ob-btn ob-btn-primary"
+            disabled={!profileResolved}
+            onClick={() => startBetaPreview('plan')}
+          >
+            Prohlédnout si ukázku bez registrace
+          </button>
+          <button type="button" className="ob-btn ob-btn-secondary" onClick={leaveBetaPreview}>
+            Pokračovat v testování
+          </button>
+        </div>
+      </ObScreen>
+    );
+  }
 
   const submit = async (event) => {
     event.preventDefault();

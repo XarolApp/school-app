@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import { AuthProvider } from './components/AuthContext';
 import { ToastProvider } from './components/ToastContext';
+import BetaTools from './components/BetaTools';
 import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 // Landing variant B (3D map). three.js + GSAP load only on this route.
@@ -21,6 +22,7 @@ import Prihlaska from './pages/Prihlaska';
 import Questionnaire from './pages/Questionnaire';
 import { Privacy, Terms } from './pages/Legal';
 import SdileniView from './pages/SdileniView';
+import BetaLanding from './pages/BetaLanding';
 import OnboardingFlow from './pages/onboarding/OnboardingFlow';
 import './styles/ui.css';
 import './App.css';
@@ -32,59 +34,62 @@ function App() {
       <AuthProvider>
         {/* Inside the router so any route can fire a toast, outside <Routes>
             so a toast survives the navigation it is confirming. */}
-        <ToastProvider>
-          <Routes>
-            {/* Onboarding sits OUTSIDE the Layout on purpose: the nav bar is a
-                distraction and an exit during a 23-screen narrative flow. */}
-            <Route path="/onboarding" element={<Navigate to="/onboarding/welcome" replace />} />
-            <Route path="/onboarding/:stepId" element={<OnboardingFlow />} />
+        <BetaTools>
+          <ToastProvider>
+            <Routes>
+              {/* Onboarding sits OUTSIDE the Layout on purpose: the nav bar is a
+                  distraction and an exit during a 23-screen narrative flow. */}
+              <Route path="/onboarding" element={<Navigate to="/onboarding/welcome" replace />} />
+              <Route path="/onboarding/:stepId" element={<OnboardingFlow />} />
+              <Route path="/beta/:code" element={<BetaLanding />} />
 
-            {/* Public read-only share view (feature-brainstorm.md §5 "Share
-                shortlist with parents") — outside Layout for the same reason
-                onboarding is: a parent following a link should not see a nav
-                bar inviting them elsewhere. No auth at all; see
-                GET /api/shared/:token in server.js. */}
-            <Route path="/sdileni/:token" element={<SdileniView />} />
+              {/* Public read-only share view (feature-brainstorm.md §5 "Share
+                  shortlist with parents") — outside Layout for the same reason
+                  onboarding is: a parent following a link should not see a nav
+                  bar inviting them elsewhere. No auth at all; see
+                  GET /api/shared/:token in server.js. */}
+              <Route path="/sdileni/:token" element={<SdileniView />} />
 
-            <Route element={<Layout />}>
-              <Route path="/" element={<Home />} />
-              {/* A/B test: variant A is "/", variant B is "/nova". No traffic split is wired yet. */}
-              <Route path="/nova" element={<Suspense fallback={null}><Landing /></Suspense>} />
-              <Route path="/skoly" element={<Search />} />
-              <Route path="/ochrana-osobnich-udaju" element={<Privacy />} />
-              <Route path="/obchodni-podminky" element={<Terms />} />
-              <Route path="/skoly/:id" element={<SchoolDetail />} />
+              <Route element={<Layout />}>
+                <Route path="/" element={<Home />} />
+                {/* A/B test: variant A is "/", variant B is "/nova". No traffic split is wired yet. */}
+                <Route path="/nova" element={<Suspense fallback={null}><Landing /></Suspense>} />
+                <Route path="/skoly" element={<Search />} />
+                <Route path="/ochrana-osobnich-udaju" element={<Privacy />} />
+                <Route path="/obchodni-podminky" element={<Terms />} />
+                <Route path="/skoly/:id" element={<SchoolDetail />} />
 
-              {/* /porovnani works signed out — the compare selection is
-                  localStorage (lib/searchPrefs.js) and /api/schools is
-                  ungated, so an anonymous visitor can compare. Only
-                  /prihlaska writes to the database, so it alone needs an
-                  account. See archive/plans/006-comparison-decision-tools.md §1.2. */}
-              <Route path="/porovnani" element={<Porovnani />} />
-              <Route path="/porovnani/matice" element={<Matice />} />
-              <Route element={<ProtectedRoute />}>
-                <Route path="/prihlaska" element={<Prihlaska />} />
-                {/* The standalone AI questionnaire (server-side lib/questionnaire.js) —
-                    separate from the onboarding quiz. Protected the same way /prihlaska
-                    is: the backend route itself also requires requireAccess. */}
-                <Route path="/dotaznik" element={<Questionnaire />} />
+                {/* /porovnani works signed out — the compare selection is
+                    localStorage (lib/searchPrefs.js) and /api/schools is
+                    ungated, so an anonymous visitor can compare. Only
+                    /prihlaska writes to the database, so it alone needs an
+                    account. See archive/plans/006-comparison-decision-tools.md §1.2. */}
+                <Route path="/porovnani" element={<Porovnani />} />
+                <Route path="/porovnani/matice" element={<Matice />} />
+                <Route element={<ProtectedRoute />}>
+                  <Route path="/prihlaska" element={<Prihlaska />} />
+                  {/* The standalone AI questionnaire (server-side lib/questionnaire.js) —
+                      separate from the onboarding quiz. Protected the same way /prihlaska
+                      is: the backend route itself also requires requireAccess. */}
+                  <Route path="/dotaznik" element={<Questionnaire />} />
+                </Route>
+
+                <Route path="/prihlaseni" element={<Login />} />
+                {/* Secondary account-creation entry point, deliberately not in
+                    the nav — the onboarding flow is the canonical path. This is
+                    for direct links and returning users. */}
+                <Route path="/registrace" element={<SignUp />} />
+                <Route path="/zapomenute-heslo" element={<ForgotPassword />} />
+                <Route path="/nove-heslo" element={<ResetPassword />} />
+                <Route path="/predplatne" element={<SubscriptionExpired />} />
+
+                {/* Settings checks sign-in itself. Billing cancellation and
+                    account erasure must stay available after access expires. */}
+                <Route path="/nastaveni" element={<Settings />} />
               </Route>
-
-              <Route path="/prihlaseni" element={<Login />} />
-              {/* Secondary account-creation entry point, deliberately not in
-                  the nav — the onboarding flow is the canonical path. This is
-                  for direct links and returning users. */}
-              <Route path="/registrace" element={<SignUp />} />
-              <Route path="/zapomenute-heslo" element={<ForgotPassword />} />
-              <Route path="/nove-heslo" element={<ResetPassword />} />
-              <Route path="/predplatne" element={<SubscriptionExpired />} />
-
-              {/* Settings checks sign-in itself. Billing cancellation and
-                  account erasure must stay available after access expires. */}
-              <Route path="/nastaveni" element={<Settings />} />
-            </Route>
-          </Routes>
-        </ToastProvider>
+            </Routes>
+          </ToastProvider>
+        </BetaTools>
       </AuthProvider>
     </BrowserRouter>
   );

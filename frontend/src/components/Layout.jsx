@@ -4,7 +4,7 @@ import { Menu, X } from 'lucide-react';
 import { useAuth } from './AuthContext';
 
 function Layout() {
-  const { isSignedIn, signOut, trialDaysLeft, hasAccess } = useAuth();
+  const { isSignedIn, isTester, signOut, trialDaysLeft, hasAccess } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
   const toggleRef = useRef(null);
@@ -71,7 +71,7 @@ function Layout() {
         </div>
       </nav>
 
-      {isSignedIn && hasAccess && trialDaysLeft > 0 && (
+      {isSignedIn && !isTester && hasAccess && trialDaysLeft > 0 && (
         <p className="trial-banner">
           Zkušební období: zbývá {trialDaysLeft}{' '}
           {trialDaysLeft === 1 ? 'den' : trialDaysLeft < 5 ? 'dny' : 'dní'}.

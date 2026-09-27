@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { ObScreen } from '../../../components/onboarding/ObKit';
 import {
   PAYMENTS_MOCKED,
@@ -12,6 +13,7 @@ import {
 } from '../../../config/pricing';
 import { createCheckoutSession } from '../../../api';
 import { useOnboarding } from '../useOnboarding';
+import { useAuth } from '../../../components/AuthContext';
 import { Icon, PayCta, PayStepChrome, useHandoffShare } from './paywallKit';
 
 /**
@@ -43,7 +45,19 @@ import { Icon, PayCta, PayStepChrome, useHandoffShare } from './paywallKit';
  * Source: design/paywall-multipage-extract4/{Platba,WebPlatba,ParentPlatba}.
  */
 function Platba() {
-  const { role, goToStep, planId } = useOnboarding();
+  const {
+    role,
+    goToStep,
+    planId,
+    isTester,
+    betaPreview,
+    profileResolved,
+    profileResolving,
+    profileError,
+    refreshProfile,
+    leaveBetaPreview,
+  } = useOnboarding();
+  const { isSignedIn, user } = useAuth();
   const parent = role === 'parent';
   const voice = parent ? 'parent' : 'student';
   const plan = getPlan(planId);
@@ -60,9 +74,20 @@ function Platba() {
   const cancellation = cancellationTerms(plan, voice);
   const refund = refundTerms(plan, voice);
   const backStep = plan.hasTrial ? 'zkusebni' : 'plan';
+  const accountResolved = profileResolved && isSignedIn && Boolean(user);
 
   const submit = async () => {
     setError(null);
+    if (!accountResolved) {
+      setError('Nejdřív ověřujeme přihlášený účet. Platbu zatím nelze zahájit.');
+      return;
+    }
+    if (isTester) {
+      if (betaPreview) goToStep('hotovo');
+      else setError('Ukázku otevři z obrazovky pro beta testery.');
+      return;
+    }
+
     setWorking(true);
     try {
       const { url } = await createCheckoutSession({ planId: plan.id, returnTo: '/skoly' });
@@ -115,6 +140,71 @@ function Platba() {
       )}
     </div>
   );
+
+  if (!accountResolved) {
+    return (
+      <ObScreen chrome={false}>
+        <h1 className="ob-title">Ověřujeme účet</h1>
+        <p className="ob-hint">
+          {profileError
+            ? 'Účet se nepodařilo ověřit. Platbu nespustíme, dokud znovu nenačteme jeho stav.'
+            : profileResolving || isSignedIn
+              ? 'Počkáme na potvrzení účtu, než otevřeme platební bránu.'
+              : 'Před platbou se přihlas ke svému účtu.'}
+        </p>
+        {profileError && (
+          <button type="button" className="ob-btn ob-btn-secondary" onClick={refreshProfile}>
+            Načíst účet znovu
+          </button>
+        )}
+        {!isSignedIn && (
+          <Link to="/prihlaseni?next=/onboarding/platba" className="ob-btn ob-btn-primary">
+            Přejít na přihlášení
+          </Link>
+        )}
+      </ObScreen>
+    );
+  }
+
+  if (isTester && !betaPreview) {
+    return (
+      <ObScreen chrome={false}>
+        <h1 className="ob-title">Platební stránka je jen ukázka</h1>
+        <p className="ob-hint">Testovací účet nic neplatí. Vrať se ke školám a otevři ukázku znovu, pokud si chceš obrazovky prohlédnout.</p>
+        <button type="button" className="ob-btn ob-btn-primary" onClick={leaveBetaPreview}>Zpět ke školám</button>
+      </ObScreen>
+    );
+  }
+
+  if (isTester && betaPreview) {
+    return (
+      <ObScreen chrome={false} wide>
+        <div className="ob-pw">
+          <PayStepChrome onBack={() => goToStep(backStep)} role={role} />
+          <h1 className="ob-title ob-pw-title">
+            {parent ? 'Ukázka závěrečné platební obrazovky' : 'Ukázka závěrečné platební stránky'}
+          </h1>
+          <p className="ob-pw-fine">
+            Tohle je pouze náhled. Částky a podmínky výše jsou příklady;{' '}
+            {parent ? 'vašeho testovacího účtu' : 'tvého testovacího účtu'} se netýkají.
+          </p>
+          <div className="ob-pw-grid ob-pw-grid-pay">
+            <div className="ob-pw-main">{summary}</div>
+            <div className="ob-pw-side">
+              <PayCta onClick={submit} disabled={working}>
+                Dokončit ukázku bez placení
+              </PayCta>
+              <p className="ob-pw-fine ob-pw-centered">
+                {parent
+                  ? 'Za pokračování se nic nestrhne a váš beta přístup se tím neprodlouží.'
+                  : 'Za pokračování se nic nestrhne a tvůj beta přístup se tím neprodlouží.'}
+              </p>
+            </div>
+          </div>
+        </div>
+      </ObScreen>
+    );
+  }
 
   return (
     <ObScreen chrome={false} wide>

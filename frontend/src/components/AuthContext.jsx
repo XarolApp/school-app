@@ -1,8 +1,9 @@
-import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { supabase, setRememberMe } from '../supabaseClient';
 import { fetchMe, updateProfile, saveOnboardingAnswers } from '../api';
 import { applyTheme } from '../lib/theme';
 import { readOnboardingStash, clearOnboardingStash } from '../lib/pendingOnboardingAnswers';
+import { clearPendingBetaCode, normalizeBetaCode, rememberBetaCode } from '../lib/pendingBetaCode';
 
 const AuthContext = createContext(null);
 const PASSWORD_RECOVERY_KEY = 'skolamatch.password-recovery';
@@ -84,22 +85,62 @@ function translateAuthError(message) {
 export function AuthProvider({ children }) {
   const [session, setSession] = useState(null);
   const [profile, setProfile] = useState(null);
+  const [profileLoading, setProfileLoading] = useState(true);
+  const [profileError, setProfileError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isPasswordRecovery, setIsPasswordRecovery] = useState(readPasswordRecovery);
+  const [betaDeadlineMs, setBetaDeadlineMs] = useState(null);
+  const [betaClockNow, setBetaClockNow] = useState(Date.now());
+  const profileRequestRef = useRef(0);
+  const profileIdentityRef = useRef(null);
 
   const loadProfile = useCallback(async (activeSession) => {
+    const requestId = ++profileRequestRef.current;
+    const userId = activeSession?.user?.id ?? null;
     if (!activeSession) {
+      profileIdentityRef.current = null;
       setProfile(null);
+      setProfileError(null);
+      setProfileLoading(false);
+      setBetaDeadlineMs(null);
       return;
     }
-    try {
-      const profile = await fetchMe();
-      applyTheme(profile.theme_palette, profile.theme_mode);
-      setProfile(profile);
-    } catch {
-      // A missing profile should not blank the app; the user stays signed in
-      // and protected routes fall back to treating them as without access.
+    if (profileIdentityRef.current !== userId) {
+      profileIdentityRef.current = userId;
       setProfile(null);
+      setProfileError(null);
+      setBetaDeadlineMs(null);
+    }
+    setProfileLoading(true);
+    try {
+      const nextProfile = await fetchMe();
+      if (
+        requestId !== profileRequestRef.current ||
+        profileIdentityRef.current !== userId ||
+        nextProfile.id !== userId
+      ) return;
+      applyTheme(nextProfile.theme_palette, nextProfile.theme_mode);
+      setProfile(nextProfile);
+      setProfileError(null);
+      const serverNow = Date.parse(nextProfile.serverNow);
+      const serverDeadline = Date.parse(nextProfile.effectiveAccessUntil);
+      const remainingMs = nextProfile.isTester && Number.isFinite(serverDeadline) && Number.isFinite(serverNow)
+        ? Math.max(0, serverDeadline - serverNow)
+        : null;
+      setBetaDeadlineMs(remainingMs === null ? null : Date.now() + remainingMs);
+      setBetaClockNow(Date.now());
+    } catch (error) {
+      if (requestId === profileRequestRef.current && profileIdentityRef.current === userId) {
+        // A failed profile read must not leave stale tester access or expose a
+        // normal checkout action for an account whose role is unknown.
+        setProfile(null);
+        setProfileError(error?.message || 'Profil účtu se nepodařilo načíst.');
+        setBetaDeadlineMs(null);
+      }
+    } finally {
+      if (requestId === profileRequestRef.current && profileIdentityRef.current === userId) {
+        setProfileLoading(false);
+      }
     }
   }, []);
 
@@ -136,7 +177,38 @@ export function AuthProvider({ children }) {
     };
   }, [loadProfile]);
 
-  const signUp = async (email, password, name, { captchaToken, emailRedirectTo } = {}) => {
+  useEffect(() => {
+    if (!session || !profile?.isTester || betaDeadlineMs === null) {
+      return undefined;
+    }
+    const refreshAtDeadline = () => {
+      setBetaClockNow(Date.now());
+      void loadProfile(session);
+    };
+    const remainingMs = betaDeadlineMs - Date.now();
+    const timeout = remainingMs > 0
+      ? window.setTimeout(refreshAtDeadline, remainingMs)
+      : null;
+    if (remainingMs <= 0) setBetaClockNow(Date.now());
+    const refreshWhenVisible = () => {
+      if (document.visibilityState === 'visible') {
+        setBetaClockNow(Date.now());
+        void loadProfile(session);
+      }
+    };
+    window.addEventListener('focus', refreshWhenVisible);
+    document.addEventListener('visibilitychange', refreshWhenVisible);
+    return () => {
+      if (timeout !== null) window.clearTimeout(timeout);
+      window.removeEventListener('focus', refreshWhenVisible);
+      document.removeEventListener('visibilitychange', refreshWhenVisible);
+    };
+  }, [session, profile?.isTester, betaDeadlineMs, loadProfile]);
+
+  const signUp = async (email, password, name, { captchaToken, emailRedirectTo, betaSchoolCode } = {}) => {
+    const normalizedBetaCode = betaSchoolCode ? normalizeBetaCode(betaSchoolCode) : null;
+    if (betaSchoolCode && !normalizedBetaCode) return { error: 'Pozvánka školy není platná.' };
+    if (normalizedBetaCode) rememberBetaCode(normalizedBetaCode);
     // The name rides along in user metadata so the database trigger can copy
     // it into the profile row it creates. The trial length is set there too —
     // deliberately not here, where it could be tampered with.
@@ -144,8 +216,14 @@ export function AuthProvider({ children }) {
       email,
       password,
       options: {
-        data: { name, accepted_terms_at: new Date().toISOString() },
-        emailRedirectTo: emailRedirectTo || `${window.location.origin}/prihlaseni?potvrzeno=1`,
+        data: {
+          name,
+          accepted_terms_at: new Date().toISOString(),
+          ...(normalizedBetaCode ? { beta_school_code: normalizedBetaCode } : {}),
+        },
+        emailRedirectTo: emailRedirectTo || (normalizedBetaCode
+          ? `${window.location.origin}/beta/${encodeURIComponent(normalizedBetaCode)}?potvrzeno=1`
+          : `${window.location.origin}/prihlaseni?potvrzeno=1`),
         captchaToken,
       },
     });
@@ -167,6 +245,8 @@ export function AuthProvider({ children }) {
     if (data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
       return { error: 'Na tento e-mail už účet existuje. Zkus se přihlásit.' };
     }
+
+    if (normalizedBetaCode) clearPendingBetaCode();
 
     // With email confirmation switched on, Supabase returns a user but no
     // session until the link is clicked.
@@ -198,12 +278,16 @@ export function AuthProvider({ children }) {
 
   // Supabase only resends while the account is still unconfirmed, and applies
   // its own cooldown, so this cannot be used to mailbomb an address.
-  const resendConfirmation = async (email, { captchaToken } = {}) => {
+  const resendConfirmation = async (email, { captchaToken, betaSchoolCode } = {}) => {
+    const normalizedBetaCode = betaSchoolCode ? normalizeBetaCode(betaSchoolCode) : null;
+    if (betaSchoolCode && !normalizedBetaCode) return { error: 'Pozvánka školy není platná.' };
     const { error } = await supabase.auth.resend({
       type: 'signup',
       email,
       options: {
-        emailRedirectTo: `${window.location.origin}/prihlaseni?potvrzeno=1`,
+        emailRedirectTo: normalizedBetaCode
+          ? `${window.location.origin}/beta/${encodeURIComponent(normalizedBetaCode)}?potvrzeno=1`
+          : `${window.location.origin}/prihlaseni?potvrzeno=1`,
         captchaToken,
       },
     });
@@ -212,6 +296,7 @@ export function AuthProvider({ children }) {
 
   const signOut = async () => {
     clearOnboardingStash();
+    clearPendingBetaCode();
     rememberPasswordRecovery(false);
     setIsPasswordRecovery(false);
     await supabase.auth.signOut();
@@ -299,22 +384,31 @@ export function AuthProvider({ children }) {
   // you no longer trust.
   const signOutEverywhere = async () => {
     clearOnboardingStash();
+    clearPendingBetaCode();
     const { error } = await supabase.auth.signOut({ scope: 'global' });
     if (error) return { error: translateAuthError(error.message) };
     setProfile(null);
     return {};
   };
 
+  const refreshProfile = useCallback(() => loadProfile(session), [loadProfile, session]);
+
   const value = {
     session,
     user: session?.user ?? null,
     profile,
     loading,
+    profileLoading,
+    profileError,
     isSignedIn: Boolean(session),
     isPasswordRecovery,
     emailConfirmed: Boolean(session?.user?.email_confirmed_at),
-    hasAccess: Boolean(profile?.hasAccess),
+    hasAccess: Boolean(
+      profile?.hasAccess &&
+      (!profile?.isTester || (betaDeadlineMs !== null && betaClockNow < betaDeadlineMs))
+    ),
     isDeveloper: Boolean(profile?.isDeveloper),
+    isTester: Boolean(profile?.isTester),
     trialDaysLeft: profile?.trialDaysLeft ?? 0,
     signUp,
     signIn,
@@ -326,7 +420,7 @@ export function AuthProvider({ children }) {
     changeEmail,
     updateName,
     signOutEverywhere,
-    refreshProfile: () => loadProfile(session),
+    refreshProfile,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

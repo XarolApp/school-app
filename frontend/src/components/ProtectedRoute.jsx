@@ -2,10 +2,20 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 
 function ProtectedRoute() {
-  const { loading, isSignedIn, emailConfirmed, hasAccess, signOut } = useAuth();
+  const {
+    loading,
+    profileLoading,
+    profileError,
+    isSignedIn,
+    emailConfirmed,
+    hasAccess,
+    isTester,
+    signOut,
+    refreshProfile,
+  } = useAuth();
   const location = useLocation();
 
-  if (loading) {
+  if (loading || (isSignedIn && profileLoading)) {
     return (
       <div className="route-loading" role="status">
         Načítám…
@@ -39,8 +49,30 @@ function ProtectedRoute() {
     );
   }
 
+  if (profileError) {
+    return (
+      <div className="page page-auth">
+        <div className="auth-layout">
+          <div className="notice notice-error" role="alert">
+            <span className="notice-title">Přístup se nepodařilo ověřit</span>
+            <p className="notice-text">{profileError}</p>
+          </div>
+          <button type="button" className="btn btn-secondary btn-block" onClick={refreshProfile}>
+            Zkusit znovu
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   if (!hasAccess) {
-    return <Navigate to="/predplatne" replace />;
+    return (
+      <Navigate
+        to="/predplatne"
+        state={{ from: location, ...(isTester ? { betaPaused: true } : {}) }}
+        replace
+      />
+    );
   }
 
   return <Outlet />;

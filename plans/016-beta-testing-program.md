@@ -1,6 +1,6 @@
 # 016 — School beta testing program
 
-**Status:** Planned; implementation has not started. Continue with GPT-6 Sol xhigh after the planning handoff is accepted. Independent review: GPT-6 Sol high; escalate payment/schema/security findings to GPT-6 Astra high.
+**Status:** Code implementation complete with GPT-6 Luna xhigh. Focused tests, lint and build pass. Known independent GPT-6 Sol high review findings were fixed; the reviewer hit its usage limit before confirming the final patches. Live database migration, disposable-database transaction checks, and deployment remain pending. Do not enable the program until the cutoff is configured.
 
 **Source:** `docs/beta_testing_logic.md`. User requested implementation on 2026-09-26 and confirmed GPT-6 Astra high for planning. **Email verification remains required for testers**, explicitly confirmed by the user. The program end date and external feedback form URL were explicitly deferred and are recorded at the top of `UNFORGET.md`. Their absence must not block implementation: leave enrollment and renewal disabled until a future end date is configured; omit the external link until supplied.
 

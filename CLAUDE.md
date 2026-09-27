@@ -352,8 +352,11 @@ both working end to end).
 | Table | What it holds |
 |---|---|
 | `schools` | id, created_at, name, location, programs, contact, website, latitude, longitude, `redizo`, `admission_cutoff`, `acceptance_rate`, `admission_data_updated_at` |
+| `beta_schools` | uppercase school invitation codes and school names; validated by the API and signup trigger |
+| `beta_program_settings` | singleton beta cutoff, rolling access hours, optional external feedback URL; currently not applied to the live database |
+| `beta_feedback` | tester-authored `bug`/`idea`/`comment` reports, attributed to the tester's school by the server |
 | `school_programs` | one row per obor per school per year, from Cermat's real admission results — `typ_skoly`, `zrizovatel`, `maturitni`, `jpz_povinna`, `jazyk_studia`, `delka_studia`, `kkov`, `kapacita`, `prihlasky`, `prijati`, `cutoff`. No client RLS policy, same as `schools` — server.js only. Declared in `supabase-setup.sql` itself as of 2026-09-08 — it existed in the live database earlier than that (created directly by the import script), so this file didn't yet describe the real schema; fixed rather than left drifting. |
-| `users` | profile mirror of the private `auth.users`: email, name, `trial_expires_at`, `subscription_status`, `theme_palette`, `theme_mode`, Stripe ids |
+| `users` | profile mirror of the private `auth.users`: email, name, `trial_expires_at`, `subscription_status`, `theme_palette`, `theme_mode`, Stripe ids; beta adds nullable `tester_school_code`, `tester_access_until`, `tester_guidance_seen_at` |
 | `favorites` | `(user_id, school_id)` |
 | `questionnaire_runs` | one row per completed *standalone* questionnaire: answers, matches, `label`, `is_default`, `archived_at`, `source` (`'questionnaire'` or `'onboarding'` — the latter written once per account from the onboarding quiz via `POST /api/me/onboarding-answers`) |
 | `school_reviews` | one row per (school, user): `role`, `role_year`, `obor_nazev`, `body`, `show_name`, `verified`, `status`. No client RLS policy — server.js only, see "User-generated content" above. |
@@ -379,7 +382,13 @@ handful of schools the fuzzy matcher couldn't place on its own.
 places, or the paywall promises a window the database does not grant.
 
 `subscription_status` accepts `trialing / active / season / past_due / canceled /
-expired / developer`. `'season'` is written after the season pass's scheduled one-time
+expired / developer / beta`. `'beta'` is exclusive time-boxed access: email must be
+confirmed, access ends at the earlier of the rolling tester deadline and configured
+program cutoff, and only accepted in-app feedback renews it. Beta never enters Stripe.
+The legacy shared beta code endpoint is retired. The beta schema is defined in its
+delimited `supabase-setup.sql` block but has not yet been applied live; see
+`docs/beta_testing_operations.md` and the pending inputs in `UNFORGET.md`.
+'season' is written after the season pass's scheduled one-time
 PaymentIntent succeeds; monthly subscriptions write `'active'` through Stripe webhooks.
 
 **RLS is enabled on all four tables** by that file (changed from disabled — this was a

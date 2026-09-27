@@ -5,6 +5,7 @@ import AuthTabs from '../components/AuthTabs';
 import Captcha, { captchaEnabled } from '../components/Captcha';
 import PasswordInput from '../components/PasswordInput';
 import { getRememberMe } from '../supabaseClient';
+import { normalizeBetaCode } from '../lib/pendingBetaCode';
 
 function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -21,11 +22,13 @@ function Login() {
   const [searchParams] = useSearchParams();
 
   const requestedDestination = searchParams.get('next');
+  const betaCode = normalizeBetaCode(searchParams.get('beta'));
   const safeDestination =
     requestedDestination?.startsWith('/') && !requestedDestination.startsWith('//')
       ? requestedDestination
       : null;
-  const destination = location.state?.from?.pathname || safeDestination || '/skoly';
+  const destination = location.state?.from?.pathname || safeDestination ||
+    (betaCode ? `/beta/${encodeURIComponent(betaCode)}` : '/skoly');
   const justConfirmed = searchParams.get('potvrzeno') === '1';
 
   const handleChange = (e) => {
@@ -80,7 +83,10 @@ function Login() {
       return;
     }
 
-    const result = await resendConfirmation(form.email, { captchaToken });
+    const result = await resendConfirmation(form.email, {
+      captchaToken,
+      ...(betaCode ? { betaSchoolCode: betaCode } : {}),
+    });
     resetCaptcha();
 
     if (result.error) {
@@ -94,6 +100,8 @@ function Login() {
   };
 
   return (
+    <>
+    {betaCode && <meta name="robots" content="noindex, nofollow" />}
     <div className="page page-auth">
       <div className="auth-layout">
         <div className="page-header">
@@ -111,7 +119,9 @@ function Login() {
             <div className="notice notice-success">
               <span className="notice-title">E-mail potvrzen</span>
               <p className="notice-text">
-                Účet je aktivní. Teď se můžeš přihlásit.
+                {betaCode
+                  ? 'Účet je aktivní. Přihlas se a vrať se ke školní beta pozvánce.'
+                  : 'Účet je aktivní. Teď se můžeš přihlásit.'}
               </p>
             </div>
           )}
@@ -203,6 +213,7 @@ function Login() {
         </form>
       </div>
     </div>
+    </>
   );
 }
 

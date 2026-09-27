@@ -659,6 +659,11 @@ Update this section whenever new information is confirmed.
   flush itself (stash → confirmed sign-in → saved row) still hasn't been
   watched succeed end to end on a real account** — do that before trusting
   match_score population from onboarding signups.
+- School beta program: **implementation built, rollout pending** — focused API
+  boundary and middleware tests pass; live Supabase migration and database
+  transaction checks have not been run. The program is closed until the founder
+  supplies a cutoff date/time; the optional external feedback URL is also pending.
+  No testers have been enrolled through this implementation.
 - Parent/child: **not finished**
 - Legal pages (Privacy + Terms): **95%** — `Legal.jsx` built with placeholders
   filled for most fields (2026-09-21/22); remaining: operator facts, SMTP setup

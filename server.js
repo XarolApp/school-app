@@ -65,12 +65,62 @@ function isDeveloperEmail(email) {
   return DEVELOPER_EMAILS.includes((email || '').toLowerCase());
 }
 
+const BETA_CODE_PATTERN = /^[A-Z0-9][A-Z0-9_-]{2,31}$/;
+const BETA_FEEDBACK_TYPES = new Set(['bug', 'idea', 'comment']);
+const BETA_FEEDBACK_MIN = 10;
+const BETA_FEEDBACK_MAX = 4000;
+
+async function readBetaSettings() {
+  return supabase
+    .from('beta_program_settings')
+    .select('ends_at, access_hours, feedback_form_url')
+    .eq('singleton', true)
+    .single();
+}
+
+function betaProgramState(settings, now = new Date()) {
+  const endsAt = settings?.ends_at ? new Date(settings.ends_at) : null;
+  const active = Boolean(endsAt && Number.isFinite(endsAt.getTime()) && endsAt > now);
+  let feedbackFormUrl = null;
+  if (typeof settings?.feedback_form_url === 'string') {
+    try {
+      const url = new URL(settings.feedback_form_url);
+      if (url.protocol === 'https:' && !url.username && !url.password) {
+        feedbackFormUrl = url.href;
+      }
+    } catch {
+      // An invalid optional URL is never exposed as a working link.
+    }
+  }
+  return {
+    programEndsAt: endsAt?.toISOString() ?? null,
+    accessHours: Number.isInteger(settings?.access_hours) ? settings.access_hours : 48,
+    programActive: active,
+    feedbackFormUrl,
+  };
+}
+
+function betaAccessState(profile, settings, now = new Date()) {
+  const program = betaProgramState(settings, now);
+  const rollingUntil = profile?.tester_access_until ? new Date(profile.tester_access_until) : null;
+  const effectiveMs = rollingUntil && program.programEndsAt
+    ? Math.min(rollingUntil.getTime(), new Date(program.programEndsAt).getTime())
+    : NaN;
+  const active = profile?.subscription_status === 'beta' && program.programActive &&
+    Number.isFinite(effectiveMs) && effectiveMs > now.getTime();
+  return {
+    ...program,
+    effectiveAccessUntil: Number.isFinite(effectiveMs) ? new Date(effectiveMs).toISOString() : null,
+    hasAccess: active,
+    expired: Boolean(profile?.subscription_status === 'beta' && program.programActive && !active),
+    programEnded: !program.programActive,
+  };
+}
+
 // One definition of "this account is paid up", used by both the middleware and
-// /api/me. 'season' is the one-time season pass, billed as a Stripe subscription
-// with a 3-day trial and an absolute cancel_at (see plan 009) so it still ends up
-// charging exactly once.
+// /api/me. Beta access is checked separately and is never a permanent paid status.
 function hasPaidStatus(status) {
-  return status === 'active' || status === 'season' || status === 'developer' || status === 'beta';
+  return status === 'active' || status === 'season' || status === 'developer';
 }
 
 // A paid status alone is not enough: hasPaidStatus('season') would otherwise
@@ -87,7 +137,7 @@ function paidAccessActive(profile) {
     );
   }
   if (!hasPaidStatus(profile.subscription_status)) return false;
-  if (profile.subscription_status === 'developer' || profile.subscription_status === 'beta') return true;
+  if (profile.subscription_status === 'developer') return true;
   if (!profile.access_expires_at) return true;
   return new Date(profile.access_expires_at) > new Date();
 }
@@ -173,14 +223,15 @@ const checkoutLimiter = rateLimit({
   message: { error: 'Příliš mnoho pokusů o platbu. Zkus to prosím později.' },
 });
 
-// A shared code is guessable in a way per-user credentials aren't — keep this
-// tight regardless of who's calling.
-const betaCodeLimiter = rateLimit({
+// The user id is known because this limiter is mounted after requireAuth;
+// students behind the same school network get independent feedback quotas.
+const betaFeedbackLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
-  limit: 5,
+  limit: 10,
   standardHeaders: 'draft-7',
   legacyHeaders: false,
-  message: { error: 'Příliš mnoho pokusů. Zkus to prosím za hodinu.' },
+  keyGenerator: (req) => req.user.id,
+  message: { error: 'Příliš mnoho hlášení. Zkus to prosím za chvíli.' },
 });
 
 // Every questionnaire submission is a paid AI call. This guards the *rate*;
@@ -292,19 +343,40 @@ async function optionalAuth(req, res, next) {
 // Confirms the account is still inside its trial or has paid. This is the
 // paywall for every route it guards, so bypassing the frontend gains nothing.
 async function requireAccess(req, res, next) {
-  if (isDeveloperEmail(req.user.email)) {
-    req.profile = { subscription_status: 'developer' };
-    return next();
-  }
-
   const { data: profile, error } = await supabase
     .from('users')
-    .select('trial_expires_at, subscription_status, access_expires_at, created_at')
+    .select('trial_expires_at, subscription_status, access_expires_at, tester_access_until, tester_school_code, created_at')
     .eq('id', req.user.id)
     .single();
 
   if (error || !profile) {
     return res.status(403).json({ error: 'Profil účtu nenalezen.' });
+  }
+
+  if (profile.subscription_status === 'beta') {
+    const { data: settings, error: settingsError } = await readBetaSettings();
+    if (settingsError || !settings) {
+      return res.status(503).json({
+        error: 'Beta přístup se teď nepodařilo ověřit. Zkus to prosím později.',
+        code: 'BETA_SETTINGS_UNAVAILABLE',
+      });
+    }
+    const beta = betaAccessState(profile, settings);
+    if (!beta.hasAccess) {
+      return res.status(402).json({
+        error: beta.programEnded
+          ? 'Beta program skončil.'
+          : 'Testovací přístup se pozastavil. Zanech zpětnou vazbu a můžeš pokračovat.',
+        code: beta.programEnded ? 'BETA_PROGRAM_ENDED' : 'BETA_ACCESS_EXPIRED',
+      });
+    }
+    req.profile = profile;
+    return next();
+  }
+
+  if (isDeveloperEmail(req.user.email)) {
+    req.profile = { ...profile, subscription_status: 'developer' };
+    return next();
   }
 
   const trialActive = new Date(profile.trial_expires_at) > new Date();
@@ -329,6 +401,40 @@ app.get('/', (req, res) => {
   res.json({ status: 'ok' });
 });
 
+// School invite links are attribution tags, not a secret security boundary.
+// Existing known schools remain resolvable after the cutoff so signed-up
+// testers can still reach sign-in, settings and the ended-program message.
+app.get('/api/beta/schools/:code', async (req, res) => {
+  const code = String(req.params.code || '').trim().toUpperCase();
+  if (!BETA_CODE_PATTERN.test(code)) {
+    return res.status(404).json({ error: 'Pozvánka neexistuje.', code: 'BETA_INVITE_NOT_FOUND' });
+  }
+
+  const { data: school, error: schoolError } = await supabase
+    .from('beta_schools')
+    .select('code, school_name')
+    .eq('code', code)
+    .single();
+  if (schoolError || !school) {
+    return res.status(schoolError?.code === 'PGRST116' ? 404 : 503).json({
+      error: schoolError?.code === 'PGRST116' ? 'Pozvánka neexistuje.' : 'Pozvánku se nepodařilo ověřit.',
+      code: schoolError?.code === 'PGRST116' ? 'BETA_INVITE_NOT_FOUND' : 'BETA_SETTINGS_UNAVAILABLE',
+    });
+  }
+
+  const { data: settings, error: settingsError } = await readBetaSettings();
+  if (settingsError || !settings) {
+    return res.status(503).json({ error: 'Pozvánku se nepodařilo ověřit.', code: 'BETA_SETTINGS_UNAVAILABLE' });
+  }
+
+  res.set('Cache-Control', 'no-store');
+  res.json({
+    ...school,
+    ...betaProgramState(settings),
+    serverNow: new Date().toISOString(),
+  });
+});
+
 app.get('/test-db', async (req, res) => {
   const { count, error } = await supabase
     .from('schools')
@@ -348,7 +454,8 @@ app.get('/test-db', async (req, res) => {
 const PROFILE_COLUMNS =
   'id, email, name, created_at, trial_expires_at, subscription_status, ' +
   'stripe_subscription_id, access_expires_at, plan_id, season_charge_due_at, cancel_at_period_end, ' +
-  'plan_started_at, last_paid_at, theme_palette, theme_mode';
+  'plan_started_at, last_paid_at, theme_palette, theme_mode, tester_school_code, ' +
+  'tester_access_until, tester_guidance_seen_at';
 
 // 14 days is the statutory minimum for everyone (§1829). Extended to 30 here
 // so the SAME self-service button also delivers the "full refund within 30
@@ -400,7 +507,11 @@ app.get('/api/me', requireAuth, async (req, res) => {
 
   // Promote allowlisted accounts on first sight, so the stored status matches
   // what the allowlist says and RLS agrees with the API.
-  if (isDeveloperEmail(profile.email) && profile.subscription_status !== 'developer') {
+  if (
+    profile.subscription_status !== 'beta' &&
+    isDeveloperEmail(profile.email) &&
+    profile.subscription_status !== 'developer'
+  ) {
     const { data: promoted } = await supabase
       .from('users')
       .update({ subscription_status: 'developer' })
@@ -410,21 +521,44 @@ app.get('/api/me', requireAuth, async (req, res) => {
     if (promoted) profile = promoted;
   }
 
-  const isDeveloper = profile.subscription_status === 'developer';
-  const trialActive = new Date(profile.trial_expires_at) > new Date();
-  const subscribed = paidAccessActive(profile);
+  const isTester = profile.subscription_status === 'beta';
+  const now = new Date();
+  const isDeveloper = !isTester && profile.subscription_status === 'developer';
+  let beta = null;
+  if (isTester) {
+    const { data: settings, error: settingsError } = await readBetaSettings();
+    if (settingsError || !settings) {
+      return res.status(503).json({
+        error: 'Beta přístup se teď nepodařilo ověřit. Zkus to prosím později.',
+        code: 'BETA_SETTINGS_UNAVAILABLE',
+      });
+    }
+    beta = betaAccessState(profile, settings, now);
+  }
+  const trialActive = !isTester && new Date(profile.trial_expires_at) > now;
+  const subscribed = !isTester && paidAccessActive(profile);
+  const hasAccess = isTester ? beta.hasAccess : trialActive || subscribed;
 
   res.json({
     ...profile,
+    isTester,
     isDeveloper,
     trialActive,
     subscribed,
-    canWithdraw: canWithdraw(profile),
-    withdrawalEndsAt: withdrawalWindowEnd(profile),
-    hasAccess: trialActive || subscribed,
+    canWithdraw: !isTester && canWithdraw(profile),
+    withdrawalEndsAt: isTester ? null : withdrawalWindowEnd(profile),
+    hasAccess,
     trialDaysLeft: trialActive && !subscribed
       ? Math.ceil((new Date(profile.trial_expires_at) - new Date()) / 86400000)
       : 0,
+    ...(beta ? beta : {}),
+    ...(beta ? {
+      betaProgramEndsAt: beta.programEndsAt,
+      betaAccessHours: beta.accessHours,
+      betaProgramActive: beta.programActive,
+      betaFeedbackFormUrl: beta.feedbackFormUrl,
+    } : {}),
+    serverNow: now.toISOString(),
   });
 });
 
@@ -537,6 +671,68 @@ app.delete('/api/me', requireAuth, async (req, res) => {
   const { error } = await supabase.auth.admin.deleteUser(req.user.id);
   if (error) return res.status(500).json({ error: error.message });
 
+  res.status(204).end();
+});
+
+app.post('/api/beta/feedback', requireAuth, betaFeedbackLimiter, async (req, res) => {
+  const { type, page_url: pageUrl, message } = req.body || {};
+  const cleanMessage = typeof message === 'string' ? message.trim() : '';
+  const safePage = typeof pageUrl === 'string' && pageUrl.length <= 512 &&
+    pageUrl.startsWith('/') && !pageUrl.startsWith('//') &&
+    !/[?#\u0000-\u001f]/.test(pageUrl) && !pageUrl.includes('://');
+
+  if (
+    !BETA_FEEDBACK_TYPES.has(type) ||
+    cleanMessage.length < BETA_FEEDBACK_MIN ||
+    cleanMessage.length > BETA_FEEDBACK_MAX ||
+    !safePage
+  ) {
+    return res.status(400).json({ error: 'Zpráva nebo stránka nemá správný formát.', code: 'BETA_FEEDBACK_INVALID' });
+  }
+
+  const { data, error } = await supabase.rpc('submit_beta_feedback', {
+    p_user_id: req.user.id,
+    p_type: type,
+    p_page_url: pageUrl,
+    p_message: cleanMessage,
+  });
+  if (error) {
+    if (error.code === '42501') {
+      return res.status(403).json({ error: 'Tento účet není zapojený do beta testování.', code: 'BETA_TESTER_REQUIRED' });
+    }
+    if (error.code === '22023') {
+      return res.status(400).json({ error: 'Zpráva nebo stránka nemá správný formát.', code: 'BETA_FEEDBACK_INVALID' });
+    }
+    if (error.code === '55000') {
+      return res.status(410).json({ error: 'Beta program skončil. Zpětnou vazbu už nelze odeslat.', code: 'BETA_PROGRAM_ENDED' });
+    }
+    console.error('Beta feedback failed:', error.message);
+    return res.status(500).json({ error: 'Zpětnou vazbu se nepodařilo uložit. Zkus to prosím znovu.' });
+  }
+  if (!data?.testerAccessUntil) {
+    return res.status(500).json({ error: 'Zpětnou vazbu se nepodařilo uložit. Zkus to prosím znovu.' });
+  }
+  res.status(201).json(data);
+});
+
+app.post('/api/beta/guidance-seen', requireAuth, async (req, res) => {
+  const { data: profile, error: profileError } = await supabase
+    .from('users')
+    .select('subscription_status')
+    .eq('id', req.user.id)
+    .single();
+  if (profileError) return res.status(500).json({ error: 'Úvodní informace se nepodařilo uložit.' });
+  if (profile?.subscription_status !== 'beta') {
+    return res.status(403).json({ error: 'Tento účet není zapojený do beta testování.', code: 'BETA_TESTER_REQUIRED' });
+  }
+
+  const { error } = await supabase
+    .from('users')
+    .update({ tester_guidance_seen_at: new Date().toISOString() })
+    .eq('id', req.user.id)
+    .eq('subscription_status', 'beta')
+    .is('tester_guidance_seen_at', null);
+  if (error) return res.status(500).json({ error: 'Úvodní informace se nepodařilo uložit.' });
   res.status(204).end();
 });
 
@@ -1809,28 +2005,11 @@ function sanitizeReturnTo(returnTo) {
   return '/skoly';
 }
 
-// One shared code (BETA_ACCESS_CODE, set in .env) unlocks full access for
-// beta testers without collecting their emails up front — a school can hand
-// this one code to every student. Whoever already has a paid/developer
-// status is left alone (never downgrades a real customer).
-const BETA_ACCESS_CODE = process.env.BETA_ACCESS_CODE || '';
-
-app.post('/api/me/redeem-beta-code', betaCodeLimiter, requireAuth, async (req, res) => {
-  if (!BETA_ACCESS_CODE) {
-    return res.status(503).json({ error: 'Beta přístup zatím není nastavený.' });
-  }
-  const code = typeof req.body?.code === 'string' ? req.body.code.trim() : '';
-  if (!code || code !== BETA_ACCESS_CODE) {
-    return res.status(400).json({ error: 'Neplatný kód.' });
-  }
-
-  const { error } = await supabase
-    .from('users')
-    .update({ subscription_status: 'beta' })
-    .eq('id', req.user.id);
-  if (error) return res.status(500).json({ error: error.message });
-
-  res.status(204).end();
+app.post('/api/me/redeem-beta-code', requireAuth, (req, res) => {
+  res.status(410).json({
+    error: 'Sdílené beta kódy už nefungují. Otevři osobní pozvánku od své školy.',
+    code: 'BETA_INVITATION_LINK_REQUIRED',
+  });
 });
 
 app.post('/api/checkout', checkoutLimiter, requireAuth, async (req, res) => {
@@ -1838,13 +2017,6 @@ app.post('/api/checkout', checkoutLimiter, requireAuth, async (req, res) => {
 
   if (planId !== 'season' && planId !== 'monthly') {
     return res.status(400).json({ error: 'Neplatný plán.' });
-  }
-
-  if (!stripe) {
-    return res.status(503).json({
-      error: 'Platby zatím nejsou nastavené.',
-      code: 'STRIPE_NOT_CONFIGURED',
-    });
   }
 
   const { data: profile, error: profileError } = await supabase
@@ -1857,6 +2029,20 @@ app.post('/api/checkout', checkoutLimiter, requireAuth, async (req, res) => {
 
   if (profileError) {
     return res.status(500).json({ error: 'Nepodařilo se ověřit platební profil. Zkus to prosím znovu.' });
+  }
+
+  if (profile.subscription_status === 'beta') {
+    return res.status(403).json({
+      error: 'Beta účty nemohou zahájit placený přístup.',
+      code: 'BETA_CHECKOUT_DISABLED',
+    });
+  }
+
+  if (!stripe) {
+    return res.status(503).json({
+      error: 'Platby zatím nejsou nastavené.',
+      code: 'STRIPE_NOT_CONFIGURED',
+    });
   }
 
   // Never sell to an account that already has a live plan — that is how one
@@ -2102,7 +2288,7 @@ async function handleStripeWebhook(req, res) {
     if (event.type === 'checkout.session.completed' && object.mode === 'setup') {
       const { data: currentProfile, error: profileError } = await supabase
         .from('users')
-        .select('stripe_setup_intent_id')
+        .select('stripe_setup_intent_id, subscription_status')
         .eq('id', object.client_reference_id)
         .single();
       if (profileError) throw profileError;
@@ -2110,7 +2296,18 @@ async function handleStripeWebhook(req, res) {
       // A retry of the same signed event must not restart a trial the user has
       // since cancelled. A genuinely new checkout has a new SetupIntent and is
       // allowed to schedule a new season purchase.
-      if (currentProfile?.stripe_setup_intent_id !== object.setup_intent) {
+      if (currentProfile?.subscription_status === 'beta') {
+        console.warn(JSON.stringify({
+          level: 'warn',
+          event: 'legacy_stripe_checkout_ignored_for_beta_tester',
+          stripeEventId: event.id,
+          stripeEventType: event.type,
+          stripeCheckoutSessionId: object.id,
+          stripeSetupIntentId: object.setup_intent,
+          userId: object.client_reference_id,
+          checkoutMode: object.mode,
+        }));
+      } else if (currentProfile?.stripe_setup_intent_id !== object.setup_intent) {
         const setupIntent = await stripe.setupIntents.retrieve(object.setup_intent);
         const checkoutCompletedAt = Number.isFinite(object.created)
           ? object.created * 1000
@@ -2130,28 +2327,52 @@ async function handleStripeWebhook(req, res) {
             plan_started_at: new Date(checkoutCompletedAt).toISOString(),
           })
           .eq('id', object.client_reference_id)
+          .neq('subscription_status', 'beta')
           .throwOnError();
       }
     }
 
     if (event.type === 'checkout.session.completed' && object.mode === 'subscription') {
-      const subscriptionId = object.subscription;
-      const sub = await stripe.subscriptions.retrieve(subscriptionId);
-      const planId = sub.metadata?.plan_id;
-
-      await supabase
+      const { data: currentProfile, error: profileError } = await supabase
         .from('users')
-        .update({
-          subscription_status: mapStripeStatus(sub.status, planId),
-          stripe_customer_id: object.customer,
-          stripe_subscription_id: subscriptionId,
-          plan_id: planId,
-          access_expires_at: accessEndsAt(sub),
-          plan_started_at: new Date(sub.start_date * 1000).toISOString(),
-          last_paid_at: new Date(sub.start_date * 1000).toISOString(),
-        })
+        .select('subscription_status')
         .eq('id', object.client_reference_id)
-        .throwOnError();
+        .maybeSingle();
+      if (profileError) throw profileError;
+
+      // A stale pre-enrollment Checkout completion must not retrieve or attach
+      // a subscription to a beta account.
+      if (currentProfile?.subscription_status === 'beta') {
+        console.warn(JSON.stringify({
+          level: 'warn',
+          event: 'legacy_stripe_checkout_ignored_for_beta_tester',
+          stripeEventId: event.id,
+          stripeEventType: event.type,
+          stripeCheckoutSessionId: object.id,
+          stripeSubscriptionId: object.subscription,
+          userId: object.client_reference_id,
+          checkoutMode: object.mode,
+        }));
+      } else {
+        const subscriptionId = object.subscription;
+        const sub = await stripe.subscriptions.retrieve(subscriptionId);
+        const planId = sub.metadata?.plan_id;
+
+        await supabase
+          .from('users')
+          .update({
+            subscription_status: mapStripeStatus(sub.status, planId),
+            stripe_customer_id: object.customer,
+            stripe_subscription_id: subscriptionId,
+            plan_id: planId,
+            access_expires_at: accessEndsAt(sub),
+            plan_started_at: new Date(sub.start_date * 1000).toISOString(),
+            last_paid_at: new Date(sub.start_date * 1000).toISOString(),
+          })
+          .eq('id', object.client_reference_id)
+          .neq('subscription_status', 'beta')
+          .throwOnError();
+      }
     }
 
     // Season's one-time charge, fired from chargeDueSeasonPasses() below. Kept
@@ -2173,6 +2394,7 @@ async function handleStripeWebhook(req, res) {
             last_paid_at: paidAt.toISOString(),
           })
           .eq('id', userId)
+          .neq('subscription_status', 'beta')
           .throwOnError();
       }
     }
@@ -2184,6 +2406,7 @@ async function handleStripeWebhook(req, res) {
           .from('users')
           .update({ subscription_status: 'past_due' })
           .eq('id', userId)
+          .neq('subscription_status', 'beta')
           .throwOnError();
       }
     }
@@ -2198,6 +2421,7 @@ async function handleStripeWebhook(req, res) {
           cancel_at_period_end: Boolean(object.cancel_at_period_end || object.cancel_at),
         })
         .eq('stripe_subscription_id', object.id)
+        .neq('subscription_status', 'beta')
         .throwOnError();
     }
 
@@ -2209,6 +2433,7 @@ async function handleStripeWebhook(req, res) {
           access_expires_at: new Date().toISOString(),
         })
         .eq('stripe_subscription_id', object.id)
+        .neq('subscription_status', 'beta')
         .throwOnError();
     }
 
@@ -2226,6 +2451,7 @@ async function handleStripeWebhook(req, res) {
       failedInvoiceUpdate = object.subscription
         ? failedInvoiceUpdate.eq('stripe_subscription_id', object.subscription)
         : failedInvoiceUpdate.eq('stripe_customer_id', object.customer);
+      failedInvoiceUpdate = failedInvoiceUpdate.neq('subscription_status', 'beta');
       await failedInvoiceUpdate.throwOnError();
     }
   } catch (err) {
@@ -2264,7 +2490,7 @@ async function chargeDueSeasonPasses() {
 
   const { data: due, error } = await supabase
     .from('users')
-    .select('id, stripe_customer_id, stripe_payment_method_id, season_charge_due_at')
+    .select('id, stripe_customer_id, stripe_payment_method_id, season_charge_due_at, subscription_status')
     .eq('plan_id', 'season')
     .eq('subscription_status', 'trialing')
     .not('stripe_payment_method_id', 'is', null)
@@ -2276,6 +2502,7 @@ async function chargeDueSeasonPasses() {
   }
 
   for (const user of due || []) {
+    if (user.subscription_status !== 'trialing') continue;
     let intent;
     try {
       intent = await stripe.paymentIntents.create(
@@ -2302,7 +2529,8 @@ async function chargeDueSeasonPasses() {
       const { error: updateError } = await supabase
         .from('users')
         .update({ subscription_status: 'past_due' })
-        .eq('id', user.id);
+        .eq('id', user.id)
+        .eq('subscription_status', 'trialing');
       if (updateError) {
         console.error(`chargeDueSeasonPasses: could not mark user ${user.id} past due:`, updateError.message);
       }
@@ -2321,6 +2549,7 @@ async function chargeDueSeasonPasses() {
             last_paid_at: paidAt.toISOString(),
           })
           .eq('id', user.id)
+          .eq('subscription_status', 'trialing')
           .throwOnError();
       } catch (err) {
         // The charge succeeded. Leave Stripe's stable idempotency key and the

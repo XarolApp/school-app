@@ -1,4 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
+import { normalizeBetaCode } from '../lib/pendingBetaCode';
 
 /**
  * A segmented control showing "Přihlásit se" and "Vytvořit účet" tabs,
@@ -15,6 +16,8 @@ import { Link, useLocation } from 'react-router-dom';
 function AuthTabs() {
   const location = useLocation();
   const isLogin = location.pathname === '/prihlaseni';
+  const betaCode = normalizeBetaCode(new URLSearchParams(location.search).get('beta'));
+  const betaQuery = betaCode ? `?beta=${encodeURIComponent(betaCode)}` : '';
 
   return (
     <nav
@@ -24,14 +27,14 @@ function AuthTabs() {
     >
       <span className="tab-thumb" aria-hidden="true" />
       <Link
-        to="/prihlaseni"
+        to={`/prihlaseni${betaQuery}`}
         aria-current={isLogin ? 'page' : undefined}
         className={isLogin ? 'auth-tab is-active' : 'auth-tab'}
       >
         Přihlásit se
       </Link>
       <Link
-        to="/registrace"
+        to={`/registrace${betaQuery}`}
         aria-current={!isLogin ? 'page' : undefined}
         className={!isLogin ? 'auth-tab is-active' : 'auth-tab'}
       >

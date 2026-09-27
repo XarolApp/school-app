@@ -11,14 +11,29 @@ function harness({
   stripeEnabled = true,
   cancelError,
   paymentIntentResult = { status: 'succeeded' },
+  rpcResult = { data: { testerAccessUntil: '2026-09-28T12:00:00.000Z' }, error: null },
+  authUser = { id: 'user-test', email: 'tester@example.com', email_confirmed_at: '2026-01-01T00:00:00.000Z' },
 } = {}) {
   const routes = new Map();
+  const routeChains = new Map();
   const queries = [];
+  const rpcCalls = [];
+  const warnings = [];
   let deletions = 0;
   let cancellations = 0;
   const paymentIntentCalls = [];
+  const checkoutCalls = [];
+  let subscriptionRetrievals = 0;
+  let setupIntentRetrievals = 0;
   const db = {
-    auth: { admin: { deleteUser: async () => { deletions++; return { error: null }; } } },
+    auth: {
+      admin: { deleteUser: async () => { deletions++; return { error: null }; } },
+      getUser: async () => ({ data: { user: authUser }, error: null }),
+    },
+    rpc(name, args) {
+      rpcCalls.push({ name, args });
+      return Promise.resolve(rpcResult);
+    },
     from(table) {
       const query = { table, calls: [] };
       queries.push(query);
@@ -41,9 +56,10 @@ function harness({
     webhooks: { constructEvent: (event) => event },
     subscriptions: {
       cancel: async () => { cancellations++; if (cancelError) throw cancelError; },
-      retrieve: async () => ({ status: 'active', metadata: { plan_id: 'monthly' }, current_period_end: 2000000000 }),
+      retrieve: async () => { subscriptionRetrievals++; return { id: 'sub_test', start_date: 1_800_000_000, status: 'active', metadata: { plan_id: 'monthly' }, current_period_end: 2000000000 }; },
     },
-    setupIntents: { retrieve: async () => ({ payment_method: 'pm_test' }) },
+    setupIntents: { retrieve: async () => { setupIntentRetrievals++; return { payment_method: 'pm_test' }; } },
+    checkout: { sessions: { create: async (params) => { checkoutCalls.push(params); return { url: 'https://checkout.test/session' }; } } },
     paymentIntents: {
       create: async (params, options) => {
         paymentIntentCalls.push({ params, options });
@@ -53,20 +69,24 @@ function harness({
   };
   const app = { use() {}, set() {}, listen() {} };
   for (const method of ['get', 'post', 'put', 'patch', 'delete']) {
-    app[method] = (path, ...handlers) => routes.set(`${method} ${path}`, handlers.at(-1));
+    app[method] = (path, ...handlers) => {
+      routes.set(`${method} ${path}`, handlers.at(-1));
+      routeChains.set(`${method} ${path}`, handlers);
+    };
   }
   const express = Object.assign(() => app, { raw: () => () => {}, json: () => () => {} });
   const source = readFileSync(join(__dirname, '../server.js'), 'utf8');
   // Leave all functions/routes intact, but stop before process startup.
   const module = { exports: {} };
   vm.runInNewContext(source.slice(0, source.lastIndexOf('\nif (stripe)')) +
-    '\nmodule.exports = { seasonEndsAt, handleStripeWebhook, slimProgramsForList, chargeDueSeasonPasses, paidAccessActive };', {
+    '\nmodule.exports = { seasonEndsAt, handleStripeWebhook, slimProgramsForList, chargeDueSeasonPasses, paidAccessActive, betaProgramState, betaAccessState, hasPaidStatus, requireAccess };', {
     module, Date, Buffer, URL, setTimeout, clearTimeout,
-    console: { log() {}, warn() {}, error() {} },
-    process: { env: { SUPABASE_SERVICE_ROLE_KEY: 'synthetic', STRIPE_SECRET_KEY: stripeEnabled ? 'synthetic' : '', STRIPE_WEBHOOK_SECRET: 'synthetic' } },
+    console: { log() {}, warn(...args) { warnings.push(args.join(' ')); }, error() {} },
+      process: { env: { SUPABASE_SERVICE_ROLE_KEY: 'synthetic', STRIPE_SECRET_KEY: stripeEnabled ? 'synthetic' : '', STRIPE_WEBHOOK_SECRET: 'synthetic', DEVELOPER_EMAILS: 'dev@example.com' } },
     require(name) {
       if (name === 'express') return express;
-      if (name === 'cors' || name === 'express-rate-limit') return () => () => {};
+      if (name === 'cors') return () => () => {};
+      if (name === 'express-rate-limit') return () => (req, res, next) => next();
       if (name === 'dotenv') return { config() {} };
       if (name === '@supabase/supabase-js') return { createClient: () => db };
       if (name === 'stripe') return () => stripe;
@@ -77,11 +97,30 @@ function harness({
     },
   }, { filename: 'server.js' });
   return {
-    ...module.exports, queries, paymentIntentCalls,
+    ...module.exports, queries, rpcCalls, checkoutCalls, paymentIntentCalls, warnings,
+    get subscriptionRetrievals() { return subscriptionRetrievals; },
+    get setupIntentRetrievals() { return setupIntentRetrievals; },
     get deletions() { return deletions; }, get cancellations() { return cancellations; },
     async call(method, path, req = {}) {
       const res = { statusCode: 200, status(code) { this.statusCode = code; return this; }, json(body) { this.body = body; return this; }, end() { return this; }, send(body) { this.body = body; return this; } };
       await routes.get(`${method} ${path}`)({ user: { id: 'user-test' }, params: {}, headers: {}, ...req }, res);
+      return res;
+    },
+    async callChain(method, path, req = {}) {
+      const res = { statusCode: 200, status(code) { this.statusCode = code; return this; }, json(body) { this.body = body; return this; }, end() { return this; }, send(body) { this.body = body; return this; } };
+      const request = { user: { id: 'user-test', email: 'tester@example.com' }, params: {}, headers: { authorization: 'Bearer synthetic' }, ...req };
+      const handlers = routeChains.get(`${method} ${path}`) || [];
+      const dispatch = async (index) => {
+        if (index >= handlers.length) return;
+        let nextPromise;
+        await handlers[index](request, res, (error) => {
+          if (error) throw error;
+          nextPromise = dispatch(index + 1);
+          return nextPromise;
+        });
+        if (nextPromise) await nextPromise;
+      };
+      await dispatch(0);
       return res;
     },
   };
@@ -105,6 +144,58 @@ test('past-due access follows its paid-through timestamp instead of revoking imm
     access_expires_at: '2000-01-01T00:00:00.000Z',
   }), false);
   assert.equal(paidAccessActive({ subscription_status: 'past_due', access_expires_at: null }), false);
+});
+
+test('beta access requires both future deadlines and refuses equality or missing settings', () => {
+  const { betaAccessState } = harness();
+  const now = new Date('2026-09-26T12:00:00.000Z');
+  const settings = { ends_at: '2026-10-01T00:00:00.000Z', access_hours: 48 };
+  const profile = { subscription_status: 'beta', tester_access_until: '2026-09-28T12:00:00.000Z' };
+
+  assert.equal(betaAccessState(profile, settings, now).hasAccess, true);
+  assert.equal(betaAccessState({ ...profile, tester_access_until: now.toISOString() }, settings, now).hasAccess, false);
+  assert.equal(betaAccessState(profile, { ...settings, ends_at: now.toISOString() }, now).hasAccess, false);
+  assert.equal(betaAccessState(profile, { ...settings, ends_at: '2026-09-26T11:59:59.000Z' }, now).programEnded, true);
+  assert.equal(betaAccessState(profile, { ...settings, ends_at: null }, now).hasAccess, false);
+  assert.equal(betaAccessState({ ...profile, tester_access_until: 'not-a-date' }, settings, now).hasAccess, false);
+  assert.equal(harness().hasPaidStatus('beta'), false);
+  assert.equal(harness().paidAccessActive({ subscription_status: 'beta' }), false);
+});
+
+test('beta access wins over a long normal trial and the developer email allowlist', async () => {
+  const now = Date.now();
+  const profile = {
+    trial_expires_at: '2999-01-01T00:00:00.000Z',
+    subscription_status: 'beta',
+    tester_access_until: new Date(now - 1000).toISOString(),
+  };
+  const h = harness({ result: (query) => query.table === 'users'
+    ? { data: profile, error: null }
+    : { data: { ends_at: new Date(now + 86400000).toISOString(), access_hours: 48 }, error: null } });
+  const req = { user: { id: 'user-test', email: 'dev@example.com' } };
+  const res = { statusCode: 200, status(code) { this.statusCode = code; return this; }, json(body) { this.body = body; return this; } };
+  let reached = false;
+  await h.requireAccess(req, res, () => { reached = true; });
+  assert.equal(reached, false);
+  assert.equal(res.statusCode, 402);
+  assert.equal(res.body.code, 'BETA_ACCESS_EXPIRED');
+});
+
+test('tester check-in through a developer email does not restore beta access', async () => {
+  const profile = {
+    id: 'user-test', email: 'dev@example.com', subscription_status: 'beta',
+    trial_expires_at: '2999-01-01T00:00:00.000Z',
+    tester_access_until: '2026-09-28T12:00:00.000Z',
+  };
+  const h = harness({ result: (query) => query.table === 'users'
+    ? { data: profile, error: null }
+    : { data: { ends_at: '2026-10-01T00:00:00.000Z', access_hours: 48 }, error: null } });
+  const res = await h.call('get', '/api/me', { user: { id: 'user-test', email: 'dev@example.com' } });
+  assert.equal(res.statusCode, 200);
+  assert.equal(res.body.isTester, true);
+  assert.equal(res.body.isDeveloper, false);
+  assert.equal(res.body.trialActive, false);
+  assert.equal(res.body.subscribed, false);
 });
 
 test('school-list capacity sums current admission groups and excludes historical programs', () => {
@@ -203,6 +294,96 @@ test('checkout does not continue with an unreadable billing profile', async () =
   const res = await h.call('post', '/api/checkout', { body: { planId: 'season' } });
   assert.equal(res.statusCode, 500);
   assert.match(res.body.error, /platební profil/);
+});
+
+test('beta accounts cannot create either Stripe checkout plan, even when Stripe is missing', async () => {
+  for (const planId of ['season', 'monthly']) {
+    for (const stripeEnabled of [true, false]) {
+      const h = harness({
+        stripeEnabled,
+        result: () => ({ data: { subscription_status: 'beta', stripe_customer_id: 'cus_legacy' }, error: null }),
+      });
+      const res = await h.call('post', '/api/checkout', { body: { planId } });
+      assert.equal(res.statusCode, 403, `${planId}, Stripe enabled=${stripeEnabled}`);
+      assert.equal(res.body.code, 'BETA_CHECKOUT_DISABLED');
+      assert.equal(h.checkoutCalls.length, 0);
+    }
+  }
+});
+
+test('beta feedback is the only API path that calls the renewal transaction', async () => {
+  const h = harness();
+  const res = await h.call('post', '/api/beta/feedback', { body: {
+    type: 'idea', page_url: '/skoly', message: 'Přidejte prosím srovnání oborů.',
+  } });
+  assert.equal(res.statusCode, 201);
+  assert.equal(h.rpcCalls.length, 1);
+  assert.equal(h.rpcCalls[0].name, 'submit_beta_feedback');
+  assert.equal(h.rpcCalls[0].args.p_user_id, 'user-test');
+  assert.equal('p_school_code' in h.rpcCalls[0].args, false);
+  assert.equal('p_deadline' in h.rpcCalls[0].args, false);
+
+  const invalid = harness();
+  const badRes = await invalid.call('post', '/api/beta/feedback', { body: {
+    type: 'bug', page_url: '//outside.test', message: 'Přesměrujte mě jinam.',
+  } });
+  assert.equal(badRes.statusCode, 400);
+  assert.equal(invalid.rpcCalls.length, 0);
+});
+
+test('unconfirmed email cannot submit beta feedback even if auth is misconfigured to issue a session', async () => {
+  const h = harness({ authUser: { id: 'user-test', email: 'tester@example.com', email_confirmed_at: null } });
+  const res = await h.callChain('post', '/api/beta/feedback', { body: {
+    type: 'comment', page_url: '/skoly', message: 'Zpráva delší než deset znaků.',
+  } });
+  assert.equal(res.statusCode, 403);
+  assert.equal(h.rpcCalls.length, 0);
+});
+
+test('beta guidance acknowledgement is an ordinary profile update, never a renewal', async () => {
+  const h = harness({ result: (query) => query.calls.some(([method]) => method === 'select')
+    ? { data: { subscription_status: 'beta' }, error: null }
+    : { data: null, error: null } });
+  const res = await h.call('post', '/api/beta/guidance-seen');
+  assert.equal(res.statusCode, 204);
+  assert.equal(h.rpcCalls.length, 0);
+  const update = h.queries.flatMap((query) => query.calls).find(([method]) => method === 'update');
+  assert.deepEqual(Object.keys(update[1]), ['tester_guidance_seen_at']);
+  assert.equal(update[1].subscription_status, undefined);
+});
+
+test('stale Stripe checkout events for beta accounts do not retrieve or attach billing', async () => {
+  for (const [mode, event] of [
+    ['setup', { id: 'evt_setup', type: 'checkout.session.completed', data: { object: { id: 'cs_setup', mode: 'setup', client_reference_id: 'user-test', setup_intent: 'seti_test' } } }],
+    ['subscription', { id: 'evt_subscription', type: 'checkout.session.completed', data: { object: { id: 'cs_subscription', mode: 'subscription', client_reference_id: 'user-test', subscription: 'sub_test' } } }],
+  ]) {
+    const h = harness({ result: () => ({ data: { subscription_status: 'beta', stripe_setup_intent_id: null }, error: null }) });
+    const res = await h.call('post', '/webhooks/stripe', { body: event });
+    assert.equal(res.statusCode, 200, mode);
+    assert.equal(h.setupIntentRetrievals, 0, mode);
+    assert.equal(h.subscriptionRetrievals, 0, mode);
+    assert.equal(h.queries.some((query) => query.calls.some(([method]) => method === 'update')), false, mode);
+    assert.deepEqual(JSON.parse(h.warnings[0]), {
+      level: 'warn',
+      event: 'legacy_stripe_checkout_ignored_for_beta_tester',
+      stripeEventId: `evt_${mode}`,
+      stripeEventType: 'checkout.session.completed',
+      stripeCheckoutSessionId: `cs_${mode}`,
+      ...(mode === 'setup' ? { stripeSetupIntentId: 'seti_test' } : { stripeSubscriptionId: 'sub_test' }),
+      userId: 'user-test',
+      checkoutMode: mode,
+    });
+    assert.equal(h.warnings.length, 1, mode);
+  }
+});
+
+test('season charge scheduler ignores beta rows even if a stale query returns one', async () => {
+  const h = harness({ result: () => ({ data: [{
+    id: 'user-test', subscription_status: 'beta', stripe_customer_id: 'cus_test',
+    stripe_payment_method_id: 'pm_test', season_charge_due_at: '2026-09-01T00:00:00.000Z',
+  }], error: null }) });
+  await h.chargeDueSeasonPasses();
+  assert.equal(h.paymentIntentCalls.length, 0);
 });
 
 test('webhook database failures are not acknowledged as successful', async () => {
@@ -309,6 +490,7 @@ test('a retried season setup event cannot restart a cancelled trial', async () =
 test('season charges reuse a stable Stripe idempotency key across retries', async () => {
   const due = {
     id: 'user-test',
+    subscription_status: 'trialing',
     stripe_customer_id: 'cus_test',
     stripe_payment_method_id: 'pm_test',
     season_charge_due_at: '2027-01-15T12:00:00.000Z',
@@ -328,6 +510,7 @@ test('season charges reuse a stable Stripe idempotency key across retries', asyn
 test('a paid season charge uses Stripe creation time and is never mislabeled past due after a database failure', async () => {
   const due = {
     id: 'user-test',
+    subscription_status: 'trialing',
     stripe_customer_id: 'cus_test',
     stripe_payment_method_id: 'pm_test',
     season_charge_due_at: '2026-01-04T12:00:00.000Z',

@@ -6,11 +6,12 @@ import Captcha, { captchaEnabled } from '../components/Captcha';
 import PasswordInput from '../components/PasswordInput';
 import PasswordStrength from '../components/PasswordStrength';
 import { useToast } from '../components/ToastContext';
-import { deleteAccount, cancelSubscription, withdrawFromContract, redeemBetaCode, updateProfile } from '../api';
+import { deleteAccount, cancelSubscription, withdrawFromContract, updateProfile } from '../api';
 import { getPlan } from '../config/pricing';
 import { supabase, getRememberMe, setRememberMe } from '../supabaseClient';
 import { DEFAULT_PALETTE, PALETTE_IDS, palettes } from '../design/tokens';
 import { applyTheme, MODES, readCachedTheme } from '../lib/theme';
+import { useBetaTools } from '../components/BetaToolsContext';
 
 const SUBSCRIPTION_LABELS = {
   trialing: 'Zkušební období',
@@ -47,6 +48,7 @@ function Settings() {
     profile,
     hasAccess,
     isDeveloper,
+    isTester,
     trialDaysLeft,
     changePassword,
     changeEmail,
@@ -57,6 +59,7 @@ function Settings() {
   } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { openFeedback } = useBetaTools();
 
   // Only one form is open at a time, so the page stays a readable summary
   // instead of a wall of inputs: 'password' | 'email' | 'delete' | 'cancel' | null.
@@ -90,10 +93,6 @@ function Settings() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-
-  const [betaCode, setBetaCode] = useState('');
-  const [betaBusy, setBetaBusy] = useState(false);
-  const [betaError, setBetaError] = useState(null);
 
   const [cachedTheme] = useState(readCachedTheme);
   const profileTheme = {
@@ -343,22 +342,6 @@ function Settings() {
     }
   };
 
-
-  const handleRedeemBeta = async (e) => {
-    e.preventDefault();
-    setBetaError(null);
-    setBetaBusy(true);
-    try {
-      await redeemBetaCode(betaCode.trim());
-      await refreshProfile();
-      setBetaCode('');
-      toast('Beta přístup aktivován — nic neplatíš.');
-    } catch (err) {
-      setBetaError(err.message);
-    } finally {
-      setBetaBusy(false);
-    }
-  };
 
   const saveThemePreference = (field, value) => {
     const revision = themeChangeRevisionRef.current + 1;
@@ -860,31 +843,28 @@ function Settings() {
             )}
           </div>
 
-          {!isDeveloper && status !== 'beta' && (
-            <form className="settings-form-inset" onSubmit={handleRedeemBeta}>
-              {betaError && (
-                <div className="notice notice-error" role="alert">
-                  <p className="notice-text">{betaError}</p>
-                </div>
+          {isTester && (
+            <div className="settings-form-inset beta-settings-access">
+              {profile?.betaProgramActive ? (
+                <>
+                  <p className="settings-section-text">
+                    {hasAccess
+                      ? `Přístup je aktivní do ${formatCzDateLong(profile.effectiveAccessUntil)}. Zpětná vazba ho obnoví o ${profile.betaAccessHours || 48} hodin, nejdéle do konce programu.`
+                      : 'Přístup je pozastavený. Po odeslání zpětné vazby se znovu otevře.'}
+                  </p>
+                  <button type="button" className="btn btn-secondary btn-sm" onClick={openFeedback}>
+                    Poslat zpětnou vazbu
+                  </button>
+                </>
+              ) : (
+                <p className="settings-section-text">Beta program skončil. Přístup se už neobnoví.</p>
               )}
-              <label className="settings-section-text" htmlFor="beta-code">
-                Máš kód pro beta testování?
-              </label>
-              <div className="settings-form-actions">
-                <input
-                  id="beta-code"
-                  className="input"
-                  type="text"
-                  value={betaCode}
-                  onChange={(e) => setBetaCode(e.target.value)}
-                  placeholder="Kód od školy"
-                  disabled={betaBusy}
-                />
-                <button type="submit" className="btn btn-secondary btn-sm" disabled={betaBusy || !betaCode.trim()}>
-                  {betaBusy ? 'Ověřuji…' : 'Aktivovat'}
-                </button>
-              </div>
-            </form>
+              {profile?.betaFeedbackFormUrl && (
+                <a href={profile.betaFeedbackFormUrl} target="_blank" rel="noreferrer">
+                  Otevřít externí formulář (přístup neobnoví)
+                </a>
+              )}
+            </div>
           )}
 
           {canCancel &&

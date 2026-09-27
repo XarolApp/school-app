@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import { Navigate, useSearchParams } from 'react-router-dom';
+import { Link, Navigate, useLocation, useSearchParams } from 'react-router-dom';
 import { Check } from 'lucide-react';
 import { useAuth } from '../components/AuthContext';
-import { createCheckoutSession, redeemBetaCode } from '../api';
-import { DEFAULT_PLAN_ID, PLANS, formatCzk, getPlan, planCopy, trialDaysPhrase } from '../config/pricing';
+import { createCheckoutSession } from '../api';
+import { useBetaTools } from '../components/BetaToolsContext';
+import { DEFAULT_PLAN_ID, PLANS, formatCzk, planCopy, trialDaysPhrase } from '../config/pricing';
 
 // Four short parallel claims — a checkmark each reads faster than a bullet and
 // says "included", which a bullet does not.
@@ -20,14 +21,14 @@ const BENEFITS = [
 // období skončilo" again right after paying would reasonably conclude the
 // payment failed. This polls fetchMe (via refreshProfile) briefly instead of
 // claiming failure — it very likely succeeded and is just mid-flight.
-function usePostCheckoutVerification(hasAccess, refreshProfile) {
+function usePostCheckoutVerification(hasAccess, refreshProfile, enabled) {
   const [searchParams] = useSearchParams();
   const [verifying, setVerifying] = useState(searchParams.get('platba') === 'ok');
   const [gaveUp, setGaveUp] = useState(false);
   const attemptsRef = useRef(0);
 
   useEffect(() => {
-    if (!verifying || hasAccess) return;
+    if (!enabled || !verifying || hasAccess) return;
 
     const interval = setInterval(async () => {
       attemptsRef.current += 1;
@@ -41,26 +42,23 @@ function usePostCheckoutVerification(hasAccess, refreshProfile) {
 
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [verifying, hasAccess]);
+  }, [enabled, verifying, hasAccess]);
 
   useEffect(() => {
-    if (hasAccess) setVerifying(false);
-  }, [hasAccess]);
+    if (enabled && hasAccess) setVerifying(false);
+  }, [enabled, hasAccess]);
 
-  return { verifying, gaveUp };
+  return { verifying: enabled && verifying, gaveUp: enabled && gaveUp };
 }
 
 function Paywall() {
-  const { loading, isSignedIn, hasAccess, profile, signOut, refreshProfile } = useAuth();
+  const { loading, profileLoading, profileError, isSignedIn, isTester, hasAccess, profile, signOut, refreshProfile } = useAuth();
   const [planId, setPlanId] = useState(DEFAULT_PLAN_ID);
   const [error, setError] = useState(null);
   const [redirecting, setRedirecting] = useState(false);
-  const [betaCode, setBetaCode] = useState('');
-  const [betaBusy, setBetaBusy] = useState(false);
-  const [betaError, setBetaError] = useState(null);
-  const { verifying, gaveUp } = usePostCheckoutVerification(hasAccess, refreshProfile);
+  const { verifying, gaveUp } = usePostCheckoutVerification(hasAccess, refreshProfile, !isTester);
 
-  if (loading) {
+  if (loading || (isSignedIn && profileLoading)) {
     return (
       <div className="route-loading" role="status">
         Načítám…
@@ -69,6 +67,21 @@ function Paywall() {
   }
 
   if (!isSignedIn) return <Navigate to="/prihlaseni" replace />;
+  if (profileError || !profile) {
+    return (
+      <div className="page page-paywall">
+        <div className="auth-layout">
+          <div className="notice notice-error" role="alert">
+            <span className="notice-title">Přístup se nepodařilo ověřit</span>
+            <p className="notice-text">{profileError || 'Platební stav účtu zatím není dostupný.'}</p>
+          </div>
+          <button type="button" className="btn btn-secondary btn-block" onClick={refreshProfile}>Zkusit znovu</button>
+          <button type="button" className="btn btn-secondary btn-block" onClick={signOut}>Odhlásit se</button>
+        </div>
+      </div>
+    );
+  }
+  if (isTester) return <BetaPaused />;
   if (hasAccess) return <Navigate to="/skoly" replace />;
 
   if (verifying) {
@@ -84,21 +97,6 @@ function Paywall() {
       </div>
     );
   }
-
-  const plan = getPlan(planId);
-
-  const handleRedeemBeta = async (e) => {
-    e.preventDefault();
-    setBetaError(null);
-    setBetaBusy(true);
-    try {
-      await redeemBetaCode(betaCode.trim());
-      await refreshProfile();
-    } catch (err) {
-      setBetaError(err.message);
-      setBetaBusy(false);
-    }
-  };
 
   const handleSubscribe = async () => {
     setError(null);
@@ -190,26 +188,6 @@ function Paywall() {
             včetně práva odstoupit do 14 dnů.
           </p>
 
-          <form className="auth-footnote" onSubmit={handleRedeemBeta}>
-            {betaError && (
-              <div className="notice notice-error" role="alert">
-                <p className="notice-text">{betaError}</p>
-              </div>
-            )}
-            <label htmlFor="beta-code">Máš kód pro beta testování od školy?</label>
-            <input
-              id="beta-code"
-              className="input"
-              type="text"
-              value={betaCode}
-              onChange={(e) => setBetaCode(e.target.value)}
-              placeholder="Kód od školy"
-              disabled={betaBusy}
-            />
-            <button type="submit" className="btn btn-secondary btn-sm" disabled={betaBusy || !betaCode.trim()}>
-              {betaBusy ? 'Ověřuji…' : 'Aktivovat bez placení'}
-            </button>
-          </form>
         </div>
 
         <p className="auth-footnote">
@@ -218,6 +196,51 @@ function Paywall() {
             Odhlásit se
           </button>
         </p>
+      </div>
+    </div>
+  );
+}
+
+function BetaPaused() {
+  const { profile, hasAccess, signOut } = useAuth();
+  const { openFeedback } = useBetaTools();
+  const location = useLocation();
+  const returnPath = location.state?.from?.pathname || '/skoly';
+
+  if (hasAccess) return <Navigate to={returnPath} replace />;
+
+  const programEnded = !profile.betaProgramActive;
+  const deadline = profile.betaProgramEndsAt
+    ? new Intl.DateTimeFormat('cs-CZ', { dateStyle: 'long', timeStyle: 'short', timeZone: 'Europe/Prague' }).format(new Date(profile.betaProgramEndsAt))
+    : null;
+
+  return (
+    <div className="page page-paywall">
+      <div className="auth-layout">
+        <div className="page-header">
+          <p className="eyebrow">Beta testování</p>
+          <h1>{programEnded ? 'Beta program skončil' : 'Přístup je pozastavený'}</h1>
+          <p className="lede">
+            {programEnded
+              ? 'Děkujeme za účast. Testovací přístup už nelze obnovit.'
+              : `Po odeslání zpětné vazby se přístup obnoví o ${profile.betaAccessHours || 48} hodin, nejdéle do konce programu.`}
+          </p>
+        </div>
+        <section className="panel panel-lg stack">
+          {deadline && <p>Program končí {deadline} (pražského času).</p>}
+          {!programEnded && (
+            <button type="button" className="btn btn-primary btn-block" onClick={openFeedback}>
+              Nahlásit zpětnou vazbu a pokračovat
+            </button>
+          )}
+          {profile.betaFeedbackFormUrl && (
+            <a href={profile.betaFeedbackFormUrl} target="_blank" rel="noreferrer">
+              Otevřít externí formulář (přístup neobnoví)
+            </a>
+          )}
+          <Link to="/nastaveni" className="btn btn-secondary btn-block">Nastavení účtu</Link>
+          <button type="button" className="btn btn-secondary btn-block" onClick={signOut}>Odhlásit se</button>
+        </section>
       </div>
     </div>
   );
