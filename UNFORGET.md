@@ -13,6 +13,27 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
+## Standing rule: re-run supabase-setup.sql after any commit that touches it — 2026-09-28
+
+On 2026-09-28 every account was locked out of `requireAccess` routes
+(questionnaire, favourites, …) with `column users.tester_school_code does not
+exist`. Cause: commit `bf24ef2` (beta program) shipped server.js code reading new
+`users.tester_*` columns and `beta_*` tables, but the live Supabase was never
+re-run with the updated `supabase-setup.sql`. The file itself was complete — an
+audit the same day found every table, column, filter and RPC server.js uses
+declared in it — so this was a process gap, not a schema bug.
+
+**Rule:** any commit that changes `supabase-setup.sql` → the founder pastes the
+whole file into the Supabase SQL editor (it is idempotent) **before** the
+matching server.js is deployed or run against the shared database. Localhost and
+production share one Supabase project, so running new code locally hits the
+same missing columns. Agents that edit `supabase-setup.sql` must say so
+explicitly in their final message, with a one-line verify query.
+
+Still open: this relies on memory. A cheap guard would be a startup check in
+server.js that selects the newest expected columns once and logs a loud error
+naming the missing migration. Not built — decide whether it is worth it.
+
 ## Beta program: end date and external feedback form URL pending — 2026-09-26
 - **Found:** 2026-09-26, planning implementation of `docs/beta_testing_logic.md`.
 - **Urgency:** High — the hard end date is required before distributing working beta invitations.
