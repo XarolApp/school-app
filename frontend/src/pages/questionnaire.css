@@ -46,6 +46,14 @@
   border-bottom: 1px solid var(--line);
 }
 
+.qz-section {
+  margin: var(--space-md) 0 var(--space-sm);
+}
+
+.qz-number {
+  max-width: 140px;
+}
+
 .qz-optional {
   color: var(--ink3);
   font-weight: 400;

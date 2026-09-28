@@ -766,7 +766,9 @@ app.post('/api/me/onboarding-answers', requireAuth, async (req, res) => {
     return res.status(200).json({ saved: false, reason: 'nothing_to_score' });
   }
 
-  const { data: schools, error: schoolsError } = await supabase.from('schools').select('*');
+  const { data: schools, error: schoolsError } = await supabase
+    .from('schools')
+    .select('*, school_extracted_details(*)');
   if (schoolsError) return res.status(500).json({ error: schoolsError.message });
   if (!schools?.length) {
     return res.status(503).json({ error: 'V databázi zatím nejsou žádné školy.' });
@@ -971,7 +973,10 @@ async function withMatchScores(userId, schools) {
   }));
 }
 
-const LIST_SELECT = '*, school_programs(*)';
+// school_extracted_details joined here too (not just in FULL_SELECT) so
+// withMatchScores -> scoreSchools sees krouzky_kategorie/ma_jidelnu/
+// vyukovy_styl_tagy on the list page, not only on the single-school page.
+const LIST_SELECT = '*, school_programs(*), school_extracted_details(*)';
 // school_extracted_details joined so /porovnani's decision matrix can score
 // maturita_pass_rate_pct / tuition_czk_per_year, not just the pros/cons text.
 const FULL_SELECT = '*, school_programs(*), school_ai_summary(*), school_extracted_details(*)';
@@ -1617,7 +1622,7 @@ async function buildRunResult(run) {
   // school_programs(*) joined so matching.js can classify a school's type
   // (gymnázium/lyceum/trade) from Cermat's own typ_skoly, not by guessing
   // from the free-text programs blob — see matching.js's isGymnasium et al.
-  const schools = withDistricts(await fetchAllSchools('*, school_programs(*)'));
+  const schools = withDistricts(await fetchAllSchools('*, school_programs(*), school_extracted_details(*)'));
   const byId = new Map(schools.map((school) => [school.id, school]));
 
   // Sentences are only ever written for the run's stored top matches, so they
@@ -1677,8 +1682,17 @@ app.get('/api/questionnaire', requireAuth, requireAccess, async (req, res) => {
       .order('created_at', { ascending: false });
     if (runsError) throw runsError;
 
+    // The points from /prihlaska, so the form does not ask for a number the
+    // account already has. Best effort: a read failure just means no prefill.
+    const { data: profile } = await supabase
+      .from('decision_profile')
+      .select('jpz_points')
+      .eq('user_id', req.user.id)
+      .maybeSingle();
+
     res.json({
       questions: QUESTIONS,
+      prefill: { body: profile?.jpz_points ?? null },
       usage: UNLIMITED_USAGE,
       // Named `active` rather than `latest`: with a default set it is no longer
       // necessarily the newest one.
@@ -1707,7 +1721,7 @@ app.post(
     // shape GET returns or the two paths render differently.
     let schools;
     try {
-      schools = await fetchAllSchools('*, school_programs(*)');
+      schools = await fetchAllSchools('*, school_programs(*), school_extracted_details(*)');
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }
@@ -1751,6 +1765,27 @@ app.post(
 
     if (insertError) {
       return res.status(500).json({ error: insertError.message });
+    }
+
+    // The Cermat points are the same number /prihlaska analyses picks against,
+    // so keep one copy. Never overwrite an 'ostra' (real exam) score with the
+    // same value re-labelled 'nanecisto', and never fail the run over this.
+    if (typeof validation.answers.body === 'number') {
+      const { data: existing } = await supabase
+        .from('decision_profile')
+        .select('jpz_points, jpz_source')
+        .eq('user_id', req.user.id)
+        .maybeSingle();
+      const keep = existing?.jpz_source === 'ostra' && Number(existing.jpz_points) === validation.answers.body;
+      if (!keep) {
+        const { error: profileError } = await supabase.from('decision_profile').upsert({
+          user_id: req.user.id,
+          jpz_points: validation.answers.body,
+          jpz_source: 'nanecisto',
+          updated_at: new Date().toISOString(),
+        });
+        if (profileError) console.error('decision_profile sync failed:', profileError.message);
+      }
     }
 
     // A new set becomes the one that scores the database. Finishing the

@@ -719,6 +719,16 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
      them (no key, no credits) never gets them later — the UI falls back to the
      scorer's own `signals`. Percentages, not bands, on this surface. The onboarding quiz is
      a separate surface with its own scoring engine.
+     **Questionnaire scoring (plan 017, 2026-09-28):** `lib/matching.js` has a
+     weight layer (`WEIGHT_RULES` / `effectiveWeights`) where answers like
+     "what offers vs. where" or "pressure" change how much other dimensions
+     count, a `selektivita` and `rezerva` dimension scored from
+     `schools.admission_cutoff` (school average, not per-obor), and a
+     `PAID_PENALTY` that sinks paid schools when the family cannot pay tuition.
+     Null data is never a "no" — it drops the school from that dimension. The
+     optional `body` (Cermat points) answer is copied to
+     `decision_profile.jpz_points` and never sent to the AI (`privateToServer`).
+     The questions are grouped by `SECTIONS` in `lib/questionnaire.js`.
 
 10. **School detail page** (`frontend/src/pages/SchoolDetail.jsx` + one
     component per section under `frontend/src/components/schoolDetail/`) —

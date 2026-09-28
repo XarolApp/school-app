@@ -69,3 +69,82 @@ test('missing AI configuration still returns scored matches without reasons', as
   assert.equal(result.matches[0].school_id, 1);
   assert.equal(result.matches.every((match) => match.reason === ''), true);
 });
+
+// --- plan 017: weight layer, difficulty, tuition, points ---------------------
+
+const { effectiveWeights } = require('../lib/matching');
+const { describeAnswers } = require('../lib/questionnaire');
+
+const mk = (id, cutoff, extra = {}) => ({
+  id,
+  name: `S${id}`,
+  location: 'Praha',
+  programs: 'Gymnázium',
+  admission_cutoff: cutoff,
+  school_programs: [],
+  ...extra,
+});
+const breakdownOf = (answers, list, id) => scoreSchools(answers, list).find((m) => m.school_id === id).breakdown;
+
+test('weight questions scale other dimensions and unanswered ones change nothing', () => {
+  assert.equal(effectiveWeights({}).casti, 20);
+  assert.equal(effectiveWeights({ priorita_nabidka_misto: 'misto' }).casti, 36);
+  assert.equal(effectiveWeights({ priorita_nabidka_misto: 'oboji' }).casti, 20);
+  // stacked answers stay under 3x the base weight
+  const stacked = effectiveWeights({ prestiz: 'prestiz', tlak_chytrejsi: 'motivuje', tlak_vykon: 'dari' });
+  assert.ok(stacked.selektivita <= 30);
+});
+
+test('selektivita ranks hard schools up for a challenge and skips schools without a cutoff', () => {
+  const list = [mk(1, 40), mk(2, 60), mk(3, 80), mk(4, null)];
+  const answers = { selektivita_vyzva: 'vyzva' };
+  assert.equal(breakdownOf(answers, list, 3).selektivita, 1);
+  assert.equal(breakdownOf(answers, list, 1).selektivita, 0);
+  assert.equal(breakdownOf(answers, list, 4).selektivita, undefined);
+  assert.equal(breakdownOf({ selektivita_tezka: 'jedno' }, list, 3).selektivita, undefined);
+});
+
+test('rezerva needs points; the gap to the cutoff decides the score', () => {
+  const list = [mk(1, 60)];
+  assert.equal(breakdownOf({ rezerva: 'jistota' }, list, 1).rezerva, undefined);
+  const sure = breakdownOf({ rezerva: 'jistota', body: 75 }, list, 1).rezerva;
+  const tight = breakdownOf({ rezerva: 'jistota', body: 60 }, list, 1).rezerva;
+  assert.equal(sure, 1);
+  assert.ok(tight > 0.2 && tight < 0.8);
+  // expected gain lifts the gap
+  const lifted = breakdownOf({ rezerva: 'jistota', body: 50, body_zlepseni: 'plus10' }, list, 1).rezerva;
+  assert.equal(lifted, tight);
+});
+
+test('tuition penalty sinks paid schools, but not church schools with unknown tuition', () => {
+  const list = [
+    mk(1, 60, { school_programs: [{ rok: 2025, zrizovatel: 'Soukromý' }], school_extracted_details: { tuition_czk_per_year: 50000 } }),
+    mk(2, 60, { school_programs: [{ rok: 2025, zrizovatel: 'Kraj' }] }),
+    mk(3, 60, { school_programs: [{ rok: 2025, zrizovatel: 'Církev' }] }),
+  ];
+  const ranked = scoreSchools({ typ: 'gymnazium', skolne: 'ne' }, list);
+  const raw = (id) => ranked.find((m) => m.school_id === id).raw_score;
+  assert.equal(raw(1), raw(2) / 2);
+  assert.equal(raw(3), raw(2));
+});
+
+test('cirkevni and alternativni skip schools with no data', () => {
+  const list = [
+    mk(1, 60, { school_programs: [{ rok: 2025, zrizovatel: 'Církev' }], school_extracted_details: [{ alternativni_pedagogika: true }] }),
+    mk(2, 60),
+  ];
+  assert.equal(breakdownOf({ cirkevni: 'ano' }, list, 1).cirkevni, 1);
+  assert.equal(breakdownOf({ cirkevni: 'ano' }, list, 2).cirkevni, undefined);
+  assert.equal(breakdownOf({ alternativni: 'ano' }, list, 1).alternativni, 1);
+  assert.equal(breakdownOf({ alternativni: 'ano' }, list, 2).alternativni, undefined);
+});
+
+test('points are validated as integers 0-100, optional, and never narrated to the AI', () => {
+  assert.equal(validateAnswers({ ...completeAnswers, body: 101 }).ok, false);
+  assert.equal(validateAnswers({ ...completeAnswers, body: 'abc' }).ok, false);
+  assert.equal(validateAnswers({ ...completeAnswers, body: '55' }).answers.body, 55);
+  assert.equal('body' in validateAnswers({ ...completeAnswers, body: '' }).answers, false);
+  const text = describeAnswers({ ...completeAnswers, body: 55, body_zlepseni: 'plus10', povaha: 'introvert' });
+  assert.doesNotMatch(text, /55|bodů/);
+  assert.match(text, /introvert/);
+});

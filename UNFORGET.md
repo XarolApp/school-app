@@ -13,6 +13,17 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
+## Questionnaire expansion (plan 017) — follow-ups — 2026-09-28
+- **Found:** 2026-09-28, while building plan 017 (weights layer, difficulty and tuition questions).
+- **Effort:** small each.
+- **Not done yet:**
+  1. **Weight numbers are first guesses.** `WEIGHT_RULES` factors, the `RESERVE_CURVES` and `PAID_PENALTY` in `lib/matching.js` were chosen by reasoning, not tuned on real students. Re-check with a handful of real answer sets.
+  2. **Questionnaire uses the school-average cutoff**, not the per-obor one, so a school with one hard and one easy obor reads as medium. Precise per-obor risk stays on `/prihlaska`.
+  3. **"What bothers you at your current school"** twin of `soucasna_skola` was skipped to keep the list short. Add the same way (multi, no free text) if wanted.
+  4. **`povolani` free-text follow-up** ("what career?") still depends on the open-text decision above.
+  5. **Fast questionnaire** still to build; the list is now 32 questions, most optional. The weight-only questions are the natural candidates for the fast version's core.
+  6. **`selektivita_tezka: jedno`** adds no direction instead of zeroing the whole dimension (deviation from plan 017's draft), so a "challenge" answer to the other question is not silently ignored.
+
 ## Standing rule: re-run supabase-setup.sql after any commit that touches it — 2026-09-28
 
 On 2026-09-28 every account was locked out of `requireAccess` routes

@@ -357,6 +357,15 @@ function Questionnaire() {
 
   const setText = (id, value) => setAnswers((prev) => ({ ...prev, [id]: value }));
 
+  // Starts every fresh form with the points the account already has (from
+  // /prihlaska or an earlier run), so the same number is never asked twice.
+  const openForm = () => {
+    const body = state.data?.prefill?.body;
+    setAnswers(body != null ? { body: String(body) } : {});
+    setSubmitError(null);
+    setView('form');
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
@@ -465,14 +474,14 @@ function Questionnaire() {
             </div>
             <h2 className="ss-headline-md h">Zatím nemáš vyplněný dotazník</h2>
             <p className="ss-body-md">
-              Deset otázek, zabere to pár minut. Podle odpovědí ti spočítáme shodu se všemi pražskými školami a u
+              Zhruba třicet otázek, většina je nepovinná. Zabere to asi 5–8 minut. Podle odpovědí ti spočítáme shodu se všemi pražskými školami a u
               prvních deseti vysvětlíme, proč zrovna ony.
             </p>
             <p className="qz-empty-tip">
               Odpovídej popravdě, ne podle toho, co zní dobře. Kde je možnost „nevím“, klidně ji vyber. Nepovinnou
               otázku můžeš přeskočit a shodu ti to nesníží.
             </p>
-            <button type="button" className="ss-btn ss-btn-primary qz-cta" onClick={() => setView('form')}>
+            <button type="button" className="ss-btn ss-btn-primary qz-cta" onClick={openForm}>
               Vyplnit dotazník
             </button>
           </div>
@@ -531,8 +540,11 @@ function Questionnaire() {
           <form className="qz-form" onSubmit={handleSubmit}>
             {questions
               .filter((q) => questionApplies(q, answers))
-              .map((q) => (
+              .map((q, i, list) => (
                 <div className="field qz-question" key={q.id}>
+                  {q.section && q.section !== list[i - 1]?.section && (
+                    <h2 className="ss-headline-md h qz-section">{q.section}</h2>
+                  )}
                   <div className="field-label">
                     {q.label}
                     {q.optional && <span className="qz-optional"> (nepovinné)</span>}
@@ -544,6 +556,18 @@ function Questionnaire() {
                       className="input qz-textarea"
                       maxLength={q.maxLength}
                       value={answers[q.id] || ''}
+                      onChange={(e) => setText(q.id, e.target.value)}
+                    />
+                  )}
+
+                  {q.type === 'number' && (
+                    <input
+                      type="number"
+                      inputMode="numeric"
+                      className="input qz-number"
+                      min={q.min}
+                      max={q.max}
+                      value={answers[q.id] ?? ''}
                       onChange={(e) => setText(q.id, e.target.value)}
                     />
                   )}
@@ -610,9 +634,7 @@ function Questionnaire() {
           onCancel={() => setConfirmRetake(false)}
           onConfirm={() => {
             setConfirmRetake(false);
-            setAnswers({});
-            setSubmitError(null);
-            setView('form');
+            openForm();
           }}
         >
           <p className="ss-body-md">
