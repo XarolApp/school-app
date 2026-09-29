@@ -59,6 +59,13 @@ export function ObScreen({
   wide = false,
   chrome = true,
   aside = null,
+  // 'profile' = the quiz's live panel; 'showcase' = a centred visual beside a
+  // non-quiz screen (welcome, role, proof, account) so desktop never shows a
+  // phone column floating in empty space.
+  asideVariant = 'profile',
+  // Vertically centre the column (short screens). Quiz screens stay
+  // top-anchored so the question does not jump between steps.
+  center = false,
 }) {
   const hasBar = typeof progress === 'number';
   const frame = (
@@ -88,9 +95,9 @@ export function ObScreen({
   // (or move inline) below it — see .ob-split in onboarding.css.
   if (!aside) return frame;
   return (
-    <div className="ob-split">
+    <div className={`ob-split ob-split--${asideVariant}${center ? ' ob-split--center' : ''}`}>
       {frame}
-      <div className="ob-split-aside">{aside}</div>
+      <div className={`ob-split-aside ob-split-aside--${asideVariant}`}>{aside}</div>
     </div>
   );
 }

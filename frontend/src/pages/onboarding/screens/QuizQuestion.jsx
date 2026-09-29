@@ -209,7 +209,22 @@ function QuizQuestion({ step }) {
       <h1 className="ob-title">{copy.title}</h1>
       {copy.hint && <p className="ob-hint">{copy.hint}</p>}
 
-      {question.type === 'select' ? (
+      {question.type === 'number' ? (
+        <div className="ob-select-wrap">
+          <input
+            type="number"
+            inputMode="numeric"
+            className="ob-number"
+            aria-label={copy.title}
+            min={question.min}
+            max={question.max}
+            placeholder={copy.placeholder}
+            value={value ?? ''}
+            onChange={(e) => setAnswer(question.key, e.target.value)}
+          />
+          {reassureCard}
+        </div>
+      ) : question.type === 'select' ? (
         <div className="ob-select-wrap">
           <select
             className="ob-select"
@@ -242,7 +257,7 @@ function QuizQuestion({ step }) {
           )}
 
           <div
-            className="ob-options"
+            className={`ob-options${question.map ? ' ob-options--districts' : ''}`}
             role={question.type === 'multi' ? 'group' : 'radiogroup'}
             aria-label={copy.title}
           >

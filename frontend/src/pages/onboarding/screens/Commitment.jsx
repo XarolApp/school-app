@@ -1,4 +1,6 @@
 import { ObOption, ObScreen } from '../../../components/onboarding/ObKit';
+import ProfilePanel from '../../../components/onboarding/ProfilePanel';
+import { QUESTIONS } from '../quizQuestions';
 import { useOnboarding } from '../useOnboarding';
 
 /**
@@ -24,7 +26,7 @@ const REASSURANCE = {
 };
 
 function Commitment() {
-  const { role, commitment, setCommitment, goNext, goBack, phase } = useOnboarding();
+  const { role, answers, commitment, setCommitment, goNext, goBack, phase } = useOnboarding();
   const parent = role === 'parent';
   const soft = commitment === 'zjistuji';
 
@@ -32,6 +34,10 @@ function Commitment() {
     <ObScreen
       onBack={goBack}
       phase={phase}
+      center
+      // The finished profile: what they told us, just before we ask how
+      // seriously they are taking it. No row is "current" any more.
+      aside={<ProfilePanel answers={answers} role={role} currentQuestionIndex={QUESTIONS.length} />}
       actions={
         <button type="button" className="ob-btn ob-btn-primary" onClick={goNext}>
           Pokračovat

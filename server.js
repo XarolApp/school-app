@@ -737,6 +737,30 @@ app.post('/api/beta/guidance-seen', requireAuth, async (req, res) => {
 });
 
 /**
+ * The Cermat points are the same number /prihlaska analyses picks against, so
+ * the questionnaire and the onboarding quiz both copy theirs into
+ * decision_profile — one number, one place. Never overwrites an 'ostra' (real
+ * exam) score with the same value re-labelled 'nanecisto', and never throws:
+ * the run is already saved, so a failure here is logged, not returned.
+ */
+async function syncJpzPoints(userId, points) {
+  if (typeof points !== 'number') return;
+  const { data: existing } = await supabase
+    .from('decision_profile')
+    .select('jpz_points, jpz_source')
+    .eq('user_id', userId)
+    .maybeSingle();
+  if (existing?.jpz_source === 'ostra' && Number(existing.jpz_points) === points) return;
+  const { error } = await supabase.from('decision_profile').upsert({
+    user_id: userId,
+    jpz_points: points,
+    jpz_source: 'nanecisto',
+    updated_at: new Date().toISOString(),
+  });
+  if (error) console.error('decision_profile sync failed:', error.message);
+}
+
+/**
  * Saves the ONBOARDING quiz's answers as a questionnaire_runs row, so an
  * account that signed up through the onboarding flow gets a match_score
  * everywhere withMatchScores reads one — search, school detail, /porovnani,
@@ -810,6 +834,8 @@ app.post('/api/me/onboarding-answers', requireAuth, async (req, res) => {
   } catch (err) {
     console.error('onboarding run saved but could not be flagged default:', err.message);
   }
+
+  await syncJpzPoints(req.user.id, translated.body);
 
   res.status(201).json({ saved: true });
 });
@@ -916,7 +942,7 @@ async function fetchAllSchools(select) {
 
 const LIST_PROGRAM_FIELDS = [
   'maturitni', 'jpz_povinna', 'typ_skoly', 'jazyk_studia',
-  'kkov', 'zrizovatel', 'kapacita',
+  'kkov', 'zrizovatel', 'kapacita', 'cutoff',
 ];
 
 /**
@@ -1767,26 +1793,7 @@ app.post(
       return res.status(500).json({ error: insertError.message });
     }
 
-    // The Cermat points are the same number /prihlaska analyses picks against,
-    // so keep one copy. Never overwrite an 'ostra' (real exam) score with the
-    // same value re-labelled 'nanecisto', and never fail the run over this.
-    if (typeof validation.answers.body === 'number') {
-      const { data: existing } = await supabase
-        .from('decision_profile')
-        .select('jpz_points, jpz_source')
-        .eq('user_id', req.user.id)
-        .maybeSingle();
-      const keep = existing?.jpz_source === 'ostra' && Number(existing.jpz_points) === validation.answers.body;
-      if (!keep) {
-        const { error: profileError } = await supabase.from('decision_profile').upsert({
-          user_id: req.user.id,
-          jpz_points: validation.answers.body,
-          jpz_source: 'nanecisto',
-          updated_at: new Date().toISOString(),
-        });
-        if (profileError) console.error('decision_profile sync failed:', profileError.message);
-      }
-    }
+    await syncJpzPoints(req.user.id, validation.answers.body);
 
     // A new set becomes the one that scores the database. Finishing the
     // questionnaire and finding the percentages unchanged would read as the

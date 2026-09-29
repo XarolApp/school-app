@@ -336,6 +336,18 @@
   border-radius: var(--ob-radius);
 }
 
+.ob-number {
+  width: 100%;
+  max-width: 200px;
+  padding: 14px 16px;
+  font: inherit;
+  font-size: 18px;
+  color: var(--text-h);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--ob-radius);
+}
+
 .ob-live {
   font-size: 14px;
   color: var(--text-h);
@@ -2548,4 +2560,350 @@
   font-size: 12px;
   line-height: 1.45;
   color: var(--ink2);
+}
+
+
+/* ===========================================================================
+   ONBOARDING POLISH + DESKTOP REDESIGN (2026-09-27)
+   Welcome, role, commitment, proof and account used to be the phone column
+   floating in a 1280px window with the button parked at the bottom edge.
+   They now use the same split the quiz uses: content column left, a
+   meaningful panel right (the product itself, a voice preview, the user's
+   own profile or top result). Phones keep their single column.
+   =========================================================================== */
+
+/* Headlines at 600, per DESIGN.md (400 read as unfinished at display size). */
+.ob-title,
+.ob-title-xl {
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.ob-btn { transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 200ms ease, background-color 200ms ease, opacity 140ms ease; }
+.ob-btn-primary { box-shadow: 0 8px 22px -12px var(--acc-line); }
+.ob-btn:active:not(:disabled) { transform: scale(0.98); }
+@media (hover: hover) and (pointer: fine) {
+  .ob-btn-primary:hover:not(:disabled) { box-shadow: 0 14px 30px -14px var(--acc-line); }
+  .ob-btn-primary:hover .ob-btn-arrow { transform: translateX(3px); }
+}
+.ob-btn-arrow { display: inline-block; transition: transform 250ms cubic-bezier(0.23, 1, 0.32, 1); }
+
+/* --- screen entrance: content rises in, staggered, once per step ---------- */
+@keyframes ob-rise {
+  from { opacity: 0; transform: translateY(12px); }
+}
+.ob-enter > *,
+.ob-body > :not(.ob-enter) {
+  animation: ob-rise 520ms cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+.ob-enter > :nth-child(2), .ob-body > :nth-child(2):not(.ob-enter) { animation-delay: 50ms; }
+.ob-enter > :nth-child(3), .ob-body > :nth-child(3):not(.ob-enter) { animation-delay: 100ms; }
+.ob-enter > :nth-child(4), .ob-body > :nth-child(4):not(.ob-enter) { animation-delay: 150ms; }
+.ob-enter > :nth-child(5), .ob-body > :nth-child(5):not(.ob-enter) { animation-delay: 200ms; }
+.ob-enter > :nth-child(n + 6), .ob-body > :nth-child(n + 6):not(.ob-enter) { animation-delay: 250ms; }
+
+/* --- welcome ---------------------------------------------------------------- */
+.ob-hero { gap: 16px; padding-top: 24px; }
+
+.ob-welcome-trust li {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 12px;
+  align-items: center;
+}
+.ob-trust-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--acc-soft);
+  color: var(--acc);
+}
+
+/* MatchPreview — real counts narrowing as chips turn on. */
+.ob-mp {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border-radius: var(--r-card);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+.ob-mp-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.ob-mp-chip {
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line2);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink2);
+  transition: background-color 300ms ease, color 300ms ease, border-color 300ms ease, transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.ob-mp-chip.is-on { background: var(--acc); border-color: var(--acc); color: var(--acc-ink); transform: scale(1.04); }
+.ob-mp-count { display: flex; align-items: baseline; gap: 8px; color: var(--ink2); font-size: 14px; }
+.ob-mp-n {
+  font-family: var(--heading);
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--text-h);
+  font-variant-numeric: tabular-nums;
+  animation: ob-rise 400ms cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+.ob-mp-bar { height: 6px; border-radius: 999px; background: var(--track); overflow: hidden; }
+.ob-mp-bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--acc);
+  transform-origin: left;
+  transition: transform 700ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* --- role fork: rows with icon, voice tag and arrow ------------------------ */
+.ob-fork-cards { grid-template-columns: 1fr; gap: 12px; }
+.ob-fork-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas: 'icon text go' 'icon tag go';
+  align-items: center;
+  column-gap: 16px;
+  row-gap: 8px;
+  padding: 20px;
+  background: var(--surface);
+  border-color: var(--line);
+  box-shadow: var(--shadow);
+}
+.ob-fork-icon {
+  grid-area: icon;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: var(--acc-soft);
+  color: var(--acc);
+  transition: background-color 200ms ease, color 200ms ease;
+}
+.ob-fork-text { grid-area: text; display: grid; gap: 2px; }
+.ob-fork-text strong { font-size: 19px; color: var(--text-h); }
+.ob-fork-tag {
+  grid-area: tag;
+  justify-self: start;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink3);
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--surface2);
+}
+.ob-fork-go { grid-area: go; color: var(--ink3); transition: transform 250ms cubic-bezier(0.23, 1, 0.32, 1), color 200ms ease; }
+.ob-fork-card:hover .ob-fork-icon,
+.ob-fork-card:focus-visible .ob-fork-icon { background: var(--acc); color: var(--acc-ink); }
+.ob-fork-card:hover .ob-fork-go,
+.ob-fork-card:focus-visible .ob-fork-go { color: var(--acc); transform: translateX(4px); }
+.ob-fork-card:active { transform: scale(0.99); }
+
+/* Voice preview (desktop panel on the role screen). */
+.ob-voice { width: 100%; max-width: 420px; display: grid; gap: 16px; }
+.ob-voice-label,
+.ob-tm-label,
+.ob-showcase-caption {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink3);
+}
+.ob-showcase-caption { text-align: center; }
+.ob-voice-card {
+  display: grid;
+  gap: 10px;
+  padding: 24px;
+  border-radius: 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow), 0 30px 60px -30px var(--glow);
+  animation: ob-rise 420ms cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+.ob-voice-step { font-size: 12px; color: var(--ink3); }
+.ob-voice-title { margin: 0; font-family: var(--heading); font-size: 28px; font-weight: 600; line-height: 1.1; color: var(--text-h); }
+.ob-voice-hint { margin: 0; font-size: 14px; color: var(--ink2); line-height: 1.45; }
+.ob-voice-opts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.ob-voice-opts span {
+  padding: 6px 11px;
+  border-radius: 999px;
+  border: 1px solid var(--line2);
+  font-size: 12px;
+  color: var(--ink2);
+}
+.ob-voice-opts .is-on { background: var(--acc); border-color: var(--acc); color: var(--acc-ink); }
+.ob-voice-note { margin: 0; font-size: 13px; color: var(--ink2); }
+
+/* --- top-match card (proof + account side panels) -------------------------- */
+.ob-tm { width: 100%; max-width: 440px; display: grid; gap: 14px; }
+.ob-tm-card {
+  display: grid;
+  gap: 10px;
+  padding: 24px;
+  border-radius: 20px;
+  background: var(--surface);
+  border: 1px solid var(--acc-line);
+  box-shadow: var(--shadow), 0 30px 60px -30px var(--glow);
+}
+.ob-tm-rank { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--acc); }
+.ob-tm-name { margin: 0; font-family: var(--heading); font-size: 26px; font-weight: 600; line-height: 1.1; color: var(--text-h); }
+.ob-tm-card .ob-hero-band { justify-self: start; margin: 0; }
+.ob-tm-why { list-style: none; margin: 4px 0 0; padding: 12px 0 0; border-top: 1px solid var(--line); display: grid; gap: 8px; }
+.ob-tm-why li { position: relative; padding-left: 22px; font-size: 14px; line-height: 1.45; color: var(--ink); }
+.ob-tm-why li::before { content: '✓'; position: absolute; left: 0; font-weight: 700; color: var(--acc); }
+.ob-tm-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.ob-tm-list li { display: flex; gap: 10px; align-items: baseline; font-size: 14px; color: var(--ink2); }
+.ob-tm-list li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--acc); flex: none; transform: translateY(-2px); }
+
+/* --- proof cards get icons -------------------------------------------------- */
+.ob-proof-card {
+  grid-template-columns: auto 1fr;
+  column-gap: 12px;
+  align-items: start;
+  padding: 16px;
+  background: var(--surface);
+  border-color: var(--line);
+}
+.ob-proof-card > strong,
+.ob-proof-card > span:not(.ob-proof-icon) { grid-column: 2; }
+.ob-proof-icon {
+  grid-row: span 2;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--acc-soft);
+  color: var(--acc);
+}
+
+/* --- desktop ------------------------------------------------------------------ */
+@media (min-width: 1024px) {
+  /* Quiz: question anchored at the top so it no longer jumps up and down as
+     the answer list changes length, and Continue stays above the fold. */
+  .ob-split .ob-body { justify-content: flex-start; padding-top: var(--space-lg); }
+
+  /* Short, non-quiz screens: the whole column centred, actions directly
+     under the content instead of pinned to the window's bottom edge. */
+  .ob-split--center .ob-screen { justify-content: center; }
+  .ob-split--center .ob-body { flex: 0 0 auto; padding-top: 0; }
+  .ob-split--center .ob-actions { position: static; background: none; padding-top: var(--space-sm); }
+
+  .ob-split--showcase { grid-template-columns: minmax(0, 1fr) minmax(460px, 46%); }
+  .ob-split--showcase .ob-screen { max-width: 720px; margin-left: auto; padding-right: var(--space-xxxl); }
+  .ob-split--showcase .ob-actions { flex-direction: column; align-items: flex-start; gap: var(--space-sm); }
+  .ob-split--showcase .ob-actions .ob-btn { min-width: 260px; }
+
+  .ob-split-aside--showcase {
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-xxl);
+    background:
+      radial-gradient(70% 60% at 50% 40%, var(--glow), transparent 70%),
+      var(--surface2);
+  }
+  .ob-showcase { display: grid; gap: var(--space-md); justify-items: center; width: 100%; }
+  .ob-showcase .pm-phone { width: min(320px, 100%); }
+  .ob-split-aside--showcase > * { animation: ob-rise 700ms cubic-bezier(0.23, 1, 0.32, 1) 150ms both; }
+
+  .ob-split--showcase .ob-title-xl { font-size: clamp(48px, 4.4vw, 68px); }
+  .ob-split--showcase .ob-lead { font-size: 18px; max-width: 46ch; }
+
+  /* The phone loop in the panel replaces the compact preview. */
+  .ob-welcome-preview { display: none; }
+
+  .ob-split--showcase .ob-fork-card { padding: 22px 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ob-enter > *,
+  .ob-body > *,
+  .ob-voice-card,
+  .ob-mp-n,
+  .ob-split-aside--showcase > * { animation: none !important; }
+  .ob-mp-chip,
+  .ob-mp-bar span { transition: none; }
+}
+
+/* --- district question: the map is the control, the list a compact index --- */
+.ob-district-map-svg { max-width: 100%; }
+.ob-district-map {
+  padding: 12px;
+  border-radius: var(--r-card);
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.ob-district-map-shape { transition: fill 180ms ease, stroke 180ms ease; }
+.ob-options--districts {
+  grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+  gap: 8px;
+}
+.ob-options--districts .ob-option {
+  min-height: 44px;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+@media (min-width: 1024px) {
+  .ob-split .ob-options--districts .ob-option { min-height: 40px; }
+}
+@media (min-width: 1024px) {
+  .ob-district-map-svg { max-width: 440px; }
+}
+.ob-options--districts .ob-option { gap: 8px; padding: 8px 10px; }
+.ob-options--districts .ob-option-label { white-space: nowrap; }
+.ob-options--districts .ob-option-mark { width: 18px; height: 18px; flex: none; }
+
+/* --- stakes: give the two columns room on desktop ------------------------- */
+.ob-stakes .ob-stat-number { font-weight: 600; }
+.ob-stakes .ob-stat-unit { font-weight: 600; }
+.ob-chip { transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1); }
+.ob-chip:active { transform: scale(0.96); }
+@media (min-width: 1024px) {
+  [data-step='stakes'] .ob-screen { max-width: 1080px; justify-content: center; }
+  [data-step='stakes'] .ob-body { flex: 0 0 auto; }
+  [data-step='stakes'] .ob-stakes { gap: var(--space-xxxl); }
+  [data-step='stakes'] .ob-stakes .ob-stat-number { font-size: 112px; }
+  [data-step='stakes'] .ob-actions {
+    position: static;
+    background: none;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-lg);
+  }
+  [data-step='stakes'] .ob-actions .ob-btn { width: auto; min-width: 280px; }
+}
+
+/* --- reveal: headline gets a real display size and measure on desktop ------ */
+@media (min-width: 1024px) {
+  .ob-reveal-head { max-width: 30ch; font-size: 44px; line-height: 1.05; }
+}
+.ob-hero-match { animation: ob-rise 700ms cubic-bezier(0.23, 1, 0.32, 1) 120ms both; }
+@media (prefers-reduced-motion: reduce) { .ob-hero-match { animation: none; } }
+
+/* --- paywall: feedback only, structure unchanged (approved design) --------- */
+.ob-pw-plan {
+  transition: border-color 220ms ease, background-color 220ms ease, box-shadow 260ms ease, transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.ob-pw-plan:active { transform: scale(0.99); }
+@media (hover: hover) and (pointer: fine) {
+  .ob-pw-plan:not(.is-selected):hover { border-color: var(--acc-line); transform: translateY(-2px); }
+}
+.ob-pw-radio { transition: background-color 200ms ease, border-color 200ms ease, transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+.ob-pw-plan.is-selected .ob-pw-radio { transform: scale(1.08); }
+.ob-pw-main > *,
+.ob-pw-side > * { animation: ob-rise 520ms cubic-bezier(0.23, 1, 0.32, 1) both; }
+.ob-pw-side > * { animation-delay: 120ms; }
+@media (prefers-reduced-motion: reduce) {
+  .ob-pw-plan, .ob-pw-radio { transition: none; }
+  .ob-pw-main > *, .ob-pw-side > * { animation: none; }
 }

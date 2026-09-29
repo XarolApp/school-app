@@ -97,6 +97,9 @@ function Activated() {
           <Link to="/skoly" className="ob-btn ob-btn-primary">
             {parent ? 'Přejít na školy' : 'Jdu na to'}
           </Link>
+          <Link to="/dotaznik" className="ob-btn ob-btn-secondary">
+            {parent ? 'Zpřesnit výsledky (asi 5 minut)' : 'Zpřesni výsledky (asi 5 minut)'}
+          </Link>
           {isTester && (
             <Link to="/nastaveni" className="ob-btn ob-btn-secondary">
               Napsat zpětnou vazbu

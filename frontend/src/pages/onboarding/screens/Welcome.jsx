@@ -1,5 +1,8 @@
 import { Link } from 'react-router-dom';
+import { Calculator, Database, ShieldCheck } from 'lucide-react';
 import { ObButton, ObScreen } from '../../../components/onboarding/ObKit';
+import MatchPreview from '../../../components/onboarding/MatchPreview';
+import { PhoneLoop } from '../../../components/landing/ProductScreens';
 import { STUDENTS_HELPED } from '../../../config/socialProof';
 import { useOnboarding } from '../useOnboarding';
 
@@ -11,26 +14,47 @@ import { useOnboarding } from '../useOnboarding';
  * conversion. Role is unknown here, so the copy is written to work for both a
  * teenager and a parent — no tykání, no vykání, no assumptions.
  *
+ * Redesigned 2026-09-27: the empty photo slot is gone. The product itself is
+ * the visual — a live phone loop in the desktop side panel (the split-screen
+ * signup pattern Buffer, Supabase and SchoolAI ship), and on phones a compact
+ * preview of 223 schools narrowing to a short list, from real counts.
+ *
  * There is no user count in the headline because there is no honest number to
  * put there yet (see config/socialProof.js).
  */
+const TRUST = [
+  { Icon: Database, title: 'Všechny pražské střední školy', body: 'Gymnázia, odborné i učební obory' },
+  { Icon: ShieldCheck, title: 'Veřejné zdroje', body: 'Cermat a MŠMT, u každého čísla rok' },
+  { Icon: Calculator, title: 'Žádné skóre o tobě', body: 'Hodnotíme shodu se školou, ne tebe' },
+];
+
 function Welcome() {
-  const { goNext } = useOnboarding();
+  const { goNext, schools } = useOnboarding();
 
   return (
     <ObScreen
       chrome={false}
+      center
+      asideVariant="showcase"
+      aside={
+        <div className="ob-showcase">
+          <PhoneLoop />
+          <p className="ob-showcase-caption">Takhle to vypadá uvnitř</p>
+        </div>
+      }
       actions={
         <>
-          <ObButton onClick={goNext}>Začít</ObButton>
-          <p className="ob-microcopy">Zabere to asi 3 minuty. Nic se neplatí předem.</p>
+          <ObButton onClick={goNext}>
+            Začít <span className="ob-btn-arrow" aria-hidden="true">→</span>
+          </ObButton>
+          <p className="ob-microcopy">Asi 3 minuty · bez registrace · nic se neplatí předem</p>
           <p className="ob-microcopy ob-signin-hint">
             Už máš účet? <Link to="/prihlaseni" className="ob-inline-link">Přihlásit se</Link>
           </p>
         </>
       }
     >
-      <div className="ob-hero">
+      <div className="ob-hero ob-enter">
         <span className="ob-logo">ŠkolaMatch</span>
         <h1 className="ob-title-xl">Jsi na správném místě.</h1>
         <p className="ob-lead">
@@ -41,26 +65,22 @@ function Welcome() {
           <p className="ob-proof-line">Už {STUDENTS_HELPED.toLocaleString('cs-CZ')} deváťáků si tudy prošlo.</p>
         )}
 
-        {/* Photography placeholder. DESIGN.md calls for real photographs of
-            real people (warmth without illustration-heavy filler; Rocket Money
-            is its named reference). No such photo exists yet, so this is an
-            honest empty slot rather than a stock image or invented artwork.
-            Swap the inner <span> for an <img> the day a real photo lands —
-            nothing else on this screen needs to change. */}
-        <div className="ob-photo-slot" aria-hidden="true">
-          <span>Sem přijde fotografie</span>
+        <div className="ob-welcome-preview">
+          <MatchPreview schools={schools} />
         </div>
 
         <ul className="ob-welcome-trust">
-          <li>
-            <strong>Pražské střední školy</strong>Gymnázia, odborné i učební obory
-          </li>
-          <li>
-            <strong>Veřejné rejstříky</strong>Data z veřejných zdrojů, u každého čísla rok
-          </li>
-          <li>
-            <strong>Žádné skóre o tobě</strong>Hodnotíme shodu se školou, ne tebe
-          </li>
+          {TRUST.map(({ Icon, title, body }) => (
+            <li key={title}>
+              <span className="ob-trust-icon" aria-hidden="true">
+                <Icon size={18} strokeWidth={2} />
+              </span>
+              <span>
+                <strong>{title}</strong>
+                {body}
+              </span>
+            </li>
+          ))}
         </ul>
       </div>
     </ObScreen>

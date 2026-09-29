@@ -148,3 +148,17 @@ test('points are validated as integers 0-100, optional, and never narrated to th
   assert.doesNotMatch(text, /55|bodů/);
   assert.match(text, /introvert/);
 });
+
+test('onboarding points block: validated, translated to the questionnaire keys, and rejected when out of range', () => {
+  const { validateOnboardingAnswers, translateOnboardingAnswers } = require('../lib/onboardingAnswers');
+  const ok = validateOnboardingAnswers({ studyType: 'gymnazium', points: '62', gain: 'plus10', reserve: 'jistota' });
+  assert.equal(ok.ok, true);
+  assert.deepEqual(
+    translateOnboardingAnswers(ok.answers),
+    { typ: 'gymnazium', body: 62, body_zlepseni: 'plus10', rezerva: 'jistota' }
+  );
+  assert.equal(validateOnboardingAnswers({ points: '101' }).ok, false);
+  assert.equal(validateOnboardingAnswers({ points: 'x' }).ok, false);
+  assert.equal(validateOnboardingAnswers({ reserve: 'nope' }).ok, false);
+  assert.equal('points' in validateOnboardingAnswers({ points: '' }).answers, false);
+});

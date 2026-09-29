@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ObScreen } from '../../../components/onboarding/ObKit';
+import TopMatchCard from '../../../components/onboarding/TopMatchCard';
 import { useOnboarding } from '../useOnboarding';
 import { useAuth } from '../../../components/AuthContext';
 import PasswordInput from '../../../components/PasswordInput';
@@ -179,10 +180,31 @@ function CreateAccount() {
     );
   }
 
+  // Desktop side panel: the result being saved, so signup reads as claiming
+  // something that already exists rather than as a gate.
+  const saved = (
+    <TopMatchCard
+      result={ranked?.[0]}
+      answers={cleanedAnswers}
+      role={role}
+      label={parent ? 'Tohle si uložíte' : 'Tohle si uložíš'}
+      footer={
+        <ul className="ob-tm-list">
+          <li>{parent ? `Celé pořadí ${matchCount} škol s důvody` : `Celé pořadí ${matchCount} škol s důvody`}</li>
+          <li>{parent ? 'Odpovědi, abyste je nemuseli vyplňovat znovu' : 'Tvoje odpovědi, ať je nemusíš vyplňovat znovu'}</li>
+          <li>Porovnání škol a plán přihlášek</li>
+        </ul>
+      }
+    />
+  );
+
   return (
     <ObScreen
       onBack={goBack}
       phase={phase}
+      center
+      asideVariant="showcase"
+      aside={saved}
       actions={
         <button
           type="submit"

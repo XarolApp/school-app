@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Confetti, DemoDataNotice, ObButton, ObScreen } from '../../../components/onboarding/ObKit';
-import { explain, tradeoffs } from '../../../lib/matching';
+import { countCandidates, explain, tradeoffs } from '../../../lib/matching';
 import { FOCUS_CATEGORIES } from '../../../lib/schoolFeatures';
 import { useOnboarding } from '../useOnboarding';
 
@@ -106,7 +106,7 @@ function schoolWord(n) {
 }
 
 function Reveal() {
-  const { role, ranked, goNext, isDemo, schoolsError, cleanedAnswers, answers } = useOnboarding();
+  const { role, ranked, schools, goNext, isDemo, schoolsError, cleanedAnswers, answers } = useOnboarding();
   const parent = role === 'parent';
   const [shareState, setShareState] = useState('idle');
 
@@ -120,6 +120,13 @@ function Reveal() {
   );
   const limits = useMemo(() => (top ? tradeoffs(top, role || 'student') : []), [top, role]);
   const headline = useMemo(() => characterise(answers, role), [answers, role]);
+  // The SAME count the quiz showed as "Zatím ti sedí N škol". `ranked` is every
+  // school in rank order, so its length (always the whole database) must never
+  // be presented as the number that "matches".
+  const fitting = useMemo(
+    () => countCandidates(schools || [], cleanedAnswers, role || 'student').fitting,
+    [schools, cleanedAnswers, role],
+  );
 
   const share = async () => {
     const text = top
@@ -166,9 +173,13 @@ function Reveal() {
         <p className="ob-eyebrow">{parent ? 'Výsledek' : 'Tvůj výsledek'}</p>
         <h1 className="ob-title ob-reveal-head">{headline}</h1>
         <p className="ob-lead ob-reveal-lede">
-          {parent
-            ? `Tomu v Praze odpovídá ${ranked.length} ${schoolWord(ranked.length)}. Tato nejvíc:`
-            : `Tomu v Praze odpovídá ${ranked.length} ${schoolWord(ranked.length)}. Tahle nejvíc:`}
+          {fitting > 0
+            ? parent
+              ? `Z ${ranked.length} pražských škol tomu odpovídá ${fitting} ${schoolWord(fitting)}. Tato nejvíc:`
+              : `Z ${ranked.length} pražských škol ti sedí ${fitting} ${schoolWord(fitting)}. Tahle nejvíc:`
+            : parent
+              ? 'Přesně tomu žádná škola neodpovídá. Tato se blíží nejvíc:'
+              : 'Přesně tomu žádná škola neodpovídá. Tahle se blíží nejvíc:'}
         </p>
 
         <DemoDataNotice isDemo={isDemo} role={role} />

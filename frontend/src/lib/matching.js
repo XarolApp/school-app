@@ -15,7 +15,7 @@
  *     in the database, "97% shoda" would be a lie.
  */
 
-import { deriveFeatures } from './schoolFeatures';
+import { deriveFeatures } from './schoolFeatures.js';
 
 /** Base weights. Question `priority` shifts focus <-> location. */
 const BASE_WEIGHTS = {
@@ -26,6 +26,8 @@ const BASE_WEIGHTS = {
   practice: 0.09,
   location: 0.2,
   breadth: 0.08,
+  // Only counts when the optional points block is answered — see COMPONENTS.reserve.
+  reserve: 0.15,
 };
 
 const BAND_THRESHOLDS = [
@@ -42,23 +44,59 @@ export function bandFor(score, role) {
   return role === 'parent' ? { ...band, label: band.parentLabel } : band;
 }
 
+/** Interests a general gymnázium genuinely covers. */
+const ACADEMIC_FOCUS = new Set(['prirodni', 'it', 'ekonomie', 'humanitni']);
+
+/**
+ * Reserve vs. ambition, from the student's own Cermat points. Same curves and
+ * breakpoints as lib/matching.js on the server (which scores the saved run), and
+ * the same +10 / -5 thresholds as admissionRisk.js — duplicated on purpose, the
+ * two engines are independent. gap = expected points - the obor's cutoff.
+ */
+const RESERVE_CURVES = {
+  jistota: [[-15, 0], [-5, 0.2], [5, 0.7], [10, 1], [40, 1]],
+  vyvazene: [[-15, 0], [-5, 0.5], [0, 1], [12, 1], [30, 0.6]],
+  ambice: [[-15, 0.1], [-8, 0.6], [-3, 1], [5, 1], [15, 0.5], [30, 0.3]],
+};
+const GAIN = { stejne: 0, plus5: 5, plus10: 10, plus15: 15 };
+
+function lerpCurve(points, x) {
+  if (x <= points[0][0]) return points[0][1];
+  for (let i = 1; i < points.length; i += 1) {
+    const [x1, y1] = points[i];
+    if (x <= x1) {
+      const [x0, y0] = points[i - 1];
+      return y0 + ((y1 - y0) * (x - x0)) / (x1 - x0);
+    }
+  }
+  return points[points.length - 1][1];
+}
+
 /** Component definitions: each returns null when it cannot be scored. */
 const COMPONENTS = {
   focus(a, f) {
     const wanted = a.focus;
     if (!wanted || wanted.length === 0 || !f.focusKnown) return null;
     const hits = wanted.filter((id) => f.focus.includes(id)).length;
-    if (hits === 0) return { score: 0, hit: false, note: 'zaměření' };
+    if (hits === 0) {
+      // A general gymnázium teaches every academic subject: for an academic
+      // interest it is a reasonable fit, not a hit and not a zero.
+      const academic = wanted.some((id) => ACADEMIC_FOCUS.has(id));
+      if (f.general && academic) return { score: 0.35, hit: false, note: 'všeobecné vzdělání' };
+      return { score: 0, hit: false, note: 'zaměření' };
+    }
     const score = Math.min(1, 0.7 + 0.3 * ((hits - 1) / Math.max(1, wanted.length - 1)));
     return { score, hit: true, note: 'zaměření' };
   },
 
   studyType(a, f) {
-    if (!a.studyType || a.studyType === 'nevim' || !f.type) return null;
-    if (a.studyType === f.type) return { score: 1, hit: true, note: 'typ školy' };
+    const types = f.types?.length ? f.types : f.type ? [f.type] : [];
+    if (!a.studyType || a.studyType === 'nevim' || types.length === 0) return null;
+    // A school offering several kinds of study matches any of them.
+    if (types.includes(a.studyType)) return { score: 1, hit: true, note: 'typ školy' };
     const soft =
-      (a.studyType === 'gymnazium' && f.type === 'odborna') ||
-      (a.studyType === 'odborna' && f.type === 'gymnazium');
+      (a.studyType === 'gymnazium' && types.includes('odborna')) ||
+      (a.studyType === 'odborna' && types.includes('gymnazium'));
     return { score: soft ? 0.45 : 0.1, hit: false, note: 'typ školy' };
   },
 
@@ -113,6 +151,21 @@ const COMPONENTS = {
     return { score: hit ? 1 : 0, hit, note: 'lokalita' };
   },
 
+  /**
+   * Needs both the points and a reserve preference. The obor's own cutoff wins
+   * over the school average; a school with neither is skipped, never scored as
+   * unreachable. Expected points are points plus the self-estimated gain,
+   * added in full — the quiz asks the student to be honest about both.
+   */
+  reserve(a, f) {
+    const curve = RESERVE_CURVES[a.reserve];
+    const points = a.points === undefined || a.points === '' ? NaN : Number(a.points);
+    const cutoff = f.cutoff ?? f.schoolCutoff;
+    if (!curve || Number.isNaN(points) || cutoff == null) return null;
+    const gap = points + (GAIN[a.gain] || 0) - cutoff;
+    return { score: lerpCurve(curve, gap), hit: gap >= -5, note: 'šance na přijetí' };
+  },
+
   breadth(a, f) {
     if (!a.certainty || a.certainty === 'nevim') return null;
     if (!f.breadth) return null;
@@ -126,6 +179,9 @@ const COMPONENTS = {
 
 function weightsFor(answers) {
   const w = { ...BASE_WEIGHTS };
+  // Without the points block the component does not exist for this student, so
+  // it must not sit in the total and drag every school's confidence down.
+  if (!answers.reserve || answers.points === undefined || answers.points === '') delete w.reserve;
   if (answers.priority === 'zamereni') {
     w.focus += 0.08;
     w.location -= 0.08;
@@ -137,8 +193,35 @@ function weightsFor(answers) {
   return w;
 }
 
+/**
+ * Scores the school once per obor and keeps the best one. Scoring the school
+ * as a whole let a mixed school collect "gymnázium" from one obor and "IT"
+ * from an unrelated one, beating schools where a single obor actually fits
+ * (found 2026-09-28: a clothing-design school ranked #1 for "gymnázium + IT").
+ * Location, language and breadth stay school-level; the rest is per obor.
+ */
 export function scoreSchool(school, answers, role = 'student') {
-  const f = deriveFeatures(school);
+  const f = { ...deriveFeatures(school), schoolCutoff: school.admission_cutoff ?? null };
+  if (!f.obory?.length) return { ...scoreFeatures(school, f, answers, role), focusDepth: 0 };
+  let best = null;
+  for (const obor of f.obory) {
+    const r = scoreFeatures(school, { ...f, ...obor }, answers, role);
+    if (!best || r.score > best.score) best = { ...r, bestObor: obor.kkov };
+  }
+  // Tie-break signal: how many of the school's obory fit the chosen
+  // interests (depth of offer), so equal scores are not settled by the
+  // alphabet alone.
+  // Only obory of the requested kind count, or the other half of a mixed
+  // school would decide ties for a gymnázium seeker.
+  const wanted = Array.isArray(answers.focus) ? answers.focus : [];
+  const kind = answers.studyType && answers.studyType !== 'nevim' ? answers.studyType : null;
+  best.focusDepth = f.obory.filter(
+    (o) => (!kind || o.type === kind) && o.focus.some((id) => wanted.includes(id)),
+  ).length;
+  return best;
+}
+
+function scoreFeatures(school, f, answers, role) {
   const weights = weightsFor(answers);
 
   let weighted = 0;
@@ -184,7 +267,10 @@ export function rankSchools(schools, answers, role = 'student') {
     .map((s) => scoreSchool(s, answers, role))
     .filter((r) => r.scored)
     .sort(
-      (a, b) => b.score - a.score || String(a.school.name).localeCompare(String(b.school.name), 'cs')
+      (a, b) =>
+        b.score - a.score ||
+        (b.focusDepth || 0) - (a.focusDepth || 0) ||
+        String(a.school.name).localeCompare(String(b.school.name), 'cs')
     );
 }
 
@@ -214,6 +300,12 @@ export function explain(result, answers, role = 'student') {
       formal
         ? 'Škola nabízí obory v oblasti, kterou jste u dítěte označili jako hlavní zájem.'
         : 'Tahle škola má obory přesně v tom, co tě baví.'
+    );
+  } else if (p.focus?.note === 'všeobecné vzdělání') {
+    out.push(
+      formal
+        ? 'Jde o všeobecné gymnázium: zvolený zájem má dítě jako předmět, ne jako samostatný obor.'
+        : 'Je to všeobecné gymnázium: to, co tě baví, tu máš jako předmět, ne jako celý obor.'
     );
   } else if (p.focus) {
     out.push(
@@ -278,7 +370,7 @@ export function tradeoffs(result, role = 'student') {
   const out = [];
   const p = result.parts;
 
-  if (p.focus && !p.focus.hit) {
+  if (p.focus && !p.focus.hit && p.focus.note !== 'všeobecné vzdělání') {
     out.push(
       formal
         ? 'Zaměření — obory školy se s uvedenými zájmy nepřekrývají. Ve výsledku ji drží ostatní kritéria.'

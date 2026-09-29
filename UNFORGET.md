@@ -13,6 +13,22 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
+## School 29 (Bezpečnostně právní akademie) has no Cermat data — obory added by hand — 2026-09-29
+- **Found:** 2026-09-29, while checking obory coverage after fixing the onboarding ranking bug (`schoolFeatures.js` now reads KKOV codes from `school_programs`).
+- **Urgency:** low
+- **Risk of fixing now:** none; data-only.
+- **Risk of NOT fixing:** this school shows "chybí data" for capacity, applications and cutoff, and the risk analysis on `/prihlaska` can't use it.
+- **Effort:** small
+- **Release/context:** none.
+
+School id 29, "Bezpečnostně právní akademie, s. r. o., střední škola", is the only one of the 223 schools with zero `school_programs` rows. The school's own site lists two obory: `68-42-M/01` Bezpečnostně právní činnost and `79-41-K/41` Gymnázium se zaměřením na právo a bezpečnost. On 2026-09-29 both were inserted by hand in the Supabase SQL editor (`rok` 2026, `maturitni` true, `delka_studia` 4; `typ_skoly`, `jazyk_studia`, `jpz_povinna`, `forma_vzdelavani` copied from other schools with the same KKOV). They have **no** `kapacita`, `prihlasky`, `prijati` or `cutoff`.
+
+To look into:
+1. **Why Cermat doesn't list it.** Probably a new or private school missing from the PZ2024 to PZ2026 files in `scripts/data/`. Or the REDIZO match failed in `scripts/import-admission-data.js`; check `schools.redizo` for id 29 and try `scripts/backfill-redizo.js`.
+2. **Real admission numbers.** Capacity, applications, admitted and cutoff: from the school, or the next Cermat import.
+3. **Scraped details.** Check that `school_extracted_details` has a row for it, and whether the school has a scrapable website.
+4. **Re-check the hand-added rows** once real data arrives. The yearly import replaces rows only for schools it matches, so if this one starts matching, the real rows replace the hand-added ones.
+
 ## Questionnaire expansion (plan 017) — follow-ups — 2026-09-28
 - **Found:** 2026-09-28, while building plan 017 (weights layer, difficulty and tuition questions).
 - **Effort:** small each.

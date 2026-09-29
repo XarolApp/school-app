@@ -1,4 +1,6 @@
+import { Calculator, CircleSlash, Lock, SkipForward } from 'lucide-react';
 import { ObButton, ObScreen } from '../../../components/onboarding/ObKit';
+import TopMatchCard from '../../../components/onboarding/TopMatchCard';
 import { STUDENTS_HELPED, testimonialsFor } from '../../../config/socialProof';
 import { useOnboarding } from '../useOnboarding';
 
@@ -21,6 +23,7 @@ import { useOnboarding } from '../useOnboarding';
 const METHOD_POINTS = [
   {
     id: 'math',
+    Icon: Calculator,
     title: 'Shodu počítá matematika, ne dojem',
     student: 'Každá odpověď má svoji váhu a u každé školy ti ukážeme, z čeho výsledek vyšel.',
     parent:
@@ -28,6 +31,7 @@ const METHOD_POINTS = [
   },
   {
     id: 'skip',
+    Icon: SkipForward,
     title: 'Přeskočená otázka nikdy neubírá body',
     student: 'Když něco nevíš, jen ti u výsledku napíšeme, že je méně spolehlivý. Nic víc.',
     parent:
@@ -35,13 +39,15 @@ const METHOD_POINTS = [
   },
   {
     id: 'limits',
+    Icon: CircleSlash,
     title: 'Neslibujeme, co nevíme',
-    student: 'Nemáme data o přijímačkách ani známkách, tak si je nevymýšlíme.',
+    student: 'Hranice přijetí z Cermatu ti ukážeme, ale tvoje šance na přijetí nehádáme. Na to nemáme data.',
     parent:
-      'Nepracujeme s daty o přijímacích zkouškách, kapacitách ani prospěchu. Dokud je nemáme, netvrdíme o nich nic.',
+      'Hranice přijetí a kapacity z výsledků Cermatu zobrazujeme, šanci na přijetí ale nepředpovídáme. Na to data nemáme.',
   },
   {
     id: 'data',
+    Icon: Lock,
     title: 'Odpovědi zůstávají u vás',
     student: 'Dokud si nezaložíš účet, odpovědi z dotazníku neopustí tvůj prohlížeč.',
     parent:
@@ -50,7 +56,7 @@ const METHOD_POINTS = [
 ];
 
 function SocialProof() {
-  const { role, goNext, goBack, phase } = useOnboarding();
+  const { role, goNext, goBack, phase, ranked, cleanedAnswers } = useOnboarding();
   const parent = role === 'parent';
   const testimonials = testimonialsFor(parent ? 'parent' : 'student');
 
@@ -58,6 +64,18 @@ function SocialProof() {
     <ObScreen
       onBack={goBack}
       phase={phase}
+      center
+      asideVariant="showcase"
+      aside={
+        // Proof by example: the first claim ("u každé školy ti ukážeme, z čeho
+        // výsledek vyšel") demonstrated on the user's own #1 result.
+        <TopMatchCard
+          result={ranked?.[0]}
+          answers={cleanedAnswers}
+          role={role}
+          label={parent ? 'Takhle rozepisujeme každou školu' : 'Takhle ti rozepíšeme každou školu'}
+        />
+      }
       actions={<ObButton onClick={goNext}>{parent ? 'Pokračovat' : 'Chci celé pořadí'}</ObButton>}
     >
       <h1 className="ob-title">{parent ? 'Na čem výsledky stojí' : 'Proč tomu můžeš věřit'}</h1>
@@ -71,6 +89,7 @@ function SocialProof() {
       <div className="ob-proof-grid">
         {METHOD_POINTS.map((p) => (
           <div key={p.id} className="ob-proof-card">
+            <span className="ob-proof-icon" aria-hidden="true"><p.Icon size={18} strokeWidth={2} /></span>
             <strong>{p.title}</strong>
             <span>{parent ? p.parent : p.student}</span>
           </div>

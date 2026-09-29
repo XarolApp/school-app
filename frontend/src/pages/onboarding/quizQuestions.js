@@ -436,6 +436,105 @@ export const QUESTIONS = [
       },
     ],
   },
+  /**
+   * The optional points block: the last three questions. Skipping any of them is
+   * free and never lowers a score — the `reserve` component only exists when
+   * points AND a preference are given (see matching.js `weightsFor`).
+   *
+   * The points stay in sessionStorage like every other answer until an account
+   * exists, then ride the same flush to decision_profile (POST
+   * /api/me/onboarding-answers), so /dotaznik and /prihlaska show the same number.
+   */
+  {
+    id: 'points',
+    key: 'points',
+    type: 'number',
+    min: 0,
+    max: 100,
+    options: [],
+    panelLabel: 'Body z přijímaček',
+    student: {
+      title: 'Kolik bodů máš z přijímaček nanečisto?',
+      hint: 'Cermat, ze 100. Nepovinné — když je nemáš, přeskoč a seřadíme školy bez nich.',
+      placeholder: 'Např. 62',
+    },
+    parent: {
+      title: 'Kolik bodů dítě získalo v přijímačkách nanečisto?',
+      hint: 'Cermat, ze 100. Nepovinné — bez nich školy seřadíme podle ostatních odpovědí.',
+      placeholder: 'Např. 62',
+    },
+    reassure: {
+      student:
+        'Podle bodů poznáme, jak daleko jsi od hranice přijetí u každé školy. Nikam je neposíláme — zůstanou u tebe, dokud si nevytvoříš účet.',
+      parent:
+        'Podle bodů porovnáme dítě s hranicí přijetí u každé školy. Do vytvoření účtu zůstanou jen v tomto zařízení.',
+    },
+    honesty:
+      'Odpovídej upřímně — nikdo tě nesoudí. Když uvedeš jiné body, než jaké máš, dostaneš horší výsledky.',
+  },
+  {
+    id: 'gain',
+    key: 'gain',
+    type: 'single',
+    panelLabel: 'Očekávané zlepšení',
+    student: {
+      title: 'O kolik bodů se do ostrých přijímaček zlepšíš?',
+      hint: 'Použije se jen když jsi zadal(a) body. Buď k sobě upřímný — přestřelený odhad ti doporučí školy, kam se nedostaneš.',
+    },
+    parent: {
+      title: 'O kolik bodů se dítě podle vás do ostrých přijímaček zlepší?',
+      hint: 'Použije se jen když jste zadali body. Přestřelený odhad doporučí školy, kam se dítě nedostane.',
+    },
+    options: [
+      { value: 'stejne', label: 'Asi zůstanu na stejném', parentLabel: 'Asi zůstane na stejném' },
+      { value: 'plus5', label: 'O pár bodů (asi +5)', parentLabel: 'O pár bodů (asi +5)' },
+      { value: 'plus10', label: 'Znatelně (asi +10)', parentLabel: 'Znatelně (asi +10)' },
+      { value: 'plus15', label: 'Hodně (+15 a víc)', parentLabel: 'Hodně (+15 a víc)' },
+    ],
+  },
+  {
+    id: 'reserve',
+    key: 'reserve',
+    type: 'single',
+    panelLabel: 'Rezerva',
+    student: {
+      title: 'Chceš školy s rezervou, nebo zkusíš těžší?',
+      hint: 'Funguje jen když jsi zadal(a) body.',
+    },
+    parent: {
+      title: 'Má dítě mířit na školy s rezervou, nebo na těžší?',
+      hint: 'Funguje jen když jste zadali body.',
+    },
+    options: [
+      {
+        value: 'jistota',
+        label: 'Chci jistotu a velkou rezervu',
+        parentLabel: 'Jistotu a velkou rezervu',
+        reassure: {
+          student: 'Nahoru půjdou školy, kam se s tvými body dostaneš s odstupem od hranice.',
+          parent: 'Nahoru půjdou školy, kam se dítě s danými body dostane s odstupem od hranice.',
+        },
+      },
+      {
+        value: 'vyvazene',
+        label: 'Něco mezi',
+        parentLabel: 'Něco mezi',
+        reassure: {
+          student: 'Hledáme školy, kam se dostaneš, ale ne úplně o kus níž, než umíš.',
+          parent: 'Hledáme školy dosažitelné, ale ne výrazně pod úrovní dítěte.',
+        },
+      },
+      {
+        value: 'ambice',
+        label: 'Zkusím těžší školy i s malou rezervou',
+        parentLabel: 'Těžší školy i s malou rezervou',
+        reassure: {
+          student: 'Posuneme výš školy na hraně tvých bodů. Rezerva bude menší — o to víc je dobré mít v přihlášce i jistotu.',
+          parent: 'Posuneme výš školy na hraně bodů. Rezerva bude menší, proto doporučujeme mít v přihlášce i jistotu.',
+        },
+      },
+    ],
+  },
 ];
 
 /** Voice-correct label for one option. */
@@ -455,7 +554,7 @@ export function questionOptions(question, role) {
   const opts = question.options;
   if (role !== 'parent') return opts;
   const hasUnsure = opts.some((o) => o.unsure);
-  if (hasUnsure || question.type === 'select') return opts;
+  if (hasUnsure || question.type === 'select' || question.type === 'number') return opts;
   return [...opts, UNSURE];
 }
 
