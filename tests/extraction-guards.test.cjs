@@ -9,7 +9,7 @@ const moduleStub = { exports: {} };
 vm.runInNewContext(source.slice(0, source.lastIndexOf('\nmain().catch')) +
   '\nmodule.exports = { isVocationalSchool, FIELD_GUARDS };', {
   module: moduleStub, __dirname: join(__dirname, '../scripts'),
-  process: { env: { SUPABASE_URL: 'synthetic', SUPABASE_SERVICE_ROLE_KEY: 'synthetic', OPENROUTER_API_KEY: 'synthetic' } },
+  process: { argv: [], env: { SUPABASE_URL: 'synthetic', SUPABASE_SERVICE_ROLE_KEY: 'synthetic', OPENROUTER_API_KEY: 'synthetic' } },
   require(name) {
     if (name === 'dotenv') return { config() {} };
     if (name === '@supabase/supabase-js') return { createClient: () => ({}) };
