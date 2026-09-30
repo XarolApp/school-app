@@ -405,49 +405,130 @@
   padding-top: var(--space-md);
 }
 
-.sd-program-trend-label {
+/* ---------- HistoryChart: the only place older years appear ---------- */
+.sd-hc {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+.sd-hc-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+.sd-hc-title {
   font-family: var(--sans);
   font-size: var(--fs-label-caps);
   font-weight: var(--fw-label-caps);
   letter-spacing: var(--ls-label-caps);
   text-transform: uppercase;
   color: var(--ink3);
-  margin-bottom: var(--space-sm);
 }
-.sd-trend-rows {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-md);
-}
-.sd-trend-row {
+.sd-hc-tabs {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--r-chip);
+  background: var(--surface2);
 }
-.sd-trend-year {
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-sm);
+.sd-hc-tab {
+  min-height: 36px;
+  padding: 0 var(--space-md);
+  border: 0;
+  border-radius: calc(var(--r-chip) - 3px);
+  background: transparent;
+  color: var(--ink2);
   font-family: var(--sans);
   font-size: var(--fs-caption);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 160ms ease, color 160ms ease;
 }
-.sd-trend-year strong {
-  font-size: var(--fs-body-sm);
-  font-weight: 500;
+.sd-hc-tab.is-active {
+  background: var(--surface);
   color: var(--ink);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
 }
-.sd-trend-bar-track {
-  height: 6px;
+.sd-hc-tab:focus-visible {
+  outline: 2px solid var(--acc);
+  outline-offset: 2px;
+}
+.sd-hc-svg {
+  width: 100%;
+  max-width: 560px;
+  height: auto;
+  overflow: visible;
+}
+.sd-hc-grid { stroke: var(--line); stroke-dasharray: 3 4; }
+.sd-hc-line { fill: none; stroke: var(--acc); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.sd-hc-dot { fill: var(--surface); stroke: var(--acc); stroke-width: 3; }
+.sd-hc-pt.is-current .sd-hc-dot { fill: var(--acc); }
+.sd-hc-band { fill: var(--accent-bg); stroke: none; }
+.sd-hc-val {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 700;
+  fill: var(--ink);
+  text-anchor: middle;
+  font-variant-numeric: tabular-nums;
+}
+.sd-hc-year { font-family: var(--sans); font-size: 12px; fill: var(--ink3); text-anchor: middle; }
+.sd-hc-year.is-current { font-weight: 700; fill: var(--ink); }
+.sd-hc-note {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  color: var(--ink3);
+}
+/* The SVG scales down with the card; on a phone it renders at ~0.65×, so the
+   labels are set larger in viewBox units to land at ~12px on screen. */
+@media (max-width: 600px) {
+  .sd-hc-val { font-size: 19px; }
+  .sd-hc-year { font-size: 17px; }
+  .sd-hc-tabs { width: 100%; }
+  .sd-hc-tab { flex: 1; padding: 0 var(--space-xs); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sd-hc-line {
+    stroke-dasharray: 1;
+    animation: sd-hc-draw 700ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  }
+  .sd-hc-band { animation: sd-hc-in 500ms cubic-bezier(0.23, 1, 0.32, 1) both 200ms; }
+  .sd-hc-pt {
+    animation: sd-hc-in 300ms cubic-bezier(0.23, 1, 0.32, 1) both;
+    animation-delay: calc(120ms + var(--i) * 90ms);
+  }
+}
+@keyframes sd-hc-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes sd-hc-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* A school whose newest data predates the current year. Muted value plus a
+   labelled badge: the year must be readable, not only implied by colour. */
+.sd-fact-tile.is-old .sd-fact-value { color: var(--ink2); }
+.sd-old-badge {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
   border-radius: 999px;
-  background: var(--track);
+  border: 1px solid var(--line2);
+  background: var(--surface2);
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink2);
 }
-.sd-trend-bar-fill {
-  height: 6px;
-  border-radius: 999px;
-  background: var(--ink2);
-}
-.sd-trend-bar-fill.is-current {
-  background: var(--acc);
+
+/* School-wide history card between the hero and the obory. */
+.sd-history {
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  padding: var(--space-lg);
+  background: var(--surface);
 }
 
 .sd-program-discontinued {
@@ -952,9 +1033,6 @@
   .sd-program-stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .sd-trend-rows {
-    grid-template-columns: 1fr;
-  }
   .sd-location {
     grid-template-columns: 1fr;
   }
@@ -1017,4 +1095,26 @@
   .sd-missing-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* Obor search on schools with more than 3 obory */
+.sd-program-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--space-md);
+  max-width: 420px;
+}
+.sd-program-search svg {
+  position: absolute;
+  left: 12px;
+  color: var(--ink3);
+  pointer-events: none;
+}
+.sd-program-search .input { width: 100%; padding-left: 36px; }
+.sd-program-search-count {
+  margin: 0 0 var(--space-sm);
+  font-family: var(--sans);
+  font-size: var(--fs-caption);
+  color: var(--ink3);
 }

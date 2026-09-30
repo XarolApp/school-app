@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { summarizeAdmission } from '../../lib/schoolPrograms';
 import { DISTRICTS } from '../../lib/pragueDistricts';
 
 /**
@@ -160,7 +161,8 @@ export class PragueScene {
       .filter((s) => s.latitude && s.longitude)
       .map((s) => {
         const [x, z] = lonLatToWorld(s.longitude, s.latitude);
-        return { ...s, x, z, home: Math.hypot(x - HOME[0], z - HOME[1]) };
+        const adm = summarizeAdmission(s);
+        return { ...s, x, z, home: Math.hypot(x - HOME[0], z - HOME[1]), adm, barCutoff: adm?.cutoffMax ?? 0 };
       });
     const n = this.schools.length;
 
@@ -389,8 +391,8 @@ export class PragueScene {
       aColor[i * 3 + 1] = cur.c.g;
       aColor[i * 3 + 2] = cur.c.b;
 
-      // Bars: height = latest admission cutoff, only where the point is lit.
-      const cutoff = s.admission_cutoff ?? 0;
+      // Bars: height = the school's highest obor cutoff in its newest year, only where the point is lit.
+      const cutoff = s.barCutoff;
       const h =
         st.barsMix * (cutoff ? ((cutoff - 8) / 72) * 1.5 : 0) * Math.max(0, (a - 0.5) / 0.5) * (1 - st.topMix * (1 - isTop));
       cur.h = lerp(cur.h, h, k);

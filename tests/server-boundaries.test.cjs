@@ -215,6 +215,18 @@ test('school-list capacity sums current admission groups and excludes historical
   assert.equal(JSON.stringify(rows), before);
 });
 
+test('school-list rows carry the year and per-obor counts; cutoff averaged within one obor only', () => {
+  const rows = [
+    { kkov: 'a', obor_nazev: 'A', rok: 2026, kapacita: 10, prihlasky: 30, prijati: 8, cutoff: 40 },
+    { kkov: 'a', obor_nazev: 'A', rok: 2026, kapacita: 5, prihlasky: 10, prijati: 2, cutoff: 50 },
+    { kkov: 'a', obor_nazev: 'A', rok: 2025, kapacita: 15, prihlasky: 99, prijati: 9, cutoff: 90 },
+    { kkov: 'b', obor_nazev: 'B', rok: 2026, kapacita: 20, prihlasky: 20, prijati: 20, cutoff: null },
+  ];
+  const [a, b] = harness().slimProgramsForList(rows);
+  assert.deepEqual([a.rok, a.prihlasky, a.prijati, a.cutoff], [2026, 40, 10, 45]);
+  assert.deepEqual([b.rok, b.cutoff], [2026, null]);
+});
+
 test('health check keeps the documented machine-readable response', async () => {
   const res = await harness().call('get', '/');
   assert.equal(res.body.status, 'ok');

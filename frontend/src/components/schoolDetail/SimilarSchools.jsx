@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchSchools } from '../../api';
 import { deriveFeatures, districtOf, districtHops } from '../../lib/schoolFeatures';
+import { summarizeAdmission, formatCutoffRange } from '../../lib/schoolPrograms';
 
 const hasMaturita = (school) => (school.school_programs ?? []).some((p) => p.maturitni === true);
 const hasVyucni = (school) => (school.school_programs ?? []).some((p) => p.maturitni === false);
@@ -60,7 +61,7 @@ function SimilarSchools({ school }) {
             <div className="sd-similar-name">{s.name}</div>
             <div className="sd-similar-meta">
               {s.location}
-              {s.admission_cutoff != null ? ` · hranice ${s.admission_cutoff} b.` : ''}
+              {formatCutoffRange(summarizeAdmission(s)) ? ` · hranice ${summarizeAdmission(s).year} ${formatCutoffRange(summarizeAdmission(s))}` : ''}
             </div>
           </Link>
         ))}

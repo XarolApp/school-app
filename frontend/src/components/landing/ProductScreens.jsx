@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { fetchSchool, fetchSchools } from '../../api';
-import { groupProgramsByObor } from '../../lib/schoolPrograms';
+import { groupProgramsByObor, summarizeAdmission, formatCutoffRange } from '../../lib/schoolPrograms';
+
+/** The four-year gymnázium obor's newest-year cutoff (the mocks are about that obor). */
+const gymCut = (s) => s?.school_programs?.find((p) => p.kkov?.startsWith('79-41') && p.cutoff != null)?.cutoff ?? null;
 import { QUESTIONS } from '../../pages/onboarding/quizQuestions';
 import './productScreens.css';
 
@@ -31,9 +34,9 @@ function loadData() {
     dataPromise = fetchSchools()
       .then(async (rows) => {
         const list = (Array.isArray(rows) ? rows : []).filter(
-          (s) => s.admission_cutoff != null && s.district && (s.school_programs ?? []).some((p) => p.kkov?.startsWith('79-41')),
+          (s) => gymCut(s) != null && s.district,
         );
-        list.sort((a, b) => b.admission_cutoff - a.admission_cutoff);
+        list.sort((a, b) => gymCut(b) - gymCut(a));
         // Spread across the range so the list isn't five elite schools.
         const picks = [6, 13, 20, 27, 34].map((i) => list[i]).filter(Boolean);
         let detail = null;
@@ -134,7 +137,7 @@ export function ResultsScreen({ data }) {
                 <span className="pm-why">
                   <i>Gymnázium</i>
                   <i>{s.district}</i>
-                  <i>hranice {Math.round(s.admission_cutoff)} b.</i>
+                  <i>hranice {Math.round(gymCut(s))} b.</i>
                 </span>
               )}
             </li>
@@ -211,12 +214,14 @@ export function DetailScreen({ data }) {
   );
 }
 
+const pct = (v) => (v != null ? `${Math.round(v)} %` : null);
+
 export function CompareScreen({ data }) {
   const [a, b] = data.schools;
   const rows = [
     ['Městská část', a?.district, b?.district],
-    ['Hranice přijetí', a && `${Math.round(a.admission_cutoff)} b.`, b && `${Math.round(b.admission_cutoff)} b.`],
-    ['Přijato', a?.acceptance_rate != null && `${Math.round(a.acceptance_rate)} %`, b?.acceptance_rate != null && `${Math.round(b.acceptance_rate)} %`],
+    ['Hranice přijetí 2026', a && formatCutoffRange(summarizeAdmission(a)), b && formatCutoffRange(summarizeAdmission(b))],
+    ['Přijato 2026', pct(summarizeAdmission(a)?.acceptance), pct(summarizeAdmission(b)?.acceptance)],
     ['Zřizovatel', a?.school_programs?.[0]?.zrizovatel, b?.school_programs?.[0]?.zrizovatel],
   ];
   return (
@@ -242,7 +247,7 @@ export function CompareScreen({ data }) {
 
 export function PrihlaskaScreen({ data }) {
   const picks = [0, 1, 2].map((i) => data.schools[i + 2] ?? data.schools[i]);
-  const cuts = picks.filter(Boolean).map((s) => Math.round(s.admission_cutoff)).sort((x, y) => x - y);
+  const cuts = picks.filter(Boolean).map((s) => Math.round(gymCut(s))).sort((x, y) => x - y);
   const score = cuts.length ? cuts[Math.floor(cuts.length / 2)] + 1 : 64;
   return (
     <div className="pm-screen pm-app">
@@ -256,7 +261,7 @@ export function PrihlaskaScreen({ data }) {
       <ol className="pm-app-list">
         {[0, 1, 2].map((i) => {
           const s = picks[i];
-          const cut = s ? Math.round(s.admission_cutoff) : null;
+          const cut = s ? Math.round(gymCut(s)) : null;
           const above = cut != null && score >= cut;
           return (
             <li key={i} className="pm-app-item" style={{ '--i': i }}>

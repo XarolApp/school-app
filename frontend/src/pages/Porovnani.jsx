@@ -146,7 +146,7 @@ function Porovnani() {
           <h1 className="ss-headline-lg h">Porovnání škol</h1>
           <p className="ss-body-md dp-subtitle">
             {schools.length} {schools.length === 1 ? 'škola' : schools.length < 5 ? 'školy' : 'škol'} vedle sebe,
-            stejné řádky. Čísla jsou z Cermatu, průměr 2024–2026.
+            stejné řádky. Čísla jsou z Cermatu, přijímačky 2026.
           </p>
         </div>
         <div className="dp-header-actions">
@@ -249,8 +249,8 @@ function Porovnani() {
       </div>
 
       <p className="ss-caption dp-footnote">
-        Hranice přijetí, míra přijetí a počty míst jsou reálná data z Cermatu (1. kolo, průměr 2024–2026, přes
-        všechny obory školy). U nových škol může být období kratší. Klady a zápory jsou automatické shrnutí těchto
+        Hranice přijetí, míra přijetí a počty míst jsou reálná data z Cermatu (1. kolo 2026). Hranice je rozpětí
+        mezi obory školy. Rok v závorce znamená, že škola novější data nemá. Starší roky najdeš v grafu v detailu školy. Klady a zápory jsou automatické shrnutí těchto
         dat, ne názor školy.
       </p>
 

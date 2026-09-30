@@ -4,6 +4,7 @@ import { escapeHtml } from '../../lib/escapeHtml';
 import { parseSchoolContact } from '../../lib/schoolContact';
 import 'leaflet/dist/leaflet.css';
 import '../SchoolMap.css';
+import { summarizeAdmission, formatCutoffRange } from '../../lib/schoolPrograms';
 
 /**
  * A single static pin — deliberately NOT the full SchoolMap component (that
@@ -34,8 +35,7 @@ function SchoolLocation({ school }) {
       maxZoom: 19,
     }).addTo(map);
 
-    const label =
-      school.admission_cutoff != null ? `${String(school.admission_cutoff).replace('.', ',')} b.` : school.name;
+    const label = formatCutoffRange(summarizeAdmission(school)) ?? school.name;
     const icon = L.divIcon({
       html: `<span class="sm-pin"><span class="sm-pin-name">${escapeHtml(school.name)}</span><span class="sm-pin-pct">${escapeHtml(label)}</span></span>`,
       className: 'sm-pin-wrap',
@@ -48,7 +48,7 @@ function SchoolLocation({ school }) {
       map.remove();
       mapRef.current = null;
     };
-  }, [hasCoords, school.latitude, school.longitude, school.name, school.admission_cutoff]);
+  }, [hasCoords, school]);
 
   const streetViewUrl = hasCoords
     ? `https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${school.latitude},${school.longitude}`

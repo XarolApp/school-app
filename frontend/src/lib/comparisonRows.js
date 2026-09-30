@@ -11,7 +11,7 @@
  * be drawn, not omitted").
  */
 
-import { summarizeCurrentYear, groupProgramsByObor, latestProgramValue } from './schoolPrograms';
+import { summarizeCurrentYear, groupProgramsByObor, latestProgramValue, summarizeAdmission, formatCutoffRange } from './schoolPrograms';
 
 export const numCz = (v, digits = 1) => (v == null ? null : v.toLocaleString('cs-CZ', { maximumFractionDigits: digits }));
 
@@ -49,8 +49,12 @@ function row(id, label, values, formatted, bestI, info, extremeTag = null) {
 export function buildComparisonRows(schools) {
   const summaries = schools.map((s) => summarizeCurrentYear(groupProgramsByObor(s)));
 
-  const cutoffs = schools.map((s) => s.admission_cutoff ?? null);
-  const rates = schools.map((s) => s.acceptance_rate ?? null);
+  const adms = schools.map((s) => summarizeAdmission(s));
+  const oldTag = (a) => (a?.isOld ? ` (${a.year})` : '');
+  // "Best" compares the easiest obor, the one a student could realistically reach.
+  const cutoffs = adms.map((a) => a?.cutoffMin ?? null);
+  const rates = adms.map((a) => a?.acceptance ?? null);
+  const admYear = adms.find((a) => a && !a.isOld)?.year ?? adms.find(Boolean)?.year ?? '';
   const ratios = summaries.map((sum) => sum.ratio);
   const kapacity = summaries.map((sum) => sum.kapacita);
 
@@ -60,18 +64,18 @@ export function buildComparisonRows(schools) {
     rows: [
       row(
         'hranice',
-        'Hranice přijetí',
+        `Hranice přijetí ${admYear}`,
         cutoffs,
-        cutoffs.map((v) => `${numCz(v)} b.`),
+        adms.map((a) => `${formatCutoffRange(a)}${oldTag(a)}`),
         bestIndex(cutoffs, { lowerIsBetter: true }),
-        'Průměr z posledních 3 let, přes všechny obory školy.',
+        'Rozpětí od oboru s nejnižší po obor s nejvyšší hranicí. Starší roky najdeš v grafu v detailu školy. Rok v závorce znamená starší data.',
         'nejnižší'
       ),
       row(
         'prijato',
-        'Přijato z přihlášených',
+        `Přijato z přihlášených ${admYear}`,
         rates,
-        rates.map((v) => `${numCz(v)} %`),
+        rates.map((v, i) => `${numCz(v)} %${oldTag(adms[i])}`),
         bestIndex(rates),
         undefined,
         'nejvyšší'

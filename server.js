@@ -942,7 +942,9 @@ async function fetchAllSchools(select) {
 
 const LIST_PROGRAM_FIELDS = [
   'maturitni', 'jpz_povinna', 'typ_skoly', 'jazyk_studia',
-  'kkov', 'zrizovatel', 'kapacita', 'cutoff',
+  'kkov', 'zrizovatel', 'kapacita', 'cutoff', 'rok', 'prihlasky', 'prijati',
+  // Per-obor name and study form, for the search filters.
+  'obor_nazev', 'forma_vzdelavani',
 ];
 
 /**
@@ -963,12 +965,23 @@ function slimProgramsForList(programs) {
     if ((row.rok ?? 0) !== latestYear) continue;
     const key = [row.kkov, row.obor_nazev, row.typ_skoly, row.delka_studia, row.jazyk_studia].join('|');
     const prev = byObor.get(key);
-    if (!prev) byObor.set(key, { ...row });
-    else if (row.kapacita != null) prev.kapacita = (prev.kapacita ?? 0) + row.kapacita;
+    if (!prev) {
+      byObor.set(key, { ...row, cutoffs: row.cutoff != null ? [row.cutoff] : [] });
+      continue;
+    }
+    // Several capacity groups of one obor: counts add up, cutoffs are averaged
+    // within that one obor (same as frontend/src/lib/schoolPrograms.js).
+    for (const f of ['kapacita', 'prihlasky', 'prijati']) {
+      if (row[f] != null) prev[f] = (prev[f] ?? 0) + row[f];
+    }
+    if (row.cutoff != null) prev.cutoffs.push(row.cutoff);
   }
-  return [...byObor.values()].map((row) =>
-    Object.fromEntries(LIST_PROGRAM_FIELDS.map((f) => [f, row[f]]))
-  );
+  return [...byObor.values()].map((row) => {
+    const cutoff = row.cutoffs.length
+      ? Math.round((row.cutoffs.reduce((s, c) => s + c, 0) / row.cutoffs.length) * 10) / 10
+      : null;
+    return Object.fromEntries(LIST_PROGRAM_FIELDS.map((f) => [f, f === 'cutoff' ? cutoff : row[f]]));
+  });
 }
 
 async function withMatchScores(userId, schools) {

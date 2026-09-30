@@ -11,7 +11,7 @@
  * shortlist on screen, not an absolute grade.
  */
 
-import { summarizeCurrentYear, groupProgramsByObor, latestProgramValue } from './schoolPrograms';
+import { summarizeCurrentYear, groupProgramsByObor, latestProgramValue, summarizeAdmission } from './schoolPrograms';
 
 // school_extracted_details comes back as an array from Supabase's nested
 // select (one row per school) — same normalization SchoolDetail.jsx already
@@ -109,10 +109,12 @@ function rawForCriterion(id, schools) {
       return schools.map((s) => (typeof s.match_score === 'number' ? s.match_score / 100 : null));
     }
     case 'sance': {
-      // Lower cutoff = easier = better, so invert.
-      const scale = minMax(schools.map((s) => s.admission_cutoff));
-      return schools.map((s) => {
-        const v = scale(s.admission_cutoff);
+      // Lower cutoff = easier = better, so invert. The easiest obor in the
+      // newest year: the one a student could realistically reach.
+      const cutoffs = schools.map((s) => summarizeAdmission(s)?.cutoffMin ?? null);
+      const scale = minMax(cutoffs);
+      return cutoffs.map((c) => {
+        const v = scale(c);
         return v == null ? null : 1 - v;
       });
     }

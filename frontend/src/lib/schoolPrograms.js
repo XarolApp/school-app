@@ -1,9 +1,8 @@
 /**
  * Per-obor aggregation of `school.school_programs` for the school detail
- * page — the school-level admission_cutoff / acceptance_rate columns are an
- * AVERAGE across every obor a school offers, useful as a headline number but
- * useless for judging any one obor. This groups the raw rows back into one
- * card per real obor, with a real 3-year trend.
+ * page. This groups the raw rows back into one card per real obor, with its
+ * year-by-year history (shown only in the history charts; everything else
+ * shows the newest year).
  *
  * Cermat's file genuinely publishes several rows for the same
  * school+obor+year (different zaměření/capacity groups within one obor) —
@@ -154,6 +153,105 @@ function buildTrend(years, presentYearsDesc) {
   }
 
   return { direction: delta < 0 ? 'down' : delta > 0 ? 'up' : 'flat', note };
+}
+
+/** The newest Cermat year imported. Bump after each yearly import; a school
+ *  whose newest rows are older than this is shown as "starší data". */
+export const CURRENT_ADMISSION_YEAR = 2026;
+
+const numCz = (v) => String(v).replace('.', ',');
+
+/**
+ * School-level admission numbers for ONE year: the school's newest year in
+ * `school_programs`. Never averaged across years, and the cutoff is a range
+ * over the school's obory, never their average. Works on both the slimmed
+ * list shape (one row per obor, newest year only) and the full detail shape.
+ *
+ * @returns {null | { year, isOld, cutoffMin, cutoffMax, acceptance, prihlasky, prijati }}
+ */
+export function summarizeAdmission(school) {
+  const rows = (school?.school_programs ?? []).filter((r) => Number.isFinite(r.rok));
+  if (!rows.length) return null;
+  const year = Math.max(...rows.map((r) => r.rok));
+
+  const groups = new Map();
+  for (const row of rows) {
+    if (row.rok !== year) continue;
+    const key = groupKey(row);
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(row);
+  }
+  const obory = [...groups.values()].map(aggregateYear);
+
+  const cutoffs = obory.map((o) => o.cutoff).filter((c) => c != null);
+  // A rate only from obory that report both counts, so a missing prijati
+  // cannot read as "nobody admitted".
+  const counted = obory.filter((o) => o.prihlasky > 0 && o.prijati != null);
+  const prihlasky = counted.reduce((s, o) => s + o.prihlasky, 0);
+  const prijati = counted.reduce((s, o) => s + o.prijati, 0);
+
+  return {
+    year,
+    isOld: year < CURRENT_ADMISSION_YEAR,
+    cutoffMin: cutoffs.length ? Math.min(...cutoffs) : null,
+    cutoffMax: cutoffs.length ? Math.max(...cutoffs) : null,
+    acceptance: prihlasky > 0 ? Math.round((prijati / prihlasky) * 1000) / 10 : null,
+    prihlasky: counted.length ? prihlasky : null,
+    prijati: counted.length ? prijati : null,
+  };
+}
+
+/** "26–35 b.", "35 b." for a one-obor school, or null. */
+export function formatCutoffRange(adm) {
+  if (adm?.cutoffMin == null) return null;
+  return adm.cutoffMin === adm.cutoffMax
+    ? `${numCz(adm.cutoffMin)} b.`
+    : `${numCz(adm.cutoffMin)}–${numCz(adm.cutoffMax)} b.`;
+}
+
+/** "2026", or "starší data, 2025" when the school has nothing newer. */
+export function admissionYearLabel(adm) {
+  if (!adm) return '';
+  return adm.isOld ? `starší data, ${adm.year}` : String(adm.year);
+}
+
+/**
+ * One point per year for the history charts. `cutoffMin`/`cutoffMax` span
+ * the obory that year (a school-level range, never averaged); for a single
+ * obor they are equal. Years with no rows are left out, not zero-filled.
+ */
+export function yearlyHistory(rowsOrEntry) {
+  const perYear = Array.isArray(rowsOrEntry)
+    ? rowsOrEntry
+    : Object.entries(rowsOrEntry.years).map(([rok, y]) => ({ rok: Number(rok), obory: [y] }));
+  return perYear
+    .map(({ rok, obory }) => {
+      const cutoffs = obory.map((o) => o.cutoff).filter((c) => c != null);
+      const counted = obory.filter((o) => o.prihlasky > 0 && o.prijati != null);
+      const prihlasky = counted.reduce((s, o) => s + o.prihlasky, 0);
+      const prijati = counted.reduce((s, o) => s + o.prijati, 0);
+      return {
+        year: rok,
+        cutoffMin: cutoffs.length ? Math.min(...cutoffs) : null,
+        cutoffMax: cutoffs.length ? Math.max(...cutoffs) : null,
+        prihlasky: sumKnown(obory.map((o) => o.prihlasky)),
+        kapacita: sumKnown(obory.map((o) => o.kapacita)),
+        acceptance: prihlasky > 0 ? Math.round((prijati / prihlasky) * 1000) / 10 : null,
+      };
+    })
+    .sort((a, b) => a.year - b.year);
+}
+
+/** School-wide history: every obor's per-year numbers, grouped by year. */
+export function schoolHistory(entries) {
+  const byYear = new Map();
+  for (const e of entries) {
+    for (const [rok, y] of Object.entries(e.years)) {
+      if (!byYear.has(rok)) byYear.set(rok, []);
+      byYear.get(rok).push(y);
+    }
+  }
+  return yearlyHistory([...byYear].map(([rok, obory]) => ({ rok: Number(rok), obory })));
 }
 
 /**

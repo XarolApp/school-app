@@ -638,6 +638,22 @@
   margin: 0;
 }
 
+.ss-range-row {
+  display: flex;
+  gap: var(--space-sm);
+}
+.ss-range-box {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+.ss-range-input {
+  width: 100%;
+  min-width: 0;
+}
+
 .ss-travel-head {
   display: flex;
   align-items: baseline;
@@ -1609,4 +1625,77 @@
     border-radius: 0;
     border: 0;
   }
+}
+
+/* ---------- Obor picker grouped by KKOV group ---------- */
+.ss-obor-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--line);
+}
+.ss-obor-group:last-of-type { border-bottom: 0; }
+.ss-obor-group-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  min-height: 36px;
+}
+.ss-obor-group-head label,
+.ss-obor-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  font-family: var(--sans);
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-body-sm);
+  color: var(--ink);
+  cursor: pointer;
+}
+.ss-obor-group-head input,
+.ss-obor-item input { margin-top: 3px; flex-shrink: 0; }
+.ss-obor-item {
+  min-height: 30px;
+  padding: 4px 0 4px var(--space-lg);
+  color: var(--ink2);
+}
+.ss-obor-group-head .ss-facet-count,
+.ss-obor-item .ss-facet-count { color: var(--ink3); white-space: nowrap; }
+.ss-link-btn {
+  flex-shrink: 0;
+  border: 0;
+  background: none;
+  padding: 4px 0;
+  font-family: var(--sans);
+  font-size: var(--fs-caption);
+  color: var(--acc);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+.ss-link-btn:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
+
+/* Named filter groups with a hover explanation */
+.ss-facet-group-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* Sort direction toggle: says which way the list runs, in words */
+.ss-sort-dir {
+  gap: 6px;
+}
+.ss-sort-dir-note {
+  color: var(--ink3);
+  font-weight: 400;
+}
+.ss-sort-dir-row {
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--line);
+  margin-top: var(--space-sm);
 }

@@ -4,6 +4,8 @@ import {
   Search as SearchIcon,
   X,
   SlidersHorizontal,
+  ArrowDown,
+  ArrowUp,
   ChevronDown,
   Check,
   Scale,
@@ -32,6 +34,8 @@ import {
   compareByCount,
 } from '../lib/schoolSearch';
 import { deriveFeatures, FOCUS_CATEGORIES } from '../lib/schoolFeatures';
+import { summarizeAdmission, formatCutoffRange } from '../lib/schoolPrograms';
+import { kkovGroupOf, kkovGroupName } from '../lib/kkovGroups';
 import { useAuth } from '../components/AuthContext';
 import FavoriteButton from '../components/FavoriteButton';
 import SchoolMap from '../components/SchoolMap';
@@ -39,6 +43,7 @@ import SearchFilters, {
   AdmissionsGroup,
   DistrictGroup,
   FieldGroup,
+  OborGroup,
   TypGroup,
   UkonceniGroup,
   ZrizovatelGroup,
@@ -103,16 +108,14 @@ const misto = (n) => plural(n, 'místo', 'místa', 'míst');
 const numCz = (v) => String(v).replace('.', ',');
 const matchLevel = (score) => (score >= 85 ? 'is-strong' : score >= 70 ? 'is-mid' : 'is-low');
 
-// admissionCutoff is an average POINTS score (Czech+Math combined out of a
-// fixed 100 = 50+50 max, halved from Cermat's raw 0–200 sum). 1 % SKÓR in
-// Cermat's file literally equals 1 point here — every student in the
-// aggregated file we import sits on that same 50+50 max, accommodated
-// students on a modified test are excluded from that file entirely — so
-// showing it as points instead of % loses nothing and is what a 15-year-old
-// already knows how to read. Always says "no data" rather than a fabricated
-// number for a school the import script hasn't matched yet.
-const cutoffLabel = (cutoff) =>
-  cutoff == null ? 'hranice přijetí zatím bez dat' : `hranice přijetí ${numCz(cutoff)} b.`;
+// Cutoffs are POINTS (Czech+Math out of 100 = 50+50, halved from Cermat's
+// raw 0–200 sum), newest year only, as a range across the school's obory.
+// Always "no data" rather than a fabricated number for an unmatched school.
+const cutoffLabel = (adm) => {
+  const range = formatCutoffRange(adm);
+  if (!range) return 'hranice přijetí zatím bez dat';
+  return `hranice přijetí ${adm.year} ${range}${adm.isOld ? ' (starší data)' : ''}`;
+};
 
 function zrizovatelLabel(value) {
   if (value === 'veřejné/státní') return 'veřejná';
@@ -121,11 +124,25 @@ function zrizovatelLabel(value) {
   return value;
 }
 
+// `defaultDir` is the direction a sort starts in; the direction button flips it.
+// `dirs` names both directions in words, so "sestupně" never has to be guessed.
 const SORTS = [
-  { id: 'shoda', label: 'Nejlepší shoda', short: 'Nejlepší shoda', tradeoff: 'podle tvého dotazníku' },
-  { id: 'match', label: 'Nejvíc splněných kritérií', short: 'Nejvíc kritérií', tradeoff: 'nebere ohled na dojezd' },
-  { id: 'cut', label: 'Nejnižší hranice přijetí', short: 'Nejnižší hranice', tradeoff: 'bezpečnější, ne nutně silnější škola' },
-  { id: 'acceptance', label: 'Největší šance na přijetí', short: 'Největší šance', tradeoff: 'podle loňské míry přijetí' },
+  {
+    id: 'shoda', label: 'Shoda s tebou', short: 'Shoda', tradeoff: 'podle tvého dotazníku', defaultDir: 'desc',
+    dirs: { asc: 'od nejnižší shody', desc: 'od nejvyšší shody' },
+  },
+  {
+    id: 'cut', label: 'Hranice přijetí', short: 'Hranice', tradeoff: 'nižší hranice = snazší se dostat', defaultDir: 'asc',
+    dirs: { asc: 'od nejnižší hranice', desc: 'od nejvyšší hranice' },
+  },
+  {
+    id: 'acceptance', label: 'Míra přijetí', short: 'Přijato', tradeoff: 'kolik přihlášených škola přijala', defaultDir: 'desc',
+    dirs: { asc: 'od nejnižší míry přijetí', desc: 'od nejvyšší míry přijetí' },
+  },
+  {
+    id: 'places', label: 'Počet míst', short: 'Míst', tradeoff: 'míst v přijímačkách 2026', defaultDir: 'desc',
+    dirs: { asc: 'od nejméně míst', desc: 'od nejvíce míst' },
+  },
 ];
 
 const FIELD_ICONS = {
@@ -149,9 +166,7 @@ const UNMET_LABELS = {
   zrizovatele: 'filtr zřizovatele',
   jazyky: 'filtr jazyka výuky',
   jpz: 'filtr přijímací zkoušky',
-  cutoffMax: 'horní hranici přijetí',
-  acceptanceMin: 'dolní hranici míry přijetí',
-  kapacitaMin: 'minimální kapacitu',
+  obor: 'filtr oborů, hranice, míst nebo formy studia',
   q: 'hledaný text',
 };
 
@@ -178,6 +193,20 @@ function summarizePrograms(school) {
     typy: [...new Set(programs.map((p) => p.typ_skoly).filter(Boolean))],
     jazyky: [...new Set(programs.map((p) => p.jazyk_studia).filter(Boolean))],
     kkov: [...new Set(programs.map((p) => p.kkov).filter(Boolean))],
+    // One entry per obor, so a range filter can require the SAME obor to fit
+    // every limit at once ("IT obor with hranice under 60") instead of matching
+    // an easy obor on one number and a hard one on another.
+    obory: programs.map((p) => ({
+      kkov: p.kkov ?? null,
+      nazev: p.obor_nazev ?? null,
+      forma: p.forma_vzdelavani ?? null,
+      cutoff: p.cutoff ?? null,
+      kapacita: p.kapacita ?? null,
+      prihlasky: p.prihlasky ?? null,
+      prijati: p.prijati ?? null,
+      rok: p.rok ?? null,
+    })),
+    formy: [...new Set(programs.map((p) => p.forma_vzdelavani).filter(Boolean))],
     zrizovatel: programs[0]?.zrizovatel ?? null,
     kapacita: programs.some((p) => p.kapacita != null)
       ? programs.reduce((sum, p) => sum + (p.kapacita || 0), 0)
@@ -213,13 +242,60 @@ function buildRow(school) {
     progs: allProgs.slice(0, 2),
     progTotal: allProgs.length,
     p,
-    // Real data, average % score across every obor and every year Cermat's
-    // file has been imported for — see import-admission-data.js. null means
-    // this school hasn't been matched to a Cermat row yet, not a 0.
-    admissionCutoff: school.admission_cutoff ?? null,
-    acceptanceRate: school.acceptance_rate ?? null,
+    // Newest year only (see summarizeAdmission). null = no Cermat rows, not 0.
+    admission: summarizeAdmission(school),
   };
 }
+
+// Range filters that apply to one obor's own numbers. Empty string = no limit.
+// Data is the latest Cermat year; an obor with no number for a field (e.g.
+// talent-exam obory have no hranice) fails an active limit on it — "no data"
+// is not "within range".
+const RANGES = [
+  { id: 'cutoff', label: 'Hranice přijetí', unit: 'b.', get: (o) => o.cutoff },
+  { id: 'places', label: 'Počet míst', unit: '', get: (o) => o.kapacita },
+  {
+    id: 'applicants',
+    label: 'Uchazečů na místo',
+    unit: '',
+    get: (o) => (o.kapacita > 0 && o.prihlasky != null ? o.prihlasky / o.kapacita : null),
+  },
+  {
+    id: 'accepted',
+    label: 'Přijato z přihlášených',
+    unit: '%',
+    get: (o) => (o.prihlasky > 0 && o.prijati != null ? (100 * o.prijati) / o.prihlasky : null),
+  },
+];
+
+// 0 limits nothing (every count and cutoff is >= 0), so it counts as no limit.
+const bound = (v) => (v === '' || v == null || Number.isNaN(Number(v)) || Number(v) === 0 ? null : Number(v));
+const rangeActive = (f, r) => bound(f[`${r.id}Min`]) != null || bound(f[`${r.id}Max`]) != null;
+const oborFiltersActive = (f) => f.obory.length > 0 || f.formy.length > 0 || RANGES.some((r) => rangeActive(f, r));
+
+function oborPasses(o, f) {
+  if (f.obory.length && !f.obory.includes(o.kkov)) return false;
+  if (f.formy.length && !f.formy.includes(o.forma)) return false;
+  return RANGES.every((r) => {
+    if (!rangeActive(f, r)) return true;
+    const v = r.get(o);
+    const lo = bound(f[`${r.id}Min`]);
+    const hi = bound(f[`${r.id}Max`]);
+    return v != null && (lo == null || v >= lo) && (hi == null || v <= hi);
+  });
+}
+
+function rangeLabel(r, f) {
+  const lo = bound(f[`${r.id}Min`]);
+  const hi = bound(f[`${r.id}Max`]);
+  const u = r.unit ? ` ${r.unit}` : '';
+  if (lo != null && hi != null) return `${r.label} ${numCz(lo)}–${numCz(hi)}${u}`;
+  if (lo != null) return `${r.label} od ${numCz(lo)}${u}`;
+  return `${r.label} do ${numCz(hi)}${u}`;
+}
+
+const FORMA_LABELS = { den: 'Denní', vec: 'Večerní', dal: 'Dálková', komb: 'Kombinovaná', dist: 'Distanční' };
+const formaLabel = (v) => FORMA_LABELS[v] ?? v;
 
 const DEFAULT_FILTERS = {
   query: '',
@@ -230,13 +306,14 @@ const DEFAULT_FILTERS = {
   zrizovatele: [],
   jazyky: [],
   jpz: [], // 'povinna' | 'nepovinna'
-  cutoffMax: 100, // 100 == "bez omezení"
-  acceptanceMin: 0, // 0 == "bez omezení"
-  kapacitaMin: 0, // 0 == "bez omezení"
+  obory: [], // KKOV codes, matched against one obor at a time — see oborPasses
+  formy: [], // Cermat form codes: den | dal | komb | dist
+  ...Object.fromEntries(RANGES.flatMap((r) => [[`${r.id}Min`, ''], [`${r.id}Max`, '']])),
   // 'shoda' when the account has a questionnaire behind it; Search falls back
   // to 'match' at render time when no school carries a match_score, so a signed
   // -out visitor never lands on a sort with nothing to sort by.
   sort: 'shoda',
+  sortDir: '', // '' = the sort's own default direction; 'asc' | 'desc' once flipped
 };
 
 // Real numbered pages, not a growing "load more" cap — each page is a fixed
@@ -337,7 +414,13 @@ function Search() {
     [rows]
   );
   const sortOptions = useMemo(() => (hasMatch ? SORTS : SORTS.filter((s) => s.id !== 'shoda')), [hasMatch]);
-  const activeSort = !hasMatch && filters.sort === 'shoda' ? 'match' : filters.sort;
+  // Without a questionnaire (or from an old saved 'match' sort) the list is
+  // ordered by lowest cutoff, which is what the removed 'match' sort did anyway.
+  const activeSort =
+    filters.sort === 'match' || (!hasMatch && filters.sort === 'shoda') ? 'cut' : filters.sort;
+  const activeSortDef = SORTS.find((o) => o.id === activeSort) ?? SORTS[1];
+  // A sort that just fell back to 'cut' uses its own default, not a stale flip.
+  const sortDir = activeSortDef.id === filters.sort && filters.sortDir ? filters.sortDir : activeSortDef.defaultDir;
 
   // Recently viewed — per-device only (localStorage, see searchPrefs.js),
   // most-recent first. Only worth showing when nothing is filtered yet; once
@@ -417,15 +500,7 @@ function Search() {
         met: f.jpz.some((v) => (v === 'povinna' ? row.p.jpzPovinna : row.p.jpzNepovinna)),
       });
     }
-    if (f.cutoffMax < 100) {
-      out.push({ k: 'cutoffMax', met: row.admissionCutoff != null && row.admissionCutoff <= f.cutoffMax });
-    }
-    if (f.acceptanceMin > 0) {
-      out.push({ k: 'acceptanceMin', met: row.acceptanceRate != null && row.acceptanceRate >= f.acceptanceMin });
-    }
-    if (f.kapacitaMin > 0) {
-      out.push({ k: 'kapacitaMin', met: row.p.kapacita != null && row.p.kapacita >= f.kapacitaMin });
-    }
+    if (oborFiltersActive(f)) out.push({ k: 'obor', met: row.p.obory.some((o) => oborPasses(o, f)) });
     if (ctx.hasQuery) out.push({ k: 'q', met: matchesQuery(row, ctx) });
     return out;
   };
@@ -435,48 +510,30 @@ function Search() {
     return rows.filter((row) => criteriaFor(row, f, ctx).every((c) => c.met));
   };
 
-  const sortRows = (list, sortId, f) => {
-    const arr = list.slice();
-    const byName = (a, b) => a.name.localeCompare(b.name, 'cs');
-    // A school with no admission data yet sorts after every school that has
-    // some — never before, which "null - 35 = -35" would otherwise do.
-    const byCutoffAsc = (a, b) => {
-      if (a.admissionCutoff == null && b.admissionCutoff == null) return byName(a, b);
-      if (a.admissionCutoff == null) return 1;
-      if (b.admissionCutoff == null) return -1;
-      return a.admissionCutoff - b.admissionCutoff || byName(a, b);
-    };
-    const byAcceptanceDesc = (a, b) => {
-      if (a.acceptanceRate == null && b.acceptanceRate == null) return byName(a, b);
-      if (a.acceptanceRate == null) return 1;
-      if (b.acceptanceRate == null) return -1;
-      return b.acceptanceRate - a.acceptanceRate || byName(a, b);
-    };
-
-    if (sortId === 'shoda') {
-      arr.sort((a, b) => {
-        const am = a.school.match_score ?? -1;
-        const bm = b.school.match_score ?? -1;
-        return bm - am || byName(a, b);
-      });
-    } else if (sortId === 'cut') arr.sort(byCutoffAsc);
-    else if (sortId === 'acceptance') arr.sort(byAcceptanceDesc);
-    else {
-      // 'match' — most active criteria satisfied first (dead default now
-      // that commute is parked; previously defaulted to a commute sort with
-      // nothing behind it).
-      arr.sort((a, b) => {
-        const am = criteriaFor(a, f).filter((c) => c.met).length;
-        const bm = criteriaFor(b, f).filter((c) => c.met).length;
-        return bm - am || byCutoffAsc(a, b);
-      });
-    }
-    return arr;
+  const SORT_VALUE = {
+    shoda: (r) => r.school.match_score,
+    cut: (r) => r.admission?.cutoffMin,
+    acceptance: (r) => r.admission?.acceptance,
+    places: (r) => r.p.kapacita,
+  };
+  // A school with no value sorts after every school that has one, in either
+  // direction; "null - 35" would otherwise put it first.
+  const sortRows = (list, sortId, dir) => {
+    const value = SORT_VALUE[sortId] ?? SORT_VALUE.cut;
+    const sign = dir === 'asc' ? 1 : -1;
+    return list.slice().sort((a, b) => {
+      const va = value(a);
+      const vb = value(b);
+      if (va == null && vb == null) return a.name.localeCompare(b.name, 'cs');
+      if (va == null) return 1;
+      if (vb == null) return -1;
+      return sign * (va - vb) || a.name.localeCompare(b.name, 'cs');
+    });
   };
 
   const total = rows.length;
   const matchedAll = listFor(filters);
-  const sortedByChoice = sortRows(matchedAll, activeSort, filters);
+  const sortedByChoice = sortRows(matchedAll, activeSort, sortDir);
   // Saved schools lead the list (sort order kept inside each half) unless the
   // student switched it off.
   const sortedAll =
@@ -506,6 +563,32 @@ function Search() {
     [rows]
   );
   const jazykFacet = useMemo(() => collectFacet(rows, (row) => row.p.jazyky, compareByCount), [rows]);
+  const oborFacet = useMemo(() => collectFacet(rows, (row) => row.p.kkov, compareByCount), [rows]);
+  const oborGroupCounts = useMemo(
+    () => Object.fromEntries(
+      collectFacet(rows, (row) => [...new Set(row.p.kkov.map(kkovGroupOf))], compareByCount).map((g) => [g.value, g.count])
+    ),
+    [rows]
+  );
+  // KKOV -> its most common obor name (a school may use its own zaměření name).
+  const kkovNames = useMemo(() => {
+    const seen = new Map();
+    for (const row of rows) {
+      for (const o of row.p.obory) {
+        if (!o.kkov || !o.nazev) continue;
+        const names = seen.get(o.kkov) ?? new Map();
+        names.set(o.nazev, (names.get(o.nazev) ?? 0) + 1);
+        seen.set(o.kkov, names);
+      }
+    }
+    return new Map([...seen].map(([k, names]) => [k, [...names].sort((a, b) => b[1] - a[1])[0][0]]));
+  }, [rows]);
+  const formaFacet = useMemo(() => collectFacet(rows, (row) => row.p.formy, compareByCount), [rows]);
+  // The Cermat year the numbers come from, shown in the labels ("Počet míst 2026").
+  const dataYear = useMemo(
+    () => Math.max(0, ...rows.flatMap((row) => row.p.obory.map((o) => o.rok ?? 0))) || null,
+    [rows]
+  );
 
   const fieldOptions = FOCUS_CATEGORIES.map((c) => ({
     id: c.id,
@@ -553,6 +636,24 @@ function Search() {
     }))
     .filter((o) => o.count > 0 || o.checked);
 
+  // Static counts (schools that have this obor at all), not "if you tick it":
+  // with ~165 names the per-option listFor pass would run on every keystroke.
+  const oborOptions = oborFacet
+    .map((o) => ({
+      value: o.value,
+      label: `${o.value} - ${kkovNames.get(o.value) ?? ''}`,
+      group: kkovGroupOf(o.value),
+      checked: filters.obory.includes(o.value),
+      count: o.count,
+    }))
+    .sort((a, b) => a.value.localeCompare(b.value));
+  const formaOptions = formaFacet.map((x) => ({
+    value: x.value,
+    label: formaLabel(x.value),
+    checked: filters.formy.includes(x.value),
+    count: listFor({ ...filters, formy: [x.value] }).length,
+  }));
+
   const jpzOptions = [
     { value: 'povinna', label: 'JPZ povinná', count: listFor({ ...filters, jpz: ['povinna'] }).length },
     { value: 'nepovinna', label: 'JPZ nepovinná', count: listFor({ ...filters, jpz: ['nepovinna'] }).length },
@@ -566,17 +667,15 @@ function Search() {
     filters.zrizovatele.length > 0,
     filters.jazyky.length > 0,
     filters.jpz.length > 0,
-    filters.cutoffMax < 100,
-    filters.acceptanceMin > 0,
-    filters.kapacitaMin > 0,
+    oborFiltersActive(filters),
     hasQuery,
   ].filter(Boolean).length;
 
   // Collapsed groups show how many of their own filters are active, per the
   // "filter-count badge on the collapsed control" pattern.
-  const admissionsActiveCount =
-    (filters.cutoffMax < 100 ? 1 : 0) + (filters.acceptanceMin > 0 ? 1 : 0) + filters.jpz.length;
-  const moreActiveCount = filters.jazyky.length + (filters.kapacitaMin > 0 ? 1 : 0);
+  const rangeCount = (ids) => RANGES.filter((r) => ids.includes(r.id) && rangeActive(filters, r)).length;
+  const admissionsActiveCount = rangeCount(['cutoff', 'applicants', 'accepted', 'places']) + filters.jpz.length;
+  const moreActiveCount = filters.jazyky.length + filters.formy.length;
 
   const chips = [];
   filters.fields.forEach((id) => {
@@ -605,23 +704,39 @@ function Search() {
       onRemove: () => toggleIn('jpz', v),
     })
   );
-  if (filters.cutoffMax < 100) {
-    chips.push({ key: 'cutoffMax', label: `Hranice do ${filters.cutoffMax} b.`, onRemove: () => setPatch({ cutoffMax: 100 }) });
+  {
+    const byGroup = new Map();
+    for (const o of oborOptions) {
+      if (!byGroup.has(o.group)) byGroup.set(o.group, []);
+      byGroup.get(o.group).push(o.value);
+    }
+    const covered = new Set();
+    for (const [group, codes] of byGroup) {
+      if (codes.length > 1 && codes.every((c) => filters.obory.includes(c))) {
+        codes.forEach((c) => covered.add(c));
+        chips.push({
+          key: `og-${group}`,
+          label: `${kkovGroupName(group)} (vše)`,
+          onRemove: () => setPatch({ obory: filters.obory.filter((v) => !codes.includes(v)) }),
+        });
+      }
+    }
+    filters.obory
+      .filter((v) => !covered.has(v))
+      .forEach((v) =>
+        chips.push({ key: `o-${v}`, label: `${v} ${kkovNames.get(v) ?? ''}`.trim(), onRemove: () => toggleIn('obory', v) })
+      );
   }
-  if (filters.acceptanceMin > 0) {
+  filters.formy.forEach((v) =>
+    chips.push({ key: `fo-${v}`, label: formaLabel(v), onRemove: () => toggleIn('formy', v) })
+  );
+  RANGES.filter((r) => rangeActive(filters, r)).forEach((r) =>
     chips.push({
-      key: 'acceptanceMin',
-      label: `Přijato aspoň ${filters.acceptanceMin} %`,
-      onRemove: () => setPatch({ acceptanceMin: 0 }),
-    });
-  }
-  if (filters.kapacitaMin > 0) {
-    chips.push({
-      key: 'kapacitaMin',
-      label: `Aspoň ${filters.kapacitaMin} ${misto(filters.kapacitaMin)}`,
-      onRemove: () => setPatch({ kapacitaMin: 0 }),
-    });
-  }
+      key: `r-${r.id}`,
+      label: `${rangeLabel(r, filters)}${r.id === 'places' && dataYear ? ` (${dataYear})` : ''}`,
+      onRemove: () => setPatch({ [`${r.id}Min`]: '', [`${r.id}Max`]: '' }),
+    })
+  );
   const clearAll = () => setFilters(DEFAULT_FILTERS);
 
   // ---- empty-state: blame sentence + ranked relax options + near misses ----
@@ -687,26 +802,29 @@ function Search() {
       apply: () => setPatch({ jpz: [] }),
     },
     {
-      key: 'cutoffMax',
-      active: filters.cutoffMax < 100,
-      blame: `hranici přijetí do ${filters.cutoffMax} b.`,
-      label: 'Zrušit horní hranici přijetí',
-      apply: () => setPatch({ cutoffMax: 100 }),
+      key: 'obory',
+      active: filters.obory.length > 0,
+      blame: 'omezení na vybrané obory',
+      label: 'Zrušit omezení oborů',
+      reset: { obory: [] },
+      apply: () => setPatch({ obory: [] }),
     },
     {
-      key: 'acceptanceMin',
-      active: filters.acceptanceMin > 0,
-      blame: `míru přijetí od ${filters.acceptanceMin} %`,
-      label: 'Zrušit dolní hranici míry přijetí',
-      apply: () => setPatch({ acceptanceMin: 0 }),
+      key: 'formy',
+      active: filters.formy.length > 0,
+      blame: 'omezení formy studia',
+      label: 'Zrušit omezení formy studia',
+      reset: { formy: [] },
+      apply: () => setPatch({ formy: [] }),
     },
-    {
-      key: 'kapacitaMin',
-      active: filters.kapacitaMin > 0,
-      blame: `minimální kapacitu ${filters.kapacitaMin}`,
-      label: 'Zrušit minimální kapacitu',
-      apply: () => setPatch({ kapacitaMin: 0 }),
-    },
+    ...RANGES.filter((r) => rangeActive(filters, r)).map((r) => ({
+      key: r.id,
+      active: true,
+      blame: rangeLabel(r, filters).toLowerCase(),
+      label: `Zrušit omezení: ${r.label.toLowerCase()}`,
+      reset: { [`${r.id}Min`]: '', [`${r.id}Max`]: '' },
+      apply: () => setPatch({ [`${r.id}Min`]: '', [`${r.id}Max`]: '' }),
+    })),
   ];
 
   const relaxRaw = filterDefs
@@ -714,7 +832,7 @@ function Search() {
     .map((d) => ({
       blame: d.blame,
       label: d.label,
-      gainN: listFor({ ...filters, [d.key]: DEFAULT_FILTERS[d.key] }).length,
+      gainN: listFor({ ...filters, ...(d.reset ?? { [d.key]: DEFAULT_FILTERS[d.key] }) }).length,
       onApply: d.apply,
     }));
   relaxRaw.sort((a, b) => b.gainN - a.gainN);
@@ -742,7 +860,7 @@ function Search() {
     .slice(0, 3)
     .map((x) => ({
       name: x.row.name,
-      why: `${x.row.districtLabel} · ${x.row.p.zrizovatel ?? 'zřizovatel neznámý'} · ${cutoffLabel(x.row.admissionCutoff)}. Nesplňuje ${UNMET_LABELS[x.unmet[0].k]}.`,
+      why: `${x.row.districtLabel} · ${x.row.p.zrizovatel ?? 'zřizovatel neznámý'} · ${cutoffLabel(x.row.admission)}. Nesplňuje ${UNMET_LABELS[x.unmet[0].k]}.`,
     }));
 
   // ---- pagination ----
@@ -840,7 +958,7 @@ function Search() {
   useBottomBarSpace(compareBarRef, pageRef, selected.size > 0);
 
   const activeFacetCount = activeCriteriaCount - (hasQuery ? 1 : 0);
-  const hasScore = hasMatch || activeCriteriaCount > 0;
+  const hasScore = hasMatch;
   const filtersEl = (
     <SearchFilters
       filters={filters}
@@ -854,8 +972,11 @@ function Search() {
       zrizovatelOptions={zrizovatelOptions}
       jpzOptions={jpzOptions}
       jazykOptions={jazykOptions}
+      oborOptions={oborOptions}
+      oborGroupCounts={oborGroupCounts}
+      formaOptions={formaOptions}
+      year={dataYear}
       admissionsActiveCount={admissionsActiveCount}
-      moreActiveCount={moreActiveCount}
     />
   );
 
@@ -866,6 +987,20 @@ function Search() {
       activeCount: filters.fields.length,
       onClear: () => setPatch({ fields: [] }),
       content: <FieldGroup fieldOptions={fieldOptions} toggleIn={toggleIn} />,
+    },
+    {
+      id: 'obory',
+      label: 'Konkrétní obory',
+      activeCount: filters.obory.length,
+      onClear: () => setPatch({ obory: [] }),
+      content: (
+        <OborGroup
+          oborOptions={oborOptions}
+          groupCounts={oborGroupCounts}
+          selected={filters.obory}
+          setObory={(obory) => setPatch({ obory })}
+        />
+      ),
     },
     {
       id: 'districts',
@@ -897,15 +1032,20 @@ function Search() {
     },
     {
       id: 'admissions',
-      label: 'Šance na přijetí',
+      label: 'Přijímačky a místa',
       activeCount: admissionsActiveCount,
-      onClear: () => setPatch({ cutoffMax: 100, acceptanceMin: 0, jpz: [] }),
+      onClear: () =>
+        setPatch({
+          cutoffMin: '', cutoffMax: '', acceptedMin: '', acceptedMax: '', applicantsMax: '',
+          placesMin: '', placesMax: '', jpz: [],
+        }),
       content: (
         <AdmissionsGroup
           filters={filters}
           setPatch={setPatch}
           jpzOptions={jpzOptions}
           toggleIn={toggleIn}
+          year={dataYear}
         />
       ),
     },
@@ -920,8 +1060,17 @@ function Search() {
       id: 'dalsi',
       label: 'Další',
       activeCount: moreActiveCount,
-      onClear: () => setPatch({ jazyky: [], kapacitaMin: 0 }),
-      content: <DalsiGroup filters={filters} setPatch={setPatch} jazykOptions={jazykOptions} toggleIn={toggleIn} />,
+      onClear: () => setPatch({ jazyky: [], formy: [] }),
+      content: (
+        <DalsiGroup
+          filters={filters}
+          setPatch={setPatch}
+          jazykOptions={jazykOptions}
+          formaOptions={formaOptions}
+          toggleIn={toggleIn}
+          year={dataYear}
+        />
+      ),
     },
   ];
   const activeSheetGroup = filterGroups.find((group) => group.id === sheet);
@@ -940,7 +1089,22 @@ function Search() {
     setSheet(null);
   };
 
-  const activeSortLabel = sortOptions.find((o) => o.id === activeSort)?.label ?? sortOptions[0].label;
+  const activeSortLabel = `${activeSortDef.short}, ${activeSortDef.dirs[sortDir]}`;
+  const flipDir = () => setPatch({ sort: activeSortDef.id, sortDir: sortDir === 'asc' ? 'desc' : 'asc' });
+  const DirIcon = sortDir === 'asc' ? ArrowUp : ArrowDown;
+  const dirButton = (
+    <button
+      type="button"
+      className="ss-fbtn ss-sort-dir"
+      onClick={flipDir}
+      aria-label={`Směr řazení: ${sortDir === 'asc' ? 'vzestupně' : 'sestupně'}, ${activeSortDef.dirs[sortDir]}. Kliknutím obrátíš.`}
+      title="Obrátit směr řazení"
+    >
+      <DirIcon size={14} aria-hidden="true" />
+      {sortDir === 'asc' ? 'Vzestupně' : 'Sestupně'}
+      <span className="ss-sort-dir-note">{activeSortDef.dirs[sortDir]}</span>
+    </button>
+  );
   const closeSort = showResults;
   const sortList = (
     <div className="ss-sort-options" role="radiogroup" aria-label="Řadit">
@@ -958,7 +1122,7 @@ function Search() {
             name="ss-sort"
             value={o.id}
             checked={activeSort === o.id}
-            onChange={() => setPatch({ sort: o.id })}
+            onChange={() => setPatch({ sort: o.id, sortDir: '' })}
           />
           <span className="ss-sort-option-check" aria-hidden="true">
             {activeSort === o.id && <Check size={16} />}
@@ -967,6 +1131,7 @@ function Search() {
           <span className="ss-sort-option-note">{o.tradeoff}</span>
         </label>
       ))}
+      <div className="ss-sort-dir-row">{dirButton}</div>
     </div>
   );
   const sortTrigger = (
@@ -997,11 +1162,12 @@ function Search() {
           role="radio"
           aria-checked={activeSort === o.id}
           className={`ss-fbtn${activeSort === o.id ? ' is-on' : ''}`}
-          onClick={() => setPatch({ sort: o.id })}
+          onClick={() => setPatch({ sort: o.id, sortDir: '' })}
         >
           {o.short}
         </button>
       ))}
+      {dirButton}
     </div>
   );
 
@@ -1075,7 +1241,7 @@ function Search() {
           <h1 className="ss-headline-lg">Střední školy v Praze</h1>
           {!loading && !error && (
             <p className="ss-body-md ss-source-line">
-              {total} {skol(total)}. Data o přijímačkách z Cermatu, roky 2024 až 2026.
+              {total} {skol(total)}. Data o přijímačkách z Cermatu, rok 2026. Starší roky najdeš v detailu školy.
             </p>
           )}
         </div>
@@ -1231,11 +1397,9 @@ function Search() {
                 <p className="ss-legend ss-body-sm">
                   <Info size={16} aria-hidden="true" />
                   <span>
-                    {activeSort === 'cut' && <>Řazeno od nejnižší hranice: bezpečnější volba, ne nutně lepší škola. </>}
-                    {activeSort === 'acceptance' && <>Řazeno podle loňské míry přijetí. </>}
-                    <strong>Hranice</strong> je nejnižší počet bodů z přijímaček (max. 100), se kterým se dalo dostat, průměr za 3 roky přes všechny obory. <strong>Přijato</strong> je podíl přijatých ze všech přihlášených. <strong>Míst</strong> je počet míst, která škola otevírala v přijímačkách 2026.
+                    Řazeno podle: {activeSortDef.label.toLowerCase()}, {sortDir === 'asc' ? 'vzestupně' : 'sestupně'} ({activeSortDef.dirs[sortDir]}). {activeSort === 'cut' && sortDir === 'asc' && <>Nižší hranice je bezpečnější volba, ne nutně lepší škola. </>}
+                    <strong>Hranice</strong> je nejnižší počet bodů z přijímaček (max. 100), se kterým se v roce 2026 dalo dostat, od oboru s nejnižší po obor s nejvyšší hranicí. Starší roky najdeš v grafu na stránce školy. <strong>Přijato</strong> je podíl přijatých ze všech přihlášených. <strong>Míst</strong> je počet míst, která škola otevírala v přijímačkách 2026.
                     {hasMatch && <> <strong>Shoda</strong> říká, jak škola sedí na tvoje odpovědi z dotazníku, ne jak je dobrá.</>}
-                    {!hasMatch && activeCriteriaCount > 0 && <> <strong>Splňuje</strong> je počet tvých filtrů, které škola splňuje.</>}
                   </span>
                 </p>
               )}
@@ -1312,7 +1476,7 @@ function Search() {
                   <div className={`ss-list-head${hasScore ? ' has-score' : ''}`}>
                     <span aria-hidden="true">Škola</span>
                     <span className="ss-cell-obory" aria-hidden="true">Obory</span>
-                    {hasScore && <span className="ss-header-numeric" aria-hidden="true">{hasMatch ? 'Shoda' : 'Splňuje'}</span>}
+                    {hasScore && <span className="ss-header-numeric" aria-hidden="true">Shoda</span>}
                     <span className="ss-header-numeric" aria-hidden="true">Hranice</span>
                     <span className="ss-header-center" aria-hidden="true">Přijato</span>
                     <span className="ss-header-numeric" aria-hidden="true">Míst</span>
@@ -1322,11 +1486,9 @@ function Search() {
                     {shown.map((row) => {
                       const isSelected = selected.has(row.id);
                       const isFavorite = favorites.has(row.id);
-                      const rowCriteria = criteriaFor(row, filters);
-                      const metCount = rowCriteria.filter((criterion) => criterion.met).length;
-                      const metTotal = rowCriteria.length;
                       const ukonceni = ukonceniText(row.p);
-                      const noAdmissionData = row.admissionCutoff == null && row.acceptanceRate == null;
+                      const adm = row.admission;
+                      const noAdmissionData = adm?.cutoffMin == null && adm?.acceptance == null;
                       const extra = Math.max(row.p.count, row.progTotal) - row.progs.length;
                       const schoolMeta = [
                         row.districtLabel,
@@ -1357,14 +1519,10 @@ function Search() {
 
                           {hasScore && (
                             <div className="ss-cell-score">
-                              {hasMatch ? (
-                                typeof row.school.match_score === 'number' ? (
-                                  <span className={`ss-match-score ${matchLevel(row.school.match_score)}`}>{row.school.match_score} %</span>
-                                ) : (
-                                  <span className="ss-caption ss-cell-missing">bez dat</span>
-                                )
+                              {typeof row.school.match_score === 'number' ? (
+                                <span className={`ss-match-score ${matchLevel(row.school.match_score)}`}>{row.school.match_score} %</span>
                               ) : (
-                                <span className="ss-data-md">{metCount} z {metTotal}</span>
+                                <span className="ss-caption ss-cell-missing">bez dat</span>
                               )}
                             </div>
                           )}
@@ -1378,23 +1536,27 @@ function Search() {
                               <div className="ss-cell-number ss-cell-cutoff">
                                 <span className="ss-data-md">
                                   <span className="sr-only">hranice přijetí </span>
-                                  {row.admissionCutoff != null ? `${numCz(row.admissionCutoff)} b.` : <span className="ss-caption ss-cell-missing">bez dat</span>}
+                                  {formatCutoffRange(adm) ?? <span className="ss-caption ss-cell-missing">bez dat</span>}
                                 </span>
-                                <span className="ss-caption ss-number-label">hranice</span>
+                                <span className="ss-caption ss-number-label">
+                                  {adm?.isOld ? `hranice ${adm.year}, starší` : 'hranice'}
+                                </span>
                               </div>
                             )}
                             {!noAdmissionData && (
                               <div className="ss-cell-number ss-cell-acceptance">
                                 <span className="ss-data-md">
                                   <span className="sr-only">přijato </span>
-                                  {row.acceptanceRate != null ? `${Math.round(row.acceptanceRate)} %` : <span className="ss-caption ss-cell-missing">bez dat</span>}
+                                  {adm?.acceptance != null ? `${Math.round(adm.acceptance)} %` : <span className="ss-caption ss-cell-missing">bez dat</span>}
                                 </span>
-                                {row.acceptanceRate != null && (
+                                {adm?.acceptance != null && (
                                   <span className="ss-accept-bar" aria-hidden="true">
-                                    <span style={{ width: `${Math.min(100, Math.round(row.acceptanceRate))}%` }} />
+                                    <span style={{ width: `${Math.min(100, Math.round(adm.acceptance))}%` }} />
                                   </span>
                                 )}
-                                <span className="ss-caption ss-number-label">přijato</span>
+                                <span className="ss-caption ss-number-label">
+                                  {adm?.isOld ? `přijato ${adm.year}, starší` : 'přijato'}
+                                </span>
                               </div>
                             )}
                             <div className="ss-cell-number ss-cell-places">

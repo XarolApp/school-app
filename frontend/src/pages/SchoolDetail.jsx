@@ -3,12 +3,13 @@ import { useParams, Link } from 'react-router-dom';
 import { fetchSchool, fetchFavorites } from '../api';
 import { useAuth } from '../components/AuthContext';
 import { recordRecentSchool } from '../lib/searchPrefs';
-import { groupProgramsByObor } from '../lib/schoolPrograms';
+import { groupProgramsByObor, schoolHistory } from '../lib/schoolPrograms';
 import { oborWord } from '../lib/pluralCz';
 import SectionNav from '../components/schoolDetail/SectionNav';
 import SchoolHero from '../components/schoolDetail/SchoolHero';
 import SchoolActions from '../components/schoolDetail/SchoolActions';
 import CutoffExplainer from '../components/schoolDetail/CutoffExplainer';
+import HistoryChart from '../components/schoolDetail/HistoryChart';
 import ProgramList from '../components/schoolDetail/ProgramList';
 import SchoolLocation from '../components/schoolDetail/SchoolLocation';
 import SchoolReviews from '../components/schoolDetail/SchoolReviews';
@@ -97,6 +98,7 @@ function SchoolDetail() {
   // trail at the end rather than interleaved — they're a footnote, not part
   // of "what this school offers now".
   const orderedEntries = [...currentEntries, ...discontinuedEntries];
+  const history = schoolHistory(programEntries);
   const zrizovatel = programEntries.find((e) => e.zrizovatel)?.zrizovatel ?? null;
   const extracted = Array.isArray(school.school_extracted_details)
     ? school.school_extracted_details[0]
@@ -132,6 +134,16 @@ function SchoolDetail() {
 
       <CutoffExplainer />
 
+      {history.length > 1 && (
+        <section className="sd-history" aria-label="Vývoj školy">
+          <div className="sd-section-head">
+            <h2 className="sd-section-title">Vývoj školy</h2>
+            <span className="sd-section-meta">všechny obory dohromady</span>
+          </div>
+          <HistoryChart points={history} subject="Vývoj školy" />
+        </section>
+      )}
+
       <div id="obory">
         <div className="sd-section-head">
           <h2 className="sd-section-title">Obory a přijímačky</h2>
@@ -140,8 +152,8 @@ function SchoolDetail() {
           </span>
         </div>
         <p className="sd-section-intro">
-          Každý obor má vlastní přijímačky a vlastní hranici. Průměr školy
-          nahoře je jen orientační.
+          Každý obor má vlastní přijímačky a vlastní hranici. Rozpětí nahoře
+          shrnuje všechny obory školy.
         </p>
         <ProgramList entries={orderedEntries} />
       </div>

@@ -77,11 +77,21 @@ test('a selected four-year program does not use the same-name six-year cutoff', 
   };
   assert.equal(cutoffForPick({ obor_kkov: '79-41-K/41', obor_nazev: 'Gymnázium' }, school).cutoff, 81);
   assert.equal(cutoffForPick({ obor_kkov: '79-41-K/61' }, school).cutoff, 75);
-  assert.equal(cutoffForPick({}, school).cutoff, 78);
+  const none = cutoffForPick({}, school);
+  assert.equal(none.cutoff, null);
+  assert.equal(none.needsObor, true);
+  assert.equal(none.range, '75–81 b.');
+});
+
+test('a one-obor school needs no obor pick; a multi-obor school gets no averaged verdict', () => {
+  const one = { school_programs: [{ kkov: 'x', rok: 2026, cutoff: 40 }] };
+  assert.equal(cutoffForPick({}, one).cutoff, 40);
+  const two = { school_programs: [{ kkov: 'x', rok: 2026, cutoff: 40 }, { kkov: 'y', rok: 2026, cutoff: 60 }] };
+  assert.equal(analyseSet([{ school: one }, { school: one }, { school: two }], 50).verdict, 'chybiObor');
 });
 
 test('an incomplete set of known cutoffs never claims all three schools are risky', () => {
-  const picks = [90, null, null].map((cutoff) => ({ school: { admission_cutoff: cutoff } }));
+  const picks = [90, null, null].map((cutoff) => ({ school: { school_programs: [{ kkov: 'x', rok: 2026, cutoff }] } }));
   const result = analyseSet(picks, 50);
   assert.equal(result.verdict, 'chybiHranice');
   assert.equal(result.counts.risk, 1);
@@ -95,10 +105,30 @@ test('missing school data is distinguished from missing student points', () => {
 });
 
 test('complete known risk data retains the existing verdicts', () => {
-  const picks = (cutoffs) => cutoffs.map((cutoff) => ({ school: { admission_cutoff: cutoff } }));
+  const picks = (cutoffs) => cutoffs.map((cutoff) => ({ school: { school_programs: [{ kkov: 'x', rok: 2026, cutoff }] } }));
   assert.equal(analyseSet(picks([80, 90, 85]), 50).verdict, 'vseRisk');
   assert.equal(analyseSet(picks([20, 25, 30]), 50).verdict, 'vseJistota');
   assert.equal(analyseSet(picks([30, 50, 80]), 50).verdict, 'vyvazene');
+});
+
+test('school admission is the newest year only: a cutoff range and a real acceptance ratio', async () => {
+  const { summarizeAdmission, formatCutoffRange, schoolHistory } = await vite.ssrLoadModule('/src/lib/schoolPrograms.js');
+  const school = { school_programs: [
+    { kkov: 'x', obor_nazev: 'X', rok: 2025, prihlasky: 100, prijati: 10, cutoff: 70 },
+    { kkov: 'x', obor_nazev: 'X', rok: 2026, prihlasky: 40, prijati: 10, cutoff: 35 },
+    { kkov: 'y', obor_nazev: 'Y', rok: 2026, prihlasky: 60, prijati: 30, cutoff: 26 },
+  ] };
+  const adm = summarizeAdmission(school);
+  assert.equal(adm.year, 2026);
+  assert.equal(adm.isOld, false);
+  assert.equal(formatCutoffRange(adm), '26–35 b.');
+  assert.equal(adm.acceptance, 40);
+  const old = summarizeAdmission({ school_programs: [{ kkov: 'x', rok: 2025, cutoff: 50 }] });
+  assert.equal(old.isOld, true);
+  assert.equal(formatCutoffRange(old), '50 b.');
+  assert.equal(summarizeAdmission({}), null);
+  const history = schoolHistory(groupProgramsByObor(school));
+  assert.deepEqual(history.map((h) => [h.year, h.cutoffMin, h.cutoffMax]), [[2025, 70, 70], [2026, 26, 35]]);
 });
 
 test('zero admitted remains zero and unknown counts remain null', () => {

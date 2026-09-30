@@ -1,4 +1,6 @@
 import InfoHint from './InfoHint';
+import HistoryChart from './HistoryChart';
+import { yearlyHistory } from '../../lib/schoolPrograms';
 
 const numCz = (v) => (v == null ? null : String(v).replace('.', ','));
 
@@ -38,8 +40,6 @@ function ProgramCard({ entry }) {
 
   const y = entry.latest;
   const hasJPZ = entry.jpzPovinna === true;
-  const years = Object.keys(entry.years).map(Number).sort((a, b) => a - b).slice(-3);
-  const maxPrihlasky = Math.max(...years.map((rok) => entry.years[rok].prihlasky || 0), 1);
 
   return (
     <div className="sd-program-card">
@@ -104,36 +104,8 @@ function ProgramCard({ entry }) {
         </div>
       </div>
 
-      {years.length > 1 && (
-        <div>
-          <div className="sd-program-trend-label">Vývoj {years[0]} → {years[years.length - 1]}</div>
-          <div className="sd-trend-rows">
-            {years.map((rok, i) => {
-              const yr = entry.years[rok];
-              const pct = yr.prihlasky ? Math.max(6, Math.round((yr.prihlasky / maxPrihlasky) * 100)) : 0;
-              const isCurrent = i === years.length - 1;
-              return (
-                <div className="sd-trend-row" key={rok}>
-                  <div className="sd-trend-year">
-                    <span>{rok}</span>
-                    <strong>
-                      {yr.prihlasky != null ? `${yr.prihlasky} přihlášek` : 'bez dat'}
-                      {yr.cutoff != null ? ` · hranice ${numCz(yr.cutoff)} b.` : ''}
-                    </strong>
-                  </div>
-                  <div className="sd-trend-bar-track">
-                    <div
-                      className={`sd-trend-bar-fill${isCurrent ? ' is-current' : ''}`}
-                      style={{ width: `${pct}%` }}
-                    />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          {entry.trend && <p className="sd-program-note">{entry.trend.note}</p>}
-        </div>
-      )}
+      <HistoryChart points={yearlyHistory(entry)} subject={entry.oborNazev} />
+      {entry.trend && <p className="sd-program-note">{entry.trend.note}</p>}
     </div>
   );
 }

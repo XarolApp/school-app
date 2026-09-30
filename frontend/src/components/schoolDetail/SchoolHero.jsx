@@ -1,6 +1,7 @@
-import { summarizeCurrentYear } from '../../lib/schoolPrograms';
+import { summarizeCurrentYear, summarizeAdmission, formatCutoffRange } from '../../lib/schoolPrograms';
 import { oborWord } from '../../lib/pluralCz';
 import { matchBand } from '../../lib/decisionMatrix';
+import { Clock } from 'lucide-react';
 import InfoHint from './InfoHint';
 
 function ukonceniLabel(entries) {
@@ -21,15 +22,24 @@ function fmt(value, unit) {
 
 // A fact tile with a hover-to-reveal explanation (CSS-only tooltip, see
 // InfoHint) — matches the same pattern as the search list's stat cells.
-function FactTile({ value, label, note }) {
+function FactTile({ value, label, note, oldYear }) {
   return (
-    <div className="sd-fact-tile">
+    <div className={`sd-fact-tile${oldYear ? ' is-old' : ''}`}>
       <div className={`sd-fact-value${value === NO_DATA ? ' is-empty' : ''}`}>{value}</div>
       <div className="sd-fact-label-row">
         <span className="sd-fact-label">{label}</span>
         <InfoHint text={note} />
       </div>
     </div>
+  );
+}
+
+function OldDataBadge({ year }) {
+  return (
+    <span className="sd-old-badge">
+      <Clock size={13} strokeWidth={2.2} aria-hidden="true" />
+      Starší data, z roku {year}. Novější čísla škola zatím nemá.
+    </span>
   );
 }
 
@@ -42,6 +52,9 @@ function SchoolHero({ school, programEntries, extracted }) {
   const zrizovatel = programEntries.find((e) => e.zrizovatel)?.zrizovatel ?? null;
   const ukonceni = ukonceniLabel(programEntries);
   const current = summarizeCurrentYear(programEntries);
+  const adm = summarizeAdmission(school);
+  const year = adm?.year ?? current.year;
+  const oldYear = adm?.isOld ? adm.year : null;
   const band = typeof school.match_score === 'number' ? matchBand(school.match_score) : null;
   const zacatekHodin = extracted?.zacatek_hodin;
 
@@ -72,31 +85,38 @@ function SchoolHero({ school, programEntries, extracted }) {
         )}
       </div>
 
+      {oldYear && (
+        <OldDataBadge year={oldYear} />
+      )}
       <div className="sd-fact-tiles">
         <FactTile
-          value={fmt(school.admission_cutoff, ' b.')}
-          label="Průměrná hranice"
-          note="Průměr z posledních 3 let (2024–2026), přes všechny obory školy. Je to nejnižší počet bodů z češtiny a matematiky (max. 100, tedy 50 + 50), který stačil na přijetí. Je to spodní hranice pro přijetí, ne průměrné skóre, které přijatí uchazeči skutečně měli. Přesnou hranici pro konkrétní obor a rok najdeš u jednotlivých oborů níž. (Nové školy mohou mít kratší historii.)"
+          value={formatCutoffRange(adm) ?? NO_DATA}
+          label={year ? `Hranice přijetí ${year}` : 'Hranice přijetí'}
+          oldYear={oldYear}
+          note={`Nejnižší počet bodů z češtiny a matematiky (max. 100, tedy 50 + 50), který v roce ${year ?? ''} stačil na přijetí. Každý obor má vlastní hranici, proto ukazujeme rozpětí: od oboru s nejnižší hranicí po obor s nejvyšší. Hranici konkrétního oboru najdeš níž.`}
         />
         <FactTile
-          value={fmt(school.acceptance_rate, ' %')}
-          label="Přijato z přihlášených"
-          note="Průměr z posledních 3 let (2024–2026), přes všechny obory školy. Je to kolik procent uchazečů škola v posledním kole přijala. U jednotlivých oborů se to může dost lišit, podrobnosti najdeš níž. (Nové školy mohou mít kratší historii.)"
+          value={fmt(adm?.acceptance ?? null, ' %')}
+          label={year ? `Přijato ${year}` : 'Přijato z přihlášených'}
+          oldYear={oldYear}
+          note={`Kolik procent přihlášených škola v roce ${year ?? ''} přijala: všichni přijatí dělení všemi přihlášenými, ve všech oborech dohromady.`}
         />
         <FactTile
           value={fmt(current.kapacita, '')}
           label={current.year ? `Míst ${current.year}` : 'Míst'}
+          oldYear={oldYear}
           note={`Kolik míst škola otevírala ve všech oborech v přijímačkách ${current.year ?? ''}. Na další rok se počet může změnit. Obory, které se už neotevírají, se do čísla nepočítají.`}
         />
         <FactTile
           value={fmt(current.ratio, '×')}
-          label="Uchazečů na místo"
-          note="Průměr z posledních 3 let (2024–2026), přes všechny obory školy. Je to kolik uchazečů si podalo přihlášku na jedno volné místo. Konkurence se obor od oboru liší, podrobnosti najdeš níž. (Nové školy mohou mít kratší historii.)"
+          label={current.year ? `Uchazečů na místo ${current.year}` : 'Uchazečů na místo'}
+          oldYear={oldYear}
+          note={`Kolik přihlášek připadlo v roce ${current.year ?? ''} na jedno volné místo, ve všech oborech dohromady. Konkurence se obor od oboru liší, podrobnosti najdeš níž.`}
         />
       </div>
       <div className="sd-provenance">
-        Čísla z Cermatu, 1. kolo přijímaček. Hranice a míra přijetí jsou průměr
-        přes všechny obory školy.
+        Čísla z Cermatu, 1. kolo přijímaček {year ?? ''}.
+ Předchozí roky najdeš v grafu vývoje níž.
       </div>
     </div>
   );

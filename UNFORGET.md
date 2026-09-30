@@ -13,6 +13,20 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
+## Search filters — form of study misses 12 obory — 2026-09-29
+- **Found:** 2026-09-29, while adding the obor / hranice / míst / forma filters to `/skoly`.
+- **Effort:** small.
+- **What:** `slimProgramsForList` in `server.js` merges rows of the same obor in the latest year into one entry (key has no `forma_vzdelavani`), so an obor offered in two forms (e.g. denní + dálková, 12 such obor groups in the 2026 Cermat file) keeps only the FIRST row's form. The forma filter therefore can't find the second form of those 12.
+- **Fix:** add `forma_vzdelavani` to that key, then check `frontend/src/lib/schoolPrograms.js` (`groupKey`) still counts the same way. Left alone because that function has uncommitted work from another session.
+
+## Places for 2027 (míst 2027) are not in the database — only in scraped text — 2026-09-30
+- **Found:** 2026-09-30, while adding the "Míst" sort to `/skoly`.
+- **Urgency:** low
+- **Effort:** medium
+- **Release/context:** none. Would let `/skoly` show and sort by next year's places.
+
+`/skoly` sorts by **Míst 2026** (Cermat, known for 222 of 223 schools). No structured "míst 2027" field exists: `school_extracted_details` has no such column and `scripts/extract-school-details.js` doesn't ask for it. A rough text scan of `scripts/data/scraped-schools` found about **10 of 220** pages that state a 2027/2028 intake in words (e.g. "budeme přijímat 48 žáků", "přijmeme 180 uchazečů do 6 tříd"). Extracting it would need a new nullable column plus a prompt field (count and obor, with a quoted sentence as the existing fields require), and the page must be re-scraped after the 2027 intake is published, since most schools haven't announced it yet.
+
 ## School 29 (Bezpečnostně právní akademie) has no Cermat data — obory added by hand — 2026-09-29
 - **Found:** 2026-09-29, while checking obory coverage after fixing the onboarding ranking bug (`schoolFeatures.js` now reads KKOV codes from `school_programs`).
 - **Urgency:** low

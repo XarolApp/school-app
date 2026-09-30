@@ -5,12 +5,13 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import StatInfo from './StatInfo';
 import { escapeHtml } from '../lib/escapeHtml';
+import { summarizeAdmission, formatCutoffRange } from '../lib/schoolPrograms';
 import './SchoolMap.css';
 
 const PRAGUE_CENTER = [50.0755, 14.4378];
 
-// Real, per-school data only: the pin's number is admissionCutoff straight
-// from Supabase (Cermat), the name is the real school name shortened by a
+// Real, per-school data only: the pin's number is the newest year's cutoff
+// range across the school's obory (Cermat), the name is the real school name shortened by a
 // display heuristic (never a different school, never invented text). A
 // school with no admission data yet gets a dashed pin reading "bez dat".
 function haversineKm([lat1, lon1], [lat2, lon2]) {
@@ -41,8 +42,10 @@ function shortSchoolName(name) {
 }
 
 function pinHtml(row, isSelected) {
-  const label = row.admissionCutoff != null ? `${row.admissionCutoff} b.` : 'bez dat';
-  const noData = row.admissionCutoff == null;
+  const adm = summarizeAdmission(row.school);
+  const range = formatCutoffRange(adm);
+  const label = range ? `${range}${adm.isOld ? ` (${adm.year})` : ''}` : 'bez dat';
+  const noData = !range;
   const shortName = escapeHtml(shortSchoolName(row.name));
   const fullName = escapeHtml(row.name);
   return (
@@ -199,6 +202,7 @@ function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
   }, [homePos]);
 
   const selectedRow = rows.find((row) => row.id === selectedId) || null;
+  const selectedAdm = selectedRow ? summarizeAdmission(selectedRow.school) : null;
 
   const setHomeFromCoords = (lat, lng) => {
     setAddressError(null);
@@ -325,25 +329,25 @@ function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
           <div className="ss-stat-grid sm-card-stats">
             <div className="ss-stat-cell">
               <p className="ss-data-md">
-                {selectedRow.admissionCutoff != null ? `${String(selectedRow.admissionCutoff).replace('.', ',')} b.` : 'bez dat'}
+                {formatCutoffRange(selectedAdm) ?? 'bez dat'}
               </p>
               <p className="ss-stat-label">
-                hranice
+                hranice {selectedAdm?.year ?? ''}{selectedAdm?.isOld ? ', starší data' : ''}
                 <StatInfo
                   placement="bottom"
-                  text="Průměr z let 2024 až 2026. Nejnižší počet bodů z češtiny a matematiky (max. 100, tedy 50 + 50), který stačil na přijetí. Je to hranice pro přijetí, ne průměrné skóre přijatých. Průměr přes všechny obory školy; hranici pro konkrétní obor a rok najdeš v detailu školy. (Nové školy mohou mít kratší historii.)"
+                  text={`Nejnižší počet bodů z češtiny a matematiky (max. 100, tedy 50 + 50), který v roce ${selectedAdm?.year ?? ''} stačil na přijetí. Rozpětí od oboru s nejnižší po obor s nejvyšší hranicí. Starší roky najdeš v grafu v detailu školy.`}
                 />
               </p>
             </div>
             <div className="ss-stat-cell">
               <p className="ss-data-md">
-                {selectedRow.acceptanceRate != null ? `${Math.round(selectedRow.acceptanceRate)} %` : 'bez dat'}
+                {selectedAdm?.acceptance != null ? `${Math.round(selectedAdm.acceptance)} %` : 'bez dat'}
               </p>
               <p className="ss-stat-label">
-                přijato
+                přijato {selectedAdm?.year ?? ''}{selectedAdm?.isOld ? ', starší data' : ''}
                 <StatInfo
                   placement="bottom"
-                  text="Průměr z let 2024 až 2026: kolik procent uchazečů škola v posledním kole přijala, v průměru přes všechny obory. Podrobnosti po jednotlivých oborech a letech najdeš po rozkliknutí školy. (Nové školy mohou mít kratší historii.)"
+                  text={`Kolik procent přihlášených škola v roce ${selectedAdm?.year ?? ''} přijala, ve všech oborech dohromady. Podrobnosti po oborech a starší roky najdeš v detailu školy.`}
                 />
               </p>
             </div>
@@ -376,7 +380,7 @@ function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
               </p>
             </div>
           </div>
-          {selectedRow.admissionCutoff == null && selectedRow.acceptanceRate == null && (
+          {selectedAdm?.cutoffMin == null && selectedAdm?.acceptance == null && (
             <p className="ss-caption ss-no-data-note">
               Tahle škola nebyla v prvním kole přijímaček, takže o ní zatím čísla nemáme.
             </p>

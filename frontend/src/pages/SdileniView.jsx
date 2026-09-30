@@ -78,7 +78,7 @@ function SdileniView() {
 
       <div className="dp-share-picks">
         {picks.map((pick) => {
-          const { cutoff, source } = cutoffForPick(pick, pick.school);
+          const { cutoff, year, range, needsObor } = cutoffForPick(pick, pick.school);
 
           return (
             <div className="dp-share-card" key={pick.school.id}>
@@ -94,12 +94,12 @@ function SdileniView() {
 
                 <div className="dp-share-card-stats">
                   <div>
-                    <div className="ss-label-caps">Hranice</div>
-                    <div className="ss-body-md">{cutoff != null ? `${numCz(cutoff)} b.` : '—'}</div>
+                    <div className="ss-label-caps">Hranice {year ?? ''}</div>
+                    <div className="ss-body-md">{cutoff != null ? `${numCz(cutoff)} b.` : range ?? '—'}</div>
                   </div>
                 </div>
-                {source === 'skola' && cutoff != null && (
-                  <p className="ss-caption">Bez vybraného oboru jde o průměr celé školy.</p>
+                {needsObor && range && (
+                  <p className="ss-caption">Obor zatím není vybraný, proto rozpětí mezi obory školy.</p>
                 )}
 
                 {pick.note && (

@@ -4,7 +4,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import { fetchSchool, fetchSchools } from '../../api';
-import { groupProgramsByObor } from '../../lib/schoolPrograms';
+import { groupProgramsByObor, formatCutoffRange } from '../../lib/schoolPrograms';
 import { trialDaysPhrase } from '../../config/pricing';
 import { QUESTIONS } from '../onboarding/quizQuestions';
 import { PragueScene } from './PragueScene';
@@ -55,7 +55,7 @@ const STEPS = [
   {
     kicker: 'Hranice přijetí',
     title: 'U každé vidíš, kolik bodů stačilo',
-    body: 'Výška sloupce je hranice přijetí z posledních přijímaček podle výsledků Cermatu. Čím vyšší, tím těžší se dostat.',
+    body: 'Výška sloupce je hranice přijetí nejtěžšího oboru školy v přijímačkách 2026 podle výsledků Cermatu. Čím vyšší, tím těžší se dostat.',
   },
   {
     kicker: 'Výsledek',
@@ -171,7 +171,7 @@ export default function Landing() {
           tip.querySelector('b').textContent = s.name;
           tip.querySelector('span').textContent = [
             s.district,
-            s.admission_cutoff != null ? `hranice ${Math.round(s.admission_cutoff)} b.` : null,
+            formatCutoffRange(s.adm) ? `hranice ${s.adm.year} ${formatCutoffRange(s.adm)}` : null,
           ]
             .filter(Boolean)
             .join(' · ');
@@ -249,7 +249,7 @@ export default function Landing() {
 
   // One real school's 3-year history for the detail mock.
   useEffect(() => {
-    const pick = shortlist.find((s) => s.admission_cutoff != null) ?? shortlist[0];
+    const pick = shortlist.find((s) => s.adm?.cutoffMin != null) ?? shortlist[0];
     if (!pick) return;
     let alive = true;
     fetchSchool(pick.id)
@@ -632,11 +632,11 @@ export default function Landing() {
                     <div className="l2-result-why">
                       <span className="l2-tag">{activeChip.label}</span>
                       <span className="l2-tag">{s.district}</span>
-                      {s.admission_cutoff != null && (
-                        <span className="l2-tag">hranice {Math.round(s.admission_cutoff)} b.</span>
+                      {formatCutoffRange(s.adm) && (
+                        <span className="l2-tag">hranice {formatCutoffRange(s.adm)}</span>
                       )}
-                      {s.acceptance_rate != null && (
-                        <span className="l2-tag">přijato {Math.round(s.acceptance_rate)} %</span>
+                      {s.adm?.acceptance != null && (
+                        <span className="l2-tag">přijato {Math.round(s.adm.acceptance)} %</span>
                       )}
                     </div>
                   )}

@@ -17,7 +17,7 @@ function PickCard({ pick, index, total, studentPoints, noteBody, onMove, onRemov
   const school = pick.school;
   const entries = groupProgramsByObor(school).filter((e) => !e.isDiscontinued);
 
-  const { cutoff, source, year } = cutoffForPick(pick, school);
+  const { cutoff, year, range, needsObor } = cutoffForPick(pick, school);
   const band = bandFor({ studentPoints, cutoff });
   const tone = band ? BANDS[band].tone : null;
 
@@ -86,8 +86,8 @@ function PickCard({ pick, index, total, studentPoints, noteBody, onMove, onRemov
 
         <div className={`dp-pick-stats${tone ? ` dp-pick-stats-${tone}` : ''}`}>
           <div>
-            <div className="ss-label-caps">Hranice {source === 'skola' ? '(průměr školy)' : year ? year : ''}</div>
-            <div className="ss-headline-sm">{cutoff != null ? `${numCz(cutoff)} b.` : '—'}</div>
+            <div className="ss-label-caps">Hranice {year ?? ''}</div>
+            <div className="ss-headline-sm">{cutoff != null ? `${numCz(cutoff)} b.` : range ?? '—'}</div>
           </div>
           <div className="dp-pick-stats-divider" />
           <div>
@@ -96,13 +96,14 @@ function PickCard({ pick, index, total, studentPoints, noteBody, onMove, onRemov
           </div>
           <div className="dp-pick-stats-note">
             {cutoff == null
-              ? 'Hranici pro tuto školu zatím nemáme.'
+              ? needsObor
+                ? 'Vyber obor a spočítáme rozdíl. Každý obor má vlastní hranici, nahoře je rozpětí mezi nimi.'
+                : 'Hranici pro tuto školu zatím nemáme.'
               : studentPoints == null
                 ? 'Zadej svoje body vpravo a spočítáme rozdíl.'
                 : studentPoints - cutoff >= 0
-                  ? `Máš o ${numCz(studentPoints - cutoff)} bodu víc, než loni stačilo.`
-                  : `Chybí ti ${numCz(cutoff - studentPoints)} bodu na loňskou hranici.`}
-            {source === 'skola' && cutoff != null && ' Bez vybraného oboru jde o průměr celé školy.'}
+                  ? `Máš o ${numCz(studentPoints - cutoff)} bodu víc, než v roce ${year} stačilo.`
+                  : `Chybí ti ${numCz(cutoff - studentPoints)} bodu na hranici z roku ${year}.`}
           </div>
         </div>
 

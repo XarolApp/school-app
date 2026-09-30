@@ -24,13 +24,15 @@
  * AGGREGATION (per product decision — a school shows ONE number, not its
  * easiest program's number, which would flatter schools with an easy niche
  * track):
- *   1. Within one school, one year: average across every obor the school
- *      offers that year.
- *   2. Across years: average of step 1's per-year number, over every file
- *      given to this run.
+ *   1. Within one school, one year: cutoff = average across every obor the
+ *      school offers that year; acceptance = all admitted / all applicants.
+ *   2. Across years: NO averaging. The school's NEWEST year in the files
+ *      given to this run wins (changed 2026-09-29; it used to be a 3-year
+ *      average).
  *   Both land on `schools.admission_cutoff` / `schools.acceptance_rate`.
- *   Search.jsx must label this "průměr" so nobody reads it as one program's
- *   guaranteed cutoff.
+ *   These columns are internal (scoring, sorting). The UI never shows them:
+ *   it shows the newest year's per-obor RANGE, computed from school_programs
+ *   (frontend/src/lib/schoolPrograms.js summarizeAdmission).
  *
  * MATCHING: Cermat's school names don't match our scraped names exactly
  * ("SŠ mediální grafiky a tisku, s.r.o." vs our "Střední škola mediální
@@ -226,7 +228,8 @@ function readYearFile(filePath) {
   const perSchool = [];
   for (const group of byRedizo.values()) {
     const cutoffs = [];
-    const rates = [];
+    let appliedTotal = 0;
+    let admittedTotal = 0;
 
     for (const row of group.rows) {
       const cutoff = halvedCutoff(row);
@@ -235,15 +238,17 @@ function readYearFile(filePath) {
       const applied = Number(row[COL.applied]);
       const admitted = Number(row[COL.admitted]);
       if (applied > 0 && !Number.isNaN(admitted)) {
-        rates.push((admitted / applied) * 100);
+        appliedTotal += applied;
+        admittedTotal += admitted;
       }
     }
 
     perSchool.push({
       redizo: group.redizo,
       name: group.name,
+      year: toIntOrNull(group.rows[0][COL.rok]),
       cutoff: cutoffs.length ? avg(cutoffs) : null,
-      rate: rates.length ? avg(rates) : null,
+      rate: appliedTotal > 0 ? (admittedTotal / appliedTotal) * 100 : null,
     });
   }
 
@@ -302,8 +307,8 @@ async function main() {
 
   console.log(`${dbSchools.length} schools in the database. Reading ${files.length} file(s)...\n`);
 
-  // schoolId -> { name, redizo, cutoffs: [...], rates: [...] } — one entry
-  // per school, filled in across every year file given this run.
+  // schoolId -> { name, redizo, year, cutoff, rate } — the school's newest
+  // year across every file given this run.
   const perSchool = new Map();
   const unmatchedNames = new Map(); // cermat name -> Set of source files it appeared unmatched in
   const rawProgramRows = []; // school_programs candidates, school_id attached once all matching is done
@@ -332,12 +337,16 @@ async function main() {
       // final write) use it too, and so it stops being a fuzzy-match candidate.
       if (!dbSchool.redizo) dbSchool.redizo = cermatSchool.redizo;
 
-      if (!perSchool.has(dbSchool.id)) {
-        perSchool.set(dbSchool.id, { name: dbSchool.name, redizo: dbSchool.redizo, cutoffs: [], rates: [] });
+      const prev = perSchool.get(dbSchool.id);
+      if (!prev || (cermatSchool.year ?? 0) >= (prev.year ?? 0)) {
+        perSchool.set(dbSchool.id, {
+          name: dbSchool.name,
+          redizo: dbSchool.redizo,
+          year: cermatSchool.year,
+          cutoff: cermatSchool.cutoff,
+          rate: cermatSchool.rate,
+        });
       }
-      const entry = perSchool.get(dbSchool.id);
-      if (cermatSchool.cutoff !== null) entry.cutoffs.push(cermatSchool.cutoff);
-      if (cermatSchool.rate !== null) entry.rates.push(cermatSchool.rate);
     }
 
     rawProgramRows.push(...programRows);
@@ -353,16 +362,15 @@ async function main() {
     .filter((row) => row.school_id !== null)
     .map(({ redizo, ...rest }) => rest); // redizo was only needed to find school_id
 
-  // Aggregation step 2: average each school's per-year numbers across every
-  // file provided this run.
+  // Aggregation step 2: the newest year only, never an average across years.
   const results = [];
   for (const [schoolId, entry] of perSchool.entries()) {
     results.push({
       id: schoolId,
       name: entry.name,
       redizo: entry.redizo,
-      admission_cutoff: entry.cutoffs.length ? round1(avg(entry.cutoffs)) : null,
-      acceptance_rate: entry.rates.length ? round1(avg(entry.rates)) : null,
+      admission_cutoff: entry.cutoff !== null ? round1(entry.cutoff) : null,
+      acceptance_rate: entry.rate !== null ? round1(entry.rate) : null,
     });
   }
 

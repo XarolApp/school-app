@@ -471,7 +471,7 @@ school-app/
         │   ├── SchoolMap.jsx     # search-page map: address search + radius filter + N pins
         │   ├── schoolDetail/     # one component per school-detail-page section
         │   │   ├── SchoolHero / SchoolActions / CutoffExplainer / SectionNav
-        │   │   ├── ProgramList + ProgramCard   # per-obor breakdown + 3-year Cermat trend
+        │   │   ├── ProgramList + ProgramCard   # per-obor breakdown + history chart (HistoryChart)
         │   │   ├── SchoolLocation               # single static map pin, no search/radius UI
         │   │   ├── SchoolReviews + ReviewCard + ReviewForm
         │   │   └── MissingDataGrid / ReportDataDialog / SimilarSchools
@@ -479,7 +479,7 @@ school-app/
         ├── lib/
         │   ├── matching.js + schoolFeatures.js   # ONBOARDING quiz scoring
         │   ├── schoolSearch.js   # diacritics folding, typo tolerance, ranking
-        │   ├── schoolPrograms.js # groups school_programs into per-obor cards + 3-year trend
+        │   ├── schoolPrograms.js # per-obor cards, newest-year summary (summarizeAdmission), history
         │   ├── searchPrefs.js    # localStorage: recently viewed, saved filters, compare selection
         │   ├── demoSchools.js / pendingOnboardingAnswers.js
         └── pages/
@@ -727,7 +727,7 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
      weight layer (`WEIGHT_RULES` / `effectiveWeights`) where answers like
      "what offers vs. where" or "pressure" change how much other dimensions
      count, a `selektivita` and `rezerva` dimension scored from
-     `schools.admission_cutoff` (school average, not per-obor), and a
+     `schools.admission_cutoff` (newest year, averaged across obory; internal only), and a
      `PAID_PENALTY` that sinks paid schools when the family cannot pay tuition.
      Null data is never a "no" — it drops the school from that dimension. The
      optional `body` (Cermat points) answer is copied to
@@ -737,9 +737,9 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
 10. **School detail page** (`frontend/src/pages/SchoolDetail.jsx` + one
     component per section under `frontend/src/components/schoolDetail/`) —
     rebuilt 2026-09-08 from feature-brainstorm.md §4. Real per-obor breakdown
-    with a 3-year Cermat trend (`frontend/src/lib/schoolPrograms.js`
+    and a history chart (`frontend/src/lib/schoolPrograms.js`
     aggregates `school.school_programs`, grouping duplicate rows per
-    obor+year the way the school-level average already does), a single
+    obor+year), a single
     static map pin, and eight explicitly-labelled "co zatím doplňujeme"
     placeholders for §4 items with no real data source (tuition/školné,
     obědy/ubytování, kroužky, maturita pass rate, VŠ placement, employment
@@ -817,6 +817,14 @@ actionable that follows from them lives in [`UNFORGET.md`](UNFORGET.md) instead.
   directly, so `server.js` remains the only way in. Gating this is tied to the paywall
   connection work in `UNFORGET.md` — remember `withMatchScores` must survive whatever
   query replaces it, or every percentage in the app disappears with nothing logged.
+- **Admission numbers show the newest year only (2026-09-29).** Every surface
+  reads `summarizeAdmission()` in `frontend/src/lib/schoolPrograms.js`: the
+  cutoff is a RANGE across the school's obory (never an average), acceptance is
+  all admitted / all applicants. A school whose newest rows predate
+  `CURRENT_ADMISSION_YEAR` is marked "starší data". Older years appear ONLY in
+  `components/schoolDetail/HistoryChart.jsx`. `schools.admission_cutoff` /
+  `acceptance_rate` are internal (scoring, sorting) and never displayed; bump
+  `CURRENT_ADMISSION_YEAR` after each yearly Cermat import.
 - **`GET /api/schools` returns a SLIMMED shape** (plan 010, 2026-09-17): each school's
   `school_programs` is collapsed to one entry per obor (latest year only), carrying just
   the fields list pages read — no per-year history, no `school_ai_summary`. Full per-obor
