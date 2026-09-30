@@ -521,7 +521,11 @@ function Search() {
   const sortRows = (list, sortId, dir) => {
     const value = SORT_VALUE[sortId] ?? SORT_VALUE.cut;
     const sign = dir === 'asc' ? 1 : -1;
+    // Schools with no current-year (2026) admission data go after everything
+    // else, in every sort: they may have closed or stopped taking applicants.
+    const stale = (r) => (!r.admission || r.admission.isOld ? 1 : 0);
     return list.slice().sort((a, b) => {
+      if (stale(a) !== stale(b)) return stale(a) - stale(b);
       const va = value(a);
       const vb = value(b);
       if (va == null && vb == null) return a.name.localeCompare(b.name, 'cs');

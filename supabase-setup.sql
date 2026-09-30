@@ -851,6 +851,11 @@ alter table public.schools add column if not exists redizo text;
 alter table public.schools add column if not exists admission_cutoff numeric;
 alter table public.schools add column if not exists acceptance_rate numeric;
 alter table public.schools add column if not exists admission_data_updated_at timestamptz;
+-- A school that legally merged into another (or was re-registered under a new
+-- REDIZO) points at its successor. server.js hides it from every list and
+-- scorer, redirects its old detail URL, and adds its school_programs to the
+-- successor's history. Null = an ordinary, independent school.
+alter table public.schools add column if not exists merged_into integer references public.schools(id);
 
 -- --- school_programs -----------------------------------------------------------
 -- Same reasoning as schools directly above: RLS on, no policy at all. Every

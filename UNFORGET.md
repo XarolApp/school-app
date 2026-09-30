@@ -13,6 +13,16 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
+## Merged / renamed schools break the REDIZO import — 2026-09-30
+- **Found:** 2026-09-30, while asking why 10 schools had no 2026 admission data.
+- **Urgency:** medium
+- **Risk of fixing now:** none; the `merged_into` column (supabase-setup.sql) and server.js support are in.
+- **Risk of NOT fixing:** every yearly import, a merged or renamed school comes back as a new REDIZO, matches nothing, and leaves a dead duplicate row with old numbers.
+- **Effort:** small (print unmatched REDIZOs in `scripts/import-admission-data.js`, then set `merged_into` by hand)
+- **Release/context:** run after each yearly Cermat import
+
+Body: handled on 2026-09-30 by `schools.merged_into` — ids 211, 216, 217, 218 (FOSTRA Aspira/Pontia/Europea/Meda, merged into FOSTRA International id 7 on 2025-09-01), 208 (KUDYKAMPUS, re-registered as id 226) and 115 (Hotelová škola a Gymnázium Radlická, merged into Smíchovská SPŠ id 110 on 2026-01-01). Still open: id 215 FOSTRA Digita (no merger record found, not in 2026 Cermat, no 2026 website listing; 2025 had 16 applicants and 0 accepted, so it may never have run), id 189 "Střední odborné učiliště" (Ministry of Justice school, evening courses, no applicant data; arguably should be hidden from 9th graders), ids 212 Přírodní škola and 213 AVIDA (open, no 4-year gymnázium admission in 2026 Cermat; correctly just "starší data").
+
 ## Questionnaire: schools without Cermat data, and scoring per obor — 2026-09-30
 - **Found:** 2026-09-30, after plan 017 (`selektivita` / `rezerva` dimensions in `lib/matching.js`) shipped and the obor filters landed on `/skoly`.
 - **Effort:** medium — touches the scorer, the questions, and the server-side list data.

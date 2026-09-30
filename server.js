@@ -930,6 +930,7 @@ async function fetchAllSchools(select) {
     const { data, error } = await supabase
       .from('schools')
       .select(select)
+      .is('merged_into', null)
       .order('name')
       .order('id')
       .range(from, from + SUPABASE_PAGE_SIZE - 1);
@@ -982,6 +983,31 @@ function slimProgramsForList(programs) {
       : null;
     return Object.fromEntries(LIST_PROGRAM_FIELDS.map((f) => [f, f === 'cutoff' ? cutoff : row[f]]));
   });
+}
+
+/**
+ * A school that merged into another (schools.merged_into) keeps its own row,
+ * but its admission history belongs to the successor. Appends the predecessors'
+ * school_programs to each successor so the detail page and its charts show the
+ * whole history. Only for single-school / ?ids reads; the list page shows the
+ * latest year only and never needs them.
+ */
+async function withPredecessorPrograms(schools) {
+  const ids = schools.map((s) => s.id);
+  if (!ids.length) return schools;
+  const { data: preds, error } = await supabase
+    .from('schools')
+    .select('id, merged_into, school_programs(*)')
+    .in('merged_into', ids);
+  if (error) throw error;
+  if (!preds.length) return schools;
+  return schools.map((s) => ({
+    ...s,
+    school_programs: [
+      ...(s.school_programs ?? []),
+      ...preds.filter((p) => p.merged_into === s.id).flatMap((p) => p.school_programs ?? []),
+    ],
+  }));
 }
 
 async function withMatchScores(userId, schools) {
@@ -1037,7 +1063,7 @@ app.get('/api/schools', optionalAuth, async (req, res) => {
     }
     const { data, error } = await supabase.from('schools').select(FULL_SELECT).in('id', ids);
     if (error) return res.status(500).json({ error: error.message });
-    return res.json(await withMatchScores(req.user?.id, data));
+    return res.json(await withMatchScores(req.user?.id, await withPredecessorPrograms(data)));
   }
 
   let rows;
@@ -1066,7 +1092,20 @@ app.get('/api/schools/:id', optionalAuth, async (req, res) => {
   if (error?.code === 'PGRST116') return res.status(404).json({ error: 'Škola nebyla nalezena.' });
   if (error) return res.status(500).json({ error: error.message });
 
-  const [school] = await withMatchScores(req.user?.id, [data]);
+  // An old link to a school that merged away answers with its successor; the
+  // page sees a different id than it asked for and redirects.
+  let row = data;
+  if (row.merged_into) {
+    const { data: successor, error: successorError } = await supabase
+      .from('schools')
+      .select('*, school_programs(*), school_ai_summary(*), school_extracted_details(*)')
+      .eq('id', row.merged_into)
+      .single();
+    if (successorError) return res.status(500).json({ error: successorError.message });
+    row = successor;
+  }
+
+  const [school] = await withMatchScores(req.user?.id, await withPredecessorPrograms([row]));
   res.json(school);
 });
 
@@ -1082,7 +1121,7 @@ app.get('/api/favorites', requireAuth, requireAccess, async (req, res) => {
 
   if (error) return res.status(500).json({ error: error.message });
 
-  const schools = data.map((row) => row.schools).filter(Boolean);
+  const schools = data.map((row) => row.schools).filter((school) => school && !school.merged_into);
   res.json(await withMatchScores(req.user.id, schools));
 });
 

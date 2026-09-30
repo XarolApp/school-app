@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { fetchSchool, fetchFavorites } from '../api';
 import { useAuth } from '../components/AuthContext';
 import { recordRecentSchool } from '../lib/searchPrefs';
@@ -22,6 +22,7 @@ import './schoolDetail.css';
 
 function SchoolDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { isSignedIn, hasAccess } = useAuth();
   const [school, setSchool] = useState(null);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -40,13 +41,18 @@ function SchoolDetail() {
     fetchSchool(id)
       .then((s) => {
         if (cancelled) return;
+        // The API answers an old (merged-away) id with its successor school.
+        if (String(s.id) !== String(id)) {
+          navigate(`/skoly/${s.id}`, { replace: true });
+          return;
+        }
         setSchool(s);
         recordRecentSchool(s.id);
       })
       .catch((err) => { if (!cancelled) setError(err); })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
-  }, [id, loadTick]);
+  }, [id, loadTick, navigate]);
 
   // Favourites need a signed-in account with access; anonymous visitors simply
   // do not see the star.
