@@ -13,6 +13,15 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
+## Questionnaire: schools without Cermat data, and scoring per obor — 2026-09-30
+- **Found:** 2026-09-30, after plan 017 (`selektivita` / `rezerva` dimensions in `lib/matching.js`) shipped and the obor filters landed on `/skoly`.
+- **Effort:** medium — touches the scorer, the questions, and the server-side list data.
+- **Not done yet:**
+  1. **Schools with no Cermat data.** `selektivita` and `rezerva` return `null` when `schools.admission_cutoff` is missing, so such a school is scored only on the other dimensions. A student who entered points and wants "jistota" can then see an unknown school ranked above schools known to be safe, with nothing telling them its hranice is unknown. Decide the rule: show a visible "hranice neznámá" note on the result, push these schools below schools with known data, or exclude them from the reserve part of the ranking. Also check how many schools this affects and whether any can be matched by `scripts/backfill-redizo.js`.
+  2. **Questionnaire is school-level, not obor-level.** The difficulty and reserve dimensions use the school's average `admission_cutoff`, so a school with one easy and one hard obor reads as medium. The questionnaire should score the obor the student actually wants: match the chosen `oblasti` / `typ` to the school's obory, and use that obor's own hranice, míst, přihlášky and přijato (as the `/skoly` filters and `/prihlaska` already do). Same idea for the onboarding quiz's `reserve` component, which already prefers the obor's cutoff when it has one.
+  3. **Other obor-related inputs worth adding at the same time:** tie `rezerva` to the best-fitting obor per school (like the onboarding engine's `bestObor`), and surface which obor a match and its hranice refer to in the result text.
+- **Why it matters:** hranice, počet míst and přijato z přihlášených only mean something per obor; the school average hides the number a student actually competes against.
+
 ## Search filters — form of study misses 12 obory — 2026-09-29
 - **Found:** 2026-09-29, while adding the obor / hranice / míst / forma filters to `/skoly`.
 - **Effort:** small.
