@@ -105,17 +105,25 @@ function ProgramCard({ entry }) {
       </div>
 
       {y.variants && (
-        <ul className="sd-variants" aria-label="Zaměření oboru">
-          {y.variants.map((v) => (
-            <li key={v.zamereni} className="sd-variant">
-              <span className="sd-variant-name">{v.zamereni}</span>
-              <span className="sd-variant-nums">
-                {v.kapacita ?? '–'} míst · {v.prihlasky ?? '–'} přihlášek · {v.prijati ?? '–'} přijatých ·{' '}
-                {v.cutoff != null ? `${numCz(v.cutoff)} b.` : 'bez hranice'}
-              </span>
-            </li>
-          ))}
-        </ul>
+        <>
+          <div className="sd-variants-head">
+            Zaměření v tomto oboru ({y.variants.length})
+            <InfoHint
+              text={`Jeden obor (stejný kód KKOV) může škola otevírat v několika zaměřeních, například jako samostatné třídy nebo programy. Každé má vlastní počet míst, přihlášek i bodovou hranici, proto je hranice oboru rozpětí, ne jedno číslo. Zaměření ukazujeme jen pro rok ${entry.latestYear}: Cermat jejich názvy každý rok přepisuje, takže se mezi roky nedají spolehlivě spárovat. Graf vývoje níž proto sleduje celý obor.`}
+            />
+          </div>
+          <ul className="sd-variants" aria-label="Zaměření oboru">
+            {y.variants.map((v) => (
+              <li key={v.zamereni} className="sd-variant">
+                <span className="sd-variant-name">{v.zamereni}</span>
+                <span className="sd-variant-nums">
+                  {v.kapacita ?? '–'} míst · {v.prihlasky ?? '–'} přihlášek · {v.prijati ?? '–'} přijatých ·{' '}
+                  {v.cutoff != null ? `${numCz(v.cutoff)} b.` : 'bez hranice'}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </>
       )}
 
       <HistoryChart points={yearlyHistory(entry)} subject={entry.oborNazev} />

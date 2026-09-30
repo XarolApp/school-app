@@ -1124,3 +1124,4 @@
 .sd-variant { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-xs) var(--space-md); padding: var(--space-sm) var(--space-md); background: var(--surface2); border: 1px solid var(--line); border-radius: var(--r-chip); }
 .sd-variant-name { font-weight: 600; color: var(--ink); }
 .sd-variant-nums { color: var(--ink2); font-variant-numeric: tabular-nums; }
+.sd-variants-head { display: flex; align-items: center; gap: var(--space-xs); margin-top: var(--space-md); font-weight: 600; color: var(--ink); }
