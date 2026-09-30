@@ -16,7 +16,7 @@ function ProgramList({ entries }) {
   const searchable = entries.length > COLLAPSED_COUNT;
   const needle = normalize(text.trim());
   const matching = needle
-    ? entries.filter((e) => normalize(`${e.oborNazev ?? ''} ${e.kkov ?? ''}`).includes(needle))
+    ? entries.filter((e) => normalize(`${e.oborNazev ?? ''} ${e.kkov ?? ''} ${(e.latest.variants ?? []).map((v) => v.zamereni).join(' ')}`).includes(needle))
     : entries;
   const shown = expanded || needle ? matching : matching.slice(0, COLLAPSED_COUNT);
   const rest = matching.length - shown.length;
@@ -43,7 +43,7 @@ function ProgramList({ entries }) {
       )}
       <div className="sd-programs">
         {shown.map((entry) => (
-          <ProgramCard key={`${entry.kkov}-${entry.oborNazev}-${entry.typSkoly}-${entry.delkaStudia}`} entry={entry} />
+          <ProgramCard key={`${entry.kkov}-${entry.oborNazev}-${entry.typSkoly}-${entry.delkaStudia}-${entry.jazykStudia}`} entry={entry} />
         ))}
       </div>
       {rest > 0 && (

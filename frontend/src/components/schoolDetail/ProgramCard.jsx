@@ -1,6 +1,6 @@
 import InfoHint from './InfoHint';
 import HistoryChart from './HistoryChart';
-import { yearlyHistory } from '../../lib/schoolPrograms';
+import { yearlyHistory, formatCutoffRange } from '../../lib/schoolPrograms';
 
 const numCz = (v) => (v == null ? null : String(v).replace('.', ','));
 
@@ -89,20 +89,34 @@ function ProgramCard({ entry }) {
         </div>
         <div>
           <div className={`sd-program-stat-value${y.cutoff == null ? ' is-empty' : ''}`}>
-            {y.cutoff != null ? `${numCz(y.cutoff)} b.` : 'bez dat'}
+            {y.cutoff != null ? formatCutoffRange({ cutoffMin: y.cutoffMin, cutoffMax: y.cutoffMax }) : 'bez dat'}
           </div>
           <div className="sd-program-stat-label">
             {y.cutoff != null ? `hranice ${entry.latestYear}` : 'bez jednotné zkoušky'}
             <InfoHint
               text={
                 y.cutoff != null
-                  ? `Nejnižší počet bodů z češtiny a matematiky (max. 100, tedy 50 + 50), který v roce ${entry.latestYear} stačil na přijetí přímo do tohoto oboru. Je to jeho vlastní hranice, ne průměr celé školy.`
+                  ? `Nejnižší počet bodů z češtiny a matematiky (max. 100, tedy 50 + 50), který v roce ${entry.latestYear} stačil na přijetí přímo do tohoto oboru. Je to jeho vlastní hranice, ne průměr celé školy.${y.variants ? ' Obor má více zaměření, každé s vlastní hranicí, proto je tu rozpětí.' : ''}`
                   : `Tento obor nemá jednotnou přijímací zkoušku (JPZ). Přijímá se jinak, např. talentovou zkouškou, takže tu není bodová hranice.`
               }
             />
           </div>
         </div>
       </div>
+
+      {y.variants && (
+        <ul className="sd-variants" aria-label="Zaměření oboru">
+          {y.variants.map((v) => (
+            <li key={v.zamereni} className="sd-variant">
+              <span className="sd-variant-name">{v.zamereni}</span>
+              <span className="sd-variant-nums">
+                {v.kapacita ?? '–'} míst · {v.prihlasky ?? '–'} přihlášek · {v.prijati ?? '–'} přijatých ·{' '}
+                {v.cutoff != null ? `${numCz(v.cutoff)} b.` : 'bez hranice'}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
 
       <HistoryChart points={yearlyHistory(entry)} subject={entry.oborNazev} />
       {entry.trend && <p className="sd-program-note">{entry.trend.note}</p>}

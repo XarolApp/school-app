@@ -175,6 +175,7 @@ const COL = {
   jazykStudia: 'JAZYK STUDIA',
   delkaStudia: 'DÉLKA STUDIA',
   formaVzdelavani: 'FORMA VZDĚLÁVÁNÍ',
+  zamereni: 'ZAMĚŘENÍ OBORU',
   kapacita: 'KAPACITA',
 };
 
@@ -268,6 +269,7 @@ function readYearFile(filePath) {
     jazyk_studia: row[COL.jazykStudia] || null,
     delka_studia: toIntOrNull(row[COL.delkaStudia]),
     forma_vzdelavani: row[COL.formaVzdelavani] || null,
+    zamereni: String(row[COL.zamereni] ?? '').trim() || null,
     kapacita: toIntOrNull(row[COL.kapacita]),
     prihlasky: toIntOrNull(row[COL.applied]),
     prijati: toIntOrNull(row[COL.admitted]),

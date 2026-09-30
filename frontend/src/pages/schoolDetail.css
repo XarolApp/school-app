@@ -1118,3 +1118,9 @@
   font-size: var(--fs-caption);
   color: var(--ink3);
 }
+
+/* Programmes (zaměření) sharing one obor, newest year */
+.sd-variants { list-style: none; margin: var(--space-md) 0 0; padding: 0; display: grid; gap: var(--space-sm); }
+.sd-variant { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-xs) var(--space-md); padding: var(--space-sm) var(--space-md); background: var(--surface2); border: 1px solid var(--line); border-radius: var(--r-chip); }
+.sd-variant-name { font-weight: 600; color: var(--ink); }
+.sd-variant-nums { color: var(--ink2); font-variant-numeric: tabular-nums; }

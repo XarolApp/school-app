@@ -45,15 +45,41 @@ export function latestProgramValue(school, field) {
   return latest[field];
 }
 
+const mean = (values) =>
+  values.length ? Math.round((values.reduce((s, v) => s + v, 0) / values.length) * 10) / 10 : null;
+
+/**
+ * One obor in one year. Rows sharing a zaměření are capacity groups of the same
+ * programme (counts add, cutoffs average). Different zaměření are different
+ * programmes (FOSTRA's Aspira / Meda / International are all 79-41-K/41): they
+ * are never averaged together, so `cutoffMin`/`cutoffMax` span them and
+ * `variants` lists each one. `cutoff` stays the mean of the programmes for the
+ * callers that need one number for an obor (the risk analysis).
+ */
 function aggregateYear(rows) {
-  const kapacita = sumKnown(rows.map((r) => r.kapacita));
-  const prihlasky = sumKnown(rows.map((r) => r.prihlasky));
-  const prijati = sumKnown(rows.map((r) => r.prijati));
-  const cutoffs = rows.map((r) => r.cutoff).filter((c) => c != null);
-  const cutoff = cutoffs.length
-    ? Math.round((cutoffs.reduce((s, c) => s + c, 0) / cutoffs.length) * 10) / 10
-    : null;
-  return { kapacita, prihlasky, prijati, cutoff };
+  const byFocus = new Map();
+  for (const row of rows) {
+    const key = (row.zamereni ?? '').trim().toLowerCase();
+    if (!byFocus.has(key)) byFocus.set(key, []);
+    byFocus.get(key).push(row);
+  }
+  const parts = [...byFocus.values()].map((rs) => ({
+    zamereni: rs[0].zamereni?.trim() || null,
+    kapacita: sumKnown(rs.map((r) => r.kapacita)),
+    prihlasky: sumKnown(rs.map((r) => r.prihlasky)),
+    prijati: sumKnown(rs.map((r) => r.prijati)),
+    cutoff: mean(rs.map((r) => r.cutoff).filter((c) => c != null)),
+  }));
+  const cutoffs = parts.map((p) => p.cutoff).filter((c) => c != null);
+  return {
+    kapacita: sumKnown(parts.map((p) => p.kapacita)),
+    prihlasky: sumKnown(parts.map((p) => p.prihlasky)),
+    prijati: sumKnown(parts.map((p) => p.prijati)),
+    cutoff: mean(cutoffs),
+    cutoffMin: cutoffs.length ? Math.min(...cutoffs) : null,
+    cutoffMax: cutoffs.length ? Math.max(...cutoffs) : null,
+    variants: parts.length > 1 && parts.every((p) => p.zamereni) ? parts : null,
+  };
 }
 
 /**
@@ -183,7 +209,7 @@ export function summarizeAdmission(school) {
   }
   const obory = [...groups.values()].map(aggregateYear);
 
-  const cutoffs = obory.map((o) => o.cutoff).filter((c) => c != null);
+  const cutoffs = obory.flatMap((o) => [o.cutoffMin, o.cutoffMax]).filter((c) => c != null);
   // A rate only from obory that report both counts, so a missing prijati
   // cannot read as "nobody admitted".
   const counted = obory.filter((o) => o.prihlasky > 0 && o.prijati != null);
@@ -226,7 +252,7 @@ export function yearlyHistory(rowsOrEntry) {
     : Object.entries(rowsOrEntry.years).map(([rok, y]) => ({ rok: Number(rok), obory: [y] }));
   return perYear
     .map(({ rok, obory }) => {
-      const cutoffs = obory.map((o) => o.cutoff).filter((c) => c != null);
+      const cutoffs = obory.flatMap((o) => [o.cutoffMin ?? o.cutoff, o.cutoffMax ?? o.cutoff]).filter((c) => c != null);
       const counted = obory.filter((o) => o.prihlasky > 0 && o.prijati != null);
       const prihlasky = counted.reduce((s, o) => s + o.prihlasky, 0);
       const prijati = counted.reduce((s, o) => s + o.prijati, 0);

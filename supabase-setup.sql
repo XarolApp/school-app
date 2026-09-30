@@ -234,11 +234,17 @@ create table if not exists public.school_programs (
   jazyk_studia text,
   delka_studia int,
   forma_vzdelavani text,
+  zamereni text,
   kapacita int,
   prihlasky int,
   prijati int,
   cutoff numeric
 );
+
+-- Cermat's "ZAMĚŘENÍ OBORU": free text that tells apart programmes sharing one
+-- KKOV (FOSTRA's five gymnázium programmes are all 79-41-K/41). The wording
+-- changes between years, so it only splits the newest year; history stays per obor.
+alter table public.school_programs add column if not exists zamereni text;
 
 create index if not exists school_programs_school_id_idx
   on public.school_programs (school_id);

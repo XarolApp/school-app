@@ -946,6 +946,8 @@ const LIST_PROGRAM_FIELDS = [
   'kkov', 'zrizovatel', 'kapacita', 'cutoff', 'rok', 'prihlasky', 'prijati',
   // Per-obor name and study form, for the search filters.
   'obor_nazev', 'forma_vzdelavani',
+  // Programmes sharing one KKOV (FOSTRA's five gymnázia) stay separate entries.
+  'zamereni',
 ];
 
 /**
@@ -964,7 +966,7 @@ function slimProgramsForList(programs) {
   for (const row of rows) {
     // A program absent from the latest year is historical, not current capacity.
     if ((row.rok ?? 0) !== latestYear) continue;
-    const key = [row.kkov, row.obor_nazev, row.typ_skoly, row.delka_studia, row.jazyk_studia].join('|');
+    const key = [row.kkov, row.obor_nazev, row.typ_skoly, row.delka_studia, row.jazyk_studia, row.zamereni].join('|');
     const prev = byObor.get(key);
     if (!prev) {
       byObor.set(key, { ...row, cutoffs: row.cutoff != null ? [row.cutoff] : [] });
