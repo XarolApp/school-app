@@ -255,7 +255,7 @@ function RunRow({ run, isCurrent, total, busy, onSetDefault, onArchive, onRename
   );
 }
 
-function History({ runs, currentId, total, error, busyId, onBack, onSetDefault, onArchive, onRename }) {
+function History({ runs, currentId, total, error, busyId, onBack, onRetake, onSetDefault, onArchive, onRename }) {
   // Current first, then the rest newest-first, archived last.
   const ordered = [...runs].sort((a, b) => {
     const rank = (r) => (r.id === currentId ? 0 : r.archived_at ? 2 : 1);
@@ -291,6 +291,10 @@ function History({ runs, currentId, total, error, busyId, onBack, onSetDefault, 
           />
         ))}
       </ul>
+
+      <button type="button" className="ss-btn ss-btn-primary" onClick={onRetake}>
+        Vyplnit znovu
+      </button>
 
       <div className="qz-note">
         <Info size={18} aria-hidden="true" />
@@ -518,6 +522,7 @@ function Questionnaire() {
           error={historyError}
           busyId={busyId}
           onBack={() => setView('results')}
+          onRetake={() => setConfirmRetake(true)}
           onSetDefault={handleSetDefault}
           onArchive={handleArchive}
           onRename={handleRename}
