@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { usePrefersReducedMotion } from './usePrefersReducedMotion';
 
 /**
@@ -66,6 +67,8 @@ export function ObScreen({
   // Vertically centre the column (short screens). Quiz screens stay
   // top-anchored so the question does not jump between steps.
   center = false,
+  // Pre-account screens offer a way out for people who already have one.
+  login = true,
 }) {
   const hasBar = typeof progress === 'number';
   const frame = (
@@ -82,6 +85,11 @@ export function ObScreen({
               {phase && <span className="ob-phase">{phase}</span>}
               <span className="ob-brandmark">Střední na míru</span>
             </>
+          )}
+          {login && (
+            <Link to="/prihlaseni" className="ob-header-login">
+              Mám účet
+            </Link>
           )}
         </header>
       )}

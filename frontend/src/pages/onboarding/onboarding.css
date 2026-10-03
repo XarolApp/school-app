@@ -2908,3 +2908,20 @@
   .ob-pw-plan, .ob-pw-radio { transition: none; }
   .ob-pw-main > *, .ob-pw-side > * { animation: none; }
 }
+
+/* --- header: "Mám účet" ----------------------------------------------------- */
+.ob-header-login {
+  flex: 0 0 auto;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+.ob-header-login:hover { color: var(--text-h); }
+
+/* Quiz: the buttons sit right under the question instead of being pushed to
+   the bottom of the viewport, so they are reachable without scrolling. Still
+   sticky, so tall questions (the district map) keep them on screen. */
+.ob-split--profile .ob-body { flex: 0 0 auto; }

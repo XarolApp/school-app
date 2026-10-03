@@ -1,4 +1,4 @@
-import { Fragment, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import { ObButton, ObOption, ObScreen, SelectionCount } from '../../../components/onboarding/ObKit';
 import DistrictMap from '../../../components/onboarding/DistrictMap';
 import ProfilePanel from '../../../components/onboarding/ProfilePanel';
@@ -131,6 +131,21 @@ function QuizQuestion({ step }) {
     if (question.max && current.length >= question.max) return;
     setAnswer(question.key, [...current, optionValue]);
   };
+
+  // Enter continues, like clicking "Pokračovat". Left alone when focus is on a
+  // real control outside the answers (Zpět, Přeskočit, links), which already
+  // handle Enter themselves.
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key !== 'Enter' || e.repeat || e.isComposing || e.defaultPrevented) return;
+      const t = e.target;
+      if (t.closest?.('.ob-header, .ob-actions, a, textarea')) return;
+      e.preventDefault();
+      goNext();
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [goNext]);
 
   const clear = () => setAnswer(question.key, question.type === 'multi' ? [] : '');
 

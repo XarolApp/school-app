@@ -202,6 +202,7 @@ function CreateAccount() {
     <ObScreen
       onBack={goBack}
       phase={phase}
+      login={false}
       center
       asideVariant="showcase"
       aside={saved}
