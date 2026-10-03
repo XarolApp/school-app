@@ -2925,3 +2925,6 @@
    the bottom of the viewport, so they are reachable without scrolling. Still
    sticky, so tall questions (the district map) keep them on screen. */
 .ob-split--profile .ob-body { flex: 0 0 auto; }
+
+.ob-hero-link { color: inherit; text-decoration: none; }
+.ob-hero-link:hover { text-decoration: underline; text-underline-offset: 4px; }

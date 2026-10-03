@@ -68,11 +68,29 @@ function SchoolDetail() {
     return () => { cancelled = true; };
   }, [id, isSignedIn, hasAccess]);
 
+  // Back goes where the visitor came from (search, map, onboarding result);
+  // /skoly only when the page was opened directly.
+  const cameFromApp = window.history.state?.idx > 0;
+  const backLink = (
+    <a
+      href="/skoly"
+      className="sd-back"
+      onClick={(e) => {
+        if (!cameFromApp) return;
+        e.preventDefault();
+        navigate(-1);
+      }}
+    >
+      &larr; {cameFromApp ? 'Zpět' : 'Zpět na výpis'}
+    </a>
+  );
+
+
   if (loading || error || !school) {
     const notFound = !loading && (error ? error.status === 404 : !school);
     return (
       <div className="school-detail page">
-        <Link to="/skoly" className="sd-back">&larr; Zpět na výpis</Link>
+        {backLink}
         {loading ? (
           <AsyncState kind="loading" title="Načítám školu…" />
         ) : notFound ? (
@@ -129,7 +147,7 @@ function SchoolDetail() {
 
   return (
     <div className="school-detail page" ref={pageRef}>
-      <Link to="/skoly" className="sd-back">&larr; Zpět na výpis</Link>
+      {backLink}
 
       <div className="sd-hero">
         <SchoolHero school={school} programEntries={programEntries} extracted={extracted} />

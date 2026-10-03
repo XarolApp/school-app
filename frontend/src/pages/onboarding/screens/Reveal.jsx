@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Confetti, DemoDataNotice, ObButton, ObScreen } from '../../../components/onboarding/ObKit';
 import { countCandidates, explain, tradeoffs } from '../../../lib/matching';
 import { FOCUS_CATEGORIES } from '../../../lib/schoolFeatures';
@@ -99,6 +100,10 @@ function characterise(answers, role) {
   return `${first} ${second.charAt(0).toUpperCase()}${second.slice(1)}.`;
 }
 
+// Same curve as displayScore() in the server's lib/matching.js, so the number
+// here matches what the account shows after sign-up.
+const toPercent = (raw) => Math.round(100 * (1 - (1 - raw) ** 1.4));
+
 function schoolWord(n) {
   if (n === 1) return 'škola';
   if (n >= 2 && n <= 4) return 'školy';
@@ -187,18 +192,20 @@ function Reveal() {
         <div className="ob-reveal-grid">
           <article className="ob-hero-match">
             <p className="ob-hero-rank">{parent ? 'Nejvyšší shoda' : 'Nejlepší shoda'}</p>
-            <h2 className="ob-hero-name">{top.school.name}</h2>
+            <h2 className="ob-hero-name">
+              <Link to={`/skoly/${top.school.id}`} className="ob-hero-link">
+                {top.school.name}
+              </Link>
+            </h2>
             {top.school.official_name && <p className="ob-hero-meta">{top.school.official_name}</p>}
             <p className="ob-hero-meta">
               {top.school.location}
               {programs ? ` · ${programs}` : ''}
             </p>
 
-            {/* A band and named reasons, never a percentage. The engine cannot
-                honestly justify two significant figures. */}
             <p className={`ob-hero-band ob-band-${top.band.tone}`}>
               <span className="ob-hero-dot" aria-hidden="true" />
-              {top.band.label}
+              {toPercent(top.score)} % shoda · {top.band.label}
             </p>
 
             <p className="ob-hero-whylabel">Shoda podle</p>
