@@ -183,6 +183,7 @@ function Porovnani() {
                     ×
                   </button>
                 </div>
+                {school.official_name && <div className="ss-caption">{school.official_name}</div>}
                 <div className="ss-caption">{school.location}</div>
                 {school.match_score != null && <div className="dp-pill dp-pill-accent">{Math.round(school.match_score)} % shoda</div>}
               </div>

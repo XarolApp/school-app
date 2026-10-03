@@ -188,6 +188,7 @@ function Reveal() {
           <article className="ob-hero-match">
             <p className="ob-hero-rank">{parent ? 'Nejvyšší shoda' : 'Nejlepší shoda'}</p>
             <h2 className="ob-hero-name">{top.school.name}</h2>
+            {top.school.official_name && <p className="ob-hero-meta">{top.school.official_name}</p>}
             <p className="ob-hero-meta">
               {top.school.location}
               {programs ? ` · ${programs}` : ''}

@@ -62,6 +62,7 @@ function SchoolHero({ school, programEntries, extracted }) {
     <div className="sd-hero-main">
       <div className="sd-title-block">
         <h1 className="ss-headline-lg">{school.name}</h1>
+        {school.official_name && <div className="sd-address">{school.official_name}</div>}
         <div className="sd-address">{school.location}</div>
       </div>
 

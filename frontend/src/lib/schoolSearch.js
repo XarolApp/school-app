@@ -165,14 +165,27 @@ export function prepareQuery(input) {
  * Program codes ("18-20-M/01") are left alone — those are worth searching for.
  */
 export function buildIndex(schools) {
-  return schools.map((school) => ({
-    school,
-    name: tokenize(school.name).filter((word) => !isNumber(word)),
-    location: tokenize(school.location).filter((word) => !isNumber(word)),
-    programs: tokenize(school.programs),
-    nameText: normalize(school.name),
-    districtText: normalize(districtOf(school) || ''),
-  }));
+  return schools.map((school) => {
+    // Official name, everyday name and website/e-mail words all count as "the
+    // name" — see lib/schoolNames.js. Adjacent words are also glued together
+    // so "artecon" finds "ART ECON" even when no domain says so.
+    const nameWords = tokenize(
+      [school.name, school.official_name, ...(school.search_keywords || [])].join(' ')
+    ).filter((word) => !isNumber(word));
+    const glued = [];
+    for (let i = 0; i + 1 < nameWords.length; i += 1) glued.push(nameWords[i] + nameWords[i + 1]);
+
+    return {
+      school,
+      name: [...nameWords, ...glued],
+      location: tokenize(school.location).filter((word) => !isNumber(word)),
+      programs: tokenize(school.programs),
+      nameText: normalize(
+        [school.name, school.official_name, ...(school.search_keywords || [])].join(' ')
+      ),
+      districtText: normalize(districtOf(school) || ''),
+    };
+  });
 }
 
 // A hit in the school's name says more about intent than a hit in its address,

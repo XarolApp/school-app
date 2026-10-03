@@ -1524,6 +1524,9 @@ function Search() {
                                 {row.name}
                               </Link>
                             </h3>
+                            {row.school.official_name && (
+                              <p className="ss-caption ss-row-meta">{row.school.official_name}</p>
+                            )}
                             <p className="ss-caption ss-row-meta">{schoolMeta}</p>
                             {row.p.focusCount > 0 && (
                               <span

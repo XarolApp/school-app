@@ -48,6 +48,7 @@ function PickCard({ pick, index, total, studentPoints, noteBody, onMove, onRemov
         <div className="dp-pick-head">
           <div>
             <h3 className="dp-pick-name">{school.name}</h3>
+            {school.official_name && <div className="ss-caption">{school.official_name}</div>}
             <div className="ss-caption">{school.location}</div>
           </div>
           <div className="dp-pick-head-right">

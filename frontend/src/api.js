@@ -1,5 +1,6 @@
 import { supabase } from './supabaseClient';
 import { DEMO_SCHOOLS } from './lib/demoSchools';
+import { withNames, withNamesAll } from './lib/schoolNames';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
@@ -147,7 +148,7 @@ export function archiveQuestionnaireRun(id, archived) {
 // kapacita) — no per-year rows, no school_ai_summary. Anything needing full
 // per-obor history or pros/cons should use fetchSchoolsByIds instead.
 export function fetchSchools() {
-  return request('/api/schools');
+  return request('/api/schools').then(withNamesAll);
 }
 
 /**
@@ -158,11 +159,11 @@ export function fetchSchools() {
  */
 export function fetchSchoolsByIds(ids) {
   if (!ids.length) return Promise.resolve([]);
-  return request(`/api/schools?ids=${ids.join(',')}`);
+  return request(`/api/schools?ids=${ids.join(',')}`).then(withNamesAll);
 }
 
 export function fetchSchool(id) {
-  return request(`/api/schools/${id}`);
+  return request(`/api/schools/${id}`).then(withNames);
 }
 
 export function fetchFavorites() {
@@ -217,7 +218,9 @@ export function reportSchoolData(schoolId, { field, message }) {
  */
 
 export function fetchPicks() {
-  return request('/api/picks');
+  return request('/api/picks').then((picks) =>
+    picks.map((p) => ({ ...p, school: withNames(p.school) }))
+  );
 }
 
 export function savePicks(picks) {
@@ -278,7 +281,9 @@ export async function fetchSharedShortlist(token) {
   if (!res.ok) {
     throw new ApiError(body.error || `Požadavek selhal (${res.status})`, res.status, body.code);
   }
-  return body;
+  return Array.isArray(body.picks)
+    ? { ...body, picks: body.picks.map((p) => ({ ...p, school: withNames(p.school) })) }
+    : body;
 }
 
 /**

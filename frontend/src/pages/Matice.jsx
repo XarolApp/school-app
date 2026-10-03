@@ -373,6 +373,9 @@ function Matice() {
                         <Link to={`/skoly/${r.school.id}`} className="h dp-matrix-name">
                           {r.school.name}
                         </Link>
+                        {r.school.official_name && (
+                          <div className="ss-caption">{r.school.official_name}</div>
+                        )}
                         {band && (
                           <span className={`dp-match-chip dp-match-chip-${band.tone}`}>
                             {band.label} · {Math.round(r.school.match_score)} %
