@@ -22,6 +22,7 @@ import Prihlaska from './pages/Prihlaska';
 import Questionnaire from './pages/Questionnaire';
 import { Privacy, Terms } from './pages/Legal';
 import SdileniView from './pages/SdileniView';
+import NotFound from './pages/NotFound';
 import BetaLanding from './pages/BetaLanding';
 import OnboardingFlow from './pages/onboarding/OnboardingFlow';
 import './styles/ui.css';
@@ -87,6 +88,7 @@ function App() {
                 {/* Settings checks sign-in itself. Billing cancellation and
                     account erasure must stay available after access expires. */}
                 <Route path="/nastaveni" element={<Settings />} />
+                <Route path="*" element={<NotFound />} />
               </Route>
             </Routes>
           </ToastProvider>

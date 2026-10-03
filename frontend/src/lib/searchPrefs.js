@@ -11,6 +11,9 @@ const PRESETS_KEY = 'skolamatch.savedFilters';
 const COMPARE_KEY = 'skolamatch.compareSelection';
 const RECENT_LIMIT = 5;
 
+/** Fired on window whenever the compare selection changes (the nav badge listens). */
+export const COMPARE_EVENT = 'skolamatch:compare';
+
 function readJSON(key, fallback) {
   try {
     const raw = localStorage.getItem(key);
@@ -76,6 +79,7 @@ export function toggleCompareSelection(schoolId) {
   }
   const next = ids.includes(schoolId) ? ids.filter((id) => id !== schoolId) : [...ids, schoolId];
   writeJSON(COMPARE_KEY, next);
+  if (typeof window !== 'undefined') window.dispatchEvent(new Event(COMPARE_EVENT));
   return next;
 }
 
@@ -87,5 +91,6 @@ export function toggleCompareSelection(schoolId) {
 export function setCompareSelection(schoolIds) {
   const next = [...new Set(schoolIds)].slice(0, 4);
   writeJSON(COMPARE_KEY, next);
+  if (typeof window !== 'undefined') window.dispatchEvent(new Event(COMPARE_EVENT));
   return next;
 }

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ChevronDown, Heart, Info, Lock, TriangleAlert } from 'lucide-react';
+import { ArrowRight, ChevronDown, Heart, Info, Lock, TriangleAlert } from 'lucide-react';
 import { fetchSchoolsByIds, fetchPicks } from '../api';
 import { getCompareSelection } from '../lib/searchPrefs';
 import { useAuth } from '../components/AuthContext';
@@ -208,11 +208,53 @@ function Matice() {
 
   if (!schools.length) {
     return (
-      <div className="decision-page dp-empty">
-        <h1 className="ss-headline-lg h">Rozhodovací matice</h1>
-        <p className="ss-body-md">
-          Zatím nemáš vybrané žádné školy. Vyber je na stránce <Link to="/skoly">Školy</Link> a vrať se sem.
-        </p>
+      <div className="decision-page">
+        <div className="dp-header">
+          <div>
+            <p className="ss-label-caps dp-eyebrow">Rozhodování</p>
+            <h1 className="ss-headline-lg h">Rozhodovací matice</h1>
+            <p className="ss-body-md dp-subtitle">
+              Nastavíš, na čem ti záleží nejvíc, a matice školy seřadí. Žádná AI, jen počty nad daty z Cermatu.
+            </p>
+          </div>
+        </div>
+
+        <DecisionTabs pickCount={pickCount} />
+
+        <section className="dp-empty-card">
+          <div className="dp-empty-copy">
+            <h2 className="ss-headline-md h">Matice počítá se školami z porovnání</h2>
+            <p className="ss-body-md">
+              Teď tam nemáš žádnou. Přidej aspoň dvě, ať je co srovnávat, a pořadí se tu spočítá samo.
+            </p>
+            <div className="dp-empty-actions">
+              <Link to="/skoly" className="ss-btn ss-btn-primary dp-btn-lg">
+                Projít školy
+                <ArrowRight size={18} aria-hidden="true" />
+              </Link>
+            </div>
+          </div>
+          <div className="dp-ghost-weights" aria-hidden="true">
+            {[
+              ['Šance na přijetí', 'Zásadní', 100],
+              ['Shoda s tvým dotazníkem', 'Dost', 66],
+              ['Bez školného', 'Trochu', 33],
+            ].map(([label, level, pct]) => (
+              <div key={label} className="dp-ghost-weight">
+                <span>{label}</span>
+                <span className="dp-ghost-track">
+                  <i style={{ width: `${pct}%` }} />
+                </span>
+                <span>{level}</span>
+              </div>
+            ))}
+            <div className="dp-ghost-podium">
+              <span className="dp-ghost-slot is-next">1.</span>
+              <span className="dp-ghost-slot">2.</span>
+              <span className="dp-ghost-slot">3.</span>
+            </div>
+          </div>
+        </section>
       </div>
     );
   }

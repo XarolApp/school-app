@@ -112,6 +112,7 @@ export default function Landing() {
   const tipRef = useRef(null);
   const sceneRef = useRef(null);
   const countRef = useRef(null);
+  const heroRef = useRef(null);
 
   const [schools, setSchools] = useState([]);
   const [chip, setChip] = useState(null);
@@ -130,6 +131,21 @@ export default function Landing() {
   const shown = chip ? counts[chip] : total;
 
   // ---------- data ----------
+  // The hero is ~730px tall; on short laptop screens it would overflow the
+  // stage under the sticky top bar. Shrink it to fit instead of clipping.
+  useEffect(() => {
+    const hero = heroRef.current;
+    if (!hero) return undefined;
+    const fit = () => {
+      const room = hero.parentElement.clientHeight - 48;
+      hero.style.scale = String(Math.min(1, room / hero.offsetHeight));
+    };
+    fit();
+    document.fonts?.ready.then(fit);
+    window.addEventListener('resize', fit);
+    return () => window.removeEventListener('resize', fit);
+  }, []);
+
   useEffect(() => {
     let alive = true;
     fetchSchools()
@@ -488,7 +504,7 @@ export default function Landing() {
             <em>Klikni pro detail</em>
           </div>
 
-          <div className="l2-hero">
+          <div ref={heroRef} className="l2-hero">
             <p className="l2-kicker">
               <span className="l2-dot" /> Výběr střední školy · Praha
             </p>

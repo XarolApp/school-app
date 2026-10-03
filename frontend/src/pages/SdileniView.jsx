@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { Link2Off } from 'lucide-react';
 import { fetchSharedShortlist } from '../api';
 import { cutoffForPick } from '../lib/admissionRisk';
 import './decision.css';
@@ -49,13 +50,29 @@ function SdileniView() {
   if (error || !data) {
     return (
       <div className="dp-share-page">
-        <div className="dp-share-topbar h">ŠkolaMatch</div>
-        <div className="dp-share-notfound">
-          <h1 className="ss-headline-md h">Odkaz nenalezen</h1>
-          <p className="ss-body-md">Tenhle odkaz už neplatí — buď byl zrušen, nebo nikdy neexistoval.</p>
-          <Link to="/skoly" className="ss-btn ss-btn-primary">
-            Prohlédnout školy
+        <div className="dp-share-topbar">
+          <Link to="/" className="navbar-brand">
+            <span className="navbar-mark" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="9" cy="12" r="5" />
+                <circle cx="15" cy="12" r="5" />
+              </svg>
+            </span>
+            ŠkolaMatch
           </Link>
+        </div>
+        <div className="dp-share-notfound">
+          <span className="dp-share-notfound-icon" aria-hidden="true">
+            <Link2Off size={28} />
+          </span>
+          <div>
+            <h1 className="ss-headline-md h">Tento odkaz už neplatí</h1>
+            <p className="ss-body-md">Kdo vám ho poslal, mohl sdílení mezitím zrušit. Požádejte ho o nový odkaz.</p>
+          </div>
+          <Link to="/skoly" className="ss-btn ss-btn-primary dp-btn-lg">
+            Prohlédnout pražské školy
+          </Link>
+          <Link to="/">Co je ŠkolaMatch?</Link>
         </div>
       </div>
     );

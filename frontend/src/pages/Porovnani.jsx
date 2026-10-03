@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { fetchSchoolsByIds, fetchPicks, savePicks } from '../api';
-import { getCompareSelection, toggleCompareSelection, setCompareSelection } from '../lib/searchPrefs';
+import { ArrowRight, Plus } from 'lucide-react';
+import { getCompareSelection, getRecentSchoolIds, toggleCompareSelection, setCompareSelection } from '../lib/searchPrefs';
 import { buildComparisonRows } from '../lib/comparisonRows';
 import DecisionTabs from '../components/decision/DecisionTabs';
 import ProsCons from '../components/decision/ProsCons';
@@ -18,6 +19,7 @@ function Porovnani() {
   const pickIds = new Set(picks.map((pick) => pick.school.id));
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [recent, setRecent] = useState([]);
 
   useEffect(() => {
     let cancelled = false;
@@ -26,6 +28,12 @@ function Porovnani() {
     if (selection.length === 0) {
       setAllSchools([]);
       setLoading(false);
+      // Empty state offers the schools viewed most recently as one-tap adds.
+      fetchSchoolsByIds(getRecentSchoolIds().slice(0, 3))
+        .then((data) => {
+          if (!cancelled) setRecent(Array.isArray(data) ? data : []);
+        })
+        .catch(() => {});
     } else {
       fetchSchoolsByIds(selection)
         .then((data) => {
@@ -129,12 +137,100 @@ function Porovnani() {
 
   if (!schools.length) {
     return (
-      <div className="decision-page dp-empty">
-        <h1 className="ss-headline-lg h">Porovnání škol</h1>
-        <p className="ss-body-md">
-          Zatím nemáš vybrané žádné školy k porovnání. Na stránce <Link to="/skoly">Školy</Link> klikni na
-          „Přidat k porovnání" u škol, které tě zajímají — a vrať se sem.
-        </p>
+      <div className="decision-page">
+        <div className="dp-header">
+          <div>
+            <p className="ss-label-caps dp-eyebrow">Rozhodování</p>
+            <h1 className="ss-headline-lg h">Porovnání škol</h1>
+            <p className="ss-body-md dp-subtitle">
+              Až 4 školy vedle sebe, řádek po řádku: hranice bodů, kolik se hlásilo a kolik jich vzali, typ školy,
+              zřizovatel i školné.
+            </p>
+          </div>
+        </div>
+
+        <DecisionTabs pickCount={pickIds.size} />
+
+        <section className="dp-empty-card">
+          <div className="dp-empty-copy">
+            <h2 className="ss-headline-md h">Zatím tu nic není. Stačí tři kroky.</h2>
+            <ol className="dp-empty-steps">
+              <li>
+                <span className="dp-step-num">1</span>
+                <span>
+                  Otevři <strong>Školy</strong> a najdi ty, které tě zajímají.
+                </span>
+              </li>
+              <li>
+                <span className="dp-step-num">2</span>
+                <span>
+                  U každé klikni na{' '}
+                  <span className="dp-fake-btn">
+                    <Plus size={14} aria-hidden="true" />
+                    Přidat k porovnání
+                  </span>
+                </span>
+              </li>
+              <li>
+                <span className="dp-step-num">3</span>
+                <span>Vrať se sem. Počet vybraných škol uvidíš i v horní liště.</span>
+              </li>
+            </ol>
+            <div className="dp-empty-actions">
+              <Link to="/skoly" className="ss-btn ss-btn-primary dp-btn-lg">
+                Projít školy
+                <ArrowRight size={18} aria-hidden="true" />
+              </Link>
+              <Link to="/dotaznik">Nevíš, kde začít? Vyplň dotazník</Link>
+            </div>
+          </div>
+
+          <div className="dp-ghost-table" aria-hidden="true">
+            <span />
+            {['1. škola', '2. škola', '3. škola'].map((label, i) => (
+              <span key={label} className={`dp-ghost-slot${i === 0 ? ' is-next' : ''}`}>
+                <Plus size={20} />
+                {label}
+              </span>
+            ))}
+            {['Hranice bodů', 'Přijato', 'Typ školy', 'Školné'].map((label, row) => (
+              <div key={label} className="dp-ghost-row">
+                <span>{label}</span>
+                {[0, 1, 2].map((col) => (
+                  <span key={col}>
+                    <i style={{ width: `${30 + ((row * 3 + col) * 17) % 40}%` }} />
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {recent.length > 0 && (
+          <section className="dp-recent">
+            <h2 className="ss-headline-sm h">Naposledy prohlížené</h2>
+            <div className="dp-recent-grid">
+              {recent.map((school) => (
+                <div key={school.id} className="dp-recent-card">
+                  <div>
+                    <Link to={`/skoly/${school.id}`} className="dp-recent-name">
+                      {school.name}
+                    </Link>
+                    <div className="ss-caption">{school.location}</div>
+                  </div>
+                  <button
+                    type="button"
+                    className="ss-btn ss-btn-secondary"
+                    onClick={() => setSelection(toggleCompareSelection(school.id))}
+                  >
+                    <Plus size={14} aria-hidden="true" />
+                    Přidat k porovnání
+                  </button>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     );
   }

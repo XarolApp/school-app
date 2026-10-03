@@ -367,7 +367,11 @@ function Search() {
     }
   };
   const [selected, setSelected] = useState(() => new Set(getCompareSelection()));
-  const [filters, setFilters] = useState(DEFAULT_FILTERS);
+  // ?q= pre-fills the search box (used by the 404 page's search form).
+  const [filters, setFilters] = useState(() => {
+    const q = new URLSearchParams(window.location.search).get('q');
+    return q ? { ...DEFAULT_FILTERS, query: q } : DEFAULT_FILTERS;
+  });
   const [currentPage, setCurrentPage] = useState(1);
   const [view, setView] = useState('list'); // 'list' | 'map'
   const [selectedMapId, setSelectedMapId] = useState(null);

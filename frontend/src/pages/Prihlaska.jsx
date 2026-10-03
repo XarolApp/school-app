@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   fetchPicks,
   savePicks,
@@ -144,13 +144,24 @@ function Prihlaska() {
         <div className="dp-picks-col">
           {picks.length === 0 && (
             <div className="dp-empty-inline">
+              <ol className="dp-ghost-picks" aria-label="Pořadí škol na přihlášce">
+                {['Škola, na kterou chceš nejvíc', 'Druhá volba', 'Pojistka'].map((label, i) => (
+                  <li key={label} className={`dp-ghost-pick${i === 0 ? ' is-next' : ''}`}>
+                    <span className="dp-ghost-pick-num">{i + 1}.</span>
+                    {label}
+                  </li>
+                ))}
+              </ol>
               <p className="ss-body-md">
-                Zatím nemáš vybranou žádnou školu. Přidej školy na stránce{' '}
-                <button type="button" className="dp-link-btn" onClick={() => navigate('/porovnani')}>
-                  Porovnání
-                </button>{' '}
+                Pořadí rozhoduje: když tě vezmou na víc škol, nastoupíš na tu, kterou máš výš. Školy přidáš z porovnání
                 nebo přímo na stránce školy.
               </p>
+              <div className="dp-empty-actions">
+                <button type="button" className="ss-btn ss-btn-primary dp-btn-lg" onClick={() => navigate('/porovnani')}>
+                  Vybrat z porovnání
+                </button>
+                <Link to="/skoly">nebo projít všechny školy</Link>
+              </div>
             </div>
           )}
 

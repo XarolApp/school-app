@@ -1,82 +1,253 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import {
+  ArrowRight,
+  ChevronDown,
+  ClipboardList,
+  Clock,
+  Columns3,
+  CreditCard,
+  ListChecks,
+  LogIn,
+  LogOut,
+  Menu,
+  Search,
+  SlidersHorizontal,
+  X,
+} from 'lucide-react';
 import { useAuth } from './AuthContext';
+import { COMPARE_EVENT, getCompareSelection } from '../lib/searchPrefs';
+
+function BrandMark() {
+  return (
+    <span className="navbar-mark" aria-hidden="true">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <circle cx="9" cy="12" r="5" />
+        <circle cx="15" cy="12" r="5" />
+      </svg>
+    </span>
+  );
+}
+
+// The compare selection lives in localStorage; re-read it whenever any page
+// changes it (same tab: COMPARE_EVENT, other tabs: 'storage').
+function useCompareCount() {
+  const [count, setCount] = useState(() => getCompareSelection().length);
+  useEffect(() => {
+    const update = () => setCount(getCompareSelection().length);
+    window.addEventListener(COMPARE_EVENT, update);
+    window.addEventListener('storage', update);
+    return () => {
+      window.removeEventListener(COMPARE_EVENT, update);
+      window.removeEventListener('storage', update);
+    };
+  }, []);
+  return count;
+}
+
+const dayWord = (n) => (n === 1 ? 'den' : n < 5 ? 'dny' : 'dní');
 
 function Layout() {
-  const { isSignedIn, isTester, signOut, trialDaysLeft, hasAccess } = useAuth();
+  const { isSignedIn, isTester, signOut, trialDaysLeft, hasAccess, profile, user } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
   const location = useLocation();
   const toggleRef = useRef(null);
+  const accountRef = useRef(null);
+  const accountButtonRef = useRef(null);
+  const compareCount = useCompareCount();
 
-  // A route change is the clearest signal the visitor is done with the menu —
-  // closing it here means every nav link can stay a plain <Link>, no per-link
-  // onClick handler to keep in sync as links are added or removed.
+  const displayName = profile?.name?.trim() || user?.email?.split('@')[0] || 'Účet';
+  const initial = displayName.charAt(0).toUpperCase();
+  const showTrial = isSignedIn && !isTester && hasAccess && trialDaysLeft > 0;
+  const trialText = `Zkušební verze · ještě ${trialDaysLeft} ${dayWord(trialDaysLeft)}`;
+
+  // A route change is the clearest signal the visitor is done with a menu.
   useEffect(() => {
     setMenuOpen(false);
+    setAccountOpen(false);
   }, [location.pathname]);
 
-  // Escape closes the disclosure and hands focus back to its trigger.
+  // Escape closes whichever menu is open and hands focus back to its trigger.
   useEffect(() => {
-    if (!menuOpen) return undefined;
+    if (!menuOpen && !accountOpen) return undefined;
     const onKey = (e) => {
-      if (e.key === 'Escape') {
+      if (e.key !== 'Escape') return;
+      if (accountOpen) {
+        setAccountOpen(false);
+        accountButtonRef.current?.focus();
+      } else {
         setMenuOpen(false);
         toggleRef.current?.focus();
       }
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
-  }, [menuOpen]);
+  }, [menuOpen, accountOpen]);
+
+  // Click outside the account menu closes it.
+  useEffect(() => {
+    if (!accountOpen) return undefined;
+    const onDown = (e) => {
+      if (!accountRef.current?.contains(e.target)) setAccountOpen(false);
+    };
+    document.addEventListener('pointerdown', onDown);
+    return () => document.removeEventListener('pointerdown', onDown);
+  }, [accountOpen]);
+
+  const compareBadge = compareCount > 0 && (
+    <span className="navbar-count" aria-label={`${compareCount} vybrané`}>
+      {compareCount}
+    </span>
+  );
 
   return (
     <div className="app-shell">
       <a href="#obsah" className="skip-link">
         Přeskočit na obsah
       </a>
-      <nav className="navbar" aria-label="Hlavní navigace">
-        <Link to="/" className="navbar-brand">
-          ŠkolaMatch
-        </Link>
+      <header className="navbar">
+        <div className="navbar-inner">
+          <Link to="/" className="navbar-brand" aria-label="ŠkolaMatch – domů">
+            <BrandMark />
+            <span>ŠkolaMatch</span>
+          </Link>
 
-        <button
-          type="button"
-          ref={toggleRef}
-          className="navbar-toggle"
-          aria-expanded={menuOpen}
-          aria-controls="navbar-links"
-          aria-label={menuOpen ? 'Zavřít menu' : 'Otevřít menu'}
-          onClick={() => setMenuOpen((open) => !open)}
-        >
-          {menuOpen ? <X size={22} aria-hidden="true" /> : <Menu size={22} aria-hidden="true" />}
-        </button>
+          <nav id="navbar-links" className={`navbar-links${menuOpen ? ' is-open' : ''}`} aria-label="Hlavní navigace">
+            <NavLink to="/skoly">
+              <Search size={16} aria-hidden="true" />
+              Školy
+            </NavLink>
+            <NavLink to="/porovnani">
+              <Columns3 size={16} aria-hidden="true" />
+              Porovnání
+              {compareBadge}
+            </NavLink>
+            {isSignedIn && (
+              <>
+                <NavLink to="/dotaznik">
+                  <ListChecks size={16} aria-hidden="true" />
+                  Dotazník
+                </NavLink>
+                <NavLink to="/prihlaska">
+                  <ClipboardList size={16} aria-hidden="true" />
+                  Přihláška
+                </NavLink>
+              </>
+            )}
 
-        <div id="navbar-links" className={`navbar-links${menuOpen ? ' is-open' : ''}`}>
-          <NavLink to="/" end>Domů</NavLink>
-          <NavLink to="/skoly">Školy</NavLink>
-          <NavLink to="/onboarding" end>Najít školu</NavLink>
-          <NavLink to="/porovnani">Porovnání</NavLink>
-          {isSignedIn ? (
-            <>
-              <NavLink to="/dotaznik">Dotazník</NavLink>
-              {import.meta.env.DEV && <NavLink to="/onboarding/plan">Předplatné (test)</NavLink>}
-              <NavLink to="/nastaveni">Nastavení</NavLink>
-              <button type="button" className="navbar-signout" onClick={signOut}>
-                Odhlásit se
-              </button>
-            </>
-          ) : (
-            <NavLink to="/prihlaseni">Přihlásit se</NavLink>
-          )}
+            {/* Mobile sheet only: account block / sign-in actions under the links. */}
+            <div className="navbar-sheet-foot">
+              {isSignedIn ? (
+                <>
+                  <div className="navbar-sheet-user">
+                    <span className="navbar-avatar navbar-avatar-lg" aria-hidden="true">{initial}</span>
+                    <span>
+                      <strong>{displayName}</strong>
+                      {user?.email && <span className="navbar-email">{user.email}</span>}
+                    </span>
+                  </div>
+                  {showTrial && (
+                    <p className="navbar-trial navbar-trial-block">
+                      <Clock size={14} aria-hidden="true" />
+                      {trialText}
+                    </p>
+                  )}
+                  <div className="navbar-sheet-actions">
+                    <Link to="/nastaveni" className="ss-btn ss-btn-secondary">Nastavení</Link>
+                    <button type="button" className="ss-btn ss-btn-secondary navbar-danger" onClick={signOut}>
+                      Odhlásit se
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <div className="navbar-sheet-actions">
+                  <Link to="/onboarding" className="ss-btn ss-btn-primary">Začít dotazník</Link>
+                  <Link to="/prihlaseni" className="ss-btn ss-btn-secondary">Přihlásit se</Link>
+                </div>
+              )}
+            </div>
+          </nav>
+
+          <div className="navbar-actions">
+            {isSignedIn ? (
+              <>
+                {showTrial && (
+                  <span className="navbar-trial">
+                    <Clock size={14} aria-hidden="true" />
+                    {trialText}
+                  </span>
+                )}
+                <div className="navbar-account" ref={accountRef}>
+                  <button
+                    type="button"
+                    ref={accountButtonRef}
+                    className="navbar-account-btn"
+                    aria-expanded={accountOpen}
+                    aria-controls="navbar-account-menu"
+                    onClick={() => setAccountOpen((open) => !open)}
+                  >
+                    <span className="navbar-avatar" aria-hidden="true">{initial}</span>
+                    <span className="navbar-account-name">{displayName}</span>
+                    <ChevronDown size={16} aria-hidden="true" className="navbar-chevron" />
+                  </button>
+                  {accountOpen && (
+                    <div id="navbar-account-menu" className="navbar-account-menu">
+                      <div className="navbar-account-head">
+                        <strong>{displayName}</strong>
+                        {user?.email && <span className="navbar-email">{user.email}</span>}
+                      </div>
+                      <Link to="/nastaveni" className="navbar-menu-item">
+                        <SlidersHorizontal size={16} aria-hidden="true" />
+                        Nastavení
+                      </Link>
+                      {import.meta.env.DEV && (
+                        <Link to="/onboarding/plan" className="navbar-menu-item">
+                          <CreditCard size={16} aria-hidden="true" />
+                          Předplatné
+                          <span className="navbar-dev-tag">DEV</span>
+                        </Link>
+                      )}
+                      <hr className="navbar-menu-sep" />
+                      <button type="button" className="navbar-menu-item navbar-danger" onClick={signOut}>
+                        <LogOut size={16} aria-hidden="true" />
+                        Odhlásit se
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </>
+            ) : (
+              <>
+                <Link to="/prihlaseni" className="navbar-login">
+                  <LogIn size={16} aria-hidden="true" />
+                  Přihlásit se
+                </Link>
+                <Link to="/onboarding" className="navbar-cta">
+                  Začít dotazník
+                  <ArrowRight size={16} aria-hidden="true" />
+                </Link>
+              </>
+            )}
+          </div>
+
+          <NavLink to="/porovnani" className="navbar-compare-mobile" aria-label={`Porovnání${compareCount ? `, ${compareCount} vybrané` : ''}`}>
+            <Columns3 size={20} aria-hidden="true" />
+            {compareBadge}
+          </NavLink>
+          <button
+            type="button"
+            ref={toggleRef}
+            className="navbar-toggle"
+            aria-expanded={menuOpen}
+            aria-controls="navbar-links"
+            aria-label={menuOpen ? 'Zavřít menu' : 'Otevřít menu'}
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            {menuOpen ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
+          </button>
         </div>
-      </nav>
-
-      {isSignedIn && !isTester && hasAccess && trialDaysLeft > 0 && (
-        <p className="trial-banner">
-          Zkušební období: zbývá {trialDaysLeft}{' '}
-          {trialDaysLeft === 1 ? 'den' : trialDaysLeft < 5 ? 'dny' : 'dní'}.
-        </p>
-      )}
+      </header>
 
       <main id="obsah" className="app-content" tabIndex={-1}>
         <Outlet />
