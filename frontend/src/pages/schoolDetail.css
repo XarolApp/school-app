@@ -607,47 +607,55 @@
 }
 
 /* ---------- MissingDataGrid ---------- */
-.sd-missing-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--space-md);
-  align-items: start;
-}
-.sd-missing-card {
-  border: 0;
+.sd-info {
+  margin: 0;
+  border: 1px solid var(--line);
   border-radius: var(--r-card);
-  padding: var(--space-lg);
-  background: var(--surface2);
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  background: var(--surface);
+  overflow: hidden;
 }
-.sd-missing-card-title {
+.sd-info-row {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: var(--space-lg);
+  padding: var(--space-md) var(--space-lg);
+  border-top: 1px solid var(--line);
+}
+.sd-info-row:first-child { border-top: 0; }
+.sd-info-label {
   display: flex;
-  align-items: center;
-  gap: var(--space-sm);
+  align-items: flex-start;
+  gap: 10px;
   font-family: var(--sans);
   font-size: var(--fs-body-sm);
   font-weight: 600;
   color: var(--ink);
 }
-.sd-missing-card-title > svg { flex: none; color: var(--acc); }
+.sd-info-label > svg { flex: none; margin-top: 2px; color: var(--acc); }
+.sd-info-body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
 .sd-card-figure {
   font: 700 var(--fs-headline-md)/1 var(--heading);
   font-variant-numeric: tabular-nums;
   color: var(--ink);
-  margin: 2px 0 var(--space-xs);
+  margin: 0 0 var(--space-xs);
 }
-.sd-missing-card-body {
+.sd-info-text {
+  max-width: 72ch;
   font-family: var(--sans);
   font-size: var(--fs-caption);
   line-height: var(--lh-caption);
   color: var(--ink2);
 }
-.sd-missing-card-body.is-clamped {
+.sd-info-text.is-clamped {
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 6;
+  -webkit-line-clamp: 3;
   overflow: hidden;
 }
 .sd-missing-card-toggle {
@@ -1046,9 +1054,6 @@
     grid-column: span 1;
     height: 240px;
   }
-  .sd-missing-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
   .sd-similar-grid {
     grid-template-columns: 1fr;
   }
@@ -1097,9 +1102,10 @@
 .sd-review-report textarea { width: 100%; }
 
 /* Long scraped texts read badly at ~160px wide; one card per row on phones. */
-@media (max-width: 600px) {
-  .sd-missing-grid {
+@media (max-width: 700px) {
+  .sd-info-row {
     grid-template-columns: 1fr;
+    gap: var(--space-xs);
   }
 }
 

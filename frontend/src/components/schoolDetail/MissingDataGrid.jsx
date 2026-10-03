@@ -92,34 +92,36 @@ function MissingDataGrid({ zrizovatel, extracted }) {
   return (
     <div id="doplnujeme">
       {filledCards.length > 0 && (
-        <div className="sd-missing-grid">
+        <dl className="sd-info">
           {filledCards.map((c) => {
             const Icon = c.Icon;
             const isLong = c.body.length > 220;
             const isExpanded = expanded.has(c.title);
 
             return (
-              <div className="sd-missing-card" key={c.title}>
-                <div className="sd-missing-card-title">
+              <div className="sd-info-row" key={c.title}>
+                <dt className="sd-info-label">
                   <Icon size={16} aria-hidden="true" />
                   {c.title}
-                </div>
-                {c.figure != null && <div className="sd-card-figure">{c.figure}</div>}
-                <div className={`sd-missing-card-body${isLong && !isExpanded ? ' is-clamped' : ''}`}>{c.body}</div>
-                {isLong && (
-                  <button
-                    type="button"
-                    className="sd-missing-card-toggle"
-                    aria-expanded={isExpanded}
-                    onClick={() => toggleExpanded(c.title)}
-                  >
-                    {isExpanded ? 'Zobrazit méně' : 'Zobrazit celé'}
-                  </button>
-                )}
+                </dt>
+                <dd className="sd-info-body">
+                  {c.figure != null && <div className="sd-card-figure">{c.figure}</div>}
+                  <div className={`sd-info-text${isLong && !isExpanded ? ' is-clamped' : ''}`}>{c.body}</div>
+                  {isLong && (
+                    <button
+                      type="button"
+                      className="sd-missing-card-toggle"
+                      aria-expanded={isExpanded}
+                      onClick={() => toggleExpanded(c.title)}
+                    >
+                      {isExpanded ? 'Zobrazit méně' : 'Zobrazit celé'}
+                    </button>
+                  )}
+                </dd>
               </div>
             );
           })}
-        </div>
+        </dl>
       )}
       {emptyTitles.length > 0 && (
         <p className="sd-missing-line">
