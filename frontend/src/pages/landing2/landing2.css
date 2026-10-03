@@ -965,6 +965,75 @@
   text-wrap: balance;
 }
 
+/* ================= PHONE ================= */
+/* The map shrinks to the top of the screen (PragueScene lifts and fits it);
+   the step copy becomes a frosted card along the bottom. */
+@media (max-width: 768px) {
+  .l2 { --l2-wide: calc(100vw - 32px); }
+
+  .l2-hero,
+  .l2-steps { left: 16px; right: 16px; width: auto; }
+  .l2-hero { top: 16px; translate: none; transform-origin: top left; }
+  .l2-title { font-size: clamp(40px, 11.5vw, 56px); }
+  .l2-lede { font-size: 15px; line-height: 1.5; margin-top: 14px; }
+  .l2-try { margin-top: 16px; padding: 12px; }
+  .l2-chip { padding: 7px 9px 7px 12px; font-size: 12px; }
+  .l2-hero-actions { flex-wrap: wrap; gap: 14px 20px; margin-top: 18px; }
+  .l2-btn { padding: 14px 18px 14px 22px; font-size: 16px; }
+  .l2-btn--lg { padding: 16px 20px 16px 24px; font-size: 17px; }
+  .l2-scrollhint { display: none; }
+
+  .l2-steps { top: auto; bottom: 16px; translate: none; }
+  .l2-step {
+    top: auto;
+    bottom: 0;
+    translate: none;
+    box-sizing: border-box;
+    padding: 18px;
+    border-radius: 20px;
+    background: var(--frost);
+    backdrop-filter: blur(14px);
+    border: 1px solid var(--line);
+  }
+  .l2-step-title { font-size: 30px; margin-top: 12px; }
+  .l2-step-body { font-size: 14px; line-height: 1.45; margin-top: 10px; }
+  .l2-step .l2-btn { margin-top: 16px; }
+
+  .l2-progress { right: 8px; top: 16px; translate: none; gap: 6px; }
+  .l2-progress i { height: 16px; }
+  .l2-progress i.is-on { height: 24px; }
+  .l2-tip { max-width: 230px; }
+  .l2-label { max-width: 150px; font-size: 11px; }
+
+  .l2-h2 { font-size: 34px; }
+  .l2-head { margin-bottom: 32px; }
+  .l2-numbers { grid-template-columns: 1fr 1fr; gap: 8px 16px; margin-top: 80px; }
+  .l2-number { padding: 20px 0 0; }
+  .l2-number b { font-size: 48px; }
+  .l2-inside,
+  .l2-statement-wrap,
+  .l2-roles,
+  .l2-honest,
+  .l2-price,
+  .l2-faq,
+  .l2-final { margin-top: 112px; }
+  .l2-statement-wrap { padding: 0; }
+  .l2-statement { font-size: 32px; }
+
+  .l2-mocks { grid-template-columns: 1fr; gap: 24px; }
+  .l2-mock--detail { margin-top: 0; }
+  .l2-result-main { grid-template-columns: 24px 1fr 96px; gap: 10px; }
+
+  .l2-roles,
+  .l2-honest-grid,
+  .l2-price-grid,
+  .l2-faq { grid-template-columns: 1fr; gap: 24px; }
+  .l2-faq-head { position: static; }
+  .l2-switch button { padding: 10px 14px; }
+  .l2-final-inner { padding: 48px 20px; border-radius: 24px; }
+  .l2-final-title { font-size: 40px; margin-bottom: 28px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .l2-dot,
   .l2-scrollhint i,

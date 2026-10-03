@@ -38,6 +38,7 @@ const POINT_VERT = /* glsl */ `
   attribute float aAlpha;
   attribute float aSize;
   uniform float uPR;
+  uniform float uFit;
   varying vec3 vColor;
   varying float vAlpha;
   void main() {
@@ -45,7 +46,7 @@ const POINT_VERT = /* glsl */ `
     vAlpha = aAlpha;
     vec4 mv = modelViewMatrix * vec4(position, 1.0);
     gl_Position = projectionMatrix * mv;
-    gl_PointSize = aSize * uPR * (400.0 / -mv.z);
+    gl_PointSize = aSize * uPR * uFit * (400.0 / -mv.z);
   }
 `;
 
@@ -180,7 +181,7 @@ export class PragueScene {
     this.pointMat = new THREE.ShaderMaterial({
       vertexShader: POINT_VERT,
       fragmentShader: POINT_FRAG,
-      uniforms: { uPR: { value: this.renderer.getPixelRatio() } },
+      uniforms: { uPR: { value: this.renderer.getPixelRatio() }, uFit: { value: 1 } },
       transparent: true,
       depthWrite: false,
     });
@@ -283,12 +284,31 @@ export class PragueScene {
       this.pointer.px = this.pointer.py = -1e4;
       this.pointer.x = this.pointer.y = 0;
     };
+    // Touch has no hover: the first tap on a school shows its tooltip, a second
+    // tap on the same school opens it.
+    this.armed = -1;
+    this.onDown = (e) => {
+      this.onMove(e);
+      this.touch = e.pointerType !== 'mouse';
+    };
     this.onClick = () => {
-      if (this.hovered >= 0 && this.state.hover) this.onSelect?.(this.schools[this.hovered]);
+      if (this.hovered < 0 || !this.state.hover) return;
+      if (this.touch && this.armed !== this.hovered) {
+        this.armed = this.hovered;
+        return;
+      }
+      this.onSelect?.(this.schools[this.hovered]);
     };
     window.addEventListener('pointermove', this.onMove, { passive: true });
+    this.canvas.addEventListener('pointerdown', this.onDown);
     this.canvas.addEventListener('pointerleave', this.onLeave);
     this.canvas.addEventListener('click', this.onClick);
+  }
+
+  /** Forget the pointer (a tap leaves it parked on a school). */
+  clearPointer() {
+    this.onLeave();
+    this.armed = -1;
   }
 
   resize() {
@@ -331,14 +351,27 @@ export class PragueScene {
     const sway = this.reduced ? 0 : Math.sin(t * 0.12) * 0.05;
     const rot = st.rot + p.sx * 0.12 + sway;
     const tilt = Math.min(1.35, Math.max(0.02, st.tilt + p.sy * 0.06));
+    // Portrait / narrow screens: pull the camera back until Prague fits the
+    // width, centre it, and lift it so the copy can sit under it.
+    const narrow = this.width < 768;
+    this.fit = Math.max(1, 1.2 / (this.width / this.height));
+    const dist = st.dist * this.fit;
+    if (this.pointMat) this.pointMat.uniforms.uFit.value = Math.sqrt(this.fit);
     const cam = this.camera;
     cam.position.set(
-      st.dist * Math.sin(tilt) * Math.sin(rot),
-      st.dist * Math.cos(tilt),
-      st.dist * Math.sin(tilt) * Math.cos(rot),
+      dist * Math.sin(tilt) * Math.sin(rot),
+      dist * Math.cos(tilt),
+      dist * Math.sin(tilt) * Math.cos(rot),
     );
     cam.lookAt(0, 0, 0);
-    cam.setViewOffset(this.width, this.height, -this.width * st.offset, 0, this.width, this.height);
+    cam.setViewOffset(
+      this.width,
+      this.height,
+      narrow ? 0 : -this.width * st.offset,
+      narrow ? this.height * 0.16 : 0,
+      this.width,
+      this.height,
+    );
 
     this.ringMat.opacity = st.radiusMix * 0.9;
     this.discMat.opacity = st.radiusMix * 0.07;
@@ -363,10 +396,16 @@ export class PragueScene {
     const target = new THREE.Color();
     const hl = new THREE.Color();
 
-    // Hover: nearest projected point (or bar top) within 16px.
+    // Hover: nearest school within 16px (24px on touch). Once the bars are up
+    // (pages 04–05) only schools with a bar count, and the whole bar is a target.
     let best = -1;
-    let bestD = 16 * 16;
+    let bestD = (this.touch ? 24 : 16) ** 2;
     const hoverOn = st.hover && p_inside(this.pointer, this.width, this.height);
+    const barsOnly = st.barsMix > 0.5;
+    const toScreen = (x, y, z) => {
+      v.set(x, y, z).project(this.camera);
+      return [(v.x * 0.5 + 0.5) * this.width, (-v.y * 0.5 + 0.5) * this.height];
+    };
 
     for (let i = 0; i < this.schools.length; i++) {
       const s = this.schools[i];
@@ -401,22 +440,20 @@ export class PragueScene {
         st.barsMix * (cutoff ? ((cutoff - 8) / 72) * 1.5 : 0) * Math.max(0, (a - 0.5) / 0.5) * (1 - st.topMix * (1 - isTop));
       cur.h = lerp(cur.h, h, k);
       v.set(s.x, 0, s.z);
-      const w = cur.h > 0.004 ? 0.06 : 0; // no flat squares for zero-height bars
+      const w = cur.h > 0.004 ? 0.06 * Math.sqrt(this.fit) : 0; // no flat squares for zero-height bars
       sc.set(w, Math.max(cur.h, 0.0001), w);
       m.compose(v, q, sc);
       this.bars.setMatrixAt(i, m);
       this.bars.setColorAt(i, cur.c);
 
-      if (hoverOn && cur.a > 0.1) {
-        for (const y of cur.h > 0.05 ? [0.02, cur.h] : [0.02]) {
-          v.set(s.x, y, s.z).project(this.camera);
-          const sx = (v.x * 0.5 + 0.5) * this.width;
-          const sy = (-v.y * 0.5 + 0.5) * this.height;
-          const d = (sx - this.pointer.px) ** 2 + (sy - this.pointer.py) ** 2;
-          if (d < bestD) {
-            bestD = d;
-            best = i;
-          }
+      const hasBar = cur.h > 0.05;
+      if (hoverOn && cur.a > 0.1 && (!barsOnly || hasBar)) {
+        const [ax, ay] = toScreen(s.x, 0.02, s.z);
+        const [bx, by] = hasBar ? toScreen(s.x, cur.h, s.z) : [ax, ay];
+        const d = segDist2(this.pointer.px, this.pointer.py, ax, ay, bx, by);
+        if (d < bestD) {
+          bestD = d;
+          best = i;
         }
       }
     }
@@ -457,12 +494,22 @@ export class PragueScene {
     window.removeEventListener('pointermove', this.onMove);
     this.canvas.removeEventListener('pointerleave', this.onLeave);
     this.canvas.removeEventListener('click', this.onClick);
+    this.canvas.removeEventListener('pointerdown', this.onDown);
     this.scene.traverse((o) => {
       o.geometry?.dispose();
       o.material?.dispose?.();
     });
     this.renderer.dispose();
   }
+}
+
+/** Squared distance from point (px, py) to the segment a–b, in pixels. */
+function segDist2(px, py, ax, ay, bx, by) {
+  const dx = bx - ax;
+  const dy = by - ay;
+  const len = dx * dx + dy * dy;
+  const t = len ? Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / len)) : 0;
+  return (px - ax - t * dx) ** 2 + (py - ay - t * dy) ** 2;
 }
 
 function p_inside(p, w, h) {
