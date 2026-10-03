@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../components/AuthContext';
-import AuthTabs from '../components/AuthTabs';
 import Captcha, { captchaEnabled } from '../components/Captcha';
 import PasswordInput from '../components/PasswordInput';
 import { getRememberMe } from '../supabaseClient';
@@ -113,8 +112,6 @@ function Login() {
         </div>
 
         <form onSubmit={handleSubmit} className="panel panel-lg auth-form">
-          <AuthTabs />
-
           {justConfirmed && !error && (
             <div className="notice notice-success">
               <span className="notice-title">E-mail potvrzen</span>
@@ -211,6 +208,19 @@ function Login() {
             {submitting ? 'Přihlašuji…' : 'Přihlásit se'}
           </button>
         </form>
+
+        {/* Accounts are created at the end of the onboarding quiz, so the
+            way in for newcomers is the quiz, not a bare signup form. Beta
+            invitees keep the direct signup that carries their code. */}
+        <div className="auth-newcomer">
+          <p>Ještě nemáš účet?</p>
+          <Link
+            to={betaCode ? `/registrace?beta=${encodeURIComponent(betaCode)}` : '/onboarding'}
+            className="btn btn-secondary btn-block"
+          >
+            {betaCode ? 'Vytvořit účet' : 'Začít dotazník zdarma'}
+          </Link>
+        </div>
       </div>
     </div>
     </>
