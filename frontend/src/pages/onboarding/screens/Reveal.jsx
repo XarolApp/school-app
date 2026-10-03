@@ -222,6 +222,9 @@ function Reveal() {
             <p className="ob-hero-confidence">
               Spolehlivost dat: {top.confidenceLabel.toLowerCase()}
             </p>
+            <p className="ob-hero-open" aria-hidden="true">
+              Zobrazit školu <span>→</span>
+            </p>
           </article>
 
           <div className="ob-lock-stack">
