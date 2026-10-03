@@ -1,4 +1,4 @@
-# Research brief — visual direction for ŠkolaMatch
+# Research brief — visual direction for Střední na míru
 
 > **How to use this file:** paste everything below the line into Claude Cowork as a
 > single research task. It is written to be self-contained — Cowork starts with no
@@ -10,7 +10,7 @@
 
 ## Context you need
 
-I'm building **ŠkolaMatch**, a web + mobile app that helps Czech 9th graders (age
+I'm building **Střední na míru**, a web + mobile app that helps Czech 9th graders (age
 14–15) choose which high school (*střední škola*) to apply to. In the Czech Republic
 this choice happens once, around age 15, and it substantially shapes the next 4 years
 and the university path after that. There is no good existing tool — the one

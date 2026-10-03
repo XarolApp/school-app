@@ -1,5 +1,5 @@
 /**
- * ŠkolaMatch design tokens — THE source of truth for the visual system.
+ * Střední na míru design tokens — THE source of truth for the visual system.
  *
  * ---------------------------------------------------------------------------
  * WHY THIS IS A .js FILE AND NOT ONLY CSS

@@ -13,7 +13,7 @@ import { stashOnboardingAnswers } from '../../../lib/pendingOnboardingAnswers';
 /**
  * Account creation, inside the flow.
  *
- * This is the canonical signup path for ŠkolaMatch — the standalone
+ * This is the canonical signup path for Střední na míru — the standalone
  * /registrace page exists only for direct links and returning users. It sits
  * immediately before the paywall because the trial window is opened by a
  * database trigger on account creation, so there has to be an account before

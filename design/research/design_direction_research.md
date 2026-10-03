@@ -1,5 +1,5 @@
 ---
-title: Visual direction research — ŠkolaMatch
+title: Visual direction research — Střední na míru
 date: 2026-08-25
 status: research reference, not a decision record
 ---
@@ -8,7 +8,7 @@ status: research reference, not a decision record
 
 ## What this document is for
 
-**ŠkolaMatch** is a Czech web + mobile product that helps 9th graders (age 14–15) and their parents choose which high school (*střední škola*) to apply to. In Czechia this choice happens once, around age 15, and substantially shapes the next four years and the university path after. The only comprehensive existing directory (atlasskolstvi.cz) is dated and dense, so students end up trawling dozens of individual school websites.
+**Střední na míru** is a Czech web + mobile product that helps 9th graders (age 14–15) and their parents choose which high school (*střední škola*) to apply to. In Czechia this choice happens once, around age 15, and substantially shapes the next four years and the university path after. The only comprehensive existing directory (atlasskolstvi.cz) is dated and dense, so students end up trawling dozens of individual school websites.
 
 Product properties that constrain the design:
 

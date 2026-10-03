@@ -230,7 +230,7 @@ name="theme-palette">` inside a `<label>` card, so arrow keys work.
 | `znacka` | Značka | Modrá jako turistická značka. Výchozí. |
 | `smrk` | Smrk | Tmavě zelená, klidná. |
 | `zvyraznovac` | Zvýrazňovač | Černá a žlutá jako zvýrazňovač. |
-| `terakota` | Terakota | Teplá cihlová, původní barvy ŠkolaMatch. |
+| `terakota` | Terakota | Teplá cihlová, původní barvy Střední na míru. |
 
 Card layout: name (`label-md`, `var(--ink)`) and description (`caption`, `var(--ink2)`)
 on the left. On the right, a preview of **that card's own** palette: three 20×20

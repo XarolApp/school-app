@@ -4,7 +4,7 @@
 > single research task. Cowork has access to the Mobbin MCP. This is a **breadth**
 > task, not a depth task — the goal is a large, structured survey that a later step
 > turns into a reusable Claude Code skill, not a one-off recommendation for
-> ŠkolaMatch specifically.
+> Střední na míru specifically.
 
 **Model/effort recommendation (you're budget-constrained on weekly usage):** don't
 downgrade the model — pattern synthesis across many screens needs real judgment, and
@@ -20,7 +20,7 @@ disposable answer.
 
 ## Context you need
 
-I'm building **ŠkolaMatch**, a Czech web + mobile app that helps 9th graders (14–15)
+I'm building **Střední na míru**, a Czech web + mobile app that helps 9th graders (14–15)
 and their parents choose a high school. It's paid (~250 Kč / ~$10), both students
 and parents buy independently, acquisition is TikTok/Instagram influencers, and it's
 used once per person, ever. Full product context, if useful, lives in
@@ -29,8 +29,8 @@ project-root location — you don't need to read those to do this task, but they
 if you want grounding.
 
 **This task is different from the previous research pass.** That one was narrow and
-ŠkolaMatch-specific (warmth vs. credibility, teen psychology, colour and trust). This
-one is broad and **not** ŠkolaMatch-specific — the goal is to build a general,
+Střední na míru-specific (warmth vs. credibility, teen psychology, colour and trust). This
+one is broad and **not** Střední na míru-specific — the goal is to build a general,
 reusable library of what separates good execution from generic execution across
 whole categories of screens, using the Mobbin MCP's access to real shipped products
 across web and app. The output will be turned into a **custom Claude Code skill** —
@@ -43,7 +43,7 @@ principle.
 
 Use the Mobbin MCP (`search_screens`, `search_flows`, `search_sections`) to survey a
 **large number of sites and apps** — tens of products per category, not a handful.
-You do **not** need most of them to resemble ŠkolaMatch. Pull from genuinely
+You do **not** need most of them to resemble Střední na míru. Pull from genuinely
 successful, well-regarded products across as many industries as you can reach:
 fintech, health, travel, ecommerce, productivity, education, dating, insurance,
 media, developer tools, consumer social — breadth is the point. Search **both web
@@ -64,7 +64,7 @@ Survey paywall and pricing-screen patterns broadly. How do successful products:
 - Use urgency, scarcity, or social proof — and where that visibly helps vs. reads
   as manipulative
 - Design the "what you get" list — iconography, copy density, ordering
-No constraint on relevance to ŠkolaMatch here — survey broadly, then flag (don't
+No constraint on relevance to Střední na míru here — survey broadly, then flag (don't
 filter out) anything that specifically wouldn't work for a payer who might be a
 minor or might be paying for someone else.
 

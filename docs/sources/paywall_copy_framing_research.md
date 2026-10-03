@@ -1,6 +1,6 @@
 # Research: Paywall Copy Framing — Loss-Averse vs Gain-Framed Copy
 
-Research for ŠkolaMatch paywall positioning. Scope: whether loss-framed copy ("don't lose access," "unlock before time runs out") outperforms gain-framed copy ("unlock full results," "see your ranking") on a one-time-purchase season pass, and legal/ethical fit for a minor EU audience under Digital Markets Act Article 25.
+Research for Střední na míru paywall positioning. Scope: whether loss-framed copy ("don't lose access," "unlock before time runs out") outperforms gain-framed copy ("unlock full results," "see your ranking") on a one-time-purchase season pass, and legal/ethical fit for a minor EU audience under Digital Markets Act Article 25.
 
 ---
 
@@ -24,7 +24,7 @@ Research for ŠkolaMatch paywall positioning. Scope: whether loss-framed copy ("
 - Classic example from prospect theory (Tversky & Kahneman 1981): "You have $100. Lose $20, or gamble 25% chance of losing $40?" Framing it as loss (vs "you have $80" as gain) increases risk-aversion, increases willingness to pay to avoid loss
 
 **Paywall context — mechanism problem:**
-- ŠkolaMatch result: user completes quiz, generates result, sees a paywall
+- Střední na míru result: user completes quiz, generates result, sees a paywall
 - User did NOT previously have access to the full ranking. The access is *new*, not *already-owned*. Framing "you will lose access" is manufactured loss — it misrepresents the user's actual entitlement state
 - This is psychologically less stable than true loss framing (prospect theory requires actual prior possession) and legally riskier (see Section 4)
 
@@ -39,7 +39,7 @@ Research for ŠkolaMatch paywall positioning. Scope: whether loss-framed copy ("
 
 Health communication meta-analyses show loss framing works for *aversive* behaviors (cancer screening feels risky/uncomfortable; people avoid it; loss frame makes avoiding the risk feel worse). 
 
-ŠkolaMatch paywall is not aversive — it's a *revelation*. The user:
+Střední na míru paywall is not aversive — it's a *revelation*. The user:
 1. Already completed the quiz (sunk effort)
 2. Wants to see results (inherent drive, no aversion to overcome)
 3. Faces a price barrier, not a behavioral barrier
@@ -50,7 +50,7 @@ In this context, loss framing doesn't address the real friction (price); it adds
 
 ## 4. Legal analysis: Article 25 DSA and minor audience
 
-**Article 25 (Digital Markets Act — EU regulation applicable to designated gatekeepers, relevant for ŠkolaMatch if platform grows to "gatekeeper" status or if data practices trigger scope):**
+**Article 25 (Digital Markets Act — EU regulation applicable to designated gatekeepers, relevant for Střední na míru if platform grows to "gatekeeper" status or if data practices trigger scope):**
 - Prohibits interface design that "exploits frailties or vulnerability" of consumers, specifically *minors* (under 18)
 - Explicitly flags psychological manipulation, dark patterns, and interfaces that misrepresent user facts or outcomes
 
@@ -61,7 +61,7 @@ In this context, loss framing doesn't address the real friction (price); it adds
 
 **Real case-law precedent:** Regulatory guidance on Article 25 (German and UK regulators' guidance to Meta, Apple, Candy Crush publishers) has flagged countdown timers + manufactured scarcity framing on minors as high-risk dark patterns.
 
-**Practical risk:** If regulators review ŠkolaMatch's paywall framing and find "lose access in 24h" applied to results the user never owned, this is a documented enforcement angle for Article 25 violations. Fines go to 10% of revenue for gatekeepers; reputational cost for an edtech product aimed at minors is higher.
+**Practical risk:** If regulators review Střední na míru's paywall framing and find "lose access in 24h" applied to results the user never owned, this is a documented enforcement angle for Article 25 violations. Fines go to 10% of revenue for gatekeepers; reputational cost for an edtech product aimed at minors is higher.
 
 **Conclusion:** This is not merely a tone issue; it's a compliance issue. Manufactured-loss framing for a minor EU audience is legally exposed.
 
@@ -126,7 +126,7 @@ Investoval jsi 12 minut — zbývá ti poslední krok. Vidět svoje pozadí a zv
 ## 7. Failure modes if loss framing is used anyway
 
 - **Regulatory investigation:** Article 25 enforcement against edtech paywalls is active (2023–2026 period, reported by German antitrust and UK CMA). A minor EU audience + manufactured-loss + countdown is a textbook pattern.
-- **Trust damage:** Parents and teens, if primed to think ŠkolaMatch is manipulative, are unlikely to pay or refer. Edtech trust is fragile.
+- **Trust damage:** Parents and teens, if primed to think Střední na míru is manipulative, are unlikely to pay or refer. Edtech trust is fragile.
 - **No conversion lift to show for the risk:** Without A/B test proof that loss framing converts better, you're taking legal/reputation cost for no measured gain.
 
 ---
@@ -149,4 +149,4 @@ Investoval jsi 12 minut — zbývá ti poslední krok. Vidět svoje pozadí a zv
 - No published A/B test compares loss-framed vs gain-framed copy on paywalls specifically. The claim relies on analogy to health communication research, which is context-dependent and doesn't clearly transfer to one-time purchases.
 - Health communication findings (loss framing works for aversive behaviors) do not predict whether loss framing works for revelatory, non-aversive paywalls. This is untested.
 - Manufactured-loss framing on minors is a documented Article 25 enforcement target, but I found no published case judgment specific to paywall copy (the regulation is new; enforcement is still active). Legal risk is real but not yet fully litigated.
-- The effort-based (sunk-cost) alternative is evidence-adjacent (endowed-progress effect is peer-reviewed and applies to completion tasks) but has not been A/B tested on ŠkolaMatch paywalls specifically.
+- The effort-based (sunk-cost) alternative is evidence-adjacent (endowed-progress effect is peer-reviewed and applies to completion tasks) but has not been A/B tested on Střední na míru paywalls specifically.

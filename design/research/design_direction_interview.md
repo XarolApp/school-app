@@ -1,6 +1,6 @@
 # Design direction — founder interview
 
-Running log of decisions about how ŠkolaMatch should look and feel. Feeds the
+Running log of decisions about how Střední na míru should look and feel. Feeds the
 `DESIGN.md` rewrite together with (a) the Cowork research output from
 `design_direction_research_prompt.md` and (b) Mobbin reference screens.
 

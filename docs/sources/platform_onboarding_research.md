@@ -1,5 +1,5 @@
 ---
-title: Platform & Onboarding Strategy Research — ŠkolaMatch
+title: Platform & Onboarding Strategy Research — Střední na míru
 date: 2026-08-25
 status: research reference, not a decision record
 ---
@@ -8,7 +8,7 @@ status: research reference, not a decision record
 
 ## What this document is about
 
-ŠkolaMatch is a Czech product that helps 9th graders (age ~15) and their parents choose a high school (střední škola). Relevant properties of the product, assumed throughout:
+Střední na míru is a Czech product that helps 9th graders (age ~15) and their parents choose a high school (střední škola). Relevant properties of the product, assumed throughout:
 
 - **Two surfaces, both real.** A mobile app is planned before public launch and is intended to be the primary way people use the product. A web app (React 19 + Vite) is being built first and remains a permanent, fully-working second surface on both desktop and mobile browsers. Neither is a stub.
 - **The app framework is not yet chosen.** React Native is a candidate because it would allow reuse of existing React components and the deterministic matching/scoring engine.

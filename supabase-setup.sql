@@ -1,5 +1,5 @@
 -- ============================================================================
--- ŠkolaMatch — auth, trial and paywall schema
+-- Střední na míru — auth, trial and paywall schema
 --
 -- Run this ONCE in the Supabase dashboard: SQL Editor -> New query -> Run.
 --

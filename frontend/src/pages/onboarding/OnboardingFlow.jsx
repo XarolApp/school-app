@@ -430,7 +430,7 @@ function OnboardingFlow() {
         <ObScreen chrome={false}>
           <div className="ob-fork">
             <h1 className="ob-title">
-              {parent ? 'Děkujeme, že testujete ŠkolaMatch' : 'Díky, že testuješ ŠkolaMatch'}
+              {parent ? 'Děkujeme, že testujete Střední na míru' : 'Díky, že testuješ Střední na míru'}
             </h1>
             <p className="ob-lead">
               {parent

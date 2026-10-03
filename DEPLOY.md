@@ -1,4 +1,4 @@
-# Deploying ŠkolaMatch
+# Deploying Střední na míru
 
 Two separate deploys: the Express backend on **Railway**, the Vite/React
 frontend on **Vercel**. Supabase is already hosted — nothing to deploy there.

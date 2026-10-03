@@ -28,7 +28,7 @@ const THEME_PALETTE_COPY = {
   znacka: { name: 'Značka', description: 'Modrá jako turistická značka. Výchozí.' },
   smrk: { name: 'Smrk', description: 'Tmavě zelená, klidná.' },
   zvyraznovac: { name: 'Zvýrazňovač', description: 'Černá a žlutá jako zvýrazňovač.' },
-  terakota: { name: 'Terakota', description: 'Teplá cihlová, původní barvy ŠkolaMatch.' },
+  terakota: { name: 'Terakota', description: 'Teplá cihlová, původní barvy Střední na míru.' },
 };
 
 const THEME_MODE_COPY = [

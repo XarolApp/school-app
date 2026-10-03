@@ -1,5 +1,5 @@
 /**
- * ŠkolaMatch deterministic matcher.
+ * Střední na míru deterministic matcher.
  *
  * HARD RULES (CLAUDE.md + trust engine):
  *  1. Scoring is plain, auditable math. No AI, no randomness, no network call.

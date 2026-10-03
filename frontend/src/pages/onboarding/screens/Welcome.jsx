@@ -56,7 +56,7 @@ function Welcome() {
       }
     >
       <div className="ob-hero ob-enter">
-        <span className="ob-logo">ŠkolaMatch</span>
+        <span className="ob-logo">Střední na míru</span>
         <h1 className="ob-title-xl">Jsi na správném místě.</h1>
         <p className="ob-lead">
           Vyber si střední školu v Praze podle toho, co tě baví a kam to máš daleko — ne podle toho,

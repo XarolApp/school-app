@@ -7,7 +7,7 @@ import { useOnboarding } from '../useOnboarding';
 /**
  * Screen 2 — THE ROLE FORK. The most structurally important screen in the app.
  *
- * ŠkolaMatch has TWO independent buyers. A 15-year-old will spend ~250 Kč of
+ * Střední na míru has TWO independent buyers. A 15-year-old will spend ~250 Kč of
  * their own money on a decision this consequential, and parents buy too. So the
  * flow asks who you are and branches VOICE (tykání/vykání), PROOF (peer vs
  * authority), MOTION (full vs restrained), PRICE FRAMING and QUESTION PHRASING.

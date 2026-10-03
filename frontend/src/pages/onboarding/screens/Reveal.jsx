@@ -131,13 +131,13 @@ function Reveal() {
   const share = async () => {
     const text = top
       ? parent
-        ? `ŠkolaMatch: nejlépe odpovídající škola je ${top.school.name} (${top.school.location}).`
-        : `Můj top match na ŠkolaMatch: ${top.school.name} (${top.school.location}).`
-      : 'ŠkolaMatch — hledání střední školy v Praze.';
+        ? `Střední na míru: nejlépe odpovídající škola je ${top.school.name} (${top.school.location}).`
+        : `Můj top match podle Střední na míru: ${top.school.name} (${top.school.location}).`
+      : 'Střední na míru — hledání střední školy v Praze.';
     const url = window.location.origin;
     try {
       if (navigator.share) {
-        await navigator.share({ title: 'ŠkolaMatch', text, url });
+        await navigator.share({ title: 'Střední na míru', text, url });
         setShareState('done');
         return;
       }

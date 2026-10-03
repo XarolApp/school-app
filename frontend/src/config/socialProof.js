@@ -1,7 +1,7 @@
 /**
  * Social proof — SINGLE SOURCE OF TRUTH.
  *
- * Deliberately EMPTY on purpose. ŠkolaMatch has no users yet, so
+ * Deliberately EMPTY on purpose. Střední na míru has no users yet, so
  * "už 1 240 deváťáků našlo svou školu" and invented testimonials would be a
  * fabricated claim shown to a 15-year-old and to a parent deciding whether to
  * pay. Under UCPD that is a misleading commercial practice, and it is the

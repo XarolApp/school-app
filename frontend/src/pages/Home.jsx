@@ -56,7 +56,7 @@ const STEPS = [
 
 const makeFaq = (SCHOOL_COUNT) => [
   {
-    q: 'Co je ŠkolaMatch?',
+    q: 'Co je Střední na míru?',
     a: 'Průvodce výběrem střední školy v Praze. Databáze všech škol s obory a výsledky přijímaček na jednom místě, a dotazník, který z nich vybere ty, které sedí tomu, co hledáš.',
   },
   {
@@ -153,7 +153,7 @@ function Home() {
           <p className="ls-eyebrow">Výběr střední školy · Praha</p>
           <h1 className="ls-title">Najdi střední školu, která ti opravdu sedí</h1>
           <p className="ls-lede">
-            ŠkolaMatch dává všech {SCHOOL_COUNT} pražských středních škol na jedno místo. Odpovíš na{' '}
+            Střední na míru dává všech {SCHOOL_COUNT} pražských středních škol na jedno místo. Odpovíš na{' '}
             {QUESTION_COUNT} otázek a uvidíš, které školy odpovídají tomu, co tě baví, kam
             dojedeš a jak se ti učí — a u každé proč.
           </p>
@@ -317,7 +317,7 @@ function Home() {
       <section className="ls-honesty" data-reveal>
         <div className="ls-section-head">
           <p className="ls-eyebrow">Na rovinu</p>
-          <h2 className="ls-h2">Co ŠkolaMatch umí a co ne</h2>
+          <h2 className="ls-h2">Co Střední na míru umí a co ne</h2>
         </div>
         <div className="ls-honesty-grid">
           <div>
@@ -352,10 +352,10 @@ function Home() {
         <blockquote className="ls-founder-quote">
           {/* TODO(founder): replace with the founder's own words and name. */}
           <p>
-            „[Návrh textu] Sám jsem si střední vybíral z tabulek a doslechu. ŠkolaMatch je
+            „[Návrh textu] Sám jsem si střední vybíral z tabulek a doslechu. Střední na míru je
             nástroj, který jsem tehdy chtěl mít.“
           </p>
-          <footer>[Jméno], zakladatel ŠkolaMatch</footer>
+          <footer>[Jméno], zakladatel Střední na míru</footer>
         </blockquote>
       </section>
 
@@ -419,7 +419,7 @@ function Home() {
 
       <footer className="ls-footer">
         <div>
-          <span className="ls-wordmark">ŠkolaMatch</span>
+          <span className="ls-wordmark">Střední na míru</span>
           <p className="ls-footer-note">
             Data o oborech a hranicích přijetí přebíráme z veřejných rejstříků MŠMT a
             z výsledků jednotné přijímací zkoušky. U každého čísla uvádíme rok a zdroj.

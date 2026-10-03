@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "school-app-local",
-  "description": "Repository-local Claude Code plugins for ŠkolaMatch.",
+  "description": "Repository-local Claude Code plugins for Střední na míru.",
   "owner": {
     "name": "Vojtěch Kadlec"
   },

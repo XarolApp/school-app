@@ -1,6 +1,6 @@
 ---
 version: alpha
-name: ŠkolaMatch
+name: Střední na míru
 description: A high school selection tool for Czech 9th graders and their parents — a searchable school database, an AI-matched questionnaire, and a paywall, built to feel like a trusted advisor rather than an institution grading you.
 
 colors:
@@ -196,7 +196,7 @@ components:
     padding: "{spacing.sm}"
 ---
 
-# ŠkolaMatch
+# Střední na míru
 
 ## Overview — read this before anything else
 
@@ -211,7 +211,7 @@ components:
 > the motion rules and the anti-references below all still apply unchanged; only the
 > palette, the typefaces and the prose that named them were rewritten.
 
-This is the **second** DESIGN.md written for ŠkolaMatch. The first one — Archival
+This is the **second** DESIGN.md written for Střední na míru. The first one — Archival
 Institutional crossed with Soft Technical, navy primary, monospace numerics, hairline
 structure, a metaphor built on report cards and a teacher's red pen — lint-passed at
 zero errors and was still wrong. Seeing it rendered, the founder's reaction was
@@ -225,7 +225,7 @@ this file is the correction, built on two inputs the first version didn't have:
    `[GAP]` flags throughout. Findings are cited by name below; treat `[INFERENCE]`-
    flagged claims as reasoning, not measurement.
 2. **Ten reference screens pulled from Mobbin** (listed under each section below,
-   with URLs) — not because ŠkolaMatch should resemble any one of them, but because
+   with URLs) — not because Střední na míru should resemble any one of them, but because
    every claim in this file about what "warm but credible" looks like in production
    is checked against something that actually shipped.
 
@@ -295,7 +295,7 @@ never from an instrument that judges them. See Colors.
 ### Explicit anti-references
 
 **atlasskolstvi.cz** (the existing Czech school directory) — dense unstyled tables, no
-hierarchy, dated chrome. ŠkolaMatch's entire value proposition is being the thing that
+hierarchy, dated chrome. Střední na míru's entire value proposition is being the thing that
 site should have been; resembling it in any way is a direct product failure.
 
 **GitHub / n8n / Supabase** — the first version's actual result. Anything that reads

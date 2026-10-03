@@ -13,7 +13,7 @@ This fills the gap between "where onboarding lives" (`platform_onboarding_resear
 - **[Vendor/marketing]** — content from a tool vendor or growth agency, directionally useful but self-interested
 - **[Inference]** — my own reasoning, not sourced, flagged as such
 
-ŠkolaMatch-specific constraints are treated as binding throughout: single-use (no retention lever), web-first with desktop as first-class, anonymous-quiz-then-paywall, dual persona, EU minor-audience legal constraints, and 23 screens currently under review.
+Střední na míru-specific constraints are treated as binding throughout: single-use (no retention lever), web-first with desktop as first-class, anonymous-quiz-then-paywall, dual persona, EU minor-audience legal constraints, and 23 screens currently under review.
 
 ---
 
@@ -26,7 +26,7 @@ The finding is a curve shape, not a single cliff:
 - 35+: respondents become comparatively indifferent to additional length.
 SurveyMonkey does not publish the actual percentages publicly in this piece, only the shape — so treat this as "front-loaded cost, flattening curve," not as a numeric table you can port directly. ([SurveyMonkey: Does Adding One More Question Impact Survey Completion Rate?](https://www.surveymonkey.com/curiosity/survey_questions_and_completion_rates/))
 
-**Important transfer caveat [inference]:** this data is from general-purpose surveys with no reward at the end (no personalized result, no product). A quiz that visibly builds toward a promised payoff (Noom, Cal AI, ŠkolaMatch's #1-match reveal) very plausibly has a *different* curve — likely flatter drop-off per question, because each answered question is visibly being used to build something the user wants to see. This is the theoretical basis for "long quiz as investment" but I found no study that isolates *reward-bearing* quizzes from plain surveys to confirm the shape actually differs, or by how much. That is a genuine gap, not a filled one.
+**Important transfer caveat [inference]:** this data is from general-purpose surveys with no reward at the end (no personalized result, no product). A quiz that visibly builds toward a promised payoff (Noom, Cal AI, Střední na míru's #1-match reveal) very plausibly has a *different* curve — likely flatter drop-off per question, because each answered question is visibly being used to build something the user wants to see. This is the theoretical basis for "long quiz as investment" but I found no study that isolates *reward-bearing* quizzes from plain surveys to confirm the shape actually differs, or by how much. That is a genuine gap, not a filled one.
 
 **Noom: 26–113 screens depending on how you count, real shipped product. [Case study]**
 Reports vary — a community teardown cites "26 onboarding screens" as an older figure; RevenueCat's more granular 2026 teardown counts up to 113 screens including all sub-steps, with completion taking 10–15 minutes for typical users and 90+ minutes for people who read everything. Email capture happens roughly one-third through, right before the results graph; paywall arrives after roughly 100 screens, following the results, plan customization, and educational content. ([RevenueCat: Inside Noom's Web-to-App Onboarding Funnel](https://www.revenuecat.com/blog/growth/web-to-app-onboarding-funnel), [StartupTalky community: Noom 2020 onboarding screens](https://community.startuptalky.com/discussions/post/in-2020-noom-1b-arr-had-2-NcwCQAnECYMy2Az))
@@ -35,7 +35,7 @@ No conversion rate is published for this exact funnel — RevenueCat's piece cit
 
 **Cal AI's onboarding is documented as a widely-copied teardown (Figma community breakdown) [vendor/community content, not primary data]** — I could not find a published completion or conversion rate for it either. Treat any specific percentage claim about Cal AI's funnel that circulates in growth-marketing content as unverified unless traced to Cal AI's own disclosure, which I did not find.
 
-**Where the curve plausibly turns earlier for ŠkolaMatch [inference, stated as inference per your instruction]:**
+**Where the curve plausibly turns earlier for Střední na míru [inference, stated as inference per your instruction]:**
 Three of your product's properties argue for a *shorter* tolerable flow than Noom/Cal AI's:
 1. **No prior brand relationship.** Noom and Cal AI users often arrive already having decided "I want a weight-loss app" — some baseline trust exists. Your traffic arrives cold, off a 15–30 second TikTok clip, with zero brand equity. Sunk-cost investment compounds slower when trust starts near zero.
 2. **No future payoff to anchor patience.** A habit-product quiz implicitly promises "this will get easier/better over weeks." A one-time decision tool has no such story — the payoff is immediate or nothing, so there's less patience reserve to draw on mid-flow.
@@ -70,7 +70,7 @@ No study found either way. What's observable in the wild: the products that keep
 **How the best ones use extra horizontal space [pattern observation, not measured]:**
 Recurring uses across examples above, ranked by how often they appear in documented patterns (not by proven effectiveness, since no comparative data exists):
 1. **Persistent progress/step indicator** beside the question rather than a thin top bar — very common, cheap to build.
-2. **A live-updating preview of the thing being built** (Notion's workspace preview, financial tools' running summary) — this is the strongest desktop-specific opportunity for you: a "your profile so far" panel building visibly next to the quiz, directly usable for ŠkolaMatch since the entire value prop is a personalized result under construction.
+2. **A live-updating preview of the thing being built** (Notion's workspace preview, financial tools' running summary) — this is the strongest desktop-specific opportunity for you: a "your profile so far" panel building visibly next to the quiz, directly usable for Střední na míru since the entire value prop is a personalized result under construction.
 3. **Illustration/mascot filling space** — common but decorative; does not add function, mainly prevents the "empty white page" feel.
 4. **Contextual reassurance text beside the question** (why we're asking, how it's used) — appears in fintech and health onboarding specifically, plausibly because those categories carry more inherent user hesitation, which maps onto your product's anxiety-adjacent nature.
 
@@ -113,7 +113,7 @@ Named practices confirmed as prohibited or clearly high-risk under Article 25 an
 
 **Explicitly not addressed in the source I could access:** the DSA Library page I fetched does not itself carry minor-specific provisions distinct from the general Article 25 text — the minors-specific weight comes from the Digital Fairness Act proposal and GDPR's Article 8 (consent age thresholds), which I was not able to fetch primary text for in this pass. **Gap, flagged honestly:** I can confirm Article 25's general prohibitions above from a primary-ish source, but I could not verify the *specific* minor-enhanced provisions (e.g., whether DFA proposals impose a stricter standard for under-18 users specifically, beyond the general ban) from a document I actually read in this session — secondary commentary (Lexology, Osborne Clarke) suggests the DFA proposal does add minor-specific scrutiny, but I did not fetch and verify their content directly, so treat that specific claim as unconfirmed pending your own legal review rather than something I've verified for you. **You should have this checked by someone with EU consumer-law expertise before finalizing copy and defaults — this section is directional, not a compliance sign-off.**
 
-**Endowed-progress-effect legal interaction [inference, worth flagging]:** the Nunes & Drèze effect works by giving a *perceived* head start. If ŠkolaMatch's progress bar showed, say, 30% complete after one screen to induce the same effort-boosting effect, that would likely cross into "artificial advancement that misrepresents actual progress" — which Article 25's anti-deception language plausibly captures, even though the academic study itself is not about legality. The safe version is a progress indicator that's accurate but *framed* well (e.g., counting only the questions, not diluting it across throwaway screens), not one that's numerically inflated.
+**Endowed-progress-effect legal interaction [inference, worth flagging]:** the Nunes & Drèze effect works by giving a *perceived* head start. If Střední na míru's progress bar showed, say, 30% complete after one screen to induce the same effort-boosting effect, that would likely cross into "artificial advancement that misrepresents actual progress" — which Article 25's anti-deception language plausibly captures, even though the academic study itself is not about legality. The safe version is a progress indicator that's accurate but *framed* well (e.g., counting only the questions, not diluting it across throwaway screens), not one that's numerically inflated.
 
 ---
 
@@ -145,7 +145,7 @@ On parental consent/confirmation steps and completion: I found general research 
 
 ## 6. What to cut
 
-No published study exists on removing steps from a specific onboarding flow and measuring the effect for a product shaped like ŠkolaMatch — the "remove X screens, gain Y% completion" data that exists (mostly signup-form-field-count studies from checkout-optimization literature) is from a different context (e-commerce checkout forms) and I would not port it here without flagging that mismatch.
+No published study exists on removing steps from a specific onboarding flow and measuring the effect for a product shaped like Střední na míru — the "remove X screens, gain Y% completion" data that exists (mostly signup-form-field-count studies from checkout-optimization literature) is from a different context (e-commerce checkout forms) and I would not port it here without flagging that mismatch.
 
 Given that, here's what the two general theories in this document actually predict for your 23-screen structure, offered as a structured judgment rather than a sourced verdict:
 
@@ -169,7 +169,7 @@ Given that, here's what the two general theories in this document actually predi
 
 ## What this does not answer
 
-- No number for where ŠkolaMatch's specific completion curve turns — the SurveyMonkey shape is the closest proxy and it's from a different category of survey entirely.
+- No number for where Střední na míru's specific completion curve turns — the SurveyMonkey shape is the closest proxy and it's from a different category of survey entirely.
 - No comparative data on any of the three reveal/paywall architectures (show #1 free vs. paywall-before-result vs. reveal-all-paywall-depth).
 - No data on whether qualitative match bands cost conversion relative to a numeric score, only that it's well-supported on ethical/product-fit grounds.
 - No case study of a dual-independent-payer minor+parent flow exists to learn from — this is closer to product-design territory you'll be establishing than replicating.

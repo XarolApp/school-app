@@ -18,7 +18,7 @@ import { SCHOOL_COUNT } from '../../../config/facts';
  * calculation the reader can disagree with — and a claim someone can check is
  * worth more with a sceptical parent than a bigger claim they cannot.
  *
- * ZERO-SHAME (§0.3). The "bez ŠkolaMatch" column describes the SITUATION (60
+ * ZERO-SHAME (§0.3). The "bez Střední na míru" column describes the SITUATION (60
  * inconsistent websites, notes in ten tabs), never the reader's competence, and
  * the payoff paragraph offers the saved hours back for přijímačky prep rather
  * than warning what happens if they get it wrong.
@@ -131,7 +131,7 @@ function Hodnota() {
 
           <div className="ob-pw-side">
             <div className="ob-pw-card ob-pw-compare" style={{ order: 3 }}>
-              <span className="ob-pw-caps">Bez ŠkolaMatch</span>
+              <span className="ob-pw-caps">Bez Střední na míru</span>
               <ul className="ob-pw-list">
                 {without.map((line, i) => (
                   <li key={i}>
@@ -145,7 +145,7 @@ function Hodnota() {
             </div>
 
             <div className="ob-pw-card ob-pw-compare is-raised" style={{ order: 4 }}>
-              <span className="ob-pw-caps is-accent">Se ŠkolaMatch</span>
+              <span className="ob-pw-caps is-accent">Se Střední na míru</span>
               <ul className="ob-pw-list">
                 {withUs.map((line) => (
                   <li key={line}>

@@ -12,7 +12,7 @@ import { useOnboarding } from '../useOnboarding';
  * stay on BOTH branches — teenagers are more scam-wary than adults assume.
  *
  * HONESTY OVERRIDE: the playbook wants a high-density testimonial wall and a
- * user count here. ŠkolaMatch has neither yet, and inventing "už 1 240
+ * user count here. Střední na míru has neither yet, and inventing "už 1 240
  * deváťáků" would be a fabricated claim aimed at a minor and their parent —
  * a misleading commercial practice under the UCPD and the fastest possible way
  * to lose a Czech parent. So this screen ships the strongest TRUE proof

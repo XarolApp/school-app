@@ -24,7 +24,7 @@ export function Privacy() {
       <h2>1. Kdo je správce</h2>
       <p>
         Správcem osobních údajů je [DOPLNIT: jméno / firma, IČO, adresa sídla], e-mail:
-        [DOPLNIT]. Provozujeme službu ŠkolaMatch (web stredninamiru.cz). Pověřence pro ochranu
+        [DOPLNIT]. Provozujeme službu Střední na míru (web stredninamiru.cz). Pověřence pro ochranu
         osobních údajů nemáme; se vším se obracej na uvedený e-mail.
       </p>
 
@@ -147,7 +147,7 @@ export function Terms() {
     <LegalPage title="Obchodní podmínky" updated="21. 9. 2026">
       <h2>1. Provozovatel a kontakt</h2>
       <p>
-        Službu ŠkolaMatch (stredninamiru.cz) provozuje [DOPLNIT: jméno / firma, IČO, adresa sídla,
+        Službu Střední na míru (stredninamiru.cz) provozuje [DOPLNIT: jméno / firma, IČO, adresa sídla,
         DIČ, zápis v rejstříku], e-mail: [DOPLNIT] (tento e-mail slouží pro všechny žádosti,
         reklamace, odstoupení od smlouvy i nahlášení nevhodného obsahu). Uzavřením smlouvy
         souhlasíš s těmito podmínkami a bereš na vědomí{' '}
@@ -217,7 +217,7 @@ export function Terms() {
       <p className="legal-form">
         <strong>Vzorový formulář pro odstoupení od smlouvy</strong><br />
         Adresát: [DOPLNIT: jméno provozovatele, adresa, e-mail]<br />
-        Oznamuji, že tímto odstupuji od smlouvy o poskytnutí služby ŠkolaMatch (tarif:
+        Oznamuji, že tímto odstupuji od smlouvy o poskytnutí služby Střední na míru (tarif:
         ……………).<br />
         Datum objednávky: …………… E-mail účtu: ……………<br />
         Jméno spotřebitele: …………… Datum: …………… (podpis, pokud podáváš písemně)

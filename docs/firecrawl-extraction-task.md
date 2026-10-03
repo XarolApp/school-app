@@ -1,4 +1,4 @@
-# Task: Firecrawl scrape + Claude extraction pipeline for ŠkolaMatch
+# Task: Firecrawl scrape + Claude extraction pipeline for Střední na míru
 
 You are being handed this task with no prior context on the project. Read this
 whole document before writing any code — it contains everything you need,
@@ -8,7 +8,7 @@ integrity.
 
 ## Project context (minimum you need)
 
-**ŠkolaMatch** is a Czech website (`school-app` repo) that helps 9th graders
+**Střední na míru** is a Czech website (`school-app` repo) that helps 9th graders
 pick a high school (*střední škola*) in Prague. It has a Supabase (Postgres)
 database with a `schools` table (~223 real Prague schools) and an Express
 backend (`server.js` at repo root) that is the only thing allowed to write to

@@ -4,7 +4,7 @@ Paste this into Cowork.
 
 ---
 
-I'm building a paywall for a Czech ed-tech app (ŠkolaMatch — helps 9th graders
+I'm building a paywall for a Czech ed-tech app (Střední na míru — helps 9th graders
 pick a high school). Current paywall copy is framed as "pay to unlock" /
 "pay to access" (gain framing): the user sees a free result already, and the
 paywall offers to unlock more of it.

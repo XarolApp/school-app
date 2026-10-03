@@ -8,7 +8,7 @@ from there.
 
 ## The prompt
 
-I'm designing the pre-signup landing page (úvodní stránka) for ŠkolaMatch, a
+I'm designing the pre-signup landing page (úvodní stránka) for Střední na míru, a
 high-school-selection app for Czech 9th graders and their parents. The brand
 voice is warm, calm, and trustworthy — never childish, never corporate-cold.
 Reference points already in use: Monzo (colour discipline), YNAB (warmth on a

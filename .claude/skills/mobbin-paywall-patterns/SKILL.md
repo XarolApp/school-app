@@ -1,6 +1,6 @@
 ---
 name: mobbin-paywall-patterns
-description: Real-shipped-product patterns for paywall and pricing screens, sourced from a 73-search Mobbin survey (~110 products, iOS + web). Use when designing or reviewing a paywall, pricing table, trial-timeline, or checkout screen — most useful for Claude Design. Not ŠkolaMatch-specific; broad reference material.
+description: Real-shipped-product patterns for paywall and pricing screens, sourced from a 73-search Mobbin survey (~110 products, iOS + web). Use when designing or reviewing a paywall, pricing table, trial-timeline, or checkout screen — most useful for Claude Design. Not Střední na míru-specific; broad reference material.
 ---
 
 # Paywall & pricing patterns (sourced via Mobbin)

@@ -59,7 +59,7 @@ was never updated. Splitting design material into its own top-level `design/` fo
 (rather than leaving it flat in here alongside general product docs) makes the design
 system discoverable as one coherent unit — for `/design`, for a human, and for future
 Claude Design imports — instead of scattered across `docs/sources/` and ad-hoc
-root-level folders with names like `# ŠkolaMatch School Search Wireframe`.
+root-level folders with names like `# Střední na míru School Search Wireframe`.
 
 ## Why *this* folder stays flat
 

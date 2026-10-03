@@ -1,6 +1,6 @@
 # Research: Ambient/Autoplay Landing-Page Animation
 
-Research for the ŠkolaMatch pre-signup landing page. Scope: motion that plays
+Research for the Střední na míru pre-signup landing page. Scope: motion that plays
 automatically on page load with no user action — not scroll-triggered
 entrances, not hover/press feedback, not loading spinners. This is the "alive
 hero" category: a looping illustration, an idle character, a drifting
@@ -75,7 +75,7 @@ Named/documented critiques of over-animated landing pages (design-community sour
 
 - **Performance cost outweighing polish.** A recurring critique in landing-page teardown write-ups (e.g., dev.to pieces on why high-traffic sites tend to avoid heavy animation) is that autoplay animation — especially WebGL/video-based — measurably slows load and hurts Core Web Vitals, which matters disproportionately for a mobile-first, TikTok-referral audience arriving on average-to-low-end phones with impatience already primed by short-form video habits.
 - **Animation as a distraction from the actual value proposition.** The critique pattern here (seen across landing-page best-practice write-ups) is that a hero animation competing for attention with the headline/value prop actively hurts comprehension and conversion — the eye tracks motion first, text second. For a product whose landing page has one job (make a 15-year-old and a skeptical parent both trust it fast), this is a direct risk: motion should support the message, not compete with it.
-- **"Try-hard" read from mismatched register.** The commonly cited failure is a serious/B2B or trust-dependent product borrowing playful-brand animation conventions (bouncy character loops, confetti) wholesale — it reads as inauthentic rather than warm, because the motion vocabulary doesn't match the stakes of the decision being made. This is the single most relevant risk for ŠkolaMatch specifically, given the brief's warmth-vs-credibility tension.
+- **"Try-hard" read from mismatched register.** The commonly cited failure is a serious/B2B or trust-dependent product borrowing playful-brand animation conventions (bouncy character loops, confetti) wholesale — it reads as inauthentic rather than warm, because the motion vocabulary doesn't match the stakes of the decision being made. This is the single most relevant risk for Střední na míru specifically, given the brief's warmth-vs-credibility tension.
 - **Motion that never resolves/settles.** Perpetual, unvarying loops that run at a noticeable pace can read as restless or nagging over a longer page-viewing session (a parent who lingers to read copy). The mitigating pattern used by calmer examples (Linear, Stripe-style gradients) is very slow, low-contrast motion — closer to "barely perceptible" than "eye-catching."
 
 I don't have a specific named case study of a landing page whose animation was documented as *directly causing* a measured conversion drop — that level of causal, cited evidence doesn't appear to be public. The above are documented *critique patterns*, not measured failures.
@@ -88,7 +88,7 @@ I don't have a specific named case study of a landing page whose animation was d
 
 **What I cannot independently confirm:** the exact current-day frame-by-frame behavior of duolingo.com's marketing homepage hero right now (i.e., whether the owl specifically blinks on an idle loop on the *marketing* site today, versus that behavior being more prominent in-app). The LottieFiles case-study content I was able to retrieve discusses Duolingo's Lottie usage in the context of retention features (streak celebrations, leaderboard motion) more than the pre-signup marketing landing page specifically, and I don't have a tool that lets me open and visually inspect the live page. Given this is your direct reference point, I'd recommend visually re-confirming duolingo.com's current hero behavior yourself (or via a screen-recording tool) before finalizing your own implementation, rather than treating my description as a verified frame-by-frame account.
 
-**What's safe to infer as a design pattern, independent of today's exact build:** Duolingo's animation approach is consistently characterized (by Lottie's own case study, and by broader design-community commentary) as small, character-centered, idle-style loops — not full-screen ambient effects — implemented via Lottie/After Effects export specifically because it's file-size-efficient and performant across devices. That's the transferable lesson for ŠkolaMatch even if the exact current homepage frame isn't independently verified here.
+**What's safe to infer as a design pattern, independent of today's exact build:** Duolingo's animation approach is consistently characterized (by Lottie's own case study, and by broader design-community commentary) as small, character-centered, idle-style loops — not full-screen ambient effects — implemented via Lottie/After Effects export specifically because it's file-size-efficient and performant across devices. That's the transferable lesson for Střední na míru even if the exact current homepage frame isn't independently verified here.
 
 ---
 

@@ -1,14 +1,14 @@
-# ŠkolaMatch — Project Overview
+# Střední na míru — Project Overview
 
 ## What is it?
 
-**ŠkolaMatch** is a web and mobile app that helps 9th graders in Prague choose their high school.
+**Střední na míru** is a web and mobile app that helps 9th graders in Prague choose their high school.
 
 Right now, students picking a high school have two bad options:
 1. Spend hours digging through dozens of individual school websites
 2. Ask ChatGPT random questions with no structure or comparison
 
-ŠkolaMatch fixes this.
+Střední na míru fixes this.
 
 ## What does the app do?
 

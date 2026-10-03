@@ -1,4 +1,4 @@
-# UI kit — ŠkolaMatch
+# UI kit — Střední na míru
 
 Click-through recreation of the product's surfaces, composed entirely from the
 system's own components (`Button`, `Input`, `Checkbox`, `OptionRow`, `Card`, `Chip`,
@@ -18,7 +18,7 @@ system's own components (`Button`, `Input`, `Checkbox`, `OptionRow`, `Card`, `Ch
 
 ## Fidelity caveat
 
-No codebase, Figma file, or screenshots of the real ŠkolaMatch product were supplied —
+No codebase, Figma file, or screenshots of the real Střední na míru product were supplied —
 `uploads/DESIGN.md` was the only source. Screen composition is therefore derived from
 DESIGN.md's prose (the three named surfaces, the density rules, the 12-column/1280px
 grid) rather than copied from a shipped design. **Tokens and component styling are

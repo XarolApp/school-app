@@ -103,7 +103,7 @@ yourself" instruction in Quick Start below.
 
 ---
 
-## ŠkolaMatch Operational Roadmap — How Planning Works
+## Střední na míru Operational Roadmap — How Planning Works
 
 **Three files form the complete launch strategy. Use them together:**
 
@@ -203,7 +203,7 @@ individual school websites, or asking ChatGPT one-off questions with no real str
 
 ## The Product
 
-An app + website (branded **ŠkolaMatch** — see onboarding agent below). The mobile
+An app + website (branded **Střední na míru** — see onboarding agent below). The mobile
 app is the intended primary surface at launch; the web app is being built first and
 remains a full second surface (see "Platform Strategy"). It:
 1. Provides a clean, searchable database of high schools — location, programs,
@@ -225,7 +225,7 @@ remains a full second surface (see "Platform Strategy"). It:
   charge, the exact mechanism the EU Digital Fairness Act targets, worse where the
   payer may be a minor — landed on monthly-pre-selected + season-secondary. Pass 3
   (same day, follow-up research specifically on single-lifetime-use apps): **flipped
-  the default to season.** ŠkolaMatch is used exactly once per person, ever — it
+  the default to season.** Střední na míru is used exactly once per person, ever — it
   isn't "seasonal-recurring" the way a fitness app is, so recurring billing solves a
   renewal problem this product doesn't have. Real-world precedent: UWorld (exam prep,
   the closest analog) sells fixed-window passes that expire, not subscriptions.
@@ -321,7 +321,7 @@ themselves. Use the browser pane / preview tools for this.
 
 ## Platform Strategy
 
-ŠkolaMatch ships on two surfaces and both matter:
+Střední na míru ships on two surfaces and both matter:
 
 - **Mobile app** — the intended *primary* surface at launch. Not built yet, framework
   undecided. Most usage is expected here, matching the acquisition channel (Czech
@@ -613,7 +613,7 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
    for onboarding, quiz flow, paywall, pricing and conversion work only. Merges
    `claude_code_ui_ux_guide.md` (psychological principles) and `onboarding.md`
    (onboarding structure) into one non-conflicting instruction set, with explicit
-   conflict rulings, ŠkolaMatch constraints (dual persona, zero-shame, EU minors),
+   conflict rulings, Střední na míru constraints (dual persona, zero-shame, EU minors),
    and a canonical 23-screen flow spec. Invoke with the Agent tool using
    `subagent_type: "onboarding-architect"`. **Do NOT use it for general feature work**
    (search, school detail pages, auth, backend endpoints, scraping) — only for
@@ -633,7 +633,7 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
      dark-pattern territory (DSA Art. 25) given the audience is minors.
 
 7. **Onboarding flow + paywall** (`frontend/src/pages/onboarding/`) — the full
-   23-screen ŠkolaMatch flow, built 2026-08-23. Payment UI is mocked in onboarding; the backend Stripe integration is implemented in test mode.
+   23-screen Střední na míru flow, built 2026-08-23. Payment UI is mocked in onboarding; the backend Stripe integration is implemented in test mode.
    - **Step controller:** `OnboardingFlow.jsx` + `steps.js`, step id lives in the
      URL (`/onboarding/:stepId`), routes registered outside `Layout` in `App.jsx`.
    - **Role fork** at screen 2 branches voice, proof, motion, price framing and
@@ -754,7 +754,7 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
       studenta", …) UNLESS the reviewer is `rodic` or `ucitel` AND opted in
       to showing their first name. Never offered to `student` / `absolvent`
       / `navstevnik`. This is a GDPR Art. 8 consequence, not a style choice:
-      the Czech digital age of consent is 15, and ŠkolaMatch's core users
+      the Czech digital age of consent is 15, and Střední na míru's core users
       are 14-15-year-old 9th graders, who cannot validly consent to
       publishing their own name next to a public opinion about a named
       school. `rodic`/`ucitel` are adults by definition; the other three
@@ -795,7 +795,7 @@ feature) is still deferred — see `UNFORGET.md`.
 intended to be the PRIMARY surface.** (Corrected 2026-08-24; an earlier version of
 this file wrongly listed it as post-launch.) The build order is web-first because
 that is what exists today, but the end state is a mobile app as the main way people
-use ŠkolaMatch, with the browser as a fully working secondary surface — not a stub.
+use Střední na míru, with the browser as a fully working secondary surface — not a stub.
 Nothing built now should assume web is the only client. See "Platform Strategy".
 
 ## Known Issues / Traps
@@ -890,7 +890,7 @@ colors, spacing, or components.
 **Always match the Mobbin search platform to what you are actually designing** — the
 `platform` parameter (`ios` / `web`) is not a detail to leave on whatever it defaulted
 to. Designing a desktop/laptop layout → search `web`. Designing the phone layout →
-search `ios`. Designing both (the normal case here, since ŠkolaMatch ships mobile and
+search `ios`. Designing both (the normal case here, since Střední na míru ships mobile and
 web as two first-class surfaces — see "Platform Strategy") → **run both searches and
 treat them as separate evidence**, because the right answer genuinely differs by
 surface. A two-plan paywall is the worked example: on web, side-by-side plan cards are

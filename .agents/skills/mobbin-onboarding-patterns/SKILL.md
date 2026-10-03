@@ -1,6 +1,6 @@
 ---
 name: mobbin-onboarding-patterns
-description: Real-shipped-product patterns for onboarding, quiz, and first-run personalization flows, sourced from a 73-search Mobbin survey (~81 products, iOS + web). Use when designing or reviewing an onboarding sequence, questionnaire, or signup flow — most useful for Codex Design. Not ŠkolaMatch-specific; broad reference material.
+description: Real-shipped-product patterns for onboarding, quiz, and first-run personalization flows, sourced from a 73-search Mobbin survey (~81 products, iOS + web). Use when designing or reviewing an onboarding sequence, questionnaire, or signup flow — most useful for Codex Design. Not Střední na míru-specific; broad reference material.
 ---
 
 # Onboarding & quiz-flow patterns (sourced via Mobbin)

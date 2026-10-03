@@ -904,7 +904,7 @@ Keep this concise.
     trial + absolute `cancel_at` so it still charges exactly once.
   - Prague school database expanded from 60 → 224 schools (target was ~214),
     via a new official-registry-backed script — see "Database" section above.
-- Marketing: rebrand decision made (ŠkolaMatch → "Kam na střední?" → landed on
+- Marketing: rebrand decision made (Střední na míru → "Kam na střední?" → landed on
   "Střední na míru" after two rounds of collision-checking — Kam na střední's
   domain was taken, Školio collided with an existing school-management SaaS).
   Not yet executed in the codebase. No content published, no creator/parent

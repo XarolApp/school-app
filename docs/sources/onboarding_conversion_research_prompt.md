@@ -14,7 +14,7 @@ but nothing sourced on **what actually makes one convert**, and nothing at all o
 
 ## The prompt
 
-I'm redesigning the onboarding flow for **ŠkolaMatch**, a Czech web app that helps
+I'm redesigning the onboarding flow for **Střední na míru**, a Czech web app that helps
 9th graders (age ~15) and their parents choose a high school (*střední škola*).
 I need research on what makes onboarding flows convert, grounded in real data and
 real shipped products — not general UX advice.

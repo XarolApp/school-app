@@ -80,7 +80,7 @@ export function ObScreen({
           ) : (
             <>
               {phase && <span className="ob-phase">{phase}</span>}
-              <span className="ob-brandmark">ŠkolaMatch</span>
+              <span className="ob-brandmark">Střední na míru</span>
             </>
           )}
         </header>

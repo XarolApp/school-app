@@ -184,11 +184,11 @@ export function useHandoffShare(role) {
 
   const share = useCallback(async () => {
     const text = parent
-      ? 'Tohle jsou tvoje výsledky ze ŠkolaMatch — podívej se na školy, které ti podle dotazníku sedí nejvíc.'
-      : 'Podívejte se na moje výsledky na ŠkolaMatch — vybírám si střední školu.';
+      ? 'Tohle jsou tvoje výsledky ze Střední na míru — podívej se na školy, které ti podle dotazníku sedí nejvíc.'
+      : 'Podívejte se na moje výsledky ze Střední na míru — vybírám si střední školu.';
     try {
       if (navigator.share) {
-        await navigator.share({ title: 'ŠkolaMatch', text, url: window.location.origin });
+        await navigator.share({ title: 'Střední na míru', text, url: window.location.origin });
         setNote('Odesláno.');
         return;
       }

@@ -81,7 +81,7 @@ function BetaLanding() {
     <main className="page page-auth beta-page">
       <div className="auth-layout">
         <div className="page-header">
-          <p className="eyebrow">ŠkolaMatch · školní testování</p>
+          <p className="eyebrow">Střední na míru · školní testování</p>
           <h1>{school?.school_name || 'Pozvánka k testování'}</h1>
           <p className="lede">
             Pomoz nám ověřit hledání středních škol a rozhodovací nástroje před spuštěním.
@@ -98,7 +98,7 @@ function BetaLanding() {
               <span className="notice-title">Tato pozvánka neplatí</span>
               <p className="notice-text">Zkontroluj odkaz nebo požádej školu o novou pozvánku.</p>
             </div>
-            <Link className="btn btn-secondary btn-block" to="/">Zpět na ŠkolaMatch</Link>
+            <Link className="btn btn-secondary btn-block" to="/">Zpět na úvodní stránku</Link>
           </div>
         )}
 
@@ -129,7 +129,7 @@ function BetaLanding() {
             {closedBeforeStart && (
               <div className="notice" role="status">
                 <span className="notice-title">Testování ještě nezačalo</span>
-                <p className="notice-text">ŠkolaMatch připravuje časový plán programu. Zkus se vrátit později.</p>
+                <p className="notice-text">Střední na míru připravuje časový plán programu. Zkus se vrátit později.</p>
               </div>
             )}
             {closedAfterEnd && (

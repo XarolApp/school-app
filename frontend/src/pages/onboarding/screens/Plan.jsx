@@ -66,7 +66,7 @@ const UNLOCKS = {
 /**
  * Trust block, desktop-only, beside the cards.
  *
- * config/socialProof.js is deliberately empty — ŠkolaMatch has no users yet,
+ * config/socialProof.js is deliberately empty — Střední na míru has no users yet,
  * and an invented "už 1 240 deváťáků" shown to a minor and their parent is a
  * misleading commercial practice under the UCPD. So these are the strongest
  * claims that are TRUE TODAY: the free #1 match they have already seen,

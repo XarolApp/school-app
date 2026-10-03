@@ -1,6 +1,6 @@
 ---
 name: mobbin-landing-page-patterns
-description: Real-shipped-product patterns for pre-signup marketing/landing pages, sourced from a 73-search Mobbin survey (~130 products, all web). Use when designing or reviewing a hero, landing page, or pre-signup marketing surface — most useful for Claude Design. Not ŠkolaMatch-specific; broad reference material.
+description: Real-shipped-product patterns for pre-signup marketing/landing pages, sourced from a 73-search Mobbin survey (~130 products, all web). Use when designing or reviewing a hero, landing page, or pre-signup marketing surface — most useful for Claude Design. Not Střední na míru-specific; broad reference material.
 ---
 
 # Landing-page patterns (sourced via Mobbin)

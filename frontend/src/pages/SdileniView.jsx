@@ -58,7 +58,7 @@ function SdileniView() {
                 <circle cx="15" cy="12" r="5" />
               </svg>
             </span>
-            ŠkolaMatch
+            Střední na míru
           </Link>
         </div>
         <div className="dp-share-notfound">
@@ -72,7 +72,7 @@ function SdileniView() {
           <Link to="/skoly" className="ss-btn ss-btn-primary dp-btn-lg">
             Prohlédnout pražské školy
           </Link>
-          <Link to="/">Co je ŠkolaMatch?</Link>
+          <Link to="/">Co je Střední na míru?</Link>
         </div>
       </div>
     );
@@ -82,7 +82,7 @@ function SdileniView() {
 
   return (
     <div className="dp-share-page">
-      <div className="dp-share-topbar h">ŠkolaMatch</div>
+      <div className="dp-share-topbar h">Střední na míru</div>
 
       <div className="dp-share-header">
         <div className="ss-label-caps">Sdílený přehled</div>
@@ -142,7 +142,7 @@ function SdileniView() {
       <div className="dp-share-cta">
         <div className="h ss-headline-sm">Chcete si školy projít sami?</div>
         <p className="ss-body-sm">
-          V ŠkolaMatch najdete všechny pražské střední školy, jejich hranice přijetí a srovnání vedle sebe.
+          Ve Střední na míru najdete všechny pražské střední školy, jejich hranice přijetí a srovnání vedle sebe.
         </p>
         <Link to="/skoly" className="ss-btn ss-btn-primary">
           Prohlédnout školy

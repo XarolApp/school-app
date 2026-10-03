@@ -1,5 +1,5 @@
 /**
- * ŠkolaMatch — pricing & trial configuration.
+ * Střední na míru — pricing & trial configuration.
  *
  * SINGLE SOURCE OF TRUTH for every price, plan and trial string in the app.
  * Nothing about money may be hardcoded in a component. If you need a number
@@ -28,7 +28,7 @@
  *
  * Pre-selected: SEZÓNNÍ PŘÍSTUP (one-time). This flipped from the first build
  * (which pre-selected Měsíční) after the follow-up research came back:
- *   - ŠkolaMatch is not "seasonal-recurring" like a fitness app — a given user
+ *   - Střední na míru is not "seasonal-recurring" like a fitness app — a given user
  *     goes through this exactly once in their life. Recurring billing solves
  *     a renewal problem this product does not have.
  *   - Gen Z (proxy for the teen persona) shows the highest "paying for
@@ -49,7 +49,7 @@
  *     if paid CPI ads (Meta/Google) are ever added as a channel.
  *
  * MĚSÍČNÍ is kept, not cut, and is NOT just "the cheaper option" — its job is
- * absorbing distrust from someone who has never heard of ŠkolaMatch and wants
+ * absorbing distrust from someone who has never heard of Střední na míru and wants
  * an easy exit before committing to the full price. Frame it that way in any
  * copy you write for it, not as a discount/decoy tier.
  */

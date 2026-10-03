@@ -1,8 +1,8 @@
-# ŠkolaMatch — Design System
+# Střední na míru — Design System
 
 **Version:** alpha · **Source of truth:** `uploads/DESIGN.md` (v2, the corrected direction)
 
-## What ŠkolaMatch is
+## What Střední na míru is
 
 A high school selection tool for Czech 9th graders and their parents. Three surfaces
 make up the product: a **searchable school database**, an **AI-matched
@@ -26,7 +26,7 @@ correction: warmth in the brand layer, sobriety in the interface layer.
 ### Anti-references
 
 - **atlasskolstvi.cz** — the incumbent Czech school directory: dense unstyled tables,
-  no hierarchy, dated chrome. ŠkolaMatch's value proposition is being what that site
+  no hierarchy, dated chrome. Střední na míru's value proposition is being what that site
   should have been. Resembling it is a product failure.
 - **GitHub / n8n / Supabase** — anything reading as a developer tool, an admin panel,
   or "professional but cold" has failed the brief.
@@ -268,7 +268,7 @@ What this system therefore uses, and what it needs from you:
   the UI kit.
 - ⚠️ **SUBSTITUTION FLAGGED:** the stroke geometry above is the Lucide house style,
   chosen as the closest match to a warm-but-credible system with generous radii. It is
-  a substitution, not a source-derived decision. If ŠkolaMatch has an icon set, supply
+  a substitution, not a source-derived decision. If Střední na míru has an icon set, supply
   it and this should be replaced. If it does not, add Lucide from CDN
   (`https://unpkg.com/lucide@latest`) rather than growing the hand-inlined set.
 - **Emoji: never**, in any surface, per Content Fundamentals.
@@ -276,7 +276,7 @@ What this system therefore uses, and what it needs from you:
   product UI. (The one exception is the Do/Don't specimen card, which is documentation,
   not product.)
 - **No logo mark exists.** No logo file was supplied and none has been drawn. The
-  wordmark "ŠkolaMatch" is set in **Fraunces 600 with `SOFT` engaged**, in
+  wordmark "Střední na míru" is set in **Fraunces 600 with `SOFT` engaged**, in
   `--primary` on light grounds or `--surface` on a Primary ground. This is the
   documented placeholder wherever a mark would go — including the project thumbnail —
   until real logo files arrive.

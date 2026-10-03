@@ -1,4 +1,4 @@
-/* ŠkolaMatch onboarding — mobile-first.
+/* Střední na míru onboarding — mobile-first.
    A 15-year-old meets this on a phone browser, so every layout starts at the
    phone and only widens at 640px+. Every animation is disabled under
    prefers-reduced-motion at the bottom of this file. */
@@ -1837,7 +1837,7 @@
 }
 
 /* The one raised block on a screen: fill + accent border + shadow. Used for
-   the "se ŠkolaMatch" column and the pre-selected plan, never for both at
+   the "se Střední na míru" column and the pre-selected plan, never for both at
    once on the same screen — two raised blocks raise nothing. */
 .ob-pw-card.is-raised {
   border: 2px solid var(--acc);
@@ -1908,7 +1908,7 @@
   line-height: 1.4;
 }
 
-/* The "bez ŠkolaMatch" column is transparent on purpose — the raised card is
+/* The "bez Střední na míru" column is transparent on purpose — the raised card is
    what carries fill, so the contrast is between them, not against the page. */
 .ob-pw-compare {
   background: transparent;

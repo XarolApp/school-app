@@ -153,7 +153,7 @@ function BetaToolsUI({
 
       <Modal
         open={Boolean(canShow && guidanceOpen && !isPasswordRecovery)}
-        title="Vítej v testování ŠkolaMatch"
+        title="Vítej v testování Střední na míru"
         onDismiss={dismissGuidance}
         busy={guidanceBusy}
         className="beta-modal"

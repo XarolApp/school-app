@@ -1,6 +1,6 @@
 # UNFORGET
 
-Single ledger for all deferred work on ŠkolaMatch — paused plans, pending decisions,
+Single ledger for all deferred work on Střední na míru — paused plans, pending decisions,
 audit findings, "come back to this later" items. See
 `.claude/skills/unforget/SKILL.md` for the format and workflow this file follows.
 
@@ -548,7 +548,7 @@ the test it describes defeats the entire point of writing this down.
 
 ---
 
-## Rebrand: "ŠkolaMatch" → "Kam na střední?" — decided, not yet executed
+## Rebrand: "Střední na míru" → "Kam na střední?" — decided, not yet executed
 - **Found:** 2026-09-13, founder decision
 - **Urgency:** medium — doesn't block current work (Stripe test-mode products,
   deployment) since none of that depends on the brand name, but should happen
@@ -556,7 +556,7 @@ the test it describes defeats the entire point of writing this down.
   purchase or the Stripe business name are finalized
 - **Effort:** medium — mostly find-and-replace, but touches many surfaces and
   needs a careful pass, not a blind sed
-- **Release/context:** the name "ŠkolaMatch" was always a placeholder (CLAUDE.md
+- **Release/context:** the name "Střední na míru" was always a placeholder (CLAUDE.md
   says so explicitly). Founder considered "Moje střední", "Škola pro mě", "Vyber
   si školu", "Kam dál?", "Škola na míru" and settled on **"Kam na střední?"** —
   it's literally the question the target user (a 9th grader or parent) already
@@ -565,7 +565,7 @@ the test it describes defeats the entire point of writing this down.
   "Moje střední" would.
 
 **What "done" looks like — surfaces that need the rename:**
-- `CLAUDE.md` — "branded **ŠkolaMatch**" and every other mention throughout
+- `CLAUDE.md` — "branded **Střední na míru**" and every other mention throughout
   (this file references the name dozens of times as the project's identity)
 - Every doc in `docs/` (`skolamatch_current_status.md`,
   `skolamatch_90_point_context.md`, `skolamatch_full_launch_marketing_plan_v2.md`)
@@ -573,14 +573,14 @@ the test it describes defeats the entire point of writing this down.
   rename the files too or just their content, given they're referenced by path
   elsewhere
 - User-facing copy in the frontend (page titles, `index.html`, any literal
-  "ŠkolaMatch" string in onboarding/paywall copy — grep for it, don't assume
+  "Střední na míru" string in onboarding/paywall copy — grep for it, don't assume
   the list above is exhaustive)
 - The eventual custom domain purchase (founder is buying one specifically to
   drop the `.vercel.app` suffix — should reflect the new name, not the old one)
 - The Stripe business name, once an adult owns the account and it goes live
   (not urgent today — test mode doesn't care what anything is called)
 - `plans/README.md` / `UNFORGET.md`'s own historical entries can keep saying
-  "ŠkolaMatch" where they're describing past decisions — this is a rename of
+  "Střední na míru" where they're describing past decisions — this is a rename of
   the *current* identity, not a rewrite of history
 
 ---
@@ -827,7 +827,7 @@ having exercised it.
   outputs and judging tone, not just checking the JSON is well-formed
 - **Release/context:** applies to every current and planned AI touchpoint
 
-The user's explicit call: the prompts behind ŠkolaMatch's AI features have been
+The user's explicit call: the prompts behind Střední na míru's AI features have been
 written functionally (produce valid JSON, stay on-topic, don't hallucinate a
 school) but never hand-tuned by a human reading real output and deciding "this
 sentence sounds right for a 15-year-old" vs. "this sounds like a robot." That

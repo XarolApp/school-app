@@ -3,7 +3,7 @@ const { Button, Divider } = window.KolaMatchDesignSystem_90cf52;
 function Wordmark({ tone = 'primary' }) {
   return <span style={{ fontFamily: 'var(--font-serif-display)', fontWeight: 600, fontSize: 21,
     letterSpacing: '-0.01em', fontVariationSettings: "'SOFT' 40, 'opsz' 24",
-    color: tone === 'primary' ? 'var(--primary)' : 'var(--surface)' }}>ŠkolaMatch</span>;
+    color: tone === 'primary' ? 'var(--primary)' : 'var(--surface)' }}>Střední na míru</span>;
 }
 
 function Header({ go, active }) {

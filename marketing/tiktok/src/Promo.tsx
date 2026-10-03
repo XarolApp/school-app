@@ -240,7 +240,7 @@ const Cta: React.FC = () => {
           <div style={{ opacity: mark, transform: `scale(${interpolate(mark, [0, 1], [0.5, 1])}) rotate(${interpolate(mark, [0, 1], [-12, 0])}deg)` }}>
             <TrailMark size={130} />
           </div>
-          <WordReveal text="ŠkolaMatch" size={150} weight={700} delay={6} />
+          <WordReveal text="Střední na míru" size={150} weight={700} delay={6} />
         </div>
         <div style={{ marginTop: 50 }}>
           <WordReveal text="Najdi střední školu, která ti opravdu sedí." size={84} weight={500} color={c.ink2} delay={12} per={3} />

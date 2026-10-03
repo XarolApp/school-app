@@ -26,7 +26,7 @@ function gatePage(wrongKey) {
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="noindex, nofollow" />
-<title>ŠkolaMatch</title>
+<title>Střední na míru</title>
 <style>
   body { font-family: system-ui, sans-serif; background: #FAF6EF; color: #221A13; display: flex; min-height: 100vh; align-items: center; justify-content: center; margin: 0; padding: 16px; }
   form { background: #fff; padding: 32px; border-radius: 12px; max-width: 360px; width: 100%; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
@@ -38,7 +38,7 @@ function gatePage(wrongKey) {
 </head>
 <body>
 <form method="GET">
-  <h1>ŠkolaMatch — stránka ještě není veřejná</h1>
+  <h1>Střední na míru — stránka ještě není veřejná</h1>
   ${wrongKey ? '<p class="err">Špatný kód.</p>' : ''}
   <input type="password" name="key" placeholder="Přístupový kód" autofocus required />
   <button type="submit">Vstoupit</button>
@@ -62,7 +62,7 @@ function betaInvitationPage(status, unavailable = false) {
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="noindex, nofollow" />
-<title>ŠkolaMatch — beta pozvánka</title>
+<title>Střední na míru — beta pozvánka</title>
 <style>
   body { font-family: system-ui, sans-serif; background: #FAF6EF; color: #221A13; display: flex; min-height: 100vh; align-items: center; justify-content: center; margin: 0; padding: 16px; }
   main { background: #fff; padding: 32px; border-radius: 12px; max-width: 440px; width: 100%; box-shadow: 0 1px 3px rgba(0,0,0,.12); }

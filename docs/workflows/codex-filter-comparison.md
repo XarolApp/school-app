@@ -1,6 +1,6 @@
 # Codex task: does the filtered markdown extract as well as the original?
 
-Paste this whole file into a **new Codex task** in the ŠkolaMatch repo
+Paste this whole file into a **new Codex task** in the Střední na míru repo
 (`/Users/vojtechkadlec/Developer/school-app`). Model: **GPT-6 Luna**, reasoning
 effort **low**. Run it **three times, each in a fresh Codex task** (never the
 same chat), changing only the `RUN` value below:
