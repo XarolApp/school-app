@@ -536,7 +536,11 @@ export default function Landing() {
       if (touchY == null) return;
       const dy = touchY - e.changedTouches[0].clientY;
       touchY = null;
-      if (Math.abs(dy) > 40) move(Math.sign(dy));
+      if (Math.abs(dy) <= 40) return;
+      // Same as the wheel: a swipe during the lock is ignored AND restarts it.
+      const now = performance.now();
+      if (now < lockUntil) lockUntil = now + (reduced ? 150 : PAGE_LOCK_MS);
+      else move(Math.sign(dy));
     };
 
     // The presentation only works from the top: never let a reload restore
