@@ -6,7 +6,7 @@ import { ToastProvider } from './components/ToastContext';
 import BetaTools from './components/BetaTools';
 import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
-// Landing variant B (3D map). three.js + GSAP load only on this route.
+// Default landing (3D map). three.js + GSAP load only on this route.
 const Landing = lazy(() => import('./pages/landing2/Landing'));
 import Search from './pages/Search';
 import SchoolDetail from './pages/SchoolDetail';
@@ -51,9 +51,10 @@ function App() {
               <Route path="/sdileni/:token" element={<SdileniView />} />
 
               <Route element={<Layout />}>
-                <Route path="/" element={<Home />} />
-                {/* A/B test: variant A is "/", variant B is "/nova". No traffic split is wired yet. */}
-                <Route path="/nova" element={<Suspense fallback={null}><Landing /></Suspense>} />
+                {/* Variant B (3D map) is the default landing; the old one stays at /stara for comparison. */}
+                <Route path="/" element={<Suspense fallback={null}><Landing /></Suspense>} />
+                <Route path="/nova" element={<Navigate to="/" replace />} />
+                <Route path="/stara" element={<Home />} />
                 <Route path="/skoly" element={<Search />} />
                 <Route path="/ochrana-osobnich-udaju" element={<Privacy />} />
                 <Route path="/obchodni-podminky" element={<Terms />} />
