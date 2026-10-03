@@ -1010,6 +1010,15 @@
   white-space: nowrap;
 }
 
+.ss-row-focus {
+  margin-top: var(--space-xs);
+  align-self: flex-start;
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  color: var(--ink);
+  cursor: help;
+}
+
 .ss-row-extra {
   color: var(--ink3);
   white-space: nowrap;

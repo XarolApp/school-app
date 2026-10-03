@@ -184,8 +184,23 @@ const UNMET_LABELS = {
  */
 function summarizePrograms(school) {
   const programs = school.school_programs ?? [];
+  // One entry per obor. The list API splits an obor into one row per zaměření
+  // (programme), so the row count alone would overstate how many obory a school
+  // has. An obor counts as multi-programme only when every row is named, the
+  // same rule the school detail uses before it lists them.
+  const byObor = new Map();
+  for (const p of programs) {
+    const key = [p.kkov, p.obor_nazev, p.typ_skoly, p.delka_studia, p.jazyk_studia].join('|');
+    if (!byObor.has(key)) byObor.set(key, { names: new Set(), unnamed: false });
+    const entry = byObor.get(key);
+    const name = (p.zamereni ?? '').trim().toLowerCase();
+    if (name) entry.names.add(name);
+    else entry.unnamed = true;
+  }
   return {
-    count: programs.length,
+    count: byObor.size,
+    // Total programmes across obory that have several; 0 when none does.
+    focusCount: [...byObor.values()].filter((e) => e.names.size > 1 && !e.unnamed).reduce((n, e) => n + e.names.size, 0),
     maturitni: programs.some((p) => p.maturitni === true),
     nematuritni: programs.some((p) => p.maturitni === false),
     jpzPovinna: programs.some((p) => p.jpz_povinna === true),
@@ -1510,6 +1525,14 @@ function Search() {
                               </Link>
                             </h3>
                             <p className="ss-caption ss-row-meta">{schoolMeta}</p>
+                            {row.p.focusCount > 0 && (
+                              <span
+                                className="ss-row-chip ss-row-focus ss-data-sm"
+                                title="Škola otevírá obor ve více zaměřeních (programech), každé s vlastní hranicí. Hranice ve sloupci vpravo je proto rozpětí. Zaměření najdeš na stránce školy."
+                              >
+                                {row.p.focusCount} zaměření
+                              </span>
+                            )}
                           </div>
 
                           <div className="ss-cell-obory">
