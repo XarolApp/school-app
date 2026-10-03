@@ -67,10 +67,18 @@ function ProgramCard({ entry }) {
 
       <div className="sd-program-stats">
         <div>
-          <div className={`sd-program-stat-value${y.kapacita == null ? ' is-empty' : ''}`}>{y.kapacita ?? 'bez dat'}</div>
+          <div className={`sd-program-stat-value${y.cutoff == null ? ' is-empty' : ''}`}>
+            {y.cutoff != null ? formatCutoffRange({ cutoffMin: y.cutoffMin, cutoffMax: y.cutoffMax }) : 'bez dat'}
+          </div>
           <div className="sd-program-stat-label">
-            míst
-            <InfoHint text={`Kolik míst tento obor otevíral v přijímačkách ${entry.latestYear}.`} />
+            {y.cutoff != null ? `hranice ${entry.latestYear}` : 'bez jednotné zkoušky'}
+            <InfoHint
+              text={
+                y.cutoff != null
+                  ? `Nejnižší počet bodů z češtiny a matematiky (max. 100, tedy 50 + 50), který v roce ${entry.latestYear} stačil na přijetí přímo do tohoto oboru. Je to jeho vlastní hranice, ne průměr celé školy.${y.variants ? ' Obor má více zaměření, každé s vlastní hranicí, proto je tu rozpětí.' : ''}`
+                  : `Tento obor nemá jednotnou přijímací zkoušku (JPZ). Přijímá se jinak, např. talentovou zkouškou, takže tu není bodová hranice.`
+              }
+            />
           </div>
         </div>
         <div>
@@ -88,18 +96,10 @@ function ProgramCard({ entry }) {
           </div>
         </div>
         <div>
-          <div className={`sd-program-stat-value${y.cutoff == null ? ' is-empty' : ''}`}>
-            {y.cutoff != null ? formatCutoffRange({ cutoffMin: y.cutoffMin, cutoffMax: y.cutoffMax }) : 'bez dat'}
-          </div>
+          <div className={`sd-program-stat-value${y.kapacita == null ? ' is-empty' : ''}`}>{y.kapacita ?? 'bez dat'}</div>
           <div className="sd-program-stat-label">
-            {y.cutoff != null ? `hranice ${entry.latestYear}` : 'bez jednotné zkoušky'}
-            <InfoHint
-              text={
-                y.cutoff != null
-                  ? `Nejnižší počet bodů z češtiny a matematiky (max. 100, tedy 50 + 50), který v roce ${entry.latestYear} stačil na přijetí přímo do tohoto oboru. Je to jeho vlastní hranice, ne průměr celé školy.${y.variants ? ' Obor má více zaměření, každé s vlastní hranicí, proto je tu rozpětí.' : ''}`
-                  : `Tento obor nemá jednotnou přijímací zkoušku (JPZ). Přijímá se jinak, např. talentovou zkouškou, takže tu není bodová hranice.`
-              }
-            />
+            míst
+            <InfoHint text={`Kolik míst tento obor otevíral v přijímačkách ${entry.latestYear}.`} />
           </div>
         </div>
       </div>
@@ -117,8 +117,8 @@ function ProgramCard({ entry }) {
               <li key={v.zamereni} className={`sd-variant${v.note ? ' is-note' : ''}`}>
                 <span className="sd-variant-name">{v.zamereni}</span>
                 <span className="sd-variant-nums">
-                  {v.kapacita ?? '–'} míst · {v.prihlasky ?? '–'} přihlášek · {v.prijati ?? '–'} přijatých ·{' '}
-                  {v.cutoff != null ? `${numCz(v.cutoff)} b.` : 'bez hranice'}
+                  {v.cutoff != null ? `${numCz(v.cutoff)} b.` : 'bez hranice'} · {v.prihlasky ?? '–'} přihlášek ·{' '}
+                  {v.prijati ?? '–'} přijatých · {v.kapacita ?? '–'} míst
                 </span>
               </li>
             ))}
@@ -126,7 +126,7 @@ function ProgramCard({ entry }) {
         </>
       )}
 
-      <HistoryChart points={yearlyHistory(entry)} subject={entry.oborNazev} />
+      <HistoryChart points={yearlyHistory(entry)} subject={entry.oborNazev} rangeOf="zamereni" />
       {entry.trend && <p className="sd-program-note">{entry.trend.note}</p>}
     </div>
   );

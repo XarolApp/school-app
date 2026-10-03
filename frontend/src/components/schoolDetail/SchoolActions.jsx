@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Bookmark, Scale, Share2, Check, ListPlus } from 'lucide-react';
+import { Bookmark, Scale, Share2, Check, ListPlus, Globe, Mail, Phone } from 'lucide-react';
 import { addFavorite, removeFavorite, fetchPicks, savePicks } from '../../api';
 import { toggleCompareSelection, isInCompareSelection } from '../../lib/searchPrefs';
 import { useToast } from '../ToastContext';
@@ -155,12 +155,14 @@ function SchoolActions({ school, isFavorite, onFavoriteChange, barRef }) {
       <div className="sd-actions-links">
         {school.website && (
           <a href={school.website} target="_blank" rel="noopener noreferrer">
+            <Globe size={16} aria-hidden="true" />
             {school.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}
           </a>
         )}
         {contacts.map((contact, index) =>
           contact.href ? (
             <a href={contact.href} key={`${contact.type}-${contact.label}-${index}`}>
+              {contact.type === 'email' ? <Mail size={16} aria-hidden="true" /> : <Phone size={16} aria-hidden="true" />}
               {contact.label}
             </a>
           ) : (

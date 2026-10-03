@@ -258,10 +258,16 @@
   gap: var(--space-sm);
 }
 .sd-actions-links a {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
   font-family: var(--sans);
   font-size: var(--fs-body-sm);
   font-weight: 500;
   word-break: break-word;
+}
+.sd-actions-links a svg {
+  flex-shrink: 0;
 }
 
 /* ---------- CutoffExplainer ---------- */

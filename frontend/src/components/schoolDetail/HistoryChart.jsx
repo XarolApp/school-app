@@ -20,7 +20,10 @@ const METRICS = [
 
 const NOTES = {
   hranice: {
-    range: 'Horní čára je obor s nejvyšší hranicí, dolní obor s nejnižší. Vybarvené pásmo mezi nimi je rozpětí hranic mezi obory školy.',
+    range: {
+      obory: 'Horní čára je obor s nejvyšší hranicí, dolní obor s nejnižší. Vybarvené pásmo mezi nimi je rozpětí hranic mezi obory školy.',
+      zamereni: 'Horní čára je zaměření s nejvyšší hranicí, dolní zaměření s nejnižší. Vybarvené pásmo mezi nimi je rozpětí hranic mezi zaměřeními tohoto oboru.',
+    },
     line: 'Nejnižší počet bodů z češtiny a matematiky (max. 100), který v daném roce stačil na přijetí.',
   },
   prihlasky: 'Kolik přihlášek přišlo v 1. kole přijímaček.',
@@ -46,7 +49,7 @@ function scaleFor(values) {
   return (v) => BASE - 14 - ((v - L) / (U - L || 1)) * (BASE - 14 - TOP);
 }
 
-function HistoryChart({ points, subject }) {
+function HistoryChart({ points, subject, rangeOf = 'obory' }) {
   const available = METRICS.filter((m) => points.filter(m.has).length >= 2);
   const [picked, setPicked] = useState(available[0]?.id);
   const labelId = useId();
@@ -77,8 +80,8 @@ function HistoryChart({ points, subject }) {
           <g key={p.year} className={`sd-hc-pt${i === last ? ' is-current' : ''}`} style={{ '--i': i }}>
             <circle cx={p.x} cy={p.yTop} r="6" className="sd-hc-dot" />
             <circle cx={p.x} cy={p.yBot} r="6" className="sd-hc-dot" />
-            <text x={p.x} y={p.yTop - 15} className="sd-hc-val">{numCz(p.cutoffMax)}</text>
-            <text x={p.x} y={p.yBot + 26} className="sd-hc-val">{numCz(p.cutoffMin)}</text>
+            <text x={p.x} y={p.yTop - 15} className="sd-hc-val">{numCz(p.cutoffMax)} b.</text>
+            <text x={p.x} y={p.yBot + 26} className="sd-hc-val">{numCz(p.cutoffMin)} b.</text>
           </g>
         ))}
       </>
@@ -107,7 +110,7 @@ function HistoryChart({ points, subject }) {
     );
   }
 
-  const note = metric.id === 'hranice' ? NOTES.hranice[isRange ? 'range' : 'line'] : NOTES[metric.id];
+  const note = metric.id === 'hranice' ? (isRange ? NOTES.hranice.range[rangeOf] : NOTES.hranice.line) : NOTES[metric.id];
 
   return (
     <div className="sd-hc">
