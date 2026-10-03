@@ -108,9 +108,9 @@ function Layout() {
       </a>
       <header className="navbar">
         <div className="navbar-inner">
-          <Link to="/" className="navbar-brand" aria-label="ŠkolaMatch – domů">
+          <Link to="/" className="navbar-brand" aria-label="Střední na míru – domů">
             <BrandMark />
-            <span>ŠkolaMatch</span>
+            <span>Střední na míru</span>
           </Link>
 
           <nav id="navbar-links" className={`navbar-links${menuOpen ? ' is-open' : ''}`} aria-label="Hlavní navigace">
@@ -254,8 +254,11 @@ function Layout() {
       </main>
 
       <footer className="app-footer">
-        <Link to="/obchodni-podminky">Obchodní podmínky</Link>
-        <Link to="/ochrana-osobnich-udaju">Ochrana osobních údajů</Link>
+        <span>© {new Date().getFullYear()} Střední na míru</span>
+        <nav aria-label="Právní informace">
+          <Link to="/obchodni-podminky">Obchodní podmínky</Link>
+          <Link to="/ochrana-osobnich-udaju">Ochrana osobních údajů</Link>
+        </nav>
       </footer>
     </div>
   );

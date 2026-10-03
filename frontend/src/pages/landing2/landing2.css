@@ -135,7 +135,8 @@
 
 .l2-stage {
   position: relative;
-  height: 720vh;
+  /* One screen: the steps are paged by Landing.jsx, not scrolled through. */
+  height: calc(100vh - var(--nav-h));
 }
 
 .l2-sticky {
@@ -224,6 +225,17 @@
 .l2-tip b { font-size: 14px; color: var(--text-h); line-height: 1.3; }
 .l2-tip span { font-size: 12px; color: var(--ink2); }
 .l2-tip em { font-style: normal; font-size: 11px; color: var(--acc); margin-top: 4px; }
+.l2-tip-metric {
+  font-style: normal;
+  font-family: var(--heading);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--acc);
+  margin-top: 4px;
+}
+.l2-tip-metric[data-kind='match'] { color: var(--match-fill); }
+.l2-tip-metric:empty { display: none; }
 
 /* ---------- hero ---------- */
 
@@ -615,18 +627,12 @@
   font-weight: 600;
 }
 
-.l2-result:first-child .l2-result-why { max-height: 60px; opacity: 1; margin-top: 12px; }
-.l2-result:first-child { background: var(--surface2); }
-.l2-result:first-child .l2-result-rank { background: var(--match-fill); color: var(--match-ink); }
-
-@media (hover: hover) and (pointer: fine) {
-  .l2-results:hover .l2-result:first-child:not(:hover) { background: transparent; }
-  .l2-results:hover .l2-result:first-child:not(:hover) .l2-result-why { max-height: 0; opacity: 0; margin-top: 0; }
-  .l2-results:hover .l2-result:first-child:not(:hover) .l2-result-rank { background: var(--surface2); color: var(--ink2); }
-  .l2-result:hover { background: var(--surface2); }
-  .l2-result:hover .l2-result-why { max-height: 60px; opacity: 1; margin-top: 12px; }
-  .l2-result:hover .l2-result-rank { background: var(--match-fill); color: var(--match-ink); }
-}
+/* The active row is the one the detail mock beside it shows (hover or focus). */
+.l2-result.is-active .l2-result-why { max-height: 60px; opacity: 1; margin-top: 12px; }
+.l2-result.is-active { background: var(--surface2); }
+.l2-result.is-active .l2-result-rank { background: var(--match-fill); color: var(--match-ink); }
+.l2-result[tabindex] { cursor: default; outline: none; }
+.l2-result:focus-visible { box-shadow: inset 0 0 0 2px var(--acc-line); }
 
 .l2-mock-note {
   margin: 0;
@@ -933,7 +939,7 @@
 
 /* ================= FINAL ================= */
 
-.l2-final { margin-top: 220px; }
+.l2-final { margin-top: 220px; margin-bottom: 96px; }
 
 .l2-final-inner {
   position: relative;
@@ -958,22 +964,6 @@
   max-width: 14ch;
   text-wrap: balance;
 }
-
-/* ================= FOOTER ================= */
-
-.l2-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 96px;
-  padding: 32px 0 16px;
-  border-top: 1px solid var(--line);
-}
-
-.l2-wordmark { font-family: var(--heading); font-size: 22px; font-weight: 600; color: var(--acc); }
-.l2-footer nav { display: flex; gap: 28px; }
-.l2-footer a { color: var(--ink2); text-decoration: none; font-size: 14px; }
-.l2-footer a:hover { color: var(--acc); }
 
 @media (prefers-reduced-motion: reduce) {
   .l2-dot,

@@ -94,6 +94,7 @@ export class PragueScene {
       radiusMix: 0,
       barsMix: 0,
       topMix: 0,
+      chipFilter: 1, // the hero chips filter the map only while the hero is showing
       hover: true,
     };
     this.pointer = { x: 0, y: 0, sx: 0, sy: 0, px: -1e4, py: -1e4 };
@@ -149,6 +150,9 @@ export class PragueScene {
     const disc = new THREE.Mesh(new THREE.CircleGeometry(COMMUTE_RADIUS, 128), this.discMat);
     const home = new THREE.Mesh(new THREE.CircleGeometry(0.09, 32), this.ringMat);
     for (const m of [ring, disc, home]) {
+      // Above the district fills: they are transparent too, and the fills nearer
+      // the camera would otherwise be sorted after the ring and paint over its near half.
+      m.renderOrder = 1;
       m.rotation.x = -Math.PI / 2;
       m.position.set(HOME[0], 0.005, HOME[1]);
       this.scene.add(m);
@@ -350,7 +354,7 @@ export class PragueScene {
     const aColor = geo.attributes.aColor.array;
     const aAlpha = geo.attributes.aAlpha.array;
     const aSize = geo.attributes.aSize.array;
-    const filt = Math.max(this.chipOn && st.hover ? 1 : 0, st.filterMix);
+    const filt = Math.max(this.chipOn ? st.chipFilter : 0, st.filterMix);
     const k = this.reduced ? 1 : 0.09;
     const m = new THREE.Matrix4();
     const q = new THREE.Quaternion();
@@ -359,7 +363,7 @@ export class PragueScene {
     const target = new THREE.Color();
     const hl = new THREE.Color();
 
-    // Hover: nearest projected point within 16px, hero only.
+    // Hover: nearest projected point (or bar top) within 16px.
     let best = -1;
     let bestD = 16 * 16;
     const hoverOn = st.hover && p_inside(this.pointer, this.width, this.height);
@@ -378,7 +382,7 @@ export class PragueScene {
       const light = filt * inF * (1 - st.radiusMix * (1 - inR));
       target.copy(C.dot).lerp(C.accent, light);
       hl.copy(target).lerp(C.match, st.topMix * isTop);
-      let size = 1 + light * 0.35 + st.topMix * isTop * 1.1;
+      let size = 1 + light * 0.6 + st.topMix * isTop * 1.1;
       if (i === this.hovered) size += 0.9;
 
       cur.a = lerp(cur.a, a * born, k);
@@ -403,14 +407,16 @@ export class PragueScene {
       this.bars.setMatrixAt(i, m);
       this.bars.setColorAt(i, cur.c);
 
-      if (hoverOn) {
-        v.set(s.x, 0.02, s.z).project(this.camera);
-        const sx = (v.x * 0.5 + 0.5) * this.width;
-        const sy = (-v.y * 0.5 + 0.5) * this.height;
-        const d = (sx - this.pointer.px) ** 2 + (sy - this.pointer.py) ** 2;
-        if (d < bestD && cur.a > 0.5) {
-          bestD = d;
-          best = i;
+      if (hoverOn && cur.a > 0.1) {
+        for (const y of cur.h > 0.05 ? [0.02, cur.h] : [0.02]) {
+          v.set(s.x, y, s.z).project(this.camera);
+          const sx = (v.x * 0.5 + 0.5) * this.width;
+          const sy = (-v.y * 0.5 + 0.5) * this.height;
+          const d = (sx - this.pointer.px) ** 2 + (sy - this.pointer.py) ** 2;
+          if (d < bestD) {
+            bestD = d;
+            best = i;
+          }
         }
       }
     }

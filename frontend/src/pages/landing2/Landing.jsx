@@ -7,7 +7,7 @@ import { fetchSchool, fetchSchools } from '../../api';
 import { groupProgramsByObor, formatCutoffRange } from '../../lib/schoolPrograms';
 import { trialDaysPhrase } from '../../config/pricing';
 import { QUESTIONS } from '../onboarding/quizQuestions';
-import { PragueScene } from './PragueScene';
+import { PragueScene, COMMUTE_RADIUS } from './PragueScene';
 import './landing2.css';
 import { useSchoolCount } from '../../lib/useSchoolCount';
 
@@ -86,10 +86,8 @@ const ROLES = {
   },
 };
 
-const STEP_COUNT = makeSteps(0).length;
-
 const makeFaq = (SCHOOL_COUNT) => [
-  ['Co je ŠkolaMatch?', 'Průvodce výběrem střední školy v Praze. Všechny školy s obory a výsledky přijímaček na jednom místě a dotazník, který z nich vybere ty, které sedí tomu, co hledáš.'],
+  ['Co je Střední na míru?', 'Průvodce výběrem střední školy v Praze. Všechny školy s obory a výsledky přijímaček na jednom místě a dotazník, který z nich vybere ty, které sedí tomu, co hledáš.'],
   ['Kolik to stojí?', `Dotazník, základní výsledek a celá databáze škol jsou zdarma. Placený přístup odemyká podrobné porovnání, rozhodovací matici a plánování přihlášek. Prvních ${trialDaysPhrase()} je zdarma a zrušit se to dá jedním kliknutím v nastavení.`],
   ['Odkud máte data o školách?', 'Obory, kapacity a hranice přijetí jsou z veřejných výsledků jednotné přijímací zkoušky (Cermat) a z rejstříku škol MŠMT. U každého čísla uvádíme rok.'],
   ['Znamená vysoké procento shody, že mě vezmou?', 'Ne. Shoda říká, jak škola odpovídá tomu, co jsi napsal. O přijetí rozhodují přijímačky a známky, proto u škol zvlášť ukazujeme hranice přijetí.'],
@@ -99,6 +97,29 @@ const makeFaq = (SCHOOL_COUNT) => [
 ];
 
 const ILLUSTRATIVE_MATCH = [94, 89, 85, 81, 77, 72];
+
+/** Story timeline position of each presentation page: 0 = hero, 1–5 = the steps. */
+const PAGE_AT = [0, 1.4, 2.6, 3.8, 5.2, 6.5];
+const LAST_PAGE = PAGE_AT.length - 1;
+/** Wheel events closer together than this belong to one gesture (trackpad inertia included). */
+const GESTURE_GAP_MS = 220;
+/** Minimum time between two page changes, so a long swipe cannot skip pages. */
+const PAGE_LOCK_MS = 900;
+
+/** Shoda shown on the map's last page. Illustrative like the results mock — the
+ *  shortlist gets the mock's numbers, everyone else stays below them. */
+function demoMatch(s, rank, inFilter) {
+  if (rank >= 0) return ILLUSTRATIVE_MATCH[rank];
+  const inRadius = s.home < COMMUTE_RADIUS ? 1 : 0;
+  return Math.round(28 + 22 * (inFilter ? 1 : 0) + 14 * inRadius + 6 * Math.max(0, 1 - s.home / 8));
+}
+
+/** Best obor for the 3-year chart: one with 2+ years of cutoffs, else any with a cutoff. */
+function chartEntry(full) {
+  const entries = groupProgramsByObor(full);
+  const years = (e) => Object.values(e.years).filter((y) => y.cutoff != null).length;
+  return entries.find((e) => years(e) >= 2) ?? entries.find((e) => years(e) >= 1) ?? null;
+}
 
 function czSchools(n) {
   if (n === 1) return 'škola';
@@ -116,11 +137,19 @@ export default function Landing() {
   const sceneRef = useRef(null);
   const countRef = useRef(null);
   const heroRef = useRef(null);
+  const lenisRef = useRef(null);
+  const storyRef = useRef(null);
+  const storyTweenRef = useRef(null);
+  const pageRef = useRef(0);
+  const hoverCtxRef = useRef({ chip: CHIPS[0], topIds: [] });
+  const detailCache = useRef(new Map());
 
   const [schools, setSchools] = useState([]);
   const [chip, setChip] = useState(null);
   const [shortlist, setShortlist] = useState([]);
   const [detail, setDetail] = useState(null);
+  const [activeId, setActiveId] = useState(null);
+  const [page, setPage] = useState(0);
   const [role, setRole] = useState('student');
   const [webgl, setWebgl] = useState(true);
 
@@ -135,6 +164,7 @@ export default function Landing() {
   const STEPS = makeSteps(total);
   const FAQ = makeFaq(total);
   const shown = chip ? counts[chip] : total;
+  hoverCtxRef.current = { chip: activeChip, topIds: shortlist.map((s) => s.id) };
 
   // ---------- data ----------
   // The hero is ~730px tall; on short laptop screens it would overflow the
@@ -166,6 +196,7 @@ export default function Landing() {
   useEffect(() => {
     if (reduced) return undefined;
     const lenis = new Lenis({ duration: 1.15, easing: (t) => 1 - Math.pow(1 - t, 4) });
+    lenisRef.current = lenis;
     lenis.on('scroll', ScrollTrigger.update);
     const raf = (time) => lenis.raf(time * 1000);
     gsap.ticker.add(raf);
@@ -173,6 +204,7 @@ export default function Landing() {
     return () => {
       gsap.ticker.remove(raf);
       lenis.destroy();
+      lenisRef.current = null;
     };
   }, [reduced]);
 
@@ -190,13 +222,21 @@ export default function Landing() {
             tip.classList.remove('is-on');
             return;
           }
+          // Pages 0–3: name + district + cutoff. Page 4 (hranice) and 5 (výsledek)
+          // lift their number out into a big metric line.
+          const at = pageRef.current;
+          const range = formatCutoffRange(s.adm);
+          const { chip: c, topIds } = hoverCtxRef.current;
+          let metric = '';
+          if (at === 4) metric = range ? `hranice ${s.adm.year}: ${range}` : 'hranice zatím neznáme';
+          if (at === 5) metric = `shoda ${demoMatch(s, topIds.indexOf(s.id), hasProgram(s, c.test))} % · ukázka`;
           tip.querySelector('b').textContent = s.name;
-          tip.querySelector('span').textContent = [
-            s.district,
-            formatCutoffRange(s.adm) ? `hranice ${s.adm.year} ${formatCutoffRange(s.adm)}` : null,
-          ]
+          tip.querySelector('span').textContent = [s.district, at < 4 && range ? `hranice ${s.adm.year} ${range}` : null]
             .filter(Boolean)
             .join(' · ');
+          const m = tip.querySelector('i');
+          m.textContent = metric;
+          m.dataset.kind = at === 5 ? 'match' : 'cutoff';
           tip.style.transform = `translate3d(${x}px, ${y}px, 0)`;
           tip.classList.add('is-on');
         },
@@ -269,24 +309,34 @@ export default function Landing() {
     return () => tw.kill();
   }, [shown, total, reduced]);
 
-  // One real school's 3-year history for the detail mock.
+  // The detail mock follows the row hovered in the results mock. All five rows
+  // are fetched up front so hovering is instant.
+  const loadDetail = (id) => {
+    const cache = detailCache.current;
+    if (!cache.has(id)) {
+      cache.set(id, fetchSchool(id).then((full) => ({ school: full, entry: chartEntry(full) })));
+      cache.get(id).catch(() => cache.delete(id));
+    }
+    return cache.get(id);
+  };
+
   useEffect(() => {
-    const pick = shortlist.find((s) => s.adm?.cutoffMin != null) ?? shortlist[0];
-    if (!pick) return;
+    const five = shortlist.slice(0, 5);
+    if (!five.length) return;
+    five.forEach((s) => loadDetail(s.id).catch(() => {}));
+    setActiveId((cur) => (five.some((s) => s.id === cur) ? cur : five[0].id));
+  }, [shortlist]);
+
+  useEffect(() => {
+    if (activeId == null) return undefined;
     let alive = true;
-    fetchSchool(pick.id)
-      .then((full) => {
-        if (!alive) return;
-        const entry = groupProgramsByObor(full).find(
-          (e) => Object.values(e.years).filter((y) => y.cutoff != null).length >= 2,
-        );
-        if (entry) setDetail({ school: full, entry });
-      })
+    loadDetail(activeId)
+      .then((d) => alive && setDetail(d))
       .catch(() => {});
     return () => {
       alive = false;
     };
-  }, [shortlist]);
+  }, [activeId]);
 
   // ---------- scroll choreography ----------
   useEffect(() => {
@@ -302,43 +352,32 @@ export default function Landing() {
         .from('.l2-chip', { y: 12, opacity: 0, stagger: 0.035, duration: reduced ? 0 : 0.8 }, '<0.1')
         .from('.l2-hero-actions > *', { y: 12, opacity: 0, stagger: 0.08 }, '<0.2');
 
-      // The pinned map story. Timeline units are arbitrary; scrub maps them
-      // onto the stage's scroll length.
+      // The map story: one paused timeline, played page by page (see the
+      // paging effect below). Each page's positions end exactly at PAGE_AT.
       const steps = gsap.utils.toArray('.l2-step');
       gsap.set(steps, { autoAlpha: 0, y: 40 });
-      const tl = gsap.timeline({
-        defaults: { ease: 'power2.inOut' },
-        scrollTrigger: {
-          trigger: stageRef.current,
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: reduced ? true : 0.8,
-          onUpdate: (self) => {
-            const s = sceneRef.current;
-            if (s) s.state.hover = self.progress < 0.06;
-            const idx = Math.min(STEP_COUNT - 1, Math.max(-1, Math.floor((self.progress - 0.1) / 0.18)));
-            document.querySelectorAll('.l2-progress i').forEach((el, i) => el.classList.toggle('is-on', i <= idx));
-          },
-        },
-      });
+      const tl = gsap.timeline({ paused: true, defaults: { ease: 'power2.inOut' } });
       const st = scene?.state ?? {};
-      tl.to('.l2-hero', { autoAlpha: 0, y: -60, duration: 0.8 }, 1)
-        .to('.l2-scrollhint', { autoAlpha: 0, duration: 0.3 }, 0.2)
-        .to(st, { tilt: 0.28, rot: 0, dist: 17, offset: 0.16, duration: 1.2 }, 1)
-        .to(steps[0], { autoAlpha: 1, y: 0, duration: 0.6 }, 1.5)
-        .to(steps[0], { autoAlpha: 0, y: -40, duration: 0.5 }, 3)
-        .to(st, { filterMix: 1, duration: 0.8 }, 3.1)
-        .to(steps[1], { autoAlpha: 1, y: 0, duration: 0.6 }, 3.3)
-        .to(steps[1], { autoAlpha: 0, y: -40, duration: 0.5 }, 4.8)
-        .to(st, { radiusMix: 1, dist: 13.5, duration: 1 }, 4.9)
-        .to(steps[2], { autoAlpha: 1, y: 0, duration: 0.6 }, 5.1)
-        .to(steps[2], { autoAlpha: 0, y: -40, duration: 0.5 }, 6.6)
-        .to(st, { barsMix: 1, tilt: 1.02, rot: -0.55, dist: 14, duration: 1.3 }, 6.7)
-        .to(steps[3], { autoAlpha: 1, y: 0, duration: 0.6 }, 7)
-        .to(steps[3], { autoAlpha: 0, y: -40, duration: 0.5 }, 8.5)
-        .to(st, { topMix: 1, dist: 12.5, rot: -0.3, offset: 0.24, duration: 1.2 }, 8.6)
-        .to(steps[4], { autoAlpha: 1, y: 0, duration: 0.6 }, 8.9)
-        .to({}, { duration: 1 }, 10);
+      tl.to('.l2-hero', { autoAlpha: 0, y: -60, duration: 0.8 }, 0)
+        .to('.l2-scrollhint', { autoAlpha: 0, duration: 0.3 }, 0)
+        .to(st, { chipFilter: 0, duration: 0.6 }, 0)
+        .to(st, { tilt: 0.28, rot: 0, dist: 17, offset: 0.16, duration: 1.4 }, 0)
+        .to(steps[0], { autoAlpha: 1, y: 0, duration: 0.6 }, 0.8)
+        // 01 → 02: the camera swings round as the map filters, so the change is hard to miss.
+        .to(steps[0], { autoAlpha: 0, y: -40, duration: 0.5 }, 1.4)
+        .to(st, { filterMix: 1, duration: 0.8 }, 1.5)
+        .to(st, { tilt: 0.66, rot: 0.6, dist: 15.5, duration: 1.2 }, 1.4)
+        .to(steps[1], { autoAlpha: 1, y: 0, duration: 0.6 }, 2.0)
+        .to(steps[1], { autoAlpha: 0, y: -40, duration: 0.5 }, 2.6)
+        .to(st, { radiusMix: 1, tilt: 0.3, rot: 0.1, dist: 13.5, duration: 1.1 }, 2.7)
+        .to(steps[2], { autoAlpha: 1, y: 0, duration: 0.6 }, 3.2)
+        .to(steps[2], { autoAlpha: 0, y: -40, duration: 0.5 }, 3.8)
+        .to(st, { barsMix: 1, tilt: 1.02, rot: -0.55, dist: 14, duration: 1.3 }, 3.9)
+        .to(steps[3], { autoAlpha: 1, y: 0, duration: 0.6 }, 4.6)
+        .to(steps[3], { autoAlpha: 0, y: -40, duration: 0.5 }, 5.2)
+        .to(st, { topMix: 1, dist: 12.5, rot: -0.3, offset: 0.24, duration: 1.2 }, 5.3)
+        .to(steps[4], { autoAlpha: 1, y: 0, duration: 0.6 }, 5.9);
+      storyRef.current = tl;
 
       // Generic fade-ups.
       ScrollTrigger.batch('[data-rise]', {
@@ -402,7 +441,113 @@ export default function Landing() {
       });
     }, rootRef);
 
-    return () => ctx.revert();
+    return () => {
+      storyTweenRef.current?.kill();
+      storyRef.current = null;
+      ctx.revert();
+    };
+  }, [reduced]);
+
+  // ---------- paging ----------
+  // While the page sits at the very top, the stage is a slideshow: one wheel
+  // gesture, swipe or key press = exactly one page, never more. Scrolling down
+  // from the last page leaves it for the normal page; scrolling back up to the
+  // top lands on the last page again.
+  useEffect(() => {
+    const goTo = (n) => {
+      const next = Math.max(0, Math.min(LAST_PAGE, n));
+      if (next === pageRef.current) return;
+      pageRef.current = next;
+      setPage(next);
+      sceneRef.current?.onHover?.(null);
+      storyTweenRef.current?.kill();
+      storyTweenRef.current = storyRef.current?.tweenTo(PAGE_AT[next], {
+        duration: reduced ? 0 : 1.1,
+        ease: 'power2.inOut',
+      });
+    };
+
+    let lastWheel = 0;
+    let gestureUsed = false; // this gesture already moved a page, or began below the stage
+    let swallow = false; // the gesture that left the stage: keep its inertia from scrolling on
+    let lockUntil = 0;
+    let touchY = null;
+
+    const atStage = () => window.scrollY <= 2;
+    const leave = () => {
+      swallow = true;
+      const navH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 0;
+      const top = stageRef.current.getBoundingClientRect().bottom + window.scrollY - navH;
+      if (lenisRef.current) lenisRef.current.scrollTo(top, { duration: 1.1 });
+      else window.scrollTo({ top, behavior: reduced ? 'auto' : 'smooth' });
+    };
+    const move = (dir) => {
+      const now = performance.now();
+      if (now < lockUntil) return;
+      lockUntil = now + (reduced ? 150 : PAGE_LOCK_MS);
+      if (dir > 0 && pageRef.current === LAST_PAGE) leave();
+      else goTo(pageRef.current + dir);
+    };
+    const block = (e) => {
+      e.preventDefault();
+      e.stopPropagation(); // keep Lenis from scrolling too
+    };
+
+    const onWheel = (e) => {
+      if (e.ctrlKey) return; // pinch-zoom
+      const dir = Math.sign(e.deltaY);
+      if (!dir) return;
+      const now = performance.now();
+      if (now - lastWheel > GESTURE_GAP_MS) {
+        gestureUsed = false;
+        swallow = false;
+      }
+      lastWheel = now;
+      if (!atStage()) {
+        if (swallow) block(e);
+        else gestureUsed = true; // arriving at the top mid-gesture must not flip a page
+        return;
+      }
+      block(e);
+      if (gestureUsed) return;
+      gestureUsed = true;
+      move(dir);
+    };
+
+    const onKey = (e) => {
+      if (!atStage() || e.altKey || e.ctrlKey || e.metaKey) return;
+      if (e.target.closest?.('input, textarea, select, button, a, [contenteditable]') && e.key === ' ') return;
+      const dir = { ArrowDown: 1, PageDown: 1, ' ': e.shiftKey ? -1 : 1, ArrowUp: -1, PageUp: -1 }[e.key];
+      if (!dir) return;
+      e.preventDefault();
+      move(dir);
+    };
+
+    const onTouchStart = (e) => {
+      touchY = atStage() ? e.touches[0].clientY : null;
+    };
+    const onTouchMove = (e) => {
+      if (touchY != null && e.cancelable) e.preventDefault();
+    };
+    const onTouchEnd = (e) => {
+      if (touchY == null) return;
+      const dy = touchY - e.changedTouches[0].clientY;
+      touchY = null;
+      if (Math.abs(dy) > 40) move(Math.sign(dy));
+    };
+
+    window.addEventListener('wheel', onWheel, { passive: false, capture: true });
+    window.addEventListener('keydown', onKey);
+    window.addEventListener('touchstart', onTouchStart, { passive: true });
+    window.addEventListener('touchmove', onTouchMove, { passive: false });
+    window.addEventListener('touchend', onTouchEnd);
+    return () => {
+      window.removeEventListener('wheel', onWheel, { capture: true });
+      window.removeEventListener('keydown', onKey);
+      window.removeEventListener('touchstart', onTouchStart);
+      window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('touchend', onTouchEnd);
+    };
   }, [reduced]);
 
   // Chart draws itself when the detail mock arrives / scrolls in.
@@ -478,7 +623,7 @@ export default function Landing() {
   }, [reduced]);
 
   const chartData = useMemo(() => {
-    if (!detail) return null;
+    if (!detail?.entry) return null;
     const years = Object.keys(detail.entry.years).map(Number).sort();
     const rows = years.map((y) => ({ year: y, ...detail.entry.years[y] }));
     const cutoffs = rows.map((r) => r.cutoff).filter((c) => c != null);
@@ -507,6 +652,7 @@ export default function Landing() {
           <div ref={tipRef} className="l2-tip" aria-hidden="true">
             <b />
             <span />
+            <i className="l2-tip-metric" />
             <em>Klikni pro detail</em>
           </div>
 
@@ -579,8 +725,8 @@ export default function Landing() {
           </div>
 
           <div className="l2-progress" aria-hidden="true">
-            {STEPS.map((s) => (
-              <i key={s.kicker} />
+            {STEPS.map((s, i) => (
+              <i key={s.kicker} className={i < page ? 'is-on' : undefined} />
             ))}
           </div>
           <div className="l2-scrollhint" aria-hidden="true">
@@ -636,7 +782,13 @@ export default function Landing() {
             </div>
             <ol className="l2-results">
               {(shortlist.length ? shortlist : Array.from({ length: 5 }, () => null)).slice(0, 5).map((s, i) => (
-                <li key={s?.id ?? i} className="l2-result">
+                <li
+                  key={s?.id ?? i}
+                  className={`l2-result${s && s.id === activeId ? ' is-active' : ''}`}
+                  tabIndex={s ? 0 : undefined}
+                  onMouseEnter={s ? () => setActiveId(s.id) : undefined}
+                  onFocus={s ? () => setActiveId(s.id) : undefined}
+                >
                   <div className="l2-result-main">
                     <span className="l2-result-rank">{i + 1}</span>
                     <div className="l2-result-name">
@@ -675,7 +827,12 @@ export default function Landing() {
               <i /><i /><i />
               <span>Detail školy</span>
             </div>
-            {detail && chartData ? (
+            {detail && !detail.entry ? (
+              <div className="l2-detail">
+                <p className="l2-detail-school">{detail.school.name}</p>
+                <p className="l2-detail-note">U této školy zatím nemáme výsledky přijímaček.</p>
+              </div>
+            ) : detail && chartData ? (
               <div className="l2-detail">
                 <p className="l2-detail-school">{detail.school.name}</p>
                 <p className="l2-detail-obor">{detail.entry.oborNazev}</p>
@@ -761,7 +918,7 @@ export default function Landing() {
       <section className="l2-honest">
         <header className="l2-head" data-rise>
           <p className="l2-kicker">Na rovinu</p>
-          <h2 className="l2-h2">Co ŠkolaMatch je, a co není</h2>
+          <h2 className="l2-h2">Co Střední na míru je, a co není</h2>
         </header>
         <div className="l2-honest-grid">
           <div className="l2-honest-col" data-rise>
@@ -848,14 +1005,6 @@ export default function Landing() {
         </div>
       </section>
 
-      <footer className="l2-footer">
-        <span className="l2-wordmark">ŠkolaMatch</span>
-        <nav aria-label="Patička">
-          <Link to="/skoly">Databáze škol</Link>
-          <Link to="/onboarding">Dotazník</Link>
-          <Link to="/predplatne">Ceník</Link>
-        </nav>
-      </footer>
     </div>
   );
 }
