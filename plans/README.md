@@ -25,6 +25,7 @@ codebase audit (see "Not audited" below).
 | 014 | [Colour themes: Značka default + 3 options, light/dark switch](014-colour-themes.md) | HIGH | M–L | Medium | APPROVED — build after 013 |
 | 015 | [More colour on desktop /skoly and Praktické informace](015-desktop-colour.md) | MEDIUM | S–M | Low | DONE |
 | 016 | [School beta testing program](016-beta-testing-program.md) | HIGH | L | High | IMPLEMENTED — rollout and DB verification pending |
+| 018 | [Parent ↔ child share links (pay via link, quiz handoff, read-only results)](018-parent-child-share-links.md) | HIGH | L | High | APPROVED — ready for Codex build |
 
 > **012** was added 2026-09-21 through `/codex-plan-then-build`, following a running-browser audit of search, school detail and auth, with source-only coverage of signed-in settings/dialogs. It improves the existing UI without changing colors or installing shadcn/Tailwind. Its scope and status are independent of the historical audit below; that older status table has not been re-audited here.
 
