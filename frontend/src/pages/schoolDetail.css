@@ -1125,3 +1125,5 @@
 .sd-variant-name { font-weight: 600; color: var(--ink); }
 .sd-variant-nums { color: var(--ink2); font-variant-numeric: tabular-nums; }
 .sd-variants-head { display: flex; align-items: center; gap: var(--space-xs); margin-top: var(--space-md); font-weight: 600; color: var(--ink); }
+.sd-variant.is-note { background: transparent; border-style: dashed; }
+.sd-variant.is-note .sd-variant-name { font-weight: 400; color: var(--ink2); }

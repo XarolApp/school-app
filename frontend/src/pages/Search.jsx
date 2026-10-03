@@ -34,7 +34,7 @@ import {
   compareByCount,
 } from '../lib/schoolSearch';
 import { deriveFeatures, FOCUS_CATEGORIES } from '../lib/schoolFeatures';
-import { summarizeAdmission, formatCutoffRange } from '../lib/schoolPrograms';
+import { summarizeAdmission, formatCutoffRange, isLengthNote } from '../lib/schoolPrograms';
 import { kkovGroupOf, kkovGroupName } from '../lib/kkovGroups';
 import { useAuth } from '../components/AuthContext';
 import FavoriteButton from '../components/FavoriteButton';
@@ -186,13 +186,15 @@ function summarizePrograms(school) {
   const programs = school.school_programs ?? [];
   // One entry per obor. The list API splits an obor into one row per zaměření
   // (programme), so the row count alone would overstate how many obory a school
-  // has. An obor counts as multi-programme only when every row is named, the
-  // same rule the school detail uses before it lists them.
+  // has. An obor is multi-programme under the same rule as the school detail:
+  // 2+ real programmes (length notes like "zkrácené studium" do not count), all
+  // named.
   const byObor = new Map();
   for (const p of programs) {
     const key = [p.kkov, p.obor_nazev, p.typ_skoly, p.delka_studia, p.jazyk_studia].join('|');
     if (!byObor.has(key)) byObor.set(key, { names: new Set(), unnamed: false });
     const entry = byObor.get(key);
+    if (isLengthNote(p.zamereni)) continue;
     const name = (p.zamereni ?? '').trim().toLowerCase();
     if (name) entry.names.add(name);
     else entry.unnamed = true;

@@ -45,6 +45,20 @@ export function latestProgramValue(school, field) {
   return latest[field];
 }
 
+/**
+ * Cermat's "zaměření" is free text. Mostly it names a programme (FOSTRA's
+ * "Aspira", a conservatoire's "Hra na housle"), but sometimes it only says HOW
+ * the obor is studied: "zkrácené studium", "délka studia dva roky", "dálková",
+ * "nástavbové studium", "pro uchazeče 18+". Those are a different course
+ * length or audience for the same obor, not another programme, so they never
+ * count toward "N zaměření" or the cutoff range. Checked against all 707
+ * labels in school_programs on 2026-10-03; labels naming a sport, instrument or
+ * another KKOV code are real programmes and are deliberately NOT matched.
+ */
+const LENGTH_NOTE =
+  /zkr[aá]cen|d[aá]lkov|n[aá]stavb|d[eé]lk[ay]\s+studia|pro\s+uchaze[cč]e|^\s*(\d+\s*let[eé]|denn[ií]\s+studium)\s*$/i;
+export const isLengthNote = (label) => LENGTH_NOTE.test(label ?? '');
+
 const mean = (values) =>
   values.length ? Math.round((values.reduce((s, v) => s + v, 0) / values.length) * 10) / 10 : null;
 
@@ -53,7 +67,7 @@ const mean = (values) =>
  * programme (counts add, cutoffs average). Different zaměření are different
  * programmes (FOSTRA's Aspira / Meda / International are all 79-41-K/41): they
  * are never averaged together, so `cutoffMin`/`cutoffMax` span them and
- * `variants` lists each one. `cutoff` stays the mean of the programmes for the
+ * `variants` lists each one (plus length notes, flagged `note`). `cutoff` stays the mean of the programmes for the
  * callers that need one number for an obor (the risk analysis).
  */
 function aggregateYear(rows) {
@@ -69,8 +83,12 @@ function aggregateYear(rows) {
     prihlasky: sumKnown(rs.map((r) => r.prihlasky)),
     prijati: sumKnown(rs.map((r) => r.prijati)),
     cutoff: mean(rs.map((r) => r.cutoff).filter((c) => c != null)),
+    note: isLengthNote(rs[0].zamereni),
   }));
-  const cutoffs = parts.map((p) => p.cutoff).filter((c) => c != null);
+  // Programmes set the cutoff; a length note (zkrácené studium...) only does
+  // when the obor has nothing else.
+  const programmes = parts.filter((p) => !p.note);
+  const cutoffs = (programmes.length ? programmes : parts).map((p) => p.cutoff).filter((c) => c != null);
   return {
     kapacita: sumKnown(parts.map((p) => p.kapacita)),
     prihlasky: sumKnown(parts.map((p) => p.prihlasky)),
@@ -78,7 +96,11 @@ function aggregateYear(rows) {
     cutoff: mean(cutoffs),
     cutoffMin: cutoffs.length ? Math.min(...cutoffs) : null,
     cutoffMax: cutoffs.length ? Math.max(...cutoffs) : null,
-    variants: parts.length > 1 && parts.every((p) => p.zamereni) ? parts : null,
+    // Listed only for 2+ real programmes, all named; length notes follow them.
+    variants:
+      programmes.length > 1 && programmes.every((p) => p.zamereni)
+        ? [...programmes, ...parts.filter((p) => p.note)]
+        : null,
   };
 }
 

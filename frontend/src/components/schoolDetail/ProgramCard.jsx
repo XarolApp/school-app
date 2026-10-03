@@ -107,14 +107,14 @@ function ProgramCard({ entry }) {
       {y.variants && (
         <>
           <div className="sd-variants-head">
-            Zaměření v tomto oboru ({y.variants.length})
+            Zaměření v tomto oboru ({y.variants.filter((v) => !v.note).length})
             <InfoHint
-              text={`Jeden obor (stejný kód KKOV) může škola otevírat v několika zaměřeních, například jako samostatné třídy nebo programy. Každé má vlastní počet míst, přihlášek i bodovou hranici, proto je hranice oboru rozpětí, ne jedno číslo. Zaměření ukazujeme jen pro rok ${entry.latestYear}: Cermat jejich názvy každý rok přepisuje, takže se mezi roky nedají spolehlivě spárovat. Graf vývoje níž proto sleduje celý obor.`}
+              text={`Jeden obor (stejný kód KKOV) může škola otevírat v několika zaměřeních, například jako samostatné třídy nebo programy. Každé má vlastní počet míst, přihlášek i bodovou hranici, proto je hranice oboru rozpětí, ne jedno číslo. Zaměření ukazujeme jen pro rok ${entry.latestYear}: Cermat jejich názvy každý rok přepisuje, takže se mezi roky nedají spolehlivě spárovat. Graf vývoje níž proto sleduje celý obor. Zkrácená, dálková a nástavbová studia (šedě) jsou jen jiná délka nebo forma stejného oboru, ne další zaměření, a do rozpětí hranice se nepočítají.`}
             />
           </div>
           <ul className="sd-variants" aria-label="Zaměření oboru">
             {y.variants.map((v) => (
-              <li key={v.zamereni} className="sd-variant">
+              <li key={v.zamereni} className={`sd-variant${v.note ? ' is-note' : ''}`}>
                 <span className="sd-variant-name">{v.zamereni}</span>
                 <span className="sd-variant-nums">
                   {v.kapacita ?? '–'} míst · {v.prihlasky ?? '–'} přihlášek · {v.prijati ?? '–'} přijatých ·{' '}
