@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { ObScreen } from '../../../components/onboarding/ObKit';
 import { usePrefersReducedMotion } from '../../../components/onboarding/usePrefersReducedMotion';
 import { useOnboarding } from '../useOnboarding';
+import { SCHOOL_COUNT } from '../../../config/facts';
 
 /**
  * Labour illusion.
@@ -67,8 +68,8 @@ function Calculating() {
         </h1>
         <p className="ob-lead ob-calc-sub">
           {parent
-            ? `Vaše odpovědi proti ${total || 'šedesáti'} pražským školám. Chvilku to trvá, ale ne dlouho.`
-            : `Tvoje odpovědi proti ${total || 'šedesáti'} pražským školám. Chvilku to trvá, ale ne dlouho.`}
+            ? `Vaše odpovědi proti ${total || SCHOOL_COUNT} pražským školám. Chvilku to trvá, ale ne dlouho.`
+            : `Tvoje odpovědi proti ${total || SCHOOL_COUNT} pražským školám. Chvilku to trvá, ale ne dlouho.`}
         </p>
 
         <ol className="ob-calc-steps" aria-live="polite">

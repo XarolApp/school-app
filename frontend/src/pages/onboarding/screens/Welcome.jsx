@@ -5,6 +5,7 @@ import MatchPreview from '../../../components/onboarding/MatchPreview';
 import { PhoneLoop } from '../../../components/landing/ProductScreens';
 import { STUDENTS_HELPED } from '../../../config/socialProof';
 import { useOnboarding } from '../useOnboarding';
+import { QUIZ_MINUTES } from '../../../config/facts';
 
 /**
  * Screen 1 — Welcome + reassurance.
@@ -47,7 +48,7 @@ function Welcome() {
           <ObButton onClick={goNext}>
             Začít <span className="ob-btn-arrow" aria-hidden="true">→</span>
           </ObButton>
-          <p className="ob-microcopy">Asi 3 minuty · bez registrace · nic se neplatí předem</p>
+          <p className="ob-microcopy">Asi {QUIZ_MINUTES} minuty · bez registrace · nic se neplatí předem</p>
           <p className="ob-microcopy ob-signin-hint">
             Už máš účet? <Link to="/prihlaseni" className="ob-inline-link">Přihlásit se</Link>
           </p>

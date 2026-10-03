@@ -5,7 +5,7 @@ import { usePrefersReducedMotion } from './usePrefersReducedMotion';
  * Welcome-screen preview (phone and tablet; desktop shows the full phone loop
  * in the side panel instead).
  *
- * Shows the product's one idea in five seconds: interests narrow 223 schools
+ * Shows the product's one idea in five seconds: interests narrow the schools
  * down to a short list. Every number is a REAL count over the loaded
  * /api/schools rows — nothing here is illustrative. The count swaps in steps
  * (crossfade), deliberately not a rolling ticker (DESIGN.md → no number

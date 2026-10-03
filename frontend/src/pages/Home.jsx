@@ -4,6 +4,7 @@ import { trialDaysPhrase } from '../config/pricing';
 import { QUESTIONS } from './onboarding/quizQuestions';
 import { DemoLoop, PhoneLoop, ScreenShot, useScreenData } from '../components/landing/ProductScreens';
 import './landing.css';
+import { SCHOOL_COUNT, QUIZ_MINUTES } from '../config/facts';
 
 /**
  * Home / úvodní stránka — long-form landing (rebuilt 2026-09-26).
@@ -23,8 +24,8 @@ import './landing.css';
 const QUESTION_COUNT = QUESTIONS.length;
 
 const FACTS = [
-  { value: '223', label: 'pražských středních škol v databázi' },
-  { value: String(QUESTION_COUNT), label: 'otázek v dotazníku, asi 4 minuty' },
+  { value: String(SCHOOL_COUNT), label: 'pražských středních škol v databázi' },
+  { value: String(QUESTION_COUNT), label: `otázek v dotazníku, asi ${QUIZ_MINUTES} minuty` },
   { value: '3 roky', label: 'hranic přijetí u každého oboru' },
   { value: '0 Kč', label: 'za základní výsledek a databázi škol' },
 ];
@@ -79,7 +80,7 @@ const FAQ = [
   },
   {
     q: 'Je to jen pro Prahu?',
-    a: 'Zatím ano, všech 223 pražských středních škol. Další kraje přidáme, až bude Praha fungovat tak, jak má.',
+    a: `Zatím ano, všech ${SCHOOL_COUNT} pražských středních škol. Další kraje přidáme, až bude Praha fungovat tak, jak má.`,
   },
   {
     q: 'Můžu to vyplnit jako rodič?',
@@ -148,7 +149,7 @@ function Home() {
           <p className="ls-eyebrow">Výběr střední školy · Praha</p>
           <h1 className="ls-title">Najdi střední školu, která ti opravdu sedí</h1>
           <p className="ls-lede">
-            ŠkolaMatch dává všech 223 pražských středních škol na jedno místo. Odpovíš na{' '}
+            ŠkolaMatch dává všech {SCHOOL_COUNT} pražských středních škol na jedno místo. Odpovíš na{' '}
             {QUESTION_COUNT} otázek a uvidíš, které školy odpovídají tomu, co tě baví, kam
             dojedeš a jak se ti učí — a u každé proč.
           </p>
@@ -160,7 +161,7 @@ function Home() {
               nebo si projdi databázi škol →
             </Link>
           </div>
-          <p className="ls-fineprint">Bez registrace · asi 4 minuty · přeskočit můžeš cokoli</p>
+          <p className="ls-fineprint">Bez registrace · asi {QUIZ_MINUTES} minuty · přeskočit můžeš cokoli</p>
         </div>
 
         <figure className="ls-hero-visual" aria-hidden="true">
@@ -369,7 +370,7 @@ function Home() {
             <h3 className="ls-list-title">Zdarma</h3>
             <ul className="ls-list">
               <li>Dotazník a výsledek se shodou</li>
-              <li>Databáze všech 223 škol</li>
+              <li>Databáze všech {SCHOOL_COUNT} škol</li>
               <li>Detail školy s hranicemi přijetí</li>
             </ul>
           </div>
@@ -405,7 +406,7 @@ function Home() {
 
       {/* ---------- 13. final CTA ---------- */}
       <section className="ls-final" data-reveal>
-        <h2 className="ls-final-title">Za čtyři minuty víš, kde začít hledat</h2>
+        <h2 className="ls-final-title">Za tři minuty víš, kde začít hledat</h2>
         <Link to="/onboarding" className="btn btn-primary btn-lg">
           Začít dotazník zdarma
         </Link>

@@ -9,6 +9,7 @@ import { trialDaysPhrase } from '../../config/pricing';
 import { QUESTIONS } from '../onboarding/quizQuestions';
 import { PragueScene } from './PragueScene';
 import './landing2.css';
+import { SCHOOL_COUNT } from '../../config/facts';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -39,7 +40,7 @@ const CHIPS = [
 const STEPS = [
   {
     kicker: 'Databáze',
-    title: '223 škol. Poprvé na jedné mapě.',
+    title: `${SCHOOL_COUNT} škol. Poprvé na jedné mapě.`,
     body: 'Každý bod je skutečná pražská střední škola, přesně tam, kde stojí. Obory, kapacity a výsledky přijímaček u všech na jednom místě.',
   },
   {
@@ -59,7 +60,7 @@ const STEPS = [
   },
   {
     kicker: 'Výsledek',
-    title: 'A z 223 je najednou pár, které dávají smysl',
+    title: `A z ${SCHOOL_COUNT} je najednou pár, které dávají smysl`,
     body: 'Seřazené podle shody a u každé napsané proč. Tohle je ukázka. Tvůj vlastní výběr máš za pár minut.',
   },
 ];
@@ -92,7 +93,7 @@ const FAQ = [
   ['Znamená vysoké procento shody, že mě vezmou?', 'Ne. Shoda říká, jak škola odpovídá tomu, co jsi napsal. O přijetí rozhodují přijímačky a známky, proto u škol zvlášť ukazujeme hranice přijetí.'],
   ['Platí mi školy za lepší umístění?', 'Ne. Pořadí počítá pevný vzorec z tvých odpovědí a z veřejných dat. Nikdo si v něm nemůže koupit místo.'],
   ['Co se děje s mými odpověďmi?', 'Během dotazníku zůstávají jen v tvém prohlížeči. Uložíme je, až si založíš účet, a smazat je můžeš kdykoli i s celým účtem.'],
-  ['Je to jen pro Prahu?', 'Zatím ano, všech 223 pražských středních škol. Další kraje přidáme, až bude Praha fungovat tak, jak má.'],
+  ['Je to jen pro Prahu?', `Zatím ano, všech ${SCHOOL_COUNT} pražských středních škol. Další kraje přidáme, až bude Praha fungovat tak, jak má.`],
 ];
 
 const ILLUSTRATIVE_MATCH = [94, 89, 85, 81, 77, 72];
@@ -127,7 +128,7 @@ export default function Landing() {
     () => Object.fromEntries(CHIPS.map((c) => [c.id, schools.filter((s) => hasProgram(s, c.test)).length])),
     [schools],
   );
-  const total = schools.length || 223;
+  const total = schools.length || SCHOOL_COUNT;
   const shown = chip ? counts[chip] : total;
 
   // ---------- data ----------

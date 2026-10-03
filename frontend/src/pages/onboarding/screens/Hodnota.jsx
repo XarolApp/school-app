@@ -1,6 +1,7 @@
 import { ObScreen } from '../../../components/onboarding/ObKit';
 import { useOnboarding } from '../useOnboarding';
 import { Icon, PayCta, PayStepChrome } from './paywallKit';
+import { SCHOOL_COUNT } from '../../../config/facts';
 
 /**
  * Paywall step 1 of 5 — HODNOTA (what this saves you).
@@ -31,7 +32,7 @@ const MINUTES_PER_SCHOOL = 12;
 
 /** Used only when the catalogue has not loaded, so the argument still holds
  *  together instead of rendering "0 škol". Matches the V1 Prague scope. */
-const FALLBACK_SCHOOL_COUNT = 60;
+const FALLBACK_SCHOOL_COUNT = SCHOOL_COUNT;
 
 function Hodnota() {
   const { role, goNext, goBack, schools } = useOnboarding();
