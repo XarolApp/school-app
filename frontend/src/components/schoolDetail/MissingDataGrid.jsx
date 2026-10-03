@@ -63,10 +63,10 @@ function MissingDataGrid({ zrizovatel, extracted }) {
   const e = extracted || {};
   const [expanded, setExpanded] = useState(() => new Set());
   const cards = [
+    { title: 'Úspěšnost u maturity', body: maturitaBody(e), Icon: GraduationCap, figure: e.maturita_pass_rate_pct != null ? `${numCz(e.maturita_pass_rate_pct)} %` : null },
     { title: 'Školné a poplatky', body: e.skolne_poplatky || tuitionBody(zrizovatel), Icon: Wallet },
     { title: 'Obědy a ubytování', body: e.obedy_ubytovani || EMPTY_INFO, Icon: Utensils },
     { title: 'Kroužky a aktivity', body: e.krouzky_aktivity || EMPTY_INFO, Icon: Music },
-    { title: 'Úspěšnost u maturity', body: maturitaBody(e), Icon: GraduationCap, figure: e.maturita_pass_rate_pct != null ? `${numCz(e.maturita_pass_rate_pct)} %` : null },
     { title: 'Kam míří absolventi', body: e.vs_uplatneni || EMPTY_INFO, Icon: Compass },
     { title: 'Uplatnění po vyučení', body: e.uplatneni_po_vyuceni || EMPTY_INFO, Icon: Briefcase },
     { title: 'Přijímací požadavky navíc', body: pripijimaciBody(e), Icon: ClipboardList },
