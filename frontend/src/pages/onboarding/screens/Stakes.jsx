@@ -1,6 +1,6 @@
 import { ObButton, ObScreen } from '../../../components/onboarding/ObKit';
 import { useOnboarding } from '../useOnboarding';
-import { SCHOOL_COUNT } from '../../../config/facts';
+import { useSchoolCount } from '../../../lib/useSchoolCount';
 
 /**
  * Screen 3 — neutral stakes + the problem + multi-intent, on ONE screen.
@@ -45,6 +45,7 @@ const PARENT_INTENTS = [
 
 function Stakes() {
   const { role, intents, setIntents, goNext, goBack, phase } = useOnboarding();
+  const schoolCount = useSchoolCount();
   const parent = role === 'parent';
   const options = parent ? PARENT_INTENTS : STUDENT_INTENTS;
 
@@ -82,7 +83,7 @@ function Stakes() {
           </p>
           <div className="ob-stakes-note">
             <p>
-              <strong>V Praze je {SCHOOL_COUNT} středních škol.</strong>{' '}
+              <strong>V Praze je {schoolCount} středních škol.</strong>{' '}
               {parent
                 ? 'Většina rodin si projde tak tři nebo čtyři, než se rozhodne. Ne proto, že by je ostatní nezajímaly — jen je nikde nevidí pohromadě.'
                 : 'Většina deváťáků si projde tak tři nebo čtyři, než se rozhodne. Ne proto, že by je ostatní nezajímaly — jen je nikde nevidí pohromadě.'}

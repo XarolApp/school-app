@@ -4,7 +4,8 @@ import { trialDaysPhrase } from '../config/pricing';
 import { QUESTIONS } from './onboarding/quizQuestions';
 import { DemoLoop, PhoneLoop, ScreenShot, useScreenData } from '../components/landing/ProductScreens';
 import './landing.css';
-import { SCHOOL_COUNT, QUIZ_MINUTES } from '../config/facts';
+import { QUIZ_MINUTES } from '../config/facts';
+import { useSchoolCount } from '../lib/useSchoolCount';
 
 /**
  * Home / úvodní stránka — long-form landing (rebuilt 2026-09-26).
@@ -23,7 +24,7 @@ import { SCHOOL_COUNT, QUIZ_MINUTES } from '../config/facts';
 
 const QUESTION_COUNT = QUESTIONS.length;
 
-const FACTS = [
+const makeFacts = (SCHOOL_COUNT) => [
   { value: String(SCHOOL_COUNT), label: 'pražských středních škol v databázi' },
   { value: String(QUESTION_COUNT), label: `otázek v dotazníku, asi ${QUIZ_MINUTES} minuty` },
   { value: '3 roky', label: 'hranic přijetí u každého oboru' },
@@ -53,7 +54,7 @@ const STEPS = [
   },
 ];
 
-const FAQ = [
+const makeFaq = (SCHOOL_COUNT) => [
   {
     q: 'Co je ŠkolaMatch?',
     a: 'Průvodce výběrem střední školy v Praze. Databáze všech škol s obory a výsledky přijímaček na jednom místě, a dotazník, který z nich vybere ty, které sedí tomu, co hledáš.',
@@ -141,6 +142,9 @@ function useReveal() {
 function Home() {
   const rootRef = useReveal();
   const screenData = useScreenData();
+  const SCHOOL_COUNT = useSchoolCount();
+  const FACTS = makeFacts(SCHOOL_COUNT);
+  const FAQ = makeFaq(SCHOOL_COUNT);
   return (
     <div ref={rootRef} className="page page-home">
       {/* ---------- 1. hero ---------- */}

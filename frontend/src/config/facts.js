@@ -2,10 +2,9 @@
  * Numbers the marketing copy quotes. One place, so the landing, the onboarding
  * and the quiz can never disagree.
  *
- * SCHOOL_COUNT is what GET /api/schools returns (merged schools are excluded
- * server-side, so it is lower than the raw row count). Where the live list is
- * loaded, prefer its length; this is the fallback and the static-copy value.
- * Update it after a school import.
+ * SCHOOL_COUNT is only the FALLBACK shown until the live list loads (or if it
+ * fails) — copy reads the real number through useSchoolCount(). Merged schools
+ * are excluded server-side, so it is lower than the raw row count.
  */
 export const SCHOOL_COUNT = 217;
 

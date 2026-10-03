@@ -9,7 +9,7 @@ import { trialDaysPhrase } from '../../config/pricing';
 import { QUESTIONS } from '../onboarding/quizQuestions';
 import { PragueScene } from './PragueScene';
 import './landing2.css';
-import { SCHOOL_COUNT } from '../../config/facts';
+import { useSchoolCount } from '../../lib/useSchoolCount';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -37,7 +37,7 @@ const CHIPS = [
   { id: 'health', label: 'Zdravotnictví', test: (p) => /^53-/.test(p.kkov ?? '') },
 ];
 
-const STEPS = [
+const makeSteps = (SCHOOL_COUNT) => [
   {
     kicker: 'Databáze',
     title: `${SCHOOL_COUNT} škol. Poprvé na jedné mapě.`,
@@ -86,7 +86,9 @@ const ROLES = {
   },
 };
 
-const FAQ = [
+const STEP_COUNT = makeSteps(0).length;
+
+const makeFaq = (SCHOOL_COUNT) => [
   ['Co je ŠkolaMatch?', 'Průvodce výběrem střední školy v Praze. Všechny školy s obory a výsledky přijímaček na jednom místě a dotazník, který z nich vybere ty, které sedí tomu, co hledáš.'],
   ['Kolik to stojí?', `Dotazník, základní výsledek a celá databáze škol jsou zdarma. Placený přístup odemyká podrobné porovnání, rozhodovací matici a plánování přihlášek. Prvních ${trialDaysPhrase()} je zdarma a zrušit se to dá jedním kliknutím v nastavení.`],
   ['Odkud máte data o školách?', 'Obory, kapacity a hranice přijetí jsou z veřejných výsledků jednotné přijímací zkoušky (Cermat) a z rejstříku škol MŠMT. U každého čísla uvádíme rok.'],
@@ -128,7 +130,10 @@ export default function Landing() {
     () => Object.fromEntries(CHIPS.map((c) => [c.id, schools.filter((s) => hasProgram(s, c.test)).length])),
     [schools],
   );
-  const total = schools.length || SCHOOL_COUNT;
+  const liveCount = useSchoolCount();
+  const total = schools.length || liveCount;
+  const STEPS = makeSteps(total);
+  const FAQ = makeFaq(total);
   const shown = chip ? counts[chip] : total;
 
   // ---------- data ----------
@@ -311,7 +316,7 @@ export default function Landing() {
           onUpdate: (self) => {
             const s = sceneRef.current;
             if (s) s.state.hover = self.progress < 0.06;
-            const idx = Math.min(STEPS.length - 1, Math.max(-1, Math.floor((self.progress - 0.1) / 0.18)));
+            const idx = Math.min(STEP_COUNT - 1, Math.max(-1, Math.floor((self.progress - 0.1) / 0.18)));
             document.querySelectorAll('.l2-progress i').forEach((el, i) => el.classList.toggle('is-on', i <= idx));
           },
         },
