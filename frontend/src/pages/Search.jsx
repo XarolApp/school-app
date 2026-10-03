@@ -128,6 +128,10 @@ function zrizovatelLabel(value) {
 // `dirs` names both directions in words, so "sestupně" never has to be guessed.
 const SORTS = [
   {
+    id: 'relevance', label: 'Shoda s hledáním', short: 'Hledání', tradeoff: 'nejpodobnější tvému hledanému textu', defaultDir: 'desc',
+    dirs: { asc: 'od nejméně podobných', desc: 'od nejpodobnějších' },
+  },
+  {
     id: 'shoda', label: 'Shoda s tebou', short: 'Shoda', tradeoff: 'podle tvého dotazníku', defaultDir: 'desc',
     dirs: { asc: 'od nejnižší shody', desc: 'od nejvyšší shody' },
   },
@@ -425,6 +429,14 @@ function Search() {
   // across reloads because synth() is a pure function of school.id.
   const rows = useMemo(() => schools.map(buildRow), [schools]);
 
+  const prepared = useMemo(() => prepareQuery(filters.query), [filters.query]);
+  // Bug fix: prepareQuery('') returns a truthy object with zero tokens. Used
+  // naively as a boolean, an empty search box would still take the "must
+  // match" branch and — since nothing has zero tokens to satisfy — the whole
+  // list would vanish on load. Only treat the query as active once it has an
+  // actual token to match against.
+  const hasQuery = prepared.tokens.length > 0;
+
   // match_score only exists for a signed-in account that has a questionnaire
   // behind it (server.js attaches it from the default run). Without one there
   // is nothing to show in the stat cell and nothing to sort by, so both the
@@ -434,12 +446,18 @@ function Search() {
     () => rows.some((r) => typeof r.school.match_score === 'number'),
     [rows]
   );
-  const sortOptions = useMemo(() => (hasMatch ? SORTS : SORTS.filter((s) => s.id !== 'shoda')), [hasMatch]);
+  const sortOptions = SORTS.filter((s) => (s.id === 'relevance' ? hasQuery : s.id !== 'shoda' || hasMatch));
   // Without a questionnaire (or from an old saved 'match' sort) the list is
   // ordered by lowest cutoff, which is what the removed 'match' sort did anyway.
+  // While a query is typed and the student hasn't picked a sort, the best
+  // text match leads; picking any sort chip overrides that.
   const activeSort =
-    filters.sort === 'match' || (!hasMatch && filters.sort === 'shoda') ? 'cut' : filters.sort;
-  const activeSortDef = SORTS.find((o) => o.id === activeSort) ?? SORTS[1];
+    hasQuery && (!filters.sortPicked || filters.sort === 'relevance')
+      ? 'relevance'
+      : filters.sort === 'match' || filters.sort === 'relevance' || (!hasMatch && filters.sort === 'shoda')
+        ? 'cut'
+        : filters.sort;
+  const activeSortDef = SORTS.find((o) => o.id === activeSort) ?? SORTS[2];
   // A sort that just fell back to 'cut' uses its own default, not a stale flip.
   const sortDir = activeSortDef.id === filters.sort && filters.sortDir ? filters.sortDir : activeSortDef.defaultDir;
 
@@ -468,13 +486,6 @@ function Search() {
     return map;
   }, [index]);
 
-  const prepared = useMemo(() => prepareQuery(filters.query), [filters.query]);
-  // Bug fix: prepareQuery('') returns a truthy object with zero tokens. Used
-  // naively as a boolean, an empty search box would still take the "must
-  // match" branch and — since nothing has zero tokens to satisfy — the whole
-  // list would vanish on load. Only treat the query as active once it has an
-  // actual token to match against.
-  const hasQuery = prepared.tokens.length > 0;
 
   // The query a filter set is evaluated against comes from THAT set, not from
   // the current page state — otherwise a hypothetical "same filters, no query"
@@ -532,6 +543,10 @@ function Search() {
   };
 
   const SORT_VALUE = {
+    relevance: (r) => {
+      const entry = indexById.get(r.id);
+      return entry ? scoreSchool(entry, currentCtx.prepared) : 0;
+    },
     shoda: (r) => r.school.match_score,
     cut: (r) => r.admission?.cutoffMin,
     acceptance: (r) => r.admission?.acceptance,
@@ -1115,7 +1130,7 @@ function Search() {
   };
 
   const activeSortLabel = `${activeSortDef.short}, ${activeSortDef.dirs[sortDir]}`;
-  const flipDir = () => setPatch({ sort: activeSortDef.id, sortDir: sortDir === 'asc' ? 'desc' : 'asc' });
+  const flipDir = () => setPatch({ sort: activeSortDef.id, sortPicked: true, sortDir: sortDir === 'asc' ? 'desc' : 'asc' });
   const DirIcon = sortDir === 'asc' ? ArrowUp : ArrowDown;
   const dirButton = (
     <button
@@ -1147,7 +1162,7 @@ function Search() {
             name="ss-sort"
             value={o.id}
             checked={activeSort === o.id}
-            onChange={() => setPatch({ sort: o.id, sortDir: '' })}
+            onChange={() => setPatch({ sort: o.id, sortPicked: true, sortDir: '' })}
           />
           <span className="ss-sort-option-check" aria-hidden="true">
             {activeSort === o.id && <Check size={16} />}
@@ -1187,7 +1202,7 @@ function Search() {
           role="radio"
           aria-checked={activeSort === o.id}
           className={`ss-fbtn${activeSort === o.id ? ' is-on' : ''}`}
-          onClick={() => setPatch({ sort: o.id, sortDir: '' })}
+          onClick={() => setPatch({ sort: o.id, sortPicked: true, sortDir: '' })}
         >
           {o.short}
         </button>
