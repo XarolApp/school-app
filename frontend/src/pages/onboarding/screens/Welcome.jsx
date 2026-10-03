@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Calculator, Database, ShieldCheck } from 'lucide-react';
 import { ObButton, ObScreen } from '../../../components/onboarding/ObKit';
 import MatchPreview from '../../../components/onboarding/MatchPreview';
-import { PhoneLoop } from '../../../components/landing/ProductScreens';
+import { DemoLoop } from '../../../components/landing/ProductScreens';
 import { STUDENTS_HELPED } from '../../../config/socialProof';
 import { useOnboarding } from '../useOnboarding';
 import { QUIZ_MINUTES } from '../../../config/facts';
@@ -39,7 +39,7 @@ function Welcome() {
       asideVariant="showcase"
       aside={
         <div className="ob-showcase">
-          <PhoneLoop />
+          <DemoLoop />
           <p className="ob-showcase-caption">Takhle to vypadá uvnitř</p>
         </div>
       }

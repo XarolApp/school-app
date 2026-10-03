@@ -1,4 +1,4 @@
-import { useId, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { QUESTIONS, answerTags } from '../../pages/onboarding/quizQuestions';
 
 /**
@@ -20,14 +20,35 @@ import { QUESTIONS, answerTags } from '../../pages/onboarding/quizQuestions';
  * Answered rows carry a tag; unanswered ones are dashed placeholder slots, so
  * the panel shows what is still missing as honestly as what is filled in.
  */
+// Furthest question reached this session. Smart defaults (quizQuestions'
+// defaultValue) pre-fill later answers, but showing them before the student
+// gets there reads as "already answered for you" — so a row only shows its
+// value once its question has been reached.
+const FURTHEST_KEY = 'skolamatch.onboarding.furthestQ';
+function readFurthest() {
+  try {
+    return Number(sessionStorage.getItem(FURTHEST_KEY)) || 0;
+  } catch {
+    return 0;
+  }
+}
+
 function ProfilePanel({ answers, role, currentQuestionIndex, variant = 'panel' }) {
   const [open, setOpen] = useState(false);
   const bodyId = useId();
+  const furthest = Math.max(readFurthest(), currentQuestionIndex ?? 0);
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(FURTHEST_KEY, String(furthest));
+    } catch {
+      // Private mode: rows just reveal by the current question instead.
+    }
+  }, [furthest]);
 
   const rows = QUESTIONS.map((q, i) => ({
     id: q.id,
     label: q.panelLabel || q.id,
-    tags: answerTags(q, answers[q.key], role),
+    tags: i <= furthest ? answerTags(q, answers[q.key], role) : [],
     isCurrent: i === currentQuestionIndex,
   }));
 

@@ -401,7 +401,7 @@ export function DemoLoop() {
     <div className="pm-window pm-window--demo">
       <div className="pm-chrome" aria-hidden="true">
         <i /><i /><i />
-        <span className="pm-url">skolamatch.cz</span>
+        <span className="pm-url">stredninamiru.cz</span>
       </div>
       <Loop
         scenes={['question', 'results', 'detail', 'compare', 'prihlaska']}

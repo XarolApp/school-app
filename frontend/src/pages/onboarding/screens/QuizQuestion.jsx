@@ -75,9 +75,10 @@ function ParentHandoffNudge() {
   return (
     <div className="ob-handoff-nudge">
       <p className="ob-handoff-nudge-lead">
-        <strong>Nejlíp to půjde společně.</strong> Další otázky jsou o tom, co baví vaše dítě —
-        předejte mu teď telefon, ať na ně odpoví samo. Odpovídat můžete i vy: u každé otázky je
-        možnost „Nevím jistě“ a nezodpovězené otázky nikdy nesnižují výsledek.
+        <strong>Vyplňte otázky společně s dítětem.</strong> Další otázky jsou o tom, co ho baví —
+        nejlepší je odpovídat spolu. Nebojte se ale ani vyplnit je sami: u každé otázky je možnost
+        „Nevím jistě“, nezodpovězené otázky nikdy nesnižují výsledek a dítě si může dotazník
+        kdykoli později vyplnit znovu samo.
       </p>
       <div className="ob-handoff-nudge-alt">
         <button type="button" className="ob-btn ob-btn-ghost" disabled>

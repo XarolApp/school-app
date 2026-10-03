@@ -2813,6 +2813,7 @@
   }
   .ob-showcase { display: grid; gap: var(--space-md); justify-items: center; width: 100%; }
   .ob-showcase .pm-phone { width: min(320px, 100%); }
+  .ob-showcase .pm-window { width: min(640px, 100%); }
   .ob-split-aside--showcase > * { animation: ob-rise 700ms cubic-bezier(0.23, 1, 0.32, 1) 150ms both; }
 
   .ob-split--showcase .ob-title-xl { font-size: clamp(48px, 4.4vw, 68px); }

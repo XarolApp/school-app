@@ -101,10 +101,9 @@ const ILLUSTRATIVE_MATCH = [94, 89, 85, 81, 77, 72];
 /** Story timeline position of each presentation page: 0 = hero, 1–5 = the steps. */
 const PAGE_AT = [0, 1.4, 2.6, 3.8, 5.2, 6.5];
 const LAST_PAGE = PAGE_AT.length - 1;
-/** A pause this long between wheel events always starts a new scroll. */
+/** Wheel events closer together than this belong to one gesture (trackpad inertia included). */
 const GESTURE_GAP_MS = 220;
-/** Minimum time between two page changes, counted from the last change that
- *  happened — so scrolling non-stop moves one page every PAGE_LOCK_MS. */
+/** Minimum time between two page changes, so a long swipe cannot skip pages. */
 const PAGE_LOCK_MS = 900;
 
 /** Shoda shown on the map's last page. Illustrative like the results mock — the
@@ -472,13 +471,14 @@ export default function Landing() {
     };
 
     let lastWheel = 0;
-    let lastDelta = 0;
-    let lastMove = -Infinity; // time of the last page change that actually happened
-    let wasBelow = false;
+    let gestureUsed = false; // this gesture already moved a page, or began below the stage
+    let swallow = false; // the gesture that left the stage: keep its inertia from scrolling on
+    let lockUntil = 0;
     let touchY = null;
 
     const atStage = () => window.scrollY <= 2;
     const leave = () => {
+      swallow = true;
       const navH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 0;
       const top = stageRef.current.getBoundingClientRect().bottom + window.scrollY - navH;
       if (lenisRef.current) lenisRef.current.scrollTo(top, { duration: 1.1 });
@@ -486,8 +486,8 @@ export default function Landing() {
     };
     const move = (dir) => {
       const now = performance.now();
-      if (now - lastMove < (reduced ? 150 : PAGE_LOCK_MS)) return;
-      lastMove = now;
+      if (now < lockUntil) return;
+      lockUntil = now + (reduced ? 150 : PAGE_LOCK_MS);
       if (dir > 0 && pageRef.current === LAST_PAGE) leave();
       else goTo(pageRef.current + dir);
     };
@@ -501,29 +501,20 @@ export default function Landing() {
       const dir = Math.sign(e.deltaY);
       if (!dir) return;
       const now = performance.now();
-      const size = Math.abs(e.deltaY);
-      // A trackpad keeps sending ever-smaller deltas after the finger lifts.
-      // Those coast-out events are not a new scroll; a pause, a direction
-      // change or a delta that stops shrinking (finger still moving, or a
-      // mouse wheel's constant notches) is.
-      const fresh = now - lastWheel > GESTURE_GAP_MS || dir !== Math.sign(lastDelta) || size >= Math.abs(lastDelta);
+      if (now - lastWheel > GESTURE_GAP_MS) {
+        gestureUsed = false;
+        swallow = false;
+      }
       lastWheel = now;
-      lastDelta = e.deltaY;
-
-      // Below the stage the page scrolls normally — no lock at all.
       if (!atStage()) {
-        wasBelow = true;
+        if (swallow) block(e);
+        else gestureUsed = true; // arriving at the top mid-gesture must not flip a page
         return;
       }
       block(e);
-      // Coming back up into the stage lands on page 05; the same scroll's
-      // momentum must not carry on to 04.
-      if (wasBelow) {
-        wasBelow = false;
-        lastMove = now;
-        return;
-      }
-      if (fresh) move(dir);
+      if (gestureUsed) return;
+      gestureUsed = true;
+      move(dir);
     };
 
     const onKey = (e) => {
