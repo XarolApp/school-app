@@ -400,7 +400,7 @@ Before real money, do ALL of these:
 8. **Inactive accounts** are not auto-deleted (stated honestly in the policy); add an automatic rule later.
 9. **Minors, both plans, 2026-09-22 decision:** founder chose to let under-18s buy either plan and treat the refund promise as the mitigation instead of gating by age. Both plans now carry the same rule (Terms §7): no age/consent check at checkout, full refund within 30 days of payment if a parent objects, pro-rata after that. **Known residual risk, accepted deliberately:** an adult can falsely claim to have been a minor to invoke this refund path; there is no way to disprove it. The self-service withdrawal button (item 3) now uses a 30-day window for everyone (see below), which delivers the "full refund within 30 days" half automatically; the pro-rata-after-30-days half stays a manual Stripe-dashboard calculation — for a monthly plan, pro-rate only the days remaining in the CURRENT billing cycle, never earlier already-billed months (those were already delivered and had their own closed window).
    - **Refund abuse by minors:** the season-pass "use it all season then refund near the end" loophole is closed by the 30-day/pro-rata structure — refunding after the DiPSy deadline returns almost nothing.
-   - **Still open, logged 2026-09-21:** a genuine device-handoff parent-consent flow (parent clicks pay on their own device via a link the student shares) would be strictly better than what exists now — it makes the parent the real contracting party and would resolve the underlying §31 contract-capacity question, not just the refund cost. Not built; revisit once there's appetite for a bigger feature.
+   - **Built in plan 018 (parent pays via link); whether this changes the §31 contract-capacity analysis needs a human/legal look.**
 10. **Season charge vs account deletion** — mostly closed by deleting the Stripe customer before the user row; only a microsecond window remains.
 11. **Accessibility Act** — micro-enterprises are exempt; revisit if the company grows.
 12. **DSA follow-ups (Cowork file 06):** review authors see the statement of reasons in-app (Art. 17); report form asks for reason + good faith (Art. 16). **2026-09-22: reporting no longer requires an account** — `POST /api/reviews/:id/report` is `optionalAuth`, `review_reports.user_id` is nullable (run the SQL below), anonymous reports still rate-limited by IP via `reviewLimiter`. Still missing: receipt/outcome e-mails to the reporter and the author need SMTP; Art. 11 contact point in Terms §9 needs the operator e-mail; DSC in Czechia will be ČTÚ (Czech implementing law still pending).
@@ -951,52 +951,27 @@ every §5 row except the two carved out below.
 
 ---
 
-## Full share-with-parent link — deferred until parent/child accounts are decided
-- **Found:** 2026-09-10, explicit user decision while scoping plan 006
-- **Urgency:** medium — it is the parent branch's whole conversion mechanic
-- **Effort:** large, and mostly NOT frontend work
-- **Release/context:** feature-brainstorm.md §5, the row below "Share shortlist
-  with parents"; deliberately excluded from
-  [`archive/plans/006-comparison-decision-tools.md`](archive/plans/006-comparison-decision-tools.md)
+## Parent/child share links — built in plan 018
 
-Plan 006 ships the NARROW version: `/sdileni/:token` shows the student's three
-picks, their order, the risk analysis and (opt-in) their notes. That is the
-"Share shortlist with parents" 🔥 row and it is self-contained.
+One account still belongs to the child; no link creates a session or grants app
+access. Results links are read-only and mirror the owner's entitlement when
+opened. Before an account exists, Reveal creates a 30-day snapshot containing
+one school, its score, the fitting-school count and role. A parent payment link
+lets the parent pay for and manage only the child's plan. A parent can also send
+a seven-day questionnaire handoff; the child answers locally on their own device,
+and the parent's onboarding stays locked until the child finishes or the parent
+revokes the link. No email delivery was added.
 
-The BROADER row — one link giving a parent read-only access to *everything* the
-student has done (all saved schools, questionnaire answers and results, match
-scores, every note) — **is deliberately not built**, at the user's explicit
-instruction, because it cannot be designed without first answering questions
-that are commercial, not technical:
-
-- **Who pays, and for what?** If a parent can see the full result set through a
-  share link with no account, the parent-branch paywall has nothing left to
-  sell. If they cannot, the link is worthless as a conversion mechanic. The
-  line between "enough to be worth opening" and "so much there is no reason to
-  pay" is a pricing decision, not an engineering one.
-- **How do a parent and a child sit on one plan?** `users` currently has no
-  concept of a linked account. feature-brainstorm.md §6 lists "Parent account
-  linked to student account" 🔥 and "Multiple children per parent account" ✅ —
-  both unbuilt. Does one purchase cover both people? Does the parent's
-  subscription grant the child access, or the reverse? `subscription_status`
-  lives on a single row today and has no answer for this.
-- **Does it flow both ways?** feature-brainstorm.md's own note says this ships
-  together with the reverse direction (a parent on the parent branch sending
-  the questionnaire to their child's device) because it is the same share-token
-  + cross-device-session plumbing pointed the other way. Building one half now
-  means writing that plumbing twice.
-- **GDPR.** A link exposing a minor's full questionnaire answers is a much
-  bigger disclosure than three school names. Worth checking against the Art. 8
-  work already recorded in the paywall legal entry above.
-
-Until this is resolved, the parent branch keeps the inert, explicitly-unbuilt
-"Poslat odkaz dítěti" control on the first quiz question plus the same-device
-"hand them the phone" nudge (`QuizQuestion.jsx`) — unchanged by plan 006.
-
-**Do not build this piecemeal.** Settle the pricing/account model first, then
-build both directions in one pass.
-
----
+- **Human review:** `frontend/src/pages/Legal.jsx`'s privacy policy must explain
+  bearer-link access, that the payment page shows the child's first name, and
+  the `share_links`, `quiz_handoffs` and `result_snapshots` data. The implementer
+  did not write policy language.
+- **Cleanup:** there is no job for expired `quiz_handoffs`, `result_snapshots` or
+  payment `share_links`. They are filtered at read time; add periodic deletion if
+  these tables grow.
+- **Payment-link revocation:** deleting a payment link removes the parent's
+  ability to cancel or withdraw through it. The student can still cancel in
+  Settings.
 
 ## Share link is copy-only — no email delivery
 - **Found:** 2026-09-10, user decision while scoping plan 006 ("Option A for

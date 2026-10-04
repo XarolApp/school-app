@@ -365,7 +365,10 @@ both working end to end).
 | `application_picks` | `(user_id, school_id)`, `priority` 1–3, optional `obor_kkov`/`obor_nazev` — the 3 schools a student is actually applying to, in binding DiPSy order. No client RLS policy — server.js only, delete-then-insert on every reorder. See plan 006 §1.1 for why this is a separate table from `favorites`. |
 | `school_notes` | `(user_id, school_id)`, free-text `body`, not limited to picked schools |
 | `decision_profile` | one row per user: `jpz_points`, `jpz_source` (`nanecisto`/`ostra`) — the single score the risk analysis compares against. Deliberately one nullable number, no per-subject breakdown (data-minimization for minors) |
-| `shortlist_shares` | revocable read-only share tokens: `token`, `user_id`, `include_notes`, `revoked_at` — powers `/sdileni/:token`, the narrow "share shortlist with parents" feature. Not the broader full-account share link, which is deferred — see `UNFORGET.md` |
+| `shortlist_shares` | revocable read-only share tokens: `token`, `user_id`, `include_notes`, `revoked_at` — powers `/sdileni/:token`, the narrow "share shortlist with parents" feature. Separate from the parent/child links in plan 018. |
+| `share_links` | child-account-owned `results` and `payment` links; service-role only, with no client policy |
+| `quiz_handoffs` | short-lived parent-to-child quiz tokens and owner secrets; contains no personal data or answers |
+| `result_snapshots` | expiring, free-tier pre-account result snapshots with one school and a count |
 | `school_ai_summary` | one row per school: cached `pros`/`cons` (jsonb), `model`, `data_fingerprint`. Written by `scripts/generate-school-proscons.js`, **not generated per request** — see plan 006 §1.3 for why |
 | `school_extracted_details` | one row per school: scraped prose plus nullable structured values. `scripts/extract-school-details.js --structure` derives six fields from stored prose first, then cached markdown only for missing/non-answer text; it updates only those six columns and skips existing values unless `--force`. Club counts require an explicit number; categories require explicit activity-domain wording. `ma_jidelnu` means lunch is available through school (its own canteen or explicitly arranged elsewhere); the case is reported while the original prose remains available. Dorm and university-continuation fields are display-only pending coverage review. The six structure columns were extracted 2026-09-26 for all 219 cached schools (Luna low, flex route) after a stable paired 20-school dry run; coverage: `ma_jidelnu` 50, `ma_koleje` 6, `krouzky_kategorie` 189, `vyukovy_styl_tagy` 77, `vs_pokracuje_pct` 4, `pocet_krouzku` 0 (unusable). Base extraction (the 13 prose/number/boolean fields) was re-run 2026-09-26 on all 219 cached schools with `openai/gpt-6-luna` at low effort on the half-price flex route (`OPENROUTER_EXTRACT_PROVIDER=openai/flex`), reading the **filtered** markdown in `scripts/data/filtered-schools/` — now the script's default input. Re-run `scripts/filter-scraped-schools.js` after every new scrape, or the extractor reads stale text. |
 
@@ -583,6 +586,8 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
    - `GET/POST /api/questionnaire` + `/api/questionnaire/runs/:id` (rename, set
      default, archive) — the standalone questionnaire, behind auth
    - `POST /api/checkout`, `POST /webhooks/stripe` — implemented Stripe Checkout/webhooks; returns 503 only when required live configuration is absent
+   - `/api/share-links` — the signed-in child's results and payment links; `GET /api/shared-results/:token` and `/api/pay-links/:token` are public, standalone recipient surfaces
+   - `/api/handoffs` and `/api/result-snapshots` — public child questionnaire handoff and pre-account result snapshot creation; recipient pages live at `/od-rodice/:token` and `/vysledky/:token`
 
    **The access rule to keep straight:** routes that *read school rows* need
    `requireAccess`; routes that let someone *manage or erase their own data*
@@ -603,6 +608,9 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
 3. **GitHub repo:** `school-app` under account `XarolApp`
 
 4. **React frontend** (`frontend/`) — Vite + React Router
+   - Plan 018 link pages never create a session or give app access. Results links mirror the child's current entitlement when opened; the payment link is the parent's only surface for checkout, cancellation and withdrawal.
+   - Standalone recipient routes: `/vysledky/:token` (read-only results), `/platba-rodice/:token` (parent checkout/plan management) and `/od-rodice/:token` (child quiz handoff).
+
    - Pages: Home, Search, School Detail, Sign Up
    - Navigation bar + Layout wrapping all pages
    - Basic styling (colors, buttons, forms)

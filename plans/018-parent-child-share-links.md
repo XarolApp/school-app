@@ -1,6 +1,6 @@
 # Plan 018 — Parent ↔ child share links: make every "share with…" button real
 
-- **Status:** APPROVED, ready for Codex build (2026-10-03, decisions confirmed by founder)
+- **Status:** IMPLEMENTED — code and local checks complete; browser, Supabase SQL and Stripe test-mode checks remain before rollout
 - **Planner:** Claude Opus 5.5 · **Implementer:** Codex (GPT-6 Luna max, or Sonnet 5 high)
   · **Reviewer:** a separate pass, using the hard-review row because this touches payments
 - **Base commit:** `8c78840`
