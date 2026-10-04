@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import BrandMark from '../components/BrandMark';
 import { Link2Off } from 'lucide-react';
 import { fetchSharedShortlist } from '../api';
 import { cutoffForPick } from '../lib/admissionRisk';
@@ -53,10 +54,7 @@ function SdileniView() {
         <div className="dp-share-topbar">
           <Link to="/" className="navbar-brand">
             <span className="navbar-mark" aria-hidden="true">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="9" cy="12" r="5" />
-                <circle cx="15" cy="12" r="5" />
-              </svg>
+              <BrandMark size={22} />
             </span>
             Střední na míru
           </Link>

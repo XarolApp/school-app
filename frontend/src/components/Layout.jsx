@@ -16,15 +16,13 @@ import {
   X,
 } from 'lucide-react';
 import { useAuth } from './AuthContext';
+import BrandMark from './BrandMark';
 import { COMPARE_EVENT, getCompareSelection } from '../lib/searchPrefs';
 
-function BrandMark() {
+function NavbarMark() {
   return (
     <span className="navbar-mark" aria-hidden="true">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <circle cx="9" cy="12" r="5" />
-        <circle cx="15" cy="12" r="5" />
-      </svg>
+      <BrandMark size={22} />
     </span>
   );
 }
@@ -109,7 +107,7 @@ function Layout() {
       <header className="navbar">
         <div className="navbar-inner">
           <Link to="/" className="navbar-brand" aria-label="Střední na míru – domů">
-            <BrandMark />
+            <NavbarMark />
             <span>Střední na míru</span>
           </Link>
 
