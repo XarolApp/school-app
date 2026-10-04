@@ -1,6 +1,6 @@
 # 019 — Beta feedback, tracking and analytics
 
-**Status:** APPROVED PLAN — not built. Every section below was agreed with the founder on 2026-10-04 (question-by-question).
+**Status:** APPROVED PLAN — steps 2–9 implemented and pushed; stopped before step 10 on 2026-10-05 for the Matching data conflict recorded in UNFORGET.md. Steps 10–12 and complete browser verification remain. Every section below was agreed with the founder on 2026-10-04 (question-by-question).
 **Builds on:** plan 016 (beta program, implemented) and `docs/beta_testing_logic.md`. This plan **extends** 016; it does not replace its access model, tables or routes.
 **Model routing (CLAUDE.md):** planning was Opus 5.5 medium. Build at Sonnet 5 high (large multi-file). Review the tracking/consent and `/admin` access code at Opus 5.5 low.
 
