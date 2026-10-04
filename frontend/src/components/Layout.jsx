@@ -252,7 +252,10 @@ function Layout() {
       </main>
 
       <footer className="app-footer">
-        <span>© {new Date().getFullYear()} Střední na míru</span>
+        <span className="app-footer-brand">
+          <BrandMark size={16} />
+          © {new Date().getFullYear()} Střední na míru
+        </span>
         <nav aria-label="Právní informace">
           <Link to="/obchodni-podminky">Obchodní podmínky</Link>
           <Link to="/ochrana-osobnich-udaju">Ochrana osobních údajů</Link>
