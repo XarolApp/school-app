@@ -1,6 +1,6 @@
 # Plan 018 — Parent ↔ child share links: make every "share with…" button real
 
-- **Status:** IMPLEMENTED — code and local checks complete; browser, Supabase SQL and Stripe test-mode checks remain before rollout
+- **Status:** IMPLEMENTED — code, local checks and review fixes done; Supabase SQL applied 2026-10-04 (3 tables, RLS on). Browser two-device and Stripe test-mode checks remain before rollout
 - **Planner:** Claude Opus 5.5 · **Implementer:** Codex (GPT-6 Luna max, or Sonnet 5 high)
   · **Reviewer:** a separate pass, using the hard-review row because this touches payments
 - **Base commit:** `8c78840`
