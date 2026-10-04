@@ -176,11 +176,15 @@
 }
 
 .ob-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   font-weight: 800;
   letter-spacing: -0.4px;
-  color: var(--accent);
+  color: var(--ink);
   font-size: 18px;
 }
+.ob-logo .ob-brandmark-tile { width: 30px; height: 30px; }
 
 .ob-proof-line {
   font-size: 14px;
@@ -1077,10 +1081,26 @@
 
 .ob-brandmark {
   margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-family: var(--heading);
   font-weight: 600;
   font-size: var(--fs-body-md);
-  color: var(--accent);
+  color: var(--ink);
+}
+
+/* Black-and-white brand tile, same as the site navbar (inverts in dark mode). */
+.ob-brandmark-tile {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: var(--ink);
+  color: var(--bg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 /* --- merged stakes + intent screen ---------------------------------------- */

@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import BrandMark from '../BrandMark';
 import { usePrefersReducedMotion } from './usePrefersReducedMotion';
 
 /**
@@ -79,11 +80,19 @@ export function ObScreen({
             <span aria-hidden="true">←</span>
           </button>
           {hasBar ? (
-            <ObProgress percent={progress} label={progressLabel} />
+            <>
+              <ObProgress percent={progress} label={progressLabel} />
+              <span className="ob-brandmark-tile" title="Střední na míru">
+                <BrandMark size={16} />
+              </span>
+            </>
           ) : (
             <>
               {phase && <span className="ob-phase">{phase}</span>}
-              <span className="ob-brandmark">Střední na míru</span>
+              <span className="ob-brandmark">
+                <span className="ob-brandmark-tile"><BrandMark size={16} /></span>
+                Střední na míru
+              </span>
             </>
           )}
           {login && (
