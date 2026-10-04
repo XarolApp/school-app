@@ -1,3 +1,4 @@
+import { track } from '../lib/betaTrack';
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -581,10 +582,23 @@ function Search() {
       ? [...sortedByChoice.filter((r) => favorites.has(r.id)), ...sortedByChoice.filter((r) => !favorites.has(r.id))]
       : sortedByChoice;
   const n = sortedAll.length;
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const query = filters.query.trim().slice(0, 120);
+      const safe = query && schools.some((school) => school.name.toLowerCase().includes(query.toLowerCase())) ? query : undefined;
+      track('search', { length: filters.query.length, query: safe, results: n });
+      if (!n) track('search_zero', { query: safe });
+    }, 700);
+    return () => clearTimeout(timer);
+  }, [filters.query, n, schools]);
 
-  const setPatch = (patch) => setFilters((f) => ({ ...f, ...patch }));
+  const setPatch = (patch) => {
+    for (const key of Object.keys(patch)) if (key !== 'query') track(key === 'sort' ? 'sort_used' : 'filter_used', key === 'sort' ? { sort: patch.sort } : { filter: key });
+    setFilters((f) => ({ ...f, ...patch }));
+  };
 
   const toggleIn = (key, value) => {
+    track('filter_used', { filter: key });
     setFilters((f) => {
       const cur = f[key];
       const next = cur.includes(value) ? cur.filter((x) => x !== value) : cur.concat([value]);

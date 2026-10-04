@@ -958,6 +958,49 @@ returns void language sql security definer set search_path = public, pg_temp as 
 $$;
 revoke all on function public.purge_beta_events() from public, anon, authenticated;
 grant execute on function public.purge_beta_events() to service_role;
+create or replace function public.record_beta_events(
+  p_user_id uuid, p_anon_id text, p_session_id text, p_events jsonb, p_join boolean
+) returns void language plpgsql security definer set search_path = public, pg_temp as $$
+declare checklist jsonb; event jsonb; key text; events jsonb := p_events;
+begin
+  if p_user_id is not null then
+    if not exists(select 1 from public.users where id = p_user_id and subscription_status = 'beta') then
+      raise exception 'Beta account required.' using errcode = '42501';
+    end if;
+    select p.checklist into checklist from public.beta_profile p where user_id = p_user_id for update;
+    if not found then raise exception 'Beta profile missing.' using errcode = '42501'; end if;
+    if p_join then
+      select events || coalesce(jsonb_agg(jsonb_build_object('name',name,'props',props)), '[]'::jsonb)
+        into events from public.beta_events where anon_id = p_anon_id and user_id is null;
+      update public.beta_events set user_id = p_user_id where anon_id = p_anon_id and user_id is null;
+    end if;
+  end if;
+  insert into public.beta_events(user_id,anon_id,session_id,name,path,props)
+  select p_user_id,p_anon_id,p_session_id,value->>'name',value->>'path',value->'props' from jsonb_array_elements(p_events);
+  if p_user_id is null then return; end if;
+  for event in select value from jsonb_array_elements(events) loop
+    key := case event->>'name'
+      when 'q_finish' then 'dotaznik' when 'result_view' then 'dotaznik'
+      when 'search' then 'vyhledavani' when 'compare_open' then 'porovnani'
+      when 'matrix_weight' then 'matice' when 'prihlaska_pick' then 'prihlaska'
+      when 'theme_change' then 'tema' when 'share_create' then 'sdileni' else null end;
+    if key is not null then checklist := jsonb_set(checklist, array[key], 'true'::jsonb); end if;
+    if event->>'name' = 'school_open' and event->'props'->'id' is not null then
+      checklist := jsonb_set(checklist, '{school_ids}', (select jsonb_agg(distinct value) from jsonb_array_elements(
+        coalesce(checklist->'school_ids','[]'::jsonb) || jsonb_build_array(event->'props'->'id'))));
+      checklist := jsonb_set(checklist, '{detail}', to_jsonb(jsonb_array_length(checklist->'school_ids') >= 3));
+    end if;
+    if event->>'name' = 'paywall_view' then
+      checklist := jsonb_set(checklist, '{paywall_screens}', (select jsonb_agg(distinct value) from jsonb_array_elements(
+        coalesce(checklist->'paywall_screens','[]'::jsonb) || jsonb_build_array(event->'props'->'screen'))));
+      checklist := jsonb_set(checklist, '{platby}', to_jsonb(checklist->'paywall_screens' @> '["hodnota","cesta","plan","zkusebni","platba"]'::jsonb));
+    end if;
+  end loop;
+  update public.beta_profile p set checklist = record_beta_events.checklist where user_id = p_user_id;
+end;
+$$;
+revoke all on function public.record_beta_events(uuid,text,text,jsonb,boolean) from public, anon, authenticated;
+grant execute on function public.record_beta_events(uuid,text,text,jsonb,boolean) to service_role;
 -- END BETA ANALYTICS BLOCK
 
 

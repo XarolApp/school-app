@@ -1,3 +1,4 @@
+import { track } from '../../lib/betaTrack';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { fetchHandoffStatus, fetchSchoolsForMatching, revokeHandoff, saveOnboardingAnswers } from '../../api';
@@ -193,6 +194,10 @@ function OnboardingFlow() {
   }, [answers]);
 
   const stepIndex = stepIndexById(stepId);
+  useEffect(() => {
+    track('ob_step', { step: stepId, role });
+    if (['hodnota','cesta','plan','zkusebni','platba'].includes(stepId)) track('paywall_view', { screen: stepId });
+  }, [stepId, role]);
 
   const profileResolved = !loading && isSignedIn && !profileLoading && !profileError && Boolean(profile);
   const holdTesterPreviewRoute =
@@ -222,6 +227,7 @@ function OnboardingFlow() {
   }, []);
 
   const setAnswer = useCallback((key, value) => {
+    track('ob_answer', { key, skipped: value == null || value === '' || Array.isArray(value) && !value.length });
     setAnswers((prev) => ({ ...prev, [key]: value }));
   }, []);
 

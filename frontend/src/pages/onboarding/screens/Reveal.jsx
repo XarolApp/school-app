@@ -6,6 +6,7 @@ import { FOCUS_CATEGORIES } from '../../../lib/schoolFeatures';
 import { useOnboarding } from '../useOnboarding';
 import { completeHandoff, createResultSnapshot } from '../../../api';
 import { shareUrl } from '../../../lib/shareLink';
+import { track } from '../../../lib/betaTrack';
 
 /**
  * THE REVEAL. The emotional peak of the whole flow.
@@ -114,6 +115,9 @@ function schoolWord(n) {
 
 function Reveal() {
   const { role, ranked, schools, goNext, isDemo, schoolsError, cleanedAnswers, answers } = useOnboarding();
+  useEffect(() => {
+    if (ranked.length && !isDemo) track('result_view', { source: 'onboarding', schools: ranked.slice(0, 10).map((m, i) => ({ id: m.school.id, rank: i + 1 })) });
+  }, [ranked, isDemo]);
   const parent = role === 'parent';
   const [shareState, setShareState] = useState('idle');
 

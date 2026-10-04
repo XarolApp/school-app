@@ -1,6 +1,7 @@
 import { supabase } from './supabaseClient';
 import { DEMO_SCHOOLS } from './lib/demoSchools';
 import { withNames, withNamesAll } from './lib/schoolNames';
+import { track, betaTracker } from './lib/betaTrack';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
@@ -43,6 +44,7 @@ async function request(path, options = {}) {
   const body = await res.json().catch(() => ({}));
 
   if (!res.ok) {
+    if (!path.startsWith('/api/beta/') && !path.startsWith('/api/admin/')) track('api_error', { endpoint: path.split('?')[0], status: res.status });
     if (
       res.status === 402 &&
       (body.code === 'BETA_ACCESS_EXPIRED' || body.code === 'BETA_PROGRAM_ENDED') &&
@@ -59,6 +61,20 @@ async function request(path, options = {}) {
     );
   }
 
+  if (path === '/api/questionnaire' && options.method === 'POST') {
+    track('q_finish', { run_id: body.run?.id });
+    track('result_view', { source: 'questionnaire', schools: (body.run?.matches || []).slice(0, 10).map((m, i) => ({ id: m.school_id, rank: i + 1 })) });
+  }
+  if (path === '/api/me' && options.method === 'PATCH') {
+    const prefs = JSON.parse(options.body || '{}');
+    if (prefs.theme_palette || prefs.theme_mode) track('theme_change', { palette: prefs.theme_palette, theme: prefs.theme_mode });
+  }
+  if (/^\/api\/favorites/.test(path) && ['POST','DELETE'].includes(options.method)) {
+    track('favorite_toggle', { id: options.method === 'POST' ? JSON.parse(options.body).schoolId : Number(path.split('/').at(-1)), added: options.method === 'POST' });
+  }
+  if (path === '/api/picks' && options.method === 'PUT') JSON.parse(options.body).picks.forEach((_, i) => track('prihlaska_pick', { priority: i + 1 }));
+  if ((path === '/api/shares' || path === '/api/share-links') && options.method === 'POST') track('share_create');
+  if (/^\/api\/schools\/\d+\/reviews$/.test(path) && options.method === 'POST') track('review_write', { id: Number(path.split('/')[3]) });
   return body;
 }
 
@@ -67,7 +83,10 @@ export function fetchMe() {
 }
 
 export function fetchBetaSchool(code) {
-  return request(`/api/beta/schools/${encodeURIComponent(code)}`);
+  const anon = betaTracker.startVisit(code);
+  return request(`/api/beta/schools/${encodeURIComponent(code)}?anon=${encodeURIComponent(anon)}`).then((result) => {
+    betaTracker.acceptTicket(result.trackingTicket); return result;
+  });
 }
 
 export function submitBetaFeedback({ type, pageUrl, message }) {

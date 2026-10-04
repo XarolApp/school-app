@@ -1,3 +1,4 @@
+import { track } from '../../lib/betaTrack';
 import { useEffect, useState } from 'react';
 import { Bookmark, Scale, Share2, Check, ListPlus, Globe, Mail, Phone } from 'lucide-react';
 import { addFavorite, removeFavorite, fetchPicks, savePicks } from '../../api';
@@ -154,7 +155,7 @@ function SchoolActions({ school, isFavorite, onFavoriteChange, barRef }) {
       <div className="sd-actions-divider" />
       <div className="sd-actions-links">
         {school.website && (
-          <a href={school.website} target="_blank" rel="noopener noreferrer">
+          <a href={school.website} target="_blank" rel="noopener noreferrer" onClick={() => track('school_web_click', { id: school.id })}>
             <Globe size={16} aria-hidden="true" />
             {school.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}
           </a>

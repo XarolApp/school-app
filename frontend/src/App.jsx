@@ -4,6 +4,7 @@ import Layout from './components/Layout';
 import { AuthProvider } from './components/AuthContext';
 import { ToastProvider } from './components/ToastContext';
 import BetaTools from './components/BetaTools';
+import BetaTracking from './components/BetaTracking';
 import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 // Default landing (3D map). three.js + GSAP load only on this route.
@@ -36,6 +37,7 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
+        <BetaTracking />
         {/* Inside the router so any route can fire a toast, outside <Routes>
             so a toast survives the navigation it is confirming. */}
         <BetaTools>

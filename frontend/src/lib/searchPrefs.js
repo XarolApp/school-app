@@ -6,6 +6,7 @@
  * just on write, in some browsers.
  */
 
+import { track } from './betaTrack.js';
 const RECENT_KEY = 'skolamatch.recentSchools';
 const PRESETS_KEY = 'skolamatch.savedFilters';
 const COMPARE_KEY = 'skolamatch.compareSelection';
@@ -78,6 +79,7 @@ export function toggleCompareSelection(schoolId) {
     throw new Error('Porovnat můžeš nejvýš 4 školy. Nejdřív jednu odeber.');
   }
   const next = ids.includes(schoolId) ? ids.filter((id) => id !== schoolId) : [...ids, schoolId];
+  if (!ids.includes(schoolId)) track('compare_add', { id: schoolId });
   writeJSON(COMPARE_KEY, next);
   if (typeof window !== 'undefined') window.dispatchEvent(new Event(COMPARE_EVENT));
   return next;
@@ -90,6 +92,8 @@ export function toggleCompareSelection(schoolId) {
  */
 export function setCompareSelection(schoolIds) {
   const next = [...new Set(schoolIds)].slice(0, 4);
+  const previous = getCompareSelection();
+  next.filter((id) => !previous.includes(id)).forEach((id) => track('compare_add', { id }));
   writeJSON(COMPARE_KEY, next);
   if (typeof window !== 'undefined') window.dispatchEvent(new Event(COMPARE_EVENT));
   return next;

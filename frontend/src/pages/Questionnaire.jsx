@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
+import { track } from '../lib/betaTrack';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronDown, ChevronUp, ClipboardCheck, Info, RotateCcw } from 'lucide-react';
 import {
@@ -393,6 +394,13 @@ function Questionnaire() {
   const [state, setState] = useState({ loading: true, error: null, data: null });
   const [view, setView] = useState(null);
   const [answers, setAnswers] = useState({});
+  const completed = useRef(false);
+  const lastKey = useRef('');
+  useEffect(() => {
+    if (view !== 'form') return;
+    completed.current = false;
+    return () => { if (!completed.current) track('q_abandon', { key: lastKey.current }); };
+  }, [view]);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
   const [confirmRetake, setConfirmRetake] = useState(false);
@@ -429,9 +437,10 @@ function Questionnaire() {
     window.scrollTo(0, 0);
   }, [view]);
 
-  const setSingle = (id, value) => setAnswers((prev) => ({ ...prev, [id]: value }));
+  const setSingle = (id, value) => { lastKey.current = id; track('q_answer', { key: id, skipped: !value }); setAnswers((prev) => ({ ...prev, [id]: value })); };
 
   const toggleMulti = (id, value, max) => {
+    lastKey.current = id; track('q_answer', { key: id, skipped: false });
     setAnswers((prev) => {
       const current = Array.isArray(prev[id]) ? prev[id] : [];
       const has = current.includes(value);
@@ -441,11 +450,12 @@ function Questionnaire() {
     });
   };
 
-  const setText = (id, value) => setAnswers((prev) => ({ ...prev, [id]: value }));
+  const setText = (id, value) => { lastKey.current = id; track('q_answer', { key: id, skipped: !value }); setAnswers((prev) => ({ ...prev, [id]: value })); };
 
   // Starts every fresh form with the points the account already has (from
   // /prihlaska or an earlier run), so the same number is never asked twice.
   const openForm = () => {
+    track('q_start');
     const body = state.data?.prefill?.body;
     setAnswers(body != null ? { body: String(body) } : {});
     setSubmitError(null);
@@ -464,6 +474,7 @@ function Questionnaire() {
 
     try {
       await submitQuestionnaire(answers);
+      completed.current = true;
       await refresh();
       setAnswers({});
       setView('results');

@@ -1,3 +1,4 @@
+import { track } from '../lib/betaTrack';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, ChevronDown, Heart, Info, Lock, TriangleAlert } from 'lucide-react';
@@ -168,6 +169,7 @@ function Matice() {
   const ranked = useMemo(() => (schools.length ? scoreByWeights(schools, weights) : []), [schools, weights]);
 
   const setWeight = (criterionId, level) => {
+    track('matrix_weight', { criterion: criterionId, level });
     setWeights((prev) => ({ ...prev, [criterionId]: level }));
   };
 

@@ -3,6 +3,7 @@ const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const crypto = require('crypto');
 const { logAiUsage } = require('./lib/aiUsage');
+const { sanitizeEvent, visitorTicket, verifyVisitorTicket } = require('./lib/betaAnalytics');
 require('dotenv').config();
 const { createClient } = require('@supabase/supabase-js');
 const {
@@ -468,8 +469,53 @@ app.get('/api/beta/schools/:code', async (req, res) => {
   res.json({
     ...school,
     ...betaProgramState(settings),
+    trackingTicket: betaProgramState(settings).programActive
+      ? visitorTicket(SERVICE_KEY, code, req.query?.anon) : null,
     serverNow: new Date().toISOString(),
   });
+});
+
+const betaEventsLimiter = rateLimit({ windowMs: 60_000, limit: 1200, standardHeaders: 'draft-7', legacyHeaders: false });
+app.post('/api/beta/events', betaEventsLimiter, async (req, res) => {
+  const body = req.body || {};
+  const token = req.headers.authorization?.replace(/^Bearer /, '') || body.token;
+  let user = null;
+  if (token) {
+    const auth = await supabase.auth.getUser(token);
+    if (auth.error || !auth.data?.user?.email_confirmed_at) return res.status(401).json({ error: 'Neplatné přihlášení.' });
+    user = auth.data.user;
+  }
+  const ticket = verifyVisitorTicket(SERVICE_KEY, body.ticket, body.anon_id);
+  if (!/^[a-f0-9-]{36}$/.test(body.anon_id || '') || !/^[a-f0-9-]{36}$/.test(body.session_id || '') ||
+      !Array.isArray(body.events) || body.events.length < 1 || body.events.length > 40) {
+    return res.status(400).json({ error: 'Neplatné události.' });
+  }
+  let profile = null;
+  if (user) {
+    const result = await supabase.from('users').select('subscription_status, tester_school_code').eq('id', user.id).single();
+    if (result.error) return res.status(503).json({ error: 'Účet nelze ověřit.' });
+    profile = result.data;
+    if (profile?.subscription_status !== 'beta') return res.status(403).json({ error: 'Sledování je pouze pro beta testery.' });
+  } else if (!ticket) return res.status(403).json({ error: 'Chybí beta pozvánka.' });
+  const settings = await readBetaSettings();
+  if (settings.error) return res.status(503).json({ error: 'Testování nelze ověřit.' });
+  if (!betaProgramState(settings.data).programActive) return res.status(410).json({ error: 'Testování skončilo.' });
+  const events = body.events.map(sanitizeEvent);
+  if (events.some((event) => !event)) return res.status(400).json({ error: 'Neznámá nebo příliš velká událost.' });
+  // A free-form search is kept only when it is actually part of a school name.
+  // Unknown queries still retain their length/result count, never personal text.
+  if (events.some((e) => e.props.query)) {
+    const names = await supabase.from('schools').select('name');
+    if (names.error) return res.status(503).json({ error: 'Události nelze ověřit.' });
+    const fold = (s) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    for (const event of events) if (event.props.query && !(names.data || []).some((s) => fold(s.name).includes(fold(event.props.query)))) delete event.props.query;
+  }
+  const result = await supabase.rpc('record_beta_events', {
+    p_user_id: user?.id || null, p_anon_id: body.anon_id, p_session_id: body.session_id,
+    p_events: events, p_join: Boolean(user && ticket && ticket.code === profile.tester_school_code),
+  });
+  if (result.error) return res.status(500).json({ error: 'Události nelze uložit.' });
+  res.status(204).end();
 });
 
 app.get('/test-db', async (req, res) => {
@@ -3120,4 +3166,10 @@ if (stripe) {
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  const purgeEvents = async () => {
+    const { error } = await supabase.rpc('purge_beta_events');
+    if (error) console.error('Beta retention cleanup failed:', error.code || 'database unavailable');
+  };
+  void purgeEvents();
+  setInterval(purgeEvents, 24 * 60 * 60 * 1000).unref();
 });

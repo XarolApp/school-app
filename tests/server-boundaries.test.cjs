@@ -98,6 +98,8 @@ function harness({
       if (name === '@supabase/supabase-js') return { createClient: () => db };
       if (name === 'stripe') return () => stripe;
       if (name === './lib/reviewFilter') return require('../lib/reviewFilter');
+      if (name === './lib/betaAnalytics') return require('../lib/betaAnalytics');
+      if (name === './lib/aiUsage') return require('../lib/aiUsage');
       if (name === './lib/pragueDistricts') return { districtOfSchool: (school) => school.district ?? null };
       if (name === './lib/matching') return { scoreSchools: (_answers, schools) => schools.map((school, index) => ({ school_id: school.id, score: 100 - index })) };
       if (name === './lib/questionnaire') return { REASON_COUNT: 10 };
@@ -824,4 +826,14 @@ test('handoff completion can update only an opened token and wrong owner secrets
   assert.equal(revoke.statusCode, 404);
   const revokeQuery = wrongRevoke.queries.find((query) => query.table === 'quiz_handoffs');
   assert.ok(revokeQuery.calls.some(([method, key, value]) => method === 'eq' && key === 'owner_secret' && value === 'wrong-secret'));
+});
+
+test('normal authenticated account cannot send beta events, even with an invitation ticket', async () => {
+  const { visitorTicket } = require('../lib/betaAnalytics');
+  const anon = '00000000-0000-0000-0000-000000000000';
+  const h = harness({ result: () => ({ data: { subscription_status: 'trialing' }, error: null }) });
+  const response = await h.call('post', '/api/beta/events', { body: { token: 'synthetic', anon_id: anon, session_id: anon,
+    ticket: visitorTicket('synthetic', 'SCHOOL', anon), events: [{ name: 'page_view', path: '/', props: {} }] } });
+  assert.equal(response.statusCode, 403);
+  assert.equal(h.rpcCalls.length, 0);
 });

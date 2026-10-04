@@ -1,3 +1,4 @@
+import { track } from '../lib/betaTrack';
 import { useEffect, useRef, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { fetchSchool, fetchFavorites } from '../api';
@@ -53,6 +54,18 @@ function SchoolDetail() {
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
   }, [id, loadTick, navigate]);
+
+  useEffect(() => {
+    if (!school || !pageRef.current) return;
+    const seen = new Set();
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) if (entry.isIntersecting && !seen.has(entry.target.id)) {
+        seen.add(entry.target.id); track('school_section', { section: entry.target.id });
+      }
+    }, { threshold: 0.25 });
+    pageRef.current.querySelectorAll('[id]').forEach((element) => observer.observe(element));
+    return () => observer.disconnect();
+  }, [school]);
 
   // Favourites need a signed-in account with access; anonymous visitors simply
   // do not see the star.
