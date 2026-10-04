@@ -7,10 +7,11 @@ import BetaInstructions from './BetaInstructions';
 import BetaFeedbackSheet from './BetaFeedbackSheet';
 import BetaMicroQuestions from './BetaMicroQuestions';
 import Modal from './Modal';
+import BetaClosingQuestionnaire from './BetaClosingQuestionnaire';
 
 function BetaToolsUI({ profile, canShow, isPasswordRecovery, userId, refreshProfile, beta, refreshBeta, feedback, openFeedback, closeFeedback }) {
   const location = useLocation(), navigate = useNavigate();
-  const [guidanceOpen,setGuidanceOpen] = useState(false), [guidanceBusy,setGuidanceBusy] = useState(false), [guidanceError,setGuidanceError] = useState('');
+  const [closingOpen,setClosingOpen]=useState(false), [guidanceOpen,setGuidanceOpen] = useState(false), [guidanceBusy,setGuidanceBusy] = useState(false), [guidanceError,setGuidanceError] = useState('');
   const acknowledged = useRef(false), dismissed = useRef(false);
   const parent = ['rodic','ucitel'].includes(beta?.role);
   const [renewed,setRenewed]=useState('');
@@ -37,12 +38,19 @@ function BetaToolsUI({ profile, canShow, isPasswordRecovery, userId, refreshProf
     return () => window.removeEventListener('skolamatch:beta-access-expired',onExpired);
   }, [canShow,userId,location.pathname,navigate,refreshProfile]);
   return <>
+    {canShow && profile.betaProgramActive && beta?.closing_due_at && !beta.closing_done_at && <div className="beta-banner" data-beta-tools role="status">
+      {profile.closingPaused?'Před pokračováním je potřeba závěrečný dotazník.':'Závěrečný dotazník je připravený. Na odpovědi je 24 hodin.'}
+      <button type="button" className="ss-btn ss-btn-primary" onClick={()=>setClosingOpen(true)}>Vyplnit dotazník</button>
+    </div>}
+    <div data-beta-tools><Modal open={Boolean(canShow && !guidanceOpen && beta && !beta.closing_done_at && (closingOpen || profile.closingPaused))} title="Závěrečný dotazník" onDismiss={()=>setClosingOpen(false)} className="beta-modal beta-closing-modal">
+      <BetaClosingQuestionnaire role={beta?.role} onDone={()=>{setClosingOpen(false);void refreshBeta();void refreshProfile();}} />
+    </Modal></div>
     {canShow && profile.betaProgramActive && profile.hasAccess && hoursLeft>0 && hoursLeft<=12 && <div className="beta-banner" data-beta-tools role="status">
       {parent?'Do 12 hodin se Vám přístup pozastaví — stačí poslat jednu připomínku.':'Do 12 hodin se ti přístup pozastaví — stačí poslat jednu připomínku.'}
       <button type="button" className="ss-btn ss-btn-secondary" onClick={openFeedback}>Poslat připomínku</button>
     </div>}
     {renewed && <div className="beta-banner" data-beta-tools role="status">Přístup obnoven do {renewed}.<button type="button" className="ss-btn ss-btn-ghost" onClick={()=>setRenewed('')}>Zavřít</button></div>}
-    <BetaMicroQuestions beta={beta} enabled={Boolean(canShow && profile.betaProgramActive && profile.hasAccess && !guidanceOpen && !feedback.open)} onRefresh={refreshBeta} onRenew={(result)=>{void refreshProfile();setRenewed(new Date(result.testerAccessUntil).toLocaleString('cs-CZ'));}} />
+    <BetaMicroQuestions beta={beta} enabled={Boolean(canShow && profile.betaProgramActive && profile.hasAccess && !guidanceOpen && !feedback.open && !closingOpen && !profile.closingPaused)} onRefresh={refreshBeta} onRenew={(result)=>{void refreshProfile();setRenewed(new Date(result.testerAccessUntil).toLocaleString('cs-CZ'));}} />
     {canShow && profile.betaProgramActive && <div data-beta-tools className={`beta-floating-tools${location.pathname.startsWith('/onboarding/') ? ' is-onboarding' : ''}`}>
       <button type="button" className="beta-help-trigger" aria-label="Pokyny k beta testování" onClick={() => setGuidanceOpen(true)}>?</button>
       <button type="button" className="beta-feedback-trigger" onClick={() => { setGuidanceOpen(false); openFeedback(); }}>Zpětná vazba</button>

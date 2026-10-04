@@ -137,3 +137,16 @@
 .beta-soft-gate textarea { display:block; width:100%; min-height:140px; margin-top:8px; }
 .beta-banner { display:flex; gap:16px; flex-wrap:wrap; align-items:center; justify-content:center; }
 @media(max-width:600px) { .beta-micro { right:16px; bottom:88px; padding:20px; } }
+
+.beta-closing { display:grid; gap:24px; }
+.beta-closing .ss-input { display:block; width:100%; margin-top:8px; }
+.beta-closing-field { border:0; padding:0; margin:0; display:grid; gap:12px; }
+.beta-closing-field legend { margin-bottom:12px; font-weight:600; }
+.beta-closing-options { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+.beta-closing-honest { border-left:3px solid var(--acc); padding-left:16px; color:var(--ink2); }
+.beta-closing-actions { display:flex; gap:12px; flex-wrap:wrap; justify-content:flex-end; }
+.beta-theme-previews { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.beta-theme-preview { border:2px solid; border-radius:var(--r-card); padding:16px; display:grid; gap:12px; cursor:pointer; }
+.beta-theme-mini { padding:12px; border-radius:var(--r-option); font-size:13px; display:grid; gap:12px; }
+.beta-theme-mini span { padding:8px; border-radius:var(--r-button); text-align:center; }
+@media(max-width:600px) { .beta-closing-options { grid-template-columns:1fr; } .beta-theme-preview { padding:12px; } }

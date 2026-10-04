@@ -98,6 +98,7 @@ function harness({
       if (name === '@supabase/supabase-js') return { createClient: () => db };
       if (name === 'stripe') return () => stripe;
       if (name === './lib/reviewFilter') return require('../lib/reviewFilter');
+      if (name === './lib/betaClosing') return require('../lib/betaClosing');
       if (name === './lib/betaAnalytics') return require('../lib/betaAnalytics');
       if (name === './lib/aiUsage') return require('../lib/aiUsage');
       if (name === './lib/pragueDistricts') return { districtOfSchool: (school) => school.district ?? null };

@@ -995,6 +995,10 @@ begin
       checklist := jsonb_set(checklist, '{platby}', to_jsonb(checklist->'paywall_screens' @> '["hodnota","cesta","plan","zkusebni","platba"]'::jsonb));
     end if;
   end loop;
+  if checklist @> '{"dotaznik":true,"detail":true}'::jsonb and
+    (checklist @> '{"porovnani":true}'::jsonb or checklist @> '{"matice":true}'::jsonb) and not checklist ? 'core_completed_at' then
+    checklist := jsonb_set(checklist,'{core_completed_at}',to_jsonb(clock_timestamp()));
+  end if;
   update public.beta_profile p set checklist = record_beta_events.checklist where user_id = p_user_id;
 end;
 $$;
@@ -1042,6 +1046,87 @@ end;
 $$;
 revoke all on function public.submit_beta_micro(uuid,text,text,text,text) from public,anon,authenticated;
 grant execute on function public.submit_beta_micro(uuid,text,text,text,text) to service_role;
+-- Earliest eligible instant, rather than the time a browser happens to poll.
+create or replace function public.beta_closing_deadline(uid uuid)
+returns timestamptz language sql stable security definer set search_path=public,pg_temp as $$
+  select case when p.closing_done_at is not null then null else coalesce(p.closing_due_at,
+    least(greatest(u.created_at,s.ends_at-interval '2 days'),
+      case when p.checklist @> '{"dotaznik":true,"detail":true}'::jsonb and
+        (p.checklist @> '{"porovnani":true}'::jsonb or p.checklist @> '{"matice":true}'::jsonb)
+      then greatest(u.created_at+interval '2 days',coalesce((p.checklist->>'core_completed_at')::timestamptz,now())) else null end)) end
+  from public.users u join public.beta_profile p on p.user_id=u.id
+  cross join public.beta_program_settings s where u.id=uid and u.subscription_status='beta' and s.singleton;
+$$;
+revoke all on function public.beta_closing_deadline(uuid) from public,anon,authenticated;
+grant execute on function public.beta_closing_deadline(uuid) to service_role;
+create or replace function public.sync_beta_closing(p_user_id uuid)
+returns void language sql security definer set search_path=public,pg_temp as $$
+  update public.beta_profile set closing_due_at=public.beta_closing_deadline(p_user_id)
+  where user_id=p_user_id and closing_done_at is null and closing_due_at is null
+    and public.beta_closing_deadline(p_user_id)<=now();
+$$;
+revoke all on function public.sync_beta_closing(uuid) from public,anon,authenticated;
+grant execute on function public.sync_beta_closing(uuid) to service_role;
+create or replace function public.submit_beta_closing(p_user_id uuid,p_answers jsonb,p_review jsonb)
+returns void language plpgsql security definer set search_path=public,pg_temp as $$
+begin
+  perform 1 from public.users u join auth.users a on a.id=u.id where u.id=p_user_id
+    and u.subscription_status='beta' and a.email_confirmed_at is not null for update of u;
+  if not found then raise exception 'Beta required.' using errcode='42501'; end if;
+  if not exists(select 1 from public.beta_program_settings where singleton and ends_at>clock_timestamp()) then
+    raise exception 'Program ended.' using errcode='55000'; end if;
+  perform 1 from public.beta_profile where user_id=p_user_id and closing_done_at is null for update;
+  if not found then raise exception 'Already completed.' using errcode='23505'; end if;
+  if jsonb_typeof(p_answers) is distinct from 'object' or octet_length(p_answers::text)>24000 then
+    raise exception 'Answers invalid.' using errcode='22023'; end if;
+  insert into public.beta_closing_answers(user_id,answers) values(p_user_id,p_answers);
+  if p_review is not null then
+    insert into public.beta_reviews(user_id,stars,body,consent_publish,display_label,age_group)
+    values(p_user_id,(p_review->>'stars')::integer,p_review->>'body',(p_review->>'consent_publish')::boolean,p_review->>'display_label',p_review->>'age_group');
+  end if;
+  update public.beta_profile set closing_done_at=clock_timestamp() where user_id=p_user_id;
+end;
+$$;
+revoke all on function public.submit_beta_closing(uuid,jsonb,jsonb) from public,anon,authenticated;
+grant execute on function public.submit_beta_closing(uuid,jsonb,jsonb) to service_role;
+create or replace function public.has_access(uid uuid)
+returns boolean
+language sql
+stable
+security definer
+set search_path = public, pg_temp
+as $$
+  select exists (
+    select 1
+    from public.users u
+    where u.id = uid
+      and case
+        when u.subscription_status = 'beta' then
+          u.tester_access_until > now()
+          and coalesce(public.beta_closing_deadline(uid)+interval '24 hours'>now(),true)
+          and exists (
+            select 1 from public.beta_program_settings s
+            where s.singleton = true and s.ends_at > now()
+          )
+          and exists (
+            select 1 from auth.users a
+            where a.id = u.id and a.email_confirmed_at is not null
+          )
+        else
+          u.trial_expires_at > now()
+          or u.subscription_status = 'developer'
+          or (
+            u.subscription_status in ('active', 'season')
+            and (u.access_expires_at is null or u.access_expires_at > now())
+          )
+          or (
+            u.subscription_status = 'past_due'
+            and u.access_expires_at is not null
+            and u.access_expires_at > now()
+          )
+        end
+  );
+$$;
 -- END BETA ANALYTICS BLOCK
 
 

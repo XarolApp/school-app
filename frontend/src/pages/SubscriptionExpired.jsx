@@ -230,7 +230,7 @@ function BetaPaused() {
         </div>
         <section className="panel panel-lg stack">
           {deadline && <p>Program končí {deadline} (pražského času).</p>}
-          {!programEnded && <BetaSoftGate />}
+          {!programEnded && !profile.closingPaused && <BetaSoftGate />}
           {profile.betaFeedbackFormUrl && (
             <a href={profile.betaFeedbackFormUrl} target="_blank" rel="noreferrer">
               Otevřít externí formulář (přístup neobnoví)

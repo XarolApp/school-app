@@ -1,3 +1,4 @@
+const { closingPayload } = require('./lib/betaClosing');
 const express = require('express');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
@@ -360,6 +361,14 @@ async function optionalAuth(req, res, next) {
   next();
 }
 
+async function closingStateFor(userId) {
+  const sync=await supabase.rpc('sync_beta_closing',{p_user_id:userId});
+  if (sync.error) return {error:sync.error};
+  const {data,error}=await supabase.from('beta_profile').select('closing_due_at,closing_done_at').eq('user_id',userId).single();
+  return {error,closingDueAt:data?.closing_due_at,closingDoneAt:data?.closing_done_at,
+    closingPaused:Boolean(data?.closing_due_at && !data.closing_done_at && new Date(data.closing_due_at).getTime()+86400000<=Date.now())};
+}
+
 // One account-access rule shared by protected routes and public result links.
 async function accessStateFor(userId, email) {
   const { data: profile, error } = await supabase
@@ -385,6 +394,9 @@ async function accessStateFor(userId, email) {
         profile,
       };
     }
+    const closing=await closingStateFor(userId);
+    if (closing.error) return {hasAccess:false,httpStatus:503,body:{error:'Dotazník nelze ověřit.'},profile};
+    if (closing.closingPaused) return {hasAccess:false,httpStatus:402,body:{error:'Nejprve vyplňte závěrečný dotazník.',code:'BETA_ACCESS_EXPIRED'},profile};
     const beta = betaAccessState(profile, settings);
     if (!beta.hasAccess) {
       return {
@@ -486,6 +498,8 @@ async function requireBetaTester(req, res, next) {
   next();
 }
 app.get('/api/beta/me', requireAuth, requireBetaTester, async (req, res) => {
+  const sync=await supabase.rpc('sync_beta_closing',{p_user_id:req.user.id});
+  if (sync.error) return res.status(503).json({error:'Dotazník nelze ověřit.'});
   const [profile, feedback] = await Promise.all([
     supabase.from('beta_profile').select('*').eq('user_id', req.user.id).single(),
     supabase.from('beta_feedback').select('id, kind, page_url, message, status, admin_reply, replied_at, created_at, source')
@@ -642,7 +656,10 @@ app.get('/api/me', requireAuth, async (req, res) => {
         code: 'BETA_SETTINGS_UNAVAILABLE',
       });
     }
-    beta = betaAccessState(profile, settings, now);
+    const closing=await closingStateFor(req.user.id);
+    if (closing.error) return res.status(503).json({error:'Dotazník nelze ověřit.'});
+    beta = {...betaAccessState(profile, settings, now),...closing};
+    if (closing.closingPaused) beta.hasAccess=false;
   }
   const trialActive = !isTester && new Date(profile.trial_expires_at) > now;
   const subscribed = !isTester && paidAccessActive(profile);
@@ -834,6 +851,15 @@ app.post('/api/beta/feedback', requireAuth, betaFeedbackLimiter, async (req, res
   res.status(201).json(data);
 });
 
+app.post('/api/beta/closing', requireAuth, requireBetaTester, betaFeedbackLimiter, async (req,res) => {
+  const profile=await supabase.from('beta_profile').select('role').eq('user_id',req.user.id).single();
+  if (profile.error || !profile.data) return res.status(503).json({error:'Testování nelze ověřit.'});
+  const payload=closingPayload(req.body,profile.data.role);
+  if (!payload) return res.status(400).json({error:'Zkontrolujte odpovědi a hodnocení.'});
+  const {error}=await supabase.rpc('submit_beta_closing',{p_user_id:req.user.id,p_answers:payload.answers,p_review:payload.review});
+  if (error) return res.status(error.code==='23505'?409:error.code==='55000'?410:500).json({error:'Dotazník nelze uložit.'});
+  res.status(201).json({saved:true});
+});
 app.post('/api/beta/micro', requireAuth, requireBetaTester, betaFeedbackLimiter, async (req,res) => {
   const { id, session_id: session, action, answer } = req.body || {};
   if (!['result','detail','compare','matrix','paywall','theme'].includes(id) || !/^[a-f0-9-]{36}$/.test(session || '') ||
