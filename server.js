@@ -142,6 +142,13 @@ function paidAccessActive(profile) {
   return new Date(profile.access_expires_at) > new Date();
 }
 
+
+function hasLivePlan(profile) {
+  const seasonScheduled = profile?.plan_id === 'season' && Boolean(profile.season_charge_due_at);
+  return (paidAccessActive(profile) && !profile.cancel_at_period_end) || seasonScheduled;
+}
+
+
 /**
  * End of the access window for a season pass: 31 March 23:59:59 Europe/Prague,
  * the first one strictly more than 30 days after `from`.
@@ -340,57 +347,75 @@ async function optionalAuth(req, res, next) {
   next();
 }
 
-// Confirms the account is still inside its trial or has paid. This is the
-// paywall for every route it guards, so bypassing the frontend gains nothing.
-async function requireAccess(req, res, next) {
+// One account-access rule shared by protected routes and public result links.
+async function accessStateFor(userId, email) {
   const { data: profile, error } = await supabase
     .from('users')
     .select('trial_expires_at, subscription_status, access_expires_at, tester_access_until, tester_school_code, created_at')
-    .eq('id', req.user.id)
+    .eq('id', userId)
     .single();
 
   if (error || !profile) {
-    return res.status(403).json({ error: 'Profil účtu nenalezen.' });
+    return { hasAccess: false, httpStatus: 403, body: { error: 'Profil účtu nenalezen.' }, profile: null };
   }
 
   if (profile.subscription_status === 'beta') {
     const { data: settings, error: settingsError } = await readBetaSettings();
     if (settingsError || !settings) {
-      return res.status(503).json({
-        error: 'Beta přístup se teď nepodařilo ověřit. Zkus to prosím později.',
-        code: 'BETA_SETTINGS_UNAVAILABLE',
-      });
+      return {
+        hasAccess: false,
+        httpStatus: 503,
+        body: {
+          error: 'Beta přístup se teď nepodařilo ověřit. Zkus to prosím později.',
+          code: 'BETA_SETTINGS_UNAVAILABLE',
+        },
+        profile,
+      };
     }
     const beta = betaAccessState(profile, settings);
     if (!beta.hasAccess) {
-      return res.status(402).json({
-        error: beta.programEnded
-          ? 'Beta program skončil.'
-          : 'Testovací přístup se pozastavil. Zanech zpětnou vazbu a můžeš pokračovat.',
-        code: beta.programEnded ? 'BETA_PROGRAM_ENDED' : 'BETA_ACCESS_EXPIRED',
-      });
+      return {
+        hasAccess: false,
+        httpStatus: 402,
+        body: {
+          error: beta.programEnded
+            ? 'Beta program skončil.'
+            : 'Testovací přístup se pozastavil. Zanech zpětnou vazbu a můžeš pokračovat.',
+          code: beta.programEnded ? 'BETA_PROGRAM_ENDED' : 'BETA_ACCESS_EXPIRED',
+        },
+        profile,
+      };
     }
-    req.profile = profile;
-    return next();
+    return { hasAccess: true, httpStatus: 200, body: null, profile };
   }
 
-  if (isDeveloperEmail(req.user.email)) {
-    req.profile = { ...profile, subscription_status: 'developer' };
-    return next();
+  if (isDeveloperEmail(email)) {
+    return {
+      hasAccess: true,
+      httpStatus: 200,
+      body: null,
+      profile: { ...profile, subscription_status: 'developer' },
+    };
   }
 
   const trialActive = new Date(profile.trial_expires_at) > new Date();
-
   if (!trialActive && !paidAccessActive(profile)) {
-    // 402 Payment Required — the frontend turns this into the paywall screen.
-    return res.status(402).json({
-      error: 'Zkušební období skončilo.',
-      code: 'PAYMENT_REQUIRED',
-    });
+    return {
+      hasAccess: false,
+      httpStatus: 402,
+      body: { error: 'Zkušební období skončilo.', code: 'PAYMENT_REQUIRED' },
+      profile,
+    };
   }
 
-  req.profile = profile;
-  next();
+  return { hasAccess: true, httpStatus: 200, body: null, profile };
+}
+
+async function requireAccess(req, res, next) {
+  const access = await accessStateFor(req.user.id, req.user.email);
+  if (!access.hasAccess) return res.status(access.httpStatus).json(access.body);
+  req.profile = access.profile;
+  return next();
 }
 
 /* ---------------------------------------------------------------------------
@@ -2108,11 +2133,9 @@ app.post('/api/me/redeem-beta-code', requireAuth, (req, res) => {
   });
 });
 
-app.post('/api/checkout', checkoutLimiter, requireAuth, async (req, res) => {
-  const { planId, returnTo } = req.body || {};
-
+async function createCheckoutForUser({ userId, email, planId, successPath, cancelPath }) {
   if (planId !== 'season' && planId !== 'monthly') {
-    return res.status(400).json({ error: 'Neplatný plán.' });
+    return { status: 400, body: { error: 'Neplatný plán.' } };
   }
 
   const { data: profile, error: profileError } = await supabase
@@ -2120,124 +2143,128 @@ app.post('/api/checkout', checkoutLimiter, requireAuth, async (req, res) => {
     .select(
       'stripe_customer_id, email, subscription_status, access_expires_at, plan_id, season_charge_due_at, cancel_at_period_end'
     )
-    .eq('id', req.user.id)
+    .eq('id', userId)
     .single();
 
   if (profileError) {
-    return res.status(500).json({ error: 'Nepodařilo se ověřit platební profil. Zkus to prosím znovu.' });
+    return {
+      status: 500,
+      body: { error: 'Nepodařilo se ověřit platební profil. Zkus to prosím znovu.' },
+    };
   }
 
   if (profile.subscription_status === 'beta') {
-    return res.status(403).json({
-      error: 'Beta účty nemohou zahájit placený přístup.',
-      code: 'BETA_CHECKOUT_DISABLED',
-    });
+    return {
+      status: 403,
+      body: {
+        error: 'Beta účty nemohou zahájit placený přístup.',
+        code: 'BETA_CHECKOUT_DISABLED',
+      },
+    };
   }
 
   if (!stripe) {
-    return res.status(503).json({
-      error: 'Platby zatím nejsou nastavené.',
-      code: 'STRIPE_NOT_CONFIGURED',
-    });
+    return {
+      status: 503,
+      body: { error: 'Platby zatím nejsou nastavené.', code: 'STRIPE_NOT_CONFIGURED' },
+    };
   }
 
-  // Never sell to an account that already has a live plan — that is how one
-  // person ends up paying twice. A monthly plan already cancelled at period end
-  // may buy again; everything else paid or scheduled may not.
-  const seasonScheduled = profile.plan_id === 'season' && Boolean(profile.season_charge_due_at);
-  if ((paidAccessActive(profile) && !profile.cancel_at_period_end) || seasonScheduled) {
-    return res.status(409).json({
-      error: 'Už máš aktivní plán. Spravuj ho v Nastavení.',
-      code: 'ALREADY_SUBSCRIBED',
-    });
+  if (hasLivePlan(profile)) {
+    return {
+      status: 409,
+      body: { error: 'Už máš aktivní plán. Spravuj ho v Nastavení.', code: 'ALREADY_SUBSCRIBED' },
+    };
   }
 
-  const safeReturnTo = sanitizeReturnTo(returnTo);
+  const billingCustomer = profile?.stripe_customer_id
+    ? { customer: profile.stripe_customer_id }
+    : email
+      ? { customer_email: email }
+      : {};
+  const successUrl = FRONTEND_URL + successPath + '?platba=ok';
+  const cancelUrl = FRONTEND_URL + cancelPath;
 
-  // Season: no Stripe Price, no subscription — mode:'setup' just saves a card.
-  // See the block comment above for why this replaced the subscription+trial
-  // approach.
   if (planId === 'season') {
     try {
       const session = await stripe.checkout.sessions.create({
         mode: 'setup',
         currency: 'czk',
-        customer: profile?.stripe_customer_id || undefined,
-        customer_email: profile?.stripe_customer_id ? undefined : req.user.email,
-        success_url: `${FRONTEND_URL}${safeReturnTo}?platba=ok`,
-        cancel_url: `${FRONTEND_URL}/predplatne`,
-        client_reference_id: req.user.id,
-        metadata: { plan_id: 'season', app_user_id: req.user.id },
+        ...billingCustomer,
+        success_url: successUrl,
+        cancel_url: cancelUrl,
+        client_reference_id: userId,
+        metadata: { plan_id: 'season', app_user_id: userId },
         custom_text: {
           submit: {
-            message: `Uložíme jen platební metodu, nic se nestrhává hned. Za ${SEASON_TRIAL_DAYS} dny proběhne jednorázová platba ${SEASON_PRICE_CZK} Kč za celou sezónu (září–březen) — pak už nic dalšího.`,
+            message: 'Uložíme jen platební metodu, nic se nestrhává hned. Za ' +
+              SEASON_TRIAL_DAYS + ' dny proběhne jednorázová platba ' +
+              SEASON_PRICE_CZK + ' Kč za celou sezónu (září–březen) — pak už nic dalšího.',
           },
         },
       });
-      return res.json({ url: session.url });
+      return { status: 200, body: { url: session.url } };
     } catch (err) {
-      return res.status(500).json({ error: err.message });
+      return { status: 500, body: { error: err.message } };
     }
   }
 
   const priceId = process.env[PLAN_PRICE_ENV[planId]];
   if (!priceId) {
-    return res.status(503).json({
-      error: 'Platby zatím nejsou nastavené.',
-      code: 'STRIPE_NOT_CONFIGURED',
-    });
+    return {
+      status: 503,
+      body: { error: 'Platby zatím nejsou nastavené.', code: 'STRIPE_NOT_CONFIGURED' },
+    };
   }
 
   try {
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
       line_items: [{ price: priceId, quantity: 1 }],
-      customer: profile?.stripe_customer_id || undefined,
-      customer_email: profile?.stripe_customer_id ? undefined : req.user.email,
-      success_url: `${FRONTEND_URL}${safeReturnTo}?platba=ok`,
-      cancel_url: `${FRONTEND_URL}/predplatne`,
-      // Ties the Stripe session back to our account when the webhook fires.
-      client_reference_id: req.user.id,
+      ...billingCustomer,
+      success_url: successUrl,
+      cancel_url: cancelUrl,
+      client_reference_id: userId,
       subscription_data: {
-        metadata: { plan_id: planId, app_user_id: req.user.id },
+        metadata: { plan_id: planId, app_user_id: userId },
       },
     });
-
-    res.json({ url: session.url });
+    return { status: 200, body: { url: session.url } };
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    return { status: 500, body: { error: err.message } };
   }
+}
+
+app.post('/api/checkout', checkoutLimiter, requireAuth, async (req, res) => {
+  const { planId, returnTo } = req.body || {};
+  const result = await createCheckoutForUser({
+    userId: req.user.id,
+    email: req.user.email,
+    planId,
+    successPath: sanitizeReturnTo(returnTo),
+    cancelPath: '/predplatne',
+  });
+  return res.status(result.status).json(result.body);
 });
 
 // requireAuth only, deliberately NOT requireAccess: an account whose access has
-// already lapsed is exactly the account that most needs to be able to cancel
-// (e.g. a season pass mid-trial). Season pass exception aside (below), never
-// write subscription_status here — the webhook is otherwise the only writer
-// of payment state; this only tells Stripe what to do and lets that flow back
-// through the webhook like every other change.
-app.post('/api/subscription/cancel', requireAuth, async (req, res) => {
+// lapsed is exactly the account that most needs to be able to cancel. Keep the
+// Stripe and season-trial behavior shared with the parent's payment-link route.
+async function cancelPlanForUser(userId) {
   if (!stripe) {
-    return res.status(503).json({
-      error: 'Platby zatím nejsou nastavené.',
-      code: 'STRIPE_NOT_CONFIGURED',
-    });
+    return { status: 503, body: { error: 'Platby zatím nejsou nastavené.', code: 'STRIPE_NOT_CONFIGURED' } };
   }
 
   const { data: profile, error: profileError } = await supabase
     .from('users')
     .select('stripe_subscription_id, plan_id, subscription_status')
-    .eq('id', req.user.id)
+    .eq('id', userId)
     .single();
 
-  if (profileError) return res.status(500).json({ error: 'Nepodařilo se ověřit předplatné. Zkus to prosím znovu.' });
+  if (profileError) {
+    return { status: 500, body: { error: 'Nepodařilo se ověřit předplatné. Zkus to prosím znovu.' } };
+  }
 
-  // Season, pre-charge: there is no Stripe subscription to cancel (mode:
-  // 'setup' never created one) — only a scheduled future charge. Clearing
-  // season_charge_due_at is what stops chargeDueSeasonPasses() from ever
-  // picking this account up. This is the one place other than the webhook
-  // that writes subscription_status, because there is no Stripe event to
-  // react to here — the whole point is that nothing happened on Stripe's side
-  // yet.
   if (profile?.plan_id === 'season' && profile.subscription_status === 'trialing') {
     const { error } = await supabase
       .from('users')
@@ -2247,24 +2274,22 @@ app.post('/api/subscription/cancel', requireAuth, async (req, res) => {
         season_charge_due_at: null,
         stripe_payment_method_id: null,
       })
-      .eq('id', req.user.id);
-    if (error) return res.status(500).json({ error: 'Předplatné se nepodařilo zrušit. Zkus to prosím znovu.' });
-    return res.json({ cancelled: 'immediately', accessUntil: null });
+      .eq('id', userId);
+    if (error) {
+      return { status: 500, body: { error: 'Předplatné se nepodařilo zrušit. Zkus to prosím znovu.' } };
+    }
+    return { status: 200, body: { cancelled: 'immediately', accessUntil: null } };
   }
 
   if (!profile?.stripe_subscription_id) {
-    return res.status(400).json({ error: 'Žádné aktivní předplatné k zrušení.' });
+    return { status: 400, body: { error: 'Žádné aktivní předplatné k zrušení.' } };
   }
 
   try {
     const sub = await stripe.subscriptions.retrieve(profile.stripe_subscription_id);
-
     if (sub.status === 'trialing') {
-      // Still in the free trial — nothing has been charged, so cancel outright
-      // rather than waiting for a period end that would otherwise trigger the
-      // very charge the user is trying to avoid.
       await stripe.subscriptions.cancel(profile.stripe_subscription_id);
-      return res.json({ cancelled: 'immediately', accessUntil: null });
+      return { status: 200, body: { cancelled: 'immediately', accessUntil: null } };
     }
 
     const updated = await stripe.subscriptions.update(profile.stripe_subscription_id, {
@@ -2273,21 +2298,24 @@ app.post('/api/subscription/cancel', requireAuth, async (req, res) => {
     const accessUntil = updated.current_period_end
       ? new Date(updated.current_period_end * 1000).toISOString()
       : null;
-    res.json({ cancelled: 'at_period_end', accessUntil });
+    return { status: 200, body: { cancelled: 'at_period_end', accessUntil } };
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    return { status: 500, body: { error: err.message } };
   }
+}
+
+app.post('/api/subscription/cancel', requireAuth, async (req, res) => {
+  const result = await cancelPlanForUser(req.user.id);
+  return res.status(result.status).json(result.body);
 });
 
 /**
- * Statutory 14-day withdrawal (Terms §6). No reason asked, no deduction for use:
- * stops all billing, refunds everything paid for this plan, ends access. Safe to
- * retry — the Stripe cancel is skipped once cancelled and each refund carries a
- * stable idempotency key, so a failure halfway can simply be repeated.
+ * Statutory 14-day withdrawal (Terms §6). The account route and parent link
+ * call the same operation so a payer can cancel or withdraw from their surface.
  */
-app.post('/api/subscription/withdraw', checkoutLimiter, requireAuth, async (req, res) => {
+async function withdrawPlanForUser(userId) {
   if (!stripe) {
-    return res.status(503).json({ error: 'Platby zatím nejsou nastavené.', code: 'STRIPE_NOT_CONFIGURED' });
+    return { status: 503, body: { error: 'Platby zatím nejsou nastavené.', code: 'STRIPE_NOT_CONFIGURED' } };
   }
 
   const { data: profile, error: profileError } = await supabase
@@ -2296,15 +2324,20 @@ app.post('/api/subscription/withdraw', checkoutLimiter, requireAuth, async (req,
       'stripe_customer_id, stripe_subscription_id, plan_id, subscription_status, ' +
         'plan_started_at, last_paid_at'
     )
-    .eq('id', req.user.id)
+    .eq('id', userId)
     .single();
-  if (profileError) return res.status(500).json({ error: 'Nepodařilo se ověřit předplatné. Zkus to prosím znovu.' });
+  if (profileError) {
+    return { status: 500, body: { error: 'Nepodařilo se ověřit předplatné. Zkus to prosím znovu.' } };
+  }
 
   if (!canWithdraw(profile)) {
-    return res.status(400).json({
-      code: 'NOT_WITHDRAWABLE',
-      error: 'Lhůta 14 dní už uplynula nebo není od čeho odstoupit. Napiš nám prosím e-mailem.',
-    });
+    return {
+      status: 400,
+      body: {
+        code: 'NOT_WITHDRAWABLE',
+        error: 'Lhůta 14 dní už uplynula nebo není od čeho odstoupit. Napiš nám prosím e-mailem.',
+      },
+    };
   }
 
   try {
@@ -2328,7 +2361,7 @@ app.post('/api/subscription/withdraw', checkoutLimiter, requireAuth, async (req,
         try {
           const refund = await stripe.refunds.create(
             { payment_intent: intent.id, reason: 'requested_by_customer' },
-            { idempotencyKey: `withdraw:${intent.id}` }
+            { idempotencyKey: 'withdraw:' + intent.id }
           );
           refundedHaleru += refund.amount;
         } catch (err) {
@@ -2347,14 +2380,25 @@ app.post('/api/subscription/withdraw', checkoutLimiter, requireAuth, async (req,
         stripe_payment_method_id: null,
         cancel_at_period_end: false,
       })
-      .eq('id', req.user.id);
+      .eq('id', userId);
     if (error) throw error;
 
-    res.json({ withdrawn: true, refundedCzk: refundedHaleru / 100, at: new Date().toISOString() });
+    return {
+      status: 200,
+      body: { withdrawn: true, refundedCzk: refundedHaleru / 100, at: new Date().toISOString() },
+    };
   } catch (err) {
     console.error('Withdrawal failed:', err.message);
-    res.status(502).json({ error: 'Odstoupení se nepodařilo dokončit. Zkus to prosím znovu; nic se nestrhne dvakrát.' });
+    return {
+      status: 502,
+      body: { error: 'Odstoupení se nepodařilo dokončit. Zkus to prosím znovu; nic se nestrhne dvakrát.' },
+    };
   }
+}
+
+app.post('/api/subscription/withdraw', checkoutLimiter, requireAuth, async (req, res) => {
+  const result = await withdrawPlanForUser(req.user.id);
+  return res.status(result.status).json(result.body);
 });
 
 // Subscription state is only ever written here, from a Stripe-signed event.
