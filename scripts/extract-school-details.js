@@ -32,6 +32,7 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
+const { logAiUsage, fetchWithAiUsage } = require('../lib/aiUsage');
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -726,7 +727,7 @@ async function callOpenRouter(text, model, typeContext) {
   const apiKey = getOpenRouterKey();
   if (!apiKey) throw new Error('No OpenRouter API key available');
 
-  const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+  const response = await fetchWithAiUsage('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${apiKey}`,
@@ -751,7 +752,7 @@ async function callOpenRouter(text, model, typeContext) {
       ],
     }),
     signal: AbortSignal.timeout(120_000),
-  });
+  }, (outcome) => logAiUsage(supabase, { ...outcome, source: 'extract', model }));
 
   if (!response.ok) {
     const detail = await response.text().catch(() => '');
@@ -908,7 +909,7 @@ async function callStructureModelOnce(userPrompt, model) {
   }
 
   const apiKey = getOpenRouterKey();
-  const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+  const response = await fetchWithAiUsage('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: {
       Authorization: 'Bearer ' + apiKey,
@@ -930,7 +931,7 @@ async function callStructureModelOnce(userPrompt, model) {
       ],
     }),
     signal: AbortSignal.timeout(120_000),
-  });
+  }, (outcome) => logAiUsage(supabase, { ...outcome, source: 'extract', model }));
   if (!response.ok) {
     const error = new Error('OpenRouter ' + response.status + ': ' + (await response.text().catch(() => '')).slice(0, 300));
     error.status = response.status;

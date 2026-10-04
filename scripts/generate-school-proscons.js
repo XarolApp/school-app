@@ -36,6 +36,7 @@
 require('dotenv').config();
 const crypto = require('crypto');
 const { createClient } = require('@supabase/supabase-js');
+const { logAiUsage, fetchWithAiUsage } = require('../lib/aiUsage');
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -158,7 +159,7 @@ function fingerprint(inputRecord) {
 }
 
 async function callModel(inputRecord, model) {
-  const response = await fetch(OPENROUTER_URL, {
+  const response = await fetchWithAiUsage(OPENROUTER_URL, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${OPENROUTER_API_KEY}`,
@@ -177,7 +178,7 @@ async function callModel(inputRecord, model) {
       ],
     }),
     signal: AbortSignal.timeout(60_000),
-  });
+  }, (outcome) => logAiUsage(supabase, { ...outcome, source: 'proscons', model }));
 
   if (!response.ok) {
     const detail = await response.text().catch(() => '');

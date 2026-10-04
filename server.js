@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const crypto = require('crypto');
+const { logAiUsage } = require('./lib/aiUsage');
 require('dotenv').config();
 const { createClient } = require('@supabase/supabase-js');
 const {
@@ -2226,6 +2227,7 @@ app.post(
 
     let matches;
     let aiUsed;
+    let aiUsageId = null;
     try {
       ({ matches, aiUsed } = await requestMatches({
         answers: validation.answers,
@@ -2233,6 +2235,11 @@ app.post(
         apiKey: OPENROUTER_API_KEY,
         model: OPENROUTER_MODEL,
         referer: FRONTEND_URL,
+        onUsage: async (outcome) => {
+          aiUsageId = await logAiUsage(supabase, {
+            ...outcome, source: 'questionnaire', model: OPENROUTER_MODEL, userId: req.user.id,
+          });
+        },
       }));
     } catch (err) {
       console.error('Questionnaire match failed:', err.message);
@@ -2260,6 +2267,13 @@ app.post(
 
     if (insertError) {
       return res.status(500).json({ error: insertError.message });
+    }
+
+    if (aiUsageId) {
+      const { error: usageError } = await supabase.from('ai_usage_log')
+        .update({ run_id: run.id, ...(!aiUsed ? { ok: false, error: 'No usable explanation returned' } : {}) })
+        .eq('id', aiUsageId);
+      if (usageError) console.error('AI run attribution could not be saved:', usageError.code);
     }
 
     await syncJpzPoints(req.user.id, validation.answers.body);
