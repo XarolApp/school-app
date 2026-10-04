@@ -728,6 +728,28 @@ test('public payment-link profile response contains only its allowlisted fields'
   ].sort());
 });
 
+test('payment link reopens checkout once a plan has ended, even though plan_id is still set', async () => {
+  const h = harness({
+    result: (query) => query.table === 'share_links'
+      ? { data: { user_id: 'owner', expires_at: '2999-01-01T00:00:00.000Z' }, error: null }
+      : {
+        data: {
+          name: null,
+          plan_id: 'monthly',
+          subscription_status: 'expired',
+          access_expires_at: '2000-01-01T00:00:00.000Z',
+          cancel_at_period_end: false,
+          season_charge_due_at: null,
+        },
+        error: null,
+      },
+  });
+  const response = await h.call('get', '/api/pay-links/:token', { params: { token: 'valid' } });
+  assert.equal(response.statusCode, 200);
+  assert.equal(response.body.plan, null);
+  assert.equal(response.body.checkout_open, true);
+});
+
 test('shared account results mirror current entitlement and expose no questionnaire answers', async () => {
   const schools = Array.from({ length: 12 }, (_, index) => ({ id: index + 1, name: 'School ' + (index + 1), district: 'Praha 1' }));
   const ownerProfile = (hasAccess) => ({

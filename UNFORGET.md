@@ -13,6 +13,40 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
+## Plan 018 review: three findings left open — 2026-10-04
+- **Found:** 2026-10-04, review of the plan 018 commits (`67ada25`…`7ff9a68`).
+  Findings 1, 3 and 4 of that review were fixed. These three were deferred.
+- **Urgency:** #1 before live payments; #2 and #3 low
+- **Effort:** #1 small–medium; #2 small; #3 trivial
+
+1. **A parent payment replaces the child's Stripe customer (needs a test-mode check).**
+   - The pay-link checkout deliberately skips the saved customer, so Stripe
+     creates a new one carrying the parent's e-mail, and the webhook overwrites
+     `users.stripe_customer_id` with it.
+   - If the student later buys again themselves, `createCheckoutForUser`
+     reuses that customer. Receipts would then go to the parent, and Checkout
+     *may* offer the parent's saved card. The saved-card part is unconfirmed;
+     check it in Stripe test mode during the plan 018 checkout run.
+   - The student's earlier customer is orphaned: `DELETE /api/me` only deletes
+     the current one. That leaves a GDPR erasure gap at Stripe.
+   - Fix options: record that a customer came from a pay link and never reuse
+     it for the account's own checkout; or have the webhook delete the replaced
+     customer when `object.customer` differs and the old one has no live plan.
+2. **`GET /api/shared-results/:token` is expensive per anonymous hit.**
+   - `buildRunResult` scores every school, with programmes and extracted
+     details, on each visit. `shareLimiter` (30/h/IP) bounds it for now.
+   - Cache the computed top 10 per run if share-link traffic grows.
+3. **The billing refactor dropped explanatory comments** in
+   `cancelPlanForUser` / `createCheckoutForUser` (server.js):
+   - why cancelling a season pass before its charge writes
+     `subscription_status` itself (there is no Stripe event to react to);
+   - why a subscription still in its trial is cancelled outright rather than
+     at period end;
+   - what `client_reference_id` is for (it ties the session back to the
+     account in the webhook).
+
+   Restore them from `git show 67ada25^:server.js`.
+
 ## Legal documents: operator details and e-mail setup still open — 2026-10-04
 - **Found:** 2026-10-04, while filling `frontend/src/pages/Legal.jsx`.
 - **Urgency:** high (blocks public launch; operator name is also needed for the beta privacy policy)

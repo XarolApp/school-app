@@ -14,6 +14,18 @@ function HandoffStart() {
   const open = useCallback(async () => {
     setState('loading');
     setError(null);
+    // The parent's lock lives in localStorage, which every tab of this browser
+    // shares. Taking over here would land the child on the parent's lock
+    // screen, so the parent's own browser is told to use the child's device.
+    try {
+      const owner = JSON.parse(localStorage.getItem('skolamatch.handoff.owner') || 'null');
+      if (owner?.token === token) {
+        setState('own-device');
+        return;
+      }
+    } catch {
+      // Unreadable storage cannot hold the parent's lock either.
+    }
     try {
       await openHandoff(token);
       localStorage.setItem(ROLE_KEY, 'student');
@@ -52,6 +64,15 @@ function HandoffStart() {
             Začít
           </button>
         </section>
+      ) : state === 'own-device' ? (
+        <div className="dp-share-notfound">
+          <h1 className="ss-headline-md h">Tento odkaz je pro vaše dítě</h1>
+          <p className="ss-body-md">
+            Odkaz jste vytvořili v tomto prohlížeči. Pošlete ho dítěti a otevřete ho na jeho zařízení —
+            tady by se dotazník zamkl.
+          </p>
+          <Link to="/onboarding/welcome" className="ss-btn ss-btn-secondary">Zpět k dotazníku</Link>
+        </div>
       ) : state === 'invalid' ? (
         <div className="dp-share-notfound">
           <h1 className="ss-headline-md h">Odkaz už neplatí</h1>

@@ -59,12 +59,14 @@ function ParentPayHandoff({ voice = 'student', variant = 'ghost', onActivated })
     return () => document.removeEventListener('visibilitychange', refreshWhenVisible);
   }, [link, refreshProfile]);
 
+  // Only a payment link this account is waiting on may move the screen on;
+  // an account that paid some other way keeps the page it opened.
   useEffect(() => {
-    if (!paidAccess || activated.current) return;
+    if (!paidAccess || !link || activated.current) return;
     activated.current = true;
     if (onActivated) onActivated();
     else navigate('/skoly');
-  }, [paidAccess, onActivated, navigate]);
+  }, [paidAccess, link, onActivated, navigate]);
 
   if (!isSignedIn || isTester || parentBranch) return null;
 

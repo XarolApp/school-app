@@ -1858,7 +1858,13 @@ app.get('/api/pay-links/:token', shareLimiter, async (req, res) => {
   }
 
   const firstName = typeof profile.name === 'string' ? profile.name.trim().split(/\s+/)[0] || null : null;
-  const hasPlan = Boolean(profile.plan_id);
+  // plan_id survives a plan's end (the subscription.deleted webhook only flips
+  // the status), so it cannot mean "has a plan" here. Only a plan that still
+  // grants access or has a charge scheduled is shown as manageable; anything
+  // else falls through to checkout so the parent can buy again.
+  const hasPlan = Boolean(profile.plan_id) && (
+    paidAccessActive(profile) || (profile.plan_id === 'season' && Boolean(profile.season_charge_due_at))
+  );
   const now = new Date();
   const checkout_open = Boolean(link.expires_at && new Date(link.expires_at) > now && !hasLivePlan(profile));
   return res.json({
