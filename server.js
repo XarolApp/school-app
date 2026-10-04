@@ -284,6 +284,17 @@ const shareLimiter = rateLimit({
   message: { error: 'Příliš mnoho pokusů. Zkus to prosím za hodinu.' },
 });
 
+
+// Anonymous link creation is more expensive than a read and can otherwise
+// leave unbounded rows behind. Public reads use shareLimiter.
+const anonLinkLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  limit: 20,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  message: { error: 'Příliš mnoho pokusů. Zkus to prosím za hodinu.' },
+});
+
 app.use('/api/', apiLimiter);
 
 // Stripe signs the exact bytes it sent, so this route needs the raw body and
@@ -1641,6 +1652,379 @@ app.delete('/api/shares/:token', requireAuth, async (req, res) => {
   res.status(204).end();
 });
 
+
+async function requireResultsLinkAccess(req, res, next) {
+  if (req.body?.kind === 'results') return requireAccess(req, res, next);
+  return next();
+}
+
+app.post('/api/share-links', decisionLimiter, requireAuth, requireResultsLinkAccess, async (req, res) => {
+  const { kind } = req.body || {};
+  if (kind !== 'results' && kind !== 'payment') {
+    return res.status(400).json({ error: 'Neplatný typ odkazu.' });
+  }
+
+  const token = crypto.randomBytes(16).toString('base64url');
+  const expires_at = kind === 'payment'
+    ? new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+    : null;
+
+  if (kind === 'payment') {
+    const { data: profile, error: profileError } = await supabase
+      .from('users')
+      .select('stripe_customer_id, subscription_status, access_expires_at, plan_id, season_charge_due_at, cancel_at_period_end')
+      .eq('id', req.user.id)
+      .single();
+
+    if (profileError || !profile) {
+      return res.status(500).json({
+        error: 'Nepodařilo se ověřit platební profil. Zkus to prosím znovu.',
+      });
+    }
+    if (profile.subscription_status === 'beta') {
+      return res.status(403).json({
+        error: 'Beta účty nemohou zahájit placený přístup.',
+        code: 'BETA_CHECKOUT_DISABLED',
+      });
+    }
+    if (hasLivePlan(profile)) {
+      return res.status(409).json({
+        error: 'Už máš aktivní plán. Spravuj ho v Nastavení.',
+        code: 'ALREADY_SUBSCRIBED',
+      });
+    }
+
+    const { error: deleteError } = await supabase
+      .from('share_links')
+      .delete()
+      .eq('user_id', req.user.id)
+      .eq('kind', 'payment');
+    if (deleteError) return res.status(500).json({ error: 'Platební odkaz se nepodařilo vytvořit.' });
+  }
+
+  const { error } = await supabase
+    .from('share_links')
+    .insert({ token, user_id: req.user.id, kind, expires_at });
+  if (error) return res.status(500).json({ error: 'Sdílený odkaz se nepodařilo vytvořit.' });
+  return res.status(201).json({ token, kind, expires_at });
+});
+
+app.get('/api/share-links', requireAuth, async (req, res) => {
+  const { data, error } = await supabase
+    .from('share_links')
+    .select('token, kind, created_at, expires_at')
+    .eq('user_id', req.user.id)
+    .order('created_at', { ascending: false });
+  if (error) return res.status(500).json({ error: 'Sdílené odkazy se nepodařilo načíst.' });
+  return res.json(data);
+});
+
+app.delete('/api/share-links/:token', requireAuth, async (req, res) => {
+  const { error } = await supabase
+    .from('share_links')
+    .delete()
+    .eq('user_id', req.user.id)
+    .eq('token', req.params.token);
+  if (error) return res.status(500).json({ error: 'Sdílený odkaz se nepodařilo zrušit.' });
+  return res.status(204).end();
+});
+
+// Public results reveal only a strict allowlist. Never return answers, JPZ
+// points, run labels, account identity, or subscription state.
+app.get('/api/shared-results/:token', shareLimiter, async (req, res) => {
+  const notFound = () => res.status(404).json({ error: 'Odkaz nenalezen nebo vypršel.' });
+  const { data: share, error: shareError } = await supabase
+    .from('share_links')
+    .select('user_id')
+    .eq('token', req.params.token)
+    .eq('kind', 'results')
+    .maybeSingle();
+
+  if (shareError) return res.status(500).json({ error: 'Výsledky se nepodařilo načíst.' });
+
+  if (share) {
+    let runResult;
+    try {
+      const { data: run, error: runError } = await scoringRunQuery(share.user_id, '*');
+      if (runError) return res.status(500).json({ error: 'Výsledky se nepodařilo načíst.' });
+      if (!run) return notFound();
+      runResult = await buildRunResult(run);
+    } catch {
+      return res.status(500).json({ error: 'Výsledky se nepodařilo načíst.' });
+    }
+
+    const matches = Array.isArray(runResult.matches) ? runResult.matches : [];
+    if (!matches.length || !matches[0]?.school) return notFound();
+
+    let ownerEmail = null;
+    let ownerVerified = false;
+    try {
+      const { data, error } = await supabase.auth.admin.getUserById(share.user_id);
+      if (!error && data?.user) {
+        ownerEmail = data.user.email;
+        ownerVerified = true;
+      }
+    } catch {
+      // Auth lookup failure must always fall back to the free tier.
+    }
+
+    let access = { hasAccess: false };
+    try {
+      access = await accessStateFor(share.user_id, ownerEmail);
+    } catch {
+      // A failed access lookup must never expose the full ranking.
+    }
+    const hasAccess = ownerVerified && access.hasAccess;
+    const shown = matches.slice(0, hasAccess ? 10 : 1);
+    const top = shown.map((match, index) => ({
+      rank: index + 1,
+      school: {
+        id: match.school.id,
+        name: match.school.name,
+        district: match.school.district ?? null,
+      },
+      score: Math.round(match.score),
+      reason: match.reason || '',
+    }));
+
+    return res.json({
+      source: 'account',
+      role: null,
+      created_at: runResult.created_at,
+      fitting_count: null,
+      locked_count: hasAccess ? 0 : Math.max(matches.length - 1, 0),
+      top,
+    });
+  }
+
+  const { data: snapshot, error: snapshotError } = await supabase
+    .from('result_snapshots')
+    .select('role, top_school_id, top_score, fitting_count, created_at')
+    .eq('token', req.params.token)
+    .gt('expires_at', new Date().toISOString())
+    .maybeSingle();
+  if (snapshotError) return res.status(500).json({ error: 'Výsledky se nepodařilo načíst.' });
+  if (!snapshot) return notFound();
+
+  const { data: school, error: schoolError } = await supabase
+    .from('schools')
+    .select('id, name, latitude, longitude')
+    .eq('id', snapshot.top_school_id)
+    .maybeSingle();
+  if (schoolError) return res.status(500).json({ error: 'Výsledky se nepodařilo načíst.' });
+  if (!school) return notFound();
+
+  const [withDistrict] = withDistricts([school]);
+  return res.json({
+    source: 'snapshot',
+    role: snapshot.role,
+    created_at: snapshot.created_at,
+    fitting_count: snapshot.fitting_count,
+    locked_count: Math.max(snapshot.fitting_count - 1, 0),
+    top: [{
+      rank: 1,
+      school: { id: withDistrict.id, name: withDistrict.name, district: withDistrict.district ?? null },
+      score: snapshot.top_score,
+      reason: '',
+    }],
+  });
+});
+
+async function findPaymentLink(token) {
+  return supabase
+    .from('share_links')
+    .select('user_id, expires_at')
+    .eq('token', token)
+    .eq('kind', 'payment')
+    .maybeSingle();
+}
+
+function paymentLinkNotFound(res) {
+  return res.status(404).json({ error: 'Odkaz nenalezen nebo byl zrušen.' });
+}
+
+app.get('/api/pay-links/:token', shareLimiter, async (req, res) => {
+  const { data: link, error } = await findPaymentLink(req.params.token);
+  if (error) return res.status(500).json({ error: 'Platební odkaz se nepodařilo načíst.' });
+  if (!link) return paymentLinkNotFound(res);
+
+  const { data: profile, error: profileError } = await supabase
+    .from('users')
+    .select('name, plan_id, subscription_status, access_expires_at, cancel_at_period_end, season_charge_due_at, plan_started_at, last_paid_at')
+    .eq('id', link.user_id)
+    .single();
+  if (profileError || !profile) {
+    return res.status(500).json({ error: 'Platební odkaz se nepodařilo načíst.' });
+  }
+
+  const firstName = typeof profile.name === 'string' ? profile.name.trim().split(/\s+/)[0] || null : null;
+  const hasPlan = Boolean(profile.plan_id);
+  const now = new Date();
+  const checkout_open = Boolean(link.expires_at && new Date(link.expires_at) > now && !hasLivePlan(profile));
+  return res.json({
+    for_name: firstName,
+    checkout_open,
+    expires_at: link.expires_at,
+    plan: hasPlan ? {
+      plan_id: profile.plan_id,
+      subscription_status: profile.subscription_status,
+      access_expires_at: profile.access_expires_at ?? null,
+      cancel_at_period_end: Boolean(profile.cancel_at_period_end),
+      can_withdraw: canWithdraw(profile),
+    } : null,
+  });
+});
+
+app.post('/api/pay-links/:token/checkout', checkoutLimiter, async (req, res) => {
+  const { data: link, error } = await findPaymentLink(req.params.token);
+  if (error) return res.status(500).json({ error: 'Platební odkaz se nepodařilo načíst.' });
+  if (!link) return paymentLinkNotFound(res);
+  if (!link.expires_at || new Date(link.expires_at) <= new Date()) {
+    return res.status(410).json({ code: 'PAY_LINK_EXPIRED' });
+  }
+
+  const result = await createCheckoutForUser({
+    userId: link.user_id,
+    email: undefined,
+    planId: req.body?.planId,
+    successPath: '/platba-rodice/' + req.params.token,
+    cancelPath: '/platba-rodice/' + req.params.token,
+  });
+  return res.status(result.status).json(result.body);
+});
+
+app.post('/api/pay-links/:token/cancel', checkoutLimiter, async (req, res) => {
+  const { data: link, error } = await findPaymentLink(req.params.token);
+  if (error) return res.status(500).json({ error: 'Platební odkaz se nepodařilo načíst.' });
+  if (!link) return paymentLinkNotFound(res);
+  const result = await cancelPlanForUser(link.user_id);
+  return res.status(result.status).json(result.body);
+});
+
+app.post('/api/pay-links/:token/withdraw', checkoutLimiter, async (req, res) => {
+  const { data: link, error } = await findPaymentLink(req.params.token);
+  if (error) return res.status(500).json({ error: 'Platební odkaz se nepodařilo načíst.' });
+  if (!link) return paymentLinkNotFound(res);
+  const result = await withdrawPlanForUser(link.user_id);
+  return res.status(result.status).json(result.body);
+});
+
+// Anonymous handoffs contain no personal data or quiz answers. The owner secret
+// stays on the parent's device and is required for status and revoke.
+app.post('/api/handoffs', anonLinkLimiter, async (req, res) => {
+  const token = crypto.randomBytes(16).toString('base64url');
+  const ownerSecret = crypto.randomBytes(16).toString('base64url');
+  const expires_at = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+  const { error } = await supabase
+    .from('quiz_handoffs')
+    .insert({ token, owner_secret: ownerSecret, expires_at });
+  if (error) return res.status(500).json({ error: 'Odkaz k dotazníku se nepodařilo vytvořit.' });
+  return res.status(201).json({ token, ownerSecret });
+});
+
+app.get('/api/handoffs/:token', shareLimiter, async (req, res) => {
+  const ownerSecret = req.get ? req.get('X-Owner-Secret') : req.headers?.['x-owner-secret'];
+  const { data: handoff, error } = await supabase
+    .from('quiz_handoffs')
+    .select('owner_secret, status, expires_at')
+    .eq('token', req.params.token)
+    .maybeSingle();
+  if (error) return res.status(500).json({ error: 'Odkaz se nepodařilo ověřit.' });
+  if (!handoff || !ownerSecret || ownerSecret !== handoff.owner_secret) {
+    return res.status(404).json({ error: 'Odkaz nenalezen nebo byl zrušen.' });
+  }
+  const expired = ['active', 'opened'].includes(handoff.status) &&
+    new Date(handoff.expires_at) <= new Date();
+  return res.json({ status: expired ? 'expired' : handoff.status });
+});
+
+app.post('/api/handoffs/:token/revoke', shareLimiter, async (req, res) => {
+  const ownerSecret = req.get ? req.get('X-Owner-Secret') : req.headers?.['x-owner-secret'];
+  if (!ownerSecret) return res.status(404).json({ error: 'Odkaz nenalezen nebo byl zrušen.' });
+  const { data, error } = await supabase
+    .from('quiz_handoffs')
+    .update({ status: 'revoked' })
+    .eq('token', req.params.token)
+    .eq('owner_secret', ownerSecret)
+    .select('token')
+    .maybeSingle();
+  if (error) return res.status(500).json({ error: 'Odkaz se nepodařilo zrušit.' });
+  if (!data) return res.status(404).json({ error: 'Odkaz nenalezen nebo byl zrušen.' });
+  // Revoking after the child opened the link unlocks the parent's device; the
+  // child's onboarding is already local and continues without the parent link.
+  return res.status(204).end();
+});
+
+app.post('/api/handoffs/:token/open', shareLimiter, async (req, res) => {
+  const { data: handoff, error } = await supabase
+    .from('quiz_handoffs')
+    .select('status, expires_at, opened_at')
+    .eq('token', req.params.token)
+    .maybeSingle();
+  if (error) return res.status(500).json({ error: 'Odkaz se nepodařilo otevřít.' });
+  if (!handoff || !['active', 'opened'].includes(handoff.status) ||
+      new Date(handoff.expires_at) <= new Date()) {
+    return res.status(404).json({ error: 'Odkaz už neplatí.' });
+  }
+
+  const now = new Date().toISOString();
+  const { data: opened, error: updateError } = await supabase
+    .from('quiz_handoffs')
+    .update({ status: 'opened', opened_at: handoff.opened_at || now })
+    .eq('token', req.params.token)
+    .in('status', ['active', 'opened'])
+    .gt('expires_at', now)
+    .select('token')
+    .maybeSingle();
+  if (updateError) return res.status(500).json({ error: 'Odkaz se nepodařilo otevřít.' });
+  if (!opened) return res.status(404).json({ error: 'Odkaz už neplatí.' });
+  return res.status(204).end();
+});
+
+app.post('/api/handoffs/:token/complete', shareLimiter, async (req, res) => {
+  const { error } = await supabase
+    .from('quiz_handoffs')
+    .update({ status: 'completed', completed_at: new Date().toISOString() })
+    .eq('token', req.params.token)
+    .eq('status', 'opened');
+  if (error) return res.status(500).json({ error: 'Odkaz se nepodařilo uzavřít.' });
+  return res.status(204).end();
+});
+
+// A forged snapshot can expose only one real school with a made-up percentage
+// under the results heading; this is accepted because it cannot unlock data.
+app.post('/api/result-snapshots', anonLinkLimiter, async (req, res) => {
+  const { role, topSchoolId, topScore, fittingCount } = req.body || {};
+  if (!['student', 'parent'].includes(role) ||
+      !Number.isInteger(topSchoolId) ||
+      !Number.isInteger(topScore) || topScore < 0 || topScore > 100 ||
+      !Number.isInteger(fittingCount) || fittingCount < 0 || fittingCount > 1000) {
+    return res.status(400).json({ error: 'Neplatný výsledek.' });
+  }
+
+  const { data: school, error: schoolError } = await supabase
+    .from('schools')
+    .select('id')
+    .eq('id', topSchoolId)
+    .maybeSingle();
+  if (schoolError) return res.status(500).json({ error: 'Výsledek se nepodařilo uložit.' });
+  if (!school) return res.status(400).json({ error: 'Neplatný výsledek.' });
+
+  const token = crypto.randomBytes(16).toString('base64url');
+  const { error } = await supabase
+    .from('result_snapshots')
+    .insert({
+      token,
+      role,
+      top_school_id: topSchoolId,
+      top_score: topScore,
+      fitting_count: fittingCount,
+      expires_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+    });
+  if (error) return res.status(500).json({ error: 'Výsledek se nepodařilo uložit.' });
+  return res.status(201).json({ token });
+});
+
 // No auth. The same 404 body fires for "token never existed" and "token was
 // revoked" — deliberately, so this endpoint cannot be used to distinguish the
 // two (a token oracle). Returns only the selected schools and programmes, plus
@@ -2177,11 +2561,16 @@ async function createCheckoutForUser({ userId, email, planId, successPath, cance
     };
   }
 
-  const billingCustomer = profile?.stripe_customer_id
-    ? { customer: profile.stripe_customer_id }
-    : email
-      ? { customer_email: email }
-      : {};
+  // The parent payment-link path passes email: undefined deliberately. Do not
+  // attach the child's saved Stripe customer either; Checkout must collect the
+  // payer's own billing details and send receipts to the parent.
+  const billingCustomer = email === undefined
+    ? {}
+    : profile?.stripe_customer_id
+      ? { customer: profile.stripe_customer_id }
+      : email
+        ? { customer_email: email }
+        : {};
   const successUrl = FRONTEND_URL + successPath + '?platba=ok';
   const cancelUrl = FRONTEND_URL + cancelPath;
 
@@ -2191,6 +2580,7 @@ async function createCheckoutForUser({ userId, email, planId, successPath, cance
         mode: 'setup',
         currency: 'czk',
         ...billingCustomer,
+        ...(email === undefined ? { customer_creation: 'always' } : {}),
         success_url: successUrl,
         cancel_url: cancelUrl,
         client_reference_id: userId,

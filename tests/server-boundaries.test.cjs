@@ -13,6 +13,7 @@ function harness({
   paymentIntentResult = { status: 'succeeded' },
   rpcResult = { data: { testerAccessUntil: '2026-09-28T12:00:00.000Z' }, error: null },
   authUser = { id: 'user-test', email: 'tester@example.com', email_confirmed_at: '2026-01-01T00:00:00.000Z' },
+  authAdmin = null,
 } = {}) {
   const routes = new Map();
   const routeChains = new Map();
@@ -27,7 +28,10 @@ function harness({
   let setupIntentRetrievals = 0;
   const db = {
     auth: {
-      admin: { deleteUser: async () => { deletions++; return { error: null }; } },
+      admin: {
+        deleteUser: async () => { deletions++; return { error: null }; },
+        getUserById: async () => authAdmin || { data: { user: authUser }, error: null },
+      },
       getUser: async () => ({ data: { user: authUser }, error: null }),
     },
     rpc(name, args) {
@@ -56,11 +60,14 @@ function harness({
     webhooks: { constructEvent: (event) => event },
     subscriptions: {
       cancel: async () => { cancellations++; if (cancelError) throw cancelError; },
+      update: async () => {},
       retrieve: async () => { subscriptionRetrievals++; return { id: 'sub_test', start_date: 1_800_000_000, status: 'active', metadata: { plan_id: 'monthly' }, current_period_end: 2000000000 }; },
     },
     setupIntents: { retrieve: async () => { setupIntentRetrievals++; return { payment_method: 'pm_test' }; } },
     checkout: { sessions: { create: async (params) => { checkoutCalls.push(params); return { url: 'https://checkout.test/session' }; } } },
+    refunds: { create: async () => ({ status: 'succeeded' }) },
     paymentIntents: {
+      list: async () => ({ data: [] }),
       create: async (params, options) => {
         paymentIntentCalls.push({ params, options });
         return paymentIntentResult;
@@ -79,7 +86,7 @@ function harness({
   // Leave all functions/routes intact, but stop before process startup.
   const module = { exports: {} };
   vm.runInNewContext(source.slice(0, source.lastIndexOf('\nif (stripe)')) +
-    '\nmodule.exports = { seasonEndsAt, handleStripeWebhook, slimProgramsForList, chargeDueSeasonPasses, paidAccessActive, betaProgramState, betaAccessState, hasPaidStatus, requireAccess };', {
+    '\nmodule.exports = { seasonEndsAt, handleStripeWebhook, slimProgramsForList, chargeDueSeasonPasses, paidAccessActive, betaProgramState, betaAccessState, hasPaidStatus, requireAccess, hasLivePlan, accessStateFor, createCheckoutForUser, cancelPlanForUser, withdrawPlanForUser };', {
     module, Date, Buffer, URL, setTimeout, clearTimeout,
     console: { log() {}, warn(...args) { warnings.push(args.join(' ')); }, error() {} },
       process: { env: { SUPABASE_SERVICE_ROLE_KEY: 'synthetic', STRIPE_SECRET_KEY: stripeEnabled ? 'synthetic' : '', STRIPE_WEBHOOK_SECRET: 'synthetic', DEVELOPER_EMAILS: 'dev@example.com' } },
@@ -91,7 +98,9 @@ function harness({
       if (name === '@supabase/supabase-js') return { createClient: () => db };
       if (name === 'stripe') return () => stripe;
       if (name === './lib/reviewFilter') return require('../lib/reviewFilter');
-      // Questionnaire is under another agent's ownership; never exercise it here.
+      if (name === './lib/pragueDistricts') return { districtOfSchool: (school) => school.district ?? null };
+      if (name === './lib/matching') return { scoreSchools: (_answers, schools) => schools.map((school, index) => ({ school_id: school.id, score: 100 - index })) };
+      if (name === './lib/questionnaire') return { REASON_COUNT: 10 };
       if (name.startsWith('./lib/')) return {};
       return require(name);
     },
@@ -624,4 +633,173 @@ test('shared shortlist token lookup distinguishes outage from a missing token', 
 
   const missing = harness({ result: () => ({ data: null, error: null }) });
   assert.equal((await missing.call('get', '/api/shared/:token', { params: { token: 'synthetic' } })).statusCode, 404);
+});
+
+
+test('payment share links reject beta and active-plan accounts, and replace the previous link', async () => {
+  const beta = harness({
+    result: (query) => query.table === 'users'
+      ? { data: { subscription_status: 'beta' }, error: null }
+      : { data: null, error: null },
+  });
+  const betaResponse = await beta.callChain('post', '/api/share-links', { body: { kind: 'payment' } });
+  assert.equal(betaResponse.statusCode, 403);
+  assert.equal(betaResponse.body.code, 'BETA_CHECKOUT_DISABLED');
+
+  const active = harness({
+    result: (query) => query.table === 'users'
+      ? { data: { subscription_status: 'active', access_expires_at: '2999-01-01T00:00:00.000Z', plan_id: 'monthly' }, error: null }
+      : { data: null, error: null },
+  });
+  const activeResponse = await active.callChain('post', '/api/share-links', { body: { kind: 'payment' } });
+  assert.equal(activeResponse.statusCode, 409);
+  assert.equal(activeResponse.body.code, 'ALREADY_SUBSCRIBED');
+
+  const created = harness({
+    result: (query) => query.table === 'users'
+      ? { data: { subscription_status: 'expired' }, error: null }
+      : { data: null, error: null },
+  });
+  const response = await created.callChain('post', '/api/share-links', { body: { kind: 'payment' } });
+  assert.equal(response.statusCode, 201);
+  assert.equal(response.body.kind, 'payment');
+  const shareQueries = created.queries.filter((query) => query.table === 'share_links');
+  assert.equal(shareQueries.length, 2);
+  assert.equal(shareQueries[0].calls[0][0], 'delete');
+  assert.equal(shareQueries[1].calls[0][0], 'insert');
+});
+
+test('parent checkout link rejects expiry and starts Stripe checkout for the child account without child email', async () => {
+  const expired = harness({
+    result: (query) => query.table === 'share_links'
+      ? { data: { user_id: 'child-owner', expires_at: '2000-01-01T00:00:00.000Z' }, error: null }
+      : { data: null, error: null },
+  });
+  const expiredResponse = await expired.call('post', '/api/pay-links/:token/checkout', {
+    params: { token: 'expired' }, body: { planId: 'season' },
+  });
+  assert.equal(expiredResponse.statusCode, 410);
+
+  const valid = harness({
+    result: (query) => {
+      if (query.table === 'share_links') return { data: { user_id: 'child-owner', expires_at: '2999-01-01T00:00:00.000Z' }, error: null };
+      if (query.table === 'users') return { data: { subscription_status: 'expired', stripe_customer_id: 'cus_child' }, error: null };
+      return { data: null, error: null };
+    },
+  });
+  const response = await valid.call('post', '/api/pay-links/:token/checkout', {
+    params: { token: 'valid' }, body: { planId: 'season' },
+  });
+  assert.equal(response.statusCode, 200);
+  assert.equal(valid.checkoutCalls.length, 1);
+  assert.equal(valid.checkoutCalls[0].client_reference_id, 'child-owner');
+  assert.equal(Object.hasOwn(valid.checkoutCalls[0], 'customer_email'), false);
+  assert.equal(Object.hasOwn(valid.checkoutCalls[0], 'customer'), false);
+  assert.equal(valid.checkoutCalls[0].customer_creation, 'always');
+  assert.equal(valid.checkoutCalls[0].success_url.includes('/platba-rodice/valid?platba=ok'), true);
+});
+
+test('public payment-link profile response contains only its allowlisted fields', async () => {
+  const profile = {
+    name: 'Tereza Nováková',
+    plan_id: 'monthly',
+    subscription_status: 'active',
+    access_expires_at: '2999-01-01T00:00:00.000Z',
+    cancel_at_period_end: false,
+    season_charge_due_at: null,
+    plan_started_at: '2999-01-01T00:00:00.000Z',
+    last_paid_at: '2999-01-01T00:00:00.000Z',
+    email: 'private@example.com',
+    id: 'private-id',
+  };
+  const h = harness({
+    result: (query) => query.table === 'share_links'
+      ? { data: { user_id: 'owner', expires_at: '2999-01-01T00:00:00.000Z' }, error: null }
+      : { data: profile, error: null },
+  });
+  const response = await h.call('get', '/api/pay-links/:token', { params: { token: 'valid' } });
+  assert.equal(response.statusCode, 200);
+  assert.deepEqual(Object.keys(response.body).sort(), ['checkout_open', 'expires_at', 'for_name', 'plan'].sort());
+  assert.equal(response.body.for_name, 'Tereza');
+  assert.equal('email' in response.body, false);
+  assert.equal('id' in response.body, false);
+  assert.deepEqual(Object.keys(response.body.plan).sort(), [
+    'plan_id', 'subscription_status', 'access_expires_at', 'cancel_at_period_end', 'can_withdraw',
+  ].sort());
+});
+
+test('shared account results mirror current entitlement and expose no questionnaire answers', async () => {
+  const schools = Array.from({ length: 12 }, (_, index) => ({ id: index + 1, name: 'School ' + (index + 1), district: 'Praha 1' }));
+  const ownerProfile = (hasAccess) => ({
+    trial_expires_at: hasAccess ? '2999-01-01T00:00:00.000Z' : '2000-01-01T00:00:00.000Z',
+    subscription_status: null,
+    access_expires_at: null,
+    tester_access_until: null,
+    tester_school_code: null,
+    created_at: '2026-01-01T00:00:00.000Z',
+  });
+  const makeHarness = (hasAccess, authAdmin) => harness({
+    authAdmin,
+    result: (query) => {
+      if (query.table === 'share_links') return { data: { user_id: 'owner' }, error: null };
+      if (query.table === 'questionnaire_runs') return { data: { id: 'run', user_id: 'owner', answers: { secret: true }, matches: [], created_at: '2026-02-01T00:00:00.000Z' }, error: null };
+      if (query.table === 'schools') return { data: schools, error: null };
+      if (query.table === 'users') return { data: ownerProfile(hasAccess), error: null };
+      if (query.table === 'beta_program_settings') return { data: { ends_at: '2999-01-01T00:00:00.000Z', access_hours: 48 }, error: null };
+      return { data: null, error: null };
+    },
+  });
+
+  const free = await makeHarness(false).call('get', '/api/shared-results/:token', { params: { token: 'results' } });
+  assert.equal(free.statusCode, 200);
+  assert.equal(free.body.top.length, 1);
+  assert.equal(free.body.locked_count, 11);
+  assert.equal('answers' in free.body, false);
+
+  const paid = await makeHarness(true).call('get', '/api/shared-results/:token', { params: { token: 'results' } });
+  assert.equal(paid.statusCode, 200);
+  assert.equal(paid.body.top.length, 10);
+  assert.equal(paid.body.locked_count, 0);
+  assert.equal('answers' in paid.body, false);
+
+  const failedLookup = await makeHarness(true, { data: null, error: { message: 'auth unavailable' } })
+    .call('get', '/api/shared-results/:token', { params: { token: 'results' } });
+  assert.equal(failedLookup.statusCode, 200);
+  assert.equal(failedLookup.body.top.length, 1);
+  assert.equal(failedLookup.body.locked_count, 11);
+});
+
+test('handoff opens reject revoked and expired tokens', async () => {
+  const revoked = harness({ result: () => ({ data: { status: 'revoked', expires_at: '2999-01-01T00:00:00.000Z' }, error: null }) });
+  assert.equal((await revoked.call('post', '/api/handoffs/:token/open', { params: { token: 'revoked' } })).statusCode, 404);
+
+  const expired = harness({ result: () => ({ data: { status: 'active', expires_at: '2000-01-01T00:00:00.000Z' }, error: null }) });
+  assert.equal((await expired.call('post', '/api/handoffs/:token/open', { params: { token: 'expired' } })).statusCode, 404);
+});
+
+test('handoff completion can update only an opened token and wrong owner secrets are hidden', async () => {
+  const completion = harness({ result: () => ({ data: null, error: null }) });
+  const completed = await completion.call('post', '/api/handoffs/:token/complete', { params: { token: 'token' } });
+  assert.equal(completed.statusCode, 204);
+  const completionQuery = completion.queries.find((query) => query.table === 'quiz_handoffs');
+  assert.deepEqual(
+    completionQuery.calls.filter(([method]) => method === 'eq').map(([, key, value]) => [key, value]),
+    [['token', 'token'], ['status', 'opened']],
+  );
+
+  const wrongStatus = harness({
+    result: () => ({ data: { owner_secret: 'right-secret', status: 'active', expires_at: '2999-01-01T00:00:00.000Z' }, error: null }),
+  });
+  const status = await wrongStatus.call('get', '/api/handoffs/:token', {
+    params: { token: 'token' }, headers: { 'x-owner-secret': 'wrong-secret' },
+  });
+  assert.equal(status.statusCode, 404);
+
+  const wrongRevoke = harness({ result: () => ({ data: null, error: null }) });
+  const revoke = await wrongRevoke.call('post', '/api/handoffs/:token/revoke', {
+    params: { token: 'token' }, headers: { 'x-owner-secret': 'wrong-secret' },
+  });
+  assert.equal(revoke.statusCode, 404);
+  const revokeQuery = wrongRevoke.queries.find((query) => query.table === 'quiz_handoffs');
+  assert.ok(revokeQuery.calls.some(([method, key, value]) => method === 'eq' && key === 'owner_secret' && value === 'wrong-secret'));
 });
