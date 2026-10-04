@@ -1537,3 +1537,62 @@
     gap: 2px 6px;
   }
 }
+
+
+/* Plan 018 — parent / child results, payment and handoff pages. */
+.dp-plan018-page {
+  min-height: 100vh;
+}
+.dp-plan018-pad {
+  margin: var(--space-lg);
+}
+.dp-results-list {
+  padding-top: var(--space-lg);
+}
+.dp-results-list .dp-share-card-name {
+  text-decoration: none;
+}
+.dp-results-list .dp-share-card-name:hover {
+  text-decoration: underline;
+}
+.dp-results-locked {
+  padding: var(--space-md);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  background: var(--surface2);
+  color: var(--ink2);
+}
+.dp-parent-pay {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+.dp-parent-pay .plan-picker {
+  margin: 0 var(--space-lg);
+}
+.dp-parent-pay-order {
+  margin: 0 var(--space-lg);
+  width: auto;
+}
+.dp-parent-pay-terms {
+  margin: 0 var(--space-lg);
+}
+.dp-plan018-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  padding: var(--space-lg);
+}
+.dp-plan018-error {
+  margin: var(--space-md) var(--space-lg) 0;
+  color: var(--danger);
+}
+.dp-plan018-page .navbar-brand {
+  color: var(--ink);
+  text-decoration: none;
+}
+@media (max-width: 520px) {
+  .dp-plan018-actions {
+    flex-direction: column;
+  }
+}

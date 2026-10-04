@@ -1,9 +1,11 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Confetti, DemoDataNotice, ObButton, ObScreen } from '../../../components/onboarding/ObKit';
 import { countCandidates, explain, tradeoffs } from '../../../lib/matching';
 import { FOCUS_CATEGORIES } from '../../../lib/schoolFeatures';
 import { useOnboarding } from '../useOnboarding';
+import { completeHandoff, createResultSnapshot } from '../../../api';
+import { shareUrl } from '../../../lib/shareLink';
 
 /**
  * THE REVEAL. The emotional peak of the whole flow.
@@ -115,6 +117,19 @@ function Reveal() {
   const parent = role === 'parent';
   const [shareState, setShareState] = useState('idle');
 
+  useEffect(() => {
+    let token;
+    try {
+      token = localStorage.getItem('skolamatch.handoff.child');
+    } catch {
+      return;
+    }
+    if (!token) return;
+    completeHandoff(token).catch(() => {}).finally(() => {
+      try { localStorage.removeItem('skolamatch.handoff.child'); } catch {}
+    });
+  }, []);
+
   const top = ranked[0];
   const locked = ranked.slice(1, 3);
   const lockedTotal = Math.max(ranked.length - 1, 0);
@@ -136,18 +151,21 @@ function Reveal() {
   const share = async () => {
     const text = top
       ? parent
-        ? `Střední na míru: nejlépe odpovídající škola je ${top.school.name} (${top.school.location}).`
-        : `Můj top match podle Střední na míru: ${top.school.name} (${top.school.location}).`
+        ? 'Střední na míru: nejlépe odpovídající škola je ' + top.school.name + ' (' + top.school.location + ').'
+        : 'Můj top match podle Střední na míru: ' + top.school.name + ' (' + top.school.location + ').'
       : 'Střední na míru — hledání střední školy v Praze.';
-    const url = window.location.origin;
     try {
-      if (navigator.share) {
-        await navigator.share({ title: 'Střední na míru', text, url });
-        setShareState('done');
-        return;
-      }
-      await navigator.clipboard.writeText(`${text} ${url}`);
-      setShareState('copied');
+      const { token } = await createResultSnapshot({
+        role: role || 'student',
+        topSchoolId: top.school.id,
+        topScore: toPercent(top.score),
+        fittingCount: fitting,
+      });
+      const result = await shareUrl({
+        text,
+        url: window.location.origin + '/vysledky/' + token,
+      });
+      setShareState(result === 'copied' ? 'copied' : result === 'shared' ? 'done' : 'idle');
     } catch {
       setShareState('error');
     }

@@ -1,0 +1,74 @@
+import { useCallback, useEffect, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import BrandMark from '../components/BrandMark';
+import { openHandoff } from '../api';
+import { ROLE_KEY, ANSWERS_KEY } from '../lib/onboardingStorage';
+import './decision.css';
+
+function HandoffStart() {
+  const { token } = useParams();
+  const navigate = useNavigate();
+  const [state, setState] = useState('loading');
+  const [error, setError] = useState(null);
+
+  const open = useCallback(async () => {
+    setState('loading');
+    setError(null);
+    try {
+      await openHandoff(token);
+      localStorage.setItem(ROLE_KEY, 'student');
+      localStorage.setItem('skolamatch.handoff.child', token);
+      sessionStorage.removeItem(ANSWERS_KEY);
+      setState('ready');
+    } catch (err) {
+      if (err?.status === 404) setState('invalid');
+      else {
+        setState('error');
+        setError(err?.status ? err.message : 'Připojení se nepodařilo. Zkus to prosím znovu.');
+      }
+    }
+  }, [token]);
+
+  useEffect(() => { open(); }, [open]);
+
+  return (
+    <div className="dp-share-page dp-plan018-page">
+      <div className="dp-share-topbar">
+        <Link to="/" className="navbar-brand">
+          <span className="navbar-mark" aria-hidden="true"><BrandMark size={22} /></span>
+          Střední na míru
+        </Link>
+      </div>
+      {state === 'loading' ? (
+        <p className="ss-body-md">Načítám odkaz…</p>
+      ) : state === 'ready' ? (
+        <section className="dp-share-header">
+          <div className="ss-label-caps">Dotazník</div>
+          <h1 className="ss-headline-md h">Rodič ti poslal dotazník</h1>
+          <p className="ss-body-md">
+            Pár otázek o tom, co tě baví a kam chceš. Odpovídej podle sebe — výsledky i účet budou tvoje.
+          </p>
+          <button className="ss-btn ss-btn-primary" type="button" onClick={() => navigate('/onboarding/stakes')}>
+            Začít
+          </button>
+        </section>
+      ) : state === 'invalid' ? (
+        <div className="dp-share-notfound">
+          <h1 className="ss-headline-md h">Odkaz už neplatí</h1>
+          <p className="ss-body-md">Rodič ho zrušil, nebo vypršel. Můžeš si dotazník vyplnit i bez něj.</p>
+          <button className="ss-btn ss-btn-primary" type="button" onClick={() => navigate('/onboarding/welcome')}>
+            Začít dotazník
+          </button>
+        </div>
+      ) : (
+        <div className="dp-share-notfound">
+          <h1 className="ss-headline-md h">Odkaz se nepodařilo otevřít</h1>
+          <p className="ss-body-md">{error}</p>
+          <button className="ss-btn ss-btn-primary" type="button" onClick={open}>Zkusit znovu</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default HandoffStart;

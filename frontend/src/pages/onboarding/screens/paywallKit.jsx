@@ -1,12 +1,10 @@
-import { useCallback, useState } from 'react';
-
 /**
  * Shared pieces for the five paywall screens
  * (hodnota -> cesta -> plan -> zkusebni -> platba).
  *
  * These live in one module because the five screens are one argument split
- * across five surfaces: the same step counter, the same icon vocabulary and the
- * same handoff share. Duplicating any of them is how two screens end up
+ * across five surfaces: the same step counter and the same icon vocabulary. Duplicating either is how
+ * two screens end up
  * claiming different things about the same purchase.
  *
  * Source design: design/paywall-multipage-extract4/ (approved 2026-09-05).
@@ -169,39 +167,4 @@ export function PayCta({ children, onClick, disabled }) {
       <Icon.chevron size={18} />
     </button>
   );
-}
-
-/* --- handoff share -------------------------------------------------------- */
-/**
- * §0.2: the handoff exists on BOTH branches and is never the only option. A
- * student sends the result to a parent who may pay; a parent sends it back to
- * the child. Real behaviour — Web Share where it exists, clipboard otherwise.
- * Nothing here fakes a send.
- */
-export function useHandoffShare(role) {
-  const parent = role === 'parent';
-  const [note, setNote] = useState('');
-
-  const share = useCallback(async () => {
-    const text = parent
-      ? 'Tohle jsou tvoje výsledky ze Střední na míru — podívej se na školy, které ti podle dotazníku sedí nejvíc.'
-      : 'Podívejte se na moje výsledky ze Střední na míru — vybírám si střední školu.';
-    try {
-      if (navigator.share) {
-        await navigator.share({ title: 'Střední na míru', text, url: window.location.origin });
-        setNote('Odesláno.');
-        return;
-      }
-      await navigator.clipboard.writeText(`${text} ${window.location.origin}`);
-      setNote(
-        parent ? 'Odkaz zkopírován — můžete ho poslat dítěti.' : 'Odkaz zkopírován — pošli ho rodičům.'
-      );
-    } catch {
-      setNote(
-        parent ? 'Sdílení se nepovedlo, zkuste to prosím znovu.' : 'Sdílení se nepovedlo, zkus to prosím znovu.'
-      );
-    }
-  }, [parent]);
-
-  return { share, note };
 }

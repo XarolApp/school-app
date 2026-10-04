@@ -22,6 +22,9 @@ import Prihlaska from './pages/Prihlaska';
 import Questionnaire from './pages/Questionnaire';
 import { Privacy, Terms } from './pages/Legal';
 import SdileniView from './pages/SdileniView';
+import SharedResults from './pages/SharedResults';
+import ParentPay from './pages/ParentPay';
+import HandoffStart from './pages/HandoffStart';
 import NotFound from './pages/NotFound';
 import BetaLanding from './pages/BetaLanding';
 import OnboardingFlow from './pages/onboarding/OnboardingFlow';
@@ -50,6 +53,9 @@ function App() {
                   bar inviting them elsewhere. No auth at all; see
                   GET /api/shared/:token in server.js. */}
               <Route path="/sdileni/:token" element={<SdileniView />} />
+              <Route path="/vysledky/:token" element={<SharedResults />} />
+              <Route path="/platba-rodice/:token" element={<ParentPay />} />
+              <Route path="/od-rodice/:token" element={<HandoffStart />} />
 
               <Route element={<Layout />}>
                 {/* Variant B (3D map) is the default landing; the old one stays at /stara for comparison. */}

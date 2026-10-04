@@ -7,8 +7,13 @@ import {
   renameQuestionnaireRun,
   setDefaultQuestionnaireRun,
   archiveQuestionnaireRun,
+  createShareLink,
+  fetchShareLinks,
+  deleteShareLink,
 } from '../api';
 import ConfirmDialog from '../components/ConfirmDialog';
+import { shareUrl } from '../lib/shareLink';
+import { ROLE_KEY } from '../lib/onboardingStorage';
 import DistrictMap from '../components/onboarding/DistrictMap';
 import './questionnaire.css';
 
@@ -80,6 +85,82 @@ function MatchRow({ match, rank, compact }) {
         )}
       </div>
     </li>
+  );
+}
+
+function ResultShareTools() {
+  const [links, setLinks] = useState([]);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState(null);
+  const [note, setNote] = useState(null);
+  const [role] = useState(() => {
+    try { return localStorage.getItem(ROLE_KEY); } catch { return null; }
+  });
+
+  const reload = useCallback(async () => {
+    const rows = await fetchShareLinks();
+    setLinks(rows.filter((row) => row.kind === 'results'));
+  }, []);
+
+  useEffect(() => {
+    reload().catch((err) => setError(err?.message || 'Odkazy se nepodařilo načíst.'));
+  }, [reload]);
+
+  const create = async () => {
+    setBusy(true);
+    setError(null);
+    setNote(null);
+    try {
+      const { token } = await createShareLink('results');
+      await reload();
+      const result = await shareUrl({
+        text: 'Moje výsledky dotazníku ze Střední na míru — jen ke čtení.',
+        url: window.location.origin + '/vysledky/' + token,
+      });
+      setNote(result === 'copied' ? 'Odkaz zkopírován do schránky.' : result === 'shared' ? 'Odesláno.' : null);
+    } catch (err) {
+      setError(err?.message || 'Odkaz se nepodařilo sdílet.');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const remove = async (token) => {
+    setError(null);
+    try {
+      await deleteShareLink(token);
+      setLinks((rows) => rows.filter((row) => row.token !== token));
+    } catch (err) {
+      setError(err?.message || 'Odkaz se nepodařilo zrušit.');
+    }
+  };
+
+  const label = role === 'parent' ? 'Sdílet s dítětem' : role === 'student' ? 'Poslat rodičům' : 'Sdílet výsledky';
+  const explanation = role === 'parent'
+    ? 'Odkaz ukazuje vaše výchozí výsledky — když změníte výchozí běh, změní se i to, co dítě uvidí. Nic jiného z aplikace s ním nepoužije.'
+    : role === 'student'
+      ? 'Odkaz ukazuje tvoje výchozí výsledky — když změníš výchozí běh, změní se i to, co rodič uvidí. Nic jiného z aplikace s ním nepoužije.'
+      : 'Odkaz ukazuje výchozí výsledky — když změníš výchozí běh, změní se i to, co příjemce uvidí. Nic jiného z aplikace s ním nepoužije.';
+
+  return (
+    <div className="qz-share-tools">
+      <button type="button" className="ss-btn ss-btn-secondary" onClick={create} disabled={busy}>
+        {busy ? 'Připravuji odkaz…' : label}
+      </button>
+      <p className="ss-caption">{explanation}</p>
+      {note && <p className="ss-caption" role="status">{note}</p>}
+      {error && <p className="ss-caption qz-share-error" role="alert">{error}</p>}
+      {links.length > 0 && (
+        <ul className="qz-share-links">
+          {links.map((link) => (
+            <li key={link.token}>
+              <span>{formatDate(link.created_at)}</span>
+              <button type="button" className="qz-link" onClick={() => remove(link.token)}>Zrušit</button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }
 
@@ -156,6 +237,7 @@ function Results({ active, runCount, onRetake, onOpenHistory }) {
         <button type="button" className="ss-btn ss-btn-primary" onClick={onRetake}>
           Vyplnit znovu
         </button>
+        <ResultShareTools />
       </div>
     </>
   );

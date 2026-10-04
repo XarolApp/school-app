@@ -6,12 +6,13 @@ import Captcha, { captchaEnabled } from '../components/Captcha';
 import PasswordInput from '../components/PasswordInput';
 import PasswordStrength from '../components/PasswordStrength';
 import { useToast } from '../components/ToastContext';
-import { deleteAccount, cancelSubscription, withdrawFromContract, updateProfile } from '../api';
+import { deleteAccount, cancelSubscription, withdrawFromContract, updateProfile, fetchShareLinks, deleteShareLink } from '../api';
 import { getPlan } from '../config/pricing';
 import { supabase, getRememberMe, setRememberMe } from '../supabaseClient';
 import { DEFAULT_PALETTE, PALETTE_IDS, palettes } from '../design/tokens';
 import { applyTheme, MODES, readCachedTheme } from '../lib/theme';
 import { useBetaTools } from '../components/BetaToolsContext';
+import { ROLE_KEY } from '../lib/onboardingStorage';
 
 const SUBSCRIPTION_LABELS = {
   trialing: 'Zkušební období',
@@ -93,6 +94,10 @@ function Settings() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  const [shareLinks, setShareLinks] = useState([]);
+  const [shareLinksError, setShareLinksError] = useState(null);
+  const [deletingShareToken, setDeletingShareToken] = useState(null);
+  const [shareRole] = useState(() => { try { return localStorage.getItem(ROLE_KEY); } catch { return null; } });
 
   const [cachedTheme] = useState(readCachedTheme);
   const profileTheme = {
@@ -109,6 +114,15 @@ function Settings() {
   const themeChangeRevisionRef = useRef(0);
   const themeSaveQueueRef = useRef(Promise.resolve());
   const profileIdRef = useRef(profile?.id ?? null);
+
+  useEffect(() => {
+    if (loading || !isSignedIn) return undefined;
+    let alive = true;
+    fetchShareLinks()
+      .then((rows) => { if (alive) setShareLinks(rows); })
+      .catch((err) => { if (alive) setShareLinksError(err?.message || 'Sdílené odkazy se nepodařilo načíst.'); });
+    return () => { alive = false; };
+  }, [loading, isSignedIn]);
 
   useEffect(() => {
     const media = window.matchMedia('(prefers-color-scheme: dark)');
@@ -386,6 +400,19 @@ function Settings() {
       }
     });
     themeSaveQueueRef.current = save;
+  };
+
+  const handleDeleteShareLink = async (token) => {
+    setDeletingShareToken(token);
+    setShareLinksError(null);
+    try {
+      await deleteShareLink(token);
+      setShareLinks((rows) => rows.filter((row) => row.token !== token));
+    } catch (err) {
+      setShareLinksError(err?.message || 'Sdílený odkaz se nepodařilo zrušit.');
+    } finally {
+      setDeletingShareToken(null);
+    }
   };
 
   const handleWithdraw = async () => {
@@ -969,6 +996,49 @@ function Settings() {
                 </button>
               </div>
             ))}
+        </section>
+
+        {/* --- Sdílené odkazy --------------------------------------------- */}
+        <section className="panel panel-lg settings-section">
+          <div className="settings-section-head">
+            <h2 className="settings-section-title">Sdílené odkazy</h2>
+            <p className="settings-section-text">Tady můžeš kdykoli zrušit výsledkový nebo platební odkaz.</p>
+          </div>
+          {shareLinksError && <p className="settings-section-text" role="alert">{shareLinksError}</p>}
+          {shareLinks.length === 0 ? (
+            <p className="settings-section-text">Žádné sdílené odkazy.</p>
+          ) : (
+            <ul className="settings-share-links">
+              {shareLinks.map((item) => (
+                <li key={item.token}>
+                  <div>
+                    <strong>{item.kind === 'results' ? 'Výsledky dotazníku' : 'Odkaz k platbě pro rodiče'}</strong>
+                    <span className="settings-section-text">Vytvořeno {formatCzDateLong(item.created_at)}</span>
+                    {item.kind === 'payment' && item.expires_at && (
+                      <span className="settings-section-text">Platí do {formatCzDateLong(item.expires_at)}</span>
+                    )}
+                  </div>
+                  <button
+                    type="button"
+                    className="btn btn-secondary btn-sm"
+                    onClick={() => handleDeleteShareLink(item.token)}
+                    disabled={deletingShareToken === item.token}
+                  >
+                    {deletingShareToken === item.token ? 'Ruším…' : 'Zrušit'}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+          {shareRole === 'parent' ? (
+            <p className="settings-section-text">
+              Když odkaz k platbě zrušíte, rodič přes něj už nebude moct předplatné spravovat — zrušit ho pak můžete vy tady v Nastavení.
+            </p>
+          ) : (
+            <p className="settings-section-text">
+              Když odkaz k platbě zrušíš, rodič přes něj už nebude moct předplatné spravovat — zrušit ho pak můžeš ty tady v Nastavení.
+            </p>
+          )}
         </section>
 
         {/* --- Smazání účtu ---------------------------------------------- */}

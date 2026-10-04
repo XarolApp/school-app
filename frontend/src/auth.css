@@ -652,3 +652,36 @@
 .auth-newcomer p {
   margin: 0;
 }
+
+
+/* Plan 018 — links can be managed from the child's account settings. */
+.settings-share-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin: 0;
+  padding: 0;
+}
+.settings-share-links li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-sm) 0;
+  border-top: 1px solid var(--line);
+}
+.settings-share-links li > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.settings-share-links .settings-section-text {
+  margin: 0;
+}
+@media (max-width: 520px) {
+  .settings-share-links li {
+    align-items: flex-start;
+  }
+}

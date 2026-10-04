@@ -1,23 +1,39 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { fetchSchoolsForMatching, saveOnboardingAnswers } from '../../api';
+import { fetchHandoffStatus, fetchSchoolsForMatching, revokeHandoff, saveOnboardingAnswers } from '../../api';
 import { rankSchools } from '../../lib/matching';
 import { ObScreen, RoleSwitch } from '../../components/onboarding/ObKit';
+import HandoffLock from '../../components/onboarding/HandoffLock';
 import { useAuth } from '../../components/AuthContext';
 import { OnboardingContext } from './useOnboarding';
 import { PHASES, STEPS, stepIndexById } from './steps';
 import { DEFAULT_PLAN_ID } from '../../config/pricing';
 import { cleanAnswers, initialAnswers, QUESTIONS } from './quizQuestions';
+import { ROLE_KEY, ANSWERS_KEY } from '../../lib/onboardingStorage';
+export { ROLE_KEY, ANSWERS_KEY };
 import './onboarding.css';
 
-const ROLE_KEY = 'skolamatch.role';
-const ANSWERS_KEY = 'skolamatch.onboarding.answers';
 const PAYWALL_STEP_IDS = new Set(['hodnota', 'cesta', 'ucet', 'plan', 'zkusebni', 'platba']);
 const FINAL_QUESTION_INDEX = QUESTIONS.length - 1;
 
 function loadRole() {
   try {
     return localStorage.getItem(ROLE_KEY) || null;
+  } catch {
+    return null;
+  }
+}
+
+function loadOwnerHandoff() {
+  try {
+    const raw = localStorage.getItem('skolamatch.handoff.owner');
+    if (!raw) return null;
+    const saved = JSON.parse(raw);
+    if (typeof saved?.token === 'string' && typeof saved?.ownerSecret === 'string' && typeof saved?.url === 'string') {
+      return saved;
+    }
+    localStorage.removeItem('skolamatch.handoff.owner');
+    return null;
   } catch {
     return null;
   }
@@ -60,6 +76,9 @@ function OnboardingFlow() {
     Boolean(profile);
 
   const [role, setRoleState] = useState(loadRole);
+  const [ownerHandoff, setOwnerHandoff] = useState(loadOwnerHandoff);
+  const [ownerHandoffStatus, setOwnerHandoffStatus] = useState('loading');
+  const [ownerHandoffError, setOwnerHandoffError] = useState(null);
   const [answers, setAnswers] = useState(() => loadAnswers() || initialAnswers());
   const [intents, setIntents] = useState([]);
   const [commitment, setCommitment] = useState(null);
@@ -80,6 +99,71 @@ function OnboardingFlow() {
     completionReached: false,
   });
   const quizSaveInFlight = useRef(null);
+  const checkOwnerHandoff = useCallback(async () => {
+    if (!ownerHandoff?.token || !ownerHandoff?.ownerSecret) return;
+    setOwnerHandoffStatus('loading');
+    setOwnerHandoffError(null);
+    try {
+      const { status } = await fetchHandoffStatus(ownerHandoff.token, ownerHandoff.ownerSecret);
+      if (status === 'revoked' || status === 'expired') {
+        localStorage.removeItem('skolamatch.handoff.owner');
+        setOwnerHandoff(null);
+        setOwnerHandoffStatus('idle');
+        return;
+      }
+      setOwnerHandoffStatus(status);
+    } catch (error) {
+      if (error?.status === 404) {
+        localStorage.removeItem('skolamatch.handoff.owner');
+        setOwnerHandoff(null);
+        setOwnerHandoffStatus('idle');
+      } else {
+        setOwnerHandoffError(error?.status ? error.message : 'Připojení se nepodařilo. Odkaz zůstává zamčený. Zkus to prosím znovu.');
+        setOwnerHandoffStatus('error');
+      }
+    }
+  }, [ownerHandoff]);
+
+  useEffect(() => {
+    const syncOwnerHandoff = () => {
+      const next = loadOwnerHandoff();
+      setOwnerHandoff(next);
+      setOwnerHandoffStatus(next ? 'loading' : 'idle');
+      setOwnerHandoffError(null);
+    };
+    window.addEventListener('skolamatch:handoff-owner', syncOwnerHandoff);
+    return () => window.removeEventListener('skolamatch:handoff-owner', syncOwnerHandoff);
+  }, []);
+
+  useEffect(() => {
+    if (!ownerHandoff?.token) return undefined;
+    checkOwnerHandoff();
+    const refreshWhenVisible = () => {
+      if (document.visibilityState === 'visible') checkOwnerHandoff();
+    };
+    document.addEventListener('visibilitychange', refreshWhenVisible);
+    return () => document.removeEventListener('visibilitychange', refreshWhenVisible);
+  }, [ownerHandoff, checkOwnerHandoff]);
+
+  const releaseOwnerHandoff = useCallback(async () => {
+    try {
+      await revokeHandoff(ownerHandoff.token, ownerHandoff.ownerSecret);
+      localStorage.removeItem('skolamatch.handoff.owner');
+      setOwnerHandoff(null);
+      setOwnerHandoffStatus('idle');
+      setOwnerHandoffError(null);
+    } catch (error) {
+      if (error?.status === 404) {
+        localStorage.removeItem('skolamatch.handoff.owner');
+        setOwnerHandoff(null);
+        setOwnerHandoffStatus('idle');
+      } else {
+        setOwnerHandoffError(error?.status ? error.message : 'Odkaz se nepodařilo zrušit. Zkus to prosím znovu.');
+        setOwnerHandoffStatus('error');
+      }
+    }
+  }, [ownerHandoff]);
+
   const currentUserId = useRef(user?.id ?? null);
   currentUserId.current = user?.id ?? null;
 
@@ -357,6 +441,35 @@ function OnboardingFlow() {
       <button type="button" className="ob-btn ob-btn-secondary" onClick={retryQuizSave}>Zkusit znovu</button>
     </div>
   ) : null;
+
+  if (ownerHandoff) {
+    if (ownerHandoffStatus === 'loading' || ownerHandoffStatus === 'idle') {
+      return (
+        <div className={'ob-root ob-role-' + (role || 'none')}>
+          <ObScreen chrome={false}>
+            <h1 className="ob-title">Načítám…</h1>
+          </ObScreen>
+        </div>
+      );
+    }
+    return (
+      <div className={'ob-root ob-role-' + (role || 'none')}>
+        <HandoffLock
+          status={ownerHandoffStatus}
+          error={ownerHandoffError}
+          url={ownerHandoff.url}
+          onRefresh={checkOwnerHandoff}
+          onRevoke={releaseOwnerHandoff}
+          onStartOwn={() => {
+            localStorage.removeItem('skolamatch.handoff.owner');
+            setOwnerHandoff(null);
+            setOwnerHandoffStatus('idle');
+            goToStep('welcome');
+          }}
+        />
+      </div>
+    );
+  }
 
   if (betaPreviewRequested && (loading || (isSignedIn && profileLoading))) {
     return (

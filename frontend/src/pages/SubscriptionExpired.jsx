@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, Navigate, useLocation, useSearchParams } from 'react-router-dom';
 import { Check } from 'lucide-react';
 import { useAuth } from '../components/AuthContext';
+import ParentPayHandoff from '../components/ParentPayHandoff';
 import { createCheckoutSession } from '../api';
 import { useBetaTools } from '../components/BetaToolsContext';
 import { DEFAULT_PLAN_ID, PLANS, formatCzk, planCopy, trialDaysPhrase } from '../config/pricing';
@@ -183,6 +184,8 @@ function Paywall() {
             {redirecting && <span className="btn-spinner" aria-hidden="true" />}
             {redirecting ? 'Přesměrovávám…' : 'Objednat s povinností platby'}
           </button>
+          <ParentPayHandoff voice="student" variant="inline" />
+
           <p className="auth-footnote">
             Objednáním souhlasíš s <a href="/obchodni-podminky" target="_blank" rel="noreferrer">obchodními podmínkami</a>{' '}
             včetně práva odstoupit do 14 dnů.

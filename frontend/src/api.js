@@ -275,6 +275,83 @@ export function revokeShare(token) {
   return request(`/api/shares/${token}`, { method: 'DELETE' });
 }
 
+async function publicRequest(path, options = {}) {
+  const headers = { ...options.headers };
+  if (options.body) headers['Content-Type'] = 'application/json';
+  const res = await fetch(API_BASE_URL + path, { ...options, headers });
+  if (res.status === 204) return null;
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) throw new ApiError(body.error || 'Požadavek selhal (' + res.status + ')', res.status, body.code);
+  return body;
+}
+
+export function createShareLink(kind) {
+  return request('/api/share-links', { method: 'POST', body: JSON.stringify({ kind }) });
+}
+
+export function fetchShareLinks() {
+  return request('/api/share-links');
+}
+
+export function deleteShareLink(token) {
+  return request('/api/share-links/' + encodeURIComponent(token), { method: 'DELETE' });
+}
+
+export function fetchSharedResults(token) {
+  return publicRequest('/api/shared-results/' + encodeURIComponent(token));
+}
+
+export function fetchPayLink(token) {
+  return publicRequest('/api/pay-links/' + encodeURIComponent(token));
+}
+
+export function startPayLinkCheckout(token, planId) {
+  return publicRequest('/api/pay-links/' + encodeURIComponent(token) + '/checkout', {
+    method: 'POST',
+    body: JSON.stringify({ planId }),
+  });
+}
+
+export function cancelViaPayLink(token) {
+  return publicRequest('/api/pay-links/' + encodeURIComponent(token) + '/cancel', { method: 'POST' });
+}
+
+export function withdrawViaPayLink(token) {
+  return publicRequest('/api/pay-links/' + encodeURIComponent(token) + '/withdraw', { method: 'POST' });
+}
+
+export function createHandoff() {
+  return publicRequest('/api/handoffs', { method: 'POST', body: JSON.stringify({}) });
+}
+
+export function fetchHandoffStatus(token, ownerSecret) {
+  return publicRequest('/api/handoffs/' + encodeURIComponent(token), {
+    headers: { 'X-Owner-Secret': ownerSecret },
+  });
+}
+
+export function revokeHandoff(token, ownerSecret) {
+  return publicRequest('/api/handoffs/' + encodeURIComponent(token) + '/revoke', {
+    method: 'POST',
+    headers: { 'X-Owner-Secret': ownerSecret },
+  });
+}
+
+export function openHandoff(token) {
+  return publicRequest('/api/handoffs/' + encodeURIComponent(token) + '/open', { method: 'POST' });
+}
+
+export function completeHandoff(token) {
+  return publicRequest('/api/handoffs/' + encodeURIComponent(token) + '/complete', { method: 'POST' });
+}
+
+export function createResultSnapshot({ role, topSchoolId, topScore, fittingCount }) {
+  return publicRequest('/api/result-snapshots', {
+    method: 'POST',
+    body: JSON.stringify({ role, topSchoolId, topScore, fittingCount }),
+  });
+}
+
 export async function fetchSharedShortlist(token) {
   const res = await fetch(`${API_BASE_URL}/api/shared/${token}`);
   const body = await res.json().catch(() => ({}));

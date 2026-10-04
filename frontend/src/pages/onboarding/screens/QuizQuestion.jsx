@@ -1,4 +1,6 @@
 import { Fragment, useEffect, useMemo, useState } from 'react';
+import { createHandoff } from '../../../api';
+import { shareUrl } from '../../../lib/shareLink';
 import { ObButton, ObOption, ObScreen, SelectionCount } from '../../../components/onboarding/ObKit';
 import DistrictMap from '../../../components/onboarding/DistrictMap';
 import ProfilePanel from '../../../components/onboarding/ProfilePanel';
@@ -52,26 +54,37 @@ import {
  */
 
 /**
- * Parent branch, first question only.
- *
- * A parent answering eleven questions about their child's taste from memory
- * produces confidently-wrong input, and the scoring engine cannot tell the
- * difference between "wrong" and "right" — only between answered and skipped.
- * So the honest fix is to get the child in front of the device for this part,
- * on the same device, in the same session. Copy-only: the quiz mechanics,
- * storage and scoring are identical on both branches.
- *
- * The "poslat odkaz dítěti" control beside it is INERT and says so. Real
- * cross-device handoff needs session tokens and sync that do not exist in this
- * codebase (answers live in sessionStorage — see CLAUDE.md, Platform
- * Strategy), and a button that looks like it sends a link but sends nothing is
- * the same class of lie as promising a trial reminder we cannot send. Same
- * pattern as TRIAL_REMINDER_IMPLEMENTED in config/pricing.js: show the thing,
- * mark it unbuilt, never fake it. Wire it up only when that infrastructure
- * lands — and ship it together with the child-to-parent direction, since it is
- * the same infrastructure.
+ * Parent branch, first question only. The child opens a one-time link and
+ * answers on their own device; the owner's device stays locked until revoke or completion.
  */
 function ParentHandoffNudge() {
+  const [busy, setBusy] = useState(false);
+  const [note, setNote] = useState(null);
+
+  const send = async () => {
+    if (busy) return;
+    setBusy(true);
+    setNote(null);
+    try {
+      const { token, ownerSecret } = await createHandoff();
+      const url = window.location.origin + '/od-rodice/' + token;
+      localStorage.setItem('skolamatch.handoff.owner', JSON.stringify({ token, ownerSecret, url }));
+      window.dispatchEvent(new Event('skolamatch:handoff-owner'));
+      try {
+        await shareUrl({
+          text: 'Vyplň si prosím dotazník ke střední škole — stačí otevřít odkaz.',
+          url,
+        });
+      } catch {
+        setNote('Odkaz je připravený, ale sdílení se nepovedlo.');
+      }
+    } catch (error) {
+      setNote(error?.message || 'Odkaz se nepodařilo vytvořit. Zkus to prosím znovu.');
+    } finally {
+      setBusy(false);
+    }
+  };
+
   return (
     <div className="ob-handoff-nudge">
       <p className="ob-handoff-nudge-lead">
@@ -81,12 +94,10 @@ function ParentHandoffNudge() {
         kdykoli později vyplnit znovu samo.
       </p>
       <div className="ob-handoff-nudge-alt">
-        <button type="button" className="ob-btn ob-btn-ghost" disabled>
-          Poslat odkaz dítěti
+        <button type="button" className="ob-btn ob-btn-ghost" onClick={send} disabled={busy}>
+          {busy ? 'Připravuji odkaz…' : 'Poslat odkaz dítěti'}
         </button>
-        <span className="ob-handoff-nudge-soon ob-trust-unbuilt">
-          Zatím nefunguje — poslat dotazník na jiné zařízení ještě neumíme, tak to neslibujeme.
-        </span>
+        {note && <span className="ob-share-note" role="status">{note}</span>}
       </div>
     </div>
   );

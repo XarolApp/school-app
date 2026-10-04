@@ -2569,17 +2569,8 @@
   gap: 6px;
 }
 
-/* Disabled, and visibly so. The button is here to show the shape of the thing
-   we intend to build; the note under it is what stops it being a promise. */
-.ob-handoff-nudge-alt .ob-btn[disabled] {
+.ob-handoff-nudge-alt .ob-btn {
   min-height: 48px;
-  opacity: 0.5;
-}
-
-.ob-handoff-nudge-soon {
-  font-size: 12px;
-  line-height: 1.45;
-  color: var(--ink2);
 }
 
 
@@ -2958,4 +2949,37 @@
   .ob-hero-match:hover { border-color: var(--acc); box-shadow: 0 0 0 3px var(--acc-soft), var(--shadow); }
   .ob-hero-match:hover .ob-hero-link { color: var(--accent); }
   .ob-hero-match:hover .ob-hero-open span { transform: translateX(4px); }
+}
+
+
+/* Plan 018: parent / child handoff. */
+.ob-handoff-status {
+  margin: var(--space-sm) 0;
+  color: var(--ink2);
+}
+.ob-handoff-warning {
+  margin-bottom: 0;
+}
+.ob-parent-pay-handoff {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-xs);
+}
+.ob-parent-pay-handoff-waiting {
+  width: 100%;
+  padding: var(--space-sm);
+  border: 1px solid var(--acc-line);
+  border-radius: var(--r-card);
+  background: var(--acc-soft);
+}
+.ob-parent-pay-status {
+  margin: 0;
+  color: var(--ink);
+  font-size: var(--fs-body-sm);
+}
+.ob-parent-pay-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
 }

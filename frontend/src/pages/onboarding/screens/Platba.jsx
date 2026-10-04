@@ -14,7 +14,8 @@ import {
 import { createCheckoutSession } from '../../../api';
 import { useOnboarding } from '../useOnboarding';
 import { useAuth } from '../../../components/AuthContext';
-import { Icon, PayCta, PayStepChrome, useHandoffShare } from './paywallKit';
+import ParentPayHandoff from '../../../components/ParentPayHandoff';
+import { Icon, PayCta, PayStepChrome } from './paywallKit';
 
 /**
  * Paywall step 5 of 5 — PLATBA (card, consent, order summary).
@@ -61,7 +62,6 @@ function Platba() {
   const parent = role === 'parent';
   const voice = parent ? 'parent' : 'student';
   const plan = getPlan(planId);
-  const { share, note } = useHandoffShare(role);
 
   const [working, setWorking] = useState(false);
   const [error, setError] = useState(null);
@@ -254,13 +254,14 @@ function Platba() {
                 ) : (
                   <>
                     <span className="ob-pw-fine">Platí ti to rodič?</span>
-                    <button type="button" className="ob-inline-link" onClick={share}>
-                      Sdílet s rodičem
-                    </button>
+                    <ParentPayHandoff
+                      voice="student"
+                      variant="inline"
+                      onActivated={() => goToStep('hotovo')}
+                    />
                   </>
                 )}
               </div>
-              {note && <span className="ob-share-note">{note}</span>}
             </div>
           </div>
 

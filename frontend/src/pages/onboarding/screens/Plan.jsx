@@ -11,7 +11,8 @@ import {
   trialFreeLabel,
 } from '../../../config/pricing';
 import { useOnboarding } from '../useOnboarding';
-import { Icon, PayCta, PayStepChrome, useHandoffShare } from './paywallKit';
+import ParentPayHandoff from '../../../components/ParentPayHandoff';
+import { Icon, PayCta, PayStepChrome } from './paywallKit';
 
 /**
  * Paywall step 3 of 5 — PLAN (choose your access).
@@ -180,7 +181,6 @@ function Plan() {
   const voice = parent ? 'parent' : 'student';
   const plan = getPlan(planId);
   const savings = savingsVsMonthly();
-  const { share, note } = useHandoffShare(role);
 
   // A plan without a trial has no trial rail to show, so step 4 is skipped
   // rather than rendered empty. The step counter still reads "ze 4" because
@@ -273,10 +273,13 @@ function Plan() {
                 ))}
               </ul>
 
-              <button type="button" className="ob-btn ob-btn-ghost" onClick={share}>
-                {parent ? 'Poslat odkaz dítěti' : 'Ať to zaplatí rodič'}
-              </button>
-              {note && <span className="ob-share-note">{note}</span>}
+              {!parent && (
+                <ParentPayHandoff
+                  voice="student"
+                  variant="ghost"
+                  onActivated={() => goToStep('hotovo')}
+                />
+              )}
 
               {PAYMENTS_MOCKED && (
                 <p className="ob-mock-note">

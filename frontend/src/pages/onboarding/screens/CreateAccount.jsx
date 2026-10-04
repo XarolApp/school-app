@@ -231,6 +231,14 @@ function CreateAccount() {
       </p>
 
       <form id="ob-signup" className="auth-form" onSubmit={submit}>
+        {parent && (
+          <div className="notice">
+            <span className="notice-title">Tip</span>
+            <p className="notice-text">
+              Doporučujeme založit účet na jméno a e-mail vašeho dítěte — aplikaci bude nejspíš používat hlavně ono. Za přístup pak můžete zaplatit vy.
+            </p>
+          </div>
+        )}
         {error && (
           <div className="notice notice-error" role="alert">
             <span className="notice-title">Účet se nepodařilo založit</span>
