@@ -13,6 +13,19 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
+## Legal documents: operator details and e-mail setup still open — 2026-10-04
+- **Found:** 2026-10-04, while filling `frontend/src/pages/Legal.jsx`.
+- **Urgency:** high (blocks public launch; operator name is also needed for the beta privacy policy)
+- **Risk of fixing now:** none
+- **Risk of NOT fixing:** privacy policy and terms name no operator; users get no sign-up/reset e-mails; payments cannot go live without a registered adult.
+- **Effort:** small (details) / medium (e-mail setup)
+- **Release/context:** blocks beta (operator name, address) and paid launch (all of it)
+
+Body: remaining `[DOPLNIT]` in Legal.jsx: (1) operator name + address of the parent (private person, no živnost yet; IČO/DIČ/register omitted), appears in privacy policy, terms, withdrawal form; (2) e-mail provider name (line ~93) and the sentence about sending result e-mails (~270). Filled so far: contact e-mail `info@stredninamiru.cz`, Supabase region eu-west-1, not a VAT payer. Keep `DRAFT = true` until the parent's details are in.
+TODO: **create a separate support mailbox (e.g. podpora@stredninamiru.cz) for real users at launch** and replace `info@stredninamiru.cz` in Legal.jsx (grep it).
+TODO: **set up outgoing e-mail** (sign-up confirmation, password reset; Supabase SMTP via Resend/Brevo or similar, plus SPF/DKIM for stredninamiru.cz), then name the provider in the privacy policy.
+Decision on record: launching paid without a živnost is the founder's accepted risk; parent registers a živnost once it earns money. Stripe needs the parent's verified identity first.
+
 ## Merged / renamed schools break the REDIZO import — 2026-09-30
 - **Found:** 2026-09-30, while asking why 10 schools had no 2026 admission data.
 - **Urgency:** medium

@@ -8,7 +8,7 @@ function LegalPage({ title, updated, children }) {
     <article className="legal">
       {DRAFT && (
         <p className="legal-draft" role="note">
-          Pracovní verze — údaje označené [DOPLNIT] (provozovatel, e-mail, DPH) se doplní před spuštěním.
+          Pracovní verze — údaje označené [DOPLNIT] (provozovatel, poskytovatel e-mailů) se doplní před spuštěním.
         </p>
       )}
       <h1>{title}</h1>
@@ -24,7 +24,7 @@ export function Privacy() {
       <h2>1. Kdo je správce</h2>
       <p>
         Správcem osobních údajů je [DOPLNIT: jméno / firma, IČO, adresa sídla], e-mail:
-        [DOPLNIT]. Provozujeme službu Střední na míru (web stredninamiru.cz). Pověřence pro ochranu
+        info@stredninamiru.cz. Provozujeme službu Střední na míru (web stredninamiru.cz). Pověřence pro ochranu
         osobních údajů nemáme; se vším se obracej na uvedený e-mail.
       </p>
 
@@ -79,7 +79,7 @@ export function Privacy() {
 
       <h2>4. Komu údaje předáváme (zpracovatelé)</h2>
       <ul>
-        <li>Supabase — databáze a přihlašování. Region uložení dat: [DOPLNIT: region projektu].</li>
+        <li>Supabase — databáze a přihlašování. Region uložení dat: EU (Irsko, region eu-west-1).</li>
         <li>Stripe — platby (Stripe Payments Europe, Ltd. a spřízněné společnosti). Může docházet k přenosu mimo EU na základě standardních smluvních doložek.</li>
         <li>
           OpenRouter a poskytovatel jazykového modelu (Google Gemini) — píší krátké vysvětlení,
@@ -122,7 +122,7 @@ export function Privacy() {
         Máš právo na přístup ke svým údajům, jejich opravu, výmaz, omezení zpracování,
         přenositelnost a právo vznést námitku proti zpracování na základě oprávněného zájmu.
         Souhlas, který jsi dal(a), můžeš kdykoli odvolat. Jméno opravíš a účet smažeš přímo v
-        Nastavení; s ostatním napiš na [DOPLNIT: e-mail], odpovíme do 30 dnů. Máš také právo podat
+        Nastavení; s ostatním napiš na info@stredninamiru.cz, odpovíme do 30 dnů. Máš také právo podat
         stížnost u Úřadu pro ochranu osobních údajů (uoou.gov.cz).
       </p>
 
@@ -148,7 +148,7 @@ export function Terms() {
       <h2>1. Provozovatel a kontakt</h2>
       <p>
         Službu Střední na míru (stredninamiru.cz) provozuje [DOPLNIT: jméno / firma, IČO, adresa sídla,
-        DIČ, zápis v rejstříku], e-mail: [DOPLNIT] (tento e-mail slouží pro všechny žádosti,
+        DIČ, zápis v rejstříku], e-mail: info@stredninamiru.cz (tento e-mail slouží pro všechny žádosti,
         reklamace, odstoupení od smlouvy i nahlášení nevhodného obsahu). Uzavřením smlouvy
         souhlasíš s těmito podmínkami a bereš na vědomí{' '}
         <a href="/ochrana-osobnich-udaju">Zásady ochrany osobních údajů</a>. Smlouva se uzavírá
@@ -193,7 +193,7 @@ export function Terms() {
         </li>
       </ul>
       <p>
-        Ceny jsou konečné, včetně DPH, pokud jsme jeho plátci [DOPLNIT: plátce / neplátce DPH].
+        Ceny jsou konečné. Nejsme plátci DPH.
         Platí se kartou přes Stripe v českých korunách.
       </p>
 
@@ -211,12 +211,12 @@ export function Terms() {
       </p>
       <ul>
         <li>Lhůta běží 14 dní od uzavření smlouvy. U sezónního přístupu ji ještě prodlužujeme: poběží nejméně 14 dní od strhnutí platby.</li>
-        <li>Odstoupit můžeš jedním tlačítkem v <strong>Nastavení</strong> (dvoukrokově — nejdřív zkontroluješ údaje, pak odstoupení potvrdíš) nebo e-mailem na [DOPLNIT: e-mail]; formulář níže můžeš použít, ale nemusíš.</li>
+        <li>Odstoupit můžeš jedním tlačítkem v <strong>Nastavení</strong> (dvoukrokově — nejdřív zkontroluješ údaje, pak odstoupení potvrdíš) nebo e-mailem na info@stredninamiru.cz; formulář níže můžeš použít, ale nemusíš.</li>
         <li>Při odstoupení tlačítkem v Nastavení vrátíme peníze automaticky ihned; na kartě se objeví obvykle do několika pracovních dnů. Při odstoupení e-mailem je vrátíme nejpozději do 14 dnů od oznámení. Vždy stejným způsobem, jakým jsi platil(a). Přístup skončí okamžikem odstoupení a předplatné zrušíme.</li>
       </ul>
       <p className="legal-form">
         <strong>Vzorový formulář pro odstoupení od smlouvy</strong><br />
-        Adresát: [DOPLNIT: jméno provozovatele, adresa, e-mail]<br />
+        Adresát: [DOPLNIT: jméno provozovatele, adresa], info@stredninamiru.cz<br />
         Oznamuji, že tímto odstupuji od smlouvy o poskytnutí služby Střední na míru (tarif:
         ……………).<br />
         Datum objednávky: …………… E-mail účtu: ……………<br />
@@ -230,7 +230,7 @@ export function Terms() {
       </p>
       <p>
         Pokud nezletilý zaplatil bez souhlasu zákonného zástupce, může zákonný zástupce napsat na
-        [DOPLNIT: e-mail]. Do 30 dnů od platby vrátíme celou zaplacenou částku. Později vrátíme
+        info@stredninamiru.cz. Do 30 dnů od platby vrátíme celou zaplacenou částku. Později vrátíme
         jen nevyužitou část: u sezónního přístupu poměrnou část ceny za období do 31. března, u
         měsíčního předplatného poměrnou část zbylých dnů v právě běžícím měsíci — dřívější měsíce
         se nevrací, protože byly už poskytnuté a nejde je vzít zpět. Přístup pak skončí. Odstoupit
@@ -239,7 +239,7 @@ export function Terms() {
 
       <h2>8. Reklamace a vady služby</h2>
       <p>
-        Když služba nefunguje, jak má, napiš nám na [DOPLNIT: e-mail]. Vadu odstraníme bez
+        Když služba nefunguje, jak má, napiš nám na info@stredninamiru.cz. Vadu odstraníme bez
         zbytečného odkladu, nejpozději do 30 dnů. Pokud se to nepodaří, máš právo na přiměřenou
         slevu z ceny, nebo na odstoupení od smlouvy s vrácením peněz. Tím nejsou dotčena tvá
         další zákonná práva spotřebitele.
@@ -261,17 +261,17 @@ export function Terms() {
       <p>
         <strong>Když recenzi omezíme,</strong> autor se důvod dozví hned u své recenze v aplikaci:
         jaké omezení jsme uložili, proč, zda bylo automatické, a jak se může bránit (napsat na
-        [DOPLNIT: e-mail], rozhodnutí znovu posoudíme).
+        info@stredninamiru.cz, rozhodnutí znovu posoudíme).
       </p>
       <p>
         <strong>Nahlášení nevhodného obsahu:</strong> tlačítkem „Nahlásit“ u recenze (napiš, proč je
-        nevhodná nebo nezákonná, a potvrď dobrou víru) nebo e-mailem na [DOPLNIT: e-mail]. Příjem
+        nevhodná nebo nezákonná, a potvrď dobrou víru) nebo e-mailem na info@stredninamiru.cz. Příjem
         oznámení potvrdíme v aplikaci; výsledek ti sdělíme na tvůj e-mail, jakmile budeme moci
         e-maily odesílat [DOPLNIT: po zprovoznění e-mailů upravit].
       </p>
       <p>
         <strong>Kontaktní místo pro uživatele i orgány dozoru</strong> (čl. 11 a 12 nařízení o
-        digitálních službách): [DOPLNIT: e-mail]. Komunikovat s námi můžeš česky nebo anglicky.
+        digitálních službách): info@stredninamiru.cz. Komunikovat s námi můžeš česky nebo anglicky.
       </p>
 
       <h2>10. Odpovědnost</h2>
@@ -291,7 +291,7 @@ export function Terms() {
 
       <h2>12. Řešení sporů</h2>
       <p>
-        Nejprve nám napiš na [DOPLNIT: e-mail], vyřídíme to do 30 dnů. Pokud se nedohodneme, můžeš
+        Nejprve nám napiš na info@stredninamiru.cz, vyřídíme to do 30 dnů. Pokud se nedohodneme, můžeš
         se obrátit na subjekt mimosoudního řešení spotřebitelských sporů: Česká obchodní inspekce,
         Štěpánská 567/15, 120 00 Praha 2, adr.coi.cz. Dozor nad dodržováním spotřebitelských
         předpisů vykonává také ČOI.
