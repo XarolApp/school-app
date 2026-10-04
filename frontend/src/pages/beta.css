@@ -129,3 +129,11 @@
 .beta-picker-toolbar label { flex: 1; min-width: 0; }
 .beta-picker-toolbar select { max-width: 100%; }
 @media (max-width: 560px) { dialog.beta-sheet { width: 100%; max-height: 90dvh; margin: auto 0 0; border-radius: var(--r-card) var(--r-card) 0 0; } .beta-sheet .ss-dialog-panel { padding: var(--space-lg) var(--space-md); } }
+
+.beta-micro { position:fixed; z-index:1050; right:24px; bottom:90px; width:min(370px,calc(100vw - 32px)); max-height:70dvh; overflow:auto; background:var(--surface); border:1px solid var(--acc-line); border-radius:var(--r-card); box-shadow:0 12px 32px color-mix(in srgb,var(--ink) 18%,transparent); padding:24px; display:grid; gap:16px; }
+.beta-micro .ss-input { width:100%; margin-top:8px; }
+.beta-micro-actions { display:flex; justify-content:space-between; gap:12px; }
+.beta-soft-gate { display:grid; gap:20px; }
+.beta-soft-gate textarea { display:block; width:100%; min-height:140px; margin-top:8px; }
+.beta-banner { display:flex; gap:16px; flex-wrap:wrap; align-items:center; justify-content:center; }
+@media(max-width:600px) { .beta-micro { right:16px; bottom:88px; padding:20px; } }

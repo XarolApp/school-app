@@ -441,3 +441,6 @@ export async function fetchSchoolsForMatching() {
     return { schools: DEMO_SCHOOLS, isDemo: true, error: err.message };
   }
 }
+
+export const submitBetaMicro = (body) => request('/api/beta/micro', { method: 'POST', body: JSON.stringify(body) });
+export const submitBetaGate = (message) => request('/api/beta/gate', { method: 'POST', body: JSON.stringify({ message }) });

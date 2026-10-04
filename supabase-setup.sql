@@ -922,7 +922,7 @@ create or replace function public.submit_beta_feedback_details(
 ) returns jsonb language plpgsql security definer set search_path = public, pg_temp as $$
 declare result jsonb;
 begin
-  if jsonb_typeof(p_details) <> 'object' or octet_length(p_details::text) > 12000
+  if p_details is null or jsonb_typeof(p_details) <> 'object' or octet_length(p_details::text) > 12000
     or coalesce(p_details ->> 'kind', 'obecne') not in ('bug','navrh','funkce','text','chvala','obecne')
     or coalesce(p_details ->> 'source', 'button') not in ('button','micro','gate')
     or (p_details ->> 'source' = 'gate' and char_length(btrim(p_message)) < 20) then
@@ -964,9 +964,8 @@ create or replace function public.record_beta_events(
 declare checklist jsonb; event jsonb; key text; events jsonb := p_events;
 begin
   if p_user_id is not null then
-    if not exists(select 1 from public.users where id = p_user_id and subscription_status = 'beta') then
-      raise exception 'Beta account required.' using errcode = '42501';
-    end if;
+    perform 1 from public.users where id = p_user_id and subscription_status = 'beta' for update;
+    if not found then raise exception 'Beta account required.' using errcode = '42501'; end if;
     select p.checklist into checklist from public.beta_profile p where user_id = p_user_id for update;
     if not found then raise exception 'Beta profile missing.' using errcode = '42501'; end if;
     if p_join then
@@ -1001,6 +1000,48 @@ end;
 $$;
 revoke all on function public.record_beta_events(uuid,text,text,jsonb,boolean) from public, anon, authenticated;
 grant execute on function public.record_beta_events(uuid,text,text,jsonb,boolean) to service_role;
+-- Claiming a micro question and its answer is serialized per tester. A skip
+-- consumes the question/session, while only a real answer renews access.
+create or replace function public.submit_beta_micro(
+  p_user_id uuid, p_id text, p_session text, p_action text, p_answer text
+) returns jsonb language plpgsql security definer set search_path = public, pg_temp as $$
+declare state jsonb; checks jsonb; result jsonb;
+begin
+  -- Keep the lock order identical to submit_beta_feedback: users, then profile.
+  perform 1 from public.users u join auth.users a on a.id=u.id
+    where u.id=p_user_id and u.subscription_status='beta' and a.email_confirmed_at is not null for update of u;
+  if not found then raise exception 'Beta required.' using errcode='42501'; end if;
+  if not exists(select 1 from public.beta_program_settings where singleton and ends_at>clock_timestamp()) then
+    raise exception 'Program ended.' using errcode='55000'; end if;
+  select micro_asked, checklist into state, checks from public.beta_profile where user_id=p_user_id for update;
+  if not found or p_id not in ('result','detail','compare','matrix','paywall','theme')
+    or p_session !~ '^[a-f0-9-]{36}$' or p_action not in ('ask','answer','skip') then
+    raise exception 'Micro invalid.' using errcode='22023'; end if;
+  if p_action='ask' then
+    if state ? p_id or exists(select 1 from jsonb_each(state) where value->>'session_id'=p_session) then
+      raise exception 'Already asked.' using errcode='23505'; end if;
+    if not coalesce((checks->>(case p_id when 'result' then 'dotaznik' when 'detail' then 'detail'
+      when 'compare' then 'porovnani' when 'matrix' then 'matice' when 'paywall' then 'platby' else 'tema' end))::boolean,false) then
+      raise exception 'Feature not tried.' using errcode='22023'; end if;
+    state := jsonb_set(state,array[p_id],jsonb_build_object('session_id',p_session,'asked_at',clock_timestamp(),'done',false));
+  else
+    if not state ? p_id or state->p_id->>'session_id' is distinct from p_session
+      or state->p_id->>'done'='true' then raise exception 'Already answered.' using errcode='23505'; end if;
+    if p_action='answer' then
+      if char_length(btrim(coalesce(p_answer,''))) not between 1 and 1500 then
+        raise exception 'Answer required.' using errcode='22023'; end if;
+      result := public.submit_beta_feedback_details(p_user_id,'comment','/beta/micro/'||p_id,
+        'Mikro otázka '||p_id||': '||btrim(p_answer),jsonb_build_object('kind','obecne','source','micro'));
+    end if;
+    state := jsonb_set(state,array[p_id,'done'],'true'::jsonb);
+    state := jsonb_set(state,array[p_id,'skipped'],to_jsonb(p_action='skip'));
+  end if;
+  update public.beta_profile set micro_asked=state where user_id=p_user_id;
+  return coalesce(result,'{}'::jsonb)||jsonb_build_object('micro_asked',state);
+end;
+$$;
+revoke all on function public.submit_beta_micro(uuid,text,text,text,text) from public,anon,authenticated;
+grant execute on function public.submit_beta_micro(uuid,text,text,text,text) to service_role;
 -- END BETA ANALYTICS BLOCK
 
 

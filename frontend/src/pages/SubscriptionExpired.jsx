@@ -4,7 +4,7 @@ import { Check } from 'lucide-react';
 import { useAuth } from '../components/AuthContext';
 import ParentPayHandoff from '../components/ParentPayHandoff';
 import { createCheckoutSession } from '../api';
-import { useBetaTools } from '../components/BetaToolsContext';
+import BetaSoftGate from '../components/BetaSoftGate';
 import { DEFAULT_PLAN_ID, PLANS, formatCzk, planCopy, trialDaysPhrase } from '../config/pricing';
 
 // Four short parallel claims — a checkmark each reads faster than a bullet and
@@ -206,7 +206,6 @@ function Paywall() {
 
 function BetaPaused() {
   const { profile, hasAccess, signOut } = useAuth();
-  const { openFeedback } = useBetaTools();
   const location = useLocation();
   const returnPath = location.state?.from?.pathname || '/skoly';
 
@@ -231,11 +230,7 @@ function BetaPaused() {
         </div>
         <section className="panel panel-lg stack">
           {deadline && <p>Program končí {deadline} (pražského času).</p>}
-          {!programEnded && (
-            <button type="button" className="btn btn-primary btn-block" onClick={openFeedback}>
-              Nahlásit zpětnou vazbu a pokračovat
-            </button>
-          )}
+          {!programEnded && <BetaSoftGate />}
           {profile.betaFeedbackFormUrl && (
             <a href={profile.betaFeedbackFormUrl} target="_blank" rel="noreferrer">
               Otevřít externí formulář (přístup neobnoví)

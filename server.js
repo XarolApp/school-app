@@ -834,6 +834,26 @@ app.post('/api/beta/feedback', requireAuth, betaFeedbackLimiter, async (req, res
   res.status(201).json(data);
 });
 
+app.post('/api/beta/micro', requireAuth, requireBetaTester, betaFeedbackLimiter, async (req,res) => {
+  const { id, session_id: session, action, answer } = req.body || {};
+  if (!['result','detail','compare','matrix','paywall','theme'].includes(id) || !/^[a-f0-9-]{36}$/.test(session || '') ||
+    !['ask','answer','skip'].includes(action) || action === 'answer' && (typeof answer !== 'string' || !answer.trim() || answer.length > 1500)) {
+    return res.status(400).json({ error: 'Odpověď nemá správný formát.' });
+  }
+  if (action === 'answer' && ['result','compare','matrix'].includes(id) && !/^[1-5](?:$| · )/.test(answer) ||
+    action === 'answer' && id === 'paywall' && !['ano','spíš ano','ne'].includes(answer)) return res.status(400).json({ error: 'Vyberte odpověď.' });
+  const { data,error } = await supabase.rpc('submit_beta_micro', { p_user_id: req.user.id, p_id: id, p_session: session, p_action: action, p_answer: action === 'answer' ? answer.trim() : null });
+  if (error) return res.status(error.code === '23505' ? 409 : error.code === '55000' ? 410 : error.code === '22023' ? 400 : 500).json({ error: 'Otázku teď nelze uložit.' });
+  res.json(data);
+});
+app.post('/api/beta/gate', requireAuth, requireBetaTester, betaFeedbackLimiter, async (req,res) => {
+  const message = typeof req.body?.message === 'string' ? req.body.message.trim() : '';
+  if (message.length < 20 || message.length > 4000) return res.status(400).json({ error: 'Napište alespoň jednu větu (20 znaků).' });
+  const { data,error } = await supabase.rpc('submit_beta_feedback_details', { p_user_id: req.user.id, p_type: 'comment', p_page_url: '/predplatne', p_message: message, p_details: { kind: 'obecne', source: 'gate' } });
+  if (error) return res.status(error.code === '55000' ? 410 : 500).json({ error: 'Odpověď nelze uložit. Zkuste to znovu.' });
+  res.status(201).json(data);
+});
+
 app.post('/api/beta/feedback/screenshot-url', requireAuth, requireBetaTester, betaFeedbackLimiter, async (req, res) => {
   const { mime, size } = req.body || {};
   if (!['image/png','image/jpeg'].includes(mime) || !Number.isInteger(size) || size < 1 || size > 1572864) {

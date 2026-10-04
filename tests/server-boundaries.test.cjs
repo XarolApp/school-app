@@ -837,3 +837,15 @@ test('normal authenticated account cannot send beta events, even with an invitat
   assert.equal(response.statusCode, 403);
   assert.equal(h.rpcCalls.length, 0);
 });
+
+test('micro answer and soft gate renew through the existing feedback transaction; skips do not contain an answer', async () => {
+  const h=harness({result:(q)=>({data:q.table==='users'?{subscription_status:'beta'}:null,error:null})});
+  const session='aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
+  await h.call('post','/api/beta/micro',{user:{id:'user-test'},body:{id:'result',session_id:session,action:'answer',answer:'4 · Skoly mi sedi'}});
+  assert.equal(h.rpcCalls[0].name,'submit_beta_micro'); assert.equal(h.rpcCalls[0].args.p_user_id,'user-test');
+  await h.call('post','/api/beta/micro',{user:{id:'user-test'},body:{id:'detail',session_id:session,action:'skip',answer:'ignored'}});
+  assert.equal(h.rpcCalls[1].args.p_answer,null);
+  const short=await h.call('post','/api/beta/gate',{user:{id:'user-test'},body:{message:'short'}}); assert.equal(short.statusCode,400);
+  await h.call('post','/api/beta/gate',{user:{id:'user-test'},body:{message:'Porovnani skol mi hodne pomohlo.'}});
+  assert.equal(h.rpcCalls[2].name,'submit_beta_feedback_details'); assert.equal(h.rpcCalls[2].args.p_details.source,'gate');
+});
