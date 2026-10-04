@@ -39,11 +39,15 @@
   text-underline-offset: 0.15em;
 }
 
-.beta-feedback-trigger {
+.beta-floating-tools {
   position: fixed;
   z-index: 30;
   right: max(var(--space-md), env(safe-area-inset-right, 0px));
   bottom: max(var(--space-md), env(safe-area-inset-bottom, 0px));
+  display: flex; gap: var(--space-sm);
+}
+
+.beta-feedback-trigger, .beta-help-trigger {
   min-height: 48px;
   padding: 0 var(--space-md);
   border: 1px solid var(--line2);
@@ -77,12 +81,12 @@
 }
 
 @media (max-width: 560px) {
-  .beta-feedback-trigger {
+  .beta-floating-tools {
     right: max(var(--space-sm), env(safe-area-inset-right, 0px));
     bottom: calc(52px + max(var(--space-sm), env(safe-area-inset-bottom, 0px)));
   }
 
-  .beta-feedback-trigger.is-onboarding {
+  .beta-floating-tools.is-onboarding {
     bottom: calc(128px + max(var(--space-sm), env(safe-area-inset-bottom, 0px)));
   }
 
@@ -95,3 +99,14 @@
 .beta-role-option { display: flex; align-items: center; gap: var(--space-sm); padding: var(--space-sm) var(--space-md); border: 1px solid var(--line); border-radius: var(--r-chip); cursor: pointer; }
 .beta-role-option.is-selected { border-color: var(--acc); background: var(--acc-soft); }
 .beta-enrollment .notice-text { max-width: 65ch; }
+
+.beta-help-trigger { background: var(--surface); color: var(--ink); width: 48px; }
+.beta-checklist { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-sm); }
+.beta-checklist li { display: flex; align-items: center; gap: var(--space-sm); padding: var(--space-sm) 0; border-bottom: 1px solid var(--line); }
+.beta-checklist a { color: var(--ink); flex: 1; text-decoration: none; }
+.beta-task-check { width: 22px; height: 22px; border: 1px solid var(--line2); border-radius: var(--r-chip); display: grid; place-items: center; }
+.beta-task-check.is-done { background: var(--acc-soft); color: var(--acc); border-color: var(--acc-line); }
+.beta-demo { display: grid; grid-template-columns: repeat(3, 1fr); list-style: none; padding: 0; gap: var(--space-sm); }
+.beta-demo li { display: flex; flex-direction: column; gap: var(--space-md); background: var(--surface2); border-radius: var(--r-card); padding: var(--space-md); animation: beta-explain 1.2s cubic-bezier(0.23, 1, 0.32, 1) both; }
+@keyframes beta-explain { from { opacity: 0.4; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .beta-demo li { animation: none; } }

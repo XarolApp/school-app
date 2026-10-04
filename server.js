@@ -476,6 +476,32 @@ app.get('/api/beta/schools/:code', async (req, res) => {
 });
 
 const betaEventsLimiter = rateLimit({ windowMs: 60_000, limit: 1200, standardHeaders: 'draft-7', legacyHeaders: false });
+async function requireBetaTester(req, res, next) {
+  const { data, error } = await supabase.from('users')
+    .select('id, created_at, subscription_status, tester_school_code, tester_access_until')
+    .eq('id', req.user.id).single();
+  if (error || !data) return res.status(503).json({ error: 'Beta účet nelze ověřit.' });
+  if (data.subscription_status !== 'beta') return res.status(403).json({ error: 'Tento účet není zapojený do testování.' });
+  req.betaUser = data;
+  next();
+}
+app.get('/api/beta/me', requireAuth, requireBetaTester, async (req, res) => {
+  const [profile, feedback] = await Promise.all([
+    supabase.from('beta_profile').select('*').eq('user_id', req.user.id).single(),
+    supabase.from('beta_feedback').select('id, kind, page_url, message, status, admin_reply, replied_at, created_at, source')
+      .eq('user_id', req.user.id).order('created_at', { ascending: false }).limit(100),
+  ]);
+  if (profile.error || feedback.error) return res.status(503).json({ error: 'Testování se nepodařilo načíst.' });
+  res.json({ ...profile.data, feedback: feedback.data || [] });
+});
+app.post('/api/beta/profile', requireAuth, requireBetaTester, async (req, res) => {
+  const { role, tracking_notice_accepted: accepted } = req.body || {};
+  if (!['8','9','rodic','ucitel','jine'].includes(role) || accepted !== true) return res.status(400).json({ error: 'Vyberte roli a potvrďte seznámení s testováním.' });
+  const { error } = await supabase.from('beta_profile').update({ role, consent_tracking_at: new Date().toISOString() })
+    .eq('user_id', req.user.id).is('consent_tracking_at', null);
+  if (error) return res.status(500).json({ error: 'Informace nelze uložit.' });
+  res.status(204).end();
+});
 app.post('/api/beta/events', betaEventsLimiter, async (req, res) => {
   const body = req.body || {};
   const token = req.headers.authorization?.replace(/^Bearer /, '') || body.token;

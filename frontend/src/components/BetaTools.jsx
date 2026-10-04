@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { acknowledgeBetaGuidance, submitBetaFeedback } from '../api';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { acknowledgeBetaGuidance, submitBetaFeedback, fetchBetaMe } from '../api';
+import BetaInstructions from './BetaInstructions';
 import { BetaToolsContext } from './BetaToolsContext';
 import { useAuth } from './AuthContext';
 import Modal from './Modal';
@@ -32,6 +33,8 @@ function BetaToolsUI({
   feedbackRequestId,
   openFeedback,
   closeFeedback,
+  beta,
+  refreshBeta,
 }) {
   const location = useLocation();
   const navigate = useNavigate();
@@ -85,12 +88,6 @@ function BetaToolsUI({
   }, [canShow, isPasswordRecovery, profile?.tester_guidance_seen_at, userId, acknowledge]);
 
   useEffect(() => {
-    if (!guidanceOpen || !canShow || isPasswordRecovery || profile.tester_guidance_seen_at) return;
-    // A separate effect runs after the modal has been committed as open.
-    void acknowledge();
-  }, [guidanceOpen, canShow, isPasswordRecovery, profile?.tester_guidance_seen_at, acknowledge]);
-
-  useEffect(() => {
     const onExpired = (event) => {
       if (!canShow || event.detail?.userId !== userId) return;
       if (location.pathname !== '/predplatne') {
@@ -113,6 +110,7 @@ function BetaToolsUI({
   const dismissGuidance = () => {
     guidanceDismissedFor.current.add(userId);
     setGuidanceOpen(false);
+    void acknowledge();
   };
 
   const handleSubmit = async (event) => {
@@ -128,6 +126,7 @@ function BetaToolsUI({
       setSubmittedUntil(result.testerAccessUntil);
       setSubmittedForRequest(feedbackRequestId);
       await refreshProfile();
+      await refreshBeta();
     } catch (error) {
       setFeedbackErrorState({
         requestId: feedbackRequestId,
@@ -141,14 +140,17 @@ function BetaToolsUI({
   return (
     <>
       {canShow && profile.betaProgramActive && (
+        <div className={`beta-floating-tools${location.pathname.startsWith('/onboarding/') ? ' is-onboarding' : ''}`}>
+        <button type="button" className="beta-help-trigger" aria-label="Pokyny k beta testování" onClick={() => setGuidanceOpen(true)}>?</button>
         <button
           ref={feedbackButtonRef}
           type="button"
-          className={`beta-feedback-trigger${location.pathname.startsWith('/onboarding/') ? ' is-onboarding' : ''}`}
+          className="beta-feedback-trigger"
           onClick={handleOpenFeedback}
         >
           Zpětná vazba
         </button>
+        </div>
       )}
 
       <Modal
@@ -158,13 +160,7 @@ function BetaToolsUI({
         busy={guidanceBusy}
         className="beta-modal"
       >
-        <p className="ss-body-md">Tady jsou čtyři věci, které nám nejvíc pomůžou ověřit:</p>
-        <ol className="beta-guide-list">
-          <li><Link to="/dotaznik" onClick={dismissGuidance}>Vyplň dotazník</Link> a podívej se, jestli pořadí škol odpovídá tvým představám.</li>
-          <li><Link to="/skoly" onClick={dismissGuidance}>Prohlédni si školy</Link>, ulož oblíbenou a porovnej je.</li>
-          <li><Link to="/onboarding/plan?betaPreview=1" onClick={dismissGuidance}>Otevři plán jako náhled</Link>. V beta testu se neplatí a karta se nezadává.</li>
-          <li>Pošli nám zpětnou vazbu pomocí tlačítka v rohu stránky.</li>
-        </ol>
+        <BetaInstructions beta={beta} hours={profile?.betaAccessHours} onDone={dismissGuidance} onRefresh={refreshBeta} busy={guidanceBusy} />
         {guidanceError && (
           <div className="notice notice-error" role="alert">
             <p className="notice-text">{guidanceError}</p>
@@ -234,6 +230,22 @@ function BetaToolsUI({
 function BetaTools({ children }) {
   const { profile, profileLoading, isSignedIn, emailConfirmed, isTester, isPasswordRecovery, user, refreshProfile } = useAuth();
   const location = useLocation();
+  const [betaState, setBetaState] = useState(null);
+  const currentUser = useRef(user?.id);
+  currentUser.current = user?.id;
+  const refreshBeta = useCallback(async () => {
+    if (!user?.id || !isTester || !emailConfirmed) return;
+    const id = user.id;
+    const value = await fetchBetaMe();
+    if (currentUser.current === id) setBetaState(value);
+  }, [user?.id, isTester, emailConfirmed]);
+  useEffect(() => {
+    setBetaState(null);
+    if (!isTester || !emailConfirmed) return;
+    void refreshBeta().catch(() => {});
+    const timer = setInterval(() => void refreshBeta().catch(() => {}), 15000);
+    return () => clearInterval(timer);
+  }, [isTester, emailConfirmed, refreshBeta]);
   const [feedbackState, setFeedbackState] = useState({ open: false, pageUrl: '/', requestId: 0 });
   const openFeedback = useCallback(() => {
     setFeedbackState((previous) => ({
@@ -247,7 +259,7 @@ function BetaTools({ children }) {
   }, []);
 
   return (
-    <BetaToolsContext.Provider value={{ openFeedback }}>
+    <BetaToolsContext.Provider value={{ openFeedback, beta: betaState, refreshBeta }}>
       {children}
       <BetaToolsUI
         profile={profile}
@@ -263,6 +275,8 @@ function BetaTools({ children }) {
         feedbackRequestId={feedbackState.requestId}
         openFeedback={openFeedback}
         closeFeedback={closeFeedback}
+        beta={betaState}
+        refreshBeta={refreshBeta}
       />
     </BetaToolsContext.Provider>
   );

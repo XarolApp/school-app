@@ -3,7 +3,7 @@ export default function BetaEnrollment({ role, accepted, onRole, onAccepted }) {
   const parent = role === 'rodic' || role === 'ucitel';
   return <div className="stack beta-enrollment">
     <fieldset className="beta-role-fieldset">
-      <legend className="ss-title-sm">{parent ? 'Kdo jste?' : 'Kdo jsi?'}</legend>
+      <legend className="ss-headline-sm">{parent ? 'Kdo jste?' : 'Kdo jsi?'}</legend>
       <div className="beta-role-options">{BETA_ROLES.map((r) => <label key={r.id} className={`beta-role-option${role === r.id ? ' is-selected' : ''}`}>
         <input type="radio" name="beta-role" value={r.id} checked={role === r.id} onChange={() => onRole(r.id)} required />{r.label}
       </label>)}</div>
