@@ -110,3 +110,22 @@
 .beta-demo li { display: flex; flex-direction: column; gap: var(--space-md); background: var(--surface2); border-radius: var(--r-card); padding: var(--space-md); animation: beta-explain 1.2s cubic-bezier(0.23, 1, 0.32, 1) both; }
 @keyframes beta-explain { from { opacity: 0.4; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .beta-demo li { animation: none; } }
+
+.beta-modes { display: grid; gap: var(--space-sm); grid-template-columns: repeat(3,1fr); }
+.beta-modes .ss-btn { flex-direction: column; white-space: normal; height: auto; padding: var(--space-md) var(--space-sm); }
+.beta-kind-chips { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-top: var(--space-sm); }
+.beta-kind-chips .ss-btn { font-size: var(--fs-caption); padding: var(--space-sm); min-height: 40px; }
+.beta-modes .is-selected,.beta-kind-chips .is-selected { background: var(--acc-soft); border-color: var(--acc); }
+.beta-sheet { max-width: 640px !important; }
+.beta-screenshot-preview { margin: 0; display: grid; gap: var(--space-sm); }
+.beta-screenshot-preview img { max-height: 300px; width: 100%; object-fit: contain; border: 1px solid var(--line); border-radius: var(--r-card); }
+.beta-screenshot-preview figcaption { color: var(--ink2); font-size: var(--fs-caption); }
+.beta-my-feedback article { border-bottom: 1px solid var(--line); padding: var(--space-md) 0; overflow-wrap: anywhere; }
+.beta-my-feedback blockquote { margin: 0; padding: var(--space-md); background: var(--acc-soft); border-radius: var(--r-card); }
+.beta-picker-dim { position: fixed; inset: 0; background: color-mix(in srgb, var(--ink) 35%, transparent); pointer-events: none; z-index: 1100; }
+.beta-picker-outline { position: fixed; pointer-events: none; border: 2px solid var(--acc); background: color-mix(in srgb, var(--acc) 10%, transparent); z-index: 1101; border-radius: var(--r-chip); }
+.beta-picker-toolbar { position: fixed; top: var(--space-md); left: 50%; transform: translateX(-50%); z-index: 1102; width: min(640px,calc(100% - 2 * var(--space-md))); background: var(--surface); color: var(--ink); padding: var(--space-md); border: 1px solid var(--line2); border-radius: var(--r-card); box-shadow: var(--shadow); display: flex; flex-wrap: wrap; gap: var(--space-sm); }
+.beta-picker-toolbar p { width: 100%; margin: 0; }
+.beta-picker-toolbar label { flex: 1; min-width: 0; }
+.beta-picker-toolbar select { max-width: 100%; }
+@media (max-width: 560px) { dialog.beta-sheet { width: 100%; max-height: 90dvh; margin: auto 0 0; border-radius: var(--r-card) var(--r-card) 0 0; } .beta-sheet .ss-dialog-panel { padding: var(--space-lg) var(--space-md); } }

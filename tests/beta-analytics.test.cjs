@@ -1,6 +1,17 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { sanitizeEvent, visitorTicket, verifyVisitorTicket, checklistFromEvents } = require('../lib/betaAnalytics');
+const { feedbackDetails } = require('../lib/betaAnalytics');
+test('feedback metadata ignores caller status/source and restricts screenshots to the owner', () => {
+  const uuid = '00000000-0000-0000-0000-000000000000';
+  const valid = feedbackDetails({ kind: 'text', text_before: 'before', text_after: 'after', source: 'micro', status: 'vyreseno',
+    screenshot_path: uuid + '/' + uuid + '.jpg' }, uuid);
+  assert.equal(valid.source, 'button');
+  assert.equal(valid.status, undefined);
+  assert.equal(feedbackDetails({ kind: 'bug', screenshot_path: 'other/' + uuid + '.jpg' }, uuid), null);
+  assert.equal(feedbackDetails({ kind: 'text', text_after: 'x'.repeat(2001) }, uuid), null);
+  assert.equal(feedbackDetails({ kind: 'bug', rect: { x: 0, y: 0, width: -1, height: 4 } }, uuid), null);
+});
 test('event allowlist rejects arbitrary names and oversized props; strips private/unknown fields', () => {
   assert.equal(sanitizeEvent({ name: 'email', path: '/', props: {} }), null);
   assert.equal(sanitizeEvent({ name: 'q_answer', path: '/', props: { arbitrary: 'a'.repeat(2050) } }), null);

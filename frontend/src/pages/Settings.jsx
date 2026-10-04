@@ -954,8 +954,8 @@ function Settings() {
                   a přístup skončí hned.
                 </p>
                 <ul className="settings-section-text">
-                  <li>Jméno: <strong>{profile.name || '—'}</strong></li>
-                  <li>E-mail účtu (sem patří potvrzení): <strong>{profile.email}</strong></li>
+                  <li data-private>Jméno: <strong>{profile.name || '—'}</strong></li>
+                  <li data-private>E-mail účtu (sem patří potvrzení): <strong>{profile.email}</strong></li>
                   <li>Tarif: <strong>{getPlan(profile.plan_id).name}</strong></li>
                   <li>Smlouva uzavřena: <strong>{formatCzDateLong(profile.plan_started_at)}</strong></li>
                 </ul>

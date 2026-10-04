@@ -142,7 +142,7 @@ function Layout() {
                     <span className="navbar-avatar navbar-avatar-lg" aria-hidden="true">{initial}</span>
                     <span>
                       <strong>{displayName}</strong>
-                      {user?.email && <span className="navbar-email">{user.email}</span>}
+                      {user?.email && <span className="navbar-email" data-private>{user.email}</span>}
                     </span>
                   </div>
                   {showTrial && (
@@ -193,7 +193,7 @@ function Layout() {
                     <div id="navbar-account-menu" className="navbar-account-menu">
                       <div className="navbar-account-head">
                         <strong>{displayName}</strong>
-                        {user?.email && <span className="navbar-email">{user.email}</span>}
+                        {user?.email && <span className="navbar-email" data-private>{user.email}</span>}
                       </div>
                       <Link to="/nastaveni" className="navbar-menu-item">
                         <SlidersHorizontal size={16} aria-hidden="true" />

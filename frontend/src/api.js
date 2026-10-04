@@ -89,11 +89,17 @@ export function fetchBetaSchool(code) {
   });
 }
 
-export function submitBetaFeedback({ type, pageUrl, message }) {
+export function submitBetaFeedback({ type, pageUrl, message, ...details }) {
   return request('/api/beta/feedback', {
     method: 'POST',
-    body: JSON.stringify({ type, page_url: pageUrl, message }),
+    body: JSON.stringify({ type, page_url: pageUrl, message, ...details }),
   });
+}
+export async function uploadBetaScreenshot(blob) {
+  const signed = await request('/api/beta/feedback/screenshot-url', { method: 'POST', body: JSON.stringify({ mime: blob.type, size: blob.size }) });
+  const response = await fetch(signed.url, { method: 'PUT', headers: { 'Content-Type': blob.type }, body: blob });
+  if (!response.ok) throw new Error('Snímek se nepodařilo nahrát. Zkuste to znovu.');
+  return signed.path;
 }
 
 export function acknowledgeBetaGuidance() {

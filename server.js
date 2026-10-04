@@ -3,7 +3,7 @@ const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const crypto = require('crypto');
 const { logAiUsage } = require('./lib/aiUsage');
-const { sanitizeEvent, visitorTicket, verifyVisitorTicket } = require('./lib/betaAnalytics');
+const { sanitizeEvent, visitorTicket, verifyVisitorTicket, feedbackDetails } = require('./lib/betaAnalytics');
 require('dotenv').config();
 const { createClient } = require('@supabase/supabase-js');
 const {
@@ -784,14 +784,17 @@ app.delete('/api/me', requireAuth, async (req, res) => {
 });
 
 app.post('/api/beta/feedback', requireAuth, betaFeedbackLimiter, async (req, res) => {
-  const { type, page_url: pageUrl, message } = req.body || {};
+  const { page_url: pageUrl, message } = req.body || {};
+  const enhanced = req.body?.kind !== undefined;
+  const details = enhanced ? feedbackDetails(req.body, req.user.id) : null;
+  const type = enhanced ? (details?.kind === 'bug' ? 'bug' : ['navrh','funkce'].includes(details?.kind) ? 'idea' : 'comment') : req.body?.type;
   const cleanMessage = typeof message === 'string' ? message.trim() : '';
   const safePage = typeof pageUrl === 'string' && pageUrl.length <= 512 &&
     pageUrl.startsWith('/') && !pageUrl.startsWith('//') &&
     !/[?#\u0000-\u001f]/.test(pageUrl) && !pageUrl.includes('://');
 
   if (
-    !BETA_FEEDBACK_TYPES.has(type) ||
+    !BETA_FEEDBACK_TYPES.has(type) || (enhanced && !details) ||
     cleanMessage.length < BETA_FEEDBACK_MIN ||
     cleanMessage.length > BETA_FEEDBACK_MAX ||
     !safePage
@@ -799,11 +802,18 @@ app.post('/api/beta/feedback', requireAuth, betaFeedbackLimiter, async (req, res
     return res.status(400).json({ error: 'Zpráva nebo stránka nemá správný formát.', code: 'BETA_FEEDBACK_INVALID' });
   }
 
-  const { data, error } = await supabase.rpc('submit_beta_feedback', {
+  if (details?.screenshot_path) {
+    const object = await supabase.storage.from('beta-screenshots').info(details.screenshot_path);
+    if (object.error || !object.data || !Number.isInteger(object.data.size) || object.data.size < 1 || object.data.size > 1572864 || !['image/png','image/jpeg'].includes(object.data.contentType)) {
+      return res.status(400).json({ error: 'Snímek není platný nebo ještě nebyl nahrán.' });
+    }
+  }
+  const { data, error } = await supabase.rpc(enhanced ? 'submit_beta_feedback_details' : 'submit_beta_feedback', {
     p_user_id: req.user.id,
     p_type: type,
     p_page_url: pageUrl,
     p_message: cleanMessage,
+    ...(enhanced ? { p_details: details } : {}),
   });
   if (error) {
     if (error.code === '42501') {
@@ -822,6 +832,20 @@ app.post('/api/beta/feedback', requireAuth, betaFeedbackLimiter, async (req, res
     return res.status(500).json({ error: 'Zpětnou vazbu se nepodařilo uložit. Zkus to prosím znovu.' });
   }
   res.status(201).json(data);
+});
+
+app.post('/api/beta/feedback/screenshot-url', requireAuth, requireBetaTester, betaFeedbackLimiter, async (req, res) => {
+  const { mime, size } = req.body || {};
+  if (!['image/png','image/jpeg'].includes(mime) || !Number.isInteger(size) || size < 1 || size > 1572864) {
+    return res.status(400).json({ error: 'Snímek musí být PNG nebo JPEG do 1,5 MB.' });
+  }
+  const settings = await readBetaSettings();
+  if (settings.error) return res.status(503).json({ error: 'Testování nelze ověřit.' });
+  if (!betaProgramState(settings.data).programActive) return res.status(410).json({ error: 'Testování skončilo.' });
+  const path = `${req.user.id}/${crypto.randomUUID()}.${mime === 'image/png' ? 'png' : 'jpg'}`;
+  const { data, error } = await supabase.storage.from('beta-screenshots').createSignedUploadUrl(path);
+  if (error) return res.status(500).json({ error: 'Snímek teď nelze nahrát.' });
+  res.json({ path, url: data.signedUrl });
 });
 
 app.post('/api/beta/guidance-seen', requireAuth, async (req, res) => {
