@@ -793,6 +793,173 @@ alter table public.beta_feedback enable row level security;
 
 -- END BETA TESTING MIGRATION BLOCK
 
+-- ----------------------------------------------------------------------------
+-- BETA ANALYTICS BLOCK (plan 019)
+-- Apply the WHOLE canonical file. These tables intentionally have no browser
+-- policies. The beta access model and its atomic renewal RPC above remain in use.
+-- ----------------------------------------------------------------------------
+create table if not exists public.beta_events (
+  id bigint generated always as identity primary key,
+  user_id uuid references auth.users(id) on delete cascade,
+  anon_id text not null check (char_length(anon_id) between 16 and 80),
+  session_id text not null check (char_length(session_id) between 16 and 80),
+  name text not null check (name in (
+    'page_view','page_leave','session_start','ob_step','ob_answer','ob_drop','paywall_view',
+    'q_start','q_answer','q_finish','q_abandon','search','search_zero','filter_used','sort_used',
+    'school_open','school_section','school_web_click','compare_add','compare_open',
+    'matrix_weight','prihlaska_pick','share_create','theme_change','favorite_toggle','review_write',
+    'result_view','js_error','api_error','rage_click'
+  )),
+  path text not null check (left(path, 1) = '/' and left(path, 2) <> '//'
+    and char_length(path) <= 512 and path !~ '[?#[:cntrl:]]'),
+  props jsonb not null default '{}'::jsonb check (jsonb_typeof(props) = 'object' and octet_length(props::text) <= 2048),
+  created_at timestamptz not null default now()
+);
+create index if not exists beta_events_user_created_idx on public.beta_events(user_id, created_at);
+create index if not exists beta_events_name_created_idx on public.beta_events(name, created_at);
+create index if not exists beta_events_anon_idx on public.beta_events(anon_id) where user_id is null;
+
+alter table public.beta_feedback
+  add column if not exists kind text,
+  add column if not exists selector text,
+  add column if not exists element_text text,
+  add column if not exists rect jsonb,
+  add column if not exists viewport jsonb,
+  add column if not exists screenshot_path text,
+  add column if not exists text_before text,
+  add column if not exists text_after text,
+  add column if not exists status text not null default 'nove',
+  add column if not exists admin_note text,
+  add column if not exists admin_reply text,
+  add column if not exists replied_at timestamptz,
+  add column if not exists source text not null default 'button';
+update public.beta_feedback set kind = case type when 'bug' then 'bug' when 'idea' then 'navrh' else 'obecne' end where kind is null;
+alter table public.beta_feedback alter column kind set default 'obecne';
+alter table public.beta_feedback alter column kind set not null;
+alter table public.beta_feedback drop constraint if exists beta_feedback_kind_check;
+alter table public.beta_feedback add constraint beta_feedback_kind_check check (kind in ('bug','navrh','funkce','text','chvala','obecne'));
+alter table public.beta_feedback drop constraint if exists beta_feedback_status_check;
+alter table public.beta_feedback add constraint beta_feedback_status_check check (status in ('nove','precteno','vyreseno','neudelame'));
+alter table public.beta_feedback drop constraint if exists beta_feedback_source_check;
+alter table public.beta_feedback add constraint beta_feedback_source_check check (source in ('button','micro','gate'));
+
+create table if not exists public.beta_profile (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  role text not null check (role in ('8','9','rodic','ucitel','jine')),
+  consent_tracking_at timestamptz,
+  checklist jsonb not null default '{}'::jsonb,
+  micro_asked jsonb not null default '{}'::jsonb,
+  closing_due_at timestamptz,
+  closing_done_at timestamptz
+);
+create table if not exists public.beta_closing_answers (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  answers jsonb not null check (jsonb_typeof(answers) = 'object' and octet_length(answers::text) <= 24000),
+  created_at timestamptz not null default now()
+);
+create table if not exists public.beta_reviews (
+  id bigint generated always as identity primary key,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  stars integer not null check (stars between 1 and 5),
+  body text not null check (char_length(btrim(body)) between 10 and 4000),
+  consent_publish boolean not null default false,
+  display_label text not null,
+  age_group text not null check (age_group in ('under15','15plus','adult','unknown')),
+  selected_by_admin boolean not null default false,
+  created_at timestamptz not null default now(),
+  unique(user_id)
+);
+create table if not exists public.ai_usage_log (
+  id bigint generated always as identity primary key,
+  user_id uuid references auth.users(id) on delete set null,
+  run_id bigint,
+  source text not null check (source in ('questionnaire','proscons','extract')),
+  model text not null,
+  prompt_tokens integer check (prompt_tokens >= 0),
+  completion_tokens integer check (completion_tokens >= 0),
+  cost_usd numeric check (cost_usd >= 0),
+  ok boolean not null,
+  error text,
+  created_at timestamptz not null default now()
+);
+create index if not exists ai_usage_log_created_idx on public.ai_usage_log(created_at);
+
+alter table public.beta_events enable row level security;
+alter table public.beta_profile enable row level security;
+alter table public.beta_closing_answers enable row level security;
+alter table public.beta_reviews enable row level security;
+alter table public.ai_usage_log enable row level security;
+
+-- Existing testers complete the new notice in-app. New signups must acknowledge
+-- it and select a role; neither field grants or changes access.
+insert into public.beta_profile(user_id, role)
+select id, 'jine' from public.users where subscription_status = 'beta'
+on conflict do nothing;
+create or replace function public.capture_beta_profile()
+returns trigger language plpgsql security definer set search_path = public, pg_temp as $$
+declare metadata jsonb;
+begin
+  if new.subscription_status = 'beta' then
+    select raw_user_meta_data into metadata from auth.users where id = new.id;
+    if coalesce(metadata ->> 'beta_role', '') not in ('8','9','rodic','ucitel','jine')
+      or metadata -> 'beta_notice_accepted' is distinct from 'true'::jsonb then
+      raise exception 'Beta role and notice acknowledgement are required.' using errcode = '22023';
+    end if;
+    insert into public.beta_profile(user_id, role, consent_tracking_at)
+    values (new.id, metadata ->> 'beta_role', clock_timestamp()) on conflict do nothing;
+  end if;
+  return new;
+end;
+$$;
+drop trigger if exists on_beta_profile_created on public.users;
+create trigger on_beta_profile_created after insert on public.users
+for each row execute function public.capture_beta_profile();
+
+-- Extra metadata is part of the same transaction as the existing insert/renewal.
+-- The service-only caller validates all fields; SQL validates the core fields too.
+create or replace function public.submit_beta_feedback_details(
+  p_user_id uuid, p_type text, p_page_url text, p_message text, p_details jsonb
+) returns jsonb language plpgsql security definer set search_path = public, pg_temp as $$
+declare result jsonb;
+begin
+  if jsonb_typeof(p_details) <> 'object' or octet_length(p_details::text) > 12000
+    or coalesce(p_details ->> 'kind', 'obecne') not in ('bug','navrh','funkce','text','chvala','obecne')
+    or coalesce(p_details ->> 'source', 'button') not in ('button','micro','gate')
+    or (p_details ->> 'source' = 'gate' and char_length(btrim(p_message)) < 20) then
+    raise exception 'Feedback metadata is invalid.' using errcode = '22023';
+  end if;
+  result := public.submit_beta_feedback(p_user_id, p_type, p_page_url, p_message);
+  update public.beta_feedback set
+    kind = coalesce(p_details ->> 'kind', 'obecne'),
+    source = coalesce(p_details ->> 'source', 'button'),
+    selector = left(p_details ->> 'selector', 512),
+    element_text = left(p_details ->> 'element_text', 120),
+    rect = p_details -> 'rect', viewport = p_details -> 'viewport',
+    screenshot_path = p_details ->> 'screenshot_path',
+    text_before = left(p_details ->> 'text_before', 2000),
+    text_after = left(p_details ->> 'text_after', 2000)
+  where id = (result ->> 'id')::bigint;
+  return result;
+end;
+$$;
+revoke all on function public.submit_beta_feedback_details(uuid,text,text,text,jsonb) from public, anon, authenticated;
+grant execute on function public.submit_beta_feedback_details(uuid,text,text,text,jsonb) to service_role;
+
+insert into storage.buckets(id, name, public, file_size_limit, allowed_mime_types)
+values ('beta-screenshots', 'beta-screenshots', false, 1572864, array['image/png','image/jpeg'])
+on conflict(id) do update set public = false, file_size_limit = 1572864, allowed_mime_types = array['image/png','image/jpeg'];
+-- No storage.objects browser policy: server-issued signed upload/read URLs only.
+
+create or replace function public.purge_beta_events()
+returns void language sql security definer set search_path = public, pg_temp as $$
+  delete from public.beta_events
+  where exists (select 1 from public.beta_program_settings where singleton
+    and ends_at + interval '6 months' <= now());
+$$;
+revoke all on function public.purge_beta_events() from public, anon, authenticated;
+grant execute on function public.purge_beta_events() to service_role;
+-- END BETA ANALYTICS BLOCK
+
 
 -- ----------------------------------------------------------------------------
 -- 5. Row Level Security
