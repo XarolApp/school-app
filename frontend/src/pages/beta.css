@@ -90,3 +90,8 @@
     flex: 1 1 100%;
   }
 }
+.beta-role-fieldset { border: 0; padding: 0; margin: 0; }
+.beta-role-options { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-top: var(--space-md); }
+.beta-role-option { display: flex; align-items: center; gap: var(--space-sm); padding: var(--space-sm) var(--space-md); border: 1px solid var(--line); border-radius: var(--r-chip); cursor: pointer; }
+.beta-role-option.is-selected { border-color: var(--acc); background: var(--acc-soft); }
+.beta-enrollment .notice-text { max-width: 65ch; }

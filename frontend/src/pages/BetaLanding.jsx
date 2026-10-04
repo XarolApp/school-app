@@ -1,3 +1,5 @@
+import BetaEnrollment from '../components/BetaEnrollment';
+import { readBetaEnrollment, saveBetaEnrollment } from '../lib/betaEnrollment';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../components/AuthContext';
@@ -73,6 +75,10 @@ function BetaLanding() {
   const deadline = dateLabel(school?.programEndsAt);
   const closedBeforeStart = school && !school.programEndsAt;
   const closedAfterEnd = school && school.programEndsAt && !school.programActive;
+  const [enrollment, setEnrollment] = useState(() => readBetaEnrollment(code));
+  const updateEnrollment = (patch) => {
+    const next = { ...enrollment, ...patch }; setEnrollment(next); saveBetaEnrollment(code, next.role, next.accepted);
+  };
   const betaQuery = code ? `?beta=${encodeURIComponent(code)}` : '';
 
   return (
@@ -166,9 +172,8 @@ function BetaLanding() {
               </div>
             ) : !closedBeforeStart && !closedAfterEnd ? (
               <div className="stack">
-                <Link className="btn btn-primary btn-block" to={`/registrace${betaQuery}`}>
-                  Vytvořit beta účet
-                </Link>
+                <BetaEnrollment role={enrollment.role} accepted={enrollment.accepted} onRole={(role) => updateEnrollment({ role })} onAccepted={(accepted) => updateEnrollment({ accepted })} />
+                <button className="btn btn-primary btn-block" disabled={!enrollment.role || !enrollment.accepted} onClick={() => navigate(`/registrace${betaQuery}`)}>Vytvořit beta účet</button>
                 <p className="beta-login-link">Už účet máš? <Link to={`/prihlaseni${betaQuery}`}>Přihlásit se</Link></p>
               </div>
             ) : (

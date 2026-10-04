@@ -1,3 +1,5 @@
+import BetaEnrollment from '../components/BetaEnrollment';
+import { readBetaEnrollment, saveBetaEnrollment } from '../lib/betaEnrollment';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../components/AuthContext';
@@ -27,6 +29,10 @@ function SignUp() {
     betaParamPresent ? searchParams.get('beta') : readPendingBetaCode()
   ), [betaParamPresent, searchParams]);
   const invalidBetaInvite = betaParamPresent && !betaCode;
+  const [betaEnrollment, setBetaEnrollment] = useState(() => readBetaEnrollment(betaCode));
+  const updateEnrollment = (patch) => {
+    const next = { ...betaEnrollment, ...patch }; setBetaEnrollment(next); saveBetaEnrollment(betaCode, next.role, next.accepted);
+  };
   const [betaState, setBetaState] = useState(betaCode ? 'loading' : 'none');
   const [betaSchool, setBetaSchool] = useState(null);
 
@@ -90,10 +96,11 @@ function SignUp() {
       return;
     }
 
+    if (betaCode && (!betaEnrollment.role || !betaEnrollment.accepted)) { setError('Vyber prosím roli a potvrď seznámení s beta testováním.'); return; }
     setSubmitting(true);
     const result = await signUp(form.email, form.password, form.name, {
       captchaToken,
-      ...(betaCode ? { betaSchoolCode: betaCode } : {}),
+      ...(betaCode ? { betaSchoolCode: betaCode, betaRole: betaEnrollment.role, betaNoticeAccepted: betaEnrollment.accepted } : {}),
     });
     setSubmitting(false);
 
@@ -168,6 +175,7 @@ function SignUp() {
 
         <form onSubmit={handleSubmit} className="panel panel-lg auth-form">
           <AuthTabs />
+          {betaCode && <BetaEnrollment role={betaEnrollment.role} accepted={betaEnrollment.accepted} onRole={(role) => updateEnrollment({ role })} onAccepted={(accepted) => updateEnrollment({ accepted })} />}
 
           {betaCode && betaState === 'loading' && <p className="field-hint" role="status">Ověřuji pozvánku…</p>}
           {betaCode && betaState === 'closed' && (

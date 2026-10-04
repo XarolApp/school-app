@@ -205,9 +205,12 @@ export function AuthProvider({ children }) {
     };
   }, [session, profile?.isTester, betaDeadlineMs, loadProfile]);
 
-  const signUp = async (email, password, name, { captchaToken, emailRedirectTo, betaSchoolCode } = {}) => {
+  const signUp = async (email, password, name, { captchaToken, emailRedirectTo, betaSchoolCode, betaRole, betaNoticeAccepted } = {}) => {
     const normalizedBetaCode = betaSchoolCode ? normalizeBetaCode(betaSchoolCode) : null;
     if (betaSchoolCode && !normalizedBetaCode) return { error: 'Pozvánka školy není platná.' };
+    if (normalizedBetaCode && (!['8','9','rodic','ucitel','jine'].includes(betaRole) || betaNoticeAccepted !== true)) {
+      return { error: 'Vyber prosím roli a potvrď seznámení s beta testováním.' };
+    }
     if (normalizedBetaCode) rememberBetaCode(normalizedBetaCode);
     // The name rides along in user metadata so the database trigger can copy
     // it into the profile row it creates. The trial length is set there too —
@@ -219,7 +222,7 @@ export function AuthProvider({ children }) {
         data: {
           name,
           accepted_terms_at: new Date().toISOString(),
-          ...(normalizedBetaCode ? { beta_school_code: normalizedBetaCode } : {}),
+          ...(normalizedBetaCode ? { beta_school_code: normalizedBetaCode, beta_role: betaRole, beta_notice_accepted: betaNoticeAccepted === true } : {}),
         },
         emailRedirectTo: emailRedirectTo || (normalizedBetaCode
           ? `${window.location.origin}/beta/${encodeURIComponent(normalizedBetaCode)}?potvrzeno=1`
