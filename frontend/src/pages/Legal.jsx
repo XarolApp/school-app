@@ -8,7 +8,7 @@ function LegalPage({ title, updated, children }) {
     <article className="legal">
       {DRAFT && (
         <p className="legal-draft" role="note">
-          Pracovní verze — údaje označené [DOPLNIT] (provozovatel, poskytovatel e-mailů) se doplní před spuštěním.
+          Pracovní verze — údaje označené [DOPLNIT] (poskytovatel e-mailů) se doplní před spuštěním.
         </p>
       )}
       <h1>{title}</h1>
@@ -23,7 +23,7 @@ export function Privacy() {
     <LegalPage title="Zásady ochrany osobních údajů" updated="21. 9. 2026">
       <h2>1. Kdo je správce</h2>
       <p>
-        Správcem osobních údajů je [DOPLNIT: jméno / firma, IČO, adresa sídla], e-mail:
+        Správcem osobních údajů je Václav Kadlec, Na Lysinách 34, 147 00 Praha, e-mail:
         info@stredninamiru.cz. Provozujeme službu Střední na míru (web stredninamiru.cz). Pověřence pro ochranu
         osobních údajů nemáme; se vším se obracej na uvedený e-mail.
       </p>
@@ -147,8 +147,7 @@ export function Terms() {
     <LegalPage title="Obchodní podmínky" updated="21. 9. 2026">
       <h2>1. Provozovatel a kontakt</h2>
       <p>
-        Službu Střední na míru (stredninamiru.cz) provozuje [DOPLNIT: jméno / firma, IČO, adresa sídla,
-        DIČ, zápis v rejstříku], e-mail: info@stredninamiru.cz (tento e-mail slouží pro všechny žádosti,
+        Službu Střední na míru (stredninamiru.cz) provozuje Václav Kadlec, Na Lysinách 34, 147 00 Praha (fyzická osoba, neplátce DPH), e-mail: info@stredninamiru.cz (tento e-mail slouží pro všechny žádosti,
         reklamace, odstoupení od smlouvy i nahlášení nevhodného obsahu). Uzavřením smlouvy
         souhlasíš s těmito podmínkami a bereš na vědomí{' '}
         <a href="/ochrana-osobnich-udaju">Zásady ochrany osobních údajů</a>. Smlouva se uzavírá
@@ -216,7 +215,7 @@ export function Terms() {
       </ul>
       <p className="legal-form">
         <strong>Vzorový formulář pro odstoupení od smlouvy</strong><br />
-        Adresát: [DOPLNIT: jméno provozovatele, adresa], info@stredninamiru.cz<br />
+        Adresát: Václav Kadlec, Na Lysinách 34, 147 00 Praha, info@stredninamiru.cz<br />
         Oznamuji, že tímto odstupuji od smlouvy o poskytnutí služby Střední na míru (tarif:
         ……………).<br />
         Datum objednávky: …………… E-mail účtu: ……………<br />
