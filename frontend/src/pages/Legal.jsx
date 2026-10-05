@@ -20,7 +20,7 @@ function LegalPage({ title, updated, children }) {
 
 export function Privacy() {
   return (
-    <LegalPage title="Zásady ochrany osobních údajů" updated="21. 9. 2026">
+    <LegalPage title="Zásady ochrany osobních údajů" updated="5. 10. 2026">
       <h2>1. Kdo je správce</h2>
       <p>
         Správcem osobních údajů je Václav Kadlec, Na Lysinách 34, 147 00 Praha, e-mail:
@@ -136,7 +136,44 @@ export function Privacy() {
         odpovědi, aby je po potvrzení e-mailu uložil ke správnému účtu.
       </p>
 
-      <h2>9. Změny</h2>
+      <h2>9. Beta testování</h2>
+      <p>
+        Pokud se zapojíš přes beta pozvánku, zaznamenáváme až po seznámení s upozorněním
+        navštívené stránky, viditelný čas na nich, použití funkcí, hledání, chyby a typ zařízení
+        (telefon, tablet nebo počítač). Ukládáme také tvoji testovací roli, postup zkoušení,
+        zpětnou vazbu, odpovědi v závěrečném dotazníku a pořadí doporučených škol. Účelem je
+        zjistit, co funguje a co máme před spuštěním opravit. Právním základem je náš
+        oprávněný zájem na testování služby; potvrzení upozornění není souhlas se sledováním.
+      </p>
+      <p>
+        Běžných návštěvníků a účtů se beta sledování netýká. Nepoužíváme analytické služby
+        třetích stran, nové cookies ani otisk zařízení. Náhodný identifikátor beta návštěvy
+        a relace je součástí testovací služby a zůstává v localStorage a sessionStorage
+        prohlížeče. Do událostí neukládáme e-mail, hesla, volný text odpovědí v dotazníku ani
+        počet bodů z přijímacích zkoušek. Hledaný text uchováme jen tehdy, když odpovídá části
+        názvu školy; jinak zaznamenáme pouze jeho délku a počet výsledků.
+      </p>
+      <p>
+        Snímek stránky je dobrovolný: pořídíš ho výslovným tlačítkem v režimu „Označit
+        místo“, před odesláním uvidíš náhled a můžeš snímek odebrat. Pole input, textarea
+        a obsah označený jako soukromý před zachycením zakryjeme. Na server ho nahrajeme
+        až při odeslání zpětné vazby, do soukromého úložiště. Zprávy a snímky jsou dostupné
+        pouze správci a tvoje zprávy i odpovědi správce také tobě v aplikaci.
+      </p>
+      <p>
+        Jednotlivé události používání smažeme šest měsíců po stanoveném konci beta programu.
+        Zpětnou vazbu, závěrečné odpovědi a recenze uchováváme pro vyhodnocení a zlepšování
+        služby; právo na výmaz zůstává zachováno. Námitku proti beta sledování, žádost o
+        přístup nebo výmaz můžeš poslat na info@stredninamiru.cz.
+      </p>
+      <p>
+        Recenze je nepovinná a její anonymní použití na webu má vlastní, předem nezaškrtnuté
+        potvrzení. Samotné odeslání ani interní výběr správcem ji nezveřejní. Při případném
+        zveřejnění uvedeme „beta tester, přístup zdarma“; recenzi dítěte mladšího 15 let
+        použijeme pouze plně anonymně, například „Student, 8. třída“.
+      </p>
+
+      <h2>10. Změny</h2>
       <p>O podstatné změně těchto zásad tě budeme předem informovat v aplikaci nebo e-mailem.</p>
     </LegalPage>
   );
