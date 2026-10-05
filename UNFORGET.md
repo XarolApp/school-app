@@ -39,6 +39,32 @@ browser verification with local seed data, and final review. Preserve beta's
 original exclusive rolling/cutoff access and zero Stripe calls. The Matching
 conflict is resolved; do not reopen the founder's choice.
 
+## Plan 018 rollout tests — Stripe test mode and two devices — 2026-10-05
+- **Found:** 2026-10-05, after the Supabase tables were applied (3 tables, RLS on).
+- **Urgency:** high — must pass before the Plan 018 server is deployed to live
+- **Effort:** about an hour; needs Stripe TEST keys in the local `.env`
+- **Release/context:** [`plans/018-parent-child-share-links.md`](plans/018-parent-child-share-links.md) §8
+
+**Stripe test mode (test keys and test card 4242… only; never live keys):**
+- [ ] Student on Plan/Platba presses "Ať to zaplatí rodič"; link is copied and the waiting panel shows.
+- [ ] Parent opens it with no session, sees plan cards and no app nav, pays with the test card.
+- [ ] Parent returns to "Platba se zpracovává…", then to the manage state.
+- [ ] Student tab, refocused, moves to `hotovo`; `/skoly` has access.
+- [ ] `checkout.session.completed` for a season (setup-mode) pay-link checkout contains a non-null `customer`. `customer_creation: 'always'` was added in the refactor but is unverified.
+- [ ] Parent cancels via the link; the student's Settings reflects it.
+- [ ] Fresh link and plan: parent withdraws; refund happens and the student loses access.
+- [ ] Check the first finding in "Plan 018 review" below: after a parent payment, does a later own purchase by the student reuse the parent's customer, receipts or saved card?
+- [ ] Ended plan: the parent link shows checkout again, not "aktivní".
+
+**Two-device scenarios (normal window plus a private window):**
+- [ ] Quiz handoff: parent presses "Poslat odkaz dítěti"; lock screen shows; child opens the link; parent refocuses and sees "otevřelo"; child reaches Reveal; parent sees the done state.
+- [ ] Parent presses "Chci dotazník vyplnit sám"; parent continues; the link then shows "Odkaz už neplatí".
+- [ ] Opening the child link in the parent's own browser shows "Tento odkaz je pro vaše dítě".
+- [ ] Reveal link before an account shows #1 plus the locked count, with only the top bar.
+- [ ] `/dotaznik` results link: top 10 with reasons; set `trial_expires_at` in the past on a test account and the same link drops to 1 row plus locked; "Zrušit" gives 404.
+- [ ] Parent signup tip shows on the parent branch only.
+- [ ] All three standalone pages (`/vysledky`, `/platba-rodice`, `/od-rodice`) at 390px and 1280px, light and dark.
+
 ## Plan 018 review: three findings left open — 2026-10-04
 - **Found:** 2026-10-04, review of the plan 018 commits (`67ada25`…`7ff9a68`).
   Findings 1, 3 and 4 of that review were fixed. These three were deferred.
