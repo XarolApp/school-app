@@ -13,31 +13,38 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
-## Plan 019: continuation after independent review — 2026-10-05
+## Plan 019: SQL reapplication and live rollout checks — 2026-10-05
 - **Found:** 2026-10-05, continuing the approved beta feedback/analytics plan.
 - **Urgency:** high (beta rollout)
 - **Risk of fixing now:** schema, privacy and access changes need focused verification.
-- **Risk of NOT fixing:** incomplete admin/legal flow and unverified tester behavior.
-- **Effort:** large (phase B steps 10–12)
+- **Risk of NOT fixing:** new API runs against outdated SQL; live privacy/access/Storage behavior remains unverified.
+- **Effort:** medium (configuration, database and real-service verification)
 - **Release/context:** plan 019 beta rollout
 
 Founder resolved Matching: full rankings in a dedicated private table (plan §6,
 commit a039c63). Claude independently reviewed steps 2–9 in
 `reports/beta-implementation-claude-review-2026-10-05.md`; phase A addresses findings
-1–10 before phase B. Current phase A checks: 107 root tests pass, frontend lint
-passes with 8 existing warnings, production build passes. SQL logic assertions
-and mocked API tests do not verify PostgreSQL/Storage transactions.
+1–10 before phase B. Steps 2–12 are now implemented and pushed through c8e632e.
+Final checks: 121 root tests pass, frontend lint passes with 8 existing warnings,
+production build passes. Actual Chrome student/parent flows and nine admin tabs
+were checked at 390px and desktop using synthetic local services: normal account
+0 event requests/rows, Stripe 0 calls, all 39 CSV exports pass. SQL logic
+assertions and mocked API tests do not verify PostgreSQL/Storage transactions.
 
 Founder confirmed applying the previous whole SQL and receiving table count 5
 on 2026-10-05. This is user-reported verification of table presence. Phase A
 changes the SQL functions/repair/cleanup; phase B adds beta_rankings, so the
 WHOLE updated supabase-setup.sql must be applied again before rollout.
 
-Still in progress: full-ranking persistence, nine admin tabs plus CSV and
-ADMIN_EMAILS, Legal.jsx beta privacy section, full phone/desktop student/parent
-browser verification with local seed data, and final review. Preserve beta's
-original exclusive rolling/cutoff access and zero Stripe calls. The Matching
-conflict is resolved; do not reopen the founder's choice.
+Still pending: apply updated whole SQL, verify beta_rankings + all six private
+tables' RLS/no policies + service-only function grants + NULL/past closing
+deadlines; real signup metadata/confirmation and private signed Storage
+upload/read/cleanup; configure ADMIN_EMAILS, production BETA_TICKET_SECRET,
+cutoff/school codes and SMTP; independent review of continuation; legal check
+before publicly using under-15 reviews. Preserve beta's original exclusive
+rolling/cutoff access and zero Stripe calls. The Matching conflict is resolved.
+Review handoff and exact SQL queries:
+`reports/beta-implementation-completion-2026-10-05.md`.
 
 ## Plan 018 rollout tests — Stripe test mode and two devices — 2026-10-05
 - **Found:** 2026-10-05, after the Supabase tables were applied (3 tables, RLS on).

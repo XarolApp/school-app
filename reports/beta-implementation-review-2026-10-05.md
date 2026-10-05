@@ -1,5 +1,8 @@
 # Plan 019 — implementation handoff for Claude Code review
 
+> Historical report for the first steps 2–9 pass. Current completion and review
+> handoff: [beta-implementation-completion-2026-10-05.md](beta-implementation-completion-2026-10-05.md).
+
 Date: 2026-10-05. Repository: `school-app`, branch `main`.
 Implementation revision to review: `1c58bf9` (last code commit: `02067ad`).
 Status: **partial implementation, not ready to launch**. Build-order steps 2–9

@@ -1,6 +1,6 @@
 # 019 — Beta feedback, tracking and analytics
 
-**Status:** APPROVED PLAN — steps 2–9 implemented; independent Claude review completed. Phase A fixes findings 1–10 (107 tests, lint/build pass). Continuing phase B steps 10–12. Matching uses full rankings per founder decision 2026-10-05. Founder reports previous SQL applied with verify count 5; updated SQL must be reapplied after continuation.
+**Status:** IMPLEMENTED — steps 2–12 committed and pushed. Claude's ten findings addressed; full rankings implemented per founder decision 2026-10-05. Local Chrome verification at 390px and desktop completed with synthetic services; 121 tests, lint/build pass. Founder reports previous SQL applied with verify count 5. Updated whole SQL (including beta_rankings), live Supabase/Storage checks and final independent review remain rollout gates. See reports/beta-implementation-completion-2026-10-05.md.
 **Builds on:** plan 016 (beta program, implemented) and `docs/beta_testing_logic.md`. This plan **extends** 016; it does not replace its access model, tables or routes.
 **Model routing (CLAUDE.md):** planning was Opus 5.5 medium. Build at Sonnet 5 high (large multi-file). Review the tracking/consent and `/admin` access code at Opus 5.5 low.
 

@@ -660,8 +660,12 @@ Update this section whenever new information is confirmed.
   watched succeed end to end on a real account** — do that before trusting
   match_score population from onboarding signups.
 - School beta program: **implementation built, rollout pending** — focused API
-  boundary and middleware tests pass; live Supabase migration and database
-  transaction checks have not been run. The program is closed until the founder
+  boundary and middleware tests pass. Plan 019 steps 2–12 are implemented
+  (2026-10-05): feedback, beta-only tracking, closing questionnaire/reviews,
+  full rankings and nine admin tabs/CSV. 121 tests and local phone/desktop
+  browser verification pass with synthetic services. Founder reports applying
+  previous SQL (count 5); updated whole SQL with beta_rankings and live
+  transaction/Storage checks remain pending. The program is closed until the founder
   supplies a cutoff date/time; the optional external feedback URL is also pending.
   No testers have been enrolled through this implementation.
 - Parent/child: **not finished**
@@ -670,8 +674,10 @@ Update this section whenever new information is confirmed.
   for confirmation e-mails, withdrawal testing in Stripe test mode, DPA
   collection. Set `DRAFT = false` after filling placeholders. See UNFORGET.md
   items 1-2.
-- Analytics: **not finished** — confirmed 2026-09-12, zero analytics/tracking
-  code anywhere in the frontend or backend (no PostHog/GA/Mixpanel/etc.).
+- Analytics: **beta implementation complete, rollout pending** — 2026-10-05,
+  first-party beta-only events, full rankings and private /admin reports.
+  Normal users send zero events by design. SQL/configuration, live Supabase
+  checks and independent continuation review remain; see plan 019 completion report.
 - Security review: **not finished**
 - Deployment: **done** — live as of 2026-09-13. Backend on Railway
   (`https://school-app-production-be43.up.railway.app`, EU West, Node 22+ —
@@ -831,8 +837,11 @@ Run 2026-09-12 against the real codebase, not assumed from the roadmap.
 **Net result (updated 2026-09-23):** the product itself (signup → questionnaire → matching →
 school browsing) is further along than initial assessment. **Payment and legal pages are now
 95% done**, leaving only final operational tasks (SMTP, DPA collection, test-mode verification, operator facts).
-**Analytics remains the biggest blocker** — zero implementation, needed to understand funnel before beta
-launch.
+**Beta analytics is implemented (2026-10-05).** Before beta rollout, apply the
+updated whole SQL, configure server-only admin/ticket settings and program dates,
+and complete live Supabase/Storage verification and independent review. Normal
+user tracking remains intentionally disabled. See
+`reports/beta-implementation-completion-2026-10-05.md`.
 
 ### Gate Status (updated 2026-09-23)
 
