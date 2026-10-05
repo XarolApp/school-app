@@ -451,3 +451,16 @@ export const submitBetaGate = (message) => request('/api/beta/gate', { method: '
 export const submitBetaClosing = (body) => request('/api/beta/closing', { method: 'POST', body: JSON.stringify(body) });
 
 export const saveBetaOnboardingRanking=(body)=>request('/api/beta/rankings',{method:'POST',body:JSON.stringify(body)});
+
+export const fetchAdminReport=tab=>request('/api/admin/'+tab);
+export const fetchAdminFeedback=id=>request('/api/admin/feedback/'+id);
+export const updateAdminFeedback=(id,body)=>request('/api/admin/feedback/'+id,{method:'PATCH',body:JSON.stringify(body)});
+export const selectAdminReview=(id,selected)=>request('/api/admin/reviews/'+id,{method:'PATCH',body:JSON.stringify({selected})});
+export const fetchTesterEmail=id=>request('/api/admin/testers/'+id+'/email');
+export async function downloadAdminCsv(table){
+  const {data:{session}}=await supabase.auth.getSession();
+  const res=await fetch(API_BASE_URL+'/api/admin/export/'+encodeURIComponent(table)+'.csv',{headers:session?{Authorization:'Bearer '+session.access_token}:{}});
+  if(!res.ok)throw new ApiError('Export se nepodařilo stáhnout.',res.status);
+  const url=URL.createObjectURL(await res.blob()),link=document.createElement('a');
+  link.href=url;link.download='beta-'+table+'.csv';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}

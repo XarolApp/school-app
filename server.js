@@ -1,4 +1,5 @@
 const { rankingPayload } = require('./lib/betaRankings');
+const { registerBetaAdmin } = require('./lib/betaAdminRoutes');
 const { betaLimitOptions } = require('./lib/betaLimits');
 const { cleanupBetaScreenshots } = require('./lib/betaMaintenance');
 const { closingPayload } = require('./lib/betaClosing');
@@ -345,6 +346,14 @@ async function requireAuth(req, res, next) {
   req.user = data.user;
   next();
 }
+
+// Independent of paid/developer access. The browser never receives this list.
+const ADMIN_EMAILS = new Set((process.env.ADMIN_EMAILS || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean));
+function requireAdmin(req, res, next) {
+  if (!ADMIN_EMAILS.has((req.user.email || '').toLowerCase())) return res.status(403).json({error:'Tato stránka je jen pro správce.'});
+  next();
+}
+registerBetaAdmin(app, supabase, [requireAuth, requireAdmin]);
 
 /**
  * Identifies the caller if they happen to be signed in, and shrugs if they are

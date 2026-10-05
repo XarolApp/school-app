@@ -9,6 +9,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 // Default landing (3D map). three.js + GSAP load only on this route.
 const Landing = lazy(() => import('./pages/landing2/Landing'));
+const Admin = lazy(() => import('./pages/Admin'));
 import Search from './pages/Search';
 import SchoolDetail from './pages/SchoolDetail';
 import SignUp from './pages/SignUp';
@@ -60,6 +61,7 @@ function App() {
               <Route path="/od-rodice/:token" element={<HandoffStart />} />
 
               <Route element={<Layout />}>
+                <Route path="/admin" element={<Suspense fallback={<p role="status">Načítání přehledů…</p>}><Admin /></Suspense>} />
                 {/* Variant B (3D map) is the default landing; the old one stays at /stara for comparison. */}
                 <Route path="/" element={<Suspense fallback={null}><Landing /></Suspense>} />
                 <Route path="/nova" element={<Navigate to="/" replace />} />

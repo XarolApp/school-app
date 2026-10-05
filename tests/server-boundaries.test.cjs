@@ -100,6 +100,7 @@ function harness({
       if (name === 'stripe') return () => stripe;
       if (name === './lib/reviewFilter') return require('../lib/reviewFilter');
       if (name === './lib/betaRankings') return require('../lib/betaRankings');
+      if (name === './lib/betaAdminRoutes') return require('../lib/betaAdminRoutes');
       if (name === './lib/betaLimits') return require('../lib/betaLimits');
       if (name === './lib/betaMaintenance') return require('../lib/betaMaintenance');
       if (name === './lib/betaClosing') return require('../lib/betaClosing');
@@ -141,6 +142,28 @@ function harness({
     },
   };
 }
+
+test('every admin report, export and mutation requires verified ADMIN_EMAILS independent of developer access',async()=>{
+ const paths=[...require('../lib/betaAdminRoutes').TABS.map(t=>['get','/api/admin/'+t]),['get','/api/admin/export/:table.csv'],['get','/api/admin/feedback/:id'],['patch','/api/admin/feedback/:id'],['patch','/api/admin/reviews/:id'],['get','/api/admin/testers/:id/email']];
+ for(const [method,path] of paths){
+  const denied=harness({authUser:{id:'dev',email:'dev@example.com',email_confirmed_at:'2026-01-01'}});
+  assert.equal((await denied.callChain(method,path)).statusCode,403,path);assert.equal(denied.queries.length,0);
+  assert.equal((await denied.callChain(method,path,{headers:{}})).statusCode,401,path);
+ }
+ const admin=harness({env:{ADMIN_EMAILS:' Admin@Example.com '},authUser:{id:'admin',email:'admin@example.com',email_confirmed_at:'2026-01-01'},result:()=>({data:[],error:null})});
+ const r=await admin.callChain('get','/api/admin/overview');assert.equal(r.statusCode,200);assert.equal(r.body.tab,'overview');
+ const unconfirmed=harness({env:{ADMIN_EMAILS:'admin@example.com'},authUser:{id:'admin',email:'admin@example.com'}});assert.equal((await unconfirmed.callChain('get','/api/admin/overview')).statusCode,403);
+});
+
+test('admin feedback patch cannot change attribution and review selection requires publication consent',async()=>{
+ const options={env:{ADMIN_EMAILS:'admin@example.com'},authUser:{id:'admin',email:'admin@example.com',email_confirmed_at:'2026-01-01'},result:q=>({data:q.table==='beta_reviews'?{id:1,consent_publish:false}:{id:1},error:null})};
+ const h=harness(options);
+ assert.equal((await h.callChain('patch','/api/admin/feedback/:id',{params:{id:'1'},body:{user_id:'other'}})).statusCode,400);
+ assert.equal((await h.callChain('patch','/api/admin/feedback/:id',{params:{id:'1'},body:{status:'vyreseno',admin_reply:'Hotovo'}})).statusCode,204);
+ const patch=h.queries.find(q=>q.table==='beta_feedback').calls.find(c=>c[0]==='update')[1];assert.equal(patch.admin_reply,'Hotovo');assert.ok(patch.replied_at);
+ assert.equal((await h.callChain('patch','/api/admin/reviews/:id',{params:{id:'1'},body:{selected:true}})).statusCode,400);
+ assert.equal((await h.callChain('patch','/api/admin/reviews/:id',{params:{id:'1'},body:{selected:false}})).statusCode,204);
+});
 
 test('season access ends on March 31 in Prague, including the rollover year', () => {
   const h = harness();
