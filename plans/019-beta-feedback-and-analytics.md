@@ -1,6 +1,6 @@
 # 019 — Beta feedback, tracking and analytics
 
-**Status:** APPROVED PLAN — steps 2–9 implemented and pushed; stopped before step 10 on 2026-10-05 for the Matching data conflict recorded in UNFORGET.md. Steps 10–12 and complete browser verification remain. Every section below was agreed with the founder on 2026-10-04 (question-by-question).
+**Status:** APPROVED PLAN — steps 2–9 implemented and pushed; stopped before step 10 on 2026-10-05 for the Matching data conflict — RESOLVED the same day: full ranking (section 6). Independent review of steps 2–9 runs before steps 10–12. Steps 10–12 and complete browser verification remain. Every section below was agreed with the founder on 2026-10-04 (question-by-question).
 **Builds on:** plan 016 (beta program, implemented) and `docs/beta_testing_logic.md`. This plan **extends** 016; it does not replace its access model, tables or routes.
 **Model routing (CLAUDE.md):** planning was Opus 5.5 medium. Build at Sonnet 5 high (large multi-file). Review the tracking/consent and `/admin` access code at Opus 5.5 low.
 
@@ -91,6 +91,7 @@ Event allowlist (first version):
 - **Compare / decide:** `compare_add`, `compare_open` (count), `matrix_weight` (criterion, level), `prihlaska_pick` (priority), `share_create`.
 - **Account / UI:** `theme_change`, `favorite_toggle`, `review_write`.
 - **Results quality:** `result_view` (top 10 school ids + ranks, source onboarding/questionnaire) — feeds section 9 Matching.
+  **Decision 2026-10-05 (founder, resolves the Matching conflict):** record the **full ranking**, not just the top 10. Each time results are produced, store the ordered list of ALL school ids (≈217 ints) with `source` (onboarding / questionnaire) and the run id when there is one — in a dedicated private table (e.g. `beta_rankings`: user_id, source, run_id, ranking int[], created_at), not in `beta_events` (it would break the 2 KB props cap). Never store the answers or Cermat points alongside it. Questionnaire: take the full `scoreSchools()` order on the server before `REASON_COUNT` slices it. Onboarding: the browser sends the full `rankSchools()` order from the scorer the tester actually saw (the server's translated-answers path cannot reproduce it). This makes per-school mean rank, spread, top/bottom-10 frequency and simulation-vs-real comparisons valid for both engines.
 - **Errors:** `js_error` (message, path — from `window.onerror`/`unhandledrejection`), `api_error` (endpoint, status) from `api.js`.
 - **Frustration:** `rage_click` (3+ clicks in 600 ms on one element: selector).
 
