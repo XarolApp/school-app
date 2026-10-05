@@ -461,7 +461,7 @@ function Settings() {
         )}
 
         {/* --- Profil ---------------------------------------------------- */}
-        <section className="panel panel-lg settings-section">
+        <section className="panel panel-lg settings-section" data-private>
           <div className="settings-section-head">
             <h2 className="settings-section-title">Profil</h2>
             <p className="settings-section-text">

@@ -15,7 +15,7 @@ function Chart({section,compact=false}){
  if(!rows.length||kind==='table')return null;
  if(['bar','funnel'].includes(kind)){
   const max=Math.max(1,...rows.map(r=>Number(r.value)||0));
-  return <div className="admin-bars" aria-label={section.title}>{rows.slice(0,12).map((r,i)=><div className="admin-bar" key={i}><span>{r.label}</span><svg viewBox="0 0 260 16" role="img" aria-label={`${r.label}: ${fmt(r.value)}`}><rect width="260" height="16" rx="4" fill="var(--track)"/><rect width={260*(Number(r.value)||0)/max} height="16" rx="4" fill="var(--acc)"/></svg><b>{fmt(r.value)}{r.drop!=null&&<small> −{fmt(r.drop)} %</small>}</b></div>)}</div>;
+  return <div className="admin-bars" aria-label={section.title}>{(kind==='funnel'?rows:rows.slice(0,12)).map((r,i)=><div className="admin-bar" key={i}><span>{r.label}</span><svg viewBox="0 0 260 16" role="img" aria-label={`${r.label}: ${fmt(r.value)}`}><rect width="260" height="16" rx="4" fill="var(--track)"/><rect width={260*(Number(r.value)||0)/max} height="16" rx="4" fill="var(--acc)"/></svg><b>{fmt(r.value)}{r.drop!=null&&<small> −{fmt(r.drop)} %</small>}</b></div>)}</div>;
  }
  const scatter=kind==='scatter',price=kind==='prices',points=scatter?rows.filter(r=>r.mean!=null):rows;
  if(!points.length)return <p className="ss-caption">Zatím nejsou uložená pořadí testerů.</p>;
@@ -76,11 +76,11 @@ export default function Admin(){
  useEffect(()=>{if(loading||!isSignedIn)return;let live=true;setBusy(true);setError('');setReport(null);fetchAdminReport(tab).then(d=>{if(live){setReport(d);setStatus(200);}}).catch(e=>{if(live){setError(e.message);setStatus(e.status);}}).finally(()=>live&&setBusy(false));return()=>{live=false;};},[tab,refresh,loading,isSignedIn,user?.id]);
  const reload=()=>setRefresh(n=>n+1);
  const download=async s=>{try{await downloadAdminCsv(tab+'--'+s.id);}catch(e){setError(e.message);}};
- if(loading)return <main className="admin"><p role="status">Ověřování přihlášení…</p></main>;
- if(!isSignedIn||status===401)return <main className="admin admin-denied"><ShieldCheck size={36}/><h1 className="ss-headline-lg">Přihlášení správce</h1><p>Pro přístup k přehledům se přihlaste.</p><Link className="ss-btn ss-btn-primary" to="/prihlaseni">Přihlásit se</Link></main>;
- if(status===403)return <main className="admin admin-denied"><ShieldCheck size={36}/><p className="ss-caption">403 · Přístup odepřen</p><h1 className="ss-headline-lg">Jen pro správce</h1><p>Tento účet nemá oprávnění zobrazit beta přehledy.</p><Link className="ss-btn ss-btn-secondary" to="/skoly">Zpět do aplikace</Link></main>;
+ if(loading)return <section className="admin"><p role="status">Ověřování přihlášení…</p></section>;
+ if(!isSignedIn||status===401)return <section className="admin admin-denied"><ShieldCheck size={36}/><h1 className="ss-headline-lg">Přihlášení správce</h1><p>Pro přístup k přehledům se přihlaste.</p><Link className="ss-btn ss-btn-primary" to="/prihlaseni">Přihlásit se</Link></section>;
+ if(status===403)return <section className="admin admin-denied"><ShieldCheck size={36}/><p className="ss-caption">403 · Přístup odepřen</p><h1 className="ss-headline-lg">Jen pro správce</h1><p>Tento účet nemá oprávnění zobrazit beta přehledy.</p><Link className="ss-btn ss-btn-secondary" to="/skoly">Zpět do aplikace</Link></section>;
  const spark=report?.sections.find(s=>s.id==='activity');
- return <main className="admin">
+ return <section className="admin">
   <header className="admin-header"><div><p className="admin-kicker"><ShieldCheck size={16}/>Beta program</p><h1 className="ss-headline-lg">Jak si vede testování</h1><p className="ss-body-sm">Zkušenosti testerů, používání aplikace a kvalita doporučení.</p></div><button className="ss-btn ss-btn-secondary" disabled={busy} onClick={reload}><RefreshCw size={16}/>Obnovit</button></header>
   <nav className="admin-tabs" aria-label="Beta přehledy">{TABS.map(([id,label])=><button key={id} aria-current={id===tab?'page':undefined} onClick={()=>setParams({tab:id})}>{label}</button>)}</nav>
   {error&&<p className="admin-error" role="alert">{error}</p>}
@@ -93,5 +93,5 @@ export default function Admin(){
   <p className="ss-caption admin-updated">Aktualizováno {new Date(report.generated_at).toLocaleString('cs-CZ')} · Přehled používá nejvýše 30 sekund stará data.</p></>}
   {!busy&&!report&&!error&&<p><MessageSquare size={20}/>Přehled se připravuje.</p>}
   {detail!=null&&<FeedbackDetail key={detail} id={detail} onClose={()=>setDetail(null)} onSaved={reload}/>}
- </main>;
+ </section>;
 }

@@ -87,8 +87,11 @@
   }
 
   .beta-floating-tools.is-onboarding {
-    bottom: calc(128px + max(var(--space-sm), env(safe-area-inset-bottom, 0px)));
+    bottom: calc(28px + max(var(--space-sm), env(safe-area-inset-bottom, 0px)));
   }
+
+  html[data-beta-ui='true'] .ob-screen { padding-bottom: calc(120px + env(safe-area-inset-bottom, 0px)); }
+  html[data-beta-ui='true'] .ob-actions { bottom: 100px; }
 
   .beta-modal .ss-dialog-actions .ss-btn {
     flex: 1 1 100%;

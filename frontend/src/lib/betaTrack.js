@@ -21,7 +21,9 @@ export function createBetaTracker({ local, session, uuid, send, beacon }) {
     setAccount(next) {
       if (account.userId !== next.userId || !next.tester && next.userId) queue = [];
       account = next;
-      if (!active()) queue=[];
+      // A same-account profile refresh pauses collection, but must not discard
+      // already accepted beta events. A resolved non-beta account still clears.
+      if (next.resolved && !active()) queue=[];
       globalThis.dispatchEvent?.(new Event('snm:beta-account'));
       if (next.resolved && next.userId && !next.tester) {
         visit = null; try { local.removeItem('snm.beta.visit'); } catch { /* storage unavailable */ }

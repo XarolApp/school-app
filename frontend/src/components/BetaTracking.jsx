@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { saveBetaOnboardingRanking } from '../api';
 import { flushBetaRankings } from '../lib/betaRankings';
@@ -12,7 +12,8 @@ export default function BetaTracking() {
   const location = useLocation();
   const locationRef=useRef(location),navigation=useRef(null); locationRef.current=location;
   const [revision, setRevision] = useState(0);
-  useEffect(() => {
+  // Resolve eligibility before the new page can be interacted with or unloaded.
+  useLayoutEffect(() => {
     betaTracker.setAccount({ resolved: !loading && !profileLoading, userId: user?.id || null, tester: isTester, noticeAccepted:Boolean(profile?.betaTrackingNoticeAccepted), token: session?.access_token || null });
   }, [loading, profileLoading, user?.id, isTester, session?.access_token, profile?.betaTrackingNoticeAccepted]);
   useEffect(() => {
@@ -23,7 +24,7 @@ export default function BetaTracking() {
     window.addEventListener('snm:beta-account',flush);
     return () => { window.removeEventListener('snm:beta-enabled', enabled); window.removeEventListener('snm:beta-account',flush);clearInterval(timer); };
   }, []);
-  useEffect(() => {
+  useLayoutEffect(() => {
     const path=location.pathname;
     if (navigation.current?.path!==path) {
       let referrer='/';
@@ -38,9 +39,12 @@ export default function BetaTracking() {
       if(document.hidden){current.hide();if(path.startsWith('/onboarding/'))track('ob_drop',{step:path.split('/').at(-1)},path);void betaTracker.flush(true);}
       else current.show();
     };
+    const leave=()=>{current.finish();void betaTracker.flush(true);};
     window.addEventListener('snm:beta-enabled',enable);window.addEventListener('snm:beta-account',enable);document.addEventListener('visibilitychange',visibility);
+    window.addEventListener('pagehide',leave);
     return ()=>{
       window.removeEventListener('snm:beta-enabled',enable);window.removeEventListener('snm:beta-account',enable);document.removeEventListener('visibilitychange',visibility);
+      window.removeEventListener('pagehide',leave);
       if(window.location.pathname!==path){current.finish();if(path.startsWith('/onboarding/')&&!window.location.pathname.startsWith('/onboarding/'))track('ob_drop',{step:path.split('/').at(-1)},path);}
     };
   },[location.pathname]);

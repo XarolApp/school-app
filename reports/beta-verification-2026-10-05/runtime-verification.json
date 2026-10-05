@@ -1,0 +1,60 @@
+{
+  "environment": "Synthetic loopback preview, actual frontend and Express handlers",
+  "normalAccount": {
+    "before": {
+      "at": "2026-10-05T20:51:07.461Z",
+      "eventRequests": 31,
+      "events": 716,
+      "stripeCalls": 0
+    },
+    "after": {
+      "at": "2026-10-05T20:52:19.733Z",
+      "eventRequests": 31,
+      "events": 716
+    },
+    "eventRequestDelta": 0,
+    "eventDelta": 0
+  },
+  "stripeCalls": 0,
+  "uploads": 2,
+  "fullRankings": [
+    {
+      "source": "onboarding",
+      "schoolCount": 30
+    },
+    {
+      "source": "questionnaire",
+      "schoolCount": 30
+    },
+    {
+      "source": "onboarding",
+      "schoolCount": 30
+    },
+    {
+      "source": "questionnaire",
+      "schoolCount": 30
+    },
+    {
+      "source": "onboarding",
+      "schoolCount": 30
+    },
+    {
+      "source": "questionnaire",
+      "schoolCount": 30
+    },
+    {
+      "source": "questionnaire",
+      "schoolCount": 30
+    },
+    {
+      "source": "onboarding",
+      "schoolCount": 30
+    },
+    {
+      "source": "onboarding",
+      "schoolCount": 30
+    }
+  ],
+  "closingSubmissions": 8,
+  "privateReviews": 7
+}

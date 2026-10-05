@@ -21,6 +21,15 @@ test('failed tracking flush cannot reattribute events to the next beta account',
  t.setAccount({resolved:true,userId:'one',tester:true,noticeAccepted:true});t.track('page_view');const pending=t.flush();
  t.setAccount({resolved:true,userId:'two',tester:true,noticeAccepted:true});reject(new Error('offline'));await pending;await t.flush();assert.equal(sent.length,1);
 });
+test('same beta profile refresh pauses new collection and preserves already queued events',async()=>{
+ const {createBetaTracker}=await import('../frontend/src/lib/betaTrack.js');const sent=[];
+ const t=createBetaTracker({local:store(),session:store(),uuid:()=>id,send:async p=>sent.push(p)});
+ t.setAccount({resolved:true,userId:'one',tester:true,noticeAccepted:true});t.track('theme_change');
+ t.setAccount({resolved:false,userId:'one',tester:true,noticeAccepted:true});t.track('page_view');await t.flush();assert.equal(sent.length,0);
+ t.setAccount({resolved:true,userId:'one',tester:true,noticeAccepted:true});await t.flush();
+ assert.equal(sent.length,1);assert.deepEqual(sent[0].events.map(e=>e.name),['theme_change']);
+ t.track('page_view');t.setAccount({resolved:true,userId:'one',tester:false,noticeAccepted:true});await t.flush();assert.equal(sent.length,1);
+});
 test('auth refresh cannot replay navigation events, including after tracking is enabled',async()=>{
  const {createBetaNavigation}=await import('../frontend/src/lib/betaNavigation.js');let enabled=false,now=0;const events=[];
  const tracker={active:()=>enabled,track:(...e)=>events.push(e)};

@@ -18,7 +18,7 @@ export default function BetaClosingQuestionnaire({role,onDone}) {
   const valid=[Boolean(a.selected),a.nps!==null&&a.help!==null,Boolean(a.pay&&a.payer&&a.plan)&&Object.values(a.prices).every(v=>v!==''&&Number(v)>=0&&Number(v)<=100000),Boolean(a.theme)&&Object.values(a.ratings).every(v=>v!==null),true][step];
   const submit=async(withReview)=>{setBusy(true);setError('');try{await submitBetaClosing({answers:{...a,prices:Object.fromEntries(Object.entries(a.prices).map(([k,v])=>[k,Number(v)]))},review:withReview?review:null});onDone();}catch(e){setError(e.message);}finally{setBusy(false);}};
   return <div className="beta-closing">
-    <p className="ss-eyebrow">{step+1} / 5 · {['O tobě','Hodnota','Placení','Vzhled a budoucnost','Nepovinná recenze'][step]}</p>
+    <p className="ss-eyebrow">{step+1} / 5 · {[parent?'O Vás':'O tobě','Hodnota','Placení','Vzhled a budoucnost','Nepovinná recenze'][step]}</p>
     <p className="beta-closing-honest">{parent?'Odpovídejte upřímně':'Odpovídej upřímně'} — nic neodsuzujeme, špatná zpráva nám pomůže víc než pochvala.</p>
     {step===0 && <>
       <p>Role: {({'8':'8. třída','9':'9. třída',rodic:'Rodič',ucitel:'Učitel',jine:'Jiné'})[role]}</p>

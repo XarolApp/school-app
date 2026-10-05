@@ -219,7 +219,8 @@ dialog.ss-dialog::backdrop {
 
 /* ---------- form controls, buttons, notices, toasts (moved from auth.css, plan 012) ---------- */
 
-.input {
+.input,
+.ss-input {
   width: 100%;
   padding: var(--space-md);
   font: inherit;
@@ -231,17 +232,31 @@ dialog.ss-dialog::backdrop {
   border-radius: var(--r-button);
 }
 
-.input:focus {
+.input:focus,
+.ss-input:focus {
   outline: none;
   border-color: var(--acc);
   box-shadow: 0 0 0 4px var(--acc-soft);
 }
-.input:disabled {
+.input:disabled,
+.ss-input:disabled {
   opacity: 0.55;
   cursor: not-allowed;
 }
-.input[aria-invalid='true'] {
+.input[aria-invalid='true'],
+.ss-input[aria-invalid='true'] {
   border-color: var(--danger);
+}
+
+.ss-field-label {
+  display: grid;
+  gap: var(--space-sm);
+  font-size: var(--fs-body-sm);
+  font-weight: 500;
+}
+textarea.ss-input {
+  min-height: 120px;
+  resize: vertical;
 }
 
 /* One focus ring for every keyboard-reachable control that has none of its own. */

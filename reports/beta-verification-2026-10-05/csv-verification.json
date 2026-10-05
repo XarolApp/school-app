@@ -1,0 +1,317 @@
+{
+  "environment": "Loopback synthetic services; actual Express/admin routes",
+  "exports": [
+    {
+      "table": "overview--activity",
+      "status": 200,
+      "bytes": 279,
+      "bom": true,
+      "columns": 2,
+      "rows": 14
+    },
+    {
+      "table": "overview--schools",
+      "status": 200,
+      "bytes": 40,
+      "bom": true,
+      "columns": 2,
+      "rows": 1
+    },
+    {
+      "table": "overview--roles",
+      "status": 200,
+      "bytes": 74,
+      "bom": true,
+      "columns": 2,
+      "rows": 3
+    },
+    {
+      "table": "overview--kinds",
+      "status": 200,
+      "bytes": 68,
+      "bom": true,
+      "columns": 2,
+      "rows": 3
+    },
+    {
+      "table": "feedback--messages",
+      "status": 200,
+      "bytes": 1896,
+      "bom": true,
+      "columns": 8,
+      "rows": 12
+    },
+    {
+      "table": "behaviour--pages",
+      "status": 200,
+      "bytes": 831,
+      "bom": true,
+      "columns": 3,
+      "rows": 26
+    },
+    {
+      "table": "behaviour--reach",
+      "status": 200,
+      "bytes": 265,
+      "bom": true,
+      "columns": 3,
+      "rows": 9
+    },
+    {
+      "table": "behaviour--searches",
+      "status": 200,
+      "bytes": 43,
+      "bom": true,
+      "columns": 2,
+      "rows": 1
+    },
+    {
+      "table": "behaviour--zero",
+      "status": 200,
+      "bytes": 24,
+      "bom": true,
+      "columns": 2,
+      "rows": 0
+    },
+    {
+      "table": "behaviour--filters",
+      "status": 200,
+      "bytes": 24,
+      "bom": true,
+      "columns": 2,
+      "rows": 0
+    },
+    {
+      "table": "behaviour--sorts",
+      "status": 200,
+      "bytes": 24,
+      "bom": true,
+      "columns": 2,
+      "rows": 0
+    },
+    {
+      "table": "behaviour--devices",
+      "status": 200,
+      "bytes": 59,
+      "bom": true,
+      "columns": 2,
+      "rows": 2
+    },
+    {
+      "table": "behaviour--errors",
+      "status": 200,
+      "bytes": 90,
+      "bom": true,
+      "columns": 4,
+      "rows": 1
+    },
+    {
+      "table": "funnels--onboarding",
+      "status": 200,
+      "bytes": 437,
+      "bom": true,
+      "columns": 3,
+      "rows": 18
+    },
+    {
+      "table": "funnels--questionnaire",
+      "status": 200,
+      "bytes": 2183,
+      "bom": true,
+      "columns": 3,
+      "rows": 32
+    },
+    {
+      "table": "funnels--paywall",
+      "status": 200,
+      "bytes": 147,
+      "bom": true,
+      "columns": 3,
+      "rows": 5
+    },
+    {
+      "table": "funnels--decision",
+      "status": 200,
+      "bytes": 82,
+      "bom": true,
+      "columns": 2,
+      "rows": 3
+    },
+    {
+      "table": "matching--questionnaire",
+      "status": 200,
+      "bytes": 3626,
+      "bom": true,
+      "columns": 13,
+      "rows": 30
+    },
+    {
+      "table": "matching--onboarding",
+      "status": 200,
+      "bytes": 3706,
+      "bom": true,
+      "columns": 13,
+      "rows": 30
+    },
+    {
+      "table": "closing--roles",
+      "status": 200,
+      "bytes": 74,
+      "bom": true,
+      "columns": 2,
+      "rows": 3
+    },
+    {
+      "table": "closing--selected",
+      "status": 200,
+      "bytes": 42,
+      "bom": true,
+      "columns": 2,
+      "rows": 1
+    },
+    {
+      "table": "closing--prior",
+      "status": 200,
+      "bytes": 57,
+      "bom": true,
+      "columns": 2,
+      "rows": 2
+    },
+    {
+      "table": "closing--nps",
+      "status": 200,
+      "bytes": 79,
+      "bom": true,
+      "columns": 2,
+      "rows": 6
+    },
+    {
+      "table": "closing--help",
+      "status": 200,
+      "bytes": 33,
+      "bom": true,
+      "columns": 2,
+      "rows": 1
+    },
+    {
+      "table": "closing--useful",
+      "status": 200,
+      "bytes": 66,
+      "bom": true,
+      "columns": 2,
+      "rows": 2
+    },
+    {
+      "table": "closing--pay",
+      "status": 200,
+      "bytes": 50,
+      "bom": true,
+      "columns": 2,
+      "rows": 2
+    },
+    {
+      "table": "closing--payer",
+      "status": 200,
+      "bytes": 49,
+      "bom": true,
+      "columns": 2,
+      "rows": 2
+    },
+    {
+      "table": "closing--plan",
+      "status": 200,
+      "bytes": 41,
+      "bom": true,
+      "columns": 2,
+      "rows": 1
+    },
+    {
+      "table": "closing--themes",
+      "status": 200,
+      "bytes": 51,
+      "bom": true,
+      "columns": 2,
+      "rows": 2
+    },
+    {
+      "table": "closing--prices",
+      "status": 200,
+      "bytes": 946,
+      "bom": true,
+      "columns": 5,
+      "rows": 33
+    },
+    {
+      "table": "closing--ratings",
+      "status": 200,
+      "bytes": 116,
+      "bom": true,
+      "columns": 2,
+      "rows": 4
+    },
+    {
+      "table": "closing--quotes",
+      "status": 200,
+      "bytes": 1397,
+      "bom": true,
+      "columns": 3,
+      "rows": 18
+    },
+    {
+      "table": "reviews--reviews",
+      "status": 200,
+      "bytes": 1263,
+      "bom": true,
+      "columns": 9,
+      "rows": 7
+    },
+    {
+      "table": "testers--testers",
+      "status": 200,
+      "bytes": 1288,
+      "bom": true,
+      "columns": 8,
+      "rows": 8
+    },
+    {
+      "table": "ai-costs--days",
+      "status": 200,
+      "bytes": 383,
+      "bom": true,
+      "columns": 7,
+      "rows": 6
+    },
+    {
+      "table": "ai-costs--models",
+      "status": 200,
+      "bytes": 158,
+      "bom": true,
+      "columns": 7,
+      "rows": 1
+    },
+    {
+      "table": "ai-costs--sources",
+      "status": 200,
+      "bytes": 154,
+      "bom": true,
+      "columns": 7,
+      "rows": 1
+    },
+    {
+      "table": "ai-costs--runs",
+      "status": 200,
+      "bytes": 365,
+      "bom": true,
+      "columns": 7,
+      "rows": 6
+    },
+    {
+      "table": "ai-costs--failed",
+      "status": 200,
+      "bytes": 156,
+      "bom": true,
+      "columns": 6,
+      "rows": 1
+    }
+  ]
+}

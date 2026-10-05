@@ -30,6 +30,7 @@ function SignUp() {
   ), [betaParamPresent, searchParams]);
   const invalidBetaInvite = betaParamPresent && !betaCode;
   const [betaEnrollment, setBetaEnrollment] = useState(() => readBetaEnrollment(betaCode));
+  const betaParent=Boolean(betaCode&&['rodic','ucitel'].includes(betaEnrollment.role));
   const updateEnrollment = (patch) => {
     const next = { ...betaEnrollment, ...patch }; setBetaEnrollment(next); saveBetaEnrollment(betaCode, next.role, next.accepted);
   };
@@ -78,7 +79,7 @@ function SignUp() {
     }
 
     if (!consent) {
-      setError('Potvrď prosím věk a souhlas s podmínkami.');
+      setError(betaParent?'Potvrďte prosím věk a souhlas s podmínkami.':'Potvrď prosím věk a souhlas s podmínkami.');
       return;
     }
 
@@ -137,15 +138,14 @@ function SignUp() {
       <div className="page page-auth">
         <div className="auth-layout">
           <div className="notice">
-            <span className="notice-title">Potvrď svůj e-mail</span>
+            <span className="notice-title">{betaParent?'Potvrďte svůj e-mail':'Potvrď svůj e-mail'}</span>
             <p className="notice-text">
               {betaCode
-                ? `Poslali jsme odkaz na ${form.email}. Potvrzení e-mailu je povinné pro beta účet; odkaz tě vrátí k pozvánce od školy.`
+                ? `Poslali jsme odkaz na ${form.email}. Potvrzení e-mailu je povinné pro beta účet; odkaz ${betaParent?'Vás':'tě'} vrátí k pozvánce od školy.`
                 : `Poslali jsme odkaz na ${form.email}. Klikni na něj a účet se aktivuje i s tvým ${trialDaysPhrase()} zkušebním obdobím. Bez potvrzení se do databáze škol nedostaneš.`}
             </p>
             <p className="notice-text">
-              Nepřišel? Zkontroluj složku se spamem — odkaz umíme poslat znovu
-              z přihlašovací stránky.
+              {betaParent?'Nepřišel? Zkontrolujte složku se spamem — odkaz umíme poslat znovu z přihlašovací stránky.':'Nepřišel? Zkontroluj složku se spamem — odkaz umíme poslat znovu z přihlašovací stránky.'}
             </p>
           </div>
           <Link to={`/prihlaseni${betaCode ? `?beta=${encodeURIComponent(betaCode)}` : ''}`} className="btn btn-secondary btn-block">
@@ -169,7 +169,7 @@ function SignUp() {
             {betaInviteProvided && !betaCode
               ? 'Beta účet založíme až po ověření platné školní pozvánky.'
               : betaCode
-              ? `Testovací přístup trvá ${betaSchool?.accessHours || 48} hodin. Potvrzení e-mailu je povinné; platební kartu nepotřebuješ a beta účet nic nestrhne.`
+              ? `Testovací přístup trvá ${betaSchool?.accessHours || 48} hodin. Potvrzení e-mailu je povinné; platební kartu ${betaParent?'nepotřebujete':'nepotřebuješ'} a beta účet nic nestrhne.`
               : `Vyzkoušej celou databázi škol ${trialDaysPhrase()} zdarma. Platit začneš až potom — a jen když budeš chtít pokračovat.`}
           </p>
         </div>

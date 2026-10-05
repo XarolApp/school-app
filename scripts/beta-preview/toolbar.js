@@ -1,0 +1,11 @@
+import {previewSession,supabase} from './supabaseClient.js';
+const holder=document.createElement('details'),summary=document.createElement('summary');summary.textContent='Místní testovací nástroje';holder.append(summary);const bar=document.createElement('div');holder.append(bar);holder.style.cssText='position:fixed;bottom:0;left:0;z-index:9999;max-width:390px;background:var(--surface2);font-size:11px';bar.dataset.private='';bar.dataset.betaTools='';bar.setAttribute('aria-label','Místní testovací nástroje');
+bar.style.cssText='padding:6px;display:flex;gap:6px;flex-wrap:wrap;background:var(--surface2);color:var(--ink);border-top:1px solid var(--line);font-size:11px';
+const label=document.createElement('b');label.textContent='Místní testovací data';bar.append(label);
+function button(text,fn){const b=document.createElement('button');b.textContent=text;b.onclick=()=>{holder.open=false;return fn();};bar.append(b);}
+button('Potvrdit nový účet',async()=>{const users=await(await fetch('http://127.0.0.1:5002/__preview/users')).json();previewSession(users.at(-1));location.href='/skoly';});
+for(const [label,role] of [['Nový student','8'],['Nový rodič','rodic']])button(label,async()=>{const r=await fetch('http://127.0.0.1:5002/__preview/tester',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({role})});previewSession((await r.json()).user);location.href='/skoly';});
+for(const [name,email] of [['Správce','admin@example.test'],['Běžný účet','normal@example.test']])button(name,async()=>{await supabase.auth.signInWithPassword({email});location.href=name==='Správce'?'/admin':'/skoly';});
+button('Nová pozvánka',()=>{previewSession(null);for(const k of Object.keys(localStorage))if(k!=='snm.local-preview.session')localStorage.removeItem(k);sessionStorage.clear();location.href='/beta/LOCALGYM';});
+for(const [label,scenario] of [['Varování 12 h','warning'],['Vypršel přístup','expired'],['Závěrečný dotazník','closing']])button(label,async()=>{const {data:{session}}=await supabase.auth.getSession();await fetch('http://127.0.0.1:5002/__preview/scenario',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:session?.user.id,scenario})});location.reload();});
+document.body.append(holder);

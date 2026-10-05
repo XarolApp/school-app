@@ -76,6 +76,7 @@ function BetaLanding() {
   const closedBeforeStart = school && !school.programEndsAt;
   const closedAfterEnd = school && school.programEndsAt && !school.programActive;
   const [enrollment, setEnrollment] = useState(() => readBetaEnrollment(code));
+  const parent=['rodic','ucitel'].includes(enrollment.role);
   const updateEnrollment = (patch) => {
     const next = { ...enrollment, ...patch }; setEnrollment(next); saveBetaEnrollment(code, next.role, next.accepted);
   };
@@ -92,7 +93,7 @@ function BetaLanding() {
           <p className="eyebrow">Střední na míru · školní testování</p>
           <h1>{school?.school_name || 'Pozvánka k testování'}</h1>
           <p className="lede">
-            Pomoz nám ověřit hledání středních škol a rozhodovací nástroje před spuštěním.
+            {parent?'Pomozte nám ověřit hledání středních škol a rozhodovací nástroje před spuštěním.':'Pomoz nám ověřit hledání středních škol a rozhodovací nástroje před spuštěním.'}
           </p>
         </div>
 
@@ -104,7 +105,7 @@ function BetaLanding() {
           <div className="panel panel-lg stack">
             <div className="notice notice-error" role="alert">
               <span className="notice-title">Tato pozvánka neplatí</span>
-              <p className="notice-text">Zkontroluj odkaz nebo požádej školu o novou pozvánku.</p>
+              <p className="notice-text">{parent?'Zkontrolujte odkaz nebo požádejte školu o novou pozvánku.':'Zkontroluj odkaz nebo požádej školu o novou pozvánku.'}</p>
             </div>
             <Link className="btn btn-secondary btn-block" to="/">Zpět na úvodní stránku</Link>
           </div>
@@ -114,7 +115,7 @@ function BetaLanding() {
           <div className="panel panel-lg stack">
             <div className="notice notice-error" role="alert">
               <span className="notice-title">Pozvánku teď nejde ověřit</span>
-              <p className="notice-text">{lookupError || 'Zkus to prosím za chvíli znovu.'}</p>
+              <p className="notice-text">{lookupError || (parent?'Zkuste to prosím za chvíli znovu.':'Zkus to prosím za chvíli znovu.')}</p>
             </div>
             <button type="button" className="btn btn-secondary btn-block" onClick={() => window.location.reload()}>
               Zkusit znovu
@@ -127,8 +128,8 @@ function BetaLanding() {
             <div>
               <h2 id="beta-invite-title">Jak testování funguje</h2>
               <ul className="beta-facts">
-                <li><strong>{school.accessHours || 48} hodin přístupu.</strong> Po skončení můžeš pokračovat odesláním zpětné vazby přímo v aplikaci.</li>
-                <li><strong>Potvrzení e-mailu je povinné.</strong> Odkaz pošleme na tvoji adresu.</li>
+                <li><strong>{school.accessHours || 48} hodin přístupu.</strong> {parent?'Po skončení můžete pokračovat odesláním zpětné vazby přímo v aplikaci.':'Po skončení můžeš pokračovat odesláním zpětné vazby přímo v aplikaci.'}</li>
+                <li><strong>Potvrzení e-mailu je povinné.</strong> {parent?'Odkaz pošleme na Vaši adresu.':'Odkaz pošleme na tvoji adresu.'}</li>
                 <li><strong>Bez platební karty a bez platby.</strong> Beta účet nikdy nespustí skutečné placení.</li>
               </ul>
               {deadline && <p className="field-hint">Celý program končí {deadline} (pražského času).</p>}
@@ -137,13 +138,13 @@ function BetaLanding() {
             {closedBeforeStart && (
               <div className="notice" role="status">
                 <span className="notice-title">Testování ještě nezačalo</span>
-                <p className="notice-text">Střední na míru připravuje časový plán programu. Zkus se vrátit později.</p>
+                <p className="notice-text">Střední na míru připravuje časový plán programu. {parent?'Zkuste se vrátit později.':'Zkus se vrátit později.'}</p>
               </div>
             )}
             {closedAfterEnd && (
               <div className="notice" role="status">
                 <span className="notice-title">Beta program skončil</span>
-                <p className="notice-text">Nové účty už nepřijímáme. Jestli už účet máš, přihlas se a zobraz si jeho stav.</p>
+                <p className="notice-text">Nové účty už nepřijímáme. {parent?'Jestli už účet máte, přihlaste se a zobrazte si jeho stav.':'Jestli už účet máš, přihlas se a zobraz si jeho stav.'}</p>
               </div>
             )}
 
@@ -157,15 +158,15 @@ function BetaLanding() {
               </div>
             ) : isSignedIn && !emailConfirmed ? (
               <div className="notice" role="status">
-                <span className="notice-title">Nejdřív potvrď e-mail</span>
-                <p className="notice-text">Otevři potvrzovací odkaz, který jsme poslali. Přístup k beta účtu se ověřuje až poté.</p>
+                <span className="notice-title">{parent?'Nejdřív potvrďte e-mail':'Nejdřív potvrď e-mail'}</span>
+                <p className="notice-text">{parent?'Otevřete potvrzovací odkaz, který jsme poslali.':'Otevři potvrzovací odkaz, který jsme poslali.'} Přístup k beta účtu se ověřuje až poté.</p>
                 <button type="button" className="btn btn-secondary btn-sm" onClick={signOut}>Odhlásit se</button>
               </div>
             ) : isSignedIn && !isTester ? (
               <div className="stack">
                 <div className="notice" role="status">
-                  <span className="notice-title">Jsi přihlášený k běžnému účtu</span>
-                  <p className="notice-text">Školní pozvánka nezmění existující účet. Můžeš pokračovat ve svém účtu nebo se odhlásit a vytvořit nový beta účet.</p>
+                  <span className="notice-title">{parent?'Jste přihlášeni k běžnému účtu':'Jsi přihlášený k běžnému účtu'}</span>
+                  <p className="notice-text">Školní pozvánka nezmění existující účet. {parent?'Můžete pokračovat ve svém účtu nebo se odhlásit a vytvořit nový beta účet.':'Můžeš pokračovat ve svém účtu nebo se odhlásit a vytvořit nový beta účet.'}</p>
                 </div>
                 <Link className="btn btn-secondary btn-block" to="/skoly">Pokračovat do aplikace</Link>
                 {!closedBeforeStart && !closedAfterEnd && (
@@ -177,7 +178,7 @@ function BetaLanding() {
                 <BetaEnrollment role={enrollment.role} accepted={enrollment.accepted} onRole={(role) => updateEnrollment({ role })} onAccepted={(accepted) => updateEnrollment({ accepted })} />
                 <button className="btn btn-primary btn-block" disabled={starting || !enrollment.role || !enrollment.accepted} onClick={continueSignup}>Vytvořit beta účet</button>
                 {startError && <p role="alert">{startError}</p>}
-                <p className="beta-login-link">Už účet máš? <Link to={`/prihlaseni${betaQuery}`}>Přihlásit se</Link></p>
+                <p className="beta-login-link">{parent?'Už účet máte?':'Už účet máš?'} <Link to={`/prihlaseni${betaQuery}`}>Přihlásit se</Link></p>
               </div>
             ) : (
               <Link className="btn btn-secondary btn-block" to={`/prihlaseni${betaQuery}`}>
@@ -188,7 +189,7 @@ function BetaLanding() {
             {justConfirmed && !isSignedIn && (
               <div className="notice notice-success" role="status">
                 <span className="notice-title">E-mail je potvrzený</span>
-                <p className="notice-text">Přihlas se a pokračuj ve svém beta účtu.</p>
+                <p className="notice-text">{parent?'Přihlaste se a pokračujte ve svém beta účtu.':'Přihlas se a pokračuj ve svém beta účtu.'}</p>
               </div>
             )}
           </section>

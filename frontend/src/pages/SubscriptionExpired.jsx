@@ -193,7 +193,7 @@ function Paywall() {
 
         </div>
 
-        <p className="auth-footnote">
+        <p className="auth-footnote" data-private>
           Přihlášen jako {profile?.email}.{' '}
           <button type="button" className="link-button" onClick={signOut}>
             Odhlásit se

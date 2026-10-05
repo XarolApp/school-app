@@ -138,7 +138,7 @@ function Layout() {
             <div className="navbar-sheet-foot">
               {isSignedIn ? (
                 <>
-                  <div className="navbar-sheet-user">
+                  <div className="navbar-sheet-user" data-private>
                     <span className="navbar-avatar navbar-avatar-lg" aria-hidden="true">{initial}</span>
                     <span>
                       <strong>{displayName}</strong>
@@ -181,6 +181,7 @@ function Layout() {
                     type="button"
                     ref={accountButtonRef}
                     className="navbar-account-btn"
+                    data-private
                     aria-expanded={accountOpen}
                     aria-controls="navbar-account-menu"
                     onClick={() => setAccountOpen((open) => !open)}
@@ -191,7 +192,7 @@ function Layout() {
                   </button>
                   {accountOpen && (
                     <div id="navbar-account-menu" className="navbar-account-menu">
-                      <div className="navbar-account-head">
+                      <div className="navbar-account-head" data-private>
                         <strong>{displayName}</strong>
                         {user?.email && <span className="navbar-email" data-private>{user.email}</span>}
                       </div>

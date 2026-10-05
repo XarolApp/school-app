@@ -99,10 +99,7 @@ function Calculating() {
           })}
         </ol>
 
-        {/* True today and worth saying: the matching runs entirely in the
-            browser (lib/matching.js), so quiz answers never reach the server.
-            That is also the single strongest trust claim available on the
-            parent branch, where methodology transparency is the right proof. */}
+        {/* Matching runs locally; account answer persistence is separate. */}
         <div className="ob-calc-note">
           <p>
             <strong>
@@ -111,8 +108,8 @@ function Calculating() {
                 : 'Počítá se to přímo u tebe v prohlížeči.'}
             </strong>{' '}
             {parent
-              ? 'Odpovědi na náš server vůbec neodcházejí — výpočet je pro všechny stejný a je veřejně popsaný.'
-              : 'Tvoje odpovědi na náš server vůbec neodcházejí — matematika je stejná pro všechny a je veřejně popsaná.'}
+              ? 'Výpočet je pro všechny stejný a je veřejně popsaný.'
+              : 'Matematika je stejná pro všechny a je veřejně popsaná.'}
           </p>
         </div>
       </div>

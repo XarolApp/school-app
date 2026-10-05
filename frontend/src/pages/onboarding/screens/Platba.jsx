@@ -185,7 +185,7 @@ function Platba() {
             {parent ? 'Ukázka závěrečné platební obrazovky' : 'Ukázka závěrečné platební stránky'}
           </h1>
           <p className="ob-pw-fine">
-            Tohle je pouze náhled. Částky a podmínky výše jsou příklady;{' '}
+            V betě nic neplatíš. Tohle je pouze náhled. Částky a podmínky výše jsou příklady;{' '}
             {parent ? 'vašeho testovacího účtu' : 'tvého testovacího účtu'} se netýkají.
           </p>
           <div className="ob-pw-grid ob-pw-grid-pay">

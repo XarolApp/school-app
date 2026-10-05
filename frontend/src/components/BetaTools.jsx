@@ -21,10 +21,9 @@ function BetaToolsUI({ profile, canShow, isPasswordRecovery, userId, refreshProf
     if (canShow && !isPasswordRecovery && !dismissed.current && !profile.tester_guidance_seen_at) setGuidanceOpen(true);
   }, [canShow,isPasswordRecovery,profile?.tester_guidance_seen_at]);
   const dismissGuidance = async () => {
-    dismissed.current = true; setGuidanceOpen(false);
-    if (!canShow || !beta?.consent_tracking_at || acknowledged.current || profile.tester_guidance_seen_at) return;
+    if (!canShow || !beta?.consent_tracking_at || acknowledged.current || profile.tester_guidance_seen_at) {dismissed.current = true;setGuidanceOpen(false);return;}
     acknowledged.current = true; setGuidanceBusy(true); setGuidanceError('');
-    try { await acknowledgeBetaGuidance(); await refreshProfile(); }
+    try { await acknowledgeBetaGuidance(); dismissed.current = true;setGuidanceOpen(false);await refreshProfile(); }
     catch { acknowledged.current = false; setGuidanceError('Potvrzení se nepodařilo uložit. Pokyny lze otevřít znovu pomocí otazníku.'); }
     finally { setGuidanceBusy(false); }
   };
@@ -83,6 +82,11 @@ function BetaTools({ children }) {
   const openFeedback = useCallback(() => setFeedback((previous) => ({ open: true, pageUrl: location.pathname, requestId: previous.requestId + 1 })), [location.pathname]);
   const closeFeedback = useCallback(() => setFeedback((previous) => ({ ...previous, open: false })), []);
   const canShow = isSignedIn && emailConfirmed && isTester && profile && !profileLoading;
+  useEffect(()=>{
+    if(canShow)document.documentElement.dataset.betaUi='true';
+    else delete document.documentElement.dataset.betaUi;
+    return()=>{delete document.documentElement.dataset.betaUi;};
+  },[canShow]);
   return <BetaToolsContext.Provider value={{ openFeedback, beta: betaState, refreshBeta }}>
     {children}
     <BetaToolsUI key={user?.id || 'anonymous'} profile={profile} canShow={canShow} isPasswordRecovery={isPasswordRecovery} userId={user?.id} refreshProfile={refreshProfile} beta={betaState} refreshBeta={refreshBeta} feedback={feedback} openFeedback={openFeedback} closeFeedback={closeFeedback} />
