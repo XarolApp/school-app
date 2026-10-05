@@ -586,7 +586,7 @@ function Search() {
     const timer = setTimeout(() => {
       const query = filters.query.trim().slice(0, 120);
       const safe = query && schools.some((school) => school.name.toLowerCase().includes(query.toLowerCase())) ? query : undefined;
-      track('search', { length: filters.query.length, query: safe, results: n });
+      if (query) track('search', { length: filters.query.length, query: safe, results: n });
       if (!n) track('search_zero', { query: safe });
     }, 700);
     return () => clearTimeout(timer);

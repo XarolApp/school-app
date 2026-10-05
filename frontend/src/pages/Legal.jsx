@@ -161,7 +161,7 @@ export function Privacy() {
         pouze správci a tvoje zprávy i odpovědi správce také tobě v aplikaci.
       </p>
       <p>
-        Jednotlivé události používání smažeme šest měsíců po stanoveném konci beta programu.
+        Jednotlivé události používání a uložená pořadí škol smažeme šest měsíců po stanoveném konci beta programu.
         Zpětnou vazbu, závěrečné odpovědi a recenze uchováváme pro vyhodnocení a zlepšování
         služby; právo na výmaz zůstává zachováno. Námitku proti beta sledování, žádost o
         přístup nebo výmaz můžeš poslat na info@stredninamiru.cz.

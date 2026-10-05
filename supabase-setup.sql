@@ -950,11 +950,16 @@ values ('beta-screenshots', 'beta-screenshots', false, 1572864, array['image/png
 on conflict(id) do update set public = false, file_size_limit = 1572864, allowed_mime_types = array['image/png','image/jpeg'];
 -- No storage.objects browser policy: server-issued signed upload/read URLs only.
 
+-- plpgsql: beta_rankings is created further down, and a sql body is checked at creation.
 create or replace function public.purge_beta_events()
-returns void language sql security definer set search_path = public, pg_temp as $$
-  delete from public.beta_events
-  where exists (select 1 from public.beta_program_settings where singleton
-    and ends_at + interval '6 months' <= now());
+returns void language plpgsql security definer set search_path = public, pg_temp as $$
+begin
+  if exists (select 1 from public.beta_program_settings where singleton
+    and ends_at + interval '6 months' <= now()) then
+    delete from public.beta_events;
+    delete from public.beta_rankings;
+  end if;
+end;
 $$;
 revoke all on function public.purge_beta_events() from public, anon, authenticated;
 grant execute on function public.purge_beta_events() to service_role;
