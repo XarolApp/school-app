@@ -114,6 +114,27 @@ Body: `frontend/src/lib/matching.js` already scores per obor (best obor wins), s
 4. The simulation feeds the onboarding scorer the newest year's rows only (`latestYearOnly`), not server.js's merged `slimProgramsForList`; confirm this does not change features before trusting the numbers.
 5. Answers are uniformly random, so this shows structural bias only; re-check against real beta results.
 
+## Brevo (e-mail provider) account is in the founder's name for beta — move to Václav before launch — 2026-10-05
+- **Found:** 2026-10-05, founder decision while setting up custom SMTP
+- **Urgency:** high — blocks the real public/paid launch, not beta
+- **Effort:** small (about 30 minutes plus DNS re-verification)
+- **Release/context:** Supabase custom SMTP via Brevo free tier; `Legal.jsx` names Václav Kadlec as data controller
+
+For beta testing the founder (a minor) opens the Brevo account in his own name.
+That conflicts with the legal documents: the privacy policy names Václav Kadlec
+as the data controller, and Brevo's terms expect an adult account holder who can
+contract and sign the DPA. This is accepted for beta only.
+
+Before the real launch:
+- [ ] Transfer the Brevo account to Václav Kadlec (change the holder and company
+      profile), or have him create a new account. With a new account, re-verify
+      `stredninamiru.cz` (Brevo's DKIM/DMARC records) and generate a new SMTP key.
+- [ ] Václav accepts Brevo's terms and the DPA; keep a copy.
+- [ ] If the SMTP key changed, update it in Supabase → Authentication → Emails → SMTP Settings.
+- [ ] Add the founder as a user on Václav's account, or record how access is shared.
+- [ ] Re-test the sign-up confirmation and password-reset e-mails.
+- [ ] Ship this together with the adult-owned live Stripe account (same holder for both).
+
 ## Legal documents: operator details and e-mail setup still open — 2026-10-04
 - **Found:** 2026-10-04, while filling `frontend/src/pages/Legal.jsx`.
 - **Urgency:** high (blocks public launch; operator name is also needed for the beta privacy policy)
