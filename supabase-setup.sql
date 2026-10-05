@@ -1141,6 +1141,20 @@ returns table(name text) language sql security definer set search_path=public,pg
 $$;
 revoke all on function public.beta_screenshot_orphans(integer) from public,anon,authenticated;
 grant execute on function public.beta_screenshot_orphans(integer) to service_role;
+-- Full orders are separate from the 2 KB event payload, without any answers.
+create table if not exists public.beta_rankings (
+  id bigint generated always as identity primary key,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  source text not null check(source in ('onboarding','questionnaire')),
+  run_id bigint references public.questionnaire_runs(id) on delete set null,
+  capture_id uuid not null,
+  ranking integer[] not null check(cardinality(ranking) between 1 and 1000 and 0<all(ranking)),
+  created_at timestamptz not null default now(),
+  unique(user_id,capture_id), unique(user_id,source,run_id)
+);
+alter table public.beta_rankings enable row level security;
+create index if not exists beta_rankings_source_created_idx on public.beta_rankings(source,created_at);
+-- No browser policy. Server validates tester/notice and all ordered IDs.
 -- END BETA ANALYTICS BLOCK
 
 

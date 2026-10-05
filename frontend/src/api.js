@@ -449,3 +449,5 @@ export const submitBetaMicro = (body) => request('/api/beta/micro', { method: 'P
 export const submitBetaGate = (message) => request('/api/beta/gate', { method: 'POST', body: JSON.stringify({ message }) });
 
 export const submitBetaClosing = (body) => request('/api/beta/closing', { method: 'POST', body: JSON.stringify(body) });
+
+export const saveBetaOnboardingRanking=(body)=>request('/api/beta/rankings',{method:'POST',body:JSON.stringify(body)});

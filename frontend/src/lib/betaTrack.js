@@ -28,6 +28,7 @@ export function createBetaTracker({ local, session, uuid, send, beacon }) {
       }
     },
     active,
+    context:()=>({userId:account.userId,anon_id:visit?.anonId,ticket:visit?.ticket}),
     track(name, props = {}, path = globalThis.location?.pathname || '/') {
       if (!active()) return;
       queue.push({ name, path, props });

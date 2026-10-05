@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Confetti, DemoDataNotice, ObButton, ObScreen } from '../../../components/onboarding/ObKit';
 import { countCandidates, explain, tradeoffs } from '../../../lib/matching';
@@ -6,7 +6,8 @@ import { FOCUS_CATEGORIES } from '../../../lib/schoolFeatures';
 import { useOnboarding } from '../useOnboarding';
 import { completeHandoff, createResultSnapshot } from '../../../api';
 import { shareUrl } from '../../../lib/shareLink';
-import { track } from '../../../lib/betaTrack';
+import { stageBetaRanking } from '../../../lib/betaRankings';
+import { track, betaTracker } from '../../../lib/betaTrack';
 
 /**
  * THE REVEAL. The emotional peak of the whole flow.
@@ -115,9 +116,18 @@ function schoolWord(n) {
 
 function Reveal() {
   const { role, ranked, schools, goNext, isDemo, schoolsError, cleanedAnswers, answers } = useOnboarding();
+  const rankingSignature=useRef(null);
   useEffect(() => {
-    if (ranked.length && !isDemo) track('result_view', { source: 'onboarding', schools: ranked.slice(0, 10).map((m, i) => ({ id: m.school.id, rank: i + 1 })) });
-  }, [ranked, isDemo]);
+    const capture=()=>{
+      if(!ranked.length || isDemo || !betaTracker.active())return;
+      const ids=ranked.map(m=>m.school.id),signature=JSON.stringify(ids);
+      if(rankingSignature.current===signature)return;
+      stageBetaRanking(ids);rankingSignature.current=signature;
+      track('result_view',{source:'onboarding',schools:ranked.slice(0,10).map((m,i)=>({id:m.school.id,rank:i+1}))});
+    };
+    capture();window.addEventListener('snm:beta-account',capture);window.addEventListener('snm:beta-enabled',capture);
+    return()=>{window.removeEventListener('snm:beta-account',capture);window.removeEventListener('snm:beta-enabled',capture);};
+  },[ranked,isDemo]);
   const parent = role === 'parent';
   const [shareState, setShareState] = useState('idle');
 

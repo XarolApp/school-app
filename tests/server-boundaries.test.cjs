@@ -99,6 +99,7 @@ function harness({
       if (name === '@supabase/supabase-js') return { createClient: () => db };
       if (name === 'stripe') return () => stripe;
       if (name === './lib/reviewFilter') return require('../lib/reviewFilter');
+      if (name === './lib/betaRankings') return require('../lib/betaRankings');
       if (name === './lib/betaLimits') return require('../lib/betaLimits');
       if (name === './lib/betaMaintenance') return require('../lib/betaMaintenance');
       if (name === './lib/betaClosing') return require('../lib/betaClosing');
@@ -884,4 +885,16 @@ test('production never signs beta tickets with the service key and lookup alone 
  const ticket=(await signed.call('get','/api/beta/schools/:code',req)).body.trackingTicket;
  assert.ok(require('../lib/betaAnalytics').verifyVisitorTicket('dedicated',ticket,req.query.anon));
  assert.equal(require('../lib/betaAnalytics').verifyVisitorTicket('synthetic',ticket,req.query.anon),null);
+});
+
+test('ranking writes reject normal accounts and testers without notice; owner/source fields are server derived',async()=>{
+ const id='aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',body={source:'onboarding',capture_id:id,ranking:[2,1],user_id:'attacker',answers:{body:90},email:'secret'};
+ const result=(status,notice)=>(q)=>({data:q.table==='users'?{subscription_status:status}:q.table==='beta_profile'?{consent_tracking_at:notice}:q.table==='schools'?[{id:1},{id:2}]:q.table==='beta_program_settings'?{ends_at:new Date(Date.now()+86400000).toISOString()}:null,error:null});
+ const normal=harness({result:result('active','now')});assert.equal((await normal.callChain('post','/api/beta/rankings',{body})).statusCode,403);
+ const legacy=harness({result:result('beta',null)});assert.equal((await legacy.callChain('post','/api/beta/rankings',{body})).statusCode,403);
+ const beta=harness({result:result('beta','now')});assert.equal((await beta.callChain('post','/api/beta/rankings',{body})).statusCode,204);
+ const saved=beta.queries.find(q=>q.table==='beta_rankings').calls.find(c=>c[0]==='upsert')[1];
+ assert.equal(saved.user_id,'user-test');assert.equal(saved.source,'onboarding');assert.equal(saved.answers,undefined);assert.equal(saved.email,undefined);assert.deepEqual(Array.from(saved.ranking),[2,1]);
+ assert.equal((await beta.callChain('post','/api/beta/rankings',{body:{...body,ranking:[2,2]}})).statusCode,400);
+ assert.equal((await beta.callChain('post','/api/beta/rankings',{body:{...body,ranking:[2,3]}})).statusCode,400);
 });

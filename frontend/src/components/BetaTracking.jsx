@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { saveBetaOnboardingRanking } from '../api';
+import { flushBetaRankings } from '../lib/betaRankings';
 import { useAuth } from './AuthContext';
 import { betaTracker, track } from '../lib/betaTrack';
 import { createBetaNavigation } from '../lib/betaNavigation';
@@ -16,8 +18,10 @@ export default function BetaTracking() {
   useEffect(() => {
     const enabled = () => setRevision((n) => n + 1);
     window.addEventListener('snm:beta-enabled', enabled);
-    const timer = setInterval(() => void betaTracker.flush(), 10000);
-    return () => { window.removeEventListener('snm:beta-enabled', enabled); clearInterval(timer); };
+    const flush=()=>{void betaTracker.flush();void flushBetaRankings(saveBetaOnboardingRanking);};
+    const timer = setInterval(flush, 10000);
+    window.addEventListener('snm:beta-account',flush);
+    return () => { window.removeEventListener('snm:beta-enabled', enabled); window.removeEventListener('snm:beta-account',flush);clearInterval(timer); };
   }, []);
   useEffect(() => {
     const path=location.pathname;

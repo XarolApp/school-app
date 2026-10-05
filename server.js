@@ -1,3 +1,4 @@
+const { rankingPayload } = require('./lib/betaRankings');
 const { betaLimitOptions } = require('./lib/betaLimits');
 const { cleanupBetaScreenshots } = require('./lib/betaMaintenance');
 const { closingPayload } = require('./lib/betaClosing');
@@ -526,6 +527,28 @@ async function betaSchoolNames() {
   }).finally(()=>{betaSchoolNamesLoading=null;});
   return betaSchoolNamesLoading;
 }
+const betaRankingsLimiter=rateLimit({windowMs:60000,limit:20,standardHeaders:'draft-7',legacyHeaders:false,keyGenerator:req=>req.user.id});
+app.post('/api/beta/rankings',requireAuth,requireBetaTester,betaRankingsLimiter,async(req,res)=>{
+  const ranking=rankingPayload(req.body?.ranking), capture=req.body?.capture_id;
+  if (!ranking || !/^[a-f0-9-]{36}$/.test(capture || '') || req.body?.source!=='onboarding') return res.status(400).json({error:'Pořadí nemá správný formát.'});
+  const notice=await supabase.from('beta_profile').select('consent_tracking_at').eq('user_id',req.user.id).single();
+  if(notice.error)return res.status(503).json({error:'Testování nelze ověřit.'});
+  if(!notice.data?.consent_tracking_at)return res.status(403).json({error:'Nejprve potvrďte seznámení s testováním.'});
+  if(req.body?.ticket){
+    const visit=verifyVisitorTicket(BETA_TICKET_SECRET,req.body.ticket,req.body.anon_id);
+    if(!visit || visit.code!==req.betaUser.tester_school_code)return res.status(403).json({error:'Pořadí nepatří k této pozvánce.'});
+  }
+  const settings=await readBetaSettings();
+  if(settings.error)return res.status(503).json({error:'Testování nelze ověřit.'});
+  if(!betaProgramState(settings.data).programActive)return res.status(410).json({error:'Testování skončilo.'});
+  let schools;
+  try{schools=await fetchAllSchools('id');}catch{return res.status(503).json({error:'Školy nelze ověřit.'});}
+  const known=new Set(schools.map(s=>s.id));
+  if(ranking.some(id=>!known.has(id)))return res.status(400).json({error:'Pořadí obsahuje neznámou školu.'});
+  const saved=await supabase.from('beta_rankings').upsert({user_id:req.user.id,source:'onboarding',run_id:null,capture_id:capture,ranking},{onConflict:'user_id,capture_id',ignoreDuplicates:true});
+  if(saved.error)return res.status(500).json({error:'Pořadí nelze uložit.'});
+  res.status(204).end();
+});
 app.post('/api/beta/events', betaEventsLimiter, async (req, res) => {
   const body = req.body || {};
   const token = req.headers.authorization?.replace(/^Bearer /, '') || body.token;
@@ -2382,9 +2405,10 @@ app.post(
 
     let matches;
     let aiUsed;
+    let fullRanking;
     let aiUsageId = null;
     try {
-      ({ matches, aiUsed } = await requestMatches({
+      ({ matches, aiUsed, fullRanking } = await requestMatches({
         answers: validation.answers,
         schools,
         apiKey: OPENROUTER_API_KEY,
@@ -2431,6 +2455,14 @@ app.post(
       if (usageError) console.error('AI run attribution could not be saved:', usageError.code);
     }
 
+    if(req.profile?.subscription_status==='beta') {
+      const notice=await supabase.from('beta_profile').select('consent_tracking_at').eq('user_id',req.user.id).single();
+      if(!notice.error && notice.data?.consent_tracking_at) {
+        const order=rankingPayload(fullRanking);
+        if(order){const logged=await supabase.from('beta_rankings').upsert({user_id:req.user.id,source:'questionnaire',run_id:run.id,capture_id:crypto.randomUUID(),ranking:order},{onConflict:'user_id,source,run_id',ignoreDuplicates:true});
+          if(logged.error)console.error('Beta ranking could not be saved:',logged.error.code || 'database unavailable');}
+      }
+    }
     await syncJpzPoints(req.user.id, validation.answers.body);
 
     // A new set becomes the one that scores the database. Finishing the
