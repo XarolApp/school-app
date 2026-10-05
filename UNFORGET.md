@@ -77,6 +77,21 @@ Independent model review is also pending after implementation/verification.
 
    Restore them from `git show 67ada25^:server.js`.
 
+## Onboarding matching bias — fixes still to do — 2026-10-05
+- **Found:** 2026-10-04, `scripts/simulate-matching.mjs` (5,000 random answer sets, report `reports/matching-simulation-2026-10-04.md`, "Onboarding" section). The `/dotaznik` scorer was fixed the same day (`a922587`); the onboarding scorer was deliberately left alone.
+- **Urgency:** medium (testers see the onboarding result first; fix before or early in the beta)
+- **Risk of fixing now:** changes what the reveal shows; re-run the simulation and `tests/onboarding-ranking.test.mjs` after any change.
+- **Risk of NOT fixing:** the same broad schools keep showing up as the free #1 on the reveal, and single-obor lycea almost never do.
+- **Effort:** small–medium
+- **Release/context:** beta (plan 019); compare with real tester results in `/admin → Matching`
+
+Body: `frontend/src/lib/matching.js` already scores per obor (best obor wins), so it does not have the whole-list keyword bug. What the simulation still shows:
+1. **Breadth advantage.** Rank correlates with number of obory (−0.52) and program text length (−0.65). Best-of-N over many obory inflates the max even when each obor is an average fit: school 14 (31 obory) is in the top 10 for 25.3 % of answer sets, 141 (34 obory) 20.7 %, 180 (19) 21.4 % — fair share is ~4.6 %. Decide whether that is wanted ("more options really is better") or should be damped (e.g. compare best obor only, tie-break by `focusDepth` as today, no extra credit for count).
+2. **Single-obor lycea sink.** 188 Waldorfské lyceum (bottom 10 in 34 %), 203 Naše lyceum (24 %), 37 Kombinované lyceum (24 %, while it is #1 in `/dotaznik`). Check how `deriveFeatures` (`frontend/src/lib/schoolFeatures.js`) types a lyceum and which focus it derives; likely it gets neither the gymnázium nor the odborná credit.
+3. **Single-obor gymnázia low** (113 Mensa, 148 ARCUS, 127 Trojské, 144/140/114 state gymnázia): check the general-academic credit (`f.general && academic → 0.35`) against the per-obor scores of specialised schools.
+4. The simulation feeds the onboarding scorer the newest year's rows only (`latestYearOnly`), not server.js's merged `slimProgramsForList`; confirm this does not change features before trusting the numbers.
+5. Answers are uniformly random, so this shows structural bias only; re-check against real beta results.
+
 ## Legal documents: operator details and e-mail setup still open — 2026-10-04
 - **Found:** 2026-10-04, while filling `frontend/src/pages/Legal.jsx`.
 - **Urgency:** high (blocks public launch; operator name is also needed for the beta privacy policy)
