@@ -1,3 +1,5 @@
+const { betaLimitOptions } = require('./lib/betaLimits');
+const { cleanupBetaScreenshots } = require('./lib/betaMaintenance');
 const { closingPayload } = require('./lib/betaClosing');
 const express = require('express');
 const cors = require('cors');
@@ -31,6 +33,7 @@ const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 // browser must never see it. It lives only here, and it is what lets this
 // server read the schools table that RLS blocks everyone else from touching.
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const BETA_TICKET_SECRET = process.env.BETA_TICKET_SECRET || (process.env.NODE_ENV !== 'production' ? SERVICE_KEY : null);
 
 if (!SERVICE_KEY) {
   console.warn(
@@ -235,14 +238,11 @@ const checkoutLimiter = rateLimit({
 
 // The user id is known because this limiter is mounted after requireAuth;
 // students behind the same school network get independent feedback quotas.
-const betaFeedbackLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000,
-  limit: 10,
-  standardHeaders: 'draft-7',
-  legacyHeaders: false,
-  keyGenerator: (req) => req.user.id,
-  message: { error: 'Příliš mnoho hlášení. Zkus to prosím za chvíli.' },
-});
+const betaFeedbackLimiter = rateLimit(betaLimitOptions('feedback'));
+const betaScreenshotLimiter = rateLimit(betaLimitOptions('screenshot'));
+const betaMicroLimiter = rateLimit(betaLimitOptions('micro'));
+const betaGateLimiter = rateLimit(betaLimitOptions('gate'));
+const betaClosingLimiter = rateLimit(betaLimitOptions('closing'));
 
 // Every questionnaire submission is a paid AI call. This guards the *rate*;
 // the monthly quota below guards the *total*. Different problems.
@@ -364,8 +364,8 @@ async function optionalAuth(req, res, next) {
 async function closingStateFor(userId) {
   const sync=await supabase.rpc('sync_beta_closing',{p_user_id:userId});
   if (sync.error) return {error:sync.error};
-  const {data,error}=await supabase.from('beta_profile').select('closing_due_at,closing_done_at').eq('user_id',userId).single();
-  return {error,closingDueAt:data?.closing_due_at,closingDoneAt:data?.closing_done_at,
+  const {data,error}=await supabase.from('beta_profile').select('closing_due_at,closing_done_at,consent_tracking_at').eq('user_id',userId).single();
+  return {error,betaTrackingNoticeAccepted:Boolean(data?.consent_tracking_at),closingDueAt:data?.closing_due_at,closingDoneAt:data?.closing_done_at,
     closingPaused:Boolean(data?.closing_due_at && !data.closing_done_at && new Date(data.closing_due_at).getTime()+86400000<=Date.now())};
 }
 
@@ -482,12 +482,13 @@ app.get('/api/beta/schools/:code', async (req, res) => {
     ...school,
     ...betaProgramState(settings),
     trackingTicket: betaProgramState(settings).programActive
-      ? visitorTicket(SERVICE_KEY, code, req.query?.anon) : null,
+      ? (req.query?.notice === '1' && ['8','9','rodic','ucitel','jine'].includes(req.query?.role)
+        ? visitorTicket(BETA_TICKET_SECRET, code, req.query?.anon) : null) : null,
     serverNow: new Date().toISOString(),
   });
 });
 
-const betaEventsLimiter = rateLimit({ windowMs: 60_000, limit: 1200, standardHeaders: 'draft-7', legacyHeaders: false });
+const betaEventsLimiter = rateLimit({ windowMs: 60_000, limit: 60, standardHeaders: 'draft-7', legacyHeaders: false });
 async function requireBetaTester(req, res, next) {
   const { data, error } = await supabase.from('users')
     .select('id, created_at, subscription_status, tester_school_code, tester_access_until')
@@ -516,6 +517,15 @@ app.post('/api/beta/profile', requireAuth, requireBetaTester, async (req, res) =
   if (error) return res.status(500).json({ error: 'Informace nelze uložit.' });
   res.status(204).end();
 });
+let betaSchoolNamesCache=null, betaSchoolNamesLoading=null;
+async function betaSchoolNames() {
+  if (betaSchoolNamesCache && betaSchoolNamesCache.until>Date.now()) return {data:betaSchoolNamesCache.names,error:null};
+  if (!betaSchoolNamesLoading) betaSchoolNamesLoading=supabase.from('schools').select('name').then(result=>{
+    if (!result.error) betaSchoolNamesCache={names:result.data || [],until:Date.now()+86400000};
+    return result;
+  }).finally(()=>{betaSchoolNamesLoading=null;});
+  return betaSchoolNamesLoading;
+}
 app.post('/api/beta/events', betaEventsLimiter, async (req, res) => {
   const body = req.body || {};
   const token = req.headers.authorization?.replace(/^Bearer /, '') || body.token;
@@ -525,7 +535,7 @@ app.post('/api/beta/events', betaEventsLimiter, async (req, res) => {
     if (auth.error || !auth.data?.user?.email_confirmed_at) return res.status(401).json({ error: 'Neplatné přihlášení.' });
     user = auth.data.user;
   }
-  const ticket = verifyVisitorTicket(SERVICE_KEY, body.ticket, body.anon_id);
+  const ticket = verifyVisitorTicket(BETA_TICKET_SECRET, body.ticket, body.anon_id);
   if (!/^[a-f0-9-]{36}$/.test(body.anon_id || '') || !/^[a-f0-9-]{36}$/.test(body.session_id || '') ||
       !Array.isArray(body.events) || body.events.length < 1 || body.events.length > 40) {
     return res.status(400).json({ error: 'Neplatné události.' });
@@ -536,6 +546,9 @@ app.post('/api/beta/events', betaEventsLimiter, async (req, res) => {
     if (result.error) return res.status(503).json({ error: 'Účet nelze ověřit.' });
     profile = result.data;
     if (profile?.subscription_status !== 'beta') return res.status(403).json({ error: 'Sledování je pouze pro beta testery.' });
+    const notice=await supabase.from('beta_profile').select('consent_tracking_at').eq('user_id',user.id).single();
+    if (notice.error) return res.status(503).json({error:'Upozornění nelze ověřit.'});
+    if (!notice.data?.consent_tracking_at) return res.status(403).json({error:'Nejprve potvrďte seznámení s beta testováním.'});
   } else if (!ticket) return res.status(403).json({ error: 'Chybí beta pozvánka.' });
   const settings = await readBetaSettings();
   if (settings.error) return res.status(503).json({ error: 'Testování nelze ověřit.' });
@@ -545,7 +558,7 @@ app.post('/api/beta/events', betaEventsLimiter, async (req, res) => {
   // A free-form search is kept only when it is actually part of a school name.
   // Unknown queries still retain their length/result count, never personal text.
   if (events.some((e) => e.props.query)) {
-    const names = await supabase.from('schools').select('name');
+    const names = await betaSchoolNames();
     if (names.error) return res.status(503).json({ error: 'Události nelze ověřit.' });
     const fold = (s) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     for (const event of events) if (event.props.query && !(names.data || []).some((s) => fold(s.name).includes(fold(event.props.query)))) delete event.props.query;
@@ -554,7 +567,7 @@ app.post('/api/beta/events', betaEventsLimiter, async (req, res) => {
     p_user_id: user?.id || null, p_anon_id: body.anon_id, p_session_id: body.session_id,
     p_events: events, p_join: Boolean(user && ticket && ticket.code === profile.tester_school_code),
   });
-  if (result.error) return res.status(500).json({ error: 'Události nelze uložit.' });
+  if (result.error) return res.status(result.error.code==='42501'?403:500).json({ error: 'Události nelze uložit.' });
   res.status(204).end();
 });
 
@@ -851,7 +864,7 @@ app.post('/api/beta/feedback', requireAuth, betaFeedbackLimiter, async (req, res
   res.status(201).json(data);
 });
 
-app.post('/api/beta/closing', requireAuth, requireBetaTester, betaFeedbackLimiter, async (req,res) => {
+app.post('/api/beta/closing', requireAuth, requireBetaTester, betaClosingLimiter, async (req,res) => {
   const profile=await supabase.from('beta_profile').select('role').eq('user_id',req.user.id).single();
   if (profile.error || !profile.data) return res.status(503).json({error:'Testování nelze ověřit.'});
   const payload=closingPayload(req.body,profile.data.role);
@@ -860,7 +873,7 @@ app.post('/api/beta/closing', requireAuth, requireBetaTester, betaFeedbackLimite
   if (error) return res.status(error.code==='23505'?409:error.code==='55000'?410:500).json({error:'Dotazník nelze uložit.'});
   res.status(201).json({saved:true});
 });
-app.post('/api/beta/micro', requireAuth, requireBetaTester, betaFeedbackLimiter, async (req,res) => {
+app.post('/api/beta/micro', requireAuth, requireBetaTester, betaMicroLimiter, async (req,res) => {
   const { id, session_id: session, action, answer } = req.body || {};
   if (!['result','detail','compare','matrix','paywall','theme'].includes(id) || !/^[a-f0-9-]{36}$/.test(session || '') ||
     !['ask','answer','skip'].includes(action) || action === 'answer' && (typeof answer !== 'string' || !answer.trim() || answer.length > 1500)) {
@@ -872,7 +885,7 @@ app.post('/api/beta/micro', requireAuth, requireBetaTester, betaFeedbackLimiter,
   if (error) return res.status(error.code === '23505' ? 409 : error.code === '55000' ? 410 : error.code === '22023' ? 400 : 500).json({ error: 'Otázku teď nelze uložit.' });
   res.json(data);
 });
-app.post('/api/beta/gate', requireAuth, requireBetaTester, betaFeedbackLimiter, async (req,res) => {
+app.post('/api/beta/gate', requireAuth, requireBetaTester, betaGateLimiter, async (req,res) => {
   const message = typeof req.body?.message === 'string' ? req.body.message.trim() : '';
   if (message.length < 20 || message.length > 4000) return res.status(400).json({ error: 'Napište alespoň jednu větu (20 znaků).' });
   const { data,error } = await supabase.rpc('submit_beta_feedback_details', { p_user_id: req.user.id, p_type: 'comment', p_page_url: '/predplatne', p_message: message, p_details: { kind: 'obecne', source: 'gate' } });
@@ -880,7 +893,7 @@ app.post('/api/beta/gate', requireAuth, requireBetaTester, betaFeedbackLimiter, 
   res.status(201).json(data);
 });
 
-app.post('/api/beta/feedback/screenshot-url', requireAuth, requireBetaTester, betaFeedbackLimiter, async (req, res) => {
+app.post('/api/beta/feedback/screenshot-url', requireAuth, requireBetaTester, betaScreenshotLimiter, async (req, res) => {
   const { mime, size } = req.body || {};
   if (!['image/png','image/jpeg'].includes(mime) || !Number.isInteger(size) || size < 1 || size > 1572864) {
     return res.status(400).json({ error: 'Snímek musí být PNG nebo JPEG do 1,5 MB.' });
@@ -3265,6 +3278,8 @@ app.listen(PORT, () => {
   const purgeEvents = async () => {
     const { error } = await supabase.rpc('purge_beta_events');
     if (error) console.error('Beta retention cleanup failed:', error.code || 'database unavailable');
+    const screenshots=await cleanupBetaScreenshots(supabase);
+    if (screenshots.error) console.error('Beta screenshot cleanup failed:', screenshots.error.code || 'storage unavailable');
   };
   void purgeEvents();
   setInterval(purgeEvents, 24 * 60 * 60 * 1000).unref();

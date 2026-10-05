@@ -1,6 +1,6 @@
 # 019 — Beta feedback, tracking and analytics
 
-**Status:** APPROVED PLAN — steps 2–9 implemented and pushed; stopped before step 10 on 2026-10-05 for the Matching data conflict — RESOLVED the same day: full ranking (section 6). Independent review of steps 2–9 runs before steps 10–12. Steps 10–12 and complete browser verification remain. Every section below was agreed with the founder on 2026-10-04 (question-by-question).
+**Status:** APPROVED PLAN — steps 2–9 implemented; independent Claude review completed. Phase A fixes findings 1–10 (107 tests, lint/build pass). Continuing phase B steps 10–12. Matching uses full rankings per founder decision 2026-10-05. Founder reports previous SQL applied with verify count 5; updated SQL must be reapplied after continuation.
 **Builds on:** plan 016 (beta program, implemented) and `docs/beta_testing_logic.md`. This plan **extends** 016; it does not replace its access model, tables or routes.
 **Model routing (CLAUDE.md):** planning was Opus 5.5 medium. Build at Sonnet 5 high (large multi-file). Review the tracking/consent and `/admin` access code at Opus 5.5 low.
 

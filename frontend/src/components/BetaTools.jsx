@@ -50,7 +50,7 @@ function BetaToolsUI({ profile, canShow, isPasswordRecovery, userId, refreshProf
       <button type="button" className="ss-btn ss-btn-secondary" onClick={openFeedback}>Poslat připomínku</button>
     </div>}
     {renewed && <div className="beta-banner" data-beta-tools role="status">Přístup obnoven do {renewed}.<button type="button" className="ss-btn ss-btn-ghost" onClick={()=>setRenewed('')}>Zavřít</button></div>}
-    <BetaMicroQuestions beta={beta} enabled={Boolean(canShow && profile.betaProgramActive && profile.hasAccess && !guidanceOpen && !feedback.open && !closingOpen && !profile.closingPaused)} onRefresh={refreshBeta} onRenew={(result)=>{void refreshProfile();setRenewed(new Date(result.testerAccessUntil).toLocaleString('cs-CZ'));}} />
+    <BetaMicroQuestions beta={beta} enabled={Boolean(canShow && beta?.consent_tracking_at && profile.betaProgramActive && profile.hasAccess && !guidanceOpen && !feedback.open && !closingOpen && !profile.closingPaused)} onRefresh={refreshBeta} onRenew={(result)=>{void refreshProfile();setRenewed(new Date(result.testerAccessUntil).toLocaleString('cs-CZ'));}} />
     {canShow && profile.betaProgramActive && <div data-beta-tools className={`beta-floating-tools${location.pathname.startsWith('/onboarding/') ? ' is-onboarding' : ''}`}>
       <button type="button" className="beta-help-trigger" aria-label="Pokyny k beta testování" onClick={() => setGuidanceOpen(true)}>?</button>
       <button type="button" className="beta-feedback-trigger" onClick={() => { setGuidanceOpen(false); openFeedback(); }}>Zpětná vazba</button>
@@ -77,7 +77,7 @@ function BetaTools({ children }) {
     setBetaState(null); setFeedback({ open: false, pageUrl: '/', requestId: 0 });
     if (!isTester || !emailConfirmed) return;
     void refreshBeta().catch(() => {});
-    const timer = setInterval(() => void refreshBeta().catch(() => {}),15000);
+    const timer = setInterval(() => void refreshBeta().catch(() => {}),60000);
     return () => clearInterval(timer);
   }, [isTester,emailConfirmed,refreshBeta]);
   const openFeedback = useCallback(() => setFeedback((previous) => ({ open: true, pageUrl: location.pathname, requestId: previous.requestId + 1 })), [location.pathname]);

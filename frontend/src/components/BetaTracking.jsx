@@ -1,16 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import { betaTracker, track } from '../lib/betaTrack';
+import { createBetaNavigation } from '../lib/betaNavigation';
 import { getCompareSelection } from '../lib/searchPrefs';
 
 export default function BetaTracking() {
-  const { user, session, isTester, loading, profileLoading } = useAuth();
+  const { user, session, isTester, loading, profileLoading, profile } = useAuth();
   const location = useLocation();
+  const locationRef=useRef(location),navigation=useRef(null); locationRef.current=location;
   const [revision, setRevision] = useState(0);
   useEffect(() => {
-    betaTracker.setAccount({ resolved: !loading && !profileLoading, userId: user?.id || null, tester: isTester, token: session?.access_token || null });
-  }, [loading, profileLoading, user?.id, isTester, session?.access_token]);
+    betaTracker.setAccount({ resolved: !loading && !profileLoading, userId: user?.id || null, tester: isTester, noticeAccepted:Boolean(profile?.betaTrackingNoticeAccepted), token: session?.access_token || null });
+  }, [loading, profileLoading, user?.id, isTester, session?.access_token, profile?.betaTrackingNoticeAccepted]);
   useEffect(() => {
     const enabled = () => setRevision((n) => n + 1);
     window.addEventListener('snm:beta-enabled', enabled);
@@ -18,33 +20,26 @@ export default function BetaTracking() {
     return () => { window.removeEventListener('snm:beta-enabled', enabled); clearInterval(timer); };
   }, []);
   useEffect(() => {
-    if (!betaTracker.active()) return;
-    let started = document.hidden ? null : Date.now();
-    let visible = 0;
-    const path = location.pathname;
-    let referrer = '/';
-    try { referrer = sessionStorage.getItem('snm.beta.lastPath') || '/'; sessionStorage.setItem('snm.beta.lastPath', path); } catch { /* storage unavailable */ }
-    track('page_view', { referrer }, path);
-    const school = path.match(/^\/skoly\/(\d+)$/);
-    if (school) track('school_open', { id: Number(school[1]), from: location.state?.from || (referrer.startsWith('/onboarding') ? 'reveal' : /^\/skoly\/\d/.test(referrer) ? 'similar' : 'search') });
-    if (path === '/porovnani') track('compare_open', { count: getCompareSelection().length });
-    if (path === '/skoly') track('search', { length: 0 });
-    const visibility = () => {
-      if (document.hidden) {
-        if (started) visible += Date.now() - started;
-        started = null;
-        track('page_leave', { ms: visible }, path); visible = 0;
-        if (path.startsWith('/onboarding/')) track('ob_drop', { step: path.split('/').at(-1) }, path);
-        void betaTracker.flush(true);
-      } else started = Date.now();
+    const path=location.pathname;
+    if (navigation.current?.path!==path) {
+      let referrer='/';
+      try {referrer=sessionStorage.getItem('snm.beta.lastPath') || '/';} catch { /* unavailable */ }
+      navigation.current=createBetaNavigation({tracker:betaTracker,path,referrer,compareCount:getCompareSelection().length,
+        from:locationRef.current.state?.from || (referrer.startsWith('/onboarding')?'reveal':/^\/skoly\/\d/.test(referrer)?'similar':'search'),hidden:()=>document.hidden});
+    }
+    const current=navigation.current;
+    const enable=()=>{current.start();if(betaTracker.active()) try{sessionStorage.setItem('snm.beta.lastPath',path);}catch{/* unavailable */}};
+    enable();
+    const visibility=()=>{
+      if(document.hidden){current.hide();if(path.startsWith('/onboarding/'))track('ob_drop',{step:path.split('/').at(-1)},path);void betaTracker.flush(true);}
+      else current.show();
     };
-    document.addEventListener('visibilitychange', visibility);
-    return () => {
-      document.removeEventListener('visibilitychange', visibility);
-      track('page_leave', { ms: visible + (started ? Date.now() - started : 0) }, path);
-      if (path.startsWith('/onboarding/') && !window.location.pathname.startsWith('/onboarding/')) track('ob_drop', { step: path.split('/').at(-1) }, path);
+    window.addEventListener('snm:beta-enabled',enable);window.addEventListener('snm:beta-account',enable);document.addEventListener('visibilitychange',visibility);
+    return ()=>{
+      window.removeEventListener('snm:beta-enabled',enable);window.removeEventListener('snm:beta-account',enable);document.removeEventListener('visibilitychange',visibility);
+      if(window.location.pathname!==path){current.finish();if(path.startsWith('/onboarding/')&&!window.location.pathname.startsWith('/onboarding/'))track('ob_drop',{step:path.split('/').at(-1)},path);}
     };
-  }, [location.pathname, location.state, loading, profileLoading, isTester, user?.id, revision]);
+  },[location.pathname]);
   useEffect(() => {
     if (!betaTracker.active()) return;
     const id = betaTracker.getSessionId();
@@ -66,6 +61,6 @@ export default function BetaTracking() {
     };
     window.addEventListener('error', error); window.addEventListener('unhandledrejection', rejection); document.addEventListener('click', click);
     return () => { window.removeEventListener('error', error); window.removeEventListener('unhandledrejection', rejection); document.removeEventListener('click', click); };
-  }, [loading, profileLoading, isTester, user?.id, revision]);
+  }, [loading, profileLoading, isTester, user?.id, revision, profile?.betaTrackingNoticeAccepted]);
   return null;
 }

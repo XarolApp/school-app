@@ -14,6 +14,7 @@ function harness({
   rpcResult = { data: { testerAccessUntil: '2026-09-28T12:00:00.000Z' }, error: null },
   authUser = { id: 'user-test', email: 'tester@example.com', email_confirmed_at: '2026-01-01T00:00:00.000Z' },
   authAdmin = null,
+  env = {},
 } = {}) {
   const routes = new Map();
   const routeChains = new Map();
@@ -89,15 +90,17 @@ function harness({
     '\nmodule.exports = { seasonEndsAt, handleStripeWebhook, slimProgramsForList, chargeDueSeasonPasses, paidAccessActive, betaProgramState, betaAccessState, hasPaidStatus, requireAccess, hasLivePlan, accessStateFor, createCheckoutForUser, cancelPlanForUser, withdrawPlanForUser };', {
     module, Date, Buffer, URL, setTimeout, clearTimeout,
     console: { log() {}, warn(...args) { warnings.push(args.join(' ')); }, error() {} },
-      process: { env: { SUPABASE_SERVICE_ROLE_KEY: 'synthetic', STRIPE_SECRET_KEY: stripeEnabled ? 'synthetic' : '', STRIPE_WEBHOOK_SECRET: 'synthetic', DEVELOPER_EMAILS: 'dev@example.com' } },
+      process: { env: { SUPABASE_SERVICE_ROLE_KEY: 'synthetic', STRIPE_SECRET_KEY: stripeEnabled ? 'synthetic' : '', STRIPE_WEBHOOK_SECRET: 'synthetic', DEVELOPER_EMAILS: 'dev@example.com',...env } },
     require(name) {
       if (name === 'express') return express;
       if (name === 'cors') return () => () => {};
-      if (name === 'express-rate-limit') return () => (req, res, next) => next();
+      if (name === 'express-rate-limit') return (options) => Object.assign((req,res,next)=>next(),{options});
       if (name === 'dotenv') return { config() {} };
       if (name === '@supabase/supabase-js') return { createClient: () => db };
       if (name === 'stripe') return () => stripe;
       if (name === './lib/reviewFilter') return require('../lib/reviewFilter');
+      if (name === './lib/betaLimits') return require('../lib/betaLimits');
+      if (name === './lib/betaMaintenance') return require('../lib/betaMaintenance');
       if (name === './lib/betaClosing') return require('../lib/betaClosing');
       if (name === './lib/betaAnalytics') return require('../lib/betaAnalytics');
       if (name === './lib/aiUsage') return require('../lib/aiUsage');
@@ -109,17 +112,17 @@ function harness({
     },
   }, { filename: 'server.js' });
   return {
-    ...module.exports, queries, rpcCalls, checkoutCalls, paymentIntentCalls, warnings,
+    ...module.exports, routeChains, queries, rpcCalls, checkoutCalls, paymentIntentCalls, warnings,
     get subscriptionRetrievals() { return subscriptionRetrievals; },
     get setupIntentRetrievals() { return setupIntentRetrievals; },
     get deletions() { return deletions; }, get cancellations() { return cancellations; },
     async call(method, path, req = {}) {
-      const res = { statusCode: 200, status(code) { this.statusCode = code; return this; }, json(body) { this.body = body; return this; }, end() { return this; }, send(body) { this.body = body; return this; } };
+      const res = { set() { return this; }, statusCode: 200, status(code) { this.statusCode = code; return this; }, json(body) { this.body = body; return this; }, end() { return this; }, send(body) { this.body = body; return this; } };
       await routes.get(`${method} ${path}`)({ user: { id: 'user-test' }, params: {}, headers: {}, ...req }, res);
       return res;
     },
     async callChain(method, path, req = {}) {
-      const res = { statusCode: 200, status(code) { this.statusCode = code; return this; }, json(body) { this.body = body; return this; }, end() { return this; }, send(body) { this.body = body; return this; } };
+      const res = { set() { return this; }, statusCode: 200, status(code) { this.statusCode = code; return this; }, json(body) { this.body = body; return this; }, end() { return this; }, send(body) { this.body = body; return this; } };
       const request = { user: { id: 'user-test', email: 'tester@example.com' }, params: {}, headers: { authorization: 'Bearer synthetic' }, ...req };
       const handlers = routeChains.get(`${method} ${path}`) || [];
       const dispatch = async (index) => {
@@ -185,7 +188,7 @@ test('beta access wins over a long normal trial and the developer email allowlis
     ? { data: profile, error: null }
     : { data: { ends_at: new Date(now + 86400000).toISOString(), access_hours: 48 }, error: null } });
   const req = { user: { id: 'user-test', email: 'dev@example.com' } };
-  const res = { statusCode: 200, status(code) { this.statusCode = code; return this; }, json(body) { this.body = body; return this; } };
+  const res = { set() { return this; }, statusCode: 200, status(code) { this.statusCode = code; return this; }, json(body) { this.body = body; return this; } };
   let reached = false;
   await h.requireAccess(req, res, () => { reached = true; });
   assert.equal(reached, false);
@@ -849,4 +852,36 @@ test('micro answer and soft gate renew through the existing feedback transaction
   const short=await h.call('post','/api/beta/gate',{user:{id:'user-test'},body:{message:'short'}}); assert.equal(short.statusCode,400);
   await h.call('post','/api/beta/gate',{user:{id:'user-test'},body:{message:'Porovnani skol mi hodne pomohlo.'}});
   assert.equal(h.rpcCalls[2].name,'submit_beta_feedback_details'); assert.equal(h.rpcCalls[2].args.p_details.source,'gate');
+});
+
+test('beta events refuse a legacy tester before the notice and cache school names after it',async()=>{
+ const id='aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
+ const body={anon_id:id,session_id:id,events:[{name:'search',path:'/skoly',props:{length:8,query:'Gymnazium',results:1}}]};
+ const response=(notice)=>(q)=>({data:q.table==='users'?{subscription_status:'beta'}:q.table==='beta_profile'?{consent_tracking_at:notice}:q.table==='beta_program_settings'?{ends_at:new Date(Date.now()+86400000).toISOString()}:q.table==='schools'?[{name:'Gymnazium Praha'}]:null,error:null});
+ const blocked=harness({result:response(null)});
+ assert.equal((await blocked.call('post','/api/beta/events',{body,headers:{authorization:'Bearer synthetic'}})).statusCode,403);
+ assert.equal(blocked.rpcCalls.length,0);
+ const allowed=harness({result:response('2026-01-01')});
+ for(let i=0;i<2;i++) assert.equal((await allowed.call('post','/api/beta/events',{body,headers:{authorization:'Bearer synthetic'}})).statusCode,204);
+ assert.equal(allowed.queries.filter(q=>q.table==='schools').length,1);
+});
+test('beta endpoints have separate per-user quotas; micro ask consumes no quota',()=>{
+ const h=harness(),paths=['feedback','feedback/screenshot-url','micro','gate','closing'];
+ const options=paths.map(p=>h.routeChains.get('post /api/beta/'+p).find(fn=>fn.options)?.options);
+ assert.deepEqual(options.map(o=>o.limit),[20,20,20,10,10]);
+ assert.equal(new Set(options).size,5);
+ for(const o of options) assert.equal(o.keyGenerator({user:{id:'one'}}),'one');
+ assert.equal(options[2].skip({body:{action:'ask'}}),true);
+ assert.equal(options[2].skip({body:{action:'answer'}}),false);
+});
+test('production never signs beta tickets with the service key and lookup alone does not issue one',async()=>{
+ const result=q=>({data:q.table==='beta_schools'?{code:'SCHOOL',school_name:'School'}:{ends_at:new Date(Date.now()+86400000).toISOString()},error:null});
+ const h=harness({result,env:{NODE_ENV:'production'}});
+ const req={params:{code:'SCHOOL'},query:{anon:'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',notice:'1',role:'9'}};
+ assert.equal((await h.call('get','/api/beta/schools/:code',req)).body.trackingTicket,null);
+ const signed=harness({result,env:{NODE_ENV:'production',BETA_TICKET_SECRET:'dedicated'}});
+ assert.equal((await signed.call('get','/api/beta/schools/:code',{...req,query:{anon:req.query.anon}})).body.trackingTicket,null);
+ const ticket=(await signed.call('get','/api/beta/schools/:code',req)).body.trackingTicket;
+ assert.ok(require('../lib/betaAnalytics').verifyVisitorTicket('dedicated',ticket,req.query.anon));
+ assert.equal(require('../lib/betaAnalytics').verifyVisitorTicket('synthetic',ticket,req.query.anon),null);
 });

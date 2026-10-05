@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { submitBetaMicro } from '../api';
+import { nextBetaMicro } from '../lib/betaMicro';
 import { betaTracker } from '../lib/betaTrack';
 
 const QUESTIONS = [
@@ -17,9 +18,10 @@ export default function BetaMicroQuestions({ beta, enabled, onRefresh, onRenew }
   useEffect(() => {
     if (!enabled || !beta || question || claiming.current) return;
     const session=betaTracker.getSessionId();
-    if (Object.values(beta.micro_asked || {}).some((state) => state.session_id===session)) return;
-    const next=QUESTIONS.find((q) => beta.checklist?.[q.check] && !beta.micro_asked?.[q.id]);
-    if (!next) return;
+    const candidate=nextBetaMicro(QUESTIONS,beta.micro_asked || {},beta.checklist || {},session);
+    if (!candidate) return;
+    const next=candidate.question;
+    if (candidate.resume) {setQuestion(next);return;}
     claiming.current=true;
     submitBetaMicro({ id:next.id, session_id:session, action:'ask' }).then(() => {
       if (alive.current) setQuestion(next);

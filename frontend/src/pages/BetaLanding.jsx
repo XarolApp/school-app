@@ -3,7 +3,7 @@ import { readBetaEnrollment, saveBetaEnrollment } from '../lib/betaEnrollment';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../components/AuthContext';
-import { fetchBetaSchool } from '../api';
+import { fetchBetaSchool, startBetaVisit } from '../api';
 import { normalizeBetaCode, rememberBetaCode } from '../lib/pendingBetaCode';
 import './beta.css';
 
@@ -79,6 +79,8 @@ function BetaLanding() {
   const updateEnrollment = (patch) => {
     const next = { ...enrollment, ...patch }; setEnrollment(next); saveBetaEnrollment(code, next.role, next.accepted);
   };
+  const [starting,setStarting]=useState(false),[startError,setStartError]=useState('');
+  const continueSignup=async()=>{setStarting(true);setStartError('');try{await startBetaVisit(code,enrollment.role,enrollment.accepted);navigate(`/registrace?beta=${encodeURIComponent(code)}`);}catch{setStartError('Pozvánku se nepodařilo připravit. Zkuste to znovu.');}finally{setStarting(false);}};
   const betaQuery = code ? `?beta=${encodeURIComponent(code)}` : '';
 
   return (
@@ -173,7 +175,8 @@ function BetaLanding() {
             ) : !closedBeforeStart && !closedAfterEnd ? (
               <div className="stack">
                 <BetaEnrollment role={enrollment.role} accepted={enrollment.accepted} onRole={(role) => updateEnrollment({ role })} onAccepted={(accepted) => updateEnrollment({ accepted })} />
-                <button className="btn btn-primary btn-block" disabled={!enrollment.role || !enrollment.accepted} onClick={() => navigate(`/registrace${betaQuery}`)}>Vytvořit beta účet</button>
+                <button className="btn btn-primary btn-block" disabled={starting || !enrollment.role || !enrollment.accepted} onClick={continueSignup}>Vytvořit beta účet</button>
+                {startError && <p role="alert">{startError}</p>}
                 <p className="beta-login-link">Už účet máš? <Link to={`/prihlaseni${betaQuery}`}>Přihlásit se</Link></p>
               </div>
             ) : (

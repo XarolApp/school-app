@@ -966,7 +966,7 @@ begin
   if p_user_id is not null then
     perform 1 from public.users where id = p_user_id and subscription_status = 'beta' for update;
     if not found then raise exception 'Beta account required.' using errcode = '42501'; end if;
-    select p.checklist into checklist from public.beta_profile p where user_id = p_user_id for update;
+    select p.checklist into checklist from public.beta_profile p where user_id = p_user_id and consent_tracking_at is not null for update;
     if not found then raise exception 'Beta profile missing.' using errcode = '42501'; end if;
     if p_join then
       select events || coalesce(jsonb_agg(jsonb_build_object('name',name,'props',props)), '[]'::jsonb)
@@ -980,7 +980,7 @@ begin
   for event in select value from jsonb_array_elements(events) loop
     key := case event->>'name'
       when 'q_finish' then 'dotaznik' when 'result_view' then 'dotaznik'
-      when 'search' then 'vyhledavani' when 'compare_open' then 'porovnani'
+      when 'search' then case when coalesce((event->'props'->>'length')::numeric,0)>0 then 'vyhledavani' else null end when 'compare_open' then 'porovnani'
       when 'matrix_weight' then 'matice' when 'prihlaska_pick' then 'prihlaska'
       when 'theme_change' then 'tema' when 'share_create' then 'sdileni' else null end;
     if key is not null then checklist := jsonb_set(checklist, array[key], 'true'::jsonb); end if;
@@ -1022,7 +1022,8 @@ begin
     or p_session !~ '^[a-f0-9-]{36}$' or p_action not in ('ask','answer','skip') then
     raise exception 'Micro invalid.' using errcode='22023'; end if;
   if p_action='ask' then
-    if state ? p_id or exists(select 1 from jsonb_each(state) where value->>'session_id'=p_session) then
+    if (state ? p_id and (state->p_id->>'done'='true' or state->p_id->>'session_id'=p_session))
+      or exists(select 1 from jsonb_each(state) where value->>'session_id'=p_session) then
       raise exception 'Already asked.' using errcode='23505'; end if;
     if not coalesce((checks->>(case p_id when 'result' then 'dotaznik' when 'detail' then 'detail'
       when 'compare' then 'porovnani' when 'matrix' then 'matice' when 'paywall' then 'platby' else 'tema' end))::boolean,false) then
@@ -1047,9 +1048,13 @@ $$;
 revoke all on function public.submit_beta_micro(uuid,text,text,text,text) from public,anon,authenticated;
 grant execute on function public.submit_beta_micro(uuid,text,text,text,text) to service_role;
 -- Earliest eligible instant, rather than the time a browser happens to poll.
+-- Repair only the persisted deadline produced by the unconfigured-end bug.
+update public.beta_profile p set closing_due_at=null from public.users u
+where p.user_id=u.id and p.closing_done_at is null and p.closing_due_at=u.created_at
+  and exists(select 1 from public.beta_program_settings where singleton and ends_at is null);
 create or replace function public.beta_closing_deadline(uid uuid)
 returns timestamptz language sql stable security definer set search_path=public,pg_temp as $$
-  select case when p.closing_done_at is not null then null else coalesce(p.closing_due_at,
+  select case when s.ends_at is null or s.ends_at<=now() or p.closing_done_at is not null then null else coalesce(p.closing_due_at,
     least(greatest(u.created_at,s.ends_at-interval '2 days'),
       case when p.checklist @> '{"dotaznik":true,"detail":true}'::jsonb and
         (p.checklist @> '{"porovnani":true}'::jsonb or p.checklist @> '{"matice":true}'::jsonb)
@@ -1127,6 +1132,15 @@ as $$
         end
   );
 $$;
+create or replace function public.beta_screenshot_orphans(p_limit integer default 100)
+returns table(name text) language sql security definer set search_path=public,pg_temp as $$
+  select o.name from storage.objects o where o.bucket_id='beta-screenshots'
+    and o.created_at<now()-interval '24 hours'
+    and not exists(select 1 from public.beta_feedback f where f.screenshot_path=o.name)
+  order by o.created_at,o.name limit least(greatest(p_limit,1),100);
+$$;
+revoke all on function public.beta_screenshot_orphans(integer) from public,anon,authenticated;
+grant execute on function public.beta_screenshot_orphans(integer) to service_role;
 -- END BETA ANALYTICS BLOCK
 
 

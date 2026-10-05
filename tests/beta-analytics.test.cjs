@@ -45,11 +45,11 @@ test('ordinary visitors and normal accounts send ZERO events, even with a beta v
   tracker.setAccount({ resolved: true, userId: null, tester: false });
   tracker.track('page_view'); await tracker.flush();
   assert.equal(values.size, 0);
-  tracker.startVisit('SCHOOL'); tracker.acceptTicket('ticket');
+  tracker.startVisit('SCHOOL',true); tracker.acceptTicket('ticket');
   tracker.setAccount({ resolved: true, userId: 'normal', tester: false, token: 'normal-token' });
   tracker.track('page_view'); tracker.track('q_finish', { run_id: 1 }); await tracker.flush(true);
   assert.equal(sent.length, 0);
-  tracker.setAccount({ resolved: true, userId: 'beta', tester: true, token: 'beta-token' });
+  tracker.setAccount({ resolved: true, userId: 'beta', tester: true, noticeAccepted:true, token: 'beta-token' });
   tracker.track('page_view'); await tracker.flush();
   assert.equal(sent.length, 1);
 });

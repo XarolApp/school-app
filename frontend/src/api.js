@@ -83,10 +83,13 @@ export function fetchMe() {
 }
 
 export function fetchBetaSchool(code) {
-  const anon = betaTracker.startVisit(code);
-  return request(`/api/beta/schools/${encodeURIComponent(code)}?anon=${encodeURIComponent(anon)}`).then((result) => {
-    betaTracker.acceptTicket(result.trackingTicket); return result;
-  });
+  return request(`/api/beta/schools/${encodeURIComponent(code)}`);
+}
+export async function startBetaVisit(code,role,accepted) {
+  if (!accepted || !['8','9','rodic','ucitel','jine'].includes(role)) return;
+  const anon=betaTracker.startVisit(code,true);
+  const result=await request(`/api/beta/schools/${encodeURIComponent(code)}?anon=${encodeURIComponent(anon)}&notice=1&role=${encodeURIComponent(role)}`);
+  betaTracker.acceptTicket(result.trackingTicket);
 }
 
 export function submitBetaFeedback({ type, pageUrl, message, ...details }) {

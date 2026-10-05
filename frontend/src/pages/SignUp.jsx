@@ -3,7 +3,7 @@ import { readBetaEnrollment, saveBetaEnrollment } from '../lib/betaEnrollment';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../components/AuthContext';
-import { fetchBetaSchool } from '../api';
+import { fetchBetaSchool, startBetaVisit } from '../api';
 import { normalizeBetaCode, readPendingBetaCode } from '../lib/pendingBetaCode';
 import AuthTabs from '../components/AuthTabs';
 import Captcha, { captchaEnabled } from '../components/Captcha';
@@ -98,6 +98,7 @@ function SignUp() {
 
     if (betaCode && (!betaEnrollment.role || !betaEnrollment.accepted)) { setError('Vyber prosím roli a potvrď seznámení s beta testováním.'); return; }
     setSubmitting(true);
+    if (betaCode) await startBetaVisit(betaCode,betaEnrollment.role,betaEnrollment.accepted).catch(()=>{});
     const result = await signUp(form.email, form.password, form.name, {
       captchaToken,
       ...(betaCode ? { betaSchoolCode: betaCode, betaRole: betaEnrollment.role, betaNoticeAccepted: betaEnrollment.accepted } : {}),

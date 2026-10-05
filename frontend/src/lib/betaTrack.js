@@ -11,16 +11,18 @@ export function createBetaTracker({ local, session, uuid, send, beacon }) {
     if (!sessionId) { sessionId = read(session, 'snm.beta.session') || uuid(); write(session, 'snm.beta.session', sessionId); }
     return sessionId;
   };
-  const active = () => account.resolved && (account.userId ? account.tester : Boolean(visit?.ticket && visit.expires > Date.now()));
+  const active = () => account.resolved && (account.userId ? account.tester && account.noticeAccepted : Boolean(visit?.noticeAccepted && visit?.ticket && visit.expires > Date.now()));
   const anon = () => visit?.anonId || read(local, 'snm.beta.anon') || (() => {
     const id = uuid(); write(local, 'snm.beta.anon', id); return id;
   })();
   return {
-    startVisit(code) { visit = { code, anonId: anon(), expires: Date.now() + 86400000 }; return visit.anonId; },
+    startVisit(code,noticeAccepted=false) { if (!noticeAccepted) {queue=[];return null;} visit = { code, anonId: anon(), noticeAccepted:true, expires: Date.now() + 86400000 }; return visit.anonId; },
     acceptTicket(ticket) { if (visit && ticket) { visit.ticket = ticket; write(local, 'snm.beta.visit', visit); globalThis.dispatchEvent?.(new Event('snm:beta-enabled')); } },
     setAccount(next) {
       if (account.userId !== next.userId || !next.tester && next.userId) queue = [];
       account = next;
+      if (!active()) queue=[];
+      globalThis.dispatchEvent?.(new Event('snm:beta-account'));
       if (next.resolved && next.userId && !next.tester) {
         visit = null; try { local.removeItem('snm.beta.visit'); } catch { /* storage unavailable */ }
       }
@@ -34,10 +36,10 @@ export function createBetaTracker({ local, session, uuid, send, beacon }) {
     },
     async flush(hidden = false) {
       if (!active() || !queue.length) return;
-      const events = queue.splice(0, 40);
+      const events = queue.splice(0, 40), userId=account.userId;
       const payload = { anon_id: anon(), session_id: getSessionId(), ticket: visit?.ticket, token: account.token, events };
       if (hidden && beacon?.(payload)) return;
-      try { await send(payload); } catch { if (active()) queue = [...events, ...queue].slice(-40); }
+      try { await send(payload); } catch { if (active() && account.userId===userId) queue = [...events, ...queue].slice(-40); }
     },
     getSessionId,
     clear() { queue = []; visit = null; account = { ...account, tester: false }; try { local.removeItem('snm.beta.visit'); } catch { /* storage unavailable */ } },
