@@ -520,9 +520,10 @@ app.get('/api/beta/me', requireAuth, requireBetaTester, async (req, res) => {
   res.json({ ...profile.data, feedback: feedback.data || [] });
 });
 app.post('/api/beta/profile', requireAuth, requireBetaTester, async (req, res) => {
-  const { role, tracking_notice_accepted: accepted } = req.body || {};
+  const { role, role_note: rawNote, tracking_notice_accepted: accepted } = req.body || {};
   if (!['8','9','rodic','ucitel','jine'].includes(role) || accepted !== true) return res.status(400).json({ error: 'Vyberte roli a potvrďte seznámení s testováním.' });
-  const { error } = await supabase.from('beta_profile').update({ role, consent_tracking_at: new Date().toISOString() })
+  const roleNote = role === 'jine' && typeof rawNote === 'string' ? rawNote.trim().slice(0, 80) || null : null;
+  const { error } = await supabase.from('beta_profile').update({ role, role_note: roleNote, consent_tracking_at: new Date().toISOString() })
     .eq('user_id', req.user.id).is('consent_tracking_at', null);
   if (error) return res.status(500).json({ error: 'Informace nelze uložit.' });
   res.status(204).end();

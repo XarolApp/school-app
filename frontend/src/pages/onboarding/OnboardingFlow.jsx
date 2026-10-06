@@ -586,7 +586,10 @@ function OnboardingFlow() {
         )}
         {betaPreview && PAYWALL_STEP_IDS.has(step.id) && (
           <div className="ob-mock-note" role="status">
-            Ukázka pro beta testery: zobrazené ceny a platební podmínky jsou jen příklad. Na tento účet se nevztahují a nic se nestrhne.{' '}
+            <strong>Náhled platebních obrazovek.</strong>{' '}
+            {role === 'parent'
+              ? 'Nic neplatíte a nic se nestrhne. Chceme jen váš názor: jsou ceny a texty srozumitelné a působí to důvěryhodně? Napište nám přes „Zpětná vazba“.'
+              : 'Nic neplatíš a nic se nestrhne. Chceme jen tvůj názor: jsou ceny a texty srozumitelné a působí to důvěryhodně? Napiš nám přes „Zpětná vazba“.'}{' '}
             <button type="button" className="ob-inline-link" onClick={leaveBetaPreview}>Zpět ke školám</button>
           </div>
         )}

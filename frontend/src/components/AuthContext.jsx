@@ -5,6 +5,14 @@ import { applyTheme } from '../lib/theme';
 import { readOnboardingStash, clearOnboardingStash } from '../lib/pendingOnboardingAnswers';
 import { clearPendingBetaCode, normalizeBetaCode, rememberBetaCode } from '../lib/pendingBetaCode';
 
+// Where the e-mail confirmation link lands: a "you can close this tab" page,
+// while the tab that signed up carries on by itself.
+function confirmationUrl(betaCode) {
+  const url = new URL('/email-overen', window.location.origin);
+  if (betaCode) url.searchParams.set('beta', betaCode);
+  return url.toString();
+}
+
 const AuthContext = createContext(null);
 const PASSWORD_RECOVERY_KEY = 'skolamatch.password-recovery';
 
@@ -205,7 +213,7 @@ export function AuthProvider({ children }) {
     };
   }, [session, profile?.isTester, betaDeadlineMs, loadProfile]);
 
-  const signUp = async (email, password, name, { captchaToken, emailRedirectTo, betaSchoolCode, betaRole, betaNoticeAccepted } = {}) => {
+  const signUp = async (email, password, name, { captchaToken, emailRedirectTo, betaSchoolCode, betaRole, betaRoleNote, betaNoticeAccepted } = {}) => {
     const normalizedBetaCode = betaSchoolCode ? normalizeBetaCode(betaSchoolCode) : null;
     if (betaSchoolCode && !normalizedBetaCode) return { error: 'Pozvánka školy není platná.' };
     if (normalizedBetaCode && (!['8','9','rodic','ucitel','jine'].includes(betaRole) || betaNoticeAccepted !== true)) {
@@ -222,11 +230,12 @@ export function AuthProvider({ children }) {
         data: {
           name,
           accepted_terms_at: new Date().toISOString(),
-          ...(normalizedBetaCode ? { beta_school_code: normalizedBetaCode, beta_role: betaRole, beta_notice_accepted: betaNoticeAccepted === true } : {}),
+          ...(normalizedBetaCode ? {
+            beta_school_code: normalizedBetaCode, beta_role: betaRole, beta_notice_accepted: betaNoticeAccepted === true,
+            ...(betaRole === 'jine' && betaRoleNote?.trim() ? { beta_role_note: betaRoleNote.trim().slice(0, 80) } : {}),
+          } : {}),
         },
-        emailRedirectTo: emailRedirectTo || (normalizedBetaCode
-          ? `${window.location.origin}/beta/${encodeURIComponent(normalizedBetaCode)}?potvrzeno=1`
-          : `${window.location.origin}/prihlaseni?potvrzeno=1`),
+        emailRedirectTo: emailRedirectTo || confirmationUrl(normalizedBetaCode),
         captchaToken,
       },
     });
@@ -288,9 +297,7 @@ export function AuthProvider({ children }) {
       type: 'signup',
       email,
       options: {
-        emailRedirectTo: normalizedBetaCode
-          ? `${window.location.origin}/beta/${encodeURIComponent(normalizedBetaCode)}?potvrzeno=1`
-          : `${window.location.origin}/prihlaseni?potvrzeno=1`,
+        emailRedirectTo: confirmationUrl(normalizedBetaCode),
         captchaToken,
       },
     });
@@ -396,6 +403,16 @@ export function AuthProvider({ children }) {
 
   const refreshProfile = useCallback(() => loadProfile(session), [loadProfile, session]);
 
+  // The confirmation link opens in a new tab, which signs in there. supabase-js
+  // broadcasts that to this tab too; this is the fallback for when the
+  // broadcast is missed (e.g. the tab was asleep), run on focus.
+  const adoptStoredSession = useCallback(async () => {
+    const { data } = await supabase.auth.getSession();
+    if (!data.session || data.session.access_token === session?.access_token) return;
+    setSession(data.session);
+    await loadProfile(data.session);
+  }, [loadProfile, session?.access_token]);
+
   const value = {
     session,
     user: session?.user ?? null,
@@ -424,6 +441,7 @@ export function AuthProvider({ children }) {
     updateName,
     signOutEverywhere,
     refreshProfile,
+    adoptStoredSession,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

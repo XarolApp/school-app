@@ -852,6 +852,9 @@ create table if not exists public.beta_profile (
   closing_due_at timestamptz,
   closing_done_at timestamptz
 );
+-- Free text a tester types after choosing "Jiné"; display-only, never decides access.
+alter table public.beta_profile add column if not exists role_note text
+  check (role_note is null or char_length(role_note) <= 80);
 create table if not exists public.beta_closing_answers (
   user_id uuid primary key references auth.users(id) on delete cascade,
   answers jsonb not null check (jsonb_typeof(answers) = 'object' and octet_length(answers::text) <= 24000),
@@ -905,8 +908,11 @@ begin
       or metadata -> 'beta_notice_accepted' is distinct from 'true'::jsonb then
       raise exception 'Beta role and notice acknowledgement are required.' using errcode = '22023';
     end if;
-    insert into public.beta_profile(user_id, role, consent_tracking_at)
-    values (new.id, metadata ->> 'beta_role', clock_timestamp()) on conflict do nothing;
+    insert into public.beta_profile(user_id, role, role_note, consent_tracking_at)
+    values (new.id, metadata ->> 'beta_role',
+      case when metadata ->> 'beta_role' = 'jine'
+        then nullif(left(btrim(coalesce(metadata ->> 'beta_role_note', '')), 80), '') end,
+      clock_timestamp()) on conflict do nothing;
   end if;
   return new;
 end;

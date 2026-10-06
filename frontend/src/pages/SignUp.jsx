@@ -1,5 +1,5 @@
 import BetaEnrollment from '../components/BetaEnrollment';
-import { readBetaEnrollment, saveBetaEnrollment } from '../lib/betaEnrollment';
+import { betaEnrollmentComplete, readBetaEnrollment, saveBetaEnrollment } from '../lib/betaEnrollment';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../components/AuthContext';
@@ -11,6 +11,7 @@ import ConsentCheckbox from '../components/ConsentCheckbox';
 import PasswordInput from '../components/PasswordInput';
 import PasswordStrength from '../components/PasswordStrength';
 import { trialDaysPhrase } from '../config/pricing';
+import './beta.css';
 
 function SignUp() {
   const [form, setForm] = useState({ name: '', email: '', password: '' });
@@ -20,7 +21,9 @@ function SignUp() {
   const [captchaToken, setCaptchaToken] = useState(null);
   const [consent, setConsent] = useState(false);
   const [captchaKey, setCaptchaKey] = useState(0);
-  const { signUp } = useAuth();
+  const [consentError, setConsentError] = useState('');
+  const [showBetaErrors, setShowBetaErrors] = useState(false);
+  const { signUp, isSignedIn, emailConfirmed, profileLoading, adoptStoredSession } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const betaParamPresent = searchParams.has('beta');
@@ -32,7 +35,7 @@ function SignUp() {
   const [betaEnrollment, setBetaEnrollment] = useState(() => readBetaEnrollment(betaCode));
   const betaParent=Boolean(betaCode&&['rodic','ucitel'].includes(betaEnrollment.role));
   const updateEnrollment = (patch) => {
-    const next = { ...betaEnrollment, ...patch }; setBetaEnrollment(next); saveBetaEnrollment(betaCode, next.role, next.accepted);
+    const next = { ...betaEnrollment, ...patch }; setBetaEnrollment(next); saveBetaEnrollment(betaCode, next);
   };
   const [betaState, setBetaState] = useState(betaCode ? 'loading' : 'none');
   const [betaSchool, setBetaSchool] = useState(null);
@@ -65,6 +68,20 @@ function SignUp() {
     return () => { active = false; };
   }, [betaCode, invalidBetaInvite]);
 
+  // The confirmation link signs in from its own tab; supabase-js tells this
+  // tab, and it carries on to the next screen without a second login.
+  useEffect(() => {
+    if (!awaitingConfirmation) return undefined;
+    const onFocus = () => { void adoptStoredSession(); };
+    window.addEventListener('focus', onFocus);
+    return () => window.removeEventListener('focus', onFocus);
+  }, [awaitingConfirmation, adoptStoredSession]);
+  useEffect(() => {
+    if (awaitingConfirmation && isSignedIn && emailConfirmed && !profileLoading) {
+      navigate(betaCode ? `/beta/${encodeURIComponent(betaCode)}` : '/skoly', { replace: true });
+    }
+  }, [awaitingConfirmation, isSignedIn, emailConfirmed, profileLoading, betaCode, navigate]);
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -78,8 +95,15 @@ function SignUp() {
       return;
     }
 
+    if (betaCode && !betaEnrollmentComplete(betaEnrollment)) {
+      setShowBetaErrors(true);
+      return;
+    }
+
     if (!consent) {
-      setError(betaParent?'Potvrďte prosím věk a souhlas s podmínkami.':'Potvrď prosím věk a souhlas s podmínkami.');
+      setConsentError(betaParent
+        ? 'Pro vytvoření účtu potřebujeme váš souhlas s podmínkami.'
+        : 'Pro vytvoření účtu potřebujeme tvůj souhlas s podmínkami.');
       return;
     }
 
@@ -97,12 +121,11 @@ function SignUp() {
       return;
     }
 
-    if (betaCode && (!betaEnrollment.role || !betaEnrollment.accepted)) { setError('Vyber prosím roli a potvrď seznámení s beta testováním.'); return; }
     setSubmitting(true);
     if (betaCode) await startBetaVisit(betaCode,betaEnrollment.role,betaEnrollment.accepted).catch(()=>{});
     const result = await signUp(form.email, form.password, form.name, {
       captchaToken,
-      ...(betaCode ? { betaSchoolCode: betaCode, betaRole: betaEnrollment.role, betaNoticeAccepted: betaEnrollment.accepted } : {}),
+      ...(betaCode ? { betaSchoolCode: betaCode, betaRole: betaEnrollment.role, betaRoleNote: betaEnrollment.roleNote, betaNoticeAccepted: betaEnrollment.accepted } : {}),
     });
     setSubmitting(false);
 
@@ -140,10 +163,17 @@ function SignUp() {
           <div className="notice">
             <span className="notice-title">{betaParent?'Potvrďte svůj e-mail':'Potvrď svůj e-mail'}</span>
             <p className="notice-text">
-              {betaCode
-                ? `Poslali jsme odkaz na ${form.email}. Potvrzení e-mailu je povinné pro beta účet; odkaz ${betaParent?'Vás':'tě'} vrátí k pozvánce od školy.`
-                : `Poslali jsme odkaz na ${form.email}. Klikni na něj a účet se aktivuje i s tvým ${trialDaysPhrase()} zkušebním obdobím. Bez potvrzení se do databáze škol nedostaneš.`}
+              {betaParent
+                ? `Poslali jsme odkaz na ${form.email}. Klikněte na něj — otevře se v novém okně, které pak můžete zavřít.`
+                : `Poslali jsme odkaz na ${form.email}. Klikni na něj — otevře se v novém okně, které pak můžeš zavřít.`}
             </p>
+            <p className="notice-text email-waiting" role="status">
+              <span className="btn-spinner" aria-hidden="true" />
+              {betaParent ? 'Tady počkáme a po ověření budeme pokračovat sami.' : 'Tady počkáme a po ověření pokračujeme sami.'}
+            </p>
+            {!betaCode && (
+              <p className="notice-text">Účet se aktivuje i s {trialDaysPhrase()} zkušebním obdobím. Bez potvrzení se do databáze škol nedostaneš.</p>
+            )}
             <p className="notice-text">
               {betaParent?'Nepřišel? Zkontrolujte složku se spamem — odkaz umíme poslat znovu z přihlašovací stránky.':'Nepřišel? Zkontroluj složku se spamem — odkaz umíme poslat znovu z přihlašovací stránky.'}
             </p>
@@ -160,7 +190,7 @@ function SignUp() {
   return (
     <>
     {betaInviteProvided && <meta name="robots" content="noindex, nofollow" />}
-    <div className="page page-auth">
+    <div className={`page page-auth${betaInviteProvided ? ' beta-page' : ''}`}>
       <div className="auth-layout">
         <div className="page-header">
           <p className="eyebrow">{betaInviteProvided ? 'Školní beta program' : `${trialDaysPhrase()} zdarma`}</p>
@@ -169,14 +199,15 @@ function SignUp() {
             {betaInviteProvided && !betaCode
               ? 'Beta účet založíme až po ověření platné školní pozvánky.'
               : betaCode
-              ? `Testovací přístup trvá ${betaSchool?.accessHours || 48} hodin. Potvrzení e-mailu je povinné; platební kartu ${betaParent?'nepotřebujete':'nepotřebuješ'} a beta účet nic nestrhne.`
+              ? `Testování je zdarma výměnou za zpětnou vazbu. Potvrzení e-mailu je povinné; platební kartu ${betaParent?'nepotřebujete':'nepotřebuješ'} a beta účet nic nestrhne.`
               : `Vyzkoušej celou databázi škol ${trialDaysPhrase()} zdarma. Platit začneš až potom — a jen když budeš chtít pokračovat.`}
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="panel panel-lg auth-form">
           <AuthTabs />
-          {betaCode && <BetaEnrollment role={betaEnrollment.role} accepted={betaEnrollment.accepted} onRole={(role) => updateEnrollment({ role })} onAccepted={(accepted) => updateEnrollment({ accepted })} />}
+          {betaCode && <BetaEnrollment role={betaEnrollment.role} roleNote={betaEnrollment.roleNote} accepted={betaEnrollment.accepted} showErrors={showBetaErrors}
+            onRole={(role) => updateEnrollment({ role })} onRoleNote={(roleNote) => updateEnrollment({ roleNote })} onAccepted={(accepted) => updateEnrollment({ accepted })} />}
 
           {betaCode && betaState === 'loading' && <p className="field-hint" role="status">Ověřuji pozvánku…</p>}
           {betaCode && betaState === 'closed' && (
@@ -250,7 +281,8 @@ function SignUp() {
             )}
           </div>
 
-          <ConsentCheckbox id="signup-consent" checked={consent} onChange={setConsent} />
+          <ConsentCheckbox id="signup-consent" checked={consent} adult={betaParent} error={consentError}
+            onChange={(value) => { setConsent(value); if (value) setConsentError(''); }} />
 
           <Captcha onVerify={setCaptchaToken} resetKey={captchaKey} />
 

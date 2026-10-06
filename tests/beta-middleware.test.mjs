@@ -75,3 +75,21 @@ test('the existing access-key and cookie gate behavior stays intact', async () =
   }));
   assert.equal(cookieResponse, undefined);
 });
+
+test('e-mail confirmation page opens the gate only for a valid invitation code', async () => {
+  process.env.SITE_ACCESS_KEY = 'server-only-secret';
+  process.env.VITE_API_BASE_URL = 'https://api.skolamatch.test';
+  globalThis.fetch = async () => Response.json({ code: 'GYMJECNA', school_name: 'Gymnázium' });
+  const ok = await middleware(new Request('https://school.test/email-overen?beta=gymjecna'));
+  assert.equal(ok.status, 302);
+  assert.equal(new URL(ok.headers.get('location'), 'https://school.test').search, '?beta=gymjecna');
+  assert.match(ok.headers.get('set-cookie'), /server-only-secret/);
+
+  globalThis.fetch = async () => new Response('{}', { status: 404 });
+  const unknown = await middleware(new Request('https://school.test/email-overen?beta=UNKNOWN'));
+  assert.equal(unknown.status, 404);
+  assert.equal(unknown.headers.get('set-cookie'), null);
+
+  const plain = await middleware(new Request('https://school.test/email-overen'));
+  assert.equal(plain.status, 401);
+});

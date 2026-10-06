@@ -29,6 +29,7 @@ import ParentPay from './pages/ParentPay';
 import HandoffStart from './pages/HandoffStart';
 import NotFound from './pages/NotFound';
 import BetaLanding from './pages/BetaLanding';
+import EmailConfirmed from './pages/EmailConfirmed';
 import OnboardingFlow from './pages/onboarding/OnboardingFlow';
 import './styles/ui.css';
 import './App.css';
@@ -49,6 +50,7 @@ function App() {
               <Route path="/onboarding" element={<Navigate to="/onboarding/welcome" replace />} />
               <Route path="/onboarding/:stepId" element={<OnboardingFlow />} />
               <Route path="/beta/:code" element={<BetaLanding />} />
+              <Route path="/email-overen" element={<EmailConfirmed />} />
 
               {/* Public read-only share view (feature-brainstorm.md §5 "Share
                   shortlist with parents") — outside Layout for the same reason

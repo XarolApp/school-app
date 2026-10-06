@@ -121,7 +121,17 @@ Body: `frontend/src/lib/matching.js` already scores per obor (best obor wins), s
 4. The simulation feeds the onboarding scorer the newest year's rows only (`latestYearOnly`), not server.js's merged `slimProgramsForList`; confirm this does not change features before trusting the numbers.
 5. Answers are uniformly random, so this shows structural bias only; re-check against real beta results.
 
-## Brevo (e-mail provider) account is in the founder's name for beta — move to Václav before launch — 2026-10-05
+## Beta tester flow rework — apply SQL, then re-check with a real tester account — 2026-10-06
+- **Found:** 2026-10-06, after rewriting the tester instructions, landing page and confirmation flow
+- **Urgency:** high — the SQL must run before this deploy reaches testers who pick "Jiné"
+- **Effort:** small
+- **Release/context:** `supabase-setup.sql` (`beta_profile.role_note` + `capture_beta_profile`), `/email-overen`, `BetaInstructions.jsx`
+
+- [ ] Run the `beta_profile.role_note` block and the updated `capture_beta_profile()` from `supabase-setup.sql` in the Supabase SQL editor **before** deploying. Without the column, `POST /api/beta/profile` fails for existing testers.
+- [ ] End-to-end with a real throwaway tester e-mail: sign up from `/beta/TEST`, click the link in a second tab and check that it says "E-mail je ověřený" and the first tab moves on by itself. Then try the link on a phone, where the tab can't move on, so "Pokračovat v tomto okně" has to work.
+- [ ] As that tester: the first-run guide can't be closed with Escape or a backdrop click; **?** opens the one-screen reference; the paywall preview banner reads correctly. These were checked only on a stand-in page, because no tester session was available locally.
+
+ — move to Václav before launch — 2026-10-05
 - **Found:** 2026-10-05, founder decision while setting up custom SMTP
 - **Urgency:** high — blocks the real public/paid launch, not beta
 - **Effort:** small (about 30 minutes plus DNS re-verification)

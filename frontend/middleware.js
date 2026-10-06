@@ -95,6 +95,17 @@ export function betaInvitationCode(pathname) {
   return BETA_CODE_PATTERN.test(code) ? code : '';
 }
 
+// The e-mail confirmation page carries the invitation as ?beta=CODE and may
+// open in a browser that never saw the invitation (a phone's mail app), so a
+// valid code opens the gate there too, exactly like /beta/CODE.
+export function betaGateCode(url) {
+  const fromPath = betaInvitationCode(url.pathname);
+  if (fromPath !== null) return fromPath;
+  if (url.pathname.replace(/\/$/, '') !== '/email-overen' || !url.searchParams.has('beta')) return null;
+  const code = (url.searchParams.get('beta') || '').trim().toUpperCase();
+  return BETA_CODE_PATTERN.test(code) ? code : '';
+}
+
 export function betaApiUrl(code) {
   const configuredOrigin = process.env.VITE_API_BASE_URL;
   if (!configuredOrigin) return null;
@@ -165,7 +176,7 @@ export default async function middleware(request) {
 
   if (hasValidCookie) return;
 
-  const betaCode = betaInvitationCode(url.pathname);
+  const betaCode = betaGateCode(url);
   if (betaCode !== null) {
     if (!betaCode) return betaInvitationPage(404);
     const result = await lookupBetaInvitation(betaCode);

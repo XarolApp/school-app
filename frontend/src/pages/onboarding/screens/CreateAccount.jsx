@@ -58,6 +58,7 @@ function CreateAccount() {
   const [password, setPassword] = useState('');
   const [captchaToken, setCaptchaToken] = useState(null);
   const [consent, setConsent] = useState(false);
+  const [consentError, setConsentError] = useState('');
   // A Turnstile token is single-use, so the widget is re-challenged after every
   // failed submit.
   const [captchaKey, setCaptchaKey] = useState(0);
@@ -115,6 +116,10 @@ function CreateAccount() {
   const submit = async (event) => {
     event.preventDefault();
     if (busy) return;
+    if (!consent) {
+      setConsentError(parent ? 'Pro vytvoření účtu potřebujeme váš souhlas s podmínkami.' : 'Pro vytvoření účtu potřebujeme tvůj souhlas s podmínkami.');
+      return;
+    }
 
     setBusy(true);
     setError(null);
@@ -292,7 +297,8 @@ function CreateAccount() {
           <PasswordStrength password={password} />
         </div>
 
-        <ConsentCheckbox id="signup-consent" checked={consent} onChange={setConsent} />
+        <ConsentCheckbox id="signup-consent" checked={consent} adult={parent} error={consentError}
+          onChange={(value) => { setConsent(value); if (value) setConsentError(''); }} />
 
         <Captcha onVerify={setCaptchaToken} resetKey={captchaKey} />
       </form>

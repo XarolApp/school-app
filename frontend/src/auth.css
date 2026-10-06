@@ -685,3 +685,63 @@
     align-items: flex-start;
   }
 }
+
+/* --- Inline validation (replaces the browser's own "required" bubble) ----- */
+
+.field-error {
+  display: block;
+  margin-top: var(--space-xs);
+  color: var(--danger);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+}
+
+.consent-row {
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid transparent;
+  border-radius: var(--r-option);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.consent-row input {
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  flex-shrink: 0;
+  accent-color: var(--acc);
+}
+
+.consent-row.is-invalid {
+  border-color: var(--danger);
+  background: var(--danger-soft);
+}
+
+.consent-field .field-error {
+  padding-left: var(--space-md);
+}
+
+.email-confirmed {
+  align-items: center;
+  text-align: center;
+  padding-top: var(--space-xl);
+}
+
+.email-confirmed h1,
+.email-confirmed .lede {
+  margin: 0;
+}
+
+.email-confirmed-icon {
+  color: var(--ok);
+}
+
+.email-waiting {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-weight: 600;
+}
+
+.email-waiting .btn-spinner {
+  flex-shrink: 0;
+}

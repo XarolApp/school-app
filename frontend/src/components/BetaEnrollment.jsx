@@ -1,12 +1,20 @@
-import { BETA_ROLES } from '../lib/betaEnrollment';
-export default function BetaEnrollment({ role, accepted, onRole, onAccepted }) {
+import { BETA_ROLES, BETA_ROLE_NOTE_MAX } from '../lib/betaEnrollment';
+export default function BetaEnrollment({ role, roleNote = '', accepted, onRole, onRoleNote, onAccepted, showErrors = false }) {
   const parent = role === 'rodic' || role === 'ucitel';
+  const noteMissing = role === 'jine' && !roleNote.trim();
   return <div className="stack beta-enrollment">
     <fieldset className="beta-role-fieldset">
       <legend className="ss-headline-sm">{parent ? 'Kdo jste?' : 'Kdo jsi?'}</legend>
       <div className="beta-role-options">{BETA_ROLES.map((r) => <label key={r.id} className={`beta-role-option${role === r.id ? ' is-selected' : ''}`}>
-        <input type="radio" name="beta-role" value={r.id} checked={role === r.id} onChange={() => onRole(r.id)} required />{r.label}
+        <input type="radio" name="beta-role" value={r.id} checked={role === r.id} onChange={() => onRole(r.id)} />{r.label}
       </label>)}</div>
+      {role === 'jine' && <div className="field beta-role-note">
+        <label className="field-label" htmlFor="beta-role-note">Kdo tedy jsi?</label>
+        <input id="beta-role-note" className="input" type="text" maxLength={BETA_ROLE_NOTE_MAX} value={roleNote}
+          placeholder="Např. 7. třída, student SŠ, výchovný poradce…" onChange={(e) => onRoleNote(e.target.value)}
+          aria-invalid={showErrors && noteMissing} />
+        {showErrors && noteMissing && <span className="field-error" role="alert">Napiš prosím krátce, kdo jsi.</span>}
+      </div>}
     </fieldset>
     <div className="notice">
       <p className="notice-title">Co během bety zaznamenáváme</p>
@@ -14,9 +22,11 @@ export default function BetaEnrollment({ role, accepted, onRole, onAccepted }) {
       <p className="notice-text">Záznamy používání smažeme 6 měsíců po konci bety. Zpětné vazby, závěrečné odpovědi a nepovinné recenze si ponecháme pro vyhodnocení. Snímek stránky vzniká jen na vyžádání, po zakrytí polí; před odesláním ho lze odebrat.</p>
       <p className="notice-text">Základem zpracování je náš oprávněný zájem na testování produktu. Námitku lze jednoduše poslat na <a href="mailto:info@stredninamiru.cz">info@stredninamiru.cz</a>.</p>
     </div>
-    <label className="consent-checkbox">
-      <input type="checkbox" checked={accepted} onChange={(e) => onAccepted(e.target.checked)} required />
-      <span>{parent ? 'Rozumím tomu, co při beta testování zaznamenáváte.' : 'Rozumím tomu, co při beta testování zaznamenáváte.'}</span>
+    <label className={`checkbox-row consent-row${showErrors && !accepted ? ' is-invalid' : ''}`}>
+      <input type="checkbox" checked={accepted} onChange={(e) => onAccepted(e.target.checked)} aria-invalid={showErrors && !accepted} />
+      <span>Rozumím tomu, co při beta testování zaznamenáváte.</span>
     </label>
+    {showErrors && !accepted && <span className="field-error" role="alert">{parent ? 'Potvrďte prosím, že jste si text přečetli.' : 'Potvrď prosím, že sis text přečetl(a).'}</span>}
   </div>;
 }
+

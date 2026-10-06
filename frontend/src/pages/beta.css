@@ -2,6 +2,44 @@
   max-width: 560px;
 }
 
+/* The invitation page renders outside Layout, so it brings its own gutter. */
+main.beta-page {
+  display: block;
+  padding: var(--page-margin);
+}
+@media (max-width: 1024px) { main.beta-page { padding: var(--page-margin-md); } }
+@media (max-width: 768px) { main.beta-page { padding: var(--page-margin-sm); } }
+
+/* Invitation page: one column on a phone, info beside the sign-up on desktop. */
+.beta-page .auth-layout.beta-landing {
+  max-width: 1080px;
+}
+
+.beta-landing-header {
+  max-width: 720px;
+}
+
+.beta-landing-grid {
+  display: grid;
+  gap: var(--space-lg);
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .beta-landing-grid {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  }
+
+  .beta-invite-card {
+    position: sticky;
+    top: var(--space-lg);
+  }
+}
+
+.beta-role-note {
+  margin-top: var(--space-md);
+}
+
 .beta-invite-card h2 {
   margin: 0 0 var(--space-md);
   color: var(--ink);
@@ -110,9 +148,7 @@
 .beta-task-check { width: 22px; height: 22px; border: 1px solid var(--line2); border-radius: var(--r-chip); display: grid; place-items: center; }
 .beta-task-check.is-done { background: var(--acc-soft); color: var(--acc); border-color: var(--acc-line); }
 .beta-demo { display: grid; grid-template-columns: repeat(3, 1fr); list-style: none; padding: 0; gap: var(--space-sm); }
-.beta-demo li { display: flex; flex-direction: column; gap: var(--space-md); background: var(--surface2); border-radius: var(--r-card); padding: var(--space-md); animation: beta-explain 1.2s cubic-bezier(0.23, 1, 0.32, 1) both; }
-@keyframes beta-explain { from { opacity: 0.4; } to { opacity: 1; } }
-@media (prefers-reduced-motion: reduce) { .beta-demo li { animation: none; } }
+.beta-demo li { display: flex; flex-direction: column; gap: var(--space-md); background: var(--surface2); border-radius: var(--r-card); padding: var(--space-md); }
 
 .beta-modes { display: grid; gap: var(--space-sm); grid-template-columns: repeat(3,1fr); }
 .beta-modes .ss-btn { flex-direction: column; white-space: normal; height: auto; padding: var(--space-md) var(--space-sm); }
@@ -153,3 +189,30 @@
 .beta-theme-mini { padding:12px; border-radius:var(--r-option); font-size:13px; display:grid; gap:12px; }
 .beta-theme-mini span { padding:8px; border-radius:var(--r-button); text-align:center; }
 @media(max-width:600px) { .beta-closing-options { grid-template-columns:1fr; } .beta-theme-preview { padding:12px; } }
+
+/* --- Tester guidance (BetaInstructions) ---------------------------------- */
+dialog.ss-dialog.beta-modal { max-width: 640px; }
+dialog.ss-dialog.beta-modal-reference { max-width: 960px; }
+.beta-instructions { display: flex; flex-direction: column; gap: var(--space-md); }
+.beta-instructions h3 { margin: 0; }
+.beta-guide-body { display: flex; flex-direction: column; gap: var(--space-md); color: var(--ink2); line-height: 1.55; }
+.beta-guide-body p, .beta-guide-section p { margin: 0; }
+.beta-guide-body strong { color: var(--ink); }
+.beta-guide-callout { display: grid; gap: var(--space-xs); padding: var(--space-md); border-left: 3px solid var(--acc); background: var(--surface2); border-radius: var(--r-option); color: var(--ink2); }
+.beta-guide-callout-title { font-weight: 600; color: var(--ink); }
+.beta-guide-callout a { color: var(--acc); }
+.beta-guide-section { display: flex; flex-direction: column; gap: var(--space-sm); color: var(--ink2); line-height: 1.55; }
+.beta-guide-section-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-sm); }
+.beta-guide-progress { font-weight: 600; color: var(--acc); white-space: nowrap; }
+.beta-guide-hint { font-size: var(--fs-caption); }
+.beta-guide-checklist { padding: var(--space-md); border: 1px solid var(--acc-line); background: var(--acc-soft); border-radius: var(--r-card); }
+.beta-guide-checklist .beta-checklist li { border-bottom-color: var(--acc-line); }
+.beta-guide-checklist .beta-checklist li:last-child { border-bottom: 0; }
+.beta-reference { gap: var(--space-lg); }
+.beta-reference-guide { display: grid; gap: var(--space-lg); }
+@media (min-width: 900px) {
+  .beta-reference { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); align-items: start; column-gap: var(--space-xl); }
+  .beta-reference .beta-guide-checklist { position: sticky; top: 0; }
+  .beta-reference-actions { grid-column: 1 / -1; }
+}
+@media (max-width: 560px) { .beta-demo { grid-template-columns: 1fr; } .beta-demo li { flex-direction: row; align-items: center; } }

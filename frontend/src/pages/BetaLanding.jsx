@@ -1,5 +1,5 @@
 import BetaEnrollment from '../components/BetaEnrollment';
-import { readBetaEnrollment, saveBetaEnrollment } from '../lib/betaEnrollment';
+import { betaEnrollmentComplete, readBetaEnrollment, saveBetaEnrollment } from '../lib/betaEnrollment';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../components/AuthContext';
@@ -78,18 +78,18 @@ function BetaLanding() {
   const [enrollment, setEnrollment] = useState(() => readBetaEnrollment(code));
   const parent=['rodic','ucitel'].includes(enrollment.role);
   const updateEnrollment = (patch) => {
-    const next = { ...enrollment, ...patch }; setEnrollment(next); saveBetaEnrollment(code, next.role, next.accepted);
+    const next = { ...enrollment, ...patch }; setEnrollment(next); saveBetaEnrollment(code, next);
   };
-  const [starting,setStarting]=useState(false),[startError,setStartError]=useState('');
-  const continueSignup=async()=>{setStarting(true);setStartError('');try{await startBetaVisit(code,enrollment.role,enrollment.accepted);navigate(`/registrace?beta=${encodeURIComponent(code)}`);}catch{setStartError('Pozvánku se nepodařilo připravit. Zkuste to znovu.');}finally{setStarting(false);}};
+  const [starting,setStarting]=useState(false),[startError,setStartError]=useState(''),[showErrors,setShowErrors]=useState(false);
+  const continueSignup=async()=>{if(!betaEnrollmentComplete(enrollment)){setShowErrors(true);return;}setStarting(true);setStartError('');try{await startBetaVisit(code,enrollment.role,enrollment.accepted);navigate(`/registrace?beta=${encodeURIComponent(code)}`);}catch{setStartError('Pozvánku se nepodařilo připravit. Zkuste to znovu.');}finally{setStarting(false);}};
   const betaQuery = code ? `?beta=${encodeURIComponent(code)}` : '';
 
   return (
     <>
     <meta name="robots" content="noindex, nofollow" />
     <main className="page page-auth beta-page">
-      <div className="auth-layout">
-        <div className="page-header">
+      <div className="auth-layout beta-landing">
+        <div className="page-header beta-landing-header">
           <p className="eyebrow">Střední na míru · školní testování</p>
           <h1>{school?.school_name || 'Pozvánka k testování'}</h1>
           <p className="lede">
@@ -124,16 +124,21 @@ function BetaLanding() {
         )}
 
         {lookupState === 'ready' && (
-          <section className="panel panel-lg stack beta-invite-card" aria-labelledby="beta-invite-title">
-            <div>
+          <div className="beta-landing-grid">
+          <section className="panel panel-lg beta-invite-card" aria-labelledby="beta-invite-title">
               <h2 id="beta-invite-title">Jak testování funguje</h2>
               <ul className="beta-facts">
-                <li><strong>{school.accessHours || 48} hodin přístupu.</strong> {parent?'Po skončení můžete pokračovat odesláním zpětné vazby přímo v aplikaci.':'Po skončení můžeš pokračovat odesláním zpětné vazby přímo v aplikaci.'}</li>
-                <li><strong>Potvrzení e-mailu je povinné.</strong> {parent?'Odkaz pošleme na Vaši adresu.':'Odkaz pošleme na tvoji adresu.'}</li>
-                <li><strong>Bez platební karty a bez platby.</strong> Beta účet nikdy nespustí skutečné placení.</li>
+                <li><strong>Zdarma, výměnou za zpětnou vazbu.</strong> {parent
+                  ? `Chceme od vás aspoň jednu zpětnou vazbu za ${school.accessHours || 48} hodin. Když se neozvete, sami si o ni řekneme. Bez ní se přístup pozastaví, dokud nám nenapíšete.`
+                  : `Chceme od tebe aspoň jednu zpětnou vazbu za ${school.accessHours || 48} hodin. Když se neozveš, sami si o ni řekneme. Bez ní se přístup pozastaví, dokud nám nenapíšeš.`}</li>
+                <li><strong>Potvrzení e-mailu je povinné.</strong> {parent?'Odkaz pošleme na vaši adresu.':'Odkaz pošleme na tvoji adresu.'}</li>
+                <li><strong>Bez platební karty a bez platby.</strong> {parent
+                  ? 'Platební obrazovky uvidíte jen jako náhled. Zajímá nás váš názor na ně, ne vaše peníze.'
+                  : 'Platební obrazovky uvidíš jen jako náhled. Zajímá nás tvůj názor na ně, ne tvoje peníze.'}</li>
               </ul>
               {deadline && <p className="field-hint">Celý program končí {deadline} (pražského času).</p>}
-            </div>
+          </section>
+          <section className="panel panel-lg stack beta-signup-card" aria-label={parent ? 'Zapojit se' : 'Zapoj se'}>
 
             {closedBeforeStart && (
               <div className="notice" role="status">
@@ -175,8 +180,9 @@ function BetaLanding() {
               </div>
             ) : !closedBeforeStart && !closedAfterEnd ? (
               <div className="stack">
-                <BetaEnrollment role={enrollment.role} accepted={enrollment.accepted} onRole={(role) => updateEnrollment({ role })} onAccepted={(accepted) => updateEnrollment({ accepted })} />
-                <button className="btn btn-primary btn-block" disabled={starting || !enrollment.role || !enrollment.accepted} onClick={continueSignup}>Vytvořit beta účet</button>
+                <BetaEnrollment role={enrollment.role} roleNote={enrollment.roleNote} accepted={enrollment.accepted} showErrors={showErrors}
+                  onRole={(role) => updateEnrollment({ role })} onRoleNote={(roleNote) => updateEnrollment({ roleNote })} onAccepted={(accepted) => updateEnrollment({ accepted })} />
+                <button className="btn btn-primary btn-block" disabled={starting} onClick={continueSignup}>Vytvořit beta účet</button>
                 {startError && <p role="alert">{startError}</p>}
                 <p className="beta-login-link">{parent?'Už účet máte?':'Už účet máš?'} <Link to={`/prihlaseni${betaQuery}`}>Přihlásit se</Link></p>
               </div>
@@ -193,6 +199,7 @@ function BetaLanding() {
               </div>
             )}
           </section>
+          </div>
         )}
       </div>
     </main>

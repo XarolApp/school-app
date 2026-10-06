@@ -104,10 +104,16 @@ function Login() {
     <div className="page page-auth">
       <div className="auth-layout">
         <div className="page-header">
-          <p className="eyebrow">Vítej zpátky</p>
-          <h1>Přihlásit se</h1>
+          <p className="eyebrow">{betaCode ? 'Školní beta program' : 'Vítej zpátky'}</p>
+          <h1>{betaCode ? 'Přihlášení k beta účtu' : 'Přihlásit se'}</h1>
           <p className="lede">
-            Přihlas se ke svému účtu a pokračuj tam, kde jsi skončil.
+            {/* Tester status belongs to the account (set from the invitation at
+                sign-up), not to this page: any login page signs a tester into
+                the same beta account, and the invitation never upgrades a
+                regular account. */}
+            {betaCode
+              ? 'Přihlas se e-mailem, se kterým sis zakládal(a) beta účet. Testování pak pokračuje tam, kde jsi skončil(a).'
+              : 'Přihlas se ke svému účtu a pokračuj tam, kde jsi skončil.'}
           </p>
         </div>
 

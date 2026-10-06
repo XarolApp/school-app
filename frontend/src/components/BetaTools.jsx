@@ -14,6 +14,7 @@ function BetaToolsUI({ profile, canShow, isPasswordRecovery, userId, refreshProf
   const [closingOpen,setClosingOpen]=useState(false), [guidanceOpen,setGuidanceOpen] = useState(false), [guidanceBusy,setGuidanceBusy] = useState(false), [guidanceError,setGuidanceError] = useState('');
   const acknowledged = useRef(false), dismissed = useRef(false);
   const parent = ['rodic','ucitel'].includes(beta?.role);
+  const firstRun = !profile?.tester_guidance_seen_at;
   const [renewed,setRenewed]=useState('');
   const until=new Date(profile?.effectiveAccessUntil || 0).getTime();
   const hoursLeft=(until-Date.now())/3600000;
@@ -55,8 +56,12 @@ function BetaToolsUI({ profile, canShow, isPasswordRecovery, userId, refreshProf
       <button type="button" className="beta-feedback-trigger" onClick={() => { setGuidanceOpen(false); openFeedback(); }}>Zpětná vazba</button>
     </div>}
     {canShow && guidanceError && <p className="beta-banner" role="alert" data-beta-tools>{guidanceError}</p>}
-    <div data-beta-tools><Modal open={Boolean(canShow && guidanceOpen && !isPasswordRecovery)} title={parent ? 'Vítejte v testování Střední na míru' : 'Vítej v testování Střední na míru'} onDismiss={dismissGuidance} busy={guidanceBusy} className="beta-modal">
-      <BetaInstructions beta={beta} hours={profile?.betaAccessHours} onDone={dismissGuidance} onRefresh={refreshBeta} busy={guidanceBusy} />
+    {/* First run must be read to the end: no Escape, no backdrop click. Once
+        seen, the "?" opens a one-screen reference that closes normally. */}
+    <div data-beta-tools><Modal open={Boolean(canShow && guidanceOpen && !isPasswordRecovery)}
+      title={firstRun ? (parent ? 'Vítejte v testování Střední na míru' : 'Vítej v testování Střední na míru') : 'Pokyny k testování'}
+      onDismiss={firstRun ? undefined : dismissGuidance} busy={guidanceBusy} className={`beta-modal${firstRun ? '' : ' beta-modal-reference'}`}>
+      <BetaInstructions beta={beta} hours={profile?.betaAccessHours} onDone={dismissGuidance} onRefresh={refreshBeta} busy={guidanceBusy} reference={!firstRun} />
     </Modal></div>
     <BetaFeedbackSheet open={Boolean(canShow && feedback.open)} requestId={feedback.requestId} onClose={closeFeedback} pageUrl={feedback.pageUrl} beta={beta} programActive={profile?.betaProgramActive}
       onSuccess={() => { void refreshProfile(); void refreshBeta().catch(() => {}); }} />
@@ -81,7 +86,9 @@ function BetaTools({ children }) {
   }, [isTester,emailConfirmed,refreshBeta]);
   const openFeedback = useCallback(() => setFeedback((previous) => ({ open: true, pageUrl: location.pathname, requestId: previous.requestId + 1 })), [location.pathname]);
   const closeFeedback = useCallback(() => setFeedback((previous) => ({ ...previous, open: false })), []);
-  const canShow = isSignedIn && emailConfirmed && isTester && profile && !profileLoading;
+  // The confirmation tab only says "you can close this"; the guidance opens in
+  // the tab the tester actually continues in.
+  const canShow = isSignedIn && emailConfirmed && isTester && profile && !profileLoading && location.pathname !== '/email-overen';
   useEffect(()=>{
     if(canShow)document.documentElement.dataset.betaUi='true';
     else delete document.documentElement.dataset.betaUi;
