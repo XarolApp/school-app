@@ -150,9 +150,8 @@ Before the real launch:
 - **Effort:** small (details) / medium (e-mail setup)
 - **Release/context:** blocks beta (operator name, address) and paid launch (all of it)
 
-Body: **Operator name and address filled 2026-10-05** (Václav Kadlec, Na Lysinách 34, 147 00 Praha; private person, no živnost yet, IČO/DIČ/register omitted, not a VAT payer) in privacy policy, terms and withdrawal form. Still open `[DOPLNIT]` in Legal.jsx: (2) e-mail provider name (line ~93) and the sentence about sending result e-mails (~270). Filled so far: contact e-mail `info@stredninamiru.cz`, Supabase region eu-west-1, not a VAT payer. Keep `DRAFT = true` until the parent's details are in.
+Body: **All `[DOPLNIT]` filled 2026-10-06; `DRAFT = false`.** Operator Václav Kadlec, Na Lysinách 34, 147 00 Praha (private person, no živnost, not a VAT payer); e-mail provider Brevo (Sendinblue SAS, France) via Supabase custom SMTP, domain authenticated (DKIM + DMARC) and sign-up/reset e-mails tested working. Report outcomes are sent manually from info@stredninamiru.cz.
 TODO: **create a separate support mailbox (e.g. podpora@stredninamiru.cz) for real users at launch** and replace `info@stredninamiru.cz` in Legal.jsx (grep it).
-TODO: **set up outgoing e-mail** (sign-up confirmation, password reset; Supabase SMTP via Resend/Brevo or similar, plus SPF/DKIM for stredninamiru.cz), then name the provider in the privacy policy.
 Decision on record: launching paid without a živnost is the founder's accepted risk; parent registers a živnost once it earns money. Stripe needs the parent's verified identity first.
 
 ## Merged / renamed schools break the REDIZO import — 2026-09-30

@@ -1,7 +1,7 @@
 import './legal.css';
 
 // Shown until the operator facts marked [DOPLNIT] are filled in. Set to false before launch.
-const DRAFT = true;
+const DRAFT = false;
 
 function LegalPage({ title, updated, children }) {
   return (
@@ -90,7 +90,7 @@ export function Privacy() {
         <li>Cloudflare — ochrana formulářů proti robotům (Turnstile); zpracovává technické údaje spojení.</li>
         <li>Vercel a Railway — provoz webu a serveru.</li>
         <li>OpenStreetMap (OpenStreetMap Foundation) — podkladové mapy a vyhledání adresy na mapě škol. Při zobrazení mapy vidí poskytovatel tvou IP adresu a při hledání i text adresy, který zadáš.</li>
-        <li>Poskytovatel e-mailů (potvrzení registrace, obnova hesla): [DOPLNIT].</li>
+        <li>Brevo (Sendinblue SAS, Francie) — odesílání e-mailů (potvrzení registrace, obnova hesla). Sídlo v EU.</li>
       </ul>
       <p>
         Údaje neprodáváme, nepředáváme školám ani inzerentům a nepoužíváme je k reklamě. Zákon nás
@@ -302,8 +302,8 @@ export function Terms() {
       <p>
         <strong>Nahlášení nevhodného obsahu:</strong> tlačítkem „Nahlásit“ u recenze (napiš, proč je
         nevhodná nebo nezákonná, a potvrď dobrou víru) nebo e-mailem na info@stredninamiru.cz. Příjem
-        oznámení potvrdíme v aplikaci; výsledek ti sdělíme na tvůj e-mail, jakmile budeme moci
-        e-maily odesílat [DOPLNIT: po zprovoznění e-mailů upravit].
+        oznámení potvrdíme v aplikaci; výsledek ti pošleme na e-mail
+        tvého účtu.
       </p>
       <p>
         <strong>Kontaktní místo pro uživatele i orgány dozoru</strong> (čl. 11 a 12 nařízení o
