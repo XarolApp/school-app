@@ -7,10 +7,11 @@ export function elementSelector(element) {
   }
   return parts.join(' > ').slice(0, 512);
 }
-export function publicElementText(element) {
+export function publicElementText(element, maxLength = 120) {
+  if (element.closest?.('[data-private]')) return '';
   const clone = element.cloneNode(true);
   clone.querySelectorAll('input,textarea,[data-private]').forEach((node) => node.remove());
-  return (clone.textContent || '').trim().replace(/[^\s@]+@[^\s@]+/g, '[soukromý údaj]').slice(0, 120);
+  return (clone.textContent || '').trim().replace(/[^\s@]+@[^\s@]+/g, '[soukromý údaj]').slice(0, maxLength);
 }
 export function maskCaptureDocument(clone) {
   for (const node of clone.querySelectorAll('input,textarea,[data-private]')) {

@@ -35,7 +35,7 @@ export function scorePassword(password) {
   if (match) {
     return {
       score: 1,
-      hint: `Obsahuje běžné slovo („${match}“). Zkus něco méně obvyklého.`,
+      hint: 'Obsahuje běžné slovo. Zkus něco méně obvyklého.',
     };
   }
 
@@ -71,7 +71,7 @@ function PasswordStrength({ password }) {
   const level = LEVELS[score];
 
   return (
-    <div className={`pw-meter ${level.className}`}>
+    <div className={`pw-meter ${level.className}`} data-private>
       <div className="pw-meter-track" aria-hidden="true">
         {[1, 2, 3, 4].map((step) => (
           <span

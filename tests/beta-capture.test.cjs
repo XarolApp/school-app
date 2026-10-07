@@ -32,3 +32,17 @@ test('marked element text removes private descendants and email addresses', asyn
   assert.equal((await capture).publicElementText(element), 'Kontakt [soukromý údaj]');
   assert.equal(removed, 1);
 });
+
+test('text proposals retain their longer limit while redacting email addresses', async () => {
+  const text = 'Kontakt private@example.test ' + 'popis '.repeat(40);
+  const element = { cloneNode: () => ({ textContent: text, querySelectorAll: () => [] }) };
+  const result = (await capture).publicElementText(element, 2000);
+  assert.ok(result.length > 120);
+  assert.ok(!result.includes('private@example.test'));
+  assert.ok(result.includes('[soukromý údaj]'));
+});
+
+test('private elements cannot expose their own text to feedback selections', async () => {
+  const element = { closest: () => ({}), cloneNode: () => { throw new Error('private text must not be read'); } };
+  assert.equal((await capture).publicElementText(element, 2000), '');
+});

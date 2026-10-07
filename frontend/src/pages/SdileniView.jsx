@@ -84,7 +84,7 @@ function SdileniView() {
 
       <div className="dp-share-header">
         <div className="ss-label-caps">Sdílený přehled</div>
-        <h1 className="ss-headline-md h">Tři vybrané školy</h1>
+        <h1 className="ss-headline-md h">Vybrané školy</h1>
         <p className="ss-body-md">
           Tohle je pořadí přihlášek. Přijetí proběhne na nejvýš postavenou školu, kam se uchazeč/ka dostane.
         </p>
@@ -132,7 +132,7 @@ function SdileniView() {
       <div className="dp-share-disclaimer">
         <div className="ss-label-caps">Jak to počítáme</div>
         <p className="ss-body-sm">
-          Hranice je nejnižší bodový výsledek, který loni stačil na přijetí do daného oboru (data Cermat, 1.
+          Hranice je nejnižší bodový výsledek, který v uvedeném roce stačil na přijetí do daného oboru (data Cermat, 1.
           kolo). Každý rok se mění podle počtu přihlášek a obtížnosti testu. Je to vodítko, ne záruka přijetí.
         </p>
       </div>

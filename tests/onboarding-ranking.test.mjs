@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { rankSchools } from '../frontend/src/lib/matching.js';
+import { rankSchools, tradeoffs } from '../frontend/src/lib/matching.js';
 import { deriveFeatures } from '../frontend/src/lib/schoolFeatures.js';
 
 // Minimal rows shaped like GET /api/schools (slimmed school_programs).
@@ -38,6 +38,20 @@ test('a mixed school cannot combine a gymnázium from one obor with a focus from
 test('scores are per obor: the best-fitting obor is reported', () => {
   const r = rankSchools(SCHOOLS, { focus: ['it'], studyType: 'odborna' });
   assert.equal(r.find((x) => x.school.id === 5).bestObor, '18-20-M/01');
+});
+
+test('language tradeoffs never describe a bilingual school as having only standard languages', () => {
+  const bilingual = { ...SCHOOLS[2], school_programs: [{ ...prog('79-43-K/61'), jazyk_studia: 'Anglický' }] };
+  for (const role of ['student', 'parent']) {
+    for (const language of ['trochu', 'hodne']) {
+      const result = rankSchools([bilingual], { language }, role)[0];
+      assert.equal(result.features.language, true);
+      assert.equal(tradeoffs(result, role).some((text) => /[Jj]azyky/.test(text)), false);
+    }
+    const standard = rankSchools([SCHOOLS[2]], { language: 'hodne' }, role)[0];
+    assert.equal(standard.features.language, false);
+    assert.equal(tradeoffs(standard, role).some((text) => /[Jj]azyky/.test(text)), true);
+  }
 });
 
 // --- optional points block (plan 017, 2026-09-29) ----------------------------

@@ -329,7 +329,7 @@ function Settings() {
   // otherwise keep billing: a recurring monthly plan, or a season pass still
   // inside its 3-day trial (cancelling there prevents the charge outright). A
   // season pass that has already been charged has nothing recurring to stop —
-  // cancellationTerms() in pricing.js already says so ("není co rušit").
+  // cancellationTerms() in pricing.js explains the trial and non-renewal.
   const canCancel =
     (profile?.plan_id === 'monthly' && !profile?.cancel_at_period_end && (status === 'active' || status === 'past_due')) ||
     (status === 'trialing' && (
@@ -449,13 +449,13 @@ function Settings() {
         </div>
 
         {success && (
-          <div className="notice notice-success" role="status">
+          <div className="notice notice-success" role="status" data-private>
             <p className="notice-text">{success}</p>
           </div>
         )}
 
         {error && !openForm && (
-          <div className="notice notice-error" role="alert">
+          <div className="notice notice-error" role="alert" data-private>
             <p className="notice-text">{error}</p>
           </div>
         )}

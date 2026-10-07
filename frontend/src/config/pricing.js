@@ -317,8 +317,8 @@ export function cancellationTerms(plan, role) {
   if (plan.billing !== 'recurring') {
     return {
       text: parent
-        ? 'Jednorázová platba — není co vypovídat. Nic se automaticky neobnovuje.'
-        : 'Jednorázová platba — není co rušit. Nic se ti samo neobnoví.',
+        ? 'Platbu lze během zkušebního období zrušit v Nastavení. Po zaplacení se přístup automaticky neobnovuje.'
+        : 'Platbu během zkušebního období zrušíš v Nastavení. Po zaplacení se přístup sám neobnoví.',
       unbuilt: false,
     };
   }

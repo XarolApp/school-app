@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useState } from 'react';
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createHandoff } from '../../../api';
 import { shareUrl } from '../../../lib/shareLink';
 import { ObButton, ObOption, ObScreen, SelectionCount } from '../../../components/onboarding/ObKit';
@@ -113,6 +113,18 @@ function QuizQuestion({ step }) {
   // Synced both ways with the map, when this question has one — pointing at
   // either representation highlights the other.
   const [hoveredDistrict, setHoveredDistrict] = useState(null);
+  const numberInputRef = useRef(null);
+  const continueQuiz = useCallback(() => {
+    if (question.type === 'number') {
+      const number = Number(value);
+      const invalid = value != null && value !== '' &&
+        (!Number.isInteger(number) || number < question.min || number > question.max);
+      numberInputRef.current?.setCustomValidity(invalid
+        ? `Hodnota musí být celé číslo od ${question.min} do ${question.max}. Odpověď lze také přeskočit.` : '');
+      if (!numberInputRef.current?.reportValidity()) return;
+    }
+    goNext();
+  }, [goNext, question.type, question.min, question.max, value]);
 
   const candidates = useMemo(
     () => countCandidates(schools, cleanedAnswers, role || 'student'),
@@ -150,13 +162,13 @@ function QuizQuestion({ step }) {
     const onKey = (e) => {
       if (e.key !== 'Enter' || e.repeat || e.isComposing || e.defaultPrevented) return;
       const t = e.target;
-      if (t.closest?.('.ob-header, .ob-actions, a, textarea')) return;
+      if (t.closest?.('.ob-header, .ob-actions, a, button, select, textarea, summary, input:not([type="number"]), [role="button"], [contenteditable="true"]')) return;
       e.preventDefault();
-      goNext();
+      continueQuiz();
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
-  }, [goNext]);
+  }, [continueQuiz]);
 
   const clear = () => setAnswer(question.key, question.type === 'multi' ? [] : '');
 
@@ -185,7 +197,7 @@ function QuizQuestion({ step }) {
       }
       actions={
         <>
-          <ObButton onClick={goNext}>
+          <ObButton onClick={continueQuiz}>
             {answered ? 'Pokračovat' : 'Pokračovat bez odpovědi'}
           </ObButton>
           <button
@@ -239,6 +251,7 @@ function QuizQuestion({ step }) {
       {question.type === 'number' ? (
         <div className="ob-select-wrap">
           <input
+            ref={numberInputRef}
             type="number"
             inputMode="numeric"
             className="ob-number"

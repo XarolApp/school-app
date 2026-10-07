@@ -391,7 +391,7 @@ export function tradeoffs(result, role = 'student') {
         : 'Je mimo části Prahy, které jsi vybral — dojíždět budeš dýl.'
     );
   }
-  if (p.language && !p.language.hit) {
+  if (p.language && !p.language.hit && result.features.language === false) {
     out.push(
       formal
         ? 'Jazyky zde mají standardní rozsah, nikoli rozšířený.'

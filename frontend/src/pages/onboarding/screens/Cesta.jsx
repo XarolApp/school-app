@@ -3,37 +3,30 @@ import { useOnboarding } from '../useOnboarding';
 import { Icon, PayCta, PayStepChrome } from './paywallKit';
 
 /**
- * Paywall step 2 of 5 — CESTA (the season, today to March).
- *
- * Replaces the old `JourneySummary` screen. The milestone content is ported
- * from it rather than rewritten — those dates and their role-keyed phrasing
- * were already correct — and two stops were added (leden–únor shortlisting,
- * and duben as the payoff) to match the approved design.
+ * Paywall step 2 of 5 — CESTA (applications, then the entrance exams).
  *
  * This is where seasonal urgency belongs (ruling C-9, permitted source 1): the
  * přihlášky deadline and dny otevřených dveří are REAL, externally verifiable
  * dates. No countdown, no manufactured scarcity — the calendar is doing the
  * work, and it costs nothing in trust.
  *
- * The March stop is also the honest frame for the season pass: the plan ends
- * exactly where the decision ends. That is the UWorld fixed-window framing
- * (ruling C-8) shown as a picture instead of asserted as a term.
+ * Applications close in February; the season pass continues through March.
  *
  * MOBILE vs WEB is the biggest structural difference in the whole design: the
  * rail runs vertically on a phone and HORIZONTALLY on desktop, where the entire
  * September-April season is visible at once — the one thing 390px physically
  * cannot do. Same DOM, one media query.
  *
- * The dates below are the standard Czech schedule. TODO(content): move to a
- * config with the exact MŠMT dates for the current school year and show the
- * year explicitly — a stale date here is worse than no date.
+ * 2026/27 first-round deadline verified 2026-10-07 against the official guide:
+ * https://www.prihlaskynastredni.cz/rodice-zaci.php
+ * Recheck the explicit year and date before the next admissions season.
  *
  * Source: design/paywall-multipage-extract4/{Cesta,WebCesta,ParentCesta}.
  */
 const MILESTONES = [
   {
     id: 'dnes',
-    when: 'Teď · září',
+    when: 'Teď',
     tone: 'now',
     student: {
       what: 'Máš pořadí všech škol',
@@ -80,15 +73,15 @@ const MILESTONES = [
   },
   {
     id: 'prihlasky',
-    when: 'Do 1. března',
+    when: 'Do 22. února 2027',
     tone: 'done',
     student: {
       what: 'Přihlášky odeslané',
-      detail: 'Sezónní přístup běží přesně sem — do chvíle, kdy už není co vybírat.',
+      detail: 'Konzervatoře mají termín už 30. listopadu 2026. Sezónní přístup pokračuje do konce března a neobnovuje se.',
     },
     parent: {
       what: 'Přihlášky odeslané',
-      detail: 'Sezónní přístup běží přesně sem — do chvíle, kdy už není co vybírat.',
+      detail: 'Konzervatoře mají termín už 30. listopadu 2026. Sezónní přístup pokračuje do konce března a neobnovuje se.',
     },
   },
   {
@@ -135,8 +128,8 @@ function Cesta() {
           <p className="ob-eyebrow">{parent ? 'Co vás čeká' : 'Co tě čeká'}</p>
           <h1 className="ob-title ob-pw-title">
             {parent
-              ? 'Rozhodování trvá do března. Nejste v tom sami.'
-              : 'Rozhodování trvá do března. Nejsi v tom sám.'}
+              ? 'Rozhodování trvá do února. Nejste v tom sami.'
+              : 'Rozhodování trvá do února. Nejsi v tom sám.'}
           </h1>
           <p className="ob-lead">
             Tohle je celá cesta od dneška k odeslané přihlášce — a kde u toho budeme.

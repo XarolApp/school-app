@@ -29,6 +29,13 @@ test('anonymous invitation ticket is signed, expires, and binds the browser id',
   assert.equal(verifyVisitorTicket('secret', ticket, 'different', 200), null);
   assert.equal(verifyVisitorTicket('secret', ticket, anon, 86400101), null);
 });
+test('result events reject malformed school items without throwing', () => {
+  for (const item of [null, false, 1, 'school', [], {}]) {
+    assert.equal(sanitizeEvent({ name: 'result_view', path: '/skoly', props: { schools: [item] } }), null);
+  }
+  assert.deepEqual(sanitizeEvent({ name: 'result_view', path: '/skoly', props: { schools: [{ id: 1, rank: 1, ignored: 'value' }] } }),
+    { name: 'result_view', path: '/skoly', props: { schools: [{ id: 1, rank: 1 }] } });
+});
 test('checklist counts unique schools and requires all five paywall screens', () => {
   const events = [1,1,2,3].map((id) => ({ name: 'school_open', props: { id } }));
   const state = checklistFromEvents(events);

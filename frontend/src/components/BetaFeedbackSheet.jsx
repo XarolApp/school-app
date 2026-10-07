@@ -31,14 +31,14 @@ export default function BetaFeedbackSheet({ open, onClose, pageUrl, beta, onSucc
     setSelection({ selector: elementSelector(element), element_text: publicElementText(element),
       rect: { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
       viewport: { width: innerWidth, height: innerHeight, scroll_x: scrollX, scroll_y: scrollY },
-      ...(mode === 'text' ? { text_before: element.textContent.trim().slice(0,2000) } : {}) });
+      ...(mode === 'text' ? { text_before: publicElementText(element,2000) } : {}) });
     setOutline(null); setError(''); setPhase(mode === 'text' ? 'edit' : 'form');
   };
   const pickRef = useRef(pick); pickRef.current = pick;
   useEffect(() => {
     if (!open || phase !== 'pick') return;
     choicesRef.current = [...document.querySelectorAll('h1,h2,h3,p,button,a')].filter(eligible).filter((e) => publicElementText(e)).slice(0,100);
-    setChoices(choicesRef.current.map(publicElementText)); setChosen(0);
+    setChoices(choicesRef.current.map((element) => publicElementText(element))); setChosen(0);
     const move = (event) => { const e = event.target.closest('svg')?.parentElement || event.target; if (eligible(e)) setOutline(e.getBoundingClientRect().toJSON()); };
     const click = (event) => {
       if (event.target.closest('[data-beta-tools]')) return;
@@ -98,7 +98,7 @@ export default function BetaFeedbackSheet({ open, onClose, pageUrl, beta, onSucc
     </div>}
     {open && phase === 'edit' && <div className="beta-picker-toolbar" data-beta-tools>
       <p role="status">{voice('Uprav označený text přímo na stránce.', 'Upravte označený text přímo na stránce.')}</p>
-      <button className="ss-btn ss-btn-primary" onClick={() => { setSelection((s) => ({ ...s, text_after: selectedElement.current.textContent.trim().slice(0,2000) })); setPhase('form'); }}>Uložit návrh textu</button>
+      <button className="ss-btn ss-btn-primary" onClick={() => { setSelection((s) => ({ ...s, text_after: publicElementText(selectedElement.current,2000) })); setPhase('form'); }}>Uložit návrh textu</button>
       <button className="ss-btn ss-btn-secondary" onClick={() => setPhase('form')}>Zrušit úpravu</button>
     </div>}
     {open && phase === 'capture' && <div className="beta-picker-toolbar" role="status" data-beta-tools>Připravuji snímek se zakrytými poli…</div>}

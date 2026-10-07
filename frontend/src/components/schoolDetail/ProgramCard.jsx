@@ -49,8 +49,8 @@ function ProgramCard({ entry }) {
           <div className="sd-chips">
             {entry.typSkoly && <span className="sd-chip">{entry.typSkoly}</span>}
             {delkaLabel(entry.delkaStudia) && <span className="sd-chip">{delkaLabel(entry.delkaStudia)}</span>}
-            <span className="sd-chip">{entry.maturitni ? 'maturita' : 'výuční list'}</span>
-            <span className="sd-chip">{hasJPZ ? 'JPZ povinná' : 'bez JPZ'}</span>
+            <span className="sd-chip">{entry.maturitni === true ? 'maturita' : entry.maturitni === false ? 'bez maturity' : 'ukončení neuvedeno'}</span>
+            <span className="sd-chip">{hasJPZ ? 'JPZ povinná' : entry.jpzPovinna === false ? 'bez JPZ' : 'JPZ neuvedena'}</span>
             {entry.kkov && <span className="sd-chip">{entry.kkov}</span>}
           </div>
         </div>
@@ -71,12 +71,14 @@ function ProgramCard({ entry }) {
             {y.cutoff != null ? formatCutoffRange({ cutoffMin: y.cutoffMin, cutoffMax: y.cutoffMax }) : 'bez dat'}
           </div>
           <div className="sd-program-stat-label">
-            {y.cutoff != null ? `hranice ${entry.latestYear}` : 'bez jednotné zkoušky'}
+            {y.cutoff != null ? `hranice ${entry.latestYear}` : entry.jpzPovinna === false ? 'bez jednotné zkoušky' : `hranice ${entry.latestYear} neuvedena`}
             <InfoHint
               text={
                 y.cutoff != null
                   ? `Nejnižší počet bodů z češtiny a matematiky (max. 100, tedy 50 + 50), který v roce ${entry.latestYear} stačil na přijetí přímo do tohoto oboru. Je to jeho vlastní hranice, ne průměr celé školy.${y.variants ? ' Obor má více zaměření, každé s vlastní hranicí, proto je tu rozpětí.' : ''}`
-                  : `Tento obor nemá jednotnou přijímací zkoušku (JPZ). Přijímá se jinak, např. talentovou zkouškou, takže tu není bodová hranice.`
+                  : entry.jpzPovinna === false
+                    ? 'Tento obor nemá jednotnou přijímací zkoušku (JPZ). Přijímá se jinak, např. talentovou zkouškou, takže tu není bodová hranice.'
+                    : 'Bodovou hranici tohoto oboru nemáme k dispozici. Chybějící údaj neznamená, že se jednotná přijímací zkouška nekoná. Podmínky ověř v aktuálních kritériích školy.'
               }
             />
           </div>
