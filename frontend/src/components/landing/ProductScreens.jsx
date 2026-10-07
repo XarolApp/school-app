@@ -268,7 +268,7 @@ export function PrihlaskaScreen({ data }) {
               <span className="pm-rank">{i + 1}</span>
               <span className="pm-row-name">
                 <b>{name(s)}</b>
-                <small>{cut != null ? `loňská hranice ${cut} b.` : ' '}</small>
+                <small>{cut != null ? `hranice přijetí ${cut} b.` : ' '}</small>
               </span>
               {cut != null && (
                 <span className={`pm-pill${above ? ' pm-pill--ok' : ''}`}>

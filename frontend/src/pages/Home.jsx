@@ -27,14 +27,14 @@ const QUESTION_COUNT = QUESTIONS.length;
 const makeFacts = (SCHOOL_COUNT) => [
   { value: String(SCHOOL_COUNT), label: 'pražských středních škol v databázi' },
   { value: String(QUESTION_COUNT), label: `otázek v dotazníku, asi ${QUIZ_MINUTES} minuty` },
-  { value: '3 roky', label: 'hranic přijetí u každého oboru' },
+  { value: '3 roky', label: 'výsledků přijímaček; dostupnost se liší podle oboru' },
   { value: '0 Kč', label: 'za základní výsledek a databázi škol' },
 ];
 
 const STEPS = [
   {
     title: 'Odpovíš na pár otázek',
-    body: 'Co tě baví, kam se vidíš za pět let, jestli tě táhne gympl nebo odborka a kam po Praze dojedeš. Otázku, kterou nevíš, přeskočíš — výsledek tím nezhoršíš.',
+    body: 'Co tě baví, kam se vidíš za pět let, jestli tě táhne gympl nebo odborka a kam po Praze dojedeš. Otázku, kterou nevíš, přeskočíš — vynechané odpovědi do výpočtu nezahrnujeme.',
     shot: 'question',
   },
   {
@@ -44,12 +44,12 @@ const STEPS = [
   },
   {
     title: 'Projdeš si detail každé školy',
-    body: 'Obory, počet míst, kolik lidí se hlásilo a kolik jich vzali, hranice přijetí za poslední tři roky. U každého čísla je rok a zdroj.',
+    body: 'Obory, počet míst, kolik lidí se hlásilo a kolik jich vzali, dostupné hranice přijetí v jednotlivých letech. U každého čísla je rok a zdroj.',
     shot: 'detail',
   },
   {
     title: 'Seřadíš si tři přihlášky',
-    body: 'Vybereš tři školy v pořadí, ve kterém je dáš na přihlášku, a uvidíš, kde je tvoje skóre z přijímaček proti loňské hranici.',
+    body: 'Vybereš tři školy v pořadí, ve kterém je dáš na přihlášku, a uvidíš, kde je tvoje skóre z přijímaček proti dostupné hranici přijetí.',
     shot: 'prihlaska',
   },
 ];
@@ -255,10 +255,10 @@ function Home() {
         </div>
         <div className="ls-bento">
           <article className="ls-tile ls-tile--lead" data-reveal style={{ '--i': 0 }}>
-            <h3 className="ls-h3">Hranice přijetí u každého oboru</h3>
+            <h3 className="ls-h3">Dostupné hranice přijetí podle oborů</h3>
             <p className="ls-body">
-              Kolik bodů stačilo loni, předloni i před třemi lety, kolik bylo míst a kolik
-              přihlášek. Vidíš, jestli se na obor dostává snáz, nebo hůř.
+              Dostupné hranice přijetí, počty míst a přihlášek v jednotlivých letech.
+              Rozsah údajů se liší podle oboru; kde máme více let, ukážeme i vývoj.
             </p>
             <figure className="ls-shot ls-shot--inset" aria-hidden="true">
               <ScreenShot screen="detail" data={screenData} />

@@ -14,11 +14,11 @@ import { useSchoolCount } from '../../lib/useSchoolCount';
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Landing v2 (2026-09-26, uncommitted redesign — the previous page is
+ * Landing v2 (2026-09-26 — the previous page is
  * pages/Home.jsx, still intact; swap back in App.jsx).
  *
  * The whole argument is told on ONE live 3D map of Prague built from the real
- * /api/schools rows: 223 points → filter by interest → commute radius →
+ * /api/schools rows: catalogue points → filter by interest → commute radius →
  * admission cutoffs as bars → a short list. Every number shown is real except
  * the match percentages in the results mock, which are labelled "ukázka".
  */
@@ -55,8 +55,8 @@ const makeSteps = (SCHOOL_COUNT) => [
   },
   {
     kicker: 'Hranice přijetí',
-    title: 'U každé vidíš, kolik bodů stačilo',
-    body: 'Výška sloupce je hranice přijetí nejtěžšího oboru školy v přijímačkách 2026 podle výsledků Cermatu. Čím vyšší, tím těžší se dostat.',
+    title: 'Uvidíš dostupné hranice přijetí',
+    body: 'Výška sloupce je hranice přijetí nejtěžšího oboru školy z jejích nejnovějších dostupných výsledků Cermatu. Rok je uvedený u čísla. Čím vyšší, tím těžší se dostat.',
   },
   {
     kicker: 'Výsledek',
@@ -70,7 +70,7 @@ const ROLES = {
     title: 'Vyber si podle sebe, ne podle doslechu',
     points: [
       ['Nemusíš vědět, čím chceš být', 'Stačí vědět, co tě baví víc a co míň. Zbytek dopočítáme.'],
-      ['Nevíš? Přeskoč', 'Otázka, kterou přeskočíš, výsledek nezhorší. Jen je méně jistý.'],
+      ['Nevíš? Přeskoč', 'Vynechané odpovědi do výpočtu nezahrnujeme. Výsledek vychází z toho, co vyplníš.'],
       ['Tvoje odpovědi jsou tvoje', 'Během dotazníku zůstávají jen v tvém prohlížeči.'],
     ],
     cta: 'Začít jako student',
@@ -428,10 +428,22 @@ export default function Landing() {
         },
       );
 
-      // Big numbers count up once.
+    }, rootRef);
+
+    return () => {
+      storyTweenRef.current?.kill();
+      storyRef.current = null;
+      ctx.revert();
+    };
+  }, [reduced]);
+
+  // The catalogue loads after mount. Rebuild only the number tweens when its
+  // total changes, so they cannot retain the fallback count or reset the story.
+  useEffect(() => {
+    const ctx = gsap.context(() => {
       gsap.utils.toArray('[data-count]').forEach((el) => {
         const to = Number(el.dataset.count);
-        const obj = { v: 0 };
+        const obj = { v: Number(el.textContent) || 0 };
         gsap.to(obj, {
           v: to,
           duration: reduced ? 0 : 1.6,
@@ -443,13 +455,8 @@ export default function Landing() {
         });
       });
     }, rootRef);
-
-    return () => {
-      storyTweenRef.current?.kill();
-      storyRef.current = null;
-      ctx.revert();
-    };
-  }, [reduced]);
+    return () => ctx.revert();
+  }, [total, reduced]);
 
   // ---------- paging ----------
   // While the page sits at the very top, the stage is a slideshow: one wheel
@@ -527,11 +534,13 @@ export default function Landing() {
     };
 
     const onTouchStart = (e) => {
-      touchY = atStage() ? e.touches[0].clientY : null;
+      touchY = e.touches.length === 1 && atStage() ? e.touches[0].clientY : null;
     };
     const onTouchMove = (e) => {
+      if (e.touches.length !== 1) { touchY = null; return; }
       if (touchY != null && e.cancelable) e.preventDefault();
     };
+    const onTouchCancel = () => { touchY = null; };
     const onTouchEnd = (e) => {
       if (touchY == null) return;
       const dy = touchY - e.changedTouches[0].clientY;
@@ -554,6 +563,7 @@ export default function Landing() {
     window.addEventListener('touchstart', onTouchStart, { passive: true });
     window.addEventListener('touchmove', onTouchMove, { passive: false });
     window.addEventListener('touchend', onTouchEnd);
+    window.addEventListener('touchcancel', onTouchCancel);
     return () => {
       history.scrollRestoration = restore;
       window.removeEventListener('wheel', onWheel, { capture: true });
@@ -561,6 +571,7 @@ export default function Landing() {
       window.removeEventListener('touchstart', onTouchStart);
       window.removeEventListener('touchmove', onTouchMove);
       window.removeEventListener('touchend', onTouchEnd);
+      window.removeEventListener('touchcancel', onTouchCancel);
     };
   }, [reduced]);
 
@@ -765,7 +776,7 @@ export default function Landing() {
             <span data-count="3">0</span>
             <small> roky</small>
           </b>
-          <span>hranic přijetí u každého oboru</span>
+          <span>výsledků přijímaček; dostupnost se liší podle oboru</span>
         </div>
         <div className="l2-number" data-rise>
           <b>
@@ -782,8 +793,8 @@ export default function Landing() {
           <p className="l2-kicker">Uvnitř</p>
           <h2 className="l2-h2">Žádná tabulka o dvou stech řádcích</h2>
           <p className="l2-sub">
-            Výsledek je krátký seznam s důvody. Detail školy ukáže, jak se na obor
-            dostávalo poslední tři roky.
+            Výsledek je krátký seznam s důvody. Detail školy ukáže dostupné
+            hranice přijetí v jednotlivých letech.
           </p>
         </header>
 

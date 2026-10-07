@@ -23,7 +23,8 @@ import { useSchoolCount } from '../../../lib/useSchoolCount';
  * a 10% relative trial lift from allowing several. They are also
  * self-articulation: saying out loud what you need is what convinces you that
  * you need the tool. They stay CLIENT-SIDE and never reach the scoring engine —
- * intents drive copy (journey summary, paywall), never matches.
+ * intents currently only record the selection on this screen; they do not
+ * change later copy or matches.
  */
 const STUDENT_INTENTS = [
   { value: 'srovnat', label: 'Najít školy, co mi sedí' },
@@ -95,8 +96,8 @@ function Stakes() {
           <h1 className="ob-title">{parent ? 'S čím vám máme pomoct?' : 'S čím ti máme pomoct?'}</h1>
           <p className="ob-hint">
             {parent
-              ? 'Vyberte klidně víc věcí. Podle toho poskládáme výsledek.'
-              : 'Vyber klidně víc věcí. Podle toho poskládáme výsledek.'}
+              ? 'Vyberte klidně víc věcí, se kterými chcete pomoct.'
+              : 'Vyber klidně víc věcí, se kterými chceš pomoct.'}
           </p>
           <div className="ob-chips" role="group" aria-label="S čím pomoct">
             {options.map((o) => {

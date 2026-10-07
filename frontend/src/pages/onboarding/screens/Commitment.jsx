@@ -49,8 +49,8 @@ function Commitment() {
       </h1>
       <p className="ob-hint">
         {parent
-          ? 'Podle toho zvolíme, co vám ukážeme jako první.'
-          : 'Podle toho ti vybereme, co ti ukázat jako první.'}
+          ? 'Vyberte možnost, která nejlépe odpovídá vaší situaci.'
+          : 'Vyber možnost, která ti je nejbližší.'}
       </p>
       <div className="ob-options">
         {OPTIONS.map((o) => (

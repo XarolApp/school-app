@@ -31,7 +31,7 @@ function RiskSummary({ picks, studentPoints }) {
 
       {total > 0 && (
         <p className="dp-risk-caveat">
-          Odhad, ne záruka. Počítáme z loňské hranice oboru — ta se každý rok mění podle počtu přihlášek a
+          Odhad, ne záruka. Počítáme z dostupné hranice oboru v uvedeném roce — ta se každý rok mění podle počtu přihlášek a
           obtížnosti testu.
         </p>
       )}

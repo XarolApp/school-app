@@ -32,10 +32,10 @@ const METHOD_POINTS = [
   {
     id: 'skip',
     Icon: SkipForward,
-    title: 'Přeskočená otázka nikdy neubírá body',
-    student: 'Když něco nevíš, jen ti u výsledku napíšeme, že je méně spolehlivý. Nic víc.',
+    title: 'Přeskočené otázky nepočítáme',
+    student: 'Když něco nevíš, otázku přeskočíš. Výsledek vychází z vyplněných odpovědí a ukazujeme i jeho spolehlivost.',
     parent:
-      'Nevyplněná odpověď se z výpočtu vyřadí a sníží se uvedená spolehlivost. Skóre se nikdy nesnižuje za mlčení.',
+      'Nevyplněná odpověď se z výpočtu vyřadí. Výsledek vychází z vyplněných odpovědí a uvádíme i jeho spolehlivost.',
   },
   {
     id: 'limits',
