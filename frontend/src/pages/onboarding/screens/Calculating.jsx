@@ -26,7 +26,7 @@ import { SCHOOL_COUNT } from '../../../config/facts';
 const SUB_STEPS = {
   student: [
     'Porovnávám pražské střední školy',
-    'Počítám dojezd do částí, které jsi vybral',
+    'Porovnávám školy s částmi Prahy, které jsi vybral(a)',
     'Připravuji vysvětlení u každé školy',
   ],
   parent: [
@@ -108,8 +108,8 @@ function Calculating() {
                 : 'Počítá se to přímo u tebe v prohlížeči.'}
             </strong>{' '}
             {parent
-              ? 'Výpočet je pro všechny stejný a je veřejně popsaný.'
-              : 'Matematika je stejná pro všechny a je veřejně popsaná.'}
+              ? 'Výpočet je pro všechny stejný.'
+              : 'Matematika je stejná pro všechny.'}
           </p>
         </div>
       </div>

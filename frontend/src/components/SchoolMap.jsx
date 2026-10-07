@@ -112,7 +112,7 @@ function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
     // © OpenStreetMap contributors attribution is a licence requirement, not
     // a nicety — never remove it.
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors',
+      attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a> contributors',
       maxZoom: 19,
     }).addTo(map);
 

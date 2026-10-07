@@ -3,8 +3,14 @@ import { ChevronUp, ChevronDown, X } from 'lucide-react';
 import { groupProgramsByObor } from '../../lib/schoolPrograms';
 import { cutoffForPick, bandFor, BANDS } from '../../lib/admissionRisk';
 import NoteEditor from './NoteEditor';
+import { pluralCz } from '../../lib/pluralCz';
 
 const numCz = (v) => (v == null ? null : v.toLocaleString('cs-CZ', { maximumFractionDigits: 1 }));
+// "1 bod / 2 body / 5 bodů", but "2,5 bodu" for a decimal difference.
+const bodu = (v) => {
+  const d = Math.round(v * 10) / 10;
+  return `${numCz(d)} ${Number.isInteger(d) ? pluralCz(d, 'bod', 'body', 'bodů') : 'bodu'}`;
+};
 
 /**
  * One school in the 3-pick planner (/prihlaska). Reordering has two paths on
@@ -103,8 +109,8 @@ function PickCard({ pick, index, total, studentPoints, noteBody, onMove, onRemov
               : studentPoints == null
                 ? 'Zadej svoje body vpravo a spočítáme rozdíl.'
                 : studentPoints - cutoff >= 0
-                  ? `Máš o ${numCz(studentPoints - cutoff)} bodu víc, než v roce ${year} stačilo.`
-                  : `Chybí ti ${numCz(cutoff - studentPoints)} bodu na hranici z roku ${year}.`}
+                  ? `Máš o ${bodu(studentPoints - cutoff)} víc, než v roce ${year} stačilo.`
+                  : `Chybí ti ${bodu(cutoff - studentPoints)} na hranici z roku ${year}.`}
           </div>
         </div>
 

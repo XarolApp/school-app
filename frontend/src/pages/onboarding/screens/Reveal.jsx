@@ -327,8 +327,8 @@ function Reveal() {
           <p>
             <strong>Shoda není záruka přijetí.</strong>{' '}
             {parent
-              ? 'Říká, jak škola odpovídá tomu, co jste vyplnili — ne jaké jsou šance na přijetí. Data o známkách, kapacitách ani o výsledcích přijímacích zkoušek zatím nemáme, takže je nepředstíráme. Vzdálenost počítáme podle městských částí, ne podle jízdních řádů.'
-              : 'Říká, jak moc škola sedí tomu, cos napsal — ne jaké máš šance se tam dostat. Data o známkách, kapacitách ani o přijímačkách zatím nemáme, tak si je nevymýšlíme. Vzdálenost počítáme podle městských částí, ne podle spojů.'}
+              ? 'Říká, jak škola odpovídá tomu, co jste vyplnili — ne jaké jsou šance na přijetí. Hranice přijetí z Cermatu u škol ukazujeme, šanci na přijetí ale nepředpovídáme. Vzdálenost počítáme podle městských částí, ne podle jízdních řádů.'
+              : 'Říká, jak moc škola sedí tomu, co jsi vyplnil(a) — ne jaké máš šance se tam dostat. Hranice přijetí z Cermatu u škol ukážeme, šanci na přijetí ale nehádáme. Vzdálenost počítáme podle městských částí, ne podle spojů.'}
           </p>
         </div>
       </div>

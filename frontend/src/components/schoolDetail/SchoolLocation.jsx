@@ -31,7 +31,7 @@ function SchoolLocation({ school }) {
     L.control.zoom({ position: 'bottomleft' }).addTo(map);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors',
+      attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a> contributors',
       maxZoom: 19,
     }).addTo(map);
 
