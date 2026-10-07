@@ -302,7 +302,7 @@ function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
               aria-label="Maximální vzdálenost v kilometrech"
             />
             <p className="ss-caption sm-privacy-note">
-              Vzdušná čára, ne skutečná trasa MHD. Zobrazuje {visibleRows.length} {visibleRows.length === 1 ? 'školu' : 'škol'}.
+              Vzdušná čára, ne skutečná trasa MHD. Zobrazuje {visibleRows.length} {visibleRows.length === 1 ? 'školu' : visibleRows.length <= 4 && visibleRows.length > 0 ? 'školy' : 'škol'}.
             </p>
           </div>
         )}
@@ -317,9 +317,9 @@ function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
                 {selectedRow.districtLabel}
                 {selectedRow.p.zrizovatel ? ` · ${selectedRow.p.zrizovatel}` : ''}
                 {selectedRow.p.maturitni || selectedRow.p.nematuritni
-                  ? ` · ${selectedRow.p.maturitni && selectedRow.p.nematuritni ? 'maturitní i výuční list' : selectedRow.p.maturitni ? 'maturitní' : 'výuční list'}`
+                  ? ` · ${selectedRow.p.maturitni && selectedRow.p.nematuritni ? 'maturitní i nematuritní obory' : selectedRow.p.maturitni ? 'maturitní' : 'bez maturity'}`
                   : ''}
-                {selectedRow.p.count ? ` · ${selectedRow.p.count} ${selectedRow.p.count === 1 ? 'obor' : 'oborů'}` : ''}
+                {selectedRow.p.count ? ` · ${selectedRow.p.count} ${selectedRow.p.count === 1 ? 'obor' : selectedRow.p.count <= 4 ? 'obory' : 'oborů'}` : ''}
               </p>
             </div>
             <button type="button" className="sm-card-close" onClick={() => onSelect(null)} aria-label="Zavřít">
@@ -382,7 +382,7 @@ function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
           </div>
           {selectedAdm?.cutoffMin == null && selectedAdm?.acceptance == null && (
             <p className="ss-caption ss-no-data-note">
-              Tahle škola nebyla v prvním kole přijímaček, takže o ní zatím čísla nemáme.
+              Údaje o hranici a míře přijetí zatím nemáme.
             </p>
           )}
           <div className="sm-card-actions">

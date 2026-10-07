@@ -92,7 +92,7 @@ function FilterPopover({ id, label, activeCount, open, onOpenChange, onClear, re
             <button
               type="button"
               className="ss-btn ss-btn-primary ss-btn-sm"
-              onClick={() => onOpenChange(false)}
+              onClick={() => { triggerRef.current?.focus(); onOpenChange(false); }}
             >
               Zobrazit {resultCount} {skol(resultCount)}
             </button>

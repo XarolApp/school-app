@@ -6,10 +6,10 @@ import InfoHint from './InfoHint';
 
 function ukonceniLabel(entries) {
   const anyMaturita = entries.some((e) => e.maturitni === true);
-  const anyVyucni = entries.some((e) => e.maturitni === false);
-  if (anyMaturita && anyVyucni) return 'maturitní i výuční list';
+  const anyNematuritni = entries.some((e) => e.maturitni === false);
+  if (anyMaturita && anyNematuritni) return 'maturitní i nematuritní obory';
   if (anyMaturita) return 'maturitní';
-  if (anyVyucni) return 'výuční list';
+  if (anyNematuritni) return 'bez maturity';
   return null;
 }
 
@@ -38,7 +38,7 @@ function OldDataBadge({ year }) {
   return (
     <span className="sd-old-badge">
       <Clock size={13} strokeWidth={2.2} aria-hidden="true" />
-      Starší data, z roku {year}. Novější čísla škola zatím nemá.
+      Starší data, z roku {year}. Novější čísla zatím nemáme.
     </span>
   );
 }

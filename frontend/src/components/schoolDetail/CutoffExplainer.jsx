@@ -21,7 +21,7 @@ function CutoffExplainer() {
         <div className="sd-explainer-title">Hranice je minimum, ne průměr</div>
         <div className="sd-explainer-body">
           Je to počet bodů z češtiny a matematiky (max. 100, tedy 50 + 50), který
-          loni stačil na přijetí. Je to spodní hranice pro přijetí, ne
+          v uvedeném roce stačil na přijetí. Je to spodní hranice pro přijetí, ne
           průměrné skóre, které přijatí uchazeči měli.
         </div>
       </div>

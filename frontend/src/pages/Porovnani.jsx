@@ -347,7 +347,7 @@ function Porovnani() {
 
       <p className="ss-caption dp-footnote">
         Hranice přijetí, míra přijetí a počty míst jsou reálná data z Cermatu (1. kolo 2026). Hranice je rozpětí
-        mezi obory školy. Rok v závorce znamená, že škola novější data nemá. Starší roky najdeš v grafu v detailu školy. Klady a zápory jsou automatické shrnutí těchto
+        mezi obory školy. Rok v závorce znamená, že novější data zatím nemáme. Starší roky najdeš v grafu v detailu školy. Klady a zápory jsou automatické shrnutí těchto
         dat, ne názor školy.
       </p>
 

@@ -58,48 +58,8 @@ import useBottomBarSpace from '../lib/useBottomBarSpace';
 import { getRecentSchoolIds, getCompareSelection, setCompareSelection } from '../lib/searchPrefs';
 import './search.css';
 
-/**
- * ⚠️ SYNTHETIC STAND-IN DATA — NOT REAL, tracked in UNFORGET.md
- *
- * Everything about admissions (cutoff, acceptance, maturita, typ školy,
- * zřizovatel, jazyk, KKOV, kapacita) is now real — either straight from
- * `schools.admission_cutoff`/`acceptance_rate` or from the nested
- * `school_programs` rows, both filled in by `scripts/import-admission-data.js`
- * from Cermat's real yearly results. A school the import hasn't matched has
- * these as `null`/`[]`, and this file must keep treating that as "no data" —
- * never fabricate a value to fill the gap.
- *
- * Still invented:
- *   districtLabel     fallback "Praha N" only when the school has no real district
- */
-// FNV-1a style string hash — small, deterministic, no external dependency.
-function hashSeed(str) {
-  let h = 2166136261;
-  for (let i = 0; i < str.length; i += 1) {
-    h ^= str.charCodeAt(i);
-    h = Math.imul(h, 16777619);
-  }
-  return h >>> 0;
-}
-
-// mulberry32 — a tiny deterministic PRNG. Seeded from the hash above so the
-// same school id always produces the same sequence of "random" values, on
-// every render and every reload. Never Math.random() here.
-function mulberry32(seed) {
-  let a = seed >>> 0;
-  return function rand() {
-    a = (a + 0x6d2b79f5) | 0;
-    let t = Math.imul(a ^ (a >>> 15), 1 | a);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
-function synth(school) {
-  const rand = mulberry32(hashSeed(String(school.id)));
-  const districtRoll = 1 + Math.floor(rand() * 22); // 1–22, used only as a fallback
-  return { districtRoll };
-}
+// Admission facts come from Cermat programme rows. Districts come from the
+// server's coordinate-based mapping; missing data must stay unknown.
 
 // Czech pluralization — three forms: 1 / 2–4 / 5+.
 const plural = (n, one, few, many) => (n === 1 ? one : n >= 2 && n <= 4 ? few : many);
@@ -182,9 +142,9 @@ const UNMET_LABELS = {
  * this per predicate would mean ~50 passes over every school's programs.
  *
  * Every boolean here is "school has AT LEAST ONE obor matching X" — a school
- * offering both maturita and a výuční list is true for both, which is why
- * the per-option counts across a pair like ukončení studia sum to more than
- * 60 (see the note rendered under that filter group).
+ * offering both maturitní and nematuritní programmes is true for both, which is why
+ * per-option counts can overlap or omit unknown values (see the note
+ * rendered under that filter group).
  */
 function summarizePrograms(school) {
   const programs = school.school_programs ?? [];
@@ -236,19 +196,16 @@ function summarizePrograms(school) {
 }
 
 function ukonceniText(p) {
-  if (p.maturitni && p.nematuritni) return 'maturitní i výuční list';
+  if (p.maturitni && p.nematuritni) return 'maturitní i nematuritní obory';
   if (p.maturitni) return 'maturitní';
-  if (p.nematuritni) return 'výuční list';
+  if (p.nematuritni) return 'bez maturity';
   return null;
 }
 
 function buildRow(school) {
   const features = deriveFeatures(school);
-  const s = synth(school);
   const p = summarizePrograms(school);
-  const realDistrict = districtOf(school); // "Praha N" or null
-  const districtLabel = realDistrict || `Praha ${s.districtRoll}`;
-  const districtSynthesized = !realDistrict;
+  const districtLabel = districtOf(school); // "Praha N" or null; never invented
 
   const allProgs = [...new Set(splitPrograms(school.programs || '').map(baseProgram))].filter(Boolean);
 
@@ -259,7 +216,6 @@ function buildRow(school) {
     location: school.location,
     focus: features.focus,
     districtLabel,
-    districtSynthesized,
     progs: allProgs.slice(0, 2),
     progTotal: allProgs.length,
     p,
@@ -425,8 +381,7 @@ function Search() {
     setCurrentPage(1);
   }, [filters]);
 
-  // Rows carry both the real fields and the synthetic stand-ins. Stable
-  // across reloads because synth() is a pure function of school.id.
+  // Derive display/filter fields once per catalogue load.
   const rows = useMemo(() => schools.map(buildRow), [schools]);
 
   const prepared = useMemo(() => prepareQuery(filters.query), [filters.query]);
@@ -659,7 +614,7 @@ function Search() {
 
   const ukonceniOptions = [
     { value: 'maturitni', label: 'Maturitní', count: listFor({ ...filters, ukonceni: ['maturitni'] }).length },
-    { value: 'nematuritni', label: 'Výuční list', count: listFor({ ...filters, ukonceni: ['nematuritni'] }).length },
+    { value: 'nematuritni', label: 'Bez maturity', count: listFor({ ...filters, ukonceni: ['nematuritni'] }).length },
   ];
 
   const typOptions = typFacet
@@ -741,7 +696,7 @@ function Search() {
   filters.ukonceni.forEach((v) =>
     chips.push({
       key: `u-${v}`,
-      label: v === 'maturitni' ? 'Maturitní' : 'Výuční list',
+      label: v === 'maturitni' ? 'Maturitní' : 'Bez maturity',
       onRemove: () => toggleIn('ukonceni', v),
     })
   );
@@ -913,7 +868,7 @@ function Search() {
     .slice(0, 3)
     .map((x) => ({
       name: x.row.name,
-      why: `${x.row.districtLabel} · ${x.row.p.zrizovatel ?? 'zřizovatel neznámý'} · ${cutoffLabel(x.row.admission)}. Nesplňuje ${UNMET_LABELS[x.unmet[0].k]}.`,
+      why: `${x.row.districtLabel || 'Městská část neuvedena'} · ${x.row.p.zrizovatel ?? 'zřizovatel neznámý'} · ${cutoffLabel(x.row.admission)}. Nesplňuje ${UNMET_LABELS[x.unmet[0].k]}.`,
     }));
 
   // ---- pagination ----
@@ -1064,7 +1019,7 @@ function Search() {
     },
     {
       id: 'ukonceni',
-      label: 'Maturita / výuční list',
+      label: 'Ukončení studia',
       activeCount: filters.ukonceni.length,
       onClear: () => setPatch({ ukonceni: [] }),
       content: (
@@ -1594,7 +1549,7 @@ function Search() {
                           <div className="ss-row-numbers">
                             {noAdmissionData ? (
                               <span className="ss-caption ss-cell-missing ss-cell-no-admission">
-                                Nebyla v prvním kole přijímaček 2026, čísla zatím nemáme.
+                                Údaje o hranici a míře přijetí zatím nemáme.
                               </span>
                             ) : (
                               <div className="ss-cell-number ss-cell-cutoff">

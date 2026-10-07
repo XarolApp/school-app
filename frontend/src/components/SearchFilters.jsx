@@ -186,6 +186,7 @@ export function DistrictGroup({ districtOptions, toggleIn }) {
           key={district.value}
           type="button"
           className={`ss-district-toggle${district.active ? ' is-active' : ''}`}
+          aria-pressed={district.active}
           onClick={() => toggleIn('districts', district.value)}
         >
           {district.label} <span>{district.count}</span>
@@ -209,7 +210,7 @@ export function UkonceniGroup({ filters, ukonceniOptions, toggleIn, total }) {
       ))}
       {filters.ukonceni.length !== 1 && (
         <p className="ss-caption ss-facet-note">
-          Řada škol nabízí obojí, proto je součet vyšší než {total}.
+          Škola může nabízet obojí a některé údaje mohou chybět. Součet se proto může lišit od počtu škol ({total}).
         </p>
       )}
     </>
@@ -224,6 +225,7 @@ export function TypGroup({ typOptions, toggleIn }) {
           key={option.value}
           type="button"
           className={`ss-district-toggle${option.checked ? ' is-active' : ''}`}
+          aria-pressed={option.checked}
           onClick={() => toggleIn('typySkoly', option.value)}
         >
           {option.label} <span>{option.count}</span>

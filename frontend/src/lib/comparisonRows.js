@@ -108,8 +108,8 @@ export function buildComparisonRows(schools) {
         values: schools.map((s) => {
           const programs = s.school_programs || [];
           const hasMaturita = programs.some((p) => p.maturitni === true);
-          const hasVyucni = programs.some((p) => p.maturitni === false);
-          const text = hasMaturita && hasVyucni ? 'Maturita i výuční list' : hasMaturita ? 'Maturita' : hasVyucni ? 'Výuční list' : '—';
+          const hasNematurita = programs.some((p) => p.maturitni === false);
+          const text = hasMaturita && hasNematurita ? 'Maturitní i nematuritní obory' : hasMaturita ? 'Maturita' : hasNematurita ? 'Bez maturity' : '—';
           return { text, isBest: false };
         }),
       },
