@@ -57,13 +57,9 @@ longer the working machine. The archived `archive/context/CONTEXT-HANDOFF.md` co
 run through it if `node_modules`, `.env`, or a working `npm run dev` aren't
 already confirmed present.
 
-**The Browser pane / preview tools are expected to work normally here.** The
-"do not use the Browser pane" rule that used to be here was specific to the
-Windows laptop's Intel-integrated-graphics hardware (a Chromium GPU crash), not a
-project policy — verify it's actually fine on this machine, then delete this
-paragraph and the stale warning further down once confirmed. Until confirmed,
-don't assume either way — test it once, cheaply, before relying on it for a real
-verification pass.
+**The Browser pane / preview tools work on the MacBook** (confirmed 2026-10-07:
+landing, onboarding, `/skoly` and the beta landing were checked at 375×812 and
+desktop). Use them for every "verify in the browser yourself" step below.
 
 **Branch: `main`.** Commit and push here. As of 2026-09-04 this branch holds the
 onboarding-flow frontend (`/onboarding/...`) — what was briefly on a branch called
@@ -76,11 +72,9 @@ different product directions on a shared backend. It is kept as reference only. 
 not merge it into `main` expecting a clean result; if something from it is wanted,
 port that piece deliberately.
 
-Nothing from it is missing here. Verified file-by-file at promotion time: all 69 of
-its app files are preserved byte-identical inside `schoool-app-laptop-progress/`, a
-reference snapshot. (That folder duplicates `older-version` and is safe to delete
-whenever it stops being useful — the content also lives on that branch and in git
-history.)
+Nothing from it is missing here: its files live on that branch and in git history.
+(The `schoool-app-laptop-progress/` snapshot folder that duplicated it has since been
+deleted.)
 
 **⚠️ Push to GitHub after every meaningful chunk of work.** The user explicitly
 asked for this, having just lost a machine. Do not batch a session's work into one
@@ -88,13 +82,6 @@ push at the very end, and do not wait to be asked — commit and push whenever a
 feature, fix, or coherent piece of work is finished and verified. `.env` files are
 gitignored and must stay that way; check `git status` before a broad `git add` so a
 secret never lands in a commit.
-
-**Historical note, now resolved:** the previous (Windows) machine could not safely
-use the Browser pane / preview tools (`mcp__Claude_Browser__*`, `preview_start`,
-`preview_stop`) — a Chromium GPU-process crash on its Intel integrated graphics
-that corrupted the MSIX package. That was a property of that hardware, not this
-one. On the MacBook, use the Browser pane normally for the "verify in the browser
-yourself" instruction in Quick Start below.
 
 > The archived `archive/context/CONTEXT-HANDOFF.md` records what was in flight at the machine switch —
 > notably the **new 5-screen paywall flow (`hodnota → cesta → plan → zkusebni →
@@ -241,19 +228,24 @@ remains a full second surface (see "Platform Strategy"). It:
   added — that changes the CAC math this rests on. See agent ruling C-8 for full
   reasoning, and `docs/sources/pricing_research.md` for both research passes.
   Already implemented in `frontend/src/config/pricing.js`.
-- **Parental confirmation required at payment on the student branch.** New requirement
-  from the same research — before Stripe Checkout opens, the student-side
-  paywall must show an explicit parental-confirmation checkpoint, not a silent charge
-  on a parent's saved method. Real UI, not a stub — see C-8.
-- **3-day free trial**, then billing begins. A day-2 reminder email is **mandatory**
-  before real billing goes live — see agent ruling C-1. Research flags 3-day trials as
+- **No payment checkbox.** The parental-confirmation checkbox at checkout was
+  removed by founder decision on 2026-09-22 (commit `9a8f8cc`). The age / guardian
+  confirmation happens once, at account creation (`ConsentCheckbox`). Minors' refunds
+  are covered by Terms §7 (full refund within 30 days, the withdrawal button in
+  Settings works for 30 days). The parent branch pays through a payment link.
+- **3-day free trial on the season pass only** (card saved, one charge after 3 days);
+  the monthly plan has no trial and charges at checkout. Every new account also gets
+  a 3-day signup trial from the database trigger. A day-2 reminder email is **mandatory**
+  before real billing goes live — see agent ruling C-1 (not built; the paywall says so). Research flags 3-day trials as
   carrying the highest Day-0/Day-1 rushed-cancellation risk of any trial length; kept
   as-is per the user's explicit choice, watch conversion data rather than silently
   lengthening it. Note `feature-brainstorm.md` rates one-time purchase 🔥 and monthly
   ✅ — written before the recurring decision, now partially superseded (one-time is
   back in the mix per the research, weekly never was and stays out).
-- **Exact prices are not yet fixed.** They live as named constants in a single config
-  module (`frontend/src/config/pricing.js`) so they can change in one place.
+- **Prices are locked (2026-09-21): Sezónní přístup 690 Kč one-time, Měsíční 249 Kč.**
+  They live in `frontend/src/config/pricing.js`; the season price is duplicated as
+  `SEASON_PRICE_CZK` in `server.js` and the monthly one is the Stripe Price — change all
+  together.
 - Schools may pay for visibility/partnerships once the platform has real users
 - Promotion via teenage TikTok/Instagram influencers (affiliate model)
 
@@ -393,13 +385,16 @@ expired / developer / beta`. `'beta'` is exclusive time-boxed access: email must
 confirmed, access ends at the earlier of the rolling tester deadline and configured
 program cutoff, and only accepted in-app feedback renews it. Beta never enters Stripe.
 The legacy shared beta code endpoint is retired. The beta schema is defined in its
-delimited `supabase-setup.sql` block but has not yet been applied live; see
-`docs/beta_testing_operations.md` and the pending inputs in `UNFORGET.md`.
+delimited `supabase-setup.sql` block and is applied live (all beta tables exist as of
+2026-10-07), but the newest SQL is NOT: `beta_profile.role_note` is missing live, so
+re-run the whole file before testers arrive; see `docs/beta_testing_operations.md`
+and `UNFORGET.md`.
 'season' is written after the season pass's scheduled one-time
 PaymentIntent succeeds; monthly subscriptions write `'active'` through Stripe webhooks.
 
-**RLS is enabled on all four tables** by that file (changed from disabled — this was a
-deliberate adoption, not a drift):
+**RLS is enabled on every table** (26 as of 2026-10-07; verified live with the anon key:
+0 rows readable from each) — changed from disabled, a deliberate adoption. Tables
+without a policy below are server-only (service role). The core ones:
 - `users` — read your own row only. No client INSERT (the trigger creates it) and no
   client UPDATE, because that row decides who has paid.
 - `favorites` — own rows only; inserting also requires `has_access()`.
@@ -436,7 +431,6 @@ school-app/
 │   ├── build-district-map.js   # regenerates the district geometry
 │   ├── import-admission-data.js  # yearly Cermat import → schools + school_programs
 │   └── backfill-redizo.js        # one-off manual REDIZO fixes for hard-to-fuzzy-match schools
-├── schoool-app-laptop-progress/  # the older laptop build, kept for reference only
 ├── design/                     # the design system — see "Design system — design/ folder" below
 │   ├── DESIGN.md                # authoritative design spec — CHECK BEFORE any non-trivial visual change
 │   ├── system/                  # real Claude Design output: components, tokens, guidelines, ui_kits
@@ -557,8 +551,11 @@ system portable to the mobile app (see "Platform Strategy").
   and legacy aliases (`--text`, `--accent-bg`, …) that the existing stylesheets
   already consume, which is why the palette swap didn't require rewriting
   `onboarding.css`'s 1,200 lines. Prefer the new names in anything new.
-- Fonts (Archivo Narrow + Archivo, per `design/DESIGN.md`) load from the Google
-  Fonts stylesheet link in `frontend/index.html`.
+- Fonts (Archivo Narrow + Archivo, per `design/DESIGN.md`) are self-hosted: the
+  `@fontsource/archivo` and `@fontsource/archivo-narrow` imports (400–700) in
+  `frontend/src/main.jsx`. **Never load fonts from fonts.googleapis.com** — the privacy
+  policy promises fonts come from our own server (a third-party font CDN sends every
+  visitor's IP to Google).
 - **Never hardcode a colour or radius** in a component or stylesheet.
 
 **Mobile preview:** `http://localhost:5173/mobile-preview.html` renders the live
@@ -645,7 +642,7 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
      dark-pattern territory (DSA Art. 25) given the audience is minors.
 
 7. **Onboarding flow + paywall** (`frontend/src/pages/onboarding/`) — the full
-   23-screen Střední na míru flow, built 2026-08-23. Payment UI is mocked in onboarding; the backend Stripe integration is implemented in test mode.
+   23-screen Střední na míru flow, built 2026-08-23. The paywall's "Objednat s povinností platby" opens a real Stripe Checkout session (`PAYMENTS_MOCKED = false`); Stripe runs in test mode only.
    - **Step controller:** `OnboardingFlow.jsx` + `steps.js`, step id lives in the
      URL (`/onboarding/:stepId`), routes registered outside `Layout` in `App.jsx`.
    - **Role fork** at screen 2 branches voice, proof, motion, price framing and
@@ -667,11 +664,11 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
      as BANDS + "shoda podle: …", never a fake percentage. Explanation sentences
      are template-based with a `TODO(claude-api)` where the Claude call goes.
    - **Pricing config:** `frontend/src/config/pricing.js` — every price, plan and
-     trial string. All prices are PLACEHOLDERS. Plans are **Měsíční (recurring,
-     pre-selected, 3-day trial)** and **Sezónní přístup (one-time)**. Weekly was
+     trial string. Prices are locked (690 / 249 Kč). Plans are **Sezónní přístup
+     (one-time, pre-selected, 3-day trial)** and **Měsíční (recurring, no trial)**. Weekly was
      dropped mid-build per `docs/sources/pricing_research.md` — do not add it back.
-   - **Parental confirmation** step on the student-branch checkout before the
-     Stripe redirect. Real UI, not a stub.
+   - **No parental-confirmation step at checkout** (removed 2026-09-22, see
+     Monetization). The student branch offers "Ať to zaplatí rodič" (payment link).
    - **One-time offer is disabled.** The unsafe localStorage entitlement prototype was
      removed; reintroducing the offer requires a server-side entitlement (tracked in
      `UNFORGET.md`).
@@ -785,7 +782,7 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
 
 ## What's NOT Built Yet (MVP Scope)
 
-**Status as of 2026-08-28:** Supabase connected, schools seeded (60), onboarding flow
+**Status as of 2026-10-07:** Supabase connected, 223 school rows (217 shown — 6 are merged duplicates), onboarding flow
 complete with district map and claim-framing signup, auth ported and wired, design tokens
 applied; see "Design tokens — tokens.js" below for the current palette and font state,
 developer-email bypass confirmed working.
@@ -819,7 +816,11 @@ actionable that follows from them lives in [`UNFORGET.md`](UNFORGET.md) instead.
   real Stripe Checkout session when keys are configured. Prices remain placeholders,
   the day-2 reminder and refund process are not implemented, and the complete test-mode
   matrix in `UNFORGET.md` must pass before any live key is used.
-- **`/api/schools*` is intentionally ungated**, unlike every other data route. The
+- **`/api/schools*` is intentionally ungated**, unlike every other data route.
+  Founder decision 2026-10-07: the intended product is "only the landing page and the
+  onboarding (with its result preview and map) are free; everything else — `/skoly`,
+  school detail, comparison, matrix, questionnaire, applications — needs the trial or a
+  paid plan". The app does not match that yet; see UNFORGET "Paid vs free gating". The
   onboarding quiz reads school data before any account exists, so gating it would break
   the funnel at its widest point. RLS still blocks the browser from reading the table
   directly, so `server.js` remains the only way in. Gating this is tied to the paywall
@@ -938,7 +939,8 @@ for a desktop layout (or the reverse) is a research error, not a shortcut.
 
 ## Geographic Scope for V1
 
-Prague only, currently holding 223 schools. Expansion to other Czech cities
+Prague only: 223 rows in `schools`, 217 shown to users (6 rows are merged duplicates
+with `merged_into` set — use the live count, `useSchoolCount()` / `SCHOOL_COUNT`). Expansion to other Czech cities
 planned for later phases once the Prague version is validated with real users.
 
 ---

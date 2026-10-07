@@ -1,9 +1,13 @@
 # Beta Testing Program — Logic Spec (for implementation)
 
-**Status:** the implementation is in the codebase (2026-09-26); live database
-migration, disposable-database transaction verification, deployment and cohort
-configuration are still pending. The program remains disabled while its cutoff
-is `NULL`. See the rollout checklist in
+**Status (updated 2026-10-07):** implemented, deployed and migrated live — access is
+`users.subscription_status = 'beta'` with the cutoff in
+`beta_program_settings.ends_at` (currently a leftover test value, 2026-10-12 21:10 UTC;
+set the real date). Still open: the newest SQL (`beta_profile.role_note`) is not
+applied, only the `TEST` school code exists, and disposable-database transaction
+verification was never run. Plan 019 (feedback sheet, screenshots, analytics, admin)
+supersedes the v1 scope limits further down — read those sections as the original
+design, not the current behaviour. See the rollout checklist in
 [`plans/016-beta-testing-program.md`](../plans/016-beta-testing-program.md) and
 [`docs/beta_testing_operations.md`](beta_testing_operations.md).
 

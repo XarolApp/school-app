@@ -13,6 +13,33 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
+## Pre-beta deep review 2026-10-07 — what is still open
+- **Found:** 2026-10-07, full-repo review by Claude Code (Opus 5.5) in parallel with Codex
+- **Urgency:** P0 items block the beta; the rest are ranked in the report
+- **Release/context:** [`reports/claude-review-2026-10-07/REPORT.md`](reports/claude-review-2026-10-07/REPORT.md) (findings + manual checks) and [`HANDOFF-PLAN.md`](reports/claude-review-2026-10-07/HANDOFF-PLAN.md) (tasks for the next agent); Codex's parallel review is in `reports/deployment-review-2026-10-07/`
+
+Founder-only items before testers (details and SQL in the report):
+- [ ] Re-run the WHOLE `supabase-setup.sql` (live DB lacks `beta_profile.role_note`, so `POST /api/beta/profile` fails for every tester).
+- [ ] Set the real beta end date — the live `ends_at` (2026-10-12 21:10 UTC) is a leftover test value (founder confirmed 2026-10-07).
+- [ ] Add the real school codes to `beta_schools` (only `TEST` exists).
+- [ ] Replace the expired OpenRouter key (local `.env` and Railway); fix the local `OPENROUTER_MODEL=gemini-3.6-flash` (missing `google/`).
+- [ ] Railway: `NODE_ENV=production` and a real `BETA_TICKET_SECRET`; Supabase redirect allowlist must include `/email-overen*`, `/prihlaseni*`, `/nove-heslo` on the www domain.
+
+## Paid vs free gating — founder decision 2026-10-07, not implemented
+- **Found:** 2026-10-07 review (landing/FAQ copy and App.jsx routes disagreed)
+- **Urgency:** high before public/paid launch; not a beta blocker (testers have full access)
+- **Risk of NOT fixing:** copy promises free things that should be paid (and vice versa); after the 3-day trial a normal account keeps the whole database, comparison and matrix for free.
+- **Effort:** medium (routes + server gating + all copy) — task T1 in the handoff plan
+
+Decision: only the landing page and the onboarding (with its result preview and its map) are free. Everything else — `/skoly`, school detail, `/porovnani`, the matrix, `/dotaznik`, `/prihlaska`, favourites — needs the trial or a paid plan. Today `/skoly`, `/skoly/:id`, `/porovnani`, `/porovnani/matice` are public and `GET /api/schools*` is ungated (onboarding needs it — gate per route/shape, not wholesale). All copy that says "databáze škol zdarma" (landing2 FAQ + pricing, Home.jsx, SignUp.jsx, Settings, paywall UNLOCKS) must change in the same release.
+
+## Church schools: tuition shown as unknown — review the extracted data
+- **Found:** 2026-10-07 review; founder decision the same day
+- **Urgency:** medium
+- **Effort:** small–medium
+
+The comparison table now shows "Zjistit u školy" for církevní schools and the decision matrix gives them no tuition score (they used to be "Placená škola" / scored as paid, while `lib/matching.js` treated them as free). The founder believes `school_extracted_details` has tuition text for each church school — check `tuition_czk_per_year` / `skolne_poplatky` for every `zrizovatel` "církevní" school, then use the real value in `comparisonRows.js`, `decisionMatrix.js` and `lib/matching.js` `isPaid()` consistently.
+
 ## Plan 019: SQL reapplication and live rollout checks — 2026-10-05
 - **Found:** 2026-10-05, continuing the approved beta feedback/analytics plan.
 - **Urgency:** high (beta rollout)
@@ -131,7 +158,7 @@ Body: `frontend/src/lib/matching.js` already scores per obor (best obor wins), s
 - [ ] End-to-end with a real throwaway tester e-mail: sign up from `/beta/TEST`, click the link in a second tab and check that it says "E-mail je ověřený" and the first tab moves on by itself. Then try the link on a phone, where the tab can't move on, so "Pokračovat v tomto okně" has to work.
 - [ ] As that tester: the first-run guide can't be closed with Escape or a backdrop click; **?** opens the one-screen reference; the paywall preview banner reads correctly. These were checked only on a stand-in page, because no tester session was available locally.
 
- — move to Václav before launch — 2026-10-05
+## Brevo SMTP account is in the founder's name — move to Václav before launch — 2026-10-05
 - **Found:** 2026-10-05, founder decision while setting up custom SMTP
 - **Urgency:** high — blocks the real public/paid launch, not beta
 - **Effort:** small (about 30 minutes plus DNS re-verification)
@@ -583,18 +610,6 @@ Set `DRAFT = false` in `Legal.jsx` after Codex report and placeholders filled.
 The test account `vojtech.kadlec@montetrida.cz` currently holds a saved SetupIntent with a
 charge due 2026-09-24 (the scheduler will charge it on its own then — the test can just
 observe that). Also re-run the no-double-charge check after a Railway restart.
-
-## Re-enable Supabase email confirmation before production
-- **Found:** 2026-09-21, Stripe test-mode testing on the live site
-- **Urgency:** Launch blocker — must be done before any real-money launch
-- **Risk of fixing now:** Re-enabling during testing brings back the 2-emails/hour cap and blocks fresh test signups.
-- **Risk of NOT fixing:** Anyone can start a trial (and a paid plan) on an email they don't own; `requireAuth` in `server.js` relies on `email_confirmed_at`, which Supabase sets instantly when confirmation is off, so the trial/abuse guard silently stops working.
-- **Effort:** Small — dashboard toggle (Authentication → Providers → Email → "Confirm email"), but only after custom SMTP is set up (see the SMTP entry)
-- **Release/context:** Pre-launch checklist, together with custom SMTP and live Stripe keys
-
-Email confirmation is deliberately switched OFF in the Supabase dashboard while
-testing payments. No code was changed — turn the toggle back on and re-test
-signup → confirm → login before launch.
 
 ## UI consolidation plan 012 — implementation and signed-in verification pending
 - **Found:** 2026-09-21, browser-first UI audit with `/codex-plan-then-build`
@@ -1412,20 +1427,6 @@ https://claude.ai/code/artifact/e2a398f2-e68d-4cda-8409-05070cf0937b
 
 ---
 
-## Two schools still have no admission data
-- **Found:** 2026-09-08, first real Cermat import
-- **Urgency:** low — self-resolving
-- **Effort:** none needed unless still empty after all 5 years' files are in
-
-`Bezpečnostně právní akademie, s. r. o., střední škola` (REDIZO 691020515) and
-`Hotelová škola, Praha 10, Vršovická 43` (REDIZO 600004741) both have a stored
-REDIZO from `scripts/backfill-redizo.js`, so they match instantly on any future
-import — they simply had no rows in the 2026 kolo1 file (round-2-only
-admission, or some other reason not investigated). No action needed unless
-they're still empty after importing the remaining 4 years' files.
-
----
-
 ## Saved filter presets / recently viewed are localStorage-only
 - **Found:** 2026-09-08
 - **Urgency:** low
@@ -1979,6 +1980,14 @@ Fold that fix into the redesign rather than patching it separately.
 ## Resolved
 
 *(Move items here with a date + one-line note when they're actually done, rather than deleting them.)*
+
+- **Supabase email confirmation re-enabled** — verified 2026-10-07 (Claude review):
+  the live project's public `/auth/v1/settings` reports `mailer_autoconfirm: false`,
+  and Brevo SMTP sends the confirmation mails. Was "Re-enable Supabase email
+  confirmation before production" (found 2026-09-21).
+- **Two schools without admission data** — resolved by 2026-10-07: every one of the
+  217 visible schools now has `school_programs` rows (4 have only pre-2026 rows:
+  ids 189, 212, 213, 215 — shown as "starší data").
 
 - **Questionnaire results, run history, unlimited runs, AI-optional** — done
   2026-09-19 (plan 011, `archive/plans/011-questionnaire-results-history.md`). `/dotaznik`

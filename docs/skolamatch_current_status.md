@@ -287,6 +287,9 @@ The product is not publicly launched yet.
 
 ## Database
 
+- **Verified 2026-10-07:** 223 rows in `schools`, **217 shown** (6 are merged
+  duplicates with `merged_into`), 2,374 `school_programs` rows, newest Cermat year
+  2026; every visible school has admission rows (4 only pre-2026).
 - **224 schools now in the database (2026-09-13)** — up from 60. Expanded via
   `scripts/import-missing-schools.js` (new script), using REDIZO/name/programs
   already present in the Cermat admission files plus official name+address from
@@ -398,13 +401,13 @@ Its value is making the entire school-selection process faster, clearer, and mor
 
 # 13. Pricing
 
-Pricing is still subject to validation.
+Prices **locked 2026-09-21** (`frontend/src/config/pricing.js`): **Sezónní přístup
+690 Kč** one-time (3-day trial, then one charge; access to 31 March) and **Měsíční
+249 Kč** (charged immediately, no trial). Still validate with beta feedback.
 
 Current working direction:
 
 - Prefer **season pass** rather than "lifetime", because the main customer need is tied to one admissions season.
-- Working base price: approximately **699 Kč**
-- This is not permanently finalized.
 
 Validate using:
 - beta feedback
@@ -626,6 +629,16 @@ Founder is willing to learn and execute faceless TikTok/content marketing.
 
 Update this section whenever new information is confirmed.
 
+> **2026-10-07 pre-beta review (Claude Code + Codex in parallel):** tests 126/126,
+> build and lint clean, RLS verified live on all 26 tables, Stripe on test keys.
+> Fixed and pushed: review reports (500 for signed-in users), Google Fonts vs privacy
+> policy, Stripe webhook API-version bug (monthly renewals wrote "paid forever"),
+> auth-callback deadlock, vulnerable deps, false onboarding/paywall claims, many
+> Czech wording bugs. **Before testers:** re-run the whole `supabase-setup.sql`, set
+> the real beta end date, add school codes, replace the expired OpenRouter key,
+> upgrade Railway before its trial ends (~2026-10-13). Full list:
+> `reports/claude-review-2026-10-07/REPORT.md`.
+
 ## Project
 
 - Phase: **Development / pre-beta**
@@ -669,11 +682,11 @@ Update this section whenever new information is confirmed.
   supplies a cutoff date/time; the optional external feedback URL is also pending.
   No testers have been enrolled through this implementation.
 - Parent/child: **not finished**
-- Legal pages (Privacy + Terms): **95%** — `Legal.jsx` built with placeholders
-  filled for most fields (2026-09-21/22); remaining: operator facts, SMTP setup
-  for confirmation e-mails, withdrawal testing in Stripe test mode, DPA
-  collection. Set `DRAFT = false` after filling placeholders. See UNFORGET.md
-  items 1-2.
+- Legal pages (Privacy + Terms): **published** (`DRAFT = false`, operator Václav
+  Kadlec, Brevo named). Open (2026-10-07 reviews): operator IČO/registration before
+  paid launch, durable order/withdrawal confirmations, beta-analytics consent
+  assessment, review notice-and-action workflow — see Codex
+  `reports/deployment-review-2026-10-07/legal-docs-findings.md` and the Claude report.
 - Analytics: **beta implementation complete, rollout pending** — 2026-10-05,
   first-party beta-only events, full rankings and private /admin reports.
   Normal users send zero events by design. SQL/configuration, live Supabase
@@ -683,7 +696,8 @@ Update this section whenever new information is confirmed.
   (`https://school-app-production-be43.up.railway.app`, EU West, Node 22+ —
   had to bump from the initial `>=20` engines constraint since
   `@supabase/realtime-js` needs native WebSocket, only present in Node 22+).
-  Frontend on Vercel (`https://school-app-xarolapp.vercel.app`). Supabase
+  Frontend on Vercel — now served at **https://www.stredninamiru.cz** (apex
+  redirects; gated by `SITE_ACCESS_KEY`), originally `https://school-app-xarolapp.vercel.app`. Supabase
   Auth redirect URLs updated to include the Vercel domain. Cloudflare
   Turnstile widget's allowed-hostnames list updated to include the Vercel
   domain (was localhost-only, silently failed on production until fixed).

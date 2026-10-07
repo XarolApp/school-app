@@ -65,7 +65,7 @@ const makeFaq = (SCHOOL_COUNT) => [
   },
   {
     q: 'Odkud máte data o školách?',
-    a: 'Obory, kapacity a hranice přijetí jsou z veřejných výsledků jednotné přijímací zkoušky (Cermat), další informace o školách z jejich webů. U každého čísla uvádíme rok. Když najdeš chybu, u školy je tlačítko „Nahlásit chybu v údajích“.',
+    a: 'Obory, kapacity a hranice přijetí jsou z veřejných výsledků jednotné přijímací zkoušky (Cermat), názvy a adresy z rejstříku škol MŠMT, další informace z webů škol a dalších veřejných zdrojů. U každého čísla uvádíme rok. Když najdeš chybu, u školy je tlačítko „Nahlásit chybu v údajích“.',
   },
   {
     q: 'Znamená vysoké procento shody, že mě vezmou?',
@@ -338,8 +338,8 @@ function Home() {
           </div>
         </div>
         <p className="ls-source">
-          Zdroje: výsledky jednotné přijímací zkoušky (Cermat) a weby
-          jednotlivých škol. U každého čísla v aplikaci uvádíme rok.
+          Zdroje: výsledky jednotné přijímací zkoušky (Cermat), rejstřík škol MŠMT,
+          weby jednotlivých škol a další veřejné zdroje. U každého čísla v aplikaci uvádíme rok.
         </p>
       </section>
 
@@ -422,7 +422,8 @@ function Home() {
           <span className="ls-wordmark">Střední na míru</span>
           <p className="ls-footer-note">
             Data o oborech a hranicích přijetí přebíráme z výsledků jednotné přijímací
-            zkoušky (Cermat), další údaje z webů škol. U každého čísla uvádíme rok a zdroj.
+            zkoušky (Cermat), názvy a adresy z rejstříku škol MŠMT, další údaje z webů
+            škol a dalších zdrojů. U každého čísla uvádíme rok a zdroj.
           </p>
         </div>
         <nav className="ls-footer-links" aria-label="Patička">

@@ -1,5 +1,11 @@
 # Beta testing operations
 
+> **Status 2026-10-07 (verified live):** all beta tables exist; the configured
+> `ends_at` is a leftover TEST value (2026-10-12 21:10 UTC — set the real date);
+> `beta_schools` holds only `TEST`; the newest SQL (`beta_profile.role_note`) is
+> NOT applied yet — re-run the whole `supabase-setup.sql` first. See
+> `reports/claude-review-2026-10-07/REPORT.md`.
+
 This is the operator runbook for plan 016. The beta program is **closed** while
 `beta_program_settings.ends_at` is `NULL`. Do not distribute working invites
 until a real future cutoff has been supplied and configured.
@@ -70,9 +76,11 @@ server-side to validate a beta invitation before issuing the existing
 be prefixed with `VITE_`.
 
 In Supabase Auth URL configuration, allow the deployed confirmation return path
-`https://<deployed-domain>/beta/*` (and the local development equivalent when
-needed). Beta signup and resend-confirmation links return to that school route,
-so a confirmed tester can finish sign-in on another device.
+`https://www.stredninamiru.cz/email-overen**` (and `http://localhost:5173/email-overen**`
+for development). Since 2026-10-06 (`c460db0`) beta signup and resend-confirmation
+links land on `/email-overen?beta=CODE`, which says "E-mail je ověřený" and offers
+"Pokračovat v tomto okně" back to `/beta/CODE`; the middleware accepts the `beta`
+query on that page, so the link also works on a phone that never saw the invitation.
 
 ## Read tester and feedback data
 
