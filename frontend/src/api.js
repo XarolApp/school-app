@@ -101,7 +101,7 @@ export function submitBetaFeedback({ type, pageUrl, message, ...details }) {
 export async function uploadBetaScreenshot(blob) {
   const signed = await request('/api/beta/feedback/screenshot-url', { method: 'POST', body: JSON.stringify({ mime: blob.type, size: blob.size }) });
   const response = await fetch(signed.url, { method: 'PUT', headers: { 'Content-Type': blob.type }, body: blob });
-  if (!response.ok) throw new Error('Snímek se nepodařilo nahrát. Zkuste to znovu.');
+  if (!response.ok) throw new Error('Snímek se nepodařilo nahrát. Zkus to znovu.');
   return signed.path;
 }
 

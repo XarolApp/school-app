@@ -406,7 +406,7 @@ async function accessStateFor(userId, email) {
     }
     const closing=await closingStateFor(userId);
     if (closing.error) return {hasAccess:false,httpStatus:503,body:{error:'Dotazník nelze ověřit.'},profile};
-    if (closing.closingPaused) return {hasAccess:false,httpStatus:402,body:{error:'Nejprve vyplňte závěrečný dotazník.',code:'BETA_ACCESS_EXPIRED'},profile};
+    if (closing.closingPaused) return {hasAccess:false,httpStatus:402,body:{error:'Nejdřív vyplň závěrečný dotazník.',code:'BETA_ACCESS_EXPIRED'},profile};
     const beta = betaAccessState(profile, settings);
     if (!beta.hasAccess) {
       return {
@@ -521,7 +521,7 @@ app.get('/api/beta/me', requireAuth, requireBetaTester, async (req, res) => {
 });
 app.post('/api/beta/profile', requireAuth, requireBetaTester, async (req, res) => {
   const { role, role_note: rawNote, tracking_notice_accepted: accepted } = req.body || {};
-  if (!['8','9','rodic','ucitel','jine'].includes(role) || accepted !== true) return res.status(400).json({ error: 'Vyberte roli a potvrďte seznámení s testováním.' });
+  if (!['8','9','rodic','ucitel','jine'].includes(role) || accepted !== true) return res.status(400).json({ error: 'Vyber roli a potvrď, že ses seznámil/a s testováním.' });
   const roleNote = role === 'jine' && typeof rawNote === 'string' ? rawNote.trim().slice(0, 80) || null : null;
   const { error } = await supabase.from('beta_profile').update({ role, role_note: roleNote, consent_tracking_at: new Date().toISOString() })
     .eq('user_id', req.user.id).is('consent_tracking_at', null);
@@ -543,7 +543,7 @@ app.post('/api/beta/rankings',requireAuth,requireBetaTester,betaRankingsLimiter,
   if (!ranking || !/^[a-f0-9-]{36}$/.test(capture || '') || req.body?.source!=='onboarding') return res.status(400).json({error:'Pořadí nemá správný formát.'});
   const notice=await supabase.from('beta_profile').select('consent_tracking_at').eq('user_id',req.user.id).single();
   if(notice.error)return res.status(503).json({error:'Testování nelze ověřit.'});
-  if(!notice.data?.consent_tracking_at)return res.status(403).json({error:'Nejprve potvrďte seznámení s testováním.'});
+  if(!notice.data?.consent_tracking_at)return res.status(403).json({error:'Nejdřív potvrď, že ses seznámil/a s testováním.'});
   if(req.body?.ticket){
     const visit=verifyVisitorTicket(BETA_TICKET_SECRET,req.body.ticket,req.body.anon_id);
     if(!visit || visit.code!==req.betaUser.tester_school_code)return res.status(403).json({error:'Pořadí nepatří k této pozvánce.'});
@@ -581,7 +581,7 @@ app.post('/api/beta/events', betaEventsLimiter, async (req, res) => {
     if (profile?.subscription_status !== 'beta') return res.status(403).json({ error: 'Sledování je pouze pro beta testery.' });
     const notice=await supabase.from('beta_profile').select('consent_tracking_at').eq('user_id',user.id).single();
     if (notice.error) return res.status(503).json({error:'Upozornění nelze ověřit.'});
-    if (!notice.data?.consent_tracking_at) return res.status(403).json({error:'Nejprve potvrďte seznámení s beta testováním.'});
+    if (!notice.data?.consent_tracking_at) return res.status(403).json({error:'Nejdřív potvrď, že ses seznámil/a s beta testováním.'});
   } else if (!ticket) return res.status(403).json({ error: 'Chybí beta pozvánka.' });
   const settings = await readBetaSettings();
   if (settings.error) return res.status(503).json({ error: 'Testování nelze ověřit.' });
@@ -635,8 +635,8 @@ const PROFILE_COLUMNS =
 // a manual Stripe-dashboard process — see UNFORGET.md.
 const WITHDRAWAL_DAYS = 30;
 
-// The 14 days run from the later of "contract concluded" and "money taken", so a
-// season pass (charged 3 days after checkout) still gets a full 14 days after the charge.
+// The window runs from the later of "contract concluded" and "money taken", so a
+// season pass (charged 3 days after checkout) still gets the full window after the charge.
 function withdrawalWindowEnd(profile) {
   const times = [profile.plan_started_at, profile.last_paid_at]
     .filter(Boolean)
@@ -901,7 +901,7 @@ app.post('/api/beta/closing', requireAuth, requireBetaTester, betaClosingLimiter
   const profile=await supabase.from('beta_profile').select('role').eq('user_id',req.user.id).single();
   if (profile.error || !profile.data) return res.status(503).json({error:'Testování nelze ověřit.'});
   const payload=closingPayload(req.body,profile.data.role);
-  if (!payload) return res.status(400).json({error:'Zkontrolujte odpovědi a hodnocení.'});
+  if (!payload) return res.status(400).json({error:'Zkontroluj odpovědi a hodnocení.'});
   const {error}=await supabase.rpc('submit_beta_closing',{p_user_id:req.user.id,p_answers:payload.answers,p_review:payload.review});
   if (error) return res.status(error.code==='23505'?409:error.code==='55000'?410:500).json({error:'Dotazník nelze uložit.'});
   res.status(201).json({saved:true});
@@ -913,16 +913,16 @@ app.post('/api/beta/micro', requireAuth, requireBetaTester, betaMicroLimiter, as
     return res.status(400).json({ error: 'Odpověď nemá správný formát.' });
   }
   if (action === 'answer' && ['result','compare','matrix'].includes(id) && !/^[1-5](?:$| · )/.test(answer) ||
-    action === 'answer' && id === 'paywall' && !['ano','spíš ano','ne'].includes(answer)) return res.status(400).json({ error: 'Vyberte odpověď.' });
+    action === 'answer' && id === 'paywall' && !['ano','spíš ano','ne'].includes(answer)) return res.status(400).json({ error: 'Vyber odpověď.' });
   const { data,error } = await supabase.rpc('submit_beta_micro', { p_user_id: req.user.id, p_id: id, p_session: session, p_action: action, p_answer: action === 'answer' ? answer.trim() : null });
   if (error) return res.status(error.code === '23505' ? 409 : error.code === '55000' ? 410 : error.code === '22023' ? 400 : 500).json({ error: 'Otázku teď nelze uložit.' });
   res.json(data);
 });
 app.post('/api/beta/gate', requireAuth, requireBetaTester, betaGateLimiter, async (req,res) => {
   const message = typeof req.body?.message === 'string' ? req.body.message.trim() : '';
-  if (message.length < 20 || message.length > 4000) return res.status(400).json({ error: 'Napište alespoň jednu větu (20 znaků).' });
+  if (message.length < 20 || message.length > 4000) return res.status(400).json({ error: 'Napiš aspoň jednu větu (20 znaků).' });
   const { data,error } = await supabase.rpc('submit_beta_feedback_details', { p_user_id: req.user.id, p_type: 'comment', p_page_url: '/predplatne', p_message: message, p_details: { kind: 'obecne', source: 'gate' } });
-  if (error) return res.status(error.code === '55000' ? 410 : 500).json({ error: 'Odpověď nelze uložit. Zkuste to znovu.' });
+  if (error) return res.status(error.code === '55000' ? 410 : 500).json({ error: 'Odpověď se nepodařilo uložit. Zkus to znovu.' });
   res.status(201).json(data);
 });
 
@@ -1015,11 +1015,16 @@ app.post('/api/me/onboarding-answers', requireAuth, async (req, res) => {
     return res.status(200).json({ saved: false, reason: 'nothing_to_score' });
   }
 
-  const { data: schools, error: schoolsError } = await supabase
-    .from('schools')
-    .select('*, school_extracted_details(*)');
-  if (schoolsError) return res.status(500).json({ error: schoolsError.message });
-  if (!schools?.length) {
+  // Same rows and joins as every other scorer (buildRunResult, POST
+  // /api/questionnaire): merged duplicates excluded, school_programs present so
+  // matching.js classifies school types from Cermat data.
+  let schools;
+  try {
+    schools = await fetchAllSchools('*, school_programs(*), school_extracted_details(*)');
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+  if (!schools.length) {
     return res.status(503).json({ error: 'V databázi zatím nejsou žádné školy.' });
   }
 
@@ -1581,16 +1586,16 @@ app.post('/api/reviews/:id/report', reviewLimiter, optionalAuth, async (req, res
     return res.status(400).json({ error: 'Napiš, proč je recenze nevhodná (10 až 500 znaků), a potvrď, že oznámení podáváš v dobré víře.' });
   }
 
-  // Signed-in reports upsert (one report per person, idempotent). An
-  // anonymous report has no user_id to dedupe on, so it always inserts;
-  // the primary key still rejects an exact (review_id, user_id) repeat for
-  // signed-in users.
+  // One report per signed-in person is enforced by the PARTIAL unique index
+  // review_reports_review_user_key. ON CONFLICT cannot target a partial index
+  // (Postgres 42P10), so this is a plain insert and a repeat (23505) counts as
+  // already reported. An anonymous report has no user_id and always inserts.
   const reportRow = { review_id: id, user_id: req.user?.id ?? null, reason };
-  const { error: reportError } = req.user
-    ? await supabase.from('review_reports').upsert(reportRow, { onConflict: 'review_id,user_id' })
-    : await supabase.from('review_reports').insert(reportRow);
+  const { error: reportError } = await supabase.from('review_reports').insert(reportRow);
 
-  if (reportError) return res.status(500).json({ error: reportError.message });
+  if (reportError && reportError.code !== '23505') {
+    return res.status(500).json({ error: 'Nahlášení se nepodařilo uložit. Zkus to prosím znovu.' });
+  }
 
   const { error: holdError } = await supabase
     .from('school_reviews')
@@ -2942,7 +2947,7 @@ async function withdrawPlanForUser(userId) {
       status: 400,
       body: {
         code: 'NOT_WITHDRAWABLE',
-        error: 'Lhůta 14 dní už uplynula nebo není od čeho odstoupit. Napiš nám prosím e-mailem.',
+        error: 'Lhůta pro odstoupení už uplynula nebo není od čeho odstoupit. Napiš nám prosím e-mailem.',
       },
     };
   }

@@ -81,7 +81,7 @@ function BetaLanding() {
     const next = { ...enrollment, ...patch }; setEnrollment(next); saveBetaEnrollment(code, next);
   };
   const [starting,setStarting]=useState(false),[startError,setStartError]=useState(''),[showErrors,setShowErrors]=useState(false);
-  const continueSignup=async()=>{if(!betaEnrollmentComplete(enrollment)){setShowErrors(true);return;}setStarting(true);setStartError('');try{await startBetaVisit(code,enrollment.role,enrollment.accepted);navigate(`/registrace?beta=${encodeURIComponent(code)}`);}catch{setStartError('Pozvánku se nepodařilo připravit. Zkuste to znovu.');}finally{setStarting(false);}};
+  const continueSignup=async()=>{if(!betaEnrollmentComplete(enrollment)){setShowErrors(true);return;}setStarting(true);setStartError('');try{await startBetaVisit(code,enrollment.role,enrollment.accepted);navigate(`/registrace?beta=${encodeURIComponent(code)}`);}catch{setStartError('Pozvánku se nepodařilo připravit. Zkus to znovu.');}finally{setStarting(false);}};
   const betaQuery = code ? `?beta=${encodeURIComponent(code)}` : '';
 
   return (

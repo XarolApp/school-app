@@ -310,8 +310,33 @@ create table if not exists public.review_reports (
 -- nullable in Postgres, so the PK is replaced with an id + a partial unique
 -- index that only dedupes signed-in reporters (a null user_id never matches
 -- another null, so anonymous reports are never blocked by it).
-alter table public.review_reports drop constraint if exists review_reports_pkey;
+-- Re-runnable: drop the ORIGINAL (review_id, user_id) key only. After the first
+-- run the new id key carries the same default name, so an unconditional drop
+-- would remove it on every re-run and leave the table with no primary key.
+do $$
+begin
+  if exists (
+    select 1 from pg_constraint c
+    join pg_attribute a on a.attrelid = c.conrelid and a.attnum = any (c.conkey)
+    where c.conrelid = 'public.review_reports'::regclass
+      and c.contype = 'p' and a.attname = 'review_id'
+  ) then
+    alter table public.review_reports drop constraint review_reports_pkey;
+  end if;
+end;
+$$;
 alter table public.review_reports add column if not exists id bigint generated always as identity primary key;
+-- Restores the id key on databases where an earlier re-run already dropped it.
+do $$
+begin
+  if not exists (
+    select 1 from pg_constraint
+    where conrelid = 'public.review_reports'::regclass and contype = 'p'
+  ) then
+    alter table public.review_reports add primary key (id);
+  end if;
+end;
+$$;
 alter table public.review_reports alter column user_id drop not null;
 create unique index if not exists review_reports_review_user_key
   on public.review_reports (review_id, user_id) where user_id is not null;

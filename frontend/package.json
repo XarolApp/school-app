@@ -11,8 +11,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@fontsource/lora": "^5.3.0",
-    "@fontsource/public-sans": "^5.3.0",
+    "@fontsource/archivo": "^5.3.0",
+    "@fontsource/archivo-narrow": "^5.3.0",
     "@supabase/supabase-js": "^2.112.3",
     "gsap": "^3.15.0",
     "html2canvas": "^1.4.1",
