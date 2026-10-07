@@ -122,7 +122,7 @@ function ParentPay() {
       ) : error && !link ? (
         <div className="dp-share-notfound">
           <h1 className="ss-headline-md h">Platební odkaz se nepodařilo načíst</h1>
-          <p className="ss-body-md">{error.status ? error.message : 'Připojení se nepodařilo. Zkus to prosím znovu.'}</p>
+          <p className="ss-body-md">{error.status ? error.message : 'Připojení se nepodařilo. Zkuste to prosím znovu.'}</p>
           <button className="ss-btn ss-btn-secondary" type="button" onClick={reload}>Zkusit znovu</button>
         </div>
       ) : paymentReturned && !plan && attempts < 10 ? (
@@ -148,7 +148,7 @@ function ParentPay() {
             {plan.cancel_at_period_end && <p className="ss-caption">Předplatné je zrušené a po skončení zaplaceného období se neobnoví.</p>}
           </div>
           {message && <p className="dp-plan018-pad" role="status">{message}</p>}
-          {error && <p className="dp-plan018-error" role="alert">{error.status ? error.message : 'Připojení se nepodařilo. Zkus to prosím znovu.'}</p>}
+          {error && <p className="dp-plan018-error" role="alert">{error.status ? error.message : 'Připojení se nepodařilo. Zkuste to prosím znovu.'}</p>}
           <div className="dp-plan018-actions">
             {canCancel && (
               <button className="ss-btn ss-btn-secondary" type="button" onClick={() => setDialog('cancel')}>
@@ -172,7 +172,7 @@ function ParentPay() {
               Sezónní přístup nabízí {trialDaysPhrase()} zdarma. Měsíční varianta se platí hned.
             </p>
           </div>
-          {error && <p className="dp-plan018-error" role="alert">{error.status ? error.message : 'Připojení se nepodařilo. Zkus to prosím znovu.'}</p>}
+          {error && <p className="dp-plan018-error" role="alert">{error.status ? error.message : 'Připojení se nepodařilo. Zkuste to prosím znovu.'}</p>}
           <div className="plan-picker">
             {PLANS.map((item) => (
               <label key={item.id} className={'plan-picker-option' + (planId === item.id ? ' is-selected' : '')}>

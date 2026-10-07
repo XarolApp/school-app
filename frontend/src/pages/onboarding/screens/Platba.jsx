@@ -30,15 +30,11 @@ import { Icon, PayCta, PayStepChrome } from './paywallKit';
  * fallback: with no Stripe keys configured, the button is disabled with an
  * honest note instead of crashing.
  *
- * CONSENT (§0.4, ruling C-8's parental-confirmation requirement):
- *  - Nothing is pre-ticked, ever.
- *  - The submit button is disabled until the box is ticked, and says so.
- *  - Student branch: a single age/guardian self-attestation, plus a visible
- *    "sdílet s rodičem" route BESIDE it — an option, not a gate, and no copy
- *    anywhere implies a teenager needs permission to buy (§0.2).
- *  - Parent branch: the buyer IS the adult, so the attestation becomes a
- *    guardianship confirmation and the handoff turns around ("účet je pro vaše
- *    dítě").
+ * CONSENT: there is no checkbox on this screen. The payment self-attestation
+ * was removed by founder decision on 2026-09-22 (commit 9a8f8cc); the age /
+ * guardian confirmation happens once, at account creation (ConsentCheckbox).
+ * The student branch keeps a visible "Platí ti to rodič?" route — an option,
+ * not a gate (§0.2). The parent branch says the account is for their child.
  *
  * Every amount, date, term and cancellation claim comes from
  * config/pricing.js. Nothing about money is hardcoded in this file.
@@ -79,12 +75,14 @@ function Platba() {
   const submit = async () => {
     setError(null);
     if (!accountResolved) {
-      setError('Nejdřív ověřujeme přihlášený účet. Platbu zatím nelze zahájit.');
+      setError(parent
+        ? 'Nejdřív ověřujeme přihlášený účet. Platbu zatím nelze zahájit.'
+        : 'Nejdřív ověřujeme tvůj účet. Platbu zatím nelze zahájit.');
       return;
     }
     if (isTester) {
       if (betaPreview) goToStep('hotovo');
-      else setError('Ukázku otevři z obrazovky pro beta testery.');
+      else setError(parent ? 'Ukázku otevřete z obrazovky pro beta testery.' : 'Ukázku otevři z obrazovky pro beta testery.');
       return;
     }
 
@@ -100,8 +98,8 @@ function Platba() {
       setWorking(false);
       setError(
         err.code === 'STRIPE_NOT_CONFIGURED'
-          ? 'Platby zatím nejsou spuštěné. Zkus to prosím později.'
-          : err.message || 'Platbu se nepodařilo zahájit. Zkus to prosím znovu.'
+          ? (parent ? 'Platby zatím nejsou spuštěné. Zkuste to prosím později.' : 'Platby zatím nejsou spuštěné. Zkus to prosím později.')
+          : err.message || (parent ? 'Platbu se nepodařilo zahájit. Zkuste to prosím znovu.' : 'Platbu se nepodařilo zahájit. Zkus to prosím znovu.')
       );
     }
   };
@@ -150,7 +148,7 @@ function Platba() {
             ? 'Účet se nepodařilo ověřit. Platbu nespustíme, dokud znovu nenačteme jeho stav.'
             : profileResolving || isSignedIn
               ? 'Počkáme na potvrzení účtu, než otevřeme platební bránu.'
-              : 'Před platbou se přihlas ke svému účtu.'}
+              : parent ? 'Před platbou se přihlaste ke svému účtu.' : 'Před platbou se přihlas ke svému účtu.'}
         </p>
         {profileError && (
           <button type="button" className="ob-btn ob-btn-secondary" onClick={refreshProfile}>
@@ -212,7 +210,7 @@ function Platba() {
         <PayStepChrome onBack={() => goToStep(backStep)} role={role} />
 
         <h1 className="ob-title ob-pw-title">
-          {parent ? 'Ještě karta a potvrzení' : 'Ještě karta a potvrzení rodiče'}
+          Zbývá zadat kartu
         </h1>
 
         {/* Mobile: the summary is pinned above everything, because further down
@@ -278,7 +276,7 @@ function Platba() {
                 {working ? 'Přesměrovávám na Stripe…' : 'Objednat s povinností platby'}
               </PayCta>
               <p className="ob-microcopy ob-pw-centered">
-                Objednáním souhlasíš s{' '}
+                {parent ? 'Objednáním souhlasíte s' : 'Objednáním souhlasíš s'}{' '}
                 <a href="/obchodni-podminky" target="_blank" rel="noreferrer">obchodními podmínkami</a>
                 {' '}včetně práva odstoupit do 14 dnů.
               </p>

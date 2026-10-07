@@ -2779,7 +2779,13 @@ async function createCheckoutForUser({ userId, email, planId, successPath, cance
   if (hasLivePlan(profile)) {
     return {
       status: 409,
-      body: { error: 'Už máš aktivní plán. Spravuj ho v Nastavení.', code: 'ALREADY_SUBSCRIBED' },
+      body: {
+        // email === undefined is the parent's payment link (vykání, no Settings).
+        error: email === undefined
+          ? 'Dítě už má aktivní plán. Spravovat ho můžete na této stránce.'
+          : 'Už máš aktivní plán. Spravuj ho v Nastavení.',
+        code: 'ALREADY_SUBSCRIBED',
+      },
     };
   }
 
@@ -2947,7 +2953,7 @@ async function withdrawPlanForUser(userId) {
       status: 400,
       body: {
         code: 'NOT_WITHDRAWABLE',
-        error: 'Lhůta pro odstoupení už uplynula nebo není od čeho odstoupit. Napiš nám prosím e-mailem.',
+        error: 'Lhůta pro odstoupení už uplynula nebo není od čeho odstoupit. Kontakt pro pomoc: info@stredninamiru.cz.',
       },
     };
   }

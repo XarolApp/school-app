@@ -140,7 +140,7 @@ function Zkusebni() {
                   </strong>
                   {!TRIAL_REMINDER_IMPLEMENTED && (
                     <span className="ob-honesty ob-trust-unbuilt">
-                      Tohle zatím <strong>neslibujeme</strong> — e-maily ještě neumíme posílat.
+                      Tohle zatím <strong>neslibujeme</strong> — připomínky e-mailem ještě neposíláme.
                       Dokud to nebude opravdu fungovat, nebudeme to tvrdit.{' '}
                       {parent
                         ? 'Do té doby si datum radši poznamenejte.'
