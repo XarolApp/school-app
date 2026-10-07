@@ -36,3 +36,54 @@ MANUAL = founder must do it in a dashboard/service; PLAN = handed to the fix age
 - F2 P3 PLAN — Landing chips show "0" until the full 758 KB school list loads; useSchoolCount fetches the whole list just to count.
 - F3 Suggestion — masculine-only copy: "abys mohl vybrat sám" (landing), "narazil" (onboarding welcome).
 - F4 Question — onboarding welcome "Veřejné zdroje — Cermat a MŠMT": is MŠMT data used?
+
+## Batch 1 — fixed and pushed (909fcdd)
+- R1 P1 FIXED — Signed-in "Nahlásit" on a review always returned 500: PostgREST upsert onConflict (review_id,user_id) cannot use the PARTIAL unique index (live probe: 42P10). Now insert + treat 23505 as already reported (server.js POST /api/reviews/:id/report). DSA Art. 16 notice-and-action was broken for logged-in users.
+- SQL1 P2 FIXED — supabase-setup.sql dropped `review_reports_pkey` on every re-run (after run 1 it is the id key), leaving no PK. Now conditional + self-healing. VERIFY after applying: `select conname, pg_get_constraintdef(oid) from pg_constraint where conrelid='public.review_reports'::regclass and contype='p';` → one row `PRIMARY KEY (id)`.
+- L1 FIXED — fonts self-hosted (@fontsource/archivo, archivo-narrow 400–700); Google Fonts links removed; unused @fontsource/lora + public-sans removed. Verified in browser: 0 requests to googleapis/gstatic, Czech glyphs OK.
+- L2 FIXED — withdrawal error no longer names 14 days; comment fixed.
+- B1 FIXED — onboarding-answers uses fetchAllSchools with school_programs.
+- B2 FIXED — beta tester messages switched to tykání (server.js, lib/betaLimits.js, api.js, BetaLanding.jsx). Admin-only messages in lib/betaAdminRoutes.js left as vykání (founder-facing).
+- RLS verified live: anon key reads 0 rows from all 26 tables; beta-screenshots bucket private; has_access RPC returns false for anon.
+
+## Batch 2 — paywall + parent pay (905df5a)
+- PW1 FIXED — Platba.jsx title "Ještě karta a potvrzení rodiče" promised a parental confirmation that was removed by founder decision 2026-09-22 (9a8f8cc); header comment described a non-existent checkbox. CLAUDE.md/AGENTS.md still say "Parental confirmation required at payment … Real UI" → docs fix.
+- PW2 FIXED — parent branch in tykání: order microcopy "Objednáním souhlasíš", errors in Platba.jsx/ParentPay.jsx, server 409 "Už máš aktivní plán. Spravuj ho v Nastavení" on the parent pay link, withdraw error "Napiš nám".
+- PW3 FIXED — Zkusebni said "e-maily ještě neumíme posílat" (false since Brevo); now "připomínky e-mailem ještě neposíláme".
+- PW4 P2 DECIDE — Paywall claims "U každé školy vysvětlení / napsané, proč se hodí" (Plan.jsx UNLOCKS, Hodnota.jsx withUs, Zkusebni "vysvětlení u každé"). AI sentences exist only for the top 10 of /dotaznik (REASON_COUNT) and are currently never generated (expired key, S3); beyond top 10 the list shows only name/score. Reword to "u nejlepších deseti" or extend reasons.
+- PW5 info — Admission dates in Cesta.jsx (přihlášky do 22. 2. 2027, konzervatoře 30. 11. 2026) verified against public sources (JPZ 12.–13. 4. 2027). Cesta.jsx is being edited by Codex.
+- PW6 P3 PLAN — Year 2026 hardcoded in ~8 UI strings (Search.jsx 148/1298/1455/1598, SchoolMap.jsx 360, ProductScreens.jsx 223-224, Porovnani.jsx 245/349, Landing.jsx 59) instead of CURRENT_ADMISSION_YEAR (schoolPrograms.js:208). Correct today; breaks silently at the next yearly import.
+- PW7 P2 — Masculine-only copy across the student voice (e.g. Plan.jsx TRUST "jsi viděl", questionnaire "nejsi jistý", "Jak bys to nesl", "Zvládl bych to", Cesta "Nejsi v tom sám", landing "mohl vybrat sám"). Product decision whether to use "viděl/a" or neutral rewrites.
+
+## Batches 3–5 — frontend (6d3fff3, 4979d70, d00cfc9)
+- A1 FIXED P1 — AuthContext onAuthStateChange awaited loadProfile → supabase.auth.getSession(): the deadlock pattern Supabase documents for that callback (hangs on token refresh / tab refocus). Work deferred with setTimeout.
+- A2 FIXED P2 — "/" Suspense fallback was null → blank screen while the 731 KB landing chunk loads.
+- A3 FIXED — Shared beta server messages made voice-neutral (reach students, parents, teachers). BetaLanding start error follows its own role voice switch again.
+- A4 FIXED — CreateAccount parent branch used ty in waiting/error copy.
+- A5 FIXED — Search empty-state agreement ("by odpovídalo 3 školy"), screen-reader "volných míst" (it is total capacity), unused helper.
+- A6 FIXED — Questionnaire share text: "výchozí běh" jargon + garbled "Nic jiného z aplikace s ním nepoužije".
+- A7 FIXED P1 — Reveal disclaimer claimed "Data o … kapacitách ani o výsledcích přijímacích zkoušek zatím nemáme" (false; SocialProof says the opposite). Calculating claimed "výpočet je veřejně popsaný" (no methodology page exists) and "Počítám dojezd" (no commute calculation).
+- A8 FIXED — PickCard "Máš o 5 bodu víc" → bod/body/bodů.
+- A9 FIXED — OSM attribution now links to openstreetmap.org/copyright (ODbL requirement) in SchoolMap + SchoolLocation.
+- A10 FIXED — landing2 hero 100vh without dvh fallback (iOS Safari toolbar covers the CTA).
+
+### Open, frontend (→ HANDOFF-PLAN)
+- F5 P1 DECIDE — What is paid vs free is described inconsistently. Landing2 + Home FAQ/pricing: "Dotazník, základní výsledek a celá databáze škol jsou zdarma. Placený přístup odemyká podrobné porovnání, rozhodovací matici a plánování přihlášek." Reality (App.jsx): /porovnani and /porovnani/matice are public, /dotaznik (full questionnaire) and /prihlaska need trial/paid, favourites need access. SignUp.jsx says the trial unlocks "celou databázi škol" and "Bez potvrzení se do databáze škol nedostaneš" (false, /skoly is public). Settings "Stav tvého přístupu k databázi škol". Decide the gating, then align ALL copy (landing2, Home, SignUp, Settings, paywall UNLOCKS/withUs, SubscriptionExpired BENEFITS).
+- F6 P2 DECIDE — Church schools shown as "Placená škola" (comparisonRows.js skolne) and scored as paid in decisionMatrix.js (skolne, vyse_skolneho), while lib/matching.js (server) treats církevní as free. Most CZ church schools charge no tuition. Pick one rule.
+- F7 P2 QUESTION — "Cermat a MŠMT" / "rejstřík škol MŠMT" claimed as data source (Welcome.jsx, landing2 Landing.jsx 81/92, Home.jsx 68). The school list was scraped from atlasskolstvi.cz; only REDIZO/Cermat are official. Confirm or reword.
+- F8 P3 — /stara (old Home.jsx) is still routed and contains placeholders "[Jméno], zakladatel", "Fotografie", "Portrét". Not linked anywhere; remove the route or fill the placeholders before public launch.
+- F9 P3 — Search.jsx synthesizes a random "Praha N" district for a school without coordinates (synth()); 0 schools affected today, but it is fabricated data that also feeds the district filter. Replace with "Praha (neurčeno)" / null.
+- F10 P3 — ReviewForm never collects role_year although ReviewCard renders "Student · N. ročník".
+- F11 P3 — Circular import steps.js ↔ QuizQuestion.jsx breaks Vite HMR ("Cannot access 'QuizQuestion' before initialization"); dev-only.
+- F12 P3 — Inconsistent polite capitalisation: beta components use "Vám/Vás", BetaLanding "vám/vás".
+- F13 P3 — supabaseClient rememberMeStorage touches localStorage without try/catch (Safari with all site data blocked throws SecurityError → auth unusable).
+- F14 P3 — HistoryChart "61,5 bodů" for decimals; ProgramCard plural of přihlášek (Codex is editing ProgramCard).
+- F15 P3 — Search setPatch tracks 'sortPicked'/'sortDir' as filter_used events (analytics noise).
+
+## Batch 6 — payments + deps (d949478)
+- P4 FIXED P1 — Stripe webhook endpoint runs API 2026-08-26.dahlia (verified with real test events): `subscription.current_period_end` → items[0], `invoice.subscription` → parent.subscription_details. customer.subscription.updated wrote access_expires_at = NULL on every renewal (= paid forever if subscription.deleted is ever missed). Now reads both shapes; regression test added. Remaining: stripe-node is v15 (API 2024-04-10) — plan an SDK upgrade + pin the endpoint version together (PLAN).
+- D1 FIXED — npm audit (prod): proxy-addr critical, axios/firecrawl high, ip-address moderate → 0 after `npm audit fix` (lockfile only). Frontend audit: 0.
+- D2 FIXED — .env.example lacked NODE_ENV (BETA_TICKET_SECRET silently falls back to the service-role key when NODE_ENV≠production), script-only vars, and showed stale example URLs; frontend example now documents SITE_ACCESS_KEY.
+- D3 P3 PLAN — test-google-api.js / test-google-simple.js at repo root are dev leftovers (read GOOGLE_GEMINI_API_KEYS); delete or move to scripts/.
+- D4 P3 PLAN — scripts that write to production with no dry-run flag: backfill-redizo.js, geocode-schools.js, reset-test-account.js (all one-off; add --dry-run or a confirmation prompt before reuse).
+- No committed secrets (git grep for live/test keys, JWTs, sb_secret, sk-or, fc-, AIza).
