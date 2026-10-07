@@ -228,8 +228,11 @@ remains a full second surface (see "Platform Strategy"). It:
   are covered by Terms §7 (full refund within 30 days, the withdrawal button in
   Settings works for 30 days). The parent branch pays through a payment link.
 - **3-day free trial on the season pass only** (card saved, one charge after 3 days);
-  the monthly plan has no trial and charges at checkout. Every new account also gets
-  a 3-day signup trial from the database trigger. A day-2 reminder email is **mandatory**
+  the monthly plan has no trial and charges at checkout. The separate ordinary-account
+  access trial currently starts at signup in the database trigger. **Founder decision
+  2026-10-07: start that three-day window at first confirmed sign-in instead; not yet
+  implemented. Beta is free for feedback, with payment screens only as a preview.**
+  A day-2 reminder email is **mandatory**
   before real billing goes live — see agent ruling C-1 (not built; the paywall says so). Research flags 3-day trials as
   carrying the highest Day-0/Day-1 rushed-cancellation risk of any trial length; kept
   as-is per the user's explicit choice, watch conversion data rather than silently
@@ -372,9 +375,12 @@ back). See that script's header comment for the full pipeline, and
 `scripts/backfill-redizo.js` for the one-off manual-REDIZO pattern used on the
 handful of schools the fuzzy matcher couldn't place on its own.
 
-**Trial length is set by a database trigger, not by the signup form** — 3 days, matching
-`frontend/src/config/pricing.js`. If that number ever changes it must change in both
-places, or the paywall promises a window the database does not grant.
+**Ordinary-account access trial: current code starts three days at signup in the
+database trigger.** The founder decided on 2026-10-07 that it must instead start
+at the first confirmed sign-in; implementation/migration is pending in the deployment
+handoff. This is separate from the seasonal purchase trial, whose length is configured
+in frontend pricing and the server payment flow. Beta has no paid/free purchase trial:
+it is free access in exchange for feedback, and its paywall is a preview only.
 
 `subscription_status` accepts `trialing / active / season / past_due / canceled /
 expired / developer / beta`. `'beta'` is exclusive time-boxed access: email must be

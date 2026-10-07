@@ -3,12 +3,20 @@
 > **Status 2026-10-07 (verified live):** all beta tables exist; the configured
 > `ends_at` is a leftover TEST value (2026-10-12 21:10 UTC — set the real date);
 > `beta_schools` holds only `TEST`; the newest SQL (`beta_profile.role_note`) is
-> NOT applied yet — re-run the whole `supabase-setup.sql` first. See
-> `reports/claude-review-2026-10-07/REPORT.md`.
+> NOT applied yet. Test a fresh installation and reruns in a disposable database,
+> then prepare/apply only the reviewed missing migration on the existing project.
+> Do not blindly rerun the whole schema on production. See the
+> [current deployment handoff](../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md).
 
 This is the operator runbook for plan 016. The beta program is **closed** while
 `beta_program_settings.ends_at` is `NULL`. Do not distribute working invites
 until a real future cutoff has been supplied and configured.
+
+Beta is **free in exchange for feedback** (founder confirmed 2026-10-07). The
+rolling tester window/cutoff is independent of ordinary-account or season payment
+trials. Paywall screens are an optional feedback preview; beta must never open
+Stripe, require payment, start a purchase trial or renew access merely by viewing
+that preview.
 
 ## Apply the database migration
 
@@ -16,10 +24,14 @@ On a fresh database, run the complete [`supabase-setup.sql`](../supabase-setup.s
 after the Supabase `auth` schema is available.
 
 On an existing installation, the base tables and Stripe columns must already
-exist. In `supabase-setup.sql`, copy and run only the section between
-`BEGIN BETA TESTING MIGRATION BLOCK` and `END BETA TESTING MIGRATION BLOCK` in
-the Supabase SQL editor. The block is idempotent and leaves a configured cutoff
-unchanged. It creates the school/settings/feedback tables, adds tester profile
+exist. The delimited `BEGIN BETA TESTING MIGRATION BLOCK` /
+`END BETA TESTING MIGRATION BLOCK` describes the original beta access/feedback
+migration; later schema sections add analytics, profile, screenshot, closing and
+ranking features. Applying that block alone does not install the latest beta.
+Inspect the full current schema, verify a fresh installation and repeat runs in a
+disposable database, and prepare an explicit incremental migration for the existing
+project. The original block is intended to leave a configured cutoff unchanged.
+It creates the school/settings/feedback tables, adds tester profile
 fields, replaces the signup trigger and access function, installs the atomic
 feedback renewal function, and enables RLS on the new tables without adding
 browser policies.
@@ -107,16 +119,18 @@ where school_code = 'GYMJECNA'
 order by created_at desc;
 ```
 
-Account deletion cascades feedback. New submissions are written only by
-`submit_beta_feedback`; school attribution and the new deadline come from the
-locked server-side profile/settings rows, never from request fields.
+Account deletion cascades feedback. Feedback is written through service-only
+server/RPC paths, including `submit_beta_feedback` and
+`submit_beta_feedback_details`; school attribution and renewal deadlines are
+derived from server-side profile/settings rows, never trusted request fields.
 
 ## Disposable-database verification
 
 Do this only against a disposable Supabase/Postgres database with a confirmed
-synthetic beta user. Never add test triggers to production. Run the beta block
-twice and confirm it succeeds both times and preserves the synthetic user's
-`tester_access_until` on the second run. Confirm RLS and function grants:
+synthetic beta user. Never add test triggers to production. Run the full current
+schema on a fresh disposable installation and at least twice more; confirm it
+succeeds each time and preserves the synthetic user's `tester_access_until` on
+subsequent runs. Confirm RLS and function grants:
 
 ```sql
 select c.relname, c.relrowsecurity
@@ -137,9 +151,13 @@ where schemaname = 'public'
   and tablename in ('beta_schools', 'beta_program_settings', 'beta_feedback');
 ```
 
-The three tables should have RLS enabled, no browser policies, and no execute
-grant for `anon` or `authenticated`; `service_role` must be able to execute the
-function.
+These three base beta tables should have RLS enabled and no browser policies.
+The function must have no `EXECUTE` grant for `anon` or `authenticated`, while
+`service_role` can execute it. These example queries cover only the original
+access/feedback block. Also inspect every later beta table, service-only RPC and
+private Storage policy, verify the latest profile columns, and exercise isolation
+with anonymous/account-A/account-B requests. Anonymous zero-row probes alone do
+not prove this.
 
 To prove both sides of transaction rollback, record the synthetic tester's
 deadline and feedback count, then separately install a disposable trigger that

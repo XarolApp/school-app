@@ -8,7 +8,11 @@ Owner: founder/controller plus implementing agent. First write an access matrix 
 
 Record whether the immediate release is strictly no-charge invited beta. Verify the deployed environment does not activate real-money paths for uninvited normal accounts. Do not change plan prices, trial duration, season duration or parental-checkpoint policy as an incidental bug fix.
 
+Founder clarification, 7 October: beta access is free for feedback; payment screens are a preview only and must not create a purchase trial, open Stripe or require payment to continue testing. Ordinary accounts' three-day access trial must start at the **first confirmed sign-in**, not the signup trigger's current timestamp. Implement that change separately from the seasonal deferred-payment trial. Add a once-only server/database transition with confirmation checks and concurrency protection; define migration of existing ordinary accounts explicitly, preserving paid/beta/developer entitlements and preventing sign-in/refresh/reconfirmation from restarting access. Do not run a broad live trial reset.
+
 Acceptance: documented route/API matrix and real HTTP tests for each access state; school detail still opens from a landing dot; expired accounts can manage/cancel/withdraw/delete; public links reveal only their approved projection; beta never enters Stripe.
+
+Trial acceptance: confirmation delayed several days still grants the full normal window on first confirmed sign-in; merely signing up/confirming without sign-in does not consume it; simultaneous first requests initialize one window; repeated sessions/password recovery do not extend it; beta preview does not change billing or tester deadlines. Update schema, access checks, frontend state and active documentation together. Existing mocked tests cover beta checkout rejection and stale webhook/scheduler exclusion, but do not prove deployed SQL or the full UI journey.
 
 ## 1. Repair and verify the beta schema
 
@@ -53,6 +57,8 @@ Exercise signup → confirmation on a second device → profile → quiz → sav
 Acceptance: recorded desktop Chromium plus real iOS Safari and Android/browser journeys at supported sizes; no overflow/hidden CTA or lost choices; external email arrives with correct origin/destination; private data remains masked and inaccessible across accounts. Emulating a mobile viewport does not establish real-device compatibility. Save manual failures to the final report rather than checking them off from source inspection.
 
 Correct and test mixed admission-year labels in comparison (C03), and explain schools absent from the map because coordinates are missing (C05). Use current/older/missing programme fixtures together; every displayed capacity/rate/ratio must retain its source year. Do not imply that missing records prove a school had no admissions or no newer data.
+
+Repair landing readability before beta (C09): the whole-hero scale reduces landscape body text to about 6.5px and the primary button to 25px height. Use a normal-sized layout that can scroll in small/short windows; test 320px, landscape, zoom/text enlargement and dynamic browser chrome. Preserve keyboard/non-WebGL access to the public school-detail exception (C10). Keep the compact-header and inactive-demo polish (C08/C11) separate from these beta gates.
 
 ## 6. Redesign the payment lifecycle before real billing
 

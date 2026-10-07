@@ -2,6 +2,8 @@
 
 > **Verified update — 7 October 2026, Codex review ongoing:** the founder clarified that valid trial, paid or beta access is required for premium catalogue/search and decision tools. Landing/onboarding remain public, **including school details opened from a landing-map dot**. Preserve functional auth/legal/account management and approved scoped share/payment journeys. The current app does not fully enforce this matrix; implementation belongs in the deployment handoff.
 >
+> **Founder clarification, 7 October:** ordinary accounts’ three-day access trial must start at first confirmed sign-in (current signup-trigger behavior is still awaiting implementation). Beta is free in exchange for feedback; its payment screens are previews only, without Stripe or a purchase trial.
+>
 > Full file-by-file deployment review is **not finished**. Codex is continuing solo; fixes in `14cce20` are on main. Root tests pass 127/127 and lint/build pass. Live read-only checks confirm 223 raw /217 visible schools, 26 tables, 48-hour beta access and cutoff 12 October at 23:10 Europe/Prague, but `beta_profile.role_note` is missing. Table presence/anonymous zero rows do not verify migration/RLS/grants. Test a disposable fresh-install/rerun before a reviewed live schema update. Real billing remains blocked by payment lifecycle, communication and legal/operator gates. See [current report](../reports/deployment-review-2026-10-07/REPORT.md) and [ordered handoff](../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md); earlier logs below retain their dated evidence and are not current release approval.
 
 ## Purpose

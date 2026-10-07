@@ -9,7 +9,7 @@ The founder authorized concurrent Codex and Claude Code reviews. Codex checks wo
 
 ## Active source edit claims
 
-Code claims released: commits `14cce20` and `f098f6c` are included in `origin/main` (verified). Current Codex edits are documentation/reporting only:
+Code claims released: commits `14cce20`, `f098f6c`, `e335d50` and `bd8629d` are included in `origin/main` (verified). Current Codex edits are documentation/reporting only:
 
 - plans/009-stripe-payments.md
 - plans/019-beta-feedback-and-analytics.md
@@ -24,7 +24,13 @@ Code claims released: commits `14cce20` and `f098f6c` are included in `origin/ma
 - reports/claude-review-2026-10-07/REPORT.md
 - reports/claude-review-2026-10-07/HANDOFF-PLAN.md
 
+Base theme fix released in pushed commit `bd8629d`.
+
 All other source review is read-only. Add peer exact-path claims below if edits resume.
+
+Unexpected shared-checkout edits are now observed in auth, beta components/styles, questionnaire/matching, admin and `supabase-setup.sql`; exact paths/hashes are in `peer-edits-observed.json`. Codex is deferring these files until stable and will re-review the finished diffs. A previous “finished” claim does not describe these new edits. Codex is not staging or reverting them.
+
+Other source claims from the landing/copy checkpoint are released.
 
 ## Verification safeguards
 

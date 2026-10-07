@@ -33,6 +33,14 @@ Founder-only items before testers (details and SQL in the report):
 
 Decision: only the landing page and the onboarding (with its result preview and its map) are free. The founder clarified in Codex that school details opened from landing-map dots remain public. Premium tools — `/skoly`, `/porovnani`, the matrix, `/dotaznik`, `/prihlaska`, favourites — need valid trial, paid or beta access. Auth/legal pages, account management and scoped share/parent links must retain the access needed for their function. Today `/skoly`, `/skoly/:id`, `/porovnani`, `/porovnani/matice` are public and `GET /api/schools*` is ungated (onboarding needs it — gate per route/shape, not wholesale). All copy that says "databáze škol zdarma" (landing2 FAQ + pricing, Home.jsx, SignUp.jsx, Settings, paywall UNLOCKS) must change in the same release.
 
+## Normal trial clock and beta preview — founder decision 2026-10-07
+- **Found:** 2026-10-07, founder clarification during the deployment review.
+- **Urgency:** normal-account access change before public launch; beta separation is a beta acceptance gate.
+- **Risk of NOT fixing:** delayed confirmation consumes the ordinary trial; confusing trial types could charge or block a feedback-only tester.
+- **Effort:** medium; schema/access-state migration with concurrency and existing-account policy, not a wording patch.
+
+Start the ordinary three-day access trial at the first confirmed sign-in. Current code starts it at signup. Implement once-only atomic initialization and define treatment of existing accounts; do not reset trials on refresh/reconfirmation or modify paid/beta/developer access. Beta stays free in exchange for feedback, and payment screens are only an optional feedback preview: no Stripe, monetary paywall or purchase trial. See section 0 of the [Codex handoff](reports/deployment-review-2026-10-07/HANDOFF-PLAN.md).
+
 ## Codex deployment review — continuing solo, 2026-10-07
 - **Found:** 2026-10-07, source review plus read-only Supabase/Stripe/OpenRouter checks.
 - **Urgency:** beta gates and separate real-money blockers; full line-by-line coverage remains unfinished.
@@ -45,6 +53,8 @@ Fix commit `14cce20` is pushed: optional quiz score validation/keyboard behavior
 Read-only confirmation: 217 visible schools from 223 raw rows; all 26 tables present but `beta_profile.role_note` missing; beta cutoff 12 October 2026 at 23:10 Prague; anonymous zero-row smoke tests and private screenshot bucket passed; configured OpenRouter key rejected (401); Stripe remains test mode. These do not prove authenticated isolation or mail delivery. Backend B01–03/B06–08 and payment P01–08 remain, subject to current-source revalidation. LEGAL-06's initial 14-day implementation claim was retracted: code actually grants 30 days, so the extended promise needs clarification rather than a presumed statutory-breach fix.
 
 New beta integration gate: `SchoolMap.jsx` invites a home address and directly calls public Nominatim. The provider limits aggregate application traffic to 1 request/second and prohibits submitting personal data. Choose an approved provider/input policy before a classroom cohort; legal text already names OSMF, so the issue is operational/privacy suitability, not a missing recipient name. Additional current findings and acceptance tests are in `reports/deployment-review-2026-10-07/continuation-findings.md` and the handoff (account-scoped search state, mixed-year comparison, feedback draft context and missing map pins).
+
+New browser beta gate: the landing hero scales the whole UI to fit. At 667×375, its paragraph renders at about 6.5px and its CTA is 25px high. Use a readable scrolling layout, then verify short/landscape windows and zoom (C09). Provide keyboard/non-WebGL access to public map-dot school details (C10). The normal trial clock decision is logged above. Concurrent auth/beta/matching/schema edits are being deferred and must be re-reviewed; earlier coverage/build evidence is not final validation of those new versions.
 
 ## Church schools: tuition shown as unknown — review the extracted data
 - **Found:** 2026-10-07 review; founder decision the same day

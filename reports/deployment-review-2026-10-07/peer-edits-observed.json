@@ -1,0 +1,136 @@
+{
+  "observed_at_utc": "2026-10-07T18:55:41.625015+00:00",
+  "basis": "Unexpected source writes in shared checkout after prior clean status. No attribution of author or claim of edit completion. Defer until stable, then re-read changes.",
+  "files": [
+    {
+      "path": "frontend/src/auth.css",
+      "sha256": "4b43a2740a3d12843cded6961767788a708a68ecf55639c71109dd6d9d46ab9d",
+      "mtime_ns": 1791399142362935074
+    },
+    {
+      "path": "frontend/src/components/AuthContext.jsx",
+      "sha256": "26a511164ba227bcbe2150d7b31ef3181ce19fa9b2bb3b6652a5a7e04ad8ef95",
+      "mtime_ns": 1791399046468355797
+    },
+    {
+      "path": "frontend/src/components/BetaEnrollment.jsx",
+      "sha256": "25e616fd916ed8ff62ee98a1e85d6b5360d25eb7fc41bb31eebcd458d626f962",
+      "mtime_ns": 1791399084155640697
+    },
+    {
+      "path": "frontend/src/components/BetaFeedbackSheet.jsx",
+      "sha256": "957a103a0da4d40fc288f9e11792ddd94af7b7e844362ef22d4f9e301737f18a",
+      "mtime_ns": 1791399294776809222
+    },
+    {
+      "path": "frontend/src/components/BetaInstructions.jsx",
+      "sha256": "be95596fd6ecf0942fad234fbca1a7f7b59c5e99d3a7c75ff4c25ca9e35542d3",
+      "mtime_ns": 1791399322169420677
+    },
+    {
+      "path": "frontend/src/components/BetaTools.jsx",
+      "sha256": "1482befcb8946aa5f98a2e2a51f6f39f0e185c25f546f1e6248625fa5580c5c7",
+      "mtime_ns": 1791399219511243446
+    },
+    {
+      "path": "frontend/src/pages/Admin.jsx",
+      "sha256": "8b493056439fae94e952d8258d489acb057e6599d0ba2246d5130b5329741933",
+      "mtime_ns": 1791399305820161880
+    },
+    {
+      "path": "frontend/src/pages/EmailConfirmed.jsx",
+      "sha256": "9cc5c71c45e23e07b8b2e23a0d20d9dc2f7f2d71d76492b32d2aeaaa2ccdcb14",
+      "mtime_ns": 1791399046468977926
+    },
+    {
+      "path": "frontend/src/pages/ForgotPassword.jsx",
+      "sha256": "5d24825b3b0af87b02c2c9107993d59d38b4678bd7865fcb09d98a9d1632de50",
+      "mtime_ns": 1791399137353618348
+    },
+    {
+      "path": "frontend/src/pages/Login.jsx",
+      "sha256": "adb8e904109dc1fa40aec4777879118231cdd4ebf19491b46881feb8375b5007",
+      "mtime_ns": 1791399122861992270
+    },
+    {
+      "path": "frontend/src/pages/Questionnaire.jsx",
+      "sha256": "3fd3eb8fe385e6f612c82f214ea72cb2427844371764e9451127624d698725cf",
+      "mtime_ns": 1791399219510086063
+    },
+    {
+      "path": "frontend/src/pages/ResetPassword.jsx",
+      "sha256": "0f25df1415891b339fdd59d38cce25f0f4f0865be2e1cd36276130100ce9e01e",
+      "mtime_ns": 1791399137354018558
+    },
+    {
+      "path": "frontend/src/pages/SignUp.jsx",
+      "sha256": "ea927dbc803dba97dfcd8f1ec4c53ece8f432c677acbbdaf087e9beed47fd42a",
+      "mtime_ns": 1791399097483770943
+    },
+    {
+      "path": "frontend/src/pages/beta.css",
+      "sha256": "58f58e9860903e919ffd8934e2dc6acd782d1e0a0304c960dd6fb37755b8edeb",
+      "mtime_ns": 1791399332417468119
+    },
+    {
+      "path": "frontend/src/pages/onboarding/screens/CreateAccount.jsx",
+      "sha256": "2fa15209c5f3950dace32f5553945580266f3d4db825bab53d4d31f008f9e7e9",
+      "mtime_ns": 1791399112561067003
+    },
+    {
+      "path": "lib/betaAdmin.js",
+      "sha256": "3177baedbada00ed19efede6860e00a35fbe5b81eeebf44b13f25e3ba3194f18",
+      "mtime_ns": 1791399305819205373
+    },
+    {
+      "path": "lib/betaAnalytics.js",
+      "sha256": "7698ee3c9a1cc6be1bb5fd5c8c96334550940bcb2c9150bc53a14cd06ab98fdf",
+      "mtime_ns": 1791399305818653078
+    },
+    {
+      "path": "lib/matching.js",
+      "sha256": "148d0f1fefd0977053fe9d7dbe8d48166c3294a501ca09f2702192591b0e1e20",
+      "mtime_ns": 1791399198052045805
+    },
+    {
+      "path": "lib/questionnaire.js",
+      "sha256": "292afefff66edb23a1b68a298269003adcabac89e6c22936eb84dbcd6e7624d6",
+      "mtime_ns": 1791399193321431828
+    },
+    {
+      "path": "supabase-setup.sql",
+      "sha256": "3f8479f402eb2f21146a1c22b0cb039c0b04b2d4530864138ffa789b4a6e8c68",
+      "mtime_ns": 1791399305819816419
+    },
+    {
+      "path": "tests/questionnaire.test.cjs",
+      "sha256": "76dc70f6ae0bf27861b1873b247e973a0623c46b6e1c8dfc1b5db775f55e0d02",
+      "mtime_ns": 1791399193322356084
+    },
+    {
+      "path": "frontend/src/components/BetaRegionPicker.jsx",
+      "sha256": "69e9abe9f6bb815a6cc46a8ef7ecbf976e6e10311ee425c3d821ba7524490972",
+      "mtime_ns": 1791399262436063755
+    },
+    {
+      "path": "frontend/src/components/ConfirmEmailWaiting.jsx",
+      "sha256": "3b5600ac56df8f220965349d9029ce3d69da3124a4303690beec52044d427497",
+      "mtime_ns": 1791399097483421357
+    },
+    {
+      "path": "frontend/src/lib/authValidation.js",
+      "sha256": "954834928a4fe0d8d9a5cb50643d9c61b6df18823aa346069b97e351b33b857a",
+      "mtime_ns": 1791399011769371731
+    },
+    {
+      "path": "frontend/src/lib/pendingConfirmation.js",
+      "sha256": "9ff89d302489cc18a4baeedb2e39f7f20c94439f6e18669478565edb21546692",
+      "mtime_ns": 1791399097483635650
+    },
+    {
+      "path": "frontend/src/lib/useDraft.js",
+      "sha256": "ed41d3a2213bcdb459b04ecaa6de53c305d06dc7a47ac2d541ca2ff5d0e0496a",
+      "mtime_ns": 1791399157711039413
+    }
+  ]
+}

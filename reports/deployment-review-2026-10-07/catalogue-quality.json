@@ -1,0 +1,19 @@
+{
+  "checkedAt": "2026-10-07T18:42:13.571Z",
+  "configuredAdmissionYear": 2026,
+  "visibleSchools": 217,
+  "schoolsMissingCoordinates": 0,
+  "schoolsWithoutAdmissionSummary": 0,
+  "schoolsWithOlderAdmissionSummary": 4,
+  "programmeYears": [
+    2024,
+    2025,
+    2026
+  ],
+  "activeProgrammeCards": 650,
+  "cardsWithNoCutoffYear": 248,
+  "cardsWithOneCutoffYear": 27,
+  "cardsWithTwoCutoffYears": 39,
+  "cardsWithAtLeastThreeCutoffYears": 336,
+  "limitation": "Catalogue data only; this does not establish completeness against the official register, source accuracy or school-site freshness."
+}
