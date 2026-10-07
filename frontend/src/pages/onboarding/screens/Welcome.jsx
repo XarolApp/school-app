@@ -26,7 +26,7 @@ import { QUIZ_MINUTES } from '../../../config/facts';
  */
 const TRUST = [
   { Icon: Database, title: 'Všechny pražské střední školy', body: 'Gymnázia, odborné i učební obory' },
-  { Icon: ShieldCheck, title: 'Veřejné zdroje', body: 'Cermat a MŠMT, u každého čísla rok' },
+  { Icon: ShieldCheck, title: 'Veřejné zdroje', body: 'Cermat a weby škol, u každého čísla rok' },
   { Icon: Calculator, title: 'Žádné skóre o tobě', body: 'Hodnotíme shodu se školou, ne tebe' },
 ];
 

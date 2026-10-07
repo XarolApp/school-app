@@ -135,7 +135,11 @@ export function buildComparisonRows(schools) {
         values: schools.map((s) => {
           const zrizovatel = (latestProgramValue(s, 'zrizovatel') || '').toLowerCase();
           if (!zrizovatel) return { text: '—', isBest: false };
-          const isPublic = !zrizovatel.includes('soukrom') && !zrizovatel.includes('církev');
+          // Church schools: tuition varies and is mostly zero — founder decision
+          // 2026-10-07 is a neutral label until the extracted data is reviewed
+          // (UNFORGET "Church schools: tuition").
+          if (zrizovatel.includes('církev')) return { text: 'Zjistit u školy', isBest: false };
+          const isPublic = !zrizovatel.includes('soukrom');
           return { text: isPublic ? 'Bez školného' : 'Placená škola', isBest: false };
         }),
       },

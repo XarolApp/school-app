@@ -66,7 +66,7 @@ export const CRITERIA = [
     id: 'skolne',
     label: 'Bez školného',
     available: true,
-    tooltip: 'Jestli je škola veřejná (bez školného) nebo soukromá/církevní.',
+    tooltip: 'Jestli je škola veřejná (bez školného) nebo soukromá. U církevních škol školné ověřujeme, proto je zatím nehodnotíme.',
   },
   {
     id: 'vyse_skolneho',
@@ -146,8 +146,9 @@ function rawForCriterion(id, schools) {
       return schools.map((s) => {
         const zrizovatel = (latestProgramValue(s, 'zrizovatel') || '').toLowerCase();
         if (!zrizovatel) return null;
-        const isPrivate = zrizovatel.includes('soukrom') || zrizovatel.includes('církev');
-        return isPrivate ? 0 : 1;
+        // Church schools are unknown, not paid (see comparisonRows.js skolne).
+        if (zrizovatel.includes('církev')) return null;
+        return zrizovatel.includes('soukrom') ? 0 : 1;
       });
     }
     case 'vyse_skolneho': {

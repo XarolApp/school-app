@@ -78,7 +78,7 @@ const ROLES = {
   parent: {
     title: 'Mějte přehled, ne další starost',
     points: [
-      ['Data ze stejných zdrojů jako školy', 'Hranice přijetí, kapacity a přihlášky z výsledků Cermatu a rejstříku MŠMT.'],
+      ['Data ze stejných zdrojů jako školy', 'Hranice přijetí, kapacity a přihlášky z výsledků Cermatu, další údaje z webů škol.'],
       ['V klidu na vlastním počítači', 'Výsledek vašeho dítěte si otevřete odkazem a projdete, kdy se vám to hodí.'],
       ['Nikdo si nekoupí lepší pořadí', 'Pořadí počítá pevný vzorec z odpovědí a veřejných dat.'],
     ],
@@ -89,7 +89,7 @@ const ROLES = {
 const makeFaq = (SCHOOL_COUNT) => [
   ['Co je Střední na míru?', 'Průvodce výběrem střední školy v Praze. Všechny školy s obory a výsledky přijímaček na jednom místě a dotazník, který z nich vybere ty, které sedí tomu, co hledáš.'],
   ['Kolik to stojí?', `Dotazník, základní výsledek a celá databáze škol jsou zdarma. Placený přístup odemyká podrobné porovnání, rozhodovací matici a plánování přihlášek. Prvních ${trialDaysPhrase()} je zdarma a zrušit se to dá jedním kliknutím v nastavení.`],
-  ['Odkud máte data o školách?', 'Obory, kapacity a hranice přijetí jsou z veřejných výsledků jednotné přijímací zkoušky (Cermat) a z rejstříku škol MŠMT. U každého čísla uvádíme rok.'],
+  ['Odkud máte data o školách?', 'Obory, kapacity a hranice přijetí jsou z veřejných výsledků jednotné přijímací zkoušky (Cermat), další informace o školách z jejich webů. U každého čísla uvádíme rok.'],
   ['Znamená vysoké procento shody, že mě vezmou?', 'Ne. Shoda říká, jak škola odpovídá tomu, co jsi napsal. O přijetí rozhodují přijímačky a známky, proto u škol zvlášť ukazujeme hranice přijetí.'],
   ['Platí mi školy za lepší umístění?', 'Ne. Pořadí počítá pevný vzorec z tvých odpovědí a z veřejných dat. Nikdo si v něm nemůže koupit místo.'],
   ['Co se děje s mými odpověďmi?', 'Během dotazníku zůstávají jen v tvém prohlížeči. Uložíme je, až si založíš účet, a smazat je můžeš kdykoli i s celým účtem.'],
@@ -953,7 +953,7 @@ export default function Landing() {
           </div>
         </div>
         <p className="l2-source" data-rise>
-          Zdroje: výsledky jednotné přijímací zkoušky (Cermat), rejstřík škol a školských zařízení (MŠMT).
+          Zdroje: výsledky jednotné přijímací zkoušky (Cermat) a weby jednotlivých škol.
           U každého čísla v aplikaci uvádíme rok.
         </p>
       </section>
