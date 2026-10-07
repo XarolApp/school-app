@@ -65,7 +65,7 @@ function App() {
               <Route element={<Layout />}>
                 <Route path="/admin" element={<Suspense fallback={<p role="status">Načítání přehledů…</p>}><Admin /></Suspense>} />
                 {/* Variant B (3D map) is the default landing; the old one stays at /stara for comparison. */}
-                <Route path="/" element={<Suspense fallback={null}><Landing /></Suspense>} />
+                <Route path="/" element={<Suspense fallback={<div className="route-loading" role="status">Načítám…</div>}><Landing /></Suspense>} />
                 <Route path="/nova" element={<Navigate to="/" replace />} />
                 <Route path="/stara" element={<Home />} />
                 <Route path="/skoly" element={<Search />} />

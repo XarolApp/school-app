@@ -73,8 +73,8 @@ function CreateAccount() {
         <h1 className="ob-title">Ověřujeme účet</h1>
         <p className="ob-hint">
           {profileError
-            ? 'Účet se nepodařilo ověřit. Před pokračováním načti profil znovu.'
-            : 'Chvilku prosím počkej, než ověříme účet.'}
+            ? (parent ? 'Účet se nepodařilo ověřit. Před pokračováním načtěte profil znovu.' : 'Účet se nepodařilo ověřit. Před pokračováním načti profil znovu.')
+            : (parent ? 'Chvilku prosím počkejte, než ověříme účet.' : 'Chvilku prosím počkej, než ověříme účet.')}
         </p>
         {profileError && (
           <button type="button" className="ob-btn ob-btn-secondary" onClick={refreshProfile}>
@@ -166,16 +166,18 @@ function CreateAccount() {
   if (awaitingConfirmation) {
     return (
       <ObScreen onBack={() => setAwaitingConfirmation(false)} phase={phase}>
-        <h1 className="ob-title">Potvrď svůj e-mail</h1>
+        <h1 className="ob-title">{parent ? 'Potvrďte svůj e-mail' : 'Potvrď svůj e-mail'}</h1>
         <div className="notice">
           <span className="notice-title">Odkaz jsme poslali na {email}</span>
           <p className="notice-text">
-            Klikni na něj a potom se přihlas. Vrátíme tě rovnou k výběru plánu;
-            bez potvrzeného účtu platbu nespustíme.
+            {parent
+              ? 'Klikněte na něj a potom se přihlaste. Vrátíme vás rovnou k výběru plánu; bez potvrzeného účtu platbu nespustíme.'
+              : 'Klikni na něj a potom se přihlas. Vrátíme tě rovnou k výběru plánu; bez potvrzeného účtu platbu nespustíme.'}
           </p>
           <p className="notice-text">
-            Když zprávu nevidíš, zkontroluj spam. Nový odkaz můžeš poslat z
-            přihlašovací stránky.
+            {parent
+              ? 'Když zprávu nevidíte, zkontrolujte spam. Nový odkaz můžete poslat z přihlašovací stránky.'
+              : 'Když zprávu nevidíš, zkontroluj spam. Nový odkaz můžeš poslat z přihlašovací stránky.'}
           </p>
         </div>
         <Link to="/prihlaseni?next=/onboarding/plan" className="ob-btn ob-btn-secondary">

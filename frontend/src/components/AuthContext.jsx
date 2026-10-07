@@ -165,7 +165,7 @@ export function AuthProvider({ children }) {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, nextSession) => {
+    } = supabase.auth.onAuthStateChange((event, nextSession) => {
       if (cancelled) return;
       if (event === 'PASSWORD_RECOVERY') {
         rememberPasswordRecovery(true);
@@ -175,8 +175,14 @@ export function AuthProvider({ children }) {
         setIsPasswordRecovery(false);
       }
       setSession(nextSession);
-      await loadProfile(nextSession);
-      flushOnboardingStash(nextSession);
+      // Deferred on purpose: this callback runs inside supabase-js's auth lock,
+      // and loadProfile -> api.js calls supabase.auth.getSession(), which waits
+      // for that same lock. Awaiting it here is the deadlock Supabase documents
+      // for onAuthStateChange (hangs on token refresh / tab refocus).
+      setTimeout(() => {
+        if (cancelled) return;
+        void loadProfile(nextSession).then(() => flushOnboardingStash(nextSession));
+      }, 0);
     });
 
     return () => {
