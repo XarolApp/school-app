@@ -6,6 +6,7 @@ import ParentPayHandoff from '../components/ParentPayHandoff';
 import { createCheckoutSession } from '../api';
 import BetaSoftGate from '../components/BetaSoftGate';
 import { DEFAULT_PLAN_ID, PLANS, formatCzk, planCopy, trialDaysPhrase } from '../config/pricing';
+import PageSkeleton from '../components/PageSkeleton';
 
 // Four short parallel claims — a checkmark each reads faster than a bullet and
 // says "included", which a bullet does not.
@@ -60,11 +61,7 @@ function Paywall() {
   const { verifying, gaveUp } = usePostCheckoutVerification(hasAccess, refreshProfile, !isTester);
 
   if (loading || (isSignedIn && profileLoading)) {
-    return (
-      <div className="route-loading" role="status">
-        Načítám…
-      </div>
-    );
+    return <PageSkeleton variant="card" />;
   }
 
   if (!isSignedIn) return <Navigate to="/prihlaseni" replace />;

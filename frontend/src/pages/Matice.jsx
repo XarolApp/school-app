@@ -17,6 +17,8 @@ import {
 import DecisionTabs from '../components/decision/DecisionTabs';
 import ConfirmDialog from '../components/ConfirmDialog';
 import './decision.css';
+import PageSkeleton from '../components/PageSkeleton';
+import { useDraft } from '../lib/useDraft';
 
 const LEVELS = [
   { key: 'nezalezi', label: 'Nezáleží' },
@@ -127,7 +129,8 @@ function Matice() {
   const [allSchools, setAllSchools] = useState([]);
   const [selection] = useState(() => getCompareSelection());
   const [pickCount, setPickCount] = useState(0);
-  const [weights, setWeights] = useState(defaultWeights);
+  // The criteria weights survive a reload (this tab only).
+  const [weights, setWeights] = useDraft('snm.matice.weights', defaultWeights);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   // Set to the level the user just clicked while the "are you sure" prompt for
@@ -193,11 +196,7 @@ function Matice() {
   };
 
   if (loading) {
-    return (
-      <div className="decision-page">
-        <p className="ss-body-md">Načítám…</p>
-      </div>
-    );
+    return <PageSkeleton variant="columns" label="Načítám matici…" />;
   }
 
   if (error) {

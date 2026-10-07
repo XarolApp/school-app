@@ -171,6 +171,29 @@ Body: `frontend/src/lib/matching.js` already scores per obor (best obor wins), s
 4. The simulation feeds the onboarding scorer the newest year's rows only (`latestYearOnly`), not server.js's merged `slimProgramsForList`; confirm this does not change features before trusting the numbers.
 5. Answers are uniformly random, so this shows structural bias only; re-check against real beta results.
 
+## Beta round 2 (feedback sheet, persistence, saved schools) — SQL + real-tester re-check — 2026-10-07
+- **Found:** 2026-10-07, founder's second beta-readiness list
+- **Urgency:** high — the SQL must run before the deploy reaches testers (the new feedback kind is rejected by the old constraint)
+- **Effort:** small
+- **Release/context:** `supabase-setup.sql` (`beta_feedback_kind_check`, `submit_beta_feedback_details`), `BetaFeedbackSheet.jsx`, `ConfirmEmailWaiting.jsx`, `AuthContext.jsx`, `/ulozene`
+
+- [ ] Run the two statements (constraint + `submit_beta_feedback_details()`) from `supabase-setup.sql` before deploying. Without them "Nepřehledné" feedback returns "Zpětnou vazbu se nepodařilo uložit".
+- [ ] Set `RESEND_COOLDOWN_SECONDS` in `frontend/src/lib/pendingConfirmation.js` to Supabase's **Minimum interval per user** (Authentication → Emails → SMTP Settings). It is 60 s here because that is Supabase's default; the founder has not confirmed the live value.
+- [ ] Real tester, real phone: (a) confirmation link opened on a phone while the sign-up tab is on a laptop (cross-device cannot auto-continue, so "Pokračovat v tomto okně" must work); (b) drag-to-mark on a touch screen (`touch-action: none` overlay) and the html2canvas capture on iOS Safari; (c) after finishing the questionnaire the "Dotazník" box ticks within a few seconds; (d) tab-away and back no longer closes the first-run guide or wipes a half-filled questionnaire.
+- [ ] The "checklist does not tick" report could not be reproduced with a real tester account. Causes fixed: profile refreshes switched `profileLoading` on (tracker dropped events, pages unmounted) and the checklist was only re-read every 60 s. If it still fails live, look in `beta_events` for the tester's `q_finish` rows first.
+- [ ] Drafts are kept in `sessionStorage` (per tab): questionnaire answers, guide step, feedback text, review text, closing questionnaire, search filters, matrix weights, saved-school notes. Settings forms and passwords are deliberately NOT kept.
+- [ ] The Resend button on the "check your inbox" screen needs a Turnstile token like every other auth call, so a widget appears there. If that looks odd to testers, drop the widget and allow resend only through the login page.
+
+## Questionnaire: "Kdy by měla škola začínat?" removed — collect the data and bring it back — 2026-10-07
+- **Found:** 2026-10-07, founder decision
+- **Urgency:** low
+- **Effort:** medium (needs real data first)
+- **Release/context:** `lib/questionnaire.js` (`zacatek`, removed from `BASE_QUESTIONS` and `SECTIONS`), `lib/matching.js` comment, `schools.zacatek_hodin` in `school_extracted_details`
+
+The only answers were "doesn't matter" and "it matters, but we can't consider it yet", which is a promise we cannot keep. Removed from the standalone `/dotaznik` (31 questions now; the onboarding quiz never had it, so the landing counts are unchanged and are computed from the data anyway). Old runs that stored `zacatek` are unaffected: the validator ignores unknown keys.
+
+To bring it back: extract school start times (the scraper already fills `school_extracted_details.zacatek_hodin` for some schools), add a weighted `zacatek` dimension to `lib/matching.js` that drops schools with no data instead of penalising them, then restore the question with real options (e.g. "co nejdřív / klidně později") and update `SECTIONS`, the tests and `plans/017`.
+
 ## Beta tester flow rework — apply SQL, then re-check with a real tester account — 2026-10-06
 - **Found:** 2026-10-06, after rewriting the tester instructions, landing page and confirmation flow
 - **Urgency:** high — the SQL must run before this deploy reaches testers who pick "Jiné"

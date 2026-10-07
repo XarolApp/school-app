@@ -5,6 +5,7 @@ import { ObButton } from './onboarding/ObKit';
 import BetaEnrollment from './BetaEnrollment';
 import { saveBetaProfile } from '../api';
 import { betaEnrollmentComplete } from '../lib/betaEnrollment';
+import { useDraft } from '../lib/useDraft';
 
 const SUPPORT_EMAIL = 'info@stredninamiru.cz';
 const tasks = [
@@ -24,6 +25,20 @@ export function BetaChecklist({ checklist = {}, onNavigate }) {
 function doneCount(checklist = {}) {
   return tasks.filter(([id]) => checklist[id]).length;
 }
+/** Progress header + the checklist, for the places that show it on its own (Nastavení). */
+export function BetaProgress({ checklist = {}, onNavigate }) {
+  const done = doneCount(checklist);
+  return <div className="beta-progress">
+    <div className="beta-guide-section-head">
+      <h3 className="ss-headline-sm">Vyzkoušené funkce</h3>
+      <span className="beta-guide-progress">{done} z {tasks.length}</span>
+    </div>
+    <div className="beta-progress-bar" role="progressbar" aria-valuemin={0} aria-valuemax={tasks.length} aria-valuenow={done} aria-label="Vyzkoušené funkce">
+      <span style={{ width: `${100 * done / tasks.length}%` }} />
+    </div>
+    <BetaChecklist checklist={checklist} onNavigate={onNavigate} />
+  </div>;
+}
 
 // Every block of guidance, worded once for both voices and shared by the
 // first-run steps and the one-screen reference behind the "?" button.
@@ -33,6 +48,7 @@ function guidance(parent, hours) {
   return {
     want: <>
       <p>{t('Chceme od tebe co nejvíc informací. Každá informace je dobrá informace — i úplná drobnost.', 'Chceme od vás co nejvíc informací. Každá informace je dobrá informace — i úplná drobnost.')}</p>
+      <p className="beta-guide-lead">{t('Co máš napsat:', 'Co máte napsat:')}</p>
       <ul className="beta-guide-list">
         <li>Chyby a místa, která nefungují nebo jsou matoucí.</li>
         <li>{t('Funkce a informace, které by se ti hodily.', 'Funkce a informace, které by se vám hodily.')}</li>
@@ -83,7 +99,8 @@ function Enrollment({ beta, onRefresh }) {
 
 /** First run: three steps the tester has to finish. `reference`: everything on one screen. */
 export default function BetaInstructions({ beta, hours = 48, onDone, onRefresh, busy, reference = false }) {
-  const [step, setStep] = useState(0);
+  // Kept per tab: a reload on step 3 must not send the tester back to step 1.
+  const [step, setStep, clearStep] = useDraft('snm.beta.guide.step', 0);
   const parent = beta?.role === 'rodic' || beta?.role === 'ucitel';
   if (!beta) return <p role="status">Načítám testování…</p>;
   if (!beta.consent_tracking_at) return <Enrollment beta={beta} onRefresh={onRefresh} />;
@@ -119,7 +136,7 @@ export default function BetaInstructions({ beta, hours = 48, onDone, onRefresh, 
     <h3 className="ss-headline-md">{steps[step][0]}</h3>
     <div className="beta-guide-body">{steps[step][1]}</div>
     <div className="ss-dialog-actions">{step > 0 && <ObButton variant="secondary" onClick={() => setStep(step - 1)}>Zpět</ObButton>}
-      <ObButton disabled={busy} onClick={() => last ? onDone() : setStep(step + 1)}>{last ? 'Začít testovat' : 'Pokračovat'}</ObButton>
+      <ObButton disabled={busy} onClick={() => { if (last) { clearStep(); onDone(); } else setStep(step + 1); }}>{last ? 'Začít testovat' : 'Pokračovat'}</ObButton>
     </div>
   </div>;
 }

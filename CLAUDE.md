@@ -494,7 +494,7 @@ school-app/
 ```
 
 **Routes are Czech** (`/skoly`, `/prihlaseni`, `/registrace`, `/zapomenute-heslo`,
-`/nove-heslo`, `/nastaveni`, `/predplatne`) — the auth components have several of these
+`/nove-heslo`, `/nastaveni`, `/predplatne`, `/ulozene` (saved schools + notes), `/email-overen` (e-mail confirmation landing)) — the auth components have several of these
 hardcoded in their redirects, so do not rename them casually.
 
 **There are two paywall-shaped surfaces and two `matching.js` files. Neither pair is

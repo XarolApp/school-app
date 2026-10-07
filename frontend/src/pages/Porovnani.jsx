@@ -8,6 +8,7 @@ import DecisionTabs from '../components/decision/DecisionTabs';
 import ProsCons from '../components/decision/ProsCons';
 import { useToast } from '../components/ToastContext';
 import './decision.css';
+import PageSkeleton from '../components/PageSkeleton';
 
 function Porovnani() {
   const navigate = useNavigate();
@@ -120,11 +121,7 @@ function Porovnani() {
   };
 
   if (loading) {
-    return (
-      <div className="decision-page">
-        <p className="ss-body-md">Načítám…</p>
-      </div>
-    );
+    return <PageSkeleton variant="columns" label="Načítám porovnání…" />;
   }
 
   if (error) {

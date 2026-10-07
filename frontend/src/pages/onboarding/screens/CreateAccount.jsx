@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom';
 import { ObScreen } from '../../../components/onboarding/ObKit';
 import TopMatchCard from '../../../components/onboarding/TopMatchCard';
 import { useOnboarding } from '../useOnboarding';
+import ConfirmEmailWaiting from '../../../components/ConfirmEmailWaiting';
+import { confirmationUrl } from '../../../components/AuthContext';
+import { readPendingConfirmation, clearPendingConfirmation } from '../../../lib/pendingConfirmation';
+import { captchaProblem, consentProblem, emailProblem, focusFirstInvalid, problemSummary, nameProblem, onlyProblems, passwordProblem } from '../../../lib/authValidation';
 import { useAuth } from '../../../components/AuthContext';
 import PasswordInput from '../../../components/PasswordInput';
 import PasswordStrength from '../../../components/PasswordStrength';
@@ -53,18 +57,19 @@ function CreateAccount() {
   const { signUp, isSignedIn, user } = useAuth();
   const parent = role === 'parent';
 
+  const [resumed] = useState(() => readPendingConfirmation('ob'));
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(resumed?.email || '');
   const [password, setPassword] = useState('');
   const [captchaToken, setCaptchaToken] = useState(null);
   const [consent, setConsent] = useState(false);
-  const [consentError, setConsentError] = useState('');
+  const [submitted, setSubmitted] = useState(false);
   // A Turnstile token is single-use, so the widget is re-challenged after every
   // failed submit.
   const [captchaKey, setCaptchaKey] = useState(0);
   const [error, setError] = useState(null);
   const [busy, setBusy] = useState(false);
-  const [awaitingConfirmation, setAwaitingConfirmation] = useState(false);
+  const [awaitingConfirmation, setAwaitingConfirmation] = useState(Boolean(resumed));
 
   // Wait for the signed-in account to resolve before ever showing signup.
   if (isSignedIn && user && !profileResolved) {
@@ -113,24 +118,33 @@ function CreateAccount() {
     );
   }
 
+  // The link opens a new tab on "e-mail ověřen"; this tab continues by itself.
+  const confirmUrl = confirmationUrl(null, '/onboarding/plan');
+  const currentProblems = () => onlyProblems({
+    name: nameProblem(name, parent),
+    email: emailProblem(email, parent),
+    password: passwordProblem(password, { parent }),
+    consent: consentProblem(consent, parent),
+    captcha: captchaProblem(captchaToken, captchaEnabled, parent),
+  });
+  const problems = submitted ? currentProblems() : {};
+  const problemCount = Object.keys(problems).length;
+
   const submit = async (event) => {
     event.preventDefault();
     if (busy) return;
-    if (!consent) {
-      setConsentError(parent ? 'Pro vytvoření účtu potřebujeme váš souhlas s podmínkami.' : 'Pro vytvoření účtu potřebujeme tvůj souhlas s podmínkami.');
+    setSubmitted(true);
+    if (Object.keys(currentProblems()).length) {
+      requestAnimationFrame(() => focusFirstInvalid());
       return;
     }
 
     setBusy(true);
     setError(null);
 
-    const resumePath = '/onboarding/plan';
-    const confirmationUrl = new URL('/prihlaseni', window.location.origin);
-    confirmationUrl.searchParams.set('potvrzeno', '1');
-    confirmationUrl.searchParams.set('next', resumePath);
-    const result = await signUp(email, password, name, {
+    const result = await signUp(email.trim(), password, name.trim(), {
       captchaToken,
-      emailRedirectTo: confirmationUrl.toString(),
+      emailRedirectTo: confirmUrl,
     });
 
     setBusy(false);
@@ -165,23 +179,25 @@ function CreateAccount() {
 
   if (awaitingConfirmation) {
     return (
-      <ObScreen onBack={() => setAwaitingConfirmation(false)} phase={phase}>
+      <ObScreen onBack={() => { clearPendingConfirmation(); setAwaitingConfirmation(false); }} phase={phase}>
         <h1 className="ob-title">{parent ? 'Potvrďte svůj e-mail' : 'Potvrď svůj e-mail'}</h1>
-        <div className="notice">
-          <span className="notice-title">Odkaz jsme poslali na {email}</span>
+        <ConfirmEmailWaiting
+          variant="ob"
+          source="ob"
+          email={email.trim()}
+          parent={parent}
+          emailRedirectTo={confirmUrl}
+          onConfirmed={goNext}
+          onChangeEmail={() => setAwaitingConfirmation(false)}
+        >
           <p className="notice-text">
             {parent
-              ? 'Klikněte na něj a potom se přihlaste. Vrátíme vás rovnou k výběru plánu; bez potvrzeného účtu platbu nespustíme.'
-              : 'Klikni na něj a potom se přihlas. Vrátíme tě rovnou k výběru plánu; bez potvrzeného účtu platbu nespustíme.'}
+              ? 'Hned potom vás vrátíme k výběru plánu. Bez potvrzeného účtu platbu nespustíme.'
+              : 'Hned potom tě vrátíme k výběru plánu. Bez potvrzeného účtu platbu nespustíme.'}
           </p>
-          <p className="notice-text">
-            {parent
-              ? 'Když zprávu nevidíte, zkontrolujte spam. Nový odkaz můžete poslat z přihlašovací stránky.'
-              : 'Když zprávu nevidíš, zkontroluj spam. Nový odkaz můžeš poslat z přihlašovací stránky.'}
-          </p>
-        </div>
-        <Link to="/prihlaseni?next=/onboarding/plan" className="ob-btn ob-btn-secondary">
-          Přejít na přihlášení
+        </ConfirmEmailWaiting>
+        <Link to="/prihlaseni?next=/onboarding/plan" className="ob-inline-link" onClick={clearPendingConfirmation}>
+          {parent ? 'Už máte účet? Přihlásit se' : 'Už máš účet? Přihlásit se'}
         </Link>
       </ObScreen>
     );
@@ -218,7 +234,7 @@ function CreateAccount() {
           type="submit"
           form="ob-signup"
           className="ob-btn ob-btn-primary"
-          disabled={busy || (captchaEnabled && !captchaToken)}
+          disabled={busy}
         >
           {busy ? 'Zakládám účet…' : 'Založit účet'}
         </button>
@@ -237,7 +253,12 @@ function CreateAccount() {
             : 'Založ si účet, ať ti výsledek zůstane a nemusíš dotazník vyplňovat znovu.'}
       </p>
 
-      <form id="ob-signup" className="auth-form" onSubmit={submit}>
+      <form id="ob-signup" className="auth-form" onSubmit={submit} noValidate>
+        {problemCount > 0 && (
+          <div className="notice notice-error" role="alert">
+            <p className="notice-text">{problemSummary(problemCount, parent)}</p>
+          </div>
+        )}
         {parent && (
           <div className="notice">
             <span className="notice-title">Tip</span>
@@ -265,7 +286,9 @@ function CreateAccount() {
             onChange={(e) => setName(e.target.value)}
             autoComplete="name"
             required
+            aria-invalid={Boolean(problems.name)}
           />
+          {problems.name && <span className="field-error" role="alert">{problems.name}</span>}
         </div>
 
         <div className="field">
@@ -280,7 +303,9 @@ function CreateAccount() {
             onChange={(e) => setEmail(e.target.value)}
             autoComplete="email"
             required
+            aria-invalid={Boolean(problems.email)}
           />
+          {problems.email && <span className="field-error" role="alert">{problems.email}</span>}
         </div>
 
         <div className="field">
@@ -295,14 +320,16 @@ function CreateAccount() {
             minLength={8}
             required
             visibleLabel="Heslo"
+            aria-invalid={Boolean(problems.password)}
           />
+          {problems.password && <span className="field-error" role="alert">{problems.password}</span>}
           <PasswordStrength password={password} />
         </div>
 
-        <ConsentCheckbox id="signup-consent" checked={consent} adult={parent} error={consentError}
-          onChange={(value) => { setConsent(value); if (value) setConsentError(''); }} />
+        <ConsentCheckbox id="signup-consent" checked={consent} adult={parent} error={problems.consent} onChange={setConsent} />
 
         <Captcha onVerify={setCaptchaToken} resetKey={captchaKey} />
+        {problems.captcha && <span className="field-error" role="alert">{problems.captcha}</span>}
       </form>
 
       <p className="ob-microcopy ob-signin-hint">

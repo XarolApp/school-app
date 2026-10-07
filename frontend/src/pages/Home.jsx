@@ -6,6 +6,7 @@ import { DemoLoop, PhoneLoop, ScreenShot, useScreenData } from '../components/la
 import './landing.css';
 import { QUIZ_MINUTES } from '../config/facts';
 import { useSchoolCount } from '../lib/useSchoolCount';
+import { useAuth } from '../components/AuthContext';
 
 /**
  * Home / úvodní stránka — long-form landing (rebuilt 2026-09-26).
@@ -140,6 +141,7 @@ function useReveal() {
 }
 
 function Home() {
+  const { isSignedIn } = useAuth();
   const rootRef = useReveal();
   const screenData = useScreenData();
   const SCHOOL_COUNT = useSchoolCount();
@@ -158,14 +160,16 @@ function Home() {
             dojedeš a jak se ti učí — a u každé proč.
           </p>
           <div className="ls-ctas">
-            <Link to="/onboarding" className="btn btn-primary btn-lg">
-              Začít dotazník zdarma
+            <Link to={isSignedIn ? '/skoly' : '/onboarding'} className="btn btn-primary btn-lg">
+              {isSignedIn ? 'Projít databázi škol' : 'Začít dotazník zdarma'}
             </Link>
-            <Link to="/skoly" className="ls-textlink">
-              nebo si projdi databázi škol →
-            </Link>
+            {!isSignedIn && (
+              <Link to="/skoly" className="ls-textlink">
+                nebo si projdi databázi škol →
+              </Link>
+            )}
           </div>
-          <p className="ls-fineprint">Bez registrace · asi {QUIZ_MINUTES} minuty · přeskočit můžeš cokoli</p>
+          {!isSignedIn && <p className="ls-fineprint">Bez registrace · asi {QUIZ_MINUTES} minuty · přeskočit můžeš cokoli</p>}
         </div>
 
         <figure className="ls-hero-visual" aria-hidden="true">
@@ -411,10 +415,10 @@ function Home() {
       {/* ---------- 13. final CTA ---------- */}
       <section className="ls-final" data-reveal>
         <h2 className="ls-final-title">Za tři minuty víš, kde začít hledat</h2>
-        <Link to="/onboarding" className="btn btn-primary btn-lg">
-          Začít dotazník zdarma
+        <Link to={isSignedIn ? '/skoly' : '/onboarding'} className="btn btn-primary btn-lg">
+          {isSignedIn ? 'Projít databázi škol' : 'Začít dotazník zdarma'}
         </Link>
-        <p className="ls-fineprint">Bez registrace · {QUESTION_COUNT} otázek · přeskočit můžeš cokoli</p>
+        {!isSignedIn && <p className="ls-fineprint">Bez registrace · {QUESTION_COUNT} otázek · přeskočit můžeš cokoli</p>}
       </section>
 
       <footer className="ls-footer">

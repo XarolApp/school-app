@@ -14,7 +14,6 @@ const completeAnswers = {
   predmety: ['informatika'],
   styl: 'kombinace',
   po_skole: 'nevim',
-  zacatek: 'nezalezi',
   velikost: 'nezalezi',
   jazyky: 'stredne',
 };

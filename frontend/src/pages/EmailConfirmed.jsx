@@ -19,8 +19,13 @@ function EmailConfirmed() {
   // processes the link.
   const [linkError] = useState(readLinkError);
   const { loading, isSignedIn, emailConfirmed } = useAuth();
-  const betaQuery = betaCode ? `?beta=${encodeURIComponent(betaCode)}` : '';
-  const continuePath = betaCode ? `/beta/${encodeURIComponent(betaCode)}` : '/skoly';
+  const requestedNext = searchParams.get('next');
+  const next = requestedNext?.startsWith('/') && !requestedNext.startsWith('//') ? requestedNext : null;
+  const loginQuery = new URLSearchParams();
+  if (betaCode) loginQuery.set('beta', betaCode);
+  if (next) loginQuery.set('next', next);
+  const betaQuery = loginQuery.size ? `?${loginQuery}` : '';
+  const continuePath = next || (betaCode ? `/beta/${encodeURIComponent(betaCode)}` : '/skoly');
 
   let body;
   if (loading && !linkError) {

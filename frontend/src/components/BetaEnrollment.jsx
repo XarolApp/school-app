@@ -6,8 +6,9 @@ export default function BetaEnrollment({ role, roleNote = '', accepted, onRole, 
     <fieldset className="beta-role-fieldset">
       <legend className="ss-headline-sm">{parent ? 'Kdo jste?' : 'Kdo jsi?'}</legend>
       <div className="beta-role-options">{BETA_ROLES.map((r) => <label key={r.id} className={`beta-role-option${role === r.id ? ' is-selected' : ''}`}>
-        <input type="radio" name="beta-role" value={r.id} checked={role === r.id} onChange={() => onRole(r.id)} />{r.label}
+        <input type="radio" name="beta-role" value={r.id} checked={role === r.id} onChange={() => onRole(r.id)} aria-invalid={showErrors && !role} />{r.label}
       </label>)}</div>
+      {showErrors && !role && <span className="field-error" role="alert" id="beta-role-error">{parent ? 'Vyberte, kdo jste.' : 'Vyber, kdo jsi.'}</span>}
       {role === 'jine' && <div className="field beta-role-note">
         <label className="field-label" htmlFor="beta-role-note">Kdo tedy jsi?</label>
         <input id="beta-role-note" className="input" type="text" maxLength={BETA_ROLE_NOTE_MAX} value={roleNote}

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useDraft } from '../../lib/useDraft';
 import { Link } from 'react-router-dom';
 import { addSchoolReview } from '../../api';
 import { useAuth } from '../AuthContext';
@@ -22,8 +23,9 @@ function ReviewForm({ schoolId, onSubmitted }) {
   const { isSignedIn, emailConfirmed } = useAuth();
   const { toast } = useToast();
   const [role, setRole] = useState('student');
-  const [body, setBody] = useState('');
-  const [oborNazev, setOborNazev] = useState('');
+  // A review in progress survives a reload (per school, per tab).
+  const [body, setBody, clearBody] = useDraft(`snm.draft.review.${schoolId}.body`, '');
+  const [oborNazev, setOborNazev, clearObor] = useDraft(`snm.draft.review.${schoolId}.obor`, '');
   const [showName, setShowName] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState(null);
@@ -64,7 +66,7 @@ function ReviewForm({ schoolId, onSubmitted }) {
         showName: isAdultRole && showName,
       });
       onSubmitted(review);
-      setBody('');
+      setBody(''); clearBody(); clearObor();
       setOborNazev('');
       setShowName(false);
       toast(

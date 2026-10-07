@@ -7,9 +7,10 @@ import { clearPendingBetaCode, normalizeBetaCode, rememberBetaCode } from '../li
 
 // Where the e-mail confirmation link lands: a "you can close this tab" page,
 // while the tab that signed up carries on by itself.
-function confirmationUrl(betaCode) {
+export function confirmationUrl(betaCode, next) {
   const url = new URL('/email-overen', window.location.origin);
   if (betaCode) url.searchParams.set('beta', betaCode);
+  if (next) url.searchParams.set('next', next);
   return url.toString();
 }
 
@@ -73,11 +74,16 @@ async function flushOnboardingStash(activeSession) {
 // Supabase reports auth failures in English. Map the ones users actually hit.
 const AUTH_ERRORS = [
   [/already registered|already exists/i, 'Na tento e-mail už účet existuje. Zkus se přihlásit.'],
+  [/email address .* is invalid|email_address_invalid/i, 'Tenhle e-mail nevypadá správně. Zkontroluj překlepy, třeba jmeno@seznam.cz.'],
+  [/signup.*disabled|signups not allowed/i, 'Registrace je teď vypnutá. Zkus to prosím později.'],
+  [/weak password|password is known to be weak|pwned/i, 'Toto heslo je příliš běžné nebo uniklé. Zvol jiné, delší.'],
+  [/email rate limit|over_email_send_rate_limit/i, 'Odeslali jsme moc e-mailů za sebou. Počkej minutu a zkus to znovu.'],
   [/invalid login credentials/i, 'Nesprávný e-mail nebo heslo.'],
   [/email not confirmed/i, 'Účet ještě není potvrzený — zkontroluj svůj e-mail.'],
   [/password should be at least/i, 'Heslo je příliš krátké.'],
   [/should be different from the old password/i, 'Nové heslo musí být jiné než to staré.'],
-  [/rate limit|only request this after/i, 'Příliš mnoho pokusů. Zkus to prosím za chvíli.'],
+  [/only request this after (\d+) seconds?/i, 'Další e-mail jde poslat až za chvíli. Počkej prosím minutu a zkus to znovu.'],
+  [/rate limit/i, 'Příliš mnoho pokusů. Zkus to prosím za chvíli.'],
   [/unable to validate email|invalid format/i, 'E-mail nemá platný formát.'],
   [/captcha/i, 'Ověření „nejsem robot“ se nezdařilo. Zkus to prosím znovu.'],
 ];
@@ -101,12 +107,14 @@ export function AuthProvider({ children }) {
   const [betaClockNow, setBetaClockNow] = useState(Date.now());
   const profileRequestRef = useRef(0);
   const profileIdentityRef = useRef(null);
+  const profileReadyRef = useRef(null);
 
   const loadProfile = useCallback(async (activeSession) => {
     const requestId = ++profileRequestRef.current;
     const userId = activeSession?.user?.id ?? null;
     if (!activeSession) {
       profileIdentityRef.current = null;
+      profileReadyRef.current = null;
       setProfile(null);
       setProfileError(null);
       setProfileLoading(false);
@@ -115,11 +123,16 @@ export function AuthProvider({ children }) {
     }
     if (profileIdentityRef.current !== userId) {
       profileIdentityRef.current = userId;
+      profileReadyRef.current = null;
       setProfile(null);
       setProfileError(null);
       setBetaDeadlineMs(null);
     }
-    setProfileLoading(true);
+    // Only the first read of an account shows "loading". A refresh of a profile
+    // we already hold (every tab refocus for testers) is silent: flipping the
+    // flag would swap every ProtectedRoute page for a spinner and wipe whatever
+    // the user was in the middle of typing.
+    if (profileReadyRef.current !== userId) setProfileLoading(true);
     try {
       const nextProfile = await fetchMe();
       if (
@@ -128,6 +141,7 @@ export function AuthProvider({ children }) {
         nextProfile.id !== userId
       ) return;
       applyTheme(nextProfile.theme_palette, nextProfile.theme_mode);
+      profileReadyRef.current = userId;
       setProfile(nextProfile);
       setProfileError(null);
       const serverNow = Date.parse(nextProfile.serverNow);
@@ -141,6 +155,7 @@ export function AuthProvider({ children }) {
       if (requestId === profileRequestRef.current && profileIdentityRef.current === userId) {
         // A failed profile read must not leave stale tester access or expose a
         // normal checkout action for an account whose role is unknown.
+        profileReadyRef.current = null;
         setProfile(null);
         setProfileError(error?.message || 'Profil účtu se nepodařilo načíst.');
         setBetaDeadlineMs(null);
@@ -296,14 +311,14 @@ export function AuthProvider({ children }) {
 
   // Supabase only resends while the account is still unconfirmed, and applies
   // its own cooldown, so this cannot be used to mailbomb an address.
-  const resendConfirmation = async (email, { captchaToken, betaSchoolCode } = {}) => {
+  const resendConfirmation = async (email, { captchaToken, betaSchoolCode, emailRedirectTo } = {}) => {
     const normalizedBetaCode = betaSchoolCode ? normalizeBetaCode(betaSchoolCode) : null;
     if (betaSchoolCode && !normalizedBetaCode) return { error: 'Pozvánka školy není platná.' };
     const { error } = await supabase.auth.resend({
       type: 'signup',
       email,
       options: {
-        emailRedirectTo: confirmationUrl(normalizedBetaCode),
+        emailRedirectTo: emailRedirectTo || confirmationUrl(normalizedBetaCode),
         captchaToken,
       },
     });

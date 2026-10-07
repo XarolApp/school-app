@@ -745,3 +745,17 @@
 .email-waiting .btn-spinner {
   flex-shrink: 0;
 }
+
+.confirm-resend {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.confirm-resend .notice-text {
+  margin: 0;
+  color: var(--ink2);
+}
+
+.confirm-status.is-ok { color: var(--ok); }
+.confirm-status.is-error { color: var(--danger); font-weight: 600; }

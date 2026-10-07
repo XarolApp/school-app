@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../components/AuthContext';
 import PasswordInput from '../components/PasswordInput';
 import PasswordStrength from '../components/PasswordStrength';
+import PageSkeleton from '../components/PageSkeleton';
 
 function ResetPassword() {
   const [form, setForm] = useState({ password: '', confirm: '' });
@@ -42,11 +43,7 @@ function ResetPassword() {
   };
 
   if (loading) {
-    return (
-      <div className="route-loading" role="status">
-        Načítám…
-      </div>
-    );
+    return <PageSkeleton variant="card" />;
   }
 
   // A normal signed-in session is not proof that the recovery link was used.
@@ -85,7 +82,7 @@ function ResetPassword() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="panel panel-lg auth-form">
+        <form onSubmit={handleSubmit} className="panel panel-lg auth-form" noValidate>
           {error && (
             <div className="notice notice-error" role="alert" id="new-password-error">
               <p className="notice-text">{error}</p>

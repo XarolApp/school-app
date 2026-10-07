@@ -862,7 +862,7 @@ update public.beta_feedback set kind = case type when 'bug' then 'bug' when 'ide
 alter table public.beta_feedback alter column kind set default 'obecne';
 alter table public.beta_feedback alter column kind set not null;
 alter table public.beta_feedback drop constraint if exists beta_feedback_kind_check;
-alter table public.beta_feedback add constraint beta_feedback_kind_check check (kind in ('bug','navrh','funkce','text','chvala','obecne'));
+alter table public.beta_feedback add constraint beta_feedback_kind_check check (kind in ('bug','navrh','funkce','text','neprehledne','chvala','obecne'));
 alter table public.beta_feedback drop constraint if exists beta_feedback_status_check;
 alter table public.beta_feedback add constraint beta_feedback_status_check check (status in ('nove','precteno','vyreseno','neudelame'));
 alter table public.beta_feedback drop constraint if exists beta_feedback_source_check;
@@ -954,7 +954,7 @@ create or replace function public.submit_beta_feedback_details(
 declare result jsonb;
 begin
   if p_details is null or jsonb_typeof(p_details) <> 'object' or octet_length(p_details::text) > 12000
-    or coalesce(p_details ->> 'kind', 'obecne') not in ('bug','navrh','funkce','text','chvala','obecne')
+    or coalesce(p_details ->> 'kind', 'obecne') not in ('bug','navrh','funkce','text','neprehledne','chvala','obecne')
     or coalesce(p_details ->> 'source', 'button') not in ('button','micro','gate')
     or (p_details ->> 'source' = 'gate' and char_length(btrim(p_message)) < 20) then
     raise exception 'Feedback metadata is invalid.' using errcode = '22023';

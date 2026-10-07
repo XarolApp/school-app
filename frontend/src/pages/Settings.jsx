@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { Check } from 'lucide-react';
 import { useAuth } from '../components/AuthContext';
@@ -12,7 +12,9 @@ import { supabase, getRememberMe, setRememberMe } from '../supabaseClient';
 import { DEFAULT_PALETTE, PALETTE_IDS, palettes } from '../design/tokens';
 import { applyTheme, MODES, readCachedTheme } from '../lib/theme';
 import { useBetaTools } from '../components/BetaToolsContext';
+import { BetaProgress } from '../components/BetaInstructions';
 import { ROLE_KEY } from '../lib/onboardingStorage';
+import PageSkeleton from '../components/PageSkeleton';
 
 const SUBSCRIPTION_LABELS = {
   trialing: 'Zkušební období',
@@ -60,7 +62,21 @@ function Settings() {
   } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { openFeedback } = useBetaTools();
+  const { openFeedback, beta, refreshBeta } = useBetaTools();
+  // Access countdown: the server's clock decides the deadline, ours only ticks.
+  const [clock, setClock] = useState(Date.now());
+  const betaDeadline = useMemo(() => {
+    const until = Date.parse(profile?.effectiveAccessUntil), serverNow = Date.parse(profile?.serverNow);
+    return Number.isFinite(until) && Number.isFinite(serverNow) ? Date.now() + (until - serverNow) : null;
+  }, [profile]);
+  const betaLeft = betaDeadline === null ? null : Math.max(0, betaDeadline - clock);
+  const countdown = betaLeft === null ? '' : `${Math.floor(betaLeft / 3600000)} h ${String(Math.floor(betaLeft / 60000) % 60).padStart(2, '0')} min ${String(Math.floor(betaLeft / 1000) % 60).padStart(2, '0')} s`;
+  useEffect(() => {
+    if (!isTester) return undefined;
+    void refreshBeta().catch(() => {});
+    const timer = setInterval(() => setClock(Date.now()), 1000);
+    return () => clearInterval(timer);
+  }, [isTester, refreshBeta]);
 
   // Only one form is open at a time, so the page stays a readable summary
   // instead of a wall of inputs: 'password' | 'email' | 'delete' | 'cancel' | null.
@@ -156,11 +172,7 @@ function Settings() {
   }, [profile, profile?.id, profile?.theme_palette, profile?.theme_mode]);
 
   if (loading) {
-    return (
-      <div className="route-loading" role="status">
-        Načítám…
-      </div>
-    );
+    return <PageSkeleton variant="form" narrow />;
   }
 
   // Deliberately not wrapped in ProtectedRoute: that sends anyone without
@@ -874,14 +886,19 @@ function Settings() {
             <div className="settings-form-inset beta-settings-access">
               {profile?.betaProgramActive ? (
                 <>
-                  <p className="settings-section-text">
-                    {hasAccess
-                      ? `Přístup je aktivní do ${formatCzDateLong(profile.effectiveAccessUntil)}. Zpětná vazba ho obnoví o ${profile.betaAccessHours || 48} hodin, nejdéle do konce programu.`
-                      : 'Přístup je pozastavený. Po odeslání zpětné vazby se znovu otevře.'}
-                  </p>
+                  {hasAccess ? (
+                    <div className="beta-countdown" role="timer" aria-label="Zbývající čas přístupu">
+                      <span className="beta-countdown-label">Přístup zbývá</span>
+                      <strong className="beta-countdown-value">{countdown}</strong>
+                      <span className="settings-section-text">Každá zpětná vazba ho sama obnoví, nejdéle do konce programu.</span>
+                    </div>
+                  ) : (
+                    <p className="settings-section-text">Přístup je pozastavený. Po odeslání zpětné vazby se znovu otevře.</p>
+                  )}
                   <button type="button" className="btn btn-secondary btn-sm" onClick={openFeedback}>
                     Poslat zpětnou vazbu
                   </button>
+                  <BetaProgress checklist={beta?.checklist} />
                 </>
               ) : (
                 <p className="settings-section-text">Beta program skončil. Přístup se už neobnoví.</p>

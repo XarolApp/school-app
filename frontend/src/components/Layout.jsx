@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import {
   ArrowRight,
+  Bookmark,
   ChevronDown,
   ClipboardList,
   Clock,
@@ -126,6 +127,10 @@ function Layout() {
                 <NavLink to="/dotaznik">
                   <ListChecks size={16} aria-hidden="true" />
                   Dotazník
+                </NavLink>
+                <NavLink to="/ulozene">
+                  <Bookmark size={16} aria-hidden="true" />
+                  Uložené
                 </NavLink>
                 <NavLink to="/prihlaska">
                   <ClipboardList size={16} aria-hidden="true" />

@@ -57,6 +57,7 @@ import useMediaQuery from '../lib/useMediaQuery';
 import useBottomBarSpace from '../lib/useBottomBarSpace';
 import { getRecentSchoolIds, getCompareSelection, setCompareSelection } from '../lib/searchPrefs';
 import './search.css';
+import { readDraft } from '../lib/useDraft';
 
 // Admission facts come from Cermat programme rows. Districts come from the
 // server's coordinate-based mapping; missing data must stay unknown.
@@ -328,12 +329,21 @@ function Search() {
   };
   const [selected, setSelected] = useState(() => new Set(getCompareSelection()));
   // ?q= pre-fills the search box (used by the 404 page's search form).
+  // Filters and the list/map choice survive a reload or a trip to another tab.
   const [filters, setFilters] = useState(() => {
     const q = new URLSearchParams(window.location.search).get('q');
-    return q ? { ...DEFAULT_FILTERS, query: q } : DEFAULT_FILTERS;
+    if (q) return { ...DEFAULT_FILTERS, query: q };
+    const saved = readDraft('snm.search.filters', null);
+    return saved && typeof saved === 'object' ? { ...DEFAULT_FILTERS, ...saved } : DEFAULT_FILTERS;
   });
+  useEffect(() => {
+    try { sessionStorage.setItem('snm.search.filters', JSON.stringify(filters)); } catch { /* the page still works */ }
+  }, [filters]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [view, setView] = useState('list'); // 'list' | 'map'
+  const [view, setView] = useState(() => (readDraft('snm.search.view', 'list') === 'map' ? 'map' : 'list')); // 'list' | 'map'
+  useEffect(() => {
+    try { sessionStorage.setItem('snm.search.view', JSON.stringify(view)); } catch { /* the page still works */ }
+  }, [view]);
   const [selectedMapId, setSelectedMapId] = useState(null);
   const [sheet, setSheet] = useState(null);
   const [openPopover, setOpenPopover] = useState(null);

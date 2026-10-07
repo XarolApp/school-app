@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../components/AuthContext';
 import Captcha, { captchaEnabled } from '../components/Captcha';
+import { captchaProblem, emailProblem, onlyProblems } from '../lib/authValidation';
 
 function ForgotPassword() {
   const [email, setEmail] = useState('');
@@ -10,20 +11,25 @@ function ForgotPassword() {
   const [sent, setSent] = useState(false);
   const [captchaToken, setCaptchaToken] = useState(null);
   const [captchaKey, setCaptchaKey] = useState(0);
+  const [submitted, setSubmitted] = useState(false);
   const { requestPasswordReset } = useAuth();
+
+  const computeProblems = () => onlyProblems({
+    email: emailProblem(email),
+    captcha: captchaProblem(captchaToken, captchaEnabled),
+  });
+  const problems = submitted ? computeProblems() : {};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
 
-    if (captchaEnabled && !captchaToken) {
-      setError('Počkej prosím na ověření „nejsem robot“.');
-      return;
-    }
+    setSubmitted(true);
+    if (Object.keys(computeProblems()).length) return;
 
     setSubmitting(true);
 
-    const result = await requestPasswordReset(email, { captchaToken });
+    const result = await requestPasswordReset(email.trim(), { captchaToken });
 
     setSubmitting(false);
 
@@ -72,7 +78,7 @@ function ForgotPassword() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="panel panel-lg auth-form">
+        <form onSubmit={handleSubmit} className="panel panel-lg auth-form" noValidate>
           {error && (
             <div className="notice notice-error" role="alert" id="reset-error">
               <p className="notice-text">{error}</p>
@@ -93,10 +99,13 @@ function ForgotPassword() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              aria-invalid={Boolean(problems.email)}
             />
+            {problems.email && <span className="field-error" role="alert">{problems.email}</span>}
           </div>
 
           <Captcha onVerify={setCaptchaToken} resetKey={captchaKey} />
+          {problems.captcha && <span className="field-error" role="alert">{problems.captcha}</span>}
 
           <button
             type="submit"

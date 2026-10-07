@@ -560,3 +560,36 @@ textarea.ss-input {
   outline: 2px solid var(--acc);
   outline-offset: 2px;
 }
+
+/* ---------- page skeleton (components/PageSkeleton.jsx) ---------- */
+.ss-pagesk {
+  width: 100%;
+  max-width: var(--content-max, 1280px);
+  margin-inline: auto;
+  padding-block: var(--space-lg);
+}
+.ss-pagesk.is-narrow,
+.ss-pagesk.is-card { max-width: 560px; }
+.ss-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.ss-sk {
+  background: var(--surface2);
+  border-radius: var(--r-card);
+  animation: ss-pulse 1.4s ease-in-out infinite;
+}
+.ss-sk-title { height: 36px; width: min(320px, 70%); margin-bottom: var(--space-md); }
+.ss-sk-line { height: 16px; width: min(520px, 90%); margin-bottom: var(--space-xl); }
+.ss-sk-grid { display: grid; gap: var(--space-md); grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.ss-sk-grid.is-cols { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+.ss-sk-stack { display: grid; gap: var(--space-md); }
+.ss-sk-card { height: 180px; }
+.ss-sk-row { height: 96px; }
+.ss-sk-field { height: 56px; }
+.ss-sk-tall { height: 320px; }
+@media (prefers-reduced-motion: reduce) { .ss-sk { animation: none; } }

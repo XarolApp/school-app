@@ -42,6 +42,7 @@ function FeedbackDetail({id,onClose,onSaved}){
   {error&&<p role="alert" className="admin-error">{error}</p>}{!detail?<p role="status">Načítání zprávy…</p>:<>
   <p className="ss-caption">{detail.tester} · {detail.page}</p><p className="admin-message">{detail.message}</p>
   {detail.screenshot_url&&<div className="admin-screenshot"><img src={detail.screenshot_url} alt="Snímek stránky od testera"/>{marked&&<span style={marked} aria-label="Označené místo"/>}</div>}
+  {rect&&viewport&&<p className="ss-caption">Oblast: x {Math.round(rect.x)}, y {Math.round(rect.y)}, {Math.round(rect.width)}×{Math.round(rect.height)} px · okno {Math.round(viewport.width)}×{Math.round(viewport.height)} px · posun {Math.round(viewport.scroll_x||0)}/{Math.round(viewport.scroll_y||0)}</p>}
   {detail.selector&&<p className="ss-caption">Místo: <code>{detail.selector}</code></p>}
   {detail.element_text&&<p className="ss-body-sm">{detail.element_text}</p>}
   {detail.text_before!=null&&<div className="admin-text-edit"><div><b>Původní text</b><p>{detail.text_before}</p></div><ArrowUpRight size={18}/><div><b>Navržený text</b><p>{detail.text_after}</p></div></div>}

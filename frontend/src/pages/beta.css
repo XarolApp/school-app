@@ -216,3 +216,25 @@ dialog.ss-dialog.beta-modal-reference { max-width: 960px; }
   .beta-reference-actions { grid-column: 1 / -1; }
 }
 @media (max-width: 560px) { .beta-demo { grid-template-columns: 1fr; } .beta-demo li { flex-direction: row; align-items: center; } }
+.beta-guide-lead { font-weight: 600; color: var(--ink); margin-top: var(--space-xs); }
+
+/* --- Feedback: drag-a-box region picker ---------------------------------- */
+.beta-region { position: fixed; inset: 0; z-index: 1100; cursor: crosshair; touch-action: none; user-select: none; -webkit-user-select: none; background: color-mix(in srgb, var(--ink) 35%, transparent); }
+.beta-region.is-drawing { background: transparent; }
+.beta-region-box { position: fixed; border: 2px solid var(--acc); border-radius: var(--r-chip); box-shadow: 0 0 0 100vmax color-mix(in srgb, var(--ink) 40%, transparent); pointer-events: none; }
+.beta-region-toolbar { position: fixed; top: var(--space-md); left: 50%; transform: translateX(-50%); width: min(560px, calc(100% - 2 * var(--space-md))); display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); padding: var(--space-md); background: var(--surface); color: var(--ink); border: 1px solid var(--line2); border-radius: var(--r-card); box-shadow: var(--shadow); cursor: default; }
+.beta-region-toolbar p { margin: 0; }
+.beta-screenshot-frame { position: relative; }
+.beta-screenshot-frame img { display: block; }
+.beta-screenshot-region { position: absolute; border: 3px solid var(--danger); background: color-mix(in srgb, var(--danger) 14%, transparent); border-radius: var(--r-chip); pointer-events: none; }
+.beta-screenshot-actions { display: flex; flex-wrap: wrap; gap: var(--space-sm); }
+
+/* --- Settings: access countdown + feature progress ------------------------- */
+.beta-countdown { display: grid; gap: var(--space-xs); }
+.beta-countdown-label { color: var(--ink2); font-size: var(--fs-caption); text-transform: uppercase; letter-spacing: 1.2px; font-weight: 600; }
+.beta-countdown-value { font-family: var(--heading); font-size: var(--fs-headline-md, 28px); font-variant-numeric: tabular-nums; color: var(--ink); }
+.beta-progress { display: grid; gap: var(--space-sm); margin-top: var(--space-sm); }
+.beta-progress h3 { margin: 0; }
+.beta-progress-bar { height: 8px; border-radius: 999px; background: var(--surface2); overflow: hidden; }
+.beta-progress-bar span { display: block; height: 100%; background: var(--acc); border-radius: inherit; transition: width 0.3s ease; }
+@media (prefers-reduced-motion: reduce) { .beta-progress-bar span { transition: none; } }

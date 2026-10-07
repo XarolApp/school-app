@@ -1,4 +1,6 @@
 import { track } from '../lib/betaTrack';
+import { useAuth } from '../components/AuthContext';
+import { clearDraftKey, readDraft } from '../lib/useDraft';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronDown, ChevronUp, ClipboardCheck, Info, RotateCcw } from 'lucide-react';
@@ -17,6 +19,7 @@ import { shareUrl } from '../lib/shareLink';
 import { ROLE_KEY } from '../lib/onboardingStorage';
 import DistrictMap from '../components/onboarding/DistrictMap';
 import './questionnaire.css';
+import PageSkeleton from '../components/PageSkeleton';
 
 /**
  * The standalone questionnaire (lib/questionnaire.js on the server) — separate
@@ -394,6 +397,15 @@ function Questionnaire() {
   const [state, setState] = useState({ loading: true, error: null, data: null });
   const [view, setView] = useState(null);
   const [answers, setAnswers] = useState({});
+  // A half-filled form survives a reload or a trip to another tab (per account,
+  // per browser tab). It is dropped the moment the form is left or submitted.
+  const { user } = useAuth();
+  const draftKey = user?.id ? `snm.draft.questionnaire.${user.id}` : null;
+  useEffect(() => {
+    if (!draftKey || view === null) return;
+    if (view !== 'form') { clearDraftKey(draftKey); return; }
+    try { sessionStorage.setItem(draftKey, JSON.stringify({ answers })); } catch { /* the form still works */ }
+  }, [draftKey, view, answers]);
   const completed = useRef(false);
   const lastKey = useRef('');
   useEffect(() => {
@@ -421,7 +433,13 @@ function Questionnaire() {
       .then((data) => {
         if (cancelled) return;
         setState({ loading: false, error: null, data });
-        setView(data.active ? 'results' : 'empty');
+        const saved = readDraft(draftKey, null);
+        if (saved?.answers && Object.keys(saved.answers).length) {
+          setAnswers(saved.answers);
+          setView('form');
+        } else {
+          setView(data.active ? 'results' : 'empty');
+        }
       })
       .catch((err) => {
         if (!cancelled) {
@@ -431,6 +449,7 @@ function Questionnaire() {
     return () => {
       cancelled = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- draftKey is only read once, on the first load
   }, []);
 
   useEffect(() => {
@@ -541,11 +560,7 @@ function Questionnaire() {
   };
 
   if (state.loading) {
-    return (
-      <div className="qz-page">
-        <p className="ss-body-md">Načítám…</p>
-      </div>
-    );
+    return <PageSkeleton variant="list" label="Načítám dotazník…" />;
   }
 
   if (state.error) {

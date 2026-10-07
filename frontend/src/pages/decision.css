@@ -1596,3 +1596,4 @@
     flex-direction: column;
   }
 }
+.dp-risk-verdict-icon { vertical-align: -3px; flex-shrink: 0; }

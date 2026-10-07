@@ -8,6 +8,7 @@ import BetaFeedbackSheet from './BetaFeedbackSheet';
 import BetaMicroQuestions from './BetaMicroQuestions';
 import Modal from './Modal';
 import BetaClosingQuestionnaire from './BetaClosingQuestionnaire';
+import { betaTracker } from '../lib/betaTrack';
 
 function BetaToolsUI({ profile, canShow, isPasswordRecovery, userId, refreshProfile, beta, refreshBeta, feedback, openFeedback, closeFeedback }) {
   const location = useLocation(), navigate = useNavigate();
@@ -15,7 +16,6 @@ function BetaToolsUI({ profile, canShow, isPasswordRecovery, userId, refreshProf
   const acknowledged = useRef(false), dismissed = useRef(false);
   const parent = ['rodic','ucitel'].includes(beta?.role);
   const firstRun = !profile?.tester_guidance_seen_at;
-  const [renewed,setRenewed]=useState('');
   const until=new Date(profile?.effectiveAccessUntil || 0).getTime();
   const hoursLeft=(until-Date.now())/3600000;
   useEffect(() => {
@@ -49,8 +49,7 @@ function BetaToolsUI({ profile, canShow, isPasswordRecovery, userId, refreshProf
       {parent?'Do 12 hodin se Vám přístup pozastaví — stačí poslat jednu připomínku.':'Do 12 hodin se ti přístup pozastaví — stačí poslat jednu připomínku.'}
       <button type="button" className="ss-btn ss-btn-secondary" onClick={openFeedback}>Poslat připomínku</button>
     </div>}
-    {renewed && <div className="beta-banner" data-beta-tools role="status">Přístup obnoven do {renewed}.<button type="button" className="ss-btn ss-btn-ghost" onClick={()=>setRenewed('')}>Zavřít</button></div>}
-    <BetaMicroQuestions beta={beta} enabled={Boolean(canShow && beta?.consent_tracking_at && profile.betaProgramActive && profile.hasAccess && !guidanceOpen && !feedback.open && !closingOpen && !profile.closingPaused)} onRefresh={refreshBeta} onRenew={(result)=>{void refreshProfile();setRenewed(new Date(result.testerAccessUntil).toLocaleString('cs-CZ'));}} />
+    <BetaMicroQuestions beta={beta} enabled={Boolean(canShow && beta?.consent_tracking_at && profile.betaProgramActive && profile.hasAccess && !guidanceOpen && !feedback.open && !closingOpen && !profile.closingPaused)} onRefresh={refreshBeta} onRenew={()=>{void refreshProfile();}} />
     {canShow && profile.betaProgramActive && <div data-beta-tools className={`beta-floating-tools${location.pathname.startsWith('/onboarding/') ? ' is-onboarding' : ''}`}>
       <button type="button" className="beta-help-trigger" aria-label="Pokyny k beta testování" onClick={() => setGuidanceOpen(true)}>?</button>
       <button type="button" className="beta-feedback-trigger" onClick={() => { setGuidanceOpen(false); openFeedback(); }}>Zpětná vazba</button>
@@ -77,6 +76,23 @@ function BetaTools({ children }) {
     const id = user.id, value = await fetchBetaMe();
     if (currentUser.current === id) setBetaState(value);
   }, [user?.id,isTester,emailConfirmed]);
+  // Ticking the checklist must feel instant: an action that counts for it sends
+  // its event and re-reads the tester state right away instead of waiting for
+  // the 10 s flush and the 60 s poll. Tab focus re-reads it too.
+  useEffect(() => {
+    if (!isTester || !emailConfirmed) return undefined;
+    const counts = new Set(['q_finish','result_view','search','compare_open','matrix_weight','prihlaska_pick','theme_change','share_create','school_open','paywall_view']);
+    let timer = null;
+    const refreshSoon = () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => { void betaTracker.flush().finally(() => { void refreshBeta().catch(() => {}); }); }, 1200);
+    };
+    const onEvent = (event) => { if (counts.has(event.detail?.name)) refreshSoon(); };
+    const onVisible = () => { if (document.visibilityState === 'visible') refreshSoon(); };
+    window.addEventListener('snm:beta-event', onEvent);
+    document.addEventListener('visibilitychange', onVisible);
+    return () => { clearTimeout(timer); window.removeEventListener('snm:beta-event', onEvent); document.removeEventListener('visibilitychange', onVisible); };
+  }, [isTester, emailConfirmed, refreshBeta]);
   useEffect(() => {
     setBetaState(null); setFeedback({ open: false, pageUrl: '/', requestId: 0 });
     if (!isTester || !emailConfirmed) return;

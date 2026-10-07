@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Printer } from 'lucide-react';
 import {
   fetchPicks,
   savePicks,
@@ -15,6 +16,7 @@ import PointsInput from '../components/decision/PointsInput';
 import RiskSummary from '../components/decision/RiskSummary';
 import { useToast } from '../components/ToastContext';
 import './decision.css';
+import PageSkeleton from '../components/PageSkeleton';
 
 function Prihlaska() {
   const navigate = useNavigate();
@@ -115,11 +117,7 @@ function Prihlaska() {
   };
 
   if (loading) {
-    return (
-      <div className="decision-page">
-        <p className="ss-body-md">Načítám…</p>
-      </div>
-    );
+    return <PageSkeleton variant="list" label="Načítám přihlášku…" />;
   }
 
   return (
@@ -133,7 +131,7 @@ function Prihlaska() {
         </div>
         <div className="dp-header-actions">
           <button type="button" className="ss-btn ss-btn-secondary" onClick={() => window.print()}>
-            🖨 Tisk / PDF
+            <Printer size={16} aria-hidden="true" /> Tisk / PDF
           </button>
         </div>
       </div>

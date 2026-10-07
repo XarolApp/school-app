@@ -1,3 +1,4 @@
+import { CircleCheck, Info, TriangleAlert } from 'lucide-react';
 import { analyseSet, VERDICT_COPY, BANDS } from '../../lib/admissionRisk';
 
 const ORDER = ['jistota', 'realna', 'risk'];
@@ -25,7 +26,10 @@ function RiskSummary({ picks, studentPoints }) {
       </div>
 
       <p className="dp-risk-verdict">
-        <span aria-hidden="true">{verdict === 'vyvazene' ? '✅' : verdict === 'bezBodu' || verdict === 'neuplne' ? 'ℹ️' : '⚠️'}</span>{' '}
+        {(() => {
+          const Icon = verdict === 'vyvazene' ? CircleCheck : verdict === 'bezBodu' || verdict === 'neuplne' ? Info : TriangleAlert;
+          return <Icon className="dp-risk-verdict-icon" size={16} aria-hidden="true" />;
+        })()}{' '}
         {VERDICT_COPY[verdict]}
       </p>
 

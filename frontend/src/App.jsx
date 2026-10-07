@@ -30,10 +30,12 @@ import HandoffStart from './pages/HandoffStart';
 import NotFound from './pages/NotFound';
 import BetaLanding from './pages/BetaLanding';
 import EmailConfirmed from './pages/EmailConfirmed';
+import SavedSchools from './pages/SavedSchools';
 import OnboardingFlow from './pages/onboarding/OnboardingFlow';
 import './styles/ui.css';
 import './App.css';
 import './auth.css';
+import PageSkeleton from './components/PageSkeleton';
 
 function App() {
   return (
@@ -63,9 +65,9 @@ function App() {
               <Route path="/od-rodice/:token" element={<HandoffStart />} />
 
               <Route element={<Layout />}>
-                <Route path="/admin" element={<Suspense fallback={<p role="status">Načítání přehledů…</p>}><Admin /></Suspense>} />
+                <Route path="/admin" element={<Suspense fallback={<PageSkeleton variant="list" label="Načítání přehledů…" />}><Admin /></Suspense>} />
                 {/* Variant B (3D map) is the default landing; the old one stays at /stara for comparison. */}
-                <Route path="/" element={<Suspense fallback={<div className="route-loading" role="status">Načítám…</div>}><Landing /></Suspense>} />
+                <Route path="/" element={<Suspense fallback={<PageSkeleton />}><Landing /></Suspense>} />
                 <Route path="/nova" element={<Navigate to="/" replace />} />
                 <Route path="/stara" element={<Home />} />
                 <Route path="/skoly" element={<Search />} />
@@ -82,6 +84,7 @@ function App() {
                 <Route path="/porovnani/matice" element={<Matice />} />
                 <Route element={<ProtectedRoute />}>
                   <Route path="/prihlaska" element={<Prihlaska />} />
+                  <Route path="/ulozene" element={<SavedSchools />} />
                   {/* The standalone AI questionnaire (server-side lib/questionnaire.js) —
                       separate from the onboarding quiz. Protected the same way /prihlaska
                       is: the backend route itself also requires requireAccess. */}

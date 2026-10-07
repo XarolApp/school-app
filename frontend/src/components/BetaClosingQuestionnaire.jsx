@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useDraft } from '../lib/useDraft';
 import { Star } from 'lucide-react';
 import { submitBetaClosing } from '../api';
 import { palettes, PALETTE_IDS } from '../design/tokens';
@@ -11,12 +12,12 @@ function Choice({label,value,options,onChange,multiple=false}) {
 function Rating({label,value,max=5,min=1,onChange}) {return <fieldset className="beta-closing-field"><legend>{label}</legend><div className="beta-kind-chips">{Array.from({length:max-min+1},(_,i)=>i+min).map(n=><button key={n} type="button" className="ss-btn ss-btn-secondary" aria-pressed={value===n} onClick={()=>onChange(n)}>{n}</button>)}</div><p className="ss-caption">{min} = nejméně · {max} = nejvíce</p></fieldset>;}
 function Text({label,value,onChange}) {return <label className="ss-field-label">{label}<textarea className="ss-input" maxLength={2000} value={value} onChange={e=>onChange(e.target.value)} /></label>;}
 export default function BetaClosingQuestionnaire({role,onDone}) {
-  const parent=['rodic','ucitel'].includes(role),[step,setStep]=useState(0),[busy,setBusy]=useState(false),[error,setError]=useState('');
-  const [a,setA]=useState({selected:'',prior:[],nps:null,help:null,useful:[],missing:'',pay:'',prices:{tooCheap:'',good:'',expensive:'',tooExpensive:''},payer:'',plan:'',theme:'',future:'',change:'',ratings:{search:null,detail:null,questionnaire:null,compare:null}});
-  const [review,setReview]=useState({stars:null,body:'',consent_publish:false});
+  const parent=['rodic','ucitel'].includes(role),[step,setStep,clearStep]=useDraft('snm.draft.beta.closing.step',0),[busy,setBusy]=useState(false),[error,setError]=useState('');
+  const [a,setA,clearA]=useDraft('snm.draft.beta.closing.answers',{selected:'',prior:[],nps:null,help:null,useful:[],missing:'',pay:'',prices:{tooCheap:'',good:'',expensive:'',tooExpensive:''},payer:'',plan:'',theme:'',future:'',change:'',ratings:{search:null,detail:null,questionnaire:null,compare:null}});
+  const [review,setReview,clearReview]=useDraft('snm.draft.beta.closing.review',{stars:null,body:'',consent_publish:false});
   const set=(key,value)=>setA(prev=>({...prev,[key]:value}));
   const valid=[Boolean(a.selected),a.nps!==null&&a.help!==null,Boolean(a.pay&&a.payer&&a.plan)&&Object.values(a.prices).every(v=>v!==''&&Number(v)>=0&&Number(v)<=100000),Boolean(a.theme)&&Object.values(a.ratings).every(v=>v!==null),true][step];
-  const submit=async(withReview)=>{setBusy(true);setError('');try{await submitBetaClosing({answers:{...a,prices:Object.fromEntries(Object.entries(a.prices).map(([k,v])=>[k,Number(v)]))},review:withReview?review:null});onDone();}catch(e){setError(e.message);}finally{setBusy(false);}};
+  const submit=async(withReview)=>{setBusy(true);setError('');try{await submitBetaClosing({answers:{...a,prices:Object.fromEntries(Object.entries(a.prices).map(([k,v])=>[k,Number(v)]))},review:withReview?review:null});clearStep();clearA();clearReview();onDone();}catch(e){setError(e.message);}finally{setBusy(false);}};
   return <div className="beta-closing">
     <p className="ss-eyebrow">{step+1} / 5 · {[parent?'O Vás':'O tobě','Hodnota','Placení','Vzhled a budoucnost','Nepovinná recenze'][step]}</p>
     <p className="beta-closing-honest">{parent?'Odpovídejte upřímně':'Odpovídej upřímně'} — nic neodsuzujeme, špatná zpráva nám pomůže víc než pochvala.</p>

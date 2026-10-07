@@ -1,6 +1,6 @@
 import BetaEnrollment from '../components/BetaEnrollment';
 import { betaEnrollmentComplete, readBetaEnrollment, saveBetaEnrollment } from '../lib/betaEnrollment';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../components/AuthContext';
 import { fetchBetaSchool, startBetaVisit } from '../api';
@@ -11,19 +11,30 @@ import ConsentCheckbox from '../components/ConsentCheckbox';
 import PasswordInput from '../components/PasswordInput';
 import PasswordStrength from '../components/PasswordStrength';
 import { trialDaysPhrase } from '../config/pricing';
+import ConfirmEmailWaiting from '../components/ConfirmEmailWaiting';
+import { confirmationUrl } from '../components/AuthContext';
+import { readPendingConfirmation, clearPendingConfirmation } from '../lib/pendingConfirmation';
+import {
+  captchaProblem, consentProblem, emailProblem, focusFirstInvalid, problemSummary, nameProblem, onlyProblems, passwordProblem,
+} from '../lib/authValidation';
 import './beta.css';
 
+function FieldError({ id, message }) {
+  return message ? <span className="field-error" id={id} role="alert">{message}</span> : null;
+}
+
 function SignUp() {
-  const [form, setForm] = useState({ name: '', email: '', password: '' });
+  // A reload on the "check your inbox" screen returns there, not to an empty form.
+  const [resumed] = useState(() => readPendingConfirmation('signup'));
+  const [form, setForm] = useState({ name: '', email: resumed?.email || '', password: '' });
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
-  const [awaitingConfirmation, setAwaitingConfirmation] = useState(false);
+  const [awaitingConfirmation, setAwaitingConfirmation] = useState(Boolean(resumed));
+  const [submitted, setSubmitted] = useState(false);
   const [captchaToken, setCaptchaToken] = useState(null);
   const [consent, setConsent] = useState(false);
   const [captchaKey, setCaptchaKey] = useState(0);
-  const [consentError, setConsentError] = useState('');
-  const [showBetaErrors, setShowBetaErrors] = useState(false);
-  const { signUp, isSignedIn, emailConfirmed, profileLoading, adoptStoredSession } = useAuth();
+  const { signUp } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const betaParamPresent = searchParams.has('beta');
@@ -68,47 +79,39 @@ function SignUp() {
     return () => { active = false; };
   }, [betaCode, invalidBetaInvite]);
 
-  // The confirmation link signs in from its own tab; supabase-js tells this
-  // tab, and it carries on to the next screen without a second login.
-  useEffect(() => {
-    if (!awaitingConfirmation) return undefined;
-    const onFocus = () => { void adoptStoredSession(); };
-    window.addEventListener('focus', onFocus);
-    return () => window.removeEventListener('focus', onFocus);
-  }, [awaitingConfirmation, adoptStoredSession]);
-  useEffect(() => {
-    if (awaitingConfirmation && isSignedIn && emailConfirmed && !profileLoading) {
-      navigate(betaCode ? `/beta/${encodeURIComponent(betaCode)}` : '/skoly', { replace: true });
-    }
-  }, [awaitingConfirmation, isSignedIn, emailConfirmed, profileLoading, betaCode, navigate]);
-
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  // Every problem is computed on each render once the person has pressed the
+  // button, so all of them show together and each clears the moment it is fixed.
+  const problems = submitted ? onlyProblems({
+    name: nameProblem(form.name, betaParent),
+    email: emailProblem(form.email, betaParent),
+    password: passwordProblem(form.password, { parent: betaParent }),
+    consent: consentProblem(consent, betaParent),
+    captcha: captchaProblem(captchaToken, captchaEnabled, betaParent),
+  }) : {};
+  const betaIncomplete = Boolean(betaCode && !betaEnrollmentComplete(betaEnrollment));
+  // One count per message actually shown, so the summary never disagrees with the list.
+  const betaProblemCount = !betaCode ? 0
+    : (betaEnrollment.role ? 0 : 1) + (betaEnrollment.role === 'jine' && !betaEnrollment.roleNote.trim() ? 1 : 0) + (betaEnrollment.accepted ? 0 : 1);
+  const problemCount = Object.keys(problems).length + (submitted ? betaProblemCount : 0);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
+    setSubmitted(true);
 
-    if (form.password.length < 8) {
-      setError('Heslo musí mít alespoň 8 znaků.');
-      return;
-    }
-
-    if (betaCode && !betaEnrollmentComplete(betaEnrollment)) {
-      setShowBetaErrors(true);
-      return;
-    }
-
-    if (!consent) {
-      setConsentError(betaParent
-        ? 'Pro vytvoření účtu potřebujeme váš souhlas s podmínkami.'
-        : 'Pro vytvoření účtu potřebujeme tvůj souhlas s podmínkami.');
-      return;
-    }
-
-    if (captchaEnabled && !captchaToken) {
-      setError('Počkej prosím na ověření „nejsem robot“.');
+    const blocking = onlyProblems({
+      name: nameProblem(form.name, betaParent),
+      email: emailProblem(form.email, betaParent),
+      password: passwordProblem(form.password, { parent: betaParent }),
+      consent: consentProblem(consent, betaParent),
+      captcha: captchaProblem(captchaToken, captchaEnabled, betaParent),
+    });
+    if (Object.keys(blocking).length || betaIncomplete) {
+      requestAnimationFrame(() => focusFirstInvalid());
       return;
     }
 
@@ -123,7 +126,7 @@ function SignUp() {
 
     setSubmitting(true);
     if (betaCode) await startBetaVisit(betaCode,betaEnrollment.role,betaEnrollment.accepted).catch(()=>{});
-    const result = await signUp(form.email, form.password, form.name, {
+    const result = await signUp(form.email.trim(), form.password, form.name.trim(), {
       captchaToken,
       ...(betaCode ? { betaSchoolCode: betaCode, betaRole: betaEnrollment.role, betaRoleNote: betaEnrollment.roleNote, betaNoticeAccepted: betaEnrollment.accepted } : {}),
     });
@@ -154,32 +157,31 @@ function SignUp() {
     navigate('/skoly', { replace: true });
   };
 
+  const confirmedCode = betaCode || resumed?.betaCode || null;
+  const goAfterConfirm = useCallback(() => {
+    navigate(confirmedCode ? `/beta/${encodeURIComponent(confirmedCode)}` : '/skoly', { replace: true });
+  }, [navigate, confirmedCode]);
+
   if (awaitingConfirmation) {
     return (
       <>
       {betaInviteProvided && <meta name="robots" content="noindex, nofollow" />}
       <div className="page page-auth">
         <div className="auth-layout">
-          <div className="notice">
-            <span className="notice-title">{betaParent?'Potvrďte svůj e-mail':'Potvrď svůj e-mail'}</span>
-            <p className="notice-text">
-              {betaParent
-                ? `Poslali jsme odkaz na ${form.email}. Klikněte na něj — otevře se v novém okně, které pak můžete zavřít.`
-                : `Poslali jsme odkaz na ${form.email}. Klikni na něj — otevře se v novém okně, které pak můžeš zavřít.`}
-            </p>
-            <p className="notice-text email-waiting" role="status">
-              <span className="btn-spinner" aria-hidden="true" />
-              {betaParent ? 'Tady počkáme a po ověření budeme pokračovat sami.' : 'Tady počkáme a po ověření pokračujeme sami.'}
-            </p>
-            {!betaCode && (
+          <ConfirmEmailWaiting
+            email={form.email.trim()}
+            parent={betaParent || Boolean(resumed?.parent)}
+            betaCode={confirmedCode}
+            emailRedirectTo={confirmationUrl(confirmedCode)}
+            onConfirmed={goAfterConfirm}
+            onChangeEmail={() => setAwaitingConfirmation(false)}
+          >
+            {!confirmedCode && (
               <p className="notice-text">Účet se aktivuje i s {trialDaysPhrase()} zkušebním obdobím. Bez potvrzení se do databáze škol nedostaneš.</p>
             )}
-            <p className="notice-text">
-              {betaParent?'Nepřišel? Zkontrolujte složku se spamem — odkaz umíme poslat znovu z přihlašovací stránky.':'Nepřišel? Zkontroluj složku se spamem — odkaz umíme poslat znovu z přihlašovací stránky.'}
-            </p>
-          </div>
-          <Link to={`/prihlaseni${betaCode ? `?beta=${encodeURIComponent(betaCode)}` : ''}`} className="btn btn-secondary btn-block">
-            Zpět na přihlášení
+          </ConfirmEmailWaiting>
+          <Link to={`/prihlaseni${confirmedCode ? `?beta=${encodeURIComponent(confirmedCode)}` : ''}`} className="btn btn-ghost btn-block" onClick={clearPendingConfirmation}>
+            Už mám účet — přihlásit se
           </Link>
         </div>
       </div>
@@ -204,9 +206,14 @@ function SignUp() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="panel panel-lg auth-form">
+        <form onSubmit={handleSubmit} className="panel panel-lg auth-form" noValidate>
           <AuthTabs />
-          {betaCode && <BetaEnrollment role={betaEnrollment.role} roleNote={betaEnrollment.roleNote} accepted={betaEnrollment.accepted} showErrors={showBetaErrors}
+          {problemCount > 0 && (
+            <div className="notice notice-error" role="alert">
+              <p className="notice-text">{problemSummary(problemCount, betaParent)}</p>
+            </div>
+          )}
+          {betaCode && <BetaEnrollment role={betaEnrollment.role} roleNote={betaEnrollment.roleNote} accepted={betaEnrollment.accepted} showErrors={submitted}
             onRole={(role) => updateEnrollment({ role })} onRoleNote={(roleNote) => updateEnrollment({ roleNote })} onAccepted={(accepted) => updateEnrollment({ accepted })} />}
 
           {betaCode && betaState === 'loading' && <p className="field-hint" role="status">Ověřuji pozvánku…</p>}
@@ -239,7 +246,10 @@ function SignUp() {
               value={form.name}
               onChange={handleChange}
               required
+              aria-invalid={Boolean(problems.name)}
+              aria-describedby={problems.name ? 'signup-name-error' : undefined}
             />
+            <FieldError id="signup-name-error" message={problems.name} />
           </div>
 
           <div className="field">
@@ -255,10 +265,15 @@ function SignUp() {
               value={form.email}
               onChange={handleChange}
               required
+              aria-invalid={Boolean(problems.email)}
+              aria-describedby={problems.email ? 'signup-email-error' : undefined}
             />
-            <span className="field-hint">
-              Pošleme na něj potvrzovací odkaz, tak ať nemá překlep.
-            </span>
+            <FieldError id="signup-email-error" message={problems.email} />
+            {!problems.email && (
+              <span className="field-hint">
+                Pošleme na něj potvrzovací odkaz, tak ať nemá překlep.
+              </span>
+            )}
           </div>
 
           <div className="field">
@@ -273,7 +288,10 @@ function SignUp() {
               value={form.password}
               onChange={handleChange}
               required
+              aria-invalid={Boolean(problems.password)}
+              aria-describedby={problems.password ? 'signup-password-error' : undefined}
             />
+            <FieldError id="signup-password-error" message={problems.password} />
             {form.password ? (
               <PasswordStrength password={form.password} />
             ) : (
@@ -281,10 +299,10 @@ function SignUp() {
             )}
           </div>
 
-          <ConsentCheckbox id="signup-consent" checked={consent} adult={betaParent} error={consentError}
-            onChange={(value) => { setConsent(value); if (value) setConsentError(''); }} />
+          <ConsentCheckbox id="signup-consent" checked={consent} adult={betaParent} error={problems.consent} onChange={setConsent} />
 
           <Captcha onVerify={setCaptchaToken} resetKey={captchaKey} />
+          <FieldError id="signup-captcha-error" message={problems.captcha} />
 
           <button
             type="submit"

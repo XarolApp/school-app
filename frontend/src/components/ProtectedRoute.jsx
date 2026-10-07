@@ -1,5 +1,6 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext';
+import PageSkeleton from './PageSkeleton';
 
 function ProtectedRoute() {
   const {
@@ -16,11 +17,7 @@ function ProtectedRoute() {
   const location = useLocation();
 
   if (loading || (isSignedIn && profileLoading)) {
-    return (
-      <div className="route-loading" role="status">
-        Načítám…
-      </div>
-    );
+    return <PageSkeleton />;
   }
 
   if (!isSignedIn) {

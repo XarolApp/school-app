@@ -5,6 +5,7 @@ import Captcha, { captchaEnabled } from '../components/Captcha';
 import PasswordInput from '../components/PasswordInput';
 import { getRememberMe } from '../supabaseClient';
 import { normalizeBetaCode } from '../lib/pendingBetaCode';
+import { captchaProblem, emailProblem, focusFirstInvalid, onlyProblems, passwordProblem } from '../lib/authValidation';
 
 function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -15,6 +16,7 @@ function Login() {
   const [resent, setResent] = useState(false);
   const [captchaToken, setCaptchaToken] = useState(null);
   const [captchaKey, setCaptchaKey] = useState(0);
+  const [submitted, setSubmitted] = useState(false);
   const { signIn, resendConfirmation } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -41,18 +43,26 @@ function Login() {
     setCaptchaKey((key) => key + 1);
   };
 
+  const computeProblems = () => onlyProblems({
+    email: emailProblem(form.email),
+    password: passwordProblem(form.password, { checkLength: false }),
+    captcha: captchaProblem(captchaToken, captchaEnabled),
+  });
+  const problems = submitted ? computeProblems() : {};
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
     setNeedsConfirmation(false);
+    setSubmitted(true);
 
-    if (captchaEnabled && !captchaToken) {
-      setError('Počkej prosím na ověření „nejsem robot“.');
+    if (Object.keys(computeProblems()).length) {
+      requestAnimationFrame(() => focusFirstInvalid());
       return;
     }
 
     setSubmitting(true);
-    const result = await signIn(form.email, form.password, {
+    const result = await signIn(form.email.trim(), form.password, {
       captchaToken,
       remember,
     });
@@ -117,7 +127,7 @@ function Login() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="panel panel-lg auth-form">
+        <form onSubmit={handleSubmit} className="panel panel-lg auth-form" noValidate>
           {justConfirmed && !error && (
             <div className="notice notice-success">
               <span className="notice-title">E-mail potvrzen</span>
@@ -165,7 +175,9 @@ function Login() {
               value={form.email}
               onChange={handleChange}
               required
+              aria-invalid={Boolean(problems.email)}
             />
+            {problems.email && <span className="field-error" role="alert">{problems.email}</span>}
           </div>
 
           <div className="field">
@@ -184,7 +196,9 @@ function Login() {
               value={form.password}
               onChange={handleChange}
               required
+              aria-invalid={Boolean(problems.password)}
             />
+            {problems.password && <span className="field-error" role="alert">{problems.password}</span>}
           </div>
 
           <label className="checkbox-row" htmlFor="login-remember">
@@ -204,6 +218,7 @@ function Login() {
           </label>
 
           <Captcha onVerify={setCaptchaToken} resetKey={captchaKey} />
+          {problems.captcha && <span className="field-error" role="alert">{problems.captcha}</span>}
 
           <button
             type="submit"
