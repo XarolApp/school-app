@@ -22,15 +22,14 @@ product/research docs, not visual design work. That split happened 2026-08-31; s
 
 ## Guides (apply ongoing, not just once)
 
-- **`claude_code_ui_ux_guide.md`** — psychological UX principles (dopamine loops,
-  IKEA effect, cognitive load, emotional design levels). Required reading before any
-  frontend work, app-wide — not just onboarding.
+- **`claude_code_ui_ux_guide.md`** — historical psychological UX research. Read its
+  implementation-override banner first; its old trial/progress/waiting checklist
+  is superseded by current source, founder decisions and `design/DESIGN.md`.
 
 ## Archival
 
-- **`onboarding.md`** — superseded. Fully merged into
-  `.claude/agents/onboarding-architect.md`; kept only for history. No need to read it
-  directly.
+- The former **`onboarding.md`** was merged into
+  `.claude/agents/onboarding-architect.md` and is no longer present here.
 
 ---
 
@@ -39,7 +38,7 @@ product/research docs, not visual design work. That split happened 2026-08-31; s
 `design/` at the repo root, created 2026-08-31:
 
 - **`design/DESIGN.md`** — the authoritative design system (moved from repo root).
-  Terracotta `#AD4F2A` / moss `#4F7143`, Fraunces + Public Sans. **Check this before
+  Značka blue `#1C58A3`, Archivo + Archivo Narrow. **Check this before
   any non-trivial frontend visual change** — see CLAUDE.md's standing rule.
 - **`design/system/`** — the real, built design-system output from Claude Design:
   actual component code (`Button`, `Input`, `Checkbox`, `Card`, `Chip`, …), tokens,

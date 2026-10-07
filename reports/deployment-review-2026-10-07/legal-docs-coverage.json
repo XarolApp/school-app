@@ -1,0 +1,631 @@
+[
+  {
+    "path": "AGENTS.md",
+    "sha256_before": "0d2c61849d2f8bf502b6c1f0b2ff782eab8b677251d604d5ffa662693bc5907a",
+    "total_lines": 956,
+    "read_ranges": [],
+    "status": "pending",
+    "sha256_after": "0d2c61849d2f8bf502b6c1f0b2ff782eab8b677251d604d5ffa662693bc5907a",
+    "total_lines_after": 956,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "CLAUDE.md",
+    "sha256_before": "14a1c634ecf7612c141973f75fd047eac829320be9f852cc5abf519fa4ee3327",
+    "total_lines": 952,
+    "read_ranges": [],
+    "status": "pending",
+    "sha256_after": "14a1c634ecf7612c141973f75fd047eac829320be9f852cc5abf519fa4ee3327",
+    "total_lines_after": 952,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "DEPLOY.md",
+    "sha256_before": "8fad0710f317d8cb012b616c3737e1bf857eb5a2bc5d79b3aa1ab4f00c3e184f",
+    "total_lines": 69,
+    "read_ranges": [
+      [
+        1,
+        69
+      ]
+    ],
+    "status": "reviewed",
+    "sha256_after": "8fad0710f317d8cb012b616c3737e1bf857eb5a2bc5d79b3aa1ab4f00c3e184f",
+    "total_lines_after": 69,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "PROJECT-OVERVIEW.md",
+    "sha256_before": "5f8772740a9175e1f6a7a16f6d34de8b1cbdb32b758535a35b347d0aa933a84a",
+    "total_lines": 58,
+    "read_ranges": [
+      [
+        1,
+        58
+      ]
+    ],
+    "status": "reviewed",
+    "sha256_after": "5f8772740a9175e1f6a7a16f6d34de8b1cbdb32b758535a35b347d0aa933a84a",
+    "total_lines_after": 58,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "README.md",
+    "sha256_before": "5196e8253a4449b132b8ceb8dadc1498b9f8270c20287ac8da0db999d297bb8c",
+    "total_lines": 1,
+    "read_ranges": [
+      [
+        1,
+        1
+      ]
+    ],
+    "status": "reviewed",
+    "sha256_after": "5196e8253a4449b132b8ceb8dadc1498b9f8270c20287ac8da0db999d297bb8c",
+    "total_lines_after": 1,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "UNFORGET.md",
+    "sha256_before": "f3c64024d4130423b356a1b46da1ca90255072671e8cf47eb23df7328555b597",
+    "total_lines": 2143,
+    "read_ranges": [
+      [
+        1,
+        130
+      ]
+    ],
+    "status": "partial",
+    "sha256_after": "f3c64024d4130423b356a1b46da1ca90255072671e8cf47eb23df7328555b597",
+    "total_lines_after": 2143,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "docs/beta_testing_logic.md",
+    "sha256_before": "6e3b4e96682742fed8a4d3e8d00bc75a093116a80241501a43de30f37b673f92",
+    "total_lines": 156,
+    "read_ranges": [
+      [
+        1,
+        156
+      ]
+    ],
+    "status": "reviewed",
+    "sha256_after": "6e3b4e96682742fed8a4d3e8d00bc75a093116a80241501a43de30f37b673f92",
+    "total_lines_after": 156,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "docs/beta_testing_operations.md",
+    "sha256_before": "c8d30ebdfc367460343d7d5d0b3b703cc89dc28c75bd5189bad3c8423d66070d",
+    "total_lines": 148,
+    "read_ranges": [
+      [
+        1,
+        148
+      ]
+    ],
+    "status": "reviewed",
+    "sha256_after": "c8d30ebdfc367460343d7d5d0b3b703cc89dc28c75bd5189bad3c8423d66070d",
+    "total_lines_after": 148,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "docs/firecrawl-extraction-task.md",
+    "sha256_before": "5f67e0b63db9f0e7d72ff5d76a49249eabc139f2c7115aea2ced2c340ee7ba22",
+    "total_lines": 227,
+    "read_ranges": [],
+    "status": "pending",
+    "sha256_after": "5f67e0b63db9f0e7d72ff5d76a49249eabc139f2c7115aea2ced2c340ee7ba22",
+    "total_lines_after": 227,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "docs/legal-research/01-withdrawal-button.md",
+    "sha256_before": "e14977c9a9c9ce6739a6bfb40e46b632c34b10e3c7e98aff1d7ef8638d73f672",
+    "total_lines": 31,
+    "read_ranges": [
+      [
+        1,
+        31
+      ]
+    ],
+    "status": "reviewed",
+    "sha256_after": "e14977c9a9c9ce6739a6bfb40e46b632c34b10e3c7e98aff1d7ef8638d73f672",
+    "total_lines_after": 31,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "docs/legal-research/02-minors-contract-capacity.md",
+    "sha256_before": "5c5cb43a22a3bcdaadffbed6d0c3156b8aca112d869364dd7adc72512c7bece5",
+    "total_lines": 30,
+    "read_ranges": [
+      [
+        1,
+        30
+      ]
+    ],
+    "status": "reviewed",
+    "sha256_after": "5c5cb43a22a3bcdaadffbed6d0c3156b8aca112d869364dd7adc72512c7bece5",
+    "total_lines_after": 30,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "docs/legal-research/03-digital-consent-age.md",
+    "sha256_before": "acb99f945e8f1f404a7f5919002ed021b716cde9ad04339892c2fc4a841670b1",
+    "total_lines": 24,
+    "read_ranges": [
+      [
+        1,
+        24
+      ]
+    ],
+    "status": "reviewed",
+    "sha256_after": "acb99f945e8f1f404a7f5919002ed021b716cde9ad04339892c2fc4a841670b1",
+    "total_lines_after": 24,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "docs/legal-research/04-withdrawal-period-refunds.md",
+    "sha256_before": "93236ded4dd62467908bb57f8f9a82ce16718c2be87bbdb38f4199cc0053c04e",
+    "total_lines": 29,
+    "read_ranges": [
+      [
+        1,
+        29
+      ]
+    ],
+    "status": "reviewed",
+    "sha256_after": "93236ded4dd62467908bb57f8f9a82ce16718c2be87bbdb38f4199cc0053c04e",
+    "total_lines_after": 29,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "docs/legal-research/05-pre-contract-information.md",
+    "sha256_before": "af539aa25bb63c76b8a063c691f7b58a4cf719eac5c06b05ab45455870c6d1d7",
+    "total_lines": 47,
+    "read_ranges": [
+      [
+        1,
+        47
+      ]
+    ],
+    "status": "reviewed",
+    "sha256_after": "af539aa25bb63c76b8a063c691f7b58a4cf719eac5c06b05ab45455870c6d1d7",
+    "total_lines_after": 47,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "docs/legal-research/06-dsa-user-reviews.md",
+    "sha256_before": "330cd9c46a0609329c9ca6588b449b0fca2f7826f9768ed891c9e7755180202c",
+    "total_lines": 33,
+    "read_ranges": [
+      [
+        1,
+        33
+      ]
+    ],
+    "status": "reviewed",
+    "sha256_after": "330cd9c46a0609329c9ca6588b449b0fca2f7826f9768ed891c9e7755180202c",
+    "total_lines_after": 33,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "docs/legal-research/07-cookies-localstorage.md",
+    "sha256_before": "28821402a868b36d75984696ed71377e2c6c0acb06cc8168d88f6c8bec43312b",
+    "total_lines": 24,
+    "read_ranges": [
+      [
+        1,
+        24
+      ]
+    ],
+    "status": "reviewed",
+    "sha256_after": "28821402a868b36d75984696ed71377e2c6c0acb06cc8168d88f6c8bec43312b",
+    "total_lines_after": 24,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "docs/legal-research/08-fines-enforcement.md",
+    "sha256_before": "d3df64327c11f1ec181e174b852121bbd80cae90554d99c57dd02f34368cffaf",
+    "total_lines": 21,
+    "read_ranges": [
+      [
+        1,
+        21
+      ]
+    ],
+    "status": "reviewed",
+    "sha256_after": "d3df64327c11f1ec181e174b852121bbd80cae90554d99c57dd02f34368cffaf",
+    "total_lines_after": 21,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "docs/reports/2026-09-21-legal-privacy-remediation-handoff.md",
+    "sha256_before": "09c89b8cf2a773184e635ff4acc4bf46c786cb31d3ee88818f55b77fe19fd495",
+    "total_lines": 131,
+    "read_ranges": [
+      [
+        1,
+        131
+      ]
+    ],
+    "status": "reviewed",
+    "sha256_after": "09c89b8cf2a773184e635ff4acc4bf46c786cb31d3ee88818f55b77fe19fd495",
+    "total_lines_after": 131,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "docs/skolamatch_90_point_context.md",
+    "sha256_before": "dabccc718ee629e12acb7cc5b1cc5acf94499bbb8e6a1658b9a76dbc7b9d7c5f",
+    "total_lines": 396,
+    "read_ranges": [],
+    "status": "pending",
+    "sha256_after": "dabccc718ee629e12acb7cc5b1cc5acf94499bbb8e6a1658b9a76dbc7b9d7c5f",
+    "total_lines_after": 396,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "docs/skolamatch_current_status.md",
+    "sha256_before": "87b769d014e43897e47b10c852c6f5ef1d77cad46b2aef0bfcf0374c70a1450f",
+    "total_lines": 1236,
+    "read_ranges": [
+      [
+        1,
+        230
+      ]
+    ],
+    "status": "partial",
+    "sha256_after": "87b769d014e43897e47b10c852c6f5ef1d77cad46b2aef0bfcf0374c70a1450f",
+    "total_lines_after": 1236,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "docs/skolamatch_full_launch_marketing_plan_v2.md",
+    "sha256_before": "3c401de317c78d6078200b09641eb0108a42cfe35ee3d04e48d375bfd47e9bef",
+    "total_lines": 2064,
+    "read_ranges": [],
+    "status": "pending",
+    "sha256_after": "3c401de317c78d6078200b09641eb0108a42cfe35ee3d04e48d375bfd47e9bef",
+    "total_lines_after": 2064,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "docs/sources/README.md",
+    "sha256_before": "c4bf89e0ac46efbc24dc3d056536fcdbb01fda2c49ee308235f75d90b35dac80",
+    "total_lines": 70,
+    "read_ranges": [
+      [
+        1,
+        70
+      ]
+    ],
+    "status": "reviewed",
+    "sha256_after": "c4bf89e0ac46efbc24dc3d056536fcdbb01fda2c49ee308235f75d90b35dac80",
+    "total_lines_after": 70,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "docs/sources/claude_code_ui_ux_guide.md",
+    "sha256_before": "e247a04ab216d19fe1ff2080cc2a10f2cdc84369dd21bc9d7d32a4d419b907a3",
+    "total_lines": 106,
+    "read_ranges": [
+      [
+        1,
+        106
+      ]
+    ],
+    "status": "reviewed",
+    "sha256_after": "e247a04ab216d19fe1ff2080cc2a10f2cdc84369dd21bc9d7d32a4d419b907a3",
+    "total_lines_after": 106,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "docs/sources/feature-brainstorm.md",
+    "sha256_before": "9c04dd3823aaf6c5da222217de4b2f9dbb2ee691429a95edacff8cde93a69be3",
+    "total_lines": 363,
+    "read_ranges": [],
+    "status": "pending",
+    "sha256_after": "9c04dd3823aaf6c5da222217de4b2f9dbb2ee691429a95edacff8cde93a69be3",
+    "total_lines_after": 363,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "docs/sources/onboarding_conversion_research.md",
+    "sha256_before": "441211fb793e4e3ceadd9a820d74e752f903cacc90f208543a8118e1daa8ccf0",
+    "total_lines": 194,
+    "read_ranges": [],
+    "status": "pending",
+    "sha256_after": "441211fb793e4e3ceadd9a820d74e752f903cacc90f208543a8118e1daa8ccf0",
+    "total_lines_after": 194,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "docs/sources/onboarding_conversion_research_prompt.md",
+    "sha256_before": "80f65a5206da5472b254098c84dca964028e77bcc49adc2cad335fe70c560a44",
+    "total_lines": 167,
+    "read_ranges": [],
+    "status": "pending",
+    "sha256_after": "80f65a5206da5472b254098c84dca964028e77bcc49adc2cad335fe70c560a44",
+    "total_lines_after": 167,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "docs/sources/paywall_copy_framing_research.md",
+    "sha256_before": "969db3afcad11350aa177b9460259a43f4d7f0a5dc6efee9f5cd2f01af7b4c9a",
+    "total_lines": 152,
+    "read_ranges": [
+      [
+        1,
+        152
+      ]
+    ],
+    "status": "reviewed",
+    "sha256_after": "969db3afcad11350aa177b9460259a43f4d7f0a5dc6efee9f5cd2f01af7b4c9a",
+    "total_lines_after": 152,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "docs/sources/paywall_loss_framing_research_prompt.md",
+    "sha256_before": "83d971abb5cdf690d2cb523e4b0202e2899ebbda0a556c61e3216755183896a8",
+    "total_lines": 49,
+    "read_ranges": [
+      [
+        1,
+        49
+      ]
+    ],
+    "status": "reviewed",
+    "sha256_after": "83d971abb5cdf690d2cb523e4b0202e2899ebbda0a556c61e3216755183896a8",
+    "total_lines_after": 49,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "docs/sources/platform_onboarding_research.md",
+    "sha256_before": "2ccf91f41e527345cbc57cfdced7544e7d55d354af1b861c3aeb09b7544d9f69",
+    "total_lines": 317,
+    "read_ranges": [],
+    "status": "pending",
+    "sha256_after": "2ccf91f41e527345cbc57cfdced7544e7d55d354af1b861c3aeb09b7544d9f69",
+    "total_lines_after": 317,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "docs/sources/pricing_research.md",
+    "sha256_before": "0fab070e9ee3d1b7697b57a188bfa0238b110eea4725ebcad807c340156f5b76",
+    "total_lines": 144,
+    "read_ranges": [
+      [
+        1,
+        144
+      ]
+    ],
+    "status": "reviewed",
+    "sha256_after": "0fab070e9ee3d1b7697b57a188bfa0238b110eea4725ebcad807c340156f5b76",
+    "total_lines_after": 144,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "docs/workflows/codex-filter-comparison.md",
+    "sha256_before": "c5a7a56e72d3b78a3c16d7f7f81715d203da6aa00cfcedb501b18bba5082fc35",
+    "total_lines": 66,
+    "read_ranges": [
+      [
+        1,
+        66
+      ]
+    ],
+    "status": "reviewed",
+    "sha256_after": "c5a7a56e72d3b78a3c16d7f7f81715d203da6aa00cfcedb501b18bba5082fc35",
+    "total_lines_after": 66,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "docs/workflows/model-gate.md",
+    "sha256_before": "1ac9925145b6b83c8121fa120d7ffc13937c580a873c614dc25f82ff1eac827b",
+    "total_lines": 19,
+    "read_ranges": [
+      [
+        1,
+        19
+      ]
+    ],
+    "status": "reviewed",
+    "sha256_after": "1ac9925145b6b83c8121fa120d7ffc13937c580a873c614dc25f82ff1eac827b",
+    "total_lines_after": 19,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "docs/workflows/plan-then-build-collaboration.md",
+    "sha256_before": "86cd9f79c16658f12256e42d470399cae1f7ca1e0637d33c0390fc705578e6b0",
+    "total_lines": 80,
+    "read_ranges": [
+      [
+        1,
+        80
+      ]
+    ],
+    "status": "reviewed",
+    "sha256_after": "86cd9f79c16658f12256e42d470399cae1f7ca1e0637d33c0390fc705578e6b0",
+    "total_lines_after": 80,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "frontend/src/pages/Legal.jsx",
+    "sha256_before": "09ef50fe1308b720fec9607e56f2713894344a6b3cf9017350172617c07e471d",
+    "total_lines": 345,
+    "read_ranges": [
+      [
+        1,
+        345
+      ]
+    ],
+    "status": "reviewed",
+    "sha256_after": "09ef50fe1308b720fec9607e56f2713894344a6b3cf9017350172617c07e471d",
+    "total_lines_after": 345,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "plans/009-stripe-payments.md",
+    "sha256_before": "72db214e2c5f654087156ebd9f068829f1d03798d13134ec54743f5a65c0fe37",
+    "total_lines": 538,
+    "read_ranges": [
+      [
+        1,
+        538
+      ]
+    ],
+    "status": "reviewed",
+    "sha256_after": "72db214e2c5f654087156ebd9f068829f1d03798d13134ec54743f5a65c0fe37",
+    "total_lines_after": 538,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "plans/012-ui-system-consolidation.md",
+    "sha256_before": "840edd5073d415ad8c943678034e09c5259b6cb9486551e4b84668c9d8bbf2da",
+    "total_lines": 183,
+    "read_ranges": [],
+    "status": "pending",
+    "sha256_after": "840edd5073d415ad8c943678034e09c5259b6cb9486551e4b84668c9d8bbf2da",
+    "total_lines_after": 183,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "plans/013-skoly-calm-list.md",
+    "sha256_before": "4e94b5b3205ef134e202e587656f18f0c8d80cf4b8d63620564a730f98fc18ac",
+    "total_lines": 607,
+    "read_ranges": [],
+    "status": "pending",
+    "sha256_after": "4e94b5b3205ef134e202e587656f18f0c8d80cf4b8d63620564a730f98fc18ac",
+    "total_lines_after": 607,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "plans/014-colour-themes.md",
+    "sha256_before": "e605bdd990af52b76e19793f9e32917b4eaf920b480da91ae8f27dde32ca3d52",
+    "total_lines": 344,
+    "read_ranges": [],
+    "status": "pending",
+    "sha256_after": "e605bdd990af52b76e19793f9e32917b4eaf920b480da91ae8f27dde32ca3d52",
+    "total_lines_after": 344,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "plans/015-desktop-colour.md",
+    "sha256_before": "cb5961fdaac4325aee95e6df1abc5a9fc436423325859846252f1f8807c95baf",
+    "total_lines": 301,
+    "read_ranges": [],
+    "status": "pending",
+    "sha256_after": "cb5961fdaac4325aee95e6df1abc5a9fc436423325859846252f1f8807c95baf",
+    "total_lines_after": 301,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "plans/016-beta-testing-program.md",
+    "sha256_before": "edd6b62ddacf1558f46bdb036301c3a67fac9379080397b385d470d786224be0",
+    "total_lines": 164,
+    "read_ranges": [
+      [
+        1,
+        164
+      ]
+    ],
+    "status": "reviewed",
+    "sha256_after": "edd6b62ddacf1558f46bdb036301c3a67fac9379080397b385d470d786224be0",
+    "total_lines_after": 164,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "plans/017-questionnaire-expansion-and-weights.md",
+    "sha256_before": "c12dbde9c4e9fd45b3aa326b836003ee2e925df5caca6cc53d36d73023c9bfce",
+    "total_lines": 346,
+    "read_ranges": [],
+    "status": "pending",
+    "sha256_after": "c12dbde9c4e9fd45b3aa326b836003ee2e925df5caca6cc53d36d73023c9bfce",
+    "total_lines_after": 346,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "plans/018-parent-child-share-links.md",
+    "sha256_before": "b114a9ac77c00b5e07e3352767ff464349d7bc978547fe76aefe1cbf3793a033",
+    "total_lines": 690,
+    "read_ranges": [
+      [
+        1,
+        690
+      ]
+    ],
+    "status": "reviewed",
+    "sha256_after": "b114a9ac77c00b5e07e3352767ff464349d7bc978547fe76aefe1cbf3793a033",
+    "total_lines_after": 690,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "plans/019-beta-feedback-and-analytics.md",
+    "sha256_before": "0a5a4631ee0a2345d2642062b7c3dfd90e01b308da0c7dc284e6f4fab238d950",
+    "total_lines": 201,
+    "read_ranges": [
+      [
+        1,
+        201
+      ]
+    ],
+    "status": "reviewed",
+    "sha256_after": "0a5a4631ee0a2345d2642062b7c3dfd90e01b308da0c7dc284e6f4fab238d950",
+    "total_lines_after": 201,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  },
+  {
+    "path": "plans/README.md",
+    "sha256_before": "ce7129a452bf2d516d6ba4130df54b1ac67b78c1cfb90aba036b01f21e983a19",
+    "total_lines": 155,
+    "read_ranges": [],
+    "status": "pending",
+    "sha256_after": "ce7129a452bf2d516d6ba4130df54b1ac67b78c1cfb90aba036b01f21e983a19",
+    "total_lines_after": 155,
+    "drift_detected": false,
+    "checked_at_utc": "2026-10-07T17:00:56.431771+00:00"
+  }
+]

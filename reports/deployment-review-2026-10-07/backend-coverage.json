@@ -1,0 +1,509 @@
+{
+  "server.js": {
+    "sha256_before": "6308006bffb4ea72a1e77675b1c11cf4e589e576008af65aa9cce7c0ff4f104b",
+    "total_lines": 3328,
+    "read_ranges": [
+      [
+        1,
+        3328
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "6308006bffb4ea72a1e77675b1c11cf4e589e576008af65aa9cce7c0ff4f104b",
+    "total_lines_after": 3328,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed."
+  },
+  "supabase-setup.sql": {
+    "sha256_before": "9715c3b1e6547de46f813cebe0790e720206eb04ec876e4989a8ad6f77d3bf10",
+    "total_lines": 1376,
+    "read_ranges": [
+      [
+        1,
+        1376
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "9715c3b1e6547de46f813cebe0790e720206eb04ec876e4989a8ad6f77d3bf10",
+    "total_lines_after": 1376,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed.",
+    "notes": "All1376 lines read. Did not execute SQL/live mutation. Found non-idempotent review_reports PK migration and ON CONFLICT/partial-index mismatch."
+  },
+  "package.json": {
+    "sha256_before": "c207257141b4d7d3091f900a8bda124a497749ff82e3c6ac227d95a373e63934",
+    "total_lines": 38,
+    "read_ranges": [
+      [
+        1,
+        38
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "c207257141b4d7d3091f900a8bda124a497749ff82e3c6ac227d95a373e63934",
+    "total_lines_after": 38,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed."
+  },
+  "package-lock.json": {
+    "sha256_before": "8969b92029a8ccc2c95f7a1fedc90a5a894375f8863cdcff1d84bef90f3e4dcc",
+    "total_lines": 1430,
+    "read_ranges": [
+      [
+        1,
+        1430
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "8969b92029a8ccc2c95f7a1fedc90a5a894375f8863cdcff1d84bef90f3e4dcc",
+    "total_lines_after": 1430,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed.",
+    "notes": "All1430 lines read. Parent owns npm-audit advisory evidence/remediation; Stripe15 API compatibility requires endpoint-version verification."
+  },
+  ".env.example": {
+    "sha256_before": "c18e8c34615fe6338f4e136e4e0f54fc7c919a93f992a860c8b67af3b7451790",
+    "total_lines": 67,
+    "read_ranges": [
+      [
+        1,
+        67
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "c18e8c34615fe6338f4e136e4e0f54fc7c919a93f992a860c8b67af3b7451790",
+    "total_lines_after": 67,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed."
+  },
+  "railway.json": {
+    "sha256_before": "e4ed90a0e9614d65bc2cb16cbcf772f80d05f8ec9e883c3c561b6dee2729e58e",
+    "total_lines": 11,
+    "read_ranges": [
+      [
+        1,
+        11
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "e4ed90a0e9614d65bc2cb16cbcf772f80d05f8ec9e883c3c561b6dee2729e58e",
+    "total_lines_after": 11,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed."
+  },
+  "plans/009-stripe-payments.md": {
+    "sha256_before": "72db214e2c5f654087156ebd9f068829f1d03798d13134ec54743f5a65c0fe37",
+    "total_lines": 538,
+    "read_ranges": [
+      [
+        1,
+        538
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "72db214e2c5f654087156ebd9f068829f1d03798d13134ec54743f5a65c0fe37",
+    "total_lines_after": 538,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed.",
+    "notes": "All538 lines read; major sections describe superseded season-subscription design; report lists exact stale ranges."
+  },
+  "lib/aiUsage.js": {
+    "sha256_before": "273343ccfd22e1c5a4300a4d4050503a7d34df3a84443bd701cd724c68dd3998",
+    "total_lines": 34,
+    "read_ranges": [
+      [
+        1,
+        34
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "273343ccfd22e1c5a4300a4d4050503a7d34df3a84443bd701cd724c68dd3998",
+    "total_lines_after": 34,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed."
+  },
+  "lib/betaAdmin.js": {
+    "sha256_before": "5461cbff4b18bbb1413c516d704595e2999e028c514ddf49bfa76b0faf3b3435",
+    "total_lines": 119,
+    "read_ranges": [
+      [
+        1,
+        119
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "5461cbff4b18bbb1413c516d704595e2999e028c514ddf49bfa76b0faf3b3435",
+    "total_lines_after": 119,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed."
+  },
+  "lib/betaAdminRoutes.js": {
+    "sha256_before": "3e01d514d5e124f7a1df28946aa2216771239574d07a963a02dce9cbb50db1e7",
+    "total_lines": 55,
+    "read_ranges": [
+      [
+        1,
+        55
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "3e01d514d5e124f7a1df28946aa2216771239574d07a963a02dce9cbb50db1e7",
+    "total_lines_after": 55,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed."
+  },
+  "lib/betaAnalytics.js": {
+    "sha256_before": "3eb69d148e98e2643dd952874dc513b6a7fc48fa6a9d54afceeb77c546936f92",
+    "total_lines": 99,
+    "read_ranges": [
+      [
+        1,
+        99
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "3eb69d148e98e2643dd952874dc513b6a7fc48fa6a9d54afceeb77c546936f92",
+    "total_lines_after": 99,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed."
+  },
+  "lib/betaClosing.js": {
+    "sha256_before": "51a6163d227cfdb22fe1bd5c6ab56ebe0cf16b911e401f91f4b03832c60eaaef",
+    "total_lines": 40,
+    "read_ranges": [
+      [
+        1,
+        40
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "51a6163d227cfdb22fe1bd5c6ab56ebe0cf16b911e401f91f4b03832c60eaaef",
+    "total_lines_after": 40,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed."
+  },
+  "lib/betaLimits.js": {
+    "sha256_before": "6990ca29ade3ae8c8211ebe812a42a708706cae79d2ec15b15ccf5149fc3803c",
+    "total_lines": 11,
+    "read_ranges": [
+      [
+        1,
+        11
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "6990ca29ade3ae8c8211ebe812a42a708706cae79d2ec15b15ccf5149fc3803c",
+    "total_lines_after": 11,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed."
+  },
+  "lib/betaMaintenance.js": {
+    "sha256_before": "4182160182cf39aecaf96a50124c8bac361df8f7458db70a87a43e4ec451de32",
+    "total_lines": 13,
+    "read_ranges": [
+      [
+        1,
+        13
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "4182160182cf39aecaf96a50124c8bac361df8f7458db70a87a43e4ec451de32",
+    "total_lines_after": 13,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed."
+  },
+  "lib/betaRankings.js": {
+    "sha256_before": "3993b3ff69c3af8a13c8bb73685196dcd61feffd5f0c7e39bf18a3c8564d8f32",
+    "total_lines": 5,
+    "read_ranges": [
+      [
+        1,
+        5
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "3993b3ff69c3af8a13c8bb73685196dcd61feffd5f0c7e39bf18a3c8564d8f32",
+    "total_lines_after": 5,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed."
+  },
+  "lib/matching.js": {
+    "sha256_before": "8b691149ec8abdd4a8b16d1483fb44a8e60d7e7b775c6964009fc7ad85590e5e",
+    "total_lines": 924,
+    "read_ranges": [
+      [
+        1,
+        924
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "8b691149ec8abdd4a8b16d1483fb44a8e60d7e7b775c6964009fc7ad85590e5e",
+    "total_lines_after": 924,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed.",
+    "notes": "Actual scorer reproduced 100 versus79 for same school when list/detail subset differs."
+  },
+  "lib/onboardingAnswers.js": {
+    "sha256_before": "f0fba45386f04e2ecc79d1facbbddef6ba097e05891a99f6bba967e751ff6b98",
+    "total_lines": 161,
+    "read_ranges": [
+      [
+        1,
+        161
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "f0fba45386f04e2ecc79d1facbbddef6ba097e05891a99f6bba967e751ff6b98",
+    "total_lines_after": 161,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed."
+  },
+  "lib/pragueDistricts.js": {
+    "sha256_before": "720424bf16f02a566257a989fa703e329e198bf34ac73e995a24165066998b06",
+    "total_lines": 142,
+    "read_ranges": [
+      [
+        1,
+        17
+      ],
+      [
+        19,
+        142
+      ]
+    ],
+    "status": "complete_authored_partial_generated_manual",
+    "sha256_after": "720424bf16f02a566257a989fa703e329e198bf34ac73e995a24165066998b06",
+    "total_lines_after": 142,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed.",
+    "automated_read_ranges": [
+      [
+        18,
+        18
+      ]
+    ],
+    "notes": "Generated numeric literal on line18 parsed and structurally checked in full, not manually examined literal by literal. 22 unique districts/rings; 16115 finite coordinate pairs inside bboxes; finite projection; frontend district-ID parity. No independent geographic survey."
+  },
+  "lib/questionnaire.js": {
+    "sha256_before": "a6e2205743a3813ac0a046b89055317563f319a359dfa4dc476a93f33fdf29b2",
+    "total_lines": 904,
+    "read_ranges": [
+      [
+        1,
+        904
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "a6e2205743a3813ac0a046b89055317563f319a359dfa4dc476a93f33fdf29b2",
+    "total_lines_after": 904,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed."
+  },
+  "lib/reviewFilter.js": {
+    "sha256_before": "3683a8b5770204d31ed96739619143e8a2c8cca45df1e92e01ce2914814f6b4f",
+    "total_lines": 53,
+    "read_ranges": [
+      [
+        1,
+        53
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "3683a8b5770204d31ed96739619143e8a2c8cca45df1e92e01ce2914814f6b4f",
+    "total_lines_after": 53,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed."
+  },
+  "tests/ai-usage.test.cjs": {
+    "sha256_before": "77ac61d404e6786a4923a9eceedf7de57e6a367dd4d1f9644e741972c29c80ba",
+    "total_lines": 30,
+    "read_ranges": [
+      [
+        1,
+        30
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "77ac61d404e6786a4923a9eceedf7de57e6a367dd4d1f9644e741972c29c80ba",
+    "total_lines_after": 30,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed."
+  },
+  "tests/beta-admin.test.cjs": {
+    "sha256_before": "6e7b6c748a7b67c0ea6390a8b3a8f005f589564d6cff8f4c1ac9caa9ebeecbad",
+    "total_lines": 33,
+    "read_ranges": [
+      [
+        1,
+        33
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "6e7b6c748a7b67c0ea6390a8b3a8f005f589564d6cff8f4c1ac9caa9ebeecbad",
+    "total_lines_after": 33,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed."
+  },
+  "tests/beta-analytics.test.cjs": {
+    "sha256_before": "29c8c4bb9d378a2f98b9d1c5962794c1671b7aec4b5cbbb793f1513ab8c00520",
+    "total_lines": 55,
+    "read_ranges": [
+      [
+        1,
+        55
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "29c8c4bb9d378a2f98b9d1c5962794c1671b7aec4b5cbbb793f1513ab8c00520",
+    "total_lines_after": 55,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed."
+  },
+  "tests/beta-capture.test.cjs": {
+    "sha256_before": "f5fc26529c6de6686cccc9f960aa96ee308ad415590b67f3de69fab703d3928f",
+    "total_lines": 34,
+    "read_ranges": [
+      [
+        1,
+        48
+      ]
+    ],
+    "status": "complete_after_concurrent_change",
+    "sha256_after": "da79fd89325aba41a5866e4dca4110623838996d2d33181306e7f8a1cffd560e",
+    "total_lines_after": 48,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed.",
+    "notes": "Other agent added14 lines during review. Entire final48-line file reread; targeted4 tests pass. Initial full root suite122 tests passed before these additions."
+  },
+  "tests/beta-closing.test.cjs": {
+    "sha256_before": "3793d329fe6bedf10372da9354ed41a064fa56e89b9145bac7fd1748fadf070f",
+    "total_lines": 23,
+    "read_ranges": [
+      [
+        1,
+        23
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "3793d329fe6bedf10372da9354ed41a064fa56e89b9145bac7fd1748fadf070f",
+    "total_lines_after": 23,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed."
+  },
+  "tests/beta-middleware.test.mjs": {
+    "sha256_before": "12831efb70427009644fd4f7ab591f84ae60ba77ce106f7f8161d00a6c281175",
+    "total_lines": 95,
+    "read_ranges": [
+      [
+        1,
+        95
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "12831efb70427009644fd4f7ab591f84ae60ba77ce106f7f8161d00a6c281175",
+    "total_lines_after": 95,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed."
+  },
+  "tests/beta-rankings.test.cjs": {
+    "sha256_before": "9fc05b47897cafbe2e6aa3aa9b47ff07f6cb33dd1bf69a121f8f79ba4de57c4e",
+    "total_lines": 14,
+    "read_ranges": [
+      [
+        1,
+        14
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "9fc05b47897cafbe2e6aa3aa9b47ff07f6cb33dd1bf69a121f8f79ba4de57c4e",
+    "total_lines_after": 14,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed."
+  },
+  "tests/beta-review-fixes.test.cjs": {
+    "sha256_before": "b2c8b6a9b40196c26e8132b3595c4911d0ae6903d19f6aa97bb06d75aa5cd139",
+    "total_lines": 64,
+    "read_ranges": [
+      [
+        1,
+        64
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "b2c8b6a9b40196c26e8132b3595c4911d0ae6903d19f6aa97bb06d75aa5cd139",
+    "total_lines_after": 64,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed."
+  },
+  "tests/decision-data.test.mjs": {
+    "sha256_before": "a25137f83233797bcb1ca5f24a969fdfdef356d84ba04fcdbd87e188ee3ff815",
+    "total_lines": 180,
+    "read_ranges": [
+      [
+        1,
+        180
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "a25137f83233797bcb1ca5f24a969fdfdef356d84ba04fcdbd87e188ee3ff815",
+    "total_lines_after": 180,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed."
+  },
+  "tests/extraction-guards.test.cjs": {
+    "sha256_before": "f0e6288689355403f876f89c28a808979fa17e41000a43fd86cec0a22f79439f",
+    "total_lines": 31,
+    "read_ranges": [
+      [
+        1,
+        31
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "f0e6288689355403f876f89c28a808979fa17e41000a43fd86cec0a22f79439f",
+    "total_lines_after": 31,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed."
+  },
+  "tests/matching-per-obor.test.cjs": {
+    "sha256_before": "967c770813f813c350adb1f45a4e3e6cc66076de13ccdbc4ab17f9c189c72ade",
+    "total_lines": 30,
+    "read_ranges": [
+      [
+        1,
+        30
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "967c770813f813c350adb1f45a4e3e6cc66076de13ccdbc4ab17f9c189c72ade",
+    "total_lines_after": 30,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed."
+  },
+  "tests/onboarding-ranking.test.mjs": {
+    "sha256_before": "e0f2312476033bc8b2d2125637a74c3443f867d4857d3b7f2d984d8eef4d67df",
+    "total_lines": 73,
+    "read_ranges": [
+      [
+        1,
+        73
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "e0f2312476033bc8b2d2125637a74c3443f867d4857d3b7f2d984d8eef4d67df",
+    "total_lines_after": 73,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed."
+  },
+  "tests/questionnaire.test.cjs": {
+    "sha256_before": "a923816a7c7ae11e69ab671589c8571f3f3e14740837faa717588cca25d0f75f",
+    "total_lines": 164,
+    "read_ranges": [
+      [
+        1,
+        164
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "a923816a7c7ae11e69ab671589c8571f3f3e14740837faa717588cca25d0f75f",
+    "total_lines_after": 164,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed."
+  },
+  "tests/review-filter.test.cjs": {
+    "sha256_before": "3559b4e6600b7e58a594aa48ac8802f7d26254276df40f734b53bbde121db68e",
+    "total_lines": 18,
+    "read_ranges": [
+      [
+        1,
+        18
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "3559b4e6600b7e58a594aa48ac8802f7d26254276df40f734b53bbde121db68e",
+    "total_lines_after": 18,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed."
+  },
+  "tests/server-boundaries.test.cjs": {
+    "sha256_before": "a24b270af2b71e7aa9070ae5f5cc68c1c9f264069ceae36c53522fbbe6596df0",
+    "total_lines": 923,
+    "read_ranges": [
+      [
+        1,
+        923
+      ]
+    ],
+    "status": "complete",
+    "sha256_after": "a24b270af2b71e7aa9070ae5f5cc68c1c9f264069ceae36c53522fbbe6596df0",
+    "total_lines_after": 923,
+    "method": "Every authored line read in paginated source output; source/config semantics reviewed; tests also executed.",
+    "notes": "122 full suite tests pass; harness mocks Stripe/PostgREST and scoreSchools, so no actual SQL constraints or matching endpoint parity proof."
+  }
+}

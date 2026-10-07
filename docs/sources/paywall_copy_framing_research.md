@@ -1,12 +1,14 @@
 # Research: Paywall Copy Framing — Loss-Averse vs Gain-Framed Copy
 
-Research for Střední na míru paywall positioning. Scope: whether loss-framed copy ("don't lose access," "unlock before time runs out") outperforms gain-framed copy ("unlock full results," "see your ranking") on a one-time-purchase season pass, and legal/ethical fit for a minor EU audience under Digital Markets Act Article 25.
+Research for Střední na míru paywall positioning. Scope: whether loss-framed copy ("don't lose access," "unlock before time runs out") outperforms gain-framed copy ("unlock full results," "see your ranking") on a one-time-purchase season pass, and legal/ethical fit for a minor EU audience under applicable EU consumer/privacy rules and, where in scope, Digital Services Act Article 25.
+
+> **Evidence status, 2026-10-07:** only the legal text linked in §4 was verified in this review. Psychology references and conversion generalizations below are historical leads, not established evidence for this product. No controlled experiment for this app is recorded. Do not interpret a failed literature search as proof that no published test exists.
 
 ---
 
 ## 1. Direct evidence for loss-framed vs gain-framed paywall copy
 
-**Direct A/B test data comparing these framings on paywalls specifically:** I could not locate any published controlled test isolating loss-frame vs gain-frame copy on mobile app paywalls, SaaS trials, or one-time purchases. This is the most straightforward answer: the specific claim "loss framing beats gain framing for paywalls" lacks experimental evidence in the paywall literature.
+**Direct A/B test data comparing these framings on paywalls specifically:** I could not locate any published controlled test isolating loss-frame vs gain-frame copy on mobile app paywalls, SaaS trials, or one-time purchases. This is the most straightforward answer: this document supplies no verified controlled test supporting "loss framing beats gain framing for paywalls".
 
 **What exists instead:**
 - Health communication meta-analyses (Rothman et al. 1999, Krishnamurthy et al. 2001, peer-reviewed): loss framing is *context-dependent*. It outperforms for **detection** behaviors (getting a screening test, making a one-time health check) but underperforms for **prevention** behaviors (sustained diet change, exercise habit). The mechanism: loss frames work when the behavior feels risky or aversive; gain frames work when the behavior feels like building/earning.
@@ -48,22 +50,13 @@ In this context, loss framing doesn't address the real friction (price); it adds
 
 ---
 
-## 4. Legal analysis: Article 25 DSA and minor audience
+## 4. Legal scope — corrected 2026-10-07
 
-**Article 25 (Digital Markets Act — EU regulation applicable to designated gatekeepers, relevant for Střední na míru if platform grows to "gatekeeper" status or if data practices trigger scope):**
-- Prohibits interface design that "exploits frailties or vulnerability" of consumers, specifically *minors* (under 18)
-- Explicitly flags psychological manipulation, dark patterns, and interfaces that misrepresent user facts or outcomes
+Article 25 belongs to the **Digital Services Act, Regulation (EU) 2022/2065**. It addresses deceptive/manipulative interfaces of online platforms. Applicability requires assessing the service; Article 19 excludes qualifying micro/small providers from this section, subject to its exceptions. Article 25(2) excludes practices covered by the Unfair Commercial Practices Directive or GDPR. Other consumer/privacy duties must be assessed independently. [Official DSA, Articles 19 and 25](https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32022R2065).
 
-**Manufactured-loss framing on a minor audience** fits the high-risk category:
-- The interface misrepresents what the user actually has/will lose (they never owned the full ranking; "loss" is fictional)
-- The framing is designed to exploit loss-aversion psychology in a minor audience
-- Minors have heightened vulnerability under DSA — courts and regulators treat manipulative framings more strictly for under-18 users
+The earlier gatekeeper/10%-fine analysis mixed different legislation. The alleged German/UK paywall cases were supported only by generic homepages and are withdrawn as unverified. This document establishes no applicable enforcement precedent or legal sign-off for this app.
 
-**Real case-law precedent:** Regulatory guidance on Article 25 (German and UK regulators' guidance to Meta, Apple, Candy Crush publishers) has flagged countdown timers + manufactured scarcity framing on minors as high-risk dark patterns.
-
-**Practical risk:** If regulators review Střední na míru's paywall framing and find "lose access in 24h" applied to results the user never owned, this is a documented enforcement angle for Article 25 violations. Fines go to 10% of revenue for gatekeepers; reputational cost for an edtech product aimed at minors is higher.
-
-**Conclusion:** This is not merely a tone issue; it's a compliance issue. Manufactured-loss framing for a minor EU audience is legally exposed.
+Product recommendation: describe actual access and prices truthfully, avoid invented expiry/scarcity, and have counsel assess the real child-facing flow. Accurate gain-framed wording is preferable for trust; it is not an automatic compliance certificate.
 
 ---
 
@@ -76,25 +69,25 @@ Přístup ke svému žebříčku vyprší za 24 hodin.
 Odemkněte NYNÍ a vyberte si své školy dříve, než ztratíte přístup.
 ```
 
-**Legal exposure:** misrepresents user's entitlement state ("vyprší" / expires implies prior ownership; they didn't have this before); countdown + loss frame together constitute manipulative dark pattern under Article 25
+**Legal exposure:** misrepresents user's entitlement state ("vyprší" / expires implies prior ownership; they didn't have this before); an invented countdown or entitlement claim needs consumer-law review; this example alone does not prove an Article 25 violation
 
 ---
 
 **Alternative 1 (gain frame, accurate):**
 ```
-Odemkněte svůj žebříček 🔓
-Vidět podrobný ranking a vybrat si své školy.
+Odemkni svůj žebříček 🔓
+Projdi si podrobné pořadí a vyber si své školy.
 Tvůj žebříček je připraven — teď si vezmi kontrolu.
 ```
 
-**Advantage:** straightforward, accurate, not psychologically exploitative; passes Article 25 scrutiny
+**Advantage:** clearer about the purchase; still requires review against actual features, access and contract terms
 
 ---
 
 **Alternative 2 (effort-based frame, psychologically rooted in sunk-cost/endowed-progress):**
 ```
 Dokonči svůj žebříček 📊
-Investoval jsi 12 minut — zbývá ti poslední krok. Vidět svoje pozadí a zvolit si první školu.
+Dotazník je vyplněný a výsledky jsou připravené. Projdi si pořadí a vyber si své školy.
 ```
 
 **Psychological mechanism:** endowed-progress effect (Nunes & Drèze 2006, peer-reviewed) — users are more motivated to complete a task when they've already invested effort and see the finish line. This is evidence-adjacent (not a guess) and avoids manufactured loss.
@@ -108,24 +101,24 @@ Investoval jsi 12 minut — zbývá ti poslední krok. Vidět svoje pozadí a zv
 **Do not use loss-framed copy** ("don't lose access," "expires in 24h") on this paywall for a minor audience. The combination of:
 - Manufactured loss (user never owned the full result)
 - Minor audience (heightened vulnerability under DSA)
-- EU jurisdiction (Article 25 enforcement active and documented)
+- EU jurisdiction (consumer/privacy duties and DSA scope require assessment)
 
-...creates regulatory and reputational risk with no measured upside (no A/B test shows it works better for paywalls).
+...creates a trust/legal-review concern; this project has no recorded experiment demonstrating a conversion benefit.
 
 **Use gain-framed copy instead:**
 - "Odemkněte svůj žebříček" / "Unlock your ranking" (simple, clear, accurate)
-- Pair with concrete value: "See schools ranked by fit, save your favorites, get notified about open days"
+- Pair with concrete value: "See schools ranked by fit and save your favorites". Open-day notifications are not implemented and must not be promised.
 
-**If you want psychological leverage without legal risk:**
+**If using completion-based language:**
 - Lead with sunk-cost/completion language: "You've done the hard part; finish your ranking" + "last step: choose your first school"
-- This has evidence (endowed-progress effect is peer-reviewed and applies to one-time-completion tasks)
-- It's not manipulative — it's true (the user *did* invest effort)
+- This is a design hypothesis drawn from historical research; transfer to this paywall remains unverified.
+- Mention only real effort; never invent minutes, completed work or a mandatory purchase step.
 
 ---
 
 ## 7. Failure modes if loss framing is used anyway
 
-- **Regulatory investigation:** Article 25 enforcement against edtech paywalls is active (2023–2026 period, reported by German antitrust and UK CMA). A minor EU audience + manufactured-loss + countdown is a textbook pattern.
+- **Regulatory risk:** false urgency or access claims need legal assessment. No edtech-paywall enforcement case was verified for this research.
 - **Trust damage:** Parents and teens, if primed to think Střední na míru is manipulative, are unlikely to pay or refer. Edtech trust is fragile.
 - **No conversion lift to show for the risk:** Without A/B test proof that loss framing converts better, you're taking legal/reputation cost for no measured gain.
 
@@ -138,15 +131,14 @@ Investoval jsi 12 minut — zbývá ti poslední krok. Vidět svoje pozadí a zv
 - [Tversky, A., & Kahneman, D. (1981). The framing of decisions and the psychology of choice]. *Science*, 211(4481), 453–458. (foundational prospect theory; manufactured loss framing)
 - [Nunes, J. C., & Drèze, X. (2006). The endowed progress effect: How artificial advancement increases effort]. *Journal of Consumer Research*, 32(4), 504–512. (peer-reviewed; completion/sunk-cost psychology)
 - [Cialdini, R. B. (1984). *Influence: The Psychology of Persuasion*]. Harper Business. (scarcity/urgency mechanism; non-framing-specific)
-- Digital Markets Act Article 25 (EU regulation 2022/1925) — interface design prohibition for minors
-- [German Bundeskartellamt guidance on Article 25 dark patterns — Meta settlement (2023)](https://www.bundeskartellamt.de)
-- [UK CMA guidance: "Principles for design of digital markets" (2023)](https://www.gov.uk/government/publications)
+- [Digital Services Act, Regulation (EU) 2022/2065](https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32022R2065), Articles 19 and 25; scope caveats in §4.
+- Psychology references above are historical research leads; their bibliographic accuracy, quoted figures and transfer to this app remain unverified.
 
 ---
 
 ## 9. Gaps and honesty notes (summary)
 
-- No published A/B test compares loss-framed vs gain-framed copy on paywalls specifically. The claim relies on analogy to health communication research, which is context-dependent and doesn't clearly transfer to one-time purchases.
+- No verified published A/B test is supplied here comparing loss-framed vs gain-framed copy on paywalls specifically. The claim relies on analogy to health communication research, which is context-dependent and doesn't clearly transfer to one-time purchases.
 - Health communication findings (loss framing works for aversive behaviors) do not predict whether loss framing works for revelatory, non-aversive paywalls. This is untested.
-- Manufactured-loss framing on minors is a documented Article 25 enforcement target, but I found no published case judgment specific to paywall copy (the regulation is new; enforcement is still active). Legal risk is real but not yet fully litigated.
+- No specific paywall judgment or applicable enforcement precedent was verified. Do not reuse the earlier categorical legal claims.
 - The effort-based (sunk-cost) alternative is evidence-adjacent (endowed-progress effect is peer-reviewed and applies to completion tasks) but has not been A/B tested on Střední na míru paywalls specifically.

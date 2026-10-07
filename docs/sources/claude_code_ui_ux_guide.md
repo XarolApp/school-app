@@ -1,7 +1,9 @@
 # CLAUDE CODE UI/UX & MONETIZATION GUIDE: ŠKOLAMATCH
 
+> **Historical research — implementation override, verified 2026-10-07.** The examples and quantitative psychology/conversion claims below are research notes, not verified product facts or current acceptance criteria. Use `design/DESIGN.md`, current source and founder decisions for implementation. The current plans are 690 Kč season with a 3-day deferred-charge trial, and 249 Kč/month with no plan trial. Do not promise reminders until implemented, manufacture progress or waiting time, invent social proof, or reuse the illustrative daily price. Scoring is deterministic; standalone explanations use the configured OpenRouter model. Both students and parents may buy. The old checklist in §3 is superseded.
+
 > **META-DIRECTIVE FOR CLAUDE CODE:**
-> You are an autonomous AI product architect. Do NOT follow the rules in this document as rigid, static checklists. Instead, treat them as **underlying psychological facts, empirical research, and cognitive principles** derived from analysis of high-performing consumer applications and behavioral science studies. 
+> You are an autonomous AI product architect. Do NOT follow the rules in this document as rigid, static checklists. Treat the historical material below as **unverified research leads and design hypotheses**, not established facts. Verify primary sources and applicability before reusing quantitative claims; the implementation override above takes precedence.
 > Your goal is to evaluate the specific context of **Střední na míru**—a high-trust Czech high school finder for 15-year-olds and their parents—and apply these psychological mechanics dynamically to make the best possible design, onboarding, paywall, and UX decisions.
 
 ---
@@ -12,7 +14,7 @@
 * **The Variable Reward Mechanism (Dopamine Loops):** Human brains release dopamine not upon receiving a reward, but in *anticipation* of an uncertain reward (B.F. Skinner / Robert Sapolsky research). Fixed rewards lead to rapid habituation, whereas variable rewards maintain high engagement.
 * **The Endowed Progress Effect:** Nunes & Drèze (2006) demonstrated that giving users artificial advancement toward a goal dramatically increases completion rates (e.g., 2 free stamps on a 10-stamp card vs 0 stamps on an 8-stamp card doubled completion rate from 19% to 34%). 
 * **The Goal Gradient Effect:** Motivation increases exponentially as the user perceives themselves getting closer to the finish line (Hull, 1932). Visual progress indicators must accelerate visually near completion.
-* **Smart Defaults & Decision Fatigue:** The human brain consumes ~20% of body energy; every choice creates cognitive friction (I样本/Baumeister). Auto-selecting the most common/optimal choice reduces drop-off significantly.
+* **Smart Defaults & Decision Fatigue:** The human brain consumes ~20% of body energy; every choice creates cognitive friction (historical attribution unverified). Auto-selecting the most common/optimal choice reduces drop-off significantly.
 * **Application to Střední na míru:**
   * In the school quiz, pre-fill progress bars (e.g., "Step 1/10: 15% Complete!" right at launch).
   * Show dynamic match percentage updates as questions are answered to trigger anticipation.

@@ -1,6 +1,6 @@
 # 019 — Beta feedback, tracking and analytics
 
-**Status:** IMPLEMENTED — steps 2–12 committed and pushed. Claude's ten findings addressed; full rankings implemented per founder decision 2026-10-05. Local Chrome verification at 390px and desktop completed with synthetic services; 121 tests, lint/build pass. Founder reports previous SQL applied with verify count 5. Updated whole SQL (including beta_rankings), live Supabase/Storage checks and final independent review remain rollout gates. See reports/beta-implementation-completion-2026-10-05.md.
+**Status:** IMPLEMENTED — steps 2–12 committed and pushed; full rankings implemented per founder decision 2026-10-05. The 5 October completion report records synthetic Chrome checks and 121 tests at that snapshot. The 7 October audit has 127 passing tests and a passing lint/build, but the full review remains in progress. Live read-only checks found all 26 tables and a private screenshot bucket, but **missing `beta_profile.role_note`**. Fresh/repeated SQL, grants/RLS, privacy assessment and complete enrollment/feedback/expiry verification remain gates. See `reports/beta-implementation-completion-2026-10-05.md` and the current deployment review; table presence is not proof of a complete migration.
 **Builds on:** plan 016 (beta program, implemented) and `docs/beta_testing_logic.md`. This plan **extends** 016; it does not replace its access model, tables or routes.
 **Model routing (CLAUDE.md):** planning was Opus 5.5 medium. Build at Sonnet 5 high (large multi-file). Review the tracking/consent and `/admin` access code at Opus 5.5 low.
 
@@ -16,7 +16,7 @@ Where the founder looks at everything: **`/admin`** in the app (section 9).
 - `subscription_status = 'beta'`, `tester_school_code`, `tester_access_until`, `tester_guidance_seen_at`.
 - `beta_feedback` + `POST /api/beta/feedback` → RPC `submit_beta_feedback` (insert + renew 48h atomically).
 - `BetaTools.jsx` (floating button + guidance modal), `SubscriptionExpired` tester copy, Stripe blocked for testers.
-- Still pending from 016 and **required before this plan can be tested live**: apply the beta SQL block to Supabase, set `ends_at`, add school codes, working outgoing e-mail (see `UNFORGET.md`).
+- **Current rollout evidence, 2026-10-07:** beta tables, one school invitation and `ends_at` (12 October 2026 at 23:10 Europe/Prague) exist live. The latest profile column/functions/grants still need a reviewed migration and verification. Confirm the intended cutoff, outgoing email and complete tester journey; do not blindly reapply the whole SQL (see `UNFORGET.md`).
 
 ## 2. Decisions taken with the founder (2026-10-04)
 
@@ -41,17 +41,17 @@ Where the founder looks at everything: **`/admin`** in the app (section 9).
 
 ## 3. Legal / privacy (must ship with the feature)
 
-- **Basis for tracking:** legitimate interest (testing the product), not consent — so no parental consent is needed for under-15s. Requires: clear notice before signup, easy objection, data minimisation, no third parties.
-- **No cookie banner needed:** events are stored server-side under the account / an anonymous id in `sessionStorage`+`localStorage` that is **strictly part of the beta service the tester joined**. Write it in the notice. No third-party scripts, no fingerprinting.
+- **Legal assessment remains a rollout gate (2026-10-07):** current tracking is implemented on a legitimate-interest rationale. The controller must assess children's rights, necessity, objection and retention. This does not by itself settle device-storage consent or under-15 authorization; see LEGAL-01/04 in `reports/deployment-review-2026-10-07/legal-docs-findings.md`.
+- **Device storage is a separate question:** `sessionStorage`/`localStorage` identifiers require assessment under the device-access rules even when analytics is first-party and subsequent processing uses legitimate interest. Do not assume that joining the beta makes every identifier strictly necessary. Decide and document optional consent or a design that removes unnecessary storage before recruitment. [ÚOOÚ cookies/storage guidance](https://uoou.gov.cz/verejnost/qa-otazky-a-odpovedi/cookies).
 - **Beta notice + checkbox on `/beta/:code` signup** (required to join): what is collected (pages, clicks on features, searches, errors, device type, screenshots they send themselves), why, how long (6 months), right to object (`info@stredninamiru.cz`).
-- **Screenshots:** captured only when the tester presses "send"; the preview is shown before sending with a "remove screenshot" option; input fields (`input`, `textarea`, `[data-private]`) are masked before capture.
+- **Screenshots:** captured locally only after the tester explicitly presses "Připravit snímek k odeslání"; the preview can be removed. Upload occurs on submitting feedback. Input fields (`input`, `textarea`, `[data-private]`) are masked before capture. No background screenshot capture.
 - **Reviews:** separate unticked checkbox "Smíme recenzi anonymně použít na webu?". Any later public use must say "beta tester, přístup zdarma" (Czech consumer law: disclosed incentive + genuine user). Under-15: anonymous only.
 - **Privacy policy:** add a "Beta testování" section to `Legal.jsx` (data, basis, retention, screenshots, reviews).
 - Never log: passwords, free-text from the questionnaire answers beyond what is already stored, full e-mail in events, Cermat points (`body`) in events.
 
 ## 4. Step 1 — Matching simulation (before the beta)
 
-`scripts/simulate-matching.js` (Node, no new deps):
+`scripts/simulate-matching.mjs` (Node):
 - Load all schools exactly like `server.js` (`withDistricts`), generate N answer sets (default 5,000) by sampling every question's options from `lib/questionnaire.js` (skips included at a realistic rate, e.g. 20%).
 - Score with `lib/matching.js` `scoreSchools`. Per school: mean rank, median, std dev, % in top 10, % in bottom 10, mean `displayScore`.
 - Join data completeness: has `admission_cutoff`, has `school_extracted_details`, # obory, # known features.
@@ -67,14 +67,15 @@ All tables: RLS on, **no browser policies**; only `server.js` (service role) rea
 |---|---|---|
 | `beta_events` | `id bigint`, `user_id uuid null`, `anon_id text`, `session_id text`, `name text`, `path text`, `props jsonb`, `created_at` | `name` from a fixed allowlist (section 6). Index `(user_id, created_at)`, `(name, created_at)`. `anon_id` joined to `user_id` on signup. |
 | `beta_feedback` (extend) | `+ kind` (bug / navrh / funkce / text / chvala / obecne), `+ selector text`, `+ element_text text`, `+ rect jsonb`, `+ viewport jsonb`, `+ screenshot_path text`, `+ text_before text`, `+ text_after text`, `+ status` (nove/precteno/vyreseno/neudelame), `+ admin_note text`, `+ admin_reply text`, `+ replied_at`, `+ source` (button / micro / gate) | Keep the existing `type` column readable; map old values. |
-| `beta_profile` | `user_id pk`, `role` (8/9/rodic/ucitel/jine), `consent_tracking_at`, `checklist jsonb`, `micro_asked jsonb`, `closing_due_at`, `closing_done_at` | one row per tester |
+| `beta_profile` | `user_id pk`, `role` (8/9/rodic/ucitel/jine), nullable `role_note`, `consent_tracking_at`, `checklist jsonb`, `micro_asked jsonb`, `closing_due_at`, `closing_done_at` | one row per tester; live `role_note` was missing on 2026-10-07 |
 | `beta_closing_answers` | `user_id pk`, `answers jsonb`, `created_at` | section 8 |
 | `beta_reviews` | `id`, `user_id`, `stars 1–5`, `body`, `consent_publish bool`, `display_label text` ("Student, 9. třída"), `age_group`, `selected_by_admin bool`, `created_at` | never public; no client policy |
+| `beta_rankings` | `id`, `user_id`, `source`, nullable `run_id`, `ranking int[]`, `created_at` | private full school order, no answers/JPZ points; added by the 5 October decision |
 | `ai_usage_log` | `id`, `user_id null`, `run_id null`, `source` (questionnaire / proscons / extract), `model`, `prompt_tokens`, `completion_tokens`, `cost_usd numeric`, `ok bool`, `error text`, `created_at` | written in `server.js` after every OpenRouter call; `usage` is already returned and currently discarded |
 
 Supabase Storage bucket `beta-screenshots` (private). Uploads go through `server.js` (signed upload URL), admin reads via signed URLs.
 
-**Reminder (UNFORGET standing rule):** after this SQL lands, the founder pastes the whole `supabase-setup.sql` into the SQL editor before the new `server.js` runs. Verify query: `select count(*) from information_schema.tables where table_name in ('beta_events','beta_profile','beta_closing_answers','beta_reviews','ai_usage_log');` → 5.
+**Rollout verification:** verify a fresh installation and repeated execution in a disposable database before applying the reviewed schema change live. A five-table count alone is insufficient. The implementation also includes private `beta_rankings`; verify `beta_profile.role_note`, required function signatures/service-only grants, authenticated cross-account isolation, closing transactions, and private signed screenshot upload/read/cleanup. Read-only checks on 2026-10-07 found all 26 declared tables, zero anonymous rows, and a private screenshot bucket, but **no `beta_profile.role_note` column**. No production migration was performed by this audit.
 
 ## 6. Background tracking (the main data source)
 

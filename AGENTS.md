@@ -84,13 +84,11 @@ gitignored and must stay that way; check `git status` before a broad `git add` s
 secret never lands in a commit.
 
 > The archived `archive/context/CONTEXT-HANDOFF.md` records what was in flight at the machine switch —
-> notably the **new 5-screen paywall flow (`hodnota → cesta → plan → zkusebni →
-> platba`), built 2026-09-05/06, that has never been visually verified in a real
-> browser.** That's the first thing to check on this machine, now that the
-> Browser pane actually works. It also covers plan 005 (spacing/typography
-> migration, still IN PROGRESS, three visual checks outstanding) and the
-> MacBook setup checklist. Delete sections of it as they're resolved into this
-> file / `UNFORGET.md`.
+> notably the 5-screen paywall flow (`hodnota → cesta → plan → zkusebni →
+> platba`), built 2026-09-05/06. The archive describes the September snapshot.
+> Browser verification now works; the October deployment review records current
+> checked journeys and remaining device/payment gates. Plan 005 and setup notes
+> remain history unless the current report/`UNFORGET.md` confirms completion.
 
 ---
 
@@ -332,31 +330,33 @@ Střední na míru ships on two surfaces and both matter:
 - Quiz answers live in `sessionStorage` — deliberate GDPR minimisation, but it also
   means state does not survive a device switch. Web→app handoff is an open design
   problem, not a solved one.
-- The visual system in `docs/sources/design_system.md` was designed 390px-mobile-first,
-  which suits the app; desktop web layout is still undesigned.
+- The authoritative visual system is `design/DESIGN.md`, with portable tokens in
+  `frontend/src/design/tokens.js`. Mobile and desktop layouts both exist; complete
+  responsive/browser acceptance remains part of the deployment review.
 - Framework choice is open. React Native would allow reusing the existing React
   components and the `matching.js` / `schoolFeatures.js` scoring engine — a reason to
   prefer it, not a decision yet.
 
 ## Supabase Schema
 
-**`supabase-setup.sql` at the repo root is the source of truth.** It is idempotent —
-safe to re-run after any schema change. It has been run against the live Supabase
-project (confirmed 2026-08-28: schools seeded, auth and the developer-email bypass
-both working end to end).
+**`supabase-setup.sql` at the repo root is the canonical intended schema.** It is
+written for repeat execution, but every change must pass fresh-install and rerun
+verification in a disposable database before a reviewed live migration. Earlier
+versions were applied live; this does not prove the latest columns/functions/grants
+are deployed. See the current deployment report.
 
 | Table | What it holds |
 |---|---|
 | `schools` | id, created_at, name, location, programs, contact, website, latitude, longitude, `redizo`, `admission_cutoff`, `acceptance_rate`, `admission_data_updated_at` |
 | `beta_schools` | uppercase school invitation codes and school names; validated by the API and signup trigger |
-| `beta_program_settings` | singleton beta cutoff, rolling access hours, optional external feedback URL; currently not applied to the live database |
+| `beta_program_settings` | singleton beta cutoff, rolling access hours, optional external feedback URL; present live on 2026-10-07 (48 hours, cutoff 12 October at 23:10 Europe/Prague) |
 | `beta_feedback` | tester-authored `bug`/`idea`/`comment` reports, attributed to the tester's school by the server |
 | `school_programs` | one row per obor per school per year, from Cermat's real admission results — `typ_skoly`, `zrizovatel`, `maturitni`, `jpz_povinna`, `jazyk_studia`, `delka_studia`, `zamereni` (Cermat's free-text focus; tells apart programmes sharing one KKOV, e.g. FOSTRA's five gymnázia — splits only the newest year, its wording changes yearly), `kkov`, `kapacita`, `prihlasky`, `prijati`, `cutoff`. No client RLS policy, same as `schools` — server.js only. Declared in `supabase-setup.sql` itself as of 2026-09-08 — it existed in the live database earlier than that (created directly by the import script), so this file didn't yet describe the real schema; fixed rather than left drifting. |
 | `users` | profile mirror of the private `auth.users`: email, name, `trial_expires_at`, `subscription_status`, `theme_palette`, `theme_mode`, Stripe ids; beta adds nullable `tester_school_code`, `tester_access_until`, `tester_guidance_seen_at` |
 | `favorites` | `(user_id, school_id)` |
 | `questionnaire_runs` | one row per completed *standalone* questionnaire: answers, matches, `label`, `is_default`, `archived_at`, `source` (`'questionnaire'` or `'onboarding'` — the latter written once per account from the onboarding quiz via `POST /api/me/onboarding-answers`) |
 | `school_reviews` | one row per (school, user): `role`, `role_year`, `obor_nazev`, `body`, `show_name`, `verified`, `status`. No client RLS policy — server.js only, see "User-generated content" above. |
-| `review_reports` | `(review_id, user_id)` — one report per person per review |
+| `review_reports` | `id` primary key, `review_id`, nullable `user_id`, reason; one report per signed-in account per review, anonymous notices also supported |
 | `data_reports` | crowdsourced "Nahlásit chybu v údajích": `school_id`, `user_id`, `field`, `message`, read directly in Supabase |
 | `application_picks` | `(user_id, school_id)`, `priority` 1–3, optional `obor_kkov`/`obor_nazev` — the 3 schools a student is actually applying to, in binding DiPSy order. No client RLS policy — server.js only, delete-then-insert on every reorder. See plan 006 §1.1 for why this is a separate table from `favorites`. |
 | `school_notes` | `(user_id, school_id)`, free-text `body`, not limited to picked schools |
@@ -387,14 +387,17 @@ program cutoff, and only accepted in-app feedback renews it. Beta never enters S
 The legacy shared beta code endpoint is retired. The beta schema is defined in its
 delimited `supabase-setup.sql` block and is applied live (all beta tables exist as of
 2026-10-07), but the newest SQL is NOT: `beta_profile.role_note` is missing live, so
-re-run the whole file before testers arrive; see `docs/beta_testing_operations.md`
-and `UNFORGET.md`.
+prepare and verify the missing migration before testers arrive; do not blindly
+re-run the whole file on production. See `docs/beta_testing_operations.md`,
+`UNFORGET.md` and the deployment handoff.
 'season' is written after the season pass's scheduled one-time
 PaymentIntent succeeds; monthly subscriptions write `'active'` through Stripe webhooks.
 
-**RLS is enabled on every table** (26 as of 2026-10-07; verified live with the anon key:
-0 rows readable from each) — changed from disabled, a deliberate adoption. Tables
-without a policy below are server-only (service role). The core ones:
+**The canonical schema enables RLS on all 26 application tables.** Read-only live
+checks on 2026-10-07 returned zero rows with the anonymous key; this smoke check
+does not prove policy definitions, authenticated cross-account isolation or RPC
+grants. Tables without a client policy below are intended to be server-only
+(service role). The core ones:
 - `users` — read your own row only. No client INSERT (the trigger creates it) and no
   client UPDATE, because that row decides who has paid.
 - `favorites` — own rows only; inserting also requires `has_access()`.
@@ -417,7 +420,7 @@ school-app/
 ├── .env.example                # documents every backend var
 ├── .gitignore
 ├── AGENTS.md                   # this file
-├── README.md                   # currently near-empty
+├── README.md                   # project entry point and run/test links
 ├── server.js                   # Express backend, root-level
 ├── package.json                # backend deps
 ├── supabase-setup.sql          # schema + RLS, idempotent, SOURCE OF TRUTH
@@ -444,7 +447,7 @@ school-app/
 ├── docs/
 │   └── sources/
 │       ├── claude_code_ui_ux_guide.md   # REQUIRED READING before any frontend work — see below
-│       ├── onboarding.md                 # archival — fully merged INTO onboarding-architect.md
+│       # onboarding.md is archived under archive/docs/sources/
 │       ├── feature-brainstorm.md         # full feature roadmap/ratings — REQUIRED READING before proposing new features or scope — see below
 │       ├── pricing_research.md            # 2025/2026 subscription pricing + EU minor-payment research — read before touching pricing/plan structure
 │       └── platform_onboarding_research.md  # web-vs-app onboarding placement research
@@ -503,14 +506,13 @@ a duplicate — do not merge them:**
 - `frontend/src/lib/matching.js` scores the onboarding quiz, entirely in the browser,
   with no server call. `lib/matching.js` (repo root) scores the standalone
   questionnaire server-side. They were built independently and are not interchangeable.
-- **The percentage every surface shows is `displayScore()` in `lib/matching.js`**, a
-  fixed curve over the raw weighted average (`100 * (1 - (1 - raw/100)^1.4)`), applied
-  once inside `scoreSchools` so search, `/dotaznik`, `/porovnani` and the matrix can
-  never disagree. It is absolute, never relative to the other results — see that
-  function's comment for the alternatives that were rejected and why. The raw average
-  is still returned as `raw_score` for debugging. Match percentages are attached to
-  `/api/schools` by `withMatchScores` from the account's default questionnaire run, so
-  they exist only for a signed-in account that has one.
+- **Backend match percentages use `displayScore()` in `lib/matching.js`**, the curve
+  `100 * (1 - (1 - raw/100)^1.4)`. `raw_score` is retained for debugging and
+  `withMatchScores` uses the signed-in account's default run. The display transform
+  is fixed, but scores are **not yet consistent across endpoints**: request-local
+  selectivity and missing enrichment are open B01/B02 findings. Onboarding uses its
+  own engine and the same curve in `Reveal.jsx`; equal curves do not make the two
+  engines' results equal. Do not promise score parity until verified.
 
 **Before building or editing ANY frontend UI (components, pages, styling, layout —
 not just onboarding), read [`docs/sources/claude_code_ui_ux_guide.md`](docs/sources/claude_code_ui_ux_guide.md) first.**
@@ -586,17 +588,19 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
    - `GET/POST/DELETE /api/favorites` — behind `requireAuth` + `requireAccess`
    - `GET/POST /api/questionnaire` + `/api/questionnaire/runs/:id` (rename, set
      default, archive) — the standalone questionnaire, behind auth
-   - `POST /api/checkout`, `POST /webhooks/stripe` — implemented Stripe Checkout/webhooks; returns 503 only when required live configuration is absent
+   - `POST /api/checkout`, `POST /webhooks/stripe` — implemented Stripe Checkout/webhooks; returns 503 when required payment configuration is absent (test/live mode follows configured credentials)
    - `/api/share-links` — the signed-in child's results and payment links; `GET /api/shared-results/:token` and `/api/pay-links/:token` are public, standalone recipient surfaces
    - `/api/handoffs` and `/api/result-snapshots` — public child questionnaire handoff and pre-account result snapshot creation; recipient pages live at `/od-rodice/:token` and `/vysledky/:token`
 
-   **The access rule to keep straight:** routes that *read school rows* need
-   `requireAccess`; routes that let someone *manage or erase their own data*
+   **The intended access rule:** premium catalogue/decision routes need
+   `requireAccess`; public landing/onboarding and landing-map school details are
+   exceptions. Routes that let someone *manage or erase their own data*
    (removing a favourite, renaming/archiving an answer set, deleting the account)
    need only `requireAuth`. An account whose trial lapsed must never be locked out
    of its own data.
 
-2. **n8n scraping workflow** (separate from this codebase, runs independently):
+2. **Original n8n scraping workflow design** (external; current deployed workflow
+   not inspected by the October review — the ~60 items below are historical):
    - Scrapes atlasskolstvi.cz directory (Prague region, pages 1-3) via Firecrawl
    - AI extraction (Gemini 2.5 Flash Lite) pulls `{name, url}` pairs from each page
    - Aggregates + splits into ~60 individual school items
@@ -638,8 +642,9 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
      Skipped quiz answers never penalize score.
    - **One-time paywall offer** is allowed on the first paywall view only, with
      server-side entitlement so it genuinely never reappears — a cookie/localStorage
-     implementation would make the "one-time" claim false and cross into EU
-     dark-pattern territory (DSA Art. 25) given the audience is minors.
+     implementation would make the "one-time" claim unreliable across devices.
+     Consumer/privacy duties and DSA scope need assessment; Article 25 is not
+     automatically applicable merely because the audience includes minors.
 
 7. **Onboarding flow + paywall** (`frontend/src/pages/onboarding/`) — the full
    23-screen Střední na míru flow, built 2026-08-23. The paywall's "Objednat s povinností platby" opens a real Stripe Checkout session (`PAYMENTS_MOCKED = false`); Stripe runs in test mode only.
@@ -648,8 +653,9 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
    - **Role fork** at screen 2 branches voice, proof, motion, price framing and
      question phrasing. Role in `localStorage`, switchable mid-flow without
      losing answers. Quiz answers are client state (`sessionStorage`) through the
-     whole quiz — nothing about a minor reaches Supabase before there is an
-     account. Once `CreateAccount` creates one, answers move to a short-lived
+     whole quiz. Pre-account result snapshots and beta identifiers/rankings are
+     separate server-side data paths; do not claim no visitor data reaches
+     Supabase before signup. Once `CreateAccount` creates one, answers move to a short-lived
      localStorage stash (`lib/pendingOnboardingAnswers.js`) and are saved as a
      `questionnaire_runs` row (`source: 'onboarding'`) only on a subsequent
      confirmed sign-in, via `AuthContext`'s flush and `POST
@@ -658,11 +664,12 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
      standalone questionnaire.
    - **Scoring:** `frontend/src/lib/matching.js` + `schoolFeatures.js`.
      Deterministic, auditable, no AI in the numbers. Features are derived from
-     the only columns that exist (`name`, `location`, `programs`), each with a
-     `known` flag; unknown or unanswered components are dropped and the weights
-     renormalised, so **skips lower confidence, never score**. Results are shown
-     as BANDS + "shoda podle: …", never a fake percentage. Explanation sentences
-     are template-based with a `TODO(claude-api)` where the Claude call goes.
+     programme/extracted fields where available and text fallback, with `known`
+     flags. Unknown/unanswered dimensions are omitted and weights renormalized;
+     skipping is not an explicit penalty, although changing included dimensions
+     can change the average. Reveal currently shows a percentage and band.
+     Explanations are deterministic templates; a future AI TODO is not a current
+     provider requirement.
    - **Pricing config:** `frontend/src/config/pricing.js` — every price, plan and
      trial string. Prices are locked (690 / 249 Kč). Plans are **Sezónní přístup
      (one-time, pre-selected, 3-day trial)** and **Měsíční (recurring, no trial)**. Weekly was
@@ -687,11 +694,13 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
 8. **Auth, trial and access control** — real Supabase Auth, ported from the earlier
    laptop build and wired into the onboarding flow.
    - Email + password with **mandatory email confirmation**: `requireAuth` rejects any
-     token whose `email_confirmed_at` is null, so a trial can never start on an address
-     nobody proved they own.
+     token whose `email_confirmed_at` is null, so unconfirmed users cannot use
+     protected data. The signup trial clock currently starts before confirmation;
+     delayed confirmation can consume it (policy gate in the deployment report).
    - Cloudflare **Turnstile CAPTCHA** on signup/login/reset. Supabase verifies the token
      itself, so there is nothing to check in `server.js`. Without
-     `VITE_TURNSTILE_SITE_KEY` the widget renders nothing and forms still work.
+     `VITE_TURNSTILE_SITE_KEY` the widget renders nothing; forms only work if
+     Supabase CAPTCHA is also disabled. Production settings must agree.
    - **Password strength meter** — advisory only; flags Czech fragments (`fotbal`,
      `slunicko`, `heslo`) an English wordlist would miss. The one hard rule is
      Supabase's 8-character minimum.
@@ -749,10 +758,9 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
     placeholders for §4 items with no real data source (tuition/školné,
     obědy/ubytování, kroužky, maturita pass rate, VŠ placement, employment
     outcomes, photos, video) — never a fabricated value. Reviews are
-    described separately below. `Search.jsx`'s own "Porovnat" button is
-    still a no-op (§5, not built) — the detail page's "Přidat k porovnání"
-    only persists a selection (`lib/searchPrefs.js`) for whenever that view
-    exists.
+    described separately below. Search/detail comparison actions persist a
+    selection (`lib/searchPrefs.js`) consumed by the implemented `/porovnani`
+    and decision matrix; access/consistency review remains open.
 
     **User-generated content — reviews.** Real, not a stub: any
     email-confirmed account can write one (`requireAuth`, not
@@ -762,12 +770,10 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
     - A review is pseudonymous by role ("Student · 3. ročník", "Rodič
       studenta", …) UNLESS the reviewer is `rodic` or `ucitel` AND opted in
       to showing their first name. Never offered to `student` / `absolvent`
-      / `navstevnik`. This is a GDPR Art. 8 consequence, not a style choice:
-      the Czech digital age of consent is 15, and Střední na míru's core users
-      are 14-15-year-old 9th graders, who cannot validly consent to
-      publishing their own name next to a public opinion about a named
-      school. `rodic`/`ucitel` are adults by definition; the other three
-      roles are not.
+      / `navstevnik`. This is the implemented protective role policy, not proof
+      of verified age or parental authority. Online-consent age and contract
+      capacity are separate questions; role selection does not verify adulthood.
+      Preserve the policy while resolving legal/operational review gates.
     - The display name is resolved from `users.name` at READ time
       (`server.js`'s `reviewDisplayName()`), never frozen into the stored
       row — so revoking consent actually removes the name from every review
@@ -813,14 +819,16 @@ These are standing architectural facts about the current codebase — not TODOs.
 actionable that follows from them lives in [`UNFORGET.md`](UNFORGET.md) instead.
 
 - **Payments are wired but not live-ready.** The onboarding purchase button creates a
-  real Stripe Checkout session when keys are configured. Prices remain placeholders,
-  the day-2 reminder and refund process are not implemented, and the complete test-mode
-  matrix in `UNFORGET.md` must pass before any live key is used.
-- **`/api/schools*` is intentionally ungated**, unlike every other data route.
-  Founder decision 2026-10-07: the intended product is "only the landing page and the
-  onboarding (with its result preview and map) are free; everything else — `/skoly`,
-  school detail, comparison, matrix, questionnaire, applications — needs the trial or a
-  paid plan". The app does not match that yet; see UNFORGET "Paid vs free gating". The
+  real Stripe Checkout session when keys are configured. Prices are approved at
+  690/249 Kč. Withdrawal/refund code exists but has unresolved recovery/integrity
+  defects; the day-2 reminder is not built. The lifecycle and test-mode matrix
+  in the deployment handoff must pass before live activation.
+- **`/api/schools*` is currently ungated.** Founder clarification 2026-10-07:
+  valid trial, paid or beta access is required for premium catalogue/search,
+  comparison, matrix, questionnaire and application tools. Landing and onboarding
+  remain free, **including school details opened from landing-map dots**. Preserve
+  necessary auth/legal/account management and scoped bearer-link journeys. The app
+  does not fully match this matrix yet; see UNFORGET "Paid vs free gating". The
   onboarding quiz reads school data before any account exists, so gating it would break
   the funnel at its widest point. RLS still blocks the browser from reading the table
   directly, so `server.js` remains the only way in. Gating this is tied to the paywall

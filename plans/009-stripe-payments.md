@@ -1,5 +1,7 @@
 # 009 — Stripe payments (both plans, real money)
 
+> **SUPERSEDED ARCHITECTURE — historical plan from 2026-09-13.** Do not follow its subscription/season-Price setup or blanket webhook-200 guidance. Current source uses a monthly subscription at 249 Kč with no plan trial; season uses Checkout **setup** and one scheduled 690 Kč PaymentIntent after 3 days, with no season Price. Prices are approved constants, not placeholders. Tests cover mocked boundaries; real-money readiness is unproven. Live activation requires the payment lifecycle fixes, confirmations, reminder, operator/provider verification and test-mode acceptance described in `reports/deployment-review-2026-10-07/backend-findings.md` and `legal-docs-findings.md`. Exchanging keys alone is insufficient. This banner overrides historical instructions below; retain them only to explain the original design.
+
 **Created:** 2026-09-13 via `/plan-then-build` (Opus planning → Sonnet implementation)
 **Base commit:** `d436994`
 **Replaces:** the `⚠️ SCAFFOLDING` payment block in `server.js` and

@@ -1,0 +1,2338 @@
+{
+  "created": "2026-10-07",
+  "files": [
+    {
+      "path": "frontend/.DS_Store",
+      "sha256_before": "efd8db3b4c26f894817b953c40d501f950a43d74add689f8052dbfedf94fa029",
+      "total_lines": 3,
+      "classification": "binary",
+      "ranges_read": [],
+      "status": "inventoried_binary_not_source",
+      "sha256_after": "efd8db3b4c26f894817b953c40d501f950a43d74add689f8052dbfedf94fa029",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/.env.example",
+      "sha256_before": "9e55592741e7418da14c85bf7729ec4c6756aac023337d7c8d94e1f1fc41f9ab",
+      "total_lines": 21,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          21
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "9e55592741e7418da14c85bf7729ec4c6756aac023337d7c8d94e1f1fc41f9ab",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/.gitignore",
+      "sha256_before": "255cb383e7fe043a19e63bf7d5cfb31514f3a7d8cad172980735c134d05e8aeb",
+      "total_lines": 26,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          26
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "255cb383e7fe043a19e63bf7d5cfb31514f3a7d8cad172980735c134d05e8aeb",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/.oxlintrc.json",
+      "sha256_before": "1be899e45c49b2a2edc715bc3bfb31d8ed8e866ed7ebab2065ff6e55e88c2396",
+      "total_lines": 8,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          8
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "1be899e45c49b2a2edc715bc3bfb31d8ed8e866ed7ebab2065ff6e55e88c2396",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/index.html",
+      "sha256_before": "8eeef06a35e36d69c60b396f07450acb38efe0cdd5869725fffe94b306761bf0",
+      "total_lines": 36,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          36
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "8eeef06a35e36d69c60b396f07450acb38efe0cdd5869725fffe94b306761bf0",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/middleware.js",
+      "sha256_before": "2149df836d8ee38aa6149e071ca74ff425be2f94dcc93742eb50bfaf61371ccc",
+      "total_lines": 201,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          201
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "2149df836d8ee38aa6149e071ca74ff425be2f94dcc93742eb50bfaf61371ccc",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/package-lock.json",
+      "sha256_before": "b4b4d321103fbc7397c14276e034c1ec4b0a279a20891296b24778663bc12f27",
+      "total_lines": 1677,
+      "classification": "generated_lock",
+      "ranges_read": [],
+      "status": "inventoried_generated_not_line_reviewed",
+      "sha256_after": "b4b4d321103fbc7397c14276e034c1ec4b0a279a20891296b24778663bc12f27",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/package.json",
+      "sha256_before": "5b785cacffe96d666d65fdcaf6ea756e9c9b4c7e4bb5e22340c05044cdf61ae8",
+      "total_lines": 34,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          34
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "5b785cacffe96d666d65fdcaf6ea756e9c9b4c7e4bb5e22340c05044cdf61ae8",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/public/apple-touch-icon.png",
+      "sha256_before": "3ef0695e0276bccfc02561b0722cbd18ffa74a08dc3e28040d659929b7ceab76",
+      "total_lines": 42,
+      "classification": "binary",
+      "ranges_read": [],
+      "status": "inventoried_binary_not_source",
+      "sha256_after": "3ef0695e0276bccfc02561b0722cbd18ffa74a08dc3e28040d659929b7ceab76",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/public/favicon.svg",
+      "sha256_before": "c8c5f3efe80d3a5008955b24de19bc1ffb3fb3a1fbc7ab8f2ce6c37e13e2565a",
+      "total_lines": 1,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "c8c5f3efe80d3a5008955b24de19bc1ffb3fb3a1fbc7ab8f2ce6c37e13e2565a",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/public/mobile-preview.html",
+      "sha256_before": "b66eaa65e6357e6f68a3d9279280b799651c9a5ee6bba54f875869c6d2e9a5d7",
+      "total_lines": 126,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          126
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "b66eaa65e6357e6f68a3d9279280b799651c9a5ee6bba54f875869c6d2e9a5d7",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/public/robots.txt",
+      "sha256_before": "331ea9090db0c9f6f597bd9840fd5b171830f6e0b3ba1cb24dfa91f0c95aedc1",
+      "total_lines": 2,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          2
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "331ea9090db0c9f6f597bd9840fd5b171830f6e0b3ba1cb24dfa91f0c95aedc1",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/scripts/gen-tokens-css.mjs",
+      "sha256_before": "3e5fb143d33500d2eb7bdbd2c2c648fae01b55e5b703a9a927d69e7dbb2435cd",
+      "total_lines": 59,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "3e5fb143d33500d2eb7bdbd2c2c648fae01b55e5b703a9a927d69e7dbb2435cd",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/App.css",
+      "sha256_before": "f6a1e61e2087b18f918a192e17a85b6ec70f6bd3a3f794d0c31cfb0b9af51da2",
+      "total_lines": 585,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "f6a1e61e2087b18f918a192e17a85b6ec70f6bd3a3f794d0c31cfb0b9af51da2",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/App.jsx",
+      "sha256_before": "f5fd8b7a9f1f38d0ed797824740067ec53be69f56599eee37ffdff36bc18c3fe",
+      "total_lines": 113,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          113
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "f5fd8b7a9f1f38d0ed797824740067ec53be69f56599eee37ffdff36bc18c3fe",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/api.js",
+      "sha256_before": "4aa9af916667d753d97d9e4ec20b77a784d345d2ce3cea508ab1c4c38c99554f",
+      "total_lines": 466,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          466
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "4aa9af916667d753d97d9e4ec20b77a784d345d2ce3cea508ab1c4c38c99554f",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/auth.css",
+      "sha256_before": "a6d115386e20d2dab31dadd59d9403cf0a1d1c106c354486fff20be0f05f1367",
+      "total_lines": 747,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "a6d115386e20d2dab31dadd59d9403cf0a1d1c106c354486fff20be0f05f1367",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/AsyncState.jsx",
+      "sha256_before": "5bc2699ffd41551d392e010df8225a1e639cb756d647b5c994f30c5f92e07df8",
+      "total_lines": 39,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "5bc2699ffd41551d392e010df8225a1e639cb756d647b5c994f30c5f92e07df8",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/AuthContext.jsx",
+      "sha256_before": "26f853317d4a0dfa3bde0c9a119ba6b312e0fb919a9d041a570a6cc511af6999",
+      "total_lines": 456,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          456
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "26f853317d4a0dfa3bde0c9a119ba6b312e0fb919a9d041a570a6cc511af6999",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/AuthTabs.jsx",
+      "sha256_before": "98e09f981302c20f52987a9a1e043871804837c31b6074c72706cdd450271347",
+      "total_lines": 47,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "98e09f981302c20f52987a9a1e043871804837c31b6074c72706cdd450271347",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/BetaClosingQuestionnaire.jsx",
+      "sha256_before": "4231a45624cd377a5f1b1c03e052871184eef4f02a23494067d0d2ad4963ed25",
+      "total_lines": 58,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          58
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "4231a45624cd377a5f1b1c03e052871184eef4f02a23494067d0d2ad4963ed25",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/BetaEnrollment.jsx",
+      "sha256_before": "222d0a453213fdd74f73d211ee7d266b98fd1e8ba4258c98e09efa2fee4f25d5",
+      "total_lines": 32,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          32
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "222d0a453213fdd74f73d211ee7d266b98fd1e8ba4258c98e09efa2fee4f25d5",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/BetaFeedbackSheet.jsx",
+      "sha256_before": "73a6a60a01f875f45e7d0404abc47da234f6c599caddcf59f97be2ff9011b01a",
+      "total_lines": 120,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          120
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "73a6a60a01f875f45e7d0404abc47da234f6c599caddcf59f97be2ff9011b01a",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/BetaInstructions.jsx",
+      "sha256_before": "253e2e787d24d2ed55edd3a3a348b72c0c81fbc94339b31003a0c798cb57ce4e",
+      "total_lines": 125,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          125
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "253e2e787d24d2ed55edd3a3a348b72c0c81fbc94339b31003a0c798cb57ce4e",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/BetaMicroQuestions.jsx",
+      "sha256_before": "6aca803184392e72cb2a0b552ad8317e8b869b782770147397e5d6d2d2b0b13f",
+      "total_lines": 53,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          53
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "6aca803184392e72cb2a0b552ad8317e8b869b782770147397e5d6d2d2b0b13f",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/BetaSoftGate.jsx",
+      "sha256_before": "54e12442f296f174e0cd468b916fd7352a5cdacf053517b2b340ac5d40a2e273",
+      "total_lines": 19,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          19
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "54e12442f296f174e0cd468b916fd7352a5cdacf053517b2b340ac5d40a2e273",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/BetaTools.jsx",
+      "sha256_before": "8ede1a347ec386e7c70417a0bb6d6516400110b5f5340e568cb20b5abed717b6",
+      "total_lines": 102,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          102
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "8ede1a347ec386e7c70417a0bb6d6516400110b5f5340e568cb20b5abed717b6",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/BetaToolsContext.jsx",
+      "sha256_before": "e5dbe4aa97bfa746aa88fce8dd24b7dce37823c3af3af3d88957192c7d5751bd",
+      "total_lines": 9,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          9
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "e5dbe4aa97bfa746aa88fce8dd24b7dce37823c3af3af3d88957192c7d5751bd",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/BetaTracking.jsx",
+      "sha256_before": "a994e9123c587facc13ee6767d8a79a53d79d74bb7b132f55a8eef9ec3d6578a",
+      "total_lines": 74,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          74
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "a994e9123c587facc13ee6767d8a79a53d79d74bb7b132f55a8eef9ec3d6578a",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/BrandMark.jsx",
+      "sha256_before": "ffa8fc6d22bb0e9d98aaa58aafe38b5963353b4528cf2df3623e60d26b87b96e",
+      "total_lines": 13,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "ffa8fc6d22bb0e9d98aaa58aafe38b5963353b4528cf2df3623e60d26b87b96e",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/Captcha.jsx",
+      "sha256_before": "799f8cded843bc8662176f58b06fcf3a4db6f7e17483f055bf529319d218339c",
+      "total_lines": 122,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          122
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "799f8cded843bc8662176f58b06fcf3a4db6f7e17483f055bf529319d218339c",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/ConfirmDialog.jsx",
+      "sha256_before": "4531191016059344f699689d48be3fc5cd02a98f2514aea5c44c0d7ebf92495a",
+      "total_lines": 53,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          53
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "4531191016059344f699689d48be3fc5cd02a98f2514aea5c44c0d7ebf92495a",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/ConsentCheckbox.jsx",
+      "sha256_before": "031211469722f3f8dc9da2d59a519522f9d0f649208521690ea00c2e56495d56",
+      "total_lines": 33,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          33
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "031211469722f3f8dc9da2d59a519522f9d0f649208521690ea00c2e56495d56",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/FavoriteButton.jsx",
+      "sha256_before": "76fb274d2a435352dd027f10711028f591a2bbef4efd3227dcac5f6e6f86ba83",
+      "total_lines": 77,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "76fb274d2a435352dd027f10711028f591a2bbef4efd3227dcac5f6e6f86ba83",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/FilterPopover.jsx",
+      "sha256_before": "daa09a92d464440573b66231b50387989cbde2df3834bfbb02bd29efff71bd45",
+      "total_lines": 106,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "daa09a92d464440573b66231b50387989cbde2df3834bfbb02bd29efff71bd45",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/Hint.jsx",
+      "sha256_before": "72d0076ca70179be6b7d71000b3a7b6072cfb3511b307fb09deaa5bbd6be9c12",
+      "total_lines": 55,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          55
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "72d0076ca70179be6b7d71000b3a7b6072cfb3511b307fb09deaa5bbd6be9c12",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/Layout.jsx",
+      "sha256_before": "b764b1e3c992a0961268d3799ec760f7b88cf82b4b5c901f885d1c5604103ebd",
+      "total_lines": 269,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "b764b1e3c992a0961268d3799ec760f7b88cf82b4b5c901f885d1c5604103ebd",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/Modal.jsx",
+      "sha256_before": "018a9918a745e2d95670121fd7f2faf47ce5c6da8c330e956337385683ef96c1",
+      "total_lines": 87,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          87
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "018a9918a745e2d95670121fd7f2faf47ce5c6da8c330e956337385683ef96c1",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/ParentPayHandoff.jsx",
+      "sha256_before": "930c32b74fda2cb9ce56b7758c6310c5de3a6c18d0d0fd34960b845442e26cb7",
+      "total_lines": 155,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          155
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "930c32b74fda2cb9ce56b7758c6310c5de3a6c18d0d0fd34960b845442e26cb7",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/PasswordInput.jsx",
+      "sha256_before": "1d709a8f1962eae54a96cc17026c3d9e376b32a6272906e4221de1abeb962271",
+      "total_lines": 81,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          81
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "1d709a8f1962eae54a96cc17026c3d9e376b32a6272906e4221de1abeb962271",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/PasswordStrength.jsx",
+      "sha256_before": "4a5194086a008eda18431c8a78e543ed1128c7ce6d9a84512a518652543a2ffb",
+      "total_lines": 92,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          92
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "4a5194086a008eda18431c8a78e543ed1128c7ce6d9a84512a518652543a2ffb",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/ProtectedRoute.jsx",
+      "sha256_before": "ca66bd87a2dcd7b5b48ba8928edd09b7d83137d538a177329516cbc5c3026c8f",
+      "total_lines": 81,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          81
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "ca66bd87a2dcd7b5b48ba8928edd09b7d83137d538a177329516cbc5c3026c8f",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/SchoolMap.css",
+      "sha256_before": "e9a00a3b67e54ae25d826530bca17f9a2cabda8b50d86a07b0453a22286b8be7",
+      "total_lines": 298,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "e9a00a3b67e54ae25d826530bca17f9a2cabda8b50d86a07b0453a22286b8be7",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/SchoolMap.jsx",
+      "sha256_before": "b08bd36c3157d2913a34090006593e687004891d9e56c829d5cc8f225852bf83",
+      "total_lines": 400,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "b08bd36c3157d2913a34090006593e687004891d9e56c829d5cc8f225852bf83",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/SearchFilters.jsx",
+      "sha256_before": "1a1ce16e4d48ee8cd68ed48f993cacddbebcd1741d98981f4c0b6de08a59e5f5",
+      "total_lines": 457,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "1a1ce16e4d48ee8cd68ed48f993cacddbebcd1741d98981f4c0b6de08a59e5f5",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/StatInfo.jsx",
+      "sha256_before": "108dda50ae7804a4e8acf61090ff4c77f51e5b0eda3fe41e6b5ee191a3c8ed45",
+      "total_lines": 10,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          10
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "108dda50ae7804a4e8acf61090ff4c77f51e5b0eda3fe41e6b5ee191a3c8ed45",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/ToastContext.jsx",
+      "sha256_before": "ef066ad5ed036d97be7e71dcabae867f41d7f2189625b617f40d038a42fcf335",
+      "total_lines": 134,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "ef066ad5ed036d97be7e71dcabae867f41d7f2189625b617f40d038a42fcf335",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/decision/DecisionTabs.jsx",
+      "sha256_before": "2aff28301ba361d208707ef47e81914c8e3c4f5ab7414a8590405e5c5a5ac51e",
+      "total_lines": 26,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          26
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "2aff28301ba361d208707ef47e81914c8e3c4f5ab7414a8590405e5c5a5ac51e",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/decision/NoteEditor.jsx",
+      "sha256_before": "d102e6cf1ac934f4167821a5a0d994236cdcf74f777db777ce8ad62e3dfd20f8",
+      "total_lines": 84,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          84
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "d102e6cf1ac934f4167821a5a0d994236cdcf74f777db777ce8ad62e3dfd20f8",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/decision/PickCard.jsx",
+      "sha256_before": "713cb0b63314071fcff93f57a3a8abbd6716fbbe9e203d87827b3372b9fa6a3f",
+      "total_lines": 117,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          117
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "713cb0b63314071fcff93f57a3a8abbd6716fbbe9e203d87827b3372b9fa6a3f",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/decision/PointsInput.jsx",
+      "sha256_before": "92e3a2db2b27fce32fdbc9bc358f4c6d2f3062db86571ad408b9513f78e007eb",
+      "total_lines": 106,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          106
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "92e3a2db2b27fce32fdbc9bc358f4c6d2f3062db86571ad408b9513f78e007eb",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/decision/ProsCons.jsx",
+      "sha256_before": "0beae6e3598e7586ab8311af1222f2ca77949b2d7fbbffdfefdfbc458d2a40bb",
+      "total_lines": 37,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          37
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "0beae6e3598e7586ab8311af1222f2ca77949b2d7fbbffdfefdfbc458d2a40bb",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/decision/RiskSummary.jsx",
+      "sha256_before": "ab21e2288c59545350d9a9a1134a8adf790cb6c46c0cad188948698aa03bf699",
+      "total_lines": 42,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          42
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "ab21e2288c59545350d9a9a1134a8adf790cb6c46c0cad188948698aa03bf699",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/landing/ProductScreens.jsx",
+      "sha256_before": "f281dc909304b7436ef03f59364de5860ac67b0342a3c2c24a9141931cbdb8ca",
+      "total_lines": 415,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "f281dc909304b7436ef03f59364de5860ac67b0342a3c2c24a9141931cbdb8ca",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/landing/productScreens.css",
+      "sha256_before": "6bc8d38821869cf47f33c400af8b45c2b13ed994a4b48abc9a320c4cf76ab19f",
+      "total_lines": 390,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "6bc8d38821869cf47f33c400af8b45c2b13ed994a4b48abc9a320c4cf76ab19f",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/onboarding/DistrictMap.jsx",
+      "sha256_before": "4068c2008d102d551f6e07bfea472bb8db78fea2ed55607034eccb846e3b50b2",
+      "total_lines": 94,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          94
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "4068c2008d102d551f6e07bfea472bb8db78fea2ed55607034eccb846e3b50b2",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/onboarding/HandoffLock.jsx",
+      "sha256_before": "d4e7d7d1b2e9dd7a84504279845279f8bba55f79e5a0fdfb502554273b0b33b2",
+      "total_lines": 74,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          74
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "d4e7d7d1b2e9dd7a84504279845279f8bba55f79e5a0fdfb502554273b0b33b2",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/onboarding/MatchPreview.jsx",
+      "sha256_before": "aabf3610df20a6b45652d356a2d17c994de3428629002e441a9f86efec2f54a0",
+      "total_lines": 59,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "aabf3610df20a6b45652d356a2d17c994de3428629002e441a9f86efec2f54a0",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/onboarding/ObKit.jsx",
+      "sha256_before": "54cb2bb1ca7bb6dad4a7301c80db6b39277d242834e421c2fbc83509b6e8a408",
+      "total_lines": 278,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          278
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "54cb2bb1ca7bb6dad4a7301c80db6b39277d242834e421c2fbc83509b6e8a408",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/onboarding/ProfilePanel.jsx",
+      "sha256_before": "8ae383d8aa0646ba1fab16d87a28c5f52487cbc635b18be5527119c7d6992608",
+      "total_lines": 156,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          156
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "8ae383d8aa0646ba1fab16d87a28c5f52487cbc635b18be5527119c7d6992608",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/onboarding/TopMatchCard.jsx",
+      "sha256_before": "14ff6212439ea50422d051a71e671fd5bb7374b79d35ef9e23ed15363fab75c2",
+      "total_lines": 39,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "14ff6212439ea50422d051a71e671fd5bb7374b79d35ef9e23ed15363fab75c2",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/onboarding/usePrefersReducedMotion.js",
+      "sha256_before": "203bc228c0cd336a6088414abdf0a17437d01c531ac5b9e2d32be0726b12fbf8",
+      "total_lines": 24,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "203bc228c0cd336a6088414abdf0a17437d01c531ac5b9e2d32be0726b12fbf8",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/schoolDetail/CutoffExplainer.jsx",
+      "sha256_before": "ed1a2c69722372629044f9ad29ade56146be33141adb808b12ad67b5493684cd",
+      "total_lines": 32,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          32
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "ed1a2c69722372629044f9ad29ade56146be33141adb808b12ad67b5493684cd",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/schoolDetail/HistoryChart.jsx",
+      "sha256_before": "e12259768f388fe7e645cae592a7327ae8369e3a36aeabe6538eaabea040e419",
+      "total_lines": 160,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          160
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "e12259768f388fe7e645cae592a7327ae8369e3a36aeabe6538eaabea040e419",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/schoolDetail/InfoHint.jsx",
+      "sha256_before": "1280926dbfb38041c5b4f0f17cab2dbe5a8f958d2bdec433bb338505f8928e33",
+      "total_lines": 8,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          8
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "1280926dbfb38041c5b4f0f17cab2dbe5a8f958d2bdec433bb338505f8928e33",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/schoolDetail/MissingDataGrid.jsx",
+      "sha256_before": "ba6ae1465a5a15e0befc9afa579858bb3278caee098e4378b0fb5b941f9ba1a9",
+      "total_lines": 135,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          135
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "ba6ae1465a5a15e0befc9afa579858bb3278caee098e4378b0fb5b941f9ba1a9",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/schoolDetail/ProgramCard.jsx",
+      "sha256_before": "ad3f4213174f817f519bae5cb10b3ae70c4746114ec79616c3352e517eaff165",
+      "total_lines": 135,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          135
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "ad3f4213174f817f519bae5cb10b3ae70c4746114ec79616c3352e517eaff165",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/schoolDetail/ProgramList.jsx",
+      "sha256_before": "22af941072c2663b39f70d7e9b9c7db6f05490eb596b82f2c049f609664a2f64",
+      "total_lines": 60,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          60
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "22af941072c2663b39f70d7e9b9c7db6f05490eb596b82f2c049f609664a2f64",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/schoolDetail/ReportDataDialog.jsx",
+      "sha256_before": "638a990fd440fcc0554727341c12a5bb61e6dd4d3786e9626de40773765f423d",
+      "total_lines": 112,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          112
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "638a990fd440fcc0554727341c12a5bb61e6dd4d3786e9626de40773765f423d",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/schoolDetail/ReviewCard.jsx",
+      "sha256_before": "ddc49b4782e0e08cf35af90857fe88de2ebd123bcd984fe586471732f3e365d4",
+      "total_lines": 118,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          118
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "ddc49b4782e0e08cf35af90857fe88de2ebd123bcd984fe586471732f3e365d4",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/schoolDetail/ReviewForm.jsx",
+      "sha256_before": "551343da7635ed53dcfc6a4711f9535f115fefe22f619b6dba1e43c438889184",
+      "total_lines": 163,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          163
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "551343da7635ed53dcfc6a4711f9535f115fefe22f619b6dba1e43c438889184",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/schoolDetail/SchoolActions.jsx",
+      "sha256_before": "f5a3b707aab20e17d0e2591f63840f9a6a559155193d201f637514ebc47ab171",
+      "total_lines": 178,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          178
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "f5a3b707aab20e17d0e2591f63840f9a6a559155193d201f637514ebc47ab171",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/schoolDetail/SchoolHero.jsx",
+      "sha256_before": "4d566fa85b64fd0990363f9f7279c3c6396ddcb515817de489fbc433a01cad32",
+      "total_lines": 126,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          126
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "4d566fa85b64fd0990363f9f7279c3c6396ddcb515817de489fbc433a01cad32",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/schoolDetail/SchoolLocation.jsx",
+      "sha256_before": "6282549f26df93a4b2f4411f6af7569973ae1efe78da1f14d833047b4d8d5118",
+      "total_lines": 137,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          137
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "6282549f26df93a4b2f4411f6af7569973ae1efe78da1f14d833047b4d8d5118",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/schoolDetail/SchoolReviews.jsx",
+      "sha256_before": "b04ab573235309b30636c8708ed2e12b6c16eed60bc20915a5aa979a44ffcd6f",
+      "total_lines": 112,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          112
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "b04ab573235309b30636c8708ed2e12b6c16eed60bc20915a5aa979a44ffcd6f",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/schoolDetail/SectionNav.jsx",
+      "sha256_before": "b38d8841581b22f465d8fb95324ac60f55daefb54b8919322f85089827ea9eab",
+      "total_lines": 20,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          20
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "b38d8841581b22f465d8fb95324ac60f55daefb54b8919322f85089827ea9eab",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/components/schoolDetail/SimilarSchools.jsx",
+      "sha256_before": "30490c3d420119d7e6754521ded1e7a7a9d32d53d2f53cb58666cfee50fee9ec",
+      "total_lines": 73,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          73
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "30490c3d420119d7e6754521ded1e7a7a9d32d53d2f53cb58666cfee50fee9ec",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/config/facts.js",
+      "sha256_before": "b8a7cd4357395ff2054a19377d760e81305dcaddf202a23fe77d96c82b43bd6e",
+      "total_lines": 12,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          12
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "b8a7cd4357395ff2054a19377d760e81305dcaddf202a23fe77d96c82b43bd6e",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/config/pricing.js",
+      "sha256_before": "24b134874870e63f7c6ac8c2b30072a93e1d83608d641f0cc2dc0f9453a21a77",
+      "total_lines": 428,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          428
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "24b134874870e63f7c6ac8c2b30072a93e1d83608d641f0cc2dc0f9453a21a77",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/config/socialProof.js",
+      "sha256_before": "c23ce1f237e86e3ff09faf009cc37672eea64a4a799ff0535cc777d2bf5e086a",
+      "total_lines": 33,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          33
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "c23ce1f237e86e3ff09faf009cc37672eea64a4a799ff0535cc777d2bf5e086a",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/design/tokens.css",
+      "sha256_before": "609b07da8dee34a1f47d8be2e819b973fc6c291cbc477327b5b43496126b0eb9",
+      "total_lines": 573,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "609b07da8dee34a1f47d8be2e819b973fc6c291cbc477327b5b43496126b0eb9",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/design/tokens.js",
+      "sha256_before": "f518fb5203dd28ee5453263b49b6a389076624ef9f8722e994e45b547eb56ed7",
+      "total_lines": 245,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "f518fb5203dd28ee5453263b49b6a389076624ef9f8722e994e45b547eb56ed7",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/index.css",
+      "sha256_before": "05043c555b8da061e63f1e88d33735d556f418413d2b29e991c1d9c352c4c869",
+      "total_lines": 106,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "05043c555b8da061e63f1e88d33735d556f418413d2b29e991c1d9c352c4c869",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/lib/admissionRisk.js",
+      "sha256_before": "c9230a7cf521b2087150779cac99a35a17766f8ea56f12652581fda0fa666a4c",
+      "total_lines": 111,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          111
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "c9230a7cf521b2087150779cac99a35a17766f8ea56f12652581fda0fa666a4c",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/lib/betaCapture.js",
+      "sha256_before": "f4cf327f1e4329de8d9c2fa90fe248fb55d07dd6309857fe908d7f0d5f1e24da",
+      "total_lines": 40,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          40
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "f4cf327f1e4329de8d9c2fa90fe248fb55d07dd6309857fe908d7f0d5f1e24da",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/lib/betaEnrollment.js",
+      "sha256_before": "ea83ece68535af8e0b0486b56067d31d7d443cc1a8b171122d8baa97eef7a5f8",
+      "total_lines": 19,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          19
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "ea83ece68535af8e0b0486b56067d31d7d443cc1a8b171122d8baa97eef7a5f8",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/lib/betaMicro.js",
+      "sha256_before": "3ce05d12841792a6a925e93ce9c358d8805e7651e7934acf398d838a1a67745d",
+      "total_lines": 7,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          7
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "3ce05d12841792a6a925e93ce9c358d8805e7651e7934acf398d838a1a67745d",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/lib/betaNavigation.js",
+      "sha256_before": "7664e45e27d211a1a9d688b9b0bcb0f4a42230bad919cfd7a9f40391a8e46c9d",
+      "total_lines": 25,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          25
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "7664e45e27d211a1a9d688b9b0bcb0f4a42230bad919cfd7a9f40391a8e46c9d",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/lib/betaRankings.js",
+      "sha256_before": "86283be964c6ad031ae95e95a3a475fe9a3d4f604431360cbaadef5449fd5b99",
+      "total_lines": 26,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          26
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "86283be964c6ad031ae95e95a3a475fe9a3d4f604431360cbaadef5449fd5b99",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/lib/betaTrack.js",
+      "sha256_before": "b4e5e972334bb50cae204372445fb49003e9975b439634154f81e33937f769bc",
+      "total_lines": 62,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          62
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "b4e5e972334bb50cae204372445fb49003e9975b439634154f81e33937f769bc",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/lib/comparisonRows.js",
+      "sha256_before": "301ba784c38e8ec5ded7e388d55bcd5928ed072dd11f7c73661715466004f87d",
+      "total_lines": 157,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          157
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "301ba784c38e8ec5ded7e388d55bcd5928ed072dd11f7c73661715466004f87d",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/lib/decisionMatrix.js",
+      "sha256_before": "0deb9a26a181b5c3eab489042d412297d364ffb62edf70b000d67719a4678a04",
+      "total_lines": 255,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          255
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "0deb9a26a181b5c3eab489042d412297d364ffb62edf70b000d67719a4678a04",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/lib/demoSchools.js",
+      "sha256_before": "ce77475f27c1ef2575476a24da8215c38783e2f95f186853439bfac028651d3d",
+      "total_lines": 169,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "ce77475f27c1ef2575476a24da8215c38783e2f95f186853439bfac028651d3d",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/lib/escapeHtml.js",
+      "sha256_before": "2036077865ca8cdda9ad6f5211e6e534b3d40735e88da224e03b23c57cc51c50",
+      "total_lines": 5,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          5
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "2036077865ca8cdda9ad6f5211e6e534b3d40735e88da224e03b23c57cc51c50",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/lib/kkovGroups.js",
+      "sha256_before": "9aeb6fec07cef94474acbcbbe9126e9dd6034623816a7c370b6719dbd4f3519d",
+      "total_lines": 40,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          40
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "9aeb6fec07cef94474acbcbbe9126e9dd6034623816a7c370b6719dbd4f3519d",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/lib/matching.js",
+      "sha256_before": "192a59f678f51634146dcbd0cc6994686e245443dc127cbfec55dbe6cf766ebc",
+      "total_lines": 410,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          410
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "192a59f678f51634146dcbd0cc6994686e245443dc127cbfec55dbe6cf766ebc",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/lib/onboardingStorage.js",
+      "sha256_before": "a48cec9471fce2af00e833871af1c3affab1e1239f0096a9c0bd045cfa899fcc",
+      "total_lines": 2,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          2
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "a48cec9471fce2af00e833871af1c3affab1e1239f0096a9c0bd045cfa899fcc",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/lib/pendingBetaCode.js",
+      "sha256_before": "b1cffc182894155cd3ad40868e84bbbd3faf29f18c9093f9cdea274bf4ae302d",
+      "total_lines": 47,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          47
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "b1cffc182894155cd3ad40868e84bbbd3faf29f18c9093f9cdea274bf4ae302d",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/lib/pendingOnboardingAnswers.js",
+      "sha256_before": "35e3d07e80149bad1f548a01fc08c3a8127e21f71e1c0883c0d88f79bf7d4943",
+      "total_lines": 56,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          56
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "35e3d07e80149bad1f548a01fc08c3a8127e21f71e1c0883c0d88f79bf7d4943",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/lib/pluralCz.js",
+      "sha256_before": "dd3e69d39ae7963ff61d26dbebbddba3989c9564166a0a96244988c67b5dc3cf",
+      "total_lines": 16,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          16
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "dd3e69d39ae7963ff61d26dbebbddba3989c9564166a0a96244988c67b5dc3cf",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/lib/pragueDistricts.js",
+      "sha256_before": "fba032bb166cf59e6e418627efae4444e8de968b4a14dbdb0d6b7978e2f8b03e",
+      "total_lines": 199,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "fba032bb166cf59e6e418627efae4444e8de968b4a14dbdb0d6b7978e2f8b03e",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/lib/schoolContact.js",
+      "sha256_before": "87e7d1299e5d9486dcd8d97285eb07ebf696eb3c8555fb3fa1b3edd5069b57ab",
+      "total_lines": 21,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          21
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "87e7d1299e5d9486dcd8d97285eb07ebf696eb3c8555fb3fa1b3edd5069b57ab",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/lib/schoolFeatures.js",
+      "sha256_before": "91200be6ac486a2e7d31495f45dafd25c678c96c77a1278e9267434de52f9c51",
+      "total_lines": 306,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          306
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "91200be6ac486a2e7d31495f45dafd25c678c96c77a1278e9267434de52f9c51",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/lib/schoolNames.js",
+      "sha256_before": "08b720053a67a3f469aca64c30f4c1cbbde765f28fbb767090dd3b6dd0a301b4",
+      "total_lines": 106,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          106
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "08b720053a67a3f469aca64c30f4c1cbbde765f28fbb767090dd3b6dd0a301b4",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/lib/schoolPrograms.js",
+      "sha256_before": "29895b3845e6a7314e887cb984a9dde6d74455e64cbfb5699f20f47774fdde91",
+      "total_lines": 317,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          317
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "29895b3845e6a7314e887cb984a9dde6d74455e64cbfb5699f20f47774fdde91",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/lib/schoolSearch.js",
+      "sha256_before": "54288d70f59f204e040d57184efbe3bdf295d0339096bdf5dd847b82f6f3f36a",
+      "total_lines": 318,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          318
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "54288d70f59f204e040d57184efbe3bdf295d0339096bdf5dd847b82f6f3f36a",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/lib/searchPrefs.js",
+      "sha256_before": "83f366cddb05201a4900c2b62775f6372f3fa5f6de48b200e70027823fd76955",
+      "total_lines": 100,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          100
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "83f366cddb05201a4900c2b62775f6372f3fa5f6de48b200e70027823fd76955",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/lib/shareLink.js",
+      "sha256_before": "0e998699af268cb644a59ffe465becc8910f7c86a731e71b3507fd9c51b7f54a",
+      "total_lines": 16,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          16
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "0e998699af268cb644a59ffe465becc8910f7c86a731e71b3507fd9c51b7f54a",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/lib/theme.js",
+      "sha256_before": "cef675e8d49cc99b923e4b43b94a2b17e30aadc27debe6a95879276ce6efecfe",
+      "total_lines": 37,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          37
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "cef675e8d49cc99b923e4b43b94a2b17e30aadc27debe6a95879276ce6efecfe",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/lib/useBottomBarSpace.js",
+      "sha256_before": "035db7d6a80ad5c1b5c45de3991206d840a748cc0594c4d6ee1fdb54b220b3ec",
+      "total_lines": 30,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          30
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "035db7d6a80ad5c1b5c45de3991206d840a748cc0594c4d6ee1fdb54b220b3ec",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/lib/useMediaQuery.js",
+      "sha256_before": "af3b6396df5a7cf57679a36489d2f5ed146d55d71c95cdc5610e27e3ee1d20ee",
+      "total_lines": 13,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          13
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "af3b6396df5a7cf57679a36489d2f5ed146d55d71c95cdc5610e27e3ee1d20ee",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/lib/useSchoolCount.js",
+      "sha256_before": "2bc15c7546e97aa0f13c678176234bd8a3e257f5cc9c0671b6e18550df03dc42",
+      "total_lines": 18,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          18
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "2bc15c7546e97aa0f13c678176234bd8a3e257f5cc9c0671b6e18550df03dc42",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/main.jsx",
+      "sha256_before": "0692876fc9d548ceca8088c3aa09fbb2f62057381740cb5ea6328945c219cce7",
+      "total_lines": 11,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          11
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "0692876fc9d548ceca8088c3aa09fbb2f62057381740cb5ea6328945c219cce7",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/Admin.css",
+      "sha256_before": "f4171ac17051be8a8ab7ab3d95df7459db6b9f93477ce79a45eed656266c2a58",
+      "total_lines": 10,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "f4171ac17051be8a8ab7ab3d95df7459db6b9f93477ce79a45eed656266c2a58",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/Admin.jsx",
+      "sha256_before": "4ae78747e75521b34b853cbbfdacae3d9066a0dc519d7164993d00783400a4a9",
+      "total_lines": 97,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "4ae78747e75521b34b853cbbfdacae3d9066a0dc519d7164993d00783400a4a9",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/BetaLanding.jsx",
+      "sha256_before": "458c53f7a4294d0d7af308bcc83326cdf7955547a9f8babf246c7f8c3c5aa4db",
+      "total_lines": 210,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          210
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "458c53f7a4294d0d7af308bcc83326cdf7955547a9f8babf246c7f8c3c5aa4db",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/EmailConfirmed.jsx",
+      "sha256_before": "5463c032242723d2f806dc05aebee6f417da4a4f16a80b34ac8ff98d33145b05",
+      "total_lines": 62,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          62
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "5463c032242723d2f806dc05aebee6f417da4a4f16a80b34ac8ff98d33145b05",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/ForgotPassword.jsx",
+      "sha256_before": "b43f830a864b7c5116c3ed38590bddc50f784fd6222b139d97ee0f1808ff75e9",
+      "total_lines": 119,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          119
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "b43f830a864b7c5116c3ed38590bddc50f784fd6222b139d97ee0f1808ff75e9",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/HandoffStart.jsx",
+      "sha256_before": "2630c1018249f9ae5988842204b6e1f94d223fba66cdf48512edac8ad7f31c94",
+      "total_lines": 95,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          95
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "2630c1018249f9ae5988842204b6e1f94d223fba66cdf48512edac8ad7f31c94",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/Home.jsx",
+      "sha256_before": "e147f110f29de838e770b60f37b6f7e0ee4f6bccb110444371d011eb2641c522",
+      "total_lines": 438,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "e147f110f29de838e770b60f37b6f7e0ee4f6bccb110444371d011eb2641c522",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/Legal.jsx",
+      "sha256_before": "09ef50fe1308b720fec9607e56f2713894344a6b3cf9017350172617c07e471d",
+      "total_lines": 345,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          345
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "09ef50fe1308b720fec9607e56f2713894344a6b3cf9017350172617c07e471d",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/Login.jsx",
+      "sha256_before": "80c0e53a49ae9619a79ab36a20310b1efd25806b678b3f73e4739deb903bac5a",
+      "total_lines": 236,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          236
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "80c0e53a49ae9619a79ab36a20310b1efd25806b678b3f73e4739deb903bac5a",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/Matice.jsx",
+      "sha256_before": "66bc078d95a505d69749ee2f777ca496af42d28eb63b2b99f4096e5a587779f3",
+      "total_lines": 499,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          499
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "66bc078d95a505d69749ee2f777ca496af42d28eb63b2b99f4096e5a587779f3",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/NotFound.jsx",
+      "sha256_before": "b7845580c970e2155ed488886342e44f0f0503eb4ddffbee4fd5d4a3271c5084",
+      "total_lines": 47,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "b7845580c970e2155ed488886342e44f0f0503eb4ddffbee4fd5d4a3271c5084",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/ParentPay.jsx",
+      "sha256_before": "852668fbe77ed781b06d724ee3abc1ae36bcec43fc60b99f15972696f02c039e",
+      "total_lines": 238,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          238
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "852668fbe77ed781b06d724ee3abc1ae36bcec43fc60b99f15972696f02c039e",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/Porovnani.jsx",
+      "sha256_before": "2f82dd09ac45322ae31a1a6b4a1344ec55f830064111ed95665d70701e13cf4e",
+      "total_lines": 365,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          365
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "2f82dd09ac45322ae31a1a6b4a1344ec55f830064111ed95665d70701e13cf4e",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/Prihlaska.jsx",
+      "sha256_before": "bf8bf1cb9d92b1064d560a80cdf5386baee845d9926a5c4e7367b635eabed2ec",
+      "total_lines": 249,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          249
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "bf8bf1cb9d92b1064d560a80cdf5386baee845d9926a5c4e7367b635eabed2ec",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/Questionnaire.jsx",
+      "sha256_before": "06e1d6b76ef674240eb474158ae6d0694283825b495f5d31c133237db9dc1c34",
+      "total_lines": 780,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          780
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "06e1d6b76ef674240eb474158ae6d0694283825b495f5d31c133237db9dc1c34",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/ResetPassword.jsx",
+      "sha256_before": "73486a12558ca56350e9db1fca2ef10d61f3699b849721785ec8526790186569",
+      "total_lines": 149,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          149
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "73486a12558ca56350e9db1fca2ef10d61f3699b849721785ec8526790186569",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/SchoolDetail.jsx",
+      "sha256_before": "ed2edeed083b77f79c8fb0aa72eca49898718a564f0f32ebc72284746bbefe8b",
+      "total_lines": 223,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          223
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "ed2edeed083b77f79c8fb0aa72eca49898718a564f0f32ebc72284746bbefe8b",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/SdileniView.jsx",
+      "sha256_before": "c9678a046443fadfa57dd6c5657622c5ef5d37ef5810ba1a290087de73f93b8f",
+      "total_lines": 157,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          157
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "c9678a046443fadfa57dd6c5657622c5ef5d37ef5810ba1a290087de73f93b8f",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/Search.jsx",
+      "sha256_before": "9d73cbc444d64f21bdeabee11335ce7e0be7cfbf3afb27565af8f8a0f70e1581",
+      "total_lines": 1732,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "9d73cbc444d64f21bdeabee11335ce7e0be7cfbf3afb27565af8f8a0f70e1581",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/Settings.jsx",
+      "sha256_before": "0cab8ced9b549b344bcfab7cd14e7e9093bbf1c0c7ef4030523b2960447afce3",
+      "total_lines": 1118,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          1118
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "0cab8ced9b549b344bcfab7cd14e7e9093bbf1c0c7ef4030523b2960447afce3",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/SharedResults.jsx",
+      "sha256_before": "6441fb62181538ee741981adc3a42bf46e074c8de4eb3a5136c50edc7c0c2473",
+      "total_lines": 98,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          98
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "6441fb62181538ee741981adc3a42bf46e074c8de4eb3a5136c50edc7c0c2473",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/SignUp.jsx",
+      "sha256_before": "8514f43e6ad21a5b05cbe6fc429a4d64d60c1b74c5e40984ff91d0c55cc4b41e",
+      "total_lines": 304,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          304
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "8514f43e6ad21a5b05cbe6fc429a4d64d60c1b74c5e40984ff91d0c55cc4b41e",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/SubscriptionExpired.jsx",
+      "sha256_before": "a1f496a039e191ab5147a4b77db25cc96ea7531be0aa7a5d9726ad67d506ffac",
+      "total_lines": 247,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          247
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "a1f496a039e191ab5147a4b77db25cc96ea7531be0aa7a5d9726ad67d506ffac",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/beta.css",
+      "sha256_before": "087d96d0a29d81f550101a1b6b2033366fe08e43678e9adb4f666896cd579a60",
+      "total_lines": 218,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "087d96d0a29d81f550101a1b6b2033366fe08e43678e9adb4f666896cd579a60",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/decision.css",
+      "sha256_before": "54057d108cb94b863288f861abf0c1b8d0d2bc9f6d0562255b131f0c66ed0b39",
+      "total_lines": 1598,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "54057d108cb94b863288f861abf0c1b8d0d2bc9f6d0562255b131f0c66ed0b39",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/landing.css",
+      "sha256_before": "39ee974a16a547f1b90153c270d74dddfd1aa345dfa17f425601887c616196f6",
+      "total_lines": 655,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "39ee974a16a547f1b90153c270d74dddfd1aa345dfa17f425601887c616196f6",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/landing2/Landing.jsx",
+      "sha256_before": "2f2a9cb424b6dcff89bc6de8854e79f9084a78f13e599d7bed56c5258d7fe44b",
+      "total_lines": 1024,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "2f2a9cb424b6dcff89bc6de8854e79f9084a78f13e599d7bed56c5258d7fe44b",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/landing2/PragueScene.js",
+      "sha256_before": "a31f6fc57994dd447662ca676252541bfbe0fba48ddd8deba410a9452ac7403e",
+      "total_lines": 517,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "a31f6fc57994dd447662ca676252541bfbe0fba48ddd8deba410a9452ac7403e",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/landing2/landing2.css",
+      "sha256_before": "21f0af71266c824929c6b993fec87371c5385cb5b10b92d43090c01554d09b2a",
+      "total_lines": 1042,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "21f0af71266c824929c6b993fec87371c5385cb5b10b92d43090c01554d09b2a",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/legal.css",
+      "sha256_before": "48b0ea252c7a7294af84b005cdcfaf4cd5753466c2331588b89bcb995814254c",
+      "total_lines": 8,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "48b0ea252c7a7294af84b005cdcfaf4cd5753466c2331588b89bcb995814254c",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/onboarding/OnboardingFlow.jsx",
+      "sha256_before": "49bf43b7d2376423b9d5afeaa685f7ab03a1a7a64927e293cb60a33fc3a554d0",
+      "total_lines": 603,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          603
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "49bf43b7d2376423b9d5afeaa685f7ab03a1a7a64927e293cb60a33fc3a554d0",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/onboarding/onboarding.css",
+      "sha256_before": "c7617c57726b61bfd7260c04177df06c53766eeeb8a8c068daf4bceb3b27e73d",
+      "total_lines": 2985,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "c7617c57726b61bfd7260c04177df06c53766eeeb8a8c068daf4bceb3b27e73d",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/onboarding/quizQuestions.js",
+      "sha256_before": "20efd01de3d8419431811d14e045aa89eb6089e616f88a7396ec905c560362a4",
+      "total_lines": 625,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          625
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "20efd01de3d8419431811d14e045aa89eb6089e616f88a7396ec905c560362a4",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/onboarding/screens/Activated.jsx",
+      "sha256_before": "65e243af2da57d89a79814a49ff6c5cb5a43169c8e3030afec48b118b9482476",
+      "total_lines": 120,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "65e243af2da57d89a79814a49ff6c5cb5a43169c8e3030afec48b118b9482476",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/onboarding/screens/Calculating.jsx",
+      "sha256_before": "3efa37c61c615553109509ec84d44db8bade233f876083c7ae4513c9ac50115e",
+      "total_lines": 120,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          120
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "3efa37c61c615553109509ec84d44db8bade233f876083c7ae4513c9ac50115e",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/onboarding/screens/Cesta.jsx",
+      "sha256_before": "c6dde96442a58b9bd2d147ea3d1b31f511268a600cbddca88ce924597c305d1c",
+      "total_lines": 182,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          182
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "c6dde96442a58b9bd2d147ea3d1b31f511268a600cbddca88ce924597c305d1c",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/onboarding/screens/Commitment.jsx",
+      "sha256_before": "85a2164a8aacbe0165ae00e89d6dbe77b95a62bc99e81ea043439757a3a96141",
+      "total_lines": 71,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "85a2164a8aacbe0165ae00e89d6dbe77b95a62bc99e81ea043439757a3a96141",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/onboarding/screens/CreateAccount.jsx",
+      "sha256_before": "86fed2be026250592f94a31d22c8dcaa6670531b604f9f7c8cce4c8def9e4d30",
+      "total_lines": 316,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          316
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "86fed2be026250592f94a31d22c8dcaa6670531b604f9f7c8cce4c8def9e4d30",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/onboarding/screens/Hodnota.jsx",
+      "sha256_before": "d717bb24b0922bc9e26faf57e5a98e771842413e4784cc38a37fc8133f0c081e",
+      "total_lines": 169,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          169
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "d717bb24b0922bc9e26faf57e5a98e771842413e4784cc38a37fc8133f0c081e",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/onboarding/screens/Plan.jsx",
+      "sha256_before": "5f3ed0971ba36969941ae0f86d4ba5f74f31aabe89f1835f7cdd6d1eed26ddb4",
+      "total_lines": 303,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          303
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "5f3ed0971ba36969941ae0f86d4ba5f74f31aabe89f1835f7cdd6d1eed26ddb4",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/onboarding/screens/Platba.jsx",
+      "sha256_before": "91415ad9099a0c4ef8b96db3d0bd2cd2d98b090ea46d7cbee32d19456c8085f3",
+      "total_lines": 318,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          318
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "91415ad9099a0c4ef8b96db3d0bd2cd2d98b090ea46d7cbee32d19456c8085f3",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/onboarding/screens/QuizQuestion.jsx",
+      "sha256_before": "d9ef1066ba224d0d3f60eaad4ab6a9e5347112f03da774004912d15571f02438",
+      "total_lines": 342,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          342
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "d9ef1066ba224d0d3f60eaad4ab6a9e5347112f03da774004912d15571f02438",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/onboarding/screens/Reveal.jsx",
+      "sha256_before": "10d53655c65af98e221a097d8c9d8e87d855cacdfa698709d6a769eed0955f41",
+      "total_lines": 339,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "10d53655c65af98e221a097d8c9d8e87d855cacdfa698709d6a769eed0955f41",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/onboarding/screens/RoleFork.jsx",
+      "sha256_before": "1d107d89494e108ff716c2d74b4fc2611f092c1cd3c73048ddbfa7cab67809c6",
+      "total_lines": 113,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "1d107d89494e108ff716c2d74b4fc2611f092c1cd3c73048ddbfa7cab67809c6",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/onboarding/screens/SocialProof.jsx",
+      "sha256_before": "31a8a321a8048e6b9a1790ef0e1d9e931cbb640466e7b1114f148b101c01248c",
+      "total_lines": 121,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "31a8a321a8048e6b9a1790ef0e1d9e931cbb640466e7b1114f148b101c01248c",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/onboarding/screens/Stakes.jsx",
+      "sha256_before": "72e131c3615428b442108524242b40c078cf63e1080d703b1e39c722d00a76de",
+      "total_lines": 123,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "72e131c3615428b442108524242b40c078cf63e1080d703b1e39c722d00a76de",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/onboarding/screens/Welcome.jsx",
+      "sha256_before": "172503dbd38f364ced67aaeb5cbd3d762a9c506d5e1473cbafdb68e8df01136a",
+      "total_lines": 95,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "172503dbd38f364ced67aaeb5cbd3d762a9c506d5e1473cbafdb68e8df01136a",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/onboarding/screens/Zkusebni.jsx",
+      "sha256_before": "455548c4476ac45d113a8d2ed1524b83eae3ebd4281bafa0adc665706b36b7b7",
+      "total_lines": 219,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          219
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "455548c4476ac45d113a8d2ed1524b83eae3ebd4281bafa0adc665706b36b7b7",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/onboarding/screens/paywallKit.jsx",
+      "sha256_before": "81158ec32805e3ce19728d3ad3efeca1a1c3d270192ae6a1e5078339d51353a7",
+      "total_lines": 170,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "81158ec32805e3ce19728d3ad3efeca1a1c3d270192ae6a1e5078339d51353a7",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/onboarding/steps.js",
+      "sha256_before": "67571d55fecf7ae426fcf026f7d9bec3648774324a83584f06c40693b8b977b7",
+      "total_lines": 144,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          144
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "67571d55fecf7ae426fcf026f7d9bec3648774324a83584f06c40693b8b977b7",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/onboarding/useOnboarding.js",
+      "sha256_before": "c53d2aa8d285a7721ab62bb8222826477c1309abbebb6def96cc245180923a29",
+      "total_lines": 37,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          37
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "c53d2aa8d285a7721ab62bb8222826477c1309abbebb6def96cc245180923a29",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/questionnaire.css",
+      "sha256_before": "0ec88de2bd8990ae91afa328e816da070edfbe0be0305119828194b3f598b347",
+      "total_lines": 494,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "0ec88de2bd8990ae91afa328e816da070edfbe0be0305119828194b3f598b347",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/schoolDetail.css",
+      "sha256_before": "8cef75191a071b8a48a55abe35f623ad4e6d20806449d8a81814eada78c79b16",
+      "total_lines": 1141,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "8cef75191a071b8a48a55abe35f623ad4e6d20806449d8a81814eada78c79b16",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/pages/search.css",
+      "sha256_before": "e00adbecc4a0851ae1af35407e652190bf41803d67304898292fd11b3b8ac4d5",
+      "total_lines": 1710,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "e00adbecc4a0851ae1af35407e652190bf41803d67304898292fd11b3b8ac4d5",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/styles/ui.css",
+      "sha256_before": "340d7defbd20756af8a9d10bd4e20bce37c3c7447df003dd60d98c839d5c0c82",
+      "total_lines": 562,
+      "classification": "authored",
+      "ranges_read": [],
+      "status": "pending",
+      "sha256_after": "340d7defbd20756af8a9d10bd4e20bce37c3c7447df003dd60d98c839d5c0c82",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/src/supabaseClient.js",
+      "sha256_before": "cb0b467a8e3185a98df96c6675df1ff6eeabd5ffa4fca60cb54ca2bfcb4786fb",
+      "total_lines": 79,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          79
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "cb0b467a8e3185a98df96c6675df1ff6eeabd5ffa4fca60cb54ca2bfcb4786fb",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/vercel.json",
+      "sha256_before": "0faf96401e6d774a6277f4df8a4883e33c9e5468b685f5ecad85221e01fa79a0",
+      "total_lines": 3,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          3
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "0faf96401e6d774a6277f4df8a4883e33c9e5468b685f5ecad85221e01fa79a0",
+      "changed_during_review": false
+    },
+    {
+      "path": "frontend/vite.config.js",
+      "sha256_before": "4d36db3522a7b2dd10e0936e1004373c7ee65f10f7cd7920cd76410459c15a45",
+      "total_lines": 7,
+      "classification": "authored",
+      "ranges_read": [
+        [
+          1,
+          7
+        ]
+      ],
+      "status": "complete",
+      "sha256_after": "4d36db3522a7b2dd10e0936e1004373c7ee65f10f7cd7920cd76410459c15a45",
+      "changed_during_review": false
+    }
+  ],
+  "reviewed_at": "2026-10-07T17:00:16.097553+00:00",
+  "summary": {
+    "complete_files": 119,
+    "complete_lines": 17438,
+    "pending_files": 49,
+    "pending_lines": 20881
+  },
+  "context_read": {
+    "docs/sources/claude_code_ui_ux_guide.md": [
+      [
+        1,
+        105
+      ]
+    ],
+    "design/DESIGN.md": [
+      [
+        1,
+        801
+      ]
+    ],
+    ".agents/skills/improve/references/audit-playbook.md": "all"
+  },
+  "verification_limits": [
+    "Read-only source audit; no source edits or live mutations.",
+    "No visual/device verification claimed.",
+    "No line review of generated lockfile or binary assets.",
+    "Source files marked pending are not yet fully reviewed; grep matches never count as full-line review."
+  ]
+}

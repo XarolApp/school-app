@@ -19,10 +19,10 @@ BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 - **Release/context:** [`reports/claude-review-2026-10-07/REPORT.md`](reports/claude-review-2026-10-07/REPORT.md) (findings + manual checks) and [`HANDOFF-PLAN.md`](reports/claude-review-2026-10-07/HANDOFF-PLAN.md) (tasks for the next agent); Codex's parallel review is in `reports/deployment-review-2026-10-07/`
 
 Founder-only items before testers (details and SQL in the report):
-- [ ] Re-run the WHOLE `supabase-setup.sql` (live DB lacks `beta_profile.role_note`, so `POST /api/beta/profile` fails for every tester).
+- [ ] Verify a fresh/repeated SQL installation in a disposable database, then apply the reviewed schema update (live DB lacks `beta_profile.role_note`, so `POST /api/beta/profile` fails for every tester).
 - [ ] Set the real beta end date — the live `ends_at` (2026-10-12 21:10 UTC) is a leftover test value (founder confirmed 2026-10-07).
 - [ ] Add the real school codes to `beta_schools` (only `TEST` exists).
-- [ ] Replace the expired OpenRouter key (local `.env` and Railway); fix the local `OPENROUTER_MODEL=gemini-3.6-flash` (missing `google/`).
+- [ ] Repair the local OpenRouter authentication failure (401) and verify Railway credentials independently; validate the local model identifier against the provider catalogue (it currently lacks a provider prefix).
 - [ ] Railway: `NODE_ENV=production` and a real `BETA_TICKET_SECRET`; Supabase redirect allowlist must include `/email-overen*`, `/prihlaseni*`, `/nove-heslo` on the www domain.
 
 ## Paid vs free gating — founder decision 2026-10-07, not implemented
@@ -31,7 +31,20 @@ Founder-only items before testers (details and SQL in the report):
 - **Risk of NOT fixing:** copy promises free things that should be paid (and vice versa); after the 3-day trial a normal account keeps the whole database, comparison and matrix for free.
 - **Effort:** medium (routes + server gating + all copy) — task T1 in the handoff plan
 
-Decision: only the landing page and the onboarding (with its result preview and its map) are free. Everything else — `/skoly`, school detail, `/porovnani`, the matrix, `/dotaznik`, `/prihlaska`, favourites — needs the trial or a paid plan. Today `/skoly`, `/skoly/:id`, `/porovnani`, `/porovnani/matice` are public and `GET /api/schools*` is ungated (onboarding needs it — gate per route/shape, not wholesale). All copy that says "databáze škol zdarma" (landing2 FAQ + pricing, Home.jsx, SignUp.jsx, Settings, paywall UNLOCKS) must change in the same release.
+Decision: only the landing page and the onboarding (with its result preview and its map) are free. The founder clarified in Codex that school details opened from landing-map dots remain public. Premium tools — `/skoly`, `/porovnani`, the matrix, `/dotaznik`, `/prihlaska`, favourites — need valid trial, paid or beta access. Auth/legal pages, account management and scoped share/parent links must retain the access needed for their function. Today `/skoly`, `/skoly/:id`, `/porovnani`, `/porovnani/matice` are public and `GET /api/schools*` is ungated (onboarding needs it — gate per route/shape, not wholesale). All copy that says "databáze škol zdarma" (landing2 FAQ + pricing, Home.jsx, SignUp.jsx, Settings, paywall UNLOCKS) must change in the same release.
+
+## Codex deployment review — continuing solo, 2026-10-07
+- **Found:** 2026-10-07, source review plus read-only Supabase/Stripe/OpenRouter checks.
+- **Urgency:** beta gates and separate real-money blockers; full line-by-line coverage remains unfinished.
+- **Risk of NOT fixing:** broken first-run beta enrollment, unstable recommendations/shortlists, unresolved child analytics/retention and payment lifecycle failures.
+- **Effort:** multiple focused tasks; see the report and handoff as they are completed.
+- **Release/context:** `reports/deployment-review-2026-10-07/REPORT.md`, backend/frontend/legal findings and coverage ledgers.
+
+Fix commit `14cce20` is pushed: optional quiz score validation/keyboard behavior, feedback privacy masks/redaction, corrected admission dates, unknown programme facts, language explanations, share headings and malformed telemetry validation. The root tests passed 127/127; frontend lint/build passed. No live charges, mail, schema changes or production data writes were performed.
+
+Read-only confirmation: 217 visible schools from 223 raw rows; all 26 tables present but `beta_profile.role_note` missing; beta cutoff 12 October 2026 at 23:10 Prague; anonymous zero-row smoke tests and private screenshot bucket passed; configured OpenRouter key rejected (401); Stripe remains test mode. These do not prove authenticated isolation or mail delivery. Backend B01–03/B06–08 and payment P01–08 remain, subject to current-source revalidation. LEGAL-06's initial 14-day implementation claim was retracted: code actually grants 30 days, so the extended promise needs clarification rather than a presumed statutory-breach fix.
+
+New beta integration gate: `SchoolMap.jsx` invites a home address and directly calls public Nominatim. The provider limits aggregate application traffic to 1 request/second and prohibits submitting personal data. Choose an approved provider/input policy before a classroom cohort; legal text already names OSMF, so the issue is operational/privacy suitability, not a missing recipient name. Additional current findings and acceptance tests are in `reports/deployment-review-2026-10-07/continuation-findings.md` and the handoff (account-scoped search state, mixed-year comparison, feedback draft context and missing map pins).
 
 ## Church schools: tuition shown as unknown — review the extracted data
 - **Found:** 2026-10-07 review; founder decision the same day

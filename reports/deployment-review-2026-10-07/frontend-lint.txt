@@ -1,0 +1,12 @@
+
+> frontend@0.0.0 lint
+> oxlint
+
+src/components/PasswordStrength.jsx:23:17: warning react(only-export-components): Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.
+src/components/ToastContext.jsx:129:17: warning react(only-export-components): Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.
+src/components/Modal.jsx:51:22: warning react-hooks(exhaustive-deps): The ref's value `.current` is accessed directly in the effect cleanup function. help: The ref value will likely have changed by the time this effect cleanup function runs. If this ref points to a node rendered by react, copy it to a variable inside the effect and use that variable in the cleanup function.
+src/pages/Search.jsx:108:7: warning eslint(no-unused-vars): Variable 'misto' is declared but never used. Unused variables should start with a '_'. help: Consider removing this declaration.
+src/components/Captcha.jsx:13:14: warning react(only-export-components): Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.
+src/components/landing/ProductScreens.jsx:61:17: warning react(only-export-components): Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.
+src/components/AuthContext.jsx:450:17: warning react(only-export-components): Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.
+src/pages/onboarding/screens/paywallKit.jsx:38:14: warning react(only-export-components): Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.

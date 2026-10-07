@@ -1,0 +1,421 @@
+{
+  "checkedAt": "2026-10-07T17:52:54.159Z",
+  "supabase": {
+    "sameFrontendProject": true,
+    "tables": [
+      {
+        "table": "schools",
+        "status": 206,
+        "count": "*/223"
+      },
+      {
+        "table": "users",
+        "status": 206,
+        "count": "*/7"
+      },
+      {
+        "table": "favorites",
+        "status": 206,
+        "count": "*/5"
+      },
+      {
+        "table": "questionnaire_runs",
+        "status": 206,
+        "count": "*/11"
+      },
+      {
+        "table": "school_programs",
+        "status": 206,
+        "count": "*/2374"
+      },
+      {
+        "table": "school_reviews",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "review_reports",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "data_reports",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "application_picks",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "school_notes",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "decision_profile",
+        "status": 206,
+        "count": "*/3"
+      },
+      {
+        "table": "shortlist_shares",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "share_links",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "quiz_handoffs",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "result_snapshots",
+        "status": 206,
+        "count": "*/4"
+      },
+      {
+        "table": "school_ai_summary",
+        "status": 206,
+        "count": "*/56"
+      },
+      {
+        "table": "school_extracted_details",
+        "status": 206,
+        "count": "*/220"
+      },
+      {
+        "table": "beta_schools",
+        "status": 206,
+        "count": "*/1"
+      },
+      {
+        "table": "beta_program_settings",
+        "status": 206,
+        "count": "*/1"
+      },
+      {
+        "table": "beta_feedback",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "beta_events",
+        "status": 206,
+        "count": "*/31"
+      },
+      {
+        "table": "beta_profile",
+        "status": 206,
+        "count": "*/1"
+      },
+      {
+        "table": "beta_closing_answers",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "beta_reviews",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "ai_usage_log",
+        "status": 206,
+        "count": "*/1"
+      },
+      {
+        "table": "beta_rankings",
+        "status": 200,
+        "count": "*/0"
+      }
+    ],
+    "anonymousReads": [
+      {
+        "table": "schools",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "users",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "favorites",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "questionnaire_runs",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "school_programs",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "school_reviews",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "review_reports",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "data_reports",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "application_picks",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "school_notes",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "decision_profile",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "shortlist_shares",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "share_links",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "quiz_handoffs",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "result_snapshots",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "school_ai_summary",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "school_extracted_details",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "beta_schools",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "beta_program_settings",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "beta_feedback",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "beta_events",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "beta_profile",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "beta_closing_answers",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "beta_reviews",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "ai_usage_log",
+        "status": 200,
+        "count": "*/0"
+      },
+      {
+        "table": "beta_rankings",
+        "status": 200,
+        "count": "*/0"
+      }
+    ],
+    "visibleCatalogue": {
+      "status": 206,
+      "count": "*/217"
+    },
+    "betaSettings": {
+      "status": 200,
+      "rows": [
+        {
+          "singleton": true,
+          "ends_at": "2026-10-12T21:10:23.234879+00:00",
+          "access_hours": 48,
+          "hasExternalFeedbackForm": false
+        }
+      ]
+    },
+    "auth": {
+      "status": 200,
+      "signupDisabled": false,
+      "emailAutoconfirm": false,
+      "emailEnabled": true
+    },
+    "schema": {
+      "status": 200,
+      "betaProfileColumns": [
+        "user_id",
+        "role",
+        "consent_tracking_at",
+        "checklist",
+        "micro_asked",
+        "closing_due_at",
+        "closing_done_at"
+      ],
+      "functions": [
+        {
+          "name": "handle_new_user",
+          "exposed": false
+        },
+        {
+          "name": "has_access",
+          "exposed": true
+        },
+        {
+          "name": "submit_beta_feedback",
+          "exposed": true
+        },
+        {
+          "name": "capture_beta_profile",
+          "exposed": false
+        },
+        {
+          "name": "submit_beta_feedback_details",
+          "exposed": true
+        },
+        {
+          "name": "purge_beta_events",
+          "exposed": true
+        },
+        {
+          "name": "record_beta_events",
+          "exposed": true
+        },
+        {
+          "name": "submit_beta_micro",
+          "exposed": true
+        },
+        {
+          "name": "beta_closing_deadline",
+          "exposed": true
+        },
+        {
+          "name": "sync_beta_closing",
+          "exposed": true
+        },
+        {
+          "name": "submit_beta_closing",
+          "exposed": true
+        },
+        {
+          "name": "beta_screenshot_orphans",
+          "exposed": true
+        }
+      ]
+    },
+    "roleNoteColumn": {
+      "status": 400
+    },
+    "storage": {
+      "status": 200,
+      "buckets": [
+        {
+          "name": "beta-screenshots",
+          "public": false,
+          "fileSizeLimit": 1572864,
+          "allowedMimeTypes": [
+            "image/png",
+            "image/jpeg"
+          ]
+        },
+        {
+          "name": "public-assets",
+          "public": true,
+          "fileSizeLimit": null,
+          "allowedMimeTypes": null
+        }
+      ]
+    }
+  },
+  "stripe": {
+    "key": {
+      "status": 200,
+      "livemode": false
+    },
+    "monthlyPrice": {
+      "status": 200,
+      "active": true,
+      "currency": "czk",
+      "unitAmount": 24900,
+      "interval": "month",
+      "livemode": false
+    },
+    "webhooks": {
+      "status": 200,
+      "endpoints": [
+        {
+          "status": "enabled",
+          "livemode": false,
+          "usesHttps": true,
+          "apiVersion": "2026-08-26.dahlia",
+          "events": [
+            "payment_intent.succeeded",
+            "checkout.session.completed",
+            "payment_intent.payment_failed",
+            "customer.subscription.updated",
+            "customer.subscription.deleted",
+            "invoice.payment_failed"
+          ]
+        }
+      ]
+    },
+    "account": {
+      "status": 200,
+      "chargesEnabled": false,
+      "payoutsEnabled": false,
+      "hasSupportEmail": false,
+      "hasSupportUrl": false,
+      "hasStatementDescriptor": false
+    }
+  },
+  "openrouter": {
+    "keyStatus": 401,
+    "configuredModelHasProviderPrefix": false
+  }
+}

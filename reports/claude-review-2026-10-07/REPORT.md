@@ -5,7 +5,7 @@ Working log with every finding: [`FINDINGS.md`](FINDINGS.md). Tasks for the next
 
 ## Verdict
 
-**Ready for school beta testing once the 7 founder steps in §2 are done.** Nothing in the code blocks testers after the fixes pushed today. The P0 items are configuration and data: the live database is one SQL run behind, the beta end date is a test value, the AI key has expired, and the Railway trial runs out around 13 October.
+**Conditional readiness opinion from this reviewer; full review remains in progress in the Codex report.** The seven steps below do not replace the open code, legal, privacy and concurrency gates in the Codex findings. Anonymous zero-row probes establish only that smoke test, not complete authenticated RLS isolation. The P0 items are configuration and data: the live database is one SQL run behind, the beta end date is a test value, the AI key has expired, and the Railway trial runs out around 13 October.
 **Not ready for real payments.** See §4 "Payment gates".
 
 ## 1. What was verified (evidence, not assumptions)
@@ -15,7 +15,7 @@ Working log with every finding: [`FINDINGS.md`](FINDINGS.md). Tasks for the next
 | Backend tests | 126/126 pass (1 regression test added today) |
 | Frontend lint / build | 0 errors; production build OK |
 | `npm audit` (prod) | backend 4 → **0** after fix (was 1 critical, 2 high); frontend 0 |
-| Live Supabase | 26 tables exist; **RLS holds**: anon key reads 0 rows from each; `beta-screenshots` bucket private; email confirmation ON (`mailer_autoconfirm=false`) |
+| Live Supabase | 26 tables exist; **Anonymous-read smoke test passed**: anon key reads 0 rows from each; authenticated isolation/grants remain to verify; `beta-screenshots` bucket private; email confirmation ON (`mailer_autoconfirm=false`) |
 | Live schema vs `supabase-setup.sql` | **1 column missing**: `beta_profile.role_note` |
 | Live data | 223 school rows / **217 shown** (6 merged), 2 374 programme rows, newest year 2026, every visible school has Cermat rows |
 | Production | https://www.stredninamiru.cz up, gated (401 + noindex); backend health OK, CORS limited to the www origin, `/api/schools` 217 rows in ~1 s |
@@ -28,7 +28,7 @@ Working log with every finding: [`FINDINGS.md`](FINDINGS.md). Tasks for the next
 
 Do these in order. Each has a one-line check.
 
-1. **Re-run the WHOLE `supabase-setup.sql`** in the Supabase SQL editor. Without it, `POST /api/beta/profile` fails for every tester, because the server always writes `role_note`.
+1. **Apply the reviewed schema update** in Supabase after fresh-install/repeated-run checks in a disposable database. Do not use an unverified production rerun as the diagnostic. Without it, `POST /api/beta/profile` fails for every tester, because the server always writes `role_note`.
    Check: `select column_name from information_schema.columns where table_schema='public' and table_name='beta_profile' and column_name='role_note';` → 1 row. Also `select pg_get_constraintdef(oid) from pg_constraint where conrelid='public.review_reports'::regclass and contype='p';` → `PRIMARY KEY (id)`.
 2. **Set the real beta end date.** The live value 2026-10-12 21:10 UTC is a leftover test value (you confirmed this).
    `update public.beta_program_settings set ends_at = '2026-MM-DD 23:59:00+01:00' where singleton;` (use +01:00 after 25 October and +02:00 before).
@@ -62,7 +62,7 @@ Do these in order. Each has a one-line check.
 ## 4. Open findings (not fixed: need a decision, are bigger than a safe fix, or are manual)
 
 ### Beta-relevant
-- **Paid vs free gating (your decision today, task T1).** Only the landing page and the onboarding (with its result preview and map) should be free. Today `/skoly`, `/skoly/:id`, `/porovnani` and `/porovnani/matice` are public, and a lot of copy says "databáze škol zdarma". Testers aren't affected (they have full access), but this has to ship as one change: gating plus all copy.
+- **Paid vs free gating (your decision today, task T1).** Only the landing page and the onboarding (with its result preview and map) should be free. Today catalogue/comparison/matrix are public, and a lot of copy says "databáze škol zdarma". Later founder clarification in Codex explicitly preserves the public school details opened from landing-map dots; T1 has been corrected to keep that exception. Testers aren't affected (they have full access), but this has to ship as one change: gating plus all copy.
 - **Codex LEGAL-01: beta analytics consent for minors.** Joining the beta requires accepting tracking, and the policy rests on "legitimate interest" for under-15s. This needs your or a lawyer's call before minors join. See Codex `legal-docs-findings.md`.
 - **Codex LEGAL-02: review reporting workflow.** Reporters get no decision e-mail and anonymous reporters leave no contact, although the Terms promise both. Also, every student review is held for manual approval, and there's **no admin screen for held school reviews** (only the Supabase table editor). Either moderate via the dashboard during the beta or disable review publishing until there is one.
 - **Paywall and marketing promise "vysvětlení u každé školy"** (Plan, Hodnota, Zkusebni, Reveal, Home). AI sentences exist only for the top 10, and none are generated until the key is replaced. Task T4.
@@ -71,7 +71,7 @@ Do these in order. Each has a one-line check.
 ### Payment gates (must be done before live keys; not needed for the beta)
 - **Season-pass card failure is a dead end (task T2).** Status becomes `past_due` but `plan_id` and the due date stay set. Checkout then answers 409 "Už máš aktivní plán", cancel answers 400, the charge is never retried, and access is gone.
 - **Stripe SDK v15 (API 2024-04-10) vs webhook endpoint `2026-08-26.dahlia` (task T3).** Today's fix reads both shapes; upgrade the SDK and pin one version.
-- No trial-reminder e-mail (honestly stated in the Terms, but CLAUDE.md requires it before live billing); no durable order or withdrawal confirmation e-mail (Codex LEGAL-07); withdrawal deadline uses milliseconds, not a Prague calendar day (LEGAL-06); operator IČO/registration missing from the Terms (LEGAL-09); adult-owned Stripe account and Brevo account; the existing UNFORGET "STOP. DO NOT GO LIVE WITH STRIPE" list.
+- No trial-reminder e-mail (honestly stated in the Terms, but CLAUDE.md requires it before live billing); no durable order or withdrawal confirmation e-mail (Codex LEGAL-07); the voluntary 30-day refund deadline needs calendar/renewal clarification (LEGAL-06; the earlier 14-day implementation claim was retracted); operator IČO/registration missing from the Terms (LEGAL-09); adult-owned Stripe account and Brevo account; the existing UNFORGET "STOP. DO NOT GO LIVE WITH STRIPE" list.
 - Production frontend sends **no security headers** (no CSP, X-Frame-Options, nosniff or Referrer-Policy), and the backend sends `x-powered-by`. Task T6.
 
 ### Lower priority (P2–P3, in the plan)

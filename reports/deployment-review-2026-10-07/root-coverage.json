@@ -1,0 +1,635 @@
+{
+  "frontend/src/components/schoolDetail/ProgramCard.jsx": {
+    "sha256": "a9e17e706f2d1b4d21fdcddb1b3cd16a99c6b22bc44d18c1a65305b0bab9bde8",
+    "lines": 137,
+    "read_ranges": [
+      [
+        1,
+        137
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root"
+  },
+  "scripts/beta-preview/README.md": {
+    "sha256": "e5f36bed7e55e95dfa95a12057f886123c7514d21c6bb49c402e2798a6066232",
+    "lines": 35,
+    "read_ranges": [
+      [
+        1,
+        35
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root"
+  },
+  "scripts/beta-preview/database.cjs": {
+    "sha256": "4883336c7b51973946108852d69c3cb8adae3ef4967142841c016495eae6171a",
+    "lines": 67,
+    "read_ranges": [
+      [
+        1,
+        67
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:36:06.930290+00:00",
+    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+  },
+  "frontend/src/pages/SdileniView.jsx": {
+    "sha256": "6bee1979a34b488d882808447371de659baa5d677032b4c50689984314f4012c",
+    "lines": 157,
+    "read_ranges": [
+      [
+        1,
+        157
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root"
+  },
+  "tests/onboarding-ranking.test.mjs": {
+    "sha256": "a9e6cac212873e5f18b2718826279987f7aac647f14e0fb372f01c3b3c9757f0",
+    "lines": 87,
+    "read_ranges": [
+      [
+        1,
+        87
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root"
+  },
+  "AGENTS.md": {
+    "sha256": "95e4290c9e055aefcd351815a1b4310039a86a1650445517111d8a9f029a85a0",
+    "lines": 966,
+    "read_ranges": [
+      [
+        1,
+        966
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:36:06.933639+00:00",
+    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+  },
+  "CLAUDE.md": {
+    "sha256": "6c544f3e2dfd8724bcbe59003864af1e4594070d3c838cdc9748640d49f238d7",
+    "lines": 962,
+    "read_ranges": [
+      [
+        1,
+        962
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:36:06.933968+00:00",
+    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+  },
+  "frontend/src/App.jsx": {
+    "sha256": "15bf8c73814fe8556df80cfe259dda221f63c6a0c699bb8c607e2cd78d9aed22",
+    "lines": 113,
+    "read_ranges": [
+      [
+        1,
+        113
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:23:06.561091+00:00"
+  },
+  "frontend/src/components/AsyncState.jsx": {
+    "sha256": "5bc2699ffd41551d392e010df8225a1e639cb756d647b5c994f30c5f92e07df8",
+    "lines": 39,
+    "read_ranges": [
+      [
+        1,
+        39
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:23:06.561413+00:00"
+  },
+  "frontend/src/components/AuthTabs.jsx": {
+    "sha256": "98e09f981302c20f52987a9a1e043871804837c31b6074c72706cdd450271347",
+    "lines": 47,
+    "read_ranges": [
+      [
+        1,
+        47
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:23:06.561693+00:00"
+  },
+  "frontend/src/components/BrandMark.jsx": {
+    "sha256": "ffa8fc6d22bb0e9d98aaa58aafe38b5963353b4528cf2df3623e60d26b87b96e",
+    "lines": 13,
+    "read_ranges": [
+      [
+        1,
+        13
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:23:06.561932+00:00"
+  },
+  "frontend/src/components/FavoriteButton.jsx": {
+    "sha256": "76fb274d2a435352dd027f10711028f591a2bbef4efd3227dcac5f6e6f86ba83",
+    "lines": 77,
+    "read_ranges": [
+      [
+        1,
+        77
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:23:06.562093+00:00"
+  },
+  "frontend/src/components/FilterPopover.jsx": {
+    "sha256": "f2754a588a6dd4b3924022f5fc35d780a94217891a2531821b6c721f2b8de030",
+    "lines": 106,
+    "read_ranges": [
+      [
+        1,
+        106
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:36:06.928971+00:00",
+    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+  },
+  "frontend/src/components/ToastContext.jsx": {
+    "sha256": "ef066ad5ed036d97be7e71dcabae867f41d7f2189625b617f40d038a42fcf335",
+    "lines": 134,
+    "read_ranges": [
+      [
+        1,
+        134
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:23:06.562607+00:00"
+  },
+  "frontend/src/components/Layout.jsx": {
+    "sha256": "b764b1e3c992a0961268d3799ec760f7b88cf82b4b5c901f885d1c5604103ebd",
+    "lines": 269,
+    "read_ranges": [
+      [
+        1,
+        269
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:23:06.562954+00:00"
+  },
+  "frontend/src/components/onboarding/MatchPreview.jsx": {
+    "sha256": "aabf3610df20a6b45652d356a2d17c994de3428629002e441a9f86efec2f54a0",
+    "lines": 59,
+    "read_ranges": [
+      [
+        1,
+        59
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:23:06.563257+00:00"
+  },
+  "frontend/src/components/onboarding/TopMatchCard.jsx": {
+    "sha256": "14ff6212439ea50422d051a71e671fd5bb7374b79d35ef9e23ed15363fab75c2",
+    "lines": 39,
+    "read_ranges": [
+      [
+        1,
+        39
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:23:06.563512+00:00"
+  },
+  "frontend/src/components/onboarding/usePrefersReducedMotion.js": {
+    "sha256": "203bc228c0cd336a6088414abdf0a17437d01c531ac5b9e2d32be0726b12fbf8",
+    "lines": 24,
+    "read_ranges": [
+      [
+        1,
+        24
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:23:06.563762+00:00"
+  },
+  "frontend/src/pages/NotFound.jsx": {
+    "sha256": "b7845580c970e2155ed488886342e44f0f0503eb4ddffbee4fd5d4a3271c5084",
+    "lines": 47,
+    "read_ranges": [
+      [
+        1,
+        47
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:23:06.563982+00:00"
+  },
+  "frontend/src/lib/demoSchools.js": {
+    "sha256": "ce77475f27c1ef2575476a24da8215c38783e2f95f186853439bfac028651d3d",
+    "lines": 169,
+    "read_ranges": [
+      [
+        1,
+        169
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:23:06.564203+00:00"
+  },
+  "frontend/src/design/tokens.js": {
+    "sha256": "f518fb5203dd28ee5453263b49b6a389076624ef9f8722e994e45b547eb56ed7",
+    "lines": 245,
+    "read_ranges": [
+      [
+        1,
+        245
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:23:06.564372+00:00"
+  },
+  "frontend/scripts/gen-tokens-css.mjs": {
+    "sha256": "3e5fb143d33500d2eb7bdbd2c2c648fae01b55e5b703a9a927d69e7dbb2435cd",
+    "lines": 59,
+    "read_ranges": [
+      [
+        1,
+        59
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:23:06.564623+00:00"
+  },
+  "frontend/src/components/BetaFeedbackSheet.jsx": {
+    "sha256": "aa939c18fc462fa253c715b8cbfdd6923b3b98464c4ec2f2799604bc85594bbd",
+    "lines": 120,
+    "read_ranges": [
+      [
+        1,
+        120
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:23:06.564973+00:00"
+  },
+  "frontend/src/components/BetaTools.jsx": {
+    "sha256": "8ede1a347ec386e7c70417a0bb6d6516400110b5f5340e568cb20b5abed717b6",
+    "lines": 102,
+    "read_ranges": [
+      [
+        1,
+        102
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:23:06.565299+00:00"
+  },
+  "plans/README.md": {
+    "sha256": "b92c5c1689c530a44dbcd5ffd1d9d30072f8d6c84dd72bd7cfeb16d90d1be7a0",
+    "lines": 146,
+    "read_ranges": [
+      [
+        1,
+        146
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:36:06.933303+00:00",
+    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+  },
+  "reports/deployment-review-2026-10-07/services.json": {
+    "sha256": "11145ffd21064d68c9ffffd669ead2bcde72772f9211f3aa12855bc094d4f081",
+    "lines": 421,
+    "read_ranges": [
+      [
+        1,
+        421
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:23:06.565830+00:00"
+  },
+  "frontend/src/pages/Search.jsx": {
+    "sha256": "8549cf8150912b74bfec5731fa8697acb69ee09dcd6ba3995c0125b5b3a730d9",
+    "lines": 1686,
+    "read_ranges": [
+      [
+        1,
+        1686
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:36:06.927793+00:00",
+    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+  },
+  "frontend/src/components/SchoolMap.jsx": {
+    "sha256": "e217fb5543faa1668aa9e2904cb4915a86e8f8718420b9be5de499d55976def6",
+    "lines": 400,
+    "read_ranges": [
+      [
+        1,
+        400
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:36:06.928370+00:00",
+    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+  },
+  "frontend/src/components/SearchFilters.jsx": {
+    "sha256": "7e8b6af0835b36d7eb58f159a6ff78d5e135079c36d6bf0af4f9b3a501109f35",
+    "lines": 459,
+    "read_ranges": [
+      [
+        1,
+        459
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:36:06.928687+00:00",
+    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+  },
+  "frontend/src/components/schoolDetail/SchoolHero.jsx": {
+    "sha256": "0090190aa51b54e8c475e165666529964f1ea39ba64c664a068ea540f0a0a195",
+    "lines": 126,
+    "read_ranges": [
+      [
+        1,
+        126
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:36:06.929196+00:00",
+    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+  },
+  "frontend/src/components/schoolDetail/CutoffExplainer.jsx": {
+    "sha256": "2e306acb604aea1e7bf5f6d11b5531fb9aeadb3040c9d34d73b4f75cb35933a4",
+    "lines": 32,
+    "read_ranges": [
+      [
+        1,
+        32
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:36:06.929455+00:00",
+    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+  },
+  "frontend/src/lib/comparisonRows.js": {
+    "sha256": "e422f64825d0fc171e9e5ff715a06cd5f806c3d0f734711ced7b1aed793a4145",
+    "lines": 161,
+    "read_ranges": [
+      [
+        1,
+        161
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:36:06.929696+00:00",
+    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+  },
+  "frontend/src/pages/Porovnani.jsx": {
+    "sha256": "41104d5625de8ce604492a42b25d9d3c5fdb88a64cc0b2cf6e634f0f160e0faa",
+    "lines": 365,
+    "read_ranges": [
+      [
+        1,
+        365
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:36:06.930005+00:00",
+    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+  },
+  "scripts/beta-preview/server.cjs": {
+    "sha256": "0f332c19cf622a182be7198ee9042905a1311b211ec698fdea708ca890ea12e4",
+    "lines": 35,
+    "read_ranges": [
+      [
+        1,
+        35
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:36:06.930450+00:00",
+    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+  },
+  "frontend/src/pages/Admin.jsx": {
+    "sha256": "4ae78747e75521b34b853cbbfdacae3d9066a0dc519d7164993d00783400a4a9",
+    "lines": 97,
+    "read_ranges": [
+      [
+        1,
+        97
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:36:06.930712+00:00",
+    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+  },
+  "frontend/src/pages/onboarding/screens/Activated.jsx": {
+    "sha256": "65e243af2da57d89a79814a49ff6c5cb5a43169c8e3030afec48b118b9482476",
+    "lines": 120,
+    "read_ranges": [
+      [
+        1,
+        120
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:36:06.930963+00:00",
+    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+  },
+  "frontend/src/pages/onboarding/screens/Commitment.jsx": {
+    "sha256": "85a2164a8aacbe0165ae00e89d6dbe77b95a62bc99e81ea043439757a3a96141",
+    "lines": 71,
+    "read_ranges": [
+      [
+        1,
+        71
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:36:06.931222+00:00",
+    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+  },
+  "frontend/src/pages/onboarding/screens/RoleFork.jsx": {
+    "sha256": "1d107d89494e108ff716c2d74b4fc2611f092c1cd3c73048ddbfa7cab67809c6",
+    "lines": 113,
+    "read_ranges": [
+      [
+        1,
+        113
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:36:06.931433+00:00",
+    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+  },
+  "frontend/src/pages/onboarding/screens/SocialProof.jsx": {
+    "sha256": "31a8a321a8048e6b9a1790ef0e1d9e931cbb640466e7b1114f148b101c01248c",
+    "lines": 121,
+    "read_ranges": [
+      [
+        1,
+        121
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:36:06.931584+00:00",
+    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+  },
+  "frontend/src/pages/onboarding/screens/Stakes.jsx": {
+    "sha256": "72e131c3615428b442108524242b40c078cf63e1080d703b1e39c722d00a76de",
+    "lines": 123,
+    "read_ranges": [
+      [
+        1,
+        123
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:36:06.931828+00:00",
+    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+  },
+  "frontend/src/pages/onboarding/screens/Welcome.jsx": {
+    "sha256": "70fa5925e41ce185404d514f57c93b2680cacdb8544da3cf2ac9d54a94737855",
+    "lines": 95,
+    "read_ranges": [
+      [
+        1,
+        95
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:36:06.931963+00:00",
+    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+  },
+  "frontend/src/pages/onboarding/screens/paywallKit.jsx": {
+    "sha256": "81158ec32805e3ce19728d3ad3efeca1a1c3d270192ae6a1e5078339d51353a7",
+    "lines": 170,
+    "read_ranges": [
+      [
+        1,
+        170
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:36:06.932101+00:00",
+    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+  },
+  "frontend/src/pages/onboarding/screens/Reveal.jsx": {
+    "sha256": "78fcc8c2f73dc0c07bd7c9cf418f5d4c6917003b7ecb08fb7ee16339fdee44c3",
+    "lines": 339,
+    "read_ranges": [
+      [
+        1,
+        339
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:36:06.932270+00:00",
+    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+  },
+  "frontend/src/config/facts.js": {
+    "sha256": "b8a7cd4357395ff2054a19377d760e81305dcaddf202a23fe77d96c82b43bd6e",
+    "lines": 12,
+    "read_ranges": [
+      [
+        1,
+        12
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:36:06.932571+00:00",
+    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+  },
+  "frontend/src/lib/betaRankings.js": {
+    "sha256": "86283be964c6ad031ae95e95a3a475fe9a3d4f604431360cbaadef5449fd5b99",
+    "lines": 26,
+    "read_ranges": [
+      [
+        1,
+        26
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:36:06.932839+00:00",
+    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+  },
+  "docs/sources/paywall_copy_framing_research.md": {
+    "sha256": "e85190832644e503d9b81b2adde1a62b079cebabea583bf49052d6d2cd6fd951",
+    "lines": 144,
+    "read_ranges": [
+      [
+        1,
+        144
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:36:06.932999+00:00",
+    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+  },
+  "docs/sources/claude_code_ui_ux_guide.md": {
+    "sha256": "70521c042a58811b4ff79f804b4de38b90eb9b026fc22999195a3f370a540d9e",
+    "lines": 108,
+    "read_ranges": [
+      [
+        1,
+        108
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-07T18:36:06.933149+00:00",
+    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+  }
+}
