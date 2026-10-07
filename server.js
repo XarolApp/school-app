@@ -186,7 +186,11 @@ function seasonEndsAt(from = new Date()) {
 // object depending on its state, so either side of the min() can be absent.
 function accessEndsAt(sub) {
   const cancelAt = sub.cancel_at ? sub.cancel_at * 1000 : null;
-  const periodEnd = sub.current_period_end ? sub.current_period_end * 1000 : null;
+  // Webhook events use the endpoint's API version (2026-08-26.dahlia), where
+  // current_period_end lives on the subscription items, not the subscription.
+  // The SDK's own calls (pinned 2024-04-10) still return the old top-level field.
+  const periodEndSec = sub.current_period_end ?? sub.items?.data?.[0]?.current_period_end;
+  const periodEnd = periodEndSec ? periodEndSec * 1000 : null;
   const ms =
     cancelAt && periodEnd ? Math.min(cancelAt, periodEnd) : cancelAt ?? periodEnd;
   return ms ? new Date(ms).toISOString() : null;
@@ -3206,8 +3210,11 @@ async function handleStripeWebhook(req, res) {
       // A customer can have an old and a replacement subscription. Match the
       // invoice's subscription whenever Stripe supplies it so a late failure
       // from the old one cannot downgrade the new plan.
-      failedInvoiceUpdate = object.subscription
-        ? failedInvoiceUpdate.eq('stripe_subscription_id', object.subscription)
+      // Newer API versions (the webhook's 2026-08-26.dahlia) moved the field to
+      // parent.subscription_details.subscription.
+      const failedSubscriptionId = object.subscription ?? object.parent?.subscription_details?.subscription;
+      failedInvoiceUpdate = failedSubscriptionId
+        ? failedInvoiceUpdate.eq('stripe_subscription_id', failedSubscriptionId)
         : failedInvoiceUpdate.eq('stripe_customer_id', object.customer);
       failedInvoiceUpdate = failedInvoiceUpdate.neq('subscription_status', 'beta');
       await failedInvoiceUpdate.throwOnError();

@@ -608,6 +608,28 @@ test('an old invoice failure cannot downgrade a replacement subscription', async
   );
 });
 
+test('webhook payloads in the dahlia API shape keep paid access self-expiring', async () => {
+  // 2026-08-26.dahlia: period end lives on the subscription items and the
+  // invoice's subscription under parent.subscription_details.
+  const h = harness({ result: () => ({ data: null, error: null }) });
+  const end = 1792590527;
+  await h.call('post', '/webhooks/stripe', { body: {
+    type: 'customer.subscription.updated',
+    data: { object: { id: 'sub_new', status: 'active', items: { data: [{ current_period_end: end }] } } },
+  } });
+  const update = h.queries.find((query) => query.calls.some(([method]) => method === 'update'));
+  const values = update.calls.find(([method]) => method === 'update')[1];
+  assert.equal(values.access_expires_at, new Date(end * 1000).toISOString());
+
+  const h2 = harness({ result: () => ({ data: null, error: null }) });
+  await h2.call('post', '/webhooks/stripe', { body: {
+    type: 'invoice.payment_failed',
+    data: { object: { customer: 'cus_test', parent: { subscription_details: { subscription: 'sub_old' } } } },
+  } });
+  const failed = h2.queries.find((query) => query.calls.some(([method]) => method === 'update'));
+  assert.deepEqual(Array.from(failed.calls.find(([method]) => method === 'eq').slice(1)), ['stripe_subscription_id', 'sub_old']);
+});
+
 test('review reads resolve opt-in adult names without the nonexistent public.users relationship', async () => {
   const rows = [
     { id: 1, user_id: 'adult', role: 'rodic', status: 'published', show_name: true },
