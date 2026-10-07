@@ -138,10 +138,10 @@ function ResultShareTools() {
 
   const label = role === 'parent' ? 'Sdílet s dítětem' : role === 'student' ? 'Poslat rodičům' : 'Sdílet výsledky';
   const explanation = role === 'parent'
-    ? 'Odkaz ukazuje vaše výchozí výsledky — když změníte výchozí běh, změní se i to, co dítě uvidí. Nic jiného z aplikace s ním nepoužije.'
+    ? 'Odkaz ukazuje vaše výchozí výsledky — když nastavíte jako výchozí jinou sadu odpovědí, změní se i to, co dítě uvidí. Nic jiného z aplikace přes odkaz neuvidí.'
     : role === 'student'
-      ? 'Odkaz ukazuje tvoje výchozí výsledky — když změníš výchozí běh, změní se i to, co rodič uvidí. Nic jiného z aplikace s ním nepoužije.'
-      : 'Odkaz ukazuje výchozí výsledky — když změníš výchozí běh, změní se i to, co příjemce uvidí. Nic jiného z aplikace s ním nepoužije.';
+      ? 'Odkaz ukazuje tvoje výchozí výsledky — když nastavíš jako výchozí jinou sadu odpovědí, změní se i to, co rodič uvidí. Nic jiného z aplikace přes odkaz neuvidí.'
+      : 'Odkaz ukazuje výchozí výsledky — když nastavíš jako výchozí jinou sadu odpovědí, změní se i to, co příjemce uvidí. Nic jiného z aplikace přes odkaz neuvidí.';
 
   return (
     <div className="qz-share-tools">

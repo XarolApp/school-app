@@ -105,7 +105,6 @@ function synth(school) {
 const plural = (n, one, few, many) => (n === 1 ? one : n >= 2 && n <= 4 ? few : many);
 const skol = (n) => plural(n, 'škola', 'školy', 'škol');
 const skolGen = (n) => plural(n, 'školu', 'školy', 'škol');
-const misto = (n) => plural(n, 'místo', 'místa', 'míst');
 const numCz = (v) => String(v).replace('.', ',');
 const matchLevel = (score) => (score >= 85 ? 'is-strong' : score >= 70 ? 'is-mid' : 'is-low');
 
@@ -901,7 +900,7 @@ function Search() {
   let blameSentence = 'Žádný jednotlivý filtr to sám neuvolní. Zruš celou kombinaci a začni od jednoho kritéria.';
   if (helpfulRelax.length) {
     const worst = helpfulRelax[0];
-    blameSentence = `Nejvíc omezuje ${worst.blame}. Bez něj by odpovídalo ${worst.gainN} ${skolGen(worst.gainN)} z ${total}.`;
+    blameSentence = `Nejvíc omezuje ${worst.blame}. Bez něj by ${plural(worst.gainN, 'odpovídala', 'odpovídaly', 'odpovídalo')} ${worst.gainN} ${skol(worst.gainN)} z ${total}.`;
   }
 
   const nearMisses = rows
@@ -1626,7 +1625,7 @@ function Search() {
                             )}
                             <div className="ss-cell-number ss-cell-places">
                               <span className="ss-data-md">
-                                <span className="sr-only">volných míst </span>
+                                <span className="sr-only">počet míst </span>
                                 {row.p.kapacita != null ? row.p.kapacita : <span className="ss-caption ss-cell-missing">bez dat</span>}
                               </span>
                               <span className="ss-caption ss-number-label">míst</span>
