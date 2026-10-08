@@ -80,9 +80,24 @@ There is one tester school.
    `/version.json` (phase 12). Static `/assets/*` stay gated; the gate page is
    self-contained.
 
-**Tester enrolment without per-school links.**
+**Tester enrolment: one shared code, no schools.** Founder, 2026-10-08:
+- There is one testing school (ZŠ Jesenicova).
+- All testers share the single code `pristuptestovaciverze`.
+- There are **no separate school codes or school names** in the tester experience.
 
-8. Add `VITE_BETA_SCHOOL_CODE` (frontend env, public).
+The database still needs one `beta_schools` row, because `users.tester_school_code`
+is a foreign key and the signup trigger validates it. That row's code **is the same
+access code**: `PRISTUPTESTOVACIVERZE`, school_name `ZŠ Jesenicova`. It stays internal
+(admin and attribution only).
+- The tester never sees or types any other code.
+- Remove tester-facing wording about a "pozvánka školy" or a school name. For example,
+  "Pozvánka školy není platná." becomes "Přístupový kód neplatí.", and the school name
+  disappears from the beta landing and instructions.
+- `/admin` may still show the school name.
+
+8. Add `VITE_BETA_SCHOOL_CODE=PRISTUPTESTOVACIVERZE` (frontend env, public; the same
+   value as `SITE_ACCESS_KEY`, upper-cased). This is already in progress in the
+   working tree.
    - When it is set, every signup sends it as `betaSchoolCode`. This covers
      `CreateAccount.jsx`, `SignUp.jsx` and `ConfirmEmailWaiting` resends: anywhere
      `signUp` / `resendConfirmation` is called without an explicit code, so all new
@@ -562,6 +577,16 @@ activity, and nothing they had is lost.
 - Filters, drafts and scroll survive.
 - A missing old chunk triggers exactly one reload.
 
+## Phase 12b — "Check spam" on every auth e-mail
+
+Done by Claude on 2026-10-08:
+- The signup confirmation already said it (`ConfirmEmailWaiting`).
+- Added to the password-reset sent screen (`ForgotPassword.jsx`) and the e-mail
+  change message (`Settings.jsx`).
+
+If phase 9 or phase 6 adds any new "we sent you an e-mail" message, include the same
+hint: "Nepřišel? Mrkni do spamu a do složky Hromadné."
+
 ## Phase 13 — Docs
 
 - Update `CLAUDE.md` + `AGENTS.md` together:
@@ -582,7 +607,7 @@ activity, and nothing they had is lost.
 These are listed in the chat reply of 2026-10-08:
 - Vercel and Railway env vars.
 - The new SQL.
-- `beta_schools` row and the end date (Sunday 18 October 2026, 23:59 Prague).
+- The single internal `beta_schools` row (`PRISTUPTESTOVACIVERZE`, ZŠ Jesenicova) and the end date (Sunday 18 October 2026, 23:59 Prague).
 - Supabase redirect URLs.
 - Turnstile.
 - The pros/cons regeneration.

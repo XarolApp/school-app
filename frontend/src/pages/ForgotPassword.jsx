@@ -55,7 +55,8 @@ function ForgotPassword() {
           <div className="notice" role="status">
             <p className="notice-text">
               Pokud na {email} existuje účet, poslali jsme na něj odkaz pro
-              nastavení nového hesla. Platí 10 minut.
+              nastavení nového hesla. Platí 10 minut. Nepřišel? Mrkni do spamu a do
+              složky Hromadné, mail může docházet i minutu.
             </p>
           </div>
           <Link to="/prihlaseni" className="btn btn-secondary btn-block">

@@ -337,7 +337,7 @@ function Settings() {
     setOpenForm(null);
     setSuccess(
       `Poslali jsme potvrzovací odkaz na ${pending} i na tvůj současný e-mail. ` +
-        'E-mail se změní, až klikneš na oba.'
+        'E-mail se změní, až klikneš na oba. Nepřišel? Mrkni do spamu a do složky Hromadné.'
     );
   };
 
