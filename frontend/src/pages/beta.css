@@ -265,3 +265,7 @@ dialog.ss-dialog.beta-modal-reference { max-width: 960px; }
 .beta-read-note { display:flex; align-items:center; gap:8px; margin:0; padding:10px 12px; border-radius:var(--r-chip); background:var(--acc-soft); color:var(--ink); font-size:var(--fs-caption); }
 .beta-read-note svg { flex:none; color:var(--acc); }
 .ob-done-quick { margin: var(--space-lg) 0; padding: var(--space-lg); border: 1px solid var(--line); border-radius: var(--r-card); background: var(--surface); text-align: left; }
+
+.beta-quick-chip { display:inline-flex; align-items:center; gap:6px; }
+.beta-quick .beta-quick-chip[aria-pressed="true"] { background:var(--acc); color:var(--acc-ink); border-color:var(--acc); }
+.beta-quick-hint { margin:0; color:var(--ink2); font-size:var(--fs-caption); }

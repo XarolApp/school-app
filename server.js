@@ -924,7 +924,7 @@ app.post('/api/beta/micro', requireAuth, requireBetaTester, betaMicroLimiter, as
       parts.push(`${rating}/5`);
     }
     if (answers !== undefined) {
-      if (!Array.isArray(answers) || answers.length > 4 || answers.some((a) => typeof a !== 'string' || !a.trim() || a.length > 120)) return res.status(400).json({ error: 'Odpověď nemá správný formát.' });
+      if (!Array.isArray(answers) || answers.length > 4 || answers.some((a) => typeof a !== 'string' || !a.trim() || a.length > 340)) return res.status(400).json({ error: 'Odpověď nemá správný formát.' });
       parts.push(...answers.map((a) => a.trim()));
     }
     if (note !== undefined && note !== null && note !== '') {
