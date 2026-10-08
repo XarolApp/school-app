@@ -91,8 +91,8 @@
 }
 
 /* --- typography ----------------------------------------------------------- */
-/* Serif headings at weight 400 — the design never bolds the serif; gravity
-   comes from size and tight tracking, not weight. */
+/* Heading family comes from the current theme tokens (Archivo Narrow).
+   These base headings use weight 400, with size and tracking for emphasis. */
 .ob-title,
 .ob-title-xl {
   font-family: var(--heading);
@@ -643,8 +643,7 @@
   background: var(--surface2);
 }
 
-/* Green is reserved exclusively for match strength — never generic success,
-   never decoration. This is the only place --ok may appear. */
+/* Match-strength band uses the semantic match/success palette. */
 .ob-band-strong {
   background: var(--ok-soft);
   border: 1px solid transparent;
@@ -1043,8 +1042,8 @@
 /* ===========================================================================
    ONBOARDING V2 — 2026-09-05
    Split-pane desktop quiz, honest chrome, merged stakes screen, rebuilt
-   reveal and two-pane paywall. Every value below comes from
-   src/design/tokens.css; nothing here hardcodes a colour, radius or size.
+   reveal and two-pane paywall. Shared colours and dimensions use
+   src/design/tokens.css alongside component-specific layout values.
    =========================================================================== */
 
 /* Base (mobile) shape of the split: there is no split. One column, the
@@ -1238,10 +1237,8 @@
 }
 
 /* --- quiz: live candidate count ------------------------------------------ */
-/* A REAL count of real candidates, recomputed from the answers so far. This is
-   the honest replacement for a "live match %": after two of nine questions no
-   percentage exists that is not invented, and this product refuses to show
-   match percentages anywhere. */
+/* Candidate count reflects the answers filled so far. It is separate from
+   the final match percentage shown on completed result cards. */
 .ob-live {
   display: inline-flex;
   align-items: center;
@@ -1488,8 +1485,7 @@
   color: var(--text);
 }
 
-/* A qualitative BAND, never a percentage — the engine cannot honestly justify
-   two significant figures and the product refuses to fake them. */
+/* Qualitative band accompanies the result card's match percentage. */
 .ob-hero-band {
   display: inline-flex;
   align-items: center;

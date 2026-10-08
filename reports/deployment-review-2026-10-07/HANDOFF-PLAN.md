@@ -58,7 +58,7 @@ Acceptance: recorded desktop Chromium plus real iOS Safari and Android/browser j
 
 Correct and test mixed admission-year labels in comparison (C03), and explain schools absent from the map because coordinates are missing (C05). Use current/older/missing programme fixtures together; every displayed capacity/rate/ratio must retain its source year. Do not imply that missing records prove a school had no admissions or no newer data.
 
-Repair landing readability before beta (C09): the whole-hero scale reduces landscape body text to about 6.5px and the primary button to 25px height. Use a normal-sized layout that can scroll in small/short windows; test 320px, landscape, zoom/text enlargement and dynamic browser chrome. Preserve keyboard/non-WebGL access to the public school-detail exception (C10). Keep the compact-header and inactive-demo polish (C08/C11) separate from these beta gates.
+Repair landing readability before beta (C09): the whole-hero scale reduces landscape body text to about 6.5px and the primary button to 25px height. Use a normal-sized layout that can scroll in small/short windows; test 320px, landscape, zoom/text enlargement and dynamic browser chrome. Preserve keyboard/non-WebGL access to the public school-detail exception (C10). Track compact-header polish (C08) and the active onboarding demo's retry/playback/accessibility work (C11) separately; the demo is rendered in Welcome, not only the inactive Home page.
 
 ## 6. Redesign the payment lifecycle before real billing
 

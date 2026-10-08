@@ -986,5 +986,61 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-07T18:56:39.511575+00:00",
     "method": "Full source read; current diff reviewed for root changes. Read coverage does not imply runtime verification."
+  },
+  "frontend/src/pages/onboarding/onboarding.css": {
+    "sha256": "932ca5cad10dc6861d20557ae25439ceca8194067a1df30069343488bb6b4eab",
+    "lines": 2981,
+    "read_ranges": [
+      [
+        1,
+        2981
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:17:25.703882+00:00",
+    "method": "Full source read; previous full stylesheet/source read plus complete current diff review where applicable. Read coverage does not imply defect-free or complete runtime verification."
+  },
+  "frontend/src/components/onboarding/DistrictMap.jsx": {
+    "sha256": "26980ffc84bd8aff3ce6c78e5f8369c333940fc679ed6c061aeb08ba39bed058",
+    "lines": 110,
+    "read_ranges": [
+      [
+        1,
+        110
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:17:25.704521+00:00",
+    "method": "Full source read; previous full stylesheet/source read plus complete current diff review where applicable. Read coverage does not imply defect-free or complete runtime verification."
+  },
+  "frontend/src/components/onboarding/districtMap.css": {
+    "sha256": "576c96cbf19b0a3f3b0114ee81bf63bb7c64fb927676078259fbb4e365420e06",
+    "lines": 20,
+    "read_ranges": [
+      [
+        1,
+        20
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:17:25.704743+00:00",
+    "method": "Full source read; previous full stylesheet/source read plus complete current diff review where applicable. Read coverage does not imply defect-free or complete runtime verification."
+  },
+  "frontend/src/pages/onboarding/screens/Cesta.jsx": {
+    "sha256": "d7c270c4e6d12f6936a9cd3e71de56ed9601f50d9ab5f45f9b6c81431c108121",
+    "lines": 175,
+    "read_ranges": [
+      [
+        1,
+        175
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:17:25.704967+00:00",
+    "method": "Full source read; previous full stylesheet/source read plus complete current diff review where applicable. Read coverage does not imply defect-free or complete runtime verification."
   }
 }
