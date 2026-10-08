@@ -106,10 +106,10 @@ function ParentHandoffNudge() {
 }
 
 function QuizQuestion({ step }) {
-  const { role, answers, setAnswer, goNext, goBack, schools, cleanedAnswers } = useOnboarding();
+  const { role, gender, answers, setAnswer, goNext, goBack, schools, cleanedAnswers } = useOnboarding();
   const parent = role === 'parent';
   const question = QUESTIONS[step.questionIndex];
-  const copy = questionCopy(question, role);
+  const copy = questionCopy(question, role, gender);
   const options = questionOptions(question, role);
   const value = answers[question.key];
   // Synced both ways with the map, when this question has one — pointing at
@@ -133,7 +133,7 @@ function QuizQuestion({ step }) {
     [schools, cleanedAnswers, role]
   );
 
-  const reassurance = reassuranceFor(question, value, role);
+  const reassurance = reassuranceFor(question, value, role, gender);
   const answered = Array.isArray(value) ? value.length > 0 : Boolean(value);
 
   const selectSingle = (optionValue) => {

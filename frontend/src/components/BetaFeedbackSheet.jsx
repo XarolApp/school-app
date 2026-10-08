@@ -6,6 +6,7 @@ import { BetaChecklist } from './BetaInstructions';
 import { submitBetaFeedback, uploadBetaScreenshot } from '../api';
 import { captureBetaScreenshot, elementSelector, publicElementText } from '../lib/betaCapture';
 import { useDraft } from '../lib/useDraft';
+import { genderedCopy, useGender } from '../lib/gender';
 
 const kinds = [['bug','Chyba'],['navrh','Návrh'],['funkce','Nová funkce'],['text','Chybný text/údaj'],['neprehledne','Nepřehledné'],['chvala','Pochvala']];
 const statuses = { nove: 'Nová', precteno: 'Přečteno', vyreseno: 'Vyřešeno', neudelame: 'Neuděláme' };
@@ -17,6 +18,7 @@ const eligible = (element) => element instanceof HTMLElement && !element.closest
 const viewportNow = () => ({ width: innerWidth, height: innerHeight, scroll_x: scrollX, scroll_y: scrollY });
 
 export default function BetaFeedbackSheet({ open, onClose, pageUrl, beta, onSuccess, programActive, requestId }) {
+  const gender = useGender();
   const [mode,setMode] = useState('general'), [phase,setPhase] = useState('form');
   // The typed message survives a reload or a switch to another tab.
   // Quick star ratings are not "messages"; the list shows what the tester wrote.
@@ -26,7 +28,7 @@ export default function BetaFeedbackSheet({ open, onClose, pageUrl, beta, onSucc
   const [outline,setOutline] = useState(null);
   const selectedElement = useRef(null), mounted = useRef(true);
   const parent = ['rodic','ucitel'].includes(beta?.role);
-  const voice = (student,adult) => parent ? adult : student;
+  const voice = (student,adult) => parent ? adult : genderedCopy(student, gender);
   useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
   useEffect(() => { setSuccess(false); }, [requestId]);
   useEffect(() => { if (!open) setPhase('form'); }, [open]);

@@ -4,6 +4,7 @@ import { Star } from 'lucide-react';
 import { submitBetaClosing } from '../api';
 import { palettes, PALETTE_IDS } from '../design/tokens';
 import { ObButton } from './onboarding/ObKit';
+import { genderedCopy, useGender } from '../lib/gender';
 
 const THEMES={znacka:'Modrá',zvyraznovac:'Žlutá',smrk:'Zelená',terakota:'Oranžová'};
 function Choice({label,value,options,onChange,multiple=false}) {
@@ -12,7 +13,9 @@ function Choice({label,value,options,onChange,multiple=false}) {
 function Rating({label,value,max=5,min=1,onChange}) {return <fieldset className="beta-closing-field"><legend>{label}</legend><div className="beta-kind-chips">{Array.from({length:max-min+1},(_,i)=>i+min).map(n=><button key={n} type="button" className="ss-btn ss-btn-secondary" aria-pressed={value===n} onClick={()=>onChange(n)}>{n}</button>)}</div><p className="ss-caption">{min} = nejméně · {max} = nejvíce</p></fieldset>;}
 function Text({label,value,onChange}) {return <label className="ss-field-label">{label}<textarea className="ss-input" maxLength={2000} value={value} onChange={e=>onChange(e.target.value)} /></label>;}
 export default function BetaClosingQuestionnaire({role,onDone}) {
+  const gender=useGender();
   const parent=['rodic','ucitel'].includes(role),[step,setStep,clearStep]=useDraft('snm.draft.beta.closing.step',0),[busy,setBusy]=useState(false),[error,setError]=useState('');
+  const voice=(student,adult)=>parent?adult:genderedCopy(student,gender);
   const [a,setA,clearA]=useDraft('snm.draft.beta.closing.answers',{selected:'',prior:[],nps:null,help:null,useful:[],missing:'',pay:'',prices:{tooCheap:'',good:'',expensive:'',tooExpensive:''},payer:'',plan:'',theme:'',future:'',change:'',ratings:{search:null,detail:null,questionnaire:null,compare:null}});
   const [review,setReview,clearReview]=useDraft('snm.draft.beta.closing.review',{stars:null,body:'',consent_publish:false});
   const set=(key,value)=>setA(prev=>({...prev,[key]:value}));
@@ -24,16 +27,16 @@ export default function BetaClosingQuestionnaire({role,onDone}) {
     {step===0 && <>
       <p>Role: {({'8':'8. třída','9':'9. třída',rodic:'Rodič',ucitel:'Učitel',jine:'Jiné'})[role]}</p>
       <Choice label={parent?'Máte už školu vybranou?':'Máš už školu vybranou?'} value={a.selected} options={['ano','ne','zatim_ne'].map((v,i)=>[v,['Ano','Ne','Ještě ne'][i]])} onChange={v=>set('selected',v)} />
-      <Choice label={parent?'Jak jste školy hledali dřív?':'Jak jsi školy hledal(a) dřív?'} value={a.prior} multiple options={['atlas','weby','chatgpt','kamaradi','rodice','jinak'].map((v,i)=>[v,['Atlas školství','Weby škol','ChatGPT','Kamarádi','Rodiče','Jinak'][i]])} onChange={v=>set('prior',v)} />
+      <Choice label={voice('Jak jsi školy hledal(a) dřív?','Jak jste školy hledali dřív?')} value={a.prior} multiple options={['atlas','weby','chatgpt','kamaradi','rodice','jinak'].map((v,i)=>[v,['Atlas školství','Weby škol','ChatGPT','Kamarádi','Rodiče','Jinak'][i]])} onChange={v=>set('prior',v)} />
     </>}
     {step===1 && <>
-      <Rating label={parent?'Doporučili byste Střední na míru dál?':'Doporučil(a) bys Střední na míru dál?'} value={a.nps} min={0} max={10} onChange={v=>set('nps',v)} />
+      <Rating label={voice('Doporučil(a) bys Střední na míru dál?','Doporučili byste Střední na míru dál?')} value={a.nps} min={0} max={10} onChange={v=>set('nps',v)} />
       <Rating label={parent?'Pomohlo Vám to vybrat?':'Pomohlo ti to vybrat?'} value={a.help} onChange={v=>set('help',v)} />
       <Choice label="Nejužitečnější funkce" multiple value={a.useful} options={['dotaznik','vyhledavani','detail','porovnani','matice','prihlaska','sdileni'].map((v,i)=>[v,['Dotazník','Vyhledávání','Detail školy','Porovnání','Matice','Přihláška','Sdílení'][i]])} onChange={v=>set('useful',v)} />
       <Text label="Co chybělo? (nepovinné)" value={a.missing} onChange={v=>set('missing',v)} />
     </>}
     {step===2 && <>
-      <Choice label={parent?'Zaplatili byste za přístup?':'Zaplatil(a) bys za přístup?'} value={a.pay} options={['ano','mozna','ne'].map((v,i)=>[v,['Ano','Možná','Ne'][i]])} onChange={v=>set('pay',v)} />
+      <Choice label={voice('Zaplatil(a) bys za přístup?','Zaplatili byste za přístup?')} value={a.pay} options={['ano','mozna','ne'].map((v,i)=>[v,['Ano','Možná','Ne'][i]])} onChange={v=>set('pay',v)} />
       <p>Jakou cenu by měl mít sezónní přístup? Částky v Kč.</p>
       {['tooCheap','good','expensive','tooExpensive'].map((key,i)=><label key={key} className="ss-field-label">{['Příliš levné — pochybnosti o kvalitě','Výhodné','Drahé, ale ještě přijatelné','Příliš drahé'][i]}<input className="ss-input" type="number" min="0" max="100000" value={a.prices[key]} onChange={e=>set('prices',{...a.prices,[key]:e.target.value})} /></label>)}
       <Choice label="Kdo by platil?" value={a.payer} options={['ja','rodic','spolu'].map((v,i)=>[v,['Já','Rodič','Spolu'][i]])} onChange={v=>set('payer',v)} />

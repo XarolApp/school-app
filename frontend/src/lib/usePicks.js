@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { fetchPicks, savePicks } from '../api';
 import { useToast } from '../components/ToastContext';
+import { useG } from './gender';
 
 /** Shared add/remove behavior for a student's three ordered application picks. */
 export function usePicks() {
   const { toast } = useToast();
+  const g = useG();
   const [picks, setPicks] = useState([]);
   const [saving, setSaving] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -65,14 +67,14 @@ export function usePicks() {
       if (err.code === 'TOO_MANY_PICKS') {
         toast('Do přihlášky patří nejvýš 3 školy.', { type: 'error' });
       } else if (err.isUnauthorized) {
-        toast('Přihlas se, abys mohl/a sestavit přihlášku.', { type: 'error' });
+        toast(`Přihlas se, abys ${g('mohl', 'mohla')} sestavit přihlášku.`, { type: 'error' });
       } else {
         toast(err.message || 'Nepodařilo se upravit přihlášku.', { type: 'error' });
       }
     } finally {
       setSaving(false);
     }
-  }, [loaded, pickIds, picks, saving, toast]);
+  }, [g, loaded, pickIds, picks, saving, toast]);
 
   return { pickIds, toggle, saving: saving || !loaded };
 }

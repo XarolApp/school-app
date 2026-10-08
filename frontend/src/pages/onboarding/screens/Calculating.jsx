@@ -4,6 +4,7 @@ import { ObScreen } from '../../../components/onboarding/ObKit';
 import { usePrefersReducedMotion } from '../../../components/onboarding/usePrefersReducedMotion';
 import { useOnboarding } from '../useOnboarding';
 import { SCHOOL_COUNT } from '../../../config/facts';
+import { useG } from '../../../lib/gender';
 
 /**
  * Labour illusion.
@@ -27,7 +28,7 @@ import { SCHOOL_COUNT } from '../../../config/facts';
 const SUB_STEPS = {
   student: [
     'Porovnávám pražské střední školy',
-    'Porovnávám školy s částmi Prahy, které jsi vybral(a)',
+    'Porovnávám školy s částmi Prahy, které jsi vybral',
     'Připravuji vysvětlení u každé školy',
   ],
   parent: [
@@ -41,10 +42,13 @@ const STEP_MS = 1050; // 3 x 1050 = 3.15s total, inside the 2.5-4.0s window.
 
 function Calculating() {
   const { role, goNext, schoolsLoading, schools } = useOnboarding();
+  const g = useG();
   const reduced = usePrefersReducedMotion();
   const [index, setIndex] = useState(0);
   const parent = role === 'parent';
-  const steps = SUB_STEPS[parent ? 'parent' : 'student'];
+  const steps = parent
+    ? SUB_STEPS.parent
+    : SUB_STEPS.student.map((step) => step.replace('vybral', g('vybral', 'vybrala')));
   const stepMs = reduced ? 400 : STEP_MS;
 
   useEffect(() => {

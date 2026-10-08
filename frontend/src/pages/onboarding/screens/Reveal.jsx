@@ -116,7 +116,7 @@ function schoolWord(n) {
 }
 
 function Reveal() {
-  const { role, ranked, schools, goNext, isDemo, schoolsError, cleanedAnswers, answers } = useOnboarding();
+  const { role, gender, ranked, schools, goNext, isDemo, schoolsError, cleanedAnswers, answers } = useOnboarding();
   const rankingSignature=useRef(null);
   useEffect(() => {
     const capture=()=>{
@@ -150,10 +150,10 @@ function Reveal() {
   const lockedTotal = Math.max(ranked.length - 1, 0);
 
   const reasons = useMemo(
-    () => (top ? explain(top, cleanedAnswers, role || 'student') : []),
-    [top, cleanedAnswers, role]
+    () => (top ? explain(top, cleanedAnswers, role || 'student', gender) : []),
+    [top, cleanedAnswers, role, gender]
   );
-  const limits = useMemo(() => (top ? tradeoffs(top, role || 'student') : []), [top, role]);
+  const limits = useMemo(() => (top ? tradeoffs(top, role || 'student', gender) : []), [top, role, gender]);
   const headline = useMemo(() => characterise(answers, role), [answers, role]);
   // The SAME count the quiz showed as "Zatím ti sedí N škol". `ranked` is every
   // school in rank order, so its length (always the whole database) must never
@@ -330,7 +330,7 @@ function Reveal() {
             <strong>Shoda není záruka přijetí.</strong>{' '}
             {parent
               ? 'Říká, jak škola odpovídá tomu, co jste vyplnili — ne jaké jsou šance na přijetí. Hranice přijetí z Cermatu u škol ukazujeme, šanci na přijetí ale nepředpovídáme. Vzdálenost počítáme podle městských částí, ne podle jízdních řádů.'
-              : 'Říká, jak moc škola sedí tomu, co jsi vyplnil(a) — ne jaké máš šance se tam dostat. Hranice přijetí z Cermatu u škol ukážeme, šanci na přijetí ale nehádáme. Vzdálenost počítáme podle městských částí, ne podle spojů.'}
+              : `Říká, jak moc škola sedí tomu, co jsi ${gender === 'f' ? 'vyplnila' : 'vyplnil'} — ne jaké máš šance se tam dostat. Hranice přijetí z Cermatu u škol ukážeme, šanci na přijetí ale nehádáme. Vzdálenost počítáme podle městských částí, ne podle spojů.`}
           </p>
         </div>
       </div>

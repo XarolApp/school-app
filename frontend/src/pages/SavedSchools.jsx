@@ -10,6 +10,7 @@ import { useToast } from '../components/ToastContext';
 import { withNamesAll } from '../lib/schoolNames';
 import { COMPARE_EVENT, getCompareSelection, toggleCompareSelection } from '../lib/searchPrefs';
 import { clearDraftKey, readDraft } from '../lib/useDraft';
+import { useG } from '../lib/gender';
 import './savedSchools.css';
 
 const NOTE_MAX = 2000;
@@ -96,11 +97,12 @@ function SavedCard({ school, savedNote, userId, inCompare, onToggleCompare, onRe
 }
 
 function SavedIntro() {
+  const g = useG();
   return (
     <div>
       <p className="eyebrow">Tvůj výběr</p>
       <h1 className="ss-headline-lg h">Uložené školy</h1>
-      <p className="ss-body-md sv-lede">Školy, které sis uložil(a) záložkou. U každé si můžeš psát poznámky, přidat ji k porovnání nebo otevřít její stránku.</p>
+      <p className="ss-body-md sv-lede">{g('Školy, které sis uložil záložkou.', 'Školy, které sis uložila záložkou.')} U každé si můžeš psát poznámky, přidat ji k porovnání nebo otevřít její stránku.</p>
     </div>
   );
 }

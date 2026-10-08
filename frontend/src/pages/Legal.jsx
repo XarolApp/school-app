@@ -1,4 +1,5 @@
 import './legal.css';
+import { useGender } from '../lib/gender';
 
 // Shown until the operator facts marked [DOPLNIT] are filled in. Set to false before launch.
 const DRAFT = false;
@@ -19,8 +20,10 @@ function LegalPage({ title, updated, children }) {
 }
 
 export function Privacy() {
+  const gender = useGender();
+  const g = (masculine, feminine) => (gender === 'f' ? feminine : masculine);
   return (
-    <LegalPage title="Zásady ochrany osobních údajů" updated="5. 10. 2026">
+    <LegalPage title="Zásady ochrany osobních údajů" updated="8. 10. 2026">
       <h2>1. Kdo je správce</h2>
       <p>
         Správcem osobních údajů je Václav Kadlec, Na Lysinách 34, 147 00 Praha, e-mail:
@@ -31,10 +34,15 @@ export function Privacy() {
       <h2>2. Jaké údaje zpracováváme, proč a na jakém základě</h2>
       <ul>
         <li>
-          <strong>Účet:</strong> e-mail, jméno (které zadáš při registraci), heslo a okamžik, kdy
-          jsi potvrdil(a) podmínky. Heslo ukládá jen zabezpečená autentizační služba v zahašované
+          <strong>Účet:</strong> e-mail, jméno (které zadáš při registraci), heslo a okamžik potvrzení
+          podmínek. Heslo ukládá jen zabezpečená autentizační služba v zahašované
           podobě; my ho nevidíme. Účel: vytvořit ti účet a umožnit přihlášení. Základ: plnění
           smlouvy.
+        </li>
+        <li>
+          <strong>Oslovení (nepovinné):</strong> jestli tě máme oslovovat jako žáka, nebo žákyni.
+          Účel: správný tvar slov v aplikaci a ve vysvětleních k výsledkům. Základ: oprávněný
+          zájem, údaj je nepovinný a lze ho kdykoli změnit nebo smazat v Nastavení.
         </li>
         <li>
           <strong>Odpovědi v dotazníku a výsledky:</strong> co odpovíš v úvodním a samostatném
@@ -82,9 +90,10 @@ export function Privacy() {
         <li>Supabase — databáze a přihlašování. Region uložení dat: EU (Irsko, region eu-west-1).</li>
         <li>Stripe — platby (Stripe Payments Europe, Ltd. a spřízněné společnosti). Může docházet k přenosu mimo EU na základě standardních smluvních doložek.</li>
         <li>
-          OpenRouter a poskytovatel jazykového modelu (Google Gemini) — píší krátké vysvětlení,
-          proč se ti škola hodí. Posíláme jen výběrové odpovědi z dotazníku a údaje o vybraných
-          školách. Jméno, e-mail ani volnou poznámku z dotazníku neposíláme. Data mohou být
+          OpenRouter a aktuálně nastavený jazykový model (výchozí OpenAI GPT-6 Luna) — píší krátké
+          vysvětlení, proč se ti škola hodí. Posíláme jen vybrané odpovědi z dotazníku, údaje o
+          školách a gramatický rod oslovení (mužský nebo ženský). Jméno, e-mail ani volnou poznámku
+          z dotazníku neposíláme. Data mohou být
           zpracována mimo EU (např. v USA) na základě standardních smluvních doložek.
         </li>
         <li>Cloudflare — ochrana formulářů proti robotům (Turnstile); zpracovává technické údaje spojení.</li>
@@ -113,7 +122,7 @@ export function Privacy() {
       <h2>6. Jak dlouho údaje uchováváme</h2>
       <ul>
         <li>Údaje z účtu, dotazníků a tvých seznamů: po dobu existence účtu. Účet můžeš kdykoli smazat v Nastavení a smaže se tím vše výše popsané, včetně tvého předplatného, uložené platební metody a zákazníka u Stripe a všech tvých recenzí.</li>
-        <li>Neaktivní účty se zatím automaticky nemažou. Kdykoli je můžeš smazat sám/sama nebo nás o to požádat e-mailem.</li>
+        <li>Neaktivní účty se zatím automaticky nemažou. Kdykoli můžeš účet smazat nebo nás o to požádat e-mailem.</li>
         <li>Záznamy o proběhlých platbách a související účetní doklady musíme uchovávat po dobu, kterou předepisují účetní a daňové předpisy (typicky 5 až 10 let); ty se smazáním účtu neruší.</li>
       </ul>
 
@@ -121,7 +130,7 @@ export function Privacy() {
       <p>
         Máš právo na přístup ke svým údajům, jejich opravu, výmaz, omezení zpracování,
         přenositelnost a právo vznést námitku proti zpracování na základě oprávněného zájmu.
-        Souhlas, který jsi dal(a), můžeš kdykoli odvolat. Jméno opravíš a účet smažeš přímo v
+        Souhlas, který jsi {g('dal', 'dala')}, můžeš kdykoli odvolat. Jméno i oslovení opravíš a účet smažeš přímo v
         Nastavení; s ostatním napiš na info@stredninamiru.cz, odpovíme do 30 dnů. Máš také právo podat
         stížnost u Úřadu pro ochranu osobních údajů (uoou.gov.cz).
       </p>
@@ -130,8 +139,8 @@ export function Privacy() {
       <p>
         Web nepoužívá reklamní, analytické ani sledovací cookies ani nástroje třetích stran ke
         sledování. Písma načítáme z našeho serveru. V prohlížeči ukládáme jen to, co ke službě
-        potřebuješ, a proto to nevyžaduje souhlas: přihlašovací relaci a volbu „zůstat
-        přihlášený“, rozpracované odpovědi z dotazníku, vybranou roli a nastavení hledání a
+        potřebuješ, a proto to nevyžaduje souhlas: přihlašovací relaci a volbu {`„zůstat přihlášen${g('ý', 'á')}“`},
+        rozpracované odpovědi z dotazníku, vybranou roli, oslovení a nastavení hledání a
         porovnání. Po registraci z úvodního dotazníku může prohlížeč až 7 dní uchovat e-mail a
         odpovědi, aby je po potvrzení e-mailu uložil ke správnému účtu.
       </p>
@@ -180,8 +189,10 @@ export function Privacy() {
 }
 
 export function Terms() {
+  const gender = useGender();
+  const g = (masculine, feminine) => (gender === 'f' ? feminine : masculine);
   return (
-    <LegalPage title="Obchodní podmínky" updated="21. 9. 2026">
+    <LegalPage title="Obchodní podmínky" updated="8. 10. 2026">
       <h2>1. Provozovatel a kontakt</h2>
       <p>
         Službu Střední na míru (stredninamiru.cz) provozuje Václav Kadlec, Na Lysinách 34, 147 00 Praha (fyzická osoba, neplátce DPH), e-mail: info@stredninamiru.cz (tento e-mail slouží pro všechny žádosti,
@@ -242,13 +253,13 @@ export function Terms() {
       <h2>6. Odstoupení od smlouvy a vrácení peněz</h2>
       <p>
         Jako spotřebitel můžeš od smlouvy <strong>odstoupit do 14 dnů bez udání důvodu</strong> a
-        my ti zaplacené peníze v plné výši vrátíme. Nevyžadujeme, aby ses tohoto práva vzdal(a),
-        a nic neúčtujeme za dobu, kdy jsi službu už používal(a).
+        my ti zaplacené peníze v plné výši vrátíme. Nevyžadujeme, aby ses tohoto práva {g('vzdal', 'vzdala')},
+        a nic neúčtujeme za dobu, kdy jsi službu už {g('používal', 'používala')}.
       </p>
       <ul>
         <li>Lhůta běží 14 dní od uzavření smlouvy. U sezónního přístupu ji ještě prodlužujeme: poběží nejméně 14 dní od strhnutí platby.</li>
         <li>Odstoupit můžeš jedním tlačítkem v <strong>Nastavení</strong> (dvoukrokově — nejdřív zkontroluješ údaje, pak odstoupení potvrdíš) nebo e-mailem na info@stredninamiru.cz; formulář níže můžeš použít, ale nemusíš.</li>
-        <li>Při odstoupení tlačítkem v Nastavení vrátíme peníze automaticky ihned; na kartě se objeví obvykle do několika pracovních dnů. Při odstoupení e-mailem je vrátíme nejpozději do 14 dnů od oznámení. Vždy stejným způsobem, jakým jsi platil(a). Přístup skončí okamžikem odstoupení a předplatné zrušíme.</li>
+        <li>Při odstoupení tlačítkem v Nastavení vrátíme peníze automaticky ihned; na kartě se objeví obvykle do několika pracovních dnů. Při odstoupení e-mailem je vrátíme nejpozději do 14 dnů od oznámení. Vždy stejným způsobem, jakým jsi {g('platil', 'platila')}. Přístup skončí okamžikem odstoupení a předplatné zrušíme.</li>
       </ul>
       <p className="legal-form">
         <strong>Vzorový formulář pro odstoupení od smlouvy</strong><br />
@@ -270,7 +281,7 @@ export function Terms() {
         jen nevyužitou část: u sezónního přístupu poměrnou část ceny za období do 31. března, u
         měsíčního předplatného poměrnou část zbylých dnů v právě běžícím měsíci — dřívější měsíce
         se nevrací, protože byly už poskytnuté a nejde je vzít zpět. Přístup pak skončí. Odstoupit
-        (§6) a totéž do 30 dnů kdykoli i sám/sama snadno vyřídíš tlačítkem v Nastavení.
+        (§6) a totéž do 30 dnů můžeš kdykoli snadno vyřídit tlačítkem v Nastavení.
       </p>
 
       <h2>8. Reklamace a vady služby</h2>

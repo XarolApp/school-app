@@ -59,7 +59,7 @@ function SettingsSkeleton() {
         <section className="panel panel-lg settings-section">
           <div className="settings-section-head">
             <h2 className="settings-section-title">Profil</h2>
-            <p className="settings-section-text">Jméno, které se zobrazuje v aplikaci.</p>
+            <p className="settings-section-text">Jméno a způsob oslovení.</p>
           </div>
           <div className="settings-form"><div style={{ display: 'grid', gap: 8, height: 155, alignContent: 'start' }}><Sk w={80} h={16} /><Sk h={48} /><Sk w="60%" h={14} /></div></div>
           <div className="settings-row"><Sk w="45%" h={36} /></div>
@@ -139,6 +139,8 @@ function Settings() {
   }, [openForm]);
   const [name, setName] = useState('');
   const [nameSaved, setNameSaved] = useState(false);
+  const [genderChoice, setGenderChoice] = useState('u');
+  const [genderSaved, setGenderSaved] = useState(false);
   const [remember, setRemember] = useState(getRememberMe);
   const [passwordForm, setPasswordForm] = useState({
     current: '',
@@ -215,6 +217,10 @@ function Settings() {
     }
   }, [profile, profile?.id, profile?.theme_palette, profile?.theme_mode]);
 
+  useEffect(() => {
+    setGenderChoice(profile?.gender || 'u');
+  }, [profile?.gender]);
+
   if (loading) {
     return <SettingsSkeleton />;
   }
@@ -227,6 +233,7 @@ function Settings() {
   const currentName = profile?.name ?? '';
   const nameValue = name || currentName;
   const nameChanged = nameValue.trim() !== currentName.trim();
+  const genderChanged = (genderChoice === 'u' ? null : genderChoice) !== (profile?.gender ?? null);
 
   const memberSince = profile?.created_at
     ? new Date(profile.created_at).toLocaleDateString('cs-CZ', {
@@ -265,6 +272,24 @@ function Settings() {
     setName('');
     setNameSaved(true);
     toast('Jméno bylo uloženo');
+  };
+
+  const handleSaveGender = async (e) => {
+    e.preventDefault();
+    setError(null);
+    setGenderSaved(false);
+    setBusy(true);
+    const value = genderChoice === 'm' || genderChoice === 'f' ? genderChoice : null;
+    try {
+      await updateProfile({ gender: value });
+      await refreshProfile();
+      setGenderSaved(true);
+      toast('Oslovení bylo uloženo');
+    } catch (saveError) {
+      setError(saveError?.message || 'Oslovení se nepodařilo uložit.');
+    } finally {
+      setBusy(false);
+    }
   };
 
   const handleChangePassword = async (e) => {
@@ -521,7 +546,7 @@ function Settings() {
           <div className="settings-section-head">
             <h2 className="settings-section-title">Profil</h2>
             <p className="settings-section-text">
-              Jméno, které se zobrazuje v aplikaci.
+              Jméno a způsob oslovení.
             </p>
           </div>
 
@@ -554,6 +579,31 @@ function Settings() {
                   {nameSaved && !nameChanged ? 'Uloženo' : 'Uložit'}
                 </button>
               </div>
+            </div>
+          </form>
+
+          <form onSubmit={handleSaveGender} className="settings-form settings-form-inset">
+            <fieldset className="field">
+              <legend className="field-label">Jak tě máme oslovovat?</legend>
+              <div className="settings-inline">
+                {[
+                  ['m', 'Jako žáka'],
+                  ['f', 'Jako žákyni'],
+                  ['u', 'Nechci uvádět'],
+                ].map(([value, label]) => (
+                  <label key={value} className="checkbox-row">
+                    <input type="radio" name="settings-gender" value={value} checked={genderChoice === value} onChange={() => { setGenderChoice(value); setGenderSaved(false); }} />
+                    <span>{label}</span>
+                  </label>
+                ))}
+              </div>
+              <span className="field-hint">Používáme jen správný tvar slov. „Nechci uvádět“ znamená mužské tvary.</span>
+            </fieldset>
+            <div className="settings-form-actions">
+              <button type="submit" className="btn btn-secondary" disabled={busy || !genderChanged}>
+                {busy && <span className="btn-spinner" aria-hidden="true" />}
+                {genderSaved && !genderChanged ? 'Uloženo' : 'Uložit oslovení'}
+              </button>
             </div>
           </form>
 

@@ -23,7 +23,7 @@ export function emailProblem(value, parent = false) {
   }
   const domain = email.split('@').pop().toLowerCase();
   if (DOMAIN_TYPOS[domain]) {
-    return t(parent, `Nemyslel(a) jsi @${DOMAIN_TYPOS[domain]}? Oprav to, ať ti mail dorazí.`, `Nemysleli jste @${DOMAIN_TYPOS[domain]}? Opravte to, ať vám mail dorazí.`);
+    return t(parent, `Zkontroluj, jestli má být doména @${DOMAIN_TYPOS[domain]}. Oprav ji, ať ti mail dorazí.`, `Zkontrolujte, jestli má být doména @${DOMAIN_TYPOS[domain]}. Opravte ji, ať vám mail dorazí.`);
   }
   if (!EMAIL_SHAPE.test(email)) {
     return t(parent,

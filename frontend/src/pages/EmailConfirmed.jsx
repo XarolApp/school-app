@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { CircleCheck } from 'lucide-react';
 import { useAuth } from '../components/AuthContext';
 import { normalizeBetaCode } from '../lib/pendingBetaCode';
+import { useG } from '../lib/gender';
 
 // Landing page of the e-mail confirmation link. The link opens a new tab and
 // signs in there; the tab that signed up hears about it and moves on by
@@ -13,6 +14,7 @@ function readLinkError() {
 }
 
 function EmailConfirmed() {
+  const g = useG();
   const [searchParams] = useSearchParams();
   const betaCode = normalizeBetaCode(searchParams.get('beta'));
   // Read once on the first render: supabase-js clears the hash after it
@@ -35,7 +37,7 @@ function EmailConfirmed() {
       <CircleCheck className="email-confirmed-icon" size={48} aria-hidden="true" />
       <h1>E-mail je ověřený</h1>
       <p className="lede">Toto okno teď můžeš zavřít. Původní okno pokračuje samo.</p>
-      <p className="field-hint">Původní okno už nemáš otevřené, nebo jsi odkaz otevřel(a) na jiném zařízení?</p>
+      <p className="field-hint">{`Původní okno už nemáš otevřené, nebo jsi odkaz ${g('otevřel', 'otevřela')} na jiném zařízení?`}</p>
       <Link className="btn btn-secondary btn-block" to={continuePath}>Pokračovat v tomto okně</Link>
     </>;
   } else if (linkError) {
@@ -49,7 +51,7 @@ function EmailConfirmed() {
     // browser that could not finish sign-in. We cannot tell it worked.
     body = <>
       <h1>Potvrzení e-mailu</h1>
-      <p className="lede">Pokud jsi právě klikl(a) na odkaz v e-mailu, toto okno můžeš zavřít a pokračovat v původním. Jinak se přihlas tady.</p>
+      <p className="lede">{`Pokud jsi právě ${g('klikl', 'klikla')} na odkaz v e-mailu, toto okno můžeš zavřít a pokračovat v původním. Jinak se přihlas tady.`}</p>
       <Link className="btn btn-secondary btn-block" to={`/prihlaseni${betaQuery}`}>Přihlásit se</Link>
     </>;
   }

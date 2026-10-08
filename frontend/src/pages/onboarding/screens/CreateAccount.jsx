@@ -8,6 +8,7 @@ import { confirmationUrl } from '../../../components/AuthContext';
 import { readPendingConfirmation, clearPendingConfirmation } from '../../../lib/pendingConfirmation';
 import { captchaProblem, consentProblem, emailProblem, focusFirstInvalid, problemSummary, nameProblem, onlyProblems, passwordProblem } from '../../../lib/authValidation';
 import { useAuth } from '../../../components/AuthContext';
+import { useG } from '../../../lib/gender';
 import PasswordInput from '../../../components/PasswordInput';
 import PasswordStrength from '../../../components/PasswordStrength';
 import Captcha, { captchaEnabled } from '../../../components/Captcha';
@@ -45,6 +46,7 @@ import { fetchBetaSchool, startBetaVisit } from '../../../api';
 function CreateAccount() {
   const {
     role,
+    gender,
     ranked,
     cleanedAnswers,
     goNext,
@@ -59,6 +61,7 @@ function CreateAccount() {
   } = useOnboarding();
   const matchCount = ranked?.length || 0;
   const { signUp, isSignedIn, user } = useAuth();
+  const g = useG();
   const parent = role === 'parent';
 
   const [resumed] = useState(() => readPendingConfirmation('ob'));
@@ -225,8 +228,8 @@ function CreateAccount() {
     // a different tab/device than this one (see lib/pendingOnboardingAnswers.js).
     // AuthContext flushes this stash to the server the next time this browser
     // sees a confirmed session for this same email.
-    if (Object.keys(cleanedAnswers || {}).length) {
-      stashOnboardingAnswers(cleanedAnswers, email);
+    if (Object.keys(cleanedAnswers || {}).length || (role !== 'parent' && (gender === 'm' || gender === 'f'))) {
+      stashOnboardingAnswers(cleanedAnswers || {}, email, role === 'parent' ? null : gender);
     }
 
     // Real checkout requires a confirmed Supabase session. Advancing without
@@ -312,7 +315,7 @@ function CreateAccount() {
         {matchCount > 0
           ? parent
             ? `Právě jsme vám seřadili ${matchCount} škol podle toho, co jste odpověděli. Založte si účet, ať vám výsledek zůstane a nemusíte dotazník vyplňovat znovu.`
-            : `Právě jsme ti seřadili ${matchCount} škol podle toho, cos odpověděl/a. Založ si účet, ať ti výsledek zůstane a nemusíš dotazník vyplňovat znovu.`
+            : `Právě jsme ti seřadili ${matchCount} škol podle toho, cos ${g('odpověděl', 'odpověděla')}. Založ si účet, ať ti výsledek zůstane a nemusíš dotazník vyplňovat znovu.`
           : parent
             ? 'Založte si účet, ať vám výsledek zůstane a nemusíte dotazník vyplňovat znovu.'
             : 'Založ si účet, ať ti výsledek zůstane a nemusíš dotazník vyplňovat znovu.'}

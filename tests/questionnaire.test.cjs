@@ -149,6 +149,11 @@ test('points are validated as integers 0-100, optional, and never narrated to th
   assert.match(text, /introvert/);
 });
 
+test('AI answer description defaults to masculine and passes only the selected grammatical form', () => {
+  assert.match(describeAnswers(completeAnswers), /Rod pro oslovení: mužský/);
+  assert.match(describeAnswers(completeAnswers, 'f'), /Rod pro oslovení: ženský/);
+});
+
 test('questionnaire explanations use the flex model schema and keep private answers out of the prompt', async () => {
   const originalFetch = global.fetch;
   const originalTimeout = AbortSignal.timeout;

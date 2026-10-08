@@ -1,5 +1,6 @@
 import { useEffect, useId, useState } from 'react';
 import { QUESTIONS, answerTags } from '../../pages/onboarding/quizQuestions';
+import { useG } from '../../lib/gender';
 
 /**
  * The live "Tvůj profil" panel — the desktop-specific idea in onboarding-v2.
@@ -36,6 +37,7 @@ function readFurthest() {
 function ProfilePanel({ answers, role, currentQuestionIndex, variant = 'panel' }) {
   const [open, setOpen] = useState(false);
   const bodyId = useId();
+  const g = useG();
   const furthest = Math.max(readFurthest(), currentQuestionIndex ?? 0);
   useEffect(() => {
     try {
@@ -58,7 +60,7 @@ function ProfilePanel({ answers, role, currentQuestionIndex, variant = 'panel' }
 
   const privacyNote = parent
     ? 'Odpovědi zůstávají ve vašem prohlížeči. Nikam je neodesíláme a nic neukládáme, dokud si sami nevytvoříte účet.'
-    : 'Odpovědi zůstávají v tvém prohlížeči. Nikam je neposíláme a nic o tobě neukládáme, dokud si sám nevytvoříš účet.';
+    : `Odpovědi zůstávají v tvém prohlížeči. Nikam je neposíláme a nic o tobě neukládáme, dokud si ${g('sám', 'sama')} nevytvoříš účet.`;
 
   const list = (
     <>

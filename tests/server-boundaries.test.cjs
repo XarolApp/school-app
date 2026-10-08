@@ -375,12 +375,24 @@ test('profile PATCH accepts palette, mode, and name-only updates with validation
   assert.deepEqual({ ...palette.update }, { theme_palette: 'smrk' });
   assert.equal(
     palette.h.queries[0].calls.find(([method]) => method === 'select')[1],
-    'id, name, theme_palette, theme_mode'
+    'id, name, theme_palette, theme_mode, gender'
   );
 
   const mode = await validPatch({ theme_mode: 'dark' });
   assert.equal(mode.res.statusCode, 200);
   assert.deepEqual({ ...mode.update }, { theme_mode: 'dark' });
+
+  const female = await validPatch({ gender: 'f' });
+  assert.equal(female.res.statusCode, 200);
+  assert.deepEqual({ ...female.update }, { gender: 'f' });
+
+  const clearGender = await validPatch({ gender: null });
+  assert.equal(clearGender.res.statusCode, 200);
+  assert.deepEqual({ ...clearGender.update }, { gender: null });
+
+  const invalidGender = await validPatch({ gender: 'other' });
+  assert.equal(invalidGender.res.statusCode, 400);
+  assert.equal(invalidGender.res.body.error, 'Neplatný způsob oslovení.');
 
   const invalidPalette = await validPatch({ theme_palette: 'violet' });
   assert.equal(invalidPalette.res.statusCode, 400);

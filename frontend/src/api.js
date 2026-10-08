@@ -113,11 +113,12 @@ export const saveBetaProfile = (role, roleNote = '') => request('/api/beta/profi
   method: 'POST', body: JSON.stringify({ role, role_note: roleNote, tracking_notice_accepted: true }),
 });
 
-export function updateProfile({ name, themePalette, themeMode }) {
+export function updateProfile({ name, themePalette, themeMode, gender }) {
   const body = {};
   if (name !== undefined) body.name = name;
   if (themePalette !== undefined) body.theme_palette = themePalette;
   if (themeMode !== undefined) body.theme_mode = themeMode;
+  if (gender !== undefined) body.gender = gender;
 
   return request('/api/me', {
     method: 'PATCH',

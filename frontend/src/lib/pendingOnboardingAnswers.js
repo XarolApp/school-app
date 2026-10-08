@@ -16,11 +16,16 @@
 const KEY = 'skolamatch.pendingOnboardingAnswers';
 const MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
 
-export function stashOnboardingAnswers(answers, email) {
+export function stashOnboardingAnswers(answers, email, gender = null) {
   try {
     localStorage.setItem(
       KEY,
-      JSON.stringify({ answers, email: (email || '').trim().toLowerCase(), savedAt: Date.now() })
+      JSON.stringify({
+        answers,
+        email: (email || '').trim().toLowerCase(),
+        gender: gender === 'm' || gender === 'f' ? gender : null,
+        savedAt: Date.now(),
+      })
     );
   } catch {
     // Private browsing, storage full, or disabled — the flush just never

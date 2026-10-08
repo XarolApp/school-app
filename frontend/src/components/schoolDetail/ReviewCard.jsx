@@ -11,7 +11,7 @@ const ROLE_LABEL = {
   absolvent: () => 'Absolvent',
   rodic: () => 'Rodič studenta',
   ucitel: () => 'Učitel/ka',
-  navstevnik: () => 'Byl/a jsem na dni otevřených dveří',
+  navstevnik: () => 'Účast na dni otevřených dveří',
 };
 
 function formatDate(iso) {

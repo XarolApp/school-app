@@ -4,6 +4,7 @@ import { fetchMe, updateProfile, saveOnboardingAnswers } from '../api';
 import { applyTheme } from '../lib/theme';
 import { readOnboardingStash, clearOnboardingStash } from '../lib/pendingOnboardingAnswers';
 import { clearPendingBetaCode, normalizeBetaCode, rememberBetaCode } from '../lib/pendingBetaCode';
+import { writeGenderPreference } from '../lib/onboardingStorage';
 
 // Where the e-mail confirmation link lands: a "you can close this tab" page,
 // while the tab that signed up carries on by itself.
@@ -51,21 +52,26 @@ let flushInFlight = false;
  * stash itself is malformed) or a successful/duplicate save clears it.
  */
 async function flushOnboardingStash(activeSession) {
-  if (!activeSession || flushInFlight) return;
+  if (!activeSession || flushInFlight) return false;
   const stash = readOnboardingStash();
-  if (!stash) return;
+  if (!stash) return false;
 
   const email = activeSession.user?.email?.toLowerCase();
-  if (!email || email !== stash.email) return;
+  if (!email || email !== stash.email) return false;
 
   flushInFlight = true;
   try {
     await saveOnboardingAnswers(stash.answers);
+    if (stash.gender === 'm' || stash.gender === 'f') {
+      await updateProfile({ gender: stash.gender });
+    }
     clearOnboardingStash();
+    return true;
   } catch (err) {
     if (err?.status === 400) clearOnboardingStash();
     // 401/403 (not confirmed yet), 5xx, or a network error: keep the stash,
     // the next session (or the next auth-state change) tries again.
+    return false;
   } finally {
     flushInFlight = false;
   }
@@ -175,7 +181,9 @@ export function AuthProvider({ children }) {
       setSession(data.session);
       await loadProfile(data.session);
       if (!cancelled) setLoading(false);
-      flushOnboardingStash(data.session);
+      void flushOnboardingStash(data.session).then((saved) => {
+        if (saved && !cancelled) return loadProfile(data.session);
+      });
     });
 
     const {
@@ -188,6 +196,7 @@ export function AuthProvider({ children }) {
       } else if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
         rememberPasswordRecovery(false);
         setIsPasswordRecovery(false);
+        if (event === 'SIGNED_OUT') writeGenderPreference(null);
       }
       setSession(nextSession);
       // Deferred on purpose: this callback runs inside supabase-js's auth lock,
@@ -196,7 +205,9 @@ export function AuthProvider({ children }) {
       // for onAuthStateChange (hangs on token refresh / tab refocus).
       setTimeout(() => {
         if (cancelled) return;
-        void loadProfile(nextSession).then(() => flushOnboardingStash(nextSession));
+        void loadProfile(nextSession).then(async () => {
+          if (await flushOnboardingStash(nextSession)) await loadProfile(nextSession);
+        });
       }, 0);
     });
 

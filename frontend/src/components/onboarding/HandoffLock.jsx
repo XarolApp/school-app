@@ -63,7 +63,7 @@ function HandoffLock({ status, error, url, onRefresh, onRevoke, onStartOwn }) {
           </div>
           <p className="ob-hint ob-handoff-warning">Odkaz tím přestane platit.</p>
           <ObButton variant="ghost" onClick={revoke} disabled={busy}>
-            {busy ? 'Ruším odkaz…' : 'Chci dotazník vyplnit sám'}
+            {busy ? 'Ruším odkaz…' : 'Chci začít vlastní dotazník'}
           </ObButton>
         </>
       )}

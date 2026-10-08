@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ArrowRight, Backpack, Users } from 'lucide-react';
-import { ObScreen } from '../../../components/onboarding/ObKit';
+import { ObButton, ObScreen } from '../../../components/onboarding/ObKit';
 import { QUESTIONS } from '../quizQuestions';
 import { useOnboarding } from '../useOnboarding';
 
@@ -40,12 +40,14 @@ const ROLES = [
 ];
 
 function RoleFork() {
-  const { setRole, goNext, goBack } = useOnboarding();
-  const [preview, setPreview] = useState('student');
+  const { role, setRole, gender, setGender, goNext, goBack } = useOnboarding();
+  const [selectedRole, setSelectedRole] = useState(role);
+  const [preview, setPreview] = useState(role || 'student');
 
   const choose = (role) => {
     setRole(role);
-    goNext();
+    setSelectedRole(role);
+    if (role === 'parent') goNext();
   };
 
   const q = Q[preview];
@@ -84,7 +86,8 @@ function RoleFork() {
             <button
               key={id}
               type="button"
-              className="ob-fork-card"
+              className={`ob-fork-card${selectedRole === id ? ' is-selected' : ''}`}
+              aria-pressed={selectedRole === id}
               onClick={() => choose(id)}
               onPointerEnter={() => setPreview(id)}
               onFocus={() => setPreview(id)}
@@ -102,8 +105,30 @@ function RoleFork() {
           ))}
         </div>
 
+        <div className={`ob-gender-reveal${selectedRole === 'student' ? ' is-open' : ''}`} aria-hidden={selectedRole !== 'student'} inert={selectedRole !== 'student'}>
+          <div className="ob-gender-inner">
+            <fieldset className="ob-gender-fieldset">
+              <legend>Jak tě máme oslovovat?</legend>
+              <div className="ob-gender-options">
+                {[
+                  ['m', 'Jako žáka'],
+                  ['f', 'Jako žákyni'],
+                  ['u', 'Nechci uvádět'],
+                ].map(([value, label]) => (
+                  <label key={value} className={`ob-gender-option${gender === value ? ' is-selected' : ''}`}>
+                    <input type="radio" name="onboarding-gender" value={value} checked={gender === value} onChange={() => setGender(value)} />
+                    <span>{label}</span>
+                  </label>
+                ))}
+              </div>
+              <p className="ob-gender-caption">Jen abychom ti psali správně (např. „vybral/vybrala“). Nic jiného se z toho neodvozuje.</p>
+            </fieldset>
+            <ObButton onClick={goNext}>Pokračovat <ArrowRight size={18} aria-hidden="true" /></ObButton>
+          </div>
+        </div>
+
         <p className="ob-microcopy">
-          Vybráno omylem? Roli změníš kdykoli později a odpovědi ti zůstanou.
+          Roli můžeš změnit i později a odpovědi ti zůstanou.
         </p>
       </div>
     </ObScreen>

@@ -4,13 +4,14 @@ import { Link } from 'react-router-dom';
 import { addSchoolReview } from '../../api';
 import { useAuth } from '../AuthContext';
 import { useToast } from '../ToastContext';
+import { useG } from '../../lib/gender';
 
 const ROLES = [
   { id: 'student', label: 'Student' },
   { id: 'absolvent', label: 'Absolvent' },
   { id: 'rodic', label: 'Rodič' },
   { id: 'ucitel', label: 'Učitel nebo zaměstnanec' },
-  { id: 'navstevnik', label: 'Byl/a jsem na dni otevřených dveří' },
+  { id: 'navstevnik', label: 'Účast na dni otevřených dveří' },
 ];
 
 // Only an adult role may ever show a real name — never a student or
@@ -22,6 +23,7 @@ const ADULT_ROLES = new Set(['rodic', 'ucitel']);
 function ReviewForm({ schoolId, onSubmitted }) {
   const { isSignedIn, emailConfirmed } = useAuth();
   const { toast } = useToast();
+  const g = useG();
   const [role, setRole] = useState('student');
   // A review in progress survives a reload (per school, per tab).
   const [body, setBody, clearBody] = useDraft(`snm.draft.review.${schoolId}.body`, '');
@@ -121,13 +123,13 @@ function ReviewForm({ schoolId, onSubmitted }) {
         <div className="sd-form-field-label">Jak to tu je</div>
         <textarea
           className="sd-textarea"
-          placeholder="Napiš, co bys sám chtěl vědět, než sis školu vybral…"
+          placeholder={`Napiš, co bys ${g('sám', 'sama')} ${g('chtěl', 'chtěla')} vědět, než sis školu ${g('vybral', 'vybrala')}…`}
           value={body}
           onChange={(e) => setBody(e.target.value)}
           maxLength={2000}
         />
         <p className="sd-form-hint">
-          Piš jen o tom, co sám znáš. Nepiš jména učitelů ani spolužáků. Takové
+          Piš jen o tom, co osobně znáš. Nepiš jména učitelů ani spolužáků. Takové
           recenze automaticky pozdržíme.
         </p>
       </div>

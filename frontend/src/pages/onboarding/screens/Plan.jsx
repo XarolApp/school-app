@@ -11,6 +11,7 @@ import {
   trialFreeLabel,
 } from '../../../config/pricing';
 import { useOnboarding } from '../useOnboarding';
+import { useG } from '../../../lib/gender';
 import ParentPayHandoff from '../../../components/ParentPayHandoff';
 import { Icon, PayCta, PayStepChrome } from './paywallKit';
 
@@ -177,6 +178,7 @@ function PlanCard({ plan, selected, onSelect, voice, savings }) {
 
 function Plan() {
   const { role, goBack, goNext, goToStep, planId, setPlanId } = useOnboarding();
+  const g = useG();
   const parent = role === 'parent';
   const voice = parent ? 'parent' : 'student';
   const plan = getPlan(planId);
@@ -221,7 +223,7 @@ function Plan() {
                   <p key={t.lead} className="ob-pw-plan-line">
                     <Ico size={17} className="ob-pw-ic is-ok" />
                     <span>
-                      <strong>{t.lead}</strong> {t.rest}
+                      <strong>{t.icon === 'shield' && !parent ? g('První školu jsi viděl zdarma.', 'První školu jsi viděla zdarma.') : t.lead}</strong> {t.rest}
                     </span>
                   </p>
                 );

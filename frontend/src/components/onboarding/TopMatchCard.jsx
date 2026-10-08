@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { explain } from '../../lib/matching';
+import { useOnboarding } from '../../pages/onboarding/useOnboarding';
 
 /**
  * The user's own #1 result, compact — used as the desktop side panel on the
@@ -10,9 +11,10 @@ import { explain } from '../../lib/matching';
  * Band + named reasons only, never a percentage, same as the reveal.
  */
 export default function TopMatchCard({ result, answers, role, label, footer }) {
+  const { gender } = useOnboarding();
   const reasons = useMemo(
-    () => (result ? explain(result, answers, role || 'student').slice(0, 3) : []),
-    [result, answers, role],
+    () => (result ? explain(result, answers, role || 'student', gender).slice(0, 3) : []),
+    [result, answers, role, gender],
   );
   if (!result) return null;
   return (

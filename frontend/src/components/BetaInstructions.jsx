@@ -6,6 +6,7 @@ import BetaEnrollment from './BetaEnrollment';
 import { saveBetaProfile } from '../api';
 import { betaEnrollmentComplete } from '../lib/betaEnrollment';
 import { useDraft } from '../lib/useDraft';
+import { genderedCopy, useGender } from '../lib/gender';
 
 const SUPPORT_EMAIL = 'info@stredninamiru.cz';
 // Sharing with a parent/child is switched off during beta (see UNFORGET), so it
@@ -44,8 +45,8 @@ export function BetaProgress({ checklist = {}, onNavigate }) {
 
 // Every block of guidance, worded once for both voices and shared by the
 // first-run steps and the one-screen reference behind the "?" button.
-function guidance(parent, hours) {
-  const t = (student, adult) => (parent ? adult : student);
+function guidance(parent, hours, gender) {
+  const t = (student, adult) => (parent ? adult : genderedCopy(student, gender));
   const mail = <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>;
   return {
     want: <>
@@ -103,10 +104,11 @@ function Enrollment({ beta, onRefresh }) {
 export default function BetaInstructions({ beta, hours = 48, onDone, onRefresh, busy, reference = false }) {
   // Kept per tab: a reload on step 3 must not send the tester back to step 1.
   const [step, setStep, clearStep] = useDraft('snm.beta.guide.step', 0);
+  const gender = useGender();
   const parent = beta?.role === 'rodic' || beta?.role === 'ucitel';
   if (!beta) return <p role="status">Načítám testování…</p>;
   if (!beta.consent_tracking_at) return <Enrollment beta={beta} onRefresh={onRefresh} />;
-  const g = guidance(parent, hours);
+  const g = guidance(parent, hours, gender);
   const done = doneCount(beta.checklist);
   const checklist = <section className="beta-guide-section beta-guide-checklist" aria-labelledby="beta-guide-try">
     <div className="beta-guide-section-head">

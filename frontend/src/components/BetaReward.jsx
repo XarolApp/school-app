@@ -4,6 +4,7 @@ import { Check, Star, X } from 'lucide-react';
 import { submitBetaMicro } from '../api';
 import { betaTracker } from '../lib/betaTrack';
 import { doneCount, tasks } from './BetaInstructions';
+import { genderedCopy, useGender } from '../lib/gender';
 
 // One ten-second question set per checklist feature. Rating 1–5 plus one or two
 // chip questions; the note is optional. Answers are feedback but never renew
@@ -49,10 +50,11 @@ const ON_PAGE = {
 
 /** The ten-second form. Used in the reward pop-up and inline (paywall preview end). */
 export function QuickFeedback({ id, parent = false, onDone, title }) {
+  const gender = useGender();
   const spec = QUICK[id];
   const [rating, setRating] = useState(0), [picked, setPicked] = useState({}), [follow, setFollow] = useState({}), [note, setNote] = useState('');
   const [busy, setBusy] = useState(false), [error, setError] = useState(''), [sent, setSent] = useState(false);
-  const t = (student, adult) => (parent ? adult : student);
+  const t = (student, adult) => (parent ? adult : genderedCopy(student, gender));
   const answers = spec.chips
     .map((_, i) => (picked[i] ? (follow[i]?.trim() ? `${picked[i]}: ${follow[i].trim()}` : picked[i]) : null))
     .filter(Boolean);
@@ -108,6 +110,7 @@ export function QuickFeedback({ id, parent = false, onDone, title }) {
  * the page they were using, so it never interrupts the feature itself.
  */
 export default function BetaReward({ beta, enabled, onRefresh }) {
+  const gender = useGender();
   const location = useLocation();
   const previous = useRef(null);
   const [queue, setQueue] = useState([]);
@@ -157,7 +160,7 @@ export default function BetaReward({ beta, enabled, onRefresh }) {
       <span className="beta-reward-check" aria-hidden="true"><Check size={22} strokeWidth={3} /></span>
       <div>
         <p className="beta-reward-eyebrow">Vyzkoušeno</p>
-        <p className="beta-reward-title">{current.id === 'tema' ? (parent ? 'Změnili jste barvu' : 'Změnil(a) jsi barvu') : label}</p>
+        <p className="beta-reward-title">{current.id === 'tema' ? (parent ? 'Změnili jste barvu' : genderedCopy('Změnil(a) jsi barvu', gender)) : label}</p>
       </div>
     </div>
     <div className="beta-reward-progress">

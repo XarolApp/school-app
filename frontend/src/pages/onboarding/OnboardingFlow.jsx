@@ -10,7 +10,7 @@ import { OnboardingContext } from './useOnboarding';
 import { PHASES, STEPS, stepIndexById } from './steps';
 import { DEFAULT_PLAN_ID } from '../../config/pricing';
 import { cleanAnswers, initialAnswers, QUESTIONS } from './quizQuestions';
-import { ROLE_KEY, ANSWERS_KEY } from '../../lib/onboardingStorage';
+import { ROLE_KEY, ANSWERS_KEY, readGenderPreference, writeGenderPreference } from '../../lib/onboardingStorage';
 export { ROLE_KEY, ANSWERS_KEY };
 import './onboarding.css';
 
@@ -77,6 +77,7 @@ function OnboardingFlow() {
     Boolean(profile);
 
   const [role, setRoleState] = useState(loadRole);
+  const [gender, setGenderState] = useState(readGenderPreference);
   const [ownerHandoff, setOwnerHandoff] = useState(loadOwnerHandoff);
   const [ownerHandoffStatus, setOwnerHandoffStatus] = useState('loading');
   const [ownerHandoffError, setOwnerHandoffError] = useState(null);
@@ -226,6 +227,12 @@ function OnboardingFlow() {
     }
   }, []);
 
+  const setGender = useCallback((next) => {
+    const value = next === 'm' || next === 'f' || next === 'u' ? next : null;
+    setGenderState(value);
+    writeGenderPreference(value);
+  }, []);
+
   const setAnswer = useCallback((key, value) => {
     track('ob_answer', { key, skipped: value == null || value === '' || Array.isArray(value) && !value.length });
     setAnswers((prev) => ({ ...prev, [key]: value }));
@@ -363,6 +370,8 @@ function OnboardingFlow() {
     () => ({
       role,
       setRole,
+      gender,
+      setGender,
       answers,
       cleanedAnswers: cleaned,
       setAnswer,
@@ -398,6 +407,8 @@ function OnboardingFlow() {
     [
       role,
       setRole,
+      gender,
+      setGender,
       answers,
       cleaned,
       setAnswer,

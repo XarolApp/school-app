@@ -2707,6 +2707,39 @@
 .ob-fork-card:hover .ob-fork-go,
 .ob-fork-card:focus-visible .ob-fork-go { color: var(--acc); transform: translateX(4px); }
 .ob-fork-card:active { transform: scale(0.99); }
+.ob-fork-card.is-selected { border-color: var(--acc); background: var(--acc-soft); }
+
+.ob-gender-reveal {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  pointer-events: none;
+  transition: grid-template-rows 220ms ease, opacity 220ms ease;
+}
+.ob-gender-reveal.is-open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  pointer-events: auto;
+}
+.ob-gender-inner { min-height: 0; overflow: hidden; display: grid; gap: var(--space-sm); }
+.ob-gender-fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+.ob-gender-fieldset legend { margin-bottom: var(--space-sm); color: var(--text-h); font-size: 16px; font-weight: 600; }
+.ob-gender-options { display: flex; flex-wrap: wrap; gap: var(--space-sm); }
+.ob-gender-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: var(--space-sm);
+  border: 1px solid var(--line);
+  border-radius: var(--r-option);
+  background: var(--surface);
+  color: var(--text-h);
+  cursor: pointer;
+}
+.ob-gender-option.is-selected { border-color: var(--acc); background: var(--acc-soft); }
+.ob-gender-option input { accent-color: var(--acc); }
+.ob-gender-caption { margin: var(--space-sm) 0 0; color: var(--ink3); font-size: 13px; line-height: 1.45; }
 
 /* Voice preview (desktop panel on the role screen). */
 .ob-voice { width: 100%; max-width: 420px; display: grid; gap: 16px; }
@@ -2834,7 +2867,8 @@
   .ob-mp-n,
   .ob-split-aside--showcase > * { animation: none !important; }
   .ob-mp-chip,
-  .ob-mp-bar span { transition: none; }
+  .ob-mp-bar span,
+  .ob-gender-reveal { transition: none; }
 }
 
 /* --- district question: the map is the control, the list a compact index --- */

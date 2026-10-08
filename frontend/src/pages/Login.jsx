@@ -6,8 +6,10 @@ import PasswordInput from '../components/PasswordInput';
 import { getRememberMe } from '../supabaseClient';
 import { normalizeBetaCode } from '../lib/pendingBetaCode';
 import { captchaProblem, emailProblem, focusFirstInvalid, onlyProblems, passwordProblem } from '../lib/authValidation';
+import { useG } from '../lib/gender';
 
 function Login() {
+  const g = useG();
   const [form, setForm] = useState({ email: '', password: '' });
   const [remember, setRemember] = useState(getRememberMe);
   const [error, setError] = useState(null);
@@ -122,8 +124,8 @@ function Login() {
                 the same beta account, and the invitation never upgrades a
                 regular account. */}
             {betaCode
-              ? 'Přihlas se e-mailem, se kterým sis zakládal(a) beta účet. Testování pak pokračuje tam, kde jsi skončil(a).'
-              : 'Přihlas se ke svému účtu a pokračuj tam, kde jsi skončil.'}
+              ? `Přihlas se e-mailem, se kterým sis ${g('zakládal', 'zakládala')} beta účet. Testování pak pokračuje tam, kde jsi ${g('skončil', 'skončila')}.`
+              : `Přihlas se ke svému účtu a pokračuj tam, kde jsi ${g('skončil', 'skončila')}.`}
           </p>
         </div>
 

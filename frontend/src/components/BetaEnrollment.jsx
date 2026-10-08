@@ -27,7 +27,6 @@ export default function BetaEnrollment({ role, roleNote = '', accepted, onRole, 
       <input type="checkbox" checked={accepted} onChange={(e) => onAccepted(e.target.checked)} aria-invalid={showErrors && !accepted} />
       <span>Rozumím tomu, co při beta testování zaznamenáváte.</span>
     </label>
-    {showErrors && !accepted && <span className="field-error" role="alert">{parent ? 'Potvrďte prosím, že jste si text přečetli.' : 'Potvrď prosím, že sis text přečetl(a).'}</span>}
+    {showErrors && !accepted && <span className="field-error" role="alert">{parent ? 'Potvrďte prosím, že jste si text přečetli.' : 'Potvrď prosím přečtení textu.'}</span>}
   </div>;
 }
-

@@ -289,7 +289,7 @@ export function countCandidates(schools, answers, role = 'student') {
  * the SAME structured `result` object. The bands and every number must keep
  * coming from the math above - Claude never computes or restates a score.
  */
-export function explain(result, answers, role = 'student') {
+export function explain(result, answers, role = 'student', gender = 'm') {
   const formal = role === 'parent';
   const out = [];
   const f = result.features;
@@ -319,7 +319,7 @@ export function explain(result, answers, role = 'student') {
     out.push(
       formal
         ? 'Škola leží v části Prahy, kam jste ochotni dojíždět.'
-        : 'Je v části Prahy, kam jsi ochotný/á jezdit.'
+        : `Je v části Prahy, kam jsi ${gender === 'f' ? 'ochotná' : 'ochotný'} jezdit.`
     );
   }
 
@@ -343,7 +343,7 @@ export function explain(result, answers, role = 'student') {
     out.push(
       formal
         ? 'Část otázek zůstala bez odpovědi, proto je toto doporučení orientační. Na přesnosti to neubírá tam, kde jsme data měli.'
-        : 'Pár otázek jsi přeskočil, tak to zatím ber orientačně. Nic se neděje — doplnit je můžeš kdykoli.'
+        : `Pár otázek jsi ${gender === 'f' ? 'přeskočila' : 'přeskočil'}, tak to zatím ber orientačně. Nic se neděje — doplnit je můžeš kdykoli.`
     );
   }
 
@@ -365,7 +365,7 @@ export function explain(result, answers, role = 'student') {
  * person answering. Components the user skipped are absent from `parts`
  * entirely and therefore silently produce no line — a skip is not a trade-off.
  */
-export function tradeoffs(result, role = 'student') {
+export function tradeoffs(result, role = 'student', gender = 'm') {
   const formal = role === 'parent';
   const out = [];
   const p = result.parts;
@@ -381,14 +381,14 @@ export function tradeoffs(result, role = 'student') {
     out.push(
       formal
         ? 'Typ školy je jiný, než jaký jste uvedli jako preferovaný.'
-        : 'Typ školy není přesně ten, který jsi vybral.'
+        : `Typ školy není přesně ten, který jsi ${gender === 'f' ? 'vybrala' : 'vybral'}.`
     );
   }
   if (p.location && !p.location.hit) {
     out.push(
       formal
         ? 'Leží mimo části Prahy, které jste označili — dojíždění bude delší.'
-        : 'Je mimo části Prahy, které jsi vybral — dojíždět budeš dýl.'
+        : `Je mimo části Prahy, které jsi ${gender === 'f' ? 'vybrala' : 'vybral'} — dojíždět budeš dýl.`
     );
   }
   if (p.language && !p.language.hit && result.features.language === false) {
@@ -402,7 +402,7 @@ export function tradeoffs(result, role = 'student') {
     out.push(
       formal
         ? 'Poměr praxe a teorie neodpovídá tomu, co jste označili.'
-        : 'Poměr praxe a teorie není přesně ten, cos chtěl.'
+        : `Poměr praxe a teorie není přesně ten, cos ${gender === 'f' ? 'chtěla' : 'chtěl'}.`
     );
   }
 

@@ -35,6 +35,7 @@
  */
 
 import { FOCUS_CATEGORIES } from '../../lib/schoolFeatures';
+import { genderedCopy } from '../../lib/gender';
 
 /** Shared "no answer" option. Its reassurance is deliberately the same warmth
  *  as every other option's — an unanswered item widens the confidence interval
@@ -479,7 +480,7 @@ export const QUESTIONS = [
     panelLabel: 'Očekávané zlepšení',
     student: {
       title: 'O kolik bodů se do ostrých přijímaček zlepšíš?',
-      hint: 'Použije se jen když jsi zadal(a) body. Buď k sobě upřímný — přestřelený odhad ti doporučí školy, kam se nedostaneš.',
+      hint: 'Použije se jen když jsi zadal(a) body. Buď k sobě upřímný/á — přestřelený odhad ti doporučí školy, kam se nedostaneš.',
     },
     parent: {
       title: 'O kolik bodů se dítě podle vás do ostrých přijímaček zlepší?',
@@ -545,8 +546,13 @@ export function optionLabel(option, role) {
 }
 
 /** Question copy for the active role. */
-export function questionCopy(question, role) {
-  return role === 'parent' ? question.parent : question.student;
+export function questionCopy(question, role, gender = 'm') {
+  const copy = role === 'parent' ? question.parent : question.student;
+  if (role === 'parent' || !copy) return copy;
+  return Object.fromEntries(Object.entries(copy).map(([key, value]) => [
+    key,
+    typeof value === 'string' ? genderedCopy(value, gender) : value,
+  ]));
 }
 
 /** Options for the active role — parent always gets a "Nevím jistě" escape. */
@@ -568,9 +574,12 @@ export function questionOptions(question, role) {
  * Returns null when nothing is selected — an empty green card under an
  * untouched question would be mirroring an answer the user has not given.
  */
-export function reassuranceFor(question, value, role) {
+export function reassuranceFor(question, value, role, gender = 'm') {
   const voice = role === 'parent' ? 'parent' : 'student';
-  const pick = (copy) => (typeof copy === 'string' ? copy : copy?.[voice]) || null;
+  const pick = (copy) => {
+    const text = (typeof copy === 'string' ? copy : copy?.[voice]) || null;
+    return role === 'parent' || !text ? text : genderedCopy(text, gender);
+  };
 
   if (Array.isArray(value)) {
     if (!value.length) return null;

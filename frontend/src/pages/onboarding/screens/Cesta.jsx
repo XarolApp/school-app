@@ -1,5 +1,6 @@
 import { ObScreen } from '../../../components/onboarding/ObKit';
 import { useOnboarding } from '../useOnboarding';
+import { useG } from '../../../lib/gender';
 import { Icon, PayCta, PayStepChrome } from './paywallKit';
 
 /**
@@ -117,6 +118,7 @@ function Mark({ m }) {
 
 function Cesta() {
   const { role, goNext, goBack } = useOnboarding();
+  const g = useG();
   const parent = role === 'parent';
 
   return (
@@ -129,7 +131,7 @@ function Cesta() {
           <h1 className="ob-title ob-pw-title">
             {parent
               ? 'Rozhodování trvá do února. Nejste v tom sami.'
-              : 'Rozhodování trvá do února. Nejsi v tom sám.'}
+              : `Rozhodování trvá do února. Nejsi v tom ${g('sám', 'sama')}.`}
           </h1>
           <p className="ob-lead">
             Tohle je celá cesta od dneška k odeslané přihlášce — a kde u toho budeme.

@@ -99,6 +99,10 @@ alter table public.users add column if not exists cancel_at_period_end boolean n
 -- Plan 014 (user-selectable colour themes): account defaults are Značka/system.
 alter table public.users add column if not exists theme_palette text not null default 'znacka';
 alter table public.users add column if not exists theme_mode text not null default 'system';
+alter table public.users add column if not exists gender text;
+alter table public.users drop constraint if exists users_gender_check;
+alter table public.users add constraint users_gender_check
+  check (gender is null or gender in ('m', 'f'));
 alter table public.users drop constraint if exists users_theme_palette_check;
 alter table public.users add constraint users_theme_palette_check
   check (theme_palette in ('znacka', 'smrk', 'zvyraznovac', 'terakota'));

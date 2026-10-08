@@ -400,7 +400,7 @@ async function closingStateFor(userId) {
 async function accessStateFor(userId, email) {
   const { data: profile, error } = await supabase
     .from('users')
-    .select('trial_expires_at, subscription_status, access_expires_at, tester_access_until, tester_school_code, created_at')
+    .select('trial_expires_at, subscription_status, access_expires_at, tester_access_until, tester_school_code, created_at, gender')
     .eq('id', userId)
     .single();
 
@@ -640,7 +640,7 @@ app.get('/test-db', async (req, res) => {
 const PROFILE_COLUMNS =
   'id, email, name, created_at, trial_expires_at, subscription_status, ' +
   'stripe_subscription_id, access_expires_at, plan_id, season_charge_due_at, cancel_at_period_end, ' +
-  'plan_started_at, last_paid_at, theme_palette, theme_mode, tester_school_code, ' +
+  'plan_started_at, last_paid_at, theme_palette, theme_mode, gender, tester_school_code, ' +
   'tester_access_until, tester_guidance_seen_at';
 
 // 14 days is the statutory minimum for everyone (§1829). Extended to 30 here
@@ -751,7 +751,7 @@ app.get('/api/me', requireAuth, async (req, res) => {
   });
 });
 
-// Only a user's name and appearance preferences are self-editable. Billing
+// Only a user's name, appearance and form-of-address preferences are self-editable. Billing
 // fields decide whether they have paid, so they remain writable only by the
 // Stripe webhook and signup trigger. Accepting `req.body` wholesale here would
 // hand out the product for free, which is also why RLS grants no browser UPDATE.
@@ -761,8 +761,9 @@ app.patch('/api/me', requireAuth, async (req, res) => {
   const hasName = Object.hasOwn(body, 'name');
   const hasPalette = Object.hasOwn(body, 'theme_palette');
   const hasMode = Object.hasOwn(body, 'theme_mode');
+  const hasGender = Object.hasOwn(body, 'gender');
 
-  if (!hasName && !hasPalette && !hasMode) {
+  if (!hasName && !hasPalette && !hasMode && !hasGender) {
     return res.status(400).json({ error: 'Není co uložit.' });
   }
 
@@ -792,11 +793,18 @@ app.patch('/api/me', requireAuth, async (req, res) => {
     update.theme_mode = body.theme_mode;
   }
 
+  if (hasGender) {
+    if (body.gender !== null && !['m', 'f'].includes(body.gender)) {
+      return res.status(400).json({ error: 'Neplatný způsob oslovení.' });
+    }
+    update.gender = body.gender;
+  }
+
   const { data, error } = await supabase
     .from('users')
     .update(update)
     .eq('id', req.user.id)
-    .select('id, name, theme_palette, theme_mode')
+    .select('id, name, theme_palette, theme_mode, gender')
     .single();
 
   if (error) return res.status(500).json({ error: error.message });
@@ -2468,6 +2476,7 @@ app.post(
         apiKey: OPENROUTER_API_KEY,
         model: OPENROUTER_MODEL,
         referer: FRONTEND_URL,
+        gender: req.profile?.gender === 'f' ? 'f' : 'm',
         onUsage: async (outcome) => {
           aiUsageId = await logAiUsage(supabase, {
             ...outcome, source: 'questionnaire', model: OPENROUTER_MODEL, userId: req.user.id,
@@ -2607,6 +2616,7 @@ app.post(
         apiKey: OPENROUTER_API_KEY,
         model: OPENROUTER_MODEL,
         referer: FRONTEND_URL,
+        gender: req.profile?.gender === 'f' ? 'f' : 'm',
         onUsage: (outcome) => logAiUsage(supabase, {
           ...outcome,
           source: 'explain',
