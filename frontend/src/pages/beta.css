@@ -269,3 +269,15 @@ dialog.ss-dialog.beta-modal-reference { max-width: 960px; }
 .beta-quick-chip { display:inline-flex; align-items:center; gap:6px; }
 .beta-quick .beta-quick-chip[aria-pressed="true"] { background:var(--acc); color:var(--acc-ink); border-color:var(--acc); }
 .beta-quick-hint { margin:0; color:var(--ink2); font-size:var(--fs-caption); }
+
+/* Selected state for every option box in the beta flows (closing questionnaire,
+   enrolment, rating buttons): filled, accent border, and a checkmark, so
+   "chosen" never depends on a tiny native radio or on colour alone. */
+.beta-role-option { position: relative; transition: background-color .12s, border-color .12s; }
+.beta-role-option:has(input:checked) { border-color: var(--acc); background: var(--acc-soft); box-shadow: inset 0 0 0 1px var(--acc); font-weight: 600; }
+.beta-role-option:has(input:focus-visible) { outline: 2px solid var(--acc); outline-offset: 2px; }
+.beta-role-option input { accent-color: var(--acc); width: 18px; height: 18px; flex: none; }
+.beta-kind-chips .ss-btn[aria-pressed="true"] { background: var(--acc); color: var(--acc-ink); border-color: var(--acc); font-weight: 600; }
+.beta-theme-preview { position: relative; }
+.beta-theme-preview:has(input:checked) { box-shadow: 0 0 0 3px var(--acc); }
+.beta-theme-preview:has(input:checked)::after { content: '✓'; position: absolute; top: 10px; right: 10px; width: 24px; height: 24px; border-radius: 50%; background: var(--acc); color: var(--acc-ink); display: grid; place-items: center; font-size: 14px; font-weight: 700; }
