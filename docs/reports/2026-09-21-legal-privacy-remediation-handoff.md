@@ -1,11 +1,13 @@
 # Legal/privacy remediation handoff — 2026-09-21
 
+> Historical remediation record. Current-state corrections checked 8 October 2026: the payment acknowledgement in section 4 was deliberately removed on 22 September; do not implement its old verification scenario. Fonts are now self-hosted, operator fields are filled, and the published legal-page draft flag is false. A Settings/API withdrawal path exists with a 30-day server window, but payment attribution/race/recovery and durable confirmation defects remain. Supabase authentication email and transactional order/withdrawal email are separate systems. `REFUND_GUARANTEE_DAYS = 0` disables a marketing guarantee, not the contractual/statutory refund rights. Use the [current deployment report and handoff](../../reports/deployment-review-2026-10-07/REPORT.md) for open/resolved status; the historical sections below describe their dated change, not today's implementation requirements.
+
 ## Scope and boundary
 
 This is a code-to-copy remediation record for Claude. It is not legal advice and
 does not certify GDPR, consumer-law, Stripe, or processor-contract compliance.
-The public legal pages remain marked as drafts and need a Czech privacy and
-consumer-law lawyer before publication.
+The legal pages were drafts at this snapshot. Their current draft flag is false;
+that switch is not evidence of Czech privacy/consumer-law approval.
 
 ## Implemented in this change
 

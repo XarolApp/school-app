@@ -34,14 +34,16 @@ Sources: [ČOI – Na co pamatovat v průběhu objednávky](https://coi.gov.cz/f
 ### After the order (§1824)
 - [ ] **Confirmation of the contract on a durable medium** (e-mail with terms/PDF) within reasonable time, at latest when service starts
 
-## Your app — status
+## Your app — source status checked 8 October 2026
 | Item | Status |
 |---|---|
 | Order button "Objednat s povinností platby" | ✅ OK equivalent |
-| Summary (price, charge date, cancel) before button | ✅ |
+| Summary (price, charge date, cancel) before button | Present; completion-time, expiry/year and parent/returning-payer consistency remain to verify. Presence alone is not acceptance. |
 | Error correction (Zpět), Czech language, ADR ČOI | ✅ |
 | Model withdrawal form | ✅ |
-| Seller identity, e-mail, VAT | ❌ `[DOPLNIT]` — launch blocker |
-| VAT consistency | ❌ `Plan.jsx` says "Ceny jsou včetně DPH", terms say "pokud jsme plátci [DOPLNIT]" |
-| Durable-medium confirmation | ❌ no e-mail system; Stripe setup-mode (trial) sends no receipt — check Stripe receipt settings |
-| Link to terms/withdrawal info on the checkout screen | ⚠️ terms accepted at signup only; add a link next to the button |
+| Seller identity, e-mail, VAT | Name/address/contact and non-VAT-payer wording are filled. Verify actual operator, business entitlement, applicable IČO/register details and VAT status manually; no `[DOPLNIT]` finding remains established for these fields. |
+| VAT consistency | Earlier conflicting placeholder wording was removed. Actual operator status still needs confirmation. |
+| Durable-medium confirmation | Supabase authentication mail is configured separately; no reviewed server order/withdrawal outbox sends the contract package. Stripe receipt settings and actual delivery remain to verify. |
+| Terms/withdrawal access and accepted version | Legal pages exist; durable terms-version/order evidence and every payment entry point remain in the payment handoff. |
+
+Free beta in exchange for feedback/personal data is not automatically outside consumer digital-service rules. Have counsel assess the immediate beta scope separately from the later paid launch; do not defer all information/confirmation duties merely because no money is collected.

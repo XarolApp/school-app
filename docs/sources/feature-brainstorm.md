@@ -1,5 +1,12 @@
 # School App — Exhaustive Feature Brainstorm
 
+> **Historical idea catalogue, refreshed 8 October 2026.** Ratings express suggestions,
+> not current implementation, legal requirements or approved scope. Use
+> `docs/skolamatch_current_status.md`, `UNFORGET.md` and the deployment review for
+> present state. Search, matching, decision tools, authentication, feedback and
+> payment paths now exist; their release verification is still incomplete. Current
+> prices are 690 Kč season /249 Kč monthly. Plan 020 is concurrently being implemented.
+
 Every feature idea, organized by category. Rated:
 - 🔥 = high value, build early
 - ✅ = solid, build eventually
@@ -13,14 +20,14 @@ Every feature idea, organized by category. Rated:
 | Feature | Rating | Notes |
 |---|---|---|
 | Text search by school name | 🔥 | Table stakes |
-| Filter by city district (Praha 1-10) | 🔥 | Location is the #1 filter parent/student uses |
+| Filter by city district | 🔥 | Current onboarding uses Praha 1–22 administrative districts; don't confuse them with the older 1–10 numbering. Ranking this as users' #1 filter was an unverified hypothesis. |
 | Filter by program/obor (IT, gymnázium, gastro...) | 🔥 | Second biggest filter |
 | Filter by KKOV code | ✅ | Power users / counselors know these codes |
 | Filter by školné (private vs. state vs. church) | 🔥 | Money is a hard constraint for families |
 | Filter by ukončení studia (maturita / výuční list) | 🔥 | Fundamental fork in the decision |
 | Filter by required entrance exam type | ✅ | JPZ vs. talent exam vs. school-specific |
 | Filter by "doporučený prospěch" (recommended GPA) | 🔥 | Lets students self-filter to realistic options |
-| Filter by acceptance rate / competitiveness | 🔥 | The data you already have (183/30 = 6:1 ratio) |
+| Filter by acceptance rate / competitiveness | 🔥 | Source-year-labelled application/admitted counts exist. Example 183/30 is illustrative (6.1:1), not a universal rate or measured personal admission probability. |
 | Filter by languages taught | ✅ | AJ/NJ/ŠJ/FJ matters to a lot of families |
 | Filter by "has dormitory" (ubytování) | ✅ | Critical for out-of-Prague students |
 | Filter by cafeteria/meal cost (stravování) | 🟡 | Nice detail, low decision weight |
@@ -44,8 +51,8 @@ Every feature idea, organized by category. Rated:
 | Feature | Rating | Notes |
 |---|---|---|
 | AI questionnaire → ranked school matches | 🔥 | Your core MVP feature |
-| **AI priority-order optimizer for DiPSy** | 🔥🔥 | **THE killer feature.** Given 3 chosen schools + your grades + last year's stats, recommend the optimal binding priority order. Nobody does this. |
-| "Chance of admission" calculator | 🔥 | Use applicant/accepted ratios + recommended GPA + your grades |
+| Preference-order support for DiPSy | 🔥 | Help the student clarify genuine preferences. Do not reorder chosen programmes by admission risk to "improve chances": [Cermat's methodology](https://cermat.gov.cz/files/files/Metodika_p%C5%99ij%C3%ADmac%C3%AD_%C5%99%C3%ADzen%C3%AD_od_1.1.2024.pdf) explains why strategic ordering is unnecessary. |
+| Historical admission-risk comparison | 🔥 | Compare documented programme criteria/results with practice scores; aggregate ratios and grades alone do not establish an individual's admission probability. Avoid calibrated-probability claims without validation. |
 | Reach / Target / Safety school categorization | 🔥 | Borrowed from US college apps. Tells students to diversify their 3 picks |
 | AI chat assistant (open-ended Q&A about schools) | ✅ | Post-MVP. Useful but questionnaire is more monetizable |
 | AI school comparison ("compare these 3 for me") | ✅ | Generates a narrative comparison instead of a spec table |
@@ -260,15 +267,15 @@ Every feature idea, organized by category. Rated:
 
 | Feature | Rating | Notes |
 |---|---|---|
-| GDPR-compliant consent flow | 🔥 | **Mandatory.** Czech + EU law, users under 18 |
-| Parental consent for under-15 accounts | 🔥 | GDPR sets the digital-consent age at 16 by default; CZ has set it lower, but you must handle it correctly. **Get this checked by someone qualified before launch** |
-| Data export (right to portability) | 🔥 | Legally required |
-| Account deletion (right to erasure) | 🔥 | Legally required |
+| Lawful, child-appropriate data processing | 🔥 | Map purposes, legal bases, notices and rights. Consent is not automatically the legal basis for all processing. Controller/legal review remains required. |
+| Under-15 consent assessment | 🔥 | Czech digital-consent age is 15 for the GDPR Art. 8 consent-based information-society-service context. This is distinct from contractual capacity and does not make parental consent a universal account rule. Get the actual purposes/flow assessed. |
+| Data export | 🔥 | Endpoint exists; verify completeness and authenticated isolation. Portability's legal scope differs from the broader access right. |
+| Account deletion | 🔥 | Endpoint exists; verify erasure, retention exceptions, related rows and private screenshots. A delete button alone does not prove compliance. |
 | Clear privacy policy in Czech | 🔥 | |
-| Cookie consent banner | 🔥 | |
-| Data minimization (don't collect what you don't need) | 🔥 | Especially grades — sensitive data about minors |
+| Browser-storage consent assessment | 🔥 | Necessary auth/preferences and optional analytics require purpose-specific assessment; no universal banner requirement or exemption. [ÚOOÚ guidance](https://uoou.gov.cz/verejnost/qa-otazky-a-odpovedi/cookies) also covers analogous storage. |
+| Data minimization (don't collect what you don't need) | 🔥 | Grades are personal data in this context; being about a child does not itself make them a GDPR Art. 9 special category. Protect them and assess additional sensitive inferences. |
 | Encrypted storage of grades/personal data | 🔥 | |
-| Row Level Security in Supabase (re-enable before launch!) | 🔥 | **You disabled it for testing. Turn it back on with proper policies** |
+| Supabase RLS and service-only grants | 🔥 | Canonical schema enables RLS on all 26 application tables. Anonymous live probes returned zero rows; authenticated cross-account, RPC and Storage isolation still require verification. Do not describe RLS as disabled or blindly rerun production SQL. |
 | Rate limiting on API | 🔥 | Stops scrapers stealing your database |
 | Email verification | ✅ | |
 | 2FA | 🟡 | Overkill for a school-search app |
@@ -315,11 +322,11 @@ Every feature idea, organized by category. Rated:
 |---|---|
 | Social feed / student network | You're not a social app. Massive moderation burden with minors |
 | Direct messaging between students | Child-safety nightmare. Do not build this |
-| Gamified points/badges/leaderboards | Ranking children by school prestige is toxic and creates anxiety |
-| Native mobile apps (iOS/Android) at MVP | Build a responsive PWA first. App store review + two codebases will eat months |
+| Ranking children by school prestige | Avoid this. Beta feedback rewards/rankings already exist; their privacy and incentive wording need their own review. This old row is not a blanket ban on founder-approved beta mechanics. |
+| Native mobile apps | Historical recommendation to defer; current project strategy intends mobile as a primary launch surface, with framework still undecided. Do not treat this brainstorm as an approved reversal. |
 | Full CRM for schools | Scope creep into a different product |
 | Expanding to universities (VŠ) at MVP | Different market, different competitors. Win 9th graders first |
-| Nationwide coverage at MVP | Prague first. 214 schools is already plenty |
+| Nationwide coverage at MVP | Prague first. The 8 October database has 217 visible schools (223 raw rows); completeness against the official register is still unverified. |
 | Display advertising | Bad UX, negligible revenue, legally messy with minors |
 | Blockchain/crypto anything | No |
 | Your own JPZ test content | Cermat publishes free official papers. Don't rewrite what's free |
@@ -328,11 +335,13 @@ Every feature idea, organized by category. Rated:
 
 ## RECOMMENDED BUILD ORDER
 
-**Phase 1 — MVP (what you're building now)**
+**Historical proposed build order — reconcile with current status before planning**
+
+**Phase 1 — MVP**
 Search + filters, school detail pages, favorites, AI questionnaire, auth.
 
 **Phase 2 — The Differentiator**
-Chance calculator, priority-order optimizer, reach/target/safety categorization,
+Historical risk comparison, genuine-preference ordering support, reach/target/safety categorization,
 deadline countdown + reminders. *This is what makes you better than the incumbents.*
 
 **Phase 3 — Growth**
@@ -354,9 +363,10 @@ You have real competitors (StredniSkoly.com, KamPoMaturite.cz, atlasskolstvi.cz)
 They own SEO and have years of data. You will not beat them on breadth of listings.
 
 You beat them on **the decision**, not the directory:
-- The DiPSy 3-school priority ordering is a genuine strategic problem with real
-  consequences, and nobody solves it well
-- Chance-of-admission math using data that's already public but never combined
+- Programme selection and genuine preference ordering have real consequences;
+  do not sell strategic reordering as an admission advantage
+- Clear historical admission criteria and uncertainty, rather than an unvalidated
+  promise of personal admission probability
 - Modern mobile UX aimed at 15-year-olds, not at their parents' desktop browsers
 
 If you build "another school directory," you lose. If you build "the tool that tells

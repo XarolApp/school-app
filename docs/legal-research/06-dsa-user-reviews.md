@@ -5,7 +5,7 @@
 Source: [DSA on EUR-Lex](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32022R2065)
 
 ## Are you covered?
-Storing reviews = **hosting** (Art. 3(g)(iii)). Publishing them to the public = **online platform** (Art. 3(i)) unless it is a "minor and purely ancillary feature" — reviews are core to school comparison, so assume platform.
+Storing user reviews is a hosting activity to assess under Art. 3(g)(iii). Public dissemination may qualify as an online platform under Art. 3(i), subject to its minor/ancillary-feature exception. This file did not establish that exception's application; counsel should classify the actual review service rather than treating "core to comparison" as a legal finding.
 
 ## Applies regardless of size
 | Article | Duty |
@@ -18,16 +18,16 @@ Storing reviews = **hosting** (Art. 3(g)(iii)). Publishing them to the public = 
 | **Art. 18** | Notify police of suspected crimes threatening life/safety |
 
 ## Exempt as micro/small enterprise
-- **Art. 19**: whole Section 3 (Art. 20–28) — internal complaint system, out-of-court dispute bodies, trusted flaggers, dark patterns (25), ad transparency, **minors protection (28)**.
+- **Art. 19**: eligible micro/small online platforms are excluded from Section 3 **except Art. 24(3)**; the provision has other qualifications, including designated very large platforms. Do not assume size eligibility without checking it. Hosting duties in Articles 16–18 are outside this exclusion.
 - **Art. 15(2)**: transparency reports.
 
 ## Czech enforcement
-- DSC will be **ČTÚ**. — [ČTÚ](https://ctu.gov.cz/digitalni-sluzby-rozcestnik)
-- The implementing **zákon o digitální ekonomice (print 69) is still in 2nd reading** as of 21. 9. 2026 → no Czech fine regime yet; DSA duties apply directly anyway. — [psp.cz print 69](https://www.psp.cz/sqw/historie.sqw?o=10&T=69)
+- Check current competence/enforcement with [ČTÚ](https://ctu.gov.cz/digitalni-sluzby-rozcestnik). Parliament's [print 69 history](https://www.psp.cz/sqw/historie.sqw?o=10&T=69), rechecked 8 October 2026, shows second reading completed and further consideration proposed for the session starting 13 October. That procedural fact alone does not establish immunity, absence of all enforcement powers or the complete current fine regime.
 
-## Your app
-- ❌ **Terms §9**: reason given only "na tvou žádost" → Art. 17 requires it proactively (applies to report-triggered holds **and** auto-held student reviews). Author sees only "čeká na kontrolu".
-- ❌ `POST /api/reviews/:id/report` requires login, captures no reason/URL/contact/good-faith statement, no receipt, no decision notice.
-- ❌ No published authority contact point + languages (Art. 11).
-- ⚠️ Terms don't say that **one report auto-hides** a review (Art. 14 transparency).
-- ✅ Terms state reviews are unverified, automated filter + human pre-check.
+## Current implementation — checked 8 October 2026
+
+- Terms §9 now describes proactive in-app moderation reasons, one-report hiding, and the contact point with Czech/English languages. Those older copy findings are superseded.
+- Reporting supports anonymous notices, a reason and good-faith statement. The earlier login-only/no-reason assessment is superseded. Reporter contact/name and the operational receipt/decision-notification workflow remain incomplete; Terms promises an email decision that the reviewed server does not send.
+- Article 16's name/contact rule has a limited exception for specified child-sexual-abuse offences; preserve it in the approved mechanism. Article 17 reasons and actual author visibility still need end-to-end verification.
+- Plan 020 proposes disabling school reviews during beta. That is a pending implementation task, not evidence the current API is disabled. Re-read the final flag/API/UI behavior after that phase and retain an appropriate contact path.
+- See LEGAL-02 and the [current handoff](../../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md). This note does not certify DSA compliance.

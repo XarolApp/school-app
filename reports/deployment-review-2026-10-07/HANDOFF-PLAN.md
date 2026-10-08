@@ -16,7 +16,7 @@ Trial acceptance: confirmation delayed several days still grants the full normal
 
 ## 1. Repair and verify the beta schema
 
-Owner: database/backend agent. Evidence: `services.json`, B04/B05 and plan 019. Current live tables exist, but `beta_profile.role_note` does not; the endpoint writes that column on ordinary profile submission. Prepare the exact missing migration and inspect the latest signup/profile functions and grants. Do not rerun the entire schema on production merely because the table count looks right.
+Owner: database/backend agent. Evidence: `services-2026-10-08.json`, B04/B05 and plan 019. `beta_profile.role_note` is now present; retire the missing-column diagnosis. Inspect the latest signup/profile functions and grants and prepare only the still-missing reviewed migration. Column presence does not prove the entire current SQL has been applied. Do not rerun the entire schema on production merely because the table count looks right. The observed beta cutoff is now 18 October at 23:59 Europe/Prague; verify the deployed enrollment/gate configuration agrees with plan 020.
 
 In a disposable database, run a fresh installation and at least two reruns. Assert primary/unique/FK/check constraints, trigger definitions, function `EXECUTE` grants and RLS policies, including the repaired `review_reports` PK. Exercise authenticated repeated reports and anonymous notices. Test accounts A/B/anonymous must not read/write each other's private rows, enumerate share/payment records, call service-only RPCs or access private screenshots. Verify account erasure and orphan screenshot cleanup separately.
 
@@ -50,7 +50,7 @@ Acceptance: dated controller decisions and accurate notices; no optional collect
 
 ## 5. Complete beta runtime and service verification
 
-Owner: implementing/review agent with founder for dashboards/devices. Verify production CSP/security headers, deployment site gate, CAPTCHA/Supabase settings and redirects, configured OpenRouter authentication, model identity and error behavior. Local OpenRouter returned 401; deployed state is unknown. Use test accounts and test money only. Do not launch the normal local backend casually against production: it starts scheduled workers.
+Owner: implementing/review agent with founder for dashboards/devices. Verify production CSP/security headers, deployment site gate, CAPTCHA/Supabase settings and redirects, configured OpenRouter generation, model identity and error behavior. Local OpenRouter authentication is now HTTP 200 with a prefixed model identifier; actual generation/provider route and deployed state remain unverified. Use test accounts and test money only. Do not launch the normal local backend casually against production: it starts scheduled workers.
 
 Exercise signup → confirmation on a second device → profile → quiz → saved result → search/detail → comparison/picks/notes → screenshot/text feedback → renewal → cutoff/expiry → account erasure. Include resend, password recovery, blocked storage, interrupted network, refresh/back/forward, keyboard/focus and long Czech text.
 
@@ -76,7 +76,15 @@ Define the statutory versus voluntary 30-day refund promise and renewal/calendar
 
 Acceptance: delayed Checkout completion grants the full promised window; season boundary/year and DST cases agree across UI/server/terms; configured-version Stripe fixtures and real test-mode webhooks work; durable emails arrive for the correct payer; reminder and receipt tests are recorded; legal/operator decisions are dated. Test new direct season payer customer creation/method attachment and parent-link purchase independently.
 
-## 8. Finish documentation and final release review
+## 8. Safeguard maintenance and data refreshes
+
+Owner: data/backend agent. Evidence: [S01–S06](script-findings.md). Before using `reset-test-account.js`, restrict it to an explicitly designated disposable Supabase project/account and reconcile Stripe objects instead of dropping billing references. A test Stripe key alone is not a database-environment boundary. Keep this helper out of production maintenance until its safeguards are verified.
+
+Before any admission refresh, validate workbook headers/year/ranges and stage the complete replacement. Replace programme rows and associated school summaries transactionally, or publish a validated version atomically. Any failed delete/update/insert must fail the run and preserve or restore the old complete dataset. Resolve duplicate REDIZO ownership explicitly and confirm official blank/suppression semantics before mapping unknown counts to zero. Add a database rollback/failure test and a small known-workbook fixture; do not test data-loss handling against production.
+
+Acceptance: reset refuses production/non-disposable identities and cannot strand live billing; failure in the second programme chunk leaves the previous published dataset unchanged; older imports cannot silently replace newer summaries; required-header changes and malformed years fail before writes. Preserve source year/provenance and produce a reconciliation summary with a nonzero exit on partial failure. Website/extraction backfills must condition their writes on unchanged intended source fields and document when dry runs still consume paid provider calls.
+
+## 9. Finish documentation and final release review
 
 Owner: reviewing agent. Read every still-pending authored file in the coverage inventory and all changed diffs; distinguish generated/binary/external reference material explicitly. Update authoritative active docs with verified present facts; label historical plans/research rather than inventing completed migration/testing. Deduplicate Claude/Codex findings and retire resolved items with commit/evidence links. Keep improvement suggestions separate from beta blockers and paid-launch blockers.
 

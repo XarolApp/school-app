@@ -1,14 +1,14 @@
 /**
- * One-off comparison: our 224 Prague schools vs. atlasskolstvi.cz's 214.
+ * Historical one-off comparison: the then-224 database rows vs. Atlas's 214.
+ * These snapshot counts are not the current visible catalogue or a register audit.
  *
  * atlasskolstvi.cz's list was collected manually (its site has no API and no
  * per-school links to scrape reliably) into atlas-prague-schools.json — 214
  * names, paginated ?p=1..11&region=hlm-praha, read directly off the page.
  *
- * Matching reuses the exact same normalize/coreTokens/jaccard logic as
- * scripts/import-admission-data.js, so "is this the same school" is judged
- * identically everywhere in this codebase, not by a second, possibly
- * disagreeing heuristic.
+ * Matching follows the admission importer's token/Jaccard approach, with a
+ * different noise-word list. Review ambiguous matches manually; this heuristic
+ * does not establish that every Prague school is in the catalogue.
  *
  *   node scripts/diff-atlas-schools.js
  */

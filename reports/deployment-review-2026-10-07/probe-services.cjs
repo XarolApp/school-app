@@ -4,6 +4,7 @@ const dotenv = require('../../node_modules/dotenv');
 const env = dotenv.parse(fs.readFileSync('.env'));
 const front = dotenv.parse(fs.readFileSync('frontend/.env'));
 const result = { checkedAt: new Date().toISOString(), supabase: {}, stripe: {} };
+const outputPath = process.argv[2] || 'reports/deployment-review-2026-10-07/services.json';
 
 async function call(url, key, options = {}) {
   try {
@@ -100,6 +101,6 @@ async function call(url, key, options = {}) {
     result.openrouter = { keyStatus: key.status, error: key.error,
       configuredModelHasProviderPrefix: (env.OPENROUTER_MODEL || 'google/gemini-2.5-flash-lite').includes('/') };
   }
-  fs.writeFileSync('reports/deployment-review-2026-10-07/services.json', JSON.stringify(result, null, 2) + '\n');
+  fs.writeFileSync(outputPath, JSON.stringify(result, null, 2) + '\n');
   console.log(JSON.stringify(result, null, 2));
 })().catch((error) => { console.error(error.name); process.exitCode = 1; });

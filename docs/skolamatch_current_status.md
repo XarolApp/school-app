@@ -4,7 +4,7 @@
 >
 > **Founder clarification, 7 October:** ordinary accounts’ three-day access trial must start at first confirmed sign-in (current signup-trigger behavior is still awaiting implementation). Beta is free in exchange for feedback; its payment screens are previews only, without Stripe or a purchase trial.
 >
-> Full file-by-file deployment review is **not finished**. Codex is continuing solo; fixes in `14cce20` are on main. Root tests pass 127/127 and lint/build pass. Live read-only checks confirm 223 raw /217 visible schools, 26 tables, 48-hour beta access and cutoff 12 October at 23:10 Europe/Prague, but `beta_profile.role_note` is missing. Table presence/anonymous zero rows do not verify migration/RLS/grants. Test a disposable fresh-install/rerun before a reviewed live schema update. Real billing remains blocked by payment lifecycle, communication and legal/operator gates. See [current report](../reports/deployment-review-2026-10-07/REPORT.md) and [ordered handoff](../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md); earlier logs below retain their dated evidence and are not current release approval.
+> **8 October service update:** full file-by-file deployment review is **not finished**. Codex is continuing solo. The recorded 127-test/lint/build checks precede subsequent plan 020 edits. Live read-only checks now confirm 223 raw /217 visible schools, 26 tables, 48-hour beta access and cutoff **18 October at 23:59 Europe/Prague**. `beta_profile.role_note` is present and the local OpenRouter key authenticates (HTTP 200). Table/column presence and anonymous zero rows do not verify migrations/RLS/grants; key authentication does not verify generation or deployed credentials. Test a disposable fresh-install/rerun before a reviewed live schema update. Real billing remains blocked by payment lifecycle, communication and legal/operator gates. See [current report](../reports/deployment-review-2026-10-07/REPORT.md) and [ordered handoff](../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md); earlier logs below retain their dated evidence and are not current release approval.
 
 ## Purpose
 
@@ -293,40 +293,28 @@ The product is not publicly launched yet.
 
 ## Database
 
-- **Verified 2026-10-07:** 223 rows in `schools`, **217 shown** (6 are merged
-  duplicates with `merged_into`), 2,374 `school_programs` rows, newest Cermat year
-  2026; every visible school has admission rows (4 only pre-2026).
-- **224 schools now in the database (2026-09-13)** — up from 60. Expanded via
-  `scripts/import-missing-schools.js` (new script), using REDIZO/name/programs
-  already present in the Cermat admission files plus official name+address from
-  MŠMT's public school registry API (isv.gov.cz/rssz — found by inspecting its
-  own search UI's network requests, not scraped/guessed). All 164 new schools
-  geocoded (`scripts/geocode-schools.js`) and matched into `school_programs` /
-  `admission_cutoff` / `acceptance_rate` by re-running
-  `scripts/import-admission-data.js` against the same 3 Cermat files — no new
-  matching logic needed, since the new schools now carry a stored REDIZO.
-  2,372 total `school_programs` rows.
-- Prague target was approximately 214 — **exceeded** (224).
-- **Not from this pass:** `contact` and `website` are null for all 164 new
-  schools — neither Cermat nor the official registry publishes those, and
-  nothing was fabricated to fill them in. Same honest-gap pattern as the school
-  detail page's other placeholders. Getting these needs a different source
-  (school websites directly, or reviving something like the old
-  atlasskolstvi.cz scrape) — not done, not urgent, but worth tracking.
-- Core school-level facts (name, location, programs, admission stats) are now
-  essentially complete for Prague; contact/website remain the real gap.
-- Historical CERMAT data comes from official files.
-- Database should be kept updated.
+Read-only snapshot, **7 October 2026**: 223 raw `schools` rows, **217 visible**
+(six merged duplicates), 2,374 programme rows, programme years 2024–2026. Four
+visible schools have older admission summaries. All 217 have coordinates; this
+does not establish completeness against the official school register or correctness
+of every record. Three-year cutoff coverage is not universal. See
+`reports/deployment-review-2026-10-07/catalogue-quality.json`.
+
+The September expansion from 60 to 224 was a historical import, not today's visible
+count. Contact/website and extracted-data coverage have changed since that import;
+do not reuse its "all 164 missing" assessment without a new query. Keep provenance,
+source year and unknown values explicit. The import/update pipeline itself is under
+review; do not rerun destructive importers against production during the audit.
 
 ## Questionnaire
 
-- Roughly 75% complete.
-- Core mathematical matching logic exists.
-- Results generate.
-- Approximately 10 questions currently.
-- Typical completion: 3–5 minutes, potentially under 2.
-- More questions may be added.
-- AI explanation prompt/output needs improvement.
+Source snapshot, **8 October 2026**: standalone `QUESTIONS` contains 31 definitions;
+the onboarding flow has 11 question slots, with conditional visibility. These are
+separate engines. Completion times and overall percentages below are historical
+founder estimates, not measured acceptance evidence. Core deterministic scoring and
+stored results exist; cross-surface consistency, AI quality and final runtime
+verification remain in the deployment handoff. Plan 020's model/prompt/explanation
+changes are being implemented in another process and need independent review.
 
 ## Matching
 
@@ -334,7 +322,7 @@ The founder currently wants **percentage-based matching**.
 
 Do not replace percentages with broad categories without a strong reason.
 
-Reason: with ~214 schools, broad labels could produce huge groups that all look identical. Percentages preserve ranking differentiation, e.g. 98% vs 83%.
+Reason: with a catalogue of hundreds of schools, broad labels could produce huge groups that all look identical. Percentages preserve ranking differentiation, e.g. 98% vs 83%.
 
 Matching itself should remain mathematically driven.
 
@@ -342,44 +330,20 @@ AI should explain the ranking, not secretly determine it.
 
 ## AI
 
-Currently implemented/planned:
-
-- AI explanation of why schools fit the student
-- AI comparison
-- DiPSy/application guidance
-
-DiPSy is approximately 25% complete.
+A model writes explanation sentences for the standalone questionnaire; scoring is
+JavaScript. Comparison/matrix and application guidance are implemented as deterministic
+product tools, not established AI comparison services. Prompt/model improvements and
+on-demand detail explanations are in plan 020; verify the final implementation and
+provider route before reporting them complete. The old "DiPSy 25%" estimate is not a
+current measured readiness metric.
 
 ## Remaining known work
 
-Potential remaining work includes:
-
-- remaining Prague school scraping
-- data enrichment
-- open-day information
-- questionnaire questions
-- AI prompt improvements
-- AI explanation quality
-- DiPSy improvements
-- deadline countdown
-- application timeline
-- email/push reminders
-- visual assets
-- product demo video/animation
-- signup/account system
-- security review
-- deployment/hosting
-- privacy policy
-- cookie handling
-- Stripe
-- authentication emails
-- parent/child logic
-- analytics
-- beta testing system
-- QA
-- launch polish
-
-This list is **not** the priority order. Apply P0–P4.
+Use the current deployment handoff and UNFORGET for open work. Signup, authentication,
+legal pages, deployment, beta instrumentation and Stripe code now exist; listing them
+as wholly unbuilt would be stale. Their end-to-end, security, privacy and operational
+acceptance is not complete. Distinguish no-charge beta gates from paid-launch gates
+and optional product improvements. This is not the priority order; apply P0–P4.
 
 ---
 
@@ -427,14 +391,7 @@ Validate using:
 
 # 14. Affiliate Model
 
-Current working test:
-
-- Base price: ~699 Kč
-- Creator referral discount: ~50 Kč
-- Referred customer: ~649 Kč
-- Starting creator commission: ~30% of actual amount paid
-
-This should be treated as a test, not an eternal rule.
+Historical, unapproved economics example: 699 Kč base, 50 Kč discount, 649 Kč net and 30% creator commission. The actual season price is now 690 Kč; no implemented affiliate offer or approved replacement economics was established by the review. Recalculate and approve a concrete offer before publishing those example amounts.
 
 Referral attribution should persist through:
 - link click
@@ -635,203 +592,93 @@ Founder is willing to learn and execute faceless TikTok/content marketing.
 
 Update this section whenever new information is confirmed.
 
-> **2026-10-07 pre-beta review (Claude Code + Codex in parallel):** tests 126/126,
-> build and lint clean, RLS verified live on all 26 tables, Stripe on test keys.
-> Fixed and pushed: review reports (500 for signed-in users), Google Fonts vs privacy
-> policy, Stripe webhook API-version bug (monthly renewals wrote "paid forever"),
-> auth-callback deadlock, vulnerable deps, false onboarding/paywall claims, many
-> Czech wording bugs. **Before testers:** re-run the whole `supabase-setup.sql`, set
-> the real beta end date, add school codes, replace the expired OpenRouter key,
-> upgrade Railway before its trial ends (~2026-10-13). Full list:
-> `reports/claude-review-2026-10-07/REPORT.md`.
+## Project and product — verified review checkpoint, 8 October 2026
 
-## Project
-
-- Phase: **Development / pre-beta**
-- Public launch: **No**
-- First city: **Prague**
-- Future expansion: **Brno, Plzeň, Ostrava, other major Czech cities**
-
-## Product
-
-- Overall: **~75%**
-- Database: **~75%**
-- Questionnaire: **~80%** — standalone questionnaire (`lib/questionnaire.js`)
-  now has a real page (`/dotaznik`, 2026-09-12), where before the backend
-  existed with no UI wired to it at all. Onboarding quiz (separate engine)
-  unchanged.
-- Matching / decision tools: rozhodovací matice (`/porovnani/matice`) got
-  hover explainers on every criterion, a plain-language "Jak to funguje?"
-  panel, and a confirm-guard so the match-score criterion can't be
-  accidentally de-prioritized (2026-09-12). **Not yet human-reviewed** — see
-  `UNFORGET.md`'s "Rozhodovací matice needs a real human review pass".
-- AI: **partial**
-- DiPSy: **~25%**
-- Stripe: **95%** — payment code implemented and tested; remaining tasks are
-  refund logic Codex review, withdrawal testing in test mode, monthly plan
-  `cancel_at` bound (medium effort, medium urgency). See UNFORGET.md items 3-4.
-- Accounts/authentication: **partial** — a real bug was found and fixed
-  2026-09-12: the `questionnaire_runs.source` column (added by plan 008's
-  migration) had never actually been applied to the live database, so every
-  authenticated call to `/api/questionnaire` (and the onboarding-answers save
-  route) was silently 500ing. Migration is applied now; **the onboarding
-  flush itself (stash → confirmed sign-in → saved row) still hasn't been
-  watched succeed end to end on a real account** — do that before trusting
-  match_score population from onboarding signups.
-- School beta program: **implementation built, rollout pending** — focused API
-  boundary and middleware tests pass. Plan 019 steps 2–12 are implemented
-  (2026-10-05): feedback, beta-only tracking, closing questionnaire/reviews,
-  full rankings and nine admin tabs/CSV. 121 tests and local phone/desktop
-  browser verification pass with synthetic services. Founder reports applying
-  previous SQL (count 5); updated whole SQL with beta_rankings and live
-  transaction/Storage checks remain pending. The program is closed until the founder
-  supplies a cutoff date/time; the optional external feedback URL is also pending.
-  No testers have been enrolled through this implementation.
-- Parent/child: **not finished**
-- Legal pages (Privacy + Terms): **published** (`DRAFT = false`, operator Václav
-  Kadlec, Brevo named). Open (2026-10-07 reviews): operator IČO/registration before
-  paid launch, durable order/withdrawal confirmations, beta-analytics consent
-  assessment, review notice-and-action workflow — see Codex
-  `reports/deployment-review-2026-10-07/legal-docs-findings.md` and the Claude report.
-- Analytics: **beta implementation complete, rollout pending** — 2026-10-05,
-  first-party beta-only events, full rankings and private /admin reports.
-  Normal users send zero events by design. SQL/configuration, live Supabase
-  checks and independent continuation review remain; see plan 019 completion report.
-- Security review: **not finished**
-- Deployment: **done** — live as of 2026-09-13. Backend on Railway
-  (`https://school-app-production-be43.up.railway.app`, EU West, Node 22+ —
-  had to bump from the initial `>=20` engines constraint since
-  `@supabase/realtime-js` needs native WebSocket, only present in Node 22+).
-  Frontend on Vercel — now served at **https://www.stredninamiru.cz** (apex
-  redirects; gated by `SITE_ACCESS_KEY`), originally `https://school-app-xarolapp.vercel.app`. Supabase
-  Auth redirect URLs updated to include the Vercel domain. Cloudflare
-  Turnstile widget's allowed-hostnames list updated to include the Vercel
-  domain (was localhost-only, silently failed on production until fixed).
-  Full smoke test passed on the live site 2026-09-13: signup, email
-  confirmation, sign-in, `/dotaznik`, `/skoly`, school detail, `/porovnani/matice`.
-  **Still open:** Railway is on a 30-day trial ($4.99 credit) — must upgrade
-  to a paid plan before ~2026-10-13 or the backend goes offline entirely, see
-  `UNFORGET.md`.
-- Privacy/cookies: **not finalized**
-- Reminders/timeline/countdown: **not finished**
-- Visual assets/demo video: **not finished**
-- **New gap found 2026-09-12** (not in the original 75% estimate): no surface
-  lets a student express wanting a *selective* school (hard to get into, so
-  classmates are more likely to be there on merit) as a distinct, opposite
-  preference from "maximize my admission chance." Every current scoring
-  engine and filter treats lower cutoff / higher acceptance rate as
-  universally better. Full writeup in `UNFORGET.md`.
+- Phase: development / restricted no-charge beta preparation. Deployment exists;
+  release acceptance is incomplete. First city remains Prague.
+- Percentage estimates such as "75% product" or "95% payments/legal" are historical
+  guesses. They must not replace the concrete open gates in the deployment report.
+- Catalogue: 217 visible schools in the dated 7 October read-only snapshot above.
+- Matching/questionnaires: implemented, with consistency and input/projection findings
+  still open. The matrix and comparison are being changed under plan 020; review the
+  final diffs and UI before calling them accepted.
+- Stripe: test mode was verified on 7 October. Real billing remains blocked by
+  duplicate-purchase, charge/cancel race, stale event, recovery/refund and communication
+  findings. This is architectural work, not just a key swap or remaining 5%.
+- Accounts/authentication: signup, confirmation, recovery and onboarding flush exist.
+  New 8 October form/draft/confirmation changes require re-review and runtime checks.
+  Ordinary trial start at first confirmed sign-in is an approved, pending change.
+- Beta: free for feedback; paywall preview cannot require payment or create a purchase
+  trial. Instrumentation, feedback/closing/admin and access windows exist. Latest SQL,
+  authenticated isolation, Storage lifecycle, child/privacy decisions and complete
+  enrollment/feedback/expiry acceptance remain to verify. A live profile row or event
+  is not proof a real external tester completed the journey.
+- Plan 020 records a single shared site/enrollment code. Its phases are in progress
+  in another process. The live cutoff was rechecked on **8 October: 18 October at
+  23:59 Europe/Prague**, with 48-hour rolling access. `beta_profile.role_note` is
+  present. Recheck the final deployed enrollment/gate configuration before inviting
+  testers. These observations do not establish completed migrations or grant safety.
+- Legal pages: published (`DRAFT = false`). Operator name/address, non-VAT wording and
+  Brevo are filled. Business entitlement/IČO applicability, vendors/DPAs, optional
+  analytics storage, moderation, durable confirmations and minor-contract/refund
+  decisions remain open. Publication does not mean legal approval.
+- Deployment: frontend Vercel (`www.stredninamiru.cz`), backend Railway. The new
+  single-code frontend gate has source/tests; actual production gate, redirects,
+  headers, CAPTCHA and provider configuration still need final verification. Check
+  Railway billing/availability in the dashboard; the earlier trial-expiry estimate
+  around 13 October is not a verified current billing state.
+- Analytics: beta-only first-party implementation exists; normal-user acquisition
+  attribution/funnel analytics is not automatically implemented by beta tracking.
+- Parent sharing, application tools and saved schools exist. Payment-link management,
+  synchronization and final device acceptance remain under review.
+- Native mobile application is not built. Browser viewport checks do not establish
+  real iOS Safari/Android compatibility.
 
 ## Marketing
 
-- Paying customers: **0**
-- Revenue: **0 Kč**
-- Beta testers: **0 confirmed strangers at last update**
-- Creators: **0**
-- Affiliate system: **not implemented**
-- Parent outreach: **not started**
-- School outreach: **not started**
-- Tutoring outreach: **not started**
-- TikTok: **not established**
-- Instagram: **not established**
-- Email list: **0**
+No fresh verified acquisition/revenue metrics were supplied during this review.
+Earlier records reported zero paying customers/creator partnerships and no established
+social audience. Treat those as dated last-known values, not a new live measurement.
+A school-cohort rollout is now being prepared; confirm actual participants/outreach
+with the founder before giving acquisition advice.
 
-## Codex Audit Status
+## Codex audit status
 
-### Deep Audit (MANDATORY GATE BEFORE BETA TESTING)
+- Deep audit: **in progress**, begun 7 October; continuing solo, no new subagents.
+- Complete file-by-file read and final changed-file review: **not complete**.
+- Findings: payment lifecycle, beta/schema/access, matching, data-loss, privacy,
+  moderation, service and mobile readability issues are documented. Zero remaining
+  critical/high findings has **not** been established.
+- Recorded 127-test/lint/build results are dated snapshots, not verification of later
+  plan 020 changes. Run final checks against a stable reviewed tree.
+- Beta gate: **not cleared**. Use the concrete acceptance gates in the
+  [report](../reports/deployment-review-2026-10-07/REPORT.md) and
+  [handoff](../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md).
+- Public-launch regression review: pending after beta and resolution of paid gates.
 
-- Status: **not started**
-- Scheduled after: Day 6 of Week 1 (fake-user testing complete)
-- Prerequisite: P0 launch blockers resolved
-- Date completed: —
-- Major findings: —
-- Critical-severity findings: **0 remaining**
-- High-severity findings: **0 remaining**
-- Medium-severity findings: none documented yet
-- Claude fixes completed: —
-- Codex verification complete: **No**
-- Beta entry gate status: **BLOCKED** (audit not started)
+## Current blockers and decisions
 
-### Pre-Launch Regression Review (MANDATORY GATE BEFORE PUBLIC LAUNCH)
+- Prices are settled: 690 Kč season, 249 Kč monthly; season is first/default, with
+  three-day deferred charging, monthly charges immediately. Do not reopen them from
+  old placeholder checklists.
+- First confirmed sign-in starts the ordinary-account access trial: approved,
+  implementation/migration pending. Beta feedback windows are separate.
+- Email confirmation is implemented and historically tested; current cross-browser,
+  resend, second-device and recovery behavior still needs final acceptance.
+- AI prompt/provider identity and real output need review. The local credential now
+  authenticates (HTTP 200, 8 October) and the configured identifier has a provider
+  prefix. Generation, provider route and deployed credentials remain unverified.
+- Matching consistency, premium access matrix and transaction-safe application picks
+  are unresolved review work. Public landing-map school detail remains intentional.
+- Payment checkbox removal is deliberate; no current parental payment checkpoint
+  should be assumed from old docs. Minor contracting/evidence remains a counsel task.
+- Data coverage is partial and purpose-specific. Maturita, tuition, meals and clubs
+  have extraction/import paths; the old all-zero table is obsolete. Use a current
+  aggregate query and source review before claiming a value or universal coverage.
 
-- Status: **not started**
-- Scheduled after: Week 3 beta period complete
-- Date completed: —
-- New vulnerabilities found: none yet
-- Deep audit fixes still in place: unknown (audit not done)
-- Codex verification complete: **No**
-- Public launch gate status: **BLOCKED** (post-beta review not started)
-
-## UNFORGET Integration Status
-
-Tracking the resolution of half-done items and blockers from `UNFORGET.md` before the Codex audit can begin.
-
-### Blocker 1 — Pricing Decisions
-
-- Status: **not finalized**
-- Required decisions:
-  - [ ] Season pass price (placeholder: 690 Kč)
-  - [ ] Monthly price (placeholder: 249 Kč)
-  - [ ] Trial length locked at 3 days
-  - [ ] Plan display order (Season first or Monthly first?)
-  - [ ] Refund window (EU baseline: 14 days)
-- Impact: **Blocks real Stripe integration**
-- Target completion: before Codex deep audit
-
-### Blocker 2 — Email Confirmation Flow
-
-- Status: **resolved** — corrected 2026-09-12. This was verified live, not
-  just read in code: signed up with a real test account
-  (`vojtech.kadlec@montetrida.cz`), the confirmation link worked, and
-  `ProtectedRoute` correctly blocked every protected route with a "Potvrď
-  svůj e-mail" notice until it was clicked — matching `requireAuth`'s
-  server-side rejection of unconfirmed tokens (403 `EMAIL_NOT_CONFIRMED`).
-  Sign-in after confirming worked and triggered plan 008's flush correctly.
-  Whatever broke this originally appears to have been fixed since this entry
-  was written; leaving the old text below struck through rather than
-  deleting, since we don't know which prior session fixed it.
-- ~~Issue: `CreateAccount.jsx` skips email-check wait~~
-- ~~Solution options: Option A (redirect to next onboarding step) or Option B (re-add gate before real payment)~~
-- Impact: no longer blocks Stripe go-live on this front
-- Target completion: done
-
-### Blocker 3 — AI Prompt Human Tuning
-
-- Status: **not started**
-- Requires:
-  - [ ] Read real output from `lib/questionnaire.js` SYSTEM_PROMPT (5+ schools minimum)
-  - [ ] Approve or rewrite prompt based on human review
-  - [ ] Read generated Czech from `scripts/generate-school-proscons.js` (5+ schools)
-  - [ ] Validate tone for 15-year-old audience
-- Impact: **AI-generated text reaches users unvetted** — needs one review pass before beta
-- Target completion: before Codex deep audit
-
-### Blocker 4 — School Suggestions Fix
-
-- Status: **flagged as needing work** (user noted this in prior context)
-- Impact: **P0 if affecting matching accuracy**
-- Target completion: before Codex deep audit
-
-### Legal / Compliance Blockers
-
-- Paywall contract capacity review: **mostly resolved** (Czech law favors minors 15+, but flag for lawyer review before Stripe)
-- Parental confirmation screen: **exists in onboarding flow**
-- Target completion: legal review before Stripe go-live
-
-### Data Gaps (Lower Priority, Not Blocking Launch)
-
-These exist but are not strikers before beta:
-
-| Data | Current | Gap | Impact |
-|---|---|---|---|
-| Maturita pass rates | 0% | Unknown source | P3 feature |
-| VŠ placement | 0% | Unknown source | P3 feature |
-| Employment outcomes | 0% | Unknown source | P3 feature |
-| Tuition (private schools) | 0% | Manual scrape needed | P3 feature |
-| Meals/accommodation | 0% | Unknown source | P3 feature |
-| Clubs/activities | 0% | Cermat lacks this | P3 feature |
-| Landing page photo | missing | Photo shoot needed | P2 conversion |
-| Ambient animation | missing | Design asset | P3 delight |
+The dated Day 1/Day 2 tables and logs below are historical snapshots, not current
+release recommendations. Their older counts, architecture and completion percentages
+are superseded by this checkpoint and the current audit.
 
 ### Day 1 P0 Audit (launch plan §12 "DAY 1 — Launch Audit + Critical Path")
 
@@ -854,16 +701,16 @@ Run 2026-09-12 against the real codebase, not assumed from the roadmap.
 | Are basic legal/privacy requirements handled? | **95% done** | Privacy + Terms pages built in `Legal.jsx`; remaining: operator facts, SMTP for confirmation e-mails, DPA collection, withdrawal testing |
 | Are emails working? | **Yes, for auth** | Confirmation + reset emails verified working live this session. No other transactional emails (e.g. the mandatory day-2 trial reminder from CLAUDE.md's pricing section) exist yet |
 
-**Net result (updated 2026-09-23):** the product itself (signup → questionnaire → matching →
+**Historical net result (2026-09-23; superseded by the October checkpoint):** the product itself (signup → questionnaire → matching →
 school browsing) is further along than initial assessment. **Payment and legal pages are now
 95% done**, leaving only final operational tasks (SMTP, DPA collection, test-mode verification, operator facts).
 **Beta analytics is implemented (2026-10-05).** Before beta rollout, apply the
-updated whole SQL, configure server-only admin/ticket settings and program dates,
+reviewed incremental SQL migration after disposable fresh-install/rerun checks, configure server-only admin/ticket settings and program dates,
 and complete live Supabase/Storage verification and independent review. Normal
 user tracking remains intentionally disabled. See
 `reports/beta-implementation-completion-2026-10-05.md`.
 
-### Gate Status (updated 2026-09-23)
+### Historical gate assessment (2026-09-23; superseded)
 
 **Can Codex audit start?**
 - [x] Pricing finalized and locked
@@ -874,7 +721,7 @@ user tracking remains intentionally disabled. See
 - [ ] AI prompts human-tuned
 - [ ] School suggestions verified working
 
-**Status: MOSTLY UNBLOCKED** — only analytics and AI tuning remain before Codex audit. Legal/payment final tasks are operational, not architectural.
+**Historical assessment withdrawn:** the October audit is already in progress and found architectural payment and other release gates. Do not use the old "mostly unblocked" assessment or its requirement to finish analytics before auditing.
 
 ---
 

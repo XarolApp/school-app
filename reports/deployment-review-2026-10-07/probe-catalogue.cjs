@@ -3,6 +3,7 @@
 const fs = require('node:fs');
 const dotenv = require('../../node_modules/dotenv');
 const env = dotenv.parse(fs.readFileSync('.env'));
+const outputPath = process.argv[2] || 'reports/deployment-review-2026-10-07/catalogue-quality.json';
 
 (async () => {
   const { groupProgramsByObor, summarizeAdmission, CURRENT_ADMISSION_YEAR } = await import('../../frontend/src/lib/schoolPrograms.js');
@@ -35,6 +36,6 @@ const env = dotenv.parse(fs.readFileSync('.env'));
     cardsWithAtLeastThreeCutoffYears: programmes.filter(entry => cutoffYears(entry) >= 3).length,
     limitation: 'Catalogue data only; this does not establish completeness against the official register, source accuracy or school-site freshness.',
   };
-  fs.writeFileSync('reports/deployment-review-2026-10-07/catalogue-quality.json', JSON.stringify(report, null, 2) + '\n');
+  fs.writeFileSync(outputPath, JSON.stringify(report, null, 2) + '\n');
   console.log(JSON.stringify(report, null, 2));
 })().catch(error => { console.error(error.name, error.message); process.exitCode = 1; });

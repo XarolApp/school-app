@@ -26,6 +26,9 @@ Up to **5 000 000 Kč** under the Consumer Protection Act (zákon 634/1992 Sb.),
 ## Small-business exemption
 **None.** The directive only asks Member States to "take into account" SME needs when transposing.
 
-## Your app (school-app)
-- No withdrawal UI exists; Terms §6 only says "napiš na e-mail". **Build before 1. 1. 2027:** button in Nastavení → form (name, account e-mail, plan) → "Potvrdit odstoupení" → automatic confirmation e-mail with timestamp → cancel subscription + trigger refund.
-- Requires an e-mail sending system (you have none yet — see file 05).
+## Current implementation — checked 8 October 2026
+
+- Settings already has a two-step withdrawal UI, and `POST /api/withdraw` implements cancellation/refunds. Terms §6 describes the button. The older "no UI" assessment is superseded.
+- The server returns a timestamp but has no durable withdrawal acknowledgement/outbox. Existing website-submission acknowledgement duties must be assessed separately from the new mandatory button's commencement; January 2027 is not a blanket permission to omit receipts today.
+- Cancellation/refund retry, purchase attribution and pending refunds remain open engineering findings; an implemented button does not establish an operationally complete withdrawal process. See [current handoff](../../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md), sections 6–7.
+- MF's September announcement and Parliament's publication history were rechecked on 8 October. The ministry confirms the 1 January 2027 commencement and scope beyond financial services. The enacted effective-date article itself still requires checking in the official Collection; the e-Sbírka page exposed no readable statute text to this review.

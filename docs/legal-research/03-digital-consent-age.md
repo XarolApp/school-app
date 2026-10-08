@@ -13,12 +13,15 @@ EDPB Guidelines 05/2020 on consent (endorsed by ÚOOÚ as EDPB member):
 - It does **not affect national contract law** on validity of contracts with a child.
 - Source: [EDPB Guidelines 05/2020 (CS)](https://edpb.europa.eu/sites/edpb/files/files/file1/edpb_guidelines_202005_consent_cs.pdf)
 
-Your privacy policy bases all processing on contract, legitimate interest or legal obligation → **§7 largely doesn't apply to you.** The real issue is contract capacity (file 02).
+The listed legal basis must be assessed per purpose. A contract/legitimate-interest label does not automatically validate children's processing or settle device-storage consent. Optional testimonial publication and any consent-based analytics require separate assessment; contract capacity is also separate (file 02).
 
 ## "Reasonable efforts" to verify parental consent
 - EDPB: **risk-based / proportionate**. For low-risk processing, **e-mailing the parent for confirmation** is given as an adequate example. Avoid collecting excessive data just to verify.
 - **ÚOOÚ**: I found **no ÚOOÚ-specific guidance** defining "přiměřené úsilí" for this situation.
 
-## Your app
-- Privacy §5 tells under-15s to get parental "souhlas" to processing — contradicts your own legal bases. Either state the basis is contract + explain the parent-involvement approach, or (worse) switch to consent.
-- Signup checkbox "Je mi alespoň 15 let, nebo mám souhlas rodiče…" – fine as a UX gate, not as verification.
+## Current implementation — checked 8 October 2026
+
+- Privacy §5 now describes contractual processing and account creation together with a guardian for under-15s. The older contradiction finding is superseded.
+- Signup remains self-declaration, not age or guardian verification. Its wording is not proof that the contract or all processing has a valid basis.
+- Beta analytics is described as legitimate interest; a separate assessment of optional local/session-storage identifiers remains open. See [storage research](07-cookies-localstorage.md) and LEGAL-01 in the current deployment review.
+- Keep optional publication consent separate from required testing feedback. Under-15 publication/authorization, children's balancing and DPIA screening remain controller/counsel decisions.
