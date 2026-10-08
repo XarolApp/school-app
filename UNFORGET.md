@@ -53,20 +53,20 @@ explicitly "log only":
 - **Urgency:** P0 items block the beta; the rest are ranked in the report
 - **Release/context:** [`reports/claude-review-2026-10-07/REPORT.md`](reports/claude-review-2026-10-07/REPORT.md) (findings + manual checks) and [`HANDOFF-PLAN.md`](reports/claude-review-2026-10-07/HANDOFF-PLAN.md) (tasks for the next agent); Codex's parallel review is in `reports/deployment-review-2026-10-07/`
 
-Founder-only items before testers (details and SQL in the report):
-- [ ] Verify a fresh/repeated SQL installation in a disposable database, then apply the reviewed schema update (live DB lacks `beta_profile.role_note`, so `POST /api/beta/profile` fails for every tester).
-- [ ] Set the real beta end date — the live `ends_at` (2026-10-12 21:10 UTC) is a leftover test value (founder confirmed 2026-10-07).
-- [ ] Add the real school codes to `beta_schools` (only `TEST` exists).
-- [ ] Repair the local OpenRouter authentication failure (401) and verify Railway credentials independently; validate the local model identifier against the provider catalogue (it currently lacks a provider prefix).
+Founder-only items before testers (refreshed with read-only evidence from 8 October; details in the current Codex report):
+- [ ] Verify a fresh installation and repeat execution in a disposable database, compare deployed functions/grants with the intended schema, then apply only the reviewed missing migration. All 26 application tables and `beta_profile.role_note` were present on 8 October; that does not prove `capture_beta_profile()` or the complete enrollment flow works.
+- [ ] Confirm the intended beta end date. The live cutoff is now **18 October 2026 at 23:59 Europe/Prague** (`2026-10-18T21:59:00Z`), with 48-hour rolling access; the earlier 12 October test value is superseded.
+- [ ] Confirm invitation coverage for every intended school. Two invitation codes were present on 8 October, and the production shared-code entry displayed ZŠ Jesenicova and the updated deadline. This entry check does not prove signup/confirmation/feedback renewal.
+- [ ] Verify Railway OpenRouter credentials and one controlled generation independently. Local authentication returned 200 on 8 October and the configured provider-prefixed model was present in the catalogue; the previous local 401/prefix finding is superseded. This does not prove generation, cost attribution or deployed credentials.
 - [ ] Railway: `NODE_ENV=production` and a real `BETA_TICKET_SECRET`; Supabase redirect allowlist must include `/email-overen*`, `/prihlaseni*`, `/nove-heslo` on the www domain.
 
 ## Paid vs free gating — founder decision 2026-10-07, not implemented
 - **Found:** 2026-10-07 review (landing/FAQ copy and App.jsx routes disagreed)
-- **Urgency:** high before public/paid launch; not a beta blocker (testers have full access)
+- **Urgency:** high before public/paid launch; invited beta testers must retain free full tools and pass a separate zero-Stripe acceptance test
 - **Risk of NOT fixing:** copy promises free things that should be paid (and vice versa); after the 3-day trial a normal account keeps the whole database, comparison and matrix for free.
 - **Effort:** medium (routes + server gating + all copy) — task T1 in the handoff plan
 
-Decision: only the landing page and the onboarding (with its result preview and its map) are free. The founder clarified in Codex that school details opened from landing-map dots remain public. Premium tools — `/skoly`, `/porovnani`, the matrix, `/dotaznik`, `/prihlaska`, favourites — need valid trial, paid or beta access. Auth/legal pages, account management and scoped share/parent links must retain the access needed for their function. Today `/skoly`, `/skoly/:id`, `/porovnani`, `/porovnani/matice` are public and `GET /api/schools*` is ungated (onboarding needs it — gate per route/shape, not wholesale). All copy that says "databáze škol zdarma" (landing2 FAQ + pricing, Home.jsx, SignUp.jsx, Settings, paywall UNLOCKS) must change in the same release.
+Decision: only the landing page and the onboarding (with its result preview and its map) are free. The founder clarified in Codex that school details opened from landing-map dots remain public. Premium tools — `/skoly`, `/porovnani`, the matrix, `/dotaznik`, `/prihlaska`, favourites — need valid trial, paid or beta access. Auth/legal pages, account management and scoped share/parent links must retain the access needed for their function. Current routes expose `/skoly`, `/skoly/:id`, `/porovnani`, `/porovnani/matice` publicly; a production anonymous `GET /api/schools` returned the 217-school rich catalogue on 8 October. Preserve public detail/onboarding needs with an explicit endpoint/data-shape access matrix, rather than gating school reads wholesale. All copy that says "databáze škol zdarma" (landing2 FAQ + pricing, Home.jsx, SignUp.jsx, Settings, paywall UNLOCKS) must change in the same release.
 
 ## Normal trial clock and beta preview — founder decision 2026-10-07
 - **Found:** 2026-10-07, founder clarification during the deployment review.
@@ -83,20 +83,33 @@ Start the ordinary three-day access trial at the first confirmed sign-in. Curren
 - **Effort:** multiple focused tasks; see the report and handoff as they are completed.
 - **Release/context:** `reports/deployment-review-2026-10-07/REPORT.md`, backend/frontend/legal findings and coverage ledgers.
 
-Fix commit `14cce20` is pushed: optional quiz score validation/keyboard behavior, feedback privacy masks/redaction, corrected admission dates, unknown programme facts, language explanations, share headings and malformed telemetry validation. The root tests passed 127/127; frontend lint/build passed. No live charges, mail, schema changes or production data writes were performed.
+Fix commit `14cce20` is pushed: optional quiz score validation/keyboard behavior, feedback privacy masks/redaction, corrected admission dates, unknown programme facts, language explanations, share headings and malformed telemetry validation. At that checkpoint the root tests passed 127/127 and frontend lint/build passed; these are dated results, not validation of all later concurrent commits. No live charges, mail, schema changes or production data writes were performed.
 
-Read-only confirmation: 217 visible schools from 223 raw rows; all 26 tables present but `beta_profile.role_note` missing; beta cutoff 12 October 2026 at 23:10 Prague; anonymous zero-row smoke tests and private screenshot bucket passed; configured OpenRouter key rejected (401); Stripe remains test mode. These do not prove authenticated isolation or mail delivery. Backend B01–03/B06–08 and payment P01–08 remain, subject to current-source revalidation. LEGAL-06's initial 14-day implementation claim was retracted: code actually grants 30 days, so the extended promise needs clarification rather than a presumed statutory-breach fix.
+Read-only refresh on **8 October**: 217 visible schools from 223 raw rows; all 26 application tables and `beta_profile.role_note` present; beta cutoff 18 October at 23:59 Prague with 48-hour rolling access and two school codes; local OpenRouter authentication returned 200 with a provider-prefixed catalogue model. Stripe remains in test mode. Anonymous zero-row smoke tests and the private screenshot bucket check do not prove authenticated cross-account isolation, RPC definitions/grants, mail delivery or a successful tester journey. See `services-2026-10-08.json`, `production-http-2026-10-08.json` and `production-api-2026-10-08.json` in the report folder. Backend B01–03/B06–08 and payment P01–08 remain, subject to current-source revalidation. LEGAL-06's initial 14-day implementation claim was retracted: code actually grants 30 days, so the extended promise needs clarification rather than a presumed statutory-breach fix.
 
 New beta integration gate: `SchoolMap.jsx` invites a home address and directly calls public Nominatim. The provider limits aggregate application traffic to 1 request/second and prohibits submitting personal data. Choose an approved provider/input policy before a classroom cohort; legal text already names OSMF, so the issue is operational/privacy suitability, not a missing recipient name. Additional current findings and acceptance tests are in `reports/deployment-review-2026-10-07/continuation-findings.md` and the handoff (account-scoped search state, mixed-year comparison, feedback draft context and missing map pins).
 
 New browser beta gate: the landing hero scales the whole UI to fit. At 667×375, its paragraph renders at about 6.5px and its CTA is 25px high. Use a readable scrolling layout, then verify short/landscape windows and zoom (C09). Provide keyboard/non-WebGL access to public map-dot school details (C10). The normal trial clock decision is logged above. Concurrent auth/beta/matching/schema edits are being deferred and must be re-reviewed; earlier coverage/build evidence is not final validation of those new versions.
+
+## Continuing deployment review — newly deferred work, 8–9 October 2026
+- **Found:** current-source review, synthetic browser checks and read-only service probes; full coverage is still in progress.
+- **Urgency:** shortlist/draft integrity before beta; deployment headers before exposure; payment and maintenance gates before their respective use.
+- **Risk of NOT fixing:** failed reads can erase saved picks, shared-browser drafts can cross account boundaries, and operational batch/reset failures can lose data or strand billing.
+- **Effort:** focused tasks with ownership checks; see the linked findings and acceptance tests.
+
+- **C12:** define and verify compatible production security headers; the shared-code gate had HSTS but lacked explicit CSP, framing, MIME, referrer and permissions policies. Check authenticated caching separately.
+- **C13–C15:** distinguish failed picks loads from an empty list before replacement writes; re-key private drafts and parent-link requests by account/token; reject stale responses. Phase 6 changes must be re-reviewed before treating earlier source snapshots as current.
+- **S01–S13:** harden account-reset, admission import, cache/extraction scope and partial-failure behavior before reuse; align pros/cons generation with the visible school projection and source years. Extraction and Google diagnostic bugs were fixed in `06c704c` and `86be63a`, but existing stored canteen candidates still need source review. Dry runs can make paid model calls and write usage accounting; corrected wording does not make them side-effect free.
+- **Production/operator checks:** verify Railway billing continuity and dashboard configuration, support-inbox access, authenticated RLS/RPC/Storage isolation, real phone/browser confirmation, feedback renewal and the optional beta paywall preview with zero Stripe calls.
+
+Details: [continuation findings](reports/deployment-review-2026-10-07/continuation-findings.md), [maintenance findings](reports/deployment-review-2026-10-07/script-findings.md) and [handoff plan](reports/deployment-review-2026-10-07/HANDOFF-PLAN.md). These remain open; presence in this ledger is not approval to change product/legal policy without the resolved founder decisions.
 
 ## Church schools: tuition shown as unknown — review the extracted data
 - **Found:** 2026-10-07 review; founder decision the same day
 - **Urgency:** medium
 - **Effort:** small–medium
 
-The comparison table now shows "Zjistit u školy" for církevní schools and the decision matrix gives them no tuition score (they used to be "Placená škola" / scored as paid, while `lib/matching.js` treated them as free). The founder believes `school_extracted_details` has tuition text for each church school — check `tuition_czk_per_year` / `skolne_poplatky` for every `zrizovatel` "církevní" school, then use the real value in `comparisonRows.js`, `decisionMatrix.js` and `lib/matching.js` `isPaid()` consistently.
+The comparison table shows "Zjistit u školy" when a církevní school lacks a supported tuition classification. The matrix binary public/private tuition criterion leaves that classification unknown; its separate tuition-amount criterion can use a known extracted amount. Earlier code classified church schools as paid while backend `lib/matching.js` treated them as free. The founder believes `school_extracted_details` has tuition text for each church school — check `tuition_czk_per_year` / `skolne_poplatky` for every `zrizovatel` "církevní" school, then use the real value in `comparisonRows.js`, `decisionMatrix.js` and `lib/matching.js` `isPaid()` consistently.
 
 ## Plan 019: SQL reapplication and live rollout checks — 2026-10-05
 - **Found:** 2026-10-05, continuing the approved beta feedback/analytics plan.
@@ -116,17 +129,20 @@ were checked at 390px and desktop using synthetic local services: normal account
 0 event requests/rows, Stripe 0 calls, all 39 CSV exports pass. SQL logic
 assertions and mocked API tests do not verify PostgreSQL/Storage transactions.
 
-Founder confirmed applying the previous whole SQL and receiving table count 5
-on 2026-10-05. This is user-reported verification of table presence. Phase A
-changes the SQL functions/repair/cleanup; phase B adds beta_rankings, so the
-WHOLE updated supabase-setup.sql must be applied again before rollout.
+Historical checkpoint: the founder reported applying the then-current SQL and
+a five-table count on 5 October. Read-only checks on 8 October found all 26
+application tables, including `beta_rankings`; neither count verifies current
+functions, grants, constraints or isolation. Do not blindly reapply the whole
+file to production. Verify a fresh installation and repeat execution in a
+disposable database, inspect the deployed definitions, and prepare a reviewed
+migration containing only the missing changes.
 
-Still pending: apply updated whole SQL, verify beta_rankings + all six private
-tables' RLS/no policies + service-only function grants + NULL/past closing
-deadlines; real signup metadata/confirmation and private signed Storage
-upload/read/cleanup; configure ADMIN_EMAILS, production BETA_TICKET_SECRET,
-cutoff/school codes and SMTP; independent review of continuation; legal check
-before publicly using under-15 reviews. Preserve beta's original exclusive
+Still pending: verify beta_rankings + all six private tables' RLS/no client
+policies + service-only function grants + NULL/past closing deadlines; real
+signup metadata/confirmation and private signed Storage upload/read/cleanup;
+verify ADMIN_EMAILS, production BETA_TICKET_SECRET, intended cutoff/school
+codes and SMTP; independent review of continuation; legal check before
+publicly using under-15 reviews. Preserve beta's original exclusive
 rolling/cutoff access and zero Stripe calls. The Matching conflict is resolved.
 Review handoff and exact SQL queries:
 `reports/beta-implementation-completion-2026-10-05.md`.
@@ -204,17 +220,20 @@ Body: `frontend/src/lib/matching.js` already scores per obor (best obor wins), s
 2. **Single-obor lycea sink.** 188 Waldorfské lyceum (bottom 10 in 34 %), 203 Naše lyceum (24 %), 37 Kombinované lyceum (24 %, while it is #1 in `/dotaznik`). Check how `deriveFeatures` (`frontend/src/lib/schoolFeatures.js`) types a lyceum and which focus it derives; likely it gets neither the gymnázium nor the odborná credit.
 3. **Single-obor gymnázia low** (113 Mensa, 148 ARCUS, 127 Trojské, 144/140/114 state gymnázia): check the general-academic credit (`f.general && academic → 0.35`) against the per-obor scores of specialised schools.
 4. The simulation feeds the onboarding scorer the newest year's rows only (`latestYearOnly`), not server.js's merged `slimProgramsForList`; confirm this does not change features before trusting the numbers.
-5. Answers are uniformly random, so this shows structural bias only; re-check against real beta results.
+5. The report used synthetic answers, and the current simulation uses biased random-comparator sampling for multi-select choices. Its figures are exploratory, not a calibrated fairness benchmark or evidence of real student preferences. An equal ~4.6% top-ten share is a reference calculation, not an expected correct outcome. Re-run against the current server projection with a reproducible sampler and inspect real consented beta results before changing weights.
 
 ## Beta round 3 — apply SQL, then re-check the checklist live — 2026-10-08
 
 - **Root cause of "Co vyzkoušet never ticks":** the live `record_beta_events`
   failed on every signed-in batch (`42P01 missing FROM-clause entry for table
   "record_beta_events"` — the variable was qualified with the function name).
-  Zero signed-in events had ever been stored. The local preview fakes this RPC in
-  JS, which is why it looked fine there. Fixed in `supabase-setup.sql`; the
-  founder must run the round-3 SQL, then tick one item with a tester account
-  and confirm a `beta_events` row with a `user_id` appears.
+  The round-3 investigation reported no signed-in events at that checkpoint.
+  The local preview fakes this RPC in JS, which is why it looked fine there.
+  A source fix is in `supabase-setup.sql`; current live event counts alone do
+  not establish whether the deployed function is fixed. Inspect its deployed
+  definition and apply a reviewed missing migration after disposable-database
+  verification, then tick one item with a tester account and confirm a
+  `beta_events` row with that tester's `user_id` appears.
 - Same SQL: `submit_beta_micro` is now the 10-second quick rating per feature;
   it stores feedback but **does not renew access**. Also adds
   `decision_profile.jpz_expected_gain`.
@@ -252,7 +271,7 @@ percentages, "X škol", trial days) actually makes sense and matches reality.
 - **Effort:** small
 - **Release/context:** `supabase-setup.sql` (`beta_feedback_kind_check`, `submit_beta_feedback_details`), `BetaFeedbackSheet.jsx`, `ConfirmEmailWaiting.jsx`, `AuthContext.jsx`, `/ulozene`
 
-- [ ] Run the two statements (constraint + `submit_beta_feedback_details()`) from `supabase-setup.sql` before deploying. Without them "Nepřehledné" feedback returns "Zpětnou vazbu se nepodařilo uložit".
+- [ ] Inspect the deployed feedback-kind constraint and `submit_beta_feedback_details()` against the current intended schema. The old constraint rejected "Nepřehledné" feedback; apply any missing changes through a reviewed, disposable-database-verified migration, then submit that kind with a real tester account.
 - [ ] Set `RESEND_COOLDOWN_SECONDS` in `frontend/src/lib/pendingConfirmation.js` to Supabase's **Minimum interval per user** (Authentication → Emails → SMTP Settings). It is 60 s here because that is Supabase's default; the founder has not confirmed the live value.
 - [ ] Real tester, real phone: (a) confirmation link opened on a phone while the sign-up tab is on a laptop (cross-device cannot auto-continue, so "Pokračovat v tomto okně" must work); (b) drag-to-mark on a touch screen (`touch-action: none` overlay) and the html2canvas capture on iOS Safari; (c) after finishing the questionnaire the "Dotazník" box ticks within a few seconds; (d) tab-away and back no longer closes the first-run guide or wipes a half-filled questionnaire.
 - [ ] The "checklist does not tick" report could not be reproduced with a real tester account. Causes fixed: profile refreshes switched `profileLoading` on (tracker dropped events, pages unmounted) and the checklist was only re-read every 60 s. If it still fails live, look in `beta_events` for the tester's `q_finish` rows first.
@@ -263,7 +282,7 @@ percentages, "X škol", trial days) actually makes sense and matches reality.
 - **Found:** 2026-10-07, founder decision
 - **Urgency:** low
 - **Effort:** medium (needs real data first)
-- **Release/context:** `lib/questionnaire.js` (`zacatek`, removed from `BASE_QUESTIONS` and `SECTIONS`), `lib/matching.js` comment, `schools.zacatek_hodin` in `school_extracted_details`
+- **Release/context:** `lib/questionnaire.js` (`zacatek`, removed from `BASE_QUESTIONS` and `SECTIONS`), `lib/matching.js` comment, `school_extracted_details.zacatek_hodin`
 
 The only answers were "doesn't matter" and "it matters, but we can't consider it yet", which is a promise we cannot keep. Removed from the standalone `/dotaznik` (31 questions now; the onboarding quiz never had it, so the landing counts are unchanged and are computed from the data anyway). Old runs that stored `zacatek` are unaffected: the validator ignores unknown keys.
 
@@ -275,7 +294,7 @@ To bring it back: extract school start times (the scraper already fills `school_
 - **Effort:** small
 - **Release/context:** `supabase-setup.sql` (`beta_profile.role_note` + `capture_beta_profile`), `/email-overen`, `BetaInstructions.jsx`
 
-- [ ] Run the `beta_profile.role_note` block and the updated `capture_beta_profile()` from `supabase-setup.sql` in the Supabase SQL editor **before** deploying. Without the column, `POST /api/beta/profile` fails for existing testers.
+- [ ] `beta_profile.role_note` was present live on 8 October. Inspect `capture_beta_profile()` and its grants before preparing any missing migration; verify a tester selecting "Jiné" can save and reload the note. Column presence alone does not close this gate.
 - [ ] End-to-end with a real throwaway tester e-mail: sign up from `/beta/TEST`, click the link in a second tab and check that it says "E-mail je ověřený" and the first tab moves on by itself. Then try the link on a phone, where the tab can't move on, so "Pokračovat v tomto okně" has to work.
 - [ ] As that tester: the first-run guide can't be closed with Escape or a backdrop click; **?** opens the one-screen reference; the paywall preview banner reads correctly. These were checked only on a stand-in page, because no tester session was available locally.
 

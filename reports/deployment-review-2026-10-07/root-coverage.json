@@ -2088,5 +2088,19 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-08T21:59:51.340438+00:00",
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
+  },
+  "UNFORGET.md": {
+    "sha256": "6a860b3de2512ac052dfcdd6c8aa990266c5d508f3cab91f7091d73864d90951",
+    "lines": 2292,
+    "read_ranges": [
+      [
+        1,
+        319
+      ]
+    ],
+    "status": "partial",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T22:04:21.848878+00:00",
+    "method": "Read original lines 1–300 in complete ranges and inspected the complete current diff for evidence/SQL-rollout corrections. Remaining long ledger is unread; this is not full coverage."
   }
 }
