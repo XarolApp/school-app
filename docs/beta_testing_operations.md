@@ -82,17 +82,27 @@ a code for another school after distributing it. Construct the invitation as
 `https://<deployed-domain>/beta/<CODE>`.
 
 The frontend deployment needs `VITE_API_BASE_URL` set to the trusted backend
-origin (the same public API origin used by the app). Vercel middleware reads it
-server-side to validate a beta invitation before issuing the existing
-`sm_access` site-gate cookie. `SITE_ACCESS_KEY` remains server-only and must not
-be prefixed with `VITE_`.
+origin (the same public API origin used by the app). The site-wide access code
+is separate from the school invitation code: set `SITE_ACCESS_KEY` in Vercel,
+server-side only, and send it to testers through the school's e-mail. Testers
+enter it once; the middleware compares normalized text and stores an HMAC in an
+HttpOnly, Secure, SameSite=Lax cookie for 180 days. `/beta/<CODE>` and
+`/email-overen?beta=<CODE>` do not bypass this gate. A confirmation link opened
+in a fresh browser asks for the site code first; reloading after entry preserves
+the confirmation URL hash.
+
+For a single-school cohort, set public `VITE_BETA_SCHOOL_CODE` to the existing
+uppercase `beta_schools.code`. The first visit to `/` sends that browser to the
+school's beta landing once. Signup flows use this code automatically, while
+still asking the tester to choose a role and acknowledge the beta data-use
+notice. The school invitation remains validated by the backend before signup.
 
 In Supabase Auth URL configuration, allow the deployed confirmation return path
 `https://www.stredninamiru.cz/email-overen**` (and `http://localhost:5173/email-overen**`
-for development). Since 2026-10-06 (`c460db0`) beta signup and resend-confirmation
-links land on `/email-overen?beta=CODE`, which says "E-mail je ověřený" and offers
-"Pokračovat v tomto okně" back to `/beta/CODE`; the middleware accepts the `beta`
-query on that page, so the link also works on a phone that never saw the invitation.
+for development). Beta confirmation links may still include `?beta=CODE` so the
+app can continue to the school landing, but that query is navigation context only;
+it does not open the site gate. The POST gate keeps access codes out of browser
+history and preserves the confirmation link's path, query, and hash after entry.
 
 ## Read tester and feedback data
 

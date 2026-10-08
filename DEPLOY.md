@@ -60,7 +60,11 @@ push to `main` after this is done once.
      Supabase → Authentication → Attack Protection. If CAPTCHA is enabled in Supabase
      and this is unset, every signup/login fails.
    - `SITE_ACCESS_KEY` — **not** prefixed `VITE_`; read by `frontend/middleware.js`
-     to keep the site private until launch (`?key=…` or a valid `/beta/CODE`).
+     as the site-wide tester code. It is submitted by POST and stored only as an
+     HMAC cookie. Production fails closed if this variable is missing.
+   - `VITE_BETA_SCHOOL_CODE` — optional public cohort code. When set, the home page
+     directs each browser to that school's beta landing once, and signup flows
+     enroll new accounts after the tester completes the role and data-use acknowledgement.
 5. Deploy. Copy the resulting URL and go back to Railway (step 1.3) to set
    `FRONTEND_URL` to it, then redeploy the Railway service.
 

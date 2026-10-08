@@ -38,11 +38,13 @@ function SignUp() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const betaParamPresent = searchParams.has('beta');
-  const betaInviteProvided = betaParamPresent || Boolean(readPendingBetaCode());
+  const [pendingBetaCode] = useState(() => readPendingBetaCode());
+  const configuredBetaCode = import.meta.env.VITE_BETA_SCHOOL_CODE || null;
+  const betaInviteProvided = betaParamPresent || Boolean(pendingBetaCode) || Boolean(configuredBetaCode);
   const betaCode = useMemo(() => normalizeBetaCode(
-    betaParamPresent ? searchParams.get('beta') : readPendingBetaCode()
-  ), [betaParamPresent, searchParams]);
-  const invalidBetaInvite = betaParamPresent && !betaCode;
+    betaParamPresent ? searchParams.get('beta') : pendingBetaCode || configuredBetaCode
+  ), [betaParamPresent, pendingBetaCode, configuredBetaCode, searchParams]);
+  const invalidBetaInvite = betaInviteProvided && !betaCode;
   const [betaEnrollment, setBetaEnrollment] = useState(() => readBetaEnrollment(betaCode));
   const betaParent=Boolean(betaCode&&['rodic','ucitel'].includes(betaEnrollment.role));
   const updateEnrollment = (patch) => {

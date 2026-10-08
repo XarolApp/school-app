@@ -235,8 +235,9 @@ export function AuthProvider({ children }) {
   }, [session, profile?.isTester, betaDeadlineMs, loadProfile]);
 
   const signUp = async (email, password, name, { captchaToken, emailRedirectTo, betaSchoolCode, betaRole, betaRoleNote, betaNoticeAccepted } = {}) => {
-    const normalizedBetaCode = betaSchoolCode ? normalizeBetaCode(betaSchoolCode) : null;
-    if (betaSchoolCode && !normalizedBetaCode) return { error: 'Pozvánka školy není platná.' };
+    const requestedBetaCode = betaSchoolCode ?? import.meta.env.VITE_BETA_SCHOOL_CODE;
+    const normalizedBetaCode = requestedBetaCode ? normalizeBetaCode(requestedBetaCode) : null;
+    if (requestedBetaCode && !normalizedBetaCode) return { error: 'Pozvánka školy není platná.' };
     if (normalizedBetaCode && (!['8','9','rodic','ucitel','jine'].includes(betaRole) || betaNoticeAccepted !== true)) {
       return { error: 'Vyber prosím roli a potvrď seznámení s beta testováním.' };
     }
@@ -312,8 +313,9 @@ export function AuthProvider({ children }) {
   // Supabase only resends while the account is still unconfirmed, and applies
   // its own cooldown, so this cannot be used to mailbomb an address.
   const resendConfirmation = async (email, { captchaToken, betaSchoolCode, emailRedirectTo } = {}) => {
-    const normalizedBetaCode = betaSchoolCode ? normalizeBetaCode(betaSchoolCode) : null;
-    if (betaSchoolCode && !normalizedBetaCode) return { error: 'Pozvánka školy není platná.' };
+    const requestedBetaCode = betaSchoolCode ?? import.meta.env.VITE_BETA_SCHOOL_CODE;
+    const normalizedBetaCode = requestedBetaCode ? normalizeBetaCode(requestedBetaCode) : null;
+    if (requestedBetaCode && !normalizedBetaCode) return { error: 'Pozvánka školy není platná.' };
     const { error } = await supabase.auth.resend({
       type: 'signup',
       email,

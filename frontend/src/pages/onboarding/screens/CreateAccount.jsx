@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ObScreen } from '../../../components/onboarding/ObKit';
 import TopMatchCard from '../../../components/onboarding/TopMatchCard';
@@ -13,6 +13,10 @@ import PasswordStrength from '../../../components/PasswordStrength';
 import Captcha, { captchaEnabled } from '../../../components/Captcha';
 import ConsentCheckbox from '../../../components/ConsentCheckbox';
 import { stashOnboardingAnswers } from '../../../lib/pendingOnboardingAnswers';
+import BetaEnrollment from '../../../components/BetaEnrollment';
+import { betaEnrollmentComplete, readBetaEnrollment, saveBetaEnrollment } from '../../../lib/betaEnrollment';
+import { normalizeBetaCode } from '../../../lib/pendingBetaCode';
+import { fetchBetaSchool, startBetaVisit } from '../../../api';
 
 /**
  * Account creation, inside the flow.
@@ -58,6 +62,11 @@ function CreateAccount() {
   const parent = role === 'parent';
 
   const [resumed] = useState(() => readPendingConfirmation('ob'));
+  const configuredBetaCode = import.meta.env.VITE_BETA_SCHOOL_CODE || resumed?.betaCode || '';
+  const betaCode = normalizeBetaCode(configuredBetaCode);
+  const [betaEnrollment, setBetaEnrollment] = useState(() => readBetaEnrollment(betaCode));
+  const [betaSchool, setBetaSchool] = useState(null);
+  const [betaState, setBetaState] = useState(configuredBetaCode ? (betaCode ? 'loading' : 'invalid') : 'none');
   const [name, setName] = useState('');
   const [email, setEmail] = useState(resumed?.email || '');
   const [password, setPassword] = useState('');
@@ -70,6 +79,31 @@ function CreateAccount() {
   const [error, setError] = useState(null);
   const [busy, setBusy] = useState(false);
   const [awaitingConfirmation, setAwaitingConfirmation] = useState(Boolean(resumed));
+
+  useEffect(() => {
+    if (!betaCode) return undefined;
+    let active = true;
+    setBetaState('loading');
+    fetchBetaSchool(betaCode).then((school) => {
+      if (!active) return;
+      if (school.code !== betaCode || typeof school.school_name !== 'string') {
+        setBetaState('invalid');
+        return;
+      }
+      setBetaSchool(school);
+      setBetaState(school.programActive ? 'ready' : 'closed');
+    }).catch((fetchError) => {
+      if (!active) return;
+      setBetaState(fetchError.status === 404 ? 'invalid' : 'unavailable');
+    });
+    return () => { active = false; };
+  }, [betaCode]);
+
+  const updateEnrollment = (patch) => {
+    const next = { ...betaEnrollment, ...patch };
+    setBetaEnrollment(next);
+    saveBetaEnrollment(betaCode, next);
+  };
 
   // Wait for the signed-in account to resolve before ever showing signup.
   if (isSignedIn && user && !profileResolved) {
@@ -119,7 +153,7 @@ function CreateAccount() {
   }
 
   // The link opens a new tab on "e-mail ověřen"; this tab continues by itself.
-  const confirmUrl = confirmationUrl(null, '/onboarding/plan');
+  const confirmUrl = confirmationUrl(betaCode, '/onboarding/plan');
   const currentProblems = () => onlyProblems({
     name: nameProblem(name, parent),
     email: emailProblem(email, parent),
@@ -128,23 +162,53 @@ function CreateAccount() {
     captcha: captchaProblem(captchaToken, captchaEnabled, parent),
   });
   const problems = submitted ? currentProblems() : {};
-  const problemCount = Object.keys(problems).length;
+  const betaIncomplete = Boolean(betaCode && !betaEnrollmentComplete(betaEnrollment));
+  const betaProblemCount = !betaCode ? 0
+    : (betaEnrollment.role ? 0 : 1) + (betaEnrollment.role === 'jine' && !betaEnrollment.roleNote.trim() ? 1 : 0) + (betaEnrollment.accepted ? 0 : 1);
+  const problemCount = Object.keys(problems).length + (submitted ? betaProblemCount : 0);
 
   const submit = async (event) => {
     event.preventDefault();
     if (busy) return;
     setSubmitted(true);
-    if (Object.keys(currentProblems()).length) {
+    if (Object.keys(currentProblems()).length || betaIncomplete) {
       requestAnimationFrame(() => focusFirstInvalid());
+      return;
+    }
+
+    if (configuredBetaCode && !betaCode) {
+      setError('Školní kód bety není platný. Zkus to prosím později znovu.');
+      return;
+    }
+    if (betaCode && betaState !== 'ready') {
+      setError(betaState === 'closed'
+        ? 'Beta program teď nové účty nepřijímá.'
+        : 'Školní pozvánku se nepodařilo ověřit. Účet teď nejde založit.');
       return;
     }
 
     setBusy(true);
     setError(null);
 
+    if (betaCode) {
+      try {
+        await startBetaVisit(betaCode, betaEnrollment.role, betaEnrollment.accepted);
+      } catch {
+        setBusy(false);
+        setError(parent ? 'Pozvánku se nepodařilo připravit. Zkuste to znovu.' : 'Pozvánku se nepodařilo připravit. Zkus to znovu.');
+        return;
+      }
+    }
+
     const result = await signUp(email.trim(), password, name.trim(), {
       captchaToken,
-      emailRedirectTo: confirmUrl,
+      emailRedirectTo: confirmationUrl(betaCode, '/onboarding/plan'),
+      ...(betaCode ? {
+        betaSchoolCode: betaCode,
+        betaRole: betaEnrollment.role,
+        betaRoleNote: betaEnrollment.roleNote,
+        betaNoticeAccepted: betaEnrollment.accepted,
+      } : {}),
     });
 
     setBusy(false);
@@ -186,6 +250,7 @@ function CreateAccount() {
           source="ob"
           email={email.trim()}
           parent={parent}
+          betaCode={betaCode}
           emailRedirectTo={confirmUrl}
           onConfirmed={goNext}
           onChangeEmail={() => setAwaitingConfirmation(false)}
@@ -234,9 +299,9 @@ function CreateAccount() {
           type="submit"
           form="ob-signup"
           className="ob-btn ob-btn-primary"
-          disabled={busy}
+          disabled={busy || Boolean(betaCode && betaState !== 'ready') || Boolean(configuredBetaCode && !betaCode)}
         >
-          {busy ? 'Zakládám účet…' : 'Založit účet'}
+          {busy ? 'Zakládám účet…' : betaCode ? 'Založit beta účet' : 'Založit účet'}
         </button>
       }
     >
@@ -273,6 +338,27 @@ function CreateAccount() {
             <p className="notice-text">{error}</p>
           </div>
         )}
+
+        {configuredBetaCode && !betaCode && <p className="field-error" role="alert">Školní kód bety není platný. Účet teď nejde založit.</p>}
+
+        {betaCode && <>
+          <div className="notice">
+            <span className="notice-title">{betaSchool?.school_name || 'Školní beta testování'}</span>
+            <p className="notice-text">Testování je zdarma výměnou za zpětnou vazbu. Platební kartu nepotřebuješ a beta účet nic nestrhne.</p>
+          </div>
+          <BetaEnrollment
+            role={betaEnrollment.role}
+            roleNote={betaEnrollment.roleNote}
+            accepted={betaEnrollment.accepted}
+            showErrors={submitted}
+            onRole={(nextRole) => updateEnrollment({ role: nextRole })}
+            onRoleNote={(roleNote) => updateEnrollment({ roleNote })}
+            onAccepted={(accepted) => updateEnrollment({ accepted })}
+          />
+          {betaState === 'loading' && <p className="field-hint" role="status">Ověřuji školní pozvánku…</p>}
+          {betaState === 'closed' && <p className="field-hint" role="status">Beta program teď nové účty nepřijímá.</p>}
+          {(betaState === 'invalid' || betaState === 'unavailable') && <p className="field-error" role="alert">Školní pozvánku se nepodařilo ověřit. Účet teď nejde založit.</p>}
+        </>}
 
         <div className="field">
           <label className="field-label" htmlFor="ob-name">

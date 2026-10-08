@@ -2,94 +2,123 @@ import { after, test } from 'node:test';
 import assert from 'node:assert/strict';
 import middleware from '../frontend/middleware.js';
 
-const originalFetch = globalThis.fetch;
 const originalSiteKey = process.env.SITE_ACCESS_KEY;
-const originalApiOrigin = process.env.VITE_API_BASE_URL;
+const originalVercelEnv = process.env.VERCEL_ENV;
 
 after(() => {
-  globalThis.fetch = originalFetch;
   if (originalSiteKey === undefined) delete process.env.SITE_ACCESS_KEY;
   else process.env.SITE_ACCESS_KEY = originalSiteKey;
-  if (originalApiOrigin === undefined) delete process.env.VITE_API_BASE_URL;
-  else process.env.VITE_API_BASE_URL = originalApiOrigin;
+  if (originalVercelEnv === undefined) delete process.env.VERCEL_ENV;
+  else process.env.VERCEL_ENV = originalVercelEnv;
 });
 
-test('known beta invitation gets the existing cookie and keeps the confirmation query', async () => {
-  process.env.SITE_ACCESS_KEY = 'server-only-secret';
-  process.env.VITE_API_BASE_URL = 'https://api.skolamatch.test';
-  let requestedUrl;
-  globalThis.fetch = async (url, options) => {
-    requestedUrl = String(url);
-    assert.equal(options.redirect, 'error');
-    assert.equal(options.cache, 'no-store');
-    return Response.json({ code: 'GYMJECNA', school_name: 'Gymnázium' });
-  };
-
-  const response = await middleware(new Request('https://school.test/beta/gymjecna?potvrzeno=1&source=email'));
-  assert.equal(response.status, 302);
-  assert.equal(new URL(response.headers.get('location'), 'https://school.test').pathname, '/beta/gymjecna');
-  assert.equal(new URL(response.headers.get('location'), 'https://school.test').search, '?potvrzeno=1&source=email');
-  assert.match(response.headers.get('set-cookie'), /HttpOnly/);
-  assert.match(response.headers.get('set-cookie'), /Secure/);
-  assert.match(response.headers.get('set-cookie'), /server-only-secret/);
-  assert.equal(requestedUrl, 'https://api.skolamatch.test/api/beta/schools/GYMJECNA');
+test('every page, including beta and email confirmation links, requires the typed code', async () => {
+  process.env.SITE_ACCESS_KEY = 'Přístup testovací verze';
+  delete process.env.VERCEL_ENV;
+  for (const path of ['/skoly', '/beta/GYMJECNA', '/email-overen?beta=GYMJECNA', '/email-overen#access_token=secret']) {
+    const response = await middleware(new Request(`https://school.test${path}`));
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    assert.match(html, /Střední na míru je teď v testovací verzi/);
+    assert.match(html, /<form method="POST" action="\/__gate">/);
+    assert.match(html, /fetch\('\/__gate', \{ method: 'POST'/);
+    assert.match(html, /location\.reload\(\)/);
+    assert.doesNotMatch(html, /<form[^>]+method="GET"/);
+    assert.equal(response.headers.get('set-cookie'), null);
+  }
 });
 
-test('unknown or unavailable beta invitations never receive the site cookie', async () => {
-  process.env.SITE_ACCESS_KEY = 'server-only-secret';
-  process.env.VITE_API_BASE_URL = 'https://api.skolamatch.test';
-  globalThis.fetch = async () => new Response('{}', { status: 404 });
-  const missing = await middleware(new Request('https://school.test/beta/UNKNOWN'));
-  assert.equal(missing.status, 404);
-  assert.equal(missing.headers.get('set-cookie'), null);
-  assert.match(missing.headers.get('x-robots-tag'), /noindex/);
+test('the POST gate normalizes accents, case and spaces, then issues an opaque long-lived cookie', async () => {
+  process.env.SITE_ACCESS_KEY = 'Přístup testovací verze';
+  const response = await middleware(new Request('https://school.test/__gate', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ key: '  PRÍSTUP TESTOVACÍ VERZE ' }),
+  }));
 
-  globalThis.fetch = async () => { throw new Error('network unavailable'); };
-  const offline = await middleware(new Request('https://school.test/beta/GYMJECNA'));
-  assert.equal(offline.status, 503);
-  assert.equal(offline.headers.get('set-cookie'), null);
+  assert.equal(response.status, 204);
+  const cookie = response.headers.get('set-cookie');
+  assert.match(cookie, /^sm_access=[a-f0-9]{64}; Path=\//);
+  assert.match(cookie, /Max-Age=15552000/);
+  assert.match(cookie, /HttpOnly/);
+  assert.match(cookie, /Secure/);
+  assert.match(cookie, /SameSite=Lax/);
+  assert.doesNotMatch(cookie, /Přístup|pristup/i);
+
+  const allowed = await middleware(new Request('https://school.test/skoly', { headers: { cookie: cookie.split(';')[0] } }));
+  assert.equal(allowed, undefined);
+
+  process.env.SITE_ACCESS_KEY = 'new secret';
+  const rotated = await middleware(new Request('https://school.test/skoly', { headers: { cookie: cookie.split(';')[0] } }));
+  assert.equal(rotated.status, 200);
 });
 
-test('beta lookup uses only the configured API origin, never the request host', async () => {
-  process.env.SITE_ACCESS_KEY = 'server-only-secret';
-  process.env.VITE_API_BASE_URL = 'https://api.skolamatch.test/path';
-  let called = false;
-  globalThis.fetch = async () => { called = true; };
-  const response = await middleware(new Request('https://attacker.test/beta/GYMJECNA'));
-  assert.equal(response.status, 503);
-  assert.equal(called, false);
+test('a wrong code reports the specified error and delays the response', async () => {
+  process.env.SITE_ACCESS_KEY = 'correct code';
+  const started = Date.now();
+  const response = await middleware(new Request('https://school.test/__gate', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ key: 'wrong code' }),
+  }));
+  assert.equal(response.status, 401);
+  assert.ok(Date.now() - started >= 550);
+  assert.deepEqual(await response.json(), { ok: false });
   assert.equal(response.headers.get('set-cookie'), null);
 });
 
-test('the existing access-key and cookie gate behavior stays intact', async () => {
-  process.env.SITE_ACCESS_KEY = 'server-only-secret';
-  process.env.VITE_API_BASE_URL = 'https://api.skolamatch.test';
-  globalThis.fetch = async () => { throw new Error('beta lookup must not run'); };
-
-  const keyResponse = await middleware(new Request('https://school.test/skoly?key=server-only-secret&sort=name'));
-  assert.equal(keyResponse.status, 302);
-  assert.equal(keyResponse.headers.get('location'), '/skoly?sort=name');
-
-  const cookieResponse = await middleware(new Request('https://school.test/skoly', {
-    headers: { cookie: 'sm_access=server-only-secret' },
+test('plain POST fallback redirects to the same local path and query', async () => {
+  process.env.SITE_ACCESS_KEY = 'entry code';
+  const response = await middleware(new Request('https://school.test/__gate', {
+    method: 'POST',
+    headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({ key: 'entry code', returnTo: '/email-overen?next=%2Fonboarding%2Fplan' }),
   }));
-  assert.equal(cookieResponse, undefined);
+  assert.equal(response.status, 303);
+  assert.equal(response.headers.get('location'), '/email-overen?next=%2Fonboarding%2Fplan');
+  assert.match(response.headers.get('set-cookie'), /HttpOnly/);
+
+  const openRedirect = await middleware(new Request('https://school.test/__gate', {
+    method: 'POST',
+    headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({ key: 'entry code', returnTo: 'https://attacker.test/' }),
+  }));
+  assert.equal(openRedirect.headers.get('location'), '/');
 });
 
-test('e-mail confirmation page opens the gate only for a valid invitation code', async () => {
-  process.env.SITE_ACCESS_KEY = 'server-only-secret';
-  process.env.VITE_API_BASE_URL = 'https://api.skolamatch.test';
-  globalThis.fetch = async () => Response.json({ code: 'GYMJECNA', school_name: 'Gymnázium' });
-  const ok = await middleware(new Request('https://school.test/email-overen?beta=gymjecna'));
-  assert.equal(ok.status, 302);
-  assert.equal(new URL(ok.headers.get('location'), 'https://school.test').search, '?beta=gymjecna');
-  assert.match(ok.headers.get('set-cookie'), /server-only-secret/);
+test('wrong plain POST keeps its local return target and does not issue a cookie', async () => {
+  process.env.SITE_ACCESS_KEY = 'entry code';
+  const response = await middleware(new Request('https://school.test/__gate', {
+    method: 'POST',
+    headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({ key: 'wrong', returnTo: '/email-overen?next=%2Fonboarding%2Fplan' }),
+  }));
+  assert.equal(response.status, 200);
+  assert.match(await response.text(), /Kód nesedí\. Zkontroluj ho v e-mailu od školy\./);
+  assert.equal(response.headers.get('set-cookie'), null);
+});
 
-  globalThis.fetch = async () => new Response('{}', { status: 404 });
-  const unknown = await middleware(new Request('https://school.test/email-overen?beta=UNKNOWN'));
-  assert.equal(unknown.status, 404);
-  assert.equal(unknown.headers.get('set-cookie'), null);
+test('robots, gate endpoint and version endpoint are exempt, and robots disallows crawling', async () => {
+  process.env.SITE_ACCESS_KEY = 'correct';
+  const robots = await middleware(new Request('https://school.test/robots.txt'));
+  assert.equal(await robots.text(), 'User-agent: *\nDisallow: /\n');
+  assert.equal(await middleware(new Request('https://school.test/version.json')), undefined);
+  assert.equal((await middleware(new Request('https://school.test/__gate'))).status, 405);
+});
 
-  const plain = await middleware(new Request('https://school.test/email-overen'));
-  assert.equal(plain.status, 401);
+test('missing key stays open locally and fails closed in production', async () => {
+  delete process.env.SITE_ACCESS_KEY;
+  delete process.env.VERCEL_ENV;
+  assert.equal(await middleware(new Request('https://school.test/skoly')), undefined);
+
+  process.env.VERCEL_ENV = 'production';
+  const response = await middleware(new Request('https://school.test/skoly'));
+  assert.equal(response.status, 503);
+  assert.match(await response.text(), /Stránka se právě nastavuje\./);
+  assert.equal(response.headers.get('x-robots-tag'), 'noindex, nofollow');
+
+  process.env.SITE_ACCESS_KEY = '   ';
+  const blankKey = await middleware(new Request('https://school.test/skoly'));
+  assert.equal(blankKey.status, 503);
+  assert.match(await blankKey.text(), /Stránka se právě nastavuje\./);
 });

@@ -1,5 +1,5 @@
-import { lazy, Suspense } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { lazy, Suspense, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import { AuthProvider } from './components/AuthContext';
 import { ToastProvider } from './components/ToastContext';
@@ -10,6 +10,29 @@ import Home from './pages/Home';
 // Default landing (3D map). three.js + GSAP load only on this route.
 const Landing = lazy(() => import('./pages/landing2/Landing'));
 const Admin = lazy(() => import('./pages/Admin'));
+
+function HomeEntry() {
+  const navigate = useNavigate();
+  const betaCode = import.meta.env.VITE_BETA_SCHOOL_CODE?.trim();
+
+  useEffect(() => {
+    if (!betaCode) return;
+    try {
+      if (localStorage.getItem('snm.beta.homeRedirected') === '1') return;
+    } catch {
+      // The route still works if browser storage is disabled.
+    }
+    navigate(`/beta/${encodeURIComponent(betaCode)}`, { replace: true });
+    try {
+      localStorage.setItem('snm.beta.homeRedirected', '1');
+    } catch {
+      // The redirect is useful even when it cannot be remembered.
+    }
+  }, [betaCode, navigate]);
+
+  return <Suspense fallback={<LoadingSpinner />}><Landing /></Suspense>;
+}
+
 import Search from './pages/Search';
 import SchoolDetail from './pages/SchoolDetail';
 import SignUp from './pages/SignUp';
@@ -67,7 +90,7 @@ function App() {
               <Route element={<Layout />}>
                 <Route path="/admin" element={<Suspense fallback={<LoadingSpinner label="Načítání přehledů…" />}><Admin /></Suspense>} />
                 {/* Variant B (3D map) is the default landing; the old one stays at /stara for comparison. */}
-                <Route path="/" element={<Suspense fallback={<LoadingSpinner />}><Landing /></Suspense>} />
+                <Route path="/" element={<HomeEntry />} />
                 <Route path="/nova" element={<Navigate to="/" replace />} />
                 <Route path="/stara" element={<Home />} />
                 <Route path="/skoly" element={<Search />} />
