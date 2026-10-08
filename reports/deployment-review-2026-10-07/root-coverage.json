@@ -411,18 +411,18 @@
     "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
   },
   "frontend/src/lib/comparisonRows.js": {
-    "sha256": "e422f64825d0fc171e9e5ff715a06cd5f806c3d0f734711ced7b1aed793a4145",
-    "lines": 161,
+    "sha256": "b8582b0253e6d6d6b6c47c6f60e425cc4751bdb15c40347df31874c60a65c873",
+    "lines": 199,
     "read_ranges": [
       [
         1,
-        161
+        199
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:36:06.929696+00:00",
-    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+    "checked_at_utc": "2026-10-08T21:58:03.930811+00:00",
+    "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
   },
   "frontend/src/pages/Porovnani.jsx": {
     "sha256": "41104d5625de8ce604492a42b25d9d3c5fdb88a64cc0b2cf6e634f0f160e0faa",
@@ -1728,5 +1728,365 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-08T21:52:21.686928+00:00",
     "method": "Full source read plus complete current authored diff review. Docs reconciled to source/read-only production evidence; read does not imply acceptance."
+  },
+  "lib/betaAdmin.js": {
+    "sha256": "17f2bb36af351b26abf6b71902749fa11e0f020b6d7a3b57ba77235e650d9384",
+    "lines": 121,
+    "read_ranges": [
+      [
+        1,
+        121
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:58:03.928217+00:00",
+    "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
+  },
+  "lib/betaAnalytics.js": {
+    "sha256": "7698ee3c9a1cc6be1bb5fd5c8c96334550940bcb2c9150bc53a14cd06ab98fdf",
+    "lines": 99,
+    "read_ranges": [
+      [
+        1,
+        99
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:58:03.928805+00:00",
+    "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
+  },
+  "lib/betaLimits.js": {
+    "sha256": "efc924843cf234cd4930976cf5f5e4816b941c5f60795e3df271543799ae7376",
+    "lines": 11,
+    "read_ranges": [
+      [
+        1,
+        11
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:58:03.929147+00:00",
+    "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
+  },
+  "lib/matching.js": {
+    "sha256": "148d0f1fefd0977053fe9d7dbe8d48166c3294a501ca09f2702192591b0e1e20",
+    "lines": 925,
+    "read_ranges": [
+      [
+        1,
+        925
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:58:03.929508+00:00",
+    "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
+  },
+  "tests/beta-analytics.test.cjs": {
+    "sha256": "964d258d26b0c6d85bc02c0aaf41e80a70fe7bffb440ca1340d4c3554d0370d2",
+    "lines": 62,
+    "read_ranges": [
+      [
+        1,
+        62
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:58:03.929753+00:00",
+    "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
+  },
+  "tests/beta-review-fixes.test.cjs": {
+    "sha256": "1ca8717ee72888ca3e3d9f738cbce6e5a4320b0d814ce06d93c0dc6e0db64f43",
+    "lines": 63,
+    "read_ranges": [
+      [
+        1,
+        63
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:58:03.929894+00:00",
+    "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
+  },
+  "tests/beta-middleware.test.mjs": {
+    "sha256": "9a42764daa95e2eea8cb626204bb29cd2e695853649452c6a147e634e3be4385",
+    "lines": 124,
+    "read_ranges": [
+      [
+        1,
+        124
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:58:03.930058+00:00",
+    "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
+  },
+  "test-google-api.js": {
+    "sha256": "8e4a39b6badfbc5fadc5f9e73d7b56f255730dfcbb4533d6a97b8d835e8790c6",
+    "lines": 54,
+    "read_ranges": [
+      [
+        1,
+        54
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:59:51.340032+00:00",
+    "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
+  },
+  "test-google-simple.js": {
+    "sha256": "baa66531f9fc9144d5ed01e4a7c9b524e4dbae3f025e08ffd890bcb8236e49c6",
+    "lines": 44,
+    "read_ranges": [
+      [
+        1,
+        44
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:58:03.930422+00:00",
+    "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
+  },
+  "tests/decision-data.test.mjs": {
+    "sha256": "63ff94b06c16b2765e2e81d7c1c28409fa232d16320adfd3cf8e724efc29bfc2",
+    "lines": 344,
+    "read_ranges": [
+      [
+        1,
+        344
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:58:03.930591+00:00",
+    "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
+  },
+  "frontend/src/lib/searchPrefs.js": {
+    "sha256": "0dbcd32240ac45cd66fde2a774f4e0493525c07d7069f344fe2d5807bbb8d84b",
+    "lines": 100,
+    "read_ranges": [
+      [
+        1,
+        100
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:58:03.931018+00:00",
+    "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
+  },
+  "frontend/src/lib/schoolDetailTagLabels.js": {
+    "sha256": "95a4d58dff858e11172543a7de60f238960167c1cc4a533bb3e61af0b1688f4b",
+    "lines": 31,
+    "read_ranges": [
+      [
+        1,
+        31
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:58:03.931213+00:00",
+    "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
+  },
+  "frontend/src/lib/decisionMatrix.js": {
+    "sha256": "2f9e9f469d09ea71a4fab555b25c7b34b9d0e7f2932aa1718b2567dea1c868c5",
+    "lines": 274,
+    "read_ranges": [
+      [
+        1,
+        274
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:59:51.340604+00:00",
+    "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
+  },
+  "frontend/src/components/ParentPayHandoff.jsx": {
+    "sha256": "3e6dce70e26daa777ab9878ac06b92307b21864f897bd34e7150d2acf03543b1",
+    "lines": 157,
+    "read_ranges": [
+      [
+        1,
+        157
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:58:03.931588+00:00",
+    "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
+  },
+  "frontend/src/pages/ParentPay.jsx": {
+    "sha256": "bdd500127f35563491fa0395d8a1eacd0061f124e1f07ba2bf2d67714e2b7315",
+    "lines": 239,
+    "read_ranges": [
+      [
+        1,
+        239
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:58:03.931816+00:00",
+    "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
+  },
+  "frontend/src/components/PasswordStrength.jsx": {
+    "sha256": "cfd7619b0d9142454adbcd88ef237a89baad3a2ad33ad1787dcfdc3bfd3b6b94",
+    "lines": 92,
+    "read_ranges": [
+      [
+        1,
+        92
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:58:03.931953+00:00",
+    "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
+  },
+  "frontend/src/components/schoolDetail/SchoolLocation.jsx": {
+    "sha256": "ad6ed344eb65e1439c07cd0729edfad2c8ae5d8b785e3d2a85ae3e7f6e8edfc4",
+    "lines": 137,
+    "read_ranges": [
+      [
+        1,
+        137
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:58:03.932290+00:00",
+    "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
+  },
+  "frontend/src/lib/pendingConfirmation.js": {
+    "sha256": "9ff89d302489cc18a4baeedb2e39f7f20c94439f6e18669478565edb21546692",
+    "lines": 27,
+    "read_ranges": [
+      [
+        1,
+        27
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:58:03.932446+00:00",
+    "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
+  },
+  "frontend/src/lib/useDraft.js": {
+    "sha256": "ed41d3a2213bcdb459b04ecaa6de53c305d06dc7a47ac2d541ca2ff5d0e0496a",
+    "lines": 29,
+    "read_ranges": [
+      [
+        1,
+        29
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:58:03.932680+00:00",
+    "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
+  },
+  "frontend/src/lib/skeletonHints.js": {
+    "sha256": "bc9451eaf94226f316b23217ebbc34c17ab71c9e09aa072a68fd8bc211eee790",
+    "lines": 10,
+    "read_ranges": [
+      [
+        1,
+        10
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:58:03.932924+00:00",
+    "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
+  },
+  "frontend/src/components/PageSkeleton.jsx": {
+    "sha256": "8399448f12c638bf68e12938ebe3850ce25e5378d904fd9008e484aa03d8d0c1",
+    "lines": 49,
+    "read_ranges": [
+      [
+        1,
+        49
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:58:03.933116+00:00",
+    "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
+  },
+  "frontend/src/config/features.js": {
+    "sha256": "1fbdc81f71e7d46e3ec08570af9caa8edea75c9086d48847ce6c97dd94be94a1",
+    "lines": 5,
+    "read_ranges": [
+      [
+        1,
+        5
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:58:03.933317+00:00",
+    "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
+  },
+  "frontend/src/pages/Matice.jsx": {
+    "sha256": "5ae0760b769c4387ceae49c19830c92e3bf086062a452a80f01905765da1a960",
+    "lines": 600,
+    "read_ranges": [
+      [
+        1,
+        600
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:58:03.933646+00:00",
+    "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
+  },
+  "frontend/src/config/pricing.js": {
+    "sha256": "eff8daee298ef48674c163382e66c404266cfc963a39bb57273572ca60749557",
+    "lines": 373,
+    "read_ranges": [
+      [
+        1,
+        373
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:59:51.340532+00:00",
+    "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
+  },
+  "frontend/src/lib/usePicks.js": {
+    "status": "deferred_peer_edits",
+    "reviewer": "root",
+    "note": "Read released snapshot on 8 October, but path changed again during Phase 6; current source requires re-review."
+  },
+  "frontend/src/lib/authValidation.js": {
+    "status": "deferred_peer_edits",
+    "reviewer": "root",
+    "note": "Read released snapshot on 8 October, but path changed again during Phase 6; current source requires re-review."
+  },
+  "tests/provider-diagnostics.test.cjs": {
+    "sha256": "598ce2c5d6285d536e06d6d56553219711f248e02c3780167d519749dd9503d2",
+    "lines": 42,
+    "read_ranges": [
+      [
+        1,
+        42
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:59:51.340438+00:00",
+    "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   }
 }

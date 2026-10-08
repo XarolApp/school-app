@@ -100,3 +100,16 @@ sentences before any paid regeneration. CLI limits and partial-success exit
 behavior share S08/S11 risks. Fingerprints currently omit model/prompt version, so
 a model-only change will skip unchanged data unless `--force` is used. Deliberate
 refresh planning is required; do not overwrite all summaries to repair one input.
+
+
+## S13 — provider diagnostic body handling fixed
+
+`test-google-api.js` consumed an HTTP-200 response as JSON and then tried to read
+it again as text when no candidate answer existed, reporting a body-consumption
+exception instead of the actual unusable response. It now reads once, accepts only
+nonblank text, reports the HTTP result without dumping upstream error bodies, and
+does not equate a short credential probe with extraction readiness. Three mocked
+regressions pass for empty success, errors, invalid JSON and valid/blank text. No
+Google call was made. The separate `test-google-simple.js` still lacks a reliable
+failure exit/result contract; neither probe verifies extraction tools, quality,
+costs or provider terms. Both are manual paid-call diagnostics, outside `npm test`.

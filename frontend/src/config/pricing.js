@@ -1,11 +1,14 @@
 /**
  * Střední na míru — pricing & trial configuration.
  *
- * SINGLE SOURCE OF TRUTH for every price, plan and trial string in the app.
+ * Frontend source for price, plan and purchase-trial strings. Backend prices,
+ * Stripe Price configuration and contractual terms must be reconciled separately.
  * Nothing about money may be hardcoded in a component. If you need a number
  * here that does not exist, add it here first.
  *
  * Prices locked 2026-09-21: season 690 Kč (one-time), monthly 249 Kč.
+ * Historical research below explains the product decision; its market figures
+ * and regulatory hypotheses are not current legal/provider verification.
  *
  * ---------------------------------------------------------------------------
  * PLAN STRUCTURE — ruling C-8, third and current revision (2026-08-23)
@@ -58,7 +61,7 @@
 const MONTHLY_PRICE_CZK = 249;
 const SEASON_PRICE_CZK = 690; // one-time, whole season
 
-/** Sept-March application window, used only for the honest daily breakdown. */
+/** Historical Sept-March denominator; the unqualified daily display is FE-10. */
 const SEASON_DAYS = 212;
 
 /**
@@ -98,72 +101,30 @@ export function trialFreeLabel() {
 }
 
 /**
- * §0.4 + C-1 are binding: only promise a reminder that actually exists.
- * There is no e-mail/notification system in this codebase yet, so this flag is
- * false and the paywall timeline renders WITHOUT the day-2 reminder promise.
- * Flip to true ONLY once the reminder is genuinely implemented and sent.
- *
- * Target cadence when it is built (docs/sources/pricing_research.md §3, which
- * is also close to what the Digital Fairness Act direction would mandate):
- *   1. same-day activation nudge,
- *   2. reminder ~1 day before the trial ends,
- *   3. morning-of: "zkušební období dnes končí, platba proběhne / zrušit můžeš".
- * Unreminded charges are what turn into refunds, chargebacks and 1-star reviews.
+ * Trial reminder delivery is not implemented. Only enable this flag after the
+ * scheduler, cancellation-aware retries and actual mailbox delivery are verified.
+ * Founder policy requires a day-2 reminder before real seasonal billing; the
+ * current UI does not promise it. Other mail/confirmation code is not proof that
+ * this reminder exists. See the deployment payment handoff.
  */
 export const TRIAL_REMINDER_IMPLEMENTED = false;
 
 /**
- * §0.4 again, same standard as TRIAL_REMINDER_IMPLEMENTED: only promise a
- * cancellation mechanism that actually exists.
- *
- * There is no account settings screen, no subscription record and no cancel
- * endpoint in this codebase, so "zrušit jedním kliknutím" would be an invented
- * promise on the one surface where an invented promise is most expensive.
- * pricing_research.md §4 flags the EU Digital Fairness Act's one-step
- * cancellation requirement ("cancellation button" of equivalent ease to
- * sign-up, plus a termination confirmation) as a pre-launch compliance item,
- * not a later cleanup — and it applies to the MĚSÍČNÍ plan, whose entire
- * reason to exist under C-8 is being the easy exit.
- *
- * Flip to true only when: a cancel control exists, it is at most one screen
- * deep, it takes effect without a support conversation, and it sends a
- * confirmation. Until then the paywall says out loud that we do not promise it.
- * BLOCKING for real billing on the recurring plan.
- *
- * TRUE as of plan 009: Settings.jsx has a one-click "Zrušit předplatné" button
- * (one screen deep, no support conversation) calling POST
- * /api/subscription/cancel, which takes effect immediately during a trial or
- * schedules cancel_at_period_end otherwise, and confirms via a toast naming
- * the exact date access ends.
+ * Settings and POST /api/subscription/cancel implement self-service cancellation:
+ * during a trial it stops the scheduled charge, otherwise monthly cancellation
+ * is scheduled for period end. This flag describes the implemented UI/API, not
+ * proof of a safe payment lifecycle, durable confirmation delivery or compliance.
+ * Cancellation/charge races and refund recovery remain paid-launch gates.
  */
 export const ONE_STEP_CANCELLATION_IMPLEMENTED = true;
 
 /**
- * Refund window for the ONE-TIME plan, in days.
- *
- * Why this constant exists at all: pricing_research.md (2026-08-23 update, §1)
- * found one-time purchases convert far better at the point of decision (12.1%
- * vs 2.2%) but carry ~1.7x the refund rate (5.8% vs 3.4%), and that regret on
- * a one-time payment lands immediately rather than gradually. Its explicit
- * recommendation is to build a visible, generous refund guarantee INTO the
- * one-time option — "a cost of the model, not a sign it's wrong for you."
- * The same section names the one-time model's core psychological weakness for
- * an unknown brand: "the money's gone if it disappoints."
- *
- * Sezónní přístup now has a pre-charge trial, but an explicit refund window
- * still matters after its one-time charge has happened.
- *
- * 3 = a TESTING placeholder the user chose (2026-08-24), not a committed
- * number. 14 (the EU distance-selling floor) remains the benchmark to
- * reconsider against once a real number is picked.
- *
- * PRE-LAUNCH BLOCKER, same class as TRIAL_REMINDER_IMPLEMENTED and
- * ONE_STEP_CANCELLATION_IMPLEMENTED above: this is fine to display in dev/
- * testing, but showing a refund promise to a real paying user with no actual
- * refund process behind it is not safe. Do not flip PAYMENTS_MOCKED to false
- * until BOTH the final number is chosen AND a working refund process exists.
+ * Optional extra guarantee badge is disabled. This is not the actual withdrawal
+ * cutoff: Terms and server withdrawal currently grant 30 days. Do not shorten
+ * that benefit or infer a 14-day implementation from this unused badge flag.
+ * Statutory/commercial calendar boundaries need the legal/payment handoff review.
  */
-export const REFUND_GUARANTEE_DAYS = 0; // Refund guarantee removed 2026-09-21; using statutory 14-day withdrawal right instead
+export const REFUND_GUARANTEE_DAYS = 0;
 
 // --- PLANS -------------------------------------------------------------------
 /**
@@ -202,23 +163,8 @@ export const PLANS = [
       student: `Vyzvednout si moje ${trialDaysPhrase()} zdarma`,
       parent: `Vyzvednout ${trialDaysPhrase()} zdarma pro dítě`,
     },
-    /**
-     * THE TRIAL LIVES HERE, NOT ON MĚSÍČNÍ — flipped 2026-09-05 with the
-     * approved 5-screen paywall design (design/paywall-multipage-extract4/,
-     * annotation "cena"). Two reasons, both already written down elsewhere in
-     * this repo before the design existed:
-     *  1. pricing_research.md §2 — a trial belongs on the LONGER commitment.
-     *     Put it on the cheap recurring tier and users simply trial the cheap
-     *     tier instead of buying the one you actually want them on.
-     *  2. The comment block at the top of this file already complains that
-     *     Sezónní, as the pre-selected default, has NO exit of any kind ("no
-     *     trial, no cancellation, nothing") and leans entirely on
-     *     REFUND_GUARANTEE_DAYS to absorb that. A trial absorbs it better:
-     *     nothing has been charged yet, so there is nothing to claw back.
-     * Měsíční does NOT lose its C-8 job of absorbing distrust — it keeps it in
-     * its own shape ("skončíš, kdy budeš chtít"), which is a different kind of
-     * exit, not a weaker one. Do not give both plans a trial.
-     */
+    // Founder decision: a three-day purchase trial only on the seasonal plan.
+    // Ordinary-account access trial and beta feedback access are separate flows.
     hasTrial: true,
     recommended: true,
   },
@@ -278,12 +224,11 @@ export const ONE_TIME_OFFER_ENABLED = false;
 
 // --- PAYMENTS ----------------------------------------------------------------
 /**
- * FALSE as of plan 009: real Stripe Checkout sessions are created server-side
- * for both plans. Built and verified against Stripe TEST MODE — the founder is
- * under 18 and cannot legally hold a Stripe account, so going live needs a
- * parent/guardian (or an s.r.o. with an adult jednatel) to own it. That is an
- * account-ownership change, not a code change: only the env vars move from
- * sk_test_... to sk_live_....
+ * Both plans use server-created Stripe Checkout rather than a frontend mock.
+ * Local configuration is test mode. This flag does not detect deployed key mode,
+ * authorize live billing or govern free beta preview access. Adult operator/
+ * provider verification, lifecycle/refund fixes, reminder delivery and end-to-end
+ * test-mode acceptance are required before live billing; key swapping is insufficient.
  */
 export const PAYMENTS_MOCKED = false;
 

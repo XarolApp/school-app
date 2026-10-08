@@ -36,7 +36,7 @@ Owner: database/backend agent, then frontend agent. Evidence: B03 and decision-t
 
 Acceptance: failed FK/insert leaves the old shortlist intact; two concurrent replacements leave exactly one valid intended set; stale requests cannot overwrite a later confirmed order/note. Run actual PostgreSQL concurrency/rollback tests, not only fake PostgREST assertions.
 
-Also resolve account-scoped search/favorites state and stale feedback context in continuation findings C02/C04. Reset or re-key private state on account/access changes, cancel stale requests, and bind a feedback draft's selection/screenshot to its original page or explicitly clear it. Acceptance includes account A → sign-out → account B in the same tab, a late A response, and closing/reopening feedback on a different page.
+Also resolve account-scoped search/favorites state and stale feedback context in continuation findings C02/C04. The new `usePicks` hook must distinguish a failed initial fetch from a confirmed empty set (C13); disable replacement until a successful current-account read and provide retry. Test that an initial GET failure cannot let the next add erase an existing list. Reset or re-key private state on account/access changes, cancel stale requests, and bind a feedback draft's selection/screenshot to its original page or explicitly clear it. Audit `useDraft` and all draft callers (C14), including globally keyed beta/closing/review text; a storage key change alone does not reload React state. Include parent payment-link/token state (C15) in delayed-response tests. Acceptance includes account A → sign-out → account B in the same tab, a late A response, and closing/reopening feedback on a different page.
 
 ## 4. Resolve beta privacy, moderation and capacity gates
 

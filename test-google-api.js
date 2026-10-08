@@ -24,16 +24,14 @@ async function testKey(apiKey, index) {
       }
     );
 
-    if (response.ok) {
-      const data = await response.json();
-      if (data.candidates?.[0]?.content?.parts?.[0]?.text) {
-        console.log(`✅ Key ${index + 1}: Works`);
-        return true;
-      }
+    const data = await response.json().catch(() => null);
+    const answer = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (response.ok && typeof answer === 'string' && answer.trim()) {
+      console.log(`✅ Key ${index + 1}: Works`);
+      return true;
     }
 
-    const text = await response.text();
-    console.log(`❌ Key ${index + 1}: ${response.status} ${text.slice(0, 100)}`);
+    console.log(`❌ Key ${index + 1}: HTTP ${response.status}, no usable answer`);
     return false;
   } catch (err) {
     console.log(`❌ Key ${index + 1}: ${err.message}`);
@@ -45,7 +43,7 @@ async function main() {
   const results = await Promise.all(GOOGLE_GEMINI_API_KEYS.map(testKey));
 
   if (results.some(Boolean)) {
-    console.log('\n✅ At least one key works. Ready to extract!');
+    console.log('\n✅ At least one key returned a short answer. Extraction/tool support still needs separate verification.');
     process.exit(0);
   } else {
     console.log('\n❌ All keys failed. Check your .env.');

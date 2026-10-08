@@ -54,9 +54,9 @@ export const CRITERIA = [
   },
   {
     id: 'jazyky',
-    label: 'Nabídka jazyků',
+    label: 'Jazyky výuky',
     available: true,
-    tooltip: 'Počet různých jazyků vyučovaných napříč obory školy.',
+    tooltip: 'Počet různých jazyků, ve kterých probíhá výuka oborů školy. Nejde o počet cizích jazyků vyučovaných jako předmět.',
   },
   {
     id: 'skolne',

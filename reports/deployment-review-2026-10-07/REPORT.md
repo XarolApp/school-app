@@ -29,6 +29,14 @@ Codex fix commit **`f098f6c`**, pushed to `main`, removes fabricated Prague dist
 
 Codex fix commit **`e335d50`**, pushed to `main`: the animated landing counter now follows the loaded catalogue instead of retaining its fallback; cutoff-history copy reflects incomplete/mixed-year records; skipped-answer copy no longer guarantees an unchanged score; onboarding choices no longer promise personalization that is not implemented. The landing touch pager releases multi-touch/canceled gestures, and the map shader uses defined `smoothstep` edge ordering. The theme token override is also fixed in pushed commit **`bd8629d`**; computed light scheme verified. Desktop local browser checks verify the counter/copy, and the method screen fits at 320px; real-device pinch/GPU verification remains required. [Synthetic 30-school counter evidence](landing-live-count.jpg), [build](frontend-build-landing-fixes.txt).
 
+The matrix language criterion now accurately names languages of instruction;
+its numeric behavior is unchanged and all 17 decision-tool tests pass. The local
+running app shows the corrected tooltip ([evidence](matrix-instruction-language.png)).
+Pricing comments now describe the implemented cancellation/30-day withdrawal
+behavior and unresolved payment gates; an export/function-body comparison confirms
+no pricing logic, constants or UI strings changed. A provider diagnostic response
+body bug is fixed with three mocked regressions; no model calls were run.
+
 ## Verification evidence and limits
 
 - Production checks, 8 October: the www site and apex redirect are reachable; the shared-code gate opens the correct free-beta invitation with the configured 18 October cutoff. This verifies entry, not signup/confirmation/feedback. The API health check returns 200, anonymous `/api/me` returns 401, and anonymous `/api/schools` returns all 217 visible schools including nested programmes/extracted fields, reproducing the unresolved premium projection boundary on the deployed service. A rejected browser origin receives a different allow-origin value, so its HTTP 200 is not a CORS bypass. [API evidence](production-api-2026-10-08.json), [gate headers](production-http-2026-10-08.json), [invitation screenshot](beta-invitation-production.png). C12 records the missing explicit browser security headers; no deployment configuration was changed.
