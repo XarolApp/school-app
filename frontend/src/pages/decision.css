@@ -434,14 +434,13 @@
 
 .dp-table {
   display: grid;
-  grid-template-columns: 200px repeat(var(--dp-cols, 3), minmax(200px, 1fr));
+  grid-template-columns: minmax(160px, 190px) repeat(var(--dp-cols, 3), minmax(170px, 1fr));
   /* NOT min-width: max-content — that measures the grid's UNCONSTRAINED
      content width, which for a long school name forces the whole grid
      (and every column) far wider than the viewport, creating both the
      empty-looking columns and a forced horizontal scroll even with only
-     2-3 schools. minmax(200px, 1fr) already lets columns shrink to fit
-     the scroll container; min-width: 0 below on the cells is what lets
-     long names actually WRAP instead of pushing their column wider. */
+     2-3 schools. Five 170px school columns fit at 1280px; narrower screens
+     keep a useful minimum and scroll while the row labels stay pinned. */
 }
 
 .dp-table-head {

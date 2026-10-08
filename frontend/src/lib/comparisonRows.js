@@ -5,15 +5,21 @@
  * decided.
  *
  * Every row is { id, label, values: [{ text, isBest }], info? }. `values`
- * has exactly one entry per compared school, in the same order. A value with
- * no data is `{ text: '—', isBest: false }` — an explicit dash, never a
- * blank cell (see the mobbin-core-product-patterns skill §C: "absence must
- * be drawn, not omitted").
+ * has exactly one entry per compared school, in the same order. Missing
+ * Cermat values say "bez dat"; missing extracted school-life values say
+ * "neuvedeno" and are muted.
  */
 
 import { summarizeCurrentYear, groupProgramsByObor, latestProgramValue, summarizeAdmission, formatCutoffRange } from './schoolPrograms';
+import { formatClubCategories, formatTeachingStyles } from './schoolDetailTagLabels';
 
 export const numCz = (v, digits = 1) => (v == null ? null : v.toLocaleString('cs-CZ', { maximumFractionDigits: digits }));
+const TWO_SCHOOL_TAGS = {
+  'nejnižší': 'nižší',
+  'nejvyšší': 'vyšší',
+  'nejméně': 'méně',
+  'nejvíc': 'víc',
+};
 
 function bestIndex(values, { lowerIsBetter = false } = {}) {
   let bestI = -1;
@@ -33,7 +39,8 @@ function bestIndex(values, { lowerIsBetter = false } = {}) {
 
 // `extremeTag` names the extreme factually ("nejnižší", "nejvíc"), never
 // "nejlepší": a lower hranice means easier to get in, not a better school.
-function row(id, label, values, formatted, bestI, info, extremeTag = null) {
+function row(id, label, values, formatted, bestI, info, extremeTag, schoolCount) {
+  const tag = schoolCount === 2 ? TWO_SCHOOL_TAGS[extremeTag] : extremeTag;
   return {
     id,
     label,
@@ -41,9 +48,31 @@ function row(id, label, values, formatted, bestI, info, extremeTag = null) {
     values: values.map((v, i) => ({
       text: v == null ? 'bez dat' : formatted[i],
       isBest: i === bestI,
-      tag: i === bestI ? extremeTag : null,
+      tag: i === bestI ? tag : null,
     })),
   };
+}
+
+function extractedOf(school) {
+  const extracted = school.school_extracted_details;
+  return Array.isArray(extracted) ? extracted[0] : extracted;
+}
+
+function detailRow(id, label, values) {
+  if (!values.some((value) => value != null)) return null;
+  return {
+    id,
+    label,
+    values: values.map((text) => ({
+      text: text ?? 'neuvedeno',
+      isBest: false,
+      isMuted: text == null,
+    })),
+  };
+}
+
+function yesNo(value) {
+  return value === true ? 'Ano' : value === false ? 'Ne' : null;
 }
 
 export function buildComparisonRows(schools) {
@@ -69,7 +98,8 @@ export function buildComparisonRows(schools) {
         adms.map((a) => `${formatCutoffRange(a)}${oldTag(a)}`),
         bestIndex(cutoffs, { lowerIsBetter: true }),
         'Rozpětí od oboru s nejnižší po obor s nejvyšší hranicí. Starší roky najdeš v grafu v detailu školy. Rok v závorce znamená starší data.',
-        'nejnižší'
+        'nejnižší',
+        schools.length
       ),
       row(
         'prijato',
@@ -78,10 +108,11 @@ export function buildComparisonRows(schools) {
         rates.map((v, i) => `${numCz(v)} %${oldTag(adms[i])}`),
         bestIndex(rates),
         undefined,
-        'nejvyšší'
+        'nejvyšší',
+        schools.length
       ),
-      row('naMisto', 'Uchazečů na místo', ratios, ratios.map((v) => `${numCz(v)}×`), bestIndex(ratios, { lowerIsBetter: true }), undefined, 'nejméně'),
-      row('mist', `Míst v roce ${summaries.find((s) => s.year)?.year ?? ''}`, kapacity, kapacity.map((v) => `${v}`), bestIndex(kapacity), undefined, 'nejvíc'),
+      row('naMisto', 'Uchazečů na místo', ratios, ratios.map((v) => `${numCz(v)}×`), bestIndex(ratios, { lowerIsBetter: true }), undefined, 'nejméně', schools.length),
+      row('mist', `Míst v roce ${summaries.find((s) => s.year)?.year ?? ''}`, kapacity, kapacity.map((v) => `${v}`), bestIndex(kapacity), undefined, 'nejvíc', schools.length),
     ],
   };
 
@@ -129,33 +160,40 @@ export function buildComparisonRows(schools) {
           return { text: count ? String(count) : '—', isBest: false };
         }),
       },
-      {
-        id: 'skolne',
-        label: 'Školné',
-        values: schools.map((s) => {
-          const zrizovatel = (latestProgramValue(s, 'zrizovatel') || '').toLowerCase();
-          if (!zrizovatel) return { text: '—', isBest: false };
-          // Church schools: tuition varies and is mostly zero — founder decision
-          // 2026-10-07 is a neutral label until the extracted data is reviewed
-          // (UNFORGET "Church schools: tuition").
-          if (zrizovatel.includes('církev')) return { text: 'Zjistit u školy', isBest: false };
-          const isPublic = !zrizovatel.includes('soukrom');
-          return { text: isPublic ? 'Bez školného' : 'Placená škola', isBest: false };
-        }),
-      },
     ],
   };
 
-  const missingSection = {
-    id: 'doplnujeme',
-    title: 'Zatím doplňujeme',
-    subtitle: 'na těchto údajích pracujeme',
-    rows: ['Dojezd MHD', 'Úspěšnost u maturity', 'Kam míří absolventi', 'Obědy a ubytování'].map((label, i) => ({
-      id: `missing-${i}`,
-      label,
-      values: schools.map(() => ({ text: '— pracujeme na tom', isBest: false, isMuted: true })),
-    })),
-  };
+  const extracted = schools.map(extractedOf);
+  const tuition = schools.map((school, i) => {
+    const zrizovatel = (latestProgramValue(school, 'zrizovatel') || '').toLocaleLowerCase('cs-CZ');
+    if (zrizovatel.includes('církev')) return 'Zjistit u školy';
+    if (zrizovatel && !zrizovatel.includes('soukrom')) return '0 Kč';
+    const amount = extracted[i]?.tuition_czk_per_year;
+    return amount == null ? null : `${numCz(amount, 0)} Kč`;
+  });
+  const maturita = extracted.map((value) => (
+    value?.maturita_pass_rate_pct == null ? null : `${numCz(value.maturita_pass_rate_pct)} %`
+  ));
+  const clubs = extracted.map((value) => formatClubCategories(value?.krouzky_kategorie));
+  const teachingStyles = extracted.map((value) => formatTeachingStyles(value?.vyukovy_styl_tagy));
+  const schoolLifeRows = [
+    detailRow('maturita', 'Úspěšnost u maturity', maturita),
+    detailRow('skolne', 'Školné za rok', tuition),
+    detailRow('obedy', 'Obědy', extracted.map((value) => yesNo(value?.ma_jidelnu))),
+    detailRow('krouzky', 'Kroužky', clubs),
+    detailRow('stylVyuky', 'Styl výuky', teachingStyles),
+    detailRow('zacatek', 'Začátek vyučování', extracted.map((value) => (
+      value?.zacatek_hodin == null ? null : `${value.zacatek_hodin}:00`
+    ))),
+    detailRow('pozadavky', 'Talentovky / další požadavky', extracted.map((value) => yesNo(value?.ma_dodatecne_pozadavky))),
+    ...(extracted.some((value) => value?.alternativni_pedagogika === true)
+      ? [detailRow('alternativniPedagogika', 'Alternativní pedagogika', extracted.map((value) => yesNo(value?.alternativni_pedagogika)))]
+      : []),
+  ].filter(Boolean);
 
-  return [admissionsSection, skolaSection, missingSection];
+  return [
+    admissionsSection,
+    skolaSection,
+    ...(schoolLifeRows.length ? [{ id: 'zivot', title: 'Život ve škole', rows: schoolLifeRows }] : []),
+  ];
 }

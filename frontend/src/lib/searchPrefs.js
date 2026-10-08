@@ -75,8 +75,8 @@ export function isInCompareSelection(schoolId) {
 
 export function toggleCompareSelection(schoolId) {
   const ids = getCompareSelection();
-  if (!ids.includes(schoolId) && ids.length >= 4) {
-    throw new Error('Porovnat můžeš nejvýš 4 školy. Nejdřív jednu odeber.');
+  if (!ids.includes(schoolId) && ids.length >= 5) {
+    throw new Error('Porovnat můžeš nejvýš 5 škol. Nejdřív jednu odeber.');
   }
   const next = ids.includes(schoolId) ? ids.filter((id) => id !== schoolId) : [...ids, schoolId];
   if (!ids.includes(schoolId)) track('compare_add', { id: schoolId });
@@ -88,10 +88,10 @@ export function toggleCompareSelection(schoolId) {
 /**
  * Whole-set replace — used when Search.jsx's own multi-select checkboxes
  * (a Set built independently of this module) hand off to /porovnani, which
- * reads this key. Caps at 4, same limit the checkboxes themselves enforce.
+ * reads this key. Caps at 5, same limit the checkboxes themselves enforce.
  */
 export function setCompareSelection(schoolIds) {
-  const next = [...new Set(schoolIds)].slice(0, 4);
+  const next = [...new Set(schoolIds)].slice(0, 5);
   const previous = getCompareSelection();
   next.filter((id) => !previous.includes(id)).forEach((id) => track('compare_add', { id }));
   writeJSON(COMPARE_KEY, next);

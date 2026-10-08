@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { fetchSchoolsByIds, fetchPicks, savePicks } from '../api';
-import { ArrowRight, Plus } from 'lucide-react';
+import { ArrowRight, Check, Plus, X } from 'lucide-react';
 import { getCompareSelection, getRecentSchoolIds, toggleCompareSelection, setCompareSelection } from '../lib/searchPrefs';
 import { buildComparisonRows } from '../lib/comparisonRows';
+import StatInfo from '../components/StatInfo';
 import DecisionTabs from '../components/decision/DecisionTabs';
 import ProsCons from '../components/decision/ProsCons';
 import { useToast } from '../components/ToastContext';
@@ -60,7 +61,7 @@ function CompareView({ schools, rows, pickIds, savingPick, onRemove, onClearAll,
                         onClick={() => onRemove(school.id)}
                         aria-label={`Odebrat ${school.name} z porovnání`}
                       >
-                        ×
+                        <X size={16} aria-hidden="true" />
                       </button>
                     </div>
                     {school.official_name && <div className="ss-caption">{school.official_name}</div>}
@@ -82,11 +83,7 @@ function CompareView({ schools, rows, pickIds, savingPick, onRemove, onClearAll,
                 <div className="dp-table-row" key={row.id}>
                   <div className="dp-table-row-label">
                     {row.label}
-                    {row.info && (
-                      <span className="ss-stat-info">
-                        <span className="ss-stat-tooltip">{row.info}</span>ⓘ
-                      </span>
-                    )}
+                    {row.info && <StatInfo text={row.info} />}
                   </div>
                   {row.values.map((v, i) => (
                     <div className={`dp-table-cell${v.isBest ? ' is-best' : ''}${v.isMuted ? ' is-muted' : ''}`} key={schools[i].id}>
@@ -124,7 +121,7 @@ function CompareView({ schools, rows, pickIds, savingPick, onRemove, onClearAll,
                     onClick={() => onAddToPicks(school)}
                     disabled={savingPick}
                   >
-                    {pickIds.has(school.id) ? '✓ V přihlášce' : 'Přidat do přihlášky'}
+                    {pickIds.has(school.id) ? <><Check size={14} aria-hidden="true" /> V přihlášce</> : 'Přidat do přihlášky'}
                   </button>
                 )}
               </div>
@@ -271,7 +268,7 @@ function Porovnani() {
             <p className="ss-label-caps dp-eyebrow">Rozhodování</p>
             <h1 className="ss-headline-lg h">Porovnání škol</h1>
             <p className="ss-body-md dp-subtitle">
-              Až 4 školy vedle sebe, řádek po řádku: hranice bodů, kolik se hlásilo a kolik jich vzali, typ školy,
+              Až 5 škol vedle sebe, řádek po řádku: hranice bodů, kolik se hlásilo a kolik jich vzali, typ školy,
               zřizovatel i školné.
             </p>
           </div>
@@ -371,7 +368,7 @@ function Porovnani() {
       <p className="ss-caption dp-footnote">
         Hranice přijetí, míra přijetí a počty míst jsou reálná data z Cermatu (1. kolo 2026). Hranice je rozpětí
         mezi obory školy. Rok v závorce znamená, že novější data zatím nemáme. Starší roky najdeš v grafu v detailu školy. Klady a zápory jsou automatické shrnutí těchto
-        dat, ne názor školy.
+        dat, ne názor školy. Údaje v části Život ve škole vycházejí z webů škol a mohou být zastaralé.
       </p>
 
       {pickIds.size > 0 && (

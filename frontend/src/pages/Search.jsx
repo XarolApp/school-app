@@ -302,9 +302,8 @@ const DEFAULT_FILTERS = {
 // Never re-filter or re-sort per page.
 const PAGE_SIZE = 40;
 
-// Same cap /sdileni and the comparison table both assume — a 5th column
-// stops being a comparison and starts being a spreadsheet.
-const COMPARE_LIMIT = 4;
+// Keep Search, /porovnani and /sdileni on the same five-school limit.
+const COMPARE_LIMIT = 5;
 
 // Skeleton for the results block: same toolbar, column header and row cells
 // as the loaded list, grey where the data goes.
@@ -987,7 +986,7 @@ function Search() {
       className={`ss-icon-toggle${isSelected ? ' is-active' : ''}`}
       aria-pressed={isSelected}
       disabled={disabled}
-      title={disabled ? `Porovnat jde nejvýš ${COMPARE_LIMIT} školy.` : isSelected ? 'Odebrat z porovnání' : 'Přidat k porovnání'}
+      title={disabled ? `Porovnat můžeš nejvýš ${COMPARE_LIMIT} škol.` : isSelected ? 'Odebrat z porovnání' : 'Přidat k porovnání'}
       aria-label={`${isSelected ? 'Odebrat z porovnání' : 'Přidat k porovnání'}: ${row.name}`}
       onClick={() => toggleSelect(row.id)}
     >

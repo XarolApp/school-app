@@ -48,7 +48,7 @@ test('mixed school contacts produce separate email and phone links', () => {
   ]);
 });
 
-test('adding a fifth comparison school is rejected without losing existing selections', () => {
+test('adding a sixth comparison school is rejected without losing existing selections', () => {
   const descriptor = Object.getOwnPropertyDescriptor(globalThis, 'localStorage');
   const storage = new Map();
   Object.defineProperty(globalThis, 'localStorage', { configurable: true, value: {
@@ -56,11 +56,12 @@ test('adding a fifth comparison school is rejected without losing existing selec
     setItem: (key, value) => storage.set(key, value),
   } });
   try {
-    setCompareSelection([1, 2, 3, 4]);
-    assert.throws(() => toggleCompareSelection(5), /4 školy/);
-    assert.deepEqual(getCompareSelection(), [1, 2, 3, 4]);
-    assert.deepEqual(toggleCompareSelection(2), [1, 3, 4]);
-    assert.deepEqual(toggleCompareSelection(5), [1, 3, 4, 5]);
+    assert.deepEqual(setCompareSelection([1, 2, 3, 4, 5, 6]), [1, 2, 3, 4, 5]);
+    assert.throws(() => toggleCompareSelection(6), /5 škol/);
+    assert.deepEqual(getCompareSelection(), [1, 2, 3, 4, 5]);
+    assert.deepEqual(toggleCompareSelection(2), [1, 3, 4, 5]);
+    assert.deepEqual(toggleCompareSelection(6), [1, 3, 4, 5, 6]);
+    assert.throws(() => toggleCompareSelection(7), /5 škol/);
   } finally {
     if (descriptor) Object.defineProperty(globalThis, 'localStorage', descriptor);
     else delete globalThis.localStorage;
@@ -163,18 +164,104 @@ test('decision tools read the founder from the newest school program year', () =
     },
   ];
 
-  const schoolRows = buildComparisonRows(schools).find((section) => section.id === 'skola').rows;
+  const rows = buildComparisonRows(schools);
+  const schoolRows = rows.find((section) => section.id === 'skola').rows;
   assert.deepEqual(
     schoolRows.find((row) => row.id === 'zrizovatel').values.map((value) => value.text),
     ['Hlavní město Praha', 'Soukromý']
   );
+  assert.equal(schoolRows.some((row) => row.id === 'skolne'), false);
   assert.deepEqual(
-    schoolRows.find((row) => row.id === 'skolne').values.map((value) => value.text),
-    ['Bez školného', 'Placená škola']
+    rows.find((section) => section.id === 'zivot').rows.find((row) => row.id === 'skolne').values.map((value) => value.text),
+    ['0 Kč', 'neuvedeno']
   );
 
   const ranked = scoreByWeights(schools, { skolne: 'zasadni' });
   assert.equal(ranked[0].school.id, 1);
   assert.equal(ranked[0].breakdown[0].raw, 1);
   assert.equal(ranked[1].breakdown[0].raw, 0);
+});
+
+function comparisonSchool(id, cutoff, applicants, admitted, capacity, extra = {}) {
+  return {
+    id,
+    name: `Škola ${id}`,
+    school_programs: [{
+      kkov: '79-41-K/41',
+      obor_nazev: 'Gymnázium',
+      rok: 2026,
+      cutoff,
+      prihlasky: applicants,
+      prijati: admitted,
+      kapacita: capacity,
+      zrizovatel: 'Soukromé',
+      ...extra.program,
+    }],
+    ...extra.school,
+  };
+}
+
+function rowById(schools, sectionId, rowId) {
+  return buildComparisonRows(schools).find((section) => section.id === sectionId).rows.find((row) => row.id === rowId);
+}
+
+test('comparison tags use plain comparatives for two schools and superlatives for three', () => {
+  const two = [
+    comparisonSchool(1, 30, 90, 27, 30),
+    comparisonSchool(2, 40, 80, 48, 40),
+  ];
+  assert.deepEqual([
+    rowById(two, 'prijimacky', 'hranice').values[0].tag,
+    rowById(two, 'prijimacky', 'prijato').values[1].tag,
+    rowById(two, 'prijimacky', 'naMisto').values[1].tag,
+    rowById(two, 'prijimacky', 'mist').values[1].tag,
+  ], ['nižší', 'vyšší', 'méně', 'víc']);
+
+  const three = [...two, comparisonSchool(3, 50, 70, 49, 50)];
+  assert.deepEqual([
+    rowById(three, 'prijimacky', 'hranice').values[0].tag,
+    rowById(three, 'prijimacky', 'prijato').values[2].tag,
+    rowById(three, 'prijimacky', 'naMisto').values[2].tag,
+    rowById(three, 'prijimacky', 'mist').values[2].tag,
+  ], ['nejnižší', 'nejvyšší', 'nejméně', 'nejvíc']);
+});
+
+test('school-life comparison rows format structured values and mark missing cells', () => {
+  const schools = [
+    comparisonSchool(1, 30, 90, 27, 30, {
+      program: { zrizovatel: 'Církevní' },
+      school: { school_extracted_details: [{
+        maturita_pass_rate_pct: 91,
+        ma_jidelnu: true,
+        krouzky_kategorie: ['sport', 'jazyky', 'veda_debata', 'jine'],
+        vyukovy_styl_tagy: ['projektova_vyuka', 'tradicni_vyklad', 'diskuze_debata'],
+        zacatek_hodin: 8,
+        ma_dodatecne_pozadavky: false,
+        alternativni_pedagogika: true,
+      }] },
+    }),
+    comparisonSchool(2, 40, 80, 48, 40, {
+      program: { zrizovatel: 'Veřejné/státní' },
+      school: { school_extracted_details: [{ ma_jidelnu: false, alternativni_pedagogika: false }] },
+    }),
+  ];
+  const life = buildComparisonRows(schools).find((section) => section.id === 'zivot');
+  assert.deepEqual(life.rows.map((row) => row.id), [
+    'maturita', 'skolne', 'obedy', 'krouzky', 'stylVyuky', 'zacatek', 'pozadavky', 'alternativniPedagogika',
+  ]);
+  assert.deepEqual(life.rows.find((row) => row.id === 'maturita').values.map((value) => value.text), ['91 %', 'neuvedeno']);
+  assert.equal(life.rows.find((row) => row.id === 'maturita').values[1].isMuted, true);
+  assert.deepEqual(life.rows.find((row) => row.id === 'skolne').values.map((value) => value.text), ['Zjistit u školy', '0 Kč']);
+  assert.deepEqual(life.rows.find((row) => row.id === 'obedy').values.map((value) => value.text), ['Ano', 'Ne']);
+  assert.equal(life.rows.find((row) => row.id === 'krouzky').values[0].text, 'Sport, Jazyky, Věda / debata +1');
+  assert.equal(life.rows.find((row) => row.id === 'stylVyuky').values[0].text, 'Projektově, Výklad +1');
+  assert.equal(life.rows.find((row) => row.id === 'zacatek').values[0].text, '8:00');
+  assert.deepEqual(life.rows.find((row) => row.id === 'pozadavky').values.map((value) => value.text), ['Ne', 'neuvedeno']);
+  assert.deepEqual(life.rows.find((row) => row.id === 'alternativniPedagogika').values.map((value) => value.text), ['Ano', 'Ne']);
+  assert.equal(buildComparisonRows(schools).some((section) => section.id === 'doplnujeme'), false);
+});
+
+test('school-life rows with no usable comparison data are omitted', () => {
+  const schools = [comparisonSchool(1, 30, 90, 27, 30), comparisonSchool(2, 40, 80, 48, 40)];
+  assert.equal(buildComparisonRows(schools).some((section) => section.id === 'zivot'), false);
 });
