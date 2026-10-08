@@ -19,6 +19,8 @@ const viewportNow = () => ({ width: innerWidth, height: innerHeight, scroll_x: s
 export default function BetaFeedbackSheet({ open, onClose, pageUrl, beta, onSuccess, programActive, requestId }) {
   const [mode,setMode] = useState('general'), [phase,setPhase] = useState('form');
   // The typed message survives a reload or a switch to another tab.
+  // Quick star ratings are not "messages"; the list shows what the tester wrote.
+  const written = (beta?.feedback || []).filter((f) => f.source !== 'micro');
   const [message,setMessage,clearMessage] = useDraft('snm.beta.feedback.message',''), [kind,setKind] = useState('obecne'), [selection,setSelection] = useState(null);
   const [screenshot,setScreenshot] = useState(null), [error,setError] = useState(''), [busy,setBusy] = useState(false), [success,setSuccess] = useState(false);
   const [outline,setOutline] = useState(null);
@@ -124,6 +126,7 @@ export default function BetaFeedbackSheet({ open, onClose, pageUrl, beta, onSucc
     <div data-beta-tools><Modal open={open && phase === 'form'} title="Zpětná vazba" onDismiss={onClose} busy={busy} className="beta-sheet">
       {success ? <div className="stack" role="status"><Check size={28} /><h3 className="ss-headline-md">Díky za zprávu</h3><p>{voice('Každá zpětná vazba nám pomáhá. Klidně pošli další.', 'Každá zpětná vazba nám pomáhá. Klidně pošlete další.')}</p><button className="ss-btn ss-btn-primary" onClick={() => { setSuccess(false); onClose(); }}>Pokračovat</button></div> : <form className="stack beta-feedback-form" onSubmit={submit}>
         <p className="field-hint">{voice('Napiš nám cokoli o celém webu, nebo označ konkrétní místo. Každá zpětná vazba pomáhá, i pozitivní.', 'Napište nám cokoli o celém webu, nebo označte konkrétní místo. Každá zpětná vazba pomáhá, i pozitivní.')}</p>
+        <p className="beta-read-note"><Check size={16} aria-hidden="true" /> {voice('Každou zpětnou vazbu čteme. Na odpověď se můžeš podívat níže v „Moje zpětné vazby“.', 'Každou zpětnou vazbu čteme. Na odpověď se můžete podívat níže v „Moje zpětné vazby“.')}</p>
         <div className="beta-modes">{modes.map(([id,Icon,label]) => <button type="button" key={id} className={`ss-btn ss-btn-secondary${mode === id ? ' is-selected' : ''}`} onClick={() => chooseMode(id)}><Icon size={18} />{label}</button>)}</div>
         {mode === 'mark' && screenshot && <figure className="beta-screenshot-preview">
           <div className="beta-screenshot-frame">
@@ -147,7 +150,7 @@ export default function BetaFeedbackSheet({ open, onClose, pageUrl, beta, onSucc
         <div className="ss-dialog-actions"><button type="button" className="ss-btn ss-btn-secondary" onClick={onClose} disabled={busy}>Zavřít</button><button type="submit" className="ss-btn ss-btn-primary" disabled={busy || message.trim().length < 10 || !programActive || needsMark || mode === 'text' && !selection?.text_after}>{busy ? 'Odesílám…' : 'Odeslat zpětnou vazbu'}</button></div>
       </form>}
       <details><summary className="ss-headline-sm">Moje vyzkoušené funkce</summary><BetaChecklist checklist={beta?.checklist} onNavigate={onClose} /></details>
-      <details><summary className="ss-headline-sm">Moje zpětné vazby ({beta?.feedback?.length || 0})</summary><div className="beta-my-feedback">{(beta?.feedback || []).map((f) => <article key={f.id}><p className="ss-data-sm">{statuses[f.status] || f.status} · {new Date(f.created_at).toLocaleDateString('cs-CZ')}</p><p>{f.message}</p>{f.admin_reply && <blockquote><strong>Odpověď týmu</strong><p>{f.admin_reply}</p></blockquote>}</article>)}</div></details>
+      <details><summary className="ss-headline-sm">Moje zpětné vazby ({written.length})</summary><div className="beta-my-feedback">{written.map((f) => <article key={f.id}><p className="ss-data-sm">{statuses[f.status] || f.status} · {new Date(f.created_at).toLocaleDateString('cs-CZ')}</p><p>{f.message}</p>{f.admin_reply && <blockquote><strong>Odpověď týmu</strong><p>{f.admin_reply}</p></blockquote>}</article>)}</div></details>
     </Modal></div>
   </>;
 }

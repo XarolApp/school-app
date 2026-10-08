@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { SHARING_ENABLED, SHARING_OFF_NOTE } from '../../../config/features';
 import { Link } from 'react-router-dom';
 import { Confetti, DemoDataNotice, ObButton, ObScreen } from '../../../components/onboarding/ObKit';
 import { countCandidates, explain, tradeoffs } from '../../../lib/matching';
@@ -296,9 +297,10 @@ function Reveal() {
                 ? 'Zobrazit celé pořadí'
                 : 'Chci vidět celé pořadí'}
           </ObButton>
-          <ObButton variant="ghost" onClick={share}>
+          <ObButton variant="ghost" onClick={share} disabled={!SHARING_ENABLED}>
             {parent ? 'Sdílet s dítětem' : 'Poslat rodičům'}
           </ObButton>
+          {!SHARING_ENABLED && <span className="ob-share-note">{SHARING_OFF_NOTE}</span>}
           <span className="ob-reveal-free">
             {parent
               ? 'První školu máte zdarma a zůstane vám.'

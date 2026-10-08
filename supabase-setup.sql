@@ -401,6 +401,10 @@ create table if not exists public.decision_profile (
   jpz_source text check (jpz_source in ('nanecisto', 'ostra')),
   updated_at timestamptz not null default now()
 );
+-- How many points the student expects to add before the real exam (a guess,
+-- shown next to the risk analysis; never used to change the verdict).
+alter table public.decision_profile add column if not exists jpz_expected_gain smallint
+  check (jpz_expected_gain between 0 and 100);
 
 -- Revocable read-only share links. The view reads LIVE data at request time
 -- (not a snapshot) so a parent always sees the current picks; revoked_at is
@@ -997,88 +1001,83 @@ grant execute on function public.purge_beta_events() to service_role;
 create or replace function public.record_beta_events(
   p_user_id uuid, p_anon_id text, p_session_id text, p_events jsonb, p_join boolean
 ) returns void language plpgsql security definer set search_path = public, pg_temp as $$
-declare checklist jsonb; event jsonb; key text; events jsonb := p_events;
+-- v_ prefix: a bare `checklist` collides with beta_profile.checklist, and
+-- qualifying it with the function name is invalid here (42P01 on every
+-- signed-in batch, which is why no checklist box ever ticked before 2026-10-08).
+declare v_checklist jsonb; v_event jsonb; v_key text; v_events jsonb := p_events;
 begin
   if p_user_id is not null then
     perform 1 from public.users where id = p_user_id and subscription_status = 'beta' for update;
     if not found then raise exception 'Beta account required.' using errcode = '42501'; end if;
-    select p.checklist into checklist from public.beta_profile p where user_id = p_user_id and consent_tracking_at is not null for update;
+    select p.checklist into v_checklist from public.beta_profile p where p.user_id = p_user_id and p.consent_tracking_at is not null for update;
     if not found then raise exception 'Beta profile missing.' using errcode = '42501'; end if;
+    v_checklist := coalesce(v_checklist, '{}'::jsonb);
     if p_join then
-      select events || coalesce(jsonb_agg(jsonb_build_object('name',name,'props',props)), '[]'::jsonb)
-        into events from public.beta_events where anon_id = p_anon_id and user_id is null;
+      select v_events || coalesce(jsonb_agg(jsonb_build_object('name',e.name,'props',e.props)), '[]'::jsonb)
+        into v_events from public.beta_events e where e.anon_id = p_anon_id and e.user_id is null;
       update public.beta_events set user_id = p_user_id where anon_id = p_anon_id and user_id is null;
     end if;
   end if;
   insert into public.beta_events(user_id,anon_id,session_id,name,path,props)
   select p_user_id,p_anon_id,p_session_id,value->>'name',value->>'path',value->'props' from jsonb_array_elements(p_events);
   if p_user_id is null then return; end if;
-  for event in select value from jsonb_array_elements(events) loop
-    key := case event->>'name'
+  for v_event in select value from jsonb_array_elements(v_events) loop
+    v_key := case v_event->>'name'
       when 'q_finish' then 'dotaznik' when 'result_view' then 'dotaznik'
-      when 'search' then case when coalesce((event->'props'->>'length')::numeric,0)>0 then 'vyhledavani' else null end when 'compare_open' then 'porovnani'
+      when 'search' then case when coalesce((v_event->'props'->>'length')::numeric,0)>0 then 'vyhledavani' else null end when 'compare_open' then 'porovnani'
       when 'matrix_weight' then 'matice' when 'prihlaska_pick' then 'prihlaska'
       when 'theme_change' then 'tema' when 'share_create' then 'sdileni' else null end;
-    if key is not null then checklist := jsonb_set(checklist, array[key], 'true'::jsonb); end if;
-    if event->>'name' = 'school_open' and event->'props'->'id' is not null then
-      checklist := jsonb_set(checklist, '{school_ids}', (select jsonb_agg(distinct value) from jsonb_array_elements(
-        coalesce(checklist->'school_ids','[]'::jsonb) || jsonb_build_array(event->'props'->'id'))));
-      checklist := jsonb_set(checklist, '{detail}', to_jsonb(jsonb_array_length(checklist->'school_ids') >= 3));
+    if v_key is not null then v_checklist := jsonb_set(v_checklist, array[v_key], 'true'::jsonb); end if;
+    if v_event->>'name' = 'school_open' and v_event->'props'->'id' is not null then
+      v_checklist := jsonb_set(v_checklist, '{school_ids}', (select jsonb_agg(distinct value) from jsonb_array_elements(
+        coalesce(v_checklist->'school_ids','[]'::jsonb) || jsonb_build_array(v_event->'props'->'id'))));
+      v_checklist := jsonb_set(v_checklist, '{detail}', to_jsonb(jsonb_array_length(v_checklist->'school_ids') >= 3));
     end if;
-    if event->>'name' = 'paywall_view' then
-      checklist := jsonb_set(checklist, '{paywall_screens}', (select jsonb_agg(distinct value) from jsonb_array_elements(
-        coalesce(checklist->'paywall_screens','[]'::jsonb) || jsonb_build_array(event->'props'->'screen'))));
-      checklist := jsonb_set(checklist, '{platby}', to_jsonb(checklist->'paywall_screens' @> '["hodnota","cesta","plan","zkusebni","platba"]'::jsonb));
+    if v_event->>'name' = 'paywall_view' then
+      v_checklist := jsonb_set(v_checklist, '{paywall_screens}', (select jsonb_agg(distinct value) from jsonb_array_elements(
+        coalesce(v_checklist->'paywall_screens','[]'::jsonb) || jsonb_build_array(v_event->'props'->'screen'))));
+      v_checklist := jsonb_set(v_checklist, '{platby}', to_jsonb(v_checklist->'paywall_screens' @> '["hodnota","cesta","plan","zkusebni","platba"]'::jsonb));
     end if;
   end loop;
-  if checklist @> '{"dotaznik":true,"detail":true}'::jsonb and
-    (checklist @> '{"porovnani":true}'::jsonb or checklist @> '{"matice":true}'::jsonb) and not checklist ? 'core_completed_at' then
-    checklist := jsonb_set(checklist,'{core_completed_at}',to_jsonb(clock_timestamp()));
+  if v_checklist @> '{"dotaznik":true,"detail":true}'::jsonb and
+    (v_checklist @> '{"porovnani":true}'::jsonb or v_checklist @> '{"matice":true}'::jsonb) and not v_checklist ? 'core_completed_at' then
+    v_checklist := jsonb_set(v_checklist,'{core_completed_at}',to_jsonb(clock_timestamp()));
   end if;
-  update public.beta_profile p set checklist = record_beta_events.checklist where user_id = p_user_id;
+  update public.beta_profile set checklist = v_checklist where user_id = p_user_id;
 end;
 $$;
 revoke all on function public.record_beta_events(uuid,text,text,jsonb,boolean) from public, anon, authenticated;
 grant execute on function public.record_beta_events(uuid,text,text,jsonb,boolean) to service_role;
--- Claiming a micro question and its answer is serialized per tester. A skip
--- consumes the question/session, while only a real answer renews access.
+-- Quick feedback after a tester tries a feature: a 1–5 rating plus one short
+-- answer, about ten seconds. It is stored as feedback (source 'micro') but on
+-- purpose does NOT renew access — only a real written report does. One answer
+-- or skip per feature; p_session is kept only for the signature/grants.
 create or replace function public.submit_beta_micro(
   p_user_id uuid, p_id text, p_session text, p_action text, p_answer text
 ) returns jsonb language plpgsql security definer set search_path = public, pg_temp as $$
-declare state jsonb; checks jsonb; result jsonb;
+declare state jsonb; checks jsonb; v_school text;
 begin
-  -- Keep the lock order identical to submit_beta_feedback: users, then profile.
-  perform 1 from public.users u join auth.users a on a.id=u.id
+  select u.tester_school_code into v_school from public.users u join auth.users a on a.id=u.id
     where u.id=p_user_id and u.subscription_status='beta' and a.email_confirmed_at is not null for update of u;
   if not found then raise exception 'Beta required.' using errcode='42501'; end if;
   if not exists(select 1 from public.beta_program_settings where singleton and ends_at>clock_timestamp()) then
     raise exception 'Program ended.' using errcode='55000'; end if;
   select micro_asked, checklist into state, checks from public.beta_profile where user_id=p_user_id for update;
-  if not found or p_id not in ('result','detail','compare','matrix','paywall','theme')
-    or p_session !~ '^[a-f0-9-]{36}$' or p_action not in ('ask','answer','skip') then
+  if not found or p_id not in ('dotaznik','vyhledavani','detail','porovnani','matice','prihlaska','tema','platby')
+    or p_action not in ('answer','skip') then
     raise exception 'Micro invalid.' using errcode='22023'; end if;
-  if p_action='ask' then
-    if (state ? p_id and (state->p_id->>'done'='true' or state->p_id->>'session_id'=p_session))
-      or exists(select 1 from jsonb_each(state) where value->>'session_id'=p_session) then
-      raise exception 'Already asked.' using errcode='23505'; end if;
-    if not coalesce((checks->>(case p_id when 'result' then 'dotaznik' when 'detail' then 'detail'
-      when 'compare' then 'porovnani' when 'matrix' then 'matice' when 'paywall' then 'platby' else 'tema' end))::boolean,false) then
-      raise exception 'Feature not tried.' using errcode='22023'; end if;
-    state := jsonb_set(state,array[p_id],jsonb_build_object('session_id',p_session,'asked_at',clock_timestamp(),'done',false));
-  else
-    if not state ? p_id or state->p_id->>'session_id' is distinct from p_session
-      or state->p_id->>'done'='true' then raise exception 'Already answered.' using errcode='23505'; end if;
-    if p_action='answer' then
-      if char_length(btrim(coalesce(p_answer,''))) not between 1 and 1500 then
-        raise exception 'Answer required.' using errcode='22023'; end if;
-      result := public.submit_beta_feedback_details(p_user_id,'comment','/beta/micro/'||p_id,
-        'Mikro otázka '||p_id||': '||btrim(p_answer),jsonb_build_object('kind','obecne','source','micro'));
-    end if;
-    state := jsonb_set(state,array[p_id,'done'],'true'::jsonb);
-    state := jsonb_set(state,array[p_id,'skipped'],to_jsonb(p_action='skip'));
+  state := coalesce(state,'{}'::jsonb);
+  if state->p_id->>'done'='true' then raise exception 'Already answered.' using errcode='23505'; end if;
+  if not coalesce((checks->>p_id)::boolean,false) then raise exception 'Feature not tried.' using errcode='22023'; end if;
+  if p_action='answer' then
+    if char_length(btrim(coalesce(p_answer,''))) not between 1 and 1500 then
+      raise exception 'Answer required.' using errcode='22023'; end if;
+    insert into public.beta_feedback(user_id, school_code, type, page_url, message, kind, source)
+    values (p_user_id, v_school, 'comment', '/beta/rychle/'||p_id, 'Rychlé hodnocení · '||p_id||' · '||btrim(p_answer), 'obecne', 'micro');
   end if;
+  state := jsonb_set(state,array[p_id],jsonb_build_object('done',true,'skipped',p_action='skip','at',clock_timestamp()));
   update public.beta_profile set micro_asked=state where user_id=p_user_id;
-  return coalesce(result,'{}'::jsonb)||jsonb_build_object('micro_asked',state);
+  return jsonb_build_object('micro_asked',state);
 end;
 $$;
 revoke all on function public.submit_beta_micro(uuid,text,text,text,text) from public,anon,authenticated;

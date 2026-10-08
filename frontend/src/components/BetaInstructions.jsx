@@ -8,11 +8,13 @@ import { betaEnrollmentComplete } from '../lib/betaEnrollment';
 import { useDraft } from '../lib/useDraft';
 
 const SUPPORT_EMAIL = 'info@stredninamiru.cz';
-const tasks = [
+// Sharing with a parent/child is switched off during beta (see UNFORGET), so it
+// is not on the list; the server may still record the key harmlessly.
+export const tasks = [
   ['dotaznik','Dotazník','/dotaznik'], ['vyhledavani','Vyhledávání','/skoly'],
   ['detail','Detail školy (3×)','/skoly'], ['porovnani','Porovnání','/porovnani'],
   ['matice','Rozhodovací matice','/porovnani/matice'], ['prihlaska','Přihláška','/prihlaska'],
-  ['tema','Barevné téma','/nastaveni'], ['sdileni','Sdílení s rodiči','/dotaznik'],
+  ['tema','Barevné téma','/nastaveni'],
   ['platby','Platební obrazovky (jen náhled)','/onboarding/hodnota?betaPreview=1'],
 ];
 export function BetaChecklist({ checklist = {}, onNavigate }) {
@@ -22,7 +24,7 @@ export function BetaChecklist({ checklist = {}, onNavigate }) {
     {id === 'detail' && <span className="ss-data-sm">{Math.min(checklist.school_ids?.length || 0,3)}/3</span>}
   </li>)}</ul>;
 }
-function doneCount(checklist = {}) {
+export function doneCount(checklist = {}) {
   return tasks.filter(([id]) => checklist[id]).length;
 }
 /** Progress header + the checklist, for the places that show it on its own (Nastavení). */

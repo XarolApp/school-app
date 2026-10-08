@@ -58,6 +58,9 @@
   --lh-data-sm: 1.4;
   --fw-data-sm: 500;
   --measure: 66ch;
+  --avatar-bg: #FFFFFF;
+  --avatar-ink: #15191E;
+  --avatar-line: #C4CBD2;
   color-scheme: light;
   --bg: #F5F6F7;
   --surface: #F5F6F7;

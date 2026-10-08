@@ -5,7 +5,7 @@ import { submitBetaClosing } from '../api';
 import { palettes, PALETTE_IDS } from '../design/tokens';
 import { ObButton } from './onboarding/ObKit';
 
-const THEMES={znacka:'Značka',smrk:'Smrk',zvyraznovac:'Zvýrazňovač',terakota:'Terakota'};
+const THEMES={znacka:'Modrá',zvyraznovac:'Žlutá',smrk:'Zelená',terakota:'Oranžová'};
 function Choice({label,value,options,onChange,multiple=false}) {
   return <fieldset className="beta-closing-field"><legend>{label}</legend><div className="beta-closing-options">{options.map(([id,text])=><label key={id} className="beta-role-option"><input type={multiple?'checkbox':'radio'} name={label} checked={multiple?value.includes(id):value===id} onChange={()=>onChange(multiple?(value.includes(id)?value.filter(v=>v!==id):[...value,id]):id)} /><span>{text}</span></label>)}</div></fieldset>;
 }

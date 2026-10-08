@@ -35,3 +35,32 @@ export function readCachedTheme() {
     return validatedTheme();
   }
 }
+
+/**
+ * A theme switch the person can actually see: the new colours spread from
+ * where they clicked (View Transitions), or cross-fade where that API is
+ * missing. Reduced-motion users get the plain instant swap.
+ */
+export function applyThemeAnimated(palette, mode, origin) {
+  const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  const root = document.documentElement;
+  if (reduce) return applyTheme(palette, mode);
+  if (!document.startViewTransition) {
+    root.classList.add('theme-fading');
+    const theme = applyTheme(palette, mode);
+    setTimeout(() => root.classList.remove('theme-fading'), 600);
+    return theme;
+  }
+  const x = origin?.x ?? window.innerWidth / 2, y = origin?.y ?? window.innerHeight / 2;
+  const radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+  root.classList.add('theme-transition');
+  const transition = document.startViewTransition(() => { applyTheme(palette, mode); });
+  transition.ready.then(() => {
+    root.animate(
+      { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+      { duration: 700, easing: 'cubic-bezier(.4,0,.2,1)', pseudoElement: '::view-transition-new(root)' },
+    );
+  }).catch(() => {});
+  transition.finished.finally(() => root.classList.remove('theme-transition'));
+  return validatedTheme(palette, mode);
+}

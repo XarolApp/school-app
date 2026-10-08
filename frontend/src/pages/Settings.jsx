@@ -10,7 +10,7 @@ import { deleteAccount, cancelSubscription, withdrawFromContract, updateProfile,
 import { getPlan } from '../config/pricing';
 import { supabase, getRememberMe, setRememberMe } from '../supabaseClient';
 import { DEFAULT_PALETTE, PALETTE_IDS, palettes } from '../design/tokens';
-import { applyTheme, MODES, readCachedTheme } from '../lib/theme';
+import { applyTheme, applyThemeAnimated, MODES, readCachedTheme } from '../lib/theme';
 import { useBetaTools } from '../components/BetaToolsContext';
 import { BetaProgress } from '../components/BetaInstructions';
 import { ROLE_KEY } from '../lib/onboardingStorage';
@@ -27,11 +27,13 @@ const SUBSCRIPTION_LABELS = {
   beta: 'Beta tester',
 };
 
+// Named by colour, in the order people scan them: blue, yellow, green, orange.
+const THEME_PALETTE_ORDER = ['znacka', 'zvyraznovac', 'smrk', 'terakota'];
 const THEME_PALETTE_COPY = {
-  znacka: { name: 'Značka', description: 'Modrá jako turistická značka. Výchozí.' },
-  smrk: { name: 'Smrk', description: 'Tmavě zelená, klidná.' },
-  zvyraznovac: { name: 'Zvýrazňovač', description: 'Černá a žlutá jako zvýrazňovač.' },
-  terakota: { name: 'Terakota', description: 'Teplá cihlová, původní barvy Střední na míru.' },
+  znacka: { name: 'Modrá', description: 'Klidná modrá. Výchozí.' },
+  zvyraznovac: { name: 'Žlutá', description: 'Černá a žlutá jako zvýrazňovač.' },
+  smrk: { name: 'Zelená', description: 'Tmavě zelená, klidná.' },
+  terakota: { name: 'Oranžová', description: 'Teplá cihlově oranžová.' },
 };
 
 const THEME_MODE_COPY = [
@@ -129,6 +131,8 @@ function Settings() {
   const chosenThemeRef = useRef(profileTheme);
   const themeChangeRevisionRef = useRef(0);
   const themeSaveQueueRef = useRef(Promise.resolve());
+  // Where the last theme option was pressed: the new colours spread from there.
+  const themeClickRef = useRef(null);
   const profileIdRef = useRef(profile?.id ?? null);
 
   useEffect(() => {
@@ -376,7 +380,7 @@ function Settings() {
     chosenThemeRef.current = nextTheme;
     setThemePalette(nextTheme.palette);
     setThemeMode(nextTheme.mode);
-    applyTheme(nextTheme.palette, nextTheme.mode);
+    applyThemeAnimated(nextTheme.palette, nextTheme.mode, themeClickRef.current);
 
     const save = themeSaveQueueRef.current.catch(() => {}).then(async () => {
       try {
@@ -603,7 +607,7 @@ function Settings() {
         </section>
 
         {/* --- Vzhled ---------------------------------------------------- */}
-        <section className="panel panel-lg settings-section">
+        <section className="panel panel-lg settings-section" onPointerDown={(e) => { themeClickRef.current = { x: e.clientX, y: e.clientY }; }}>
           <div className="settings-section-head">
             <h2 className="settings-section-title">Vzhled</h2>
             <p className="settings-section-text">
@@ -614,7 +618,7 @@ function Settings() {
           <fieldset className="settings-theme-group">
             <legend className="field-label">Barvy</legend>
             <div className="theme-palette-grid">
-              {PALETTE_IDS.map((id) => {
+              {THEME_PALETTE_ORDER.filter((id) => PALETTE_IDS.includes(id)).map((id) => {
                 const colors = palettes[id][effectiveMode];
                 const copy = THEME_PALETTE_COPY[id];
                 const selected = themePalette === id;

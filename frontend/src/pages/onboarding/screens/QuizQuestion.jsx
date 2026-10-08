@@ -1,4 +1,5 @@
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { SHARING_ENABLED, SHARING_OFF_NOTE } from '../../../config/features';
 import { createHandoff } from '../../../api';
 import { shareUrl } from '../../../lib/shareLink';
 import { ObButton, ObOption, ObScreen, SelectionCount } from '../../../components/onboarding/ObKit';
@@ -94,9 +95,10 @@ function ParentHandoffNudge() {
         kdykoli později vyplnit znovu samo.
       </p>
       <div className="ob-handoff-nudge-alt">
-        <button type="button" className="ob-btn ob-btn-ghost" onClick={send} disabled={busy}>
+        <button type="button" className="ob-btn ob-btn-ghost" onClick={send} disabled={busy || !SHARING_ENABLED}>
           {busy ? 'Připravuji odkaz…' : 'Poslat odkaz dítěti'}
         </button>
+        {!SHARING_ENABLED && <span className="ob-share-note">{SHARING_OFF_NOTE}</span>}
         {note && <span className="ob-share-note" role="status">{note}</span>}
       </div>
     </div>

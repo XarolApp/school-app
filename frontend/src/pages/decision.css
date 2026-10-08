@@ -1226,16 +1226,14 @@
   color: var(--ink3);
   white-space: nowrap;
 }
-.dp-points-source {
-  display: flex;
-  gap: var(--space-md);
+.dp-points { display: flex; flex-direction: column; gap: var(--space-sm); }
+.dp-points-label {
   font-size: var(--fs-body-sm);
+  font-weight: 600;
+  color: var(--ink);
 }
-.dp-points-source label {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
+.dp-points-label:not(:first-child) { margin-top: var(--space-sm); }
+.dp-points-projected { margin: 0; }
 .dp-points-error {
   color: var(--danger);
   font-size: var(--fs-caption);

@@ -171,6 +171,46 @@ Body: `frontend/src/lib/matching.js` already scores per obor (best obor wins), s
 4. The simulation feeds the onboarding scorer the newest year's rows only (`latestYearOnly`), not server.js's merged `slimProgramsForList`; confirm this does not change features before trusting the numbers.
 5. Answers are uniformly random, so this shows structural bias only; re-check against real beta results.
 
+## Beta round 3 — apply SQL, then re-check the checklist live — 2026-10-08
+
+- **Root cause of "Co vyzkoušet never ticks":** the live `record_beta_events`
+  failed on every signed-in batch (`42P01 missing FROM-clause entry for table
+  "record_beta_events"` — the variable was qualified with the function name).
+  Zero signed-in events had ever been stored. The local preview fakes this RPC in
+  JS, which is why it looked fine there. Fixed in `supabase-setup.sql`; the
+  founder must run the round-3 SQL, then tick one item with a tester account
+  and confirm a `beta_events` row with a `user_id` appears.
+- Same SQL: `submit_beta_micro` is now the 10-second quick rating per feature;
+  it stores feedback but **does not renew access**. Also adds
+  `decision_profile.jpz_expected_gain`.
+- Still unchecked on a real phone: the reward pop-up placement above the
+  floating beta buttons, and the theme-switch circle animation on iOS Safari.
+
+## Sharing with parent/child: test before re-enabling — 2026-10-08
+
+Every "share with parent/child" button (results link, payment link "Ať to
+zaplatí rodič", quiz handoff "Poslat odkaz dítěti", Reveal share, Přihláška
+"Ukázat rodičům") is disabled with a "zatím nefunguje" note via
+`SHARING_ENABLED` in `frontend/src/config/features.js`, and the item was
+removed from the beta checklist. Before flipping it back: test each link end to
+end on two devices (create, open as recipient, revoke, payment-link checkout in
+Stripe test mode) — see "Plan 018 rollout tests" below — then set the flag to
+`true` and put `['sdileni', …]` back in `BetaInstructions.jsx` `tasks`.
+
+## Questionnaire: address + km radius instead of only districts — 2026-10-08
+
+Founder idea: let the student type an address (home) and pick how far the
+school may be (a km circle), as `/skoly`'s SchoolMap already does, instead of
+or next to the district map. Needs a geocoder decision (same as SchoolMap) and
+a scoring rule in both `lib/matching.js` engines (distance from coordinates;
+schools without coordinates must not be penalised).
+
+## Founder to-do: sanity-check the numbers in onboarding and the paywall — 2026-10-08
+
+The founder wants to read through the onboarding flow and the five paywall
+screens and check that every number shown there (school counts, prices,
+percentages, "X škol", trial days) actually makes sense and matches reality.
+
 ## Beta round 2 (feedback sheet, persistence, saved schools) — SQL + real-tester re-check — 2026-10-07
 - **Found:** 2026-10-07, founder's second beta-readiness list
 - **Urgency:** high — the SQL must run before the deploy reaches testers (the new feedback kind is rejected by the old constraint)

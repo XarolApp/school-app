@@ -5,7 +5,7 @@ import { BetaToolsContext } from './BetaToolsContext';
 import { useAuth } from './AuthContext';
 import BetaInstructions from './BetaInstructions';
 import BetaFeedbackSheet from './BetaFeedbackSheet';
-import BetaMicroQuestions from './BetaMicroQuestions';
+import BetaReward from './BetaReward';
 import Modal from './Modal';
 import BetaClosingQuestionnaire from './BetaClosingQuestionnaire';
 import { betaTracker } from '../lib/betaTrack';
@@ -49,7 +49,7 @@ function BetaToolsUI({ profile, canShow, isPasswordRecovery, userId, refreshProf
       {parent?'Do 12 hodin se Vám přístup pozastaví — stačí poslat jednu připomínku.':'Do 12 hodin se ti přístup pozastaví — stačí poslat jednu připomínku.'}
       <button type="button" className="ss-btn ss-btn-secondary" onClick={openFeedback}>Poslat připomínku</button>
     </div>}
-    <BetaMicroQuestions beta={beta} enabled={Boolean(canShow && beta?.consent_tracking_at && profile.betaProgramActive && profile.hasAccess && !guidanceOpen && !feedback.open && !closingOpen && !profile.closingPaused)} onRefresh={refreshBeta} onRenew={()=>{void refreshProfile();}} />
+    <BetaReward beta={beta} enabled={Boolean(canShow && beta?.consent_tracking_at && profile.betaProgramActive && profile.hasAccess && !guidanceOpen && !feedback.open && !closingOpen && !profile.closingPaused)} onRefresh={refreshBeta} />
     {canShow && profile.betaProgramActive && <div data-beta-tools className={`beta-floating-tools${location.pathname.startsWith('/onboarding/') ? ' is-onboarding' : ''}`}>
       <button type="button" className="beta-help-trigger" aria-label="Pokyny k beta testování" onClick={() => setGuidanceOpen(true)}>?</button>
       <button type="button" className="beta-feedback-trigger" onClick={() => { setGuidanceOpen(false); openFeedback(); }}>Zpětná vazba</button>

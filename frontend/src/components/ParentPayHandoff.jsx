@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { SHARING_ENABLED, SHARING_OFF_NOTE } from '../config/features';
 import { useNavigate } from 'react-router-dom';
 import { createShareLink, deleteShareLink, fetchShareLinks } from '../api';
 import { useAuth } from './AuthContext';
@@ -130,9 +131,10 @@ function ParentPayHandoff({ voice = 'student', variant = 'ghost', onActivated })
     const className = variant === 'inline' ? 'ob-inline-link' : 'ob-btn ob-btn-ghost';
     return (
       <div className="ob-parent-pay-handoff">
-        <button type="button" className={className} onClick={create} disabled={busy}>
+        <button type="button" className={className} onClick={create} disabled={busy || !SHARING_ENABLED}>
           {busy ? 'Připravuji odkaz…' : 'Ať to zaplatí rodič'}
         </button>
+        {!SHARING_ENABLED && <span className="ob-share-note">{SHARING_OFF_NOTE}</span>}
         {error && <span className="ob-share-note" role="alert">{error}</span>}
       </div>
     );

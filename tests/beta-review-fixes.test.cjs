@@ -13,7 +13,7 @@ test('no anonymous or account event is queued before notice acceptance',async()=
  assert.equal(local.m.size,0);assert.equal(sent.length,0);
  t.setAccount({resolved:true,userId:'beta',tester:true,noticeAccepted:false});t.track('page_view');await t.flush();assert.equal(sent.length,0);
  t.setAccount({resolved:true,userId:'beta',tester:true,noticeAccepted:true});t.track('page_view');await t.flush();assert.equal(sent.length,1);
- assert.match(sql,/where user_id = p_user_id and consent_tracking_at is not null for update/);
+ assert.match(sql,/where p.user_id = p_user_id and p.consent_tracking_at is not null for update/);
 });
 test('failed tracking flush cannot reattribute events to the next beta account',async()=>{
  const {createBetaTracker}=await import('../frontend/src/lib/betaTrack.js');let reject;const sent=[];
@@ -37,13 +37,12 @@ test('auth refresh cannot replay navigation events, including after tracking is 
  enabled=true;nav.start();nav.start();nav.start();now=300;nav.finish();
  assert.equal(events.filter(e=>e[0]==='page_view').length,1);assert.equal(events.filter(e=>e[0]==='school_open').length,1);assert.equal(events.filter(e=>e[0]==='page_leave').length,1);
 });
-test('unfinished micro question resumes on reload or can be reclaimed by a new session',async()=>{
- const {nextBetaMicro}=await import('../frontend/src/lib/betaMicro.js');const questions=[{id:'result',check:'dotaznik'}],state={result:{session_id:'old',done:false}};
- assert.equal(nextBetaMicro(questions,state,{dotaznik:true},'old').resume,true);
- assert.equal(nextBetaMicro(questions,state,{dotaznik:true},'new').resume,false);
- assert.equal(nextBetaMicro(questions,{result:{session_id:'old',done:true}},{dotaznik:true},'new'),null);
- assert.equal(nextBetaMicro(questions,{...state,other:{session_id:'new',done:true}},{dotaznik:true},'new'),null);
- assert.match(sql,/state->p_id->>'done'='true' or state->p_id->>'session_id'=p_session/);
+test('quick feature ratings never renew access, and event recording avoids the invalid function-name qualifier',()=>{
+ const micro=sql.slice(sql.indexOf('create or replace function public.submit_beta_micro'),sql.indexOf('revoke all on function public.submit_beta_micro'));
+ assert.doesNotMatch(micro,/submit_beta_feedback/);
+ assert.match(micro,/insert into public.beta_feedback/);
+ const events=sql.slice(sql.indexOf('create or replace function public.record_beta_events'),sql.indexOf('revoke all on function public.record_beta_events'));
+ assert.doesNotMatch(events,/record_beta_events\.checklist/);
 });
 test('null or past program end suppresses a persisted closing deadline in JS and SQL',()=>{
  const user={created_at:'2026-10-01'},beta={closing_due_at:'2026-10-01'},now=new Date('2026-10-05');
@@ -55,7 +54,7 @@ test('visiting search with an empty query does not count as a real search',()=>{
  const {checklistFromEvents}=require('../lib/betaAnalytics');
  assert.equal(checklistFromEvents([{name:'search',props:{length:0}}]).vyhledavani,undefined);
  assert.equal(checklistFromEvents([{name:'search',props:{length:3}}]).vyhledavani,true);
- assert.match(sql,/when 'search' then case when coalesce\(\(event->'props'->>'length'\)::numeric,0\)>0/);
+ assert.match(sql,/when 'search' then case when coalesce\(\(v_event->'props'->>'length'\)::numeric,0\)>0/);
 });
 test('daily cleanup removes only server-selected orphans through private Storage',async()=>{
  const removed=[];const db={rpc:async(name,args)=>{assert.equal(name,'beta_screenshot_orphans');assert.equal(args.p_limit,100);return {data:[{name:'owner/orphan.jpg'}]};},storage:{from:b=>{assert.equal(b,'beta-screenshots');return {remove:async paths=>{removed.push(...paths);return {error:null};}};}}};

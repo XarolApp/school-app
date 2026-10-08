@@ -117,6 +117,12 @@ function Layout() {
               <Search size={16} aria-hidden="true" />
               Školy
             </NavLink>
+            {isSignedIn && (
+              <NavLink to="/dotaznik">
+                <ListChecks size={16} aria-hidden="true" />
+                Dotazník
+              </NavLink>
+            )}
             <NavLink to="/porovnani">
               <Columns3 size={16} aria-hidden="true" />
               Porovnání
@@ -124,17 +130,13 @@ function Layout() {
             </NavLink>
             {isSignedIn && (
               <>
-                <NavLink to="/dotaznik">
-                  <ListChecks size={16} aria-hidden="true" />
-                  Dotazník
+                <NavLink to="/prihlaska">
+                  <ClipboardList size={16} aria-hidden="true" />
+                  Přihláška
                 </NavLink>
                 <NavLink to="/ulozene">
                   <Bookmark size={16} aria-hidden="true" />
                   Uložené
-                </NavLink>
-                <NavLink to="/prihlaska">
-                  <ClipboardList size={16} aria-hidden="true" />
-                  Přihláška
                 </NavLink>
               </>
             )}

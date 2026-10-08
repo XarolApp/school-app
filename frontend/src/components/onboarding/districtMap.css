@@ -1,0 +1,20 @@
+/* District map (DistrictMap.jsx). Scoped under .ob-district-map so these win
+   over the older map rules in onboarding.css regardless of load order. */
+.ob-district-map .ob-district-map-shape { stroke-linejoin: round; }
+.ob-district-map .ob-district-map-region.is-selected .ob-district-map-shape { fill: var(--acc-soft); stroke: var(--acc); stroke-width: 2.5; }
+.ob-district-map .ob-district-map-region.is-selected:hover .ob-district-map-shape,
+.ob-district-map .ob-district-map-region.is-selected.is-peer-hovered .ob-district-map-shape { fill: var(--acc-line); stroke: var(--acc); }
+
+/* Numbers sit in their own top layer and keep the same colour selected or
+   not; the thin halo in the surface colour keeps them legible on any fill. */
+.ob-district-map .ob-district-map-label {
+  fill: var(--ink);
+  font-family: var(--sans);
+  font-weight: 600;
+  pointer-events: none;
+  paint-order: stroke;
+  stroke: var(--surface);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+.ob-district-map .ob-district-map-label.is-blocked { opacity: 0.4; }

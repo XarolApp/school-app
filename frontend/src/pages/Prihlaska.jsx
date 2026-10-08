@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { SHARING_ENABLED, SHARING_OFF_NOTE } from '../config/features';
 import { Link, useNavigate } from 'react-router-dom';
 import { Printer } from 'lucide-react';
 import {
@@ -214,13 +215,13 @@ function Prihlaska() {
           <div className="dp-rail-card">
             <div className="ss-headline-sm h">Ukázat rodičům</div>
             <p className="ss-body-sm">
-              Vytvoří odkaz, kde uvidí tvoje školy, pořadí a rozbor. Nemusí se nikam registrovat.
+              {SHARING_ENABLED ? 'Vytvoří odkaz, kde uvidí tvoje školy, pořadí a rozbor. Nemusí se nikam registrovat.' : SHARING_OFF_NOTE}
             </p>
             <label className="dp-share-checkbox">
-              <input type="checkbox" checked={includeNotes} onChange={(e) => setIncludeNotes(e.target.checked)} />
+              <input type="checkbox" checked={includeNotes} disabled={!SHARING_ENABLED} onChange={(e) => setIncludeNotes(e.target.checked)} />
               Poslat i moje poznámky
             </label>
-            <button type="button" className="ss-btn ss-btn-primary" onClick={handleCreateShare} disabled={!picks.length}>
+            <button type="button" className="ss-btn ss-btn-primary" onClick={handleCreateShare} disabled={!picks.length || !SHARING_ENABLED}>
               Vytvořit odkaz
             </button>
 

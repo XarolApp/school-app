@@ -910,16 +910,32 @@ app.post('/api/beta/closing', requireAuth, requireBetaTester, betaClosingLimiter
   if (error) return res.status(error.code==='23505'?409:error.code==='55000'?410:500).json({error:'Dotazník nelze uložit.'});
   res.status(201).json({saved:true});
 });
+// Quick ten-second rating after a feature is tried. Stored as feedback, but it
+// never renews access (only a written report does) — see submit_beta_micro.
+const QUICK_FEATURES = ['dotaznik','vyhledavani','detail','porovnani','matice','prihlaska','tema','platby'];
 app.post('/api/beta/micro', requireAuth, requireBetaTester, betaMicroLimiter, async (req,res) => {
-  const { id, session_id: session, action, answer } = req.body || {};
-  if (!['result','detail','compare','matrix','paywall','theme'].includes(id) || !/^[a-f0-9-]{36}$/.test(session || '') ||
-    !['ask','answer','skip'].includes(action) || action === 'answer' && (typeof answer !== 'string' || !answer.trim() || answer.length > 1500)) {
-    return res.status(400).json({ error: 'Odpověď nemá správný formát.' });
+  const { id, action, rating, answers, note } = req.body || {};
+  if (!QUICK_FEATURES.includes(id) || !['answer','skip'].includes(action)) return res.status(400).json({ error: 'Odpověď nemá správný formát.' });
+  let summary = null;
+  if (action === 'answer') {
+    const parts = [];
+    if (rating !== undefined && rating !== null) {
+      if (!Number.isInteger(rating) || rating < 1 || rating > 5) return res.status(400).json({ error: 'Hodnocení musí být 1 až 5.' });
+      parts.push(`${rating}/5`);
+    }
+    if (answers !== undefined) {
+      if (!Array.isArray(answers) || answers.length > 4 || answers.some((a) => typeof a !== 'string' || !a.trim() || a.length > 120)) return res.status(400).json({ error: 'Odpověď nemá správný formát.' });
+      parts.push(...answers.map((a) => a.trim()));
+    }
+    if (note !== undefined && note !== null && note !== '') {
+      if (typeof note !== 'string' || note.trim().length > 600) return res.status(400).json({ error: 'Poznámka je moc dlouhá.' });
+      if (note.trim()) parts.push(note.trim());
+    }
+    if (!parts.length) return res.status(400).json({ error: 'Chybí odpověď.' });
+    summary = parts.join(' · ');
   }
-  if (action === 'answer' && ['result','compare','matrix'].includes(id) && !/^[1-5](?:$| · )/.test(answer) ||
-    action === 'answer' && id === 'paywall' && !['ano','spíš ano','ne'].includes(answer)) return res.status(400).json({ error: 'Chybí odpověď.' });
-  const { data,error } = await supabase.rpc('submit_beta_micro', { p_user_id: req.user.id, p_id: id, p_session: session, p_action: action, p_answer: action === 'answer' ? answer.trim() : null });
-  if (error) return res.status(error.code === '23505' ? 409 : error.code === '55000' ? 410 : error.code === '22023' ? 400 : 500).json({ error: 'Otázku teď nelze uložit.' });
+  const { data,error } = await supabase.rpc('submit_beta_micro', { p_user_id: req.user.id, p_id: id, p_session: '00000000-0000-0000-0000-000000000000', p_action: action, p_answer: summary });
+  if (error) return res.status(error.code === '23505' ? 409 : error.code === '55000' ? 410 : error.code === '22023' ? 400 : 500).json({ error: 'Hodnocení teď nelze uložit.' });
   res.json(data);
 });
 app.post('/api/beta/gate', requireAuth, requireBetaTester, betaGateLimiter, async (req,res) => {
@@ -1781,27 +1797,32 @@ app.delete('/api/notes/:schoolId', requireAuth, async (req, res) => {
 app.get('/api/decision-profile', requireAuth, async (req, res) => {
   const { data, error } = await supabase
     .from('decision_profile')
-    .select('jpz_points, jpz_source, updated_at')
+    .select('jpz_points, jpz_source, jpz_expected_gain, updated_at')
     .eq('user_id', req.user.id)
     .maybeSingle();
 
   if (error) return res.status(500).json({ error: error.message });
-  res.json(data || { jpz_points: null, jpz_source: null, updated_at: null });
+  res.json(data || { jpz_points: null, jpz_source: null, jpz_expected_gain: null, updated_at: null });
 });
 
 app.put('/api/decision-profile', decisionLimiter, requireAuth, async (req, res) => {
-  const rawPoints = req.body?.jpzPoints;
-  const jpzPoints = rawPoints === null || rawPoints === undefined ? null : Number(rawPoints);
-  if (jpzPoints !== null && (Number.isNaN(jpzPoints) || jpzPoints < 0 || jpzPoints > 100)) {
-    return res.status(400).json({ error: 'Body musí být mezi 0 a 100.' });
+  const whole = (raw) => (raw === null || raw === undefined || raw === '' ? null : Number(raw));
+  const jpzPoints = whole(req.body?.jpzPoints);
+  const expectedGain = whole(req.body?.expectedGain);
+  if (jpzPoints !== null && (!Number.isInteger(jpzPoints) || jpzPoints < 0 || jpzPoints > 100)) {
+    return res.status(400).json({ error: 'Body musí být celé číslo mezi 0 a 100.' });
   }
-
-  const jpzSource = ['nanecisto', 'ostra'].includes(req.body?.jpzSource) ? req.body.jpzSource : null;
+  if (expectedGain !== null && (!Number.isInteger(expectedGain) || expectedGain < 0 || expectedGain > 100)) {
+    return res.status(400).json({ error: 'Odhad zlepšení musí být celé číslo mezi 0 a 100.' });
+  }
 
   const { error } = await supabase.from('decision_profile').upsert({
     user_id: req.user.id,
     jpz_points: jpzPoints,
-    jpz_source: jpzPoints === null ? null : jpzSource,
+    // The student no longer picks mock vs. real exam: the number is simply
+    // their current, most realistic score.
+    jpz_source: jpzPoints === null ? null : 'nanecisto',
+    jpz_expected_gain: jpzPoints === null ? null : expectedGain,
     updated_at: new Date().toISOString(),
   });
 

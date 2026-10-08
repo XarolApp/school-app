@@ -218,6 +218,10 @@ export function cssVarsText(p) {
 /** Theme-independent tokens: emitted ONCE in :root, not per palette.
  *  Names match design/system/tokens/*.css exactly, so screens produced by
  *  /design against that template need no translation layer. */
+// The account avatar stays the same white circle in every theme and mode, so
+// the theme change reads as the page changing, not the person's icon.
+export const avatar = { bg: '#FFFFFF', ink: '#15191E', line: '#C4CBD2' };
+
 export function staticVars() {
   const out = {};
   for (const [k, v] of Object.entries(space)) out[`--space-${k}`] = `${v}px`;
@@ -236,6 +240,9 @@ export function staticVars() {
     if (t.variation) out[`--var-${n}`] = t.variation;
   }
   out['--measure'] = '66ch';
+  out['--avatar-bg'] = avatar.bg;
+  out['--avatar-ink'] = avatar.ink;
+  out['--avatar-line'] = avatar.line;
   return out;
 }
 

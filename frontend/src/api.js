@@ -285,10 +285,10 @@ export function fetchDecisionProfile() {
   return request('/api/decision-profile');
 }
 
-export function saveDecisionProfile({ jpzPoints, jpzSource }) {
+export function saveDecisionProfile({ jpzPoints, expectedGain }) {
   return request('/api/decision-profile', {
     method: 'PUT',
-    body: JSON.stringify({ jpzPoints, jpzSource }),
+    body: JSON.stringify({ jpzPoints, expectedGain }),
   });
 }
 

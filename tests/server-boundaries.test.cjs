@@ -888,12 +888,14 @@ test('normal authenticated account cannot send beta events, even with an invitat
   assert.equal(h.rpcCalls.length, 0);
 });
 
-test('micro answer and soft gate renew through the existing feedback transaction; skips do not contain an answer', async () => {
+test('quick ratings go through submit_beta_micro; skips carry no answer; soft gate renews through feedback', async () => {
   const h=harness({result:(q)=>({data:q.table==='users'?{subscription_status:'beta'}:null,error:null})});
   const session='aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
-  await h.call('post','/api/beta/micro',{user:{id:'user-test'},body:{id:'result',session_id:session,action:'answer',answer:'4 · Skoly mi sedi'}});
+  const bad=await h.call('post','/api/beta/micro',{user:{id:'user-test'},body:{id:'dotaznik',action:'answer',rating:7}}); assert.equal(bad.statusCode,400);
+  await h.call('post','/api/beta/micro',{user:{id:'user-test'},body:{id:'dotaznik',session_id:session,action:'answer',rating:4,answers:['Spíš sedí'],note:'Skoly mi sedi'}});
   assert.equal(h.rpcCalls[0].name,'submit_beta_micro'); assert.equal(h.rpcCalls[0].args.p_user_id,'user-test');
-  await h.call('post','/api/beta/micro',{user:{id:'user-test'},body:{id:'detail',session_id:session,action:'skip',answer:'ignored'}});
+  assert.equal(h.rpcCalls[0].args.p_answer,'4/5 · Spíš sedí · Skoly mi sedi');
+  await h.call('post','/api/beta/micro',{user:{id:'user-test'},body:{id:'detail',session_id:session,action:'skip',rating:3}});
   assert.equal(h.rpcCalls[1].args.p_answer,null);
   const short=await h.call('post','/api/beta/gate',{user:{id:'user-test'},body:{message:'short'}}); assert.equal(short.statusCode,400);
   await h.call('post','/api/beta/gate',{user:{id:'user-test'},body:{message:'Porovnani skol mi hodne pomohlo.'}});

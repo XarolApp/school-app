@@ -53,8 +53,10 @@ function createDatabase(){
    if(p)Object.assign(p.checklist,checklistFromEvents(tables.beta_events.filter(e=>e.user_id===u.id)));
   }else if(name==='submit_beta_feedback'||name==='submit_beta_feedback_details')result=renew(a.p_message,a.p_page_url,a.p_details);
   else if(name==='submit_beta_micro'){
-   if(a.p_action==='ask'){const asked=p.micro_asked;if(Object.values(asked).some(m=>m.session_id===a.p_session)||asked[a.p_id]?.done)return {error:{code:'23505'}};asked[a.p_id]={session_id:a.p_session,done:false};}
-   else {p.micro_asked[a.p_id]={session_id:a.p_session,done:true};if(a.p_action==='answer')result=renew('Mikro otázka '+a.p_id+': '+a.p_answer,'/beta/micro/'+a.p_id,{source:'micro'});}result=result||{asked:true};
+   if(p.micro_asked[a.p_id]?.done)return {error:{code:'23505'}};if(!p.checklist[a.p_id])return {error:{code:'22023'}};
+   p.micro_asked[a.p_id]={done:true,skipped:a.p_action==='skip',at:iso()};
+   if(a.p_action==='answer'){const id=tables.beta_feedback.length+1;tables.beta_feedback.push({id,user_id:u.id,school_code:u.tester_school_code,kind:'obecne',source:'micro',type:'comment',page_url:'/beta/rychle/'+a.p_id,message:'Rychlé hodnocení · '+a.p_id+' · '+a.p_answer,status:'nove',created_at:iso(),admin_note:null,admin_reply:null});}
+   result={micro_asked:p.micro_asked};
   }else if(name==='submit_beta_closing'){
    if(p.closing_done_at)return {error:{code:'23505'}};
    tables.beta_closing_answers.push({user_id:u.id,answers:a.p_answers,created_at:iso()});p.closing_done_at=iso();

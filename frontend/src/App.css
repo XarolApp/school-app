@@ -204,8 +204,9 @@ html {
   width: 32px;
   height: 32px;
   border-radius: 999px;
-  background: var(--ink);
-  color: var(--bg);
+  background: var(--avatar-bg);
+  color: var(--avatar-ink);
+  border: 1px solid var(--avatar-line);
   display: inline-flex;
   align-items: center;
   justify-content: center;

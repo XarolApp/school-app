@@ -103,3 +103,10 @@ code {
   padding: var(--space-xs) var(--space-sm);
   background: var(--code-bg);
 }
+
+/* Theme switch (lib/theme.js applyThemeAnimated): the new theme grows out of
+   the clicked option; the browser's default cross-fade is turned off so the
+   circle is the only motion. */
+.theme-transition::view-transition-old(root),
+.theme-transition::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+.theme-fading, .theme-fading * { transition: background-color .5s ease, color .5s ease, border-color .5s ease, fill .5s ease !important; }

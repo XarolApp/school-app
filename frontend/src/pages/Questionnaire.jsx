@@ -1,4 +1,5 @@
 import { track } from '../lib/betaTrack';
+import { SHARING_ENABLED, SHARING_OFF_NOTE } from '../config/features';
 import { useAuth } from '../components/AuthContext';
 import { clearDraftKey, readDraft } from '../lib/useDraft';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -148,10 +149,10 @@ function ResultShareTools() {
 
   return (
     <div className="qz-share-tools">
-      <button type="button" className="ss-btn ss-btn-secondary" onClick={create} disabled={busy}>
+      <button type="button" className="ss-btn ss-btn-secondary" onClick={create} disabled={busy || !SHARING_ENABLED}>
         {busy ? 'Připravuji odkaz…' : label}
       </button>
-      <p className="ss-caption">{explanation}</p>
+      <p className="ss-caption">{SHARING_ENABLED ? explanation : SHARING_OFF_NOTE}</p>
       {note && <p className="ss-caption" role="status">{note}</p>}
       {error && <p className="ss-caption qz-share-error" role="alert">{error}</p>}
       {links.length > 0 && (
