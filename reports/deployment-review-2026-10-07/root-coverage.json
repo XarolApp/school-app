@@ -24,18 +24,18 @@
     "reviewer": "root"
   },
   "scripts/beta-preview/database.cjs": {
-    "sha256": "4883336c7b51973946108852d69c3cb8adae3ef4967142841c016495eae6171a",
-    "lines": 67,
+    "sha256": "219ab51d88148116cc0cccc3830af76f27cf072d67ab28a18bca223ecea531a6",
+    "lines": 69,
     "read_ranges": [
       [
         1,
-        67
+        69
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:36:06.930290+00:00",
-    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+    "checked_at_utc": "2026-10-08T21:40:57.646532+00:00",
+    "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
   },
   "frontend/src/pages/SdileniView.jsx": {
     "sha256": "6bee1979a34b488d882808447371de659baa5d677032b4c50689984314f4012c",
@@ -1366,45 +1366,241 @@
     "method": "Full source read across recorded continuation turns, including missing middleware/brainstorm ranges and complete authored diffs. Read means inspected, not defect-free or runtime-approved."
   },
   "reports/deployment-review-2026-10-07/REPORT.md": {
-    "sha256": "749cde068f369c978371c0c182067366e3e150bb267f471b97b3556252528e78",
-    "lines": 64,
+    "sha256": "b2172489188d6fa642db79b2dc7f490cd2dd6fe836e86639eef60decbf1773ec",
+    "lines": 67,
     "read_ranges": [
       [
         1,
-        64
+        67
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:30:59.017070+00:00",
-    "method": "Full source read across recorded continuation turns, including missing middleware/brainstorm ranges and complete authored diffs. Read means inspected, not defect-free or runtime-approved."
+    "checked_at_utc": "2026-10-08T21:40:57.648533+00:00",
+    "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
   },
   "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md": {
-    "sha256": "b529cf9cbb6323c8ea2789589f50136744f217fc3ba572bf058ed0bf63c854ee",
-    "lines": 91,
+    "sha256": "a6678a14d47405e40e67b17ce1b518f306476f1bf27fefd2d2acf4dba37f0256",
+    "lines": 93,
     "read_ranges": [
       [
         1,
-        91
+        93
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:30:59.017121+00:00",
-    "method": "Full source read across recorded continuation turns, including missing middleware/brainstorm ranges and complete authored diffs. Read means inspected, not defect-free or runtime-approved."
+    "checked_at_utc": "2026-10-08T21:40:57.648582+00:00",
+    "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
   },
   "reports/deployment-review-2026-10-07/script-findings.md": {
-    "sha256": "651402d56e978938be762f98dea750baaf9f3c671fb33cbe468b760f6bb721ed",
-    "lines": 43,
+    "sha256": "67e42c93ea061f4892aa3494ed0063f009e3b03d2f238bb84d76efa1f0cbd0e7",
+    "lines": 75,
     "read_ranges": [
       [
         1,
-        43
+        75
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:30:59.017160+00:00",
-    "method": "Full source read across recorded continuation turns, including missing middleware/brainstorm ranges and complete authored diffs. Read means inspected, not defect-free or runtime-approved."
+    "checked_at_utc": "2026-10-08T21:40:57.648486+00:00",
+    "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
+  },
+  "scripts/geocode-schools.js": {
+    "sha256": "dd928bac23644ec082c8a216793d72763a4eb6a9df47d1739c2f6db779b34607",
+    "lines": 215,
+    "read_ranges": [
+      [
+        1,
+        215
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:40:57.644550+00:00",
+    "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
+  },
+  "scripts/filter-config.json": {
+    "sha256": "a9f44c037b1e581778e02799c638270986f94f3483f03011f6d41c23619d28a1",
+    "lines": 27,
+    "read_ranges": [
+      [
+        1,
+        27
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:40:57.644911+00:00",
+    "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
+  },
+  "scripts/filter-scraped-schools.js": {
+    "sha256": "67d8123239e6249a5255fa86f72e05c987564369516ad2abf0625de7ceac5087",
+    "lines": 355,
+    "read_ranges": [
+      [
+        1,
+        355
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:40:57.645301+00:00",
+    "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
+  },
+  "scripts/filter-scraped-schools.test.js": {
+    "sha256": "bdc2bc00ce29d32042ea7f80f4a1e2adfad41ee96648681fb9b2aa44de77c541",
+    "lines": 97,
+    "read_ranges": [
+      [
+        1,
+        97
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:40:57.645562+00:00",
+    "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
+  },
+  "scripts/scrape-schools.js": {
+    "sha256": "d0b859939de8bf71409f215f6b0a992b7e264614201aa257ed86fa0d762e9e50",
+    "lines": 202,
+    "read_ranges": [
+      [
+        1,
+        202
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:40:57.645865+00:00",
+    "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
+  },
+  "scripts/scrape-schools-free.js": {
+    "sha256": "7bb4cc0993c539ccb36a9b365e7477e7fef3881458d1adf74c4412db0241ea47",
+    "lines": 435,
+    "read_ranges": [
+      [
+        1,
+        435
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:40:57.646226+00:00",
+    "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
+  },
+  "scripts/beta-preview/supabaseClient.js": {
+    "sha256": "36f57373f1961fdc41d9524231df37d597af96802a05a60916dbd0c0c8f3a468",
+    "lines": 9,
+    "read_ranges": [
+      [
+        1,
+        9
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:40:57.646792+00:00",
+    "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
+  },
+  "scripts/beta-preview/toolbar.js": {
+    "sha256": "8bbe0fd623beb1e581719d4533819f56a34070e41e72de2704d29f236fde494a",
+    "lines": 11,
+    "read_ranges": [
+      [
+        1,
+        11
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:40:57.646958+00:00",
+    "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
+  },
+  "scripts/beta-preview/vite.config.mjs": {
+    "sha256": "4e4302f9af0214cb970bd7f3ea98d36250e08a2fcc4843579eb8e0aa8532b054",
+    "lines": 5,
+    "read_ranges": [
+      [
+        1,
+        5
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:40:57.647089+00:00",
+    "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
+  },
+  "scripts/extract-school-details.js": {
+    "sha256": "c0dd0ec3d5dcd01fe61113389f444cf2b048da431d8d97d074ebfea2ffc5d9df",
+    "lines": 1499,
+    "read_ranges": [
+      [
+        1,
+        1499
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:40:57.647477+00:00",
+    "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
+  },
+  "scripts/build-district-map.js": {
+    "sha256": "84762836f3b81891e79fcb8721c1b183c40b126b5443f507b49a2effa8a8e54b",
+    "lines": 433,
+    "read_ranges": [
+      [
+        1,
+        433
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:40:57.647645+00:00",
+    "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
+  },
+  "scripts/simulate-matching.mjs": {
+    "sha256": "cb35a9533db3b10db7454a72d7fea80baaebe7553a20ee68e4c02f6fde8031a9",
+    "lines": 273,
+    "read_ranges": [
+      [
+        1,
+        273
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:40:57.647982+00:00",
+    "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
+  },
+  "tests/extraction-guards.test.cjs": {
+    "sha256": "07540af77051e261f6d1b91c2ef7eefa887bab6f768f7250a10cb35be752b1c0",
+    "lines": 93,
+    "read_ranges": [
+      [
+        1,
+        93
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:40:57.648242+00:00",
+    "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
+  },
+  "reports/deployment-review-2026-10-07/probe-data-integrity.cjs": {
+    "sha256": "c25dc8417817ffb99d59c8cd99c99d3fa9e866826129c9a38b697a34c559e23a",
+    "lines": 66,
+    "read_ranges": [
+      [
+        1,
+        66
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:40:57.648442+00:00",
+    "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
   }
 }

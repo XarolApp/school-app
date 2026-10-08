@@ -20,6 +20,8 @@ These findings come from full source reads. No write script was run against prod
 
 `import-admission-data.js:327` chooses the first database row with a REDIZO for aggregates, while lines 359–364 construct a map whose last duplicate wins for programmes. Maturita/website import maps have similar last-wins behavior. **Conditional risk:** this splits attribution if the database contains duplicate institution identifiers. Check aggregate duplicate counts and the intended merged-school mapping without exporting private rows; fail or map explicitly rather than relying on array order.
 
+**8 October follow-up:** [read-only integrity evidence](data-integrity-2026-10-08.json) found **zero duplicate REDIZO groups**, raw or visible. Do not describe the conditional identifier issue as current corruption. Six merged rows still own programme records; preserve their deliberate aggregation/ownership during refreshes.
+
 **Action:** check actual workbook explanation sheets/header definitions, null/suppression cases, legitimate shared REDIZO records and programme ownership. Record confirmed rules in fixtures. Unknown counts must stay distinguishable from measured zero. Do not interpret a website claim or fuzzy match as official register completeness.
 
 ## S04 — P2: website backfill can overwrite an intervening correction
@@ -37,6 +39,36 @@ These findings come from full source reads. No write script was run against prod
 ## S06 — P2 documentation: Atlas matching is a separate heuristic
 
 `scripts/diff-atlas-schools.js:2–11` describes an old 224-vs-214 snapshot and claims exactly the same matching everywhere. Its noise-word list differs from the admission importer. This comparison is historical supporting evidence, not an authoritative current school count or completeness check. Update the comment and retain the original snapshot's date/source limitation; do not force the algorithms to match merely to make the comment true.
+
+**Fixed:** header corrected in pushed commit `cdd56d0`; matching behavior unchanged. Current Atlas/register completeness is still unverified.
+
+## S07 — P2: coordinate presence is not address precision
+
+`scripts/geocode-schools.js` accepts the first Czech result without checking feature type, address precision or whether it is the intended school building. Removing the last address segment can leave only a district/city. Any returned centroid is then saved as a precise location. Requests have no explicit timeout and fill-missing updates do not guard an intervening correction. Per-process pacing also does not coordinate with other application Nominatim traffic (C01).
+
+**Observed:** all 217 visible schools currently have finite, in-range coordinates within the generated Prague district geometry. That does not prove building accuracy, particularly for schools near district boundaries. Review suspicious broad/repeated coordinates and original geocoder matches; never correct them solely from the postal Praha number. Add precision checks/manual approval for broad results and conditional updates before future geocoding batches. Corrected fallback/`--force` comments do not constitute a precision fix.
+
+## S08 — P2: scrape-cache failure can silently change batch scope
+
+Both scrape scripts catch malformed `_manifest.json` and return an empty object. A corrupted manifest therefore makes every eligible school appear uncached, potentially recrawling paid Firecrawl pages; later saves replace the manifest with only the new batch's entries. Saves are not atomic and concurrent runs can lose each other's entries. CLI `--limit` is not validated: zero/NaN means no limit, and a negative value selects all but the trailing records. Partial school failures still allow a successful process exit.
+
+**Action before another batch:** fail with a recoverable manifest error, validate IDs/limits, write cache plus manifest atomically and prevent simultaneous writers. Exit nonzero on a partial failed run while preserving useful completed work. Document that free-scraper “dry run” makes no crawl calls, whereas extraction/website-backfill dry runs may call paid providers. Review robots/site permissions, redirect destinations, sitemap scope and response-size limits before scaling external crawling; the source review does not prove permission for every school website or Jina's current service terms.
+
+## S09 — reproduced canteen negation bug fixed; stored candidates need source review
+
+**Confirmed and fixed in the current source:** `hasExplicitDiningEvidence` matched `má` within `nemá`; a negated canteen could become `ma_jidelnu=true`. A quoted denial could also rescue a model positive. Regression tests failed on the old code and now verify six denial examples return unknown, explicit own/arranged lunches remain true and explicit no meals remains false. Base extraction descriptions were aligned with existing whole-school tuition rules and no longer permit `false` merely because additional admission requirements are omitted.
+
+The [live aggregate probe](data-integrity-2026-10-08.json) flags public school IDs **118, 146, 228** for source review. These are **candidates, not three proven incorrect records**: 118/228 mention named off-site dining; 146 mentions self-heating food, a delivery portal and nearby bistros. Read the stored source URLs/current school pages and confirm whether meals are explicitly arranged through the school. Keep that distinction in the prose; change structured values only after confirming the evidence. No extraction or database update was run.
+
+**Also fixed:** failure to read Cermat preservation records or existing extraction records now aborts before model calls/writes. Previously the run could overwrite protected official rates after a failed lookup or reprocess all previously extracted schools. A mocked preflight-failure regression asserts zero model calls/writes for both cases.
+
+## S10 — remaining extraction assurance and freshness work
+
+Base extraction verifies type/range and limited text guards, but does not prove numeric/boolean values against exact source evidence or validate every source URL against cached pages. Structured mode has stronger evidence rules, but verbatim quote presence alone does not prove a model-assigned category or meal interpretation. Existing values are skipped without revalidation; source/model changes do not automatically refresh dependent structured values. A base re-extraction can leave the six structure fields derived from old prose. Partial provider failures are logged but can end with exit code zero.
+
+**Action:** retain source checksums/year/extraction version, define which dependent values become stale on refresh, validate source URL membership and sample every scoring-relevant field against source text before relying on it. Resolve the tuition prompt's remaining inference that an unqualified single price means “same for all programmes”; absence of another listed price is not proof. Test zero/free tuition, decimals/time rounding and multiple tracks deliberately before changing their data policy. Keep unknown distinct from false/zero. This needs a reviewed data-quality policy and targeted reconciliation, not a blind live re-extraction.
+
+**Limits of filter/simulation evidence:** all six existing filter tests pass. Preserving a keyword group does not prove every important fact survives truncation. The simulation uses an approximate latest-year projection and random-sort multi-selection; do not call its output a calibrated probability, uniform subset sample or proof of unfair scoring. Review those assumptions before using the report to change matching weights. Uniformly sampled question options do not represent real student preferences.
 
 ## Optional improvements
 

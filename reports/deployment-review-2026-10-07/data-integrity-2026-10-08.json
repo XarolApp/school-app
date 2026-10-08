@@ -1,0 +1,17 @@
+{
+  "checkedAt": "2026-10-08T21:38:08.252Z",
+  "rawSchools": 223,
+  "visibleSchools": 217,
+  "duplicateRedizoGroupsRaw": 0,
+  "duplicateRedizoGroupsVisible": 0,
+  "mergedRowsWithProgrammes": 6,
+  "visibleCoordinatesInvalid": 0,
+  "visibleCoordinatesOutsideDistrictGeometry": 0,
+  "storedMealPositivesWithOnlyCanteenDenialCandidate": 3,
+  "mealCandidateSchoolIds": [
+    118,
+    146,
+    228
+  ],
+  "limitation": "Duplicate identifiers may be legitimate institution/merged records and need explicit ownership rules. Coordinate presence/geometry does not prove building accuracy. Meal candidates need source review, not automatic nulling. No database writes or model calls."
+}

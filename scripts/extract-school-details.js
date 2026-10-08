@@ -61,8 +61,9 @@ const supabase = createClient(supabaseUrl, serviceKey);
 
 const SCRAPED_DATA_DIR = path.join(__dirname, 'data', 'scraped-schools');
 // Default input is the filtered markdown (scripts/filter-scraped-schools.js), not the raw
-// scrape: same facts, ~59% fewer tokens, and nothing lost to the 150k cut. Re-run the
-// filter after every new scrape. --input-dir scripts/data/scraped-schools reads the raw files.
+// scrape. Filtering reduces input, but keyword preservation does not prove every fact
+// survives. Re-run the filter after every scrape and sample source coverage.
+// --input-dir scripts/data/scraped-schools reads the raw files.
 const FILTERED_DATA_DIR = path.join(__dirname, 'data', 'filtered-schools');
 const inputDirArg = process.argv.indexOf('--input-dir');
 if (inputDirArg !== -1 && (!process.argv[inputDirArg + 1] || process.argv[inputDirArg + 1].startsWith('--'))) throw new Error('--input-dir needs a path');
@@ -92,7 +93,7 @@ const FIELDS = [
 const NUMERIC_FIELDS = [
   [
     'tuition_czk_per_year',
-    'Roční školné v Kč, jako celé číslo. Pokud web uvádí částku za pololetí/měsíc, přepočti ji na CELÝ ROK (vynásob 2, resp. 10-12 podle toho, kolik měsíců školního roku pokrývá). Pokud škola nabízí víc programů s různou cenou, použij tu NEJNIŽŠÍ uvedenou. Pouze pro soukromé školy — veřejné/státní školy jsou ze zákona bez školného, takže null.',
+    'Roční školné v Kč, jako celé číslo. Měsíční/pololetní částku přepočti na celý rok pouze při výslovně uvedeném počtu platebních měsíců/pololetí. Pokud se ceny programů/větví liší nebo je cena doložena jen pro jeden z nich, vrať null a rozdíly zachovej v textu skolne_poplatky. Pouze pro soukromé školy — veřejné/státní školy bez školného mají null.',
   ],
   [
     'maturita_pass_rate_pct',
@@ -113,7 +114,7 @@ const NUMERIC_FIELDS = [
 const BOOLEAN_FIELDS = [
   [
     'ma_dodatecne_pozadavky',
-    'true, pokud škola vyžaduje NĚCO NAD RÁMEC jednotné přijímací zkoušky (talentovka, pohovor, portfolio, vlastní test). false, pokud web explicitně říká, že rozhoduje jen JPZ / prospěch, nebo o žádných dalších požadavcích nemluví. Vrať null jen pokud text o přijímacím řízení vůbec nemluví.',
+    'true, pokud škola explicitně vyžaduje NĚCO NAD RÁMEC jednotné přijímací zkoušky (talentovka, pohovor, portfolio, vlastní test). false jen pokud web explicitně říká, že rozhoduje pouze JPZ / prospěch a další požadavky nejsou. Pokud text další požadavky pouze nezmiňuje nebo je rozsah nejasný, vrať null.',
   ],
   [
     'alternativni_pedagogika',
@@ -583,6 +584,11 @@ function hasPartialDiningScope(text) {
   return /\b(?:u|pro)\s+(?:student\w*\s+)?obor(?:u|e|y)?\b|\b(?:u|pro)\s+(?:student\w*\s+)?pobock\w*\b|\b(?:pouze|jen)\s+(?:v|pro)\s+(?:budov\w*|pavilon\w*|pracovist\w*)\b|\bv\s+jedne\s+z\s+(?:vice|dve|tri)\s+budov\b/.test(folded);
 }
 
+function hasCanteenDenial(text) {
+  const folded = foldForRules(text);
+  return /\b(?:nema\w*|neprovozuje\w*|nenabizi\w*)\b.{0,45}\b(?:jideln\w*|menz\w*|kantyn\w*)|\b(?:jideln\w*|menz\w*|kantyn\w*)\b.{0,45}\b(?:nema\w*|neprovozuje\w*|nenabizi\w*|neni|nejsou|nefunguje\w*|nenachazi\w*|neexistuje\w*)\b/.test(folded);
+}
+
 // ma_jidelnu means students can get lunch through the school: on-site or
 // explicitly arranged elsewhere. “No own canteen” alone is not a denial.
 // Keep the own/elsewhere distinction in validation output; the DB stays boolean-only.
@@ -591,7 +597,7 @@ function hasExplicitDiningEvidence(text, value) {
   const noMeals = /(?:skola.{0,25})?(?:neposkytuje|nezajistuje|nema|nevari)\s+(?:zadne\s+)?(?:skolni\s+)?(?:stravovan\w*|obed\w*)|(?:stravovan\w*|obed\w*).{0,35}(?:neni zajisten|nejsou zajisten|se neposkytuj|se nevar)/.test(folded);
   if (value === false) return noMeals;
   if (noMeals || looksLikeNoDataAnswer(text)) return false;
-  const canteen = /(?:skola.{0,30})?(?:ma|provozuje|nabizi|zajistuje).{0,45}(?:skolni\s+)?(?:jideln\w*|menz\w*|kantyn\w*)|(?:skolni\s+)?(?:jideln\w*|menz\w*|kantyn\w*).{0,50}(?:v budov|v areal|pro zak|fung|k dispozic|samoobsluhou|nachaz)|(?:v areal\w*|vedle).{0,60}(?:je|funguje|nachaz\w*).{0,30}(?:jideln\w*|menz\w*|kantyn\w*)/.test(folded);
+  const canteen = !hasCanteenDenial(text) && /(?:skola.{0,30})?\b(?:ma(?:me|ji)?|provozuje\w*|nabizi\w*|zajistuje\w*)\b.{0,45}(?:skolni\s+)?(?:jideln\w*|menz\w*|kantyn\w*)|(?:skolni\s+)?(?:jideln\w*|menz\w*|kantyn\w*).{0,50}(?:v budov|v areal|pro zak|fung|k dispozic|samoobsluhou|nachaz)|(?:v areal\w*|vedle).{0,60}(?:je|funguje|nachaz\w*).{0,30}(?:jideln\w*|menz\w*|kantyn\w*)/.test(folded);
   const schoolLunches = /(?:obedy|stravovan\w*).{0,45}(?:dostup|zaji|poskyt|nabiz|je|jsou)|(?:dostup|zaji|poskyt|nabiz).{0,45}(?:obedy|stravovan\w*)/.test(folded);
   const elsewhere = /(?:obedy|stravovan\w*).{0,100}(?:zajist|dostup|poskyt|nabiz).{0,100}(?:blizk\w*|partnersk\w*|jine skole|v\s+[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]{2,}|mimo skolu)|(?:blizk\w*|partnersk\w*|jine skole).{0,80}(?:jideln\w*|obedy|stravovan\w*)/.test(folded);
   const atSchool = /(?:obedy|stravovan\w*).{0,50}(?:v budov\w* skol|v areal\w* skol|na skole)|(?:v budov\w* skol|v areal\w* skol|na skole).{0,50}(?:obedy|stravovan\w*)/.test(folded);
@@ -611,6 +617,8 @@ function deriveDining(text) {
     return { value: true, quote, note: elsewhere ? 'zajištěno jinde' : 'vlastní jídelna' };
   }
   if (negatives.length) return { value: false, quote: negatives[0] };
+  const canteenDenial = quotes.find(hasCanteenDenial);
+  if (canteenDenial) return { value: null, quote: canteenDenial, reason: 'canteen denial does not establish whether school-arranged lunches exist elsewhere' };
   return { value: null, quote: null, reason: 'no explicit whole-school meal evidence' };
 }
 
@@ -1056,7 +1064,7 @@ function cleanStructureResult(raw, sources, requestedFields) {
     let derived = field === 'ma_jidelnu' ? deriveDining(sourceText) : deriveDormitory(sourceText);
     // The keyword rule misses plain wording ("Obědy dodává Goodlunch", "Žákovský oběd stojí 53 Kč").
     // A model "true" still counts when its quote is verbatim in the source and the rule found no
-    // partial-scope or conflicting statement — the quote check is the anti-fabrication guarantee.
+    // partial-scope or conflicting statement. Quote presence alone does not prove its meaning.
     const modelQuote = evidence[field];
     if (field === 'ma_jidelnu' && derived.value === null && !derived.quote && raw?.[field] === true
       && quoteIsInSource(modelQuote, sourceText) && !hasPartialDiningScope(modelQuote) && !looksLikeNoDataAnswer(modelQuote)
@@ -1361,7 +1369,8 @@ async function main() {
       .from('school_extracted_details')
       .select('school_id')
       .not('model', 'is', null);
-    if (!extractedError && extracted) {
+    if (extractedError) throw new Error('Could not read existing extraction records: ' + extractedError.message);
+    if (extracted) {
       const extractedIds = new Set(extracted.map((row) => String(row.school_id)));
       const before = schoolIds.length;
       schoolIds = schoolIds.filter((id) => !extractedIds.has(id));
@@ -1393,11 +1402,12 @@ async function main() {
   const publicIds = new Set(schools.filter(isPublicSchool).map((s) => String(s.id)));
 
   // Cermat's official maturita figures must survive a re-extraction.
-  const { data: cermatRows } = await supabase
+  const { data: cermatRows, error: cermatError } = await supabase
     .from('school_extracted_details')
     .select('school_id')
     .in('school_id', schoolIds)
     .ilike('maturita_uspesnost', '%zdroj: Cermat%');
+  if (cermatError) throw new Error('Could not read Cermat preservation records: ' + cermatError.message);
   const cermatIds = new Set((cermatRows || []).map((r) => String(r.school_id)));
 
   let processed = 0;

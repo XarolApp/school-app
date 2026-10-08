@@ -49,8 +49,8 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
  * "Praha 6, Evropská 33", others carry a postal code or a building name. Rather
  * than parse them, hand Nominatim the whole thing and let it do the matching,
  * with the country pinned so a Czech street name cannot resolve to a namesake
- * abroad. The second attempt drops everything before the last comma, which
- * turns a decorated address back into a plain street line.
+ * abroad. Fallbacks remove a cadastral segment, then the last comma-delimited
+ * segment; the remaining query can be broader and needs match-precision review.
  */
 // Scraped addresses often carry Prague's cadastral neighbourhood name — the
 // historical district (Stodůlky, Vršovice, Chodov, ...) — in the middle,
@@ -203,8 +203,8 @@ async function main() {
     }
     console.log(
       '\nUsually the address is too vague for Nominatim. Setting latitude/longitude\n' +
-        'by hand in the Supabase table editor works — nothing here overwrites a row\n' +
-        'that already has both.'
+        'by hand in the Supabase table editor works. Normal reruns skip complete\n' +
+        'coordinates; --force replaces them.'
     );
   }
 }

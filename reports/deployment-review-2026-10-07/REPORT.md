@@ -31,6 +31,9 @@ Codex fix commit **`e335d50`**, pushed to `main`: the animated landing counter n
 
 ## Verification evidence and limits
 
+- Solo extraction checkpoint, 8 October: a regression reproduced negated canteen text becoming a positive; the corrected rule preserves unknown versus explicit no meals and arranged lunches. Failed existing/Cermat-preservation lookups now stop before paid model calls/writes. All **11 targeted extraction/filter tests pass**. No live re-extraction was run. [S09 and remaining source-data limits](script-findings.md).
+- A separate [read-only data-integrity check](data-integrity-2026-10-08.json) found zero duplicate REDIZO groups, all 217 visible coordinates finite/in range/within Prague geometry, and six merged rows with programmes. Three stored meal positives (public school IDs 118, 146, 228) need source review; named off-site dining/delivery must be assessed before changing values. Coordinates within Prague do not prove building accuracy.
+
 - Root tests: **127 passed**, including the new redaction, malformed analytics and language-explanation regressions. [Output](backend-tests-after-fixes.txt).
 - Current production dependency audits: backend and frontend both report zero known advisories. The full backend audit still reports the development-only `xlsx` dependency as high severity; review the importer/update path before consuming untrusted workbooks. See `*-audit-*-current.json`.
 - Frontend lint: zero errors, seven warnings in the earlier recorded run; the latest in-flight shared-tree run reports eight warnings (seven Fast Refresh exports and one Modal cleanup dependency warning). Production build passes. [Lint](frontend-lint-after-fixes.txt), [build](frontend-build-after-fixes.txt). Large bundles remain a performance concern; a build is not a device test.
