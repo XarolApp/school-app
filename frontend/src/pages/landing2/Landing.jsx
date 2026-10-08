@@ -507,6 +507,7 @@ export default function Landing() {
     };
 
     const onWheel = (e) => {
+      if (e.target?.closest?.('dialog[open]')) return;
       if (e.ctrlKey) return; // pinch-zoom
       const dir = Math.sign(e.deltaY);
       if (!dir) return;
@@ -528,6 +529,7 @@ export default function Landing() {
     };
 
     const onKey = (e) => {
+      if (e.target?.closest?.('dialog[open]')) return;
       if (!atStage() || e.altKey || e.ctrlKey || e.metaKey) return;
       if (e.target.closest?.('input, textarea, select, button, a, [contenteditable]') && e.key === ' ') return;
       const dir = { ArrowDown: 1, PageDown: 1, ' ': e.shiftKey ? -1 : 1, ArrowUp: -1, PageUp: -1 }[e.key];
@@ -537,14 +539,17 @@ export default function Landing() {
     };
 
     const onTouchStart = (e) => {
+      if (e.target?.closest?.('dialog[open]')) { touchY = null; return; }
       touchY = e.touches.length === 1 && atStage() ? e.touches[0].clientY : null;
     };
     const onTouchMove = (e) => {
+      if (e.target?.closest?.('dialog[open]')) { touchY = null; return; }
       if (e.touches.length !== 1) { touchY = null; return; }
       if (touchY != null && e.cancelable) e.preventDefault();
     };
     const onTouchCancel = () => { touchY = null; };
     const onTouchEnd = (e) => {
+      if (e.target?.closest?.('dialog[open]')) { touchY = null; return; }
       if (touchY == null) return;
       const dy = touchY - e.changedTouches[0].clientY;
       touchY = null;

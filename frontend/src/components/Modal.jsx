@@ -63,6 +63,7 @@ function Modal({
     <dialog
       ref={ref}
       className={`ss-dialog ${className}`.trim()}
+      data-lenis-prevent
       role={role}
       aria-labelledby={titleId}
       aria-describedby={describedBy}
