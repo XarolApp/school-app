@@ -42,7 +42,7 @@ function BetaToolsUI({ profile, canShow, isPasswordRecovery, userId, refreshProf
       {profile.closingPaused?'Před pokračováním je potřeba závěrečný dotazník.':'Závěrečný dotazník je připravený. Na odpovědi je 24 hodin.'}
       <button type="button" className="ss-btn ss-btn-primary" onClick={()=>setClosingOpen(true)}>Vyplnit dotazník</button>
     </div>}
-    <div data-beta-tools><Modal open={Boolean(canShow && !guidanceOpen && beta && !beta.closing_done_at && (closingOpen || profile.closingPaused))} title="Závěrečný dotazník" onDismiss={()=>setClosingOpen(false)} className="beta-modal beta-closing-modal">
+    <div data-beta-tools><Modal open={Boolean(canShow && profile.betaProgramActive && !guidanceOpen && beta && !beta.closing_done_at && (closingOpen || profile.closingPaused))} title="Závěrečný dotazník" onDismiss={()=>setClosingOpen(false)} className="beta-modal beta-closing-modal">
       <BetaClosingQuestionnaire role={beta?.role} onDone={()=>{setClosingOpen(false);void refreshBeta();void refreshProfile();}} />
     </Modal></div>
     {canShow && profile.betaProgramActive && profile.hasAccess && hoursLeft>0 && hoursLeft<=12 && <div className="beta-banner" data-beta-tools role="status">

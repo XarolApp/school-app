@@ -90,17 +90,18 @@
     "method": "Full source read; earlier full read plus complete current diff review where applicable. Read coverage does not imply defect-free or full runtime verification."
   },
   "frontend/src/App.jsx": {
-    "sha256": "15bf8c73814fe8556df80cfe259dda221f63c6a0c699bb8c607e2cd78d9aed22",
-    "lines": 113,
+    "sha256": "1b72fab35d3be14a790d6105d0f543cf6f741ad3a69dc8d8232e6147c79bba13",
+    "lines": 139,
     "read_ranges": [
       [
         1,
-        113
+        139
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:23:06.561091+00:00"
+    "checked_at_utc": "2026-10-08T22:10:05.659202+00:00",
+    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
   },
   "frontend/src/components/AsyncState.jsx": {
     "sha256": "5bc2699ffd41551d392e010df8225a1e639cb756d647b5c994f30c5f92e07df8",
@@ -286,32 +287,32 @@
     "checked_at_utc": "2026-10-07T18:23:06.564623+00:00"
   },
   "frontend/src/components/BetaFeedbackSheet.jsx": {
-    "sha256": "aa939c18fc462fa253c715b8cbfdd6923b3b98464c4ec2f2799604bc85594bbd",
-    "lines": 120,
+    "sha256": "c6fdf444e69bd0bf5ed8cf228ded4d27cfb4a4820f34fc212e6b1a76828a8b9f",
+    "lines": 158,
     "read_ranges": [
       [
         1,
-        120
+        158
       ]
     ],
-    "status": "deferred_peer_edits",
+    "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:23:06.564973+00:00",
-    "deferred_note": "Shared-checkout source changed during continuation; saved read hash/ranges are historical, pending current-source re-review."
+    "checked_at_utc": "2026-10-08T22:10:05.663082+00:00",
+    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
   },
   "frontend/src/components/BetaTools.jsx": {
-    "sha256": "8ede1a347ec386e7c70417a0bb6d6516400110b5f5340e568cb20b5abed717b6",
-    "lines": 102,
+    "sha256": "902ec6c63e8f8fb6e23f72159b9ebbbb0fb1792176c3d2ba87314df4ef9b1cf5",
+    "lines": 118,
     "read_ranges": [
       [
         1,
-        102
+        118
       ]
     ],
-    "status": "deferred_peer_edits",
+    "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:23:06.565299+00:00",
-    "deferred_note": "Shared-checkout source changed during continuation; saved read hash/ranges are historical, pending current-source re-review."
+    "checked_at_utc": "2026-10-08T22:10:05.661945+00:00",
+    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
   },
   "plans/README.md": {
     "sha256": "b92c5c1689c530a44dbcd5ffd1d9d30072f8d6c84dd72bd7cfeb16d90d1be7a0",
@@ -636,18 +637,18 @@
     "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
   },
   "frontend/src/components/decision/RiskSummary.jsx": {
-    "sha256": "9f57fb37bacab0dc4e3fd702db85d6045fa0d948e70303274dccc2cab8cc8fed",
-    "lines": 42,
+    "sha256": "fe495b428a5a001f854df86bfd331fe6053847a80cdfd485c9a1090d516ce5fe",
+    "lines": 46,
     "read_ranges": [
       [
         1,
-        42
+        46
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:51:37.840211+00:00",
-    "method": "Full source read; earlier full read plus complete current diff review where applicable. Read coverage does not imply defect-free or full runtime verification."
+    "checked_at_utc": "2026-10-08T22:10:05.663930+00:00",
+    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
   },
   "frontend/src/components/landing/ProductScreens.jsx": {
     "sha256": "9befc35659baaedd4495f3d3f61104fa6d82f324fcf265015e26e0c2ee6f5a33",
@@ -1810,8 +1811,8 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:58:03.929894+00:00",
-    "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
+    "checked_at_utc": "2026-10-08T22:10:05.664619+00:00",
+    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
   },
   "tests/beta-middleware.test.mjs": {
     "sha256": "9a42764daa95e2eea8cb626204bb29cd2e695853649452c6a147e634e3be4385",
@@ -2066,14 +2067,32 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "frontend/src/lib/usePicks.js": {
-    "status": "deferred_peer_edits",
+    "sha256": "9eea8be3af3b24f1bda45dff7106ec8242efe05ed77287160e91e7973cc8b6c3",
+    "lines": 80,
+    "read_ranges": [
+      [
+        1,
+        80
+      ]
+    ],
+    "status": "complete",
     "reviewer": "root",
-    "note": "Read released snapshot on 8 October, but path changed again during Phase 6; current source requires re-review."
+    "checked_at_utc": "2026-10-08T22:10:05.660354+00:00",
+    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
   },
   "frontend/src/lib/authValidation.js": {
-    "status": "deferred_peer_edits",
+    "sha256": "b7f92fda74fdd99c649b1f589a2cb806c9d562067943e00d6f936e801ec16ed6",
+    "lines": 77,
+    "read_ranges": [
+      [
+        1,
+        77
+      ]
+    ],
+    "status": "complete",
     "reviewer": "root",
-    "note": "Read released snapshot on 8 October, but path changed again during Phase 6; current source requires re-review."
+    "checked_at_utc": "2026-10-08T22:10:05.661574+00:00",
+    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
   },
   "tests/provider-diagnostics.test.cjs": {
     "sha256": "598ce2c5d6285d536e06d6d56553219711f248e02c3780167d519749dd9503d2",
@@ -2090,17 +2109,241 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "6a860b3de2512ac052dfcdd6c8aa990266c5d508f3cab91f7091d73864d90951",
-    "lines": 2292,
+    "sha256": "6bfcfeacece49c77c2ef09f1b54110f0f6848cf0dcd3f602582a9ccaac176679",
+    "lines": 2293,
     "read_ranges": [
       [
         1,
-        319
+        320
       ]
     ],
     "status": "partial",
     "reviewer": "root",
     "checked_at_utc": "2026-10-08T22:04:21.848878+00:00",
     "method": "Read original lines 1–300 in complete ranges and inspected the complete current diff for evidence/SQL-rollout corrections. Remaining long ledger is unread; this is not full coverage."
+  },
+  "frontend/src/api.js": {
+    "sha256": "07b5a72a87fbd88712988bbe465d8a34ec16a1b6f2b127bbdfa82e74e930e003",
+    "lines": 473,
+    "read_ranges": [
+      [
+        1,
+        473
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T22:10:05.659662+00:00",
+    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
+  },
+  "frontend/src/components/AuthContext.jsx": {
+    "sha256": "d79a5d4c04588be385ff11ee6abea12d2c8d13f11254abcfe55964ac34b3de01",
+    "lines": 490,
+    "read_ranges": [
+      [
+        1,
+        490
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T22:10:05.660005+00:00",
+    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
+  },
+  "frontend/src/components/ProtectedRoute.jsx": {
+    "sha256": "bd45bfda7b59b798610039751633cf9b6a71296ab54427d687593b27951a13c1",
+    "lines": 78,
+    "read_ranges": [
+      [
+        1,
+        78
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T22:10:05.660141+00:00",
+    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
+  },
+  "frontend/src/lib/gender.js": {
+    "sha256": "e17672102189f49abeb1d4f50d230b0576e14ebae841b94f5e1eb5f8cc39e43f",
+    "lines": 31,
+    "read_ranges": [
+      [
+        1,
+        31
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T22:10:05.660569+00:00",
+    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
+  },
+  "frontend/src/lib/genderCopy.js": {
+    "sha256": "169276daaf1afa90203e1ad1534f09066ba3126f12b72b2dd61683ce7410c526",
+    "lines": 14,
+    "read_ranges": [
+      [
+        1,
+        14
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T22:10:05.660770+00:00",
+    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
+  },
+  "frontend/src/lib/onboardingStorage.js": {
+    "sha256": "2442589a2da4795fe0c711e3f2ac26694d3c90362493faff70aadbbdef2f4022",
+    "lines": 30,
+    "read_ranges": [
+      [
+        1,
+        30
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T22:10:05.661019+00:00",
+    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
+  },
+  "frontend/src/lib/pendingOnboardingAnswers.js": {
+    "sha256": "0c3b1e1ed60b6502157dca432689c7cf8889d35e96cbc4ec72f1e215e09860b3",
+    "lines": 61,
+    "read_ranges": [
+      [
+        1,
+        61
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T22:10:05.661296+00:00",
+    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
+  },
+  "frontend/src/lib/betaCapture.js": {
+    "sha256": "e89d89c347de19f6ef279134036299eb2290c8b6a0ff810d16bba0652dff15cf",
+    "lines": 41,
+    "read_ranges": [
+      [
+        1,
+        41
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T22:10:05.661786+00:00",
+    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
+  },
+  "frontend/src/components/BetaRegionPicker.jsx": {
+    "sha256": "69e9abe9f6bb815a6cc46a8ef7ecbf976e6e10311ee425c3d821ba7524490972",
+    "lines": 63,
+    "read_ranges": [
+      [
+        1,
+        63
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T22:10:05.662162+00:00",
+    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
+  },
+  "frontend/src/components/BetaClosingQuestionnaire.jsx": {
+    "sha256": "b4240c7accff79e33a9a65eebadc05434f2a0325d4ba730fc282da57517a7ff6",
+    "lines": 62,
+    "read_ranges": [
+      [
+        1,
+        62
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T22:10:05.662466+00:00",
+    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
+  },
+  "frontend/src/components/BetaEnrollment.jsx": {
+    "sha256": "1859ba554d8ce99375dfac644fe8cc5decd9498e6e16778440d1ecdacd2873fa",
+    "lines": 32,
+    "read_ranges": [
+      [
+        1,
+        32
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T22:10:05.662676+00:00",
+    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
+  },
+  "frontend/src/components/BetaSoftGate.jsx": {
+    "sha256": "5c9094454c3b8cc99edb07001476b644e4d37f87b8266b09a000989cb0f337a4",
+    "lines": 21,
+    "read_ranges": [
+      [
+        1,
+        21
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T22:10:05.662927+00:00",
+    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
+  },
+  "frontend/src/components/BetaReward.jsx": {
+    "sha256": "1738c4515c26bf2aca3daf3fad25f2aa5b2f32df4bdc375920193b92a1cdd730",
+    "lines": 177,
+    "read_ranges": [
+      [
+        1,
+        177
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T22:10:05.663406+00:00",
+    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
+  },
+  "frontend/src/components/BetaInstructions.jsx": {
+    "sha256": "f6da2fd11b331c27776ee6ae76687594c6ddf3664bc65e533f9d94082597dc94",
+    "lines": 146,
+    "read_ranges": [
+      [
+        1,
+        146
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T22:10:05.663612+00:00",
+    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
+  },
+  "frontend/src/components/decision/PointsInput.jsx": {
+    "sha256": "5c354cca487d4b0b32ba39de8146f409fbddabe0cf70bfd21a5d2777ec9541c7",
+    "lines": 103,
+    "read_ranges": [
+      [
+        1,
+        103
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T22:10:05.664176+00:00",
+    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
+  },
+  "tests/gender-copy.test.mjs": {
+    "sha256": "e4172e3756ff2c86433fcb2f1b88193d38867efe8fde850a29b25baf0dbd1b84",
+    "lines": 12,
+    "read_ranges": [
+      [
+        1,
+        12
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T22:10:05.664326+00:00",
+    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
   }
 }

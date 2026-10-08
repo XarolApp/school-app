@@ -143,8 +143,9 @@ export function saveOnboardingAnswers(answers) {
  * The standalone questionnaire (server-side lib/questionnaire.js) — a separate
  * surface from the onboarding quiz, see CLAUDE.md. GET returns the question set,
  * the account's active/default run and its full run history; POST submits new
- * answers (unlimited; scores always, AI sentences when a model is reachable) and
- * the new run becomes the default.
+ * answers and scores deterministically; the new run becomes the default.
+ * AI explanations are requested separately for an individual school through
+ * explainQuestionnaireSchool(), rather than generated with every submission.
  */
 export function fetchQuestionnaire() {
   return request('/api/questionnaire');
@@ -419,9 +420,10 @@ export function withdrawFromContract() {
 }
 
 /**
- * Cancels the caller's Stripe subscription (plan 009). During a season pass's
- * 3-day trial this cancels immediately (nothing has been charged yet); once
- * paid, it schedules cancellation for the end of the current period. Returns
+ * Cancels a scheduled season charge during its purchase trial, or cancels the
+ * caller's monthly Stripe subscription (immediately during a subscription
+ * trial; otherwise at period end). A paid one-time season pass has no recurring
+ * subscription to cancel; withdrawal is a separate action. Returns
  * `{ cancelled: 'immediately' | 'at_period_end', accessUntil: string|null }`.
  */
 export function cancelSubscription() {
@@ -431,9 +433,9 @@ export function cancelSubscription() {
 /**
  * Schools for the onboarding matcher.
  *
- * /api/schools answers 200 with [] when Supabase is empty or paused. An empty
- * reveal screen after a 10-question quiz is the worst possible outcome, so we
- * fall back to a clearly-labelled fixture and hand the caller `isDemo` so the
+ * An empty catalogue or a failed school request falls back to clearly-labelled
+ * fixtures. A paused/unavailable database may return an error, not an empty
+ * success. The caller receives `isDemo` so the
  * UI can say out loud that these are ukázková data.
  *
  * @returns {Promise<{schools:Array, isDemo:boolean, error:string|null}>}
