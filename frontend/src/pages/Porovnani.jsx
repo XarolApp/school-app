@@ -8,7 +8,133 @@ import DecisionTabs from '../components/decision/DecisionTabs';
 import ProsCons from '../components/decision/ProsCons';
 import { useToast } from '../components/ToastContext';
 import './decision.css';
-import PageSkeleton from '../components/PageSkeleton';
+import { SkeletonPage, Sk } from '../components/PageSkeleton';
+import { readHint } from '../lib/skeletonHints';
+
+// The header and table, drawn either with data or — while loading — with the
+// same rows and columns filled with grey blocks (row labels are static, the
+// column count is the comparison selection), so nothing moves when data lands.
+function CompareView({ schools, rows, pickIds, savingPick, onRemove, onClearAll, onAddToPicks, skeleton = false }) {
+  return (
+    <>
+      <div className="dp-header">
+        <div>
+          <h1 className="ss-headline-lg h">Porovnání škol</h1>
+          <p className="ss-body-md dp-subtitle">
+            {schools.length} {schools.length === 1 ? 'škola' : schools.length < 5 ? 'školy' : 'škol'} vedle sebe,
+            stejné řádky. Čísla jsou z Cermatu, přijímačky 2026.
+          </p>
+        </div>
+        <div className="dp-header-actions">
+          <button type="button" className="ss-btn ss-btn-secondary" onClick={() => window.print()}>
+            Tisk / PDF
+          </button>
+          <Link to="/skoly" className="ss-btn ss-btn-secondary">
+            Přidat školu
+          </Link>
+          <button type="button" className="ss-btn ss-btn-secondary dp-clear-all" onClick={onClearAll}>
+            Vymazat vše
+          </button>
+        </div>
+      </div>
+
+      <DecisionTabs pickCount={skeleton ? readHint('picks', 0) : pickIds.size} />
+
+      <div className="dp-table-scroll">
+        <div className="dp-table" style={{ '--dp-cols': schools.length }}>
+          <div className="dp-table-head">
+            <div className="dp-table-head-corner" />
+            {schools.map((school) => (
+              <div className="dp-table-head-cell" key={school.id}>
+                {skeleton ? (
+                  <><Sk w="80%" h={26} /><Sk w="40%" h={16} /><Sk w={84} h={24} r="999px" /></>
+                ) : (
+                  <>
+                    <div className="dp-table-head-top">
+                      <Link to={`/skoly/${school.id}`} className="dp-table-head-name h">
+                        {school.name}
+                      </Link>
+                      <button
+                        type="button"
+                        className="dp-table-head-remove"
+                        onClick={() => onRemove(school.id)}
+                        aria-label={`Odebrat ${school.name} z porovnání`}
+                      >
+                        ×
+                      </button>
+                    </div>
+                    {school.official_name && <div className="ss-caption">{school.official_name}</div>}
+                    <div className="ss-caption">{school.location}</div>
+                    {school.match_score != null && <div className="dp-pill dp-pill-accent">{Math.round(school.match_score)} % shoda</div>}
+                  </>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {rows.map((section) => (
+            <div key={section.id} className="dp-table-section">
+              <div className="dp-table-section-title">
+                {section.title}
+                {section.subtitle && <span className="dp-table-section-subtitle"> · {section.subtitle}</span>}
+              </div>
+              {section.rows.map((row) => (
+                <div className="dp-table-row" key={row.id}>
+                  <div className="dp-table-row-label">
+                    {row.label}
+                    {row.info && (
+                      <span className="ss-stat-info">
+                        <span className="ss-stat-tooltip">{row.info}</span>ⓘ
+                      </span>
+                    )}
+                  </div>
+                  {row.values.map((v, i) => (
+                    <div className={`dp-table-cell${v.isBest ? ' is-best' : ''}${v.isMuted ? ' is-muted' : ''}`} key={schools[i].id}>
+                      {skeleton ? <Sk w="55%" h={24} /> : <strong>{v.text}</strong>}
+                      {v.tag && <span className="dp-best-tag">{v.tag}</span>}
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          ))}
+
+          <div className="dp-table-section">
+            <div className="dp-table-section-title">
+              Klady a zápory<span className="dp-table-section-subtitle"> · shrnutí z dat školy</span>
+            </div>
+            <div className="dp-table-row dp-table-row-proscons">
+              <div className="dp-table-row-label">Klady a zápory</div>
+              {schools.map((school) => (
+                <div className="dp-table-cell dp-table-cell-proscons" key={school.id}>
+                  {skeleton ? <><Sk h={14} /><Sk w="85%" h={14} /><Sk w="70%" h={14} /></> : <ProsCons summary={school.school_ai_summary} />}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="dp-table-row dp-table-row-actions">
+            <div className="dp-table-row-label" />
+            {schools.map((school) => (
+              <div className="dp-table-cell" key={school.id}>
+                {skeleton ? <Sk w={150} h={36} /> : (
+                  <button
+                    type="button"
+                    className={`ss-btn ss-btn-sm${pickIds.has(school.id) ? ' dp-btn-picked' : ' ss-btn-primary'}`}
+                    onClick={() => onAddToPicks(school)}
+                    disabled={savingPick}
+                  >
+                    {pickIds.has(school.id) ? '✓ V přihlášce' : 'Přidat do přihlášky'}
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
 
 function Porovnani() {
   const navigate = useNavigate();
@@ -121,7 +247,12 @@ function Porovnani() {
   };
 
   if (loading) {
-    return <PageSkeleton variant="columns" label="Načítám porovnání…" />;
+    const stubs = selection.map((id) => ({ id }));
+    return (
+      <SkeletonPage className="decision-page" label="Načítám porovnání…">
+        <CompareView skeleton schools={stubs} rows={buildComparisonRows(stubs)} pickIds={new Set()} />
+      </SkeletonPage>
+    );
   }
 
   if (error) {
@@ -234,113 +365,8 @@ function Porovnani() {
 
   return (
     <div className="decision-page">
-      <div className="dp-header">
-        <div>
-          <h1 className="ss-headline-lg h">Porovnání škol</h1>
-          <p className="ss-body-md dp-subtitle">
-            {schools.length} {schools.length === 1 ? 'škola' : schools.length < 5 ? 'školy' : 'škol'} vedle sebe,
-            stejné řádky. Čísla jsou z Cermatu, přijímačky 2026.
-          </p>
-        </div>
-        <div className="dp-header-actions">
-          <button type="button" className="ss-btn ss-btn-secondary" onClick={() => window.print()}>
-            Tisk / PDF
-          </button>
-          <Link to="/skoly" className="ss-btn ss-btn-secondary">
-            Přidat školu
-          </Link>
-          <button type="button" className="ss-btn ss-btn-secondary dp-clear-all" onClick={handleClearAll}>
-            Vymazat vše
-          </button>
-        </div>
-      </div>
-
-      <DecisionTabs pickCount={pickIds.size} />
-
-      <div className="dp-table-scroll">
-        <div className="dp-table" style={{ '--dp-cols': schools.length }}>
-          <div className="dp-table-head">
-            <div className="dp-table-head-corner" />
-            {schools.map((school) => (
-              <div className="dp-table-head-cell" key={school.id}>
-                <div className="dp-table-head-top">
-                  <Link to={`/skoly/${school.id}`} className="dp-table-head-name h">
-                    {school.name}
-                  </Link>
-                  <button
-                    type="button"
-                    className="dp-table-head-remove"
-                    onClick={() => handleRemove(school.id)}
-                    aria-label={`Odebrat ${school.name} z porovnání`}
-                  >
-                    ×
-                  </button>
-                </div>
-                {school.official_name && <div className="ss-caption">{school.official_name}</div>}
-                <div className="ss-caption">{school.location}</div>
-                {school.match_score != null && <div className="dp-pill dp-pill-accent">{Math.round(school.match_score)} % shoda</div>}
-              </div>
-            ))}
-          </div>
-
-          {rows.map((section) => (
-            <div key={section.id} className="dp-table-section">
-              <div className="dp-table-section-title">
-                {section.title}
-                {section.subtitle && <span className="dp-table-section-subtitle"> · {section.subtitle}</span>}
-              </div>
-              {section.rows.map((row) => (
-                <div className="dp-table-row" key={row.id}>
-                  <div className="dp-table-row-label">
-                    {row.label}
-                    {row.info && (
-                      <span className="ss-stat-info">
-                        <span className="ss-stat-tooltip">{row.info}</span>ⓘ
-                      </span>
-                    )}
-                  </div>
-                  {row.values.map((v, i) => (
-                    <div className={`dp-table-cell${v.isBest ? ' is-best' : ''}${v.isMuted ? ' is-muted' : ''}`} key={schools[i].id}>
-                      <strong>{v.text}</strong>
-                      {v.tag && <span className="dp-best-tag">{v.tag}</span>}
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-          ))}
-
-          <div className="dp-table-section">
-            <div className="dp-table-section-title">
-              Klady a zápory<span className="dp-table-section-subtitle"> · shrnutí z dat školy</span>
-            </div>
-            <div className="dp-table-row dp-table-row-proscons">
-              <div className="dp-table-row-label">Klady a zápory</div>
-              {schools.map((school) => (
-                <div className="dp-table-cell dp-table-cell-proscons" key={school.id}>
-                  <ProsCons summary={school.school_ai_summary} />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="dp-table-row dp-table-row-actions">
-            <div className="dp-table-row-label" />
-            {schools.map((school) => (
-              <div className="dp-table-cell" key={school.id}>
-                <button
-                  type="button"
-                  className={`ss-btn ss-btn-sm${pickIds.has(school.id) ? ' dp-btn-picked' : ' ss-btn-primary'}`}
-                  onClick={() => handleAddToPicks(school)}
-                  disabled={savingPick}
-                >
-                  {pickIds.has(school.id) ? '✓ V přihlášce' : 'Přidat do přihlášky'}
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      <CompareView schools={schools} rows={rows} pickIds={pickIds} savingPick={savingPick}
+        onRemove={handleRemove} onClearAll={handleClearAll} onAddToPicks={handleAddToPicks} />
 
       <p className="ss-caption dp-footnote">
         Hranice přijetí, míra přijetí a počty míst jsou reálná data z Cermatu (1. kolo 2026). Hranice je rozpětí

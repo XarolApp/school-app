@@ -35,7 +35,7 @@ import OnboardingFlow from './pages/onboarding/OnboardingFlow';
 import './styles/ui.css';
 import './App.css';
 import './auth.css';
-import PageSkeleton from './components/PageSkeleton';
+import { LoadingSpinner } from './components/PageSkeleton';
 
 function App() {
   return (
@@ -65,9 +65,9 @@ function App() {
               <Route path="/od-rodice/:token" element={<HandoffStart />} />
 
               <Route element={<Layout />}>
-                <Route path="/admin" element={<Suspense fallback={<PageSkeleton variant="list" label="Načítání přehledů…" />}><Admin /></Suspense>} />
+                <Route path="/admin" element={<Suspense fallback={<LoadingSpinner label="Načítání přehledů…" />}><Admin /></Suspense>} />
                 {/* Variant B (3D map) is the default landing; the old one stays at /stara for comparison. */}
-                <Route path="/" element={<Suspense fallback={<PageSkeleton />}><Landing /></Suspense>} />
+                <Route path="/" element={<Suspense fallback={<LoadingSpinner />}><Landing /></Suspense>} />
                 <Route path="/nova" element={<Navigate to="/" replace />} />
                 <Route path="/stara" element={<Home />} />
                 <Route path="/skoly" element={<Search />} />

@@ -20,7 +20,8 @@ import { shareUrl } from '../lib/shareLink';
 import { ROLE_KEY } from '../lib/onboardingStorage';
 import DistrictMap from '../components/onboarding/DistrictMap';
 import './questionnaire.css';
-import PageSkeleton from '../components/PageSkeleton';
+import { SkeletonPage, Sk, SkLines } from '../components/PageSkeleton';
+import { readHint, writeHint } from '../lib/skeletonHints';
 
 /**
  * The standalone questionnaire (lib/questionnaire.js on the server) — separate
@@ -66,6 +67,71 @@ function answeredCount(answers) {
 function runMeta(run, total) {
   const origin = run.source === 'onboarding' ? ' · z úvodu do aplikace' : '';
   return `${formatDate(run.created_at)}${origin} · ${answeredCount(run.answers)} z ${total} odpovědí`;
+}
+
+// Skeleton: mirrors the three views below (results / empty / form) in the
+// same qz-* containers. Which one is shown is guessed from what this browser
+// saw last time, so a returning student does not watch the page change shape.
+function QuestionnaireSkeleton({ view, aiNote }) {
+  if (view === 'form') {
+    return (
+      <SkeletonPage className="qz-page qz-page-narrow" label="Načítám dotazník…">
+        <Sk w={160} h={34} style={{ marginBottom: 16 }} />
+        <SkLines count={2} h={16} last="70%" />
+        <div className="qz-form" style={{ marginTop: 32 }}>
+          {[0, 1, 2].map((i) => (
+            <div className="field qz-question" key={i}>
+              <Sk w="55%" h={20} style={{ marginBottom: 12 }} />
+              <div className="qz-options">{[0, 1, 2, 3].map((j) => <Sk key={j} w={120} h={44} />)}</div>
+            </div>
+          ))}
+        </div>
+      </SkeletonPage>
+    );
+  }
+  if (view === 'empty') {
+    return (
+      <SkeletonPage className="qz-page" label="Načítám dotazník…">
+        <Sk w={240} h={34} style={{ marginBottom: 24 }} />
+        <div className="qz-empty">
+          <Sk w={52} h={52} r="50%" />
+          <Sk w="50%" h={28} />
+          <SkLines count={2} h={16} last="80%" />
+          <Sk w={180} h={44} />
+        </div>
+      </SkeletonPage>
+    );
+  }
+  return (
+    <SkeletonPage className="qz-page" label="Načítám dotazník…">
+      <div className="qz-head">
+        <Sk w={240} h={34} style={{ marginBottom: 8 }} />
+        <div style={{ maxWidth: 600 }}><SkLines count={2} h={16} last="55%" /></div>
+      </div>
+      <div className="qz-runbar">
+        <div className="qz-runbar-main">
+          <Sk w={220} h={24} className="is-strong" style={{ marginBottom: 6 }} />
+          <Sk w={140} h={14} className="is-strong" />
+        </div>
+        <Sk w={150} h={16} className="is-strong" />
+      </div>
+      <div className="qz-note"><Sk w={18} h={18} r="50%" /><SkLines count={2} h={14} last="45%" /></div>
+      {aiNote && <div className="qz-note qz-note-strong"><Sk w={18} h={18} r="50%" /><SkLines count={3} h={14} last="45%" /></div>}
+      <div className="qz-section-head"><Sk w={180} h={28} /><Sk w={120} h={14} /></div>
+      <ol className="qz-list">
+        {[0, 1, 2, 3].map((i) => (
+          <li className="qz-row" key={i}>
+            <div className="qz-row-score"><Sk w={20} h={14} /><Sk w={56} h={28} /><Sk w={40} h={12} /></div>
+            <div className="qz-row-body">
+              <Sk w="45%" h={20} style={{ marginBottom: 8 }} />
+              <Sk w={80} h={14} style={{ marginBottom: 10 }} />
+              <SkLines count={1} h={14} last="75%" />
+            </div>
+          </li>
+        ))}
+      </ol>
+    </SkeletonPage>
+  );
 }
 
 function MatchRow({ match, rank, compact }) {
@@ -441,6 +507,8 @@ function Questionnaire() {
         } else {
           setView(data.active ? 'results' : 'empty');
         }
+        const seenView = !data.active ? 'empty' : (data.active.matches || []).slice(0, TOP_COUNT).some((m) => m.reason) ? 'results' : 'results-no-ai';
+        writeHint('questionnaire', seenView);
       })
       .catch((err) => {
         if (!cancelled) {
@@ -561,7 +629,9 @@ function Questionnaire() {
   };
 
   if (state.loading) {
-    return <PageSkeleton variant="list" label="Načítám dotazník…" />;
+    const seen = readHint('questionnaire', 'results');
+    const hasDraft = Object.keys(readDraft(draftKey, null)?.answers || {}).length > 0;
+    return <QuestionnaireSkeleton view={hasDraft ? 'form' : seen === 'empty' ? 'empty' : 'results'} aiNote={seen === 'results-no-ai'} />;
   }
 
   if (state.error) {

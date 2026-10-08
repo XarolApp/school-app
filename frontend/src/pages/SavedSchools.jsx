@@ -4,7 +4,8 @@ import { Bookmark, Columns3, ExternalLink, Trash2 } from 'lucide-react';
 import { deleteNote, fetchFavorites, fetchNotes, removeFavorite, saveNote } from '../api';
 import { useAuth } from '../components/AuthContext';
 import AsyncState from '../components/AsyncState';
-import PageSkeleton from '../components/PageSkeleton';
+import { SkeletonPage, Sk } from '../components/PageSkeleton';
+import { readHint, writeHint } from '../lib/skeletonHints';
 import { useToast } from '../components/ToastContext';
 import { withNamesAll } from '../lib/schoolNames';
 import { COMPARE_EVENT, getCompareSelection, toggleCompareSelection } from '../lib/searchPrefs';
@@ -94,6 +95,40 @@ function SavedCard({ school, savedNote, userId, inCompare, onToggleCompare, onRe
   );
 }
 
+function SavedIntro() {
+  return (
+    <div>
+      <p className="eyebrow">Tvůj výběr</p>
+      <h1 className="ss-headline-lg h">Uložené školy</h1>
+      <p className="ss-body-md sv-lede">Školy, které sis uložil(a) záložkou. U každé si můžeš psát poznámky, přidat ji k porovnání nebo otevřít její stránku.</p>
+    </div>
+  );
+}
+
+// Skeleton: real header, and as many cards as this browser saw last time.
+function SavedSkeleton() {
+  const count = readHint('favorites', 2);
+  return (
+    <SkeletonPage className="sv-page" label="Načítám uložené školy…">
+      <header className="sv-header"><SavedIntro />{count > 0 && <Sk w={190} h={44} />}</header>
+      {count === 0 ? (
+        <div className="sv-empty"><Sk w={28} h={28} /><Sk w={220} h={28} /><Sk w="60%" h={16} /><Sk w={180} h={44} /></div>
+      ) : <ul className="sv-list">
+        {Array.from({ length: count }, (_, i) => (
+          <li className="sv-card" key={i}>
+            <div className="sv-card-head">
+              <div className="sv-card-title" style={{ flex: 1 }}><Sk w="50%" h={30} style={{ marginBottom: 8 }} /><Sk w="30%" h={16} style={{ marginBottom: 6 }} /><Sk w="40%" h={16} /></div>
+              <Sk w={72} h={56} />
+            </div>
+            <div><Sk w={100} h={18} style={{ marginBottom: 8 }} /><Sk h={112} style={{ marginBottom: 8 }} /><Sk w={60} h={16} /></div>
+            <div className="sv-actions"><Sk w={120} h={44} /><Sk w={170} h={44} /><Sk w={180} h={44} /></div>
+          </li>
+        ))}
+      </ul>}
+    </SkeletonPage>
+  );
+}
+
 function SavedSchools() {
   const { user } = useAuth();
   const { toast } = useToast();
@@ -111,6 +146,7 @@ function SavedSchools() {
       .catch((err) => { if (!err.isUnauthorized) setState((s) => ({ ...s, loading: false, error: err.message || 'Uložené školy se nepodařilo načíst.' })); });
   }, []);
   useEffect(load, [load]);
+  useEffect(() => { if (!state.loading) writeHint('favorites', state.schools.length); }, [state.loading, state.schools.length]);
 
   const schools = useMemo(() => [...state.schools].sort((a, b) =>
     (b.match_score ?? -1) - (a.match_score ?? -1) || String(a.name).localeCompare(String(b.name), 'cs')), [state.schools]);
@@ -127,17 +163,13 @@ function SavedSchools() {
     }
   };
 
-  if (state.loading && !state.schools.length) return <PageSkeleton variant="list" label="Načítám uložené školy…" />;
+  if (state.loading && !state.schools.length) return <SavedSkeleton />;
   if (state.error) return <AsyncState kind="error" title="Uložené školy se nepodařilo načíst" onRetry={load}>{state.error}</AsyncState>;
 
   return (
     <div className="sv-page">
       <header className="sv-header">
-        <div>
-          <p className="eyebrow">Tvůj výběr</p>
-          <h1 className="ss-headline-lg h">Uložené školy</h1>
-          <p className="ss-body-md sv-lede">Školy, které sis uložil(a) záložkou. U každé si můžeš psát poznámky, přidat ji k porovnání nebo otevřít její stránku.</p>
-        </div>
+        <SavedIntro />
         {schools.length > 0 && (
           <Link to="/porovnani" className="btn btn-primary">
             <Columns3 size={16} aria-hidden="true" /> Porovnat vybrané{compareIds.length ? ` (${compareIds.length})` : ''}

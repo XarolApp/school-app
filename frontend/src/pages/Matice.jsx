@@ -17,7 +17,8 @@ import {
 import DecisionTabs from '../components/decision/DecisionTabs';
 import ConfirmDialog from '../components/ConfirmDialog';
 import './decision.css';
-import PageSkeleton from '../components/PageSkeleton';
+import { SkeletonPage, Sk, SkLines } from '../components/PageSkeleton';
+import { readHint } from '../lib/skeletonHints';
 import { useDraft } from '../lib/useDraft';
 
 const LEVELS = [
@@ -123,6 +124,119 @@ function weakNote(row, ranked) {
   );
 }
 
+function MaticeEmpty({ pickCount }) {
+  return (
+      <div className="decision-page">
+        <div className="dp-header">
+          <div>
+            <p className="ss-label-caps dp-eyebrow">Rozhodování</p>
+            <h1 className="ss-headline-lg h">Rozhodovací matice</h1>
+            <p className="ss-body-md dp-subtitle">
+              Nastavíš, na čem ti záleží nejvíc, a matice školy seřadí. Žádná AI, jen počty nad daty z Cermatu.
+            </p>
+          </div>
+        </div>
+
+        <DecisionTabs pickCount={pickCount} />
+
+        <section className="dp-empty-card">
+          <div className="dp-empty-copy">
+            <h2 className="ss-headline-md h">Matice počítá se školami z porovnání</h2>
+            <p className="ss-body-md">
+              Teď tam nemáš žádnou. Přidej aspoň dvě, ať je co srovnávat, a pořadí se tu spočítá samo.
+            </p>
+            <div className="dp-empty-actions">
+              <Link to="/skoly" className="ss-btn ss-btn-primary dp-btn-lg">
+                Projít školy
+                <ArrowRight size={18} aria-hidden="true" />
+              </Link>
+            </div>
+          </div>
+          <div className="dp-ghost-weights" aria-hidden="true">
+            {[
+              ['Šance na přijetí', 'Zásadní', 100],
+              ['Shoda s tvým dotazníkem', 'Dost', 66],
+              ['Bez školného', 'Trochu', 33],
+            ].map(([label, level, pct]) => (
+              <div key={label} className="dp-ghost-weight">
+                <span>{label}</span>
+                <span className="dp-ghost-track">
+                  <i style={{ width: `${pct}%` }} />
+                </span>
+                <span>{level}</span>
+              </div>
+            ))}
+            <div className="dp-ghost-podium">
+              <span className="dp-ghost-slot is-next">1.</span>
+              <span className="dp-ghost-slot">2.</span>
+              <span className="dp-ghost-slot">3.</span>
+            </div>
+          </div>
+        </section>
+      </div>
+  );
+}
+
+// Skeleton: same header, tabs and two columns; criteria names are static, so
+// they are real text — only the weight bars and the ranked schools are grey.
+function MaticeSkeleton({ count }) {
+  return (
+    <SkeletonPage className="decision-page" label="Načítám matici…">
+      <div className="dp-header">
+        <div>
+          <h1 className="ss-headline-lg h">Rozhodovací matice</h1>
+          <p className="ss-body-md dp-subtitle">
+            Řekni, co je pro tebe důležité. Přepočítáme školy podle tvých vah — ne podle našeho pořadí.
+          </p>
+        </div>
+      </div>
+      <div className="dp-how">
+        <span className="dp-how-toggle"><ChevronDown size={16} aria-hidden="true" /> Jak to funguje?</span>
+      </div>
+      <DecisionTabs pickCount={readHint('picks', 0)} />
+      <div className="dp-matrix-layout">
+        <div className="dp-matrix-weights">
+          <div className="dp-matrix-weights-head">
+            <div className="ss-headline-sm h">Co je pro tebe důležité?</div>
+            <p className="ss-caption">
+              Nastav každé kritérium. Co necháš na „nezáleží“, se do výpočtu vůbec nepočítá.
+            </p>
+          </div>
+          {CRITERIA.map((c) => (
+            <div className={`dp-criterion${c.id === 'shoda' ? ' dp-criterion-featured' : ''}`} key={c.id}>
+              <div className="dp-criterion-head">
+                <span className="dp-criterion-label">{c.id === 'shoda' && <Heart size={15} aria-hidden="true" />}{c.label}</span>
+                <Sk w={56} h={14} />
+              </div>
+              <Sk h={32} />
+              {c.id === 'shoda' && <div style={{ height: 57 }}><SkLines count={3} h={13} gap={6} last="70%" /></div>}
+            </div>
+          ))}
+        </div>
+        <div className="dp-matrix-result">
+          <div className="dp-matrix-result-card">
+            <div className="dp-matrix-result-head">
+              <div className="ss-headline-sm h">Pořadí podle tvých vah</div>
+              <p className="ss-caption dp-matrix-result-sub">
+                Delší proužek = škola je v tom kritériu lepší než ostatní porovnávané. Váhy nastavuješ ty.
+              </p>
+            </div>
+            {Array.from({ length: count }, (_, i) => (
+              <div className="dp-matrix-row" key={i}>
+                <Sk w={32} h={32} r="50%" />
+                <div className="dp-matrix-row-body">
+                  <div className="dp-matrix-row-head"><Sk w="55%" h={26} /></div>
+                  <div className="dp-crit-list">{Array.from({ length: 7 }, (_, j) => <Sk key={j} h={20} />)}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </SkeletonPage>
+  );
+}
+
 function Matice() {
   const navigate = useNavigate();
   const { isSignedIn } = useAuth();
@@ -196,7 +310,8 @@ function Matice() {
   };
 
   if (loading) {
-    return <PageSkeleton variant="columns" label="Načítám matici…" />;
+    // Nothing selected for comparison: the page can only be the empty state.
+    return selection.length ? <MaticeSkeleton count={selection.length} /> : <MaticeEmpty pickCount={readHint('picks', 0)} />;
   }
 
   if (error) {
@@ -207,58 +322,7 @@ function Matice() {
     );
   }
 
-  if (!schools.length) {
-    return (
-      <div className="decision-page">
-        <div className="dp-header">
-          <div>
-            <p className="ss-label-caps dp-eyebrow">Rozhodování</p>
-            <h1 className="ss-headline-lg h">Rozhodovací matice</h1>
-            <p className="ss-body-md dp-subtitle">
-              Nastavíš, na čem ti záleží nejvíc, a matice školy seřadí. Žádná AI, jen počty nad daty z Cermatu.
-            </p>
-          </div>
-        </div>
-
-        <DecisionTabs pickCount={pickCount} />
-
-        <section className="dp-empty-card">
-          <div className="dp-empty-copy">
-            <h2 className="ss-headline-md h">Matice počítá se školami z porovnání</h2>
-            <p className="ss-body-md">
-              Teď tam nemáš žádnou. Přidej aspoň dvě, ať je co srovnávat, a pořadí se tu spočítá samo.
-            </p>
-            <div className="dp-empty-actions">
-              <Link to="/skoly" className="ss-btn ss-btn-primary dp-btn-lg">
-                Projít školy
-                <ArrowRight size={18} aria-hidden="true" />
-              </Link>
-            </div>
-          </div>
-          <div className="dp-ghost-weights" aria-hidden="true">
-            {[
-              ['Šance na přijetí', 'Zásadní', 100],
-              ['Shoda s tvým dotazníkem', 'Dost', 66],
-              ['Bez školného', 'Trochu', 33],
-            ].map(([label, level, pct]) => (
-              <div key={label} className="dp-ghost-weight">
-                <span>{label}</span>
-                <span className="dp-ghost-track">
-                  <i style={{ width: `${pct}%` }} />
-                </span>
-                <span>{level}</span>
-              </div>
-            ))}
-            <div className="dp-ghost-podium">
-              <span className="dp-ghost-slot is-next">1.</span>
-              <span className="dp-ghost-slot">2.</span>
-              <span className="dp-ghost-slot">3.</span>
-            </div>
-          </div>
-        </section>
-      </div>
-    );
-  }
+  if (!schools.length) return <MaticeEmpty pickCount={pickCount} />;
 
   const otherCriteria = CRITERIA.filter((c) => c.id !== 'shoda');
   const shodaCriterion = CRITERIA.find((c) => c.id === 'shoda');

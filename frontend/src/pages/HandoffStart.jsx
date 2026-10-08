@@ -4,7 +4,7 @@ import BrandMark from '../components/BrandMark';
 import { openHandoff } from '../api';
 import { ROLE_KEY, ANSWERS_KEY } from '../lib/onboardingStorage';
 import './decision.css';
-import PageSkeleton from '../components/PageSkeleton';
+import { LoadingSpinner } from '../components/PageSkeleton';
 
 function HandoffStart() {
   const { token } = useParams();
@@ -53,7 +53,7 @@ function HandoffStart() {
         </Link>
       </div>
       {state === 'loading' ? (
-        <PageSkeleton variant="card" label="Načítám odkaz…" />
+        <LoadingSpinner label="Načítám odkaz…" />
       ) : state === 'ready' ? (
         <section className="dp-share-header">
           <div className="ss-label-caps">Dotazník</div>

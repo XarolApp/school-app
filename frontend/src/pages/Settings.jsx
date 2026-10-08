@@ -14,7 +14,7 @@ import { applyTheme, applyThemeAnimated, MODES, readCachedTheme } from '../lib/t
 import { useBetaTools } from '../components/BetaToolsContext';
 import { BetaProgress } from '../components/BetaInstructions';
 import { ROLE_KEY } from '../lib/onboardingStorage';
-import PageSkeleton from '../components/PageSkeleton';
+import { SkeletonPage, Sk } from '../components/PageSkeleton';
 
 const SUBSCRIPTION_LABELS = {
   trialing: 'Zkušební období',
@@ -44,6 +44,46 @@ const THEME_MODE_COPY = [
 
 const formatCzDateLong = (iso) =>
   new Date(iso).toLocaleDateString('cs-CZ', { day: 'numeric', month: 'long', year: 'numeric' });
+
+// Skeleton: the page header and the first two panels (what is on screen
+// before scrolling) with their real titles; only the values are grey.
+function SettingsSkeleton() {
+  return (
+    <SkeletonPage className="page page-settings" label="Načítám nastavení…">
+      <div className="settings-layout">
+        <div className="page-header">
+          <p className="eyebrow">Účet</p>
+          <h1>Nastavení</h1>
+          <p className="lede">Uprav svůj profil a zabezpečení účtu.</p>
+        </div>
+        <section className="panel panel-lg settings-section">
+          <div className="settings-section-head">
+            <h2 className="settings-section-title">Profil</h2>
+            <p className="settings-section-text">Jméno, které se zobrazuje v aplikaci.</p>
+          </div>
+          <div className="settings-form"><div style={{ display: 'grid', gap: 8, height: 155, alignContent: 'start' }}><Sk w={80} h={16} /><Sk h={48} /><Sk w="60%" h={14} /></div></div>
+          <div className="settings-row"><Sk w="45%" h={36} /></div>
+          <div className="settings-row"><Sk w="35%" h={36} /></div>
+        </section>
+        <section className="panel panel-lg settings-section">
+          <div className="settings-section-head">
+            <h2 className="settings-section-title">Vzhled</h2>
+            <p className="settings-section-text">Barvy a režim se uloží k tvému účtu, takže je uvidíš na každém zařízení.</p>
+          </div>
+          <div className="settings-theme-group">
+            <Sk w={60} h={16} style={{ marginBottom: 8 }} />
+            <div className="theme-palette-grid">{[0, 1, 2, 3].map((i) => <Sk key={i} h={72} />)}</div>
+          </div>
+          <div className="settings-theme-group">
+            <Sk w={60} h={16} style={{ marginBottom: 8 }} />
+            <Sk w={260} h={40} style={{ marginBottom: 10 }} />
+            <Sk w="50%" h={14} />
+          </div>
+        </section>
+      </div>
+    </SkeletonPage>
+  );
+}
 
 function Settings() {
   const {
@@ -176,7 +216,7 @@ function Settings() {
   }, [profile, profile?.id, profile?.theme_palette, profile?.theme_mode]);
 
   if (loading) {
-    return <PageSkeleton variant="form" narrow />;
+    return <SettingsSkeleton />;
   }
 
   // Deliberately not wrapped in ProtectedRoute: that sends anyone without

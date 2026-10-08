@@ -5,7 +5,7 @@ import { Link2Off } from 'lucide-react';
 import { fetchSharedShortlist } from '../api';
 import { cutoffForPick } from '../lib/admissionRisk';
 import './decision.css';
-import PageSkeleton from '../components/PageSkeleton';
+import { LoadingSpinner } from '../components/PageSkeleton';
 
 const numCz = (v) => (v == null ? null : v.toLocaleString('cs-CZ', { maximumFractionDigits: 1 }));
 
@@ -42,7 +42,7 @@ function SdileniView() {
   }, [token]);
 
   if (loading) {
-    return <div className="dp-share-page"><PageSkeleton variant="list" label="Načítám sdílený výběr…" /></div>;
+    return <div className="dp-share-page"><LoadingSpinner label="Načítám sdílený výběr…" /></div>;
   }
 
   if (error || !data) {

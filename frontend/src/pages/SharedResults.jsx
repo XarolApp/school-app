@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import BrandMark from '../components/BrandMark';
 import { fetchSharedResults } from '../api';
 import './decision.css';
-import PageSkeleton from '../components/PageSkeleton';
+import { LoadingSpinner } from '../components/PageSkeleton';
 
 function formatDate(value) {
   return value
@@ -38,7 +38,7 @@ function SharedResults() {
         </Link>
       </div>
       {loading ? (
-        <PageSkeleton variant="list" label="Načítám výsledky…" />
+        <LoadingSpinner label="Načítám výsledky…" />
       ) : error?.status === 404 || (!data && !error) ? (
         <div className="dp-share-notfound">
           <h1 className="ss-headline-md h">Tento odkaz už neplatí</h1>

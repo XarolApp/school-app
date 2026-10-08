@@ -1,6 +1,6 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext';
-import PageSkeleton from './PageSkeleton';
+import { LoadingSpinner } from './PageSkeleton';
 
 function ProtectedRoute() {
   const {
@@ -17,7 +17,7 @@ function ProtectedRoute() {
   const location = useLocation();
 
   if (loading || (isSignedIn && profileLoading)) {
-    return <PageSkeleton />;
+    return <LoadingSpinner />;
   }
 
   if (!isSignedIn) {

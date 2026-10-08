@@ -1,4 +1,6 @@
 import { track } from '../lib/betaTrack';
+import { Sk } from '../components/PageSkeleton';
+import { readHint, writeHint } from '../lib/skeletonHints';
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -303,6 +305,42 @@ const PAGE_SIZE = 40;
 // Same cap /sdileni and the comparison table both assume — a 5th column
 // stops being a comparison and starts being a spreadsheet.
 const COMPARE_LIMIT = 4;
+
+// Skeleton for the results block: same toolbar, column header and row cells
+// as the loaded list, grey where the data goes.
+function ResultsSkeleton({ hasScore }) {
+  return (
+    <div role="status" aria-busy="true">
+      <span className="ss-visually-hidden">Načítám školy…</span>
+      <div className="ss-toolbar"><Sk w={110} h={28} /><Sk w={420} h={40} /></div>
+      <Sk h={42} style={{ margin: '16px 0' }} />
+      <div className={`ss-list-head${hasScore ? ' has-score' : ''}`}>
+        <span>Škola</span>
+        <span className="ss-cell-obory">Obory</span>
+        {hasScore && <span className="ss-header-numeric">Shoda</span>}
+        <span className="ss-header-numeric">Hranice</span>
+        <span className="ss-header-center">Přijato</span>
+        <span className="ss-header-numeric">Míst</span>
+        <span />
+      </div>
+      <ul className={`ss-list${hasScore ? ' has-score' : ''}`}>
+        {Array.from({ length: 8 }, (_, i) => (
+          <li className={`ss-row${hasScore ? ' has-score' : ''}`} key={i}>
+            <div className="ss-cell-school"><Sk w="70%" h={22} style={{ marginBottom: 6 }} /><Sk w="55%" h={14} /></div>
+            <div className="ss-cell-obory"><Sk w={130} h={24} r="999px" /></div>
+            {hasScore && <div className="ss-cell-score"><Sk w={48} h={24} r="999px" /></div>}
+            <div className="ss-row-numbers">
+              <div className="ss-cell-number ss-cell-cutoff"><Sk w={44} h={20} /></div>
+              <div className="ss-cell-number ss-cell-acceptance"><Sk w={60} h={20} /></div>
+              <div className="ss-cell-number ss-cell-places"><Sk w={28} h={20} /></div>
+            </div>
+            <div className="ss-row-actions"><Sk w={36} h={36} /><Sk w={36} h={36} /></div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 function Search() {
   const navigate = useNavigate();
@@ -977,6 +1015,7 @@ function Search() {
 
   const activeFacetCount = activeCriteriaCount - (hasQuery ? 1 : 0);
   const hasScore = hasMatch;
+  useEffect(() => { if (!loading) writeHint('searchScore', hasScore); }, [loading, hasScore]);
   const filtersEl = (
     <SearchFilters
       filters={filters}
@@ -1262,6 +1301,7 @@ function Search() {
               {total} {skol(total)}. Data o přijímačkách z Cermatu, rok 2026. Starší roky najdeš v detailu školy.
             </p>
           )}
+          {loading && <Sk w={520} h={24} className="ss-source-line" />}
         </div>
         {!loading && !error && activeCriteriaCount === 0 && recentRows.length > 0 && view === 'list' && (
           <div className="ss-recent" aria-label="Naposledy zobrazené školy">
@@ -1369,7 +1409,7 @@ function Search() {
       )}
 
       <section className="ss-results" id="ss-results">
-          {loading && <AsyncState kind="loading" title="Načítám školy…" />}
+          {loading && <ResultsSkeleton hasScore={readHint('searchScore', false)} />}
           {error && !loading && (
             <AsyncState
               kind="error"

@@ -1,4 +1,5 @@
 import { track } from '../lib/betaTrack';
+import { SkeletonPage, Sk } from '../components/PageSkeleton';
 import { useEffect, useRef, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { fetchSchool, fetchFavorites } from '../api';
@@ -99,14 +100,39 @@ function SchoolDetail() {
   );
 
 
-  if (loading || error || !school) {
-    const notFound = !loading && (error ? error.status === 404 : !school);
+  if (loading) {
+    // Skeleton: the hero and action rail in grey, the static section nav and
+    // explainer for real — same blocks, same order as the loaded page.
+    return (
+      <SkeletonPage className="school-detail page" label="Načítám školu…">
+        {backLink}
+        <div className="sd-hero">
+          <div className="sd-hero-main">
+            <div className="sd-title-block"><Sk w="45%" h={34} style={{ marginBottom: 8 }} /><Sk w="30%" h={16} style={{ marginBottom: 6 }} /><Sk w="12%" h={16} /></div>
+            <div className="sd-chips">{[70, 54, 80, 110].map((w) => <Sk key={w} w={w} h={34} r="999px" />)}</div>
+            <Sk h={106} className="sd-fact-tiles" />
+            <Sk w="60%" h={19} />
+          </div>
+          <div className="sd-actions">
+            {[0, 1, 2, 3].map((i) => <Sk key={i} h={54} className="is-strong" />)}
+            <div className="sd-actions-divider" />
+            <Sk w="70%" h={22} className="is-strong" />
+          </div>
+        </div>
+        <SectionNav />
+        <CutoffExplainer />
+        <div className="sd-section-head"><h2 className="sd-section-title">Obory a přijímačky</h2><Sk w={180} h={16} /></div>
+        <Sk h={120} style={{ marginTop: 16 }} />
+      </SkeletonPage>
+    );
+  }
+
+  if (error || !school) {
+    const notFound = error ? error.status === 404 : !school;
     return (
       <div className="school-detail page">
         {backLink}
-        {loading ? (
-          <AsyncState kind="loading" title="Načítám školu…" />
-        ) : notFound ? (
+        {notFound ? (
           <AsyncState
             kind="empty"
             title="Tuhle školu jsme nenašli"

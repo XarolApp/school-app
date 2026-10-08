@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../components/AuthContext';
 import PasswordInput from '../components/PasswordInput';
 import PasswordStrength from '../components/PasswordStrength';
-import PageSkeleton from '../components/PageSkeleton';
+import { LoadingSpinner } from '../components/PageSkeleton';
 
 function ResetPassword() {
   const [form, setForm] = useState({ password: '', confirm: '' });
@@ -43,7 +43,7 @@ function ResetPassword() {
   };
 
   if (loading) {
-    return <PageSkeleton variant="card" />;
+    return <LoadingSpinner />;
   }
 
   // A normal signed-in session is not proof that the recovery link was used.

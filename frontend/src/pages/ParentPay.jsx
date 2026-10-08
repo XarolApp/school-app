@@ -14,7 +14,7 @@ import {
   trialDaysPhrase,
 } from '../config/pricing';
 import './decision.css';
-import PageSkeleton from '../components/PageSkeleton';
+import { LoadingSpinner } from '../components/PageSkeleton';
 
 function formatDate(value) {
   return value
@@ -115,7 +115,7 @@ function ParentPay() {
       </div>
 
       {loading ? (
-        <PageSkeleton variant="card" label="Načítám platební odkaz…" />
+        <LoadingSpinner label="Načítám platební odkaz…" />
       ) : noLink ? (
         <div className="dp-share-notfound">
           <h1 className="ss-headline-md h">Odkaz nenalezen nebo byl zrušen</h1>

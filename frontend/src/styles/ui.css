@@ -561,15 +561,7 @@ textarea.ss-input {
   outline-offset: 2px;
 }
 
-/* ---------- page skeleton (components/PageSkeleton.jsx) ---------- */
-.ss-pagesk {
-  width: 100%;
-  max-width: var(--content-max, 1280px);
-  margin-inline: auto;
-  padding-block: var(--space-lg);
-}
-.ss-pagesk.is-narrow,
-.ss-pagesk.is-card { max-width: 560px; }
+/* ---------- loading states (components/PageSkeleton.jsx) ---------- */
 .ss-visually-hidden {
   position: absolute;
   width: 1px;
@@ -579,17 +571,28 @@ textarea.ss-input {
   white-space: nowrap;
 }
 .ss-sk {
+  display: block;
+  max-width: 100%;
   background: var(--surface2);
-  border-radius: var(--r-card);
+  border-radius: var(--r-chip);
   animation: ss-pulse 1.4s ease-in-out infinite;
 }
-.ss-sk-title { height: 36px; width: min(320px, 70%); margin-bottom: var(--space-md); }
-.ss-sk-line { height: 16px; width: min(520px, 90%); margin-bottom: var(--space-xl); }
-.ss-sk-grid { display: grid; gap: var(--space-md); grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
-.ss-sk-grid.is-cols { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
-.ss-sk-stack { display: grid; gap: var(--space-md); }
-.ss-sk-card { height: 180px; }
-.ss-sk-row { height: 96px; }
-.ss-sk-field { height: 56px; }
-.ss-sk-tall { height: 320px; }
+.ss-sk-lines { display: grid; width: 100%; }
+.ss-loading {
+  display: grid;
+  place-items: center;
+  min-height: 50vh;
+}
+.ss-loading-wheel {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 3px solid var(--line);
+  border-top-color: var(--acc);
+  animation: ss-spin 0.8s linear infinite;
+}
+@keyframes ss-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .ss-loading-wheel { animation-duration: 2.4s; } }
 @media (prefers-reduced-motion: reduce) { .ss-sk { animation: none; } }
+/* Blocks on an already-grey panel need the darker line colour to show. */
+.ss-sk.is-strong { background: var(--line); }

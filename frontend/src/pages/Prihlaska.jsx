@@ -17,7 +17,99 @@ import PointsInput from '../components/decision/PointsInput';
 import RiskSummary from '../components/decision/RiskSummary';
 import { useToast } from '../components/ToastContext';
 import './decision.css';
-import PageSkeleton from '../components/PageSkeleton';
+import { SkeletonPage, Sk, SkLines } from '../components/PageSkeleton';
+import { readHint, writeHint } from '../lib/skeletonHints';
+
+// Skeleton: the same header, tabs and two-column layout as the page below,
+// with as many pick cards as this browser saw last time.
+function PrihlaskaHeader({ pickCount }) {
+  return (
+    <>
+      <div className="dp-header">
+        <div>
+          <h1 className="ss-headline-lg h">Moje přihláška</h1>
+          <p className="ss-body-md dp-subtitle">
+            Tři školy v závazném pořadí — přesně tak, jak je zadáš do DiPSy. Pořadí měníš přetažením nebo šipkami.
+          </p>
+        </div>
+        <div className="dp-header-actions">
+          <button type="button" className="ss-btn ss-btn-secondary" onClick={() => window.print()}>
+            <Printer size={16} aria-hidden="true" /> Tisk / PDF
+          </button>
+        </div>
+      </div>
+      <DecisionTabs pickCount={pickCount} />
+    </>
+  );
+}
+
+function PicksEmpty({ onPick }) {
+  return (
+    <div className="dp-empty-inline">
+      <ol className="dp-ghost-picks" aria-label="Pořadí škol na přihlášce">
+        {['Škola, na kterou chceš nejvíc', 'Druhá volba', 'Pojistka'].map((label, i) => (
+          <li key={label} className={`dp-ghost-pick${i === 0 ? ' is-next' : ''}`}>
+            <span className="dp-ghost-pick-num">{i + 1}.</span>
+            {label}
+          </li>
+        ))}
+      </ol>
+      <p className="ss-body-md">
+        Pořadí rozhoduje: když tě vezmou na víc škol, nastoupíš na tu, kterou máš výš. Školy přidáš z porovnání
+        nebo přímo na stránce školy.
+      </p>
+      <div className="dp-empty-actions">
+        <button type="button" className="ss-btn ss-btn-primary dp-btn-lg" onClick={onPick}>
+          Vybrat z porovnání
+        </button>
+        <Link to="/skoly">nebo projít všechny školy</Link>
+      </div>
+    </div>
+  );
+}
+
+function PrihlaskaSkeleton() {
+  const count = readHint('picks', 0);
+  return (
+    <SkeletonPage className="decision-page" label="Načítám přihlášku…">
+      <PrihlaskaHeader pickCount={count} />
+      <div className="dp-prihlaska-layout">
+        <div className="dp-picks-col">
+          {count === 0 ? <PicksEmpty /> : Array.from({ length: count }, (_, i) => (
+            <div className="dp-pick-card" key={i}>
+              <div className="dp-pick-rank"><Sk w={40} h={40} r="50%" /></div>
+              <div className="dp-pick-body">
+                <div className="dp-pick-head"><div><Sk w={220} h={22} style={{ marginBottom: 8 }} /><Sk w={90} h={14} /></div></div>
+                <Sk h={40} />
+                <Sk h={80} />
+                <div><Sk w={110} h={12} style={{ marginBottom: 10 }} /><Sk h={114} /></div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="dp-rail">
+          <div className="dp-rail-card">
+            <div className="ss-headline-sm h">Tvoje body z přijímaček</div>
+            <div className="dp-points">
+              <Sk w="55%" h={22} /><Sk h={53} />
+              <div style={{ height: 75 }}><SkLines count={3} h={14} gap={10} last="40%" /></div>
+              <Sk w="85%" h={22} /><Sk h={53} /><Sk w="50%" h={19} /><Sk w={120} h={16} />
+            </div>
+          </div>
+          <div className="dp-rail-card dp-rail-card-accent">
+            <div className="ss-headline-sm h">Rozbor tvých tří škol</div>
+            <Sk h={94} className="is-strong" />
+          </div>
+          <div className="dp-rail-card">
+            <div className="ss-headline-sm h">Ukázat rodičům</div>
+            <div style={{ height: 42 }}><SkLines count={2} h={14} gap={10} last="50%" /></div>
+            <Sk w={160} h={22} /><Sk w={140} h={44} /><Sk w={170} h={19} />
+          </div>
+        </div>
+      </div>
+    </SkeletonPage>
+  );
+}
 
 function Prihlaska() {
   const navigate = useNavigate();
@@ -47,6 +139,7 @@ function Prihlaska() {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps -- load on mount only; `toast` is stable
   useEffect(load, []);
+  useEffect(() => { if (!loading) writeHint('picks', picks.length); }, [loading, picks.length]);
 
   const writePicks = async (nextPicks) => {
     setPicks(nextPicks); // optimistic
@@ -118,51 +211,16 @@ function Prihlaska() {
   };
 
   if (loading) {
-    return <PageSkeleton variant="list" label="Načítám přihlášku…" />;
+    return <PrihlaskaSkeleton />;
   }
 
   return (
     <div className="decision-page">
-      <div className="dp-header">
-        <div>
-          <h1 className="ss-headline-lg h">Moje přihláška</h1>
-          <p className="ss-body-md dp-subtitle">
-            Tři školy v závazném pořadí — přesně tak, jak je zadáš do DiPSy. Pořadí měníš přetažením nebo šipkami.
-          </p>
-        </div>
-        <div className="dp-header-actions">
-          <button type="button" className="ss-btn ss-btn-secondary" onClick={() => window.print()}>
-            <Printer size={16} aria-hidden="true" /> Tisk / PDF
-          </button>
-        </div>
-      </div>
-
-      <DecisionTabs pickCount={picks.length} />
+      <PrihlaskaHeader pickCount={picks.length} />
 
       <div className="dp-prihlaska-layout">
         <div className="dp-picks-col">
-          {picks.length === 0 && (
-            <div className="dp-empty-inline">
-              <ol className="dp-ghost-picks" aria-label="Pořadí škol na přihlášce">
-                {['Škola, na kterou chceš nejvíc', 'Druhá volba', 'Pojistka'].map((label, i) => (
-                  <li key={label} className={`dp-ghost-pick${i === 0 ? ' is-next' : ''}`}>
-                    <span className="dp-ghost-pick-num">{i + 1}.</span>
-                    {label}
-                  </li>
-                ))}
-              </ol>
-              <p className="ss-body-md">
-                Pořadí rozhoduje: když tě vezmou na víc škol, nastoupíš na tu, kterou máš výš. Školy přidáš z porovnání
-                nebo přímo na stránce školy.
-              </p>
-              <div className="dp-empty-actions">
-                <button type="button" className="ss-btn ss-btn-primary dp-btn-lg" onClick={() => navigate('/porovnani')}>
-                  Vybrat z porovnání
-                </button>
-                <Link to="/skoly">nebo projít všechny školy</Link>
-              </div>
-            </div>
-          )}
+          {picks.length === 0 && <PicksEmpty onPick={() => navigate('/porovnani')} />}
 
           {picks.map((pick, index) => (
             <PickCard
