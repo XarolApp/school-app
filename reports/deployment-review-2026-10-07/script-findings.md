@@ -73,3 +73,30 @@ Base extraction verifies type/range and limited text guards, but does not prove 
 ## Optional improvements
 
 Add a compact data-refresh run record: source URL/checksum/year, dry-run diff, validation results, publication ID, inserted/removed counts and rollback location. Prefer extending an existing import path over introducing a separate general job framework. This is a recommendation; no framework or live migration has been created by this review.
+
+## S11 — dry runs have paid-call and database-logging side effects
+
+The Phase 5 usage logger is invoked by OpenRouter calls in both the extractor and pros/cons generator, regardless of `--dry-run`. It inserts `ai_usage_log` records even when content-table writes are skipped. The extractor can also write `EXTRACT_DUMP_DIR` JSON during a preview. The old console claim “nothing written to Supabase” is therefore false. This was established from source; no paid call or production write was performed to reproduce it. Retaining cost accounting can be intentional, so this audit does not disable it silently.
+
+**Action:** correct operational wording, keep usage logging explicit, and use a designated disposable database for test calls. The base extractor's `--limit`/`--school-id` parsing is also less strict than structure mode: malformed/zero limits can leave the whole batch selected, and an explicit missing ID can fail late after preflight. Add shared validated scope parsing before future paid batches; test invalid/missing/unknown IDs and zero/negative/fractional/NaN limits without provider/database calls. Do not assume a dry-run flag proves a production project is untouched.
+
+
+## S12 — pros/cons generation uses a different school projection
+
+`scripts/generate-school-proscons.js` fetches raw schools without excluding merged
+records or merging their programmes into the visible parent. Its summary groups
+programmes only by KKOV/name, rather than the frontend's newest-year focus-aware
+programme identity. Schools with multiple focuses sharing a KKOV can therefore
+get an understated programme count. Historical language/type rows also influence
+current descriptors. The school-level cutoff/rate and newest programme year are
+not guaranteed to describe the same source year; older school aggregates are
+present in the live catalogue. These are input/provenance inconsistencies, not a
+verified claim that each cached AI sentence is wrong.
+
+**Action:** use the canonical visible-school/merged-programme projection from B01,
+retain each metric's actual year, and compare a school with shared KKOV focuses,
+merged records and mixed years against frontend summaries. Review existing cached
+sentences before any paid regeneration. CLI limits and partial-success exit
+behavior share S08/S11 risks. Fingerprints currently omit model/prompt version, so
+a model-only change will skip unchanged data unless `--force` is used. Deliberate
+refresh planning is required; do not overwrite all summaries to repair one input.

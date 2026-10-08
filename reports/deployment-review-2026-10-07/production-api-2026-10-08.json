@@ -1,0 +1,150 @@
+{
+  "checkedAt": "2026-10-08T21:46:03.493Z",
+  "documentedOrigin": "https://school-app-production-be43.up.railway.app",
+  "checks": [
+    {
+      "path": "/",
+      "requestOrigin": "https://www.stredninamiru.cz",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "access-control-allow-origin": "https://www.stredninamiru.cz",
+        "vary": "Origin",
+        "content-security-policy": null,
+        "strict-transport-security": null,
+        "x-frame-options": null,
+        "x-content-type-options": null,
+        "referrer-policy": null,
+        "permissions-policy": null,
+        "cache-control": null
+      },
+      "bodyKind": "object",
+      "topKeys": [
+        "status"
+      ],
+      "arrayLength": null,
+      "firstRowKeys": [],
+      "health": "ok"
+    },
+    {
+      "path": "/api/me",
+      "requestOrigin": "https://www.stredninamiru.cz",
+      "status": 401,
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "access-control-allow-origin": "https://www.stredninamiru.cz",
+        "vary": "Origin",
+        "content-security-policy": null,
+        "strict-transport-security": null,
+        "x-frame-options": null,
+        "x-content-type-options": null,
+        "referrer-policy": null,
+        "permissions-policy": null,
+        "cache-control": null
+      },
+      "bodyKind": "object",
+      "topKeys": [
+        "error"
+      ],
+      "arrayLength": null,
+      "firstRowKeys": [],
+      "health": null
+    },
+    {
+      "path": "/api/schools",
+      "requestOrigin": "https://www.stredninamiru.cz",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "access-control-allow-origin": "https://www.stredninamiru.cz",
+        "vary": "Origin, accept-encoding",
+        "content-security-policy": null,
+        "strict-transport-security": null,
+        "x-frame-options": null,
+        "x-content-type-options": null,
+        "referrer-policy": null,
+        "permissions-policy": null,
+        "cache-control": null
+      },
+      "bodyKind": "array",
+      "topKeys": [],
+      "arrayLength": 217,
+      "firstRowKeys": [
+        "id",
+        "created_at",
+        "name",
+        "location",
+        "programs",
+        "contact",
+        "website",
+        "latitude",
+        "longitude",
+        "redizo",
+        "admission_cutoff",
+        "acceptance_rate",
+        "admission_data_updated_at",
+        "merged_into",
+        "school_programs",
+        "school_extracted_details",
+        "district"
+      ],
+      "health": null
+    },
+    {
+      "path": "/api/beta/schools/PRISTUPTESTOVACIVERZE",
+      "requestOrigin": "https://www.stredninamiru.cz",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "access-control-allow-origin": "https://www.stredninamiru.cz",
+        "vary": "Origin",
+        "content-security-policy": null,
+        "strict-transport-security": null,
+        "x-frame-options": null,
+        "x-content-type-options": null,
+        "referrer-policy": null,
+        "permissions-policy": null,
+        "cache-control": "no-store"
+      },
+      "bodyKind": "object",
+      "topKeys": [
+        "code",
+        "school_name",
+        "programEndsAt",
+        "accessHours",
+        "programActive",
+        "feedbackFormUrl",
+        "trackingTicket",
+        "serverNow"
+      ],
+      "arrayLength": null,
+      "firstRowKeys": [],
+      "health": null
+    },
+    {
+      "path": "/",
+      "requestOrigin": "https://example.invalid",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "access-control-allow-origin": "https://www.stredninamiru.cz",
+        "vary": "Origin",
+        "content-security-policy": null,
+        "strict-transport-security": null,
+        "x-frame-options": null,
+        "x-content-type-options": null,
+        "referrer-policy": null,
+        "permissions-policy": null,
+        "cache-control": null
+      },
+      "bodyKind": "object",
+      "topKeys": [
+        "status"
+      ],
+      "arrayLength": null,
+      "firstRowKeys": [],
+      "health": null
+    }
+  ],
+  "limitation": "Anonymous GET requests only; no account, token, mutation, mail, model or payment actions. Response row values not retained. Does not prove authenticated access-state isolation or proxy/rate-limit topology."
+}

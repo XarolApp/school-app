@@ -1534,7 +1534,7 @@
     "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
   },
   "scripts/extract-school-details.js": {
-    "sha256": "c0dd0ec3d5dcd01fe61113389f444cf2b048da431d8d97d074ebfea2ffc5d9df",
+    "sha256": "fbd77ebbfeb99c3f78e791349bba9a674206d51ffdc24d74e797fbc5be20f107",
     "lines": 1499,
     "read_ranges": [
       [
@@ -1544,8 +1544,8 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:40:57.647477+00:00",
-    "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
+    "checked_at_utc": "2026-10-08T21:52:21.686128+00:00",
+    "method": "Full source read plus complete current authored diff review. Docs reconciled to source/read-only production evidence; read does not imply acceptance."
   },
   "scripts/build-district-map.js": {
     "sha256": "84762836f3b81891e79fcb8721c1b183c40b126b5443f507b49a2effa8a8e54b",
@@ -1602,5 +1602,131 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-08T21:40:57.648442+00:00",
     "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
+  },
+  "DEPLOY.md": {
+    "sha256": "ff7315caf848619f7600a34132ce8882400a4effa42fe29ccaf56ef77a6eb64b",
+    "lines": 130,
+    "read_ranges": [
+      [
+        1,
+        130
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:52:21.685139+00:00",
+    "method": "Full source read plus complete current authored diff review. Docs reconciled to source/read-only production evidence; read does not imply acceptance."
+  },
+  "README.md": {
+    "sha256": "0c0257d9cd8c592d85bc8c4167b4048f8f621eac47aba69397dc87c375c640eb",
+    "lines": 19,
+    "read_ranges": [
+      [
+        1,
+        19
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:52:21.685599+00:00",
+    "method": "Full source read plus complete current authored diff review. Docs reconciled to source/read-only production evidence; read does not imply acceptance."
+  },
+  "PROJECT-OVERVIEW.md": {
+    "sha256": "1d3689b9eb59c5c220129acf31841b932b32debeec547423b1aae19b53b1ef06",
+    "lines": 58,
+    "read_ranges": [
+      [
+        1,
+        58
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:52:21.685643+00:00",
+    "method": "Full source read plus complete current authored diff review. Docs reconciled to source/read-only production evidence; read does not imply acceptance."
+  },
+  "docs/firecrawl-extraction-task.md": {
+    "sha256": "613819e87871cc804ae1ddb14e9094b555e208e630df80d13df26b64298957a9",
+    "lines": 137,
+    "read_ranges": [
+      [
+        1,
+        137
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:52:21.685794+00:00",
+    "method": "Full source read plus complete current authored diff review. Docs reconciled to source/read-only production evidence; read does not imply acceptance."
+  },
+  "scripts/generate-school-proscons.js": {
+    "sha256": "f76d24243f6c0f2543637b802998c5f06e8d23e40c22ee91c0e33e350ae170f6",
+    "lines": 311,
+    "read_ranges": [
+      [
+        1,
+        311
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:52:21.686184+00:00",
+    "method": "Full source read plus complete current authored diff review. Docs reconciled to source/read-only production evidence; read does not imply acceptance."
+  },
+  "lib/aiUsage.js": {
+    "sha256": "273343ccfd22e1c5a4300a4d4050503a7d34df3a84443bd701cd724c68dd3998",
+    "lines": 34,
+    "read_ranges": [
+      [
+        1,
+        34
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:52:21.686332+00:00",
+    "method": "Full source read plus complete current authored diff review. Docs reconciled to source/read-only production evidence; read does not imply acceptance."
+  },
+  "tests/ai-usage.test.cjs": {
+    "sha256": "46f93753374d33c0fcbf51f180f1e77e4ec8ac0b9622d898b816495d371baf2a",
+    "lines": 33,
+    "read_ranges": [
+      [
+        1,
+        33
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:52:21.686467+00:00",
+    "method": "Full source read plus complete current authored diff review. Docs reconciled to source/read-only production evidence; read does not imply acceptance."
+  },
+  "frontend/vercel.json": {
+    "sha256": "0faf96401e6d774a6277f4df8a4883e33c9e5468b685f5ecad85221e01fa79a0",
+    "lines": 3,
+    "read_ranges": [
+      [
+        1,
+        3
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:52:21.686802+00:00",
+    "method": "Full source read plus complete current authored diff review. Docs reconciled to source/read-only production evidence; read does not imply acceptance."
+  },
+  "package.json": {
+    "sha256": "c207257141b4d7d3091f900a8bda124a497749ff82e3c6ac227d95a373e63934",
+    "lines": 38,
+    "read_ranges": [
+      [
+        1,
+        38
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-08T21:52:21.686928+00:00",
+    "method": "Full source read plus complete current authored diff review. Docs reconciled to source/read-only production evidence; read does not imply acceptance."
   }
 }

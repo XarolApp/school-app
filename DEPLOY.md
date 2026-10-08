@@ -1,17 +1,28 @@
 # Deploying Střední na míru
 
 Two separate deploys: the Express backend on **Railway**, the Vite/React
-frontend on **Vercel**. Supabase is already hosted — nothing to deploy there.
+frontend on **Vercel**. Supabase hosts the database and Auth; schema, grants,
+policies and Auth/Storage settings still require separate migration verification.
 
-**Current production (verified 2026-10-07):** frontend https://www.stredninamiru.cz
-(apex `stredninamiru.cz` redirects there; gated by `SITE_ACCESS_KEY`, `noindex`),
-backend https://school-app-production-be43.up.railway.app (CORS allows only the www
-origin). Stripe runs on **test** keys; the Stripe webhook endpoint points at the
-Railway URL above. ⚠️ The Railway service is on its 30-day trial (deployed
-2026-09-13) — upgrade it before ~2026-10-13 or the whole backend goes offline.
+**Observed deployment, 8 October 2026:** frontend https://www.stredninamiru.cz
+(apex redirects to www; the shared-code gate returns `no-store` and `noindex`).
+The shared code opens the school beta invitation. Backend
+https://school-app-production-be43.up.railway.app returns a healthy JSON response;
+its CORS response allows the www origin. CORS does not replace API authorization:
+the anonymous catalogue endpoint currently returns all 217 visible schools and
+nested data. The premium/public projection boundary remains an open review item.
 
-Everything below is a one-time setup. Both platforms auto-redeploy on every
-push to `main` after this is done once.
+Local Stripe configuration was verified in **test mode**; the test webhook points
+at the Railway URL. This does not verify deployed billing secrets or authorize
+real payments. Check Railway billing/credits and continuity in the dashboard: the
+previous note predicted a trial deadline around 13 October, but its current billing
+state has not been verified. Do not assume that date proves the service will stop.
+
+The setup below describes the existing topology, not release approval. Git pushes
+are intended to trigger Railway/Vercel deployment; verify each platform's deployed
+commit and build logs rather than assuming every push reached both services. See
+the [continuing deployment review](reports/deployment-review-2026-10-07/REPORT.md)
+and [handoff gates](reports/deployment-review-2026-10-07/HANDOFF-PLAN.md).
 
 ---
 
@@ -26,8 +37,11 @@ push to `main` after this is done once.
 3. Go to the service's **Variables** tab and add every var from
    [`.env.example`](.env.example) with real values, **except**:
    - `PORT` — leave unset, Railway injects its own.
-   - `TRUST_PROXY` — set to `true` (Railway sits behind a proxy;
-     `express-rate-limit` needs this to see real client IPs, not Railway's).
+   - `TRUST_PROXY` — configure only after verifying Railway's actual trusted
+     proxy/header topology. The earlier blanket `true` instruction is not a
+     verified safe configuration. Confirm forwarded headers cannot be spoofed and
+     rate limits distinguish clients without blocking a classroom behind one NAT.
+     See B06 in the deployment review; do not change live settings blindly.
    - `NODE_ENV` — `production`. Without it a missing `BETA_TICKET_SECRET`
      silently falls back to the service-role key.
    - `BETA_TICKET_SECRET` — a fresh random 32+ byte value (beta tracking tickets).
@@ -68,7 +82,7 @@ push to `main` after this is done once.
 5. Deploy. Copy the resulting URL and go back to Railway (step 1.3) to set
    `FRONTEND_URL` to it, then redeploy the Railway service.
 
-## 3. Supabase — one setting to check
+## 3. Supabase — Auth configuration and schema acceptance
 
 Auth → URL Configuration: **Site URL** `https://www.stredninamiru.cz`, and
 **Redirect URLs** must cover every path the app sends in an e-mail link:
@@ -80,14 +94,37 @@ Auth → URL Configuration: **Site URL** `https://www.stredninamiru.cz`, and
 A missing entry makes Supabase fall back to the Site URL, and the tab that is
 waiting for confirmation never moves on.
 
-## 4. After both are live
+The canonical intended schema is `supabase-setup.sql`; table presence is not proof
+that its latest functions, grants or constraints are deployed. `beta_profile.role_note`
+is present in the 8 October read-only check. Fresh-install/rerun and authenticated
+cross-account/Storage tests remain required in a disposable database, followed by
+only the reviewed missing migration on production. Never blindly rerun the entire
+schema on production or use production accounts for destructive acceptance tests.
 
-- Full smoke test against the real URLs: sign up, confirm email, sign in,
-  fill `/dotaznik`, browse `/skoly`, open a school page, check
-  `/porovnani/matice`.
-- Update `docs/skolamatch_current_status.md`'s "Deployment" line from
-  "not finalized" to done, with the two URLs.
-- Payment is NOT live: Stripe runs on test keys (real Checkout sessions, test
-  cards only). Going live needs an adult-owned Stripe account plus every item in
-  `UNFORGET.md` "STOP. DO NOT GO LIVE WITH STRIPE" and the payment gates in
-  `reports/claude-review-2026-10-07/REPORT.md`.
+## 4. Verify the deployed beta
+
+- Record the deployed frontend/backend commits, HTTP security headers, allowed
+  origins and environment mode. Test both the shared-code gate and unlocked app;
+  the gate currently lacks CSP/framing and other explicit browser security headers.
+  Select compatible policies and verify Turnstile, maps, Auth and screenshots still
+  work. The API host is independently reachable outside the frontend gate.
+- Use designated synthetic testers to exercise invitation → role/data-use
+  acknowledgement → signup → email confirmation → first sign-in → onboarding →
+  search/detail → comparison/matrix → feedback/renewal → expiry. Test delayed
+  confirmation, recovery, account switching and account management. Do not submit
+  real pupil data merely to run a smoke test.
+- Beta is **free for feedback**, with payment screens as a preview. Verify no beta
+  journey opens Stripe, starts a purchase trial or requires payment. The observed
+  cutoff is 18 October at 23:59 Europe/Prague, with a 48-hour rolling window; check
+  the server's current settings before distributing invitations.
+- Preserve the founder's public landing/onboarding and landing-map school-detail
+  exception while enforcing premium access on the rest of the product. Ordinary
+  access trials must start at first confirmed sign-in; that change is still pending.
+- Save evidence and unresolved manual checks in the current review, then update
+  `docs/skolamatch_current_status.md` with what actually passed. Deployed URLs and a
+  successful build alone do not mean beta acceptance is complete.
+- Payment is **not approved for live billing**. Test cards only until the payment
+  lifecycle, refund, reminder, operator and provider gates in `UNFORGET.md` and the
+  [current handoff](reports/deployment-review-2026-10-07/HANDOFF-PLAN.md) are closed.
+  The [Claude review](reports/claude-review-2026-10-07/REPORT.md) is additional
+  snapshot evidence, not a replacement for those gates.

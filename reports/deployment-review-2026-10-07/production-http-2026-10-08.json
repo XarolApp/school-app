@@ -1,0 +1,69 @@
+{
+  "checkedAt": "2026-10-08T21:42:05.197Z",
+  "checks": [
+    {
+      "requested": "https://www.stredninamiru.cz/",
+      "finalHost": "www.stredninamiru.cz",
+      "finalPath": "/",
+      "status": 200,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "content-security-policy": null,
+        "strict-transport-security": "max-age=63072000",
+        "x-frame-options": null,
+        "x-content-type-options": null,
+        "referrer-policy": null,
+        "permissions-policy": null,
+        "cache-control": "no-store",
+        "x-robots-tag": "noindex, nofollow",
+        "server": "Vercel"
+      },
+      "scripts": [],
+      "showsAccessGate": true,
+      "htmlTitle": "Střední na míru — testovací verze"
+    },
+    {
+      "requested": "https://stredninamiru.cz/",
+      "finalHost": "www.stredninamiru.cz",
+      "finalPath": "/",
+      "status": 200,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "content-security-policy": null,
+        "strict-transport-security": "max-age=63072000",
+        "x-frame-options": null,
+        "x-content-type-options": null,
+        "referrer-policy": null,
+        "permissions-policy": null,
+        "cache-control": "no-store",
+        "x-robots-tag": "noindex, nofollow",
+        "server": "Vercel"
+      },
+      "scripts": [],
+      "showsAccessGate": true,
+      "htmlTitle": "Střední na míru — testovací verze"
+    },
+    {
+      "requested": "https://www.stredninamiru.cz/skoly",
+      "finalHost": "www.stredninamiru.cz",
+      "finalPath": "/skoly",
+      "status": 200,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "content-security-policy": null,
+        "strict-transport-security": "max-age=63072000",
+        "x-frame-options": null,
+        "x-content-type-options": null,
+        "referrer-policy": null,
+        "permissions-policy": null,
+        "cache-control": "no-store",
+        "x-robots-tag": "noindex, nofollow",
+        "server": "Vercel"
+      },
+      "scripts": [],
+      "showsAccessGate": true,
+      "htmlTitle": "Střední na míru — testovací verze"
+    }
+  ],
+  "limitation": "Anonymous GET only. Does not verify authenticated app journeys, deployed environment variables or backend origin."
+}

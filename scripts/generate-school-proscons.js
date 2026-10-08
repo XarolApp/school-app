@@ -8,9 +8,9 @@
  * WHY THIS RUNS ONCE PER SCHOOL, NOT PER REQUEST (plan 006 §1.3): the pros/cons
  * text is a function of the school's OWN data (cutoff, acceptance rate,
  * capacity, obor mix, trend) — it is not personalized per student, so there is
- * nothing to gain by generating it live. Doing it here means ~60 calls ever
- * (once per school, again only when that school's underlying data actually
- * changes) instead of one call per student per school viewed. It also means
+ * nothing to gain by generating it live. The cache is reusable across users;
+ * refreshes make calls for selected schools whose fingerprint changed (or every selected school with --force), rather than
+ * one call per student per school viewed. It also means
  * the comparison page renders instantly with no LLM round-trip on the request
  * path.
  *
@@ -228,7 +228,7 @@ async function main() {
   const modelArg = args.indexOf('--model');
   const model = modelArg !== -1 ? args[modelArg + 1] : DEFAULT_MODEL;
 
-  console.log(`Model: ${model}${dryRun ? ' (dry run — nothing written)' : ''}\n`);
+  console.log(`Model: ${model}${dryRun ? ' (dry run — summary writes skipped; paid calls/usage logs still occur)' : ''}\n`);
 
   const { data: schools, error } = await supabase
     .from('schools')
@@ -302,7 +302,7 @@ async function main() {
     `\nGenerated ${generated}, skipped ${skipped} (unchanged), failed ${failed}, of ${targets.length} targeted.`
   );
   if (totalTokens) console.log(`~${totalTokens} tokens used this run.`);
-  if (dryRun) console.log('--dry-run: nothing written to Supabase.');
+  if (dryRun) console.log('--dry-run: summaries unchanged; paid model calls and AI usage-log writes may have occurred.');
 }
 
 main().catch((err) => {

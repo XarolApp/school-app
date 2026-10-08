@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-08T21:40:57.935802+00:00",
-  "commit": "6e876606c63900702afd68459ae1a0c04be196fb",
+  "checked_at_utc": "2026-10-08T21:52:21.975349+00:00",
+  "commit": "420c690f4306b444f6456eaedfffec74c2dd3a4a",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "pending_or_changed": 585,
-    "binary_requires_asset_check": 44,
+    "pending_or_changed": 583,
     "current_full_read": 169,
-    "generated_or_audit_artifact": 36,
+    "binary_requires_asset_check": 45,
+    "generated_or_audit_artifact": 41,
     "removed_or_missing": 2
   },
   "files": [
@@ -747,10 +747,12 @@
     },
     {
       "path": "DEPLOY.md",
-      "sha256": "94fdff6d009c69e2d6609860bead21cbbda49bcbe587dd57ccad9b1ddb1b55b1",
-      "lines": 93,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "ff7315caf848619f7600a34132ce8882400a4effa42fe29ccaf56ef77a6eb64b",
+      "lines": 130,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "Model & Effort Routing Guide  Codex Plus + Claude Pro.md",
@@ -761,17 +763,21 @@
     },
     {
       "path": "PROJECT-OVERVIEW.md",
-      "sha256": "69e9806188426b6f1e3b7bffd436ea1eec4ec5ce07e2b9645bdaa5fb7499c2e2",
+      "sha256": "1d3689b9eb59c5c220129acf31841b932b32debeec547423b1aae19b53b1ef06",
       "lines": 58,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "README.md",
-      "sha256": "68fcc7738a7a136237404d89f47f51b738b876c6f3e14187209bc3b9e2b4b9eb",
-      "lines": 12,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "0c0257d9cd8c592d85bc8c4167b4048f8f621eac47aba69397dc87c375c640eb",
+      "lines": 19,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "UNFORGET.md",
@@ -2350,10 +2356,12 @@
     },
     {
       "path": "docs/firecrawl-extraction-task.md",
-      "sha256": "5f67e0b63db9f0e7d72ff5d76a49249eabc139f2c7115aea2ced2c340ee7ba22",
-      "lines": 227,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "613819e87871cc804ae1ddb14e9094b555e208e630df80d13df26b64298957a9",
+      "lines": 137,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "docs/handouts/hudba-pri-cviceni.docx",
@@ -3200,8 +3208,8 @@
     },
     {
       "path": "frontend/src/components/schoolDetail/SchoolActions.jsx",
-      "sha256": "307a94fbda1329ca44037625acccc7c92993f9895f6b14a18b5b7610e22dadee",
-      "lines": 245,
+      "sha256": "353bd6607612fec2472031b37db8e04ae5f466b1de195fcdb3e4228a0175b53b",
+      "lines": 262,
       "status": "pending_or_changed",
       "matching_evidence": []
     },
@@ -3399,6 +3407,13 @@
       ]
     },
     {
+      "path": "frontend/src/lib/gender.js",
+      "sha256": "cbde62c3d42bd03af7216c131f8583943dfc5485c529f8b8362559e1307cef9d",
+      "lines": 36,
+      "status": "pending_or_changed",
+      "matching_evidence": []
+    },
+    {
       "path": "frontend/src/lib/kkovGroups.js",
       "sha256": "9aeb6fec07cef94474acbcbbe9126e9dd6034623816a7c370b6719dbd4f3519d",
       "lines": 40,
@@ -3416,12 +3431,10 @@
     },
     {
       "path": "frontend/src/lib/onboardingStorage.js",
-      "sha256": "a48cec9471fce2af00e833871af1c3affab1e1239f0096a9c0bd045cfa899fcc",
-      "lines": 2,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "frontend-coverage.json"
-      ]
+      "sha256": "79bc9ac960e6a062108bc8ab412e826d7fc20ff4c24c54da275482915bfb13e1",
+      "lines": 22,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/lib/pendingBetaCode.js",
@@ -3830,17 +3843,15 @@
     },
     {
       "path": "frontend/src/pages/onboarding/OnboardingFlow.jsx",
-      "sha256": "49bf43b7d2376423b9d5afeaa685f7ab03a1a7a64927e293cb60a33fc3a554d0",
-      "lines": 603,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "frontend-coverage.json"
-      ]
+      "sha256": "1d8a948dd50609a89112cf0ec2b4db46ba3df4cf975d68157bc1aca273ce6591",
+      "lines": 614,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/pages/onboarding/onboarding.css",
-      "sha256": "7a65cbdb3bc7370b994068440a7c39fc0a8988b5ec18cd2c7d823cf13136f53d",
-      "lines": 2976,
+      "sha256": "73e239fe836b017bead88a7062f84cef112dc5668a3db8bf75f09cd5031e6d6d",
+      "lines": 3010,
       "status": "pending_or_changed",
       "matching_evidence": []
     },
@@ -3933,12 +3944,10 @@
     },
     {
       "path": "frontend/src/pages/onboarding/screens/RoleFork.jsx",
-      "sha256": "1d107d89494e108ff716c2d74b4fc2611f092c1cd3c73048ddbfa7cab67809c6",
-      "lines": 113,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "c37da434c08ee3e191fbcac9532529aa8cee636db09659dca5d28c07391402b1",
+      "lines": 138,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/pages/onboarding/screens/SocialProof.jsx",
@@ -4053,7 +4062,8 @@
       "lines": 3,
       "status": "current_full_read",
       "matching_evidence": [
-        "frontend-coverage.json"
+        "frontend-coverage.json",
+        "root-coverage.json"
       ]
     },
     {
@@ -4071,7 +4081,8 @@
       "lines": 34,
       "status": "current_full_read",
       "matching_evidence": [
-        "backend-coverage.json"
+        "backend-coverage.json",
+        "root-coverage.json"
       ]
     },
     {
@@ -4156,8 +4167,8 @@
     },
     {
       "path": "lib/questionnaire.js",
-      "sha256": "34a086e608831ab730e5560be4e56380236b76f1474488eabc35ba08deabf558",
-      "lines": 928,
+      "sha256": "12345c99a733b1074786c6ff1ffb8e5b8a8883588979ef0e11ea723ae2db35a4",
+      "lines": 929,
       "status": "pending_or_changed",
       "matching_evidence": []
     },
@@ -4281,7 +4292,8 @@
       "lines": 38,
       "status": "current_full_read",
       "matching_evidence": [
-        "backend-coverage.json"
+        "backend-coverage.json",
+        "root-coverage.json"
       ]
     },
     {
@@ -5339,28 +5351,24 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "d303ac813487d0cdab4c33050cbc53a2780ac0c0d1fbea7a2eb625b7e08cceae",
-      "lines": 67,
+      "sha256": "46e9ac0bc4c6cca159c8ca0cc998aebeb136b917e665a12e2983ffecce07d0a3",
+      "lines": 77,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "a6678a14d47405e40e67b17ce1b518f306476f1bf27fefd2d2acf4dba37f0256",
-      "lines": 93,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "c48a75d513eee903bc65487ebf6ca41335d96dbe7d04dd4f0da719990119e3cb",
+      "lines": 97,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "b2172489188d6fa642db79b2dc7f490cd2dd6fe836e86639eef60decbf1773ec",
-      "lines": 67,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "7acec9cccde825f9377c5d5fd9747d35f61592067810db10c7d9ff114760cedb",
+      "lines": 68,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/admission-roadmap-mobile.jpg",
@@ -5419,6 +5427,13 @@
       "matching_evidence": []
     },
     {
+      "path": "reports/deployment-review-2026-10-07/beta-invitation-production.png",
+      "sha256": "8cad03c33fa4416c2c37aea3ca217cd2d659fc3aa1ee737d868552bb07022f25",
+      "lines": null,
+      "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/catalogue-quality-2026-10-08.json",
       "sha256": "5d89dc8c0fa2e4911aa530d289dc6765104056a6b335920f72de264dd8f28aca",
       "lines": 19,
@@ -5434,15 +5449,15 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "0464a7285ab199bafaef1f5c767e0e21c4bf49b1f98b278305bc3577885a638b",
-      "lines": 81,
+      "sha256": "0b1477941bcc4bd01a064bc6729495a8e17c75882f41e8b6efa229bce89fd52e",
+      "lines": 89,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "9a827c9de5c7bb0865d3104b7f4b57126383274c8d2a9f0774e653a787aeb449",
-      "lines": 6169,
+      "sha256": "307ab4fa6ebd24a51a7f4b0d07be78e5f3fa6fd3a7b42c84af7514bf20dafc4d",
+      "lines": 6201,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -5621,6 +5636,20 @@
       ]
     },
     {
+      "path": "reports/deployment-review-2026-10-07/production-api-2026-10-08.json",
+      "sha256": "fba4b4543ca9510ff8654bdfb6428ecc0d7113ab71cc1a06188153260470bcf7",
+      "lines": 150,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/production-http-2026-10-08.json",
+      "sha256": "ff75f0f1d7108eee7bf7885573480f934f3f4c7f8f99b91bf45f9a13ea8206ac",
+      "lines": 69,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/programme-unknown-desktop.jpg",
       "sha256": "e9095dcdcdf2ce37de8dbe50aa29fa51d6898b7cc977803687eb855306dbb999",
       "lines": null,
@@ -5638,8 +5667,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "1d6839c2e28b87065321c1b8ad18ed2e44afbfde8814442b008ccf1077e9eab5",
-      "lines": 1606,
+      "sha256": "3efa21d45a0eaca96346d586c6674a390f392927cd8fa9ff12ffbdbb1a0689a1",
+      "lines": 1732,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -5652,12 +5681,10 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/script-findings.md",
-      "sha256": "67e42c93ea061f4892aa3494ed0063f009e3b03d2f238bb84d76efa1f0cbd0e7",
-      "lines": 75,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "e0c03a83e7415b78229367d1c789e574f84fef68ad0a5a3203dbfc22271b1e70",
+      "lines": 102,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/search-missing-data-desktop.jpg",
@@ -5886,7 +5913,7 @@
     },
     {
       "path": "scripts/extract-school-details.js",
-      "sha256": "c0dd0ec3d5dcd01fe61113389f444cf2b048da431d8d97d074ebfea2ffc5d9df",
+      "sha256": "fbd77ebbfeb99c3f78e791349bba9a674206d51ffdc24d74e797fbc5be20f107",
       "lines": 1499,
       "status": "current_full_read",
       "matching_evidence": [
@@ -5922,10 +5949,12 @@
     },
     {
       "path": "scripts/generate-school-proscons.js",
-      "sha256": "fd91cf91a76da6e9ac5e5cc1554534219dc774b41a2f47a2bb8c1c691c790f01",
+      "sha256": "f76d24243f6c0f2543637b802998c5f06e8d23e40c22ee91c0e33e350ae170f6",
       "lines": 311,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "scripts/geocode-schools.js",
@@ -6080,8 +6109,10 @@
       "path": "tests/ai-usage.test.cjs",
       "sha256": "46f93753374d33c0fcbf51f180f1e77e4ec8ac0b9622d898b816495d371baf2a",
       "lines": 33,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "tests/beta-admin.test.cjs",

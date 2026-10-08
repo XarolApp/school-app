@@ -23,7 +23,7 @@
  * (looksLikeFiller) and treated as null rather than trusted.
  *
  * Uses either Google Gemini (GOOGLE_GEMINI_API_KEYS) or OpenRouter
- * (OPENROUTER_API_KEY). Google Gemini is checked first — set both keys to choose.
+ * (OPENROUTER_API_KEY). Google Gemini takes precedence whenever its key list is nonempty.
  * Supports multiple comma-separated Google API keys for round-robin load balancing
  * across accounts (avoids 3 RPM per-key rate limit).
  */
@@ -1273,7 +1273,7 @@ async function runStructureMode(args) {
   }
 
   const projection = projectStructureCoverage(allSchoolIds, detailById);
-  console.log('Model: ' + model + (dryRun ? ' (dry run — nothing written)' : '') + (force ? ' (--force)' : ''));
+  console.log('Model: ' + model + (dryRun ? ' (dry run — detail writes skipped; paid calls/usage logs may occur)' : '') + (force ? ' (--force)' : ''));
   console.log('Cached schools: ' + allSchoolIds.length + '; targeted: ' + schoolIds.length + '.');
   console.log('Projected non-null candidates (local evidence checks, not a full model run):');
   for (const field of STRUCTURE_FIELDS) console.log('  ' + field + ': ' + projection[field] + '/' + allSchoolIds.length);
@@ -1338,7 +1338,7 @@ async function runStructureMode(args) {
   for (const field of STRUCTURE_FIELDS) console.log('  ' + field + ': ' + modelCoverage[field] + '/' + processed);
   console.log('Validated non-null outputs:');
   for (const field of STRUCTURE_FIELDS) console.log('  ' + field + ': ' + validatedCoverage[field] + '/' + processed);
-  if (dryRun) console.log('--dry-run: nothing written to Supabase.');
+  if (dryRun) console.log('--dry-run: school details unchanged; paid model calls and AI usage-log writes may have occurred.');
 }
 
 async function main() {
@@ -1380,7 +1380,7 @@ async function main() {
     }
   }
 
-  console.log(`Model: ${model}${dryRun ? ' (dry run — nothing written)' : ''}`);
+  console.log(`Model: ${model}${dryRun ? ' (dry run — detail writes skipped; paid calls/usage logs may occur)' : ''}`);
   console.log(`${schoolIds.length} cached schools to process.\n`);
 
   const { data: schools, error } = await supabase
@@ -1466,7 +1466,7 @@ async function main() {
     console.log('\nFailures:');
     failures.forEach((f) => console.log(`  - ${f}`));
   }
-  if (dryRun) console.log('--dry-run: nothing written to Supabase.');
+  if (dryRun) console.log('--dry-run: school details unchanged; paid model calls and AI usage-log writes may have occurred.');
 }
 
 // Applies stripPublicTuition to rows already stored, without re-running the

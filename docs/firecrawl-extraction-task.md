@@ -1,227 +1,137 @@
-# Task: Firecrawl scrape + Claude extraction pipeline for Střední na míru
+# School website scrape, filter and extraction operations
 
-You are being handed this task with no prior context on the project. Read this
-whole document before writing any code — it contains everything you need,
-including the exact schema, exact fields, and exact safety rules. Ask the user
-if anything below is ambiguous; do not guess on anything that touches data
-integrity.
+Updated 8 October 2026 against the current scripts. This replaces an obsolete
+initial build task: the pipeline, schema and school-detail integration already
+exist. Do not rebuild them from the former six-column example or install a direct
+Anthropic client on the assumption that it is the current provider.
 
-## Project context (minimum you need)
+## Current purpose and data
 
-**Střední na míru** is a Czech website (`school-app` repo) that helps 9th graders
-pick a high school (*střední škola*) in Prague. It has a Supabase (Postgres)
-database with a `schools` table (~223 real Prague schools) and an Express
-backend (`server.js` at repo root) that is the only thing allowed to write to
-that database with the service-role key (Row Level Security blocks the
-browser from writing directly).
+The pipeline caches school website text, filters it locally, then extracts
+source-supported information into `school_extracted_details`. Keep scraping and
+extraction separate so a prompt/model change does not require another crawl.
+The current catalogue has 223 raw rows and 217 visible schools; these counts do
+not prove completeness against the official register. Historical September runs
+used 219 cached schools; cache, raw-row and visible counts describe different sets.
 
-Relevant existing columns on `schools`: `id`, `name`, `location`, `programs`,
-`contact`, `website`, `zrizovatel`-equivalent info lives in `school_programs`
-(see below), `redizo`. Full schema lives in `supabase-setup.sql` at repo root
-— read it before writing migrations.
+The canonical intended schema is `supabase-setup.sql`, not a copied table fragment
+in this document. The table is service-role only; the backend and maintenance
+scripts use it. RLS does not make service-role writes safe automatically.
+Current fields include:
 
-There is already a `school_programs` table (per-obor Cermat admission-results
-data) and a `school_ai_summary` table (cached AI-generated pros/cons per
-school, regenerated when a `data_fingerprint` column changes) — **use
-`school_ai_summary`'s pattern as your model** for how this project caches
-AI-generated content: one row per school, a fingerprint/timestamp column, a
-`model` column recording which AI model produced it, never regenerated on
-every page load.
+- Eight prose fields: `skolne_poplatky`, `obedy_ubytovani`, `krouzky_aktivity`,
+  `maturita_uspesnost`, `vs_uplatneni`, `uplatneni_po_vyuceni`,
+  `pripijimaci_pozadavky_detail` (existing spelling) and `vyukovy_styl_detail`.
+- Base numbers: `tuition_czk_per_year`, `maturita_pass_rate_pct`, `zacatek_hodin`.
+- Base booleans: `ma_dodatecne_pozadavky`, `alternativni_pedagogika`.
+- Six additional structure fields: `ma_jidelnu`, `ma_koleje`, `pocet_krouzku`,
+  `krouzky_kategorie`, `vs_pokracuje_pct`, `vyukovy_styl_tagy`.
+- Provenance/model/timestamp fields; see the schema and script for their shape.
 
-## The actual task
+School pages and matching tools already consume subsets of this data. Missing
+values must remain unknown; a prompt, quote or successful schema validation does
+not establish that a statement is true, current or applies to every programme.
+Photos/video are outside this text pipeline.
 
-The school detail page (`frontend/src/components/schoolDetail/MissingDataGrid.jsx`)
-currently shows **six placeholder cards** that say "Nemáme tuto informaci"
-("We don't have this info") because the site only has admission-stats data
-today, not school-life info. Your job: build a two-phase pipeline that scrapes
-each school's own website and uses Claude to try to fill these in with real
-information — never invented, never guessed.
+## 1. Scrape and cache
 
-The six fields (Czech DB column name → what it means → the exact Czech card
-title already live on the site, do not change the wording, the frontend will
-be updated separately to read your table instead of showing the placeholder):
+`scripts/scrape-schools.js` uses Firecrawl and reads the school website list from
+Supabase. `scripts/scrape-schools-free.js` is a separate HTML/Jina alternative;
+it has different traffic, source and third-party handling, not a drop-in claim of
+identical results. Review the current maintenance findings before either full run.
 
-| DB column | Meaning | Existing card title |
-|---|---|---|
-| `skolne_poplatky` | Tuition/fees — note: for public schools (`zrizovatel = 'veřejné/státní'`) this is legally zero, already handled elsewhere; you only need to find this for **private** schools | Školné a poplatky |
-| `obedy_ubytovani` | School meals / dormitory / boarding availability | Obědy a ubytování |
-| `krouzky_aktivity` | Clubs, extracurricular activities, student organizations | Kroužky a aktivity |
-| `maturita_uspesnost` | Maturita (school-leaving exam) pass rate, if the school publishes it | Úspěšnost u maturity |
-| `vs_uplatneni` | Where graduates go — university placement rate/list, if published | Kam míří absolventi |
-| `uplatneni_po_vyuceni` | Post-vocational-training employment outcomes (for SOU/SOŠ schools) | Uplatnění po vyučení |
+The Firecrawl script writes one `scripts/data/scraped-schools/<id>.md` per school
+and `_manifest.json` with crawl date/page count/source URLs. Page boundaries use
+`## PAGE-URL: <url>`. This ignored external content must not be committed as if it
+were authored application code. A missing website is skipped. Normal runs skip
+manifest-cached schools; `--force` requests another scrape.
 
-(Two more placeholder cards, "Fotky školy" and "Video a prohlídka", are
-**out of scope** — text only, no photo/video extraction in this pass.)
+A bounded listing check, with an actual catalogue ID in place of `123`:
 
-## Two-phase architecture (deliberate — confirmed with the user)
-
-**Phase 1 — scrape and cache to disk.** Crawl each school's *entire* website
-(not just the homepage — as much as Firecrawl can reasonably get: about page,
-"pro uchazeče"/admissions page, life-at-school pages, etc.) and save the raw
-content to files on disk. This is the expensive, rate-limited, slow step.
-
-**Phase 2 — extract from cached files with Claude.** A completely separate
-script reads the cached files and asks Claude to pull out the six fields
-above, writing results to a new Supabase table. **This must be re-runnable
-without ever re-scraping** — the whole reason for the two-phase split is so
-the user can later say "extract this again, I improved the prompt" or "check
-this school's cached page for X" without burning Firecrawl credits again.
-
-Do not build this as one combined script. Two scripts, two `npm` invocations,
-cache is the seam between them.
-
-## Phase 1 — `scripts/scrape-schools.js`
-
-- Query `schools` for `id, name, website`. **Skip any school where `website`
-  is null or empty** — log it, don't error.
-- For each remaining school, use Firecrawl to crawl the site (its `/crawl`
-  endpoint, or repeated `/scrape` calls following on-site links — whichever
-  the Firecrawl SDK makes cleaner; check current Firecrawl docs, don't assume
-  an API shape). Get markdown output (Firecrawl returns clean markdown by
-  default) — this is what "save it into some file" in the original request
-  refers to.
-- **Save one file per school** to `scripts/data/scraped-schools/<school_id>.md`
-  (create that directory; add it to `.gitignore` — this will be several MB of
-  scraped content, it should not be committed to git). Concatenate all crawled
-  pages for that school into the one file, with a `## <page URL>` heading
-  before each page's content so Phase 2 can cite sources.
-- Also write a `scripts/data/scraped-schools/_manifest.json` mapping
-  `school_id -> { scrapedAt, pageCount, sourceUrls: [...] }` so Phase 2 (and
-  future reruns) can tell what's cached and when, without re-parsing every
-  markdown file.
-- **Flags:**
-  - `--dry-run` — print which schools would be scraped and their websites,
-    write nothing, call Firecrawl for nothing.
-  - `--limit N` — only process the first N eligible schools (for testing).
-  - `--school-id <id>` — scrape just one school, for testing/debugging.
-  - No flag — process every school with a website that isn't already cached
-    (idempotent: skip a school whose file already exists in the manifest,
-    unless...).
-  - `--force` — re-scrape even schools already cached.
-- **Never fail the whole run on one school's error** — catch per-school,
-  log the school name + error, continue to the next. Print a summary at the
-  end: N scraped, N skipped (no website), N failed (with reasons), N already
-  cached and skipped.
-- Needs a `FIRECRAWL_API_KEY` env var (backend `.env`, gitignored — add the
-  var name, not a value, to `.env.example`). The user will provide their own
-  key when they run this; do not ask them to paste it into chat, they'll set
-  it in `.env` themselves.
-- Respect whatever reasonable rate limit/concurrency Firecrawl's docs
-  recommend — this is a few hundred schools, not thousands, so it doesn't
-  need to be fast, it needs to not get the account rate-limited or banned.
-
-## Phase 2 — `scripts/extract-school-details.js`
-
-- Read `scripts/data/scraped-schools/_manifest.json` to know which schools
-  have cached content.
-- For each cached school (respecting the same `--limit` / `--school-id` /
-  `--dry-run` flags as Phase 1), read its `.md` file and send it to Claude
-  (direct Anthropic API — the user specifically asked for "Claude by
-  Anthropic," not the OpenRouter proxy this repo also uses elsewhere) with an
-  extraction prompt that:
-  - Lists the six fields above with their meanings.
-  - **Explicitly instructs Claude to return `null` for any field it cannot
-    find real evidence for in the provided text — never infer, guess, or
-    fill in a plausible-sounding placeholder.** This is the single most
-    important instruction in the whole prompt; the app has an existing
-    written policy (see `frontend/src/components/schoolDetail/MissingDataGrid.jsx`'s
-    header comment) that it never shows fabricated data to users — a wrong
-    "yes we have a dorm" is worse than an honest "we don't know."
-  - Asks for a short citation/quote or the source URL for each non-null
-    field it does return, if the source text makes that identifiable — this
-    goes in a `source_urls` jsonb column, not shown to end users necessarily,
-    but useful for someone spot-checking later.
-  - Requests strict JSON output (use Claude's structured output support /
-    a JSON schema, or a very explicit "respond with only this JSON shape"
-    instruction — whichever the current Anthropic SDK makes more reliable).
-- **Never fabricate.** If the model returns something that looks like a
-  generic non-answer ("many extracurricular activities are offered") rather
-  than a specific fact, treat that as equivalent to null — write a brief
-  sanity check for this (e.g. reject values under some minimum specificity,
-  or just trust the prompt and spot check manually — use your judgment, but
-  err toward under-filling rather than shipping vague filler text).
-- Write one row per school to the new Supabase table (see schema below) —
-  upsert on `school_id`, so a rerun with an improved prompt overwrites
-  cleanly rather than duplicating.
-- Needs `ANTHROPIC_API_KEY` in `.env` — add to `.env.example`. **Use Claude
-  Haiku 4.5** (`claude-3-5-haiku-20241022`) for extraction — it is excellent at
-  structured extraction, cheap (~$3 for full run), and fast. If extraction
-  quality is poor (too many false positives), re-run Phase 2 with Claude Sonnet 5
-  (`claude-3-5-sonnet-20241022`, still only ~$15 for full run and notably better
-  at the "return null" discipline).
-- Uses the `SUPABASE_SERVICE_ROLE_KEY` to write, same as every other script
-  in `scripts/` — RLS blocks anything else.
-- Print a summary: N schools processed, and for each, which of the 6 fields
-  came back non-null (e.g. "Gymnázium X: 3/6 fields found") — this gives the
-  user a fast way to see extraction coverage without opening Supabase.
-
-## New Supabase table — add to `supabase-setup.sql`
-
-Follow that file's existing conventions (idempotent `CREATE TABLE IF NOT
-EXISTS`, RLS enabled, no client policy — same as `schools` and
-`school_programs`, since this is scraped/AI-derived content the browser
-should only ever read through `server.js`, never write to directly).
-
-```sql
-CREATE TABLE IF NOT EXISTS school_extracted_details (
-  school_id integer PRIMARY KEY REFERENCES schools(id) ON DELETE CASCADE,
-  skolne_poplatky text,
-  obedy_ubytovani text,
-  krouzky_aktivity text,
-  maturita_uspesnost text,
-  vs_uplatneni text,
-  uplatneni_po_vyuceni text,
-  source_urls jsonb,
-  model text,
-  extracted_at timestamptz NOT NULL DEFAULT now()
-);
-
-ALTER TABLE school_extracted_details ENABLE ROW LEVEL SECURITY;
--- No client policy — server.js (service role) is the only writer/reader from
--- the app's perspective, same rule as `schools`.
+```sh
+node scripts/scrape-schools.js --dry-run --school-id 123
 ```
 
-Do not wire this into `server.js`/the frontend as part of this task unless
-the user asks — the scope here is the scraping + extraction pipeline and the
-table it writes to. Getting real data into the table safely is the deliverable;
-surfacing it on the school detail page (replacing the relevant
-`MissingDataGrid` placeholder cards) is a natural next step but a separate
-one — mention it's ready to wire up when you're done, don't do it unprompted.
+This scraper's dry run lists targets without calling Firecrawl or writing cache
+files. A real crawl requires `FIRECRAWL_API_KEY`, can cost money, and writes files.
+The script also accepts `--limit N`; malformed/zero/negative scope validation and
+manifest recovery are unresolved maintenance findings, so verify the printed
+scope before any real run. A failed manifest parse can currently become an empty
+manifest and trigger unnecessary recrawls. Back up the cache/manifest first and
+avoid concurrent writers. Do not assume a zero exit means every school succeeded.
 
-## Dependencies
+## 2. Filter locally after each scrape
 
-Add to root `package.json` (this is backend/scripts tooling, same place
-`xlsx` lives): the official Firecrawl SDK (`@mendable/firecrawl-js` — verify
-current package name against Firecrawl's docs, it may have changed) and the
-official Anthropic SDK (`@anthropic-ai/sdk`).
+The extractor defaults to **filtered**, not raw, text. Refresh the filter after a
+new scrape or it can read stale content:
 
-## Non-negotiable constraints (reasons given so you don't relitigate them)
+```sh
+node scripts/filter-scraped-schools.js --school 123 --dry-run --verbose
+node scripts/filter-scraped-schools.js --school 123 --verbose
+```
 
-1. **Never fabricate data.** This app is used by 14-18-year-olds making a
-   real, consequential decision. A wrong "yes this school has a cafeteria" is
-   actively harmful, not a minor bug. Null is always the safe default.
-2. **Two-phase, not combined.** Re-extraction without re-scraping is a
-   deliberate, explicitly-requested capability — don't collapse this into one
-   script "for simplicity."
-3. **Text only, this pass.** No photo/video scraping or extraction — those
-   two placeholder cards stay as-is.
-4. **Skip schools with no website** rather than erroring or trying to guess
-   one.
-5. **`--dry-run` and `--limit` on both scripts** — this will be tested on a
-   handful of schools before the user commits to running it on all ~223.
-6. **Don't touch `frontend/` or `server.js`** in this task — scripts and the
-   new table only, unless the user explicitly asks you to wire up the
-   frontend too.
+Without `--school`, the filter processes numeric Markdown files and writes a
+whole-run `_report.json` under `scripts/data/filtered-schools/`. Filtering makes no
+provider calls or database writes. Its dry run writes no files. Inspect flags,
+retained pages and source text: preserved keyword groups are not a guarantee that
+all relevant facts survived. The raw cache remains the provenance reference.
 
-## If anything is unclear
+## 3. Extract from cached text
 
-Ask the user directly. In particular, check with them before you:
-- Pick the exact Firecrawl crawl parameters (max pages per site, depth) —
-  propose a sensible default (e.g. up to ~20 pages per school site) and
-  confirm rather than silently picking a number that could be slow or
-  expensive across ~200 schools.
-- Do anything that would touch `frontend/` or `server.js`.
+`scripts/extract-school-details.js` reads the raw manifest and selected input
+files. Base extraction normally skips already extracted schools; specifying
+`--school-id` explicitly re-extracts that target. `--input-dir` or
+`EXTRACT_INPUT_DIR` can change the input directory. Do not point at an old filtered
+folder and assume it reflects today's website.
 
-When done, tell the user exactly how to run both phases (the two npm/node
-commands, in order, with the recommended flags for a first small test run
-before a full run).
+The script needs `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`. Provider selection
+is automatic: nonempty `GOOGLE_GEMINI_API_KEYS` takes precedence over OpenRouter,
+so setting both does not let the model name alone switch providers. Otherwise it
+uses `OPENROUTER_API_KEYS` or `OPENROUTER_API_KEY`. Provider/model/route settings are
+in the script and `.env.example`; never paste secret values into a report.
+The code defaults are Google `gemini-3.6-flash` or OpenRouter
+`anthropic/claude-haiku-4.5`; these identifiers are source defaults, not verification
+that a deployed credential can use them. September's Luna/flex run is historical,
+not an instruction to silently select that provider today. Check availability,
+terms, costs and the approved route before a controlled call.
+
+A single-target base preview, **after paid calls are authorized and the selected
+database is suitable for usage logging**:
+
+```sh
+node scripts/extract-school-details.js --school-id 123 --dry-run
+```
+
+**Extraction dry run is not read-only:** it skips school-detail writes, but makes
+real model calls and the OpenRouter path writes `ai_usage_log`. When
+`EXTRACT_DUMP_DIR` is set it also writes local JSON. Do not use this flag to assert
+that production Supabase cannot be changed. The Google path does not provide the
+same usage-log coverage. Use a disposable database/project for acceptance tests;
+this review did not run paid extraction or modify live school records.
+
+The separate `--structure` mode derives the six additional fields from stored
+prose first, with cached text as fallback; it preserves existing values unless
+`--force`. It accepts comma-separated IDs and validates a positive `--limit`.
+Its `--dry-run` can likewise make paid calls/write usage records. Do not use
+`--force` across the catalogue without a reviewed diff and rollback plan.
+
+## Source validation and remaining safeguards
+
+- Unknown means `null`, not zero/false. A no-own-canteen statement is not proof that
+  no school-arranged lunch exists; a nearby restaurant is not automatically a
+  school meal service. The negated-canteen parsing bug was fixed in `06c704c`.
+- Annual tuition needs an explicit billing period and programme applicability.
+  Do not invent payment months or select the cheapest programme as the school price.
+- Cermat-derived maturita figures must be preserved. Failed preservation lookups
+  now abort before extraction; test this in a disposable environment.
+- Base refreshes can leave dependent structure fields stale. Source URLs, factual
+  applicability, old cache dates and partial-run failures still require review.
+  Do not rerun an entire paid batch merely to repair three suspect records.
+- Treat cached website text as untrusted input. Inspect current official pages and
+  provenance before publishing changes affecting admissions, fees or facilities.
+
+See [maintenance findings](../reports/deployment-review-2026-10-07/script-findings.md)
+and [handoff section 8](../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md) for
+transactional refresh, safe scope/manifest recovery and existing-data checks.
+The initial task's direct Anthropic SDK/model IDs, six-column migration, estimated
+full-run prices and claim that the frontend was not wired are superseded.
