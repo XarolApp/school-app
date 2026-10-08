@@ -11,6 +11,7 @@ import {
   ArrowUp,
   ChevronDown,
   Check,
+  Plus,
   Scale,
   Monitor,
   FlaskConical,
@@ -58,6 +59,7 @@ import AsyncState from '../components/AsyncState';
 import useMediaQuery from '../lib/useMediaQuery';
 import useBottomBarSpace from '../lib/useBottomBarSpace';
 import { getRecentSchoolIds, getCompareSelection, setCompareSelection } from '../lib/searchPrefs';
+import { usePicks } from '../lib/usePicks';
 import './search.css';
 import { readDraft } from '../lib/useDraft';
 
@@ -333,7 +335,7 @@ function ResultsSkeleton({ hasScore }) {
               <div className="ss-cell-number ss-cell-acceptance"><Sk w={60} h={20} /></div>
               <div className="ss-cell-number ss-cell-places"><Sk w={28} h={20} /></div>
             </div>
-            <div className="ss-row-actions"><Sk w={36} h={36} /><Sk w={36} h={36} /></div>
+            <div className="ss-row-actions"><Sk w={40} h={40} /><Sk w={40} h={40} /><Sk w={40} h={40} /></div>
           </li>
         ))}
       </ul>
@@ -398,6 +400,7 @@ function Search() {
   }, [isMobile]);
 
   const { isSignedIn, hasAccess } = useAuth();
+  const { pickIds, toggle: togglePick, saving: savingPick } = usePicks();
 
   const [loadTick, setLoadTick] = useState(0);
   useEffect(() => {
@@ -993,6 +996,23 @@ function Search() {
       <Scale size={18} aria-hidden="true" />
     </button>
   );
+  const pickToggle = (row) => {
+    const isPicked = pickIds.has(row.id);
+    const label = `${isPicked ? 'Odebrat' : 'Přidat'} ${row.name} ${isPicked ? 'z' : 'do'} přihlášky`;
+    return (
+      <button
+        type="button"
+        className={`ss-icon-toggle${isPicked ? ' is-active' : ''}`}
+        aria-pressed={isPicked}
+        aria-label={label}
+        title={label}
+        disabled={savingPick}
+        onClick={() => togglePick(row.school)}
+      >
+        {isPicked ? <Check size={18} aria-hidden="true" /> : <Plus size={18} aria-hidden="true" />}
+      </button>
+    );
+  };
   const favoriteToggle = (row, isFavorite) => (
     <FavoriteButton
       schoolId={row.id}
@@ -1469,6 +1489,7 @@ function Search() {
                   renderCardActions={(row) => (
                     <>
                       {compareToggle(row, selected.has(row.id), selected.size >= COMPARE_LIMIT && !selected.has(row.id))}
+                      {pickToggle(row)}
                       {canFavorite && favoriteToggle(row, favorites.has(row.id))}
                     </>
                   )}
@@ -1638,6 +1659,7 @@ function Search() {
 
                           <div className="ss-row-actions">
                             {compareToggle(row, isSelected, compareDisabled)}
+                            {pickToggle(row)}
                             {canFavorite && favoriteToggle(row, isFavorite)}
                           </div>
 
