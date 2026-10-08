@@ -13,6 +13,41 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
+## Founder backlog from the 2026-10-08 beta-launch request (logged, not built)
+
+Plan `plans/020-beta-launch-batch.md` builds the rest of that request. These items were
+explicitly "log only":
+
+- **Přihláška: suggest the order (feature).** Propose a DiPSy ordering of the 1–3 picked
+  schools (dream / realistic / safe, from the student's points vs. each obor's cutoff) and
+  explain why. Only suggest; the student decides. Needs `decision_profile.jpz_points`, or
+  falls back to acceptance rate.
+- **Questionnaire: form of study (denní / dálková / distanční / kombinovaná).** Add a
+  question and a `forma` dimension so the unused personality answers count. For example,
+  `povaha = extrovert` or `novy_kolektiv = pohoda` lowers distance/remote programmes, and
+  `introvert` does not penalise them. Cermat's `school_programs` already carries the
+  form per obor (search has a "forma" facet). Today `povaha`, `novy_kolektiv`, `motivace`,
+  `soucasna_skola`, `velikost` and `poznamka` change no score; plan 020 uses them only
+  to personalise the AI sentence.
+- **Micro-animations across the site.** The compare bar's slide-down (plan 020) is the
+  pattern: short (150–250 ms), transform/opacity only, and off under
+  `prefers-reduced-motion`. Candidates: toasts, favourite toggle, adding to the
+  přihláška, filter chips, opening the accordions.
+- **Remember filters and the search text across sessions.** `/skoly` filters, view and
+  query already survive a reload *in the same tab* (`sessionStorage`
+  `snm.search.filters` / `snm.search.view`). Not done: keeping them when the tab is
+  closed or on another device (`localStorage` or the profile). Decide whether a closed
+  tab should forget them (privacy on a shared school computer).
+- **Comparison: data we do not have for any school.** Removed from `/porovnani`
+  instead of showing "zatím doplňujeme":
+  - Public-transport commute (dojezd MHD). Also removed from the matrix.
+  - Where graduates go (VŠ placement / employment). `vs_pokracuje_pct` exists for only 4
+    schools; `vs_uplatneni` is free text.
+  - Club count (`pocet_krouzku` is 0 rows, unusable).
+  - Dormitory (`ma_koleje` exists for only 6 schools).
+  
+  Bring each one back as a comparison row once coverage is real.
+
 ## Pre-beta deep review 2026-10-07 — what is still open
 - **Found:** 2026-10-07, full-repo review by Claude Code (Opus 5.5) in parallel with Codex
 - **Urgency:** P0 items block the beta; the rest are ranked in the report
