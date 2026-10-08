@@ -1,16 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { fetchSchoolsByIds, fetchPicks, savePicks } from '../api';
+import { fetchSchoolsByIds } from '../api';
 import { ArrowRight, Check, Plus, X } from 'lucide-react';
 import { getCompareSelection, getRecentSchoolIds, toggleCompareSelection, setCompareSelection } from '../lib/searchPrefs';
 import { buildComparisonRows } from '../lib/comparisonRows';
 import StatInfo from '../components/StatInfo';
 import DecisionTabs from '../components/decision/DecisionTabs';
 import ProsCons from '../components/decision/ProsCons';
-import { useToast } from '../components/ToastContext';
 import './decision.css';
 import { SkeletonPage, Sk } from '../components/PageSkeleton';
 import { readHint } from '../lib/skeletonHints';
+import { usePicks } from '../lib/usePicks';
 
 // The header and table, drawn either with data or — while loading — with the
 // same rows and columns filled with grey blocks (row labels are static, the
@@ -135,12 +135,9 @@ function CompareView({ schools, rows, pickIds, savingPick, onRemove, onClearAll,
 
 function Porovnani() {
   const navigate = useNavigate();
-  const { toast } = useToast();
   const [allSchools, setAllSchools] = useState([]);
   const [selection, setSelection] = useState(() => getCompareSelection());
-  const [picks, setPicks] = useState([]);
-  const [savingPick, setSavingPick] = useState(false);
-  const pickIds = new Set(picks.map((pick) => pick.school.id));
+  const { pickIds, toggle, saving: savingPick } = usePicks();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [recent, setRecent] = useState([]);
@@ -170,14 +167,6 @@ function Porovnani() {
           if (!cancelled) setLoading(false);
         });
     }
-    fetchPicks()
-      .then((picks) => {
-        if (!cancelled) setPicks(picks);
-      })
-      .catch(() => {
-        // Signed out or expired — picks simply stay empty, the compare page
-        // itself works fine without an account.
-      });
     return () => {
       cancelled = true;
     };
@@ -197,50 +186,6 @@ function Porovnani() {
 
   const handleClearAll = () => {
     setSelection(setCompareSelection([]));
-  };
-
-  const handleAddToPicks = async (school) => {
-    if (savingPick) return;
-    const serializePick = (pick) => ({
-      schoolId: pick.school.id,
-      oborKkov: pick.obor_kkov,
-      oborNazev: pick.obor_nazev,
-    });
-    if (pickIds.has(school.id)) {
-      // Toggle off.
-      const nextPicks = picks.filter((pick) => pick.school.id !== school.id);
-      setSavingPick(true);
-      try {
-        await savePicks(nextPicks.map(serializePick));
-        setPicks(nextPicks);
-      } catch (err) {
-        toast(err.message || 'Nepodařilo se upravit přihlášku.', { type: 'error' });
-      } finally {
-        setSavingPick(false);
-      }
-      return;
-    }
-    if (pickIds.size >= 3) {
-      toast('Do přihlášky patří nejvýš 3 školy — nejdřív jednu odeber na záložce Moje přihláška.', { type: 'error' });
-      return;
-    }
-    setSavingPick(true);
-    try {
-      const nextPicks = [...picks, { school }];
-      await savePicks(nextPicks.map(serializePick));
-      setPicks(nextPicks);
-      toast(`${school.name} přidána do přihlášky.`);
-    } catch (err) {
-      if (err.code === 'TOO_MANY_PICKS') {
-        toast('Do přihlášky patří nejvýš 3 školy.', { type: 'error' });
-      } else if (err.isUnauthorized) {
-        toast('Přihlas se, abys mohl/a sestavit přihlášku.', { type: 'error' });
-      } else {
-        toast(err.message || 'Nepodařilo se upravit přihlášku.', { type: 'error' });
-      }
-    } finally {
-      setSavingPick(false);
-    }
   };
 
   if (loading) {
@@ -363,7 +308,7 @@ function Porovnani() {
   return (
     <div className="decision-page">
       <CompareView schools={schools} rows={rows} pickIds={pickIds} savingPick={savingPick}
-        onRemove={handleRemove} onClearAll={handleClearAll} onAddToPicks={handleAddToPicks} />
+        onRemove={handleRemove} onClearAll={handleClearAll} onAddToPicks={toggle} />
 
       <p className="ss-caption dp-footnote">
         Hranice přijetí, míra přijetí a počty míst jsou reálná data z Cermatu (1. kolo 2026). Hranice je rozpětí

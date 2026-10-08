@@ -27,7 +27,7 @@ const { setCompareSelection, getCompareSelection, toggleCompareSelection } = awa
 const { escapeHtml } = await vite.ssrLoadModule('/src/lib/escapeHtml.js');
 const { parseSchoolContact } = await vite.ssrLoadModule('/src/lib/schoolContact.js');
 const { buildComparisonRows } = await vite.ssrLoadModule('/src/lib/comparisonRows.js');
-const { scoreByWeights } = await vite.ssrLoadModule('/src/lib/decisionMatrix.js');
+const { scoreByWeights, CRITERIA } = await vite.ssrLoadModule('/src/lib/decisionMatrix.js');
 
 test('Leaflet labels keep HTML and attributes as literal text', () => {
   assert.equal(escapeHtml('<img src=x onerror="alert(1)">'), '&lt;img src=x onerror=&quot;alert(1)&quot;&gt;');
@@ -204,6 +204,83 @@ function comparisonSchool(id, cutoff, applicants, admitted, capacity, extra = {}
 function rowById(schools, sectionId, rowId) {
   return buildComparisonRows(schools).find((section) => section.id === sectionId).rows.find((row) => row.id === rowId);
 }
+
+function matrixSchool(id, { cutoff, applicants, admitted, capacity, languages, maturity, owner = 'Soukromý', tuition } = {}) {
+  const programRows = (languages ?? ['Angličtina']).map((language, index) => ({
+    kkov: `79-41-K/${id}-${index}`,
+    obor_nazev: `Obor ${id}-${index}`,
+    rok: 2026,
+    cutoff,
+    prihlasky: applicants,
+    prijati: admitted,
+    kapacita: (capacity ?? 0) / (languages?.length || 1),
+    zrizovatel: owner,
+    jazyk_studia: language,
+  }));
+  return {
+    id,
+    name: `Škola ${id}`,
+    school_programs: programRows,
+    school_extracted_details: {
+      maturita_pass_rate_pct: maturity,
+      tuition_czk_per_year: tuition,
+    },
+  };
+}
+
+test('decision matrix uses readable absolute and relative scales, with labels for every value', () => {
+  const schools = [
+    matrixSchool(1, { cutoff: 30, applicants: 100, admitted: 40, capacity: 40, languages: ['Angličtina'], maturity: 91, tuition: 45000 }),
+    matrixSchool(2, { cutoff: 90, applicants: 100, admitted: 60, capacity: 120, languages: ['Angličtina', 'Němčina', 'Francouzština'], maturity: 70, tuition: 15000 }),
+  ];
+
+  const byCriterion = (criterionId) => scoreByWeights(schools, { [criterionId]: 'zasadni' });
+  const chance = byCriterion('sance');
+  assert.equal(chance[0].school.id, 2, 'acceptance rate outranks the unrelated cutoff');
+  assert.equal(chance.find((row) => row.school.id === 1).breakdown[0].raw, 0.4);
+  assert.equal(chance.find((row) => row.school.id === 1).breakdown[0].display, 'přijato 40 %');
+
+  const capacity = byCriterion('mista');
+  assert.equal(capacity.find((row) => row.school.id === 1).breakdown[0].raw, 1 / 3);
+  assert.equal(capacity.find((row) => row.school.id === 1).breakdown[0].display, '40 míst');
+  assert.equal(capacity.find((row) => row.school.id === 2).breakdown[0].display, '120 míst');
+
+  const languages = byCriterion('jazyky');
+  assert.equal(languages.find((row) => row.school.id === 1).breakdown[0].raw, 1 / 3);
+  assert.equal(languages.find((row) => row.school.id === 1).breakdown[0].display, '1 jazyk');
+  assert.equal(languages.find((row) => row.school.id === 2).breakdown[0].display, '3 jazyky');
+
+  const maturity = byCriterion('maturita');
+  assert.equal(maturity.find((row) => row.school.id === 1).breakdown[0].raw, 0.91);
+  assert.equal(maturity.find((row) => row.school.id === 1).breakdown[0].display, '91 %');
+
+  const tuition = byCriterion('vyse_skolneho');
+  assert.equal(tuition.find((row) => row.school.id === 1).breakdown[0].raw, 0);
+  assert.equal(tuition.find((row) => row.school.id === 1).breakdown[0].display, '45 000 Kč');
+  assert.ok(Math.abs(tuition.find((row) => row.school.id === 2).breakdown[0].raw - 2 / 3) < 1e-12);
+
+  const schoolFee = byCriterion('skolne');
+  assert.deepEqual(schoolFee.map((row) => row.breakdown[0].display), ['placená', 'placená']);
+
+  assert.equal(CRITERIA.find((criterion) => criterion.id === 'shoda').label, 'Shoda s tebou');
+  assert.equal(CRITERIA.some((criterion) => ['dojezd', 'typ'].includes(criterion.id)), false);
+  assert.equal(scoreByWeights(schools, { dojezd: 'zasadni', typ: 'zasadni' }).every((row) => row.breakdown.length === 0), true);
+});
+
+test('missing matrix data stays visible but excludes the criterion for every school', () => {
+  const schools = [
+    matrixSchool(1, { maturity: 91 }),
+    matrixSchool(2),
+  ];
+  const ranked = scoreByWeights(schools, { maturita: 'zasadni' });
+
+  assert.equal(ranked.every((row) => row.score == null), true);
+  assert.equal(ranked.every((row) => row.breakdown.length === 1 && row.breakdown[0].included === false), true);
+  const missing = ranked.find((row) => row.school.id === 2).breakdown[0];
+  assert.equal(missing.raw, null);
+  assert.equal(missing.display, 'Tento údaj nemáme');
+  assert.equal(ranked.find((row) => row.school.id === 1).breakdown[0].display, '91 %');
+});
 
 test('comparison tags use plain comparatives for two schools and superlatives for three', () => {
   const two = [

@@ -6,12 +6,14 @@
  * also reads `match_score` (the questionnaire result, attached server-side by
  * withMatchScores) as one more criterion — still no AI in the number itself.
  *
- * Every raw score is normalized 0–1 relative to the schools ACTUALLY being
- * compared, not to all of Prague — this is a relative ranking of the
- * shortlist on screen, not an absolute grade.
+ * Each raw score uses a scale that can be read on its own: percentages stay
+ * percentages, binary facts stay binary, and counts are shown relative to the
+ * largest count in the shortlist. Criteria with missing data stay visible but
+ * are left out of every school's weighted total.
  */
 
 import { summarizeCurrentYear, groupProgramsByObor, latestProgramValue, summarizeAdmission } from './schoolPrograms';
+import { pluralCz } from './pluralCz';
 
 // school_extracted_details comes back as an array from Supabase's nested
 // select (one row per school) — same normalization SchoolDetail.jsx already
@@ -33,7 +35,7 @@ export const MATCH_GAP = 15;
 export const CRITERIA = [
   {
     id: 'shoda',
-    label: 'Shoda s tvým dotazníkem',
+    label: 'Shoda s tebou',
     available: true,
     tooltip:
       'Procento z tvého dotazníku — jak dobře škola odpovídá tvým zájmům, plánům a preferencím. Doporučujeme nechat na „Zásadní“: je to jediné kritérium tady, které zná i tvoje odpovědi, ne jen tvrdá data o škole.',
@@ -42,19 +44,13 @@ export const CRITERIA = [
     id: 'sance',
     label: 'Šance na přijetí',
     available: true,
-    tooltip: 'Z bodové hranice přijetí za poslední rok (Cermat) — nižší hranice = snazší se dostat.',
+    tooltip: 'Podíl přijatých uchazečů ze všech přihlášených v posledních přijímačkách podle Cermatu. Vyšší podíl znamená, že škola přijala větší část uchazečů.',
   },
   {
     id: 'mista',
     label: 'Počet míst',
     available: true,
     tooltip: 'Kolik míst škola otevírala v posledních přijímačkách. Víc míst obvykle znamená menší tlak na body.',
-  },
-  {
-    id: 'typ',
-    label: 'Typ školy odpovídá mým plánům',
-    available: true,
-    tooltip: 'Zjednodušený signál z toho, jestli škola nabízí maturitní obor — zatím nevíme, co přesně plánuješ ty.',
   },
   {
     id: 'jazyky',
@@ -72,75 +68,92 @@ export const CRITERIA = [
     id: 'vyse_skolneho',
     label: 'Výše školného',
     available: true,
-    tooltip: 'Roční školné v Kč — veřejné školy počítáme jako 0 Kč (ze zákona), u soukromých/církevních jde o částku sesbíranou z webu školy. Funguje jen když ji známe u všech porovnávaných škol.',
-  },
-  {
-    id: 'dojezd',
-    label: 'Dojezd z domova',
-    available: false,
-    unavailableNote: 'Na dojezdových časech MHD pracujeme.',
-    tooltip: 'Zatím nepočítáme — na dojezdových časech MHD pracujeme.',
+    tooltip: 'Roční školné v Kč — veřejné školy počítáme jako 0 Kč (ze zákona), u soukromých/církevních jde o částku sesbíranou z webu školy. Pokud částku u některé školy neznáme, kritérium se nikomu nezapočítá.',
   },
   {
     id: 'maturita',
     label: 'Úspěšnost u maturity',
     available: true,
-    tooltip: 'Úspěšnost u maturitní zkoušky v procentech, sesbíraná z webu školy. Funguje jen když ji známe u všech porovnávaných škol — zatím ji máme jen pro menšinu škol.',
+    tooltip: 'Úspěšnost u maturitní zkoušky v procentech, sesbíraná z webu školy. Když údaj chybí u některé porovnávané školy, kritérium se nezapočítá nikomu.',
   },
 ];
 
-function minMax(values) {
-  const known = values.filter((v) => v != null);
-  if (!known.length) return () => null;
-  const min = Math.min(...known);
+function relativeToMax(values, { allZero = 0 } = {}) {
+  const known = values.filter((value) => value != null);
+  if (!known.length) return values.map(() => null);
   const max = Math.max(...known);
-  if (min === max) return (v) => (v == null ? null : 0.5);
-  return (v) => (v == null ? null : (v - min) / (max - min));
+  if (max === 0) return values.map((value) => (value == null ? null : allZero));
+  return values.map((value) => (value == null ? null : value / max));
+}
+
+function formatCount(value) {
+  return new Intl.NumberFormat('cs-CZ', { maximumFractionDigits: 0 }).format(value);
+}
+
+function formatPercent(value) {
+  return `${Math.round(value)} %`;
+}
+
+function displayForCriterion(id, school, raw) {
+  switch (id) {
+    case 'shoda':
+      return raw == null ? 'Tento údaj nemáme' : formatPercent(raw * 100);
+    case 'sance': {
+      const acceptance = summarizeAdmission(school)?.acceptance;
+      return acceptance == null ? 'Tento údaj nemáme' : `přijato ${formatPercent(acceptance)}`;
+    }
+    case 'mista': {
+      const capacity = summarizeCurrentYear(groupProgramsByObor(school)).kapacita;
+      return capacity == null
+        ? 'Tento údaj nemáme'
+        : `${formatCount(capacity)} ${pluralCz(capacity, 'místo', 'místa', 'míst')}`;
+    }
+    case 'jazyky': {
+      const count = new Set((school.school_programs || []).map((p) => p.jazyk_studia).filter(Boolean)).size;
+      return count === 0 ? 'Tento údaj nemáme' : `${count} ${pluralCz(count, 'jazyk', 'jazyky', 'jazyků')}`;
+    }
+    case 'skolne': {
+      const zrizovatel = (latestProgramValue(school, 'zrizovatel') || '').toLowerCase();
+      if (!zrizovatel || zrizovatel.includes('církev')) return 'Tento údaj nemáme';
+      return zrizovatel.includes('soukrom') ? 'placená' : 'bez školného';
+    }
+    case 'vyse_skolneho': {
+      const zrizovatel = (latestProgramValue(school, 'zrizovatel') || '').toLowerCase();
+      const amount = zrizovatel && !zrizovatel.includes('soukrom') && !zrizovatel.includes('církev')
+        ? 0
+        : extractedOf(school)?.tuition_czk_per_year;
+      return amount == null ? 'Tento údaj nemáme' : `${formatCount(amount)} Kč`;
+    }
+    case 'maturita': {
+      const rate = extractedOf(school)?.maturita_pass_rate_pct;
+      return rate == null ? 'Tento údaj nemáme' : formatPercent(rate);
+    }
+    default:
+      return raw == null ? 'Tento údaj nemáme' : '';
+  }
 }
 
 function rawForCriterion(id, schools) {
   switch (id) {
     case 'shoda': {
-      // Absolute, not min-maxed across the compared set. Relative scaling made
-      // the weakest of the compared schools score zero however good it was —
-      // comparing the 1st, 2nd and 3rd best schools in the database left the
-      // 3rd with an empty bar. This criterion is the one number that already
-      // means something on its own scale, so it is used as it is.
       return schools.map((s) => (typeof s.match_score === 'number' ? s.match_score / 100 : null));
     }
     case 'sance': {
-      // Lower cutoff = easier = better, so invert. The easiest obor in the
-      // newest year: the one a student could realistically reach.
-      const cutoffs = schools.map((s) => summarizeAdmission(s)?.cutoffMin ?? null);
-      const scale = minMax(cutoffs);
-      return cutoffs.map((c) => {
-        const v = scale(c);
-        return v == null ? null : 1 - v;
+      return schools.map((s) => {
+        const acceptance = summarizeAdmission(s)?.acceptance;
+        return acceptance == null ? null : acceptance / 100;
       });
     }
     case 'mista': {
       const capacities = schools.map((s) => summarizeCurrentYear(groupProgramsByObor(s)).kapacita);
-      const scale = minMax(capacities);
-      return capacities.map((v) => scale(v));
-    }
-    case 'typ': {
-      // Placeholder until a student "plans" input exists — maturita-bearing
-      // schools score higher, everything else is neutral. Deliberately not
-      // hidden as unavailable: it is a real (if crude) signal today.
-      return schools.map((s) => {
-        const programs = s.school_programs || [];
-        if (!programs.length) return null;
-        const anyMaturitni = programs.some((p) => p.maturitni === true);
-        return anyMaturitni ? 1 : 0.5;
-      });
+      return relativeToMax(capacities);
     }
     case 'jazyky': {
       const counts = schools.map((s) => {
         const jazyky = new Set((s.school_programs || []).map((p) => p.jazyk_studia).filter(Boolean));
         return jazyky.size || null;
       });
-      const scale = minMax(counts);
-      return counts.map((v) => scale(v));
+      return relativeToMax(counts);
     }
     case 'skolne': {
       return schools.map((s) => {
@@ -160,17 +173,14 @@ function rawForCriterion(id, schools) {
         if (zrizovatel && !zrizovatel.includes('soukrom') && !zrizovatel.includes('církev')) return 0;
         return extractedOf(s)?.tuition_czk_per_year ?? null;
       });
-      const scale = minMax(amounts);
-      // Lower tuition = better, so invert.
-      return amounts.map((v) => {
-        const scaled = scale(v);
-        return scaled == null ? null : 1 - scaled;
-      });
+      const relativeAmounts = relativeToMax(amounts, { allZero: 0 });
+      return relativeAmounts.map((value) => (value == null ? null : 1 - value));
     }
     case 'maturita': {
-      const rates = schools.map((s) => extractedOf(s)?.maturita_pass_rate_pct ?? null);
-      const scale = minMax(rates);
-      return rates.map((v) => scale(v));
+      return schools.map((s) => {
+        const rate = extractedOf(s)?.maturita_pass_rate_pct;
+        return rate == null ? null : rate / 100;
+      });
     }
     default:
       return schools.map(() => null);
@@ -198,22 +208,30 @@ export function scoreByWeights(schools, weightsById) {
     const raws = perCriterionRaw.get(c.id);
     return raws.every((v) => v != null);
   });
+  const usableIds = new Set(usableCriteria.map((c) => c.id));
 
   const totalWeight = usableCriteria.reduce((sum, c) => sum + WEIGHTS[weightsById[c.id]], 0);
 
   const results = schools.map((school, i) => {
-    if (!usableCriteria.length || totalWeight === 0) {
-      return { school, score: null, breakdown: [] };
-    }
-
-    const breakdown = usableCriteria.map((c) => {
+    const breakdown = activeCriteria.map((c) => {
       const raw = perCriterionRaw.get(c.id)[i];
-      const weightKey = weightsById[c.id];
-      const weight = WEIGHTS[weightKey] / totalWeight;
-      return { criterionId: c.id, label: c.label, raw, weightKey, weighted: raw * weight };
+      const weightKey = weightsById[c.id] ?? 'nezalezi';
+      const included = usableIds.has(c.id) && totalWeight > 0;
+      const weight = included ? WEIGHTS[weightKey] / totalWeight : 0;
+      return {
+        criterionId: c.id,
+        label: c.label,
+        raw,
+        display: displayForCriterion(c.id, school, raw),
+        weightKey,
+        weighted: included ? raw * weight : 0,
+        included,
+      };
     });
 
-    const score = breakdown.reduce((sum, b) => sum + b.weighted, 0);
+    const score = usableCriteria.length && totalWeight > 0
+      ? breakdown.reduce((sum, b) => sum + b.weighted, 0)
+      : null;
     return { school, score, breakdown };
   });
 
@@ -244,7 +262,7 @@ export function matchBand(score) {
  *  scores under WEAK_THRESHOLD — the raw material for the weak-spot callout. */
 export function weakSpots(breakdown) {
   return breakdown.filter(
-    (b) => (b.weightKey === 'dost' || b.weightKey === 'zasadni') && b.raw < WEAK_THRESHOLD
+    (b) => b.included !== false && (b.weightKey === 'dost' || b.weightKey === 'zasadni') && b.raw < WEAK_THRESHOLD
   );
 }
 

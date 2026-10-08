@@ -831,15 +831,32 @@
   flex-direction: column;
   gap: 9px;
 }
+.dp-crit-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
 .dp-crit-row {
   display: grid;
-  grid-template-columns: 210px minmax(0, 1fr) 68px;
+  grid-template-columns: minmax(130px, 210px) minmax(0, 1fr) minmax(90px, auto);
   gap: 12px;
   align-items: center;
 }
 .dp-crit-label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-width: 0;
   font-size: var(--fs-caption);
   color: var(--ink2);
+}
+.dp-crit-label-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
 }
 .dp-crit-label.is-featured {
   color: var(--ink);
@@ -857,15 +874,33 @@
   background: var(--acc);
 }
 .dp-crit-weight {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  text-align: right;
   color: var(--ink3);
 }
 .dp-crit-weight.is-hi {
   color: var(--acc);
+}
+.dp-crit-value {
+  color: var(--ink2);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  text-align: right;
+  white-space: nowrap;
+}
+.dp-crit-value.is-missing {
+  color: var(--ink3);
+  font-weight: 400;
+  white-space: normal;
+}
+.dp-crit-excluded {
+  margin: 0 0 0 calc(min(210px, 28%) + 12px);
+  color: var(--ink3);
+  font-size: 11px;
+  line-height: 1.4;
+}
+.dp-matrix-pick {
+  align-self: flex-start;
 }
 
 .dp-matrix-note {
@@ -902,6 +937,10 @@
   background: var(--acc-soft);
   padding: var(--space-lg);
 }
+.dp-matrix-callout > svg {
+  flex: none;
+  color: var(--acc);
+}
 .dp-matrix-callout-title {
   font-weight: 600;
   color: var(--ink);
@@ -919,17 +958,24 @@
 @media (max-width: 560px) {
   .dp-crit-row {
     grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas: 'label weight' 'track track';
+    grid-template-areas: 'label value' 'track track';
     row-gap: 6px;
   }
   .dp-crit-label {
     grid-area: label;
   }
-  .dp-crit-weight {
-    grid-area: weight;
-  }
   .dp-crit-track {
     grid-area: track;
+  }
+  .dp-crit-row > [aria-hidden='true'] {
+    grid-area: track;
+    height: 0;
+  }
+  .dp-crit-value {
+    grid-area: value;
+  }
+  .dp-crit-excluded {
+    margin-left: 0;
   }
 }
 
