@@ -501,22 +501,17 @@
   flex: none;
   display: grid;
   place-items: center;
-  font-size: 13px;
-  font-weight: 600;
-  border: 1.5px solid var(--line2);
-  color: transparent;
+  color: var(--ink3);
 }
 
 .ob-calc-step.is-done .ob-calc-mark {
   background: var(--ok-soft);
   color: var(--ok);
-  border-color: transparent;
 }
 
 .ob-calc-step.is-now .ob-calc-mark {
   background: var(--acc-soft);
   color: var(--acc);
-  border-color: transparent;
 }
 
 .ob-calc-text {

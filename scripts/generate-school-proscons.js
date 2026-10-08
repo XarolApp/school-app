@@ -21,16 +21,9 @@
  * ignores the fingerprint and regenerates everything (use this when changing
  * the prompt itself, not the data).
  *
- * MODEL: defaults to google/gemini-2.5-flash — chosen 2026-09-10 after the
- * user's explicit push to justify AI cost rather than default to Claude. At
- * this volume (tens of calls, ever) the price difference between models is
- * cents; the real variable is Czech fluency, which cannot be reasoned about
- * in the abstract. Compare models with --model before trusting the default:
- *   for M in google/gemini-2.5-flash-lite google/gemini-2.5-flash anthropic/claude-haiku-4.5; do
- *     node scripts/generate-school-proscons.js --dry-run --limit 5 --model "$M"
- *   done
- * and read the Czech output yourself. See UNFORGET.md "AI feature prompts need
- * real human editing" — this prompt has NOT had that pass yet.
+ * MODEL: defaults to GPT-6 Luna through OpenRouter Flex at low reasoning effort.
+ * Before regenerating production summaries after a prompt change, run a small
+ * dry run and review the Czech output yourself.
  */
 
 require('dotenv').config();
@@ -54,7 +47,9 @@ if (!OPENROUTER_API_KEY) {
 
 const supabase = createClient(supabaseUrl, serviceKey);
 
-const DEFAULT_MODEL = process.env.OPENROUTER_PROSCONS_MODEL || 'google/gemini-2.5-flash';
+const DEFAULT_MODEL = process.env.OPENROUTER_PROSCONS_MODEL || 'openai/gpt-6-luna';
+const OPENROUTER_PROVIDER = process.env.OPENROUTER_PROVIDER || 'openai/flex';
+const PROVIDER_ORDER = [...new Set([OPENROUTER_PROVIDER, 'openai'])];
 
 const SYSTEM_PROMPT = `Jsi asistent, který píše krátké shrnutí klad a záporů střední školy pro
 českého deváťáka (15 let), tykáním, neformálně ale věcně.
@@ -71,13 +66,31 @@ PRAVIDLA (dodržuj přesně):
    prázdné místo obecnou frází.
 4. Každá položka je JEDNA věta, max 90 znaků, česky.
 5. Vrať 2–3 klady a 2–3 zápory.
-6. NIKDY netvrď, že se čtenář/čtenářka na školu dostane nebo nedostane, ani
+6. Piš stručně a konkrétně. Neuváděj procenta ani obecné fráze; každé tvrzení
+   musí být přímo podložené vstupními daty.
+7. NIKDY netvrď, že se čtenář/čtenářka na školu dostane nebo nedostane, ani
    že "je přijatý/á". Nevíš, kolik bodů čtenář má — hranice přijetí je
    průměr za školu/obor, ne predikce pro konkrétního člověka. Piš o škole
    ("hranice je X bodů"), nikdy o čtenáři ("dostaneš se", "jsi přijatý").
 
-Odpověz JEN validním JSON, přesně v tomto tvaru, nic jiného:
-{"pros": ["věta", "věta"], "cons": ["věta", "věta"]}`;
+Odpověz pouze podle tohoto JSON schématu, nic jiného.`;
+
+const PROSCONS_RESPONSE_FORMAT = {
+  type: 'json_schema',
+  json_schema: {
+    name: 'school_pros_and_cons',
+    strict: true,
+    schema: {
+      type: 'object',
+      properties: {
+        pros: { type: 'array', items: { type: 'string', maxLength: 90 }, maxItems: 3 },
+        cons: { type: 'array', items: { type: 'string', maxLength: 90 }, maxItems: 3 },
+      },
+      required: ['pros', 'cons'],
+      additionalProperties: false,
+    },
+  },
+};
 
 function median(nums) {
   const sorted = [...nums].filter((n) => n != null && !Number.isNaN(n)).sort((a, b) => a - b);
@@ -169,9 +182,10 @@ async function callModel(inputRecord, model) {
     },
     body: JSON.stringify({
       model,
-      temperature: 0.3,
       max_tokens: 700,
       reasoning: { effort: 'low' },
+      provider: { order: PROVIDER_ORDER, allow_fallbacks: false },
+      response_format: PROSCONS_RESPONSE_FORMAT,
       messages: [
         { role: 'system', content: SYSTEM_PROMPT },
         { role: 'user', content: `DATA ŠKOLY:\n${JSON.stringify(inputRecord, null, 2)}` },

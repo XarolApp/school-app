@@ -14,11 +14,13 @@ function harness({
   rpcResult = { data: { testerAccessUntil: '2026-09-28T12:00:00.000Z' }, error: null },
   authUser = { id: 'user-test', email: 'tester@example.com', email_confirmed_at: '2026-01-01T00:00:00.000Z' },
   authAdmin = null,
+  requestReasonsImpl = async () => new Map(),
   env = {},
 } = {}) {
   const routes = new Map();
   const routeChains = new Map();
   const queries = [];
+  const reasonCalls = [];
   const rpcCalls = [];
   const warnings = [];
   let deletions = 0;
@@ -108,13 +110,19 @@ function harness({
       if (name === './lib/aiUsage') return require('../lib/aiUsage');
       if (name === './lib/pragueDistricts') return { districtOfSchool: (school) => school.district ?? null };
       if (name === './lib/matching') return { scoreSchools: (_answers, schools) => schools.map((school, index) => ({ school_id: school.id, score: 100 - index })) };
-      if (name === './lib/questionnaire') return { REASON_COUNT: 10 };
+      if (name === './lib/questionnaire') return {
+        REASON_COUNT: 10,
+        requestReasons: async (options) => {
+          reasonCalls.push(options);
+          return requestReasonsImpl(options);
+        },
+      };
       if (name.startsWith('./lib/')) return {};
       return require(name);
     },
   }, { filename: 'server.js' });
   return {
-    ...module.exports, routeChains, queries, rpcCalls, checkoutCalls, paymentIntentCalls, warnings,
+    ...module.exports, routeChains, queries, reasonCalls, rpcCalls, checkoutCalls, paymentIntentCalls, warnings,
     get subscriptionRetrievals() { return subscriptionRetrievals; },
     get setupIntentRetrievals() { return setupIntentRetrievals; },
     get deletions() { return deletions; }, get cancellations() { return cancellations; },
@@ -142,6 +150,87 @@ function harness({
     },
   };
 }
+
+test('on-demand questionnaire explanations are authenticated, access-gated and limited per account', async () => {
+  const h = harness();
+  const handlers = h.routeChains.get('post /api/questionnaire/explain/:schoolId');
+  assert.equal(handlers.length, 4);
+  const limiter = handlers[2];
+  assert.equal(limiter.options.limit, 30);
+  assert.equal(limiter.options.windowMs, 60 * 60 * 1000);
+  assert.equal(limiter.options.keyGenerator({ user: { id: 'student-a' } }), 'student-a');
+  assert.equal((await h.call('post', '/api/questionnaire/explain/:schoolId', { params: { schoolId: '0' } })).statusCode, 400);
+  assert.equal(h.queries.length, 0);
+});
+
+test('on-demand explanation returns stored reasons without another model call', async () => {
+  const h = harness({ result: (query) => query.table === 'questionnaire_runs'
+    ? { data: { id: 9, answers: {}, matches: [{ school_id: 7, reason: 'Už uložený důvod.' }], extra_reasons: {} }, error: null }
+    : { data: null, error: null } });
+  const response = await h.call('post', '/api/questionnaire/explain/:schoolId', { params: { schoolId: '7' } });
+  assert.equal(response.statusCode, 200);
+  assert.equal(response.body.reason, 'Už uložený důvod.');
+  assert.equal(response.body.cached, true);
+  assert.equal(h.reasonCalls.length, 0);
+});
+
+test('on-demand explanations cache extra schools on only the caller’s default run', async () => {
+  let extraReasons = {};
+  const baseRun = {
+    id: 12,
+    answers: { typ: 'odborna' },
+    matches: Array.from({ length: 10 }, (_, i) => ({ school_id: i + 1, reason: '' })),
+  };
+  const h = harness({
+    env: { OPENROUTER_API_KEY: 'synthetic' },
+    result: (query) => {
+      if (query.table === 'questionnaire_runs') {
+        const update = query.calls.find((call) => call[0] === 'update');
+        if (update) {
+          extraReasons = update[1].extra_reasons;
+          return { data: null, error: null };
+        }
+        return { data: { ...baseRun, extra_reasons: extraReasons }, error: null };
+      }
+      if (query.table === 'schools') return { data: [{ id: 11, name: 'Škola 11', programs: 'Gymnázium' }], error: null };
+      return { data: null, error: null };
+    },
+    requestReasonsImpl: async ({ shortlist }) => new Map([[shortlist[0].school_id, 'Nové vysvětlení.']]),
+  });
+
+  const first = await h.call('post', '/api/questionnaire/explain/:schoolId', { params: { schoolId: '11' } });
+  assert.equal(first.statusCode, 200);
+  assert.equal(first.body.reason, 'Nové vysvětlení.');
+  assert.equal(first.body.cached, false);
+  assert.equal(h.reasonCalls.length, 1);
+  assert.equal(h.reasonCalls[0].shortlist.length, 1);
+  assert.equal(h.reasonCalls[0].shortlist[0].school_id, 11);
+  const update = h.queries.find((query) => query.table === 'questionnaire_runs' && query.calls.some((call) => call[0] === 'update'));
+  assert.deepEqual(update.calls.find((call) => call[0] === 'eq' && call[1] === 'user_id'), ['eq', 'user_id', 'user-test']);
+
+  const second = await h.call('post', '/api/questionnaire/explain/:schoolId', { params: { schoolId: '11' } });
+  assert.equal(second.statusCode, 200);
+  assert.equal(second.body.reason, 'Nové vysvětlení.');
+  assert.equal(second.body.cached, true);
+  assert.equal(h.reasonCalls.length, 1);
+});
+
+test('on-demand explanation without a default run is a safe no-op, and a missing key is reported inline', async () => {
+  const noRun = harness({ result: () => ({ data: null, error: null }) });
+  const missing = await noRun.call('post', '/api/questionnaire/explain/:schoolId', { params: { schoolId: '4' } });
+  assert.equal(missing.statusCode, 404);
+  assert.equal(missing.body.code, 'QUESTIONNAIRE_REQUIRED');
+
+  const noKey = harness({
+    result: (query) => query.table === 'questionnaire_runs'
+      ? { data: { id: 2, answers: {}, matches: [], extra_reasons: {} }, error: null }
+      : { data: null, error: null },
+  });
+  const unavailable = await noKey.call('post', '/api/questionnaire/explain/:schoolId', { params: { schoolId: '4' } });
+  assert.equal(unavailable.statusCode, 503);
+  assert.equal(unavailable.body.error, 'Vysvětlení teď nejde vytvořit.');
+  assert.equal(noKey.reasonCalls.length, 0);
+});
 
 test('every admin report, export and mutation requires verified ADMIN_EMAILS independent of developer access',async()=>{
  const paths=[...require('../lib/betaAdminRoutes').TABS.map(t=>['get','/api/admin/'+t]),['get','/api/admin/export/:table.csv'],['get','/api/admin/feedback/:id'],['patch','/api/admin/feedback/:id'],['patch','/api/admin/reviews/:id'],['get','/api/admin/testers/:id/email']];

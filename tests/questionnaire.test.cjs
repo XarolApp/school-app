@@ -5,6 +5,7 @@ const {
   QUESTIONS,
   validateAnswers,
   requestMatches,
+  requestReasons,
 } = require('../lib/questionnaire');
 const { scoreSchools, displayScore } = require('../lib/matching');
 
@@ -146,6 +147,58 @@ test('points are validated as integers 0-100, optional, and never narrated to th
   const text = describeAnswers({ ...completeAnswers, body: 55, body_zlepseni: 'plus10', povaha: 'introvert' });
   assert.doesNotMatch(text, /55|bodů/);
   assert.match(text, /introvert/);
+});
+
+test('questionnaire explanations use the flex model schema and keep private answers out of the prompt', async () => {
+  const originalFetch = global.fetch;
+  const originalTimeout = AbortSignal.timeout;
+  let request;
+  let timeoutMs;
+  try {
+    AbortSignal.timeout = (ms) => {
+      timeoutMs = ms;
+      return originalTimeout(ms);
+    };
+    global.fetch = async (_url, options) => {
+      request = JSON.parse(options.body);
+      return new Response(JSON.stringify({
+        choices: [{ message: { content: JSON.stringify({ reasons: [{ school_id: 7, reason: 'Učební obor vede rovnou do praxe, kterou hledáš.' }] }) } }],
+        usage: { prompt_tokens: 18, completion_tokens: 11 },
+      }), { status: 200 });
+    };
+
+    const byId = new Map([[7, { id: 7, name: 'Gastronomie', programs: 'Kuchař-číšník' }]]);
+    const reasons = await requestReasons({
+      answers: { ...completeAnswers, povaha: 'extrovert', body: 55, body_zlepseni: 'plus10', poznamka: 'soukromý text' },
+      shortlist: [{ school_id: 7, score: 78, signals: ['vede rovnou do praxe'], breakdown: {} }],
+      byId,
+      apiKey: 'synthetic',
+      model: 'openai/gpt-6-luna',
+      gender: 'f',
+    });
+
+    assert.equal(reasons.get(7), 'Učební obor vede rovnou do praxe, kterou hledáš.');
+    assert.equal(request.model, 'openai/gpt-6-luna');
+    assert.deepEqual(request.reasoning, { effort: 'low' });
+    assert.deepEqual(request.provider, {
+      order: [...new Set([process.env.OPENROUTER_PROVIDER || 'openai/flex', 'openai'])],
+      allow_fallbacks: false,
+    });
+    assert.equal('temperature' in request, false);
+    assert.equal(request.response_format.type, 'json_schema');
+    assert.equal(request.response_format.json_schema.strict, true);
+    assert.equal(request.response_format.json_schema.schema.properties.reasons.items.properties.school_id.type, 'integer');
+    assert.equal(request.max_tokens, 4000);
+    assert.equal(timeoutMs, 120_000);
+    const prompt = request.messages[1].content;
+    assert.match(prompt, /Rod pro oslovení: ženský/);
+    assert.match(prompt, /Spíš extrovert/);
+    assert.doesNotMatch(prompt, /55|plus10|soukromý text/);
+    assert.match(request.messages[0].content, /Krátké ukázky/);
+  } finally {
+    global.fetch = originalFetch;
+    AbortSignal.timeout = originalTimeout;
+  }
 });
 
 test('onboarding points block: validated, translated to the questionnaire keys, and rejected when out of range', () => {

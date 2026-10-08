@@ -140,6 +140,7 @@ create table if not exists public.questionnaire_runs (
   user_id uuid not null references auth.users (id) on delete cascade,
   answers jsonb not null,
   matches jsonb not null,
+  extra_reasons jsonb not null default '{}'::jsonb,
   model text,
   created_at timestamptz not null default now()
 );
@@ -198,6 +199,10 @@ create index if not exists questionnaire_runs_user_default_idx
 alter table public.questionnaire_runs
   add column if not exists source text not null default 'questionnaire'
   check (source in ('questionnaire', 'onboarding'));
+
+-- Explanations requested after the original run are cached by school id.
+alter table public.questionnaire_runs
+  add column if not exists extra_reasons jsonb not null default '{}'::jsonb;
 
 -- At most one onboarding set per account, so a double flush (two tabs, a
 -- retry) cannot create duplicates — the second insert simply conflicts.
@@ -905,7 +910,7 @@ create table if not exists public.ai_usage_log (
   id bigint generated always as identity primary key,
   user_id uuid references auth.users(id) on delete set null,
   run_id bigint,
-  source text not null check (source in ('questionnaire','proscons','extract')),
+  source text not null check (source in ('questionnaire','proscons','extract','explain')),
   model text not null,
   prompt_tokens integer check (prompt_tokens >= 0),
   completion_tokens integer check (completion_tokens >= 0),
@@ -915,6 +920,9 @@ create table if not exists public.ai_usage_log (
   created_at timestamptz not null default now()
 );
 create index if not exists ai_usage_log_created_idx on public.ai_usage_log(created_at);
+alter table public.ai_usage_log drop constraint if exists ai_usage_log_source_check;
+alter table public.ai_usage_log add constraint ai_usage_log_source_check
+  check (source in ('questionnaire','proscons','extract','explain'));
 
 alter table public.beta_events enable row level security;
 alter table public.beta_profile enable row level security;

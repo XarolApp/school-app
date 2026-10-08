@@ -13,6 +13,9 @@ test('cost ledger stores returned usage and keeps unknown cost unknown', async (
     prompt_tokens: 10, completion_tokens: 3, cost_usd: 0.012, ok: true, error: null });
   await logAiUsage(db, { source: 'extract', model: 'test', usage: {}, ok: false });
   assert.equal(rows[1].cost_usd, null);
+  await logAiUsage(db, { source: 'explain', model: 'openai/gpt-6-luna', userId: 'tester', runId: 12, usage: {}, ok: true });
+  assert.equal(rows[2].source, 'explain');
+  assert.equal(rows[2].run_id, 12);
 });
 
 test('every OpenRouter HTTP call logs usage, including errors, without response text', async () => {

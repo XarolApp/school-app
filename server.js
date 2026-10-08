@@ -17,6 +17,7 @@ const {
   DEFAULT_MODEL,
   validateAnswers,
   requestMatches,
+  requestReasons,
 } = require('./lib/questionnaire');
 const { scoreSchools } = require('./lib/matching');
 const { districtOfSchool } = require('./lib/pragueDistricts');
@@ -258,6 +259,18 @@ const questionnaireLimiter = rateLimit({
   standardHeaders: 'draft-7',
   legacyHeaders: false,
   message: { error: 'Příliš mnoho pokusů. Zkus to prosím za hodinu.' },
+});
+
+// On-demand explanations cost one small model call each; key them by the
+// authenticated account so students on the same school network do not share a
+// quota.
+const questionnaireExplainLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  limit: 30,
+  keyGenerator: (req) => req.user.id,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  message: { error: 'Příliš mnoho vysvětlení. Zkus to prosím za hodinu.' },
 });
 
 // Posting/reporting reviews and data-corrections. Low limit on purpose — a
@@ -2357,6 +2370,7 @@ async function buildRunResult(run) {
     // null = the run was scored without a model, so no match carries a sentence.
     model: run.model ?? null,
     answers: run.answers,
+    extra_reasons: run.extra_reasons ?? {},
     // The top of the list carries the full school row and the reasons behind
     // the score; the tail only needs a name, a district and a number, which
     // keeps a 223-school response small.
@@ -2382,7 +2396,7 @@ app.get('/api/questionnaire', requireAuth, requireAccess, async (req, res) => {
     // an AI call. Only submitting new answers costs anything.
     const { data: active, error: activeError } = await scoringRunQuery(
       req.user.id,
-      'id, label, answers, matches, created_at, is_default, model, source'
+      'id, label, answers, matches, extra_reasons, created_at, is_default, model, source'
     );
     if (activeError) throw activeError;
 
@@ -2539,6 +2553,90 @@ app.post(
   }
 );
 
+app.post(
+  '/api/questionnaire/explain/:schoolId',
+  requireAuth,
+  requireAccess,
+  questionnaireExplainLimiter,
+  async (req, res) => {
+    const schoolId = Number(req.params.schoolId);
+    if (!Number.isSafeInteger(schoolId) || schoolId <= 0) {
+      return res.status(400).json({ error: 'Neplatné ID školy.' });
+    }
+
+    try {
+      const { data: run, error: runError } = await scoringRunQuery(
+        req.user.id,
+        'id, answers, matches, extra_reasons'
+      );
+      if (runError) throw runError;
+      if (!run) {
+        return res.status(404).json({
+          error: 'Nejdřív vyplň dotazník.',
+          code: 'QUESTIONNAIRE_REQUIRED',
+        });
+      }
+
+      const cached = run.extra_reasons?.[String(schoolId)];
+      if (typeof cached === 'string' && cached.trim()) {
+        return res.json({ reason: cached, cached: true });
+      }
+
+      const storedMatch = (run.matches || []).find((match) => Number(match.school_id) === schoolId);
+      if (storedMatch?.reason) {
+        return res.json({ reason: storedMatch.reason, cached: true });
+      }
+
+      if (!OPENROUTER_API_KEY) {
+        return res.status(503).json({ error: 'Vysvětlení teď nejde vytvořit.' });
+      }
+
+      // scoreSchools derives selectivity signals from the full school set, so
+      // score against that same comparison pool but send only the requested
+      // school's evidence to the model.
+      const schools = withDistricts(await fetchAllSchools('*, school_programs(*), school_extracted_details(*)'));
+      const school = schools.find((entry) => entry.id === schoolId);
+      if (!school) return res.status(404).json({ error: 'Škola nebyla nalezena.' });
+      const match = scoreSchools(run.answers, schools).find((entry) => entry.school_id === schoolId);
+      if (!match) return res.status(404).json({ error: 'Školu se nepodařilo vyhodnotit.' });
+
+      const reasons = await requestReasons({
+        answers: run.answers,
+        shortlist: [match],
+        byId: new Map([[schoolId, school]]),
+        apiKey: OPENROUTER_API_KEY,
+        model: OPENROUTER_MODEL,
+        referer: FRONTEND_URL,
+        onUsage: (outcome) => logAiUsage(supabase, {
+          ...outcome,
+          source: 'explain',
+          model: OPENROUTER_MODEL,
+          userId: req.user.id,
+          runId: run.id,
+        }),
+      });
+      const reason = reasons.get(schoolId);
+      if (!reason) throw new Error('Model nevrátil vysvětlení školy.');
+
+      const extraReasons = {
+        ...(run.extra_reasons && typeof run.extra_reasons === 'object' ? run.extra_reasons : {}),
+        [String(schoolId)]: reason,
+      };
+      const { error: updateError } = await supabase
+        .from('questionnaire_runs')
+        .update({ extra_reasons: extraReasons })
+        .eq('id', run.id)
+        .eq('user_id', req.user.id);
+      if (updateError) throw updateError;
+
+      return res.json({ reason, cached: false });
+    } catch (err) {
+      console.error('On-demand questionnaire explanation unavailable:', err.message);
+      return res.status(502).json({ error: 'Vysvětlení teď nejde vytvořit.' });
+    }
+  }
+);
+
 /* ---------------------------------------------------------------------------
  * Managing sets of answers
  *
@@ -2601,7 +2699,7 @@ app.get('/api/questionnaire/runs/:id', requireAuth, requireAccess, async (req, r
     const run = await ownRun(
       req.user.id,
       req.params.id,
-      'id, label, answers, matches, created_at, is_default, archived_at, model, source'
+      'id, label, answers, matches, extra_reasons, created_at, is_default, archived_at, model, source'
     );
     if (!run) return res.status(404).json({ error: 'Tato sada odpovědí neexistuje.' });
 

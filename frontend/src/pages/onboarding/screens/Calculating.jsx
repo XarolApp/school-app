@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Check, Circle, Loader } from 'lucide-react';
 import { ObScreen } from '../../../components/onboarding/ObKit';
 import { usePrefersReducedMotion } from '../../../components/onboarding/usePrefersReducedMotion';
 import { useOnboarding } from '../useOnboarding';
@@ -72,14 +73,14 @@ function Calculating() {
             : `Tvoje odpovědi proti ${total || SCHOOL_COUNT} pražským školám. Chvilku to trvá, ale ne dlouho.`}
         </p>
 
-        <ol className="ob-calc-steps" aria-live="polite">
+        <ol className="ob-calc-steps" role="status" aria-live="polite">
           {steps.map((label, i) => {
             const state = i < index ? 'done' : i === index ? 'now' : 'next';
             return (
               <li key={label} className={`ob-calc-step is-${state}`}>
                 <span className="ob-calc-row">
                   <span className="ob-calc-mark" aria-hidden="true">
-                    {state === 'done' ? '✓' : state === 'now' ? '◐' : '·'}
+                    {state === 'done' ? <Check size={16} /> : state === 'now' ? <Loader size={16} /> : <Circle size={12} />}
                   </span>
                   <span className="ob-calc-text">
                     {label}

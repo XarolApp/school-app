@@ -16,6 +16,10 @@
   max-width: 640px;
 }
 
+.qz-calculating {
+  min-height: min(58vh, 520px);
+}
+
 .qz-subtitle {
   color: var(--ink2);
   max-width: 66ch;

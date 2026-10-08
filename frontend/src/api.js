@@ -156,6 +156,10 @@ export function submitQuestionnaire(answers) {
   });
 }
 
+export function explainQuestionnaireSchool(schoolId) {
+  return request(`/api/questionnaire/explain/${schoolId}`, { method: 'POST' });
+}
+
 export function renameQuestionnaireRun(id, label) {
   return request(`/api/questionnaire/runs/${id}`, {
     method: 'PATCH',

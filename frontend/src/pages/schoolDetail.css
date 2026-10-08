@@ -247,6 +247,24 @@
   width: 100%;
   justify-content: center;
 }
+.sd-explanation {
+  padding: var(--space-md);
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+}
+.sd-explanation h3 {
+  margin: 0 0 var(--space-xs);
+  font-family: var(--heading);
+  font-size: var(--fs-headline-sm);
+  color: var(--ink);
+}
+.sd-explanation p {
+  margin: 0;
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-body-sm);
+  color: var(--ink2);
+}
 .sd-actions-divider {
   height: 1px;
   background: var(--line);

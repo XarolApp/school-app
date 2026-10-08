@@ -4,7 +4,7 @@ import { useAuth } from '../components/AuthContext';
 import { clearDraftKey, readDraft } from '../lib/useDraft';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronDown, ChevronUp, ClipboardCheck, Info, RotateCcw } from 'lucide-react';
+import { Check, ChevronDown, ChevronUp, Circle, ClipboardCheck, Info, Loader, RotateCcw } from 'lucide-react';
 import {
   fetchQuestionnaire,
   submitQuestionnaire,
@@ -22,6 +22,7 @@ import DistrictMap from '../components/onboarding/DistrictMap';
 import './questionnaire.css';
 import { SkeletonPage, Sk, SkLines } from '../components/PageSkeleton';
 import { readHint, writeHint } from '../lib/skeletonHints';
+import { usePrefersReducedMotion } from '../components/onboarding/usePrefersReducedMotion';
 
 /**
  * The standalone questionnaire (lib/questionnaire.js on the server) — separate
@@ -44,6 +45,47 @@ import { readHint, writeHint } from '../lib/skeletonHints';
 
 const TOP_COUNT = 10;
 const LABEL_MAX = 60;
+const SUBMIT_STEPS = [
+  'Ukládám tvoje odpovědi',
+  'Počítám shodu s každou školou',
+  'Řadím školy podle shody',
+  'Píšu vysvětlení k nejlepším školám',
+  'Ještě chvilku — kontroluju texty',
+];
+
+function QuestionnaireLoading({ step, reduced }) {
+  return (
+    <div className="ob-calc qz-calculating" aria-busy="true">
+      <h1 className="ss-headline-lg h ob-calc-title">Počítám tvoji shodu</h1>
+      <p className="ss-body-md qz-subtitle ob-calc-sub">
+        Procházím školy a připravuji vysvětlení. Může to chvilku trvat.
+      </p>
+      <ol className="ob-calc-steps" role="status" aria-live="polite" aria-atomic="false">
+        {SUBMIT_STEPS.map((label, i) => {
+          const state = i < step ? 'done' : i === step ? 'now' : 'next';
+          return (
+            <li key={label} className={`ob-calc-step is-${state}`}>
+              <span className="ob-calc-row">
+                <span className="ob-calc-mark" aria-hidden="true">
+                  {state === 'done' ? <Check size={16} /> : state === 'now' ? <Loader size={16} /> : <Circle size={12} />}
+                </span>
+                <span className="ob-calc-text">{label}</span>
+                <span className="ob-calc-state">
+                  {state === 'done' ? 'hotovo' : state === 'now' ? 'právě teď' : ''}
+                </span>
+              </span>
+              {state === 'now' && (
+                <span className={`ob-calc-bar${reduced ? ' is-static' : ''}`} aria-hidden="true">
+                  <span className="ob-calc-bar-fill" />
+                </span>
+              )}
+            </li>
+          );
+        })}
+      </ol>
+    </div>
+  );
+}
 
 // Mirrors questionApplies in lib/questionnaire.js — kept tiny since no
 // question currently sets showIf, but the server contract allows it.
@@ -481,12 +523,23 @@ function Questionnaire() {
     return () => { if (!completed.current) track('q_abandon', { key: lastKey.current }); };
   }, [view]);
   const [submitting, setSubmitting] = useState(false);
+  const [submitStep, setSubmitStep] = useState(0);
   const [submitError, setSubmitError] = useState(null);
   const [confirmRetake, setConfirmRetake] = useState(false);
   const [afterSubmit, setAfterSubmit] = useState(null);
   const [historyError, setHistoryError] = useState(null);
   const [busyId, setBusyId] = useState(null);
   const [switching, setSwitching] = useState(false);
+  const reduced = usePrefersReducedMotion();
+
+  useEffect(() => {
+    if (!submitting || submitStep >= SUBMIT_STEPS.length - 1) {
+      if (!submitting) setSubmitStep(0);
+      return undefined;
+    }
+    const timer = setTimeout(() => setSubmitStep((step) => Math.min(step + 1, SUBMIT_STEPS.length - 1)), 2500);
+    return () => clearTimeout(timer);
+  }, [submitting, submitStep]);
 
   const refresh = useCallback(async () => {
     const data = await fetchQuestionnaire();
@@ -708,7 +761,9 @@ function Questionnaire() {
         />
       )}
 
-      {view === 'form' && (
+      {view === 'form' && submitting && <QuestionnaireLoading step={submitStep} reduced={reduced} />}
+
+      {view === 'form' && !submitting && (
         <>
           {active && (
             <button type="button" className="qz-link" onClick={() => setView('results')}>
@@ -802,8 +857,8 @@ function Questionnaire() {
 
             {submitError && <p className="qz-error" role="alert">{submitError}</p>}
 
-            <button type="submit" className="ss-btn ss-btn-primary" disabled={submitting}>
-              {submitting ? 'Počítám…' : 'Spočítat shodu'}
+            <button type="submit" className="ss-btn ss-btn-primary">
+              Spočítat shodu
             </button>
           </form>
         </>

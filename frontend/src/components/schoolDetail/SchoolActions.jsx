@@ -1,7 +1,15 @@
 import { track } from '../../lib/betaTrack';
 import { useEffect, useState } from 'react';
-import { Bookmark, Scale, Share2, Check, ListPlus, Globe, Mail, Phone } from 'lucide-react';
-import { addFavorite, removeFavorite, fetchPicks, savePicks } from '../../api';
+import { Link } from 'react-router-dom';
+import { Bookmark, Scale, Share2, Check, ListPlus, Globe, Mail, Phone, Sparkles } from 'lucide-react';
+import {
+  addFavorite,
+  removeFavorite,
+  fetchPicks,
+  savePicks,
+  fetchQuestionnaire,
+  explainQuestionnaireSchool,
+} from '../../api';
 import { toggleCompareSelection, isInCompareSelection } from '../../lib/searchPrefs';
 import { useToast } from '../ToastContext';
 import { useAuth } from '../AuthContext';
@@ -24,6 +32,9 @@ function SchoolActions({ school, isFavorite, onFavoriteChange, barRef }) {
   const [compared, setCompared] = useState(() => isInCompareSelection(school.id));
   const [picks, setPicks] = useState(null); // null = not loaded yet
   const [savingPick, setSavingPick] = useState(false);
+  const [questionnaire, setQuestionnaire] = useState({ loading: false, active: undefined, failed: false });
+  const [explanationLoading, setExplanationLoading] = useState(false);
+  const [explanationError, setExplanationError] = useState('');
   const contacts = parseSchoolContact(school.contact);
 
   const canFavorite = isSignedIn && hasAccess;
@@ -40,6 +51,25 @@ function SchoolActions({ school, isFavorite, onFavoriteChange, barRef }) {
       cancelled = true;
     };
   }, [canFavorite]);
+
+  useEffect(() => {
+    if (!canFavorite) {
+      setQuestionnaire({ loading: false, active: undefined, failed: false });
+      return undefined;
+    }
+    let cancelled = false;
+    setQuestionnaire({ loading: true, active: undefined, failed: false });
+    fetchQuestionnaire()
+      .then((data) => {
+        if (!cancelled) setQuestionnaire({ loading: false, active: data.active ?? null, failed: false });
+      })
+      .catch(() => {
+        if (!cancelled) setQuestionnaire({ loading: false, active: undefined, failed: true });
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [canFavorite, school.id]);
 
   const handleSave = async () => {
     if (!canFavorite || saving) return;
@@ -96,6 +126,25 @@ function SchoolActions({ school, isFavorite, onFavoriteChange, barRef }) {
     }
   };
 
+  const handleExplain = async () => {
+    if (explanationLoading) return;
+    setExplanationLoading(true);
+    setExplanationError('');
+    try {
+      const result = await explainQuestionnaireSchool(school.id);
+      setQuestionnaire((current) => ({
+        ...current,
+        active: current.active
+          ? { ...current.active, extra_reasons: { ...current.active.extra_reasons, [school.id]: result.reason } }
+          : current.active,
+      }));
+    } catch (err) {
+      setExplanationError(err.message || 'Vysvětlení teď nejde vytvořit.');
+    } finally {
+      setExplanationLoading(false);
+    }
+  };
+
   const handleShare = async () => {
     const url = window.location.href;
     if (navigator.share) {
@@ -126,6 +175,8 @@ function SchoolActions({ school, isFavorite, onFavoriteChange, barRef }) {
       Sdílet školu
     </button>
   );
+  const storedReason = questionnaire.active?.matches?.find((match) => match.school_id === school.id)?.reason;
+  const explanation = storedReason || questionnaire.active?.extra_reasons?.[String(school.id)] || '';
 
   // Desktop shows one rail in this order. On mobile the "primary" group is the
   // fixed bottom bar — two actions, never more — and "secondary" flows under
@@ -144,12 +195,45 @@ function SchoolActions({ school, isFavorite, onFavoriteChange, barRef }) {
       </div>
       {canFavorite && (
         <div className="sd-actions-secondary">
-          <button type="button" className="ss-btn ss-btn-secondary" onClick={handleTogglePick} disabled={picks === null || savingPick}>
+          <button
+            type="button"
+            className="ss-btn ss-btn-secondary"
+            onClick={handleTogglePick}
+            disabled={picks === null || savingPick}
+          >
             {isPicked ? <Check size={16} aria-hidden="true" /> : <ListPlus size={16} aria-hidden="true" />}
             {isPicked ? 'V přihlášce' : 'Přidat do přihlášky'}
           </button>
+          {!questionnaire.loading && questionnaire.active && !explanation && !questionnaire.failed && (
+            <button
+              type="button"
+              className="ss-btn ss-btn-secondary"
+              onClick={handleExplain}
+              disabled={explanationLoading}
+            >
+              <Sparkles size={16} aria-hidden="true" />
+              {explanationLoading ? 'Píšu vysvětlení…' : 'Získat vysvětlení'}
+            </button>
+          )}
+          {!questionnaire.loading && questionnaire.active === null && !questionnaire.failed && (
+            <Link to="/dotaznik" className="ss-btn ss-btn-secondary">
+              <Sparkles size={16} aria-hidden="true" />
+              Nejdřív vyplň dotazník
+            </Link>
+          )}
           {shareButton}
         </div>
+      )}
+      {canFavorite && explanation && (
+        <section className="sd-explanation" aria-live="polite">
+          <h3>Proč ti (ne)sedí</h3>
+          <p>{explanation}</p>
+        </section>
+      )}
+      {canFavorite && (explanationError || questionnaire.failed) && (
+        <p className="sd-form-error" role="alert">
+          {explanationError || 'Vysvětlení se nepodařilo načíst.'}
+        </p>
       )}
 
       <div className="sd-actions-divider" />
