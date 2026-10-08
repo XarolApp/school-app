@@ -21,6 +21,7 @@ import {
   HeartPulse,
   Users,
   ChefHat,
+  ChevronUp,
   Dumbbell,
   Wrench,
   Info,
@@ -306,6 +307,15 @@ const PAGE_SIZE = 40;
 
 // Keep Search, /porovnani and /sdileni on the same five-school limit.
 const COMPARE_LIMIT = 5;
+const COMPARE_BAR_COLLAPSED_KEY = 'snm.compareBar.collapsed';
+
+function readCompareBarCollapsed() {
+  try {
+    return localStorage.getItem(COMPARE_BAR_COLLAPSED_KEY) === 'true';
+  } catch {
+    return false;
+  }
+}
 
 // Skeleton for the results block: same toolbar, column header and row cells
 // as the loaded list, grey where the data goes.
@@ -367,6 +377,7 @@ function Search() {
     }
   };
   const [selected, setSelected] = useState(() => new Set(getCompareSelection()));
+  const [compareBarCollapsed, setCompareBarCollapsed] = useState(readCompareBarCollapsed);
   // ?q= pre-fills the search box (used by the 404 page's search form).
   // Filters and the list/map choice survive a reload or a trip to another tab.
   const [filters, setFilters] = useState(() => {
@@ -393,6 +404,26 @@ function Search() {
   const resultsHeadingRef = useRef(null);
   const pageRef = useRef(null);
   const compareBarRef = useRef(null);
+  const compareCollapseRef = useRef(null);
+  const compareExpandRef = useRef(null);
+  const compareFocusTarget = useRef(null);
+
+  const changeCompareBarCollapsed = (collapsed) => {
+    compareFocusTarget.current = collapsed ? 'expand' : 'collapse';
+    setCompareBarCollapsed(collapsed);
+    try {
+      localStorage.setItem(COMPARE_BAR_COLLAPSED_KEY, String(collapsed));
+    } catch {
+      /* The bar still works until this page is closed. */
+    }
+  };
+
+  useEffect(() => {
+    const target = compareFocusTarget.current === 'expand' ? compareExpandRef : compareCollapseRef;
+    if (!compareFocusTarget.current) return;
+    compareFocusTarget.current = null;
+    target.current?.focus();
+  }, [compareBarCollapsed]);
 
   useEffect(() => {
     if (isMobile) setOpenPopover(null);
@@ -1726,8 +1757,13 @@ function Search() {
       </section>
 
       {selected.size > 0 && (
-        <div className="ss-compare-bar" ref={compareBarRef}>
-          <div className="ss-compare-bar-inner">
+        <div className={`ss-compare-bar${compareBarCollapsed ? ' is-collapsed' : ''}`} ref={compareBarRef}>
+          <div
+            className="ss-compare-bar-inner"
+            id="ss-compare-bar-content"
+            inert={compareBarCollapsed}
+            aria-hidden={compareBarCollapsed}
+          >
             <p className="ss-body-sm">
               {isMobile ? (
                 <strong>{selected.size} {plural(selected.size, 'vybraná škola', 'vybrané školy', 'vybraných škol')}</strong>
@@ -1747,7 +1783,30 @@ function Search() {
             <button type="button" className="ss-btn ss-btn-primary ss-compare-action" onClick={handleCompare}>
               Porovnat
             </button>
+            <button
+              type="button"
+              className="ss-compare-collapse"
+              ref={compareCollapseRef}
+              aria-label="Skrýt lištu porovnání"
+              aria-expanded={!compareBarCollapsed}
+              aria-controls="ss-compare-bar-content"
+              onClick={() => changeCompareBarCollapsed(true)}
+            >
+              <ChevronDown size={18} aria-hidden="true" />
+            </button>
           </div>
+          <button
+            type="button"
+            className="ss-compare-bar-tab"
+            ref={compareExpandRef}
+            aria-label={`Zobrazit lištu porovnání: ${selected.size} ${skol(selected.size)} k porovnání`}
+            aria-expanded={!compareBarCollapsed}
+            aria-controls="ss-compare-bar-content"
+            onClick={() => changeCompareBarCollapsed(false)}
+          >
+            <ChevronUp size={18} aria-hidden="true" />
+            <span>{selected.size} {skol(selected.size)} k porovnání</span>
+          </button>
         </div>
       )}
     </div>

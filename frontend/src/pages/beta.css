@@ -81,7 +81,7 @@ main.beta-page {
   position: fixed;
   z-index: 30;
   right: max(var(--space-md), env(safe-area-inset-right, 0px));
-  bottom: max(var(--space-md), env(safe-area-inset-bottom, 0px));
+  bottom: calc(var(--bottom-bar-h, 0px) + max(var(--space-md), env(safe-area-inset-bottom, 0px)));
   display: flex; gap: var(--space-sm);
 }
 
@@ -121,11 +121,11 @@ main.beta-page {
 @media (max-width: 560px) {
   .beta-floating-tools {
     right: max(var(--space-sm), env(safe-area-inset-right, 0px));
-    bottom: calc(52px + max(var(--space-sm), env(safe-area-inset-bottom, 0px)));
+    bottom: calc(var(--bottom-bar-h, 0px) + max(var(--space-sm), env(safe-area-inset-bottom, 0px)));
   }
 
   .beta-floating-tools.is-onboarding {
-    bottom: calc(28px + max(var(--space-sm), env(safe-area-inset-bottom, 0px)));
+    bottom: calc(var(--bottom-bar-h, 0px) + 28px + max(var(--space-sm), env(safe-area-inset-bottom, 0px)));
   }
 
   html[data-beta-ui='true'] .ob-screen { padding-bottom: calc(120px + env(safe-area-inset-bottom, 0px)); }
