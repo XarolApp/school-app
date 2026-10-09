@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { MessageSquare } from 'lucide-react';
 import { fetchSchoolReviews } from '../../api';
+import { SCHOOL_REVIEWS_ENABLED, SCHOOL_REVIEWS_OFF_NOTE } from '../../config/features';
 import ReviewCard from './ReviewCard';
 import ReviewForm from './ReviewForm';
 
@@ -26,11 +27,16 @@ function SchoolReviews({ schoolId }) {
   }, [schoolId]);
 
   useEffect(() => {
+    if (!SCHOOL_REVIEWS_ENABLED) return undefined;
     setReviews(null);
     setTab('all');
     load();
     return () => { requestRef.current += 1; };
   }, [load]);
+
+  if (!SCHOOL_REVIEWS_ENABLED) {
+    return <p className="sd-section-intro">{SCHOOL_REVIEWS_OFF_NOTE}</p>;
+  }
 
   if (reviews === null) return null;
 

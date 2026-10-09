@@ -24,10 +24,13 @@ export const SCHOOLS_IN_CATALOGUE = null;
 
 /**
  * Real testimonials only. Shape:
- * { id, quote, author, role: 'student' | 'parent' }
+ * { id, quote, author, role: 'student' | 'parent', consent_publish: true,
+ *   selected_by_admin: true }
+ * Only publish reviews with explicit consent that a human has selected after
+ * review. Keep the free-beta disclosure beside every quote when rendering it.
  */
 export const TESTIMONIALS = [];
 
-export function testimonialsFor(role) {
-  return TESTIMONIALS.filter((t) => t.role === role);
+export function testimonialsFor(role, source = TESTIMONIALS) {
+  return source.filter((t) => t.role === role && t.consent_publish === true && t.selected_by_admin === true);
 }

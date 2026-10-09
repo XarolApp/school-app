@@ -4,6 +4,7 @@ import Modal from './Modal';
 import BetaRegionPicker from './BetaRegionPicker';
 import { BetaChecklist } from './BetaInstructions';
 import { submitBetaFeedback, uploadBetaScreenshot } from '../api';
+import BetaClosingQuestionnaire from './BetaClosingQuestionnaire';
 import { captureBetaScreenshot, elementSelector, publicElementText } from '../lib/betaCapture';
 import { useDraft } from '../lib/useDraft';
 import { genderedCopy, useGender } from '../lib/gender';
@@ -25,13 +26,14 @@ export default function BetaFeedbackSheet({ open, onClose, pageUrl, beta, onSucc
   const written = (beta?.feedback || []).filter((f) => f.source !== 'micro');
   const [message,setMessage,clearMessage] = useDraft('snm.beta.feedback.message',''), [kind,setKind] = useState('obecne'), [selection,setSelection] = useState(null);
   const [screenshot,setScreenshot] = useState(null), [error,setError] = useState(''), [busy,setBusy] = useState(false), [success,setSuccess] = useState(false);
+  const [reviewBusy,setReviewBusy] = useState(false), [reviewSaved,setReviewSaved] = useState(false);
   const [outline,setOutline] = useState(null);
   const selectedElement = useRef(null), mounted = useRef(true);
   const parent = ['rodic','ucitel'].includes(beta?.role);
   const voice = (student,adult) => parent ? adult : genderedCopy(student, gender);
   useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
   useEffect(() => { setSuccess(false); }, [requestId]);
-  useEffect(() => { if (!open) setPhase('form'); }, [open]);
+  useEffect(() => { if (!open) { setPhase('form'); setReviewBusy(false); setReviewSaved(false); } }, [open]);
   useEffect(() => () => { if (screenshot) URL.revokeObjectURL(screenshot.url); }, [screenshot]);
 
   // "Navrhnout změnu textu": the tester clicks the text itself (no list of elements).
@@ -125,7 +127,9 @@ export default function BetaFeedbackSheet({ open, onClose, pageUrl, beta, onSucc
       <button className="ss-btn ss-btn-secondary" onClick={() => { setPhase('form'); setMode('general'); setSelection(null); }}>Zrušit úpravu</button>
     </div>}
     {open && phase === 'capture' && <div className="beta-picker-toolbar" role="status" data-beta-tools>Připravuji snímek se zakrytými poli…</div>}
-    <div data-beta-tools><Modal open={open && phase === 'form'} title="Zpětná vazba" onDismiss={onClose} busy={busy} className="beta-sheet">
+    <div data-beta-tools><Modal open={open && (phase === 'form' || phase === 'review')} title={phase === 'review' ? 'Napsat recenzi webu' : 'Zpětná vazba'} onDismiss={phase === 'review' ? () => setPhase('form') : onClose} busy={busy || reviewBusy} className="beta-sheet">
+      {phase === 'review' ? <BetaClosingQuestionnaire role={beta?.role} reviewOnly onBusyChange={setReviewBusy} onCancel={() => setPhase('form')} onDone={() => { setPhase('form'); setReviewSaved(true); void onSuccess?.(); }} /> : <>
+      {reviewSaved && <p className="beta-read-note" role="status">{voice('Díky za recenzi webu. Zveřejníme ji jen s tvým samostatným souhlasem a po kontrole.', 'Děkujeme za recenzi webu. Zveřejníme ji jen s Vaším samostatným souhlasem a po kontrole.')}</p>}
       {success ? <div className="stack" role="status"><Check size={28} /><h3 className="ss-headline-md">Díky za zprávu</h3><p>{voice('Každá zpětná vazba nám pomáhá. Klidně pošli další.', 'Každá zpětná vazba nám pomáhá. Klidně pošlete další.')}</p><button className="ss-btn ss-btn-primary" onClick={() => { setSuccess(false); onClose(); }}>Pokračovat</button></div> : <form className="stack beta-feedback-form" onSubmit={submit}>
         <p className="field-hint">{voice('Napiš nám cokoli o celém webu, nebo označ konkrétní místo. Každá zpětná vazba pomáhá, i pozitivní.', 'Napište nám cokoli o celém webu, nebo označte konkrétní místo. Každá zpětná vazba pomáhá, i pozitivní.')}</p>
         <p className="beta-read-note"><Check size={16} aria-hidden="true" /> {voice('Každou zpětnou vazbu čteme. Na odpověď se můžeš podívat níže v „Moje zpětné vazby“.', 'Každou zpětnou vazbu čteme. Na odpověď se můžete podívat níže v „Moje zpětné vazby“.')}</p>
@@ -153,6 +157,8 @@ export default function BetaFeedbackSheet({ open, onClose, pageUrl, beta, onSucc
       </form>}
       <details><summary className="ss-headline-sm">Moje vyzkoušené funkce</summary><BetaChecklist checklist={beta?.checklist} onNavigate={onClose} /></details>
       <details><summary className="ss-headline-sm">Moje zpětné vazby ({written.length})</summary><div className="beta-my-feedback">{written.map((f) => <article key={f.id}><p className="ss-data-sm">{statuses[f.status] || f.status} · {new Date(f.created_at).toLocaleDateString('cs-CZ')}</p><p>{f.message}</p>{f.admin_reply && <blockquote><strong>Odpověď týmu</strong><p>{f.admin_reply}</p></blockquote>}</article>)}</div></details>
+      <button type="button" className="ss-btn ss-btn-secondary" disabled={!programActive} onClick={() => { setReviewSaved(false); setPhase('review'); }}>Napsat recenzi webu</button>
+      </>}
     </Modal></div>
   </>;
 }

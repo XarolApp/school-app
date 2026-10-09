@@ -1,3 +1,5 @@
+import { SCHOOL_REVIEWS_ENABLED } from '../../config/features';
+
 const SECTIONS = [
   { id: 'obory', label: 'Obory a přijímačky' },
   { id: 'kde-to-je', label: 'Kde to je' },
@@ -8,7 +10,7 @@ const SECTIONS = [
 function SectionNav() {
   return (
     <nav className="sd-nav" aria-label="Sekce na stránce školy">
-      {SECTIONS.map((s) => (
+      {SECTIONS.filter((section) => SCHOOL_REVIEWS_ENABLED || section.id !== 'recenze').map((s) => (
         <a key={s.id} href={`#${s.id}`}>
           {s.label}
         </a>

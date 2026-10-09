@@ -2,7 +2,7 @@ const { rankingPayload } = require('./lib/betaRankings');
 const { registerBetaAdmin } = require('./lib/betaAdminRoutes');
 const { betaLimitOptions } = require('./lib/betaLimits');
 const { cleanupBetaScreenshots } = require('./lib/betaMaintenance');
-const { closingPayload } = require('./lib/betaClosing');
+const { closingPayload, reviewPayload } = require('./lib/betaClosing');
 const express = require('express');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
@@ -31,6 +31,7 @@ const {
 const app = express();
 const PORT = process.env.PORT || 5000;
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
+const SCHOOL_REVIEWS_ENABLED = process.env.SCHOOL_REVIEWS_ENABLED === 'true';
 
 // The service role key bypasses Row Level Security, which is exactly why the
 // browser must never see it. It lives only here, and it is what lets this
@@ -931,6 +932,18 @@ app.post('/api/beta/closing', requireAuth, requireBetaTester, betaClosingLimiter
   if (error) return res.status(error.code==='23505'?409:error.code==='55000'?410:500).json({error:'Dotazník nelze uložit.'});
   res.status(201).json({saved:true});
 });
+app.post('/api/beta/review', requireAuth, requireBetaTester, betaClosingLimiter, async (req,res) => {
+  const profile=await supabase.from('beta_profile').select('role').eq('user_id',req.user.id).single();
+  if (profile.error || !profile.data) return res.status(503).json({error:'Testování nelze ověřit.'});
+  const review=reviewPayload(req.body?.review,profile.data.role);
+  if (!review) return res.status(400).json({error:'Recenze nebo souhlas nemají správný formát.'});
+  const {error}=await supabase.rpc('submit_beta_review',{p_user_id:req.user.id,p_review:review});
+  if (error) {
+    const status=error.code==='42501'?403:error.code==='55000'?410:error.code==='22023'?400:500;
+    return res.status(status).json({error:status===410?'Beta program skončil. Recenzi už nelze odeslat.':'Recenzi se nepodařilo uložit.'});
+  }
+  res.status(201).json({saved:true});
+});
 // Quick ten-second rating after a feature is tried. Stored as feedback, but it
 // never renews access (only a written report does) — see submit_beta_micro.
 const QUICK_FEATURES = ['dotaznik','vyhledavani','detail','porovnani','matice','prihlaska','tema','platby'];
@@ -1505,6 +1518,7 @@ async function withReviewNames(rows) {
 const REVIEW_ROLES = ['student', 'absolvent', 'rodic', 'ucitel', 'navstevnik'];
 
 app.get('/api/schools/:id/reviews', optionalAuth, async (req, res) => {
+  if (!SCHOOL_REVIEWS_ENABLED) return res.json([]);
   const schoolId = Number(req.params.id);
   if (!Number.isInteger(schoolId)) {
     return res.status(400).json({ error: 'Neplatné ID školy.' });
@@ -1530,7 +1544,10 @@ app.get('/api/schools/:id/reviews', optionalAuth, async (req, res) => {
   res.json((await withReviewNames(visible)).map((row) => toPublicReview(row, req.user?.id)));
 });
 
-app.post('/api/schools/:id/reviews', reviewLimiter, requireAuth, async (req, res) => {
+app.post('/api/schools/:id/reviews', (req, res, next) => {
+  if (!SCHOOL_REVIEWS_ENABLED) return res.status(403).json({ error: 'Recenze škol jsou během beta testování vypnuté.' });
+  return next();
+}, reviewLimiter, requireAuth, async (req, res) => {
   const schoolId = Number(req.params.id);
   if (!Number.isInteger(schoolId)) {
     return res.status(400).json({ error: 'Neplatné ID školy.' });

@@ -1,6 +1,6 @@
 const {test}=require('node:test');
 const assert=require('node:assert/strict');
-const {closingDue,closingPayload}=require('../lib/betaClosing');
+const {closingDue,closingPayload,reviewPayload,BETA_REVIEW_CONSENT_VERSION}=require('../lib/betaClosing');
 const now=new Date('2026-10-05T12:00:00Z');
 test('closing starts after core features and day two, or two days before cutoff; new testers get 24 hours',()=>{
  const user={created_at:'2026-10-02T12:00:00Z'},settings={ends_at:'2026-10-15T12:00:00Z'};
@@ -20,4 +20,16 @@ test('closing validation strips extra fields and derives anonymous review label 
  assert.equal(closingPayload({answers:{...valid,nps:11}},'9'),null);
  assert.equal(closingPayload({answers:{...valid,prices:{...valid.prices,good:-1}}},'9'),null);
  assert.equal(closingPayload({answers:valid,review:{stars:0,body:'text',consent_publish:false}},'9'),null);
+});
+test('website review stores only server-derived consent metadata and signature',()=>{
+ const optedOut=reviewPayload({stars:4,body:'Pomohlo mi porovnat školy.',consent_publish:false,consent_text_version:'forged',display_label:'Jana',age_group:'adult'},'8');
+ assert.equal(optedOut.consent_publish,false);
+ assert.equal(optedOut.consent_text_version,null);
+ assert.equal(optedOut.display_label,'Student, 8. třída');
+ assert.equal(optedOut.age_group,'under15');
+ const optedIn=reviewPayload({stars:5,body:'Pomohlo mi vybrat si vhodnou školu.',consent_publish:true},'9');
+ assert.equal(optedIn.consent_text_version,BETA_REVIEW_CONSENT_VERSION);
+ assert.equal(optedIn.display_label,'Student, 9. třída');
+ assert.equal(optedIn.age_group,'unknown');
+ assert.equal(reviewPayload({stars:4,body:'Krátké',consent_publish:true},'9'),null);
 });

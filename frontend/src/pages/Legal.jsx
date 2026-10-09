@@ -23,7 +23,7 @@ export function Privacy() {
   const gender = useGender();
   const g = (masculine, feminine) => (gender === 'f' ? feminine : masculine);
   return (
-    <LegalPage title="Zásady ochrany osobních údajů" updated="8. 10. 2026">
+    <LegalPage title="Zásady ochrany osobních údajů" updated="9. 10. 2026">
       <h2>1. Kdo je správce</h2>
       <p>
         Správcem osobních údajů je Václav Kadlec, Na Lysinách 34, 147 00 Praha, e-mail:
@@ -56,11 +56,11 @@ export function Privacy() {
           rodičům. Účel: poskytnout tyto funkce. Základ: plnění smlouvy.
         </li>
         <li>
-          <strong>Recenze a hlášení chyb:</strong> text recenze, tvoje role (např. student, rodič)
-          a případná hlášení. Recenze je veřejná, ale ukazuje se jen s rolí (např. „Student · 3.
-          ročník“), ne se jménem. Jméno u recenze ukážeme jen rodiči nebo učiteli, který to sám
-          zapne. Účel: provoz recenzí a jejich moderace. Základ: oprávněný zájem na bezpečném
-          a slušném obsahu; zveřejnění recenze je tvoje dobrovolná volba.
+          <strong>Recenze škol a hlášení chyb:</strong> text recenze, tvoje role (např. student,
+          rodič) a případná hlášení. Recenze školy se při beta testování nezobrazují ani nepřijímají.
+          Až budou zapnuté, veřejně se ukazují jen s rolí (např. „Student · 3. ročník“), ne se
+          jménem. Jméno u recenze ukážeme jen rodiči nebo učiteli, který to sám zapne. Účel: provoz
+          recenzí a jejich moderace. Základ: oprávněný zájem na bezpečném a slušném obsahu.
         </li>
         <li>
           <strong>Předplatné a platby:</strong> zvolený tarif, stav předplatného, data platby a
@@ -181,6 +181,15 @@ export function Privacy() {
         zveřejnění uvedeme „beta tester, přístup zdarma“; recenzi dítěte mladšího 15 let
         použijeme pouze plně anonymně, například „Student, 8. třída“.
       </p>
+      <p>
+        U dobrovolné recenze webu uchováváme hvězdičky, text, testovací roli a informaci o tom,
+        zda jsi souhlasil{g('','a')} se zveřejněním, včetně verze textu souhlasu a času potvrzení.
+        Recenzi lze odeslat i bez souhlasu; v takovém případě zůstane soukromá a slouží jen k
+        vyhodnocení beta testu. Veřejně ji použijeme pouze po samostatném souhlasu. Pokud ti ještě
+        nebylo 15 let, nezveřejníme tvoje jméno ani školu; použijeme jen anonymní označení role,
+        například „Student, 8. třída“. Právním základem zveřejnění je tvůj výslovný souhlas,
+        který můžeš kdykoli odvolat.
+      </p>
 
       <h2>10. Změny</h2>
       <p>O podstatné změně těchto zásad tě budeme předem informovat v aplikaci nebo e-mailem.</p>
@@ -192,7 +201,7 @@ export function Terms() {
   const gender = useGender();
   const g = (masculine, feminine) => (gender === 'f' ? feminine : masculine);
   return (
-    <LegalPage title="Obchodní podmínky" updated="8. 10. 2026">
+    <LegalPage title="Obchodní podmínky" updated="9. 10. 2026">
       <h2>1. Provozovatel a kontakt</h2>
       <p>
         Službu Střední na míru (stredninamiru.cz) provozuje Václav Kadlec, Na Lysinách 34, 147 00 Praha (fyzická osoba, neplátce DPH), e-mail: info@stredninamiru.cz (tento e-mail slouží pro všechny žádosti,
@@ -293,6 +302,18 @@ export function Terms() {
       </p>
 
       <h2>9. Obsah od uživatelů a moderace</h2>
+      <p>
+        <strong>Dobrovolná recenze webu v beta testování:</strong> Recenzi můžeš poslat i bez
+        souhlasu se zveřejněním; v takovém případě zůstane neveřejná a použijeme ji pouze k
+        vyhodnocení testování. Zveřejníme ji jen tehdy, když samostatně a výslovně zaškrtneš
+        souhlas u recenze. Souhlas nám uděluje bezplatnou nevýhradní licenci užít a zveřejnit
+        hvězdičky a text na webu Střední na míru, v aplikaci a na našich sociálních sítích. Text můžeme přiměřeně
+        zkrátit, pokud tím nezměníme jeho smysl. Nepoužijeme tvoje jméno; uvedeme jen anonymní
+        označení role, například „Student, 9. třída“, a vždy také „beta tester, přístup zdarma“.
+        U dítěte mladšího 15 let neuvedeme ani název školy. Souhlas můžeš kdykoli odvolat e-mailem
+        na info@stredninamiru.cz; zveřejněnou recenzi pak stáhneme. Odeslání recenze ani její
+        výběr správcem souhlas nenahrazuje.
+      </p>
       <p>
         Recenze musí být pravdivé, slušné a nesmí obsahovat osobní údaje třetích osob, kontaktní
         údaje ani jména konkrétních učitelů. <strong>Recenze nejsou ověřené</strong> — jde o

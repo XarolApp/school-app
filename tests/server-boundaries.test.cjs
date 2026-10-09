@@ -738,7 +738,7 @@ test('review reads resolve opt-in adult names without the nonexistent public.use
     { id: 3, user_id: 'user-test', role: 'ucitel', status: 'held', show_name: false },
     { id: 4, user_id: 'other', role: 'student', status: 'held', show_name: false },
   ];
-  const h = harness({ result: (query) => {
+  const h = harness({ env: { SCHOOL_REVIEWS_ENABLED: 'true' }, result: (query) => {
     if (query.calls.some(([method, value]) => method === 'select' && /users\s*\(/.test(value))) return { error: { code: 'PGRST200', message: 'No relationship' } };
     return { data: query.table === 'school_reviews' ? rows : [{ id: 'adult', name: 'Jana Nováková' }], error: null };
   } });
@@ -754,7 +754,7 @@ test('review reads resolve opt-in adult names without the nonexistent public.use
 });
 
 test('new held reviews return moderation state without a broken join', async () => {
-  const h = harness({ result: (query) => {
+  const h = harness({ env: { SCHOOL_REVIEWS_ENABLED: 'true' }, result: (query) => {
     if (query.calls.some(([method, value]) => method === 'select' && /users\s*\(/.test(value))) return { error: { code: 'PGRST200', message: 'No relationship' } };
     const insert = query.calls.find(([method]) => method === 'insert')?.[1];
     return { data: { ...insert, id: 5 }, error: null };
@@ -763,6 +763,36 @@ test('new held reviews return moderation state without a broken join', async () 
   assert.equal(res.statusCode, 201);
   assert.equal(res.body.status, 'held');
   assert.equal(res.body.display_name, null);
+});
+
+test('school reviews stay disabled by default at both public API routes', async () => {
+  const h = harness();
+  const reads = await h.call('get', '/api/schools/:id/reviews', { params: { id: '1' } });
+  assert.equal(reads.statusCode, 200);
+  assert.deepEqual(Array.from(reads.body), []);
+  const writes = await h.callChain('post', '/api/schools/:id/reviews', { params: { id: '1' }, body: {} });
+  assert.equal(writes.statusCode, 403);
+  assert.equal(h.queries.length, 0);
+});
+
+test('beta website review accepts private feedback and stamps publication consent server-side', async () => {
+  for (const consent of [false, true]) {
+    const h = harness({ result: (query) => {
+      if (query.table === 'users') return { data: { id: 'user-test', subscription_status: 'beta' }, error: null };
+      if (query.table === 'beta_profile') return { data: { role: '9' }, error: null };
+      return { data: null, error: null };
+    } });
+    const response = await h.callChain('post', '/api/beta/review', { body: {
+      review: { stars: 5, body: 'Pomohlo mi vybrat si vhodnou školu.', consent_publish: consent, display_label: 'Jméno', age_group: 'adult' },
+    } });
+    assert.equal(response.statusCode, 201);
+    assert.equal(h.rpcCalls[0].name, 'submit_beta_review');
+    assert.equal(h.rpcCalls[0].args.p_user_id, 'user-test');
+    assert.equal(h.rpcCalls[0].args.p_review.display_label, 'Student, 9. třída');
+    assert.equal(h.rpcCalls[0].args.p_review.age_group, 'unknown');
+    assert.equal(h.rpcCalls[0].args.p_review.consent_publish, consent);
+    assert.equal(h.rpcCalls[0].args.p_review.consent_text_version, consent ? '2026-10-08' : null);
+  }
 });
 
 test('shared shortlist does not disguise database failures as an empty selection', async () => {

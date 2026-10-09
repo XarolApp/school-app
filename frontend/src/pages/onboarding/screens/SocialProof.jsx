@@ -101,7 +101,8 @@ function SocialProof() {
           {testimonials.map((t) => (
             <blockquote key={t.id} className="ob-testimonial">
               <p>{t.quote}</p>
-              <cite>{t.author}</cite>
+              {/* Beta reviewers receive free access, so keep the incentive disclosure adjacent to each quote. */}
+              <cite>{t.author} · beta tester, přístup zdarma</cite>
             </blockquote>
           ))}
         </div>
