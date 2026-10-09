@@ -25,7 +25,7 @@ import { parseSchoolContact } from '../../lib/schoolContact';
  * rows; this needs a full labelled button, so the logic is repeated rather
  * than the component reused).
  */
-function SchoolActions({ school, isFavorite, onFavoriteChange, barRef }) {
+function SchoolActions({ school, isFavorite, onFavoriteChange, barRef, publicView = false }) {
   const { isSignedIn, hasAccess } = useAuth();
   const { toast } = useToast();
   const [saving, setSaving] = useState(false);
@@ -37,7 +37,7 @@ function SchoolActions({ school, isFavorite, onFavoriteChange, barRef }) {
   const [explanationError, setExplanationError] = useState('');
   const contacts = parseSchoolContact(school.contact);
 
-  const canFavorite = isSignedIn && hasAccess;
+  const canFavorite = isSignedIn && hasAccess && !publicView;
 
   useEffect(() => {
     if (!canFavorite) return;
@@ -190,9 +190,19 @@ function SchoolActions({ school, isFavorite, onFavoriteChange, barRef }) {
             {isFavorite ? 'Uloženo' : 'Uložit'}
           </button>
         )}
-        {compareButton}
+        {publicView ? (
+          <Link to="/registrace" className="ss-btn ss-btn-primary">Registrace</Link>
+        ) : (
+          compareButton
+        )}
         {!canFavorite && shareButton}
       </div>
+      {publicView && (
+        <p className="ss-caption sd-public-note">
+          Ukládání škol, porovnání, přihláška a vysvětlení shody jsou jen pro registrované.{' '}
+          <Link to="/prihlaseni">Už máš účet? Přihlas se.</Link>
+        </p>
+      )}
       {canFavorite && (
         <div className="sd-actions-secondary">
           <button

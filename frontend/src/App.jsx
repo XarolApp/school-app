@@ -98,12 +98,21 @@ function App() {
                 <Route path="/stara" element={<Navigate to="/" replace />} />
                 <Route path="/ochrana-osobnich-udaju" element={<Privacy />} />
                 <Route path="/obchodni-podminky" element={<Terms />} />
-                <Route element={<ProtectedRoute />}>
-                  <Route path="/admin" element={<Suspense fallback={<LoadingSpinner label="Načítání přehledů…" />}><Admin /></Suspense>} />
+                {/* Signed-out visitors have no school list or comparison: they
+                    go back to the landing. */}
+                <Route element={<ProtectedRoute signedOutTo="/" />}>
                   <Route path="/skoly" element={<Search />} />
-                  <Route path="/skoly/:id" element={<SchoolDetail />} />
                   <Route path="/porovnani" element={<Porovnani />} />
                   <Route path="/porovnani/matice" element={<Matice />} />
+                </Route>
+                {/* A school page opened from the landing map is view-only when
+                    signed out (no save, compare, explanation or review). */}
+                <Route
+                  path="/skoly/:id"
+                  element={<ProtectedRoute publicFallback={<SchoolDetail publicView />}><SchoolDetail /></ProtectedRoute>}
+                />
+                <Route element={<ProtectedRoute />}>
+                  <Route path="/admin" element={<Suspense fallback={<LoadingSpinner label="Načítání přehledů…" />}><Admin /></Suspense>} />
                   <Route path="/prihlaska" element={<Prihlaska />} />
                   <Route path="/ulozene" element={<SavedSchools />} />
                   {/* The standalone AI questionnaire (server-side lib/questionnaire.js) —

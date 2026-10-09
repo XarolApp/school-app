@@ -22,7 +22,7 @@ import AsyncState from '../components/AsyncState';
 import useBottomBarSpace from '../lib/useBottomBarSpace';
 import './schoolDetail.css';
 
-function SchoolDetail() {
+function SchoolDetail({ publicView = false }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const { isSignedIn, hasAccess } = useAuth();
@@ -85,9 +85,11 @@ function SchoolDetail() {
   // Back goes where the visitor came from (search, map, onboarding result);
   // /skoly only when the page was opened directly.
   const cameFromApp = window.history.state?.idx > 0;
+  // Signed out there is no school list to go back to: back means the landing.
+  const backHref = publicView ? '/' : '/skoly';
   const backLink = (
     <a
-      href="/skoly"
+      href={backHref}
       className="sd-back"
       onClick={(e) => {
         if (!cameFromApp) return;
@@ -95,7 +97,7 @@ function SchoolDetail() {
         navigate(-1);
       }}
     >
-      &larr; {cameFromApp ? 'Zpět' : 'Zpět na výpis'}
+      &larr; {cameFromApp ? 'Zpět' : publicView ? 'Zpět na úvod' : 'Zpět na výpis'}
     </a>
   );
 
@@ -136,7 +138,7 @@ function SchoolDetail() {
           <AsyncState
             kind="empty"
             title="Tuhle školu jsme nenašli"
-            action={<Link to="/skoly" className="ss-btn ss-btn-primary">Zpět na školy</Link>}
+            action={<Link to={backHref} className="ss-btn ss-btn-primary">{publicView ? 'Zpět na úvod' : 'Zpět na školy'}</Link>}
           >
             Odkaz může být starý nebo škola už v databázi není.
           </AsyncState>
@@ -145,7 +147,7 @@ function SchoolDetail() {
             kind="error"
             title="Školu se nepodařilo načíst"
             onRetry={() => setLoadTick((t) => t + 1)}
-            action={<Link to="/skoly" className="ss-btn ss-btn-secondary">Zpět na školy</Link>}
+            action={<Link to={backHref} className="ss-btn ss-btn-secondary">{publicView ? 'Zpět na úvod' : 'Zpět na školy'}</Link>}
           >
             Zkontroluj připojení a zkus to znovu. ({error?.message})
           </AsyncState>
@@ -190,7 +192,7 @@ function SchoolDetail() {
 
       <div className="sd-hero">
         <SchoolHero school={school} programEntries={programEntries} extracted={extracted} />
-        <SchoolActions school={school} isFavorite={isFavorite} onFavoriteChange={setIsFavorite} barRef={barRef} />
+        <SchoolActions school={school} isFavorite={isFavorite} onFavoriteChange={setIsFavorite} barRef={barRef} publicView={publicView} />
       </div>
 
       <SectionNav />
@@ -239,7 +241,7 @@ function SchoolDetail() {
         <MissingDataGrid zrizovatel={zrizovatel} extracted={extracted} />
       </div>
 
-      <ReportDataDialog schoolId={school.id} />
+      {!publicView && <ReportDataDialog schoolId={school.id} />}
 
       <SimilarSchools school={school} />
     </div>

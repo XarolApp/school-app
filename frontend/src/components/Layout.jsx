@@ -267,10 +267,12 @@ function Layout() {
             )}
           </div>
 
-          <NavLink to="/porovnani" className="navbar-compare-mobile" aria-label={`Porovnání${compareCount ? `, ${compareCount} vybrané` : ''}`}>
-            <Columns3 size={20} aria-hidden="true" />
-            {compareBadge}
-          </NavLink>
+          {isSignedIn && (
+            <NavLink to="/porovnani" className="navbar-compare-mobile" aria-label={`Porovnání${compareCount ? `, ${compareCount} vybrané` : ''}`}>
+              <Columns3 size={20} aria-hidden="true" />
+              {compareBadge}
+            </NavLink>
+          )}
           {showFeedbackInbox && feedbackInboxButton(true)}
           <button
             type="button"

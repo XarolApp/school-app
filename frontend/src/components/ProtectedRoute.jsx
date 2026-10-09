@@ -2,7 +2,14 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import { LoadingSpinner } from './PageSkeleton';
 
-function ProtectedRoute({ requireAccess = true }) {
+/**
+ * Gate for app routes. `signedOutTo` is where a signed-out visitor is sent
+ * (login by default; the landing for /skoly and /porovnani, which have no
+ * public version). `publicFallback` renders a view-only page for signed-out
+ * visitors instead of redirecting (the school detail opened from the
+ * landing map).
+ */
+function ProtectedRoute({ requireAccess = true, signedOutTo = '/prihlaseni', publicFallback = null, children = null }) {
   const {
     loading,
     profileLoading,
@@ -21,8 +28,9 @@ function ProtectedRoute({ requireAccess = true }) {
   }
 
   if (!isSignedIn) {
+    if (publicFallback) return publicFallback;
     // Remember where they were headed so login can send them back there.
-    return <Navigate to="/prihlaseni" state={{ from: location }} replace />;
+    return <Navigate to={signedOutTo} state={signedOutTo === '/' ? undefined : { from: location }} replace />;
   }
 
   // Checked before access, otherwise an unconfirmed account gets bounced to the
@@ -72,7 +80,7 @@ function ProtectedRoute({ requireAccess = true }) {
     );
   }
 
-  return <Outlet />;
+  return children ?? <Outlet />;
 }
 
 export default ProtectedRoute;
