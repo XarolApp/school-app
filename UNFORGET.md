@@ -13,7 +13,7 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
-## Founder backlog from the 2026-10-08 beta-launch request (logged, not built)
+## Founder backlog from the 2026-10-08 request — implementation underway, acceptance open
 
 Plan `plans/020-beta-launch-batch.md` builds the rest of that request. These items were
 explicitly "log only":
@@ -92,6 +92,8 @@ New beta integration gate: `SchoolMap.jsx` invites a home address and directly c
 New browser beta gate: the landing hero scales the whole UI to fit. At 667×375, its paragraph renders at about 6.5px and its CTA is 25px high. Use a readable scrolling layout, then verify short/landscape windows and zoom (C09). Provide keyboard/non-WebGL access to public map-dot school details (C10). The normal trial clock decision is logged above. Concurrent auth/beta/matching/schema edits are being deferred and must be re-reviewed; earlier coverage/build evidence is not final validation of those new versions.
 
 ## Continuing deployment review — newly deferred work, 8–9 October 2026
+
+- **C19 publication gate:** no beta testimonial is approved for publication merely by grade-derived age, a checkbox or an omitted name. Review child/guardian authority, effective text anonymity, consent/licence/withdrawal evidence and every renderer/export before adding quotes. Current `TESTIMONIALS` is empty; Phase 9's consent/version/selection controls are implementation evidence, not legal approval. See the current deployment handoff.
 - **Found:** current-source review, synthetic browser checks and read-only service probes; full coverage is still in progress.
 - **Urgency:** shortlist/draft integrity before beta; deployment headers before exposure; payment and maintenance gates before their respective use.
 - **Risk of NOT fixing:** failed reads can erase saved picks, shared-browser drafts can cross account boundaries, and operational batch/reset failures can lose data or strand billing.
@@ -320,17 +322,10 @@ Before the real launch:
 - [ ] Re-test the sign-up confirmation and password-reset e-mails.
 - [ ] Ship this together with the adult-owned live Stripe account (same holder for both).
 
-## Legal documents: operator details and e-mail setup still open — 2026-10-04
-- **Found:** 2026-10-04, while filling `frontend/src/pages/Legal.jsx`.
-- **Urgency:** high (blocks public launch; operator name is also needed for the beta privacy policy)
-- **Risk of fixing now:** none
-- **Risk of NOT fixing:** privacy policy and terms name no operator; users get no sign-up/reset e-mails; payments cannot go live without a registered adult.
-- **Effort:** small (details) / medium (e-mail setup)
-- **Release/context:** blocks beta (operator name, address) and paid launch (all of it)
-
-Body: **All `[DOPLNIT]` filled 2026-10-06; `DRAFT = false`.** Operator Václav Kadlec, Na Lysinách 34, 147 00 Praha (private person, no živnost, not a VAT payer); e-mail provider Brevo (Sendinblue SAS, France) via Supabase custom SMTP, domain authenticated (DKIM + DMARC) and sign-up/reset e-mails tested working. Report outcomes are sent manually from info@stredninamiru.cz.
-TODO: **create a separate support mailbox (e.g. podpora@stredninamiru.cz) for real users at launch** and replace `info@stredninamiru.cz` in Legal.jsx (grep it).
-Decision on record: launching paid without a živnost is the founder's accepted risk; parent registers a živnost once it earns money. Stripe needs the parent's verified identity first.
+## Operator and mail details filled; legal/account verification still required
+- `Legal.jsx` has operator/contact details and `DRAFT = false`; it no longer lacks a named operator. Historical 6 October records say Brevo auth mail and domain authentication were tested.
+- Verify the actual adult operator/account holder, lawful business/tax/invoicing status, monitored contact mailbox, vendor agreements and current SMTP/DNS settings before the applicable launch. The founder's accepted risk about starting paid without a živnost is a recorded decision, not a legal approval or a substitute for this check.
+- Retain the proposed separate support mailbox as a founder/operations decision; do not replace the working `info@stredninamiru.cz` contact until the new mailbox is created and monitored. Moderation/rights responses also need an operated procedure.
 
 ## Merged / renamed schools break the REDIZO import — 2026-09-30
 - **Found:** 2026-09-30, while asking why 10 schools had no 2026 admission data.
@@ -363,23 +358,13 @@ Body: handled on 2026-09-30 by `schools.merged_into` — ids 211, 216, 217, 218 
 - **Effort:** medium
 - **Release/context:** none. Would let `/skoly` show and sort by next year's places.
 
-`/skoly` sorts by **Míst 2026** (Cermat, known for 222 of 223 schools). No structured "míst 2027" field exists: `school_extracted_details` has no such column and `scripts/extract-school-details.js` doesn't ask for it. A rough text scan of `scripts/data/scraped-schools` found about **10 of 220** pages that state a 2027/2028 intake in words (e.g. "budeme přijímat 48 žáků", "přijmeme 180 uchazečů do 6 tříd"). Extracting it would need a new nullable column plus a prompt field (count and obor, with a quoted sentence as the existing fields require), and the page must be re-scraped after the 2027 intake is published, since most schools haven't announced it yet.
+The 30 September snapshot described **Míst 2026** coverage as 222 of 223 raw schools; this is not a current visible-school coverage count. No structured "míst 2027" field exists: `school_extracted_details` has no such column and `scripts/extract-school-details.js` doesn't ask for it. A rough text scan of `scripts/data/scraped-schools` found about **10 of 220** pages that state a 2027/2028 intake in words (e.g. "budeme přijímat 48 žáků", "přijmeme 180 uchazečů do 6 tříd"). Extracting it would need a new nullable column plus a prompt field (count and obor, with a quoted sentence as the existing fields require), and the page must be re-scraped after the 2027 intake is published, since most schools haven't announced it yet.
 
-## School 29 (Bezpečnostně právní akademie) has no Cermat data — obory added by hand — 2026-09-29
-- **Found:** 2026-09-29, while checking obory coverage after fixing the onboarding ranking bug (`schoolFeatures.js` now reads KKOV codes from `school_programs`).
-- **Urgency:** low
-- **Risk of fixing now:** none; data-only.
-- **Risk of NOT fixing:** this school shows "chybí data" for capacity, applications and cutoff, and the risk analysis on `/prihlaska` can't use it.
-- **Effort:** small
-- **Release/context:** none.
-
-School id 29, "Bezpečnostně právní akademie, s. r. o., střední škola", is the only one of the 223 schools with zero `school_programs` rows. The school's own site lists two obory: `68-42-M/01` Bezpečnostně právní činnost and `79-41-K/41` Gymnázium se zaměřením na právo a bezpečnost. On 2026-09-29 both were inserted by hand in the Supabase SQL editor (`rok` 2026, `maturitni` true, `delka_studia` 4; `typ_skoly`, `jazyk_studia`, `jpz_povinna`, `forma_vzdelavani` copied from other schools with the same KKOV). They have **no** `kapacita`, `prihlasky`, `prijati` or `cutoff`.
-
-To look into:
-1. **Why Cermat doesn't list it.** Probably a new or private school missing from the PZ2024 to PZ2026 files in `scripts/data/`. Or the REDIZO match failed in `scripts/import-admission-data.js`; check `schools.redizo` for id 29 and try `scripts/backfill-redizo.js`.
-2. **Real admission numbers.** Capacity, applications, admitted and cutoff: from the school, or the next Cermat import.
-3. **Scraped details.** Check that `school_extracted_details` has a row for it, and whether the school has a scrapable website.
-4. **Re-check the hand-added rows** once real data arrives. The yearly import replaces rows only for schools it matches, so if this one starts matching, the real rows replace the hand-added ones.
+## School 29 hand-added programmes — verify provenance and admission facts
+- On 29 September, two programme rows were inserted manually for school 29, with some characteristics copied from other schools sharing KKOV. This historical action does not verify that school's own language, qualification, form or JPZ requirement.
+- The old “only school with zero programme rows” statement preceded the insertion and is superseded: the 8 October probe found rows for every visible school.
+- Verify REDIZO/source matching and each hand-added characteristic against the school's current official material, and keep unknown capacity/applications/admitted/cutoff unknown until sourced. Check extracted-source coverage separately.
+- A future import must preserve or transactionally replace the reviewed dataset; do not rely on the current delete-before-insert script as a safe reconciliation path (S02/S03).
 
 ## Questionnaire expansion (plan 017) — follow-ups — 2026-09-28
 - **Found:** 2026-09-28, while building plan 017 (weights layer, difficulty and tuition questions).
@@ -389,7 +374,7 @@ To look into:
   2. **Questionnaire uses the school-average cutoff**, not the per-obor one, so a school with one hard and one easy obor reads as medium. Precise per-obor risk stays on `/prihlaska`.
   3. **"What bothers you at your current school"** twin of `soucasna_skola` was skipped to keep the list short. Add the same way (multi, no free text) if wanted.
   4. **`povolani` free-text follow-up** ("what career?") still depends on the open-text decision above.
-  5. **Fast questionnaire** still to build; the list is now 32 questions, most optional. The weight-only questions are the natural candidates for the fast version's core.
+  5. **Fast questionnaire** still to build; the standalone list currently has 31 questions, most optional. The weight-only questions are the natural candidates for the fast version's core.
   6. **`selektivita_tezka: jedno`** adds no direction instead of zeroing the whole dimension (deviation from plan 017's draft), so a "challenge" answer to the other question is not silently ignored.
 
 ## Standing rule: verify and migrate schema before matching code — updated 2026-10-09
@@ -416,25 +401,15 @@ Still open: this relies on memory. A cheap guard would be a startup check in
 server.js that selects the newest expected columns once and logs a loud error
 naming the missing migration. Not built — decide whether it is worth it.
 
-## Beta program: end date and external feedback form URL pending — 2026-09-26
-- **Found:** 2026-09-26, planning implementation of `docs/beta_testing_logic.md`.
-- **Urgency:** High — the hard end date is required before distributing working beta invitations.
-- **Effort:** Small — founder decision and configuration.
-- **Release/context:** School beta launch. The founder explicitly deferred these answers on 2026-09-26.
-- **Pending question:** What exact date and time (Europe/Prague) should the beta program end, and what is the external feedback form URL?
-- **Confirmed:** Tester email verification remains required; in-app feedback renews access for 48 hours. The external form never renews access.
-- **Implementation constraint:** Leave the program disabled until a valid future cutoff is configured. Do not invent a deadline or ship a placeholder external-form link. Add the real form link when provided; explain that only in-app feedback renews access.
+## Beta cutoff configured; external form remains optional — verified 2026-10-08
+- Earlier missing-date blocker is superseded: live settings have a cutoff of **18 October 2026, 23:59 Europe/Prague**, a 48-hour rolling feedback window, and no external feedback-form URL.
+- Do not restore the earlier 12 October deadline. Only accepted in-app feedback renews access; an external form would not.
+- Still open: signed-in cutoff/renewal/closing acceptance and the latest migration/function/grant verification. Beta is free for feedback and its payment screens are previews only.
 
-## Landing page A/B test: two variants committed, both still to be tweaked — 2026-09-26
-- **Found:** 2026-09-26. The founder will tweak both pages before the test starts.
-- **Urgency:** Medium — no test can run until the points below are done.
-- **Variant A:** `frontend/src/pages/Home.jsx` at `/` (the live page): long scroll, coded app screens (`components/landing/ProductScreens.jsx`), no new dependencies.
-- **Variant B:** `frontend/src/pages/landing2/` at `/nova`: a scroll-driven 3D map of Prague built from the real schools (three.js + GSAP + Lenis, loaded only on that route).
-- **Not built — the split itself:** nothing sends visitors to one variant or the other. The repo has no analytics either. Needed: (1) random assignment kept per visitor, (2) counting visits per variant, (3) counting clicks on "Začít dotazník" and finished onboarding per variant.
-- **B is desktop-only.** Built without a phone layout, and the TikTok/Instagram traffic this product depends on is mostly phones. Either send only desktop visitors to the test or give B a phone version first; otherwise B loses for the wrong reason.
-- **If B wins:** DESIGN.md's "Motion — landing page" rules (WebGL discouraged, one ambient loop) were deliberately ignored for B and need updating. Also remove the DEV-only `window.__l2scene` handle in `landing2/Landing.jsx`.
-- **Also open (variant A only):** the founder quote and the "asi 4 minuty" claim (entry above).
-- **Effort:** Medium for the split and tracking; Small for the tweaks.
+## Landing variants exist; ordinary A/B measurement is not established
+- Current routes: the map-led B landing is `/`; `/nova` redirects there; `/stara` retains A as a reference.
+- Both variants need final browser/device and copy acceptance. The deployment review records unreadable short-viewport hero scaling (C09), keyboard/non-WebGL map access (C10), and unsupported completeness/hour claims (C06).
+- Beta interaction tracking is not proof of a working ordinary visitor A/B assignment, conversion metric or consent policy. Agree the experiment and measurement before comparing conversion.
 
 ## Landing page: two unverified pieces of copy — 2026-09-26
 - **Found:** 2026-09-26, landing rebuild (commit `7240e30`, `frontend/src/pages/Home.jsx`).
@@ -478,12 +453,11 @@ when regenerated.
 `node scripts/generate-school-proscons.js --dry-run --limit 5` to eyeball the wording,
 then `node scripts/generate-school-proscons.js --force`. Not run yet, deliberately.
 
-## Structure scraped school-life details — extracted 2026-09-26, follow-ups open
-- **Done:** the six columns were written 2026-09-26 for all 219 cached schools (Luna low, flex, no `--force`). Paired 20-school dry run first: 5 of 6 fields identical, teaching-style tags differed by one tag on 2 schools. Outputs in `reports/structure-v3/` (untracked).
-- **Coverage (after the 2026-09-26 rule fix):** `ma_jidelnu` 108, `ma_koleje` 6, `krouzky_kategorie` 189, `vyukovy_styl_tagy` 79, `vs_pokracuje_pct` 4, `pocet_krouzku` 0. The keyword validator was vetoing correct model answers (63 lunches, 163 club categories); a model value whose quote is verbatim in the source is now accepted for lunch and club categories (not dorm-canteen quotes). Backup of the pre-fix six columns: `reports/structure-v3/backup-six-columns.json`.
-- **Recommendation, not yet applied:** score on `ma_jidelnu`, `krouzky_kategorie`, `vyukovy_styl_tagy`; display-only for `ma_koleje` and `vs_pokracuje_pct`; skip `pocet_krouzku`. Wire into matching.
-- **Still open — broken scrapes (Firecrawl out of credits 2026-09-26, re-scrape blocked):** `schools.website` already corrected for 26 → https://spszem.cz/ (www. is a parked page), 142 → https://www.hotelova-skola.cz/, 47 → https://gymnazium.truhla.cz/ (truhla.cz is a hub), 157 → https://cszs.mojezdravka.cz/. After topping up Firecrawl: `node scripts/scrape-schools.js --school-id ID --force` for 26, 142, 47, 157, 226 (edupage JS site), 145 (1-page landing); then `node scripts/filter-scraped-schools.js --school ID`, then base + `--structure` extraction for those ids. School 98 (ssgh.cz) sits behind a bot-check page — fill manually, do not bypass.
-- **Effort:** Small–Medium.
+## Structured school-life extraction — dated coverage and source checks
+- The six columns were extracted for all **219 cached schools** on 26 September. That is cache scope, not the 217 visible-school count. The ledger's later September snapshot recorded meals 108, dorm 6, club categories 189, teaching-style tags 79, university continuation 4 and explicit club count 0; earlier notes use different counts. Recompute current approved coverage before using any figure in product copy.
+- Lunch/club/teaching-style inputs are connected to matching; dorm/university continuation remain display-only and explicit club count is unusable. Source/programme/year and uncertainty review remains required.
+- A verbatim evidence quote alone does not prove its interpretation. Canteen-negation/unsafe preservation bugs were fixed in `06c704c`; review existing 118/146/228 candidate records before changing data (S09).
+- Historical stale/broken-source candidates: 26, 142, 47, 157, 226 and 145; recheck current URLs/cache manifests first, then refresh only approved scope, filter and reconcile base/structured facts. School 98's bot-check must not be bypassed. Do not run a paid full scrape/extraction from these old instructions.
 
 ## /skoly redesign (plan 013): untested checks + one founder call — 2026-09-24
 - **Found:** 2026-09-24, Claude review of plan 013 (`9d9026b`). The redesigned /skoly
@@ -582,46 +556,12 @@ then `node scripts/generate-school-proscons.js --force`. Not run yet, deliberate
 - **Not done yet:** a decision on ID 189 (exclude vs. keep-and-label), and a
   reminder to re-check ID 227 once EduVia's own site exists.
 
-## Structured school-details extraction — expanded 2026-09-22, not yet run for real
-- **Found:** 2026-09-22, founder asked to expand the Firecrawl extraction pipeline
-  beyond tuition/maturita to admission requirements, teaching style and start time.
-- **Effort:** small–medium, mostly done.
-- **Release/context:** `scripts/extract-school-details.js` now extracts, alongside
-  the original 6 free-text fields: `tuition_czk_per_year`, `maturita_pass_rate_pct`,
-  `zacatek_hodin` (NUMERIC_FIELDS), `ma_dodatecne_pozadavky`,
-  `alternativni_pedagogika` (BOOLEAN_FIELDS), plus two new free-text detail fields
-  (`pripijimaci_pozadavky_detail`, `vyukovy_styl_detail`). Same anti-fabrication
-  discipline as the original 6 (explicit-evidence-only, `NUMERIC_BOUNDS` plausibility
-  checks). Verified via `--dry-run` against 11+ real cached schools — plausible
-  values throughout, correct `false` (not a default `true`) where a school
-  genuinely has no extra requirements or alternative pedagogy.
-- **Not done yet:**
-  1. **SQL not run against the live database.** `supabase-setup.sql` has the 5 new
-     `alter table ... add column if not exists` statements (tuition_czk_per_year,
-     maturita_pass_rate_pct, zacatek_hodin, ma_dodatecne_pozadavky,
-     pripijimaci_pozadavky_detail, alternativni_pedagogika, vyukovy_styl_detail —
-     7 total across both rounds). Run these in the Supabase SQL Editor before the
-     real (non-dry-run) extraction can write anything.
-  2. **Real extraction batch not run.** Only `--dry-run` has been exercised so far
-     (bounded by OpenRouter credits running out mid-batch — see next item). 64 of
-     206 cached schools were still unextracted as of 2026-09-22.
-  3. **OpenRouter ran out of credits mid-dry-run** (`402: in_flight_budget_exhausted`).
-     Either top up OpenRouter, or set `GOOGLE_GEMINI_API_KEYS` in `.env` (currently
-     unset despite `.env.example` documenting it) — the script already prefers
-     Gemini when that key is present.
-  4. **Not wired into scoring yet.** `lib/decisionMatrix.js`'s `maturita` criterion
-     still sits `available: false`; `skolne` is still the crude public/private
-     boolean, not scaled against `tuition_czk_per_year`. Do this only after the real
-     extraction has run and there's actual data to test the criteria against —
-     wiring in ahead of real data risks a criterion that always reads "no data".
-  5. **Minor prompt-quality observation, not a fabrication:** one dry-run sample
-     returned `pripijimaci_pozadavky_detail = "Web neuvádí konkrétní požadavky na
-     přijímací řízení. Zmíňuje se přijímací zkouška, ale bez detailů."` — the model
-     narrating its own uncertainty in prose rather than returning `null`. Not wrong
-     (it's honest, not fabricated), but not clean data either — passed `looksLikeFiller`
-     because it's long enough and doesn't match the generic-phrase regexes. Worth a
-     small prompt tweak later ("if you would describe this as 'not specified',
-     return null instead") if it turns out to be common at full-batch scale.
+## School-details extraction exists; provenance and refresh acceptance remain open
+- The September “only dry runs / not yet extracted / SQL absent” snapshot is superseded. Base extraction was rerun on all **219 cached schools** on 26 September, and six structured fields were extracted from that cache. This cache scope differs from 223 raw / 217 visible database schools.
+- `school_extracted_details` has prose, number/boolean fields and the six structure columns. The matrix reads extracted tuition and maturita rates; school-life inputs are also connected. A connected field is not evidence that its source is current or accurate.
+- Remaining work: review source/programme level, null/filler handling, cached URL/scope and dated coverage. Quote/plausibility checks do not prove factual correctness. See S03/S08–S12 in the deployment report.
+- Canteen-negation and failed preservation-query guards are fixed (`06c704c`); existing candidate records 118/146/228 still need school-source review before any correction. Base refreshes must reconcile dependent structured fields.
+- Dry runs may make paid provider calls and write usage accounting. Use a disposable project for acceptance; do not launch a paid full batch solely to resolve this ledger item.
 
 ## Structured extraction — deliberately NOT pursued: hodiny za předmět (hours per subject)
 - **Found:** 2026-09-22, founder asked about extracting weekly hours per subject
@@ -641,31 +581,19 @@ then `node scripts/generate-school-proscons.js --force`. Not run yet, deliberate
   PDFs as a separate source, at which point this would be its own extraction
   pipeline and its own table, not an addition to `school_extracted_details`.
 
-## `zacatek` questionnaire dimension still can't use zacatek_hodin once extracted
-- **Found:** 2026-09-22, spotted while scoping the structured-extraction expansion.
-- **Urgency:** Low — informational field for now, not blocking anything.
-- **Release/context:** the questionnaire's `zacatek` question (`lib/questionnaire.js`
-  QUESTIONS) only ever asks "does start time matter to you?" (`nezalezi`/`zalezi`
-  — see `lib/matching.js`'s own header comment, already documenting this as a
-  zero-weight no-op). It never collects *which* start time a student prefers.
-  `zacatek_hodin` (newly extracted) will make a real fact available for display on
-  the school detail page immediately, but turning it into an actual scored
-  dimension needs the question itself to change — new answer options like "co
-  nejdřív"/"nevadí mi později"/a specific hour — which is an onboarding/
-  questionnaire UI change, not just a backend/extraction one. Two separate pieces
-  of work; don't assume finishing the extraction finishes the scoring integration.
+## Start-time preference removed; reintroduction needs useful data and options
+- The standalone `zacatek` question was removed in the October work; its former zero-weight/no-op state is historical.
+- `zacatek_hodin` is a display/source field, not a complete preference model. Reintroducing a scored question requires the preferred time, programme/day context, verified coverage and a defined scoring contract.
+- Keep this deferred with the 7 October founder request; do not restore the old question because an extracted field exists.
 
 ## Shared beta access code — retired 2026-09-26
 - **Status:** Replaced by plan 016's school-specific invitation links, required email confirmation, rolling access renewal through in-app feedback, and a configured program cutoff.
 - **Compatibility:** `POST /api/me/redeem-beta-code` now returns `410`; remove any remaining references to `BETA_ACCESS_CODE` when updating deployment settings. The beta migration and settings are not applied to the live database yet.
 
-## Season charge vs account deletion — residual race (mostly closed)
-- **Found:** 2026-09-21, Codex handoff
-- **Urgency:** Low
-- **Risk of fixing now:** Needs an atomic claim on the user row; not worth complexity yet.
-- **Risk of NOT fixing:** A scheduler run that already created the PaymentIntent a split second before deletion still charges once; refundable manually.
-- **Effort:** Small–medium
-- **Release/context:** `DELETE /api/me` deletes the Stripe customer BEFORE the user row, so any charge attempted afterwards fails (`resource_missing`) and cannot succeed. Only the microsecond window remains.
+## Season charge, cancellation and account deletion — paid-launch lifecycle gate
+- The earlier “microsecond / mostly closed / low urgency” characterization was not supported by a concurrency test.
+- A scheduler and cancellation/deletion can overlap. Deleting a Stripe customer after a payment was claimed or created does not prove that no charge succeeded, that a refund succeeded, or that billing references remain recoverable.
+- Resolve purchase identity, atomic charge/cancel claims and reconciliation together with P01/P02/P06–P08. Use disposable accounts and test-mode Stripe; do not reproduce deletion/charge races against production.
 
 ## Monthly plan: auto-stop billing at 31 March (proposed 2026-09-22)
 - **Found:** 2026-09-22, founder idea during minors/legal discussion — not yet built
@@ -858,7 +786,9 @@ the test it describes defeats the entire point of writing this down.
 
 ---
 
-## Rebrand: "Střední na míru" → "Kam na střední?" — decided, not yet executed
+## Rebrand decision needs founder reconciliation — September proposal, current brand unchanged
+
+**9 October:** the current site/domain use Střední na míru; founder confirmation was requested about whether the September rebrand remains intended. Keep the history below as a proposal/decision record until answered; do not rename product/domain or erase the decision unilaterally.
 - **Found:** 2026-09-13, founder decision
 - **Urgency:** medium — doesn't block current work (Stripe test-mode products,
   deployment) since none of that depends on the brand name, but should happen
@@ -896,6 +826,8 @@ the test it describes defeats the entire point of writing this down.
 ---
 
 ## Pricing logic, discounts and offers need a proper pass — not just the one-time offer
+
+**Current qualification, 9 October:** the 249/690 prices and season-first structure are settled. This entry retains discount/affiliate proposals; DSA applicability is a legal assessment, not a proved violation from a countdown alone.
 - **Found:** 2026-09-13, while planning Stripe (plan 009)
 - **Urgency:** medium — nothing is broken or live, but it blocks charging at full
   intent, and one piece of it (the offer) had to be switched off to ship payments
@@ -918,18 +850,13 @@ as a whole is not yet what they want.** Things in this area that are known-unset
   `GET /api/offers/one-time/status`, with the server as the only thing that decides
   eligibility. This needs a fresh implementation if the offer survives the product
   decision; there is no client entitlement module to revive.
-- **The actual prices** — 249 Kč monthly / 690 Kč season are still explicitly
-  marked `PLACEHOLDER` in `pricing.js`. They have never been set as real numbers.
-- **`REFUND_GUARANTEE_DAYS = 3`** — a testing placeholder the founder picked, not
-  a committed number. 14 days (the EU distance-selling floor) is the benchmark it
-  was meant to be reconsidered against, and arguably applies regardless.
+- **Prices are settled** — 249 Kč monthly / 690 Kč season, locked on 21 September. Verify frontend/server/Stripe/terms agreement rather than reopening them.
+- **Withdrawal/guarantee** — the optional badge is disabled (`REFUND_GUARANTEE_DAYS = 0`); actual Terms/server withdrawal is 30 days. Applicable statutory and voluntary calendar/renewal boundaries still need qualified review.
 - **Discount / affiliate mechanics generally** — the launch plan leans on
   influencer affiliates paid on realized revenue, but there is no promo-code,
   referral-attribution or affiliate-payout concept anywhere in the code or in
   `pricing.js`. Stripe supports promotion codes natively; nothing uses them.
-- **Parent + child on one plan** — already carved out of plan 006 for the same
-  reason and still unresolved; it interacts directly with what a "plan" even means
-  here.
+- **Parent payer / child account** — plan 018 implements scoped links; sharing remains disabled until end-to-end acceptance. The account, payer and management/revocation boundaries still need verification.
 
 **What "done" looks like:** a deliberate sit-down on the pricing model — real
 numbers, whether discounts/promo codes exist at all and in what form, how
@@ -940,152 +867,21 @@ honest default.
 
 ---
 
-## School database: 3 likely duplicate rows + ~8-11 genuinely missing schools found
-- **Found:** 2026-09-14, comparing our 224 schools against atlasskolstvi.cz's 214
-- **Urgency:** medium — doesn't break anything, but duplicate rows would look
-  bad on the search page (two identical-looking cards) and the missing schools
-  are real gaps in coverage
-- **Effort:** small — mostly verification + a few targeted deletes/inserts,
-  not a rebuild
-- **Release/context:** `scripts/diff-atlas-schools.js` +
-  `scripts/atlas-prague-schools.json` (new, committed 2026-09-14)
+## School catalogue completeness and merge review — historical Atlas candidates
+- The 13 September Atlas comparison was a candidate list, not an official-register completeness proof. Do not delete school rows or assign REDIZOs from fuzzy names alone.
+- Read-only 8 October checks found **223 raw rows, 217 visible schools, six merged rows and no duplicate non-null REDIZO**. Old duplicate-row/collision claims are superseded; merged rows still own programmes and need explicit import/projection handling.
+- Previously flagged possible omissions included OA Dušní, Vinohradská and Hovorčovická, Akademie VŠEM, Gymnázia Čakovice / Na Pražačce / Botičská / Budějovická / Na Vítězné pláni, Meridian and SRAZ. Reconcile each against current rows, addresses, official register status and REDIZO before calling it missing or adding it.
+- Atlas absence, Cermat inclusion and one school website each cover different scopes; none alone proves every currently active Prague secondary school/campus is represented. See C06/S02/S06/S12. Founder confirmation of the landing completeness claim remains pending.
 
-Ran a name-fuzzy-match audit between our `schools` table and
-atlasskolstvi.cz's Prague listing, using the same matching logic as
-`import-admission-data.js`. Verified with a REDIZO/address cross-check
-(`schools.redizo` query), not just fuzzy-name guessing:
+## Railway billing/runway — verify current dashboard before beta
+- The 13 September deployment recorded a 30-day limited trial and $4.99 credit. Those are historical values, not a verified current plan or expiry date.
+- The production backend answered the read-only 8 October health probe. This proves availability at that moment, not paid billing, remaining credits, restart resilience or continued service through beta.
+- Founder/manual check: confirm the actual plan, remaining usage/credits, payment method and any trial deadline in Railway. Resolve runway before inviting testers. No upgrade, charge or infrastructure migration was performed by this audit.
 
-**Confirmed duplicate-looking rows (verified via query, different REDIZOs, byte-identical name+address):**
-- `Obchodní akademie, Praha 3, Kubelíkova 37` — ids 38 (redizo 600006573,
-  from the original 2026-08-06 seed) and 88 (redizo 600004929, from the
-  2026-09-13 expansion)
-- `Obchodní akademie a Gymnázium Bubeneč` — ids 49 (redizo 600004520) and 121
-  (redizo 600005721)
-- `Anglo-německá obchodní akademie a. s.` / `Anglo - německá obchodní
-  akademie a.s.` — ids 45 (redizo 600005941) and 196 (redizo 691001111)
-- Plus one genuine REDIZO collision: ids 5 and 36 share redizo 600004741
-  despite **different names** (`Střední škola gastronomická a hotelová s. r.
-  o.` vs `Hotelová škola, Praha 10, Vršovická 43`) — worth checking whether
-  this is one school that was renamed (REDIZOs persist across renames) and
-  got inserted twice under both names.
-
-**Not necessarily bugs** — Czech schools commonly register multiple REDIZOs
-(one per obor-offering "škola" record) under one legal entity at one address,
-so two REDIZOs sharing a name+address *can* be legitimate. But it reads as a
-duplicate to a user browsing the search page regardless of the legal nuance,
-so it's worth a human decision either way, not an automatic delete.
-
-**Genuinely missing from our database** (verified by address, not just name,
-for the "Obchodní akademie" cluster where fuzzy-name matching alone produced
-wrong pairings):
-- Obchodní akademie Dušní (Dušní 1083/7, Praha 1)
-- Obchodní akademie Vinohradská (Vinohradská 1971/38, Praha 2)
-- Obchodní akademie Hovorčovická (U Vinohradského hřbitova 2471/3, Praha 3)
-
-**Flagged by the fuzzy matcher as unmatched, NOT yet individually address-verified**
-(worth a closer look before assuming they're really missing):
-- Akademie VŠEM – střední škola, s. r. o.
-- Gymnázium Čakovice, Praha 9, nám. 25. března 100
-- Gymnázium Na Pražačce, Praha 3, Nad Ohradou 23
-- Gymnázium, Praha 2, Botičská 1
-- Gymnázium, Praha 4, Budějovická 680
-- Gymnázium, Praha 4, Na Vítězné pláni 1160
-- Meridian česko-britská mateřská škola, základní škola a gymnázium s. r. o.
-- Střední pedagogická škola SRAZ s. r. o.
-
-**In our database but not on atlasskolstvi.cz's list** — mostly small/new
-private schools (several `Gymnázium FOSTRA *` variants, `1. IT Gymnázium`,
-`Gymnázium ARTION`, etc.) that appeared in the Cermat JPZ data. Cermat is
-authoritative for "this school currently runs entrance exams," so the more
-likely explanation is atlasskolstvi.cz is simply behind, not that these
-schools are wrong — but not independently confirmed.
-
-**What "done" looks like:** decide what to do with the 3 duplicate-row pairs
-(merge/delete one of each pair, or confirm they're legitimately separate
-REDIZOs and leave both), and run the official registry lookup
-(`isv.gov.cz/rssz` — see `scripts/import-missing-schools.js`) for the 11
-"missing" names above to get their real REDIZO and add them if genuine.
-
----
-
-## Railway backend is on a 30-day trial — will go offline if not upgraded
-- **Found:** 2026-09-13, during first production deployment
-- **Urgency:** high, but not urgent yet — 30-day runway, must not be forgotten
-- **Effort:** small — it's a billing decision + a few clicks, not engineering work
-- **Release/context:** the backend (`school-app` service on Railway, project
-  `perceptive-friendship`) was deployed 2026-09-13 on Railway's free/trial
-  tier — **"Limited Trial Plan," 30 days remaining, $4.99 in credits
-  remaining.** Per Railway's own copy: "Your trial expires in 30 days or when
-  you are out of credits. Upgrade to keep your services online."
-
-If this isn't upgraded to the **Hobby plan** (or another paid tier) before
-the trial/credits run out, the production backend goes offline —
-**everything breaks**: `/api/schools`, auth (via `server.js`'s
-`requireAuth`), favorites, questionnaire, reviews, the whole site. This is
-not a "nice to fix eventually" item — it's a hard cutoff date.
-
-**What "done" looks like:** before ~2026-10-13 (30 days from deploy, sooner
-if the $4.99 credit runs out faster from real usage), either upgrade Railway
-to Hobby (railway.app → Settings → Plans → Upgrade), or migrate the backend
-elsewhere. Set a reminder outside this file too (calendar, phone) — a
-30-day-out item is exactly the kind of thing that's easy to lose track of
-between now and launch.
-
----
-
-## "Selectivity" is missing as its own preference — we only ever model admission ease as good
-- **Found:** 2026-09-12, user request
-- **Urgency:** high — this is a real, systemic gap in how the whole product frames
-  admission difficulty, not a cosmetic one
-- **Effort:** medium-large — it's one new concept, but it touches many surfaces
-  (see list below), each of which currently hardcodes the opposite assumption
-- **Release/context:** `admission_cutoff` / `acceptance_rate` (from Cermat data,
-  `schools` table) is the underlying data; every place that reads it today only
-  ever treats a *lower* cutoff / *higher* acceptance rate as strictly better
-
-The user's point: right now every surface that touches admission difficulty
-assumes "easier to get in = better for everyone." That's wrong for a real
-chunk of students. Some students specifically want a school that's **hard**
-to get into — not for prestige, but because a high cutoff filters the
-classroom: the harder the school is to enter, the fewer classmates got there
-by accident, and the more likely you are to be surrounded by people who are
-actually academically serious. That's a real, opposite preference from
-"maximize my chance of getting in," and the product currently has no way to
-express it — it only ever optimizes toward "easier."
-
-**Concretely, where this assumption is currently baked in one-directionally:**
-- `frontend/src/lib/decisionMatrix.js`'s `sance` criterion (rozhodovací
-  matice) — explicitly inverts the cutoff score ("Lower cutoff = easier =
-  better, so invert") with no way to flip that direction.
-- `lib/questionnaire.js` — no question anywhere asks about wanting a
-  selective vs. accessible school; `matching.js` (server-side scorer) has no
-  dimension for it at all.
-- `frontend/src/lib/matching.js` + `schoolFeatures.js` (onboarding quiz
-  engine) — same gap, no selectivity dimension.
-- `Search.jsx` / school list filters — cutoff/acceptance rate are shown as
-  stats and used in one of the sort options ("Nejnižší hranice přijetí" /
-  "Největší šance na přijetí" — see the sort tab copy in Search.jsx), always
-  framed as "easier is the good direction." No "hardest to get into" sort.
-- Comparison table / `/porovnani` — shows the raw numbers but has no framing
-  either way, and definitely no way to weight toward "more selective is
-  better."
-- School detail page (`CutoffExplainer` component) — checked: its copy is
-  neutral (explains "minimum, not average"), doesn't assume a direction. Not
-  part of the problem, but also not part of any future fix — it's a separate,
-  correct explainer.
-
-**What "done" looks like:** a real preference — e.g. "Chci školu, kam se
-dostanou jen fakt šikovní" vs. "Chci mít co nejvyšší šanci se dostat" vs. "Je
-mi to jedno" — exists as an actual input the student can set, and every one
-of the surfaces above (questionnaire, onboarding quiz, matrix, search sort/
-filter, comparison) respects the direction the student actually wants,
-instead of all of them silently agreeing that low cutoff is always the win.
-This needs product/UX thinking first (how to phrase it so it doesn't read as
-elitist or shaming to a 15-year-old — see the zero-shame rule in
-CLAUDE.md/the onboarding agent), then the same change propagated through
-every scoring engine and UI listed above.
-
----
+## Selectivity preference — partly implemented; cross-surface behavior still needs review
+- The standalone questionnaire now asks `selektivita_vyzva` and `selektivita_tezka`; `lib/matching.js` has a weighted selectivity dimension. The former “no input anywhere” claim is superseded.
+- Onboarding, matrix, search sorting and comparison still need a deliberate shared interpretation. Do not assume a preference in one scorer controls every surface, or treat a historical cutoff as an admission probability.
+- Review wording for students who want challenge versus lower entry difficulty, and test contradictory/skipped answers, missing/older cutoffs and the same school with the same data. Preserve neutral detail explanations; do not infer student quality or teaching quality solely from a cutoff.
 
 ## Rozhodovací matice needs a real human review pass
 - **Found:** 2026-09-12, user request right after the tooltip/confirm-dialog/
@@ -1129,49 +925,11 @@ having exercised it.
 
 ---
 
-## AI feature prompts need real human editing, not just structural correctness
-- **Found:** 2026-09-10, user request while scoping plan 006's pros/cons generator
-- **Urgency:** medium — every AI-generated sentence a user reads is currently
-  running on a first-draft prompt
-- **Effort:** small per prompt, but needs a human (not Claude) reading the actual
-  outputs and judging tone, not just checking the JSON is well-formed
-- **Release/context:** applies to every current and planned AI touchpoint
-
-The user's explicit call: the prompts behind Střední na míru's AI features have been
-written functionally (produce valid JSON, stay on-topic, don't hallucinate a
-school) but never hand-tuned by a human reading real output and deciding "this
-sentence sounds right for a 15-year-old" vs. "this sounds like a robot." That
-tuning pass hasn't happened yet for any of them, and it needs to before these
-are treated as finished, not just working.
-
-**Added 2026-09-19 (plan 011):** the questionnaire's default model moved from
-Claude Sonnet 5 to **Gemini 2.5 Flash Lite** (~20x cheaper). Its Czech has never
-been read by a human, and the output is shown to 14-15-year-olds — so this pass
-now has a second reason to happen, and the model choice itself should be judged
-in the same sitting (`OPENROUTER_MODEL` swaps it with no code change).
-
-**Current AI touchpoints, in ascending order of how much attention they've had:**
-- `lib/questionnaire.js`'s `SYSTEM_PROMPT` (~line 399) — the onboarding quiz's
-  "why this school fits you" sentence. The most mature one; still worth a
-  fresh read now that real schools/data exist, not just the synthesized set it
-  was likely tuned against originally.
-- `scripts/generate-school-proscons.js` (plan 006, not yet built) — the pros/cons
-  prompt is specced in `archive/plans/006-comparison-decision-tools.md` §5 with hard
-  constraints (Czech, tykání, only use provided numbers, never mention teachers/
-  reputation, a con must be a real tradeoff not a discouragement) but those
-  constraints were written by Claude reasoning about what *should* work, not
-  validated by a human reading actual model output. §7 of that plan already asks
-  the user to compare 3 models — **do the prompt-quality pass at the same time**,
-  not as a separate later step, since both require reading the same generated
-  Czech text.
-
-**What "done" looks like:** the user (or someone else fluent in the target
-register — Czech teenager, informal) reads real generated output for each
-feature and either approves it or rewrites the prompt directly. This is not a
-task Claude can close out alone — grading whether Czech phrasing lands right
-for a 15-year-old is exactly the kind of judgment call that started this list.
-
----
+## AI explanations and pros/cons need a real Czech/source-quality acceptance pass
+- On-demand school explanations are implemented (plan 020 Phase 5); questionnaire submission saves deterministic scores without requiring a generation call. The October code default is `openai/gpt-6-luna`; deployment environment/provider settings still need controlled generation verification.
+- `scripts/generate-school-proscons.js` is built. Its output is cached by school, not generated on every page load. The earlier “not built” and Gemini-only claims describe old snapshots.
+- A human should judge actual Czech output for teenager/parent voice, evidence, absent data, programme focus and meaningful tradeoffs. Validate each prompt/model route separately; JSON shape and a 200 authentication probe do not establish quality.
+- See S11/S12 for paid dry-run/accounting side effects, catalogue/year/focus scope and cache fingerprints. Do not rerun the whole paid corpus until these input contracts are verified.
 
 ## Fix school suggestions
 - **Found:** 2026-09-09, user request
@@ -1235,31 +993,10 @@ Options to decide later, not decided now:
 
 ---
 
-## Comparison view still does not exist — PLANNED 2026-09-10 as plan 006
-- **Found:** 2026-09-08, school detail page rebuild
-- **Urgency:** medium — there are now two entry points feeding a selection
-  into nothing
-- **Effort:** medium (§5 of feature-brainstorm.md — its own small feature)
-- **Release/context:** feature-brainstorm.md §5 — now specced in
-  [`archive/plans/006-comparison-decision-tools.md`](archive/plans/006-comparison-decision-tools.md),
-  design canvas at https://claude.ai/code/artifact/688789aa-b54c-4a5e-b2b6-17b3ee775899
-
-`Search.jsx`'s "Porovnat N škol" button (`pages/Search.jsx`, in the sticky
-compare bar) has always been `onClick={() => {}}` — a real no-op, not a bug
-introduced now. The school detail page's new "Přidat k porovnání" action
-(`components/schoolDetail/SchoolActions.jsx`) adds a SECOND way to build a
-selection (`lib/searchPrefs.js`'s `toggleCompareSelection`/`getCompareSelection`,
-localStorage, same idiom as recently-viewed and saved filters) — but there is
-still no page that reads that selection and renders schools side by side.
-Building §5 means: a `/porovnani` route reading `getCompareSelection()`,
-fetching those schools, and rendering the "attributes as rows, options as
-columns" pattern already researched in `.claude/skills/mobbin-core-product-
-patterns/SKILL.md` §C.
-
-**Status 2026-09-10:** planned in full, not yet implemented. Plan 006 covers
-every §5 row except the two carved out below.
-
----
+## Comparison and decision tools — built; final acceptance remains
+- `/porovnani`, `/porovnani/matice` and application picks exist and are linked from search/detail. The September no-op/unbuilt claim is superseded.
+- Remaining gates are scoring/projection/year consistency, meaningful matrix criteria, account ownership, initial-load failures and transactional shortlist replacement (B01–B03/C02/C03/C13–C16).
+- Browser checks already exercised the synthetic comparison/matrix and corrected language-of-instruction wording. They do not replace real-account, keyboard, missing-data and device acceptance or the founder's matrix-quality review.
 
 ## Parent/child share links — built in plan 018
 
@@ -1283,149 +1020,32 @@ revokes the link. No email delivery was added.
   ability to cancel or withdraw through it. The student can still cancel in
   Settings.
 
-## Share link is copy-only — no email delivery
-- **Found:** 2026-09-10, user decision while scoping plan 006 ("Option A for
-  now, implement option B later")
-- **Urgency:** low — copying a link into WhatsApp is what teenagers actually do
-- **Effort:** small once an email provider exists
-- **Release/context:** [`archive/plans/006-comparison-decision-tools.md`](archive/plans/006-comparison-decision-tools.md) §8
+## Parent sharing remains disabled; app-content email delivery is not implemented
+- Sharing features are built but `SHARING_ENABLED` remains false pending the two-device/payment-link acceptance gates. Do not re-enable them from an old copy-link instruction.
+- Supabase Auth confirmation/reset mail and custom SMTP are separate from application-content messages, receipts and trial reminders. Auth mailbox success does not demonstrate those app email jobs exist.
+- If direct email sharing is approved later, assess recipient verification, bearer-link privacy and retention. Copying a bearer link can also disclose child data to anyone who receives it; it is not inherently exempt from this assessment. Keep scoped revocation and payer-management limitations explicit.
 
-`POST /api/shares` returns a token the student copies. There is no "e-mail it to
-my parent" path, because the app has **no transactional email provider wired up
-at all** — Supabase Auth sends confirmation and reset mail through its own
-built-in sender, which is not a general-purpose send channel for app content.
+## Missing or sparse school details — verify each field's actual source
+- Scraped/extracted tuition, maturita results, meals, accommodation, clubs and teaching-style fields exist; the former “no data at all” statement is superseded. Coverage and programme/year applicability vary, and a website-derived number is not an official uniform dataset.
+- The matrix's maturita/tuition criteria are connected; university continuation and dorm facts remain display-only pending coverage/meaning review. Unknowns must remain unknown, with useful provenance and dates.
+- School photos/video, director identity, alumni/outcomes and a verified uniform official maturita/university-destination import still need source and licence decisions. Do not infer university placement from maturita success or charge zero tuition merely because a school is church-run.
+- See extraction tasks and S03/S09/S10/S12 before scraping or changing stored school facts. Do not mirror the current delete-before-insert admission importer until its data-loss gate is resolved.
 
-Adding email delivery means picking a provider (Resend/Postmark/SES) and adding
-the key to `.env`, which is the same prerequisite as the deadline-reminder
-emails in feature-brainstorm.md §3 and §11 — all of which are 🔥. **Do that once
-for all of them, not separately for this one feature.**
+## Minor privacy and payment contracting — qualified review still required
+- Czech law sets the Article 8 information-society consent threshold at **15**, as [ÚOOÚ explains](https://uoou.gov.cz/verejnost/zakladni-prirucka-k-ochrane-udaju). School grade alone does not establish age. Article 8 concerns consent-based processing in its defined scope; it is not universal permission for every child-data use or a payment-capacity rule. [GDPR Article 8](https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng).
+- The checkout parental-confirmation checkbox was deliberately removed on **22 September**. Account creation has its age/guardian acknowledgment; a parent-payment link is built but disabled pending testing. Do not restore the historical checkbox or treat a parent's card as proof of the contracting party/authority.
+- Before real billing, get Czech consumer/contract/privacy review of minor contracting, operator identity, consent evidence, durable terms and the voluntary 30-day withdrawal promise. The no-charge beta also needs its child-data/telemetry assessment.
+- The Digital Fairness Act is a legislative initiative in the [Commission's 2026 work programme](https://commission.europa.eu/document/download/aa8d20ed-148f-4eaa-b8ea-92be7acdaee6_en?filename=CWP_2026_explained-version6_0.pdf), scheduled for Q4 2026. This schedule is not an enacted blanket autoplay/countdown ban or a compliance approval of this site. Existing consumer/privacy rules remain separate.
 
-Note the minors angle when it happens: sending mail to a parent's address that a
-15-year-old typed in is a disclosure of the child's data to an address nobody has
-verified belongs to a parent. A copy-link flow has no such problem, which is part
-of why it is a reasonable place to stop for now.
-
----
-
-## Maturita pass rate, VŠ placement, and six other §4 items have no data source
-- **Found:** 2026-09-08, school detail page rebuild
-- **Urgency:** low — all render as an honest "Nemáme tuto informaci." on the
-  school detail page (`components/schoolDetail/MissingDataGrid.jsx`), never a
-  fabricated value
-- **Effort:** varies a lot per item, see below
-- **Release/context:** feature-brainstorm.md §4 🔥/✅ items the user explicitly
-  asked to placeholder rather than skip
-
-- **Maturita pass rate** 🔥 and **VŠ placement (kam míří absolventi)** 🔥 —
-  Cermat publishes per-school maturita results as a downloadable file, same
-  shape as the JPZ admissions file already imported. **The user is sending
-  this file separately; do not build the import until it arrives** — when it
-  does, mirror `scripts/import-admission-data.js`'s pipeline (REDIZO-first
-  match, fuzzy fallback, per-school aggregation) rather than writing a new
-  one from scratch. VŠ placement specifically has NO known public per-school
-  dataset — even once the maturita file lands, that one section may stay a
-  placeholder.
-- **Tuition/školné at private and church schools** — public schools already
-  show a real, correct "no fee" line (inferred from `zrizovatel`, not
-  invented); private/church schools have no fee data at all. A cowork prompt
-  scraping each school's own website for a fee page is the plausible next
-  step — ask the user before running it (see `docs/sources/
-  platform_onboarding_research.md`-style caution around scraping claims).
-- **Obědy/ubytování, kroužky, ředitel/ka name** — same story: each school's
-  own website likely has this, but genuinely needs a per-school scrape, not
-  something derivable from data already held. A candidate n8n or cowork
-  workflow, not a code change.
-- **Employment outcomes for vocational schools** ✅ — no data source found;
-  unclear one exists publicly at all for Czech vocational schools.
-
----
-
-## Legal check on the paywall — one real open question, one resolved
-
-- **Found:** 2026-09-05, checking `onboarding-architect.md`'s legal constraints
-  (§0.4) against primary sources rather than secondary commentary
-- **Urgency:** medium now, high before real money moves
-- **Release/context:** must be resolved before Stripe goes live (checkout is
-  implemented but live keys are not approved)
-
-**Resolved, favorably — GDPR Art. 8 age of consent.** `onboarding-architect.md`
-assumed the EU default (16) applies. It does not: **Czech law lowered it to 15**
-via Act No. 110/2019 Coll., §7. A 9th grader taking the quiz can legally consent
-to that data processing themselves, no parent needed. Source:
-[ARROWS](https://arws.cz/en/news-at-arrows/compliance-with-the-requirements-of-the-office-for-personal-data-protection-regarding-consent-to-the-processing-of-personal-data-of-minors).
-No action needed, but this is age-sensitive — re-check if the product ever
-targets 8th graders (age 14).
-
-**Open, and this is the one that matters — contract capacity to pay.** GDPR
-governs consent to *data processing*, not the capacity to *pay money*, which is
-a different area of law (Czech Civil Code). A minor's legal capacity there is
-only "matters appropriate to their intellectual and volitional maturity" —
-deliberately vague, and no source found states whether a 690 Kč purchase falls
-inside or outside that line for a 15-year-old.
-([Dostupný advokát](https://dostupnyadvokat.cz/en/blog/rights-and-responsibilities-for-children))
-
-The onboarding-v2 paywall has a parental-confirmation checkbox before the Stripe
-redirect, per ruling C-8.
-**That checkbox is a UX safeguard, not a legal fix** — it doesn't transfer
-contractual capacity. If the card actually charged is the parent's own, this is
-moot. If a minor could ever complete checkout with their own card/account
-directly, the contract's validity is an unresolved question a generalist search
-cannot answer. **Get this read by someone with Czech consumer/contract law
-expertise before Stripe integration goes live with real charges** — this is
-squarely gated on that work, not on anything already built.
-
-**2026-09-05 revision (multi-page paywall, `design/paywall-multipage/`):** the
-blocking parent-confirmation *screen* was replaced with a single self-attestation
-checkbox — "Potvrzuji, že je mi 18 let, nebo že o téhle platbě ví můj rodič či
-zákonný zástupce" — matching the industry-standard pattern (App Store, Netflix,
-etc. all use unverified 18+ checkboxes). User's explicit call: they expect most
-minors will check it without it being true, same as everywhere else, and accept
-that risk — the goal is having *a* documented consent step, not verifying it.
-A "Ať to zaplatí rodič" (let my parent pay this) option still exists alongside
-it, reframed from a demanding "send parent a link to approve" into a neutral
-delegation the student chooses. **This does not change the open legal question
-above** — still needs real lawyer review before Stripe goes live — but it's a
-materially different mitigation shape (self-attestation vs. hard gate) than what
-that review was scoped against, so flag the new copy specifically when this
-finally gets legal eyes.
-
-**Also confirmed, informational:** the Digital Fairness Act (EU proposal, expected
-Q4 2026) *does* name minors specifically — a proposed default ban on "addictive
-design" aimed at children (infinite scroll, autoplay, exploitative gamification)
-and scrutiny of influencer marketing to minors
-([European Parliament, Oct 2025](https://www.europarl.europa.eu/news/en/press-room/20251013IPR30892/new-eu-measures-needed-to-make-online-services-safer-for-minors)).
-Nothing currently built or designed violates this, but it applies to the planned
-TikTok/Instagram influencer acquisition channel too, not just onboarding screens
-— worth remembering when that campaign gets built, not just now.
-
----
-
-
-## Pricing decisions not yet finalized
-- **Found:** 2026-08-24, pricing research passes
-- **Urgency:** high
-- **Risk of fixing now:** none — these are the user's calls, not a coding risk
-- **Risk of NOT fixing:** cannot go live with real payments until settled
-- **Effort:** small (they're decisions, not implementation)
-- **Release/context:** blocks Stripe go-live
-
-Three things need a final number before real money can move, tracked as
-placeholders in `frontend/src/config/pricing.js`:
-1. **Exact prices** — Season pass placeholder: 690 Kč. Monthly placeholder: 249 Kč.
-2. **Trial length** — currently 3 days (schema + config both agree). Research
-   flags 3 days as carrying the highest Day-0/Day-1 rushed-cancellation risk of
-   any trial length. Keep as-is per the user's explicit prior choice, or extend
-   to 5–7 days — watch conversion data rather than deciding blind.
-3. **Plan display order** — currently Season Pass (one-time, pre-selected) shown
-   before Měsíční (recurring). Keep or flip?
-4. **`REFUND_GUARANTEE_DAYS`** — set to `3` as a testing placeholder
-   (2026-08-24), not a committed number. **Do not display this to a real paying
-   user without both a final number and a working refund process behind it.**
-   14 days (EU distance-selling floor) is the benchmark to reconsider against.
-
----
+## Pricing settled; lifecycle and disclosure checks remain before billing
+- Prices locked 21 September: **690 Kč season**, one time after a three-day purchase trial; **249 Kč monthly**, immediate recurring charge with no purchase trial. Season remains preselected.
+- `REFUND_GUARANTEE_DAYS = 0` disables an extra badge. It is not the actual withdrawal cutoff: Terms/server currently grant **30 days**. Do not shorten this from an old 3-day placeholder.
+- The ordinary access trial has a separate approved first-confirmed-sign-in change pending; beta has neither a paid nor a commercial free-trial requirement.
+- Verify season dates, daily/savings denominators and UI/server/Stripe/terms consistency, cancellation/refund integrity, operator and emails before live keys. Commercial prices are not awaiting another founder decision.
 
 ## Multi-page paywall — decisions deferred out of the 2026-09-05 redesign
+
+**Current qualification, 9 October:** prices/plan order are settled, the checkout parental checkbox is removed, and cancellation UI/API exists. `perDayCzk()` rounding is a formatting choice, not a confirmed bug; the material issue is its fixed seasonal denominator and date clarity (FE-10). Testimonials require explicit publication consent, human selection and free-beta disclosure. Video/countdown work remains a proposal and must satisfy reduced motion/accessibility and applicable law.
 - **Found:** 2026-09-05, designing the 5-screen paywall
   (`design/paywall-multipage/`, artifact `7b40dacd`)
 - **Urgency:** medium — none of these block the design proposal, all block go-live
@@ -1489,87 +1109,35 @@ placeholders in `frontend/src/config/pricing.js`:
 
 ---
 
-## Stripe live activation and end-to-end verification
-- **Found:** 2026-08-27; implementation completed in test-mode code 2026-09-19
-- **Urgency:** high before launch
-- **Risk of NOT fixing:** no real revenue, or real-money failures if keys are enabled prematurely
-- **Effort:** medium — account/product setup plus the full test matrix at the top of this file
-- **Release/context:** blocks real payments and the trial reminder below
+## Stripe live activation — prohibited until payment gates pass
+- Checkout, webhooks, cancellation/withdrawal and the season scheduler exist, but unresolved P01–P09 defects mean the remaining work includes code/architecture as well as operational verification.
+- The 8 October read-only probe confirmed test mode, an active CZK 249 monthly Price and an enabled webhook. Charges/payout eligibility and missing support details still need account-owner verification; no live-money acceptance was established. Season deliberately has no Stripe Price.
+- Complete purchase/concurrency/event/refund/recovery tests, legal/operator review, durable confirmations and the founder-required day-2 reminder before enabling live keys. Beta must remain outside Stripe.
 
-Checkout, cancellation, webhooks and the season one-time scheduler are implemented.
-What remains is operational and verification work: choose final prices, create the
-adult-owned Stripe account and monthly Price, configure test keys/webhook secret,
-run every test-mode scenario, then add live keys only after the legal/reminder/refund
-blockers are resolved. The season plan deliberately has no Stripe Price.
+## Billing delivery and consumer review — project release requirements
+- A **day-2 seasonal trial reminder is mandatory by founder/project policy before real billing**, and `TRIAL_REMINDER_IMPLEMENTED` remains false. This ledger does not assert a universal EU rule prescribing that exact email/day for every contract.
+- `ONE_STEP_CANCELLATION_IMPLEMENTED` is true: Settings and the API contain self-service cancellation. That flag is not evidence of race safety, refund integrity, durable confirmation delivery or legal compliance.
+- Qualified Czech consumer review must settle the applicable disclosures, contracting, withdrawal and cancellation requirements. Implement verified reminder/confirmation delivery with retries and cancellation-aware scheduling; see payment handoff sections 6–7.
 
----
+## Supabase custom SMTP configured; cohort mailbox acceptance remains
+- The former built-in-mailer-only launch blocker is superseded: the founder/Claude review recorded Brevo delivery and mandatory confirmation, and the read-only auth settings report email confirmation enabled.
+- Still verify current SMTP credentials/ownership, SPF/DKIM/DMARC, sender/redirect templates, provider/Supabase rate limits and enough simultaneous confirmation/reset deliveries for a classroom cohort. Existing messages do not prove every browser/device/recovery flow or deliverability.
+- Auth SMTP does not implement app-content receipts or the day-2 reminder. Do not use `reset-test-account.js` against the shared database as a workaround; S01 records its billing/environment hazard.
 
-## EU-required billing features (legal blockers)
-- **Found:** pricing research, 2026-08-23/24
-- **Urgency:** high — legal requirement, not optional polish
-- **Risk of fixing now:** none, but depends on Stripe integration existing first
-- **Risk of NOT fixing:** cannot legally run real recurring billing in the EU
-- **Effort:** medium (email: needs a transactional email service; cancellation: needs a real subscription-management UI + API route)
-- **Release/context:** blocks real recurring billing specifically (season pass, being one-time, is less exposed but should still get a lawyer look)
+## Duplicate checkout completion — P1 paid-launch gate
+- Two sessions created before either completes can both be paid; an already-subscribed check alone does not reserve a purchase. Completion can overwrite the tracked subscription and strand another billable object.
+- This is not safely resolved by a lone “cancel and refund the newer subscription” branch; failures, ordering, season/monthly overlap and identity need one purchase lifecycle with reconciliation.
+- Implement and test P01 with the rest of P02–P08 before live billing. No real duplicate purchase was performed by this audit.
 
-- **Trial reminder email** — a day-2 reminder before billing starts. Tracked as
-  `TRIAL_REMINDER_IMPLEMENTED: false` in `pricing.js`; the paywall currently
-  tells users this honestly rather than lying about it.
-- **One-step cancellation screen** — tracked as
-  `ONE_STEP_CANCELLATION_IMPLEMENTED: false` in `pricing.js`. The Mobbin
-  paywall-patterns research (dated 3-beat trial timeline, symmetrical decline
-  paths, due-today-vs-recurring split) has concrete sourced patterns to build
-  this against once started.
-- **Czech consumer-law lawyer review** — have someone actually qualified check
-  the whole flow is legal before charging real users. Not a coding task, but
-  blocks going live regardless of what else is done.
+## Subscription cancellation — implemented path, safety and confirmations open
+- Settings and `/api/subscription/cancel` exist. Monthly cancellation is intended for period end; an uncharged season trial is intended to stop its scheduled PaymentIntent.
+- Do not call the full lifecycle verified from a historical successful click: P02/P03/P05/P08 retain cancellation/charge, event-ordering, recovery and refund concerns.
+- Test actual access/cancellation states and webhook ordering, and deliver a dated durable confirmation with the correct payer and access end. Treat copy/UI polish separately from money-integrity blockers.
 
-## Supabase email is capped at 2/hour — custom SMTP needed before launch
-- **Found:** 2026-09-21, hit while creating test accounts
-- **Urgency:** high — launch blocker
-- **Effort:** small — pick a provider, paste SMTP credentials into Supabase
-- **Release/context:** Supabase's built-in mailer is fixed at 2 emails/hour and its rate limit cannot be edited without a custom SMTP provider (or a Send Email hook). Signup confirmation and password-reset emails all go through it, so at launch only ~2 people per hour could confirm an account. Set up a real provider (Resend, Brevo, Postmark…) under Authentication → SMTP, on the stredninamiru.cz domain with SPF/DKIM. The same provider will carry the mandatory trial-reminder email. For testing meanwhile: `node scripts/reset-test-account.js <email>` resets an account's paywall state without signing up again.
-
-## Two open checkout sessions can both be paid (double-click edge case)
-- **Found:** 2026-09-21, Stripe verification run
-- **Urgency:** low-medium — needs a deliberate second payment in a second tab
-- **Effort:** small
-- **Release/context:** `/api/checkout` now refuses (409 `ALREADY_SUBSCRIBED`) any account that already has a live or scheduled plan, which closes the "reach the paywall again and buy twice" hole. What it cannot stop is two sessions created *before* either is paid (double-click, two tabs) and then both completed. The webhook would attach the second subscription over the first. Fix if wanted: in `checkout.session.completed`, if the account already has a different live `stripe_subscription_id`, cancel the newer subscription and refund it.
-
-## Subscription cancellation flow — polish still owed
-- **Found:** 2026-09-21, Stripe test session
-- **Urgency:** medium — before real billing
-- **Effort:** small–medium
-- **Release/context:** cancelling works end to end (`/api/subscription/cancel` plus an inline "ano, zrušit" confirm in Settings). Still owed: (1) a real cancellation flow/page as the EU one-step-cancellation research describes (dated confirmation, what happens to access, symmetrical exit copy, a confirmation email); (2) cancellation of a monthly plan sets `users.cancel_at_period_end`, and Settings now shows "Zrušeno — nic se neobnoví" — verify that against the webhook on a fresh account.
-
----
-
-## Search page ships synthesized stand-in data — mostly resolved 2026-09-08
-- **Found:** 2026-08-30, Claude Design import of `School Search.dc.html`
-- **Resolved 2026-09-08:** `admissionCutoff`, `acceptanceRate`, `hasTalentExam`
-  and `schoolType` are now REAL — imported from Cermat's 2026 kolo1 results via
-  `scripts/import-admission-data.js` into `schools.admission_cutoff` /
-  `acceptance_rate` and the new `school_programs` table (maturita status,
-  zřizovatel, typ školy, JPZ requirement, jazyk studia, KKOV, kapacita — one
-  row per obor). `frontend/src/pages/Search.jsx` reads all of it for real now;
-  13 filters total, reorganized into an accordion (see the design canvas
-  linked below) so 13 checkbox groups never render flat/unweighted.
-- **Still synthetic:** only `commuteMinutes` and the `districtLabel` fallback
-  (used when a school has no real district). The commute filter/sort are
-  rendered visibly disabled ("zatím nedostupné"), not deleted, not silently
-  inert-looking — see the "Dojezd MHD needs a routing-API decision" entry below.
-- **Risk of NOT finishing:** none currently — nothing fabricated ships. The
-  original risk (a student choosing a school on an invented cutoff) no longer
-  applies to any filter or number rendered on the page.
-
-`differentiator` is deliberately NOT synthesized — it is derived from real
-`deriveFeatures()` output, because inventing editorial claims about named schools
-reads as researched fact in a way a number in a labelled cell does not.
-
-Design canvas for the redesigned search + map:
-https://claude.ai/code/artifact/e2a398f2-e68d-4cda-8409-05070cf0937b
-
----
+## Search data — no fabricated district fallback; remaining interpretation checks
+- Search uses stored admission/programme/extracted facts. Codex removed the deterministic invented district fallback (`f098f6c`); missing geography/admissions remain unknown. Commute time is unavailable, not a real routing metric.
+- All 217 visible live schools had coordinates in the 8 October probe, but this does not establish address/building precision or official catalogue completeness.
+- Data-source/year/qualification wording and missing-data cases received fixes/browser checks. Scoring/projection consistency, programme focus/form and refresh provenance remain B01/B02/C03/S03/S07/S12; do not declare every rendered statistic correct from this pipeline description.
 
 ## Saved filter presets / recently viewed are localStorage-only
 - **Found:** 2026-09-08
@@ -1585,150 +1153,36 @@ elsewhere in the app.
 
 ---
 
-## Dojezd MHD needs a routing-API decision
-- **Found:** 2026-09-08
-- **Urgency:** medium — a 🔥-rated filter (feature-brainstorm.md §1) is currently disabled
-- **Effort:** medium (Google) to large (self-hosted)
+## Public-transit commute requires a provider, licence and accuracy decision
+- Current map radius is straight-line distance, not MHD travel time. Keep unavailable commute controls honest; do not substitute haversine distance under a transit label.
+- Evaluate current Google Routes TRANSIT capabilities/billing/terms or self-hosted OpenTripPlanner with PID GTFS before implementation. The old $200/month Google Maps credit estimate is obsolete: [Google replaced it with per-SKU free usage caps on 1 March 2025](https://developers.google.com/maps/billing-and-pricing/faq).
+- Verify storage/caching permissions, departure/arrival/date context, costs, privacy and service reliability. District-centre precomputation is an approximation, not a personalised home-to-school journey. Founder/provider choice remains pending.
 
-The commute filter and "Nejkratší dojezd" sort are shipped visibly disabled
-("zatím nedostupné") in `Search.jsx`, not deleted. Real MHD (public transit)
-time has no free option:
-- **Google Distance Matrix, transit mode** — not free, but the $200/mo Google
-  Cloud credit covers roughly 20,000 calls/month ≈ 330 users doing a full
-  60-school lookup before any real cost.
-- **Self-hosted OpenTripPlanner on PID's free GTFS feed** ([pid.cz/en/opendata](https://pid.cz/en/opendata/))
-  — free data, but real infrastructure to run and maintain.
-- Straight-line (haversine) distance is free but is NOT commute time and
-  would need its own honest labelling ("~X km vzdušnou čarou"), not reused as
-  a stand-in for "dojezd MHD".
+## Cermat admission data — first-round decision retained; coverage varies
+- The 58/60-school and 697-row figures describe the 8 September snapshot, not the current catalogue. Read-only 8 October: 217 visible schools have programme rows, four have only older admission summaries, and 650 active programme cards cover available years 2024–2026. Cutoff coverage: 248 none, 27 one year, 39 two, 336 at least three.
+- Therefore not every school/obor has a three-year cutoff. Show the actual source years and missing values; do not assume absence means no first-round participation.
+- Retain the founder's choice not to blend second-round leftover-capacity results into the first-round difficulty metric. Review official blank/suppression semantics and transactional/year-safe import before future refreshes (S02/S03).
+- Future annual source availability must be checked; the old “final / no fourth year to add” statement was a dated observation, not a permanent limit.
 
-Needs the user's decision before building either path.
+## Local API configuration — macOS override, production fail-fast gate
+- Code defaults to `http://localhost:5000`, matching the general backend default. On this MacBook, AirPlay commonly occupies 5000, so local `.env` uses backend 5001 and matching `VITE_API_BASE_URL`.
+- This machine-specific override is not a universal code bug. Do not hardcode 5001 into production or commit secrets.
+- Production must have the intended HTTPS API configured at build time; a missing variable must not silently send deployed clients to localhost. Verify deployment environment and build/runtime checks before release.
 
----
+## Historical paywall mockup — do not ship unsourced promises
+- The August mockup's 199 Kč, June end date and question/screen counts are historical design values. Current commercial values come from `pricing.js` and must agree with backend/Stripe/terms; current flow counts come from the flow/question data.
+- The source-less 38% statistic must remain unpublished unless a suitable source is verified. Social proof is empty until real consented, selected evidence exists.
+- Cancellation and 30-day withdrawal paths exist; payment integrity, durable delivery and date/savings denominators are still release gates. Do not use a mockup badge as proof they work.
+- Admission probability from school grades, personalised commute and reliable email deadline reminders must not be promised without the relevant implemented/verified data/service. Richer stored programme/extracted data exists but does not establish those particular capabilities.
 
-## Cermat import — resolved 2026-09-08, 3-year average is final (kolo 2 deliberately excluded)
-- **Resolved:** 2026-09-08
+## Post-launch proposals — distinguish improvements from existing features
+- Better matching: structured admission/programme/school-life inputs and weighted scorers already exist. Calibration, unknown-data treatment, projection parity and real-user validation remain improvements/gates depending on the defect.
+- Priority support: application picks and risk analysis exist. Any broader DiPSy optimiser needs the official preference-order contract; it must not recommend placing an easier school first as a tactic. Founder ordering wording clarification remains pending.
 
-Only 3 years of kolo1 data exist (2024/2025/2026 — earlier years aren't
-published/available); the import was run with all 3
-(`node scripts/import-admission-data.js PZ2024_kolo1_....xlsx
-PZ2025_kolo1_....xlsx PZ2026_kolo1_....xlsx`). 58/60 schools now have
-cutoff/acceptance averaged across 3 years, 697 `school_programs` rows written.
-This is the final state — there is no 4th/5th year to add.
-
-**Kolo 2 (2nd round) files were deliberately not requested or imported.**
-Kolo 2 only runs at schools that didn't fill up in kolo 1 — it's a
-leftover-capacity round, not a second sample of the same admission difficulty.
-Blending it in would (a) understate cutoffs in a way that reflects "how much
-capacity was left over" rather than "how hard is it to get in," and (b) do so
-inconsistently, since only some schools ever run a kolo 2 — making those
-schools look artificially easier relative to ones that filled up in round 1
-and have no kolo 2 data at all. Kolo 1 only is the correct, comparable signal.
-Do not add kolo 2 data back in without re-opening this decision explicitly.
-
-Still real, unresolved: 3 schools have no cutoff (2 have zero data at all —
-Bezpečnostně právní akademie s.r.o. and Hotelová škola Vršovická; one, Dívčí
-katolická střední škola, has acceptance data but no cutoff score in any of the
-3 files). All three render `—`, never a fabricated number. No action needed
-unless a future year's file still doesn't cover them.
-
----
-
-## `frontend/src/api.js` defaults to the wrong backend port
-- **Found:** 2026-09-08
-- **Urgency:** low — harmless while `frontend/.env` is present and correct
-- **Effort:** trivial — one line
-
-`API_BASE_URL` in `frontend/src/api.js` falls back to `http://localhost:5000`
-when `VITE_API_BASE_URL` is unset. The real backend on this machine runs on
-**5001** — port 5000 is claimed by macOS's AirPlay Receiver (Control Center),
-not this app. As long as `frontend/.env` sets `VITE_API_BASE_URL` correctly
-this never bites, but the fallback itself is stale and would silently fail if
-that env var ever went missing.
-
----
-
-## Paywall mockup promises that outran the product
-- **Found:** 2026-08-24, comparing `docs/sources/design_system.md` mockup against real config
-- **Urgency:** high for the two payment-screen items (false trust signals), low for the rest
-- **Risk of fixing now:** the two payment-screen claims are actively unsafe to ship as-is
-- **Risk of NOT fixing:** displaying a refund/cancellation promise with nothing behind it is a real user-trust and possibly legal problem
-- **Effort:** small once the underlying feature (refund process, cancellation) exists
-- **Release/context:** blocks real payments (the two flagged items); the rest is roadmap-shaped, not blocking
-
-The 2026-08-24 Claude Design mockup invented plausible product copy that
-doesn't have a real feature behind it yet. The *visual system* was good and
-got ported into the real `DESIGN.md`; these specific claims were not, and
-still aren't real:
-
-**Blocking before real payments:**
-- "Vrácení do 14 dnů" — no refund process exists yet (see pricing decisions above)
-- "Zrušíte kdykoli do dalšího zúčtování" — deliberately removed from
-  `Paywall.jsx` already since `ONE_STEP_CANCELLATION_IMPLEMENTED` is false
-
-**Needs real data/source before it can ship:**
-- "38 %" statistic (students who'd choose differently) — mockup itself labels
-  it "Zdroj: doplnit" (source: TBD). Find a real citable Czech source or drop
-  it. `config/socialProof.js` stays deliberately empty until then.
-- Outcome bullets promising admission-chance estimates from pololetí grades,
-  commute times ("22 minut od tebe"), deadline reminders — none of this data
-  exists in Supabase (`schools` only has name/location/programs/contact/
-  website) and there's no email system. Real roadmap features, not close.
-
-**Cosmetic, low priority:**
-- Mockup says 199 Kč/month; `pricing.js` says 249 — `pricing.js` is always the
-  source of truth, mockup is stale.
-- Mockup's season-pass end date (30.6.2027) vs config's actual window (end of March) — reconcile whenever season pass is actually wired up.
-- Mockup says "osm otázek"/"3 / 8"/"Krok 1 ze 3" — real flow is 10 quiz questions across 23 screens.
-
----
-
-## Post-launch feature roadmap (not blocking, just don't forget)
-- **Found:** 2026-08-24
-- **Urgency:** low
-- **Effort:** large (both are substantial features)
-- **Release/context:** after launch, once there's real usage to justify them
-
-- **Better school matching** — add real admission-grade/capacity data so match
-  scores are more than name/location/programs text-matching.
-- **Priority optimizer** — help students rank their top 3 schools for the
-  Czech DiPSy admissions system. Flagged as "the killer feature nobody else
-  has" — worth prioritizing once the core product is solid.
-
----
-
-## Design system: two open research-dependent decisions
-- **Found:** 2026-08-25, Mobbin research pass
-- **Urgency:** medium
-- **Risk of NOT fixing:** DESIGN.md's imagery/score-display guidance stays provisional
-- **Effort:** small (verification) / medium (score display needs a real decision + possible rework)
-- **Release/context:** should resolve before a big visual polish pass on school-detail or results screens
-
-1. **Photo gallery verification — RESOLVED FALSE, 2026-09-08.** `docs/sources/
-   feature-brainstorm.md`'s claim that school photos (and, separately, videos)
-   were "already scraped" is wrong. Checked directly against the live
-   `schools` table, `school_programs`, and the old laptop dataset — no photo
-   or video column/data exists anywhere, and the laptop build's own CLAUDE.md
-   said as much explicitly ("Nothing to bind a banner to... don't fake one
-   with a placeholder"). Director name is likewise not scraped. All three now
-   render as honest placeholders on the school detail page
-   (`MissingDataGrid.jsx`) instead of being treated as available. Do not
-   re-trust this brainstorm claim in a future session.
-2. **Score display resolution** — **RESOLVED 2026-09-19 for the standalone
-   questionnaire only (`/dotaznik`): percentages**, per the founder's
-   explicit call (with ~220 schools, bands would lump huge groups together and
-   lose the 98 % vs 83 % difference). Still open for school-detail surfaces;
-   the onboarding quiz stays band-only on purpose. Original note follows —
-   still undecided: percentages (user's
-   preference) vs. criteria list + factor magnitudes (research + Mobbin
-   patterns both point this way) vs. a plain band (what's actually shipped
-   in the onboarding quiz today, per matching.js's own hard rule against fake
-   percentages). The onboarding quiz already resolved this for itself — a
-   BAND, never a percentage — so this item is really about whether the
-   *standalone questionnaire* (once it gets a UI) and school-detail pages
-   should match that or do something else.
-
----
+## School media and score presentation — current decisions and remaining checks
+- School photos/video and director identity still need verified source/licence/data decisions. Earlier brainstorm assertions that these assets had already been scraped were corrected; don't add stock assets as school evidence.
+- Standalone results and post-signup surfaces display deterministic server percentages. Current Reveal also displays a frontend percentage and its band; the earlier “band only, never percentage” instruction is superseded by current presentation.
+- The independent engines/input projections can disagree. Define and test the intended contract (B01/B02), explain the heuristic and avoid suggesting admission probability. Presentation similarity is not proof of scoring parity.
 
 ## Landing-page ambient animation — spec written, NOT implemented
 - **Found:** 2026-08-28
@@ -1767,45 +1221,14 @@ User created 14 logo concept artboards (canvas-based design system, Concepts 01�
 
 ---
 
-## Questionnaire runs saved without AI sentences never get them — and `.env` pins the old model
-- **Found:** 2026-09-19, building plan 011
-- **Urgency:** medium — bites the moment OpenRouter credits are added
-- **Effort:** small-medium (one endpoint + a button), plus a one-line `.env` edit
-- **Release/context:** `lib/questionnaire.js` `requestMatches`, `POST /api/questionnaire`
+## On-demand explanations built; generation and saved-run acceptance pending
+- Plan 020 Phase 5 added generation for existing runs/school reasons and UI actions. Submission no longer has to generate explanations; old saved runs with empty reasons are not limited to retaking the questionnaire.
+- Code default is now `openai/gpt-6-luna`; local/deployed environment values can override it. The historical Sonnet/Gemini-specific `.env` assertion is not current configuration evidence.
+- Verify configured provider/model, real Czech outputs, cache/run/account ownership, existing/onboarding runs, retries and paid usage accounting. A prefixed model identifier and successful auth probe do not prove those paths work.
 
-Two separate things, both surfaced by making the AI optional:
-
-1. **Sentences are generated at submission time only.** A run submitted while
-   OpenRouter has no credits is saved with real percentages and empty `reason`
-   fields, and nothing ever backfills them — the results screen says so honestly
-   ("U téhle sady chybí slovní zdůvodnění") rather than promising it will fill in.
-   Once credits exist, every run made before that stays sentence-less unless the
-   student retakes the questionnaire, which the UI deliberately discourages. A
-   `POST /api/questionnaire/runs/:id/reasons` that re-asks the model for the top
-   10 of an *existing* run (no re-scoring, no new run) would close the gap.
-   Onboarding runs (`source: 'onboarding'`) never had sentences at all.
-2. **The real `.env` still sets `OPENROUTER_MODEL=anthropic/claude-sonnet-5`**,
-   which overrides the new Gemini 2.5 Flash Lite default in code and in
-   `.env.example`. Sonnet costs ~$0.11/user/month at 10 runs vs ~$0.005 — small
-   either way, but it is not the choice that was made. Edit that line (or delete
-   it) when credits are added. Deliberately not edited by Claude: `.env` is off
-   limits.
-
----
-
-## Matice.jsx should adopt the shared ConfirmDialog
-- **Found:** 2026-09-19, plan 011
-- **Urgency:** low
-- **Effort:** trivial once its review pass is done
-
-`components/ConfirmDialog.jsx` (+ `.ss-dialog-*` in `styles/ui.css`) was extracted
-for `/dotaznik`'s two dialogs from the markup `Matice.jsx` already carried
-(`.dp-confirm-*` in `decision.css`). Matice was left untouched on purpose because
-it is still awaiting its human review pass (see "Rozhodovací matice needs a real
-human review pass"), so the same dialog now exists twice. Swap it over, and delete
-the `.dp-confirm-*` block, as part of that review.
-
----
+## Matrix shared dialog adopted; retain interaction acceptance
+- Current `Matice.jsx` imports and uses `ConfirmDialog`; the former duplicate-dialog migration task is superseded.
+- Keep keyboard/focus/Escape, scroll locking, narrow viewport and meaningful-weight confirmation in the final matrix acceptance. This does not close its ranking/data-quality or founder review tasks.
 
 ## Questionnaire form options still use a solid accent fill when selected
 - **Found:** 2026-09-19, plan 011
@@ -1848,9 +1271,7 @@ Still to check against real usage:
 
 **Measured floor, worth keeping:** the worst best-match any answer combination
 can produce is about **59 %** (raw 47) — found by sampling ~9,000 answer sets
-plus hill-climbing, so it is an empirical bound, not a proof. No student should
-ever see a top result below roughly 59 %, and one meaningfully lower is a signal
-that something in the scorer or the data has broken.
+plus hill-climbing, so it is an empirical bound, not a proof. That historical sample is not a universal minimum for all future answers, projections or datasets. A lower result needs investigation, not an automatic assertion that the scorer is broken.
 
 ---
 
@@ -1870,61 +1291,27 @@ edit one, edit the other.
 
 ---
 
-## Waiting on the user (not a coding task)
-- **Found:** 2026-08-25
-- **Urgency:** none — explicitly deferred by the user's own choice
-- **Effort:** n/a
+## Onboarding visual overhaul — founder trigger still required
+- The machine-move/laptop-access premise is historical; the MacBook and browser preview now work. Onboarding has received further implementation/visual changes since August, so “plain complete 23-screen version” is not a current acceptance claim.
+- Preserve the founder's instruction not to start an unsolicited broad design overhaul. Fix confirmed wording/usability defects and finish the requested browser/device audit; any larger redesign needs a concrete proposal and founder direction.
 
-**Big visual/graphic design pass on the onboarding.** Deliberately not started
-— the user has an already-built site (with a questionnaire + other features)
-on their laptop they were waiting to get access to, and wants to do the visual
-redesign once fully available rather than designing twice. Current onboarding
-is functionally complete (all 23 screens, both role branches, real scoring)
-but visually plain by design — built to the UX guide's structural rules, not
-final visual polish. **Do not start a design overhaul on this proactively;
-wait for the user to say the go-ahead.**
+## Release audits — current full-project review is underway
+- Claude and Codex reviews have run; this solo exhaustive continuation is still in progress. The old “server never reviewed / onboarding need not be rechecked” assertion is superseded.
+- Review the current changed source, not only old reports. Revalidate payment/security boundaries before enabling billing or applying RLS/migrations, and test connected onboarding/paywall/account behavior after changes.
+- `older-version` is a reference branch, not a pending laptop-folder merge. Port any wanted piece deliberately; do not merge divergent product histories as a routine audit task.
 
----
-
-## `/improve` audit checkpoints not yet run
-- **Found:** 2026-08-25
-- **Urgency:** low until the triggering milestone is actually about to happen
-- **Effort:** the audit itself is small (read-only); fixing what it finds varies
-
-`/improve` is a read-only codebase audit (bugs/security/perf/tech-debt, never
-edits code). Run it as a pre-transition checkpoint at each of these, not on a
-schedule:
-- Before wiring real Stripe payments (money + real card flows — highest priority of these)
-- Before re-enabling/changing Supabase RLS policies (security-boundary change)
-- Before doing serious work on `server.js` — it hasn't had a critical pass since the initial fix (flat routes, no validation layer, no structured error handling)
-- Before merging in any remaining questionnaire/features from the laptop build, if anything further gets pulled from `schoool-app-laptop-progress/`
-
-**Not needed** on the onboarding/paywall specifically — already got a
-dedicated deep pass from the onboarding-architect agent (2026-08-23/24), found
-and fixed 4 real bugs. Re-auditing now would mostly re-surface already-tracked
-gaps above.
-
----
-
-## Housekeeping
-- **Found:** 2026-08-27 merge
-- **Urgency:** low
-- **Effort:** trivial
-
-`schoool-app-laptop-progress/` is kept as read-only reference from the merge;
-nothing in the live app imports from it. Delete it once confident nothing else
-is needed from there (the questionnaire UI, forest/teal design system, and
-map/match-score components were deliberately NOT ported and aren't coming
-back).
-
----
+## Historical laptop snapshot already removed
+- `schoool-app-laptop-progress/` was deleted. Earlier source is retained on `older-version` and in Git history; there is no duplicate snapshot folder to clean up.
+- Do not delete current design/logo/reference artifacts based on this old housekeeping item. Review any future removal against imports and the founder's retained-reference decisions.
 
 ## True `?limit=&offset=` pagination — needed at national scale, not built
+
+**Current qualification, 9 October:** 223 is the raw-row snapshot; 217 are currently visible. The scorer now reads structured inputs, so preserve full projection/parity when implementing server filtering. National-scale pagination remains deferred.
 - **Found:** pre-2026-08-27; narrowed to this scope 2026-09-17 (plan 010)
 - **Urgency:** low — not urgent at 223 schools, only matters past ~1300
   (national scale, once the product expands past Prague)
 - **Effort:** large — real server-side filtering, sorting and facet counting,
-  which means rewriting the core of `Search.jsx` and moving onboarding-quiz
+  which means reviewing the core of `Search.jsx` and onboarding-quiz
   scoring off the client
 - **Release/context:** must exist before expanding past Prague to other Czech
   cities (CLAUDE.md's "Geographic Scope for V1")
@@ -1941,8 +1328,7 @@ Prague-only and pre-launch.
 **If this gets built:** `withMatchScores` (server.js) must survive whatever
 query replaces `fetchAllSchools`/`LIST_SELECT` — see CLAUDE.md's `/api/schools*`
 trap note. It already survives plan 010 unmodified because the server scorer
-only reads the `programs` text column, never the nested `school_programs`
-join; keep that property true of any future rewrite too.
+now also reads structured programme/extracted inputs. Preserve the complete current projection and test B01/B02 parity rather than retaining the old text-only assumption.
 
 ---
 
@@ -1967,34 +1353,14 @@ equivalents), these should eventually be replaced by the real template
 components rather than the other way around. Not started — sequence this after
 the spacing/typography migration lands and is verified stable.
 
-## Top nav bar overflows horizontally on mobile
-- **Found:** 2026-09-12, while browser-verifying plan 007's decision-matrix redesign
-- **Urgency:** medium — affects every page, not just the matrix
-- **Release/context:** already spun off as its own session (task_c7de19a6)
+## Navigation responsiveness — historical overflow, current acceptance pending
+- The 12 September 113px overflow measurement describes an older nav. Current layout has responsive behavior; plan 020 is changing shared navigation again, so the old “zero responsive handling” statement is superseded.
+- Recheck the released current version at 320/375px, landscape, enlarged text, keyboard and zoom, with signed-in beta/account controls and long Czech labels. Do not mark this closed solely from source media queries or one desktop check.
 
-`.navbar` / `.navbar-links` in `App.css` have zero responsive handling — no
-wrap, no hamburger menu. Confirmed 113px of horizontal page overflow at 375px
-width on both `/` and `/porovnani/matice`, so this is nav-wide, not specific to
-any one page. The "Porovnání" link added 2026-09-11 made the row one item
-longer but did not cause the underlying gap — the nav had no mobile handling
-before that either. See "Responsive design beyond the fixed 1280px desktop
-width" below for the broader context this sits inside.
-
-## Onboarding Reveal ranking can disagree with the server match %
-- **Found:** 2026-09-11/12, while building plan 008 (save onboarding answers)
-- **Urgency:** low
-- **Release/context:** accepted tradeoff, not a bug to silently fix
-
-Two independently-built scoring engines exist by design (see CLAUDE.md): the
-onboarding quiz's `frontend/src/lib/matching.js` (band-only, runs in the
-browser, scores the Reveal screen) and the server's `lib/matching.js`
-(percentage-based, scores everything post-signup: search, school detail,
-`/porovnani`, the decision matrix). Plan 008 translates onboarding answers into
-the server engine's input shape so match_score is available at all after
-signup, but it does not and cannot make the two engines agree pointwise — a
-school ranked #1 on Reveal could show a lower % than #2 once the server engine
-scores the same translated answers. Consider unifying onto one engine if this
-ever causes a support question.
+## Frontend and server scoring can disagree — define the intended contract
+- Onboarding uses `frontend/src/lib/matching.js`; post-signup surfaces use `lib/matching.js` with translated saved answers. Both currently display percentages in some surfaces, but remain independently implemented.
+- Translation and similar curves do not prove equal pointwise scores or rankings. Review the same school/answers/full data across surfaces and document any deliberate difference (B01/B02).
+- The original September note called this an accepted tradeoff. The current deployment request requires explicit assessment of confusing numbers; do not silently unify weights or close the consistency gate from that old characterization.
 
 ## Onboarding `sport` focus has no server-side matching area
 - **Found:** 2026-09-11/12, building `lib/onboardingAnswers.js` (plan 008)
@@ -2010,43 +1376,15 @@ mapping it to something misleading. Add a `sport` area + keywords to
 `lib/matching.js` if sport-focused schools start mattering enough to justify it
 (the database currently has very few, if any).
 
-## Onboarding answers only reach the account on the signup device
-- **Found:** 2026-09-11/12, building plan 008 (save onboarding answers)
-- **Urgency:** low
-- **Release/context:** a known limit of the localStorage-stash design, not a bug
+## Onboarding stash is device-local; account ownership and handoff remain open
+- `pendingOnboardingAnswers` uses browser local storage before a session exists. The same browser flushes a matching confirmed email; another device cannot recover that local stash automatically.
+- Email confirmation/resumption is implemented, but that does not transfer answers between devices. A confirm-on-another-device journey still needs a designed recovery/handoff choice.
+- C16 additionally reproduces a session-switch write/clear race in the flush. Fix immutable account/stash ownership and stale completion handling before claiming this path verified; do not treat same-tab confirmation as a complete solution.
 
-`CreateAccount.jsx` stashes quiz answers in `localStorage`
-(`lib/pendingOnboardingAnswers.js`) because there is no session yet to save
-them under. `AuthContext` flushes that stash to the server the next time this
-*same browser* sees a confirmed session for the *same email*. If a student
-signs up on their phone but confirms and first signs in on a different
-device/browser, the stash never reaches that second device and their match
-score never populates from the quiz (they'd need to redo the standalone
-questionnaire, or the stash silently expires after 7 days). This resolves
-itself naturally if/when the existing "email confirmation gate temporarily
-disabled" item (elsewhere in this file) is fixed the way it already proposes —
-resuming onboarding in the confirming tab, rather than redirecting to generic
-Login — since that keeps everything on one device throughout.
-
-## Responsive design beyond the fixed 1280px desktop width
-- **Found:** 2026-08-31, alongside widening `.app-content` to 1280px
-- **Urgency:** medium
-- **Risk of fixing now:** none — this is scoping future work, not a live bug
-- **Risk of NOT fixing:** the app looks right at exactly three breakpoints
-  (1280px, 1024px, 768px margins) and untested in between; no per-component
-  responsive behavior exists beyond the shared container's own padding
-- **Effort:** large — a real pass across every page, not a token change
-- **Release/context:** explicitly deferred by the user 2026-08-31 — "for now
-  lets stick with that original claude design width and height"
-
-`.app-content` was widened from 960px to `design/DESIGN.md`'s stated 1280px, with
-its three documented breakpoint margins (64px / 32px / 16px) implemented as real
-media queries in `App.css` (there were none before). This is a fixed-width port
-of the desktop spec, not a responsive redesign — no intermediate tuning, no
-per-component adaptation, and no verification yet that every page (not just
-Search, which the plan above did explicitly test at 375px and 1280px) holds up
-across phone/tablet/ultrawide sizes. Do this properly once the spacing/typography
-and component-library work above have landed, so it isn't done twice.
+## Responsive/browser acceptance — implementations exist, full pass still required
+- Multiple components now have responsive styles; the August “no component adaptation” claim is superseded. Local checks already cover several desktop and 320–390px journeys.
+- Complete the current released screens across phone portrait/landscape, tablet, short desktop, zoom/text enlargement, touch/keyboard, reduced motion, dark/light/native controls and supported browsers. Check errors/loading/empty/long-content states as well as happy paths.
+- C09 hero scaling and C08 narrow header are recorded findings; compare-bar/modal fixes from plan 020 require final revalidation. Real iOS Safari/Android/browser/device acceptance remains separate from the local synthetic browser.
 
 ## onboarding.css still on the old spacing/type scale
 - **Found:** 2026-08-31, during the site-wide spacing/typography migration (plan 005)
@@ -2076,52 +1414,19 @@ Known pre-existing bug in that file, already tracked as `plans/003`: `.ob-title`
 *shrinks* 32px → 30px at the 640px breakpoint (`onboarding.css:107` vs `:1168`).
 Fold that fix into the redesign rather than patching it separately.
 
-## App palette neutrals — VISUAL CHECK STILL OWED
-- **Found:** 2026-09-04 · **fixed the same day**, see Resolved
-- **What is still open:** only the human eyeball pass. The token change itself is
-  done and built clean, but the browser tools are blocked on this machine
-  (CLAUDE.md, top), so **no screen has actually been looked at** on the new
-  palette. Every surface in the app changed at once.
-- **Urgency:** medium — a contrast or fill regression would be live and unseen
-- **Effort:** minutes, but needs a person at a browser
-- **What to look at,** in rough order of how likely they are to break:
-  1. **Anything that was a white card on off-white.** `surface` is now the *same*
-     value as `bg`, so cards separate by hairline alone (DESIGN.md's own
-     elevation rule). Search results, school detail, settings, favourites — check
-     nothing reads as a flat undifferentiated sheet.
-  2. **`onboarding.css`** (1,882 lines, the largest consumer) — option cards,
-     selected states, the progress track.
-  3. **Auth pages** (`/prihlaseni`, `/registrace`) — inputs are wells on
-     `--surface2`, which moved.
-  4. **`.btn-primary`** — soft terracotta fill; confirm the label still reads.
-  5. **Dark mode**, if reachable — it was rewritten wholesale from DESIGN.md's
-     dark block and has never been rendered.
+## Theme visual/contrast acceptance — partially checked, complete pass still owed
+- Browser preview works on the MacBook. Current light scheme, search/missing-data detail/comparison/matrix and several narrow screens have been inspected; the old “no screen seen / tools blocked” statement is superseded.
+- Finish all palettes and light/dark/system modes, text/control contrast, error/disabled/selected states and native controls on a dark OS. The duplicate base color-scheme override was fixed (`bd8629d`); this does not establish all-theme acceptance.
+- Use current portable tokens and `design/DESIGN.md`; the warm-paper/Fraunces snapshot and old bundle sizes in Resolved are historical.
 
-## Landing page: three gaps carried over from the mockup
-- **Found:** 2026-09-04, porting `ui_kits/skolamatch/Landing.jsx` onto `/`
-- **Urgency:** low — none of them block the page working
-- **Risk of fixing now:** none; each is additive
-- **Risk of NOT fixing:** the hero has a visible empty photo slot, which is fine
-  internally but not shippable to real visitors
-- **Effort:** small each
-- **Release/context:** the photograph is a pre-launch blocker; the other two are not
-
-1. **No hero photograph.** `.ls-photo` is a labelled dashed placeholder. DESIGN.md
-   calls for real photography of real people, not illustration, and no asset
-   exists. The unrelated abstract purple starter asset was removed as dead code.
-   Hidden below 900px, so mobile is unaffected.
-2. **The ambient idle animation is not implemented.** DESIGN.md's "Motion —
-   landing page" section specifies exactly one slow, contained idle loop
-   (CSS keyframes on `transform`/`opacity`, Linear/Stripe register — never a
-   mascot, never full-screen). The mockup omits it too and says so. This is the
-   landing page's one sanctioned piece of ambient motion.
-3. **The footer is landing-only.** `Shell.jsx` treats it as chrome shared by every
-   screen, but `components/Layout.jsx` has never had a footer and adding one
-   globally would change eight pages that were not part of this port. Two of the
-   mockup's footer links ("Zdroje dat", "Kontakt") were dropped rather than
-   shipped as dead `href="#"`; restore them when those pages exist.
+## Old landing mockup gaps — apply only to the retained A/reference design
+- The September photo-placeholder/ambient-loop/footer observations concerned the earlier A landing. Current `/` is the map-led B landing; `/stara` retains A.
+- Do not add a hero photograph or ambient animation to the current page merely to satisfy this old mockup. Preserve the founder's animation/design trigger and image-rights requirements if A is revisited.
+- Audit the actual public landing links/footer, responsive readability, school-dot access, count/completeness claims and WebGL fallback. See C06/C09/C10 and the current browser evidence.
 
 ## Resolved
+
+**Historical completion log:** dated entries below preserve what was done then. Their model, font, bundle-size, school-count, scoring-projection and browser-tool descriptions are not current deployment evidence. Current read-only facts and unresolved gates appear above and in the deployment report.
 
 *(Move items here with a date + one-line note when they're actually done, rather than deleting them.)*
 
@@ -2186,8 +1491,7 @@ Fold that fix into the redesign rather than patching it separately.
   can't bite once the school count grows past Prague — verified by
   temporarily lowering the page size to 50 and confirming all 223 rows came
   back with no duplicates across the boundary. `withMatchScores` needed no
-  changes: the server scorer only ever reads the `programs` text column, not
-  the nested join, exactly as CLAUDE.md's `/api/schools*` warning assumes.
+  changes at that September snapshot. Current scoring also reads programme/extracted facts, so projection parity needs B01/B02 acceptance; the old text-only assumption must not guide a rewrite.
   **Side effect, intentional:** summing `kapacita` over the old nested rows
   double/triple-counted capacity for schools with multiple imported years —
   **211 of 223 schools** had an inflated "volných míst" number feeding the
@@ -2280,17 +1584,14 @@ Fold that fix into the redesign rather than patching it separately.
 - **Check first:** Google Maps ToS restricts storing/caching API results beyond a short window — confirm before persisting durations. Fallback with no such restriction: OpenTripPlanner self-hosted on PID's open GTFS (free data, costs hosting), or Golemio API.
 - **Not done yet:** everything above; no questions were added to the questionnaire for this.
 
-## Open-ended "Ještě něco bys dodal?" question — decide how (or whether) to use it — 2026-09-24
-- **Found:** 2026-09-24, questionnaire rebuild brainstorm. The founder wants a free-text last question ("Ještě něco bys dodal?") but it is undecided what the answer would DO.
-- **Urgency:** Low — the questionnaire works without it; decide before building the new question set, not before launch.
-- **Effort:** Small if display-only, Medium if it feeds scoring.
-- **Options to decide between:** (a) store and show it back to the student only; (b) pass it to the AI explanation sentence as extra context (cheap, no scoring impact); (c) have the AI parse it into structured preferences/weights (powerful, but the AI would then influence numbers, which contradicts the "AI explains, never scores" rule in CLAUDE.md); (d) drop the question.
-- **Constraints to remember:** free text from 14–15-year-olds is personal data of minors (GDPR minimisation, retention, deletion on account erasure); needs a length cap and a prompt-injection-safe way into any AI call; the same text would feed every future rerun.
-- **Not done yet:** the decision itself.
+## Optional free-text note exists; broader use remains a decision
+- The standalone questionnaire has `poznamka` (“Chceš něco doplnit?”), optional and capped at 500 characters. It is stored with the user's run; `describeAnswers()` explicitly excludes text fields from external AI prompts. It does not drive numeric scoring.
+- The original “not built / decide whether to collect” snapshot is superseded. Any future AI interpretation or cross-run reuse is a separate privacy/product/scoring decision, with minimisation, retention, erasure, prompt-boundary and evidence checks.
+- Do not forward the stored child-authored text to a provider or let it change scores solely because an old brainstorm lists those options.
 
 ## Offer a "fast questionnaire" and a "full questionnaire" — 2026-09-24
-- **Found:** 2026-09-24, same session. With the question list growing well past the current ~10, a short path and a long path are wanted.
+- **Found:** 2026-09-24, same session. The standalone list now has 31 questions; a shorter path and a full path are still wanted.
 - **Urgency:** Medium — decide together with the weighted-questions redesign, since which questions are "fast" depends on which ones carry the most weight.
 - **Effort:** Medium.
-- **To decide:** which questions belong in the fast version (likely the ones that most change the ranking: school type, interests, location, and any weight-setting questions); whether a fast run can be upgraded to a full one later without starting over; how results show lower confidence for a fast run (the scorer already drops unanswered components and renormalises weights, so a skip never lowers a score, but the ranking is less differentiated); and whether the onboarding quiz, `/dotaznik` or both get the choice.
+- **To decide:** which questions belong in the fast version (likely the ones that most change the ranking: school type, interests, location, and any weight-setting questions); whether a fast run can be upgraded to a full one later without starting over; how results show lower confidence for a fast run (the scorer already drops unanswered components and renormalises weights; skipping can raise or lower a score when remaining weights renormalise, and ranking/confidence can change); and whether the onboarding quiz, `/dotaznik` or both get the choice.
 - **Not done yet:** everything above.

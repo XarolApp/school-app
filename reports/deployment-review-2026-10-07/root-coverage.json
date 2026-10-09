@@ -513,18 +513,18 @@
     "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
   },
   "frontend/src/pages/onboarding/screens/SocialProof.jsx": {
-    "sha256": "ff6abfcab2015972eb7f4e942622caa091474098a1befbb29eb730ae63566c76",
-    "lines": 121,
+    "sha256": "fc0705048e5f9c670a1a8e736c6d0eef7284afdefa9ad9f51424388e70aecf55",
+    "lines": 122,
     "read_ranges": [
       [
         1,
-        121
+        122
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:51:37.842029+00:00",
-    "method": "Full source read; earlier full read plus complete current diff review where applicable. Read coverage does not imply defect-free or full runtime verification."
+    "checked_at_utc": "2026-10-09T21:25:25.269816+00:00",
+    "method": "Full current source read in bounded, untruncated ranges on 9 October; released Phase 9 reviewed. Four beta/social-proof tests pass. Reading is not legal, production or full runtime approval."
   },
   "frontend/src/pages/onboarding/screens/Stakes.jsx": {
     "sha256": "92be8928cd4389f20619d00123a23bbda97c79fae0c658f168cc41f89f04be56",
@@ -2027,18 +2027,18 @@
     "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
   },
   "frontend/src/config/features.js": {
-    "sha256": "1fbdc81f71e7d46e3ec08570af9caa8edea75c9086d48847ce6c97dd94be94a1",
-    "lines": 5,
+    "sha256": "676a210303a018e44eb21dcfaa5f8b57d731e1552e2aefb03d1a335377f1487e",
+    "lines": 10,
     "read_ranges": [
       [
         1,
-        5
+        10
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:58:03.933317+00:00",
-    "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
+    "checked_at_utc": "2026-10-09T21:25:25.269816+00:00",
+    "method": "Full current source read in bounded, untruncated ranges on 9 October; released Phase 9 reviewed. Four beta/social-proof tests pass. Reading is not legal, production or full runtime approval."
   },
   "frontend/src/pages/Matice.jsx": {
     "sha256": "5ae0760b769c4387ceae49c19830c92e3bf086062a452a80f01905765da1a960",
@@ -2111,18 +2111,18 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "b3b1f9d013f61abdee3deea8b7096fe08c9b50c969985ba487d24a79bf95cb60",
-    "lines": 2296,
+    "sha256": "ba3a580d41c95d9c90db6c970c2b399afdbde9db33198a8ca33491d0a36424e1",
+    "lines": 1597,
     "read_ranges": [
       [
         1,
-        960
+        1597
       ]
     ],
-    "status": "partial",
+    "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T21:13:42.172292+00:00",
-    "method": "Read through earlier 960-line checkpoint; all truncated ranges reread, including 380–425 and 661–810. Own obsolete SQL rule diff read. Remaining long ledger pending; historical contradictions queued."
+    "checked_at_utc": "2026-10-09T21:25:25.269816+00:00",
+    "method": "Full 2,296-line pre-edit ledger read including all truncated-range rereads; complete added/changed paragraph inspection and removed source already fully read. Current reconciliation preserves deferred choices and qualifies dated evidence. All other project Markdown is not complete."
   },
   "frontend/src/api.js": {
     "sha256": "07b5a72a87fbd88712988bbe465d8a34ec16a1b6f2b127bbdfa82e74e930e003",
@@ -2251,18 +2251,18 @@
     "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
   },
   "frontend/src/components/BetaClosingQuestionnaire.jsx": {
-    "sha256": "b4240c7accff79e33a9a65eebadc05434f2a0325d4ba730fc282da57517a7ff6",
-    "lines": 62,
+    "sha256": "bd05d1f51ad9270ddfaab126a24d5c5ff482e9a3b3f80703c28822666f47e106",
+    "lines": 79,
     "read_ranges": [
       [
         1,
-        62
+        79
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T22:10:05.662466+00:00",
-    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
+    "checked_at_utc": "2026-10-09T21:25:25.269816+00:00",
+    "method": "Full 79-line current component and complete own parent-copy diff read; synthetic browser verifies parent vykání and unchanged student wording. No submissions or external service calls."
   },
   "frontend/src/components/BetaEnrollment.jsx": {
     "sha256": "1859ba554d8ce99375dfac644fe8cc5decd9498e6e16778440d1ecdacd2873fa",
@@ -2545,7 +2545,7 @@
     "method": "Full current source read plus complete own redirect-fix diff; two targeted tests and synthetic confirmation component browser check. No production sign-in/mailbox acceptance claimed."
   },
   "frontend/src/pages/Login.jsx": {
-    "sha256": "73c3b908cfb3a4ea3461f9701bc67cf3428b50de586546d4192fb76af7ac04b0",
+    "sha256": "206f8774d11825a0ed1a083b610949b65b153d791ec3a429ded4258b4b344670",
     "lines": 251,
     "read_ranges": [
       [
@@ -2555,8 +2555,8 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T21:13:42.172292+00:00",
-    "method": "Full current source read plus complete own redirect-fix diff; two targeted tests and synthetic confirmation component browser check. No production sign-in/mailbox acceptance claimed."
+    "checked_at_utc": "2026-10-09T21:25:25.269816+00:00",
+    "method": "Full prior source plus complete own redirect-fix and released 9083ede newcomer-link diffs read. Two return-path tests and isolated confirmation component browser evidence; production sign-in remains separate."
   },
   "frontend/src/lib/internalReturnPath.js": {
     "sha256": "de5d8f9ae3953a95f8ecad9aa026c29d8c6b3a0abb5b4bc5f6c677deab20f17e",
@@ -2585,5 +2585,117 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-09T21:13:42.172292+00:00",
     "method": "Full current source read plus complete own redirect-fix diff; two targeted tests and synthetic confirmation component browser check. No production sign-in/mailbox acceptance claimed."
+  },
+  "frontend/src/pages/Legal.jsx": {
+    "sha256": "e7e8196c0310baede21e35116657ce4b0cf8c193f502aacff83b7da504014c27",
+    "lines": 377,
+    "read_ranges": [
+      [
+        1,
+        377
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:25:25.269816+00:00",
+    "method": "Full current source read in bounded, untruncated ranges on 9 October; released Phase 9 reviewed. Four beta/social-proof tests pass. Reading is not legal, production or full runtime approval."
+  },
+  "frontend/src/config/socialProof.js": {
+    "sha256": "70b47b86cd7b03a405aff53b98d66fac9aaccc231a66207a54c9a95752ec86a8",
+    "lines": 36,
+    "read_ranges": [
+      [
+        1,
+        36
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:25:25.269816+00:00",
+    "method": "Full current source read in bounded, untruncated ranges on 9 October; released Phase 9 reviewed. Four beta/social-proof tests pass. Reading is not legal, production or full runtime approval."
+  },
+  "lib/betaClosing.js": {
+    "sha256": "cda2ed54b44fd8615892425697e11d232951b51c1d5a7afd801c32a17e19ba2f",
+    "lines": 48,
+    "read_ranges": [
+      [
+        1,
+        48
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:25:25.269816+00:00",
+    "method": "Full current source read in bounded, untruncated ranges on 9 October; released Phase 9 reviewed. Four beta/social-proof tests pass. Reading is not legal, production or full runtime approval."
+  },
+  "frontend/src/lib/betaReviewApi.js": {
+    "sha256": "89331eaa1c01ad4f756bb2d38e94c66eba5ffd85eb5869f9a0e76884aecb4a9c",
+    "lines": 21,
+    "read_ranges": [
+      [
+        1,
+        21
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:25:25.269816+00:00",
+    "method": "Full current source read in bounded, untruncated ranges on 9 October; released Phase 9 reviewed. Four beta/social-proof tests pass. Reading is not legal, production or full runtime approval."
+  },
+  "frontend/src/components/schoolDetail/SectionNav.jsx": {
+    "sha256": "2938c55f38165c6d0d1e7c5aa0990d1ea352069d0f806d604d8d05fdc7d195fc",
+    "lines": 22,
+    "read_ranges": [
+      [
+        1,
+        22
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:25:25.269816+00:00",
+    "method": "Full current source read in bounded, untruncated ranges on 9 October; released Phase 9 reviewed. Four beta/social-proof tests pass. Reading is not legal, production or full runtime approval."
+  },
+  "frontend/src/components/schoolDetail/SchoolReviews.jsx": {
+    "sha256": "7bbd76455703a9a1e748b51535ed9f12f12d22e81fafc4597d46ea2d7d769f35",
+    "lines": 118,
+    "read_ranges": [
+      [
+        1,
+        118
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:25:25.269816+00:00",
+    "method": "Full current source read in bounded, untruncated ranges on 9 October; released Phase 9 reviewed. Four beta/social-proof tests pass. Reading is not legal, production or full runtime approval."
+  },
+  "tests/beta-closing.test.cjs": {
+    "sha256": "a0575e23b7b6405dee5d0d702773f2b62441cea69d34fed3890b9f08a7bd2d8e",
+    "lines": 35,
+    "read_ranges": [
+      [
+        1,
+        35
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:25:25.269816+00:00",
+    "method": "Full current source read in bounded, untruncated ranges on 9 October; released Phase 9 reviewed. Four beta/social-proof tests pass. Reading is not legal, production or full runtime approval."
+  },
+  "tests/social-proof.test.cjs": {
+    "sha256": "11f404d7662a7e3bb05102ee79399b92df38ce6e7e63c501fd6c741165d97c78",
+    "lines": 16,
+    "read_ranges": [
+      [
+        1,
+        16
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:25:25.269816+00:00",
+    "method": "Full current source read in bounded, untruncated ranges on 9 October; released Phase 9 reviewed. Four beta/social-proof tests pass. Reading is not legal, production or full runtime approval."
   }
 }

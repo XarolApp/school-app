@@ -37,7 +37,7 @@ export default function BetaClosingQuestionnaire({role,onDone,onCancel,reviewOnl
   const submit=async(withReview)=>{setBusy(true);onBusyChange?.(true);setError('');try{if(reviewOnly){await submitBetaReview(review);clearReview();onDone();}else{await submitBetaClosing({answers:{...a,prices:Object.fromEntries(Object.entries(a.prices).map(([k,v])=>[k,Number(v)]))},review:withReview?review:null});clearStep();clearA();clearReview();onDone();}}catch(e){setError(e.message);}finally{setBusy(false);onBusyChange?.(false);}};
   if (reviewOnly) return <div className="beta-closing">
     <p className="ss-eyebrow">Nepovinná recenze webu</p>
-    <p className="beta-closing-honest">{parent?'Odpovídejte upřímně':'Odpovídej upřímně'} — zveřejnění je nepovinné a rozhodneš o něm zvlášť.</p>
+    <p className="beta-closing-honest">{parent?'Odpovídejte upřímně — zveřejnění je nepovinné a rozhodnete o něm zvlášť.':'Odpovídej upřímně — zveřejnění je nepovinné a rozhodneš o něm zvlášť.'}</p>
     <ReviewFields role={role} parent={parent} review={review} setReview={setReview} />
     {error&&<p role="alert">{error}</p>}
     <div className="beta-closing-actions"><ObButton variant="secondary" disabled={busy} onClick={onCancel}>Zpět ke zpětné vazbě</ObButton><ObButton disabled={busy || !review.stars || review.body.trim().length<10} onClick={()=>submit(true)}>{busy?'Ukládáme…':'Odeslat recenzi'}</ObButton></div>
