@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { ObScreen } from '../../../components/onboarding/ObKit';
 import {
   TRIAL_CHARGE_DAY_NUMBER,
@@ -29,8 +29,8 @@ import { Icon, PayCta, PayStepChrome } from './paywallKit';
  * a concrete date is what a person can put in a calendar.
  *
  * THE REMINDER BEAT IS RENDERED AS NOT PROMISED.
- * TRIAL_REMINDER_IMPLEMENTED is false — there is no e-mail system in this
- * codebase — so the step stays in the timeline (removing it would hide that
+ * TRIAL_REMINDER_IMPLEMENTED is false — the purchase reminder is not built,
+ * even though other mail paths exist — so the step stays in the timeline (removing it would hide that
  * billing arrives unannounced) but with a dashed marker and copy that says out
  * loud we do not promise it, and tells the user to note the date themselves.
  * When the flag flips, the marker fills in and the disclaimer disappears with
@@ -41,7 +41,7 @@ import { Icon, PayCta, PayStepChrome } from './paywallKit';
  * purely to unlock a trial is what pricing_research.md §4 flags as the
  * direction the Digital Fairness Act is moving against, and the audience here
  * is minors. Built as specified; this comment is the record that our own
- * research advises otherwise.
+ * research raises this concern; it does not establish the scope of current law.
  *
  * Source: design/paywall-multipage-extract4/{Zkusebni,WebZkusebni,ParentZkusebni}.
  */
@@ -50,6 +50,12 @@ function Zkusebni() {
   const parent = role === 'parent';
   const voice = parent ? 'parent' : 'student';
   const plan = getPlan(planId);
+
+  // Browser history or a direct route can reopen this screen after the plan
+  // changed. A monthly plan must never display the seasonal free-trial terms.
+  useEffect(() => {
+    if (!plan.hasTrial) goToStep('platba', { replace: true });
+  }, [plan.hasTrial, goToStep]);
 
   // Computed once per mount so the rail and the money box can never disagree
   // about the date, even across a midnight boundary.
@@ -60,6 +66,8 @@ function Zkusebni() {
       chargeLabel: formatCzDate(trialChargeDate(now)),
     };
   }, []);
+
+  if (!plan.hasTrial) return null;
 
   const chargeSuffix =
     plan.billing === 'one_time' ? 'jednou' : `a pak každý ${plan.periodLabel}`;
@@ -111,8 +119,8 @@ function Zkusebni() {
                     {parent ? 'Odemknete celou aplikaci' : 'Odemkneš celou aplikaci'} — 0 Kč
                   </strong>
                   <span className="ob-pw-rail-detail">
-                    Všechny školy, vysvětlení u každé, srovnání vedle sebe. Kartu potřebujeme jen
-                    pro ověření — dnes se z ní nestrhne nic.
+                    Všechny školy, vysvětlení u každé, srovnání vedle sebe. Kartu pro budoucí
+                    platbu uloží Stripe — dnes se z ní nestrhne nic.
                   </span>
                 </div>
               </li>

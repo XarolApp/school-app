@@ -291,7 +291,7 @@ function Platba() {
                 {plan.hasTrial && (
                   <li>
                     <Icon.check size={14} className="ob-pw-ic is-ok" />
-                    <span>Karta jen ověřuje — nic se nestrhne dřív než {chargeLabel}.</span>
+                    <span>Stripe uloží kartu pro pozdější platbu.</span>
                   </li>
                 )}
                 <li>

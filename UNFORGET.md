@@ -1676,3 +1676,8 @@ Confirmed score/weight, historical-admission, commute and local/account-storage 
 - C23's unverified “payment received”/paid-parent labels, Stripe-information claim and parent beta-preview voice/summary wording are corrected. Actual-component synthetic desktop/phone checks verify local free-preview completion; checkout/polling/sharing handlers and pricing calculations are unchanged.
 - P01–P08, P04 calendar/delayed-charge boundaries and C02/C15 account/token ownership remain open. Preserve the statutory 14-day Terms summary and implemented wider 30-day withdrawal benefit; legal/commercial calendar approval is still required before real billing.
 - Evidence and acceptance tasks: [current report](reports/deployment-review-2026-10-07/REPORT.md), [handoff](reports/deployment-review-2026-10-07/HANDOFF-PLAN.md).
+
+## Trial, keyboard and calculation-loading review — 10 October 2026
+- C24: fixed monthly selection falsely showing seasonal trial terms; C25: fixed Plan custom-radio arrow selection/focus and Tab stop. Actual-component browser checks and lint/build pass. Full router/beta/Stripe acceptance remains open.
+- C26 deferred: calculation timers display all tasks as complete while school data is still loading. Reproduced with an empty, pending catalogue in the actual component. Reconcile truthful progress/pending/error/retry behavior and reduced-motion delay without changing matching.
+- Complete same-pattern custom-radio keyboard checks in Search/BetaReward and the remaining full source reads; preserve C06/FE-10 evidence questions and the paid-launch lifecycle/calendar gates. [Handoff](reports/deployment-review-2026-10-07/HANDOFF-PLAN.md).

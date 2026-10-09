@@ -61,7 +61,7 @@ const UNLOCKS = {
     'Celé pořadí pražských středních škol podle shody s vaším dítětem',
     'U každé školy rozepsané odůvodnění, ne jen číslo',
     'Porovnání škol vedle sebe',
-    'Přehled ke stažení, se kterým se dá jít na dny otevřených dveří',
+    'Přehled k vytištění, se kterým se dá jít na dny otevřených dveří',
   ],
 };
 
@@ -91,11 +91,11 @@ const reassuranceFor = (plan) => [
   plan.hasTrial
     ? 'Dnes se z karty nestrhne nic. Ukážeme přesné datum první platby.'
     : `Dnes se strhne ${formatCzk(plan.priceCzk)} za první měsíc.`,
-  'Platební údaje nevidíme ani neukládáme.',
+  'Celé číslo karty zpracovává Stripe; v aplikaci ho neukládáme.',
   'Ceny jsou konečné. Žádné skryté poplatky.',
 ];
 
-function PlanCard({ plan, selected, onSelect, voice, savings }) {
+function PlanCard({ plan, selected, onSelect, onKeyDown, voice, savings }) {
   const perDay = perDayCzk(plan);
   const cancellation = cancellationTerms(plan, voice);
   const showBadge = plan.recommended && savings.percent > 0;
@@ -105,8 +105,10 @@ function PlanCard({ plan, selected, onSelect, voice, savings }) {
       type="button"
       className={`ob-pw-plan${selected ? ' is-selected' : ''}`}
       onClick={onSelect}
+      onKeyDown={onKeyDown}
       role="radio"
       aria-checked={selected}
+      tabIndex={selected ? 0 : -1}
     >
       {showBadge && (
         <span className="ob-pw-plan-badge">
@@ -189,6 +191,15 @@ function Plan() {
   // that is what this branch of the flow actually contains.
   const onContinue = () => (plan.hasTrial ? goNext() : goToStep('platba'));
 
+  const onPlanKeyDown = (event, index) => {
+    const delta = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[event.key];
+    if (!delta) return;
+    event.preventDefault();
+    const next = (index + delta + PLANS.length) % PLANS.length;
+    setPlanId(PLANS[next].id);
+    event.currentTarget.parentElement.querySelectorAll('[role="radio"]')[next]?.focus();
+  };
+
   return (
     <ObScreen chrome={false} wide>
       <div className="ob-pw">
@@ -242,7 +253,7 @@ function Plan() {
 
           <div className="ob-pw-side ob-pw-buybox">
             <div className="ob-pw-plans" role="radiogroup" aria-label="Varianty přístupu">
-              {PLANS.map((p) => (
+              {PLANS.map((p, index) => (
                 <PlanCard
                   key={p.id}
                   plan={p}
@@ -250,6 +261,7 @@ function Plan() {
                   savings={savings}
                   selected={p.id === plan.id}
                   onSelect={() => setPlanId(p.id)}
+                  onKeyDown={(event) => onPlanKeyDown(event, index)}
                 />
               ))}
             </div>

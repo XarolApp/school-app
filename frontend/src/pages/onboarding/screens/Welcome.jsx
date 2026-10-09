@@ -13,13 +13,13 @@ import { QUIZ_MINUTES } from '../../../config/facts';
  *
  * "You've come to the right place" opener (§2.3 Pillar 1.1): frame the problem
  * and the solution inside the first three screens, because confusion kills
- * conversion. Role is unknown here, so the copy is written to work for both a
- * teenager and a parent — no tykání, no vykání, no assumptions.
+ * conversion. Before the role fork, the current welcome copy uses student
+ * voice. Subsequent screens adapt to the selected student/parent role.
  *
  * Redesigned 2026-09-27: the empty photo slot is gone. The product itself is
  * the visual — a live phone loop in the desktop side panel (the split-screen
  * signup pattern Buffer, Supabase and SchoolAI ship), and on phones a compact
- * preview of 223 schools narrowing to a short list, from real counts.
+ * preview narrowing the loaded visible catalogue to a short list, from real counts.
  *
  * There is no user count in the headline because there is no honest number to
  * put there yet (see config/socialProof.js).

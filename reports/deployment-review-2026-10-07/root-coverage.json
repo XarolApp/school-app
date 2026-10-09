@@ -208,7 +208,8 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:23:06.563257+00:00"
+    "checked_at_utc": "2026-10-09T22:40:12.068633+00:00",
+    "method": "Full current files read in bounded complete ranges. Initial read hashes checked against 9183339 and unchanged source. All own edits/diffs inspected; current UNFORGET 25-line peer addition read completely. Full baseline hashes verified for docs. Browser screen/branch/keyboard checks are not full router, real-device or Stripe acceptance."
   },
   "frontend/src/components/onboarding/TopMatchCard.jsx": {
     "sha256": "677a209b8ed21def7b2379b6c3df24da2e74c7dc6becd8278ccf199a924fcbf3",
@@ -473,18 +474,18 @@
     "deferred_note": "Shared-checkout source changed during continuation; saved read hash/ranges are historical, pending current-source re-review."
   },
   "frontend/src/pages/onboarding/screens/Activated.jsx": {
-    "sha256": "65e243af2da57d89a79814a49ff6c5cb5a43169c8e3030afec48b118b9482476",
-    "lines": 120,
+    "sha256": "2d5bac975c980bda23520d9772310eec5a4767cc633dfac1d35eccfbc1a3162c",
+    "lines": 131,
     "read_ranges": [
       [
         1,
-        120
+        131
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:36:06.930963+00:00",
-    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+    "checked_at_utc": "2026-10-09T22:40:12.068633+00:00",
+    "method": "Full current files read in bounded complete ranges. Initial read hashes checked against 9183339 and unchanged source. All own edits/diffs inspected; current UNFORGET 25-line peer addition read completely. Full baseline hashes verified for docs. Browser screen/branch/keyboard checks are not full router, real-device or Stripe acceptance."
   },
   "frontend/src/pages/onboarding/screens/Commitment.jsx": {
     "sha256": "f980b694e4e8a1d0df44efc56f07382a4b53d90276f5263bb6c748654f5b6c69",
@@ -501,18 +502,18 @@
     "method": "Full source read; earlier full read plus complete current diff review where applicable. Read coverage does not imply defect-free or full runtime verification."
   },
   "frontend/src/pages/onboarding/screens/RoleFork.jsx": {
-    "sha256": "1d107d89494e108ff716c2d74b4fc2611f092c1cd3c73048ddbfa7cab67809c6",
-    "lines": 113,
+    "sha256": "8c47052f1a13146154194104eb7bf0ab577ea61e4602848c7d42e54bf76b32da",
+    "lines": 138,
     "read_ranges": [
       [
         1,
-        113
+        138
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:36:06.931433+00:00",
-    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+    "checked_at_utc": "2026-10-09T22:40:12.068633+00:00",
+    "method": "Full current files read in bounded complete ranges. Initial read hashes checked against 9183339 and unchanged source. All own edits/diffs inspected; current UNFORGET 25-line peer addition read completely. Full baseline hashes verified for docs. Browser screen/branch/keyboard checks are not full router, real-device or Stripe acceptance."
   },
   "frontend/src/pages/onboarding/screens/SocialProof.jsx": {
     "sha256": "fc0705048e5f9c670a1a8e736c6d0eef7284afdefa9ad9f51424388e70aecf55",
@@ -543,7 +544,7 @@
     "method": "Full source read; earlier full read plus complete current diff review where applicable. Read coverage does not imply defect-free or full runtime verification."
   },
   "frontend/src/pages/onboarding/screens/Welcome.jsx": {
-    "sha256": "70fa5925e41ce185404d514f57c93b2680cacdb8544da3cf2ac9d54a94737855",
+    "sha256": "d0983dec46c05d39f5759f3987b6b5569c37ccda5a0494208f7fd5a54caac638",
     "lines": 95,
     "read_ranges": [
       [
@@ -553,8 +554,8 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:36:06.931963+00:00",
-    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+    "checked_at_utc": "2026-10-09T22:40:12.068633+00:00",
+    "method": "Full current files read in bounded complete ranges. Initial read hashes checked against 9183339 and unchanged source. All own edits/diffs inspected; current UNFORGET 25-line peer addition read completely. Full baseline hashes verified for docs. Browser screen/branch/keyboard checks are not full router, real-device or Stripe acceptance."
   },
   "frontend/src/pages/onboarding/screens/paywallKit.jsx": {
     "sha256": "81158ec32805e3ce19728d3ad3efeca1a1c3d270192ae6a1e5078339d51353a7",
@@ -595,8 +596,8 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:36:06.932571+00:00",
-    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+    "checked_at_utc": "2026-10-09T22:40:12.068633+00:00",
+    "method": "Full current files read in bounded complete ranges. Initial read hashes checked against 9183339 and unchanged source. All own edits/diffs inspected; current UNFORGET 25-line peer addition read completely. Full baseline hashes verified for docs. Browser screen/branch/keyboard checks are not full router, real-device or Stripe acceptance."
   },
   "frontend/src/lib/betaRankings.js": {
     "sha256": "86283be964c6ad031ae95e95a3a475fe9a3d4f604431360cbaadef5449fd5b99",
@@ -1035,18 +1036,18 @@
     "method": "Full source read; previous full stylesheet/source read plus complete current diff review where applicable. Read coverage does not imply defect-free or complete runtime verification."
   },
   "frontend/src/pages/onboarding/screens/Cesta.jsx": {
-    "sha256": "d7c270c4e6d12f6936a9cd3e71de56ed9601f50d9ab5f45f9b6c81431c108121",
-    "lines": 175,
+    "sha256": "d892fd4843c26476a57d80318846934889bc1120c0ef4e5fa9de2a8cd5db6fd4",
+    "lines": 177,
     "read_ranges": [
       [
         1,
-        175
+        177
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:17:25.704967+00:00",
-    "method": "Full source read; previous full stylesheet/source read plus complete current diff review where applicable. Read coverage does not imply defect-free or complete runtime verification."
+    "checked_at_utc": "2026-10-09T22:40:12.068633+00:00",
+    "method": "Full current files read in bounded complete ranges. Initial read hashes checked against 9183339 and unchanged source. All own edits/diffs inspected; current UNFORGET 25-line peer addition read completely. Full baseline hashes verified for docs. Browser screen/branch/keyboard checks are not full router, real-device or Stripe acceptance."
   },
   "docs/legal-research/08-fines-enforcement.md": {
     "sha256": "4c0f804caf0e1f1179b66b70f1d91109bae01cc7f31b291d9621787ca0e5c3bc",
@@ -1371,32 +1372,32 @@
     "method": "Full source read across recorded continuation turns, including missing middleware/brainstorm ranges and complete authored diffs. Read means inspected, not defect-free or runtime-approved."
   },
   "reports/deployment-review-2026-10-07/REPORT.md": {
-    "sha256": "3119d4181aac2e7143abb3d969a1eb372afa9676e7b5c602ac597b37b69d2551",
-    "lines": 100,
+    "sha256": "3ae22283e30447ccc5177139c92e31a35c9e5829e714d0549494cbdc97b7e3da",
+    "lines": 102,
     "read_ranges": [
       [
         1,
-        100
+        102
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T22:07:47.125587+00:00",
-    "method": "Full current source read in bounded complete ranges, truncated ranges reread; own full diff inspected. Current guide/report/UNFORGET baselines verified against saved full-read hash plus every own edit. Pricing runtime and checkout/polling/sharing handler equality verified. Source read is not Stripe, PostgreSQL, account or deployment acceptance."
+    "checked_at_utc": "2026-10-09T22:40:12.068633+00:00",
+    "method": "Full current files read in bounded complete ranges. Initial read hashes checked against 9183339 and unchanged source. All own edits/diffs inspected; current UNFORGET 25-line peer addition read completely. Full baseline hashes verified for docs. Browser screen/branch/keyboard checks are not full router, real-device or Stripe acceptance."
   },
   "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md": {
-    "sha256": "20560c5c55d64b7c9d4a48ec8afc10ca173ffcace1d9e5f603cfd951401006c0",
-    "lines": 118,
+    "sha256": "0239ec4cccea52b0b3cbb9daed512a9fac7e1b115b655ddc45c07c290fd88d22",
+    "lines": 120,
     "read_ranges": [
       [
         1,
-        118
+        120
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T22:07:47.125587+00:00",
-    "method": "Full current source read in bounded complete ranges, truncated ranges reread; own full diff inspected. Current guide/report/UNFORGET baselines verified against saved full-read hash plus every own edit. Pricing runtime and checkout/polling/sharing handler equality verified. Source read is not Stripe, PostgreSQL, account or deployment acceptance."
+    "checked_at_utc": "2026-10-09T22:40:12.068633+00:00",
+    "method": "Full current files read in bounded complete ranges. Initial read hashes checked against 9183339 and unchanged source. All own edits/diffs inspected; current UNFORGET 25-line peer addition read completely. Full baseline hashes verified for docs. Browser screen/branch/keyboard checks are not full router, real-device or Stripe acceptance."
   },
   "reports/deployment-review-2026-10-07/script-findings.md": {
     "sha256": "67e42c93ea061f4892aa3494ed0063f009e3b03d2f238bb84d76efa1f0cbd0e7",
@@ -2113,18 +2114,18 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "3816219a27a6c78814a3e172b737ac0e5e100b4151f88f420df31384b85579f8",
-    "lines": 1616,
+    "sha256": "05f32f180a3875a18e6fe9f9b9bccf17c4edb6d0baa47bb2aa1c00ec713cf467",
+    "lines": 1683,
     "read_ranges": [
       [
         1,
-        1616
+        1683
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T22:07:47.125587+00:00",
-    "method": "Full current source read in bounded complete ranges, truncated ranges reread; own full diff inspected. Current guide/report/UNFORGET baselines verified against saved full-read hash plus every own edit. Pricing runtime and checkout/polling/sharing handler equality verified. Source read is not Stripe, PostgreSQL, account or deployment acceptance."
+    "checked_at_utc": "2026-10-09T22:40:12.068633+00:00",
+    "method": "Full current files read in bounded complete ranges. Initial read hashes checked against 9183339 and unchanged source. All own edits/diffs inspected; current UNFORGET 25-line peer addition read completely. Full baseline hashes verified for docs. Browser screen/branch/keyboard checks are not full router, real-device or Stripe acceptance."
   },
   "frontend/src/api.js": {
     "sha256": "2e60c1cacdcddfe855eae350da4a77751375099e4614b76e31f3ed02146106d2",
@@ -3025,18 +3026,18 @@
     "method": "Full current source read in complete bounded ranges (including previous-turn api.js 1-180/181-360/361-end and tokens.js 1-150/151-end); all subsequent own narrow diffs inspected. App/ProtectedRoute reread after bc1f826. Read is not runtime/service or legal acceptance."
   },
   "reports/deployment-review-2026-10-07/continuation-findings.md": {
-    "sha256": "ccd7dcade78cd2358651ddc6bd530bd057fe7fef23f31f7fd101b5b89b98b52c",
-    "lines": 202,
+    "sha256": "be3c02b5ed04343e0d9d2e19443f44549dd97ea3a399275a0cb704f4d488d916",
+    "lines": 216,
     "read_ranges": [
       [
         1,
-        202
+        216
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T22:07:47.125587+00:00",
-    "method": "Full current source read in bounded complete ranges, truncated ranges reread; own full diff inspected. Current guide/report/UNFORGET baselines verified against saved full-read hash plus every own edit. Pricing runtime and checkout/polling/sharing handler equality verified. Source read is not Stripe, PostgreSQL, account or deployment acceptance."
+    "checked_at_utc": "2026-10-09T22:40:12.068633+00:00",
+    "method": "Full current files read in bounded complete ranges. Initial read hashes checked against 9183339 and unchanged source. All own edits/diffs inspected; current UNFORGET 25-line peer addition read completely. Full baseline hashes verified for docs. Browser screen/branch/keyboard checks are not full router, real-device or Stripe acceptance."
   },
   "frontend/src/components/schoolDetail/SimilarSchools.jsx": {
     "sha256": "30490c3d420119d7e6754521ded1e7a7a9d32d53d2f53cb58666cfee50fee9ec",
@@ -3109,7 +3110,7 @@
     "method": "Full current source read without truncation; SchoolActions in 1-145/146-end; QuizQuestion full read plus own df6b680 diff (omitted from preceding ledger update, now recorded). Reproduction uses the actual callback and synthetic state, not full React/browser or live-service acceptance."
   },
   "frontend/src/pages/onboarding/screens/Platba.jsx": {
-    "sha256": "d444060dd51a9c444eff764133259be44052d503bd7b8bd32eaa70031408b407",
+    "sha256": "d66ccee803aee8c23d9acf1eaf189b4f4998551997d9e955a45877de352cc00f",
     "lines": 316,
     "read_ranges": [
       [
@@ -3119,8 +3120,8 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T22:07:47.125587+00:00",
-    "method": "Full current source read in bounded complete ranges, truncated ranges reread; own full diff inspected. Current guide/report/UNFORGET baselines verified against saved full-read hash plus every own edit. Pricing runtime and checkout/polling/sharing handler equality verified. Source read is not Stripe, PostgreSQL, account or deployment acceptance."
+    "checked_at_utc": "2026-10-09T22:40:12.068633+00:00",
+    "method": "Full current files read in bounded complete ranges. Initial read hashes checked against 9183339 and unchanged source. All own edits/diffs inspected; current UNFORGET 25-line peer addition read completely. Full baseline hashes verified for docs. Browser screen/branch/keyboard checks are not full router, real-device or Stripe acceptance."
   },
   "frontend/src/pages/SubscriptionExpired.jsx": {
     "sha256": "473993425ea65d3f7cb92ccfe704e2799a9165a7824e608978d03cd6d6890059",
@@ -3149,5 +3150,61 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-09T22:07:47.125587+00:00",
     "method": "Full current source read in bounded complete ranges, truncated ranges reread; own full diff inspected. Current guide/report/UNFORGET baselines verified against saved full-read hash plus every own edit. Pricing runtime and checkout/polling/sharing handler equality verified. Source read is not Stripe, PostgreSQL, account or deployment acceptance."
+  },
+  "frontend/src/pages/onboarding/screens/Hodnota.jsx": {
+    "sha256": "9bf3ecbe973911a8f14f2f76ca5f8b4f45e340d9c4df4fdb8b3535e4b02cc6b4",
+    "lines": 169,
+    "read_ranges": [
+      [
+        1,
+        169
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T22:40:12.068633+00:00",
+    "method": "Full current files read in bounded complete ranges. Initial read hashes checked against 9183339 and unchanged source. All own edits/diffs inspected; current UNFORGET 25-line peer addition read completely. Full baseline hashes verified for docs. Browser screen/branch/keyboard checks are not full router, real-device or Stripe acceptance."
+  },
+  "frontend/src/pages/onboarding/screens/Plan.jsx": {
+    "sha256": "ba0b8eb2e4a7206b09fa59a38ab5b7bf669e6567272b697746ea107911bb924d",
+    "lines": 317,
+    "read_ranges": [
+      [
+        1,
+        317
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T22:40:12.068633+00:00",
+    "method": "Full current files read in bounded complete ranges. Initial read hashes checked against 9183339 and unchanged source. All own edits/diffs inspected; current UNFORGET 25-line peer addition read completely. Full baseline hashes verified for docs. Browser screen/branch/keyboard checks are not full router, real-device or Stripe acceptance."
+  },
+  "frontend/src/pages/onboarding/screens/Zkusebni.jsx": {
+    "sha256": "b90f79e87c3767c6dd6f952f924920c83250f17f8a08c002c802d810e8ca7927",
+    "lines": 227,
+    "read_ranges": [
+      [
+        1,
+        227
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T22:40:12.068633+00:00",
+    "method": "Full current files read in bounded complete ranges. Initial read hashes checked against 9183339 and unchanged source. All own edits/diffs inspected; current UNFORGET 25-line peer addition read completely. Full baseline hashes verified for docs. Browser screen/branch/keyboard checks are not full router, real-device or Stripe acceptance."
+  },
+  "frontend/src/pages/onboarding/screens/Calculating.jsx": {
+    "sha256": "264cb022106921a4276acab6f04ee796bf55261e0bb75b6c50568b596e86596d",
+    "lines": 125,
+    "read_ranges": [
+      [
+        1,
+        125
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T22:40:12.068633+00:00",
+    "method": "Full current files read in bounded complete ranges. Initial read hashes checked against 9183339 and unchanged source. All own edits/diffs inspected; current UNFORGET 25-line peer addition read completely. Full baseline hashes verified for docs. Browser screen/branch/keyboard checks are not full router, real-device or Stripe acceptance."
   }
 }

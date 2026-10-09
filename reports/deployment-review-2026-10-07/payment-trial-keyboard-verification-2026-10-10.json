@@ -1,0 +1,26 @@
+{
+  "checked_at_utc": "2026-10-09T22:40:12.068633+00:00",
+  "scope": "Actual Plan/Zkusebni/Platba/Calculating with synthetic onboarding/auth/API; no external operation. Fixture navigation callback mounts actual Platba; not the complete app router.",
+  "monthly_trial_before": "0 Kč today; 249 Kč after 3 days",
+  "monthly_trial_after": "no false trial render; existing platba navigation; actual Platba 249 Kč today",
+  "season_after": "0 Kč today; 690 Kč scheduled, saved-card copy accurate",
+  "keyboard_before": "ArrowRight left season selected; both radios tabbable",
+  "keyboard_after": "Right selects/focuses monthly; Down wraps to season; Up wraps to monthly; Tab moves to CTA; selected tabindex=0, other=-1",
+  "calculating_deferred": "schoolsLoading=true, schools=[]; all three timed labels finish while navigation remains waiting",
+  "lint": "pass, 0 errors, 11 existing warnings",
+  "build": "pass, existing large chunks",
+  "prices_dates_checkout": "unchanged; no-trial guard and selection keyboard behavior are the only runtime changes",
+  "sources": {
+    "frontend/src/pages/onboarding/screens/Hodnota.jsx": "9bf3ecbe973911a8f14f2f76ca5f8b4f45e340d9c4df4fdb8b3535e4b02cc6b4",
+    "frontend/src/pages/onboarding/screens/Cesta.jsx": "d892fd4843c26476a57d80318846934889bc1120c0ef4e5fa9de2a8cd5db6fd4",
+    "frontend/src/pages/onboarding/screens/Plan.jsx": "ba0b8eb2e4a7206b09fa59a38ab5b7bf669e6567272b697746ea107911bb924d",
+    "frontend/src/pages/onboarding/screens/Zkusebni.jsx": "b90f79e87c3767c6dd6f952f924920c83250f17f8a08c002c802d810e8ca7927",
+    "frontend/src/pages/onboarding/screens/Activated.jsx": "2d5bac975c980bda23520d9772310eec5a4767cc633dfac1d35eccfbc1a3162c",
+    "frontend/src/pages/onboarding/screens/Calculating.jsx": "264cb022106921a4276acab6f04ee796bf55261e0bb75b6c50568b596e86596d",
+    "frontend/src/pages/onboarding/screens/RoleFork.jsx": "8c47052f1a13146154194104eb7bf0ab577ea61e4602848c7d42e54bf76b32da",
+    "frontend/src/pages/onboarding/screens/Welcome.jsx": "d0983dec46c05d39f5759f3987b6b5569c37ccda5a0494208f7fd5a54caac638",
+    "frontend/src/pages/onboarding/screens/Platba.jsx": "d66ccee803aee8c23d9acf1eaf189b4f4998551997d9e955a45877de352cc00f",
+    "frontend/src/components/onboarding/MatchPreview.jsx": "aabf3610df20a6b45652d356a2d17c994de3428629002e441a9f86efec2f54a0",
+    "frontend/src/config/facts.js": "b8a7cd4357395ff2054a19377d760e81305dcaddf202a23fe77d96c82b43bd6e"
+  }
+}
