@@ -395,6 +395,11 @@ function Settings() {
     setBusy(true);
     try {
       await deleteAccount();
+      // Half-written answers and drafts live in this tab's sessionStorage; on a
+      // shared school computer they must not outlive the account.
+      try {
+        Object.keys(sessionStorage).filter((k) => k.startsWith('snm.')).forEach((k) => sessionStorage.removeItem(k));
+      } catch { /* storage unavailable: nothing to clear */ }
       await signOut();
       navigate('/', { replace: true });
     } catch (err) {
@@ -1160,8 +1165,9 @@ function Settings() {
           <div className="settings-section-head">
             <h2 className="settings-section-title">Smazat účet</h2>
             <p className="settings-section-text">
-              Trvale odstraní tvůj účet, uložené oblíbené školy i případné
-              předplatné. Tohle nejde vzít zpět.
+              Trvale odstraní tvůj účet i všechno, co k němu patří: odpovědi v
+              dotazníku, uložené školy, přihlášku, poznámky, zpětné vazby,
+              recenze a případné předplatné. Tohle nejde vzít zpět.
             </p>
           </div>
 

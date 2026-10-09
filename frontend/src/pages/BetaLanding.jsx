@@ -69,7 +69,8 @@ function BetaLanding() {
     if (lookupState !== 'ready' || !isSignedIn || loading || profileLoading || profileError) return;
     if (!emailConfirmed) return;
     if (!isTester) return;
-    navigate(hasAccess ? '/skoly' : '/predplatne', { replace: true });
+    // A tester's first step is the questionnaire: everything else builds on its result.
+    navigate(hasAccess ? '/dotaznik' : '/predplatne', { replace: true });
   }, [lookupState, isSignedIn, loading, profileLoading, profileError, emailConfirmed, isTester, hasAccess, navigate]);
 
   const deadline = dateLabel(school?.programEndsAt);

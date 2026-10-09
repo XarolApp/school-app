@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Check, MousePointer2, SquareMousePointer, MessageSquare } from 'lucide-react';
 import { ObButton } from './onboarding/ObKit';
 import BetaEnrollment from './BetaEnrollment';
@@ -105,6 +105,7 @@ export default function BetaInstructions({ beta, hours = 48, onDone, onRefresh, 
   // Kept per tab: a reload on step 3 must not send the tester back to step 1.
   const [step, setStep, clearStep] = useDraft('snm.beta.guide.step', 0);
   const gender = useGender();
+  const navigate = useNavigate();
   const parent = beta?.role === 'rodic' || beta?.role === 'ucitel';
   if (!beta) return <p role="status">Načítám testování…</p>;
   if (!beta.consent_tracking_at) return <Enrollment beta={beta} onRefresh={onRefresh} />;
@@ -135,12 +136,15 @@ export default function BetaInstructions({ beta, hours = 48, onDone, onRefresh, 
     ['Jak testování funguje', <>{g.rules}{checklist}</>],
   ];
   const last = step === steps.length - 1;
+  // First step of testing is the questionnaire; once it is done the last
+  // button just closes the guide.
+  const startWithQuestionnaire = !beta.checklist?.dotaznik;
   return <div className="beta-instructions">
     <p className="eyebrow">Pokyny · {step + 1} ze {steps.length}</p>
     <h3 className="ss-headline-md">{steps[step][0]}</h3>
     <div className="beta-guide-body">{steps[step][1]}</div>
     <div className="ss-dialog-actions">{step > 0 && <ObButton variant="secondary" onClick={() => setStep(step - 1)}>Zpět</ObButton>}
-      <ObButton disabled={busy} onClick={() => { if (last) { clearStep(); onDone(); } else setStep(step + 1); }}>{last ? 'Začít testovat' : 'Pokračovat'}</ObButton>
+      <ObButton disabled={busy} onClick={() => { if (last) { clearStep(); onDone(); if (startWithQuestionnaire) navigate('/dotaznik'); } else setStep(step + 1); }}>{last ? (startWithQuestionnaire ? 'Začít dotazníkem' : 'Začít testovat') : 'Pokračovat'}</ObButton>
     </div>
   </div>;
 }
