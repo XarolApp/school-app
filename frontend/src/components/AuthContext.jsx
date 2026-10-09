@@ -248,7 +248,7 @@ export function AuthProvider({ children }) {
   const signUp = async (email, password, name, { captchaToken, emailRedirectTo, betaSchoolCode, betaRole, betaRoleNote, betaNoticeAccepted } = {}) => {
     const requestedBetaCode = betaSchoolCode ?? import.meta.env.VITE_BETA_SCHOOL_CODE;
     const normalizedBetaCode = requestedBetaCode ? normalizeBetaCode(requestedBetaCode) : null;
-    if (requestedBetaCode && !normalizedBetaCode) return { error: 'Pozvánka školy není platná.' };
+    if (requestedBetaCode && !normalizedBetaCode) return { error: 'Přístupový kód neplatí.' };
     if (normalizedBetaCode && (!['8','9','rodic','ucitel','jine'].includes(betaRole) || betaNoticeAccepted !== true)) {
       return { error: 'Vyber prosím roli a potvrď seznámení s beta testováním.' };
     }
@@ -326,7 +326,7 @@ export function AuthProvider({ children }) {
   const resendConfirmation = async (email, { captchaToken, betaSchoolCode, emailRedirectTo } = {}) => {
     const requestedBetaCode = betaSchoolCode ?? import.meta.env.VITE_BETA_SCHOOL_CODE;
     const normalizedBetaCode = requestedBetaCode ? normalizeBetaCode(requestedBetaCode) : null;
-    if (requestedBetaCode && !normalizedBetaCode) return { error: 'Pozvánka školy není platná.' };
+    if (requestedBetaCode && !normalizedBetaCode) return { error: 'Přístupový kód neplatí.' };
     const { error } = await supabase.auth.resend({
       type: 'signup',
       email,

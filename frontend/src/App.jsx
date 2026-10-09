@@ -6,7 +6,6 @@ import { ToastProvider } from './components/ToastContext';
 import BetaTools from './components/BetaTools';
 import BetaTracking from './components/BetaTracking';
 import ProtectedRoute from './components/ProtectedRoute';
-import Home from './pages/Home';
 // Default landing (3D map). three.js + GSAP load only on this route.
 const Landing = lazy(() => import('./pages/landing2/Landing'));
 const Admin = lazy(() => import('./pages/Admin'));
@@ -72,8 +71,13 @@ function App() {
             <Routes>
               {/* Onboarding sits OUTSIDE the Layout on purpose: the nav bar is a
                   distraction and an exit during a 23-screen narrative flow. */}
-              <Route path="/onboarding" element={<Navigate to="/onboarding/welcome" replace />} />
-              <Route path="/onboarding/:stepId" element={<OnboardingFlow />} />
+              {/* Closed beta: every app page needs a signed-in, confirmed account
+                  with access; signed-out visitors only see the landing, auth
+                  and legal pages. Server routes enforce the same rule. */}
+              <Route element={<ProtectedRoute />}>
+                <Route path="/onboarding" element={<Navigate to="/onboarding/welcome" replace />} />
+                <Route path="/onboarding/:stepId" element={<OnboardingFlow />} />
+              </Route>
               <Route path="/beta/:code" element={<BetaLanding />} />
               <Route path="/email-overen" element={<EmailConfirmed />} />
 
@@ -88,24 +92,18 @@ function App() {
               <Route path="/od-rodice/:token" element={<HandoffStart />} />
 
               <Route element={<Layout />}>
-                <Route path="/admin" element={<Suspense fallback={<LoadingSpinner label="Načítání přehledů…" />}><Admin /></Suspense>} />
                 {/* Variant B (3D map) is the default landing; the old one stays at /stara for comparison. */}
                 <Route path="/" element={<HomeEntry />} />
                 <Route path="/nova" element={<Navigate to="/" replace />} />
-                <Route path="/stara" element={<Home />} />
-                <Route path="/skoly" element={<Search />} />
+                <Route path="/stara" element={<Navigate to="/" replace />} />
                 <Route path="/ochrana-osobnich-udaju" element={<Privacy />} />
                 <Route path="/obchodni-podminky" element={<Terms />} />
-                <Route path="/skoly/:id" element={<SchoolDetail />} />
-
-                {/* /porovnani works signed out — the compare selection is
-                    localStorage (lib/searchPrefs.js) and /api/schools is
-                    ungated, so an anonymous visitor can compare. Only
-                    /prihlaska writes to the database, so it alone needs an
-                    account. See archive/plans/006-comparison-decision-tools.md §1.2. */}
-                <Route path="/porovnani" element={<Porovnani />} />
-                <Route path="/porovnani/matice" element={<Matice />} />
                 <Route element={<ProtectedRoute />}>
+                  <Route path="/admin" element={<Suspense fallback={<LoadingSpinner label="Načítání přehledů…" />}><Admin /></Suspense>} />
+                  <Route path="/skoly" element={<Search />} />
+                  <Route path="/skoly/:id" element={<SchoolDetail />} />
+                  <Route path="/porovnani" element={<Porovnani />} />
+                  <Route path="/porovnani/matice" element={<Matice />} />
                   <Route path="/prihlaska" element={<Prihlaska />} />
                   <Route path="/ulozene" element={<SavedSchools />} />
                   {/* The standalone AI questionnaire (server-side lib/questionnaire.js) —
@@ -121,7 +119,11 @@ function App() {
                 <Route path="/registrace" element={<SignUp />} />
                 <Route path="/zapomenute-heslo" element={<ForgotPassword />} />
                 <Route path="/nove-heslo" element={<ResetPassword />} />
-                <Route path="/predplatne" element={<SubscriptionExpired />} />
+                {/* Signed in but not necessarily with access: this is where
+                    ProtectedRoute sends a lapsed account. */}
+                <Route element={<ProtectedRoute requireAccess={false} />}>
+                  <Route path="/predplatne" element={<SubscriptionExpired />} />
+                </Route>
 
                 {/* Settings checks sign-in itself. Billing cancellation and
                     account erasure must stay available after access expires. */}

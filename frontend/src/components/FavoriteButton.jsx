@@ -49,7 +49,7 @@ function FavoriteButton({ schoolId, isFavorite, onChange, className = '' }) {
       toast(
         next
           ? 'Školu se nepodařilo uložit'
-          : 'Školu se nepodařilo odebrat z uložených',
+          : 'Školu se nepodařilo odebrat z oblíbených',
         { type: 'error' }
       );
     } finally {
@@ -65,8 +65,8 @@ function FavoriteButton({ schoolId, isFavorite, onChange, className = '' }) {
       onAnimationEnd={() => setPopping(false)}
       disabled={saving}
       aria-pressed={isFavorite}
-      aria-label={isFavorite ? 'Odebrat z uložených' : 'Uložit školu'}
-      title={isFavorite ? 'Odebrat z uložených' : 'Uložit školu'}
+      aria-label={isFavorite ? 'Odebrat z oblíbených' : 'Uložit školu k oblíbeným'}
+      title={isFavorite ? 'Odebrat z oblíbených' : 'Uložit školu k oblíbeným'}
       data-pop={popping ? '' : undefined}
     >
       <Bookmark size={18} fill={isFavorite ? 'currentColor' : 'none'} aria-hidden="true" />

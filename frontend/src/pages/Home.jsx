@@ -160,8 +160,8 @@ function Home() {
             dojedeš a jak se ti učí — a u každé proč.
           </p>
           <div className="ls-ctas">
-            <Link to={isSignedIn ? '/skoly' : '/onboarding'} className="btn btn-primary btn-lg">
-              {isSignedIn ? 'Projít databázi škol' : 'Začít dotazník zdarma'}
+            <Link to={isSignedIn ? '/skoly' : '/registrace'} className="btn btn-primary btn-lg">
+              {isSignedIn ? 'Projít databázi škol' : 'Registrace'}
             </Link>
             {!isSignedIn && (
               <Link to="/skoly" className="ls-textlink">
@@ -415,8 +415,8 @@ function Home() {
       {/* ---------- 13. final CTA ---------- */}
       <section className="ls-final" data-reveal>
         <h2 className="ls-final-title">Za tři minuty víš, kde začít hledat</h2>
-        <Link to={isSignedIn ? '/skoly' : '/onboarding'} className="btn btn-primary btn-lg">
-          {isSignedIn ? 'Projít databázi škol' : 'Začít dotazník zdarma'}
+        <Link to={isSignedIn ? '/skoly' : '/registrace'} className="btn btn-primary btn-lg">
+          {isSignedIn ? 'Projít databázi škol' : 'Registrace'}
         </Link>
         {!isSignedIn && <p className="ls-fineprint">Bez registrace · {QUESTION_COUNT} otázek · přeskočit můžeš cokoli</p>}
       </section>

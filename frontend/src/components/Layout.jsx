@@ -191,7 +191,7 @@ function Layout() {
                 </>
               ) : (
                 <div className="navbar-sheet-actions">
-                  <Link to="/onboarding" className="ss-btn ss-btn-primary">Začít dotazník</Link>
+                  <Link to="/registrace" className="ss-btn ss-btn-primary">Registrace</Link>
                   <Link to="/prihlaseni" className="ss-btn ss-btn-secondary">Přihlásit se</Link>
                 </div>
               )}
@@ -254,8 +254,8 @@ function Layout() {
                   <LogIn size={16} aria-hidden="true" />
                   Přihlásit se
                 </Link>
-                <Link to="/onboarding" className="navbar-cta">
-                  Začít dotazník
+                <Link to="/registrace" className="navbar-cta">
+                  Registrace
                   <ArrowRight size={16} aria-hidden="true" />
                 </Link>
               </>

@@ -486,7 +486,7 @@ app.get('/', (req, res) => {
 app.get('/api/beta/schools/:code', async (req, res) => {
   const code = String(req.params.code || '').trim().toUpperCase();
   if (!BETA_CODE_PATTERN.test(code)) {
-    return res.status(404).json({ error: 'Pozvánka neexistuje.', code: 'BETA_INVITE_NOT_FOUND' });
+    return res.status(404).json({ error: 'Přístupový kód neplatí.', code: 'BETA_INVITE_NOT_FOUND' });
   }
 
   const { data: school, error: schoolError } = await supabase
@@ -496,14 +496,14 @@ app.get('/api/beta/schools/:code', async (req, res) => {
     .single();
   if (schoolError || !school) {
     return res.status(schoolError?.code === 'PGRST116' ? 404 : 503).json({
-      error: schoolError?.code === 'PGRST116' ? 'Pozvánka neexistuje.' : 'Pozvánku se nepodařilo ověřit.',
+      error: schoolError?.code === 'PGRST116' ? 'Přístupový kód neplatí.' : 'Testovací přístup se nepodařilo ověřit.',
       code: schoolError?.code === 'PGRST116' ? 'BETA_INVITE_NOT_FOUND' : 'BETA_SETTINGS_UNAVAILABLE',
     });
   }
 
   const { data: settings, error: settingsError } = await readBetaSettings();
   if (settingsError || !settings) {
-    return res.status(503).json({ error: 'Pozvánku se nepodařilo ověřit.', code: 'BETA_SETTINGS_UNAVAILABLE' });
+    return res.status(503).json({ error: 'Testovací přístup se nepodařilo ověřit.', code: 'BETA_SETTINGS_UNAVAILABLE' });
   }
 
   res.set('Cache-Control', 'no-store');
@@ -613,7 +613,7 @@ app.post('/api/beta/events', betaEventsLimiter, async (req, res) => {
     const notice=await supabase.from('beta_profile').select('consent_tracking_at').eq('user_id',user.id).single();
     if (notice.error) return res.status(503).json({error:'Upozornění nelze ověřit.'});
     if (!notice.data?.consent_tracking_at) return res.status(403).json({error:'Nejdřív je potřeba potvrdit seznámení s beta testováním.'});
-  } else if (!ticket) return res.status(403).json({ error: 'Chybí beta pozvánka.' });
+  } else if (!ticket) return res.status(403).json({ error: 'Chybí testovací přístup.' });
   const settings = await readBetaSettings();
   if (settings.error) return res.status(503).json({ error: 'Testování nelze ověřit.' });
   if (!betaProgramState(settings.data).programActive) return res.status(410).json({ error: 'Testování skončilo.' });
@@ -2897,7 +2897,7 @@ function sanitizeReturnTo(returnTo) {
 
 app.post('/api/me/redeem-beta-code', requireAuth, (req, res) => {
   res.status(410).json({
-    error: 'Sdílené beta kódy už nefungují. Otevři osobní pozvánku od své školy.',
+    error: 'Tenhle způsob přístupu už nefunguje. Zaregistruj se na stredninamiru.cz.',
     code: 'BETA_INVITATION_LINK_REQUIRED',
   });
 });

@@ -186,7 +186,7 @@ function CreateAccount() {
     if (betaCode && betaState !== 'ready') {
       setError(betaState === 'closed'
         ? 'Beta program teď nové účty nepřijímá.'
-        : 'Školní pozvánku se nepodařilo ověřit. Účet teď nejde založit.');
+        : 'Testovací přístup se nepodařilo ověřit. Účet teď nejde založit.');
       return;
     }
 
@@ -198,7 +198,7 @@ function CreateAccount() {
         await startBetaVisit(betaCode, betaEnrollment.role, betaEnrollment.accepted);
       } catch {
         setBusy(false);
-        setError(parent ? 'Pozvánku se nepodařilo připravit. Zkuste to znovu.' : 'Pozvánku se nepodařilo připravit. Zkus to znovu.');
+        setError(parent ? 'Přístup se nepodařilo připravit. Zkuste to znovu.' : 'Přístup se nepodařilo připravit. Zkus to znovu.');
         return;
       }
     }
@@ -346,7 +346,7 @@ function CreateAccount() {
 
         {betaCode && <>
           <div className="notice">
-            <span className="notice-title">{betaSchool?.school_name || 'Školní beta testování'}</span>
+            <span className="notice-title">Testování Střední na míru</span>
             <p className="notice-text">Testování je zdarma výměnou za zpětnou vazbu. Platební kartu nepotřebuješ a beta účet nic nestrhne.</p>
           </div>
           <BetaEnrollment
@@ -358,9 +358,9 @@ function CreateAccount() {
             onRoleNote={(roleNote) => updateEnrollment({ roleNote })}
             onAccepted={(accepted) => updateEnrollment({ accepted })}
           />
-          {betaState === 'loading' && <p className="field-hint" role="status">Ověřuji školní pozvánku…</p>}
+          {betaState === 'loading' && <p className="field-hint" role="status">Ověřuji testovací přístup…</p>}
           {betaState === 'closed' && <p className="field-hint" role="status">Beta program teď nové účty nepřijímá.</p>}
-          {(betaState === 'invalid' || betaState === 'unavailable') && <p className="field-error" role="alert">Školní pozvánku se nepodařilo ověřit. Účet teď nejde založit.</p>}
+          {(betaState === 'invalid' || betaState === 'unavailable') && <p className="field-error" role="alert">Testovací přístup se nepodařilo ověřit. Účet teď nejde založit.</p>}
         </>}
 
         <div className="field">

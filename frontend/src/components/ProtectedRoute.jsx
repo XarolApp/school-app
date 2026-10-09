@@ -2,7 +2,7 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import { LoadingSpinner } from './PageSkeleton';
 
-function ProtectedRoute() {
+function ProtectedRoute({ requireAccess = true }) {
   const {
     loading,
     profileLoading,
@@ -62,7 +62,7 @@ function ProtectedRoute() {
     );
   }
 
-  if (!hasAccess) {
+  if (requireAccess && !hasAccess) {
     return (
       <Navigate
         to="/predplatne"

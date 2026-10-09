@@ -81,7 +81,7 @@ function BetaLanding() {
     const next = { ...enrollment, ...patch }; setEnrollment(next); saveBetaEnrollment(code, next);
   };
   const [starting,setStarting]=useState(false),[startError,setStartError]=useState(''),[showErrors,setShowErrors]=useState(false);
-  const continueSignup=async()=>{if(!betaEnrollmentComplete(enrollment)){setShowErrors(true);return;}setStarting(true);setStartError('');try{await startBetaVisit(code,enrollment.role,enrollment.accepted);navigate(`/registrace?beta=${encodeURIComponent(code)}`);}catch{setStartError(parent?'Pozvánku se nepodařilo připravit. Zkuste to znovu.':'Pozvánku se nepodařilo připravit. Zkus to znovu.');}finally{setStarting(false);}};
+  const continueSignup=async()=>{if(!betaEnrollmentComplete(enrollment)){setShowErrors(true);return;}setStarting(true);setStartError('');try{await startBetaVisit(code,enrollment.role,enrollment.accepted);navigate(`/registrace?beta=${encodeURIComponent(code)}`);}catch{setStartError(parent?'Přístup se nepodařilo připravit. Zkuste to znovu.':'Přístup se nepodařilo připravit. Zkus to znovu.');}finally{setStarting(false);}};
   const betaQuery = code ? `?beta=${encodeURIComponent(code)}` : '';
 
   return (
@@ -91,21 +91,21 @@ function BetaLanding() {
       <div className="auth-layout beta-landing">
         <div className="page-header beta-landing-header">
           <p className="eyebrow">Střední na míru · školní testování</p>
-          <h1>{school?.school_name || 'Pozvánka k testování'}</h1>
+          <h1>Testování Střední na míru</h1>
           <p className="lede">
             {parent?'Pomozte nám ověřit hledání středních škol a rozhodovací nástroje před spuštěním.':'Pomoz nám ověřit hledání středních škol a rozhodovací nástroje před spuštěním.'}
           </p>
         </div>
 
         {lookupState === 'loading' && (
-          <div className="panel panel-lg" role="status">Ověřuji školní pozvánku…</div>
+          <div className="panel panel-lg" role="status">Ověřuji testovací přístup…</div>
         )}
 
         {lookupState === 'invalid' && (
           <div className="panel panel-lg stack">
             <div className="notice notice-error" role="alert">
-              <span className="notice-title">Tato pozvánka neplatí</span>
-              <p className="notice-text">{parent?'Zkontrolujte odkaz nebo požádejte školu o novou pozvánku.':'Zkontroluj odkaz nebo požádej školu o novou pozvánku.'}</p>
+              <span className="notice-title">Přístupový kód neplatí</span>
+              <p className="notice-text">{parent?'Zkontrolujte kód v e-mailu od školy.':'Zkontroluj kód v e-mailu od školy.'}</p>
             </div>
             <Link className="btn btn-secondary btn-block" to="/">Zpět na úvodní stránku</Link>
           </div>
@@ -114,7 +114,7 @@ function BetaLanding() {
         {lookupState === 'unavailable' && (
           <div className="panel panel-lg stack">
             <div className="notice notice-error" role="alert">
-              <span className="notice-title">Pozvánku teď nejde ověřit</span>
+              <span className="notice-title">Přístup teď nejde ověřit</span>
               <p className="notice-text">{lookupError || (parent?'Zkuste to prosím za chvíli znovu.':'Zkus to prosím za chvíli znovu.')}</p>
             </div>
             <button type="button" className="btn btn-secondary btn-block" onClick={() => window.location.reload()}>
@@ -171,7 +171,7 @@ function BetaLanding() {
               <div className="stack">
                 <div className="notice" role="status">
                   <span className="notice-title">{parent?'Jste přihlášeni k běžnému účtu':'Jsi přihlášený k běžnému účtu'}</span>
-                  <p className="notice-text">Školní pozvánka nezmění existující účet. {parent?'Můžete pokračovat ve svém účtu nebo se odhlásit a vytvořit nový beta účet.':'Můžeš pokračovat ve svém účtu nebo se odhlásit a vytvořit nový beta účet.'}</p>
+                  <p className="notice-text">Testovací přístup nezmění existující účet. {parent?'Můžete pokračovat ve svém účtu nebo se odhlásit a vytvořit nový beta účet.':'Můžeš pokračovat ve svém účtu nebo se odhlásit a vytvořit nový beta účet.'}</p>
                 </div>
                 <Link className="btn btn-secondary btn-block" to="/skoly">Pokračovat do aplikace</Link>
                 {!closedBeforeStart && !closedAfterEnd && (

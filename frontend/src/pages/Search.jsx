@@ -11,7 +11,8 @@ import {
   ArrowUp,
   ChevronDown,
   Check,
-  Plus,
+  ClipboardCheck,
+  ClipboardPlus,
   Scale,
   Monitor,
   FlaskConical,
@@ -1029,18 +1030,18 @@ function Search() {
   );
   const pickToggle = (row) => {
     const isPicked = pickIds.has(row.id);
-    const label = `${isPicked ? 'Odebrat' : 'Přidat'} ${row.name} ${isPicked ? 'z' : 'do'} přihlášky`;
+    const title = isPicked ? 'Odebrat z přihlášky' : 'Přidat do přihlášky';
     return (
       <button
         type="button"
         className={`ss-icon-toggle${isPicked ? ' is-active' : ''}`}
         aria-pressed={isPicked}
-        aria-label={label}
-        title={label}
+        aria-label={`${title}: ${row.name}`}
+        title={title}
         disabled={savingPick}
         onClick={() => togglePick(row.school)}
       >
-        {isPicked ? <Check size={18} aria-hidden="true" /> : <Plus size={18} aria-hidden="true" />}
+        {isPicked ? <ClipboardCheck size={18} aria-hidden="true" /> : <ClipboardPlus size={18} aria-hidden="true" />}
       </button>
     );
   };

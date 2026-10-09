@@ -727,8 +727,8 @@ export default function Landing() {
             </div>
 
             <div className="l2-hero-actions">
-              <Link to={isSignedIn ? '/skoly' : '/onboarding'} className="l2-btn l2-magnet">
-                {isSignedIn ? 'Projít databázi škol' : 'Začít dotazník zdarma'}
+              <Link to={isSignedIn ? '/skoly' : '/registrace'} className="l2-btn l2-magnet">
+                {isSignedIn ? 'Projít databázi škol' : 'Registrace'}
                 <span className="l2-btn-arrow" aria-hidden="true">→</span>
               </Link>
               {isSignedIn
@@ -750,7 +750,7 @@ export default function Landing() {
                     `${activeChip.label}: ${counts[activeChip.id] ?? '…'} ${czSchools(counts[activeChip.id] ?? 5)}. Ostatní ustoupí do pozadí. V dotazníku těch věcí zvážíš víc najednou.`}
                 </p>
                 {i === STEPS.length - 1 && (
-                  <Link to={isSignedIn ? '/skoly' : '/onboarding'} className="l2-btn l2-magnet">
+                  <Link to={isSignedIn ? '/skoly' : '/registrace'} className="l2-btn l2-magnet">
                     {isSignedIn ? 'Projít školy' : 'Najít svoje školy'}
                     <span className="l2-btn-arrow" aria-hidden="true">→</span>
                   </Link>
@@ -945,7 +945,7 @@ export default function Landing() {
               </li>
             ))}
           </ul>
-          <Link to={isSignedIn ? '/skoly' : '/onboarding'} className="l2-link l2-link--arrow">{isSignedIn ? 'Projít databázi škol' : ROLES[role].cta} →</Link>
+          <Link to={isSignedIn ? '/skoly' : '/registrace'} className="l2-link l2-link--arrow">{isSignedIn ? 'Projít databázi škol' : ROLES[role].cta} →</Link>
         </div>
       </section>
 
@@ -1032,8 +1032,8 @@ export default function Landing() {
         <div className="l2-final-inner" data-rise>
           <p className="l2-kicker">Máš na to pár minut?</p>
           <h2 className="l2-final-title">Tvůj krátký seznam je {QUESTION_COUNT} otázek daleko.</h2>
-          <Link to={isSignedIn ? '/skoly' : '/onboarding'} className="l2-btn l2-btn--lg l2-magnet">
-            {isSignedIn ? 'Projít databázi škol' : 'Začít dotazník zdarma'}
+          <Link to={isSignedIn ? '/skoly' : '/registrace'} className="l2-btn l2-btn--lg l2-magnet">
+            {isSignedIn ? 'Projít databázi škol' : 'Registrace'}
             <span className="l2-btn-arrow" aria-hidden="true">→</span>
           </Link>
           {!isSignedIn && <p className="l2-fine">Bez registrace · přeskočit můžeš cokoli</p>}
