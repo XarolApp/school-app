@@ -531,11 +531,23 @@ app.get('/api/beta/me', requireAuth, requireBetaTester, async (req, res) => {
   if (sync.error) return res.status(503).json({error:'Dotazník nelze ověřit.'});
   const [profile, feedback] = await Promise.all([
     supabase.from('beta_profile').select('*').eq('user_id', req.user.id).single(),
-    supabase.from('beta_feedback').select('id, kind, page_url, message, status, admin_reply, replied_at, created_at, source')
+    supabase.from('beta_feedback').select('id, kind, page_url, message, status, admin_reply, replied_at, reply_read_at, created_at, source')
       .eq('user_id', req.user.id).order('created_at', { ascending: false }).limit(100),
   ]);
   if (profile.error || feedback.error) return res.status(503).json({ error: 'Testování se nepodařilo načíst.' });
-  res.json({ ...profile.data, feedback: feedback.data || [] });
+  const feedbackRows = feedback.data || [];
+  const unreadReplies = feedbackRows.filter((item) => item.admin_reply != null && (
+    item.reply_read_at == null || (item.replied_at != null && Date.parse(item.reply_read_at) < Date.parse(item.replied_at))
+  )).length;
+  res.json({ ...profile.data, feedback: feedbackRows, unreadReplies });
+});
+app.post('/api/beta/feedback/replies/read', requireAuth, requireBetaTester, async (req, res) => {
+  const { error } = await supabase.from('beta_feedback')
+    .update({ reply_read_at: new Date().toISOString() })
+    .eq('user_id', req.user.id)
+    .not('admin_reply', 'is', null);
+  if (error) return res.status(500).json({ error: 'Zprávy se nepodařilo označit přečtenými.' });
+  res.status(204).end();
 });
 app.post('/api/beta/profile', requireAuth, requireBetaTester, async (req, res) => {
   const { role, role_note: rawNote, tracking_notice_accepted: accepted } = req.body || {};

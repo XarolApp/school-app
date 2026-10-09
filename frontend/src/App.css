@@ -115,6 +115,42 @@ html {
   gap: var(--space-md);
 }
 
+.navbar-feedback-trigger {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--r-button);
+  background: transparent;
+  color: var(--ink2);
+  cursor: pointer;
+}
+.navbar-feedback-trigger:hover,
+.navbar-feedback-trigger:focus-visible {
+  background: var(--surface2);
+  color: var(--ink);
+}
+.navbar-feedback-trigger:focus-visible {
+  outline: 2px solid var(--acc);
+  outline-offset: 2px;
+}
+.navbar-feedback-mobile { display: none; }
+.navbar-feedback-dot {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 9px;
+  height: 9px;
+  border: 2px solid var(--surface);
+  border-radius: 50%;
+  background: var(--acc);
+}
+
 .navbar-trial {
   display: inline-flex;
   align-items: center;
@@ -300,6 +336,7 @@ html {
 /* Mobile-only pieces, hidden on desktop. */
 .navbar-toggle,
 .navbar-compare-mobile,
+.navbar-feedback-mobile,
 .navbar-sheet-foot {
   display: none;
 }
@@ -334,7 +371,8 @@ html {
     display: none;
   }
   .navbar-toggle,
-  .navbar-compare-mobile {
+  .navbar-compare-mobile,
+  .navbar-feedback-mobile {
     position: relative;
     display: flex;
     align-items: center;

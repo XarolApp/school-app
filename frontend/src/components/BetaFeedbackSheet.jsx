@@ -3,7 +3,7 @@ import { MessageSquare, SquareMousePointer, Pencil, ImageOff, Check } from 'luci
 import Modal from './Modal';
 import BetaRegionPicker from './BetaRegionPicker';
 import { BetaChecklist } from './BetaInstructions';
-import { submitBetaFeedback, uploadBetaScreenshot } from '../api';
+import { markBetaRepliesRead, submitBetaFeedback, uploadBetaScreenshot } from '../api';
 import BetaClosingQuestionnaire from './BetaClosingQuestionnaire';
 import { captureBetaScreenshot, elementSelector, publicElementText } from '../lib/betaCapture';
 import { useDraft } from '../lib/useDraft';
@@ -18,7 +18,7 @@ const eligible = (element) => element instanceof HTMLElement && !element.closest
   !element.querySelector('input,textarea,[data-private]') && !['BODY','HTML','SCRIPT','STYLE'].includes(element.tagName);
 const viewportNow = () => ({ width: innerWidth, height: innerHeight, scroll_x: scrollX, scroll_y: scrollY });
 
-export default function BetaFeedbackSheet({ open, onClose, pageUrl, beta, onSuccess, programActive, requestId }) {
+export default function BetaFeedbackSheet({ open, onClose, pageUrl, beta, onSuccess, programActive, requestId, focusReplies = false, onRepliesRead }) {
   const gender = useGender();
   const [mode,setMode] = useState('general'), [phase,setPhase] = useState('form');
   // The typed message survives a reload or a switch to another tab.
@@ -27,14 +27,32 @@ export default function BetaFeedbackSheet({ open, onClose, pageUrl, beta, onSucc
   const [message,setMessage,clearMessage] = useDraft('snm.beta.feedback.message',''), [kind,setKind] = useState('obecne'), [selection,setSelection] = useState(null);
   const [screenshot,setScreenshot] = useState(null), [error,setError] = useState(''), [busy,setBusy] = useState(false), [success,setSuccess] = useState(false);
   const [reviewBusy,setReviewBusy] = useState(false), [reviewSaved,setReviewSaved] = useState(false);
+  const [inboxError,setInboxError] = useState('');
   const [outline,setOutline] = useState(null);
-  const selectedElement = useRef(null), mounted = useRef(true);
+  const selectedElement = useRef(null), mounted = useRef(true), feedbackInboxRef = useRef(null);
   const parent = ['rodic','ucitel'].includes(beta?.role);
   const voice = (student,adult) => parent ? adult : genderedCopy(student, gender);
   useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
   useEffect(() => { setSuccess(false); }, [requestId]);
-  useEffect(() => { if (!open) { setPhase('form'); setReviewBusy(false); setReviewSaved(false); } }, [open]);
+  useEffect(() => { if (!open) { setPhase('form'); setReviewBusy(false); setReviewSaved(false); setInboxError(''); } }, [open]);
   useEffect(() => () => { if (screenshot) URL.revokeObjectURL(screenshot.url); }, [screenshot]);
+  useEffect(() => {
+    if (!open || !focusReplies) return undefined;
+    const details = feedbackInboxRef.current;
+    if (!details) return undefined;
+    details.open = true;
+    details.scrollIntoView({ block: 'nearest' });
+    let current = true;
+    setInboxError('');
+    markBetaRepliesRead()
+      .then(() => { if (current) return onRepliesRead?.(); })
+      .catch(() => {
+        if (current) setInboxError(parent
+          ? 'Odpovědi se nepodařilo označit přečtenými. Zkuste to prosím znovu.'
+          : 'Odpovědi se nepodařilo označit přečtenými. Zkus to prosím znovu.');
+      });
+    return () => { current = false; };
+  }, [open, focusReplies, requestId, onRepliesRead, parent]);
 
   // "Navrhnout změnu textu": the tester clicks the text itself (no list of elements).
   const pickText = (element) => {
@@ -156,7 +174,14 @@ export default function BetaFeedbackSheet({ open, onClose, pageUrl, beta, onSucc
         <div className="ss-dialog-actions"><button type="button" className="ss-btn ss-btn-secondary" onClick={onClose} disabled={busy}>Zavřít</button><button type="submit" className="ss-btn ss-btn-primary" disabled={busy || message.trim().length < 10 || !programActive || needsMark || mode === 'text' && !selection?.text_after}>{busy ? 'Odesílám…' : 'Odeslat zpětnou vazbu'}</button></div>
       </form>}
       <details><summary className="ss-headline-sm">Moje vyzkoušené funkce</summary><BetaChecklist checklist={beta?.checklist} onNavigate={onClose} /></details>
-      <details><summary className="ss-headline-sm">Moje zpětné vazby ({written.length})</summary><div className="beta-my-feedback">{written.map((f) => <article key={f.id}><p className="ss-data-sm">{statuses[f.status] || f.status} · {new Date(f.created_at).toLocaleDateString('cs-CZ')}</p><p>{f.message}</p>{f.admin_reply && <blockquote><strong>Odpověď týmu</strong><p>{f.admin_reply}</p></blockquote>}</article>)}</div></details>
+      <details ref={feedbackInboxRef}><summary className="ss-headline-sm">Moje zpětné vazby ({written.length})</summary><div className="beta-my-feedback">{written.map((f) => {
+        const unread = f.admin_reply != null && (f.reply_read_at == null || (f.replied_at != null && Date.parse(f.reply_read_at) < Date.parse(f.replied_at)));
+        return <article key={f.id} className={unread ? 'is-reply-unread' : ''}>
+          <p className="ss-data-sm">{statuses[f.status] || f.status} · {new Date(f.created_at).toLocaleDateString('cs-CZ')}</p>
+          <p>{f.message}</p>
+          {f.admin_reply && <blockquote><strong>Odpověď týmu{unread && <span className="beta-reply-new"> · Nová</span>}</strong><p>{f.admin_reply}</p></blockquote>}
+        </article>;
+      })}</div>{inboxError && <p className="notice notice-error" role="alert">{inboxError}</p>}</details>
       <button type="button" className="ss-btn ss-btn-secondary" disabled={!programActive} onClick={() => { setReviewSaved(false); setPhase('review'); }}>Napsat recenzi webu</button>
       </>}
     </Modal></div>

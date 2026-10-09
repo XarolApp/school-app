@@ -765,6 +765,40 @@ test('new held reviews return moderation state without a broken join', async () 
   assert.equal(res.body.display_name, null);
 });
 
+test('beta inbox returns reply read timestamps and counts only unread admin replies', async () => {
+  const rows = [
+    { id: 1, admin_reply: 'Nová odpověď', replied_at: '2026-10-08T10:00:00.000Z', reply_read_at: null },
+    { id: 2, admin_reply: 'Upravená odpověď', replied_at: '2026-10-08T11:00:00.000Z', reply_read_at: '2026-10-08T10:30:00.000Z' },
+    { id: 3, admin_reply: 'Přečtená odpověď', replied_at: '2026-10-08T10:00:00.000Z', reply_read_at: '2026-10-08T10:01:00.000Z' },
+    { id: 4, admin_reply: null, replied_at: null, reply_read_at: null },
+  ];
+  const h = harness({ result: (query) => {
+    if (query.table === 'beta_profile') return { data: { role: '9' }, error: null };
+    if (query.table === 'beta_feedback') return { data: rows, error: null };
+    return { data: null, error: null };
+  } });
+  const response = await h.call('get', '/api/beta/me');
+  assert.equal(response.statusCode, 200);
+  assert.equal(response.body.unreadReplies, 2);
+  assert.equal(response.body.feedback[0].reply_read_at, null);
+  const select = h.queries.find((query) => query.table === 'beta_feedback').calls.find(([method]) => method === 'select')[1];
+  assert.match(select, /reply_read_at/);
+});
+
+test('marking inbox replies read updates only the authenticated tester’s replied rows', async () => {
+  const h = harness({ result: (query) => query.table === 'users'
+    ? { data: { id: 'user-test', subscription_status: 'beta' }, error: null }
+    : { data: null, error: null } });
+  const response = await h.callChain('post', '/api/beta/feedback/replies/read', { body: { user_id: 'other-user' } });
+  assert.equal(response.statusCode, 204);
+  const update = h.queries.find((query) => query.table === 'beta_feedback');
+  assert.ok(update);
+  const payload = update.calls.find(([method]) => method === 'update')[1];
+  assert.ok(Number.isFinite(Date.parse(payload.reply_read_at)));
+  assert.ok(update.calls.some(([method, column, value]) => method === 'eq' && column === 'user_id' && value === 'user-test'));
+  assert.ok(update.calls.some(([method, column, operator, value]) => method === 'not' && column === 'admin_reply' && operator === 'is' && value === null));
+});
+
 test('school reviews stay disabled by default at both public API routes', async () => {
   const h = harness();
   const reads = await h.call('get', '/api/schools/:id/reviews', { params: { id: '1' } });

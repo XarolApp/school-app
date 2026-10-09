@@ -160,7 +160,9 @@ main.beta-page {
 .beta-screenshot-preview img { max-height: 300px; width: 100%; object-fit: contain; border: 1px solid var(--line); border-radius: var(--r-card); }
 .beta-screenshot-preview figcaption { color: var(--ink2); font-size: var(--fs-caption); }
 .beta-my-feedback article { border-bottom: 1px solid var(--line); padding: var(--space-md) 0; overflow-wrap: anywhere; }
+.beta-my-feedback article.is-reply-unread { border-left: 3px solid var(--acc); padding-left: var(--space-md); background: var(--acc-soft); }
 .beta-my-feedback blockquote { margin: 0; padding: var(--space-md); background: var(--acc-soft); border-radius: var(--r-card); }
+.beta-reply-new { color: var(--acc); }
 .beta-picker-dim { position: fixed; inset: 0; background: color-mix(in srgb, var(--ink) 35%, transparent); pointer-events: none; z-index: 1100; }
 .beta-picker-outline { position: fixed; pointer-events: none; border: 2px solid var(--acc); background: color-mix(in srgb, var(--acc) 10%, transparent); z-index: 1101; border-radius: var(--r-chip); }
 .beta-picker-toolbar { position: fixed; top: var(--space-md); left: 50%; transform: translateX(-50%); z-index: 1102; width: min(640px,calc(100% - 2 * var(--space-md))); background: var(--surface); color: var(--ink); padding: var(--space-md); border: 1px solid var(--line2); border-radius: var(--r-card); box-shadow: var(--shadow); display: flex; flex-wrap: wrap; gap: var(--space-sm); }

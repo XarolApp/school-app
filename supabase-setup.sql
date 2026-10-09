@@ -870,6 +870,7 @@ alter table public.beta_feedback
   add column if not exists admin_note text,
   add column if not exists admin_reply text,
   add column if not exists replied_at timestamptz,
+  add column if not exists reply_read_at timestamptz,
   add column if not exists source text not null default 'button';
 update public.beta_feedback set kind = case type when 'bug' then 'bug' when 'idea' then 'navrh' else 'obecne' end where kind is null;
 alter table public.beta_feedback alter column kind set default 'obecne';

@@ -62,14 +62,14 @@ function BetaToolsUI({ profile, canShow, isPasswordRecovery, userId, refreshProf
       onDismiss={firstRun ? undefined : dismissGuidance} busy={guidanceBusy} className={`beta-modal${firstRun ? '' : ' beta-modal-reference'}`}>
       <BetaInstructions beta={beta} hours={profile?.betaAccessHours} onDone={dismissGuidance} onRefresh={refreshBeta} busy={guidanceBusy} reference={!firstRun} />
     </Modal></div>
-    <BetaFeedbackSheet open={Boolean(canShow && feedback.open)} requestId={feedback.requestId} onClose={closeFeedback} pageUrl={feedback.pageUrl} beta={beta} programActive={profile?.betaProgramActive}
+    <BetaFeedbackSheet open={Boolean(canShow && feedback.open)} requestId={feedback.requestId} onClose={closeFeedback} pageUrl={feedback.pageUrl} beta={beta} programActive={profile?.betaProgramActive} focusReplies={feedback.focusReplies} onRepliesRead={refreshBeta}
       onSuccess={() => { void refreshProfile(); void refreshBeta().catch(() => {}); }} />
   </>;
 }
 function BetaTools({ children }) {
   const { profile, profileLoading, isSignedIn, emailConfirmed, isTester, isPasswordRecovery, user, refreshProfile } = useAuth();
   const location = useLocation();
-  const [betaState,setBetaState] = useState(null), [feedback,setFeedback] = useState({ open: false, pageUrl: '/', requestId: 0 });
+  const [betaState,setBetaState] = useState(null), [feedback,setFeedback] = useState({ open: false, pageUrl: '/', requestId: 0, focusReplies: false });
   const currentUser = useRef(user?.id); currentUser.current = user?.id;
   const refreshBeta = useCallback(async () => {
     if (!user?.id || !isTester || !emailConfirmed) return;
@@ -94,14 +94,19 @@ function BetaTools({ children }) {
     return () => { clearTimeout(timer); window.removeEventListener('snm:beta-event', onEvent); document.removeEventListener('visibilitychange', onVisible); };
   }, [isTester, emailConfirmed, refreshBeta]);
   useEffect(() => {
-    setBetaState(null); setFeedback({ open: false, pageUrl: '/', requestId: 0 });
+    setBetaState(null); setFeedback({ open: false, pageUrl: '/', requestId: 0, focusReplies: false });
     if (!isTester || !emailConfirmed) return;
     void refreshBeta().catch(() => {});
     const timer = setInterval(() => void refreshBeta().catch(() => {}),60000);
     return () => clearInterval(timer);
   }, [isTester,emailConfirmed,refreshBeta]);
-  const openFeedback = useCallback(() => setFeedback((previous) => ({ open: true, pageUrl: location.pathname, requestId: previous.requestId + 1 })), [location.pathname]);
-  const closeFeedback = useCallback(() => setFeedback((previous) => ({ ...previous, open: false })), []);
+  const openFeedback = useCallback((options = {}) => setFeedback((previous) => ({
+    open: true,
+    pageUrl: location.pathname,
+    requestId: previous.requestId + 1,
+    focusReplies: Boolean(options.focusReplies),
+  })), [location.pathname]);
+  const closeFeedback = useCallback(() => setFeedback((previous) => ({ ...previous, open: false, focusReplies: false })), []);
   // The confirmation tab only says "you can close this"; the guidance opens in
   // the tab the tester actually continues in.
   const canShow = isSignedIn && emailConfirmed && isTester && profile && !profileLoading && location.pathname !== '/email-overen';

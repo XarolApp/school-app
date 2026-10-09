@@ -12,11 +12,13 @@ import {
   LogIn,
   LogOut,
   Menu,
+  MessageSquare,
   Search,
   SlidersHorizontal,
   X,
 } from 'lucide-react';
 import { useAuth } from './AuthContext';
+import { useBetaTools } from './BetaToolsContext';
 import BrandMark from './BrandMark';
 import { COMPARE_EVENT, getCompareSelection } from '../lib/searchPrefs';
 
@@ -47,7 +49,8 @@ function useCompareCount() {
 const dayWord = (n) => (n === 1 ? 'den' : n < 5 ? 'dny' : 'dní');
 
 function Layout() {
-  const { isSignedIn, isTester, signOut, trialDaysLeft, hasAccess, profile, user } = useAuth();
+  const { isSignedIn, isTester, emailConfirmed, signOut, trialDaysLeft, hasAccess, profile, user } = useAuth();
+  const { openFeedback, beta } = useBetaTools();
   const [menuOpen, setMenuOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
   const location = useLocation();
@@ -60,6 +63,27 @@ function Layout() {
   const initial = displayName.charAt(0).toUpperCase();
   const showTrial = isSignedIn && !isTester && hasAccess && trialDaysLeft > 0;
   const trialText = `Zkušební verze · ještě ${trialDaysLeft} ${dayWord(trialDaysLeft)}`;
+  const showFeedbackInbox = isSignedIn && isTester && emailConfirmed;
+  const unreadReplies = beta?.unreadReplies || 0;
+  const inboxLabel = unreadReplies > 0
+    ? `Moje zpětné vazby, nové odpovědi: ${unreadReplies}`
+    : 'Moje zpětné vazby';
+  const feedbackInboxButton = (mobile = false) => (
+    <button
+      type="button"
+      className={`navbar-feedback-trigger${mobile ? ' navbar-feedback-mobile' : ''}`}
+      aria-label={inboxLabel}
+      title="Moje zpětné vazby"
+      onClick={() => {
+        setMenuOpen(false);
+        setAccountOpen(false);
+        openFeedback({ focusReplies: true });
+      }}
+    >
+      <MessageSquare size={20} aria-hidden="true" />
+      {unreadReplies > 0 && <span className="navbar-feedback-dot" aria-hidden="true" />}
+    </button>
+  );
 
   // A route change is the clearest signal the visitor is done with a menu.
   useEffect(() => {
@@ -183,6 +207,7 @@ function Layout() {
                     {trialText}
                   </span>
                 )}
+                {showFeedbackInbox && feedbackInboxButton()}
                 <div className="navbar-account" ref={accountRef}>
                   <button
                     type="button"
@@ -241,6 +266,7 @@ function Layout() {
             <Columns3 size={20} aria-hidden="true" />
             {compareBadge}
           </NavLink>
+          {showFeedbackInbox && feedbackInboxButton(true)}
           <button
             type="button"
             ref={toggleRef}

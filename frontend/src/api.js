@@ -109,6 +109,9 @@ export function acknowledgeBetaGuidance() {
   return request('/api/beta/guidance-seen', { method: 'POST', body: JSON.stringify({}) });
 }
 export const fetchBetaMe = () => request('/api/beta/me');
+export const markBetaRepliesRead = () => request('/api/beta/feedback/replies/read', {
+  method: 'POST', body: JSON.stringify({}),
+});
 export const saveBetaProfile = (role, roleNote = '') => request('/api/beta/profile', {
   method: 'POST', body: JSON.stringify({ role, role_note: roleNote, tracking_notice_accepted: true }),
 });
