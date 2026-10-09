@@ -252,6 +252,7 @@ function CreateAccount() {
           variant="ob"
           source="ob"
           email={email.trim()}
+          password={password}
           parent={parent}
           betaCode={betaCode}
           emailRedirectTo={confirmUrl}

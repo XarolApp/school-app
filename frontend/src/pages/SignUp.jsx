@@ -172,6 +172,7 @@ function SignUp() {
         <div className="auth-layout">
           <ConfirmEmailWaiting
             email={form.email.trim()}
+            password={form.password}
             parent={betaParent || Boolean(resumed?.parent)}
             betaCode={confirmedCode}
             emailRedirectTo={confirmationUrl(confirmedCode)}
