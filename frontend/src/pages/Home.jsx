@@ -86,7 +86,7 @@ const makeFaq = (SCHOOL_COUNT) => [
   },
   {
     q: 'Můžu to vyplnit jako rodič?',
-    a: 'Ano. Na začátku dotazníku si vyberete, jestli ho vyplňuje student, nebo rodič, a otázky se tomu přizpůsobí. Výsledek pak můžete sdílet odkazem.',
+    a: 'Ano. Na začátku dotazníku si vyberete, jestli ho vyplňuje student, nebo rodič, a otázky se tomu přizpůsobí.',
   },
 ];
 
@@ -169,7 +169,7 @@ function Home() {
               </Link>
             )}
           </div>
-          {!isSignedIn && <p className="ls-fineprint">Bez registrace · asi {QUIZ_MINUTES} minuty · přeskočit můžeš cokoli</p>}
+          {!isSignedIn && <p className="ls-fineprint">Asi {QUIZ_MINUTES} minuty · přeskočit můžeš cokoli</p>}
         </div>
 
         <figure className="ls-hero-visual" aria-hidden="true">
@@ -281,8 +281,8 @@ function Home() {
             <p className="ls-body">Psané lidmi, kteří na škole jsou nebo byli. Anonymně podle role.</p>
           </article>
           <article className="ls-tile" data-reveal style={{ '--i': 4 }}>
-            <h3 className="ls-h3">Sdílení s rodiči</h3>
-            <p className="ls-body">Jeden odkaz, jen pro čtení. Kdykoli ho zase zrušíš.</p>
+            <h3 className="ls-h3">Poznámky ke školám</h3>
+            <p className="ls-body">U každé uložené školy si napíšeš, co se ti líbí a na co se zeptat.</p>
           </article>
         </div>
       </section>
@@ -387,7 +387,7 @@ function Home() {
             <ul className="ls-list">
               <li>Porovnání a rozhodovací matice</li>
               <li>Plán tří přihlášek se skóre</li>
-              <li>Poznámky a sdílení s rodiči</li>
+              <li>Poznámky ke školám</li>
             </ul>
             <p className="ls-fineprint">
               Prvních {trialDaysPhrase()} zdarma · zrušení jedním kliknutím
@@ -418,7 +418,7 @@ function Home() {
         <Link to={isSignedIn ? '/skoly' : '/registrace'} className="btn btn-primary btn-lg">
           {isSignedIn ? 'Projít databázi škol' : 'Registrace'}
         </Link>
-        {!isSignedIn && <p className="ls-fineprint">Bez registrace · {QUESTION_COUNT} otázek · přeskočit můžeš cokoli</p>}
+        {!isSignedIn && <p className="ls-fineprint">{QUESTION_COUNT} otázek · přeskočit můžeš cokoli</p>}
       </section>
 
       <footer className="ls-footer">

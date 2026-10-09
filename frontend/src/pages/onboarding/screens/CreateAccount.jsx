@@ -135,8 +135,8 @@ function CreateAccount() {
         <h1 className="ob-title">{parent ? 'Už máte tester účet' : 'Už máš tester účet'}</h1>
         <p className="ob-hint">
           {parent
-            ? 'Nový účet nepotřebujete. Můžete pokračovat bez registrace a platby.'
-            : 'Nový účet nepotřebuješ. Můžeš pokračovat bez registrace a platby.'}
+            ? 'Nový účet nepotřebujete. Můžete pokračovat s tímto účtem, bez platby.'
+            : 'Nový účet nepotřebuješ. Můžeš pokračovat s tímto účtem, bez platby.'}
         </p>
         <div className="ob-actions">
           <button
@@ -145,7 +145,7 @@ function CreateAccount() {
             disabled={!profileResolved}
             onClick={() => startBetaPreview('plan')}
           >
-            Prohlédnout si ukázku bez registrace
+            Prohlédnout si ukázku
           </button>
           <button type="button" className="ob-btn ob-btn-secondary" onClick={leaveBetaPreview}>
             Pokračovat v testování

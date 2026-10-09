@@ -25,7 +25,7 @@ const TASKS = {
     'Projdi si celé pořadí škol',
     'Ulož si tři školy, které tě zaujaly',
     'Porovnej je vedle sebe',
-    'Ukaž výsledky rodičům',
+    'Napiš si poznámky ke školám',
     'Najdi si termíny dnů otevřených dveří',
     'Poznač si datum přihlášek',
   ],

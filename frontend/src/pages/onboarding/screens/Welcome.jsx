@@ -49,7 +49,7 @@ function Welcome() {
           <ObButton onClick={goNext}>
             Začít <span className="ob-btn-arrow" aria-hidden="true">→</span>
           </ObButton>
-          <p className="ob-microcopy">Asi {QUIZ_MINUTES} minuty · bez registrace · nic se neplatí předem</p>
+          <p className="ob-microcopy">Asi {QUIZ_MINUTES} minuty · nic se neplatí předem</p>
           <p className="ob-microcopy ob-signin-hint">
             Už máš účet? <Link to="/prihlaseni" className="ob-inline-link">Přihlásit se</Link>
           </p>

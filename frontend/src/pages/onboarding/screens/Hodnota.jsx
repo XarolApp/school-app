@@ -67,13 +67,13 @@ function Hodnota() {
         `Všech ${count} škol na jednom místě seřazených podle preferencí vašeho dítěte`,
         'U každé napsané, proč se hodí právě jemu',
         'Srovnání škol vedle sebe na jedné obrazovce',
-        'Dítě vám může nasdílet vybrané školy a pořadí přihlášky',
+        'Poznámky ke školám i pořadí přihlášky na jednom místě',
       ]
     : [
         `Všech ${count} škol na jednom místě seřazených podle tvých preferencí`,
         'U každé napsané, proč sedí zrovna tobě',
         'Srovnání škol vedle sebe na jedné obrazovce',
-        'Přehled, který můžeš rovnou nasdílet rodičům',
+        'Poznámky ke každé škole na jednom místě',
       ];
 
   return (

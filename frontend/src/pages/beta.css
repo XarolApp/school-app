@@ -322,3 +322,24 @@ html[data-menu-open] .beta-reward { display: none; }
   .beta-feedback-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .beta-guide-link { display: inline-flex; align-self: flex-start; padding: 0; border: 0; background: none; color: var(--acc); font: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 0.18em; cursor: pointer; }
 }
+
+/* Phone: compact reward / quick-rating card — a short bottom sheet instead of
+   a panel that covers most of the screen. */
+@media (max-width: 600px) {
+  .beta-reward { left: 12px; right: 12px; width: auto; bottom: 76px; max-height: 58dvh; padding: 14px; gap: 10px; }
+  .beta-reward-head { gap: 10px; }
+  .beta-reward-check { width: 32px; height: 32px; }
+  .beta-reward-check svg { width: 16px; height: 16px; }
+  .beta-reward-title { font-size: 18px; }
+  .beta-reward-progress { grid-template-columns: 1fr auto; align-items: center; gap: 8px; }
+  .beta-quick { gap: 8px; }
+  .beta-quick-title { font-size: var(--fs-body-sm); }
+  .beta-quick-q { gap: 6px; }
+  .beta-quick-q p { font-size: var(--fs-body-sm); }
+  .beta-quick-stars { gap: 0; }
+  .beta-quick-star { padding: 2px; }
+  .beta-quick-star svg { width: 24px; height: 24px; }
+  .beta-quick .ss-input { min-height: 40px; padding-block: 8px; }
+  .beta-quick-hint { font-size: 12px; line-height: 1.35; }
+  .beta-quick-actions .ss-btn { min-height: 38px; }
+}

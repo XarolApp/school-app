@@ -735,7 +735,7 @@ export default function Landing() {
                 ? <Link to="/dotaznik" className="l2-link">nebo vyplň dotazník</Link>
                 : <Link to="/skoly" className="l2-link">nebo projdi databázi</Link>}
             </div>
-            {!isSignedIn && <p className="l2-fine">Bez registrace · {QUESTION_COUNT} otázek · přeskočit můžeš cokoli</p>}
+            {!isSignedIn && <p className="l2-fine">{QUESTION_COUNT} otázek · přeskočit můžeš cokoli</p>}
           </div>
 
           <div className="l2-steps">
@@ -1001,7 +1001,7 @@ export default function Landing() {
             <ul>
               <li>Porovnání škol vedle sebe a rozhodovací matice</li>
               <li>Plán tří přihlášek se skóre z přijímaček</li>
-              <li>Poznámky a sdílení s rodiči</li>
+              <li>Poznámky ke školám</li>
             </ul>
             <p className="l2-plan-fine">Zrušení jedním kliknutím v nastavení</p>
           </div>
@@ -1036,7 +1036,7 @@ export default function Landing() {
             {isSignedIn ? 'Projít databázi škol' : 'Registrace'}
             <span className="l2-btn-arrow" aria-hidden="true">→</span>
           </Link>
-          {!isSignedIn && <p className="l2-fine">Bez registrace · přeskočit můžeš cokoli</p>}
+          {!isSignedIn && <p className="l2-fine">Přeskočit můžeš cokoli</p>}
         </div>
       </section>
 
