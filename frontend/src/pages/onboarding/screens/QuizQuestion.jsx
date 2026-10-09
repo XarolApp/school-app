@@ -38,16 +38,15 @@ import {
  *  - Progress is HONEST: exactly (question number) / (number of questions),
  *    no pre-filled head start and no easing curve. See steps.js.
  *  - The live counter is a REAL count of REAL candidates recomputed from the
- *    answers so far, not a percentage. A match percentage after two of nine
- *    questions would be invented precision, and this product refuses to show
- *    match percentages anywhere at all.
+ *    answers so far, not a match percentage. The reveal shows the computed
+ *    preference-fit percentage after the quiz.
  *  - Selecting an answer injects a reassurance card directly under it. That is
  *    the migrated Mirroring screen: the same "you were heard" work, spread
  *    across every question instead of costing one more screen.
  *  - Smart defaults are pre-selected where an honest modal answer exists.
- *  - "Přeskočit" is on every screen and never costs anything. A skip drops the
- *    component from the weights and widens the confidence interval; it never
- *    lowers a score (zero-shame rule).
+ *  - "Přeskočit" is on every screen. A skipped component is excluded from the
+ *    weighted average; the score can move in either direction. Confidence
+ *    measures covered component weight, not a statistical interval.
  *
  * NOTE — there is deliberately NO "skip the whole questionnaire" control, and
  * one must not be added. The quiz leading into the reveal is the only place in
@@ -92,7 +91,7 @@ function ParentHandoffNudge() {
       <p className="ob-handoff-nudge-lead">
         <strong>Vyplňte otázky společně s dítětem.</strong> Další otázky jsou o tom, co ho baví —
         nejlepší je odpovídat spolu. Nebojte se ale ani vyplnit je sami: u každé otázky je možnost
-        „Nevím jistě“, nezodpovězené otázky nikdy nesnižují výsledek a dítě si může dotazník
+        „Nevím jistě“, nezodpovězené otázky do výpočtu nezahrneme a dítě si může dotazník
         kdykoli později vyplnit znovu samo.
       </p>
       <div className="ob-handoff-nudge-alt">

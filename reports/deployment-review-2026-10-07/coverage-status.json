@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-09T21:42:42.305905+00:00",
-  "commit": "bc1f82653de093bcdb70526ed097f508447c5923",
+  "checked_at_utc": "2026-10-09T21:56:05.050216+00:00",
+  "commit": "8108167769a7e544851937738a019a16a8888840",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "pending_or_changed": 549,
-    "current_full_read": 219,
-    "binary_requires_asset_check": 53,
-    "generated_or_audit_artifact": 44,
+    "pending_or_changed": 545,
+    "current_full_read": 226,
+    "binary_requires_asset_check": 56,
+    "generated_or_audit_artifact": 43,
     "removed_or_missing": 2
   },
   "files": [
@@ -783,8 +783,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "ce137b8dd3c9221df34e9635a37b834de89b17dc1d792e74886792d6d14fa39b",
-      "lines": 1606,
+      "sha256": "9410076e22575c397df00977aa0dcf0d3a2fb90d09be6a1783c96b892a8abcbd",
+      "lines": 1611,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -2703,15 +2703,19 @@
       "path": "frontend/src/App.jsx",
       "sha256": "8f699b26bda2cc15aa691b9416e554560586d63335d896838bdcd9d40e05c915",
       "lines": 150,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/api.js",
-      "sha256": "677c89553868364b5e283ddace72d3199762283ec2ca5b7d962c1fc75a7b75bd",
+      "sha256": "2e60c1cacdcddfe855eae350da4a77751375099e4614b76e31f3ed02146106d2",
       "lines": 476,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/auth.css",
@@ -2765,19 +2769,17 @@
     },
     {
       "path": "frontend/src/components/BetaFeedbackSheet.jsx",
-      "sha256": "03b66e5c56e561e32bfaae062934407c68d7232d7d48a5d276df6680addf2279",
-      "lines": 189,
+      "sha256": "38ab5384af68e848154113a336fa7db9804b16764bd959d2e930f60998ea1086",
+      "lines": 191,
       "status": "pending_or_changed",
       "matching_evidence": []
     },
     {
       "path": "frontend/src/components/BetaInstructions.jsx",
-      "sha256": "f6da2fd11b331c27776ee6ae76687594c6ddf3664bc65e533f9d94082597dc94",
-      "lines": 146,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "cfbec9366767c24d35aa4fa8627b3c63df5f6b5111107365b60983630f8a8990",
+      "lines": 150,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/components/BetaMicroQuestions.jsx",
@@ -2812,8 +2814,8 @@
     },
     {
       "path": "frontend/src/components/BetaTools.jsx",
-      "sha256": "6510872233036ee571e4a4062ba6fe540922bf5fefbb856fe5cdf3a7c92c2535",
-      "lines": 123,
+      "sha256": "e99028078b5e497d4e66b81c392af4b02e8df94b2c30dc59548181544da361df",
+      "lines": 127,
       "status": "pending_or_changed",
       "matching_evidence": []
     },
@@ -2914,10 +2916,12 @@
     },
     {
       "path": "frontend/src/components/Modal.jsx",
-      "sha256": "ef7c427f804441aa56f96077fd105949b15c882cc536567c707d5990465c9523",
+      "sha256": "3aeefecccf3adbab78838d06388672b1e9d8125bdb0d9a51944299cbb9e092c7",
       "lines": 88,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/components/PageSkeleton.jsx",
@@ -2959,8 +2963,10 @@
       "path": "frontend/src/components/ProtectedRoute.jsx",
       "sha256": "591df014798f50b89c023f2ece1588e3fce7b551bb1df3f7e15c916b71625e1b",
       "lines": 86,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/components/SchoolMap.css",
@@ -3061,6 +3067,13 @@
       "matching_evidence": []
     },
     {
+      "path": "frontend/src/components/decision/matrixMobile.css",
+      "sha256": "c5fcd4f2c3e43eff3b5902190069732830d3250799ae073d5dccb39cc53782cd",
+      "lines": 8,
+      "status": "pending_or_changed",
+      "matching_evidence": []
+    },
+    {
       "path": "frontend/src/components/decision/pickCard.css",
       "sha256": "ff08d0b04d1c9881077b9e2d4df9ddd7499882dcf645f59cedf623bfe1b6dea2",
       "lines": 12,
@@ -3098,8 +3111,10 @@
       "path": "frontend/src/components/onboarding/HandoffLock.jsx",
       "sha256": "7cc48aab10f4bf03176108ee9a1b7f051acb5274dfeb58a461a354c4efa490eb",
       "lines": 74,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/components/onboarding/MatchPreview.jsx",
@@ -3112,35 +3127,37 @@
     },
     {
       "path": "frontend/src/components/onboarding/ObKit.jsx",
-      "sha256": "54cb2bb1ca7bb6dad4a7301c80db6b39277d242834e421c2fbc83509b6e8a408",
-      "lines": 278,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "frontend-coverage.json"
-      ]
-    },
-    {
-      "path": "frontend/src/components/onboarding/ProfilePanel.jsx",
-      "sha256": "7858cd22c5d57d402bd9d07efc3a58a16e05fd1f6bae90d3a9e68fd8ee322061",
-      "lines": 158,
-      "status": "pending_or_changed",
-      "matching_evidence": []
-    },
-    {
-      "path": "frontend/src/components/onboarding/TopMatchCard.jsx",
-      "sha256": "75165d8892f46686aafc66d02fbb01048bd6c2c5a7a66bfec4e6f8f8a0ce5978",
-      "lines": 41,
-      "status": "pending_or_changed",
-      "matching_evidence": []
-    },
-    {
-      "path": "frontend/src/components/onboarding/districtMap.css",
-      "sha256": "576c96cbf19b0a3f3b0114ee81bf63bb7c64fb927676078259fbb4e365420e06",
-      "lines": 20,
+      "sha256": "5b85d3b943994dc14f9ffd386abfa9bd4e2cf630d3446c14e4f5a1ba30bbee99",
+      "lines": 275,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
       ]
+    },
+    {
+      "path": "frontend/src/components/onboarding/ProfilePanel.jsx",
+      "sha256": "accf9163e5cc409d9edabc85dc3a438cdd9514f6d9ed45d3e78fa5c9e05b7422",
+      "lines": 160,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
+    },
+    {
+      "path": "frontend/src/components/onboarding/TopMatchCard.jsx",
+      "sha256": "677a209b8ed21def7b2379b6c3df24da2e74c7dc6becd8278ccf199a924fcbf3",
+      "lines": 41,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
+    },
+    {
+      "path": "frontend/src/components/onboarding/districtMap.css",
+      "sha256": "ea8f3e4b6e38e91c0eba776528f0bf1bad48614d6cf47acb8c9e6c3147be8044",
+      "lines": 26,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/components/onboarding/usePrefersReducedMotion.js",
@@ -3331,10 +3348,12 @@
     },
     {
       "path": "frontend/src/design/tokens.js",
-      "sha256": "82d0e2f8d7313cb1c1d0b10a12d09abd8320ebfe7c9451bd36c454f68201ec39",
-      "lines": 252,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "0f79791a886a10c2b4835e293145a2ad0ae4d0a1a161256c55a082b3f8c79d4e",
+      "lines": 253,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/index.css",
@@ -3345,11 +3364,11 @@
     },
     {
       "path": "frontend/src/lib/admissionRisk.js",
-      "sha256": "c9230a7cf521b2087150779cac99a35a17766f8ea56f12652581fda0fa666a4c",
+      "sha256": "cc71be40838197b2b82664f5a4b5c76d703f0e4d6c633dcad3645c82e06e1e38",
       "lines": 111,
       "status": "current_full_read",
       "matching_evidence": [
-        "frontend-coverage.json"
+        "root-coverage.json"
       ]
     },
     {
@@ -3417,7 +3436,8 @@
       "lines": 62,
       "status": "current_full_read",
       "matching_evidence": [
-        "frontend-coverage.json"
+        "frontend-coverage.json",
+        "root-coverage.json"
       ]
     },
     {
@@ -3494,10 +3514,12 @@
     },
     {
       "path": "frontend/src/lib/matching.js",
-      "sha256": "c02b24c0093b2bed5409dcfc707231ea80745f041d4064a17f58d5044356bea0",
-      "lines": 410,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "570d95acb83d19b7dbd2a2930764a3e46bbf893e8924a1314bf5c1e72114cd3c",
+      "lines": 408,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/lib/onboardingStorage.js",
@@ -3654,8 +3676,10 @@
       "path": "frontend/src/lib/useBottomBarSpace.js",
       "sha256": "336b035c3c51e992e08ac2cecc4621ec8f4b96dcb734eeafaf8b18296ff0757c",
       "lines": 42,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/lib/useDraft.js",
@@ -3720,8 +3744,8 @@
     },
     {
       "path": "frontend/src/pages/BetaLanding.jsx",
-      "sha256": "4e60ec9362f9bcffc9b0f2cbf933fd98906aff20dd1cd019f53e30c89edf95ff",
-      "lines": 210,
+      "sha256": "b22cfbb93126e6078fb128465ba4ba68930201554d86a59d9ed1bd6435743772",
+      "lines": 211,
       "status": "pending_or_changed",
       "matching_evidence": []
     },
@@ -3754,7 +3778,7 @@
     },
     {
       "path": "frontend/src/pages/Home.jsx",
-      "sha256": "1d9adcbb68c100ddf170e43e622d39124e2e62e86e09cc9103b814fb4f1c382b",
+      "sha256": "40b8238ece86bd5da8fdfb03ce96b998475f11b2dff30ce69d59486c9efd0bee",
       "lines": 443,
       "status": "pending_or_changed",
       "matching_evidence": []
@@ -3779,12 +3803,10 @@
     },
     {
       "path": "frontend/src/pages/Matice.jsx",
-      "sha256": "5ae0760b769c4387ceae49c19830c92e3bf086062a452a80f01905765da1a960",
-      "lines": 600,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "5e515fa3f21cc74e4a4ccf064cd74d1ef956dd1be1355e4ac57d3c25b23de76d",
+      "lines": 603,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/pages/NotFound.jsx",
@@ -3818,8 +3840,8 @@
     },
     {
       "path": "frontend/src/pages/Questionnaire.jsx",
-      "sha256": "48864e649c814632e17f0c9df31bc39dff742b11f59a97d8c0d6cc18d3e870d9",
-      "lines": 925,
+      "sha256": "1dda962565e90d21fcfdc8704ae157053f739221fe7f68fcef60ad7ffd55e470",
+      "lines": 934,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -3866,8 +3888,8 @@
     },
     {
       "path": "frontend/src/pages/Settings.jsx",
-      "sha256": "3565806cb60ccab5ef74c50204d42f9faad6ecff180cb309d51c713d62d46189",
-      "lines": 1232,
+      "sha256": "b6c722a6e2b51809dac751ce0786f30f16eda5e88a4663deb3200b4ed2a8f06b",
+      "lines": 1238,
       "status": "pending_or_changed",
       "matching_evidence": []
     },
@@ -3896,8 +3918,8 @@
     },
     {
       "path": "frontend/src/pages/beta.css",
-      "sha256": "aaee0beea545fbe15f63942685f98d898386a7af71d15ca97a1ea0bb756be8fc",
-      "lines": 311,
+      "sha256": "16295f88afca14e6e5361a274564e129f48a43ddd1b125ad0f6ff132d3c02bef",
+      "lines": 345,
       "status": "pending_or_changed",
       "matching_evidence": []
     },
@@ -3917,7 +3939,7 @@
     },
     {
       "path": "frontend/src/pages/landing2/Landing.jsx",
-      "sha256": "b9bfb6c0008dc637e9aa8818caf1a5802d42aca2d901f8820920225c17a98e1e",
+      "sha256": "230651f34d1c72915b840076a88b6ffc3b758a9c728349c89c08ced8dfc50809",
       "lines": 1045,
       "status": "pending_or_changed",
       "matching_evidence": []
@@ -3951,8 +3973,10 @@
       "path": "frontend/src/pages/onboarding/OnboardingFlow.jsx",
       "sha256": "1d8a948dd50609a89112cf0ec2b4db46ba3df4cf975d68157bc1aca273ce6591",
       "lines": 614,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/pages/onboarding/onboarding.css",
@@ -3963,14 +3987,16 @@
     },
     {
       "path": "frontend/src/pages/onboarding/quizQuestions.js",
-      "sha256": "5e639700a5dbd83ed9b2beeb64099aab37fdaf1a64f9df332386f70b16db7845",
-      "lines": 634,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "c1426b97620e9bd319eb4f448b5813a1a242def98bb46479fa6b98ed391a9848",
+      "lines": 635,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/pages/onboarding/screens/Activated.jsx",
-      "sha256": "8d78655472003afb91afdb5c95a5b9c63ee051205503bbaef934d9102d16856d",
+      "sha256": "2d5bac975c980bda23520d9772310eec5a4767cc633dfac1d35eccfbc1a3162c",
       "lines": 131,
       "status": "pending_or_changed",
       "matching_evidence": []
@@ -4000,19 +4026,17 @@
     },
     {
       "path": "frontend/src/pages/onboarding/screens/CreateAccount.jsx",
-      "sha256": "85036f06dba1ade96907e637cb067ae1cc930d98390845dd412b3dab3e59cbc8",
+      "sha256": "8a8ef4804f9564c738d7fd3c2bd8f4850f6ea821be83332f8f4f559237436e15",
       "lines": 434,
       "status": "pending_or_changed",
       "matching_evidence": []
     },
     {
       "path": "frontend/src/pages/onboarding/screens/Hodnota.jsx",
-      "sha256": "d717bb24b0922bc9e26faf57e5a98e771842413e4784cc38a37fc8133f0c081e",
+      "sha256": "9bf3ecbe973911a8f14f2f76ca5f8b4f45e340d9c4df4fdb8b3535e4b02cc6b4",
       "lines": 169,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "frontend-coverage.json"
-      ]
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/pages/onboarding/screens/Plan.jsx",
@@ -4030,8 +4054,8 @@
     },
     {
       "path": "frontend/src/pages/onboarding/screens/QuizQuestion.jsx",
-      "sha256": "caabed226622b897adbeb6ea59df052d92f9ae3695b46be00bef5ea62f6c10e0",
-      "lines": 358,
+      "sha256": "d5aca155805b9b2d0200cef8af78aa7b9659c580f247a688f0569c9f8974e0b2",
+      "lines": 357,
       "status": "pending_or_changed",
       "matching_evidence": []
     },
@@ -4069,12 +4093,10 @@
     },
     {
       "path": "frontend/src/pages/onboarding/screens/Welcome.jsx",
-      "sha256": "70fa5925e41ce185404d514f57c93b2680cacdb8544da3cf2ac9d54a94737855",
+      "sha256": "eb61ef63299cebd6c0cafc8cb2ee7d7773409cb9f61cdb9262cf2ce462949364",
       "lines": 95,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/pages/onboarding/screens/Zkusebni.jsx",
@@ -4094,26 +4116,26 @@
     },
     {
       "path": "frontend/src/pages/onboarding/steps.js",
-      "sha256": "67571d55fecf7ae426fcf026f7d9bec3648774324a83584f06c40693b8b977b7",
-      "lines": 144,
+      "sha256": "d323defa4c2b9b6f8522d79e99316448730304f76199f7251e7b21d7ef086412",
+      "lines": 142,
       "status": "current_full_read",
       "matching_evidence": [
-        "frontend-coverage.json"
+        "root-coverage.json"
       ]
     },
     {
       "path": "frontend/src/pages/onboarding/useOnboarding.js",
-      "sha256": "c53d2aa8d285a7721ab62bb8222826477c1309abbebb6def96cc245180923a29",
+      "sha256": "f5260a6693427e08d562912e126e4723072e3c6f59e6a0c900466cf3b35ebf9b",
       "lines": 37,
       "status": "current_full_read",
       "matching_evidence": [
-        "frontend-coverage.json"
+        "root-coverage.json"
       ]
     },
     {
       "path": "frontend/src/pages/questionnaire.css",
-      "sha256": "cc93f483beb68276d21b01e623349191f1c8cb4bdab9ad1bcf6898f71b7f7a14",
-      "lines": 498,
+      "sha256": "6ff9e8f1bd29697c89b2a34e075adf5facfaef41c6a5d03bd948cbd29c4d1e97",
+      "lines": 513,
       "status": "pending_or_changed",
       "matching_evidence": []
     },
@@ -4272,12 +4294,10 @@
     },
     {
       "path": "lib/questionnaire.js",
-      "sha256": "d0882d61e7e39194fb8f221970a1c0652054e69c51e3648455502e30a3b6ee38",
+      "sha256": "dda2d49fc302b9cf1660b4d859af58b4db73cbea63918bfdeabc2b8ed4fbc635",
       "lines": 929,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "lib/reviewFilter.js",
@@ -5463,22 +5483,24 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "949ef5de2967ab468623a60e2959a9e44e480fd98c0ae4e94eb41df488e0c16e",
-      "lines": 181,
+      "sha256": "1b5b142fdf0ac8bc908e3c3ff14a86c3892328b18ab0c69ec7fa1d919ebaf413",
+      "lines": 194,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "6e60b18190078d795b396993694b759f4aba6b0169fe4013486af012f608b293",
-      "lines": 112,
-      "status": "generated_or_audit_artifact",
-      "matching_evidence": []
+      "sha256": "656f129bf5be72a0b01f0294615afb925b1a4faeeecb5f099c340fb18de35253",
+      "lines": 114,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "99fc0c125859035050f3db9ac10c0278bb0ad6621353ae68f5ab6a42ffe0c3a2",
-      "lines": 94,
+      "sha256": "0a05264893afef1e100ea446a75e18a50525ed36776dab727b4c0139fc02dc66",
+      "lines": 96,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -5598,15 +5620,17 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "1a4f0299cb86600a91ce49b8c033629e0eed9ea504e1047326b54f14a3274494",
-      "lines": 174,
-      "status": "generated_or_audit_artifact",
-      "matching_evidence": []
+      "sha256": "43be52fd55e8d5ae08e1ab27b9df666d50ba3ab7c368d6b9bc631ed894ad9788",
+      "lines": 186,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "8d7eebb99d0d0320df7580e48d808315229c733ae581ecc97b92da095b6a862f",
-      "lines": 6504,
+      "sha256": "b0a4ddce568ab424c5ff105dd3a4a9a18f629204a9bd23a912bb98f4c1255db0",
+      "lines": 6520,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -5859,6 +5883,34 @@
       "matching_evidence": []
     },
     {
+      "path": "reports/deployment-review-2026-10-07/quiz-copy-regressions-2026-10-09.txt",
+      "sha256": "77b450a9206f4adf262d0ef3178f5ee99e84e5c6a0dd4af1442fe77d933ce921",
+      "lines": 53,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/quiz-parent-unknown-answer-after.png",
+      "sha256": "f5ba54188d7cc631479121f75832786fc7251a802ae266ebee16656d22515462",
+      "lines": null,
+      "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/quiz-privacy-admission-copy-desktop.png",
+      "sha256": "9e91880761c4f2fb1c74d9b1140e19e5af8547c68da4b11605965d586256eff9",
+      "lines": null,
+      "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/quiz-privacy-admission-copy-phone.png",
+      "sha256": "2586254740ecaba82f6565e9eb6cd0736140979b5d12c60bd323a5942541e023",
+      "lines": null,
+      "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/reconcile-coverage.py",
       "sha256": "e64852bc5cd366838a5c4c0d9f9c98ff06f3af5b10f0a9387be2c160033652f5",
       "lines": 61,
@@ -5885,8 +5937,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "54ae7cf13124f046326c0e6b47c11e7e02ccc8a8b172c2f8d9c45c79f01f1187",
-      "lines": 2855,
+      "sha256": "e94696ef62625dc7ff7c80f3010b480647c74576488372cdd26120dffe7cf632",
+      "lines": 3041,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6174,12 +6226,10 @@
     },
     {
       "path": "scripts/generate-school-proscons.js",
-      "sha256": "f76d24243f6c0f2543637b802998c5f06e8d23e40c22ee91c0e33e350ae170f6",
-      "lines": 311,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "0a33bae7c2b657eeb4b71196717ae88207f9e4dacf5821b40a78d9fd2b24cd83",
+      "lines": 325,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "scripts/geocode-schools.js",

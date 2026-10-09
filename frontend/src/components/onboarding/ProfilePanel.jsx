@@ -1,6 +1,6 @@
 import { useEffect, useId, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { QUESTIONS, answerTags } from '../../pages/onboarding/quizQuestions';
-import { useG } from '../../lib/gender';
 
 /**
  * The live "Tvůj profil" panel — the desktop-specific idea in onboarding-v2.
@@ -37,7 +37,6 @@ function readFurthest() {
 function ProfilePanel({ answers, role, currentQuestionIndex, variant = 'panel' }) {
   const [open, setOpen] = useState(false);
   const bodyId = useId();
-  const g = useG();
   const furthest = Math.max(readFurthest(), currentQuestionIndex ?? 0);
   useEffect(() => {
     try {
@@ -59,8 +58,8 @@ function ProfilePanel({ answers, role, currentQuestionIndex, variant = 'panel' }
   const parent = role === 'parent';
 
   const privacyNote = parent
-    ? 'Odpovědi zůstávají ve vašem prohlížeči. Nikam je neodesíláme a nic neukládáme, dokud si sami nevytvoříte účet.'
-    : `Odpovědi zůstávají v tvém prohlížeči. Nikam je neposíláme a nic o tobě neukládáme, dokud si ${g('sám', 'sama')} nevytvoříš účet.`;
+    ? 'Během vyplňování jsou odpovědi v tomto prohlížeči. Dokončený dotazník ukládáme k vašemu účtu; u nového účtu až po potvrzení e-mailu. Beta verze navíc zaznamenává používání aplikace.'
+    : 'Během vyplňování jsou odpovědi v tomto prohlížeči. Dokončený dotazník ukládáme k tvému účtu; u nového účtu až po potvrzení e-mailu. Beta verze navíc zaznamenává používání aplikace.';
 
   const list = (
     <>
@@ -93,7 +92,10 @@ function ProfilePanel({ answers, role, currentQuestionIndex, variant = 'panel' }
             {parent ? 'Zbývá' : 'Zbývá'} {remaining} {questionWord(remaining)}
           </p>
         )}
-        <p className="ob-profile-privacy">{privacyNote}</p>
+        <p className="ob-profile-privacy">
+          {privacyNote}{' '}
+          <Link to="/ochrana-osobnich-udaju">Podrobnosti o ochraně soukromí</Link>
+        </p>
       </div>
     </>
   );

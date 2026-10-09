@@ -20,8 +20,9 @@
  *     properties rather than importing the CSS representation.
  *
  * Source: Claude Design project "Seven-screen system launch" (2026-08-24).
- * Full extraction notes + the list of mockup claims we deliberately did NOT
- * port: docs/sources/design_system.md
+ * Current design specification: design/DESIGN.md
+ * Historical extraction notes and rejected mockup claims:
+ * archive/design/research/design_system-archived.md
  */
 
 // --- Typography --------------------------------------------------------------

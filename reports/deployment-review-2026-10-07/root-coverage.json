@@ -92,18 +92,18 @@
     "method": "Full current AGENTS shared content read, entire original pair diff inspected, all own guide edits reviewed, and exact transformed-byte equality asserted for the shared current content. Only graphify prefix/agent-specific names and paths differ; those differences were read explicitly. Final own wording/metadata additions inspected; exact paired-guide equality rechecked."
   },
   "frontend/src/App.jsx": {
-    "sha256": "1b72fab35d3be14a790d6105d0f543cf6f741ad3a69dc8d8232e6147c79bba13",
-    "lines": 139,
+    "sha256": "8f699b26bda2cc15aa691b9416e554560586d63335d896838bdcd9d40e05c915",
+    "lines": 150,
     "read_ranges": [
       [
         1,
-        139
+        150
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T22:10:05.659202+00:00",
-    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
+    "checked_at_utc": "2026-10-09T21:56:04.686116+00:00",
+    "method": "Full current source read in complete bounded ranges (including previous-turn api.js 1-180/181-360/361-end and tokens.js 1-150/151-end); all subsequent own narrow diffs inspected. App/ProtectedRoute reread after bc1f826. Read is not runtime/service or legal acceptance."
   },
   "frontend/src/components/AsyncState.jsx": {
     "sha256": "5bc2699ffd41551d392e010df8225a1e639cb756d647b5c994f30c5f92e07df8",
@@ -211,17 +211,18 @@
     "checked_at_utc": "2026-10-07T18:23:06.563257+00:00"
   },
   "frontend/src/components/onboarding/TopMatchCard.jsx": {
-    "sha256": "14ff6212439ea50422d051a71e671fd5bb7374b79d35ef9e23ed15363fab75c2",
-    "lines": 39,
+    "sha256": "677a209b8ed21def7b2379b6c3df24da2e74c7dc6becd8278ccf199a924fcbf3",
+    "lines": 41,
     "read_ranges": [
       [
         1,
-        39
+        41
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:23:06.563512+00:00"
+    "checked_at_utc": "2026-10-09T21:56:04.686116+00:00",
+    "method": "Full current source read in complete bounded ranges (including previous-turn api.js 1-180/181-360/361-end and tokens.js 1-150/151-end); all subsequent own narrow diffs inspected. App/ProtectedRoute reread after bc1f826. Read is not runtime/service or legal acceptance."
   },
   "frontend/src/components/onboarding/usePrefersReducedMotion.js": {
     "sha256": "203bc228c0cd336a6088414abdf0a17437d01c531ac5b9e2d32be0726b12fbf8",
@@ -263,17 +264,18 @@
     "checked_at_utc": "2026-10-07T18:23:06.564203+00:00"
   },
   "frontend/src/design/tokens.js": {
-    "sha256": "f518fb5203dd28ee5453263b49b6a389076624ef9f8722e994e45b547eb56ed7",
-    "lines": 245,
+    "sha256": "0f79791a886a10c2b4835e293145a2ad0ae4d0a1a161256c55a082b3f8c79d4e",
+    "lines": 253,
     "read_ranges": [
       [
         1,
-        245
+        253
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:23:06.564372+00:00"
+    "checked_at_utc": "2026-10-09T21:56:04.686116+00:00",
+    "method": "Full current source read in complete bounded ranges (including previous-turn api.js 1-180/181-360/361-end and tokens.js 1-150/151-end); all subsequent own narrow diffs inspected. App/ProtectedRoute reread after bc1f826. Read is not runtime/service or legal acceptance."
   },
   "frontend/scripts/gen-tokens-css.mjs": {
     "sha256": "3e5fb143d33500d2eb7bdbd2c2c648fae01b55e5b703a9a927d69e7dbb2435cd",
@@ -1369,32 +1371,32 @@
     "method": "Full source read across recorded continuation turns, including missing middleware/brainstorm ranges and complete authored diffs. Read means inspected, not defect-free or runtime-approved."
   },
   "reports/deployment-review-2026-10-07/REPORT.md": {
-    "sha256": "99fc0c125859035050f3db9ac10c0278bb0ad6621353ae68f5ab6a42ffe0c3a2",
-    "lines": 94,
+    "sha256": "0a05264893afef1e100ea446a75e18a50525ed36776dab727b4c0139fc02dc66",
+    "lines": 96,
     "read_ranges": [
       [
         1,
-        94
+        96
       ]
     ],
-    "status": "complete",
+    "status": "complete_after_concurrent_change",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T21:42:41.962300+00:00",
-    "method": "Full current report read previously and all subsequent own additions inspected. Current review remains in progress. Final own wording/metadata additions inspected; exact paired-guide equality rechecked."
+    "checked_at_utc": "2026-10-09T21:56:04.686116+00:00",
+    "method": "Previous complete root read plus all own subsequent additions/corrections inspected; earlier truncated current report/plan tails reread in bounded ranges. Deployment review remains incomplete."
   },
   "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md": {
-    "sha256": "a6678a14d47405e40e67b17ce1b518f306476f1bf27fefd2d2acf4dba37f0256",
-    "lines": 93,
+    "sha256": "656f129bf5be72a0b01f0294615afb925b1a4faeeecb5f099c340fb18de35253",
+    "lines": 114,
     "read_ranges": [
       [
         1,
-        93
+        114
       ]
     ],
-    "status": "complete",
+    "status": "complete_after_concurrent_change",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:40:57.648582+00:00",
-    "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
+    "checked_at_utc": "2026-10-09T21:56:04.686116+00:00",
+    "method": "Previous complete root read plus all own subsequent additions/corrections inspected; earlier truncated current report/plan tails reread in bounded ranges. Deployment review remains incomplete."
   },
   "reports/deployment-review-2026-10-07/script-findings.md": {
     "sha256": "67e42c93ea061f4892aa3494ed0063f009e3b03d2f238bb84d76efa1f0cbd0e7",
@@ -2111,32 +2113,32 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "ce137b8dd3c9221df34e9635a37b834de89b17dc1d792e74886792d6d14fa39b",
-    "lines": 1606,
+    "sha256": "9410076e22575c397df00977aa0dcf0d3a2fb90d09be6a1783c96b892a8abcbd",
+    "lines": 1611,
     "read_ranges": [
       [
         1,
-        1606
+        1611
       ]
     ],
-    "status": "complete",
+    "status": "complete_after_concurrent_change",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T21:42:41.962300+00:00",
-    "method": "Full 2,296-line original ledger and complete reconciliation previously read; all current narrow C21 additions inspected. Final own wording/metadata additions inspected; exact paired-guide equality rechecked."
+    "checked_at_utc": "2026-10-09T21:56:04.686116+00:00",
+    "method": "Previous complete root read plus all own subsequent additions/corrections inspected; earlier truncated current report/plan tails reread in bounded ranges. Deployment review remains incomplete."
   },
   "frontend/src/api.js": {
-    "sha256": "07b5a72a87fbd88712988bbe465d8a34ec16a1b6f2b127bbdfa82e74e930e003",
-    "lines": 473,
+    "sha256": "2e60c1cacdcddfe855eae350da4a77751375099e4614b76e31f3ed02146106d2",
+    "lines": 476,
     "read_ranges": [
       [
         1,
-        473
+        476
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T22:10:05.659662+00:00",
-    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
+    "checked_at_utc": "2026-10-09T21:56:04.686116+00:00",
+    "method": "Full current source read in complete bounded ranges (including previous-turn api.js 1-180/181-360/361-end and tokens.js 1-150/151-end); all subsequent own narrow diffs inspected. App/ProtectedRoute reread after bc1f826. Read is not runtime/service or legal acceptance."
   },
   "frontend/src/components/AuthContext.jsx": {
     "sha256": "d79a5d4c04588be385ff11ee6abea12d2c8d13f11254abcfe55964ac34b3de01",
@@ -2153,18 +2155,18 @@
     "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
   },
   "frontend/src/components/ProtectedRoute.jsx": {
-    "sha256": "bd45bfda7b59b798610039751633cf9b6a71296ab54427d687593b27951a13c1",
-    "lines": 78,
+    "sha256": "591df014798f50b89c023f2ece1588e3fce7b551bb1df3f7e15c916b71625e1b",
+    "lines": 86,
     "read_ranges": [
       [
         1,
-        78
+        86
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T22:10:05.660141+00:00",
-    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
+    "checked_at_utc": "2026-10-09T21:56:04.686116+00:00",
+    "method": "Full current source read in complete bounded ranges (including previous-turn api.js 1-180/181-360/361-end and tokens.js 1-150/151-end); all subsequent own narrow diffs inspected. App/ProtectedRoute reread after bc1f826. Read is not runtime/service or legal acceptance."
   },
   "frontend/src/lib/gender.js": {
     "sha256": "e17672102189f49abeb1d4f50d230b0576e14ebae841b94f5e1eb5f8cc39e43f",
@@ -2177,8 +2179,8 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T22:10:05.660569+00:00",
-    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
+    "checked_at_utc": "2026-10-09T21:56:04.686116+00:00",
+    "method": "Full current source read in complete bounded ranges (including previous-turn api.js 1-180/181-360/361-end and tokens.js 1-150/151-end); all subsequent own narrow diffs inspected. App/ProtectedRoute reread after bc1f826. Read is not runtime/service or legal acceptance."
   },
   "frontend/src/lib/genderCopy.js": {
     "sha256": "169276daaf1afa90203e1ad1534f09066ba3126f12b72b2dd61683ce7410c526",
@@ -2713,18 +2715,20 @@
     "method": "Exact saved 1,376-line c460db0 baseline SHA verified against Git, then complete current diff (135 additions/53 deletions) read without truncation on 9 October. Current hash checked again; source coverage only, no SQL execution or migration approval."
   },
   "frontend/src/pages/Questionnaire.jsx": {
-    "sha256": "48864e649c814632e17f0c9df31bc39dff742b11f59a97d8c0d6cc18d3e870d9",
-    "lines": 925,
+    "sha256": "1dda962565e90d21fcfdc8704ae157053f739221fe7f68fcef60ad7ffd55e470",
+    "lines": 934,
     "read_ranges": [
       [
         1,
-        925
+        934
       ]
     ],
-    "status": "complete",
+    "status": "complete_after_concurrent_change",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T21:33:50.165512+00:00",
-    "method": "Full current source read in complete ranges 1-180,181-360,361-504,505-631,632-712,713-815,816-end. All narrow copy/accessibility changes inspected and actual component verified with synthetic read-only API; no submissions."
+    "checked_at_utc": "2026-10-09T21:56:04.686116+00:00",
+    "method": "Exact SHA of saved complete c90bb0c 925-line read verified; complete c90bb0c..HEAD peer diff and current own comment-only diff read. Browser proof remains fixture-scoped.",
+    "baseline_commit": "c90bb0c",
+    "baseline_sha256": "48864e649c814632e17f0c9df31bc39dff742b11f59a97d8c0d6cc18d3e870d9"
   },
   "tests/questionnaire.test.cjs": {
     "sha256": "77bb95a0284eb9196e9153ff85fd810b212f9f6558ece3f39b9223576b3e5395",
@@ -2851,5 +2855,187 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-09T21:42:41.962300+00:00",
     "method": "Full authored read-only OpenAPI probe inspected and executed. Emits expected field/path booleans only; no user rows, RPC calls or schema writes. Metadata is not full grants/behavior approval."
+  },
+  "frontend/src/components/Modal.jsx": {
+    "sha256": "3aeefecccf3adbab78838d06388672b1e9d8125bdb0d9a51944299cbb9e092c7",
+    "lines": 88,
+    "read_ranges": [
+      [
+        1,
+        88
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:56:04.686116+00:00",
+    "method": "Full current source read in complete bounded ranges (including previous-turn api.js 1-180/181-360/361-end and tokens.js 1-150/151-end); all subsequent own narrow diffs inspected. App/ProtectedRoute reread after bc1f826. Read is not runtime/service or legal acceptance."
+  },
+  "frontend/src/components/onboarding/ProfilePanel.jsx": {
+    "sha256": "accf9163e5cc409d9edabc85dc3a438cdd9514f6d9ed45d3e78fa5c9e05b7422",
+    "lines": 160,
+    "read_ranges": [
+      [
+        1,
+        160
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:56:04.686116+00:00",
+    "method": "Full current source read in complete bounded ranges (including previous-turn api.js 1-180/181-360/361-end and tokens.js 1-150/151-end); all subsequent own narrow diffs inspected. App/ProtectedRoute reread after bc1f826. Read is not runtime/service or legal acceptance."
+  },
+  "frontend/src/lib/useBottomBarSpace.js": {
+    "sha256": "336b035c3c51e992e08ac2cecc4621ec8f4b96dcb734eeafaf8b18296ff0757c",
+    "lines": 42,
+    "read_ranges": [
+      [
+        1,
+        42
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:56:04.686116+00:00",
+    "method": "Full current source read in complete bounded ranges (including previous-turn api.js 1-180/181-360/361-end and tokens.js 1-150/151-end); all subsequent own narrow diffs inspected. App/ProtectedRoute reread after bc1f826. Read is not runtime/service or legal acceptance."
+  },
+  "frontend/src/components/onboarding/HandoffLock.jsx": {
+    "sha256": "7cc48aab10f4bf03176108ee9a1b7f051acb5274dfeb58a461a354c4efa490eb",
+    "lines": 74,
+    "read_ranges": [
+      [
+        1,
+        74
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:56:04.686116+00:00",
+    "method": "Full current source read in complete bounded ranges (including previous-turn api.js 1-180/181-360/361-end and tokens.js 1-150/151-end); all subsequent own narrow diffs inspected. App/ProtectedRoute reread after bc1f826. Read is not runtime/service or legal acceptance."
+  },
+  "frontend/src/pages/onboarding/OnboardingFlow.jsx": {
+    "sha256": "1d8a948dd50609a89112cf0ec2b4db46ba3df4cf975d68157bc1aca273ce6591",
+    "lines": 614,
+    "read_ranges": [
+      [
+        1,
+        614
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:56:04.686116+00:00",
+    "method": "Full current source read in complete bounded ranges (including previous-turn api.js 1-180/181-360/361-end and tokens.js 1-150/151-end); all subsequent own narrow diffs inspected. App/ProtectedRoute reread after bc1f826. Read is not runtime/service or legal acceptance."
+  },
+  "frontend/src/lib/betaTrack.js": {
+    "sha256": "b4e5e972334bb50cae204372445fb49003e9975b439634154f81e33937f769bc",
+    "lines": 62,
+    "read_ranges": [
+      [
+        1,
+        62
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:56:04.686116+00:00",
+    "method": "Full current source read in complete bounded ranges (including previous-turn api.js 1-180/181-360/361-end and tokens.js 1-150/151-end); all subsequent own narrow diffs inspected. App/ProtectedRoute reread after bc1f826. Read is not runtime/service or legal acceptance."
+  },
+  "frontend/src/pages/onboarding/quizQuestions.js": {
+    "sha256": "c1426b97620e9bd319eb4f448b5813a1a242def98bb46479fa6b98ed391a9848",
+    "lines": 635,
+    "read_ranges": [
+      [
+        1,
+        635
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:56:04.686116+00:00",
+    "method": "Full current source read in complete bounded ranges (including previous-turn api.js 1-180/181-360/361-end and tokens.js 1-150/151-end); all subsequent own narrow diffs inspected. App/ProtectedRoute reread after bc1f826. Read is not runtime/service or legal acceptance."
+  },
+  "frontend/src/lib/matching.js": {
+    "sha256": "570d95acb83d19b7dbd2a2930764a3e46bbf893e8924a1314bf5c1e72114cd3c",
+    "lines": 408,
+    "read_ranges": [
+      [
+        1,
+        408
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:56:04.686116+00:00",
+    "method": "Full current source read in complete bounded ranges (including previous-turn api.js 1-180/181-360/361-end and tokens.js 1-150/151-end); all subsequent own narrow diffs inspected. App/ProtectedRoute reread after bc1f826. Read is not runtime/service or legal acceptance."
+  },
+  "frontend/src/components/onboarding/ObKit.jsx": {
+    "sha256": "5b85d3b943994dc14f9ffd386abfa9bd4e2cf630d3446c14e4f5a1ba30bbee99",
+    "lines": 275,
+    "read_ranges": [
+      [
+        1,
+        275
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:56:04.686116+00:00",
+    "method": "Full current source read in complete bounded ranges (including previous-turn api.js 1-180/181-360/361-end and tokens.js 1-150/151-end); all subsequent own narrow diffs inspected. App/ProtectedRoute reread after bc1f826. Read is not runtime/service or legal acceptance."
+  },
+  "frontend/src/pages/onboarding/useOnboarding.js": {
+    "sha256": "f5260a6693427e08d562912e126e4723072e3c6f59e6a0c900466cf3b35ebf9b",
+    "lines": 37,
+    "read_ranges": [
+      [
+        1,
+        37
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:56:04.686116+00:00",
+    "method": "Full current source read in complete bounded ranges (including previous-turn api.js 1-180/181-360/361-end and tokens.js 1-150/151-end); all subsequent own narrow diffs inspected. App/ProtectedRoute reread after bc1f826. Read is not runtime/service or legal acceptance."
+  },
+  "frontend/src/pages/onboarding/steps.js": {
+    "sha256": "d323defa4c2b9b6f8522d79e99316448730304f76199f7251e7b21d7ef086412",
+    "lines": 142,
+    "read_ranges": [
+      [
+        1,
+        142
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:56:04.686116+00:00",
+    "method": "Full current source read in complete bounded ranges (including previous-turn api.js 1-180/181-360/361-end and tokens.js 1-150/151-end); all subsequent own narrow diffs inspected. App/ProtectedRoute reread after bc1f826. Read is not runtime/service or legal acceptance."
+  },
+  "frontend/src/lib/admissionRisk.js": {
+    "sha256": "cc71be40838197b2b82664f5a4b5c76d703f0e4d6c633dcad3645c82e06e1e38",
+    "lines": 111,
+    "read_ranges": [
+      [
+        1,
+        111
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:56:04.686116+00:00",
+    "method": "Full current source read in complete bounded ranges (including previous-turn api.js 1-180/181-360/361-end and tokens.js 1-150/151-end); all subsequent own narrow diffs inspected. App/ProtectedRoute reread after bc1f826. Read is not runtime/service or legal acceptance."
+  },
+  "reports/deployment-review-2026-10-07/continuation-findings.md": {
+    "sha256": "43be52fd55e8d5ae08e1ab27b9df666d50ba3ab7c368d6b9bc631ed894ad9788",
+    "lines": 186,
+    "read_ranges": [
+      [
+        1,
+        186
+      ]
+    ],
+    "status": "complete_after_concurrent_change",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:56:04.686116+00:00",
+    "method": "Previous complete root read plus all own subsequent additions/corrections inspected; earlier truncated current report/plan tails reread in bounded ranges. Deployment review remains incomplete."
   }
 }

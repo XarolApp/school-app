@@ -13,13 +13,10 @@ import { usePrefersReducedMotion } from './usePrefersReducedMotion';
 /**
  * The quiz progress bar.
  *
- * HONEST BY CONSTRUCTION. `percent` must be a real count of answered questions
- * over total questions — see steps.js `quizProgressPercent`. There is no
- * pre-filled head start here any more: an indicator inflated to manufacture a
- * feeling of advancement is exactly the "artificial advancement" the DSA
- * Art. 25 interface-manipulation prohibition describes, and the audience is
- * minors. Do not add an offset, an easing curve, or a bar to a screen that has
- * no questions on it.
+ * `percent` reports the current question position over the total question count,
+ * including skipped questions — see steps.js `quizProgressPercent`.
+ * Honest progress is the project's design policy. Do not add an offset,
+ * an easing curve, or a bar to a screen that has no questions on it.
  *
  * The rail is capped to the question column's width (see .ob-progress in
  * onboarding.css) rather than stretched across a 1280px desktop viewport — a

@@ -6,7 +6,7 @@ import { createContext, useContext } from 'react';
  * {
  *   role: 'student' | 'parent' | null,
  *   setRole(role),
- *   answers: object,          // quiz answers, CLIENT STATE ONLY until the reveal
+ *   answers: object,          // local during quiz; completed tester answers are saved
  *   setAnswer(key, value),
  *   intents: string[],        // multi-intent selection
  *   commitment: string|null,
@@ -20,7 +20,7 @@ import { createContext, useContext } from 'react';
  *   phase: string|null       // honest phase label ("Než začneme"). There is
  *                            // deliberately NO flow-wide `progress` percentage:
  *                            // see steps.js `quizProgressPercent` — the only
- *                            // real number is questions answered / questions.
+ *                            // real number is question position / question count.
  * }
  */
 export const OnboardingContext = createContext(null);

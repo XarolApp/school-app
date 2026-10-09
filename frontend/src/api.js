@@ -147,8 +147,8 @@ export function saveOnboardingAnswers(answers) {
  * surface from the onboarding quiz, see CLAUDE.md. GET returns the question set,
  * the account's active/default run and its full run history; POST submits new
  * answers and scores deterministically; the new run becomes the default.
- * AI explanations are requested separately for an individual school through
- * explainQuestionnaireSchool(), rather than generated with every submission.
+ * With AI configured, submission also requests explanations for the top results.
+ * explainQuestionnaireSchool() separately requests one school's explanation.
  */
 export function fetchQuestionnaire() {
   return request('/api/questionnaire');

@@ -101,9 +101,9 @@ export function analyseSet(picks, studentPoints) {
 
 export const VERDICT_COPY = {
   vyvazene: 'Tohle je dobře rozložené.',
-  vseRisk: 'Všechny tři jsou risk — zvaž přidat školu, kam se dostaneš jistě.',
-  vseJistota: 'Máš jistotu, ale možná míříš níž, než bys mohl.',
-  bezJistoty: 'Chybí ti záložní škola, kam se dostaneš skoro jistě.',
+  vseRisk: 'U všech tří jsou tvoje body pod známou historickou hranicí. Zvaž školu s větší bodovou rezervou; přijetí to nezaručuje.',
+  vseJistota: 'U všech tří máš podle známých historických hranic větší bodovou rezervu. Budoucí hranice se ale mohou změnit.',
+  bezJistoty: 'U žádné z těchto škol nemáš oproti známé historické hranici větší bodovou rezervu. Zvaž přidat školu s větší rezervou.',
   neuplne: 'Zatím nemáš vybrané všechny 3 školy.',
   bezBodu: 'Zadej svoje body a spočítáme rozbor.',
   chybiHranice: 'U některých škol chybí hranice přijetí. Rozbor všech tří zatím nemůžeme dokončit.',

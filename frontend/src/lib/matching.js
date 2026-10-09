@@ -4,15 +4,13 @@
  * HARD RULES (CLAUDE.md + trust engine):
  *  1. Scoring is plain, auditable math. No AI, no randomness, no network call.
  *     Claude may later write the Czech *sentences*, never the numbers.
- *  2. A skipped / "nevím jistě" answer NEVER lowers a score (zero-shame rule).
- *     Its component is removed and the remaining weights are renormalised, and
- *     the CONFIDENCE drops instead. Missing information widens the interval;
- *     it does not punish the user.
+ *  2. A skipped / "nevím jistě" answer is excluded from the weighted average.
+ *     Removing a component can move the score in either direction. Confidence
+ *     reports the share of component weight covered, not a statistical interval.
  *  3. A component whose school-side data is unknown is likewise dropped. We
  *     only ever score on text we actually read.
- *  4. The result is reported as a BAND plus the explicit list of what it was
- *     based on - never a spurious percentage. With only name/location/programs
- *     in the database, "97% shoda" would be a lie.
+ *  4. Surfaces show a band, and some also show the computed score as a percentage.
+ *     This measures preference fit; it is not an admission probability.
  */
 
 import { deriveFeatures } from './schoolFeatures.js';
@@ -244,7 +242,7 @@ function scoreFeatures(school, f, answers, role) {
   }
 
   const totalWeight = Object.values(weights).reduce((s, x) => s + x, 0);
-  // Renormalise across ANSWERED components only: skips never penalise.
+  // Renormalise across components with both an answer and usable school data.
   const score = usedWeight > 0 ? weighted / usedWeight : 0;
   const confidence = totalWeight > 0 ? usedWeight / totalWeight : 0;
 
@@ -310,8 +308,8 @@ export function explain(result, answers, role = 'student', gender = 'm') {
   } else if (p.focus) {
     out.push(
       formal
-        ? 'Zaměření školy se s vybranými zájmy překrývá jen částečně.'
-        : 'Zaměření se s tvými zájmy potkává jen částečně — což nemusí vadit, pokud tě láká zkusit něco nového.'
+        ? 'Z dostupných údajů nevidíme překryv zaměření školy s vybranými zájmy.'
+        : 'V dostupných údajích nevidíme zaměření, které by odpovídalo tvým zájmům. Škola ale může vyhovovat v ostatních věcech.'
     );
   }
 
@@ -342,8 +340,8 @@ export function explain(result, answers, role = 'student', gender = 'm') {
   if (result.confidence < 0.6) {
     out.push(
       formal
-        ? 'Část otázek zůstala bez odpovědi, proto je toto doporučení orientační. Na přesnosti to neubírá tam, kde jsme data měli.'
-        : `Pár otázek jsi ${gender === 'f' ? 'přeskočila' : 'přeskočil'}, tak to zatím ber orientačně. Nic se neděje — doplnit je můžeš kdykoli.`
+        ? 'Pro část kritérií chybí odpovědi nebo údaje o škole. Doporučení proto vychází jen z dostupných informací.'
+        : 'U části kritérií nemáme odpověď nebo údaj o škole. Doporučení proto ber jako orientační.'
     );
   }
 
@@ -387,8 +385,8 @@ export function tradeoffs(result, role = 'student', gender = 'm') {
   if (p.location && !p.location.hit) {
     out.push(
       formal
-        ? 'Leží mimo části Prahy, které jste označili — dojíždění bude delší.'
-        : `Je mimo části Prahy, které jsi ${gender === 'f' ? 'vybrala' : 'vybral'} — dojíždět budeš dýl.`
+        ? 'Leží mimo části Prahy, které jste označili. Skutečný dojezd je potřeba ověřit.'
+        : `Je mimo části Prahy, které jsi ${gender === 'f' ? 'vybrala' : 'vybral'}. Ověř si skutečný dojezd.`
     );
   }
   if (p.language && !p.language.hit && result.features.language === false) {

@@ -35,12 +35,12 @@ import { usePrefersReducedMotion } from '../components/onboarding/usePrefersRedu
  *   history  — every run: rename, set as default, archive
  *   form     — the questions (reached from "Vyplnit znovu" or the empty state)
  *
- * The score is a percentage here on purpose (the onboarding quiz shows bands):
- * with ~220 schools, bands would lump huge groups together and lose the
- * 98 % vs 83 % difference.
+ * This page shows a computed preference-fit percentage alongside the ranking.
+ * The onboarding reveal also shows a percentage; compact cards can show a band.
  *
- * Sentences are written by a model at submission time only. A run saved
- * without one never gets one later, so the copy never promises it will fill in.
+ * The server requests top-result explanations at submission when AI is configured.
+ * This page does not retry missing sentences automatically; school detail can
+ * separately request an explanation and cache it on the saved run.
  */
 
 const TOP_COUNT = 10;

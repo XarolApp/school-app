@@ -1,9 +1,9 @@
 /**
- * The 10 quiz questions — one per screen.
+ * The 11 quiz questions — one per screen.
  *
  * Design rules baked in here:
- *  - EVERY question feeds the scoring engine. Data minimisation (GDPR Art. 8,
- *    minors): if the matcher does not consume an answer, the question is cut.
+ *  - EVERY question feeds the scoring engine. Data minimisation: if the
+ *    matcher does not consume an answer, the question is cut.
  *    Nothing here is a "nice to have" field.
  *  - The role fork changes VOICE, FRAMING and PHRASING only, never the scoring
  *    engine. Both branches write the same answer keys with the same values, so
@@ -14,7 +14,7 @@
  *    scores and burns adult trust.
  *  - `defaultValue` = smart default where a true modal answer exists (reduces
  *    decision fatigue). Where no honest default exists, there is none.
- *  - Skipping is always allowed and never lowers a score.
+ *  - Skipping is always allowed; unanswered criteria are excluded from scoring.
  *  - `reassure` (onboarding-v2) = the "you were heard" line shown directly
  *    under the option the user just picked. This is what replaced the deleted
  *    stand-alone Mirroring screen: the same mirroring job, distributed across
@@ -37,18 +37,17 @@
 import { FOCUS_CATEGORIES } from '../../lib/schoolFeatures';
 import { genderedCopy } from '../../lib/gender';
 
-/** Shared "no answer" option. Its reassurance is deliberately the same warmth
- *  as every other option's — an unanswered item widens the confidence interval
- *  and is dropped from the weights; it never lowers a score. */
+/** Shared "no answer" option. An unanswered item is excluded from the weighted
+ *  average; confidence describes the weight covered, not a statistical interval. */
 const UNSURE = {
   value: 'nevim',
   label: 'Nevím jistě',
   unsure: true,
   reassure: {
     student:
-      'V pohodě. Tuhle otázku prostě do výpočtu nezapočítáme — nesnižuje ti to shodu, jen z ní ubere jistotu.',
+      'V pohodě. Tuhle otázku do výpočtu nezapočítáme. Výsledek pak vychází z ostatních odpovědí.',
     parent:
-      'To je v pořádku. Tuto otázku do výpočtu nezahrneme — shodu nesnižuje, jen o něco snižuje spolehlivost výsledku.',
+      'To je v pořádku. Tuto otázku do výpočtu nezahrneme. Výsledek pak vychází z ostatních odpovědí.',
   },
 };
 
@@ -84,9 +83,9 @@ export const QUESTIONS = [
     // would flicker on every toggle.
     reassure: {
       student:
-        'Podle tohohle hledáme obory, ne názvy škol. Víc oblastí neznamená horší shodu — škola, která pokrývá dvě z nich, se posune nahoru.',
+        'Podle tohohle porovnáváme zaměření oborů s tvými zájmy. Zohledníme, kolik z vybraných oblastí škola pokrývá.',
       parent:
-        'Podle toho vyhledáváme obory, nikoli názvy škol. Více oblastí shodu nezhoršuje — škola, která pokrývá dvě z nich, se v pořadí posune výš.',
+        'Porovnáváme zaměření oborů s uvedenými zájmy. Zohledníme, kolik z vybraných oblastí škola pokrývá.',
     },
   },
   {
@@ -170,9 +169,9 @@ export const QUESTIONS = [
         label: 'Odborná škola s maturitou',
         reassure: {
           student:
-            'Odborka s maturitou = obor teď, vysoká pořád ve hře. Přidáme váhu tomu, co tě baví, protože tady na tom záleží víc než na gymplu.',
+            'Odborka s maturitou = obor teď, vysoká pořád ve hře. Zohledníme typ školy i to, co tě baví.',
           parent:
-            'Odborná škola s maturitou znamená volbu oboru nyní při zachování cesty na vysokou školu. Zájmové oblasti proto vážíme silněji.',
+            'Odborná škola s maturitou znamená volbu oboru nyní při zachování cesty na vysokou školu. Zohledníme typ školy i zájmové oblasti.',
         },
       },
       {
@@ -231,9 +230,9 @@ export const QUESTIONS = [
         parentLabel: 'Spíše doplňková',
         reassure: {
           student:
-            'Jasně. Jazyky necháme jako drobný bonus, ale nebudou kvůli nim přeskakovat školy, které ti sedí jinak.',
+            'Zohledníme, že ti běžný rozsah jazykové výuky stačí. Vedle jazyků dál porovnáváme i ostatní odpovědi.',
           parent:
-            'Jazyky ponecháme jako drobný bonus. Nepřebijí školy, které vyhovují v podstatnějších kritériích.',
+            'Zohledníme, že vám běžný rozsah jazykové výuky stačí. Vedle jazyků dál porovnáváme i ostatní odpovědi.',
         },
       },
       {
@@ -357,9 +356,9 @@ export const QUESTIONS = [
         parentLabel: 'Má jasno',
         reassure: {
           student:
-            'Když máš jasno, dává smysl jít po specializovaných školách. Přitvrdíme na zaměření a nebudeme ti nahoru cpát „něco od všeho“.',
+            'Když máš jasno, zohledníme školy s užší nabídkou oborů i to, co tě baví.',
           parent:
-            'Při jasné představě dává smysl upřednostnit specializované školy. Zaměření proto vážíme silněji.',
+            'Při jasné představě zohledníme školy s užší nabídkou oborů i uvedené zájmy.',
         },
       },
       {
@@ -380,9 +379,9 @@ export const QUESTIONS = [
         unsure: true,
         reassure: {
           student:
-            'Úplně normální a nic tím neztrácíš. Upřednostníme školy se širší nabídkou, kde se rozhoduješ až za rok nebo dva.',
+            'Úplně normální. Zohledníme šíři nabídky oborů, aby bylo z čeho vybírat. Možnost změnit obor si ověř u konkrétní školy.',
           parent:
-            'Zcela běžné a na výsledek to nemá negativní vliv. Upřednostníme školy se širší nabídkou, kde se obor volí později.',
+            'Zcela běžné. Zohledníme šíři nabídky oborů, aby bylo z čeho vybírat. Možnost změnit obor je potřeba ověřit u konkrétní školy.',
         },
       },
     ],
@@ -426,25 +425,26 @@ export const QUESTIONS = [
       },
       {
         value: 'obojí',
-        label: 'Obojí stejně',
-        parentLabel: 'Obojí stejně',
+        label: 'Obojí je důležité',
+        parentLabel: 'Obojí je důležité',
         reassure: {
           student:
-            'Necháme váhy vyrovnané. Nahoru se dostane škola, která zvládne obojí, ne ta, která exceluje jen v jednom.',
+            'Zaměření i dostupnost zohledníme společně s ostatními odpověďmi.',
           parent:
-            'Váhy zůstanou vyrovnané. Nejvýše skončí školy vyhovující v obou kritériích, nikoli ty výrazné pouze v jednom.',
+            'Zaměření i dostupnost zohledníme společně s ostatními odpověďmi.',
         },
       },
     ],
   },
   /**
    * The optional points block: the last three questions. Skipping any of them is
-   * free and never lowers a score — the `reserve` component only exists when
+   * allowed; the `reserve` component only exists when
    * points AND a preference are given (see matching.js `weightsFor`).
    *
    * The points stay in sessionStorage like every other answer until an account
-   * exists, then ride the same flush to decision_profile (POST
-   * /api/me/onboarding-answers), so /dotaznik and /prihlaska show the same number.
+   * is available. Completed tester answers are saved by OnboardingFlow; a new
+   * account's answers are flushed after confirmation. Points and expected gain
+   * also update decision_profile through POST /api/me/onboarding-answers.
    */
   {
     id: 'points',
@@ -466,12 +466,12 @@ export const QUESTIONS = [
     },
     reassure: {
       student:
-        'Podle bodů poznáme, jak daleko jsi od hranice přijetí u každé školy. Nikam je neposíláme — zůstanou u tebe, dokud si nevytvoříš účet.',
+        'Body porovnáme s historickými hranicemi přijetí tam, kde je známe. Dokončený dotazník uložíme k tvému účtu. Přijetí to nezaručuje.',
       parent:
-        'Podle bodů porovnáme dítě s hranicí přijetí u každé školy. Do vytvoření účtu zůstanou jen v tomto zařízení.',
+        'Body porovnáme s historickými hranicemi přijetí tam, kde je známe. Dokončený dotazník uložíme k vašemu účtu. Přijetí to nezaručuje.',
     },
     honesty:
-      'Odpovídej upřímně — nikdo tě nesoudí. Když uvedeš jiné body, než jaké máš, dostaneš horší výsledky.',
+      'Odpovídej upřímně — nikdo tě nesoudí. Jiné body, než jaké máš, vedou k méně přesnému doporučení.',
   },
   {
     id: 'gain',
@@ -480,11 +480,11 @@ export const QUESTIONS = [
     panelLabel: 'Očekávané zlepšení',
     student: {
       title: 'O kolik bodů se do ostrých přijímaček zlepšíš?',
-      hint: 'Použije se jen když jsi zadal(a) body. Buď k sobě upřímný/á — přestřelený odhad ti doporučí školy, kam se nedostaneš.',
+      hint: 'Použije se jen když jsi zadal(a) body. Přestřelený odhad může ukázat příliš ambiciózní školy. Budoucí hranice přijetí zatím neznáme.',
     },
     parent: {
       title: 'O kolik bodů se dítě podle vás do ostrých přijímaček zlepší?',
-      hint: 'Použije se jen když jste zadali body. Přestřelený odhad doporučí školy, kam se dítě nedostane.',
+      hint: 'Použije se jen když jste zadali body. Přestřelený odhad může ukázat příliš ambiciózní školy. Budoucí hranice přijetí zatím neznáme.',
     },
     options: [
       { value: 'stejne', label: 'Asi zůstanu na stejném', parentLabel: 'Asi zůstane na stejném' },
@@ -512,8 +512,8 @@ export const QUESTIONS = [
         label: 'Chci jistotu a velkou rezervu',
         parentLabel: 'Jistotu a velkou rezervu',
         reassure: {
-          student: 'Nahoru půjdou školy, kam se s tvými body dostaneš s odstupem od hranice.',
-          parent: 'Nahoru půjdou školy, kam se dítě s danými body dostane s odstupem od hranice.',
+          student: 'Zvýhodníme školy, kde máš podle známých historických hranic větší bodovou rezervu. Přijetí to nezaručuje.',
+          parent: 'Zvýhodníme školy, kde má dítě podle známých historických hranic větší bodovou rezervu. Přijetí to nezaručuje.',
         },
       },
       {
@@ -521,8 +521,8 @@ export const QUESTIONS = [
         label: 'Něco mezi',
         parentLabel: 'Něco mezi',
         reassure: {
-          student: 'Hledáme školy, kam se dostaneš, ale ne úplně o kus níž, než umíš.',
-          parent: 'Hledáme školy dosažitelné, ale ne výrazně pod úrovní dítěte.',
+          student: 'Zvýhodníme školy, kde jsou tvé očekávané body blízko známé historické hranice nebo trochu nad ní.',
+          parent: 'Zvýhodníme školy, kde jsou očekávané body dítěte blízko známé historické hranice nebo trochu nad ní.',
         },
       },
       {
@@ -583,10 +583,11 @@ export function reassuranceFor(question, value, role, gender = 'm') {
 
   if (Array.isArray(value)) {
     if (!value.length) return null;
+    if (value.every((item) => item === 'nevim')) return pick(UNSURE.reassure);
     return pick(question.reassure);
   }
-  if (!value) return null;
-  const option = question.options.find((o) => o.value === value);
+  if (value === undefined || value === null || value === '') return null;
+  const option = questionOptions(question, role).find((o) => o.value === value);
   return pick(option?.reassure) || pick(question.reassure);
 }
 
@@ -617,7 +618,7 @@ export function initialAnswers() {
 
 /**
  * The matcher must never see 'nevim' as a real value — it means "no answer".
- * Blank answers widen the confidence interval, they never lower a score.
+ * Blank answers are excluded; confidence measures covered component weight.
  */
 export function cleanAnswers(answers) {
   const out = {};

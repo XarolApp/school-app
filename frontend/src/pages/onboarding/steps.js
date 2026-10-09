@@ -16,11 +16,11 @@ import Activated from './screens/Activated';
 import { QUESTIONS } from './quizQuestions';
 
 /**
- * The canonical flow — 23 screens (onboarding-v2 + split paywall, 2026-09-05).
+ * The canonical flow. FLOW_LENGTH derives its current length from STEPS.
  *
  * Pillar 1 (3)  welcome -> role fork -> stakes+intent
- * Pillar 2 (11) quiz (one question per screen) -> calculation -> reveal
- * Pillar 3 (9)  commitment -> social proof -> hodnota -> cesta -> account ->
+ * Pillar 2     quiz (one per QUESTIONS entry) -> calculation -> reveal
+ * Pillar 3 (8) commitment -> social proof -> hodnota -> cesta -> account ->
  *               plan -> zkusebni -> platba
  *
  * THE PAYWALL IS FIVE SCREENS, NOT ONE (2026-09-05, approved design in
@@ -67,7 +67,7 @@ import { QUESTIONS } from './quizQuestions';
  *  - `expectation` (HonestExpectation) -> DELETED as a screen. Its content
  *    moved onto the reveal, attached to the claim it actually qualifies.
  *
- * `Activated` sits AFTER the 20 and is the post-onboarding empty-state
+ * `Activated` sits after the flow and is the post-onboarding empty-state
  * checklist, not an onboarding screen (`postFlow`).
  */
 
@@ -124,14 +124,12 @@ export const FIRST_QUIZ_INDEX = stepIndexById('q1');
  *
  * The previous version pre-filled the bar to 15% on screen one and eased it
  * through a goal-gradient curve (endowed progress, Nunes & Drèze 2006). That is
- * deliberately gone: an indicator inflated to induce a feeling of advancement is
- * "artificial advancement that misrepresents the actual state" — squarely the
- * interface-manipulation prohibition in DSA Art. 25, and the audience here is
- * minors. Do not reintroduce it.
+ * deliberately gone under the project's honest-progress design policy.
+ * Do not reintroduce an invented offset.
  *
  * What is left is a bar that counts questions and nothing else:
  *   - pre-quiz screens: no bar at all (a phase label instead),
- *   - quiz screens:     exactly (answered position) / (number of questions),
+ *   - quiz screens:     exactly (current question position) / (number of questions),
  *   - post-quiz:        no bar; a phase label only.
  *
  * @param {number} questionIndex zero-based index of the question on screen

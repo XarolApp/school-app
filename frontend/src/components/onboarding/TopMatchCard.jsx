@@ -8,7 +8,7 @@ import { useOnboarding } from '../../pages/onboarding/useOnboarding';
  * artefact they already have is what makes "save it" and "trust it" concrete
  * (Mobbin: signup as the door to a thing already built).
  *
- * Band + named reasons only, never a percentage, same as the reveal.
+ * This compact card shows the band and named reasons; the reveal also shows a percentage.
  */
 export default function TopMatchCard({ result, answers, role, label, footer }) {
   const { gender } = useOnboarding();

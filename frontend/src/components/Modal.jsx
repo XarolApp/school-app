@@ -6,7 +6,7 @@ import { useEffect, useId, useRef } from 'react';
  * Escape and backdrop clicks call `onDismiss` (ignored while `busy`).
  * Focus goes to `initialFocusRef` (else the first focusable) and returns to
  * `returnFocusRef` (else whatever had focus when it opened) on close.
- * `children` may be a function receiving the title id, for aria wiring.
+ * The modal labels itself with its title; `children` supplies the content.
  */
 function Modal({
   open,
