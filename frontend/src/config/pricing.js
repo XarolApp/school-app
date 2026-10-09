@@ -43,8 +43,8 @@
  *     though the teen is the one clicking through the quiz.
  *   - Real-world precedent: UWorld (exam prep — the closest analog: bounded,
  *     high-stakes, single-event use) sells fixed-window access passes that
- *     expire and do NOT auto-renew, not subscriptions. That is the model to
- *     copy, including how it is described (see windowLabel/terms below — this
+ *     expire without automatic renewal; UWorld calls them "subscriptions".
+ *     This supports the fixed-window model (see windowLabel/terms below — this
  *     must read as "access through a deadline," never as "lifetime access").
  *   - Your acquisition channel (influencer/affiliate) is paid on realized
  *     revenue, not upfront CPI, which removes the usual reason recurring
@@ -120,8 +120,9 @@ export const ONE_STEP_CANCELLATION_IMPLEMENTED = true;
 
 /**
  * Optional extra guarantee badge is disabled. This is not the actual withdrawal
- * cutoff: Terms and server withdrawal currently grant 30 days. Do not shorten
- * that benefit or infer a 14-day implementation from this unused badge flag.
+ * cutoff: the server gives everyone 30 days to also cover the minors' refund
+ * promise in Terms §7; §6 describes the statutory 14-day right. Do not shorten
+ * the implemented benefit or infer its cutoff from this unused badge flag.
  * Statutory/commercial calendar boundaries need the legal/payment handoff review.
  */
 export const REFUND_GUARANTEE_DAYS = 0;
@@ -214,8 +215,7 @@ export const ONE_TIME_OFFER = {
 /**
  * OFF for real payments (plan 009). A client-side entitlement can be reset by
  * clearing cookies or opening an incognito window, which makes the "jen teď,
- * jednorázově" claim false in practice. Shown to minors that is a DSA Art. 25
- * dark-pattern problem, not a rough edge — so it stays off until eligibility
+ * jednorázově" claim false in practice. Project policy keeps it off until eligibility
  * and expiry are issued and enforced server-side (tracked in UNFORGET.md).
  * Every consumer of ONE_TIME_OFFER below must check this flag and degrade to
  * "full price, no countdown" — never to a broken or empty element.

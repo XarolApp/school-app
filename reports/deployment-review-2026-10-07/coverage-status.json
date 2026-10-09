@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-09T21:59:25.564247+00:00",
-  "commit": "df6b680e934f8e7f0ce811f8af287c86e25c3bd7",
+  "checked_at_utc": "2026-10-09T22:07:47.674081+00:00",
+  "commit": "5c097aa5fb8960f34f1c5f9e422093bd1d7486ac",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "pending_or_changed": 538,
-    "current_full_read": 234,
-    "binary_requires_asset_check": 56,
-    "generated_or_audit_artifact": 43,
+    "pending_or_changed": 536,
+    "current_full_read": 236,
+    "binary_requires_asset_check": 61,
+    "generated_or_audit_artifact": 44,
     "removed_or_missing": 2
   },
   "files": [
@@ -783,8 +783,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "9410076e22575c397df00977aa0dcf0d3a2fb90d09be6a1783c96b892a8abcbd",
-      "lines": 1611,
+      "sha256": "3816219a27a6c78814a3e172b737ac0e5e100b4151f88f420df31384b85579f8",
+      "lines": 1616,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -2628,8 +2628,8 @@
     },
     {
       "path": "frontend/middleware.js",
-      "sha256": "9151df98e266a4327613ed915821cd7db98e24e88b58681c4b71a4b074294b70",
-      "lines": 231,
+      "sha256": "c0477e0bc0e0e8b7aba0deb566ef9f78fdffe12e54c431e7d15397cf275e47b0",
+      "lines": 232,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -2865,7 +2865,8 @@
       "lines": 53,
       "status": "current_full_read",
       "matching_evidence": [
-        "frontend-coverage.json"
+        "frontend-coverage.json",
+        "root-coverage.json"
       ]
     },
     {
@@ -2938,7 +2939,7 @@
     },
     {
       "path": "frontend/src/components/ParentPayHandoff.jsx",
-      "sha256": "3e6dce70e26daa777ab9878ac06b92307b21864f897bd34e7150d2acf03543b1",
+      "sha256": "03b062563409c123194f9f4600a872d2b39da0175d0df0e5608a6a1f2d8bcbf0",
       "lines": 157,
       "status": "current_full_read",
       "matching_evidence": [
@@ -3334,7 +3335,7 @@
     },
     {
       "path": "frontend/src/config/pricing.js",
-      "sha256": "eff8daee298ef48674c163382e66c404266cfc963a39bb57273572ca60749557",
+      "sha256": "a990be6870eb153e640f67ede9a2d4e1438966a6dc607d079bd7b0b2c3f69ed6",
       "lines": 373,
       "status": "current_full_read",
       "matching_evidence": [
@@ -3713,8 +3714,8 @@
     },
     {
       "path": "frontend/src/lib/usePicks.js",
-      "sha256": "9eea8be3af3b24f1bda45dff7106ec8242efe05ed77287160e91e7973cc8b6c3",
-      "lines": 80,
+      "sha256": "d01f92794edb081957e270a4aaa4fdafac51f87994af1ed059f9c4c829cdea76",
+      "lines": 72,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -3831,10 +3832,12 @@
     },
     {
       "path": "frontend/src/pages/ParentPay.jsx",
-      "sha256": "27c65ef57dea62a2e89d6d82498a6cd5db363cc417d4835cf157dbc1c1d95c5b",
+      "sha256": "62df17a13df81fead76624a634074ecc6f11a97e26e2feac3d64bd8dd7700b5f",
       "lines": 241,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/pages/Porovnani.jsx",
@@ -3925,10 +3928,12 @@
     },
     {
       "path": "frontend/src/pages/SubscriptionExpired.jsx",
-      "sha256": "3658e58d124dcff9537c39346ae2c43fe372476e8284b4b243984e5fd603212c",
-      "lines": 246,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "473993425ea65d3f7cb92ccfe704e2799a9165a7824e608978d03cd6d6890059",
+      "lines": 245,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/pages/beta.css",
@@ -4061,10 +4066,12 @@
     },
     {
       "path": "frontend/src/pages/onboarding/screens/Platba.jsx",
-      "sha256": "b5cf9f6864f85acc1caf60c1764b4ee659b110a82a34ec0357f13718fc8e51fb",
-      "lines": 318,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "d444060dd51a9c444eff764133259be44052d503bd7b8bd32eaa70031408b407",
+      "lines": 316,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/pages/onboarding/screens/QuizQuestion.jsx",
@@ -5499,15 +5506,15 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "f774ab92317b21e828d05d8fc23c29dae719d6691c21b8dc5e46f50b76abdc47",
-      "lines": 196,
+      "sha256": "e780603f6e04947c9a36c590dca40bd467b5c056ae8595d083f8e030c9d0afe2",
+      "lines": 204,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "9951c8f68d3cd98e4fe6aac48f4dc8da4fc5ae79ce0d32cc9ec99d45bcd56db2",
-      "lines": 116,
+      "sha256": "20560c5c55d64b7c9d4a48ec8afc10ca173ffcace1d9e5f603cfd951401006c0",
+      "lines": 118,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -5515,8 +5522,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "f635c796bb440d5621f728451d9add3eeaf2e79f3a264ef33498d9e6f83d7cf8",
-      "lines": 98,
+      "sha256": "3119d4181aac2e7143abb3d969a1eb372afa9676e7b5c602ac597b37b69d2551",
+      "lines": 100,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -5636,8 +5643,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "dd04ef75f3321e1d84e04e21968e66dbae6f8d077ee4d9c984666ea0fd17e05e",
-      "lines": 194,
+      "sha256": "ccd7dcade78cd2358651ddc6bd530bd057fe7fef23f31f7fd101b5b89b98b52c",
+      "lines": 202,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -5645,7 +5652,7 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "d95a42f2b60ac04c0d0890862793c49c689efcf98e57b100217333c340a337ca",
+      "sha256": "7ab2fc94d96c7b57b50291eb278957f6d586315c4fb0b5b286ea24afd650c4f8",
       "lines": 6595,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
@@ -5819,6 +5826,48 @@
       "matching_evidence": []
     },
     {
+      "path": "reports/deployment-review-2026-10-07/payment-beta-parent-desktop.png",
+      "sha256": "b37051232a7703e6a2df0f7fc7356808a8a5a924596da812e8db5cd98fd1ee72",
+      "lines": null,
+      "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/payment-beta-parent-phone.png",
+      "sha256": "cab49fd82287fd77fe63e7e9dd82ac6ad82d5088dcebdfd8cd3b2da99e7744ae",
+      "lines": null,
+      "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/payment-copy-verification-2026-10-10.json",
+      "sha256": "a597d3569ce3046196fcfa24b997fc5325cea3a75f445eee89f82c967f3744f6",
+      "lines": 45,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/payment-parent-unconfirmed-phone.png",
+      "sha256": "4705379d7f8c7aef71a1ef3348e122956b7e53eac098f52ac159760926e43e19",
+      "lines": null,
+      "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/payment-return-verification-phone.png",
+      "sha256": "c1dd3f06b7e6c08f3c47f037ddcfc1edecfff5a9d0e997f9c31390ce27db4f52",
+      "lines": null,
+      "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/payment-stripe-information-phone.png",
+      "sha256": "c642d6da5668139d8c40c984d0730089c007994c7ddd8d4d021daf44494d779e",
+      "lines": null,
+      "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/peer-edits-observed.json",
       "sha256": "6b2d2597556c4122cdffe0d2b74b3c7947fd3856b0f1256b496e9072de797c04",
       "lines": 136,
@@ -5962,8 +6011,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "ba5b87ff6b55aa892bc83021fd76ae38a732f9fb1f14e3b8f214f10fedac9f4f",
-      "lines": 3111,
+      "sha256": "19e5e9d3bc66b36e30818791783eba352092f169ea36e583928fca4bd77151be",
+      "lines": 3153,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6372,12 +6421,10 @@
     },
     {
       "path": "server.js",
-      "sha256": "f6914d0d4737c1ee22c26cc97832d439947fc7262cc17005d0235904efd848f1",
-      "lines": 3505,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "77c04d00f1f700a876354bb8e59777333c823a49b84845b3b39c6412ddf4fd8a",
+      "lines": 3545,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "skills-lock.json",

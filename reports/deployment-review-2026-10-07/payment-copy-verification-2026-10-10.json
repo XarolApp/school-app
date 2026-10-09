@@ -1,0 +1,45 @@
+{
+  "checked_at_utc": "2026-10-09T22:05:55.635188+00:00",
+  "scope": "Actual React payment/return components with synthetic auth/API responses; no external checkout, cancellation, withdrawal or submission. Not an end-to-end Stripe/beta acceptance test.",
+  "source_checks": {
+    "checkout_polling_sharing_handlers_unchanged": true,
+    "pricing_runtime_unchanged": true
+  },
+  "browser_checks": [
+    {
+      "screen": "Parent beta preview",
+      "viewport": "desktop and 375x812",
+      "copy": "vykani and position-independent summary",
+      "phone_width": 375,
+      "phone_scroll_width": 375,
+      "completion": "actual submit chose goToStep(hotovo); external checkout stub would throw"
+    },
+    {
+      "screen": "Parent ordinary seasonal checkout",
+      "viewport": "375x812",
+      "copy": "Stripe identifiers/order access; statutory 14-day summary retained",
+      "phone_width": 375,
+      "phone_scroll_width": 375,
+      "action": "Checkout was not started"
+    },
+    {
+      "screen": "SubscriptionExpired return",
+      "copy": "access verification; no payment receipt or timing guarantee"
+    },
+    {
+      "screen": "ParentPay return",
+      "copy": "access verification; no payment receipt"
+    }
+  ],
+  "checks": {
+    "frontend_lint": "pass: zero errors, eleven existing warnings",
+    "frontend_build": "pass: existing large-chunk warnings"
+  },
+  "hashes": {
+    "frontend/src/config/pricing.js": "a990be6870eb153e640f67ede9a2d4e1438966a6dc607d079bd7b0b2c3f69ed6",
+    "frontend/src/pages/onboarding/screens/Platba.jsx": "d444060dd51a9c444eff764133259be44052d503bd7b8bd32eaa70031408b407",
+    "frontend/src/pages/ParentPay.jsx": "62df17a13df81fead76624a634074ecc6f11a97e26e2feac3d64bd8dd7700b5f",
+    "frontend/src/components/ParentPayHandoff.jsx": "03b062563409c123194f9f4600a872d2b39da0175d0df0e5608a6a1f2d8bcbf0",
+    "frontend/src/pages/SubscriptionExpired.jsx": "473993425ea65d3f7cb92ccfe704e2799a9165a7824e608978d03cd6d6890059"
+  }
+}

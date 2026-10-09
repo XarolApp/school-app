@@ -130,12 +130,12 @@ function ParentPay() {
         </div>
       ) : paymentReturned && !plan && attempts < 10 ? (
         <section className="dp-share-header">
-          <h1 className="ss-headline-md h">Platba se zpracovává…</h1>
-          <p className="ss-body-md">Počkáme na potvrzení platby.</p>
+          <h1 className="ss-headline-md h">Ověřujeme stav přístupu…</h1>
+          <p className="ss-body-md">Čekáme na potvrzení platební brány.</p>
         </section>
       ) : paymentReturned && !plan ? (
         <section className="dp-share-header">
-          <h1 className="ss-headline-md h">Platba se zpracovává…</h1>
+          <h1 className="ss-headline-md h">Přístup zatím nemáme potvrzený</h1>
           <p className="ss-body-md">Stav můžete znovu ověřit.</p>
           <button type="button" className="ss-btn ss-btn-secondary" onClick={() => { setAttempts(0); attemptsRef.current = 0; reload(); }}>
             Zkontrolovat znovu

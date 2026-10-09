@@ -567,8 +567,8 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:36:06.932101+00:00",
-    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+    "checked_at_utc": "2026-10-09T22:07:47.125587+00:00",
+    "method": "Full current source read in bounded complete ranges, truncated ranges reread; own full diff inspected. Current guide/report/UNFORGET baselines verified against saved full-read hash plus every own edit. Pricing runtime and checkout/polling/sharing handler equality verified. Source read is not Stripe, PostgreSQL, account or deployment acceptance."
   },
   "frontend/src/pages/onboarding/screens/Reveal.jsx": {
     "sha256": "78fcc8c2f73dc0c07bd7c9cf418f5d4c6917003b7ecb08fb7ee16339fdee44c3",
@@ -1287,18 +1287,18 @@
     "method": "Full source read across recorded continuation turns, including missing middleware/brainstorm ranges and complete authored diffs. Read means inspected, not defect-free or runtime-approved."
   },
   "frontend/middleware.js": {
-    "sha256": "9151df98e266a4327613ed915821cd7db98e24e88b58681c4b71a4b074294b70",
-    "lines": 231,
+    "sha256": "c0477e0bc0e0e8b7aba0deb566ef9f78fdffe12e54c431e7d15397cf275e47b0",
+    "lines": 232,
     "read_ranges": [
       [
         1,
-        231
+        232
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:30:59.016112+00:00",
-    "method": "Full source read across recorded continuation turns, including missing middleware/brainstorm ranges and complete authored diffs. Read means inspected, not defect-free or runtime-approved."
+    "checked_at_utc": "2026-10-09T22:07:47.125587+00:00",
+    "method": "Full current source read in bounded complete ranges, truncated ranges reread; own full diff inspected. Current guide/report/UNFORGET baselines verified against saved full-read hash plus every own edit. Pricing runtime and checkout/polling/sharing handler equality verified. Source read is not Stripe, PostgreSQL, account or deployment acceptance."
   },
   "plans/020-beta-launch-batch.md": {
     "sha256": "ed88e93f0569bcc3ea5b29a58fe94c50a35ea05846ee1f728d46833bd924a25a",
@@ -1371,32 +1371,32 @@
     "method": "Full source read across recorded continuation turns, including missing middleware/brainstorm ranges and complete authored diffs. Read means inspected, not defect-free or runtime-approved."
   },
   "reports/deployment-review-2026-10-07/REPORT.md": {
-    "sha256": "f635c796bb440d5621f728451d9add3eeaf2e79f3a264ef33498d9e6f83d7cf8",
-    "lines": 98,
+    "sha256": "3119d4181aac2e7143abb3d969a1eb372afa9676e7b5c602ac597b37b69d2551",
+    "lines": 100,
     "read_ranges": [
       [
         1,
-        98
+        100
       ]
     ],
-    "status": "complete_after_concurrent_change",
+    "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T21:59:05.062191+00:00",
-    "method": "Previous complete root read plus all own subsequent additions/corrections inspected; earlier truncated current report/plan tails reread in bounded ranges. Deployment review remains incomplete."
+    "checked_at_utc": "2026-10-09T22:07:47.125587+00:00",
+    "method": "Full current source read in bounded complete ranges, truncated ranges reread; own full diff inspected. Current guide/report/UNFORGET baselines verified against saved full-read hash plus every own edit. Pricing runtime and checkout/polling/sharing handler equality verified. Source read is not Stripe, PostgreSQL, account or deployment acceptance."
   },
   "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md": {
-    "sha256": "9951c8f68d3cd98e4fe6aac48f4dc8da4fc5ae79ce0d32cc9ec99d45bcd56db2",
-    "lines": 116,
+    "sha256": "20560c5c55d64b7c9d4a48ec8afc10ca173ffcace1d9e5f603cfd951401006c0",
+    "lines": 118,
     "read_ranges": [
       [
         1,
-        116
+        118
       ]
     ],
-    "status": "complete_after_concurrent_change",
+    "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T21:59:05.062191+00:00",
-    "method": "Previous complete root read plus all own subsequent additions/corrections inspected; earlier truncated current report/plan tails reread in bounded ranges. Deployment review remains incomplete."
+    "checked_at_utc": "2026-10-09T22:07:47.125587+00:00",
+    "method": "Full current source read in bounded complete ranges, truncated ranges reread; own full diff inspected. Current guide/report/UNFORGET baselines verified against saved full-read hash plus every own edit. Pricing runtime and checkout/polling/sharing handler equality verified. Source read is not Stripe, PostgreSQL, account or deployment acceptance."
   },
   "reports/deployment-review-2026-10-07/script-findings.md": {
     "sha256": "67e42c93ea061f4892aa3494ed0063f009e3b03d2f238bb84d76efa1f0cbd0e7",
@@ -1917,7 +1917,7 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "frontend/src/components/ParentPayHandoff.jsx": {
-    "sha256": "3e6dce70e26daa777ab9878ac06b92307b21864f897bd34e7150d2acf03543b1",
+    "sha256": "03b062563409c123194f9f4600a872d2b39da0175d0df0e5608a6a1f2d8bcbf0",
     "lines": 157,
     "read_ranges": [
       [
@@ -1927,22 +1927,22 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:58:03.931588+00:00",
-    "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
+    "checked_at_utc": "2026-10-09T22:07:47.125587+00:00",
+    "method": "Full current source read in bounded complete ranges, truncated ranges reread; own full diff inspected. Current guide/report/UNFORGET baselines verified against saved full-read hash plus every own edit. Pricing runtime and checkout/polling/sharing handler equality verified. Source read is not Stripe, PostgreSQL, account or deployment acceptance."
   },
   "frontend/src/pages/ParentPay.jsx": {
-    "sha256": "bdd500127f35563491fa0395d8a1eacd0061f124e1f07ba2bf2d67714e2b7315",
-    "lines": 239,
+    "sha256": "62df17a13df81fead76624a634074ecc6f11a97e26e2feac3d64bd8dd7700b5f",
+    "lines": 241,
     "read_ranges": [
       [
         1,
-        239
+        241
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:58:03.931816+00:00",
-    "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
+    "checked_at_utc": "2026-10-09T22:07:47.125587+00:00",
+    "method": "Full current source read in bounded complete ranges, truncated ranges reread; own full diff inspected. Current guide/report/UNFORGET baselines verified against saved full-read hash plus every own edit. Pricing runtime and checkout/polling/sharing handler equality verified. Source read is not Stripe, PostgreSQL, account or deployment acceptance."
   },
   "frontend/src/components/PasswordStrength.jsx": {
     "sha256": "cfd7619b0d9142454adbcd88ef237a89baad3a2ad33ad1787dcfdc3bfd3b6b94",
@@ -2057,7 +2057,7 @@
     "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
   },
   "frontend/src/config/pricing.js": {
-    "sha256": "eff8daee298ef48674c163382e66c404266cfc963a39bb57273572ca60749557",
+    "sha256": "a990be6870eb153e640f67ede9a2d4e1438966a6dc607d079bd7b0b2c3f69ed6",
     "lines": 373,
     "read_ranges": [
       [
@@ -2067,22 +2067,22 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:59:51.340532+00:00",
-    "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
+    "checked_at_utc": "2026-10-09T22:07:47.125587+00:00",
+    "method": "Full current source read in bounded complete ranges, truncated ranges reread; own full diff inspected. Current guide/report/UNFORGET baselines verified against saved full-read hash plus every own edit. Pricing runtime and checkout/polling/sharing handler equality verified. Source read is not Stripe, PostgreSQL, account or deployment acceptance."
   },
   "frontend/src/lib/usePicks.js": {
-    "sha256": "9eea8be3af3b24f1bda45dff7106ec8242efe05ed77287160e91e7973cc8b6c3",
-    "lines": 80,
+    "sha256": "d01f92794edb081957e270a4aaa4fdafac51f87994af1ed059f9c4c829cdea76",
+    "lines": 72,
     "read_ranges": [
       [
         1,
-        80
+        72
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T22:10:05.660354+00:00",
-    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
+    "checked_at_utc": "2026-10-09T22:07:47.125587+00:00",
+    "method": "Full current source read in bounded complete ranges, truncated ranges reread; own full diff inspected. Current guide/report/UNFORGET baselines verified against saved full-read hash plus every own edit. Pricing runtime and checkout/polling/sharing handler equality verified. Source read is not Stripe, PostgreSQL, account or deployment acceptance."
   },
   "frontend/src/lib/authValidation.js": {
     "sha256": "b7f92fda74fdd99c649b1f589a2cb806c9d562067943e00d6f936e801ec16ed6",
@@ -2113,18 +2113,18 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "9410076e22575c397df00977aa0dcf0d3a2fb90d09be6a1783c96b892a8abcbd",
-    "lines": 1611,
+    "sha256": "3816219a27a6c78814a3e172b737ac0e5e100b4151f88f420df31384b85579f8",
+    "lines": 1616,
     "read_ranges": [
       [
         1,
-        1611
+        1616
       ]
     ],
-    "status": "complete_after_concurrent_change",
+    "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T21:56:04.686116+00:00",
-    "method": "Previous complete root read plus all own subsequent additions/corrections inspected; earlier truncated current report/plan tails reread in bounded ranges. Deployment review remains incomplete."
+    "checked_at_utc": "2026-10-09T22:07:47.125587+00:00",
+    "method": "Full current source read in bounded complete ranges, truncated ranges reread; own full diff inspected. Current guide/report/UNFORGET baselines verified against saved full-read hash plus every own edit. Pricing runtime and checkout/polling/sharing handler equality verified. Source read is not Stripe, PostgreSQL, account or deployment acceptance."
   },
   "frontend/src/api.js": {
     "sha256": "2e60c1cacdcddfe855eae350da4a77751375099e4614b76e31f3ed02146106d2",
@@ -3025,18 +3025,18 @@
     "method": "Full current source read in complete bounded ranges (including previous-turn api.js 1-180/181-360/361-end and tokens.js 1-150/151-end); all subsequent own narrow diffs inspected. App/ProtectedRoute reread after bc1f826. Read is not runtime/service or legal acceptance."
   },
   "reports/deployment-review-2026-10-07/continuation-findings.md": {
-    "sha256": "dd04ef75f3321e1d84e04e21968e66dbae6f8d077ee4d9c984666ea0fd17e05e",
-    "lines": 194,
+    "sha256": "ccd7dcade78cd2358651ddc6bd530bd057fe7fef23f31f7fd101b5b89b98b52c",
+    "lines": 202,
     "read_ranges": [
       [
         1,
-        194
+        202
       ]
     ],
-    "status": "complete_after_concurrent_change",
+    "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T21:59:05.062191+00:00",
-    "method": "Previous complete root read plus all own subsequent additions/corrections inspected; earlier truncated current report/plan tails reread in bounded ranges. Deployment review remains incomplete."
+    "checked_at_utc": "2026-10-09T22:07:47.125587+00:00",
+    "method": "Full current source read in bounded complete ranges, truncated ranges reread; own full diff inspected. Current guide/report/UNFORGET baselines verified against saved full-read hash plus every own edit. Pricing runtime and checkout/polling/sharing handler equality verified. Source read is not Stripe, PostgreSQL, account or deployment acceptance."
   },
   "frontend/src/components/schoolDetail/SimilarSchools.jsx": {
     "sha256": "30490c3d420119d7e6754521ded1e7a7a9d32d53d2f53cb58666cfee50fee9ec",
@@ -3107,5 +3107,47 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-09T21:59:05.062191+00:00",
     "method": "Full current source read without truncation; SchoolActions in 1-145/146-end; QuizQuestion full read plus own df6b680 diff (omitted from preceding ledger update, now recorded). Reproduction uses the actual callback and synthetic state, not full React/browser or live-service acceptance."
+  },
+  "frontend/src/pages/onboarding/screens/Platba.jsx": {
+    "sha256": "d444060dd51a9c444eff764133259be44052d503bd7b8bd32eaa70031408b407",
+    "lines": 316,
+    "read_ranges": [
+      [
+        1,
+        316
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T22:07:47.125587+00:00",
+    "method": "Full current source read in bounded complete ranges, truncated ranges reread; own full diff inspected. Current guide/report/UNFORGET baselines verified against saved full-read hash plus every own edit. Pricing runtime and checkout/polling/sharing handler equality verified. Source read is not Stripe, PostgreSQL, account or deployment acceptance."
+  },
+  "frontend/src/pages/SubscriptionExpired.jsx": {
+    "sha256": "473993425ea65d3f7cb92ccfe704e2799a9165a7824e608978d03cd6d6890059",
+    "lines": 245,
+    "read_ranges": [
+      [
+        1,
+        245
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T22:07:47.125587+00:00",
+    "method": "Full current source read in bounded complete ranges, truncated ranges reread; own full diff inspected. Current guide/report/UNFORGET baselines verified against saved full-read hash plus every own edit. Pricing runtime and checkout/polling/sharing handler equality verified. Source read is not Stripe, PostgreSQL, account or deployment acceptance."
+  },
+  "frontend/src/components/ConfirmDialog.jsx": {
+    "sha256": "4531191016059344f699689d48be3fc5cd02a98f2514aea5c44c0d7ebf92495a",
+    "lines": 53,
+    "read_ranges": [
+      [
+        1,
+        53
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T22:07:47.125587+00:00",
+    "method": "Full current source read in bounded complete ranges, truncated ranges reread; own full diff inspected. Current guide/report/UNFORGET baselines verified against saved full-read hash plus every own edit. Pricing runtime and checkout/polling/sharing handler equality verified. Source read is not Stripe, PostgreSQL, account or deployment acceptance."
   }
 }

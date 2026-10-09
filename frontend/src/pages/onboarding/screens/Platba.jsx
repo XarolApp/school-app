@@ -25,10 +25,9 @@ import { Icon, PayCta, PayStepChrome } from './paywallKit';
  *
  * PAYMENTS (plan 009): a real Stripe Checkout session is created server-side
  * and the browser is redirected to Stripe's own hosted page — card data never
- * enters this app's state, which is what makes "kartu nevidíme ani
- * neukládáme" true rather than aspirational. `PAYMENTS_MOCKED` stays as a dev
- * fallback: with no Stripe keys configured, the button is disabled with an
- * honest note instead of crashing.
+ * enters this app's state. We retain Stripe identifiers needed to manage the
+ * order/access. `PAYMENTS_MOCKED` is a static display flag, not a key detector;
+ * missing backend keys produce the handled STRIPE_NOT_CONFIGURED API error.
  *
  * CONSENT: there is no checkbox on this screen. The payment self-attestation
  * was removed by founder decision on 2026-09-22 (commit 9a8f8cc); the age /
@@ -36,8 +35,8 @@ import { Icon, PayCta, PayStepChrome } from './paywallKit';
  * The student branch keeps a visible "Platí ti to rodič?" route — an option,
  * not a gate (§0.2). The parent branch says the account is for their child.
  *
- * Every amount, date, term and cancellation claim comes from
- * config/pricing.js. Nothing about money is hardcoded in this file.
+ * Plan amounts, trial dates and cancellation copy come from config/pricing.js.
+ * The statutory withdrawal summary links to the contractual terms.
  *
  * Source: design/paywall-multipage-extract4/{Platba,WebPlatba,ParentPlatba}.
  */
@@ -185,7 +184,7 @@ function Platba() {
             {parent ? 'Ukázka závěrečné platební obrazovky' : 'Ukázka závěrečné platební stránky'}
           </h1>
           <p className="ob-pw-fine">
-            V betě nic neplatíš. Tohle je pouze náhled. Částky a podmínky výše jsou příklady;{' '}
+            {parent ? 'V betě nic neplatíte.' : 'V betě nic neplatíš.'} Tohle je pouze náhled. Zobrazené částky a podmínky jsou příklady;{' '}
             {parent ? 'vašeho testovacího účtu' : 'tvého testovacího účtu'} se netýkají.
           </p>
           <div className="ob-pw-grid ob-pw-grid-pay">
@@ -215,9 +214,8 @@ function Platba() {
           Zbývá zadat kartu
         </h1>
 
-        {/* Mobile: the summary is pinned above everything, because further down
-            it would simply never be seen. Desktop moves it to the right column,
-            where it cannot be scrolled past either. */}
+        {/* Mobile shows the summary before the card explanation. Desktop places
+            it in the right column beside the checkout action. */}
         <div className="ob-pw-summary-mobile">{summary}</div>
 
         <div className="ob-pw-grid ob-pw-grid-pay">
@@ -238,8 +236,8 @@ function Platba() {
                   thing that cannot be walked back with a parent. */}
               <p className="ob-pw-fine">
                 {parent
-                  ? 'Kartu zadáváte na zabezpečené stránce Stripe, kam vás za chvíli přesměrujeme. My ji nevidíme ani neukládáme — dostaneme jen potvrzení, že platba prošla.'
-                  : 'Kartu zadáváš na zabezpečené stránce Stripe, kam tě za chvíli přesměrujeme. My ji nevidíme ani neukládáme — dostaneme jen potvrzení, že platba prošla.'}
+                  ? 'Kartu zadáváte na zabezpečené stránce Stripe. Celé číslo karty nevidíme ani neukládáme. Od Stripe dostaneme údaje potřebné ke správě objednávky a přístupu.'
+                  : 'Kartu zadáváš na zabezpečené stránce Stripe. Celé číslo karty nevidíme ani neukládáme. Od Stripe dostaneme údaje potřebné ke správě objednávky a přístupu.'}
               </p>
             </div>
 

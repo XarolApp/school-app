@@ -101,7 +101,7 @@ New browser beta gate: the landing hero scales the whole UI to fit. At 667×375,
 - **Effort:** focused tasks with ownership checks; see the linked findings and acceptance tests.
 
 - **C12:** define and verify compatible production security headers; the shared-code gate had HSTS but lacked explicit CSP, framing, MIME, referrer and permissions policies. Check authenticated caching separately.
-- **C13–C16:** distinguish failed picks loads from an empty list before replacement writes; re-key private drafts and parent-link requests by account/token; bind every onboarding-flush write and completion to its original owner. Released Phase 6 still has these paths: a synthetic delayed A-save / switch-to-B reproduction issues the next gender update under B and clears the current stash. See the runnable reproduction and C16 handoff; no real account was changed.
+- **C13–C16:** `5c097aa` fixes the failed-initial-picks-read overwrite in source: actions remain disabled after failure, and a toggle fetches the current list first. Retry, immutable account ownership and concurrent/versioned writes remain open. Re-key private drafts and parent-link requests by account/token; bind every onboarding-flush write and completion to its original owner. The synthetic delayed A-save / switch-to-B reproduction issues the next gender update under B and clears the current stash. See the runnable reproduction and C16 handoff; no real account was changed.
 - **C17 fixed:** the closing questionnaire now requires an active beta program before opening. Synthetic browser checks confirm the ended state has no dialog and active/overdue still opens it; real cutoff/device acceptance remains open.
 - **S01–S13:** harden account-reset, admission import, cache/extraction scope and partial-failure behavior before reuse; align pros/cons generation with the visible school projection and source years. Extraction and Google diagnostic bugs were fixed in `06c704c` and `86be63a`, but existing stored canteen candidates still need source review. Dry runs can make paid model calls and write usage accounting; corrected wording does not make them side-effect free.
 - **Production/operator checks:** verify Railway billing continuity and dashboard configuration, support-inbox access, authenticated RLS/RPC/Storage isolation, real phone/browser confirmation, feedback renewal and the optional beta paywall preview with zero Stripe calls.
@@ -996,7 +996,7 @@ Options to decide later, not decided now:
 
 ## Comparison and decision tools — built; final acceptance remains
 - `/porovnani`, `/porovnani/matice` and application picks exist and are linked from search/detail. The September no-op/unbuilt claim is superseded.
-- Remaining gates are scoring/projection/year consistency, meaningful matrix criteria, account ownership, initial-load failures and transactional shortlist replacement (B01–B03/C02/C03/C13–C16).
+- Remaining gates are scoring/projection/year consistency, meaningful matrix criteria, account ownership, initial-load recovery and transactional/versioned shortlist replacement (B01–B03/C02/C03/C13–C16). `5c097aa` prevents the original failed-initial-read overwrite; it does not close the other gates.
 - Browser checks already exercised the synthetic comparison/matrix and corrected language-of-instruction wording. They do not replace real-account, keyboard, missing-data and device acceptance or the founder's matrix-quality review.
 
 ## Parent/child share links — built in plan 018
@@ -1609,3 +1609,8 @@ Fold that fix into the redesign rather than patching it separately.
 ## Quiz wording/evidence follow-up — deployment review C22, 2026-10-09
 
 Confirmed score/weight, historical-admission, commute and local/account-storage wording defects are corrected, along with the reproduced parent unknown-answer reassurance. Scoring/thresholds/answer keys/order policy are unchanged. Continue the same-pattern review of standalone-questionnaire admission text, risk band naming, confidence/data-coverage wording and unsupported most-common-answer/teen-development/labour-market statements. Verify evidence before altering uncertain claims. Preserve C20's private note purpose and finish the B01/B02/C03 data/score contract plus account/persistence acceptance separately. See `reports/deployment-review-2026-10-07/continuation-findings.md` C22 and its desktop/375×812 actual-component evidence; real-device/full-beta-flow acceptance is still open.
+
+## Payment copy review checkpoint — 10 October 2026
+- C23's unverified “payment received”/paid-parent labels, Stripe-information claim and parent beta-preview voice/summary wording are corrected. Actual-component synthetic desktop/phone checks verify local free-preview completion; checkout/polling/sharing handlers and pricing calculations are unchanged.
+- P01–P08, P04 calendar/delayed-charge boundaries and C02/C15 account/token ownership remain open. Preserve the statutory 14-day Terms summary and implemented wider 30-day withdrawal benefit; legal/commercial calendar approval is still required before real billing.
+- Evidence and acceptance tasks: [current report](reports/deployment-review-2026-10-07/REPORT.md), [handoff](reports/deployment-review-2026-10-07/HANDOFF-PLAN.md).

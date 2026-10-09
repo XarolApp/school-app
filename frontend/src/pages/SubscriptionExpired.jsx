@@ -8,8 +8,7 @@ import BetaSoftGate from '../components/BetaSoftGate';
 import { DEFAULT_PLAN_ID, PLANS, formatCzk, planCopy, trialDaysPhrase } from '../config/pricing';
 import { LoadingSpinner } from '../components/PageSkeleton';
 
-// Four short parallel claims — a checkmark each reads faster than a bullet and
-// says "included", which a bullet does not.
+// Short statements of the included features and visible payment terms.
 const BENEFITS = [
   'Pražské střední školy s podrobnými údaji',
   'Filtrování podle oboru a městské části',
@@ -22,7 +21,7 @@ const BENEFITS = [
 // *before* our own database has been updated, and a user seeing "zkušební
 // období skončilo" again right after paying would reasonably conclude the
 // payment failed. This polls fetchMe (via refreshProfile) briefly instead of
-// claiming failure — it very likely succeeded and is just mid-flight.
+// claiming either success or failure before the account state is confirmed.
 function usePostCheckoutVerification(hasAccess, refreshProfile, enabled) {
   const [searchParams] = useSearchParams();
   const [verifying, setVerifying] = useState(searchParams.get('platba') === 'ok');
@@ -87,9 +86,9 @@ function Paywall() {
       <div className="page page-paywall">
         <div className="auth-layout">
           <div className="page-header">
-            <p className="eyebrow">Platba přijata</p>
-            <h1>Ověřujeme platbu…</h1>
-            <p className="lede">Za pár vteřin tě přesměrujeme k hledání škol.</p>
+            <p className="eyebrow">Návrat z platební brány</p>
+            <h1>Ověřujeme přístup…</h1>
+            <p className="lede">Čekáme na potvrzení platební brány. Jakmile ověříme přístup, otevřeme hledání škol.</p>
           </div>
         </div>
       </div>
@@ -144,7 +143,7 @@ function Paywall() {
           {gaveUp && (
             <div className="notice" role="status">
               <p className="notice-text">
-                Platba se zpracovává. Za chvíli obnov stránku — pokud se nic nezmění, ozvi se nám.
+                Přístup zatím nemáme potvrzený. Za chvíli obnov stránku — pokud se nic nezmění, ozvi se nám.
               </p>
             </div>
           )}

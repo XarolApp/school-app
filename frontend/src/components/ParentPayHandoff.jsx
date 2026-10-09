@@ -142,12 +142,12 @@ function ParentPayHandoff({ voice = 'student', variant = 'ghost', onActivated })
 
   return (
     <div className="ob-parent-pay-handoff ob-parent-pay-handoff-waiting">
-      <p className="ob-parent-pay-status">Čekáme na platbu od rodiče. Odkaz platí 7 dní.</p>
+      <p className="ob-parent-pay-status">Čekáme na potvrzení přístupu. Odkaz platí 7 dní.</p>
       {error && <p className="ob-share-note" role="alert">{error}</p>}
       {note && <p className="ob-share-note" role="status">{note}</p>}
       <div className="ob-parent-pay-actions">
         <button type="button" className="ob-inline-link" onClick={resend}>Poslat znovu</button>
-        <button type="button" className="ob-inline-link" onClick={checkPaid} disabled={busy}>Rodič už zaplatil</button>
+        <button type="button" className="ob-inline-link" onClick={checkPaid} disabled={busy}>Zkontrolovat přístup</button>
         <button type="button" className="ob-inline-link" onClick={cancelLink} disabled={busy}>Zrušit odkaz</button>
       </div>
     </div>
