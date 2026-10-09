@@ -7,6 +7,7 @@ import { getRememberMe } from '../supabaseClient';
 import { normalizeBetaCode } from '../lib/pendingBetaCode';
 import { captchaProblem, emailProblem, focusFirstInvalid, onlyProblems, passwordProblem } from '../lib/authValidation';
 import { useG } from '../lib/gender';
+import { internalReturnPath } from '../lib/internalReturnPath';
 
 function Login() {
   const g = useG();
@@ -26,11 +27,8 @@ function Login() {
 
   const requestedDestination = searchParams.get('next');
   const betaCode = normalizeBetaCode(searchParams.get('beta'));
-  const safeDestination =
-    requestedDestination?.startsWith('/') && !requestedDestination.startsWith('//')
-      ? requestedDestination
-      : null;
-  const destination = location.state?.from?.pathname || safeDestination ||
+  const safeDestination = internalReturnPath(requestedDestination);
+  const destination = internalReturnPath(location.state?.from?.pathname) || safeDestination ||
     (betaCode ? `/beta/${encodeURIComponent(betaCode)}` : '/skoly');
   const justConfirmed = searchParams.get('potvrzeno') === '1';
 

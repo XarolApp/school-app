@@ -98,3 +98,5 @@ Acceptance: final report contains complete coverage accounting, fixed/open findi
 
 
 Account ownership follow-up, 9 October (C16): re-read released `AuthContext.jsx`, `api.js`, `usePicks.js` and all `useDraft` callers together. Bind onboarding flush writes/completion and stash removal to the original account and stash identity. Add delayed A → B regressions including a new B stash; require no B write, no B stash deletion and no stale A profile refresh. Coordinate with the existing C02/C13–C15 tasks; do not silently discard all drafts as a shortcut. C17's ended-program modal guard is fixed and browser-checked; retain active/null/past-cutoff regression coverage in the beta acceptance run.
+
+C18's auth return-path bug is fixed; retain `tests/internal-return-path.test.mjs` and the confirmation/login use of the shared helper. Include malformed `next` and a valid internal school destination in the eventual real-email/auth acceptance journey. Do not repeat the code fix or treat the synthetic component check as mailbox verification.

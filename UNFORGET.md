@@ -392,7 +392,7 @@ To look into:
   5. **Fast questionnaire** still to build; the list is now 32 questions, most optional. The weight-only questions are the natural candidates for the fast version's core.
   6. **`selektivita_tezka: jedno`** adds no direction instead of zeroing the whole dimension (deviation from plan 017's draft), so a "challenge" answer to the other question is not silently ignored.
 
-## Standing rule: re-run supabase-setup.sql after any commit that touches it — 2026-09-28
+## Standing rule: verify and migrate schema before matching code — updated 2026-10-09
 
 On 2026-09-28 every account was locked out of `requireAccess` routes
 (questionnaire, favourites, …) with `column users.tester_school_code does not
@@ -402,12 +402,15 @@ re-run with the updated `supabase-setup.sql`. The file itself was complete — a
 audit the same day found every table, column, filter and RPC server.js uses
 declared in it — so this was a process gap, not a schema bug.
 
-**Rule:** any commit that changes `supabase-setup.sql` → the founder pastes the
-whole file into the Supabase SQL editor (it is idempotent) **before** the
-matching server.js is deployed or run against the shared database. Localhost and
-production share one Supabase project, so running new code locally hits the
-same missing columns. Agents that edit `supabase-setup.sql` must say so
-explicitly in their final message, with a one-line verify query.
+**Current rule:** any commit that changes `supabase-setup.sql` requires a
+disposable-database fresh-install and rerun check, then a reviewed migration for
+the actual missing live changes **before** matching code is deployed or run
+against the shared database. Do not paste the whole current setup file into
+production merely because it is intended to be repeatable; the deployment
+review has not verified its latest functions, grants and isolation behavior.
+Local configuration can point to the shared Supabase project, so localhost alone
+is not a database sandbox. Agents must identify the schema change, migration,
+rollback/backup approach and read-only verification queries in their handoff.
 
 Still open: this relies on memory. A cheap guard would be a startup check in
 server.js that selects the newest expected columns once and logs a loud error

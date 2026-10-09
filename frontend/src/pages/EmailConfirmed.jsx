@@ -4,6 +4,7 @@ import { CircleCheck } from 'lucide-react';
 import { useAuth } from '../components/AuthContext';
 import { normalizeBetaCode } from '../lib/pendingBetaCode';
 import { useG } from '../lib/gender';
+import { internalReturnPath } from '../lib/internalReturnPath';
 
 // Landing page of the e-mail confirmation link. The link opens a new tab and
 // signs in there; the tab that signed up hears about it and moves on by
@@ -22,7 +23,7 @@ function EmailConfirmed() {
   const [linkError] = useState(readLinkError);
   const { loading, isSignedIn, emailConfirmed } = useAuth();
   const requestedNext = searchParams.get('next');
-  const next = requestedNext?.startsWith('/') && !requestedNext.startsWith('//') ? requestedNext : null;
+  const next = internalReturnPath(requestedNext);
   const loginQuery = new URLSearchParams();
   if (betaCode) loginQuery.set('beta', betaCode);
   if (next) loginQuery.set('next', next);
