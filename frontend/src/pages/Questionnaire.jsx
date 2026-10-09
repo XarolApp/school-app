@@ -715,7 +715,7 @@ function Questionnaire() {
             </p>
             <p className="qz-empty-tip">
               Odpovídej popravdě, ne podle toho, co zní dobře. Kde je možnost „nevím“, klidně ji vyber. Nepovinnou
-              otázku můžeš přeskočit a shodu ti to nesníží.
+              otázku můžeš přeskočit — nebude se počítat do shody.
             </p>
             <button type="button" className="ss-btn ss-btn-primary qz-cta" onClick={openForm}>
               Vyplnit dotazník
@@ -773,7 +773,7 @@ function Questionnaire() {
           <h1 className="ss-headline-lg h">Dotazník</h1>
           <p className="ss-body-md qz-subtitle">
             Odpovídej popravdě — vyplnit ho víckrát nepomůže, pomůže jen upřímnost. Otázky označené jako nepovinné
-            můžeš přeskočit a shodu ti to nesníží.
+            můžeš přeskočit — nebudou se počítat do shody.
           </p>
 
           <form className="qz-form" onSubmit={handleSubmit}>
@@ -784,7 +784,7 @@ function Questionnaire() {
                   {q.section && q.section !== list[i - 1]?.section && (
                     <h2 className="ss-headline-md h qz-section">{q.section}</h2>
                   )}
-                  <div className="field-label">
+                  <div className="field-label" id={`qz-label-${q.id}`}>
                     {q.label}
                     {q.optional && <span className="qz-optional"> (nepovinné)</span>}
                   </div>
@@ -793,6 +793,7 @@ function Questionnaire() {
                   {q.type === 'text' && (
                     <textarea
                       className="input qz-textarea"
+                      aria-labelledby={`qz-label-${q.id}`}
                       maxLength={q.maxLength}
                       value={answers[q.id] || ''}
                       onChange={(e) => setText(q.id, e.target.value)}
@@ -804,6 +805,7 @@ function Questionnaire() {
                       type="number"
                       inputMode="numeric"
                       className="input qz-number"
+                      aria-labelledby={`qz-label-${q.id}`}
                       min={q.min}
                       max={q.max}
                       value={answers[q.id] ?? ''}
@@ -812,12 +814,13 @@ function Questionnaire() {
                   )}
 
                   {q.type === 'single' && (
-                    <div className="qz-options">
+                    <div className="qz-options" role="group" aria-labelledby={`qz-label-${q.id}`}>
                       {q.options.map((opt) => (
                         <button
                           type="button"
                           key={opt.value}
                           className={`qz-option${answers[q.id] === opt.value ? ' is-on' : ''}`}
+                          aria-pressed={answers[q.id] === opt.value}
                           onClick={() => setSingle(q.id, opt.value)}
                         >
                           {opt.label}
@@ -835,7 +838,7 @@ function Questionnaire() {
                           onToggle={(district) => toggleMulti(q.id, `Praha ${district}`, q.max)}
                         />
                       )}
-                      <div className="qz-options">
+                      <div className="qz-options" role="group" aria-labelledby={`qz-label-${q.id}`}>
                         {q.options.map((opt) => {
                           const selected = Array.isArray(answers[q.id]) && answers[q.id].includes(opt.value);
                           return (
@@ -843,6 +846,7 @@ function Questionnaire() {
                               type="button"
                               key={opt.value}
                               className={`qz-option${selected ? ' is-on' : ''}`}
+                              aria-pressed={selected}
                               onClick={() => toggleMulti(q.id, opt.value, q.max)}
                             >
                               {opt.label}

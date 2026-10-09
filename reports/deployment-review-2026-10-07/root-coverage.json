@@ -1369,18 +1369,18 @@
     "method": "Full source read across recorded continuation turns, including missing middleware/brainstorm ranges and complete authored diffs. Read means inspected, not defect-free or runtime-approved."
   },
   "reports/deployment-review-2026-10-07/REPORT.md": {
-    "sha256": "b2172489188d6fa642db79b2dc7f490cd2dd6fe836e86639eef60decbf1773ec",
-    "lines": 67,
+    "sha256": "b23eef5e46564478b13be54f2b56b60188863c74494e3c95e4c10fe52cc8c5ee",
+    "lines": 88,
     "read_ranges": [
       [
         1,
-        67
+        88
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:40:57.648533+00:00",
-    "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
+    "checked_at_utc": "2026-10-09T21:33:50.165512+00:00",
+    "method": "Full current document read through end, then own narrow edits inspected. Review still in progress."
   },
   "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md": {
     "sha256": "a6678a14d47405e40e67b17ce1b518f306476f1bf27fefd2d2acf4dba37f0256",
@@ -1775,18 +1775,18 @@
     "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
   },
   "lib/matching.js": {
-    "sha256": "148d0f1fefd0977053fe9d7dbe8d48166c3294a501ca09f2702192591b0e1e20",
-    "lines": 925,
+    "sha256": "1d6f3a68c60bdbeaedea8698255887925492c81101c287f179460bb499e6b6a2",
+    "lines": 924,
     "read_ranges": [
       [
         1,
-        925
+        924
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:58:03.929508+00:00",
-    "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
+    "checked_at_utc": "2026-10-09T21:33:50.165512+00:00",
+    "method": "Exact saved 924-line c460db0 baseline SHA verified against Git and every current diff read, including comment corrections; all 14 questionnaire regressions pass. No scoring behavior changed."
   },
   "tests/beta-analytics.test.cjs": {
     "sha256": "964d258d26b0c6d85bc02c0aaf41e80a70fe7bffb440ca1340d4c3554d0370d2",
@@ -2111,18 +2111,18 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "ba3a580d41c95d9c90db6c970c2b399afdbde9db33198a8ca33491d0a36424e1",
-    "lines": 1597,
+    "sha256": "889f490b45eae73786a9b12d16cd12aea56df448a15d7e15aec952fb8c2d9da5",
+    "lines": 1599,
     "read_ranges": [
       [
         1,
-        1597
+        1599
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T21:25:25.269816+00:00",
-    "method": "Full 2,296-line pre-edit ledger read including all truncated-range rereads; complete added/changed paragraph inspection and removed source already fully read. Current reconciliation preserves deferred choices and qualifies dated evidence. All other project Markdown is not complete."
+    "checked_at_utc": "2026-10-09T21:33:50.165512+00:00",
+    "method": "Full original 2,296-line ledger and full reconciliation edits previously read; all current narrow founder-note changes read. Founder confirms note stays private saved context."
   },
   "frontend/src/api.js": {
     "sha256": "07b5a72a87fbd88712988bbe465d8a34ec16a1b6f2b127bbdfa82e74e930e003",
@@ -2517,7 +2517,7 @@
     "method": "Full current source read in bounded ranges on 9 October; unchanged against 8f519d9 when recording. Read coverage is not runtime approval."
   },
   "lib/questionnaire.js": {
-    "sha256": "12345c99a733b1074786c6ff1ffb8e5b8a8883588979ef0e11ea723ae2db35a4",
+    "sha256": "d0882d61e7e39194fb8f221970a1c0652054e69c51e3648455502e30a3b6ee38",
     "lines": 929,
     "read_ranges": [
       [
@@ -2527,8 +2527,8 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T21:13:42.172292+00:00",
-    "method": "Full baseline read by stopped backend reviewer (SHA verified against c460db0) plus complete current diff read by root on 9 October; current source unchanged against 8f519d9. Generation/provider and connected endpoint acceptance remain separate."
+    "checked_at_utc": "2026-10-09T21:33:50.165512+00:00",
+    "method": "Previous current full-read root evidence verified before this narrow edit, then complete authored diff read. Lunch/optional-note wording matches read-only counts/founder decision; 14 regressions and synthetic component browser check pass."
   },
   "frontend/src/pages/EmailConfirmed.jsx": {
     "sha256": "25067f5a868bb89ae9855093dd81b96284e3d2f5326301559cde0803ce93b95d",
@@ -2697,5 +2697,61 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-09T21:25:25.269816+00:00",
     "method": "Full current source read in bounded, untruncated ranges on 9 October; released Phase 9 reviewed. Four beta/social-proof tests pass. Reading is not legal, production or full runtime approval."
+  },
+  "supabase-setup.sql": {
+    "sha256": "356bd9832fc1f1ba002e5bc7dd7fe9ebeefe9b41ce7782bc7c35b86881726877",
+    "lines": 1458,
+    "read_ranges": [
+      [
+        1,
+        1458
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:33:50.165512+00:00",
+    "method": "Exact saved 1,376-line c460db0 baseline SHA verified against Git, then complete current diff (135 additions/53 deletions) read without truncation on 9 October. Current hash checked again; source coverage only, no SQL execution or migration approval."
+  },
+  "frontend/src/pages/Questionnaire.jsx": {
+    "sha256": "48864e649c814632e17f0c9df31bc39dff742b11f59a97d8c0d6cc18d3e870d9",
+    "lines": 925,
+    "read_ranges": [
+      [
+        1,
+        925
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:33:50.165512+00:00",
+    "method": "Full current source read in complete ranges 1-180,181-360,361-504,505-631,632-712,713-815,816-end. All narrow copy/accessibility changes inspected and actual component verified with synthetic read-only API; no submissions."
+  },
+  "tests/questionnaire.test.cjs": {
+    "sha256": "77bb95a0284eb9196e9153ff85fd810b212f9f6558ece3f39b9223576b3e5395",
+    "lines": 221,
+    "read_ranges": [
+      [
+        1,
+        221
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:33:50.165512+00:00",
+    "method": "Full current test source read and all 14 regressions pass."
+  },
+  "reports/deployment-review-2026-10-07/probe-extracted-coverage.cjs": {
+    "sha256": "2c4e5ac09294116a1e32ef1143154377b389937a9d73eaea80b03c6e28b4bb08",
+    "lines": 51,
+    "read_ranges": [
+      [
+        1,
+        51
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:33:50.165512+00:00",
+    "method": "Entire authored read-only probe inspected; run emits aggregate school coverage only, checks complete response and row cardinality; no data writes or model calls."
   }
 }

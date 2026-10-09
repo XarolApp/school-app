@@ -27,8 +27,9 @@ explicitly "log only":
   `povaha = extrovert` or `novy_kolektiv = pohoda` lowers distance/remote programmes, and
   `introvert` does not penalise them. Cermat's `school_programs` already carries the
   form per obor (search has a "forma" facet). Today `povaha`, `novy_kolektiv`, `motivace`,
-  `soucasna_skola`, `velikost` and `poznamka` change no score; plan 020 uses them only
-  to personalise the AI sentence.
+  `soucasna_skola` and `velikost` change no score; plan 020 uses those structured
+  profile answers to personalise the AI sentence. `poznamka` is excluded from AI
+  and scoring: the founder confirmed on 9 October that it stays private context.
 - **Micro-animations across the site.** The compare bar's slide-down (plan 020) is the
   pattern: short (150–250 ms), transform/opacity only, and off under
   `prefers-reduced-motion`. Candidates: toasts, favourite toggle, adding to the
@@ -1584,8 +1585,9 @@ Fold that fix into the redesign rather than patching it separately.
 - **Check first:** Google Maps ToS restricts storing/caching API results beyond a short window — confirm before persisting durations. Fallback with no such restriction: OpenTripPlanner self-hosted on PID's open GTFS (free data, costs hosting), or Golemio API.
 - **Not done yet:** everything above; no questions were added to the questionnaire for this.
 
-## Optional free-text note exists; broader use remains a decision
+## Optional free-text note is private saved context — founder decision 2026-10-09
 - The standalone questionnaire has `poznamka` (“Chceš něco doplnit?”), optional and capped at 500 characters. It is stored with the user's run; `describeAnswers()` explicitly excludes text fields from external AI prompts. It does not drive numeric scoring.
+- The founder confirmed that this purpose should stay unchanged. The hint now explicitly explains private context, storage with the answers, no score effect and no language-model transmission. Include the note in account ownership, access, retention and erasure verification.
 - The original “not built / decide whether to collect” snapshot is superseded. Any future AI interpretation or cross-run reuse is a separate privacy/product/scoring decision, with minimisation, retention, erasure, prompt-boundary and evidence checks.
 - Do not forward the stored child-authored text to a provider or let it change scores solely because an old brainstorm lists those options.
 

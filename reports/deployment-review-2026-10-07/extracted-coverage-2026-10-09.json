@@ -1,0 +1,100 @@
+{
+  "checkedAt": "2026-10-09T21:28:49.023Z",
+  "raw": {
+    "schools": 223,
+    "withExtractedRow": 220,
+    "fields": {
+      "ma_jidelnu": {
+        "known": 108,
+        "coveragePercent": 48.4,
+        "trueValues": 107,
+        "falseValues": 1,
+        "zeroValues": 0
+      },
+      "ma_koleje": {
+        "known": 6,
+        "coveragePercent": 2.7,
+        "trueValues": 5,
+        "falseValues": 1,
+        "zeroValues": 0
+      },
+      "krouzky_kategorie": {
+        "known": 159,
+        "coveragePercent": 71.3,
+        "trueValues": 0,
+        "falseValues": 0,
+        "zeroValues": 0
+      },
+      "vyukovy_styl_tagy": {
+        "known": 79,
+        "coveragePercent": 35.4,
+        "trueValues": 0,
+        "falseValues": 0,
+        "zeroValues": 0
+      },
+      "vs_pokracuje_pct": {
+        "known": 4,
+        "coveragePercent": 1.8,
+        "trueValues": 0,
+        "falseValues": 0,
+        "zeroValues": 0
+      },
+      "pocet_krouzku": {
+        "known": 0,
+        "coveragePercent": 0,
+        "trueValues": 0,
+        "falseValues": 0,
+        "zeroValues": 0
+      }
+    }
+  },
+  "visible": {
+    "schools": 217,
+    "withExtractedRow": 214,
+    "fields": {
+      "ma_jidelnu": {
+        "known": 104,
+        "coveragePercent": 47.9,
+        "trueValues": 103,
+        "falseValues": 1,
+        "zeroValues": 0
+      },
+      "ma_koleje": {
+        "known": 6,
+        "coveragePercent": 2.8,
+        "trueValues": 5,
+        "falseValues": 1,
+        "zeroValues": 0
+      },
+      "krouzky_kategorie": {
+        "known": 154,
+        "coveragePercent": 71,
+        "trueValues": 0,
+        "falseValues": 0,
+        "zeroValues": 0
+      },
+      "vyukovy_styl_tagy": {
+        "known": 75,
+        "coveragePercent": 34.6,
+        "trueValues": 0,
+        "falseValues": 0,
+        "zeroValues": 0
+      },
+      "vs_pokracuje_pct": {
+        "known": 4,
+        "coveragePercent": 1.8,
+        "trueValues": 0,
+        "falseValues": 0,
+        "zeroValues": 0
+      },
+      "pocet_krouzku": {
+        "known": 0,
+        "coveragePercent": 0,
+        "trueValues": 0,
+        "falseValues": 0,
+        "zeroValues": 0
+      }
+    }
+  },
+  "limitation": "Stored coverage is not verification of extracted facts. Null and empty arrays count as unknown; explicit false and zero count as known. Raw/visible school denominators differ from cached extraction inputs. No database writes or model calls."
+}
