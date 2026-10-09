@@ -230,16 +230,16 @@ function Login() {
           </button>
         </form>
 
-        {/* Accounts are created at the end of the onboarding quiz, so the
-            way in for newcomers is the quiz, not a bare signup form. Beta
-            invitees keep the direct signup that carries their code. */}
+        {/* During the closed beta every newcomer signs up directly (the
+            signup form attaches the tester code); after launch this goes
+            back to the onboarding quiz. */}
         <div className="auth-newcomer">
           <p>Ještě nemáš účet?</p>
           <Link
-            to={betaCode ? `/registrace?beta=${encodeURIComponent(betaCode)}` : '/onboarding'}
+            to={betaCode ? `/registrace?beta=${encodeURIComponent(betaCode)}` : '/registrace'}
             className="btn btn-secondary btn-block"
           >
-            {betaCode ? 'Vytvořit účet' : 'Začít dotazník zdarma'}
+            Registrace
           </Link>
         </div>
       </div>
