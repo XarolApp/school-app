@@ -1,0 +1,41 @@
+{
+  "checked_at_utc": "2026-10-09T22:54:04.463856+00:00",
+  "mode": "actual components/handlers with synthetic services; no external auth/CAPTCHA/mail/data mutation",
+  "confirmation_resend": {
+    "captcha_before": [
+      "signIn"
+    ],
+    "captcha_after": [
+      "resend"
+    ],
+    "no_captcha_after": [
+      "signIn",
+      "resend"
+    ],
+    "desktop_and_phone": "one simulated resend and cooldown",
+    "real_mail_delivery_verified": false
+  },
+  "beta_rating_keyboard": {
+    "before": "no arrows; five Tab stops",
+    "after": [
+      "unselected first + Left -> selected/focused fifth",
+      "fifth + Down -> selected/focused first",
+      "Tab -> next question"
+    ]
+  },
+  "auth_owner_race": "A rejection signs out B before deferred B profile load; callback-level synthetic reproduction",
+  "auth_outage": "actual requireAuth + mocked retryable503 -> client401",
+  "validation": {
+    "lint_errors": 0,
+    "lint_warnings": 11,
+    "build": "pass; large chunks"
+  },
+  "legal_date": "Terms 10. 10. 2026; actual component at 375x812",
+  "source_sha256": {
+    "frontend/src/components/AuthContext.jsx": "9825804de68a22ee24c9f5443afaa8ab79e9319d13e71cd42c26523fcc97d6aa",
+    "frontend/src/components/ConfirmEmailWaiting.jsx": "530abb1c0467242f197640d40c6b1422f2053654174456b865e1f8aeb293963d",
+    "frontend/src/components/BetaReward.jsx": "e6f1806dec75a547cb9b1e4e5eed38230bd25431287558334832c22a35b83173",
+    "frontend/src/pages/Legal.jsx": "d42a95bace6a810164b1ed88d46ca644faec8e50cb67776aec7df5df62593fd6",
+    "server.js": "77c04d00f1f700a876354bb8e59777333c823a49b84845b3b39c6412ddf4fd8a"
+  }
+}

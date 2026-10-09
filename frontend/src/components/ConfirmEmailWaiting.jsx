@@ -107,12 +107,12 @@ export default function ConfirmEmailWaiting({
   const resend = useCallback(async () => {
     setSending(true);
     setStatus(null);
-    // Supabase sends nothing for an address that is already confirmed, and still
-    // answers "ok". Check first so that case signs in instead of waiting.
-    if (password && (!captchaEnabled || captchaToken)) {
+    // A CAPTCHA token is single-use: reserve it for the resend operation.
+    // Without CAPTCHA, first check whether the address is already confirmed;
+    // Supabase's resend answers "ok" without sending mail for that address.
+    if (password && !captchaEnabled) {
       const already = await signIn(email, password, { captchaToken, remember: true });
       if (!already.error) { setSending(false); return; }
-      if (captchaEnabled) { setCaptchaToken(null); setCaptchaKey((key) => key + 1); setSending(false); setStatus({ kind: 'info', text: 'Ještě to nevypadá potvrzené. Počkej pár sekund na nové ověření a pošli odkaz znovu.' }); return; }
     }
     const result = await resendConfirmation(email, {
       captchaToken, emailRedirectTo, ...(betaCode ? { betaSchoolCode: betaCode } : {}),

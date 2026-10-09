@@ -25,8 +25,9 @@ nic neplatí a nikdo nebude karet ani plateb žádat.
 - **Co od žáků chceme:** vyzkoušet aplikaci a poslat nám zpětnou vazbu přímo v aplikaci
   (co se nepovedlo, co by pomohlo)
 - **Osobní údaje:** žáci mladší 15 let si účet zakládají **společně s rodičem**. Měříme,
-  jak aplikaci používají (jen s jejich souhlasem), a nic z toho nepředáváme třetím
-  stranám ani nepoužíváme k reklamě. Účet lze kdykoli smazat v Nastavení. Podrobnosti
+  jak aplikaci používají (jen s jejich souhlasem). Pro provoz používáme poskytovatele
+  uvedené v zásadách ochrany osobních údajů; údaje neprodáváme školám ani inzerentům
+  a nepoužíváme je k reklamě. Účet lze kdykoli smazat v Nastavení. Podrobnosti
   jsou v zásadách ochrany osobních údajů na webu: https://www.stredninamiru.cz/ochrana-osobnich-udaju
   (stránka se otevře po zadání testovacího kódu z textu níže; účet k přečtení není potřeba).
 
@@ -84,3 +85,6 @@ Díky, že pomáháš!
 - [ ] Doplněno: jméno odesílatele, datum odeslání, případně osobní nabídka návštěvy.
 - [ ] Rozhodni, jestli škola smí text přeposlat, nebo ho chceš poslat rodičům ty sám.
 - [ ] Ověřeno u dashboardů (viz `docs/legal-decisions-2026-10-10.md`, bod D5).
+- [ ] Správce vyřešil otevřené podmínky souhlasu/odvolání, dětských údajů a posouzení
+      rizik v bodech D1 a D4. Tento koncept ani rozhodnutí v dokumentu nejsou právní
+      potvrzení připravenosti; před odesláním ověř i popsané mazání a obnovování přístupu.

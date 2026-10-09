@@ -208,7 +208,7 @@ export function Terms() {
   const gender = useGender();
   const g = (masculine, feminine) => (gender === 'f' ? feminine : masculine);
   return (
-    <LegalPage title="Obchodní podmínky" updated="9. 10. 2026">
+    <LegalPage title="Obchodní podmínky" updated="10. 10. 2026">
       <h2>1. Provozovatel a kontakt</h2>
       <p>
         Službu Střední na míru (stredninamiru.cz) provozuje Václav Kadlec, Na Lysinách 34, 147 00 Praha (fyzická osoba, neplátce DPH), e-mail: info@stredninamiru.cz (tento e-mail slouží pro všechny žádosti,

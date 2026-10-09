@@ -34,8 +34,13 @@ checklist depends on it) but make it **consent**:
   weak under GDPR, but being observed is the whole content of a test; the school e-mail
   says so up front. If a parent objects, the child simply does not take part.
 
-**Not done (logged in UNFORGET):** a one-click "stop recording" switch in Nastavení. For
-a 7-day beta the e-mail route is acceptable; build the switch before any larger beta.
+**Release assessment still open (LEGAL-01):** a one-click "stop recording" switch in
+Nastavení is not implemented. Giving consent takes one checkbox; withdrawing currently
+requires an e-mail or deleting the entire account. Do not treat the seven-day duration
+as an exemption. The controller/adviser must resolve freely given consent, comparable
+withdrawal and child/guardian authority before accepting this beta gate. See the
+[European Commission's consent guidance](https://commission.europa.eu/law/law-topic/data-protection/information-business-and-organisations/legal-grounds-processing-data_en)
+and [EDPB Guidelines 05/2020](https://www.edpb.europa.eu/documents/guideline/guidelines-052020-on-consent-under-regulation-2016679_en).
 
 ## D2 — Review reporting and DSA (LEGAL-02)
 
@@ -50,9 +55,13 @@ contact, decision, notification, redress) is built.
 
 ## D3 — Parent and result links, pre-account snapshots (LEGAL-03)
 
-**Decision.** Link sharing is off (`SHARING_ENABLED = false`) and every app page now needs
-a signed-in account, so neither the parent payment link nor pre-account result snapshots
-can occur during the beta. The privacy text for them is **not** added now; add it
+**Decision.** Sharing controls are off in the frontend (`SHARING_ENABLED = false`).
+This flag is not an API permission boundary: `server.js` still registers result-snapshot,
+handoff and share/payment-link endpoints. Signed-out view-only school detail is also
+intentionally public. Therefore the source does not establish that links or pre-account
+snapshots cannot occur during beta; verify the deployed API access matrix and explicitly
+disable excluded operations server-side if that is the agreed beta scope. The privacy text
+for these flows is **not** added now; add it
 (what each link shows, who can open a forwarded link, expiry/revocation, that expired
 rows are not yet deleted) in the same release that re-enables sharing.
 
@@ -67,13 +76,19 @@ rows are not yet deleted) in the same release that re-enables sharing.
 - A public testimonial (only with its own consent): kept until the consent is withdrawn.
 - Accounts: until the user deletes them (unchanged).
 
-**DPIA screening, 2026-10-10:** no full DPIA is required in my assessment — one school,
+**Preliminary DPIA screening, 2026-10-10 — not accepted as a release sign-off:** the
+initial assessment considered one school,
 at most about 170 testers, 7 days, no special-category data collected on purpose,
 no location, no sharing with third parties for their own purposes, no profiling with
 legal effect, data minimised (no e-mail, free text or points in events), deletion on
-request. Residual points to watch: the church-school preference question is optional
-and treated as ordinary data, but would need re-assessment if it were ever combined with
-identity; and the tester pool is children. Re-screen before any launch beyond this school.
+request. Its factual assumptions need correction: the optional `cirkevni` answer is
+already stored in `questionnaire_runs.answers` together with `user_id`; it is not
+unlinked from identity. Choosing a church school does not by itself prove a religious
+belief, but optionality alone does not settle whether the processing reveals one.
+Account-linked recommendations, children's data, free-text/screenshot content and map
+location features must be included in a documented controller/adviser risk assessment.
+Do not use this note to conclude that a DPIA is unnecessary. Re-screen before any launch
+beyond this school, and resolve the current cohort's assessment before release acceptance.
 
 ## D5 — Vendors and the operator (LEGAL-05) — founder to verify
 

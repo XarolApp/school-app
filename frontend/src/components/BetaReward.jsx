@@ -58,6 +58,14 @@ export function QuickFeedback({ id, parent = false, onDone, title }) {
   const answers = spec.chips
     .map((_, i) => (picked[i] ? (follow[i]?.trim() ? `${picked[i]}: ${follow[i].trim()}` : picked[i]) : null))
     .filter(Boolean);
+  const onRatingKeyDown = (event, value) => {
+    const direction = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[event.key];
+    if (!direction) return;
+    event.preventDefault();
+    const next = ((value - 1 + direction + 5) % 5) + 1;
+    setRating(next);
+    event.currentTarget.parentElement.querySelectorAll('[role="radio"]')[next - 1]?.focus();
+  };
   const send = async (skip) => {
     setBusy(true); setError('');
     try {
@@ -77,6 +85,7 @@ export function QuickFeedback({ id, parent = false, onDone, title }) {
     <p className="beta-quick-title">{title || t(`Jak hodnotíš ${spec.label}?`, `Jak hodnotíte ${spec.label}?`)}</p>
     <div className="beta-quick-stars" role="radiogroup" aria-label="Hodnocení od 1 do 5">
       {[1, 2, 3, 4, 5].map((n) => <button key={n} type="button" role="radio" aria-checked={rating === n} aria-label={`${n} z 5`}
+        tabIndex={(rating || 1) === n ? 0 : -1} onKeyDown={(event) => onRatingKeyDown(event, n)}
         className={`beta-quick-star${n <= rating ? ' is-on' : ''}`} onClick={() => setRating(n)}><Star size={22} aria-hidden="true" /></button>)}
     </div>
     {spec.chips.map(([student, adult, options, followUps], i) => {

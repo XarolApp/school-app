@@ -1,0 +1,73 @@
+
+> frontend@0.0.0 build
+> vite build
+
+vite v8.2.0 building client environment for production...
+[2Ktransforming...✓ 2045 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/version.json                                                    0.02 kB │ gzip:   0.04 kB
+dist/index.html                                                      1.38 kB │ gzip:   0.64 kB
+dist/assets/archivo-narrow-vietnamese-400-normal-uH49xrTy.woff2      4.33 kB
+dist/assets/archivo-narrow-vietnamese-700-normal-VsvP8OcS.woff2      4.35 kB
+dist/assets/archivo-narrow-vietnamese-600-normal-B3iMS2rD.woff2      4.42 kB
+dist/assets/archivo-narrow-vietnamese-500-normal-CbuGBAYj.woff2      4.44 kB
+dist/assets/archivo-vietnamese-600-normal-anCjMumA.woff2             5.19 kB
+dist/assets/archivo-vietnamese-500-normal-k0drYPZA.woff2             5.65 kB
+dist/assets/archivo-vietnamese-400-normal-BF4g3tCF.woff2             5.67 kB
+dist/assets/archivo-vietnamese-700-normal-nuAQAQa7.woff2             5.68 kB
+dist/assets/archivo-narrow-vietnamese-400-normal-C2Bhhhro.woff       6.07 kB
+dist/assets/archivo-narrow-vietnamese-700-normal-CB0yIOvF.woff       6.12 kB
+dist/assets/archivo-narrow-vietnamese-600-normal-BOVNaV0C.woff       6.24 kB
+dist/assets/archivo-narrow-vietnamese-500-normal-DBsYfoQF.woff       6.25 kB
+dist/assets/archivo-vietnamese-600-normal-C8xBVdfP.woff              7.38 kB
+dist/assets/archivo-vietnamese-500-normal-7W3lD2kQ.woff              7.66 kB
+dist/assets/archivo-vietnamese-700-normal-Bz2vkKqq.woff              7.67 kB
+dist/assets/archivo-vietnamese-400-normal-FGOLYM1a.woff              7.68 kB
+dist/assets/archivo-narrow-latin-ext-400-normal-BzcuidUP.woff2      10.75 kB
+dist/assets/archivo-narrow-latin-ext-700-normal-DCLoHMFv.woff2      10.85 kB
+dist/assets/archivo-narrow-latin-ext-600-normal-DNmONYTo.woff2      11.03 kB
+dist/assets/archivo-narrow-latin-ext-500-normal-CEqYmuFE.woff2      11.08 kB
+dist/assets/archivo-narrow-latin-700-normal-DtADLsoy.woff2          11.77 kB
+dist/assets/archivo-narrow-latin-400-normal-BON_owyT.woff2          11.79 kB
+dist/assets/archivo-narrow-latin-600-normal-l2jiltzb.woff2          12.09 kB
+dist/assets/archivo-narrow-latin-500-normal-BH-FPhCi.woff2          12.12 kB
+dist/assets/archivo-latin-ext-600-normal-Dm61iqcg.woff2             12.38 kB
+dist/assets/archivo-latin-ext-400-normal-B5tPZzqW.woff2             12.92 kB
+dist/assets/archivo-latin-ext-500-normal-RFhg4CpD.woff2             13.16 kB
+dist/assets/archivo-latin-ext-700-normal-DD_nkw6b.woff2             13.27 kB
+dist/assets/archivo-latin-600-normal-3BBy0ZsW.woff2                 13.82 kB
+dist/assets/archivo-latin-700-normal-D9cHMWGj.woff2                 14.50 kB
+dist/assets/archivo-latin-500-normal-CGugC8dq.woff2                 14.60 kB
+dist/assets/archivo-latin-400-normal-C81ewxNO.woff2                 14.70 kB
+dist/assets/archivo-narrow-latin-ext-400-normal-DO6227My.woff       14.76 kB
+dist/assets/archivo-narrow-latin-ext-700-normal-C4q0W15T.woff       14.76 kB
+dist/assets/archivo-narrow-latin-ext-600-normal-CFDqFZjW.woff       15.14 kB
+dist/assets/archivo-narrow-latin-ext-500-normal-DESKgx4f.woff       15.19 kB
+dist/assets/archivo-narrow-latin-700-normal-DxmyBkwC.woff           15.19 kB
+dist/assets/archivo-narrow-latin-400-normal-nNe3qgr1.woff           15.28 kB
+dist/assets/archivo-narrow-latin-600-normal-DZkbuzR9.woff           15.54 kB
+dist/assets/archivo-narrow-latin-500-normal-Oafwxh5s.woff           15.58 kB
+dist/assets/archivo-latin-ext-600-normal-D7uErJuz.woff              17.72 kB
+dist/assets/archivo-latin-ext-400-normal-DrmqtLj6.woff              17.98 kB
+dist/assets/archivo-latin-600-normal-DwYieO8P.woff                  18.20 kB
+dist/assets/archivo-latin-ext-500-normal-D7mXw3Kz.woff              18.29 kB
+dist/assets/archivo-latin-ext-700-normal-CgyfnKjw.woff              18.40 kB
+dist/assets/archivo-latin-700-normal-lT5TFe7H.woff                  18.79 kB
+dist/assets/archivo-latin-400-normal-Bl602Mgc.woff                  18.97 kB
+dist/assets/archivo-latin-500-normal-pkzA7jw9.woff                  18.98 kB
+dist/assets/Admin-C0G76Kw0.css                                       6.47 kB │ gzip:   1.84 kB
+dist/assets/Landing-BYOx0MSN.css                                    21.10 kB │ gzip:   4.95 kB
+dist/assets/index-BOYIvIhN.css                                     229.00 kB │ gzip:  42.19 kB
+dist/assets/rolldown-runtime-CbXtAM7H.js                             0.58 kB │ gzip:   0.36 kB
+dist/assets/Admin-DFyLtd3-.js                                       14.46 kB │ gzip:   5.49 kB
+dist/assets/html2canvas-ydWbLPCJ.js                                199.49 kB │ gzip:  46.77 kB
+dist/assets/Landing-DLqjEpu3.js                                    732.50 kB │ gzip: 202.78 kB
+dist/assets/index-C72JfR9y.js                                    1,189.03 kB │ gzip: 347.18 kB
+
+✓ built in 421ms
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.

@@ -2114,18 +2114,17 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "05f32f180a3875a18e6fe9f9b9bccf17c4edb6d0baa47bb2aa1c00ec713cf467",
-    "lines": 1683,
+    "sha256": "2d17a288c7fcdbf965aded200dc22571b8443e4d21f85fff281a487864b55b89",
+    "lines": 1686,
     "read_ranges": [
       [
         1,
-        1683
+        1686
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T22:40:12.068633+00:00",
-    "method": "Full current files read in bounded complete ranges. Initial read hashes checked against 9183339 and unchanged source. All own edits/diffs inspected; current UNFORGET 25-line peer addition read completely. Full baseline hashes verified for docs. Browser screen/branch/keyboard checks are not full router, real-device or Stripe acceptance."
+    "method": "Full stable current read in bounded ranges, or exact verified full-read baseline plus complete current diff and own reviewed patch. Truncated confirmation/instructions ranges reread; UNFORGET peer additions fully reread after 3bc498c. Source read is not legal/service/runtime approval."
   },
   "frontend/src/api.js": {
     "sha256": "2e60c1cacdcddfe855eae350da4a77751375099e4614b76e31f3ed02146106d2",
@@ -2142,18 +2141,17 @@
     "method": "Full current source read in complete bounded ranges (including previous-turn api.js 1-180/181-360/361-end and tokens.js 1-150/151-end); all subsequent own narrow diffs inspected. App/ProtectedRoute reread after bc1f826. Read is not runtime/service or legal acceptance."
   },
   "frontend/src/components/AuthContext.jsx": {
-    "sha256": "d79a5d4c04588be385ff11ee6abea12d2c8d13f11254abcfe55964ac34b3de01",
-    "lines": 490,
+    "sha256": "9825804de68a22ee24c9f5443afaa8ab79e9319d13e71cd42c26523fcc97d6aa",
+    "lines": 497,
     "read_ranges": [
       [
         1,
-        490
+        497
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T22:10:05.660005+00:00",
-    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
+    "method": "Full stable current read in bounded ranges, or exact verified full-read baseline plus complete current diff and own reviewed patch. Truncated confirmation/instructions ranges reread; UNFORGET peer additions fully reread after 3bc498c. Source read is not legal/service/runtime approval."
   },
   "frontend/src/components/ProtectedRoute.jsx": {
     "sha256": "591df014798f50b89c023f2ece1588e3fce7b551bb1df3f7e15c916b71625e1b",
@@ -2268,7 +2266,7 @@
     "method": "Full 79-line current component and complete own parent-copy diff read; synthetic browser verifies parent vykání and unchanged student wording. No submissions or external service calls."
   },
   "frontend/src/components/BetaEnrollment.jsx": {
-    "sha256": "1859ba554d8ce99375dfac644fe8cc5decd9498e6e16778440d1ecdacd2873fa",
+    "sha256": "ea9be3f819546fa76c993ed47eed9ca34d360f4a017947fb70b8b0a2055208dc",
     "lines": 32,
     "read_ranges": [
       [
@@ -2278,8 +2276,7 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T22:10:05.662676+00:00",
-    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
+    "method": "Full stable current read in bounded ranges, or exact verified full-read baseline plus complete current diff and own reviewed patch. Truncated confirmation/instructions ranges reread; UNFORGET peer additions fully reread after 3bc498c. Source read is not legal/service/runtime approval."
   },
   "frontend/src/components/BetaSoftGate.jsx": {
     "sha256": "5c9094454c3b8cc99edb07001476b644e4d37f87b8266b09a000989cb0f337a4",
@@ -2296,32 +2293,30 @@
     "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
   },
   "frontend/src/components/BetaReward.jsx": {
-    "sha256": "1738c4515c26bf2aca3daf3fad25f2aa5b2f32df4bdc375920193b92a1cdd730",
-    "lines": 177,
+    "sha256": "e6f1806dec75a547cb9b1e4e5eed38230bd25431287558334832c22a35b83173",
+    "lines": 186,
     "read_ranges": [
       [
         1,
-        177
+        186
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T22:10:05.663406+00:00",
-    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
+    "method": "Full stable current read in bounded ranges, or exact verified full-read baseline plus complete current diff and own reviewed patch. Truncated confirmation/instructions ranges reread; UNFORGET peer additions fully reread after 3bc498c. Source read is not legal/service/runtime approval."
   },
   "frontend/src/components/BetaInstructions.jsx": {
-    "sha256": "f6da2fd11b331c27776ee6ae76687594c6ddf3664bc65e533f9d94082597dc94",
-    "lines": 146,
+    "sha256": "cfbec9366767c24d35aa4fa8627b3c63df5f6b5111107365b60983630f8a8990",
+    "lines": 150,
     "read_ranges": [
       [
         1,
-        146
+        150
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T22:10:05.663612+00:00",
-    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
+    "method": "Full stable current read in bounded ranges, or exact verified full-read baseline plus complete current diff and own reviewed patch. Truncated confirmation/instructions ranges reread; UNFORGET peer additions fully reread after 3bc498c. Source read is not legal/service/runtime approval."
   },
   "frontend/src/components/decision/PointsInput.jsx": {
     "sha256": "5c354cca487d4b0b32ba39de8146f409fbddabe0cf70bfd21a5d2777ec9541c7",
@@ -2422,7 +2417,7 @@
     "method": "Full current source read without truncation; SchoolActions in 1-145/146-end; QuizQuestion full read plus own df6b680 diff (omitted from preceding ledger update, now recorded). Reproduction uses the actual callback and synthetic state, not full React/browser or live-service acceptance."
   },
   "frontend/src/components/schoolDetail/SchoolActions.jsx": {
-    "sha256": "58e43d65f9dbc316d476d4da19756c3dc993fd6526e0d8b201beda76cfbd32f6",
+    "sha256": "5a8cc34c0f4455ff0b8fb3054c729f0b85606b9a6b10fab9497ff770d3c87716",
     "lines": 272,
     "read_ranges": [
       [
@@ -2432,8 +2427,7 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T21:59:05.062191+00:00",
-    "method": "Full current source read without truncation; SchoolActions in 1-145/146-end; QuizQuestion full read plus own df6b680 diff (omitted from preceding ledger update, now recorded). Reproduction uses the actual callback and synthetic state, not full React/browser or live-service acceptance."
+    "method": "Full stable current read in bounded ranges, or exact verified full-read baseline plus complete current diff and own reviewed patch. Truncated confirmation/instructions ranges reread; UNFORGET peer additions fully reread after 3bc498c. Source read is not legal/service/runtime approval."
   },
   "frontend/src/pages/SharedResults.jsx": {
     "sha256": "37ac74dcdbee92b2aa57cd5079487249f20aef3e2a7109cd110e64e987e51b38",
@@ -2464,18 +2458,17 @@
     "method": "Full current source read in bounded ranges on 9 October; unchanged against 8f519d9 when recording. Read coverage is not runtime approval."
   },
   "frontend/src/pages/SignUp.jsx": {
-    "sha256": "4de3edf7acda8e528817fd19889993f516d7fada4ab0ae964b73fe2a119342b1",
-    "lines": 324,
+    "sha256": "30eac58e725d46d90072c469d22425f3e3dd9ffe7afe9adf0faeec93b41944f2",
+    "lines": 325,
     "read_ranges": [
       [
         1,
-        324
+        325
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T21:13:42.172292+00:00",
-    "method": "Full current source read in bounded ranges on 9 October; unchanged against 8f519d9 when recording. Read coverage is not runtime approval."
+    "method": "Full stable current read in bounded ranges, or exact verified full-read baseline plus complete current diff and own reviewed patch. Truncated confirmation/instructions ranges reread; UNFORGET peer additions fully reread after 3bc498c. Source read is not legal/service/runtime approval."
   },
   "frontend/src/pages/ForgotPassword.jsx": {
     "sha256": "22ee7df2d5daf44b7f9b39556b8de04daf55a1f0d3475a09c38c5f07b6339667",
@@ -2506,21 +2499,20 @@
     "method": "Full current source read in bounded ranges on 9 October; unchanged against 8f519d9 when recording. Read coverage is not runtime approval."
   },
   "frontend/src/components/ConfirmEmailWaiting.jsx": {
-    "sha256": "3b5600ac56df8f220965349d9029ce3d69da3124a4303690beec52044d427497",
-    "lines": 113,
+    "sha256": "530abb1c0467242f197640d40c6b1422f2053654174456b865e1f8aeb293963d",
+    "lines": 168,
     "read_ranges": [
       [
         1,
-        113
+        168
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T21:13:42.172292+00:00",
-    "method": "Full current source read in bounded ranges on 9 October; unchanged against 8f519d9 when recording. Read coverage is not runtime approval."
+    "method": "Full stable current read in bounded ranges, or exact verified full-read baseline plus complete current diff and own reviewed patch. Truncated confirmation/instructions ranges reread; UNFORGET peer additions fully reread after 3bc498c. Source read is not legal/service/runtime approval."
   },
   "lib/questionnaire.js": {
-    "sha256": "d0882d61e7e39194fb8f221970a1c0652054e69c51e3648455502e30a3b6ee38",
+    "sha256": "dda2d49fc302b9cf1660b4d859af58b4db73cbea63918bfdeabc2b8ed4fbc635",
     "lines": 929,
     "read_ranges": [
       [
@@ -2530,8 +2522,7 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T21:33:50.165512+00:00",
-    "method": "Previous current full-read root evidence verified before this narrow edit, then complete authored diff read. Lunch/optional-note wording matches read-only counts/founder decision; 14 regressions and synthetic component browser check pass."
+    "method": "Full stable current read in bounded ranges, or exact verified full-read baseline plus complete current diff and own reviewed patch. Truncated confirmation/instructions ranges reread; UNFORGET peer additions fully reread after 3bc498c. Source read is not legal/service/runtime approval."
   },
   "frontend/src/pages/EmailConfirmed.jsx": {
     "sha256": "25067f5a868bb89ae9855093dd81b96284e3d2f5326301559cde0803ce93b95d",
@@ -2544,8 +2535,7 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T21:13:42.172292+00:00",
-    "method": "Full current source read plus complete own redirect-fix diff; two targeted tests and synthetic confirmation component browser check. No production sign-in/mailbox acceptance claimed."
+    "method": "Full stable current read in bounded ranges, or exact verified full-read baseline plus complete current diff and own reviewed patch. Truncated confirmation/instructions ranges reread; UNFORGET peer additions fully reread after 3bc498c. Source read is not legal/service/runtime approval."
   },
   "frontend/src/pages/Login.jsx": {
     "sha256": "206f8774d11825a0ed1a083b610949b65b153d791ec3a429ded4258b4b344670",
@@ -2590,18 +2580,17 @@
     "method": "Full current source read plus complete own redirect-fix diff; two targeted tests and synthetic confirmation component browser check. No production sign-in/mailbox acceptance claimed."
   },
   "frontend/src/pages/Legal.jsx": {
-    "sha256": "e7e8196c0310baede21e35116657ce4b0cf8c193f502aacff83b7da504014c27",
-    "lines": 377,
+    "sha256": "d42a95bace6a810164b1ed88d46ca644faec8e50cb67776aec7df5df62593fd6",
+    "lines": 388,
     "read_ranges": [
       [
         1,
-        377
+        388
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T21:25:25.269816+00:00",
-    "method": "Full current source read in bounded, untruncated ranges on 9 October; released Phase 9 reviewed. Four beta/social-proof tests pass. Reading is not legal, production or full runtime approval."
+    "method": "Full stable current read in bounded ranges, or exact verified full-read baseline plus complete current diff and own reviewed patch. Truncated confirmation/instructions ranges reread; UNFORGET peer additions fully reread after 3bc498c. Source read is not legal/service/runtime approval."
   },
   "frontend/src/config/socialProof.js": {
     "sha256": "70b47b86cd7b03a405aff53b98d66fac9aaccc231a66207a54c9a95752ec86a8",
@@ -2716,20 +2705,17 @@
     "method": "Exact saved 1,376-line c460db0 baseline SHA verified against Git, then complete current diff (135 additions/53 deletions) read without truncation on 9 October. Current hash checked again; source coverage only, no SQL execution or migration approval."
   },
   "frontend/src/pages/Questionnaire.jsx": {
-    "sha256": "1dda962565e90d21fcfdc8704ae157053f739221fe7f68fcef60ad7ffd55e470",
-    "lines": 934,
+    "sha256": "6d563cf4a3438c15f78558e4a5d7312b19523d640f4559a16d2e258ffcd15e02",
+    "lines": 964,
     "read_ranges": [
       [
         1,
-        934
+        964
       ]
     ],
-    "status": "complete_after_concurrent_change",
+    "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T21:56:04.686116+00:00",
-    "method": "Exact SHA of saved complete c90bb0c 925-line read verified; complete c90bb0c..HEAD peer diff and current own comment-only diff read. Browser proof remains fixture-scoped.",
-    "baseline_commit": "c90bb0c",
-    "baseline_sha256": "48864e649c814632e17f0c9df31bc39dff742b11f59a97d8c0d6cc18d3e870d9"
+    "method": "Full stable current read in bounded ranges, or exact verified full-read baseline plus complete current diff and own reviewed patch. Truncated confirmation/instructions ranges reread; UNFORGET peer additions fully reread after 3bc498c. Source read is not legal/service/runtime approval."
   },
   "tests/questionnaire.test.cjs": {
     "sha256": "77bb95a0284eb9196e9153ff85fd810b212f9f6558ece3f39b9223576b3e5395",
@@ -2760,18 +2746,17 @@
     "method": "Entire authored read-only probe inspected; run emits aggregate school coverage only, checks complete response and row cardinality; no data writes or model calls."
   },
   "server.js": {
-    "sha256": "f6914d0d4737c1ee22c26cc97832d439947fc7262cc17005d0235904efd848f1",
-    "lines": 3505,
+    "sha256": "77c04d00f1f700a876354bb8e59777333c823a49b84845b3b39c6412ddf4fd8a",
+    "lines": 3545,
     "read_ranges": [
       [
         1,
-        3505
+        3545
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T21:41:03.501885+00:00",
-    "method": "Exact saved 3,328-line c460db0 full-read SHA verified; all 570 lines of the complete current diff read in 1-200,201-390,391-end, then relevant connected routes reread. Source hash checked again. 157 tests pass; C21 reproduced with synthetic services. No live SQL/payment approval."
+    "method": "Full stable current read in bounded ranges, or exact verified full-read baseline plus complete current diff and own reviewed patch. Truncated confirmation/instructions ranges reread; UNFORGET peer additions fully reread after 3bc498c. Source read is not legal/service/runtime approval."
   },
   "frontend/vite.config.js": {
     "sha256": "fab6a73a2c8e936ab2699c7f3799e8769bc160e2c3990f9729dc9c646318f841",
@@ -2938,8 +2923,7 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T21:56:04.686116+00:00",
-    "method": "Full current source read in complete bounded ranges (including previous-turn api.js 1-180/181-360/361-end and tokens.js 1-150/151-end); all subsequent own narrow diffs inspected. App/ProtectedRoute reread after bc1f826. Read is not runtime/service or legal acceptance."
+    "method": "Full stable current read in bounded ranges, or exact verified full-read baseline plus complete current diff and own reviewed patch. Truncated confirmation/instructions ranges reread; UNFORGET peer additions fully reread after 3bc498c. Source read is not legal/service/runtime approval."
   },
   "frontend/src/pages/onboarding/quizQuestions.js": {
     "sha256": "c1426b97620e9bd319eb4f448b5813a1a242def98bb46479fa6b98ed391a9848",
@@ -3206,5 +3190,70 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-09T22:40:12.068633+00:00",
     "method": "Full current files read in bounded complete ranges. Initial read hashes checked against 9183339 and unchanged source. All own edits/diffs inspected; current UNFORGET 25-line peer addition read completely. Full baseline hashes verified for docs. Browser screen/branch/keyboard checks are not full router, real-device or Stripe acceptance."
+  },
+  "frontend/src/pages/onboarding/screens/CreateAccount.jsx": {
+    "sha256": "4d93bee19acf40c270999bab03718d5edb569d7e2ed04402f7d0adb8069ed330",
+    "lines": 435,
+    "read_ranges": [
+      [
+        1,
+        435
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "method": "Full stable current read in bounded ranges, or exact verified full-read baseline plus complete current diff and own reviewed patch. Truncated confirmation/instructions ranges reread; UNFORGET peer additions fully reread after 3bc498c. Source read is not legal/service/runtime approval."
+  },
+  "frontend/src/pages/BetaLanding.jsx": {
+    "sha256": "b22cfbb93126e6078fb128465ba4ba68930201554d86a59d9ed1bd6435743772",
+    "lines": 211,
+    "read_ranges": [
+      [
+        1,
+        211
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "method": "Full stable current read in bounded ranges, or exact verified full-read baseline plus complete current diff and own reviewed patch. Truncated confirmation/instructions ranges reread; UNFORGET peer additions fully reread after 3bc498c. Source read is not legal/service/runtime approval."
+  },
+  "frontend/src/components/ConsentCheckbox.jsx": {
+    "sha256": "031211469722f3f8dc9da2d59a519522f9d0f649208521690ea00c2e56495d56",
+    "lines": 33,
+    "read_ranges": [
+      [
+        1,
+        33
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "method": "Full stable current read in bounded ranges, or exact verified full-read baseline plus complete current diff and own reviewed patch. Truncated confirmation/instructions ranges reread; UNFORGET peer additions fully reread after 3bc498c. Source read is not legal/service/runtime approval."
+  },
+  "docs/legal-decisions-2026-10-10.md": {
+    "sha256": "c74501d91ba10a8f59fb98fad740ccd8b6140b379adf5a7cd5f729a0052659c3",
+    "lines": 113,
+    "read_ranges": [
+      [
+        1,
+        113
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "method": "Full stable current read in bounded ranges, or exact verified full-read baseline plus complete current diff and own reviewed patch. Truncated confirmation/instructions ranges reread; UNFORGET peer additions fully reread after 3bc498c. Source read is not legal/service/runtime approval."
+  },
+  "docs/beta-school-email-draft.md": {
+    "sha256": "f4384b36d85489009d5b8a7972e587521b925bd6bac01b7c7186fc0bad7264d1",
+    "lines": 90,
+    "read_ranges": [
+      [
+        1,
+        90
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "method": "Full stable current read in bounded ranges, or exact verified full-read baseline plus complete current diff and own reviewed patch. Truncated confirmation/instructions ranges reread; UNFORGET peer additions fully reread after 3bc498c. Source read is not legal/service/runtime approval."
   }
 }
