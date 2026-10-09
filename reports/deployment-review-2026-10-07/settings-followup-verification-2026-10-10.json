@@ -1,0 +1,43 @@
+{
+  "checked_at_utc": "2026-10-09T23:11:56.474995+00:00",
+  "baseline_commit": "278eee5",
+  "scope": "Actual Settings React component with synthetic auth/API; deferred simulated appearance requests only. No auth/credentials/account/payment/delete operation.",
+  "checks": {
+    "name_clear_before": "Test B restored",
+    "name_clear_after": "empty edit retained; required/minlength=2 unchanged",
+    "expired_trial_before": "Zkušební období — zbývá 0 dní",
+    "expired_trial_after": "Zkušební období skončilo",
+    "phone": {
+      "viewport": 375,
+      "scrollWidth": 375
+    },
+    "native_radios": "gender ArrowRight wraps u to m; palette two ArrowRight steps; mode ArrowRight system to light",
+    "queued_theme_calls": [
+      {
+        "owner": "A",
+        "patch": {
+          "themePalette": "zvyraznovac"
+        }
+      },
+      {
+        "owner": "B",
+        "patch": {
+          "themePalette": "smrk"
+        }
+      }
+    ],
+    "draft_after_owner_change": {
+      "owner": "B",
+      "name": "Nové jméno",
+      "submitted": false
+    },
+    "lint": "exit 0, zero errors, eleven existing warnings",
+    "build": "exit 0, large-chunk warnings"
+  },
+  "open": [
+    "C02/C16 immutable ownership",
+    "C31 erasure lifecycle/notice",
+    "C07 first-sign-in trial migration",
+    "actual services and device acceptance"
+  ]
+}

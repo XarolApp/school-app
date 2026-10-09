@@ -138,7 +138,7 @@ function Settings() {
       lastSection.current = null;
     }
   }, [openForm]);
-  const [name, setName] = useState('');
+  const [name, setName] = useState(null);
   const [nameSaved, setNameSaved] = useState(false);
   const [genderChoice, setGenderChoice] = useState('u');
   const [genderSaved, setGenderSaved] = useState(false);
@@ -232,7 +232,7 @@ function Settings() {
   if (!isSignedIn) return <Navigate to="/prihlaseni" replace />;
 
   const currentName = profile?.name ?? '';
-  const nameValue = name || currentName;
+  const nameValue = name ?? currentName;
   const nameChanged = nameValue.trim() !== currentName.trim();
   const genderChanged = (genderChoice === 'u' ? null : genderChoice) !== (profile?.gender ?? null);
 
@@ -270,7 +270,7 @@ function Settings() {
       setError(result.error);
       return;
     }
-    setName('');
+    setName(null);
     setNameSaved(true);
     toast('Jméno bylo uloženo');
   };
@@ -409,7 +409,9 @@ function Settings() {
   };
 
   const status = profile?.subscription_status;
-  const statusLabel = SUBSCRIPTION_LABELS[status] || 'Neznámý stav';
+  const statusLabel = status === 'trialing' && !hasAccess
+    ? SUBSCRIPTION_LABELS.expired
+    : SUBSCRIPTION_LABELS[status] || 'Neznámý stav';
   const effectiveMode = themeMode === 'system' ? systemMode : themeMode;
 
   // A cancel button is only meaningful when there is something Stripe would
@@ -950,7 +952,7 @@ function Settings() {
               <span className="settings-row-label">Stav</span>
               <span className="settings-row-value">
                 {profile?.cancel_at_period_end && status === 'active' ? 'Zrušeno — nic se neobnoví' : statusLabel}
-                {status === 'trialing' && (
+                {status === 'trialing' && hasAccess && (
                   <>
                     {' — zbývá '}
                     <strong>

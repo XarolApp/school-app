@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-09T23:07:17.546468+00:00",
-  "commit": "902bccd18c52cae7e9546eb1c3ac2317e17c82c1",
+  "checked_at_utc": "2026-10-09T23:11:56.797630+00:00",
+  "commit": "278eee52df3c05e59b1ac2ec6bc4813aecbe80df",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "pending_or_changed": 517,
-    "current_full_read": 254,
-    "binary_requires_asset_check": 74,
-    "generated_or_audit_artifact": 58,
+    "pending_or_changed": 516,
+    "current_full_read": 255,
+    "binary_requires_asset_check": 77,
+    "generated_or_audit_artifact": 62,
     "removed_or_missing": 2
   },
   "files": [
@@ -783,8 +783,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "491efe8d52d92d8678bae0221117a6097adb8570ed8b78a09ff8dbe586eca552",
-      "lines": 1692,
+      "sha256": "772cf9b38800f6b5eaff59aea19872731c39c8b6a8e34d6aa80d3d3322fc40a9",
+      "lines": 1698,
       "status": "pending_or_changed",
       "matching_evidence": []
     },
@@ -3939,10 +3939,12 @@
     },
     {
       "path": "frontend/src/pages/Settings.jsx",
-      "sha256": "b6c722a6e2b51809dac751ce0786f30f16eda5e88a4663deb3200b4ed2a8f06b",
-      "lines": 1238,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "41b242e8076065dab772eb20d704074afc846ad8c6503bcdad8c95f201276b8e",
+      "lines": 1240,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/pages/SharedResults.jsx",
@@ -5562,22 +5564,22 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "c77257489ff4afdcc6a67e87b47a40c2560e66524b2aa22b2f696466811de603",
-      "lines": 232,
+      "sha256": "db811a8f89f1745bbfd4e65067099b78d1a3b391e0911bd6852c7406231e50e9",
+      "lines": 238,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "0e2607046ea53a3bef08fb867721bdc08762d27a28ec518983102c49f79b69af",
-      "lines": 129,
+      "sha256": "9a31d727ae3bb1701cd60798a34da4d25768dbd01418cbbfff901cbbf55b5d8a",
+      "lines": 132,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "27f3f22bcbea03619ce876522fcc466a3b7a4cccae0a4756d40ec739a1e03d32",
-      "lines": 107,
+      "sha256": "b12585723227e9dcb7778cc3f7bf2f56306f454fa830f95f40732b4636c5e821",
+      "lines": 110,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -5744,14 +5746,14 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "3c7e076b76e3328719bfe54f9a969c6000c49eafd9c423201cedf469a873f236",
-      "lines": 251,
+      "sha256": "34b43a5822474f142ec1f012ee038917366ff6768128982a44918e9367ce4702",
+      "lines": 270,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "3a30aa5dfd30f258302b6c59689237fd2a807de9e49897494882aaadb2ba4412",
+      "sha256": "3c56b23f567f131133d861e03fe0c7028d9d4faf3b151bffe619a99e2a13691c",
       "lines": 6862,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
@@ -6186,9 +6188,16 @@
       ]
     },
     {
+      "path": "reports/deployment-review-2026-10-07/reproduce-settings-theme-queue.cjs",
+      "sha256": "9baf71d4d7b89f219938d08a40db85d32db3c556040a0f3b933d469c691e33e6",
+      "lines": 48,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "1f529bcedef4e2331be59cea0743484ae6a39a3edd96ea74797894680c33e74b",
-      "lines": 3289,
+      "sha256": "850f9d3882fa4776b3ef1c76a99c000f1f83a99632c081e23bb51af23bbf9fb1",
+      "lines": 3303,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6277,6 +6286,48 @@
       "matching_evidence": [
         "root-coverage.json"
       ]
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/settings-expired-trial-phone.png",
+      "sha256": "1824e5dfd191ce1d19de37b701a996e2d562d6d8df65e5e0ba8ca9b1a05559b1",
+      "lines": null,
+      "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/settings-followup-build-2026-10-10.txt",
+      "sha256": "bed9b3c41e2e3a68696ccf762962d7352c2cd984ad385a91be9fd9b8e0aad676",
+      "lines": 74,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/settings-followup-lint-2026-10-10.txt",
+      "sha256": "583945bbb3f2133870e374b7343068624141f4479c0cc8ce8ef8230e14e411b4",
+      "lines": 15,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/settings-followup-verification-2026-10-10.json",
+      "sha256": "64e4e53a4e54db075d6ef2ea7f259c3cd6f19c5c5ea889894b4fa2a2de440c12",
+      "lines": 43,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/settings-name-owner-draft.png",
+      "sha256": "4d6f2a099ab6209d24553e66368e35c1767c38de03d5b7ebd3fb5ed6130fa0ea",
+      "lines": null,
+      "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/settings-owner-queue.png",
+      "sha256": "646d588a97ce8843fe4f933d74085e2e5d81341b86aa946493a3d78ce28c05e7",
+      "lines": null,
+      "status": "binary_requires_asset_check",
+      "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/tooling-coverage.json",

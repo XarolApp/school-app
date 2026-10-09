@@ -3285,5 +3285,19 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-09T23:06:59.247017+00:00",
     "method": "Full stable current source read in bounded complete ranges; current own authored diff fully reviewed where applicable. Actual Search/Map isolated browser checks recorded separately. Read is not runtime/service/legal acceptance."
+  },
+  "frontend/src/pages/Settings.jsx": {
+    "sha256": "41b242e8076065dab772eb20d704074afc846ad8c6503bcdad8c95f201276b8e",
+    "lines": 1240,
+    "read_ranges": [
+      [
+        1,
+        1240
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T23:11:56.474995+00:00",
+    "method": "All 1–1238 baseline lines read in six bounded complete ranges plus full own diff. Actual React Settings fixture checks recorded separately; source read does not approve lifecycle/legal/services."
   }
 }
