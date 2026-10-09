@@ -1,9 +1,11 @@
 # 020 — Beta launch batch (access gate, comparison, matrix, AI explanations, tester UX)
 
-**Status:** PLANNED 2026-10-08. Not started.
-**Model routing:** planned at Opus 5.5 medium. Build with Codex GPT-6 Luna at max
-effort (founder choice). After the build, review security and privacy at Opus 5.5 low:
-phase 1 (gate), phase 6 (gender data) and phase 9 (reviews and consent).
+**Status:** IMPLEMENTED 2026-10-09. Repository implementation and Phase 13
+documentation are on `origin/main`; see the commit list below. This status does
+not mean production configuration, database migration or beta acceptance is done.
+**Model routing:** implementation used Codex GPT-6 Luna at max effort (founder
+choice). The separate security/privacy review at Opus 5.5 low for phase 1 (gate),
+phase 6 (gender data) and phase 9 (reviews and consent) is still pending.
 **Founder decisions:** made in chat on 2026-10-08 and quoted per phase. Do not
 re-litigate them.
 **Already logged (do not re-log):** the UNFORGET section "Founder backlog from the
@@ -601,6 +603,31 @@ hint: "Nepřišel? Mrkni do spamu a do složky Hromadné."
 - Also update `DEPLOY.md` (env tables), `.env.example`, `frontend/.env.example` and
   `docs/beta_testing_operations.md`.
 - Mark this plan IMPLEMENTED with the commit list.
+
+## Implementation commits
+
+All commits listed here are on `origin/main`:
+
+- Phase 1, shared-code gate: `32562fe`.
+- Phase 2, comparison support to five schools: `cc5facb`.
+- Phase 3, decision matrix and shared picks: `84353a4`.
+- Phase 4, application-pick controls: `f146073`.
+- Phase 5, on-demand school explanations: `420c690`.
+- Phase 6, optional gender preference and copy: `ccfd1cc`.
+- Phase 7, comparison-bar controls: `ffd9716`; cutoff and beta-flow follow-ups:
+  `8f519d9`, `6e87660`, `1270070`.
+- Phase 8, modal scrolling: `1a7f222`.
+- Phase 9, consented beta website reviews: `ae9eaeb`.
+- Phase 10, tester feedback-reply inbox: `64fc45b`.
+- Phase 11, remove user-facing emoji: `9a1dec8`.
+- Phase 12, delayed automatic updates: `ed4cf41`.
+- Phase 12b, auth-email spam hints and shared-code decision: `e33924e`.
+- Supporting incremental SQL draft for gender, explanations, reply-read timestamps
+  and review consent: `4a070f2` (founder review/application remains pending).
+- Phase 13, launch and operations documentation: `5ca8389`.
+
+The independent security/privacy review noted above and all founder steps below
+remain release gates.
 
 ## Founder steps (not for Codex)
 
