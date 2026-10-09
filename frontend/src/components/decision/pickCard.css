@@ -1,0 +1,12 @@
+/* PickCard on phones (2026-10-09 mobile pass). Kept here, next to the
+   component, so it can't be undone by edits to the long decision.css. */
+@media (max-width: 600px) {
+  /* Hranice | Tvoje body side by side, the sentence under both — instead of
+     wrapping "Tvoje body" under a stray vertical divider. */
+  .dp-pick-stats { display: grid; grid-template-columns: 1fr auto 1fr; gap: var(--space-sm) var(--space-md); align-items: start; }
+  .dp-pick-stats-note { grid-column: 1 / -1; min-width: 0; }
+}
+/* Drag-to-reorder is mouse-only (HTML5 drag & drop); touch uses the arrows. */
+@media (pointer: coarse) {
+  .dp-pick-drag-handle { display: none; }
+}

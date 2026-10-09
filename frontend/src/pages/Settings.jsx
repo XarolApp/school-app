@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { SHARING_ENABLED } from '../config/features';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { Check } from 'lucide-react';
 import { useAuth } from '../components/AuthContext';
@@ -583,15 +584,15 @@ function Settings() {
           </form>
 
           <form onSubmit={handleSaveGender} className="settings-form settings-form-inset">
-            <fieldset className="field">
+            <fieldset className="field settings-fieldset">
               <legend className="field-label">Jak tě máme oslovovat?</legend>
-              <div className="settings-inline">
+              <div className="settings-choice">
                 {[
                   ['m', 'Jako žáka'],
                   ['f', 'Jako žákyni'],
                   ['u', 'Nechci uvádět'],
                 ].map(([value, label]) => (
-                  <label key={value} className="checkbox-row">
+                  <label key={value} className="settings-choice-option">
                     <input type="radio" name="settings-gender" value={value} checked={genderChoice === value} onChange={() => { setGenderChoice(value); setGenderSaved(false); }} />
                     <span>{label}</span>
                   </label>
@@ -1110,6 +1111,7 @@ function Settings() {
         </section>
 
         {/* --- Sdílené odkazy --------------------------------------------- */}
+        {(SHARING_ENABLED || shareLinks.length > 0) && (
         <section className="panel panel-lg settings-section">
           <div className="settings-section-head">
             <h2 className="settings-section-title">Sdílené odkazy</h2>
@@ -1151,6 +1153,7 @@ function Settings() {
             </p>
           )}
         </section>
+        )}
 
         {/* --- Smazání účtu ---------------------------------------------- */}
         <section className="panel panel-lg settings-section settings-danger">

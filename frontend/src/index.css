@@ -112,3 +112,7 @@ code {
 .theme-transition::view-transition-old(root),
 .theme-transition::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
 .theme-fading, .theme-fading * { transition: background-color .5s ease, color .5s ease, border-color .5s ease, fill .5s ease !important; }
+
+/* Leaflet panes use z-index 400–700. Without its own stacking context the map
+   drew over fixed UI (bottom action bars, beta buttons) on phones. */
+.leaflet-container { isolation: isolate; }

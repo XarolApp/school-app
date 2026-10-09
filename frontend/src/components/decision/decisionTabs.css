@@ -1,0 +1,8 @@
+/* Phones: the three tabs fit only with short labels ("Matice", "Přihláška");
+   the full names stay on wider screens and for screen readers via aria-label. */
+.dp-tab-short { display: none; }
+@media (max-width: 480px) {
+  .dp-tab-long { display: none; }
+  .dp-tab-short { display: inline; }
+  .dp-tabs .dp-tab { padding-inline: 12px; }
+}

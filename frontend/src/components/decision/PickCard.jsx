@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import './pickCard.css';
 import { ChevronUp, ChevronDown, X } from 'lucide-react';
 import { groupProgramsByObor } from '../../lib/schoolPrograms';
 import { cutoffForPick, bandFor, BANDS } from '../../lib/admissionRisk';
@@ -107,7 +108,7 @@ function PickCard({ pick, index, total, studentPoints, noteBody, onMove, onRemov
                 ? 'Vyber obor a spočítáme rozdíl. Každý obor má vlastní hranici, nahoře je rozpětí mezi nimi.'
                 : 'Hranici pro tuto školu zatím nemáme.'
               : studentPoints == null
-                ? 'Zadej svoje body vpravo a spočítáme rozdíl.'
+                ? 'Zadej svoje body v poli „Tvoje body z přijímaček“ a spočítáme rozdíl.'
                 : studentPoints - cutoff >= 0
                   ? `Máš o ${bodu(studentPoints - cutoff)} víc, než v roce ${year} stačilo.`
                   : `Chybí ti ${bodu(cutoff - studentPoints)} na hranici z roku ${year}.`}

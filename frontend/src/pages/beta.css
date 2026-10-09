@@ -293,3 +293,19 @@ dialog.ss-dialog.beta-modal-reference { max-width: 960px; }
   -webkit-mask: var(--mask-check) center / contain no-repeat;
   mask: var(--mask-check) center / contain no-repeat;
 }
+
+/* Long guide on a phone: keep "Pokračovat / Začít testovat" in reach instead
+   of below the fold of a scrolling dialog. */
+@media (max-width: 600px) {
+  .beta-modal .beta-instructions > .ss-dialog-actions,
+  .beta-modal .beta-reference-actions {
+    position: sticky; bottom: 0; z-index: 1;
+    margin: 0 calc(-1 * var(--space-lg)) calc(-1 * var(--space-lg)); padding: var(--space-md) var(--space-lg);
+    background: var(--surface); border-top: 1px solid var(--line);
+  }
+}
+
+/* Phone menu sheet open: the floating beta buttons would cover its account
+   actions (Nastavení / Odhlásit se). */
+html[data-menu-open] .beta-floating-tools,
+html[data-menu-open] .beta-reward { display: none; }

@@ -1019,6 +1019,8 @@
   .l2-head { margin-bottom: 32px; }
   .l2-numbers { grid-template-columns: 1fr 1fr; gap: 8px 16px; margin-top: 80px; }
   .l2-number { padding: 20px 0 0; }
+  /* Two per row: a cell that starts a row gets no divider or indent. */
+  .l2-number:nth-child(odd) { padding-left: 0; border-left: 0; }
   .l2-number b { font-size: 48px; }
   .l2-inside,
   .l2-statement-wrap,
@@ -1032,6 +1034,10 @@
 
   .l2-mocks { grid-template-columns: 1fr; gap: 24px; }
   .l2-mock--detail { margin-top: 0; }
+  /* Stacked mocks: the desktop parallax (gsap yPercent) would slide the
+     detail card over the results card's disclaimer, so it is cancelled here. */
+  .l2-mock--detail,
+  .l2-mock--results { transform: none !important; }
   .l2-result-main { grid-template-columns: 24px 1fr 96px; gap: 10px; }
 
   .l2-roles,

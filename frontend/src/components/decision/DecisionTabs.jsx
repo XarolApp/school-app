@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+import './decisionTabs.css';
 
 /**
  * The 3-tab bar shared by /porovnani, /porovnani/matice and /prihlaska.
@@ -12,11 +13,11 @@ function DecisionTabs({ pickCount = 0 }) {
       <NavLink to="/porovnani" end className={({ isActive }) => `dp-tab${isActive ? ' is-active' : ''}`}>
         Porovnání
       </NavLink>
-      <NavLink to="/porovnani/matice" className={({ isActive }) => `dp-tab${isActive ? ' is-active' : ''}`}>
-        Rozhodovací matice
+      <NavLink to="/porovnani/matice" aria-label="Rozhodovací matice" className={({ isActive }) => `dp-tab${isActive ? ' is-active' : ''}`}>
+        <span className="dp-tab-long">Rozhodovací matice</span><span className="dp-tab-short">Matice</span>
       </NavLink>
-      <NavLink to="/prihlaska" className={({ isActive }) => `dp-tab${isActive ? ' is-active' : ''}`}>
-        Moje přihláška
+      <NavLink to="/prihlaska" aria-label={`Moje přihláška, ${pickCount} ze 3`} className={({ isActive }) => `dp-tab${isActive ? ' is-active' : ''}`}>
+        <span className="dp-tab-long">Moje přihláška</span><span className="dp-tab-short">Přihláška</span>
         <span className="dp-tab-badge">{pickCount}/3</span>
       </NavLink>
     </nav>

@@ -52,6 +52,13 @@ function Layout() {
   const { isSignedIn, isTester, emailConfirmed, signOut, trialDaysLeft, hasAccess, profile, user } = useAuth();
   const { openFeedback, beta } = useBetaTools();
   const [menuOpen, setMenuOpen] = useState(false);
+  // Lets floating UI outside the navbar (beta buttons, reward card) step aside
+  // while the phone menu sheet is open.
+  useEffect(() => {
+    if (menuOpen) document.documentElement.dataset.menuOpen = 'true';
+    else delete document.documentElement.dataset.menuOpen;
+    return () => { delete document.documentElement.dataset.menuOpen; };
+  }, [menuOpen]);
   const [accountOpen, setAccountOpen] = useState(false);
   const location = useLocation();
   const toggleRef = useRef(null);
@@ -137,23 +144,21 @@ function Layout() {
           </Link>
 
           <nav id="navbar-links" className={`navbar-links${menuOpen ? ' is-open' : ''}`} aria-label="Hlavní navigace">
-            <NavLink to="/skoly">
-              <Search size={16} aria-hidden="true" />
-              Školy
-            </NavLink>
-            {isSignedIn && (
-              <NavLink to="/dotaznik">
-                <ListChecks size={16} aria-hidden="true" />
-                Dotazník
-              </NavLink>
-            )}
-            <NavLink to="/porovnani">
-              <Columns3 size={16} aria-hidden="true" />
-              Porovnání
-              {compareBadge}
-            </NavLink>
             {isSignedIn && (
               <>
+                <NavLink to="/skoly">
+                  <Search size={16} aria-hidden="true" />
+                  Školy
+                </NavLink>
+                <NavLink to="/dotaznik">
+                  <ListChecks size={16} aria-hidden="true" />
+                  Dotazník
+                </NavLink>
+                <NavLink to="/porovnani">
+                  <Columns3 size={16} aria-hidden="true" />
+                  Porovnání
+                  {compareBadge}
+                </NavLink>
                 <NavLink to="/prihlaska">
                   <ClipboardList size={16} aria-hidden="true" />
                   Přihláška
