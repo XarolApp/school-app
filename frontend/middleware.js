@@ -50,7 +50,8 @@ function safeReturnTo(value) {
   if (typeof value !== 'string' || !value.startsWith('/') || value.startsWith('//')) return '/';
   try {
     const target = new URL(value, 'https://gate.invalid');
-    return target.origin === 'https://gate.invalid' ? `${target.pathname}${target.search}` : '/';
+    const path = `${target.pathname}${target.search}`;
+    return target.origin === 'https://gate.invalid' && !path.startsWith('//') ? path : '/';
   } catch {
     return '/';
   }

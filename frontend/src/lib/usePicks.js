@@ -15,14 +15,12 @@ export function usePicks() {
   useEffect(() => {
     let cancelled = false;
     fetchPicks()
-      .then((loaded) => {
-        if (!cancelled) setPicks(loaded);
+      .then((fresh) => {
+        if (!cancelled) { setPicks(fresh); setLoaded(true); }
       })
       .catch(() => {
-        // Signed out or expired — pick buttons remain available to explain the limit/login state.
-      })
-      .finally(() => {
-        if (!cancelled) setLoaded(true);
+        // Stays "not loaded": the buttons remain disabled, so a failed load can
+        // never be saved back as an empty list (the server replaces the whole set).
       });
     return () => {
       cancelled = true;
@@ -38,31 +36,25 @@ export function usePicks() {
       oborNazev: pick.obor_nazev,
     });
 
-    if (pickIds.has(school.id)) {
-      const nextPicks = picks.filter((pick) => pick.school.id !== school.id);
-      setSaving(true);
-      try {
-        await savePicks(nextPicks.map(serializePick));
-        setPicks(nextPicks);
-      } catch (err) {
-        toast(err.message || 'Nepodařilo se upravit přihlášku.', { type: 'error' });
-      } finally {
-        setSaving(false);
-      }
-      return;
-    }
-
-    if (pickIds.size >= 3) {
-      toast('Do přihlášky patří nejvýš 3 školy — nejdřív jednu odeber na záložce Moje přihláška.', { type: 'error' });
-      return;
-    }
-
     setSaving(true);
     try {
-      const nextPicks = [...picks, { school }];
+      // PUT replaces the whole set, so always edit the server's current list,
+      // not this tab's possibly stale copy (reordered or changed elsewhere).
+      const current = await fetchPicks();
+      setPicks(current);
+      const isPicked = current.some((pick) => pick.school.id === school.id);
+
+      if (!isPicked && current.length >= 3) {
+        toast('Do přihlášky patří nejvýš 3 školy — nejdřív jednu odeber na záložce Moje přihláška.', { type: 'error' });
+        return;
+      }
+
+      const nextPicks = isPicked
+        ? current.filter((pick) => pick.school.id !== school.id)
+        : [...current, { school }];
       await savePicks(nextPicks.map(serializePick));
       setPicks(nextPicks);
-      toast(`${school.name} přidána do přihlášky.`);
+      if (!isPicked) toast(`${school.name} přidána do přihlášky.`);
     } catch (err) {
       if (err.code === 'TOO_MANY_PICKS') {
         toast('Do přihlášky patří nejvýš 3 školy.', { type: 'error' });
@@ -74,7 +66,7 @@ export function usePicks() {
     } finally {
       setSaving(false);
     }
-  }, [g, loaded, pickIds, picks, saving, toast]);
+  }, [g, loaded, saving, toast]);
 
   return { pickIds, toggle, saving: saving || !loaded };
 }
