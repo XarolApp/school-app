@@ -1,6 +1,8 @@
 # 009 — Stripe payments (both plans, real money)
 
-> **SUPERSEDED ARCHITECTURE — historical plan from 2026-09-13.** Do not follow its subscription/season-Price setup or blanket webhook-200 guidance. Current source uses a monthly subscription at 249 Kč with no plan trial; season uses Checkout **setup** and one scheduled 690 Kč PaymentIntent after 3 days, with no season Price. Prices are approved constants, not placeholders. Tests cover mocked boundaries; real-money readiness is unproven. Live activation requires the payment lifecycle fixes, confirmations, reminder, operator/provider verification and test-mode acceptance described in `reports/deployment-review-2026-10-07/backend-findings.md` and `legal-docs-findings.md`. Exchanging keys alone is insufficient. This banner overrides historical instructions below; retain them only to explain the original design.
+> **SUPERSEDED ARCHITECTURE — historical plan from 2026-09-13; reconciled 10 October.** Do not execute the old setup/migration instructions or follow its subscription/season-Price, blanket webhook-200, checkout-checkbox or legal/eligibility assertions. Current source uses a monthly subscription at 249 Kč with no plan trial; season uses Checkout **setup** and one scheduled 690 Kč PaymentIntent after 3 days, with no season Price. Prices are approved constants, not placeholders. Beta is free for feedback; payment screens are a preview and must never enter Stripe. The ordinary-account access trial is separate and must start at first confirmed sign-in; that change is pending.
+>
+> Tests cover mocked boundaries; real-money readiness is unproven. Live activation requires the payment lifecycle fixes, durable confirmations, day-2 reminder, refunds, operator/provider verification and test-mode acceptance in the [current review](../reports/deployment-review-2026-10-07/REPORT.md) and [handoff](../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md). Exchanging keys alone is insufficient. This banner overrides the historical implementation and checklist below; retain them only to explain the original design.
 
 **Created:** 2026-09-13 via `/plan-then-build` (Opus planning → Sonnet implementation)
 **Base commit:** `d436994`
@@ -19,9 +21,9 @@ are binding on the implementation:
    → **Everything in this plan is built and tested against Stripe TEST MODE**,
    which requires no verification, no entity and no age check. Going live is
    gated on a parent/guardian (or an s.r.o. with an adult jednatel) owning the
-   account. **No code change is needed to go live later** — only swapping the
-   env vars from `sk_test_…` to `sk_live_…`. Do not build anything that assumes
-   live keys exist.
+   account. **The original key-swap-only assumption was incorrect:** current
+   live-billing gates include code, provider, operational and legal acceptance.
+   Follow the current handoff above. Do not assume live keys exist.
 2. **Season pass keeps its 3-day trial exactly as designed.** The founder
    explicitly rejected changing the paywall structure. See §1 for how this is
    achieved without a scheduled job.

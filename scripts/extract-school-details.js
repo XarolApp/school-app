@@ -24,8 +24,9 @@
  *
  * Uses either Google Gemini (GOOGLE_GEMINI_API_KEYS) or OpenRouter
  * (OPENROUTER_API_KEY). Google Gemini takes precedence whenever its key list is nonempty.
- * Supports multiple comma-separated Google API keys for round-robin load balancing
- * across accounts (avoids 3 RPM per-key rate limit).
+ * Supports multiple comma-separated Google API keys and rotates requests.
+ * Gemini quotas apply per project, not per key; rotation within a project does
+ * not increase its quota. Verify current model/project limits in Google AI Studio.
  */
 
 require('dotenv').config();

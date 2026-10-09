@@ -1,5 +1,6 @@
 .env
-.env.local
+.env.*
+!.env.example
 .env-rewrite
 node_modules/
 dist/

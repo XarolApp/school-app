@@ -727,18 +727,18 @@
     "method": "Full current source read in bounded complete ranges, plus full reviewed own patch where applicable. Browser/test evidence recorded separately; reading is not defect-free or live/legal/device approval."
   },
   "frontend/src/App.css": {
-    "sha256": "f6a1e61e2087b18f918a192e17a85b6ec70f6bd3a3f794d0c31cfb0b9af51da2",
-    "lines": 585,
+    "sha256": "ca74e4320571f75a1a335abcd5d0e7d624c7b76cd654d3b57bd415f1fc9a6e83",
+    "lines": 624,
     "read_ranges": [
       [
         1,
-        585
+        624
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:51:37.842423+00:00",
-    "method": "Full source read; earlier full read plus complete current diff review where applicable. Read coverage does not imply defect-free or full runtime verification."
+    "checked_at_utc": "2026-10-09T23:50:27.812945+00:00",
+    "method": "Complete current source read in bounded ranges, including rereading truncated gaps. tokens.css/App.css/auth.css full reads immediately before compaction and hashes bound after resumption. No edits; reading does not establish rendered contrast, browser/device/print or accessibility acceptance."
   },
   "frontend/src/styles/ui.css": {
     "sha256": "1ecf78bb01c2a3b2e61279dd1c5dfe8ac9ca96339ab1676c33464ea6e9b6aefe",
@@ -755,33 +755,32 @@
     "method": "Full current source read in complete bounded ranges plus own reviewed patch; pricing/ObKit prior current hash-qualified complete reads plus own string-only patches. Browser/test acceptance recorded separately, not inferred from read."
   },
   "frontend/src/design/tokens.css": {
-    "sha256": "609b07da8dee34a1f47d8be2e819b973fc6c291cbc477327b5b43496126b0eb9",
-    "lines": 573,
+    "sha256": "4769f04b6e387334b68556792881ec17a3076147f3604221f7ad7aa23733c799",
+    "lines": 576,
     "read_ranges": [
       [
         1,
-        573
+        576
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:51:37.842969+00:00",
-    "method": "Full source read; earlier full read plus complete current diff review where applicable. Read coverage does not imply defect-free or full runtime verification."
+    "checked_at_utc": "2026-10-09T23:50:27.812327+00:00",
+    "method": "Complete current source read in bounded ranges, including rereading truncated gaps. tokens.css/App.css/auth.css full reads immediately before compaction and hashes bound after resumption. No edits; reading does not establish rendered contrast, browser/device/print or accessibility acceptance."
   },
   "frontend/src/auth.css": {
-    "sha256": "a6d115386e20d2dab31dadd59d9403cf0a1d1c106c354486fff20be0f05f1367",
-    "lines": 747,
+    "sha256": "bfbd4ed6598ce9476a40d88e5c8fc89b3201e5d898a4d7ffdc1ea12817f411c9",
+    "lines": 772,
     "read_ranges": [
       [
         1,
-        747
+        772
       ]
     ],
-    "status": "deferred_peer_edits",
+    "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:51:37.843300+00:00",
-    "method": "Full source read; earlier full read plus complete current diff review where applicable. Read coverage does not imply defect-free or full runtime verification.",
-    "deferred_note": "Shared-checkout source changed during continuation; saved read hash/ranges are historical, pending current-source re-review."
+    "checked_at_utc": "2026-10-09T23:50:27.813308+00:00",
+    "method": "Complete current source read in bounded ranges, including rereading truncated gaps. tokens.css/App.css/auth.css full reads immediately before compaction and hashes bound after resumption. No edits; reading does not establish rendered contrast, browser/device/print or accessibility acceptance."
   },
   "frontend/src/pages/Admin.css": {
     "sha256": "f4171ac17051be8a8ab7ab3d95df7459db6b9f93477ce79a45eed656266c2a58",
@@ -812,19 +811,18 @@
     "method": "Full source read; earlier full read plus complete current diff review where applicable. Read coverage does not imply defect-free or full runtime verification."
   },
   "frontend/src/pages/beta.css": {
-    "sha256": "087d96d0a29d81f550101a1b6b2033366fe08e43678e9adb4f666896cd579a60",
-    "lines": 218,
+    "sha256": "16295f88afca14e6e5361a274564e129f48a43ddd1b125ad0f6ff132d3c02bef",
+    "lines": 345,
     "read_ranges": [
       [
         1,
-        218
+        345
       ]
     ],
-    "status": "deferred_peer_edits",
+    "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:51:37.844120+00:00",
-    "method": "Full source read; earlier full read plus complete current diff review where applicable. Read coverage does not imply defect-free or full runtime verification.",
-    "deferred_note": "Shared-checkout source changed during continuation; saved read hash/ranges are historical, pending current-source re-review."
+    "checked_at_utc": "2026-10-09T23:50:27.813569+00:00",
+    "method": "Complete current source read in bounded ranges, including rereading truncated gaps. tokens.css/App.css/auth.css full reads immediately before compaction and hashes bound after resumption. No edits; reading does not establish rendered contrast, browser/device/print or accessibility acceptance."
   },
   "frontend/public/favicon.svg": {
     "sha256": "c8c5f3efe80d3a5008955b24de19bc1ffb3fb3a1fbc7ab8f2ce6c37e13e2565a",
@@ -911,32 +909,32 @@
     "method": "Full source read; current diff reviewed for root changes. Read coverage does not imply runtime verification."
   },
   "frontend/src/pages/questionnaire.css": {
-    "sha256": "0ec88de2bd8990ae91afa328e816da070edfbe0be0305119828194b3f598b347",
-    "lines": 494,
+    "sha256": "3de0404ddcf35c67a2c132fab2f1a65138e8df2d0819820339038e50337e8f8b",
+    "lines": 531,
     "read_ranges": [
       [
         1,
-        494
+        531
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:56:39.509804+00:00",
-    "method": "Full source read; current diff reviewed for root changes. Read coverage does not imply runtime verification."
+    "checked_at_utc": "2026-10-09T23:50:27.814267+00:00",
+    "method": "Complete current source read in bounded ranges, including rereading truncated gaps. tokens.css/App.css/auth.css full reads immediately before compaction and hashes bound after resumption. No edits; reading does not establish rendered contrast, browser/device/print or accessibility acceptance."
   },
   "frontend/src/pages/landing.css": {
-    "sha256": "39ee974a16a547f1b90153c270d74dddfd1aa345dfa17f425601887c616196f6",
-    "lines": 655,
+    "sha256": "b08d5b9fa7e1979ee3f6d68eab148dde25186488575516eee7126c582a90d5a7",
+    "lines": 669,
     "read_ranges": [
       [
         1,
-        655
+        669
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:56:39.510087+00:00",
-    "method": "Full source read; current diff reviewed for root changes. Read coverage does not imply runtime verification."
+    "checked_at_utc": "2026-10-09T23:51:33.837676+00:00",
+    "method": "Full stable current CSS source read in complete bounded ranges; no source changes. Related InfoHint/Hint/district override reads checked connected behavior. Not browser/device/print/contrast acceptance."
   },
   "frontend/src/pages/landing2/landing2.css": {
     "sha256": "5f0169d7713340f3a7aef013535d59268df264f06057a2c437b05c2bbb83cc9b",
@@ -953,32 +951,32 @@
     "method": "Full current source read in complete bounded ranges plus own reviewed patch; pricing/ObKit prior current hash-qualified complete reads plus own string-only patches. Browser/test acceptance recorded separately, not inferred from read."
   },
   "frontend/src/pages/decision.css": {
-    "sha256": "54057d108cb94b863288f861abf0c1b8d0d2bc9f6d0562255b131f0c66ed0b39",
-    "lines": 1598,
+    "sha256": "5158a09a8383fde99e907f6a7bc5972100dddedc9d09f21ae466694efa89f724",
+    "lines": 1642,
     "read_ranges": [
       [
         1,
-        1598
+        1642
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:56:39.510888+00:00",
-    "method": "Full source read; current diff reviewed for root changes. Read coverage does not imply runtime verification."
+    "checked_at_utc": "2026-10-09T23:50:27.814021+00:00",
+    "method": "Complete current source read in bounded ranges, including rereading truncated gaps. tokens.css/App.css/auth.css full reads immediately before compaction and hashes bound after resumption. No edits; reading does not establish rendered contrast, browser/device/print or accessibility acceptance."
   },
   "frontend/src/pages/schoolDetail.css": {
-    "sha256": "8cef75191a071b8a48a55abe35f623ad4e6d20806449d8a81814eada78c79b16",
-    "lines": 1141,
+    "sha256": "72b4854ec84ad1934e45fba5a1e3e1863c9bcbc2b53116d2430ef4cf40cc8615",
+    "lines": 1174,
     "read_ranges": [
       [
         1,
-        1141
+        1174
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:56:39.511299+00:00",
-    "method": "Full source read; current diff reviewed for root changes. Read coverage does not imply runtime verification."
+    "checked_at_utc": "2026-10-09T23:55:00.163022+00:00",
+    "method": "Full stable current source/document read plus complete reviewed own diff. server.js/extractor original hashes matched previous complete current root reads; only comment patches. Source/settings/runtime, real billing, SQL/device/print/contrast acceptance not inferred."
   },
   "frontend/src/pages/search.css": {
     "sha256": "133cfa5bb9a257820136d2b0bb6071725bb530f44d5174b4a650ff954d8f0548",
@@ -995,18 +993,18 @@
     "method": "Full current source read in bounded complete ranges, plus full reviewed own patch where applicable. Browser/test evidence recorded separately; reading is not defect-free or live/legal/device approval."
   },
   "frontend/src/pages/onboarding/onboarding.css": {
-    "sha256": "932ca5cad10dc6861d20557ae25439ceca8194067a1df30069343488bb6b4eab",
-    "lines": 2981,
+    "sha256": "284a477fd797c46fe2f90b483e48caea709eda8cac43cd0c8efc57f45132431e",
+    "lines": 3019,
     "read_ranges": [
       [
         1,
-        2981
+        3019
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:17:25.703882+00:00",
-    "method": "Full source read; previous full stylesheet/source read plus complete current diff review where applicable. Read coverage does not imply defect-free or complete runtime verification."
+    "checked_at_utc": "2026-10-09T23:51:33.838500+00:00",
+    "method": "Full stable current CSS source read in complete bounded ranges; no source changes. Related InfoHint/Hint/district override reads checked connected behavior. Not browser/device/print/contrast acceptance."
   },
   "frontend/src/components/onboarding/DistrictMap.jsx": {
     "sha256": "26980ffc84bd8aff3ce6c78e5f8369c333940fc679ed6c061aeb08ba39bed058",
@@ -1541,18 +1539,18 @@
     "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
   },
   "scripts/extract-school-details.js": {
-    "sha256": "fbd77ebbfeb99c3f78e791349bba9a674206d51ffdc24d74e797fbc5be20f107",
-    "lines": 1499,
+    "sha256": "252ac800dd9abc8dba558a98ad13709b5c6d63d56a0f9e546c5ffeaedf611956",
+    "lines": 1500,
     "read_ranges": [
       [
         1,
-        1499
+        1500
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:52:21.686128+00:00",
-    "method": "Full source read plus complete current authored diff review. Docs reconciled to source/read-only production evidence; read does not imply acceptance."
+    "checked_at_utc": "2026-10-09T23:55:00.162646+00:00",
+    "method": "Full stable current source/document read plus complete reviewed own diff. server.js/extractor original hashes matched previous complete current root reads; only comment patches. Source/settings/runtime, real billing, SQL/device/print/contrast acceptance not inferred."
   },
   "scripts/build-district-map.js": {
     "sha256": "84762836f3b81891e79fcb8721c1b183c40b126b5443f507b49a2effa8a8e54b",
@@ -1611,18 +1609,18 @@
     "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
   },
   "DEPLOY.md": {
-    "sha256": "ff7315caf848619f7600a34132ce8882400a4effa42fe29ccaf56ef77a6eb64b",
-    "lines": 130,
+    "sha256": "2788b15e95ae4ed3b452d22b62bf96872000328094b4d87c689b1c139e13baf2",
+    "lines": 144,
     "read_ranges": [
       [
         1,
-        130
+        144
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:52:21.685139+00:00",
-    "method": "Full source read plus complete current authored diff review. Docs reconciled to source/read-only production evidence; read does not imply acceptance."
+    "checked_at_utc": "2026-10-09T23:55:00.161770+00:00",
+    "method": "Full stable current source/document read plus complete reviewed own diff. server.js/extractor original hashes matched previous complete current root reads; only comment patches. Source/settings/runtime, real billing, SQL/device/print/contrast acceptance not inferred."
   },
   "README.md": {
     "sha256": "0c0257d9cd8c592d85bc8c4167b4048f8f621eac47aba69397dc87c375c640eb",
@@ -2748,17 +2746,18 @@
     "method": "Entire authored read-only probe inspected; run emits aggregate school coverage only, checks complete response and row cardinality; no data writes or model calls."
   },
   "server.js": {
-    "sha256": "77c04d00f1f700a876354bb8e59777333c823a49b84845b3b39c6412ddf4fd8a",
-    "lines": 3545,
+    "sha256": "6bf50e0f3aa2a5abbfe9da51fbe23d9f054e79a8df64bfefe4c5b66dc59d41b0",
+    "lines": 3546,
     "read_ranges": [
       [
         1,
-        3545
+        3546
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "method": "Full stable current read in bounded ranges, or exact verified full-read baseline plus complete current diff and own reviewed patch. Truncated confirmation/instructions ranges reread; UNFORGET peer additions fully reread after 3bc498c. Source read is not legal/service/runtime approval."
+    "checked_at_utc": "2026-10-09T23:55:00.162156+00:00",
+    "method": "Full stable current source/document read plus complete reviewed own diff. server.js/extractor original hashes matched previous complete current root reads; only comment patches. Source/settings/runtime, real billing, SQL/device/print/contrast acceptance not inferred."
   },
   "frontend/vite.config.js": {
     "sha256": "fab6a73a2c8e936ab2699c7f3799e8769bc160e2c3990f9729dc9c646318f841",
@@ -3495,5 +3494,47 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-09T23:44:49.959354+00:00",
     "method": "Full current source read in complete bounded ranges plus own reviewed patch; pricing/ObKit prior current hash-qualified complete reads plus own string-only patches. Browser/test acceptance recorded separately, not inferred from read."
+  },
+  ".env.example": {
+    "sha256": "2b0b9de05a15aea20b4ac05e74da5da59e55e3f837535736cd3a4e07cfbcbd7a",
+    "lines": 89,
+    "read_ranges": [
+      [
+        1,
+        89
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T23:55:00.160654+00:00",
+    "method": "Full stable current source/document read plus complete reviewed own diff. server.js/extractor original hashes matched previous complete current root reads; only comment patches. Source/settings/runtime, real billing, SQL/device/print/contrast acceptance not inferred."
+  },
+  ".gitignore": {
+    "sha256": "6d1c463c0228cfd5e0ff4f6198ac20b0e331d119b2c4dccbd72dad27be1fe00e",
+    "lines": 21,
+    "read_ranges": [
+      [
+        1,
+        21
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T23:55:00.161464+00:00",
+    "method": "Full stable current source/document read plus complete reviewed own diff. server.js/extractor original hashes matched previous complete current root reads; only comment patches. Source/settings/runtime, real billing, SQL/device/print/contrast acceptance not inferred."
+  },
+  "plans/009-stripe-payments.md": {
+    "sha256": "a3ea2bc2ec90567c23b1ff2877667639055a9363ee2795b5332fc77c87395ee6",
+    "lines": 542,
+    "read_ranges": [
+      [
+        1,
+        542
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T23:55:00.161856+00:00",
+    "method": "Full stable current source/document read plus complete reviewed own diff. server.js/extractor original hashes matched previous complete current root reads; only comment patches. Source/settings/runtime, real billing, SQL/device/print/contrast acceptance not inferred."
   }
 }

@@ -1,0 +1,42 @@
+{
+  "checks": [
+    {
+      "path": ".env",
+      "ignored": true
+    },
+    {
+      "path": ".env.local",
+      "ignored": true
+    },
+    {
+      "path": ".env.production",
+      "ignored": true
+    },
+    {
+      "path": "frontend/.env.production.local",
+      "ignored": true
+    },
+    {
+      "path": "seedance-demo/.env.local",
+      "ignored": true
+    },
+    {
+      "path": ".env-rewrite",
+      "ignored": true
+    },
+    {
+      "path": ".env.example",
+      "ignored": false
+    },
+    {
+      "path": "frontend/.env.example",
+      "ignored": false
+    },
+    {
+      "path": "seedance-demo/.env.example",
+      "ignored": false
+    }
+  ],
+  "schoolDetailCssDeclarationsUnchanged": true,
+  "scope": "Synthetic path matching and source-only checks. No environment files or hosted settings created/changed; no extractor/model call."
+}

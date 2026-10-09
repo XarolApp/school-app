@@ -2907,9 +2907,10 @@ app.patch('/api/questionnaire/runs/:id/archive', requireAuth, async (req, res) =
  * already grants access purely from trial_expires_at (the DB-trigger trial),
  * independent of subscription_status — see that function above.
  *
- * Built and tested against Stripe TEST MODE. Going live needs an adult-owned
- * Stripe account (the founder is under 18) — no code change, only swapping
- * env vars from sk_test_ to sk_live_. See plan 009 §11.
+ * Mocked boundary tests and local TEST MODE configuration are recorded; they
+ * do not approve live billing. Close the payment lifecycle, reminder, refund,
+ * operator/provider and test-mode acceptance gates in UNFORGET.md and the
+ * current deployment handoff before enabling real charges. Beta never bills.
  * ------------------------------------------------------------------------- */
 
 // Locked 2026-09-21. Must mirror SEASON_PRICE_CZK in frontend/src/config/pricing.js.
@@ -2917,8 +2918,8 @@ app.patch('/api/questionnaire/runs/:id/archive', requireAuth, async (req, res) =
 // a Stripe Price; season no longer has one). Change both together.
 const SEASON_PRICE_CZK = 690;
 
-// Must mirror TRIAL_DAYS in frontend/src/config/pricing.js and the DB
-// trigger's trial window — same duplication the old trial_period_days had.
+// Must mirror the seasonal purchase TRIAL_DAYS in frontend/src/config/pricing.js.
+// The ordinary-account access trial is separate (first-confirmed-sign-in change pending).
 const SEASON_TRIAL_DAYS = 3;
 
 const PLAN_PRICE_ENV = {

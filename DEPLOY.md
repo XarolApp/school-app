@@ -35,8 +35,9 @@ and [handoff gates](reports/deployment-review-2026-10-07/HANDOFF-PLAN.md).
    `node server.js` as the start command — no manual build config needed.
    **Root directory: leave as the repo root** (not `frontend/`) — `server.js`
    lives at the top level.
-3. Go to the service's **Variables** tab and add every var from
-   [`.env.example`](.env.example) with real values, **except**:
+3. Go to the service's **Variables** tab and configure the server variables from
+   [`.env.example`](.env.example). Scrape/extraction-only keys and tuning variables
+   belong in the local pipeline environment, not this service. In particular:
    - `PORT` — leave unset, Railway injects its own.
    - `TRUST_PROXY` — configure only after verifying Railway's actual trusted
      proxy/header topology. The earlier blanket `true` instruction is not a
@@ -120,8 +121,10 @@ schema on production or use production accounts for destructive acceptance tests
   considering CSP enforcement. Verify Turnstile, maps, Auth and screenshots still
   work. The API host is independently reachable outside the frontend gate.
 - Use designated synthetic testers to exercise invitation → role/data-use
-  acknowledgement → signup → email confirmation → first sign-in → onboarding →
-  search/detail → comparison/matrix → feedback/renewal → expiry. Test delayed
+  acknowledgement → signup → email confirmation → first sign-in → questionnaire →
+  search/detail → comparison/matrix → main feedback/renewal → expiry. Separately
+  exercise onboarding and its optional payment preview. Quick ratings must leave
+  the access timer unchanged. Test delayed
   confirmation, recovery, account switching and account management. Do not submit
   real pupil data merely to run a smoke test.
 - Beta is **free for feedback**, with payment screens as a preview. Verify no beta

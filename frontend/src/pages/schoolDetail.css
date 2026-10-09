@@ -1,6 +1,6 @@
 /* schoolDetail.css — styles for the /skoly/:id page, scoped under
- * .school-detail. Every value is a var(--token) from tokens.css — never a
- * hardcoded colour or radius (CLAUDE.md rule). One component maps to one
+ * .school-detail. Shared colours and dimensions use tokens.css alongside
+ * component-specific layout values. One component maps to one
  * block below (marked by section comments) so a future design tweak means
  * editing one component + one block here, not a rewrite.
  */
@@ -163,8 +163,8 @@
   align-items: flex-start;
   gap: 4px;
 }
-/* Hover-to-reveal info hint (InfoHint.jsx) — CSS-only tooltip, no click
-   state. Used both on the hero fact tiles and on each obor's own stats. */
+/* InfoHint.jsx wraps the shared tap/keyboard Hint; .is-open persists the
+   explanation, while hover previews it. Used on hero and obor stats. */
 .sd-info-hint {
   position: relative;
   display: inline-flex;
@@ -429,7 +429,7 @@
   padding-top: var(--space-md);
 }
 
-/* ---------- HistoryChart: the only place older years appear ---------- */
+/* ---------- HistoryChart: per-year admission trends ---------- */
 .sd-hc {
   display: flex;
   flex-direction: column;
