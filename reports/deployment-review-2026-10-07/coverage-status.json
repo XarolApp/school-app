@@ -1,10 +1,10 @@
 {
-  "checked_at_utc": "2026-10-09T21:56:05.050216+00:00",
-  "commit": "8108167769a7e544851937738a019a16a8888840",
+  "checked_at_utc": "2026-10-09T21:59:25.564247+00:00",
+  "commit": "df6b680e934f8e7f0ce811f8af287c86e25c3bd7",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "pending_or_changed": 545,
-    "current_full_read": 226,
+    "pending_or_changed": 538,
+    "current_full_read": 234,
     "binary_requires_asset_check": 56,
     "generated_or_audit_artifact": 43,
     "removed_or_missing": 2
@@ -2771,8 +2771,10 @@
       "path": "frontend/src/components/BetaFeedbackSheet.jsx",
       "sha256": "38ab5384af68e848154113a336fa7db9804b16764bd959d2e930f60998ea1086",
       "lines": 191,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/components/BetaInstructions.jsx",
@@ -2816,8 +2818,10 @@
       "path": "frontend/src/components/BetaTools.jsx",
       "sha256": "e99028078b5e497d4e66b81c392af4b02e8df94b2c30dc59548181544da361df",
       "lines": 127,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/components/BetaToolsContext.jsx",
@@ -3013,8 +3017,10 @@
       "path": "frontend/src/components/decision/DecisionTabs.jsx",
       "sha256": "e12cf05e6d9263e07acabc115ee08efee1137970ce193957465e0a66a535ef3b",
       "lines": 27,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/components/decision/NoteEditor.jsx",
@@ -3029,8 +3035,10 @@
       "path": "frontend/src/components/decision/PickCard.jsx",
       "sha256": "d9de7e71ba048f09731f5629fe225b0c236bbbd169472bf6d2be83dc746fc568",
       "lines": 124,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/components/decision/PointsInput.jsx",
@@ -3254,8 +3262,10 @@
       "path": "frontend/src/components/schoolDetail/SchoolActions.jsx",
       "sha256": "58e43d65f9dbc316d476d4da19756c3dc993fd6526e0d8b201beda76cfbd32f6",
       "lines": 272,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/components/schoolDetail/SchoolHero.jsx",
@@ -3299,7 +3309,8 @@
       "lines": 73,
       "status": "current_full_read",
       "matching_evidence": [
-        "frontend-coverage.json"
+        "frontend-coverage.json",
+        "root-coverage.json"
       ]
     },
     {
@@ -3579,7 +3590,8 @@
       "lines": 21,
       "status": "current_full_read",
       "matching_evidence": [
-        "frontend-coverage.json"
+        "frontend-coverage.json",
+        "root-coverage.json"
       ]
     },
     {
@@ -3867,8 +3879,10 @@
       "path": "frontend/src/pages/SchoolDetail.jsx",
       "sha256": "7df5c45db14154e7f176d61d8c13090e0d70deb92dbd5b12c17e090c2a5f9394",
       "lines": 251,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/pages/SdileniView.jsx",
@@ -4056,8 +4070,10 @@
       "path": "frontend/src/pages/onboarding/screens/QuizQuestion.jsx",
       "sha256": "d5aca155805b9b2d0200cef8af78aa7b9659c580f247a688f0569c9f8974e0b2",
       "lines": 357,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/pages/onboarding/screens/Reveal.jsx",
@@ -5483,15 +5499,15 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "1b5b142fdf0ac8bc908e3c3ff14a86c3892328b18ab0c69ec7fa1d919ebaf413",
-      "lines": 194,
+      "sha256": "f774ab92317b21e828d05d8fc23c29dae719d6691c21b8dc5e46f50b76abdc47",
+      "lines": 196,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "656f129bf5be72a0b01f0294615afb925b1a4faeeecb5f099c340fb18de35253",
-      "lines": 114,
+      "sha256": "9951c8f68d3cd98e4fe6aac48f4dc8da4fc5ae79ce0d32cc9ec99d45bcd56db2",
+      "lines": 116,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -5499,8 +5515,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "0a05264893afef1e100ea446a75e18a50525ed36776dab727b4c0139fc02dc66",
-      "lines": 96,
+      "sha256": "f635c796bb440d5621f728451d9add3eeaf2e79f3a264ef33498d9e6f83d7cf8",
+      "lines": 98,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -5620,8 +5636,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "43be52fd55e8d5ae08e1ab27b9df666d50ba3ab7c368d6b9bc631ed894ad9788",
-      "lines": 186,
+      "sha256": "dd04ef75f3321e1d84e04e21968e66dbae6f8d077ee4d9c984666ea0fd17e05e",
+      "lines": 194,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -5629,8 +5645,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "b0a4ddce568ab424c5ff105dd3a4a9a18f629204a9bd23a912bb98f4c1255db0",
-      "lines": 6520,
+      "sha256": "d95a42f2b60ac04c0d0890862793c49c689efcf98e57b100217333c340a337ca",
+      "lines": 6595,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -5936,9 +5952,18 @@
       "matching_evidence": []
     },
     {
+      "path": "reports/deployment-review-2026-10-07/reproduce-school-explanation-state.cjs",
+      "sha256": "92643c21abef3e1d222221a344750bb8c0c3cb198bdf422f0d1a9ed7bf47a9fd",
+      "lines": 41,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "e94696ef62625dc7ff7c80f3010b480647c74576488372cdd26120dffe7cf632",
-      "lines": 3041,
+      "sha256": "ba5b87ff6b55aa892bc83021fd76ae38a732f9fb1f14e3b8f214f10fedac9f4f",
+      "lines": 3111,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },

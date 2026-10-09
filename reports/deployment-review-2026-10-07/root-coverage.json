@@ -291,32 +291,32 @@
     "checked_at_utc": "2026-10-07T18:23:06.564623+00:00"
   },
   "frontend/src/components/BetaFeedbackSheet.jsx": {
-    "sha256": "c6fdf444e69bd0bf5ed8cf228ded4d27cfb4a4820f34fc212e6b1a76828a8b9f",
-    "lines": 158,
+    "sha256": "38ab5384af68e848154113a336fa7db9804b16764bd959d2e930f60998ea1086",
+    "lines": 191,
     "read_ranges": [
       [
         1,
-        158
+        191
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T22:10:05.663082+00:00",
-    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
+    "checked_at_utc": "2026-10-09T21:59:05.062191+00:00",
+    "method": "Full current source read without truncation; SchoolActions in 1-145/146-end; QuizQuestion full read plus own df6b680 diff (omitted from preceding ledger update, now recorded). Reproduction uses the actual callback and synthetic state, not full React/browser or live-service acceptance."
   },
   "frontend/src/components/BetaTools.jsx": {
-    "sha256": "902ec6c63e8f8fb6e23f72159b9ebbbb0fb1792176c3d2ba87314df4ef9b1cf5",
-    "lines": 118,
+    "sha256": "e99028078b5e497d4e66b81c392af4b02e8df94b2c30dc59548181544da361df",
+    "lines": 127,
     "read_ranges": [
       [
         1,
-        118
+        127
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T22:10:05.661945+00:00",
-    "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
+    "checked_at_utc": "2026-10-09T21:59:05.062191+00:00",
+    "method": "Full current source read without truncation; SchoolActions in 1-145/146-end; QuizQuestion full read plus own df6b680 diff (omitted from preceding ledger update, now recorded). Reproduction uses the actual callback and synthetic state, not full React/browser or live-service acceptance."
   },
   "plans/README.md": {
     "sha256": "b92c5c1689c530a44dbcd5ffd1d9d30072f8d6c84dd72bd7cfeb16d90d1be7a0",
@@ -1371,31 +1371,31 @@
     "method": "Full source read across recorded continuation turns, including missing middleware/brainstorm ranges and complete authored diffs. Read means inspected, not defect-free or runtime-approved."
   },
   "reports/deployment-review-2026-10-07/REPORT.md": {
-    "sha256": "0a05264893afef1e100ea446a75e18a50525ed36776dab727b4c0139fc02dc66",
-    "lines": 96,
+    "sha256": "f635c796bb440d5621f728451d9add3eeaf2e79f3a264ef33498d9e6f83d7cf8",
+    "lines": 98,
     "read_ranges": [
       [
         1,
-        96
+        98
       ]
     ],
     "status": "complete_after_concurrent_change",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T21:56:04.686116+00:00",
+    "checked_at_utc": "2026-10-09T21:59:05.062191+00:00",
     "method": "Previous complete root read plus all own subsequent additions/corrections inspected; earlier truncated current report/plan tails reread in bounded ranges. Deployment review remains incomplete."
   },
   "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md": {
-    "sha256": "656f129bf5be72a0b01f0294615afb925b1a4faeeecb5f099c340fb18de35253",
-    "lines": 114,
+    "sha256": "9951c8f68d3cd98e4fe6aac48f4dc8da4fc5ae79ce0d32cc9ec99d45bcd56db2",
+    "lines": 116,
     "read_ranges": [
       [
         1,
-        114
+        116
       ]
     ],
     "status": "complete_after_concurrent_change",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T21:56:04.686116+00:00",
+    "checked_at_utc": "2026-10-09T21:59:05.062191+00:00",
     "method": "Previous complete root read plus all own subsequent additions/corrections inspected; earlier truncated current report/plan tails reread in bounded ranges. Deployment review remains incomplete."
   },
   "reports/deployment-review-2026-10-07/script-findings.md": {
@@ -2351,18 +2351,18 @@
     "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
   },
   "frontend/src/components/decision/PickCard.jsx": {
-    "sha256": "f04e85cf865a4573edaea83ff82064a2d67707be98de1d9c44203d0d813dde57",
-    "lines": 123,
+    "sha256": "d9de7e71ba048f09731f5629fe225b0c236bbbd169472bf6d2be83dc746fc568",
+    "lines": 124,
     "read_ranges": [
       [
         1,
-        123
+        124
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T21:13:42.172292+00:00",
-    "method": "Full current source read in bounded ranges on 9 October; unchanged against 8f519d9 when recording. Read coverage is not runtime approval."
+    "checked_at_utc": "2026-10-09T21:59:05.062191+00:00",
+    "method": "Full current source read without truncation; SchoolActions in 1-145/146-end; QuizQuestion full read plus own df6b680 diff (omitted from preceding ledger update, now recorded). Reproduction uses the actual callback and synthetic state, not full React/browser or live-service acceptance."
   },
   "frontend/src/lib/theme.js": {
     "sha256": "15299fe21bf498274bdbe6a2974e2559ae1001a70d765a1d07b416bf3932865d",
@@ -2407,32 +2407,32 @@
     "method": "Full current source read in bounded ranges on 9 October; unchanged against 8f519d9 when recording. Read coverage is not runtime approval."
   },
   "frontend/src/pages/SchoolDetail.jsx": {
-    "sha256": "1bfd84ca5fffa97009e918924468203b20f3e77dcd0d8f64d5fa4933df8aebb5",
-    "lines": 249,
+    "sha256": "7df5c45db14154e7f176d61d8c13090e0d70deb92dbd5b12c17e090c2a5f9394",
+    "lines": 251,
     "read_ranges": [
       [
         1,
-        249
+        251
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T21:13:42.172292+00:00",
-    "method": "Full current source read in bounded ranges on 9 October; unchanged against 8f519d9 when recording. Read coverage is not runtime approval."
+    "checked_at_utc": "2026-10-09T21:59:05.062191+00:00",
+    "method": "Full current source read without truncation; SchoolActions in 1-145/146-end; QuizQuestion full read plus own df6b680 diff (omitted from preceding ledger update, now recorded). Reproduction uses the actual callback and synthetic state, not full React/browser or live-service acceptance."
   },
   "frontend/src/components/schoolDetail/SchoolActions.jsx": {
-    "sha256": "353bd6607612fec2472031b37db8e04ae5f466b1de195fcdb3e4228a0175b53b",
-    "lines": 262,
+    "sha256": "58e43d65f9dbc316d476d4da19756c3dc993fd6526e0d8b201beda76cfbd32f6",
+    "lines": 272,
     "read_ranges": [
       [
         1,
-        262
+        272
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T21:13:42.172292+00:00",
-    "method": "Full current source read in bounded ranges on 9 October; unchanged against 8f519d9 when recording. Read coverage is not runtime approval."
+    "checked_at_utc": "2026-10-09T21:59:05.062191+00:00",
+    "method": "Full current source read without truncation; SchoolActions in 1-145/146-end; QuizQuestion full read plus own df6b680 diff (omitted from preceding ledger update, now recorded). Reproduction uses the actual callback and synthetic state, not full React/browser or live-service acceptance."
   },
   "frontend/src/pages/SharedResults.jsx": {
     "sha256": "37ac74dcdbee92b2aa57cd5079487249f20aef3e2a7109cd110e64e987e51b38",
@@ -3025,17 +3025,87 @@
     "method": "Full current source read in complete bounded ranges (including previous-turn api.js 1-180/181-360/361-end and tokens.js 1-150/151-end); all subsequent own narrow diffs inspected. App/ProtectedRoute reread after bc1f826. Read is not runtime/service or legal acceptance."
   },
   "reports/deployment-review-2026-10-07/continuation-findings.md": {
-    "sha256": "43be52fd55e8d5ae08e1ab27b9df666d50ba3ab7c368d6b9bc631ed894ad9788",
-    "lines": 186,
+    "sha256": "dd04ef75f3321e1d84e04e21968e66dbae6f8d077ee4d9c984666ea0fd17e05e",
+    "lines": 194,
     "read_ranges": [
       [
         1,
-        186
+        194
       ]
     ],
     "status": "complete_after_concurrent_change",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T21:56:04.686116+00:00",
+    "checked_at_utc": "2026-10-09T21:59:05.062191+00:00",
     "method": "Previous complete root read plus all own subsequent additions/corrections inspected; earlier truncated current report/plan tails reread in bounded ranges. Deployment review remains incomplete."
+  },
+  "frontend/src/components/schoolDetail/SimilarSchools.jsx": {
+    "sha256": "30490c3d420119d7e6754521ded1e7a7a9d32d53d2f53cb58666cfee50fee9ec",
+    "lines": 73,
+    "read_ranges": [
+      [
+        1,
+        73
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:59:05.062191+00:00",
+    "method": "Full current source read without truncation; SchoolActions in 1-145/146-end; QuizQuestion full read plus own df6b680 diff (omitted from preceding ledger update, now recorded). Reproduction uses the actual callback and synthetic state, not full React/browser or live-service acceptance."
+  },
+  "frontend/src/lib/schoolContact.js": {
+    "sha256": "87e7d1299e5d9486dcd8d97285eb07ebf696eb3c8555fb3fa1b3edd5069b57ab",
+    "lines": 21,
+    "read_ranges": [
+      [
+        1,
+        21
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:59:05.062191+00:00",
+    "method": "Full current source read without truncation; SchoolActions in 1-145/146-end; QuizQuestion full read plus own df6b680 diff (omitted from preceding ledger update, now recorded). Reproduction uses the actual callback and synthetic state, not full React/browser or live-service acceptance."
+  },
+  "frontend/src/components/decision/DecisionTabs.jsx": {
+    "sha256": "e12cf05e6d9263e07acabc115ee08efee1137970ce193957465e0a66a535ef3b",
+    "lines": 27,
+    "read_ranges": [
+      [
+        1,
+        27
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:59:05.062191+00:00",
+    "method": "Full current source read without truncation; SchoolActions in 1-145/146-end; QuizQuestion full read plus own df6b680 diff (omitted from preceding ledger update, now recorded). Reproduction uses the actual callback and synthetic state, not full React/browser or live-service acceptance."
+  },
+  "frontend/src/pages/onboarding/screens/QuizQuestion.jsx": {
+    "sha256": "d5aca155805b9b2d0200cef8af78aa7b9659c580f247a688f0569c9f8974e0b2",
+    "lines": 357,
+    "read_ranges": [
+      [
+        1,
+        357
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:59:05.062191+00:00",
+    "method": "Full current source read without truncation; SchoolActions in 1-145/146-end; QuizQuestion full read plus own df6b680 diff (omitted from preceding ledger update, now recorded). Reproduction uses the actual callback and synthetic state, not full React/browser or live-service acceptance."
+  },
+  "reports/deployment-review-2026-10-07/reproduce-school-explanation-state.cjs": {
+    "sha256": "92643c21abef3e1d222221a344750bb8c0c3cb198bdf422f0d1a9ed7bf47a9fd",
+    "lines": 41,
+    "read_ranges": [
+      [
+        1,
+        41
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:59:05.062191+00:00",
+    "method": "Full current source read without truncation; SchoolActions in 1-145/146-end; QuizQuestion full read plus own df6b680 diff (omitted from preceding ledger update, now recorded). Reproduction uses the actual callback and synthetic state, not full React/browser or live-service acceptance."
   }
 }
