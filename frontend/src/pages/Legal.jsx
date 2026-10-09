@@ -23,7 +23,7 @@ export function Privacy() {
   const gender = useGender();
   const g = (masculine, feminine) => (gender === 'f' ? feminine : masculine);
   return (
-    <LegalPage title="Zásady ochrany osobních údajů" updated="9. 10. 2026">
+    <LegalPage title="Zásady ochrany osobních údajů" updated="10. 10. 2026">
       <h2>1. Kdo je správce</h2>
       <p>
         Správcem osobních údajů je Václav Kadlec, Na Lysinách 34, 147 00 Praha, e-mail:
@@ -142,23 +142,28 @@ export function Privacy() {
         potřebuješ, a proto to nevyžaduje souhlas: přihlašovací relaci a volbu {`„zůstat přihlášen${g('ý', 'á')}“`},
         rozpracované odpovědi z dotazníku, vybranou roli, oslovení a nastavení hledání a
         porovnání. Po registraci z úvodního dotazníku může prohlížeč až 7 dní uchovat e-mail a
-        odpovědi, aby je po potvrzení e-mailu uložil ke správnému účtu.
+        odpovědi, aby je po potvrzení e-mailu uložil ke správnému účtu. Jedinou výjimkou je
+        beta testování (kapitola 9): náhodný identifikátor testování ukládáme jen na základě
+        tvého souhlasu.
       </p>
 
       <h2>9. Beta testování</h2>
       <p>
-        Pokud se zapojíš přes beta pozvánku, zaznamenáváme až po seznámení s upozorněním
-        navštívené stránky, viditelný čas na nich, použití funkcí, hledání, chyby a typ zařízení
-        (telefon, tablet nebo počítač). Ukládáme také tvoji testovací roli, postup zkoušení,
-        zpětnou vazbu, odpovědi v závěrečném dotazníku a pořadí doporučených škol. Účelem je
-        zjistit, co funguje a co máme před spuštěním opravit. Právním základem je náš
-        oprávněný zájem na testování služby; potvrzení upozornění není souhlas se sledováním.
+        Pokud se zapojíš do beta testování, zaznamenáváme až po tvém souhlasu (zaškrtnutí při
+        registraci) navštívené stránky, viditelný čas na nich, použití funkcí, hledání, chyby
+        a typ zařízení (telefon, tablet nebo počítač). Ukládáme také tvoji testovací roli,
+        postup zkoušení, odpovědi v závěrečném dotazníku a pořadí doporučených škol. Účelem je
+        zjistit, co funguje a co máme před spuštěním opravit. Právním základem je tvůj souhlas.
+        Odvolat ho můžeš kdykoli e-mailem na info@stredninamiru.cz; zaznamenávání pak ukončíme
+        a dosud zaznamenané události na požádání smažeme. Odvolání nemá vliv na zpracování
+        před ním. Pokud ti ještě nebylo 15 let, zakládáš účet (a tím i tento souhlas) společně
+        s rodičem nebo zákonným zástupcem (kapitola 5). Zpětnou vazbu, kterou sám odešleš,
+        zpracováváme na základě našeho oprávněného zájmu na zlepšování služby.
       </p>
       <p>
         Běžných návštěvníků a účtů se beta sledování netýká. Nepoužíváme analytické služby
         třetích stran, nové cookies ani otisk zařízení. Náhodný identifikátor beta návštěvy
-        a relace je součástí testovací služby a zůstává v localStorage a sessionStorage
-        prohlížeče. Do událostí neukládáme e-mail, hesla, volný text odpovědí v dotazníku ani
+        a relace ukládáme do localStorage a sessionStorage prohlížeče jen po tvém souhlasu. Do událostí neukládáme e-mail, hesla, volný text odpovědí v dotazníku ani
         počet bodů z přijímacích zkoušek. Hledaný text uchováme jen tehdy, když odpovídá části
         názvu školy; jinak zaznamenáme pouze jeho délku a počet výsledků.
       </p>
@@ -171,9 +176,11 @@ export function Privacy() {
       </p>
       <p>
         Jednotlivé události používání a uložená pořadí škol smažeme šest měsíců po stanoveném konci beta programu.
-        Zpětnou vazbu, závěrečné odpovědi a recenze uchováváme pro vyhodnocení a zlepšování
-        služby; právo na výmaz zůstává zachováno. Námitku proti beta sledování, žádost o
-        přístup nebo výmaz můžeš poslat na info@stredninamiru.cz.
+        Zpětnou vazbu (včetně snímků stránky) a závěrečné odpovědi smažeme nebo anonymizujeme
+        nejpozději 12 měsíců po konci beta programu; soukromé recenze webu také. Veřejně použitou
+        recenzi (jen se samostatným souhlasem) uchováme, dokud souhlas neodvoláš. Právo na výmaz
+        zůstává zachováno a účet můžeš kdykoli smazat v Nastavení. Odvolání souhlasu, námitku,
+        žádost o přístup nebo výmaz můžeš poslat na info@stredninamiru.cz.
       </p>
       <p>
         Recenze je nepovinná a její anonymní použití na webu má vlastní, předem nezaškrtnuté
@@ -302,6 +309,10 @@ export function Terms() {
       </p>
 
       <h2>9. Obsah od uživatelů a moderace</h2>
+      <p>
+        <strong>Recenze škol jsou v testovací verzi vypnuté</strong> (nezobrazují se ani se nepřijímají);
+        níže popsaná moderace a hlášení platí od jejich zapnutí.
+      </p>
       <p>
         <strong>Dobrovolná recenze webu v beta testování:</strong> Recenzi můžeš poslat i bez
         souhlasu se zveřejněním; v takovém případě zůstane neveřejná a použijeme ji pouze k

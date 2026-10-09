@@ -19,14 +19,14 @@ export default function BetaEnrollment({ role, roleNote = '', accepted, onRole, 
     </fieldset>
     <div className="notice">
       <p className="notice-title">Co během bety zaznamenáváme</p>
-      <p className="notice-text">Navštívené stránky, použití funkcí, hledání škol, chyby a typ zařízení nám pomáhají zlepšit web. Nepoužíváme žádné analytické služby třetích stran, nové cookies ani otisk zařízení. Náhodný beta identifikátor uchováváme v úložišti prohlížeče jako součást testování a po registraci ho spojíme s beta účtem.</p>
-      <p className="notice-text">Záznamy používání smažeme 6 měsíců po konci bety. Zpětné vazby, závěrečné odpovědi a nepovinné recenze si ponecháme pro vyhodnocení. Snímek stránky vzniká jen na vyžádání, po zakrytí polí; před odesláním ho lze odebrat.</p>
-      <p className="notice-text">Základem zpracování je náš oprávněný zájem na testování produktu. Námitku lze jednoduše poslat na <a href="mailto:info@stredninamiru.cz">info@stredninamiru.cz</a>.</p>
+      <p className="notice-text">Navštívené stránky, použití funkcí, hledání škol, chyby a typ zařízení nám pomáhají zlepšit web. Nepoužíváme žádné analytické služby třetích stran, nové cookies ani otisk zařízení. Náhodný beta identifikátor ukládáme do úložiště prohlížeče a po registraci ho spojíme s beta účtem.</p>
+      <p className="notice-text">Záznamy používání smažeme 6 měsíců po konci bety, zpětné vazby a závěrečné odpovědi nejpozději po 12 měsících. Snímek stránky vzniká jen na vyžádání, po zakrytí polí; před odesláním ho lze odebrat.</p>
+      <p className="notice-text">Zaznamenáváme to jen s tvým souhlasem. Odvolat ho můžeš kdykoli e-mailem na <a href="mailto:info@stredninamiru.cz">info@stredninamiru.cz</a>. Je-li ti méně než 15 let, souhlas dáváš společně s rodičem nebo zákonným zástupcem.</p>
     </div>
     <label className={`checkbox-row consent-row${showErrors && !accepted ? ' is-invalid' : ''}`}>
       <input type="checkbox" checked={accepted} onChange={(e) => onAccepted(e.target.checked)} aria-invalid={showErrors && !accepted} />
-      <span>Rozumím tomu, co při beta testování zaznamenáváte.</span>
+      <span>Souhlasím s tím, že se při testování zaznamenává, jak web používám (viz výše). Souhlas mohu kdykoli odvolat.</span>
     </label>
-    {showErrors && !accepted && <span className="field-error" role="alert">{parent ? 'Potvrďte prosím, že jste si text přečetli.' : 'Potvrď prosím přečtení textu.'}</span>}
+    {showErrors && !accepted && <span className="field-error" role="alert">{parent ? 'Bez souhlasu se záznamem používání se testování nelze zúčastnit.' : 'Bez souhlasu se záznamem používání se testování nejde zúčastnit.'}</span>}
   </div>;
 }
