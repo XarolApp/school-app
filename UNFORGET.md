@@ -13,6 +13,43 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
+## Beta launch readiness — state on 2026-10-10 (read this first)
+
+**Done (verified or pushed):** single-code access gate (`pristuptestovaciverze`) and one
+internal `beta_schools` row (`PRISTUPTESTOVACIVERZE`, ZŠ Jesenicova, never shown to
+testers); beta end 18 Oct 2026 23:59 Prague; all test accounts and the `TEST`/`KOD_SKOLY`
+codes deleted (only the admin account remains); plan-020 catch-up SQL applied
+(`migrations/2026-10-09-plan020-catchup.sql`); every app page needs a signed-in account,
+signed-out visitors get a view-only school page; Registrace CTAs; testers start with the
+questionnaire; delete-account verified end to end on the live database; match
+percentages identical on every page (verified live); pros/cons regenerated for all 223
+rows with Luna on flex; AI explanation ("Proč tahle shoda") on the questionnaire and
+school page; Railway/Vercel/Supabase/Turnstile variables checked by the founder.
+
+**Legal decisions of 10 Oct (see `docs/legal-decisions-2026-10-10.md`):** beta tracking is
+now explicit consent (wording in `BetaEnrollment.jsx`, `Legal.jsx` §8–9); school reviews
+stay off; sharing links stay off; feedback/closing answers/private reviews deleted by
+**18 Oct 2027**; DPIA screened as not required for one school. Not a legal sign-off.
+School e-mail: `docs/beta-school-email-draft.md`.
+
+**Still open before / right after the school e-mail**
+- [ ] **Railway upgrade to Hobby (founder, 11 Oct).** Trial ends about 13 Oct.
+- [ ] Founder phone test with a fresh tester account on the live site, then delete it.
+- [ ] Founder verifies the vendor facts in the decisions doc, D5 (Supabase region, Brevo
+      owner, OpenRouter logging, operator agrees to be named) and writes the dates there.
+- [ ] Reminder: **delete feedback, closing answers and private reviews by 18 Oct 2027**
+      (manual; no job exists).
+- [ ] Parents cannot read the privacy page without the gate code. Either put the code in the
+      forwarded text (done) or serve legal pages ungated — the SPA assets are gated too, so
+      that needs a separate static page.
+- [ ] A one-click "stop recording my usage" switch in Nastavení (withdrawal is by e-mail now).
+- [ ] Before sharing links are re-enabled: privacy text for result/payment links and
+      pre-account snapshots (LEGAL-03). Before school reviews are re-enabled: notice and
+      action workflow (LEGAL-02).
+- [ ] Before real payments: IČO / adult operator (none today), Brevo account moved to Václav,
+      day-2 reminder e-mail, season `past_due` dead end, Stripe SDK upgrade (HANDOFF-PLAN
+      T2/T3 of the 2026-10-07 review).
+
 ## Match percentages: onboarding result screen can still disagree with the app — 2026-10-10
 
 The app's pages (school list, school page, comparison, matrix, questionnaire result) now
