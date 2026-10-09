@@ -330,7 +330,7 @@ effort.
    - **Client:** a `SchoolActions`-area button, "Získat vysvětlení" (secondary,
      lucide `Sparkles` is fine).
      - Loading: "Píšu vysvětlení…".
-     - Shows the sentence in a small card titled "Proč ti (ne)sedí".
+     - Shows the sentence in a small card titled "Proč tahle shoda".
      - Without a default run: a link, "Nejdřív vyplň dotazník", to `/dotaznik`.
      - Errors are shown inline in the existing pattern.
      - Already explained: show it straight away (`GET` the run, or return it with the

@@ -236,7 +236,7 @@ function SchoolActions({ school, isFavorite, onFavoriteChange, barRef, publicVie
       )}
       {canFavorite && explanation && (
         <section className="sd-explanation" aria-live="polite">
-          <h3>Proč ti (ne)sedí</h3>
+          <h3>Proč tahle shoda</h3>
           <p>{explanation}</p>
         </section>
       )}

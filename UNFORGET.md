@@ -13,6 +13,31 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
+## Match percentages: onboarding result screen can still disagree with the app — 2026-10-10
+
+The app's pages (school list, school page, comparison, matrix, questionnaire result) now
+all score against one cached full catalogue and agree (verified live 2026-10-10: 73 % on
+every page; before, the school page said 65 %). The **onboarding result screen** (`Reveal`,
+`TopMatchCard`, `frontend/src/lib/matching.js`) is a separate engine in the browser with
+its own dimensions, so a student can see one percentage there and another in the app for
+the same school. Same open problem as the earlier B01/B02 findings.
+- **Options:** (a) score the onboarding answers on the server with the same engine, and
+  show that number; (b) keep two engines but stop showing a percentage on the onboarding
+  result (a band like "Silná shoda" only); (c) tell the student the numbers differ.
+- **Needs:** a founder choice; (a) is cleanest but the quiz answers do not map one-to-one
+  onto the questionnaire questions.
+
+## AI explanations: make them more detailed — 2026-10-10
+
+Today a "Proč tahle shoda" explanation is 1–2 short sentences (about 260 characters,
+`SYSTEM_PROMPT` in `lib/questionnaire.js`). The founder wants more detail. Ideas: 3–4
+sentences or short bullets that name the specific obory, which answers matched and which
+did not, and how the school compares on admission difficulty. Constraints to keep: only
+facts from the signals and school data, no numbers the student gave (points stay private),
+no predictions of acceptance, tykání/vykání and gender forms. More text means more output
+tokens, so re-estimate the cost (about 0.006 Kč per explanation now) and the loading time,
+and let the cards expand ("Zobrazit víc") so the top 10 stays scannable.
+
 ## Founder backlog from the 2026-10-08 request — implementation underway, acceptance open
 
 Plan `plans/020-beta-launch-batch.md` builds the rest of that request. These items were
