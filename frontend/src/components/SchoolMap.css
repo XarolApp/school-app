@@ -109,7 +109,6 @@
   border-radius: 50%;
   background: var(--surface);
   border: 2px solid var(--primary);
-  font-size: 16px;
   box-shadow: var(--shadow);
   transform: translate(-50%, -50%);
 }

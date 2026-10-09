@@ -820,15 +820,23 @@
 }
 
 .l2-honest-col li::before {
-  content: '✓';
+  content: '';
   position: absolute;
   left: 0;
   top: 16px;
-  font-weight: 700;
+  width: 18px;
+  height: 18px;
   color: var(--acc);
+  background: currentColor;
+  -webkit-mask: var(--mask-check) center / contain no-repeat;
+  mask: var(--mask-check) center / contain no-repeat;
 }
 
-.l2-honest-col--no li::before { content: '✕'; color: var(--ink3); }
+.l2-honest-col--no li::before {
+  color: var(--ink3);
+  -webkit-mask-image: var(--mask-cross);
+  mask-image: var(--mask-cross);
+}
 
 .l2-source { margin: 28px 0 0; font-size: 13px; color: var(--ink3); max-width: 70ch; }
 

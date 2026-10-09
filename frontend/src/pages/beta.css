@@ -282,4 +282,14 @@ dialog.ss-dialog.beta-modal-reference { max-width: 960px; }
 .beta-kind-chips .ss-btn[aria-pressed="true"] { background: var(--acc); color: var(--acc-ink); border-color: var(--acc); font-weight: 600; }
 .beta-theme-preview { position: relative; }
 .beta-theme-preview:has(input:checked) { box-shadow: 0 0 0 3px var(--acc); }
-.beta-theme-preview:has(input:checked)::after { content: '✓'; position: absolute; top: 10px; right: 10px; width: 24px; height: 24px; border-radius: 50%; background: var(--acc); color: var(--acc-ink); display: grid; place-items: center; font-size: 14px; font-weight: 700; }
+.beta-theme-preview:has(input:checked)::after {
+  content: '';
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 20px;
+  height: 20px;
+  background: var(--acc);
+  -webkit-mask: var(--mask-check) center / contain no-repeat;
+  mask: var(--mask-check) center / contain no-repeat;
+}

@@ -1,4 +1,5 @@
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Sparkle } from 'lucide-react';
 import { SHARING_ENABLED, SHARING_OFF_NOTE } from '../../../config/features';
 import { createHandoff } from '../../../api';
 import { shareUrl } from '../../../lib/shareLink';
@@ -179,7 +180,7 @@ function QuizQuestion({ step }) {
   const reassureCard = reassurance ? (
     <div className="ob-reassure" role="status">
       <span className="ob-reassure-icon" aria-hidden="true">
-        ✦
+        <Sparkle size={16} strokeWidth={2} />
       </span>
       <p>{reassurance}</p>
     </div>

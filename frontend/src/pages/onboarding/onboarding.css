@@ -1281,8 +1281,7 @@
 
 .ob-reassure-icon {
   color: var(--ok);
-  font-size: var(--fs-body-sm);
-  line-height: 1.4;
+  display: inline-flex;
   flex: none;
 }
 
@@ -2794,7 +2793,17 @@
 .ob-tm-card .ob-hero-band { justify-self: start; margin: 0; }
 .ob-tm-why { list-style: none; margin: 4px 0 0; padding: 12px 0 0; border-top: 1px solid var(--line); display: grid; gap: 8px; }
 .ob-tm-why li { position: relative; padding-left: 22px; font-size: 14px; line-height: 1.45; color: var(--ink); }
-.ob-tm-why li::before { content: '✓'; position: absolute; left: 0; font-weight: 700; color: var(--acc); }
+.ob-tm-why li::before {
+  content: '';
+  position: absolute;
+  top: 0.25em;
+  left: 0;
+  width: 1em;
+  height: 1em;
+  background: var(--acc);
+  -webkit-mask: var(--mask-check) center / contain no-repeat;
+  mask: var(--mask-check) center / contain no-repeat;
+}
 .ob-tm-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 .ob-tm-list li { display: flex; gap: 10px; align-items: baseline; font-size: 14px; color: var(--ink2); }
 .ob-tm-list li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--acc); flex: none; transform: translateY(-2px); }
