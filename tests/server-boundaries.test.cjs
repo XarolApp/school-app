@@ -77,7 +77,7 @@ function harness({
       },
     },
   };
-  const app = { use() {}, set() {}, listen() {} };
+  const app = { use() {}, set() {}, listen() {}, disable() {} };
   for (const method of ['get', 'post', 'put', 'patch', 'delete']) {
     app[method] = (path, ...handlers) => {
       routes.set(`${method} ${path}`, handlers.at(-1));

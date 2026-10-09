@@ -99,10 +99,12 @@ function Paywall() {
   const handleSubscribe = async () => {
     setError(null);
     setRedirecting(true);
+    document.documentElement.dataset.snmStripeRedirecting = 'true';
     try {
       const { url } = await createCheckoutSession({ planId, returnTo: '/predplatne' });
       window.location.href = url;
     } catch (err) {
+      delete document.documentElement.dataset.snmStripeRedirecting;
       setRedirecting(false);
       setError(
         err.code === 'STRIPE_NOT_CONFIGURED'

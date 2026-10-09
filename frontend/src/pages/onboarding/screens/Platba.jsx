@@ -87,6 +87,7 @@ function Platba() {
     }
 
     setWorking(true);
+    document.documentElement.dataset.snmStripeRedirecting = 'true';
     try {
       const { url } = await createCheckoutSession({ planId: plan.id, returnTo: '/skoly' });
       // Full navigation on purpose — Stripe's hosted checkout page is not part
@@ -95,6 +96,7 @@ function Platba() {
       // on this path: the account updates once Stripe tells our backend it did.
       window.location.href = url;
     } catch (err) {
+      delete document.documentElement.dataset.snmStripeRedirecting;
       setWorking(false);
       setError(
         err.code === 'STRIPE_NOT_CONFIGURED'

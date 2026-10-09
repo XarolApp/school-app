@@ -67,10 +67,12 @@ function ParentPay() {
     setBusy(true);
     setMessage(null);
     setError(null);
+    document.documentElement.dataset.snmStripeRedirecting = 'true';
     try {
       const { url } = await startPayLinkCheckout(token, planId);
       window.location.assign(url);
     } catch (err) {
+      delete document.documentElement.dataset.snmStripeRedirecting;
       setError(err);
     } finally {
       setBusy(false);
