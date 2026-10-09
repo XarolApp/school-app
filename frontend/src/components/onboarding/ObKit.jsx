@@ -191,7 +191,7 @@ export function MatchBand({ band, basedOn, confidenceLabel }) {
       {basedOn.length > 0 && (
         <span className="ob-band-basis">Shoda podle: {basedOn.join(', ')}</span>
       )}
-      <span className="ob-band-confidence">Spolehlivost dat: {confidenceLabel.toLowerCase()}</span>
+      <span className="ob-band-confidence">Úplnost podkladů pro shodu: {confidenceLabel.toLowerCase()}</span>
     </div>
   );
 }

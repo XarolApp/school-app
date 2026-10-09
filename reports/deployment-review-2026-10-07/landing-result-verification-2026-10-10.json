@@ -1,0 +1,83 @@
+{
+  "checkedAt": "2026-10-09T23:42:35.505Z",
+  "method": "Actual Landing/Home/Reveal components with actual GSAP/Lenis/WebGL scene, bundled fonts and frontend matcher; synthetic catalogue/auth/API/tracking. Fixture helper scroll used to reach role/pricing sections; not full deployed journey, navigation or real-device acceptance. No live writes/sharing/Stripe.",
+  "resultOne": {
+    "action": "Zobrazit zbývající školu",
+    "confidence": "Úplnost podkladů pro shodu: nízká",
+    "schoolText": "Další 1 škola seřazená podle tvých odpovědí, s vysvětlením shody"
+  },
+  "resultTwo": {
+    "action": "Zobrazit zbývající 2 školy",
+    "lead": "Z 3 pražských škol tomu odpovídá 1 škola. Tato nejvíc:",
+    "schoolText": "Další 2 školy seřazené podle vašich odpovědí, s odůvodněním shody"
+  },
+  "resultFivePhone": {
+    "action": "Zobrazit zbývající 5 škol",
+    "document": 375,
+    "lead": "Z 6 pražských škol tomu odpovídají 2 školy. Tato nejvíc:",
+    "schoolText": "Dalších 5 škol seřazených podle vašich odpovědí, s odůvodněním shody",
+    "viewport": 375
+  },
+  "roles": {
+    "active": "l2-role-parent",
+    "deadBrowseLinks": 0,
+    "panelLabel": "l2-role-parent",
+    "parentText": "Mějte přehled, ne další starost01Data ze stejných zdrojů jako školyHranice přijetí, kapacity a přihlášky z výsledků Cermatu, názvy a adresy z rejstříku škol MŠMT, další údaje z webů škol a dalších zdrojů.02V klidu na vlastním počítačiPodrobnosti o školách si v klidu projdete i na vlastním počítači. Sdílení výsledků odkazem je během bety vypnuté.03Nikdo si nekoupí lepší pořadíPořadí počítá pevný vzorec z odpovědí a veřejných dat.Začít jako rodič →",
+    "tabs": [
+      {
+        "controls": "l2-role-panel",
+        "id": "l2-role-student",
+        "selected": "false",
+        "tabIndex": -1
+      },
+      {
+        "controls": "l2-role-panel",
+        "id": "l2-role-parent",
+        "selected": "true",
+        "tabIndex": 0
+      }
+    ]
+  },
+  "landingPhone": {
+    "document": 375,
+    "faq": "Kolik to stojí?Onboarding a první ukázka výsledku jsou zdarma. Databáze, dotazník v aplikaci a nástroje pro rozhodování vyžadují aktivní zkušební období nebo placený přístup. V betě jsou pro registrované testery zdarma výměnou za zpětnou vazbu; platební obrazovky jsou jen náhled.",
+    "price": "CenaZačátek je zdarma. Opravdu.Zdarma0 KčOnboarding a první ukázka výsledkuInteraktivní mapa na úvodní stránceDetail školy otevřený z mapyPlný přístupS aktivním přístupemDatabáze všech 3 škol a dotazník v aplikaciPorovnání škol vedle sebe a rozhodovací maticePlán tří přihlášek se skóre z přijímačekPoznámky ke školámV betě zdarma pro registrované testery výměnou za zpětnou vazbu. Platební obrazovky jsou jen náhled.",
+    "priceBounds": {
+      "height": 1177.0625,
+      "width": 343,
+      "x": 16,
+      "y": 5262.96875
+    },
+    "tabs": [
+      {
+        "selected": "false",
+        "tabIndex": -1
+      },
+      {
+        "selected": "true",
+        "tabIndex": 0
+      }
+    ],
+    "viewport": 375
+  },
+  "landscape": {
+    "bodyFont": "18px",
+    "chipFont": "13px",
+    "document": 812,
+    "heroHeight": 799,
+    "heroScale": "0.334168",
+    "stageHeight": 315,
+    "viewport": {
+      "height": 375,
+      "width": 812
+    },
+    "effectiveBodyFont": 6.015024,
+    "effectiveChipFont": 4.344184
+  },
+  "legacyHomePhone": {
+    "document": 375,
+    "freeFacts": "3pražských středních škol v databázi11otázek v dotazníku, asi 3 minuty3 rokyvýsledků přijímaček; dostupnost se liší podle oboru0 Kčza onboarding a první ukázku výsledku",
+    "price": "CenaZačátek je zdarmaOnboarding a první ukázka výsledku jsou zdarma. Databáze a nástroje pro rozhodování vyžadují aktivní přístup. V betě jsou zdarma pro registrované testery výměnou za zpětnou vazbu.ZdarmaOnboarding a první ukázka výsledkuÚvodní mapa školDetail školy otevřený z mapyPlný přístupDatabáze všech 3 škol a dotazník v aplikaciPorovnání a rozhodovací maticePlán tří přihlášek se skórePoznámky ke školámV betě zdarma výměnou za zpětnou vazbu · platební obrazovky jsou jen náhled",
+    "viewport": 375
+  }
+}

@@ -270,8 +270,8 @@ export function cancellationTerms(plan, role) {
   if (ONE_STEP_CANCELLATION_IMPLEMENTED) {
     return {
       text: parent
-        ? 'Zrušit lze kdykoli jedním kliknutím v účtu, bez volání a bez psaní podpoře.'
-        : 'Zrušíš kdykoli jedním kliknutím v účtu. Nikomu nemusíš nic vysvětlovat.',
+        ? 'Zrušit lze kdykoli v Nastavení, bez volání a bez psaní podpoře.'
+        : 'Zrušíš kdykoli v Nastavení. Nikomu nemusíš nic vysvětlovat.',
       unbuilt: false,
     };
   }

@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { trialDaysPhrase } from '../config/pricing';
 import { QUESTIONS } from './onboarding/quizQuestions';
 import { DemoLoop, PhoneLoop, ScreenShot, useScreenData } from '../components/landing/ProductScreens';
 import './landing.css';
@@ -9,10 +8,12 @@ import { useSchoolCount } from '../lib/useSchoolCount';
 import { useAuth } from '../components/AuthContext';
 
 /**
- * Home / úvodní stránka — long-form landing (rebuilt 2026-09-26).
+ * Inactive legacy landing (rebuilt 2026-09-26); App.jsx renders landing2.
+ * Photography/byline placeholders still require founder content before reuse.
  *
- * One offer, one action: every primary button goes to /onboarding. Browsing
- * the database stays a demoted text link (hybrid paywall, ruling C-7).
+ * Primary buttons route signed-in visitors to schools and others to signup.
+ * Ordinary database/tool access requires a trial or paid entitlement; beta is
+ * free for feedback. Public landing-map school detail is an intentional preview.
  *
  * Product visuals (hero phone loop, demo loop, step screenshots) are coded
  * screens from components/landing/ProductScreens.jsx, built from live data.
@@ -29,7 +30,7 @@ const makeFacts = (SCHOOL_COUNT) => [
   { value: String(SCHOOL_COUNT), label: 'pražských středních škol v databázi' },
   { value: String(QUESTION_COUNT), label: `otázek v dotazníku, asi ${QUIZ_MINUTES} minuty` },
   { value: '3 roky', label: 'výsledků přijímaček; dostupnost se liší podle oboru' },
-  { value: '0 Kč', label: 'za základní výsledek a databázi škol' },
+  { value: '0 Kč', label: 'za onboarding a první ukázku výsledku' },
 ];
 
 const STEPS = [
@@ -45,7 +46,7 @@ const STEPS = [
   },
   {
     title: 'Projdeš si detail každé školy',
-    body: 'Obory, počet míst, kolik lidí se hlásilo a kolik jich vzali, dostupné hranice přijetí v jednotlivých letech. U každého čísla je rok a zdroj.',
+    body: 'Obory, počet míst, kolik lidí se hlásilo a kolik jich vzali, dostupné hranice přijetí v jednotlivých letech. U přijímacích statistik uvádíme dostupný rok a zdroj.',
     shot: 'detail',
   },
   {
@@ -62,11 +63,11 @@ const makeFaq = (SCHOOL_COUNT) => [
   },
   {
     q: 'Kolik to stojí?',
-    a: `Dotazník, základní výsledek a celá databáze škol jsou zdarma. Placený přístup odemyká podrobné porovnání, rozhodovací matici a plánování přihlášek. Prvních ${trialDaysPhrase()} je zdarma a zrušit se to dá jedním kliknutím v nastavení.`,
+    a: 'Onboarding a první ukázka výsledku jsou zdarma. Databáze, dotazník v aplikaci a nástroje pro rozhodování vyžadují aktivní zkušební období nebo placený přístup. V betě jsou pro registrované testery zdarma výměnou za zpětnou vazbu; platební obrazovky jsou jen náhled.',
   },
   {
     q: 'Odkud máte data o školách?',
-    a: 'Obory, kapacity a hranice přijetí jsou z veřejných výsledků jednotné přijímací zkoušky (Cermat), názvy a adresy z rejstříku škol MŠMT, další informace z webů škol a dalších veřejných zdrojů. U každého čísla uvádíme rok. Když najdeš chybu, u školy je tlačítko „Nahlásit chybu v údajích“.',
+    a: 'Obory, kapacity a hranice přijetí jsou z veřejných výsledků jednotné přijímací zkoušky (Cermat), názvy a adresy z rejstříku škol MŠMT, další informace z webů škol a dalších veřejných zdrojů. U přijímacích statistik uvádíme dostupný rok. Když najdeš chybu, u školy je tlačítko „Nahlásit chybu v údajích“.',
   },
   {
     q: 'Znamená vysoké procento shody, že mě vezmou?',
@@ -78,7 +79,7 @@ const makeFaq = (SCHOOL_COUNT) => [
   },
   {
     q: 'Co se děje s mými odpověďmi?',
-    a: 'Během dotazníku zůstávají jen v tvém prohlížeči. Uložíme je až ve chvíli, kdy si založíš účet, a smazat je můžeš kdykoli i s celým účtem.',
+    a: 'V onboardingu se průběžně ukládají v prohlížeči. Po přihlášení se mohou uložit k účtu; dotazník v aplikaci je odesílá serveru pro výpočet a uložení výsledku. Vyžádané AI vysvětlení používá vybrané odpovědi. Podrobnosti najdeš v ochraně osobních údajů.',
   },
   {
     q: 'Je to jen pro Prahu?',
@@ -163,11 +164,6 @@ function Home() {
             <Link to={isSignedIn ? '/skoly' : '/registrace'} className="btn btn-primary btn-lg">
               {isSignedIn ? 'Projít databázi škol' : 'Registrace'}
             </Link>
-            {!isSignedIn && (
-              <Link to="/skoly" className="ls-textlink">
-                nebo si projdi databázi škol →
-              </Link>
-            )}
           </div>
           {!isSignedIn && <p className="ls-fineprint">Asi {QUIZ_MINUTES} minuty · přeskočit můžeš cokoli</p>}
         </div>
@@ -277,8 +273,8 @@ function Home() {
             <p className="ls-body">Vybereš městské části, kam dojedeš, a vzdálenost se promítne do shody.</p>
           </article>
           <article className="ls-tile" data-reveal style={{ '--i': 3 }}>
-            <h3 className="ls-h3">Recenze od studentů</h3>
-            <p className="ls-body">Psané lidmi, kteří na škole jsou nebo byli. Anonymně podle role.</p>
+            <h3 className="ls-h3">Praktické údaje o školách</h3>
+            <p className="ls-body">Informace z webů škol; kde údaj nemáme, zůstává neuvedený. Školní recenze jsou během bety vypnuté.</p>
           </article>
           <article className="ls-tile" data-reveal style={{ '--i': 4 }}>
             <h3 className="ls-h3">Poznámky ke školám</h3>
@@ -310,8 +306,8 @@ function Home() {
           <p className="ls-eyebrow">Pro rodiče</p>
           <h2 className="ls-h3">Mějte přehled, ne další starost</h2>
           <p className="ls-body">
-            Data ze stejných zdrojů, jaké používají školy, na jednom místě. Výsledek vašeho
-            dítěte si můžete otevřít na vlastním počítači a projít v klidu.
+            Data ze stejných zdrojů, jaké používají školy, na jednom místě. Podrobnosti o
+            školách si v klidu projdete i na vlastním počítači. Sdílení výsledků odkazem je během bety vypnuté.
           </p>
           <Link to="/onboarding" className="ls-textlink">Začít jako rodič →</Link>
         </article>
@@ -343,7 +339,7 @@ function Home() {
         </div>
         <p className="ls-source">
           Zdroje: výsledky jednotné přijímací zkoušky (Cermat), rejstřík škol MŠMT,
-          weby jednotlivých škol a další veřejné zdroje. U každého čísla v aplikaci uvádíme rok.
+          weby jednotlivých škol a další veřejné zdroje. U přijímacích statistik uvádíme dostupný rok.
         </p>
       </section>
 
@@ -369,28 +365,29 @@ function Home() {
           <p className="ls-eyebrow">Cena</p>
           <h2 className="ls-h2">Začátek je zdarma</h2>
           <p className="ls-body">
-            Dotazník, výsledek a databázi škol používáš bez placení. Podrobné nástroje pro
-            rozhodování si můžeš {trialDaysPhrase()} vyzkoušet zdarma.
+            Onboarding a první ukázka výsledku jsou zdarma. Databáze a nástroje pro
+            rozhodování vyžadují aktivní přístup. V betě jsou zdarma pro registrované testery výměnou za zpětnou vazbu.
           </p>
         </div>
         <div className="ls-price-cols" data-reveal>
           <div className="ls-price-col">
             <h3 className="ls-list-title">Zdarma</h3>
             <ul className="ls-list">
-              <li>Dotazník a výsledek se shodou</li>
-              <li>Databáze všech {SCHOOL_COUNT} škol</li>
-              <li>Detail školy s hranicemi přijetí</li>
+              <li>Onboarding a první ukázka výsledku</li>
+              <li>Úvodní mapa škol</li>
+              <li>Detail školy otevřený z mapy</li>
             </ul>
           </div>
           <div className="ls-price-col ls-price-col--paid">
             <h3 className="ls-list-title">Plný přístup</h3>
             <ul className="ls-list">
+              <li>Databáze všech {SCHOOL_COUNT} škol a dotazník v aplikaci</li>
               <li>Porovnání a rozhodovací matice</li>
               <li>Plán tří přihlášek se skóre</li>
               <li>Poznámky ke školám</li>
             </ul>
             <p className="ls-fineprint">
-              Prvních {trialDaysPhrase()} zdarma · zrušení jedním kliknutím
+              V betě zdarma výměnou za zpětnou vazbu · platební obrazovky jsou jen náhled
             </p>
           </div>
         </div>
@@ -427,7 +424,7 @@ function Home() {
           <p className="ls-footer-note">
             Data o oborech a hranicích přijetí přebíráme z výsledků jednotné přijímací
             zkoušky (Cermat), názvy a adresy z rejstříku škol MŠMT, další údaje z webů
-            škol a dalších zdrojů. U každého čísla uvádíme rok a zdroj.
+            škol a dalších zdrojů. U přijímacích statistik uvádíme dostupný rok a zdroj.
           </p>
         </div>
         <nav className="ls-footer-links" aria-label="Patička">

@@ -5,7 +5,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import { fetchSchool, fetchSchools } from '../../api';
 import { groupProgramsByObor, formatCutoffRange } from '../../lib/schoolPrograms';
-import { trialDaysPhrase } from '../../config/pricing';
 import { QUESTIONS } from '../onboarding/quizQuestions';
 import { PragueScene, COMMUTE_RADIUS } from './PragueScene';
 import './landing2.css';
@@ -57,7 +56,7 @@ const makeSteps = (SCHOOL_COUNT) => [
   {
     kicker: 'Hranice přijetí',
     title: 'Uvidíš dostupné hranice přijetí',
-    body: 'Výška sloupce je hranice přijetí nejtěžšího oboru školy z jejích nejnovějších dostupných výsledků Cermatu. Rok je uvedený u čísla. Čím vyšší, tím těžší se dostat.',
+    body: 'Výška sloupce odpovídá nejvyšší známé hranici přijetí mezi obory školy z jejích nejnovějších dostupných výsledků Cermatu. Rok je uvedený u čísla. Jde o historickou bodovou hranici, ne předpověď přijetí.',
   },
   {
     kicker: 'Výsledek',
@@ -72,7 +71,7 @@ const ROLES = {
     points: [
       ['Nemusíš vědět, čím chceš být', 'Stačí vědět, co tě baví víc a co míň. Zbytek dopočítáme.'],
       ['Nevíš? Přeskoč', 'Vynechané odpovědi do výpočtu nezahrnujeme. Výsledek vychází z toho, co vyplníš.'],
-      ['Tvoje odpovědi jsou tvoje', 'Během dotazníku zůstávají jen v tvém prohlížeči.'],
+      ['Tvoje odpovědi jsou tvoje', 'V onboardingu se průběžně ukládají v prohlížeči. Po přihlášení se mohou uložit k účtu; dotazník v aplikaci je odesílá serveru pro výpočet a uložení výsledku.'],
     ],
     cta: 'Začít jako student',
   },
@@ -80,7 +79,7 @@ const ROLES = {
     title: 'Mějte přehled, ne další starost',
     points: [
       ['Data ze stejných zdrojů jako školy', 'Hranice přijetí, kapacity a přihlášky z výsledků Cermatu, názvy a adresy z rejstříku škol MŠMT, další údaje z webů škol a dalších zdrojů.'],
-      ['V klidu na vlastním počítači', 'Výsledek vašeho dítěte si otevřete odkazem a projdete, kdy se vám to hodí.'],
+      ['V klidu na vlastním počítači', 'Podrobnosti o školách si v klidu projdete i na vlastním počítači. Sdílení výsledků odkazem je během bety vypnuté.'],
       ['Nikdo si nekoupí lepší pořadí', 'Pořadí počítá pevný vzorec z odpovědí a veřejných dat.'],
     ],
     cta: 'Začít jako rodič',
@@ -89,11 +88,11 @@ const ROLES = {
 
 const makeFaq = (SCHOOL_COUNT) => [
   ['Co je Střední na míru?', 'Průvodce výběrem střední školy v Praze. Všechny školy s obory a výsledky přijímaček na jednom místě a dotazník, který z nich vybere ty, které sedí tomu, co hledáš.'],
-  ['Kolik to stojí?', `Dotazník, základní výsledek a celá databáze škol jsou zdarma. Placený přístup odemyká podrobné porovnání, rozhodovací matici a plánování přihlášek. Prvních ${trialDaysPhrase()} je zdarma a zrušit se to dá jedním kliknutím v nastavení.`],
-  ['Odkud máte data o školách?', 'Obory, kapacity a hranice přijetí jsou z veřejných výsledků jednotné přijímací zkoušky (Cermat), názvy a adresy z rejstříku škol MŠMT, další informace z webů škol a dalších veřejných zdrojů. U každého čísla uvádíme rok.'],
+  ['Kolik to stojí?', 'Onboarding a první ukázka výsledku jsou zdarma. Databáze, dotazník v aplikaci a nástroje pro rozhodování vyžadují aktivní zkušební období nebo placený přístup. V betě jsou pro registrované testery zdarma výměnou za zpětnou vazbu; platební obrazovky jsou jen náhled.'],
+  ['Odkud máte data o školách?', 'Obory, kapacity a hranice přijetí jsou z veřejných výsledků jednotné přijímací zkoušky (Cermat), názvy a adresy z rejstříku škol MŠMT, další informace z webů škol a dalších veřejných zdrojů. U přijímacích statistik uvádíme dostupný rok.'],
   ['Znamená vysoké procento shody, že mě vezmou?', 'Ne. Shoda říká, jak škola odpovídá tomu, co jsi napsal. O přijetí rozhodují přijímačky a známky, proto u škol zvlášť ukazujeme hranice přijetí.'],
   ['Platí mi školy za lepší umístění?', 'Ne. Pořadí počítá pevný vzorec z tvých odpovědí a z veřejných dat. Nikdo si v něm nemůže koupit místo.'],
-  ['Co se děje s mými odpověďmi?', 'Během dotazníku zůstávají jen v tvém prohlížeči. Uložíme je, až si založíš účet, a smazat je můžeš kdykoli i s celým účtem.'],
+  ['Co se děje s mými odpověďmi?', 'V onboardingu se průběžně ukládají v prohlížeči. Po přihlášení se mohou uložit k účtu; dotazník v aplikaci je odesílá serveru pro výpočet a uložení výsledku. Vyžádané AI vysvětlení používá vybrané odpovědi. Podrobnosti najdeš v ochraně osobních údajů.'],
   ['Je to jen pro Prahu?', `Zatím ano, všech ${SCHOOL_COUNT} pražských středních škol. Další kraje přidáme, až bude Praha fungovat tak, jak má.`],
 ];
 
@@ -617,16 +616,22 @@ export default function Landing() {
   // Role switch crossfade.
   const switchRole = (next) => {
     if (next === role) return;
-    gsap.to('.l2-role-body', {
-      autoAlpha: 0,
-      y: 10,
-      duration: reduced ? 0 : 0.18,
-      ease: 'power2.in',
-      onComplete: () => {
-        setRole(next);
-        gsap.fromTo('.l2-role-body', { autoAlpha: 0, y: -10 }, { autoAlpha: 1, y: 0, duration: reduced ? 0 : 0.45, ease: 'expo.out' });
-      },
-    });
+    // Selection and focus stay in sync even when arrow presses arrive faster
+    // than the visual transition. Only the panel's entrance is animated.
+    setRole(next);
+    gsap.fromTo('.l2-role-body', { autoAlpha: 0, y: -10 }, { autoAlpha: 1, y: 0, duration: reduced ? 0 : 0.45, ease: 'expo.out', overwrite: true });
+  };
+
+  const onRoleKey = (event) => {
+    const roles = ['student', 'parent'];
+    const index = roles.indexOf(event.currentTarget.dataset.role);
+    const next = event.key === 'Home' ? 0 : event.key === 'End' ? 1
+      : event.key === 'ArrowRight' ? (index + 1) % roles.length
+      : event.key === 'ArrowLeft' ? (index + roles.length - 1) % roles.length : null;
+    if (next === null) return;
+    event.preventDefault();
+    event.currentTarget.parentElement.querySelector(`[data-role="${roles[next]}"]`).focus();
+    switchRole(roles[next]);
   };
 
   // Magnetic primary buttons (pointer devices only).
@@ -731,9 +736,7 @@ export default function Landing() {
                 {isSignedIn ? 'Projít databázi škol' : 'Registrace'}
                 <span className="l2-btn-arrow" aria-hidden="true">→</span>
               </Link>
-              {isSignedIn
-                ? <Link to="/dotaznik" className="l2-link">nebo vyplň dotazník</Link>
-                : <Link to="/skoly" className="l2-link">nebo projdi databázi</Link>}
+              {isSignedIn && <Link to="/dotaznik" className="l2-link">nebo vyplň dotazník</Link>}
             </div>
             {!isSignedIn && <p className="l2-fine">{QUESTION_COUNT} otázek · přeskočit můžeš cokoli</p>}
           </div>
@@ -793,7 +796,7 @@ export default function Landing() {
             <span data-count="0">0</span>
             <small> Kč</small>
           </b>
-          <span>za dotazník, výsledek a databázi</span>
+          <span>za onboarding a první ukázku výsledku</span>
         </div>
       </section>
 
@@ -842,10 +845,10 @@ export default function Landing() {
                       <span className="l2-tag">{activeChip.label}</span>
                       <span className="l2-tag">{s.district}</span>
                       {formatCutoffRange(s.adm) && (
-                        <span className="l2-tag">hranice {formatCutoffRange(s.adm)}</span>
+                        <span className="l2-tag">hranice {s.adm.year}: {formatCutoffRange(s.adm)}</span>
                       )}
                       {s.adm?.acceptance != null && (
-                        <span className="l2-tag">přijato {Math.round(s.adm.acceptance)} %</span>
+                        <span className="l2-tag">přijato {s.adm.year}: {Math.round(s.adm.acceptance)} %</span>
                       )}
                     </div>
                   )}
@@ -887,6 +890,7 @@ export default function Landing() {
                     <text key={p.year} x={p.x} y={chartData.H - 2} className="l2-chart-year">{p.year}</text>
                   ))}
                 </svg>
+                <p className="l2-detail-note">Údaje o oboru za rok {detail.entry.latestYear}</p>
                 <dl className="l2-detail-stats">
                   <div><dt>Míst</dt><dd>{detail.entry.latest.kapacita ?? '—'}</dd></div>
                   <div><dt>Přihlášek</dt><dd>{detail.entry.latest.prihlasky ?? '—'}</dd></div>
@@ -921,10 +925,10 @@ export default function Landing() {
           <h2 className="l2-h2">Jeden nástroj, dva pohledy</h2>
           <div className="l2-switch" role="tablist" aria-label="Kdo jsi">
             <span className="l2-switch-pill" data-at={role} aria-hidden="true" />
-            <button type="button" role="tab" aria-selected={role === 'student'} onClick={() => switchRole('student')}>
+            <button type="button" role="tab" id="l2-role-student" data-role="student" aria-controls="l2-role-panel" tabIndex={role === 'student' ? 0 : -1} aria-selected={role === 'student'} onKeyDown={onRoleKey} onClick={() => switchRole('student')}>
               Jsem student
             </button>
-            <button type="button" role="tab" aria-selected={role === 'parent'} onClick={() => switchRole('parent')}>
+            <button type="button" role="tab" id="l2-role-parent" data-role="parent" aria-controls="l2-role-panel" tabIndex={role === 'parent' ? 0 : -1} aria-selected={role === 'parent'} onKeyDown={onRoleKey} onClick={() => switchRole('parent')}>
               Jsem rodič
             </button>
           </div>
@@ -932,7 +936,7 @@ export default function Landing() {
             Na začátku dotazníku si vybereš, kdo ho vyplňuje. Otázky i výsledek se tomu přizpůsobí.
           </p>
         </div>
-        <div className="l2-role-body" role="tabpanel" data-rise>
+        <div className="l2-role-body" role="tabpanel" id="l2-role-panel" aria-labelledby={`l2-role-${role}`} data-rise>
           <h3 className="l2-role-title">{ROLES[role].title}</h3>
           <ul className="l2-role-points">
             {ROLES[role].points.map(([t, b], i) => (
@@ -975,7 +979,7 @@ export default function Landing() {
         </div>
         <p className="l2-source" data-rise>
           Zdroje: výsledky jednotné přijímací zkoušky (Cermat), rejstřík škol MŠMT, weby jednotlivých škol a další veřejné zdroje.
-          U každého čísla v aplikaci uvádíme rok.
+          U přijímacích statistik uvádíme dostupný rok.
         </p>
       </section>
 
@@ -990,20 +994,21 @@ export default function Landing() {
             <p className="l2-plan-name">Zdarma</p>
             <p className="l2-plan-price">0 Kč</p>
             <ul>
-              <li>Dotazník a výsledek se shodou</li>
-              <li>Databáze všech {total} škol</li>
-              <li>Detail školy s hranicemi přijetí</li>
+              <li>Onboarding a první ukázka výsledku</li>
+              <li>Interaktivní mapa na úvodní stránce</li>
+              <li>Detail školy otevřený z mapy</li>
             </ul>
           </div>
           <div className="l2-plan l2-plan--full" data-rise>
             <p className="l2-plan-name">Plný přístup</p>
-            <p className="l2-plan-price">{trialDaysPhrase()} zdarma</p>
+            <p className="l2-plan-price">S aktivním přístupem</p>
             <ul>
+              <li>Databáze všech {total} škol a dotazník v aplikaci</li>
               <li>Porovnání škol vedle sebe a rozhodovací matice</li>
               <li>Plán tří přihlášek se skóre z přijímaček</li>
               <li>Poznámky ke školám</li>
             </ul>
-            <p className="l2-plan-fine">Zrušení jedním kliknutím v nastavení</p>
+            <p className="l2-plan-fine">V betě zdarma pro registrované testery výměnou za zpětnou vazbu. Platební obrazovky jsou jen náhled.</p>
           </div>
         </div>
       </section>

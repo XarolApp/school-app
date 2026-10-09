@@ -461,19 +461,18 @@
     "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
   },
   "frontend/src/pages/Admin.jsx": {
-    "sha256": "4ae78747e75521b34b853cbbfdacae3d9066a0dc519d7164993d00783400a4a9",
-    "lines": 97,
+    "sha256": "8b493056439fae94e952d8258d489acb057e6599d0ba2246d5130b5329741933",
+    "lines": 98,
     "read_ranges": [
       [
         1,
-        97
+        98
       ]
     ],
-    "status": "deferred_peer_edits",
+    "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:36:06.930712+00:00",
-    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free.",
-    "deferred_note": "Shared-checkout source changed during continuation; saved read hash/ranges are historical, pending current-source re-review."
+    "checked_at_utc": "2026-10-09T23:44:49.957181+00:00",
+    "method": "Full current source read in complete bounded ranges plus own reviewed patch; pricing/ObKit prior current hash-qualified complete reads plus own string-only patches. Browser/test acceptance recorded separately, not inferred from read."
   },
   "frontend/src/pages/onboarding/screens/Activated.jsx": {
     "sha256": "2d5bac975c980bda23520d9772310eec5a4767cc633dfac1d35eccfbc1a3162c",
@@ -574,18 +573,18 @@
     "method": "Full current source read in bounded complete ranges, truncated ranges reread; own full diff inspected. Current guide/report/UNFORGET baselines verified against saved full-read hash plus every own edit. Pricing runtime and checkout/polling/sharing handler equality verified. Source read is not Stripe, PostgreSQL, account or deployment acceptance."
   },
   "frontend/src/pages/onboarding/screens/Reveal.jsx": {
-    "sha256": "78fcc8c2f73dc0c07bd7c9cf418f5d4c6917003b7ecb08fb7ee16339fdee44c3",
-    "lines": 339,
+    "sha256": "99af33ca108e190cc7724451d00cc69ceb420e86f25d1c5fafa83e37201cb993",
+    "lines": 344,
     "read_ranges": [
       [
         1,
-        339
+        344
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:36:06.932270+00:00",
-    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+    "checked_at_utc": "2026-10-09T23:44:49.957430+00:00",
+    "method": "Full current source read in complete bounded ranges plus own reviewed patch; pricing/ObKit prior current hash-qualified complete reads plus own string-only patches. Browser/test acceptance recorded separately, not inferred from read."
   },
   "frontend/src/config/facts.js": {
     "sha256": "b8a7cd4357395ff2054a19377d760e81305dcaddf202a23fe77d96c82b43bd6e",
@@ -672,32 +671,32 @@
     "method": "Full source read; earlier full read plus complete current diff review where applicable. Read coverage does not imply defect-free or full runtime verification."
   },
   "frontend/src/pages/Home.jsx": {
-    "sha256": "a9309d6b815bf0cdbe83352a1b3ed4fb6af1d65d6ba44118dc1b151d545f8787",
-    "lines": 439,
+    "sha256": "cfe2f48b5d016a66a9ac4f0b25a7bdb6a060bc8b652a165ba106b3d4b469aab0",
+    "lines": 440,
     "read_ranges": [
       [
         1,
-        439
+        440
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:51:37.840933+00:00",
-    "method": "Full source read; earlier full read plus complete current diff review where applicable. Read coverage does not imply defect-free or full runtime verification."
+    "checked_at_utc": "2026-10-09T23:44:49.957349+00:00",
+    "method": "Full current source read in complete bounded ranges plus own reviewed patch; pricing/ObKit prior current hash-qualified complete reads plus own string-only patches. Browser/test acceptance recorded separately, not inferred from read."
   },
   "frontend/src/pages/landing2/Landing.jsx": {
-    "sha256": "ac30a1f7c74fae57ffecab6c30b6d7426fbc56ff96fc0220fa6c9a87abceed14",
-    "lines": 1035,
+    "sha256": "575a9a8a8d22c05e2f58c889e7996c65e73a3f8d10c1452fe922a1e58073019b",
+    "lines": 1050,
     "read_ranges": [
       [
         1,
-        1035
+        1050
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:51:37.841250+00:00",
-    "method": "Full source read; earlier full read plus complete current diff review where applicable. Read coverage does not imply defect-free or full runtime verification."
+    "checked_at_utc": "2026-10-09T23:44:49.957809+00:00",
+    "method": "Full current source read in complete bounded ranges plus own reviewed patch; pricing/ObKit prior current hash-qualified complete reads plus own string-only patches. Browser/test acceptance recorded separately, not inferred from read."
   },
   "frontend/src/pages/landing2/PragueScene.js": {
     "sha256": "6592aa614f28e2355fc1560652a04f941009b29e1a942df01f90174fc1dff8d5",
@@ -742,18 +741,18 @@
     "method": "Full source read; earlier full read plus complete current diff review where applicable. Read coverage does not imply defect-free or full runtime verification."
   },
   "frontend/src/styles/ui.css": {
-    "sha256": "340d7defbd20756af8a9d10bd4e20bce37c3c7447df003dd60d98c839d5c0c82",
-    "lines": 562,
+    "sha256": "1ecf78bb01c2a3b2e61279dd1c5dfe8ac9ca96339ab1676c33464ea6e9b6aefe",
+    "lines": 598,
     "read_ranges": [
       [
         1,
-        562
+        598
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:51:37.842778+00:00",
-    "method": "Full source read; earlier full read plus complete current diff review where applicable. Read coverage does not imply defect-free or full runtime verification."
+    "checked_at_utc": "2026-10-09T23:44:49.958383+00:00",
+    "method": "Full current source read in complete bounded ranges plus own reviewed patch; pricing/ObKit prior current hash-qualified complete reads plus own string-only patches. Browser/test acceptance recorded separately, not inferred from read."
   },
   "frontend/src/design/tokens.css": {
     "sha256": "609b07da8dee34a1f47d8be2e819b973fc6c291cbc477327b5b43496126b0eb9",
@@ -940,18 +939,18 @@
     "method": "Full source read; current diff reviewed for root changes. Read coverage does not imply runtime verification."
   },
   "frontend/src/pages/landing2/landing2.css": {
-    "sha256": "90c6780c7fbe7293e60990b0398d4e841eacc6e43e2eb001aaa4694443bb7bf2",
-    "lines": 1044,
+    "sha256": "5f0169d7713340f3a7aef013535d59268df264f06057a2c437b05c2bbb83cc9b",
+    "lines": 1058,
     "read_ranges": [
       [
         1,
-        1044
+        1058
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:56:39.510458+00:00",
-    "method": "Full source read; current diff reviewed for root changes. Read coverage does not imply runtime verification."
+    "checked_at_utc": "2026-10-09T23:44:49.958136+00:00",
+    "method": "Full current source read in complete bounded ranges plus own reviewed patch; pricing/ObKit prior current hash-qualified complete reads plus own string-only patches. Browser/test acceptance recorded separately, not inferred from read."
   },
   "frontend/src/pages/decision.css": {
     "sha256": "54057d108cb94b863288f861abf0c1b8d0d2bc9f6d0562255b131f0c66ed0b39",
@@ -2060,7 +2059,7 @@
     "method": "Full current source read in bounded complete ranges, plus full reviewed own patch where applicable. Browser/test evidence recorded separately; reading is not defect-free or live/legal/device approval."
   },
   "frontend/src/config/pricing.js": {
-    "sha256": "a990be6870eb153e640f67ede9a2d4e1438966a6dc607d079bd7b0b2c3f69ed6",
+    "sha256": "5f608d1c03404e3a572bd02178a6f32d84282bbfc397bc2b3ffb5e28e3b3c561",
     "lines": 373,
     "read_ranges": [
       [
@@ -2070,8 +2069,8 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T22:07:47.125587+00:00",
-    "method": "Full current source read in bounded complete ranges, truncated ranges reread; own full diff inspected. Current guide/report/UNFORGET baselines verified against saved full-read hash plus every own edit. Pricing runtime and checkout/polling/sharing handler equality verified. Source read is not Stripe, PostgreSQL, account or deployment acceptance."
+    "checked_at_utc": "2026-10-09T23:44:49.960040+00:00",
+    "method": "Full current source read in complete bounded ranges plus own reviewed patch; pricing/ObKit prior current hash-qualified complete reads plus own string-only patches. Browser/test acceptance recorded separately, not inferred from read."
   },
   "frontend/src/lib/usePicks.js": {
     "sha256": "d01f92794edb081957e270a4aaa4fdafac51f87994af1ed059f9c4c829cdea76",
@@ -2957,7 +2956,7 @@
     "method": "Full current source read in complete bounded ranges (including previous-turn api.js 1-180/181-360/361-end and tokens.js 1-150/151-end); all subsequent own narrow diffs inspected. App/ProtectedRoute reread after bc1f826. Read is not runtime/service or legal acceptance."
   },
   "frontend/src/components/onboarding/ObKit.jsx": {
-    "sha256": "5b85d3b943994dc14f9ffd386abfa9bd4e2cf630d3446c14e4f5a1ba30bbee99",
+    "sha256": "40f56ebb37bc29f360ca60f3afd32c274f2f44d48e73c7297d82cfe565404cd2",
     "lines": 275,
     "read_ranges": [
       [
@@ -2967,8 +2966,8 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T21:56:04.686116+00:00",
-    "method": "Full current source read in complete bounded ranges (including previous-turn api.js 1-180/181-360/361-end and tokens.js 1-150/151-end); all subsequent own narrow diffs inspected. App/ProtectedRoute reread after bc1f826. Read is not runtime/service or legal acceptance."
+    "checked_at_utc": "2026-10-09T23:44:49.960510+00:00",
+    "method": "Full current source read in complete bounded ranges plus own reviewed patch; pricing/ObKit prior current hash-qualified complete reads plus own string-only patches. Browser/test acceptance recorded separately, not inferred from read."
   },
   "frontend/src/pages/onboarding/useOnboarding.js": {
     "sha256": "f5260a6693427e08d562912e126e4723072e3c6f59e6a0c900466cf3b35ebf9b",
@@ -3440,5 +3439,61 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-09T23:28:51.754747+00:00",
     "method": "Complete stable source read in bounded ranges in this/preceding turn plus own reviewed patch. Settings: full hash-matching prior read plus single-line patch. Not deployment/legal/SQL/device approval."
+  },
+  "frontend/.env.example": {
+    "sha256": "0cf77a48655078a95bb5ac7f66fbfcf0318f30bcfe32b35c8401bb3244e45831",
+    "lines": 31,
+    "read_ranges": [
+      [
+        1,
+        31
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T23:44:49.958471+00:00",
+    "method": "Full current source read in complete bounded ranges plus own reviewed patch; pricing/ObKit prior current hash-qualified complete reads plus own string-only patches. Browser/test acceptance recorded separately, not inferred from read."
+  },
+  "frontend/index.html": {
+    "sha256": "b4ebc3ecb8ff5c17be92f7a3bd4594af2508eb887aedb21fa980bddcb4016377",
+    "lines": 29,
+    "read_ranges": [
+      [
+        1,
+        29
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T23:44:49.958666+00:00",
+    "method": "Full current source read in complete bounded ranges plus own reviewed patch; pricing/ObKit prior current hash-qualified complete reads plus own string-only patches. Browser/test acceptance recorded separately, not inferred from read."
+  },
+  "frontend/package.json": {
+    "sha256": "b27912980ce51004325018f74e4d70225083d366b3ad0fcd6f34516798d83dab",
+    "lines": 34,
+    "read_ranges": [
+      [
+        1,
+        34
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T23:44:49.958853+00:00",
+    "method": "Full current source read in complete bounded ranges plus own reviewed patch; pricing/ObKit prior current hash-qualified complete reads plus own string-only patches. Browser/test acceptance recorded separately, not inferred from read."
+  },
+  ".agents/skills/landing-page-design/SKILL.md": {
+    "sha256": "84c21a39dc8ebbc3a866caf36308a23b86c650477b32b38ea167eb062ee7f6a7",
+    "lines": 417,
+    "read_ranges": [
+      [
+        1,
+        417
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T23:44:49.959354+00:00",
+    "method": "Full current source read in complete bounded ranges plus own reviewed patch; pricing/ObKit prior current hash-qualified complete reads plus own string-only patches. Browser/test acceptance recorded separately, not inferred from read."
   }
 }

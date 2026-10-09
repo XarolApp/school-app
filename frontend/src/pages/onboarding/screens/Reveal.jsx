@@ -105,8 +105,8 @@ function characterise(answers, role) {
   return `${first} ${second.charAt(0).toUpperCase()}${second.slice(1)}.`;
 }
 
-// Same curve as displayScore() in the server's lib/matching.js, so the number
-// here matches what the account shows after sign-up.
+// Same display curve as the server matcher; the two engines calculate raw
+// scores separately, so an account's later score can differ.
 const toPercent = (raw) => Math.round(100 * (1 - (1 - raw) ** 1.4));
 
 function schoolWord(n) {
@@ -148,6 +148,7 @@ function Reveal() {
   const top = ranked[0];
   const locked = ranked.slice(1, 3);
   const lockedTotal = Math.max(ranked.length - 1, 0);
+  const orderedWord = lockedTotal === 1 ? 'seřazená' : lockedTotal < 5 ? 'seřazené' : 'seřazených';
 
   const reasons = useMemo(
     () => (top ? explain(top, cleanedAnswers, role || 'student', gender) : []),
@@ -213,7 +214,7 @@ function Reveal() {
         <p className="ob-lead ob-reveal-lede">
           {fitting > 0
             ? parent
-              ? `Z ${ranked.length} pražských škol tomu odpovídá ${fitting} ${schoolWord(fitting)}. Tato nejvíc:`
+              ? `Z ${ranked.length} pražských škol tomu ${fitting >= 2 && fitting <= 4 ? 'odpovídají' : 'odpovídá'} ${fitting} ${schoolWord(fitting)}. Tato nejvíc:`
               : `Z ${ranked.length} pražských škol ti sedí ${fitting} ${schoolWord(fitting)}. Tahle nejvíc:`
             : parent
               ? 'Přesně tomu žádná škola neodpovídá. Tato se blíží nejvíc:'
@@ -253,7 +254,7 @@ function Reveal() {
               ))}
             </ul>
             <p className="ob-hero-confidence">
-              Spolehlivost dat: {top.confidenceLabel.toLowerCase()}
+              Úplnost podkladů pro shodu: {top.confidenceLabel.toLowerCase()}
             </p>
             <p className="ob-hero-open" aria-hidden="true">
               Zobrazit školu <span>→</span>
@@ -277,11 +278,11 @@ function Reveal() {
               <div className="ob-lock-foot">
                 <p>
                   <strong>
-                    {parent ? 'Dalších' : 'Dalších'} {lockedTotal} {schoolWord(lockedTotal)}
+                    {lockedTotal < 5 ? 'Další' : 'Dalších'} {lockedTotal} {schoolWord(lockedTotal)}
                   </strong>{' '}
                   {parent
-                    ? 'seřazených podle vašich odpovědí, s odůvodněním u každé z nich'
-                    : 'seřazených podle tvých odpovědí, s vysvětlením u každé z nich'}
+                    ? `${orderedWord} podle vašich odpovědí, s odůvodněním shody`
+                    : `${orderedWord} podle tvých odpovědí, s vysvětlením shody`}
                 </p>
               </div>
             )}
@@ -292,7 +293,9 @@ function Reveal() {
         <div className="ob-reveal-actions">
           <ObButton onClick={goNext}>
             {lockedTotal > 0
-              ? `Zobrazit zbylých ${lockedTotal} ${schoolWord(lockedTotal)}`
+              ? lockedTotal === 1
+                ? 'Zobrazit zbývající školu'
+                : `Zobrazit zbývající ${lockedTotal} ${schoolWord(lockedTotal)}`
               : parent
                 ? 'Zobrazit celé pořadí'
                 : 'Chci vidět celé pořadí'}

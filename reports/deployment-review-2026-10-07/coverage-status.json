@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-09T23:28:52.080101+00:00",
-  "commit": "aab44badfcc8d1acaa106252d9fe77e6027d1f5c",
+  "checked_at_utc": "2026-10-09T23:44:50.327406+00:00",
+  "commit": "364744d619f084471828285df0e21a9ee23b5a85",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "pending_or_changed": 500,
-    "current_full_read": 271,
-    "binary_requires_asset_check": 81,
-    "generated_or_audit_artifact": 71,
+    "pending_or_changed": 490,
+    "current_full_read": 281,
+    "binary_requires_asset_check": 84,
+    "generated_or_audit_artifact": 74,
     "removed_or_missing": 2
   },
   "files": [
@@ -252,8 +252,10 @@
       "path": ".agents/skills/landing-page-design/SKILL.md",
       "sha256": "84c21a39dc8ebbc3a866caf36308a23b86c650477b32b38ea167eb062ee7f6a7",
       "lines": 417,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/mobbin-core-product-patterns/SKILL.md",
@@ -783,8 +785,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "e43d2f7a9609da61b2815ee4239b0030c1716ae2ed817e1f976b443808e23448",
-      "lines": 1709,
+      "sha256": "e1df58bf5e458de3d7d569936c88d869963d121538017a6aa4ca55f6a544cd42",
+      "lines": 1715,
       "status": "pending_or_changed",
       "matching_evidence": []
     },
@@ -2618,10 +2620,12 @@
     },
     {
       "path": "frontend/.env.example",
-      "sha256": "4e081d014848b0a05d6179b6c435dad8ea66d1355f8c71ce12f3055f131e8b8d",
-      "lines": 30,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "0cf77a48655078a95bb5ac7f66fbfcf0318f30bcfe32b35c8401bb3244e45831",
+      "lines": 31,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/.gitignore",
@@ -2645,8 +2649,10 @@
       "path": "frontend/index.html",
       "sha256": "b4ebc3ecb8ff5c17be92f7a3bd4594af2508eb887aedb21fa980bddcb4016377",
       "lines": 29,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/middleware.js",
@@ -2668,8 +2674,10 @@
       "path": "frontend/package.json",
       "sha256": "b27912980ce51004325018f74e4d70225083d366b3ad0fcd6f34516798d83dab",
       "lines": 34,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/public/apple-touch-icon.png",
@@ -3178,7 +3186,7 @@
     },
     {
       "path": "frontend/src/components/onboarding/ObKit.jsx",
-      "sha256": "5b85d3b943994dc14f9ffd386abfa9bd4e2cf630d3446c14e4f5a1ba30bbee99",
+      "sha256": "40f56ebb37bc29f360ca60f3afd32c274f2f44d48e73c7297d82cfe565404cd2",
       "lines": 275,
       "status": "current_full_read",
       "matching_evidence": [
@@ -3379,7 +3387,7 @@
     },
     {
       "path": "frontend/src/config/pricing.js",
-      "sha256": "a990be6870eb153e640f67ede9a2d4e1438966a6dc607d079bd7b0b2c3f69ed6",
+      "sha256": "5f608d1c03404e3a572bd02178a6f32d84282bbfc397bc2b3ffb5e28e3b3c561",
       "lines": 373,
       "status": "current_full_read",
       "matching_evidence": [
@@ -3798,8 +3806,10 @@
       "path": "frontend/src/pages/Admin.jsx",
       "sha256": "8b493056439fae94e952d8258d489acb057e6599d0ba2246d5130b5329741933",
       "lines": 98,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/pages/BetaLanding.jsx",
@@ -3839,10 +3849,12 @@
     },
     {
       "path": "frontend/src/pages/Home.jsx",
-      "sha256": "40b8238ece86bd5da8fdfb03ce96b998475f11b2dff30ce69d59486c9efd0bee",
-      "lines": 443,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "cfe2f48b5d016a66a9ac4f0b25a7bdb6a060bc8b652a165ba106b3d4b469aab0",
+      "lines": 440,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/pages/Legal.jsx",
@@ -4020,10 +4032,12 @@
     },
     {
       "path": "frontend/src/pages/landing2/Landing.jsx",
-      "sha256": "230651f34d1c72915b840076a88b6ffc3b758a9c728349c89c08ced8dfc50809",
-      "lines": 1045,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "575a9a8a8d22c05e2f58c889e7996c65e73a3f8d10c1452fe922a1e58073019b",
+      "lines": 1050,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/pages/landing2/PragueScene.js",
@@ -4038,8 +4052,10 @@
       "path": "frontend/src/pages/landing2/landing2.css",
       "sha256": "5f0169d7713340f3a7aef013535d59268df264f06057a2c437b05c2bbb83cc9b",
       "lines": 1058,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/pages/legal.css",
@@ -4158,10 +4174,12 @@
     },
     {
       "path": "frontend/src/pages/onboarding/screens/Reveal.jsx",
-      "sha256": "48c4dfaf6a83bd9905d63bd2c3fd210fe9b66b03eeed13e3fce8ab55def66543",
-      "lines": 341,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "99af33ca108e190cc7724451d00cc69ceb420e86f25d1c5fafa83e37201cb993",
+      "lines": 344,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/pages/onboarding/screens/RoleFork.jsx",
@@ -4271,8 +4289,10 @@
       "path": "frontend/src/styles/ui.css",
       "sha256": "1ecf78bb01c2a3b2e61279dd1c5dfe8ac9ca96339ab1676c33464ea6e9b6aefe",
       "lines": 598,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/supabaseClient.js",
@@ -5596,22 +5616,22 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "9d9e7147111286d33c194df04fa700a071a80095b14428131447febacec66b61",
-      "lines": 250,
+      "sha256": "397f658d37920a160ccddd3f8883917f29b683449104047ac7486300f34e493a",
+      "lines": 258,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "da7b29d52b88f1cfc4fa3c8b5760a37f6a8d0479131bc9e7ca879b982627a341",
-      "lines": 138,
+      "sha256": "87e65feb9df353f86a89bc0999c9ea1df06954a3abf9a99b78bffc2be0ad8f51",
+      "lines": 141,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "f9fc244574e5ccdc9a2c34a258e2d7ebf0d9e95ec14294979388671b6068ee75",
-      "lines": 116,
+      "sha256": "cb0215b286cf9c63efa9e6fb64412153f5b66cbd7606adf2e18b439bed3bd205",
+      "lines": 119,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -5728,10 +5748,24 @@
       "matching_evidence": []
     },
     {
+      "path": "reports/deployment-review-2026-10-07/beta-renewal-build-2026-10-10.log",
+      "sha256": "75796a8d622111f2ef601794143faa9381db8e253171eeaf370ad7e5455cbd7a",
+      "lines": 74,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/beta-renewal-guide-phone.png",
       "sha256": "c6a8e3b1c1d084b95813d1460d5cf50198e3ba9a1c638348363d4ed331fa480a",
       "lines": null,
       "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/beta-renewal-lint-2026-10-10.log",
+      "sha256": "5efdb35aef514b0ac8659e679d0d8f80553a727c1cc5efe23c6f6ed55105a08b",
+      "lines": 15,
+      "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
@@ -5820,15 +5854,15 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "418d346666d88ef72dbaf4409496a0e7920614f7a5c6809dd8fd351eeb2db405",
-      "lines": 296,
+      "sha256": "472c0dabbe449bd673c33164c63889c19c6b4497db52ed2a1bae5c18e6e14b47",
+      "lines": 309,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "d7bfaf547ea950bf0ba8c9081f0d68432ddcbf98a7a6f00517d78c52453e7cfc",
-      "lines": 7015,
+      "sha256": "8a1a15f201863d407b4ace405387df726bc8a517724551ba17d2312dd61c5728",
+      "lines": 7036,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -5980,8 +6014,22 @@
       "matching_evidence": []
     },
     {
+      "path": "reports/deployment-review-2026-10-07/landing-access-price-phone.png",
+      "sha256": "d0cc7d5074f0b7b5b8bd50818aeaad8036467bf0fa04eee37fca591f6594d88f",
+      "lines": null,
+      "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/landing-landscape-667.jpg",
       "sha256": "ba6d06e35f16c9243dbb85fd6ee044c9e04493b40e5c533dfdae383795c438eb",
+      "lines": null,
+      "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/landing-landscape-current.png",
+      "sha256": "0311714c596475cce37178fdb5bda98a5d69d5fc62ce3a757fe5601f6e0cf1f9",
       "lines": null,
       "status": "binary_requires_asset_check",
       "matching_evidence": []
@@ -5998,6 +6046,13 @@
       "sha256": "72d92e3ae41869c7e8a00b347f55e14cb3b32f7659afb7d2fa8673375e0e242e",
       "lines": null,
       "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/landing-result-verification-2026-10-10.json",
+      "sha256": "adf9a0439159485efb479bb52a38b3830c59c81c6fe2aef1ccbb54c960e0c83a",
+      "lines": 83,
+      "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
@@ -6318,9 +6373,16 @@
       "matching_evidence": []
     },
     {
+      "path": "reports/deployment-review-2026-10-07/result-count-grammar-phone.png",
+      "sha256": "d9b7791fef28ab06ee7e8532b7cc719110bb7ef027b44c2948355ae06f93a26c",
+      "lines": null,
+      "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "4edfc461c39196f53b3a7f76174954f3dfaf40747939a3cbaf5facdad59896af",
-      "lines": 3444,
+      "sha256": "8ea3b933199335dbca94171894879b108ae5a6943d37deccaf8722556b001c74",
+      "lines": 3499,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
