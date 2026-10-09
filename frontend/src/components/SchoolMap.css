@@ -232,12 +232,9 @@
   z-index: 1000;
   max-width: 360px;
   max-height: calc(100% - 2 * var(--space-md));
-  /* Content here is fixed-shape (name, meta, 3 stats, one note, buttons) —
-     never a variable-length list — so this was a defensive scroll clip that
-     was never actually needed, and it silently ate the stat tooltips'
-     hover popovers trying to escape the card in either direction. Visible
-     instead: max-height above still caps normal layout, it just no longer
-     clips anything that intentionally paints outside the box. */
+  /* Let explanations paint outside the card. max-height limits the box, but
+     does not constrain overflowing children: viewport collision handling and
+     long-content/large-text acceptance remain necessary. */
   overflow: visible;
   background: var(--surface);
   border: 1px solid var(--border-strong);

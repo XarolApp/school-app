@@ -111,7 +111,7 @@ const SORTS = [
     dirs: { asc: 'od nejnižší míry přijetí', desc: 'od nejvyšší míry přijetí' },
   },
   {
-    id: 'places', label: 'Počet míst', short: 'Míst', tradeoff: 'míst v přijímačkách 2026', defaultDir: 'desc',
+    id: 'places', label: 'Počet míst', short: 'Míst', tradeoff: 'míst podle posledních dostupných dat', defaultDir: 'desc',
     dirs: { asc: 'od nejméně míst', desc: 'od nejvíce míst' },
   },
 ];
@@ -294,8 +294,7 @@ const DEFAULT_FILTERS = {
   formy: [], // Cermat form codes: den | dal | komb | dist
   ...Object.fromEntries(RANGES.flatMap((r) => [[`${r.id}Min`, ''], [`${r.id}Max`, '']])),
   // 'shoda' when the account has a questionnaire behind it; Search falls back
-  // to 'match' at render time when no school carries a match_score, so a signed
-  // -out visitor never lands on a sort with nothing to sort by.
+  // to 'cut' at render time when no school carries a match_score.
   sort: 'shoda',
   sortDir: '', // '' = the sort's own default direction; 'asc' | 'desc' once flipped
 };
@@ -478,7 +477,7 @@ function Search() {
   // behind it (server.js attaches it from the default run). Without one there
   // is nothing to show in the stat cell and nothing to sort by, so both the
   // column and the "Nejlepší shoda" sort disappear rather than rendering "—"
-  // on all 223 rows.
+  // on every loaded row.
   const hasMatch = useMemo(
     () => rows.some((r) => typeof r.school.match_score === 'number'),
     [rows]
@@ -1214,6 +1213,14 @@ function Search() {
     </button>
   );
   const closeSort = showResults;
+  const onSortKeyDown = (event, option) => {
+    const direction = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[event.key];
+    if (!direction) return;
+    event.preventDefault();
+    const next = (sortOptions.indexOf(option) + direction + sortOptions.length) % sortOptions.length;
+    setPatch({ sort: sortOptions[next].id, sortPicked: true, sortDir: '' });
+    event.currentTarget.parentElement.querySelectorAll('[role="radio"]')[next]?.focus();
+  };
   const sortList = (
     <div className="ss-sort-options" role="radiogroup" aria-label="Řadit">
       {sortOptions.map((o) => (
@@ -1269,6 +1276,8 @@ function Search() {
           type="button"
           role="radio"
           aria-checked={activeSort === o.id}
+          tabIndex={activeSort === o.id ? 0 : -1}
+          onKeyDown={(event) => onSortKeyDown(event, o)}
           className={`ss-fbtn${activeSort === o.id ? ' is-on' : ''}`}
           onClick={() => setPatch({ sort: o.id, sortPicked: true, sortDir: '' })}
         >
@@ -1349,7 +1358,7 @@ function Search() {
           <h1 className="ss-headline-lg">Střední školy v Praze</h1>
           {!loading && !error && (
             <p className="ss-body-md ss-source-line">
-              {total} {skol(total)}. Data o přijímačkách z Cermatu, rok 2026. Starší roky najdeš v detailu školy.
+              {total} {skol(total)}. Data o přijímačkách z Cermatu podle posledního dostupného roku každé školy. Starší údaje jsou označené; historii najdeš v detailu školy.
             </p>
           )}
           {loading && <Sk w={520} h={24} className="ss-source-line" />}
@@ -1426,7 +1435,7 @@ function Search() {
         </button>
         {sheet === 'all' ? filtersEl : sheet === 'sort' ? sortList : activeSheetGroup?.content}
         <button type="button" className="ss-mobile-commit" onClick={showResults}>
-          Zobrazit {n} {skol(n)}
+          Zobrazit {n} {skolGen(n)}
         </button>
       </Modal>
 
@@ -1506,8 +1515,8 @@ function Search() {
                 <p className="ss-legend ss-body-sm">
                   <Info size={16} aria-hidden="true" />
                   <span>
-                    Řazeno podle: {activeSortDef.label.toLowerCase()}, {sortDir === 'asc' ? 'vzestupně' : 'sestupně'} ({activeSortDef.dirs[sortDir]}). {activeSort === 'cut' && sortDir === 'asc' && <>Nižší hranice je bezpečnější volba, ne nutně lepší škola. </>}
-                    <strong>Hranice</strong> je nejnižší počet bodů z přijímaček (max. 100), se kterým se v roce 2026 dalo dostat, od oboru s nejnižší po obor s nejvyšší hranicí. Starší roky najdeš v grafu na stránce školy. <strong>Přijato</strong> je podíl přijatých ze všech přihlášených. <strong>Míst</strong> je počet míst, která škola otevírala v přijímačkách 2026.
+                    Řazeno podle: {activeSortDef.label.toLowerCase()}, {sortDir === 'asc' ? 'vzestupně' : 'sestupně'} ({activeSortDef.dirs[sortDir]}). {activeSort === 'cut' && sortDir === 'asc' && <>Nižší historická hranice nezaručuje přijetí. </>}
+                    <strong>Hranice</strong> je nejnižší bodový výsledek přijatých uchazečů podle dat z přijímaček (max. 100), od oboru s nejnižší po obor s nejvyšší hranicí. Používáme poslední dostupný rok školy; starší údaje jsou označené a historii najdeš v detailu. <strong>Přijato</strong> je podíl přijatých ze všech přihlášených. <strong>Míst</strong> je počet míst podle dostupných údajů Cermatu.
                     {hasMatch && <> <strong>Shoda</strong> říká, jak škola sedí na tvoje odpovědi z dotazníku, ne jak je dobrá.</>}
                   </span>
                 </p>
@@ -1604,6 +1613,7 @@ function Search() {
                         row.districtLabel,
                         zrizovatelLabel(row.p.zrizovatel),
                         ukonceni,
+                        adm?.isOld ? `starší údaje o přijímačkách, ${adm.year}` : null,
                       ].filter(Boolean).join(' · ');
                       const compareDisabled = selected.size >= COMPARE_LIMIT && !isSelected;
 

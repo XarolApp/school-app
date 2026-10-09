@@ -61,14 +61,12 @@ function homePinHtml() {
 }
 
 /**
- * A plain Leaflet map, not react-leaflet — react-leaflet's peer dependency
- * range doesn't yet cover React 19, and the imperative Leaflet API is a
- * small, well-contained surface here (one map, N pins, one home pin, one
- * detail card).
+ * A plain Leaflet map using the imperative API: one map, school pins, one
+ * home pin and one detail card.
  *
  * `rows` is the CURRENTLY FILTERED list from Search.jsx — the map only ever
  * shows what the list would show (further narrowed by the radius filter
- * below), never all 60 schools regardless of the sidebar filters.
+ * below), never the unfiltered catalogue.
  *
  * Every floating control (locate panel, fullscreen button, detail card) is
  * given z-index: 1000 — Leaflet's own internal panes (tiles, markers,
@@ -281,7 +279,7 @@ function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
         <button type="button" className="sm-locate-btn" onClick={centerOnMe}>
           Najít mě podle polohy
         </button>
-        <p className="ss-caption sm-privacy-note">Adresu ani polohu nikam neukládáme.</p>
+        <p className="ss-caption sm-privacy-note">Polohu držíme jen v paměti této stránky. Zadanou adresu posíláme službě OpenStreetMap pro vyhledání.</p>
         {addressError && <p className="ss-caption sm-address-error">{addressError}</p>}
 
         {homePos && (
@@ -335,7 +333,9 @@ function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
                 hranice {selectedAdm?.year ?? ''}{selectedAdm?.isOld ? ', starší data' : ''}
                 <StatInfo
                   placement="bottom"
-                  text={`Nejnižší počet bodů z češtiny a matematiky (max. 100, tedy 50 + 50), který v roce ${selectedAdm?.year ?? ''} stačil na přijetí. Rozpětí od oboru s nejnižší po obor s nejvyšší hranicí. Starší roky najdeš v grafu v detailu školy.`}
+                  text={selectedAdm?.year
+                    ? `Nejnižší bodový výsledek přijatých uchazečů podle dat Cermatu za rok ${selectedAdm.year} (max. 100, tedy 50 + 50). Rozpětí od oboru s nejnižší po obor s nejvyšší hranicí. Historická hranice nezaručuje budoucí přijetí; historii najdeš v detailu školy.`
+                    : 'Údaje o bodové hranici této školy zatím nemáme.'}
                 />
               </p>
             </div>
@@ -347,7 +347,9 @@ function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
                 přijato {selectedAdm?.year ?? ''}{selectedAdm?.isOld ? ', starší data' : ''}
                 <StatInfo
                   placement="bottom"
-                  text={`Kolik procent přihlášených škola v roce ${selectedAdm?.year ?? ''} přijala, ve všech oborech dohromady. Podrobnosti po oborech a starší roky najdeš v detailu školy.`}
+                  text={selectedAdm?.year
+                    ? `Kolik procent přihlášených škola v roce ${selectedAdm.year} přijala, ve všech oborech dohromady. Podrobnosti po oborech a starší roky najdeš v detailu školy.`
+                    : 'Údaje o míře přijetí této školy zatím nemáme.'}
                 />
               </p>
             </div>
@@ -357,7 +359,7 @@ function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
                 míst
                 <StatInfo
                   placement="bottom"
-                  text="Kolik míst škola otevírala ve všech oborech v přijímačkách 2026. Na další rok se počet může změnit."
+                  text="Počet míst podle dostupných údajů Cermatu ve všech oborech dohromady. Na další rok se počet může změnit."
                 />
               </p>
             </div>

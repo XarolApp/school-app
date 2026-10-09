@@ -145,7 +145,7 @@
     "checked_at_utc": "2026-10-07T18:23:06.561932+00:00"
   },
   "frontend/src/components/FavoriteButton.jsx": {
-    "sha256": "76fb274d2a435352dd027f10711028f591a2bbef4efd3227dcac5f6e6f86ba83",
+    "sha256": "fed9d4dfd390428d390d5509caa5669b5a9820053358ec4be1dbfc2b48ecd869",
     "lines": 77,
     "read_ranges": [
       [
@@ -155,7 +155,8 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:23:06.562093+00:00"
+    "checked_at_utc": "2026-10-09T23:06:59.247017+00:00",
+    "method": "Full stable current source read in bounded complete ranges; current own authored diff fully reviewed where applicable. Actual Search/Map isolated browser checks recorded separately. Read is not runtime/service/legal acceptance."
   },
   "frontend/src/components/FilterPopover.jsx": {
     "sha256": "f2754a588a6dd4b3924022f5fc35d780a94217891a2531821b6c721f2b8de030",
@@ -185,17 +186,18 @@
     "checked_at_utc": "2026-10-07T18:23:06.562607+00:00"
   },
   "frontend/src/components/Layout.jsx": {
-    "sha256": "b764b1e3c992a0961268d3799ec760f7b88cf82b4b5c901f885d1c5604103ebd",
-    "lines": 269,
+    "sha256": "963f3b08f72ca2986bcedc119df9459ed1dcbee9d186f6a4040c849aee9823bd",
+    "lines": 309,
     "read_ranges": [
       [
         1,
-        269
+        309
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:23:06.562954+00:00"
+    "checked_at_utc": "2026-10-09T23:06:59.247017+00:00",
+    "method": "Full stable current source read in bounded complete ranges; current own authored diff fully reviewed where applicable. Actual Search/Map isolated browser checks recorded separately. Read is not runtime/service/legal acceptance."
   },
   "frontend/src/components/onboarding/MatchPreview.jsx": {
     "sha256": "aabf3610df20a6b45652d356a2d17c994de3428629002e441a9f86efec2f54a0",
@@ -347,32 +349,32 @@
     "checked_at_utc": "2026-10-07T18:23:06.565830+00:00"
   },
   "frontend/src/pages/Search.jsx": {
-    "sha256": "8549cf8150912b74bfec5731fa8697acb69ee09dcd6ba3995c0125b5b3a730d9",
-    "lines": 1686,
+    "sha256": "6a611589a9146d1def34478463e1351c26e38a89b1959089e4bd00ff0932feb6",
+    "lines": 1827,
     "read_ranges": [
       [
         1,
-        1686
+        1827
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:36:06.927793+00:00",
-    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+    "checked_at_utc": "2026-10-09T23:06:59.247017+00:00",
+    "method": "Full stable current source read in bounded complete ranges; current own authored diff fully reviewed where applicable. Actual Search/Map isolated browser checks recorded separately. Read is not runtime/service/legal acceptance."
   },
   "frontend/src/components/SchoolMap.jsx": {
-    "sha256": "e217fb5543faa1668aa9e2904cb4915a86e8f8718420b9be5de499d55976def6",
-    "lines": 400,
+    "sha256": "4001be30cef29b162050d6a1d603003e6b5ebc3c54e4e0ee1f0210743ce54a8a",
+    "lines": 402,
     "read_ranges": [
       [
         1,
-        400
+        402
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:36:06.928370+00:00",
-    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+    "checked_at_utc": "2026-10-09T23:06:59.247017+00:00",
+    "method": "Full stable current source read in bounded complete ranges; current own authored diff fully reviewed where applicable. Actual Search/Map isolated browser checks recorded separately. Read is not runtime/service/legal acceptance."
   },
   "frontend/src/components/SearchFilters.jsx": {
     "sha256": "7e8b6af0835b36d7eb58f159a6ff78d5e135079c36d6bf0af4f9b3a501109f35",
@@ -882,18 +884,18 @@
     "method": "Full source read across recorded continuation turns, including missing middleware/brainstorm ranges and complete authored diffs. Read means inspected, not defect-free or runtime-approved."
   },
   "frontend/src/components/SchoolMap.css": {
-    "sha256": "e9a00a3b67e54ae25d826530bca17f9a2cabda8b50d86a07b0453a22286b8be7",
-    "lines": 298,
+    "sha256": "7237fc024d4af5271f844e8daf6139c9e54b2ee1375e9527d18eadd92ffbcaa6",
+    "lines": 294,
     "read_ranges": [
       [
         1,
-        298
+        294
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:56:39.509247+00:00",
-    "method": "Full source read; current diff reviewed for root changes. Read coverage does not imply runtime verification."
+    "checked_at_utc": "2026-10-09T23:06:59.247017+00:00",
+    "method": "Full stable current source read in bounded complete ranges; current own authored diff fully reviewed where applicable. Actual Search/Map isolated browser checks recorded separately. Read is not runtime/service/legal acceptance."
   },
   "frontend/src/components/landing/productScreens.css": {
     "sha256": "6bc8d38821869cf47f33c400af8b45c2b13ed994a4b48abc9a320c4cf76ab19f",
@@ -3255,5 +3257,33 @@
     "status": "complete",
     "reviewer": "root",
     "method": "Full stable current read in bounded ranges, or exact verified full-read baseline plus complete current diff and own reviewed patch. Truncated confirmation/instructions ranges reread; UNFORGET peer additions fully reread after 3bc498c. Source read is not legal/service/runtime approval."
+  },
+  "frontend/src/components/StatInfo.jsx": {
+    "sha256": "8bdccee3c0b2ec28aad3499c3f089815b546f737690c29061e644fbc7188928c",
+    "lines": 10,
+    "read_ranges": [
+      [
+        1,
+        10
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T23:06:59.247017+00:00",
+    "method": "Full stable current source read in bounded complete ranges; current own authored diff fully reviewed where applicable. Actual Search/Map isolated browser checks recorded separately. Read is not runtime/service/legal acceptance."
+  },
+  "frontend/src/components/Hint.jsx": {
+    "sha256": "72d0076ca70179be6b7d71000b3a7b6072cfb3511b307fb09deaa5bbd6be9c12",
+    "lines": 55,
+    "read_ranges": [
+      [
+        1,
+        55
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T23:06:59.247017+00:00",
+    "method": "Full stable current source read in bounded complete ranges; current own authored diff fully reviewed where applicable. Actual Search/Map isolated browser checks recorded separately. Read is not runtime/service/legal acceptance."
   }
 }

@@ -1,0 +1,40 @@
+{
+  "checked_at_utc": "2026-10-09T23:06:59.247017+00:00",
+  "baseline_commit": "902bccd",
+  "scope": "Actual Search/SchoolMap components; synthetic auth/API/catalogue; actual Leaflet with external tiles disabled; no auth, mail, feedback, address, geolocation or purchase write.",
+  "checks": {
+    "desktop_sort_radio": "Arrow selection/focus/wrap and Tab checked",
+    "older_year": "2024 is visible and no universal 2026 claim",
+    "single_result_action": "Zobrazit 1 školu",
+    "search_phone_document": {
+      "viewport": 375,
+      "scrollWidth": 375
+    },
+    "map_phone_document": {
+      "viewport": 375,
+      "scrollWidth": 405
+    },
+    "visible_capacity_note": {
+      "left": -144.75,
+      "right": 95.25,
+      "width": 240,
+      "visibility": "visible",
+      "opacity": 1
+    },
+    "hidden_first_note": {
+      "left": 165,
+      "right": 405,
+      "visibility": "hidden",
+      "opacity": 0
+    },
+    "lint": "exit 0, zero errors, eleven existing warnings",
+    "build": "exit 0, large-chunk warnings"
+  },
+  "open": [
+    "C29 viewport collision",
+    "C03 mixed-year filter labels",
+    "C01 provider policy/retention",
+    "C02/C16 ownership",
+    "real-device/browser and full beta journeys"
+  ]
+}
