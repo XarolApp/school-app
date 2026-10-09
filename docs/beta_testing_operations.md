@@ -68,34 +68,39 @@ When the founder supplies the end date and time, edit the single row where
 - Set `feedback_form_url` only after the external form URL is supplied. Leave
   it `NULL` otherwise; the app validates HTTPS before showing a link.
 
-Add one row to `beta_schools` per participating school. Use an uppercase code
-matching `^[A-Z0-9][A-Z0-9_-]{2,31}$` and the school's trimmed name:
+The current cohort has one shared tester code and one internal school attribution
+row. Do not create a different code per tester or show the school name as a tester
+invitation. Seed the existing cohort row with the uppercase code and internal school
+name:
 
 ```sql
 insert into public.beta_schools (code, school_name)
-values ('GYMJECNA', 'Název školy')
+values ('PRISTUPTESTOVACIVERZE', 'ZŠ Jesenicova')
 on conflict (code) do update set school_name = excluded.school_name;
 ```
 
-Replace both sample values with the school's agreed code and name. Do not reuse
-a code for another school after distributing it. Construct the invitation as
-`https://<deployed-domain>/beta/<CODE>`.
+This database row is internal: it satisfies the signup trigger's code validation
+and attributes testers to the sole cohort school. The tester-facing code is
+`pristuptestovaciverze`; the uppercase form is used in `beta_schools` and the
+frontend environment variable. The beta landing is at `/beta/PRISTUPTESTOVACIVERZE`.
 
 The frontend deployment needs `VITE_API_BASE_URL` set to the trusted backend
-origin (the same public API origin used by the app). The site-wide access code
-is separate from the school invitation code: set `SITE_ACCESS_KEY` in Vercel,
-server-side only, and send it to testers through the school's e-mail. Testers
-enter it once; the middleware compares normalized text and stores an HMAC in an
-HttpOnly, Secure, SameSite=Lax cookie for 180 days. `/beta/<CODE>` and
-`/email-overen?beta=<CODE>` do not bypass this gate. A confirmation link opened
-in a fresh browser asks for the site code first; reloading after entry preserves
-the confirmation URL hash.
+origin (the same public API origin used by the app). In Vercel set server-side
+`SITE_ACCESS_KEY=pristuptestovaciverze` and public
+`VITE_BETA_SCHOOL_CODE=PRISTUPTESTOVACIVERZE`. The middleware accepts the shared
+code by POST, normalizes it, and stores an HMAC in a Secure, HttpOnly,
+SameSite=Lax cookie for 180 days. Production fails closed when `SITE_ACCESS_KEY`
+is missing; local and preview builds stay open. `/beta/<CODE>` and
+`/email-overen?beta=<CODE>` do not bypass the gate. A confirmation link opened
+in a fresh browser asks for the code first; after entry, the same path, query and
+hash are restored so Supabase tokens survive.
 
-For a single-school cohort, set public `VITE_BETA_SCHOOL_CODE` to the existing
-uppercase `beta_schools.code`. The first visit to `/` sends that browser to the
-school's beta landing once. Signup flows use this code automatically, while
-still asking the tester to choose a role and acknowledge the beta data-use
-notice. The school invitation remains validated by the backend before signup.
+`VITE_BETA_SCHOOL_CODE` is public and included in the frontend bundle. It sends
+the first visit to `/` to the beta landing once and supplies the internal school
+code at signup; testers still choose a role and acknowledge the beta data-use
+notice. Since this public value matches the gate code, treat the shared-code gate
+as a beta distribution barrier, not as a security boundary. Keep API authorization
+server-side: direct requests to the backend are not blocked by frontend middleware.
 
 In Supabase Auth URL configuration, allow the deployed confirmation return path
 `https://www.stredninamiru.cz/email-overen**` (and `http://localhost:5173/email-overen**`

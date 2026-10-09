@@ -6,7 +6,8 @@ policies and Auth/Storage settings still require separate migration verification
 
 **Observed deployment, 8 October 2026:** frontend https://www.stredninamiru.cz
 (apex redirects to www; the shared-code gate returns `no-store` and `noindex`).
-The shared code opens the school beta invitation. Backend
+The site-wide gate uses the shared tester code and protects only the frontend;
+each API endpoint has its own authorization policy. Backend
 https://school-app-production-be43.up.railway.app returns a healthy JSON response;
 its CORS response allows the www origin. CORS does not replace API authorization:
 the anonymous catalogue endpoint currently returns all 217 visible schools and
@@ -46,6 +47,10 @@ and [handoff gates](reports/deployment-review-2026-10-07/HANDOFF-PLAN.md).
      silently falls back to the service-role key.
    - `BETA_TICKET_SECRET` — a fresh random 32+ byte value (beta tracking tickets).
    - `ADMIN_EMAILS` / `DEVELOPER_EMAILS` — comma-separated, server-only.
+   - `OPENROUTER_API_KEY` — needed for questionnaire explanations and cached
+     school reasons. Defaults are `OPENROUTER_MODEL=openai/gpt-6-luna`,
+     `OPENROUTER_PROSCONS_MODEL=openai/gpt-6-luna`, and
+     `OPENROUTER_PROVIDER=openai/flex`; see [`.env.example`](.env.example).
    - `FRONTEND_URL` — you don't have the Vercel URL yet. Deploy step 2 first,
      then come back and set this to that URL (no trailing slash), then
      redeploy this service (Railway → Deployments → Redeploy) so CORS,
@@ -73,12 +78,17 @@ and [handoff gates](reports/deployment-review-2026-10-07/HANDOFF-PLAN.md).
    - `VITE_TURNSTILE_SITE_KEY` — must match the Turnstile secret configured in
      Supabase → Authentication → Attack Protection. If CAPTCHA is enabled in Supabase
      and this is unset, every signup/login fails.
-   - `SITE_ACCESS_KEY` — **not** prefixed `VITE_`; read by `frontend/middleware.js`
-     as the site-wide tester code. It is submitted by POST and stored only as an
-     HMAC cookie. Production fails closed if this variable is missing.
-   - `VITE_BETA_SCHOOL_CODE` — optional public cohort code. When set, the home page
-     directs each browser to that school's beta landing once, and signup flows
-     enroll new accounts after the tester completes the role and data-use acknowledgement.
+   - `SITE_ACCESS_KEY` — **not** prefixed `VITE_`; set the shared tester code
+     `pristuptestovaciverze`. Vercel middleware accepts it by POST and stores only
+     an HMAC in a 180-day Secure, HttpOnly, SameSite=Lax cookie. Production fails
+     closed if this variable is missing; `/beta/:code` and `?beta=` do not bypass it.
+   - `VITE_BETA_SCHOOL_CODE=PRISTUPTESTOVACIVERZE` — public, baked into the client
+     bundle, and used for the single internal beta-school enrolment. It is the
+     uppercase form of the shared tester code. The first visit to `/` goes to the
+     beta landing once; signup still requires role and data-use acknowledgement.
+     Since this value is public and matches the gate code, treat the shared-code
+     gate as a beta distribution barrier, not as a security boundary. API access
+     still depends on server-side authorization.
 5. Deploy. Copy the resulting URL and go back to Railway (step 1.3) to set
    `FRONTEND_URL` to it, then redeploy the Railway service.
 
@@ -104,9 +114,10 @@ schema on production or use production accounts for destructive acceptance tests
 ## 4. Verify the deployed beta
 
 - Record the deployed frontend/backend commits, HTTP security headers, allowed
-  origins and environment mode. Test both the shared-code gate and unlocked app;
-  the gate currently lacks CSP/framing and other explicit browser security headers.
-  Select compatible policies and verify Turnstile, maps, Auth and screenshots still
+  origins and environment mode. Test both the shared-code gate and unlocked app.
+  `frontend/vercel.json` configures CSP in report-only mode and applies the other
+  listed browser security headers; inspect their deployed values and reports before
+  considering CSP enforcement. Verify Turnstile, maps, Auth and screenshots still
   work. The API host is independently reachable outside the frontend gate.
 - Use designated synthetic testers to exercise invitation → role/data-use
   acknowledgement → signup → email confirmation → first sign-in → onboarding →

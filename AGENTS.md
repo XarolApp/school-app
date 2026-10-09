@@ -305,9 +305,10 @@ themselves. Use the browser pane / preview tools for this.
 - **Frontend linting:** `oxlint` (`npm run lint` inside `frontend/`) — not ESLint
 - **Icons:** `lucide-react`, named imports only (never the barrel import — that is
   what makes it tree-shakeable)
-- **AI:** Gemini 2.5 Flash Lite via OpenRouter (default; `OPENROUTER_MODEL` overrides) — writes the *explanation sentence* on the
-  standalone questionnaire only. Scoring is plain JS on both surfaces; the AI never
-  produces a number
+- **AI:** GPT-6 Luna via OpenRouter (`OPENROUTER_MODEL=openai/gpt-6-luna`,
+  `OPENROUTER_PROVIDER=openai/flex`) writes questionnaire explanation sentences
+  and on-demand school reasons. Matching and scores are deterministic JavaScript;
+  AI never produces a score. Gemini remains in the separate scraping pipeline.
 - **Scraping:** n8n + Firecrawl + Gemini 2.5 Flash Lite (external workflow, not in this repo)
 - **Payments:** Stripe Checkout + webhooks are implemented and covered by deterministic
   boundary tests. Monthly uses a subscription; season uses Setup mode followed by one
@@ -315,6 +316,34 @@ themselves. Use the browser pane / preview tools for this.
   are still blocked by the checklist at the top of `UNFORGET.md`.
 - **Mobile app:** planned before public launch, framework not yet chosen. Intended
   primary surface — see "Platform Strategy" directly below.
+
+## Beta access and release behavior
+
+- The Vercel Edge gate requires one shared tester code. It accepts a POST to
+  `/__gate`, normalizes the code, and sets a 180-day Secure, HttpOnly,
+  SameSite=Lax cookie containing an HMAC. The code stays out of the URL; reloading
+  preserves the current path, query and hash, including Supabase email tokens.
+  `/beta/:code` and `?beta=` are not gate bypasses. Production fails closed when
+  `SITE_ACCESS_KEY` is missing; local and preview deployments remain open.
+- The current cohort uses `pristuptestovaciverze` as its shared gate/enrolment
+  code. Set frontend `VITE_BETA_SCHOOL_CODE=PRISTUPTESTOVACIVERZE` (public and
+  baked into the bundle); it sends first-time visitors to the beta landing and
+  supplies the single internal `beta_schools` code at signup. New accounts still
+  confirm their role and beta data-use notice. Because this public value matches
+  the gate code, treat the gate as a beta distribution barrier, not as a security
+  boundary; API authorization remains server-side.
+- The comparison screen supports up to five schools (`COMPARE_LIMIT = 5`). School
+  reviews are disabled throughout the feedback beta with
+  `SCHOOL_REVIEWS_ENABLED=false`; consented beta website testimonials use a
+  separate flow and table.
+- A build id is exposed through `/version.json`. `updateWatcher.js` checks every
+  five minutes and when a tab becomes visible, then reloads a changed build after
+  30 minutes of inactivity. It waits around dialogs, focused inputs, feedback
+  uploads and Stripe redirects, and restores the path and scroll position.
+  `index.html` and `/version.json` are `no-store`; hashed assets are immutable.
+  Session-backed drafts remain available across the reload. Stale Vite chunks
+  trigger at most one guarded reload. The Vercel CSP is report-only while the
+  other configured security headers are enforced.
 
 ## Platform Strategy
 
@@ -355,10 +384,10 @@ are deployed. See the current deployment report.
 | `beta_program_settings` | singleton beta cutoff, rolling access hours, optional external feedback URL; present live on 2026-10-07 (48 hours, cutoff 12 October at 23:10 Europe/Prague) |
 | `beta_feedback` | tester-authored `bug`/`idea`/`comment` reports, attributed to the tester's school by the server |
 | `school_programs` | one row per obor per school per year, from Cermat's real admission results — `typ_skoly`, `zrizovatel`, `maturitni`, `jpz_povinna`, `jazyk_studia`, `delka_studia`, `zamereni` (Cermat's free-text focus; tells apart programmes sharing one KKOV, e.g. FOSTRA's five gymnázia — splits only the newest year, its wording changes yearly), `kkov`, `kapacita`, `prihlasky`, `prijati`, `cutoff`. No client RLS policy, same as `schools` — server.js only. Declared in `supabase-setup.sql` itself as of 2026-09-08 — it existed in the live database earlier than that (created directly by the import script), so this file didn't yet describe the real schema; fixed rather than left drifting. |
-| `users` | profile mirror of the private `auth.users`: email, name, `trial_expires_at`, `subscription_status`, `theme_palette`, `theme_mode`, Stripe ids; beta adds nullable `tester_school_code`, `tester_access_until`, `tester_guidance_seen_at` |
+| `users` | profile mirror of the private `auth.users`: email, name, nullable `gender` (`m`/`f`, captured only for students and used for grammatical agreement), `trial_expires_at`, `subscription_status`, `theme_palette`, `theme_mode`, Stripe ids; beta adds nullable `tester_school_code`, `tester_access_until`, `tester_guidance_seen_at` |
 | `favorites` | `(user_id, school_id)` |
-| `questionnaire_runs` | one row per completed *standalone* questionnaire: answers, matches, `label`, `is_default`, `archived_at`, `source` (`'questionnaire'` or `'onboarding'` — the latter written once per account from the onboarding quiz via `POST /api/me/onboarding-answers`) |
-| `school_reviews` | one row per (school, user): `role`, `role_year`, `obor_nazev`, `body`, `show_name`, `verified`, `status`. No client RLS policy — server.js only, see "User-generated content" above. |
+| `questionnaire_runs` | one row per completed *standalone* questionnaire: answers, matches, `extra_reasons` (JSONB map keyed by school id, populated on demand), `label`, `is_default`, `archived_at`, `source` (`'questionnaire'` or `'onboarding'` — the latter written once per account from the onboarding quiz via `POST /api/me/onboarding-answers`) |
+| `school_reviews` | one row per (school, user): `role`, `role_year`, `obor_nazev`, `body`, `show_name`, `verified`, `status`. No client RLS policy — server.js only. The feature is disabled during beta with `SCHOOL_REVIEWS_ENABLED=false`; see the separate consented beta website-review flow. |
 | `review_reports` | `id` primary key, `review_id`, nullable `user_id`, reason; one report per signed-in account per review, anonymous notices also supported |
 | `data_reports` | crowdsourced "Nahlásit chybu v údajích": `school_id`, `user_id`, `field`, `message`, read directly in Supabase |
 | `application_picks` | `(user_id, school_id)`, `priority` 1–3, optional `obor_kkov`/`obor_nazev` — the 3 schools a student is actually applying to, in binding DiPSy order. No client RLS policy — server.js only, delete-then-insert on every reorder. See plan 006 §1.1 for why this is a separate table from `favorites`. |
@@ -768,29 +797,13 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
     selection (`lib/searchPrefs.js`) consumed by the implemented `/porovnani`
     and decision matrix; access/consistency review remains open.
 
-    **User-generated content — reviews.** Real, not a stub: any
-    email-confirmed account can write one (`requireAuth`, not
-    `requireAccess` — reviewing a school you already left needs no active
-    trial). Two identity rules enforced ONLY server-side, never trusted from
-    the client:
-    - A review is pseudonymous by role ("Student · 3. ročník", "Rodič
-      studenta", …) UNLESS the reviewer is `rodic` or `ucitel` AND opted in
-      to showing their first name. Never offered to `student` / `absolvent`
-      / `navstevnik`. This is the implemented protective role policy, not proof
-      of verified age or parental authority. Online-consent age and contract
-      capacity are separate questions; role selection does not verify adulthood.
-      Preserve the policy while resolving legal/operational review gates.
-    - The display name is resolved from `users.name` at READ time
-      (`server.js`'s `reviewDisplayName()`), never frozen into the stored
-      row — so revoking consent actually removes the name from every review
-      immediately (GDPR Art. 17), not just new ones.
-
-    Moderation is notice-and-action, not pre-approval: a word filter
-    (`lib/reviewFilter.js` — profanity + "names a specific teacher") holds a
-    review before it ever publishes; otherwise it's live immediately, and
-    one report (`POST /api/reviews/:id/report`) holds it out of public view
-    pending a manual look. `verified` exists on every review but nothing
-    sets it yet — see `UNFORGET.md`.
+    **User-generated content — reviews.** School-review reads return an empty
+    list and writes are rejected during beta; the school detail page shows the
+    off note instead of a review feed or form. Keep the frontend flag and server
+    `SCHOOL_REVIEWS_ENABLED` false while testers use the separate feedback and
+    consented beta website-review flows. The `school_reviews` table and server
+    code remain in the schema for a later launch; do not describe school reviews
+    as available to beta users.
 
 ## What's NOT Built Yet (MVP Scope)
 
@@ -805,12 +818,10 @@ developer-email bypass confirmed working.
 
 Explicitly OUT of MVP scope (post-launch): open-ended AI chat assistant.
 
-**Reviews are IN, as of 2026-09-08** — this line used to list them as
-post-launch; that was overridden by an explicit decision, not superseded by
-drift. Real, user-written reviews now ship on the school detail page
-(`school_reviews` table, `server.js`'s Reviews section, `POST /api/schools/:id/reviews`
-et al., `components/schoolDetail/SchoolReviews.jsx`). Q&A (a related §4
-feature) is still deferred — see `UNFORGET.md`.
+**School reviews are implemented but disabled during beta** by the server-side
+`SCHOOL_REVIEWS_ENABLED=false` flag. The separate beta website-review feature
+requires explicit publication consent and is not a school review. Q&A remains
+deferred — see `UNFORGET.md`.
 
 **The mobile app is NOT out of scope — it is planned before public launch, and it is
 intended to be the PRIMARY surface.** (Corrected 2026-08-24; an earlier version of
