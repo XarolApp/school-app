@@ -158,6 +158,13 @@ export function AuthProvider({ children }) {
       setBetaDeadlineMs(remainingMs === null ? null : Date.now() + remainingMs);
       setBetaClockNow(Date.now());
     } catch (error) {
+      // The server rejected the token itself (account deleted, session revoked):
+      // this browser's saved session is dead, so end it instead of showing a
+      // signed-in header over a page that errors on everything.
+      if (error?.status === 401 && requestId === profileRequestRef.current) {
+        await supabase.auth.signOut({ scope: 'local' }).catch(() => {});
+        return;
+      }
       if (requestId === profileRequestRef.current && profileIdentityRef.current === userId) {
         // A failed profile read must not leave stale tester access or expose a
         // normal checkout action for an account whose role is unknown.
