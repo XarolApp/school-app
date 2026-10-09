@@ -14,6 +14,7 @@ import {
   createShareLink,
   fetchShareLinks,
   deleteShareLink,
+  explainQuestionnaireSchool,
 } from '../api';
 import ConfirmDialog from '../components/ConfirmDialog';
 import { shareUrl } from '../lib/shareLink';
@@ -176,9 +177,27 @@ function QuestionnaireSkeleton({ view, aiNote }) {
   );
 }
 
-function MatchRow({ match, rank, compact }) {
+function MatchRow({ match, rank, compact, extraReason = '' }) {
   const school = match.school;
   const signals = Array.isArray(match.signals) ? match.signals : [];
+  // A run saved while the AI was unavailable has no sentence; the student can
+  // ask for it here (the server caches it, so a second click costs nothing).
+  const [generated, setGenerated] = useState('');
+  const [explaining, setExplaining] = useState(false);
+  const [explainError, setExplainError] = useState('');
+  const reason = match.reason || extraReason || generated;
+  const explain = async () => {
+    setExplaining(true);
+    setExplainError('');
+    try {
+      const result = await explainQuestionnaireSchool(match.school_id);
+      setGenerated(result.reason || '');
+    } catch (err) {
+      setExplainError(err.message || 'Vysvětlení teď nejde vytvořit.');
+    } finally {
+      setExplaining(false);
+    }
+  };
 
   return (
     <li className="qz-row">
@@ -192,9 +211,20 @@ function MatchRow({ match, rank, compact }) {
           {school?.name || `Škola #${match.school_id}`}
         </Link>
         {school?.district && <div className="qz-meta">{school.district}</div>}
-        {!compact && match.reason && <p className="qz-reason">{match.reason}</p>}
-        {!compact && !match.reason && signals.length > 0 && (
-          <p className="qz-reason qz-reason-quiet">Shoda podle: {signals.join(' · ')}</p>
+        {!compact && reason && (
+          <div className="qz-why">
+            <p className="qz-why-label">Proč tahle shoda</p>
+            <p className="qz-reason">{reason}</p>
+          </div>
+        )}
+        {!compact && !reason && (
+          <div className="qz-why">
+            {signals.length > 0 && <p className="qz-reason qz-reason-quiet">Shoda podle: {signals.join(' · ')}</p>}
+            <button type="button" className="ss-btn ss-btn-secondary ss-btn-sm qz-why-button" onClick={explain} disabled={explaining}>
+              {explaining ? 'Píšu vysvětlení…' : 'Získat vysvětlení'}
+            </button>
+            {explainError && <p className="qz-why-error" role="alert">{explainError}</p>}
+          </div>
         )}
       </div>
     </li>
@@ -341,7 +371,7 @@ function Results({ active, runCount, onRetake, onOpenHistory }) {
 
       <ol className="qz-list">
         {top.map((m, i) => (
-          <MatchRow key={m.school_id} match={m} rank={i + 1} />
+          <MatchRow key={m.school_id} match={m} rank={i + 1} extraReason={active.extra_reasons?.[String(m.school_id)]} />
         ))}
         {showAll &&
           rest.map((m, i) => <MatchRow key={m.school_id} match={m} rank={TOP_COUNT + i + 1} compact />)}

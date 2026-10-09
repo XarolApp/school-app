@@ -1309,6 +1309,39 @@ async function withPredecessorPrograms(schools) {
   }));
 }
 
+/**
+ * The ONE set of schools every match percentage is computed against.
+ *
+ * scoreSchools() derives each school's selectivity from the cutoffs of the
+ * schools it is handed, and reads full programme rows. Scoring "just this
+ * school" (detail page), "just these four" (comparison) or a slimmed list gave
+ * a different number than the questionnaire result for the same school — 86 %
+ * on one page, 83 % on another. Every surface now scores the whole
+ * catalogue, with districts attached, and only picks its own schools out of
+ * the result. Cached briefly: school data changes only on imports.
+ */
+const SCORING_CATALOGUE_TTL_MS = 5 * 60 * 1000;
+let scoringCatalogue = { rows: null, loadedAt: 0, pending: null };
+
+async function getScoringCatalogue() {
+  const fresh = scoringCatalogue.rows && Date.now() - scoringCatalogue.loadedAt < SCORING_CATALOGUE_TTL_MS;
+  if (fresh) return scoringCatalogue.rows;
+  if (!scoringCatalogue.pending) {
+    scoringCatalogue.pending = fetchAllSchools('*, school_programs(*), school_extracted_details(*)')
+      .then((rows) => {
+        scoringCatalogue = { rows: withDistricts(rows), loadedAt: Date.now(), pending: null };
+        return scoringCatalogue.rows;
+      })
+      .catch((err) => {
+        scoringCatalogue.pending = null;
+        // A stale catalogue beats no percentages at all.
+        if (scoringCatalogue.rows) return scoringCatalogue.rows;
+        throw err;
+      });
+  }
+  return scoringCatalogue.pending;
+}
+
 async function withMatchScores(userId, schools) {
   // District is attached first on purpose: the search page's district filter
   // needs it for every visitor, including one who is not signed in at all.
@@ -1327,8 +1360,15 @@ async function withMatchScores(userId, schools) {
 
   // scoreSchools returns its own ranked order; mapping by id keeps the caller's
   // ordering exactly as it was.
+  let catalogue;
+  try {
+    catalogue = await getScoringCatalogue();
+  } catch (err) {
+    console.error('match scores: could not load the scoring catalogue', err.message);
+    return located;
+  }
   const scores = new Map(
-    scoreSchools(run.answers, located).map((match) => [match.school_id, match.score])
+    scoreSchools(run.answers, catalogue).map((match) => [match.school_id, match.score])
   );
 
   return located.map((school) => ({
@@ -2387,7 +2427,7 @@ async function buildRunResult(run) {
   // school_programs(*) joined so matching.js can classify a school's type
   // (gymnázium/lyceum/trade) from Cermat's own typ_skoly, not by guessing
   // from the free-text programs blob — see matching.js's isGymnasium et al.
-  const schools = withDistricts(await fetchAllSchools('*, school_programs(*), school_extracted_details(*)'));
+  const schools = await getScoringCatalogue();
   const byId = new Map(schools.map((school) => [school.id, school]));
 
   // Sentences are only ever written for the run's stored top matches, so they
@@ -2487,7 +2527,7 @@ app.post(
     // shape GET returns or the two paths render differently.
     let schools;
     try {
-      schools = await fetchAllSchools('*, school_programs(*), school_extracted_details(*)');
+      schools = await getScoringCatalogue();
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }
@@ -2633,7 +2673,7 @@ app.post(
       // scoreSchools derives selectivity signals from the full school set, so
       // score against that same comparison pool but send only the requested
       // school's evidence to the model.
-      const schools = withDistricts(await fetchAllSchools('*, school_programs(*), school_extracted_details(*)'));
+      const schools = await getScoringCatalogue();
       const school = schools.find((entry) => entry.id === schoolId);
       if (!school) return res.status(404).json({ error: 'Škola nebyla nalezena.' });
       const match = scoreSchools(run.answers, schools).find((entry) => entry.school_id === schoolId);

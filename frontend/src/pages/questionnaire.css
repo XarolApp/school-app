@@ -283,6 +283,24 @@
 .qz-reason-quiet {
   color: var(--ink3);
 }
+.qz-why {
+  display: grid;
+  gap: var(--space-xs);
+  margin-top: var(--space-xs);
+  justify-items: start;
+}
+.qz-why-label {
+  margin: 0;
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ink3);
+}
+.qz-why-error {
+  margin: 0;
+  font-size: var(--fs-caption);
+  color: var(--danger);
+}
 
 .qz-actions {
   display: flex;
@@ -494,7 +512,7 @@
   font-size: var(--fs-caption);
 }
 .qz-share-error {
-  color: var(--danger, var(--ink2));
+  color: var(--danger);
 }
 
 /* Results notes: always visible on wider screens; on a phone they sit behind
