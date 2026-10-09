@@ -279,6 +279,7 @@ function ResultShareTools() {
 
 function Results({ active, runCount, onRetake, onOpenHistory }) {
   const [showAll, setShowAll] = useState(false);
+  const [notesOpen, setNotesOpen] = useState(false);
   const matches = active.matches ?? [];
   const top = matches.slice(0, TOP_COUNT);
   const rest = matches.slice(TOP_COUNT);
@@ -302,6 +303,13 @@ function Results({ active, runCount, onRetake, onOpenHistory }) {
         </button>
       </div>
 
+      {/* On a phone both notes collapse behind one line so the top 10 is on
+          the first screen; on wider screens they are always shown. */}
+      <button type="button" className="qz-notes-toggle" aria-expanded={notesOpen} onClick={() => setNotesOpen((v) => !v)}>
+        <Info size={16} aria-hidden="true" /> Jak číst výsledky
+        <ChevronDown size={16} aria-hidden="true" className={notesOpen ? 'is-open' : ''} />
+      </button>
+      <div className={`qz-notes${notesOpen ? ' is-open' : ''}`}>
       <div className="qz-note">
         <Info size={18} aria-hidden="true" />
         <p className="ss-body-sm">
@@ -322,6 +330,7 @@ function Results({ active, runCount, onRetake, onOpenHistory }) {
           </div>
         </div>
       )}
+      </div>
 
       <div className="qz-section-head">
         <h2 className="ss-headline-md h">Nejlepší shoda</h2>

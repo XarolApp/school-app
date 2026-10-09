@@ -18,3 +18,9 @@
   stroke-linejoin: round;
 }
 .ob-district-map .ob-district-map-label.is-blocked { opacity: 0.4; }
+
+/* Phones: the map is too small to tap Praha 1–3 reliably, so it only shows
+   what is selected; picking happens in the district buttons next to it. */
+@media (max-width: 600px) {
+  .ob-district-map .ob-district-map-region { pointer-events: none; cursor: default; }
+}

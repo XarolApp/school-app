@@ -496,3 +496,18 @@
 .qz-share-error {
   color: var(--danger, var(--ink2));
 }
+
+/* Results notes: always visible on wider screens; on a phone they sit behind
+   one "Jak číst výsledky" line so the top 10 is on the first screen. */
+.qz-notes { display: contents; }
+.qz-notes-toggle { display: none; }
+@media (max-width: 600px) {
+  .qz-notes { display: none; }
+  .qz-notes.is-open { display: grid; gap: var(--space-md); }
+  .qz-notes-toggle {
+    display: inline-flex; align-items: center; gap: var(--space-xs); align-self: flex-start;
+    padding: 0; border: 0; background: none; color: var(--acc); font: inherit; font-weight: 600; cursor: pointer;
+  }
+  .qz-notes-toggle svg.is-open { transform: rotate(180deg); }
+}
+@media (max-width: 600px) { .qz-page[aria-busy='true'] > .qz-note { display: none; } }

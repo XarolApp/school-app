@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { MessageSquare } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { acknowledgeBetaGuidance, fetchBetaMe } from '../api';
 import { BetaToolsContext } from './BetaToolsContext';
@@ -52,7 +53,9 @@ function BetaToolsUI({ profile, canShow, isPasswordRecovery, userId, refreshProf
     <BetaReward beta={beta} enabled={Boolean(canShow && beta?.consent_tracking_at && profile.betaProgramActive && profile.hasAccess && !guidanceOpen && !feedback.open && !closingOpen && !profile.closingPaused)} onRefresh={refreshBeta} />
     {canShow && profile.betaProgramActive && <div data-beta-tools className={`beta-floating-tools${location.pathname.startsWith('/onboarding/') ? ' is-onboarding' : ''}`}>
       <button type="button" className="beta-help-trigger" aria-label="Pokyny k beta testování" onClick={() => setGuidanceOpen(true)}>?</button>
-      <button type="button" className="beta-feedback-trigger" onClick={() => { setGuidanceOpen(false); openFeedback(); }}>Zpětná vazba</button>
+      <button type="button" className="beta-feedback-trigger" aria-label="Zpětná vazba" onClick={() => { setGuidanceOpen(false); openFeedback(); }}>
+        <MessageSquare size={22} aria-hidden="true" className="beta-feedback-icon" /><span className="beta-feedback-label">Zpětná vazba</span>
+      </button>
     </div>}
     {canShow && guidanceError && <p className="beta-banner" role="alert" data-beta-tools>{guidanceError}</p>}
     {/* First run must be read to the end: no Escape, no backdrop click. Once
@@ -63,6 +66,7 @@ function BetaToolsUI({ profile, canShow, isPasswordRecovery, userId, refreshProf
       <BetaInstructions beta={beta} hours={profile?.betaAccessHours} onDone={dismissGuidance} onRefresh={refreshBeta} busy={guidanceBusy} reference={!firstRun} />
     </Modal></div>
     <BetaFeedbackSheet open={Boolean(canShow && feedback.open)} requestId={feedback.requestId} onClose={closeFeedback} pageUrl={feedback.pageUrl} beta={beta} programActive={profile?.betaProgramActive} focusReplies={feedback.focusReplies} onRepliesRead={refreshBeta}
+      onOpenGuide={() => { closeFeedback(); setGuidanceOpen(true); }}
       onSuccess={() => { void refreshProfile(); void refreshBeta().catch(() => {}); }} />
   </>;
 }

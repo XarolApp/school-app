@@ -17,6 +17,7 @@ import {
 import DecisionTabs from '../components/decision/DecisionTabs';
 import ConfirmDialog from '../components/ConfirmDialog';
 import './decision.css';
+import '../components/decision/matrixMobile.css';
 import { SkeletonPage, Sk, SkLines } from '../components/PageSkeleton';
 import { readHint } from '../lib/skeletonHints';
 import { useDraft } from '../lib/useDraft';
@@ -393,7 +394,7 @@ function Matice() {
       <DecisionTabs pickCount={pickCount} />
 
       <div className="dp-matrix-layout">
-        <div className="dp-matrix-weights">
+        <div className="dp-matrix-weights" id="vahy">
           <div className="dp-matrix-weights-head">
             <div className="ss-headline-sm h">Co je pro tebe důležité?</div>
             <p className="ss-caption">
@@ -476,6 +477,8 @@ function Matice() {
                 Procenta ukazují skutečný podíl; počty jsou vůči nejvyšší hodnotě mezi vybranými školami.
               </p>
             </div>
+            {/* Shown only when the columns stack (ranking first): jump to the weights. */}
+            <a href="#vahy" className="dp-matrix-jump">Nastavit váhy ↓</a>
 
             {ranked.every((r) => r.breakdown.length === 0) ? (
               <p className="ss-body-md dp-matrix-empty">

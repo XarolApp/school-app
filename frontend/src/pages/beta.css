@@ -309,3 +309,16 @@ dialog.ss-dialog.beta-modal-reference { max-width: 960px; }
    actions (Nastavení / Odhlásit se). */
 html[data-menu-open] .beta-floating-tools,
 html[data-menu-open] .beta-reward { display: none; }
+
+/* Phone: one round feedback button (the "?" guide is inside the sheet), so
+   the floating control covers as little content as possible. */
+.beta-feedback-trigger { display: inline-flex; align-items: center; gap: var(--space-sm); }
+.beta-feedback-icon { display: none; }
+.beta-guide-link { display: none; }
+@media (max-width: 600px) {
+  .beta-help-trigger { display: none; }
+  .beta-feedback-trigger { width: 52px; height: 52px; min-height: 0; padding: 0; justify-content: center; border-radius: 50%; }
+  .beta-feedback-icon { display: block; }
+  .beta-feedback-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .beta-guide-link { display: inline-flex; align-self: flex-start; padding: 0; border: 0; background: none; color: var(--acc); font: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 0.18em; cursor: pointer; }
+}

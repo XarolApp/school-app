@@ -1,0 +1,8 @@
+/* Stacked matrix (tablet/phone): the ranking comes first and links down to the
+   weights, instead of nine weight controls before any result. */
+.dp-matrix-jump { display: none; }
+@media (max-width: 900px) {
+  .dp-matrix-layout .dp-matrix-result { order: -1; } /* also orders the loading skeleton */
+  .dp-matrix-jump { display: inline-flex; align-self: flex-start; margin: var(--space-md) var(--space-lg) var(--space-sm); color: var(--acc); font-weight: 600; text-decoration: underline; text-underline-offset: 0.18em; }
+  #vahy { scroll-margin-top: 80px; }
+}

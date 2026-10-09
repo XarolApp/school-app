@@ -18,7 +18,7 @@ const eligible = (element) => element instanceof HTMLElement && !element.closest
   !element.querySelector('input,textarea,[data-private]') && !['BODY','HTML','SCRIPT','STYLE'].includes(element.tagName);
 const viewportNow = () => ({ width: innerWidth, height: innerHeight, scroll_x: scrollX, scroll_y: scrollY });
 
-export default function BetaFeedbackSheet({ open, onClose, pageUrl, beta, onSuccess, programActive, requestId, focusReplies = false, onRepliesRead }) {
+export default function BetaFeedbackSheet({ open, onClose, pageUrl, beta, onSuccess, programActive, requestId, focusReplies = false, onRepliesRead, onOpenGuide }) {
   const gender = useGender();
   const [mode,setMode] = useState('general'), [phase,setPhase] = useState('form');
   // The typed message survives a reload or a switch to another tab.
@@ -150,6 +150,8 @@ export default function BetaFeedbackSheet({ open, onClose, pageUrl, beta, onSucc
       {reviewSaved && <p className="beta-read-note" role="status">{voice('Díky za recenzi webu. Zveřejníme ji jen s tvým samostatným souhlasem a po kontrole.', 'Děkujeme za recenzi webu. Zveřejníme ji jen s Vaším samostatným souhlasem a po kontrole.')}</p>}
       {success ? <div className="stack" role="status"><Check size={28} /><h3 className="ss-headline-md">Díky za zprávu</h3><p>{voice('Každá zpětná vazba nám pomáhá. Klidně pošli další.', 'Každá zpětná vazba nám pomáhá. Klidně pošlete další.')}</p><button className="ss-btn ss-btn-primary" onClick={() => { setSuccess(false); onClose(); }}>Pokračovat</button></div> : <form className="stack beta-feedback-form" onSubmit={submit}>
         <p className="field-hint">{voice('Napiš nám cokoli o celém webu, nebo označ konkrétní místo. Každá zpětná vazba pomáhá, i pozitivní.', 'Napište nám cokoli o celém webu, nebo označte konkrétní místo. Každá zpětná vazba pomáhá, i pozitivní.')}</p>
+        {/* Phones have no separate "?" button; the guide opens from here. */}
+        {onOpenGuide && <button type="button" className="beta-guide-link" onClick={onOpenGuide}>Pokyny k testování</button>}
         <p className="beta-read-note"><Check size={16} aria-hidden="true" /> {voice('Každou zpětnou vazbu čteme. Na odpověď se můžeš podívat níže v „Moje zpětné vazby“.', 'Každou zpětnou vazbu čteme. Na odpověď se můžete podívat níže v „Moje zpětné vazby“.')}</p>
         <div className="beta-modes">{modes.map(([id,Icon,label]) => <button type="button" key={id} className={`ss-btn ss-btn-secondary${mode === id ? ' is-selected' : ''}`} onClick={() => chooseMode(id)}><Icon size={18} />{label}</button>)}</div>
         {mode === 'mark' && screenshot && <figure className="beta-screenshot-preview">
