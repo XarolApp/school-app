@@ -1,16 +1,23 @@
 # Beta testing operations
 
-> **Status 2026-10-07 (verified live):** all beta tables exist; the configured
-> `ends_at` is a leftover TEST value (2026-10-12 21:10 UTC — set the real date);
-> `beta_schools` holds only `TEST`; the newest SQL (`beta_profile.role_note`) is
-> NOT applied yet. Test a fresh installation and reruns in a disposable database,
-> then prepare/apply only the reviewed missing migration on the existing project.
+> **Status 2026-10-10 (read-only hosted check):** `ends_at` is
+> `2026-10-18T21:59:00Z` (18 October at 23:59 Europe/Prague), the rolling window
+> is 48 hours, and the sole cohort code is `PRISTUPTESTOVACIVERZE`.
+> `beta_profile.role_note` and `consent_tracking_at` are exposed in metadata;
+> tracking version/revocation columns are not. No external feedback URL is set.
+> This replaces the 7 October test-state diagnosis. Configuration/column presence
+> does not prove current function bodies, grants, policies or actual enrollment.
+> Test a fresh installation and reruns in a disposable database,
+> then prepare/apply only any reviewed missing migration on the existing project.
 > Do not blindly rerun the whole schema on production. See the
-> [current deployment handoff](../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md).
+> [current deployment handoff](../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md)
+> and [dated evidence](../reports/deployment-review-2026-10-07/beta-cohort-schema-2026-10-10.json).
 
 This is the operator runbook for plan 016. The beta program is **closed** while
 `beta_program_settings.ends_at` is `NULL`. Do not distribute working invites
-until a real future cutoff has been supplied and configured.
+until a real future cutoff has been supplied/configured and the release gates below are accepted.
+The current cutoff is configured; database/isolation, privacy/consent, erasure and
+full tester-journey acceptance still remain in the deployment handoff.
 
 Beta is **free in exchange for feedback** (founder confirmed 2026-10-07). The
 rolling tester window/cutoff is independent of ordinary-account or season payment
@@ -56,7 +63,9 @@ where subscription_status = 'beta'
 
 The schema seeds a settings row with `access_hours = 48`, `ends_at = NULL`, and
 no external form. It backfills a missing rolling deadline once for old beta
-profiles. Running the block again does not extend an existing deadline.
+profiles. Accepted main-form/access-gate messages renew access; quick star ratings
+do not. The founder confirmed this rule on 10 October. Running the block again
+does not extend an existing deadline.
 
 ## Configure a cohort
 
@@ -130,7 +139,7 @@ specific information needed:
 ```sql
 select created_at, school_code, user_id, type, page_url, message
 from public.beta_feedback
-where school_code = 'GYMJECNA'
+where school_code = 'PRISTUPTESTOVACIVERZE'
 order by created_at desc;
 ```
 
@@ -138,6 +147,12 @@ Account deletion cascades feedback. Feedback is written through service-only
 server/RPC paths, including `submit_beta_feedback` and
 `submit_beta_feedback_details`; school attribution and renewal deadlines are
 derived from server-side profile/settings rows, never trusted request fields.
+Deleting feedback rows does not synchronously remove screenshot files. The current
+orphan cleanup selects unreferenced files older than 24 hours and removes them at
+startup/daily through Storage; failed or delayed cleanup can extend retention.
+Account erasure and the all-data-removed notices must be reconciled before tester
+acceptance (C31). AI usage logs also retain nullable-owner records. Do not promise
+immediate removal of every artifact from the row cascade alone.
 
 ## Disposable-database verification
 

@@ -1,0 +1,19 @@
+{
+  "checkedAt": "2026-10-09T23:26:56.988Z",
+  "method": "Actual Settings/BetaInstructions React components in loopback fixture, service/auth/tracking/write stubs. No feedback submitted, no Stripe/account operations. Not deployed/end-to-end acceptance.",
+  "parentPhone": {
+    "document": 375,
+    "rule": "Zdarma, výměnou za zpětnou vazbu. Chceme aspoň jednu zprávu za 48 hodin. Když se neozvete, sami si o ni řekneme. Bez ní se přístup pozastaví, dokud nám nenapíšete přes „Zpětná vazba“ nebo formulář pro obnovení přístupu. Tato zpráva ho zase obnoví, nejdéle do konce programu. Rychlé hodnocení časovač nemění.",
+    "viewport": 375
+  },
+  "settingsPhone": {
+    "document": 375,
+    "text": "Přístup obnoví zpráva přes „Zpětná vazba“, nejdéle do konce programu. Rychlé hodnocení časovač nemění.",
+    "viewport": 375
+  },
+  "studentDesktop": {
+    "document": 1280,
+    "rule": "Zdarma, výměnou za zpětnou vazbu. Chceme aspoň jednu zprávu za 48 hodin. Když se neozveš, sami si o ni řekneme. Bez ní se přístup pozastaví, dokud nám nenapíšeš přes „Zpětná vazba“ nebo formulář pro obnovení přístupu. Tato zpráva ho zase obnoví, nejdéle do konce programu. Rychlé hodnocení časovač nemění.",
+    "viewport": 1280
+  }
+}

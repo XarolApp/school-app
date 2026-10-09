@@ -1,6 +1,8 @@
 # 019 — Beta feedback, tracking and analytics
 
-**Status:** IMPLEMENTED — steps 2–12 committed and pushed; full rankings implemented per founder decision 2026-10-05. The 5 October completion report records synthetic Chrome checks and 121 tests at that snapshot. The 7 October audit has 127 passing tests and a passing lint/build, but the full review remains in progress. Live read-only checks found all 26 tables and a private screenshot bucket, but **missing `beta_profile.role_note`**. Fresh/repeated SQL, grants/RLS, privacy assessment and complete enrollment/feedback/expiry verification remain gates. See `reports/beta-implementation-completion-2026-10-05.md` and the current deployment review; table presence is not proof of a complete migration.
+**Status, updated 10 October:** implementation/history plan, not deployment acceptance. Steps 2–12 were committed and full rankings implemented after the 5 October founder decision; the 121/127-test reports describe their dated snapshots. A fresh read-only check on 10 October exposes `beta_profile.role_note`, a 48-hour window, one current cohort code and cutoff 18 October at 23:59 Europe/Prague. The earlier missing-column/12 October diagnosis is superseded. Fresh/repeated SQL, grants/RLS/Storage isolation, privacy/erasure and complete enrollment/feedback/expiry verification remain gates. See [current evidence](../reports/deployment-review-2026-10-07/beta-cohort-schema-2026-10-10.json) and the deployment handoff; metadata is not proof of a complete migration.
+
+**Current contract:** only messages through the main feedback form or access gate renew access; quick ratings never do (founder confirmed 10 October). Beta is free, payment screens are an optional preview, and no beta Stripe operation is permitted. Plan 020 and the current [logic](../docs/beta_testing_logic.md)/[runbook](../docs/beta_testing_operations.md) supersede this original build specification where behavior differs. The detailed event/UI/endpoint lists below are historical design, not a claim that the deployed app exactly follows every item.
 **Builds on:** plan 016 (beta program, implemented) and `docs/beta_testing_logic.md`. This plan **extends** 016; it does not replace its access model, tables or routes.
 **Model routing (CLAUDE.md):** planning was Opus 5.5 medium. Build at Sonnet 5 high (large multi-file). Review the tracking/consent and `/admin` access code at Opus 5.5 low.
 
@@ -16,7 +18,7 @@ Where the founder looks at everything: **`/admin`** in the app (section 9).
 - `subscription_status = 'beta'`, `tester_school_code`, `tester_access_until`, `tester_guidance_seen_at`.
 - `beta_feedback` + `POST /api/beta/feedback` → RPC `submit_beta_feedback` (insert + renew 48h atomically).
 - `BetaTools.jsx` (floating button + guidance modal), `SubscriptionExpired` tester copy, Stripe blocked for testers.
-- **Current rollout evidence, 2026-10-07:** beta tables, one school invitation and `ends_at` (12 October 2026 at 23:10 Europe/Prague) exist live. The latest profile column/functions/grants still need a reviewed migration and verification. Confirm the intended cutoff, outgoing email and complete tester journey; do not blindly reapply the whole SQL (see `UNFORGET.md`).
+- **Current rollout evidence, 2026-10-10:** 48-hour access, one cohort invitation, `ends_at` (18 October 2026 at 23:59 Europe/Prague) and exposed `beta_profile.role_note` are confirmed by read-only metadata. Current function definitions/grants/policies, outgoing email and the complete tester journey still require acceptance; do not blindly reapply the whole SQL (see `UNFORGET.md`).
 
 ## 2. Decisions taken with the founder (2026-10-04)
 
@@ -30,18 +32,18 @@ Where the founder looks at everything: **`/admin`** in the app (section 9).
 | "Suggest a change" | yes — tester edits a text in place, we store before → after |
 | Activity rule | 48h renewal stays; on expiry the account is **not suspended** — a soft gate asks one open question; one real answer unlocks 48h. No points system (it rewards quantity over quality) |
 | Warning | in-app banner 12h before expiry |
-| Micro-questions | max 1 per session, 6 in total, each skippable, each answer counts as feedback (renews 48h) |
+| Micro-questions | original design: max 1 per session, 6 in total, each skippable. Superseded: current quick ratings are feedback but never renew access (10 October founder decision) |
 | Closing questionnaire | appears after the main features were tried (checklist) and day ≥ 2, or for everyone 2 days before `ends_at`; **required** (access pauses until done); text "odpovídej upřímně, nic neodsuzujeme" |
 | Review | optional separate step; saved only, **never published automatically**; founder reviews each before any use |
 | Under-15 reviews | stored; publish only fully anonymous ("Student, 8. třída"), lawyer check before first public use |
 | Paywall | testers walk all 5 paywall screens; Stripe replaced by "V betě nic neplatíš" |
-| Retention | raw events deleted 6 months after `ends_at`; feedback, questionnaire, reviews kept |
+| Retention | current notice: raw events/rankings deleted 6 months after `ends_at`; feedback/screenshots/closing answers/private reviews deleted or anonymised within 12 months. Cleanup and justified retention remain acceptance gates; see legal decisions of 10 October |
 | Feedback replies | founder replies from `/admin`; tester sees status + reply in the app |
 | Simulation | yes, as step 1, before the beta starts |
 
 ## 3. Legal / privacy (must ship with the feature)
 
-- **Legal assessment remains a rollout gate (2026-10-07):** current tracking is implemented on a legitimate-interest rationale. The controller must assess children's rights, necessity, objection and retention. This does not by itself settle device-storage consent or under-15 authorization; see LEGAL-01/04 in `reports/deployment-review-2026-10-07/legal-docs-findings.md`.
+- **Legal assessment remains a rollout gate (updated 2026-10-10):** current notice/required checkbox name explicit consent, replacing the earlier legitimate-interest rationale. Freely given consent, equally easy withdrawal, device-storage consent, actual collection stop and child/guardian authority remain unresolved acceptance points; see `docs/legal-decisions-2026-10-10.md` and LEGAL-01/04 in the deployment handoff. The checkbox alone is not legal sign-off.
 - **Device storage is a separate question:** `sessionStorage`/`localStorage` identifiers require assessment under the device-access rules even when analytics is first-party and subsequent processing uses legitimate interest. Do not assume that joining the beta makes every identifier strictly necessary. Decide and document optional consent or a design that removes unnecessary storage before recruitment. [ÚOOÚ cookies/storage guidance](https://uoou.gov.cz/verejnost/qa-otazky-a-odpovedi/cookies).
 - **Beta notice + checkbox on `/beta/:code` signup** (required to join): what is collected (pages, clicks on features, searches, errors, device type, screenshots they send themselves), why, how long (6 months), right to object (`info@stredninamiru.cz`).
 - **Screenshots:** captured locally only after the tester explicitly presses "Připravit snímek k odeslání"; the preview can be removed. Upload occurs on submitting feedback. Input fields (`input`, `textarea`, `[data-private]`) are masked before capture. No background screenshot capture.
@@ -75,7 +77,7 @@ All tables: RLS on, **no browser policies**; only `server.js` (service role) rea
 
 Supabase Storage bucket `beta-screenshots` (private). Uploads go through `server.js` (signed upload URL), admin reads via signed URLs.
 
-**Rollout verification:** verify a fresh installation and repeated execution in a disposable database before applying the reviewed schema change live. A five-table count alone is insufficient. The implementation also includes private `beta_rankings`; verify `beta_profile.role_note`, required function signatures/service-only grants, authenticated cross-account isolation, closing transactions, and private signed screenshot upload/read/cleanup. Read-only checks on 2026-10-07 found all 26 declared tables, zero anonymous rows, and a private screenshot bucket, but **no `beta_profile.role_note` column**. No production migration was performed by this audit.
+**Rollout verification:** verify a fresh installation and repeated execution in a disposable database before applying any reviewed missing schema change live. A five-table count alone is insufficient. Verify required function signatures/service-only grants, authenticated cross-account isolation, closing transactions, and private signed screenshot upload/read/cleanup. The 7 October probe did not expose `role_note`; it is exposed in fresh 10 October metadata, so do not implement that obsolete missing-column task without inspecting current state. No production migration was performed by this audit.
 
 ## 6. Background tracking (the main data source)
 
@@ -110,7 +112,7 @@ Reuse onboarding visual language (`ObKit`, tokens). Screens:
 2. **Používej to normálně:** "Používej to, jako bys opravdu vybíral(a) školu." + **checklist** (auto-ticked): dotazník · vyhledávání · detail školy (3×) · porovnání · matice · přihláška · barevné téma · sdílení s rodiči · platební obrazovky.
 3. **Co od tebe chceme:** chyby, ale i návrhy, chybějící funkce, texty, které bys napsal(a) jinak, špatné údaje o školách. "Nic není moc malé."
 4. **Jak na to:** short 3-step animation of the feedback button (klikni → označ místo / obecně → napiš).
-5. **Pravidlo 48 hodin** (friendly): "S každou zpětnou vazbou se ti přístup obnoví. Když se dva dny neozveš, zeptáme se tě na jednu otázku."
+5. **Pravidlo 48 hodin** (current): "Přístup obnoví zpráva přes Zpětná vazba nebo formulář pro obnovení přístupu, nejdéle do konce programu. Rychlé hodnocení časovač nemění."
 6. **Na konci:** krátký dotazník a nepovinná recenze.
 
 ### 7.3 Feedback button (replaces the simple form in `BetaTools.jsx`)
@@ -132,7 +134,7 @@ Small bottom card, never a modal:
 4. After the matrix: "Dávalo pořadí v matici smysl?" 1–5.
 5. After the paywall screens: "Byla cena jasná?" ano / spíš ano / ne.
 6. After a theme change: "Proč tohle téma?" (text, optional).
-Each answer is stored as feedback (`source = micro`) and renews 48h.
+Current quick ratings are stored as micro feedback and **do not renew access**. The original six-question design is historical; use the current source/runbook before extending it.
 
 ### 7.5 Expiry warning + soft gate
 - 12h before `tester_access_until`: banner "Za 12 hodin se ti přístup pozastaví — stačí poslat jednu připomínku."
@@ -153,7 +155,7 @@ Header on every screen: "Odpovídej upřímně — nic neodsuzujeme, špatná zp
 - `POST /api/beta/feedback` (extend) — new fields; screenshot via `POST /api/beta/feedback/screenshot-url` (signed upload URL, image/png|jpeg ≤ 1.5 MB).
 - `GET /api/beta/me` — role, checklist, micro state, closing due/done, my feedback with statuses/replies.
 - `POST /api/beta/profile` — role + tracking consent (once).
-- `POST /api/beta/micro` — micro answer (renews via the same RPC).
+- `POST /api/beta/micro` — quick rating; stores feedback without renewing access.
 - `POST /api/beta/closing` — closing answers + optional review.
 - `ai_usage_log` writes inside the questionnaire endpoint and the generator scripts.
 - **Admin** (`requireAdmin` = `requireAuth` + email in `ADMIN_EMAILS`, server-side only): `GET /api/admin/overview|feedback|behaviour|funnels|matching|closing|reviews|testers|ai-costs`, `PATCH /api/admin/feedback/:id` (status, note, reply), `PATCH /api/admin/reviews/:id` (selected), `GET /api/admin/export/:table.csv`. All aggregation in SQL/Node, never raw events to the browser except the feedback list.
@@ -190,7 +192,7 @@ Tabs:
 
 ## 11. Verification
 
-- Tests: event allowlist validation, admin guard (non-admin → 403), closing trigger logic, renewal via micro/gate, CSV escaping, simulation determinism with a seed.
+- Tests: event allowlist validation, admin guard (non-admin → 403), closing trigger logic, main-form/gate renewal and no renewal from quick ratings, CSV escaping, simulation determinism with a seed.
 - Browser: full tester run on phone width and desktop; screenshot masking of inputs; `/admin` charts render with seed data.
 - Privacy: grep that no event carries an e-mail or `body`.
 

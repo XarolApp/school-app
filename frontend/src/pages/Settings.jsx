@@ -992,7 +992,7 @@ function Settings() {
                     <div className="beta-countdown" role="timer" aria-label="Zbývající čas přístupu">
                       <span className="beta-countdown-label">Přístup zbývá</span>
                       <strong className="beta-countdown-value">{countdown}</strong>
-                      <span className="settings-section-text">Každá zpětná vazba ho sama obnoví, nejdéle do konce programu.</span>
+                      <span className="settings-section-text">Přístup obnoví zpráva přes „Zpětná vazba“, nejdéle do konce programu. Rychlé hodnocení časovač nemění.</span>
                     </div>
                   ) : (
                     <p className="settings-section-text">Přístup je pozastavený. Po odeslání zpětné vazby se znovu otevře.</p>

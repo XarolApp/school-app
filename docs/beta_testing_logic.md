@@ -1,160 +1,155 @@
-# Beta Testing Program — Logic Spec (for implementation)
+# Beta testing program — current logic
 
-**Status (updated 2026-10-07):** implemented, deployed and migrated live — access is
-`users.subscription_status = 'beta'` with the cutoff in
-`beta_program_settings.ends_at` (currently a leftover test value, 2026-10-12 21:10 UTC;
-set the real date). Still open: the newest SQL (`beta_profile.role_note`) is not
-applied, only the `TEST` school code exists, and disposable-database transaction
-verification was never run. Plan 019 (feedback sheet, screenshots, analytics, admin)
-supersedes the v1 scope limits further down — read those sections as the original
-design, not the current behaviour. See the rollout checklist in
-[`plans/016-beta-testing-program.md`](../plans/016-beta-testing-program.md) and
-[`docs/beta_testing_operations.md`](beta_testing_operations.md).
+**Updated 10 October 2026.** Beta is free in exchange for feedback. It uses
+`users.subscription_status = 'beta'`; testers never enter real Stripe Checkout,
+start a purchase trial or pay to regain access. Paywall screens are an optional
+feedback preview. The ordinary-account trial and seasonal purchase trial are
+separate systems.
 
-**Confirmed 2026-09-26:** tester email verification remains required. The founder
-has deferred the exact program end date and external feedback form URL; those
-questions are recorded in `UNFORGET.md`. Leave enrollment disabled until a future
-cutoff is configured, and do not ship a placeholder external form link.
+A read-only hosted check at 01:18 Europe/Prague confirms a 48-hour rolling window,
+cutoff `2026-10-18T21:59:00Z` (18 October at 23:59 Prague time), one cohort code
+matching `PRISTUPTESTOVACIVERZE`, and exposed `beta_profile.role_note` and
+`consent_tracking_at` columns. No external feedback URL is configured. This
+supersedes the 7 October test-cutoff/TEST-only/missing-role-note diagnosis.
+[Evidence](../reports/deployment-review-2026-10-07/beta-cohort-schema-2026-10-10.json).
+Configuration and column presence do not prove deployed environment variables,
+function bodies/grants, policies, email delivery or a complete tester journey.
 
-**Context:** first beta school confirmed interest (2026-09-22). User has ~7 days
-to have this working. Multiple schools will receive links and reshare them to
-students. Goal: get real usage + real feedback from students, not free
-unlimited access with no feedback loop.
+The September v1 design is retained in plan 016/history. Plans 019/020 and the
+current source expanded feedback, screenshots, analytics, guidance and closing
+flows. The original v1 out-of-scope list is no longer a current limitation.
+Use this document with the [operator runbook](beta_testing_operations.md),
+[deployment report](../reports/deployment-review-2026-10-07/REPORT.md) and
+[handoff plan](../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md).
 
----
+## 1. Distribution, enrollment and confirmation
 
-## 1. Distribution & signup flow
+- The current cohort uses one shared tester-facing code, with an uppercase
+  `beta_schools.code` row for validation and internal school attribution. It does
+  not assign a different invitation code to each tester.
+- The beta landing is `/beta/:code`. Signup creates an individual Supabase Auth
+  account, and valid beta metadata is checked by the server/database trigger.
+- Email confirmation remains required. Neither an invitation code nor an
+  unconfirmed session is sufficient for authenticated tester access.
+- The production frontend also has a shared-code distribution gate. It is not
+  API authorization: the public frontend cohort code is bundled, and direct
+  backend requests must still enforce their own access rules. See the runbook
+  for the code-entry and confirmation-link return behavior.
+- New testers enter the questionnaire first. The profile/enrollment flow asks
+  for a test role and currently requires tracking consent; existing testers
+  can be asked to complete the current notice in-app. Mandatory versus optional
+  observation, withdrawal/version/revocation and child/guardian evidence remain
+  privacy release decisions, not resolved by a checkbox alone.
 
-- Each participating school gets **one unique magic link**, built from a short
-  code (e.g. `GYMJECNA`). Store codes in a new table, `beta_schools`
-  (`code`, `school_name`, `created_at`) — free-text name is fine, no need to
-  join to the real `schools` table.
-- Link shape: `https://<domain>/beta/:code` — a new route, separate from
-  `/registrace` and the onboarding flow.
-- Landing page at that route: short intro + "Sign up to start testing" CTA.
-  The code travels with the user into signup (query param → sessionStorage,
-  same pattern already used for `pendingOnboardingAnswers.js`).
-- Signup itself is a **real individual account** (reuse existing Supabase Auth
-  signup). **Email confirmation remains required for testers**, confirmed by
-  the founder on 2026-09-26; preserve existing `requireAuth` behavior.
-- On successful signup, the account is marked as a tester and tagged with the
-  school code it came from (see data model below). This is what lets feedback
-  be attributed back to a school.
+## 2. Free tester access and preview payments
 
-## 2. Tester accounts vs normal accounts
+Tester access uses beta-specific deadlines and closing state, not paid-plan
+fields. Payment endpoints must reject beta identities; frontend preview actions
+complete locally without Stripe. Merely viewing a preview must not renew access.
 
-- Testers must **never** hit real Stripe / the real paywall. Add an
-  `is_tester` flag (or a new `subscription_status` value, e.g. `'tester'` —
-  matches the existing enum pattern in `supabase-setup.sql`) so `hasAccess()`
-  and `requireAccess` grant access without any Stripe involvement.
-- Anywhere the paywall screens (`Hodnota`/`Cesta`/`Plan`/`Zkusebni`/`Platba`)
-  would normally appear, a tester should instead see a short "you're in the
-  beta program, no payment needed" state — they should still be able to see
-  those screens exist (it's part of what you want tested!) but the actual
-  checkout action must be disabled/mocked for testers.
+The seasonal paid plan has a three-day deferred-charge trial and monthly charges
+at checkout. Those real billing flows require separate acceptance before paid
+launch. The founder also requires the ordinary account’s access trial to begin at
+first confirmed sign-in; that migration is still pending and must preserve beta,
+paid and developer accounts.
 
-## 3. Access control: time-box + feedback-gated renewal
+## 3. Rolling window and program cutoff
 
-Chosen logic (confirmed): **time-boxed access that only renews when feedback
-is submitted, and each submission extends the clock again** (repeatable, not
-one-time).
+The signup trigger creates a beta rolling deadline of approximately 48 hours
+from account creation, capped by the program cutoff. The server requires a
+confirmed email and computes effective access from current profile/settings.
+The earlier signup time is current beta behavior; do not silently apply the
+ordinary-account trial-start decision to this separate beta window.
 
-- On tester account creation: `tester_access_until = now() + 48h`.
-- Server-side access check (wherever `requireAccess` currently runs) adds one
-  more condition for testers: `is_tester AND tester_access_until > now()`.
-  If expired, respond the same way an expired trial does today (redirect to
-  a tester-specific version of `SubscriptionExpired.jsx` — different copy,
-  since there's nothing to buy: "Your testing access paused — leave feedback
-  to keep testing").
-- **Every accepted in-app feedback submission resets
-  `tester_access_until = now() + 48h`** (not additive/stacking — always a
-  fresh 48h from the moment of submission). This must happen server-side, in
-  the same endpoint that writes the feedback row, so it can't be spoofed from
-  the client.
-- The whole beta program also has a **hard end date**
-  (`BETA_PROGRAM_ENDS_AT`, a config constant). Once passed, all tester access
-  locks regardless of feedback history — the renewal loop is bounded, it
-  doesn't let testing run forever by accident.
-- 48h is a starting number, not fixed — pick something that gives ~2-3 renewal
-  cycles inside the real testing window and adjust if the school's timeline
-  needs it.
+Accepted main feedback messages renew the window server-side, capped by the
+cutoff. The feedback row and deadline update use a service-only RPC transaction;
+renewal resets the window rather than stacking another 48 hours. The access-gate
+message uses the same feedback renewal path.
 
-## 4. Feedback collection — two channels (confirmed: both)
+**Founder confirmed 10 October: only main feedback messages renew access.**
+The access-gate message uses that same path. Quick star ratings are stored as
+micro feedback and never renew the window. Settings and guidance distinguish
+these paths; do not restore the historical micro-rating renewal instruction.
+Viewing a paywall preview, recording usage events, answering the closing form
+or submitting an external form must not be treated as main-feedback renewal.
 
-### In-app (primary — this is what extends access)
-- A floating feedback button, visible only when `is_tester` is true.
-- Opens a small form: type (`bug` / `idea` / `comment`), free-text message,
-  auto-captured `page_url` (from `window.location.pathname`) so you know what
-  they were looking at without asking them.
-- Screenshot attachment is a nice-to-have, not required for v1.
-- New table `beta_feedback`: `id, user_id, school_code, type, page_url,
-  message, created_at`.
-- Endpoint (e.g. `POST /api/beta/feedback`) does two things in one
-  transaction: inserts the row, and resets `tester_access_until` per §3.
-  This is the **only** thing that renews access.
+A null cutoff closes the program. A past cutoff ends tester access and prevents
+feedback renewal. The current cutoff is configured, but enrollment readiness
+still depends on the remaining release gates. A due closing questionnaire may
+also pause access; verify its completion/reopen journey independently of expiry.
+The server clock is authoritative; client countdowns are display only.
 
-### External form (secondary — does not renew access)
-- A separate form (Google Form or similar) linked from the feedback widget
-  ("something longer to say? open the full form") and/or referenced in the
-  first-login guidance, for slower structured questions: would-you-pay, NPS,
-  what's confusing, etc.
-- Since it's disconnected from the backend, it **cannot** gate/renew access
-  without extra webhook plumbing that isn't worth building in 7 days — call
-  this out explicitly rather than silently skipping it. If per-student
-  join-back matters later, prefill the form via a URL param
-  (`?entry.xxx=<user_id>` or `<school_code>`, which Google Forms supports)
-  so responses can be matched manually afterward.
+## 4. Feedback, screenshots and external forms
 
-## 5. First-login guidance (confirmed: in-app, first login only)
+The main in-app feedback form records an allowlisted kind, text and a normalized
+page path. Server-side profile/settings decide school attribution and renewal;
+client-supplied ownership/deadlines are not authoritative. Region/text metadata
+and optional screenshots are now implemented, extending the original v1 scope.
+Screenshots use a private bucket, server-issued signed URLs and format/size
+validation. They require full ownership/privacy/cleanup acceptance.
 
-- A one-time screen/modal shown right after a tester's first login, gated by
-  a `tester_guidance_seen_at` timestamp on the account (set once shown).
-- Content, kept short:
-  1. What to try — 3-5 concrete flows (run the quiz, open a school detail
-     page, try the paywall screens without needing to pay, leave a review).
-  2. How to report — points at the feedback button, explains it's the fast
-     path.
-  3. The trust/incentive message — "your access renews automatically every
-     time you give feedback," so they understand *why* the account might
-     lock and how to unlock it again.
-- Should reuse the existing onboarding visual language/components rather than
-  inventing new UI — the implementing session should check
-  `docs/sources/claude_code_ui_ux_guide.md` and `design/DESIGN.md` first, per
-  standing project convention.
+Quick ratings, main feedback, access-gate messages and closing answers are
+separate paths. Test each path’s required fields, duplicate handling, attribution
+and actual renewal result; do not infer equivalent behavior from a shared label.
 
-## 6. Data model summary (net-new)
+No external form URL is currently set. If one is later supplied, configure a
+trusted HTTPS URL and explain that external responses do not renew access. Do
+not append account identifiers to third-party forms without a reviewed purpose,
+disclosure and data-transfer decision.
 
-| Table / column | Purpose |
+## 5. Guidance, tasks, closing and reviews
+
+The beta UI includes first-login guidance, a task checklist, quick feature ratings,
+a feedback inbox/replies, a closing questionnaire and optional website review.
+School reviews remain disabled in the beta. A private website review is separate
+from permission to publish it in marketing.
+
+Publication requires explicit permission, accepted child/guardian authority and
+an anonymisation/withdrawal procedure; an omitted signature does not anonymise
+free text automatically. Current review-consent version fields do not substitute
+for legal acceptance or proof of permission in every eventual export/surface.
+No quote should be published until those gates are accepted.
+
+## 6. Current data and service boundaries
+
+| Table/field | Purpose |
 |---|---|
-| `beta_schools` (`code`, `school_name`, `created_at`) | one row per participating school, resolves the magic-link code |
-| `users.is_tester` (bool) or `subscription_status = 'tester'` | marks a tester account, bypasses Stripe/paywall |
-| `users.tester_school_code` | which school this student came from |
-| `users.tester_access_until` (timestamptz) | rolling access deadline, reset on feedback |
-| `users.tester_guidance_seen_at` (timestamptz, nullable) | gates the first-login guidance screen to once |
-| `beta_feedback` (`id, user_id, school_code, type, page_url, message, created_at`) | in-app feedback log; the only writer that resets `tester_access_until` |
-| `BETA_PROGRAM_ENDS_AT` (config constant, like `pricing.js`) | hard cutoff for the whole program regardless of feedback |
+| `beta_schools` | cohort code validation and internal school attribution |
+| `beta_program_settings` | singleton cutoff, rolling hours, optional external URL |
+| `users.subscription_status = 'beta'` | beta identity, kept outside Stripe |
+| `users.tester_school_code` | tester’s cohort attribution |
+| `users.tester_access_until` | rolling deadline reset by accepted main feedback |
+| `users.tester_guidance_seen_at` | first-login guidance record |
+| `beta_feedback` | messages, micro feedback, optional screenshot/region metadata and replies |
+| `beta_profile` | role/note, tracking notice timestamp, tasks and closing state |
+| `beta_events` / `beta_rankings` | allowlisted usage events and result ordering |
+| `beta_closing_answers` / `beta_reviews` | closing responses and optional private website reviews |
+| private `beta-screenshots` bucket | uploaded screenshot files |
 
-## 7. Edge cases / open questions for the implementer
+The canonical definitions are in `supabase-setup.sql`. The intended application
+schema enables RLS; sensitive beta writes/RPCs are service-role only. Read-only
+anonymous zero-row probes and OpenAPI column/function paths do not prove grants,
+policy definitions or authenticated cross-account isolation.
 
-- **Link leakage:** a school could reshare the code beyond its own students.
-  Accepted risk at this scale — the code is not meant to be a hard security
-  boundary, just an attribution tag.
-- **Mid-session expiry:** if `tester_access_until` lapses while a student is
-  actively using the app, they should hit the same kind of redirect the real
-  expired-trial flow uses today (`ProtectedRoute` → tester-specific expired
-  page), not a broken/half-loaded screen.
-- **Duplicate signups:** no special tester handling needed — the existing
-  duplicate-account detection (per `CLAUDE.md`, "Duplicate signups are
-  surfaced, not hidden") applies as-is.
-- **Email confirmation for testers — resolved 2026-09-26:** keep it required.
-  `requireAuth` must continue rejecting unconfirmed emails everywhere.
-- **Never let a tester reach a real Stripe charge.** This is the one hard
-  rule — verify it explicitly once built, not just assumed from the flag.
+Account deletion cascades linked feedback rows but does not synchronously remove
+screenshot files. Orphan cleanup waits for files older than 24 hours and a
+successful startup/daily maintenance run; AI usage logs also retain nullable-owner
+records. C31’s erasure workflow/notice reconciliation remains a beta gate.
 
-## 8. Explicitly out of scope for v1
+## 7. Required acceptance before inviting testers
 
-- Screenshot uploads on feedback.
-- Any reward/incentive system for students who give feedback.
-- Automatic join-back from the external form into the app's database.
-- Per-student analytics dashboards — school-level and per-user querying
-  directly in Supabase is enough for a 7-day beta.
+- Fresh disposable installation and repeated schema runs; inspect all table/RPC
+  grants and private Storage policies, then test anonymous/account-A/account-B
+  isolation and transactional feedback rollback/concurrency.
+- Real confirmation/resend mail and shared-code return in the same and a fresh
+  browser, including missing/expired/reused CAPTCHA and upstream auth failure.
+- Immutable account/request/draft ownership, late responses and account switches.
+- Active/expired/null/past-cutoff beta, main/micro/gate/closing feedback paths,
+  capped renewal and actual optional preview with zero beta Stripe operations.
+- Tracking basis/choice/withdrawal, child data, vendor/controller facts, retention,
+  screenshot erasure, testimonial permission and monitored support inbox.
+- Complete responsive/keyboard journeys and real Safari/Chrome/Firefox acceptance.
+
+These are current report gates, not evidence that the checks have already passed.
+Do not blindly rerun historical SQL excerpts on production or reset real accounts
+as an acceptance shortcut.

@@ -856,18 +856,18 @@
     "method": "Full current source read, including self-hosted fonts and update watcher entry. Build passes; runtime update acceptance remains open."
   },
   "docs/beta_testing_operations.md": {
-    "sha256": "37283aee60a32d8af0730a288e3e74f4413f08a7eb9f06f75b1e93b0923ff388",
-    "lines": 174,
+    "sha256": "ee8b56753743678b64dbf1850d9c8dbf655fc93e95e5cf5a480e4d6ccdf606b5",
+    "lines": 204,
     "read_ranges": [
       [
         1,
-        174
+        204
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:56:39.511626+00:00",
-    "method": "Full source read; current diff reviewed for root changes. Read coverage does not imply runtime verification."
+    "checked_at_utc": "2026-10-09T23:28:51.753310+00:00",
+    "method": "Complete stable source read in bounded ranges in this/preceding turn plus own reviewed patch. Settings: full hash-matching prior read plus single-line patch. Not deployment/legal/SQL/device approval."
   },
   "reports/deployment-review-2026-10-07/probe-catalogue.cjs": {
     "sha256": "773b14dfe32d864e5bc612488624164f8afe27744ffd4b4f9a96a0badb41fe64",
@@ -2308,7 +2308,7 @@
     "method": "Full stable current read in bounded ranges, or exact verified full-read baseline plus complete current diff and own reviewed patch. Truncated confirmation/instructions ranges reread; UNFORGET peer additions fully reread after 3bc498c. Source read is not legal/service/runtime approval."
   },
   "frontend/src/components/BetaInstructions.jsx": {
-    "sha256": "cfbec9366767c24d35aa4fa8627b3c63df5f6b5111107365b60983630f8a8990",
+    "sha256": "afe15094706349a3b6dd2a32f8bcbc282b971e0dd742f59f30df879c59da422f",
     "lines": 150,
     "read_ranges": [
       [
@@ -2318,7 +2318,8 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "method": "Full stable current read in bounded ranges, or exact verified full-read baseline plus complete current diff and own reviewed patch. Truncated confirmation/instructions ranges reread; UNFORGET peer additions fully reread after 3bc498c. Source read is not legal/service/runtime approval."
+    "checked_at_utc": "2026-10-09T23:28:51.754242+00:00",
+    "method": "Complete stable source read in bounded ranges in this/preceding turn plus own reviewed patch. Settings: full hash-matching prior read plus single-line patch. Not deployment/legal/SQL/device approval."
   },
   "frontend/src/components/decision/PointsInput.jsx": {
     "sha256": "5c354cca487d4b0b32ba39de8146f409fbddabe0cf70bfd21a5d2777ec9541c7",
@@ -3287,7 +3288,7 @@
     "method": "Full stable current source read in bounded complete ranges; current own authored diff fully reviewed where applicable. Actual Search/Map isolated browser checks recorded separately. Read is not runtime/service/legal acceptance."
   },
   "frontend/src/pages/Settings.jsx": {
-    "sha256": "41b242e8076065dab772eb20d704074afc846ad8c6503bcdad8c95f201276b8e",
+    "sha256": "24bf3f416ba10657f67701edc430d3e2de9251894ee5fbc1b9ded6da88bb51d0",
     "lines": 1240,
     "read_ranges": [
       [
@@ -3297,8 +3298,8 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T23:11:56.474995+00:00",
-    "method": "All 1–1238 baseline lines read in six bounded complete ranges plus full own diff. Actual React Settings fixture checks recorded separately; source read does not approve lifecycle/legal/services."
+    "checked_at_utc": "2026-10-09T23:28:51.754547+00:00",
+    "method": "Complete stable source read in bounded ranges in this/preceding turn plus own reviewed patch. Settings: full hash-matching prior read plus single-line patch. Not deployment/legal/SQL/device approval."
   },
   "frontend/src/components/decision/decisionTabs.css": {
     "sha256": "5d3bc3ee8d34e5de78287cc8df416678f5a1e9767cbc3686d62e5f160735d1c1",
@@ -3383,5 +3384,61 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-09T23:17:08.895984+00:00",
     "method": "Full current source read in bounded complete ranges, plus full reviewed own patch where applicable. Browser/test evidence recorded separately; reading is not defect-free or live/legal/device approval."
+  },
+  "docs/beta_testing_logic.md": {
+    "sha256": "c82cfb53fd7a4a91e4b6eabe150269f59dd111928f33d5e51e5a05aa0532a0fc",
+    "lines": 155,
+    "read_ranges": [
+      [
+        1,
+        155
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T23:28:51.753518+00:00",
+    "method": "Complete stable source read in bounded ranges in this/preceding turn plus own reviewed patch. Settings: full hash-matching prior read plus single-line patch. Not deployment/legal/SQL/device approval."
+  },
+  "docs/sql/2026-10-08-beta-round3.sql": {
+    "sha256": "93f71a980280915a5d8105c54c9c72b31b0158ea619f047c1f3a4d4c89929778",
+    "lines": 97,
+    "read_ranges": [
+      [
+        1,
+        97
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T23:28:51.753562+00:00",
+    "method": "Complete stable source read in bounded ranges in this/preceding turn plus own reviewed patch. Settings: full hash-matching prior read plus single-line patch. Not deployment/legal/SQL/device approval."
+  },
+  "migrations/2026-10-09-plan020-catchup.sql": {
+    "sha256": "6aa30b26c6b919dc4b1dacb5bde9d2a121f37fd6e9a406692d7c66fce4e8f09d",
+    "lines": 84,
+    "read_ranges": [
+      [
+        1,
+        84
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T23:28:51.753602+00:00",
+    "method": "Complete stable source read in bounded ranges in this/preceding turn plus own reviewed patch. Settings: full hash-matching prior read plus single-line patch. Not deployment/legal/SQL/device approval."
+  },
+  "plans/019-beta-feedback-and-analytics.md": {
+    "sha256": "cefa2f358282385f57c9b307faf230c699777356b96d426c4319eb77ae54aff1",
+    "lines": 204,
+    "read_ranges": [
+      [
+        1,
+        204
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T23:28:51.754747+00:00",
+    "method": "Complete stable source read in bounded ranges in this/preceding turn plus own reviewed patch. Settings: full hash-matching prior read plus single-line patch. Not deployment/legal/SQL/device approval."
   }
 }

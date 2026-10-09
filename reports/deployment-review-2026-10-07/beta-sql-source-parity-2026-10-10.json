@@ -1,0 +1,34 @@
+{
+  "checkedAt": "2026-10-09T23:28:51.752010+00:00",
+  "checks": [
+    {
+      "path": "docs/sql/2026-10-08-beta-round3.sql",
+      "function": "record_beta_events",
+      "sameLatestCanonicalFunctionText": true,
+      "sha256": "ea4c16d43c69cc13ce49e7da1b06031999b22735786d0885238a1da4e43796ce",
+      "sqlChangesCommentsOnly": true
+    },
+    {
+      "path": "docs/sql/2026-10-08-beta-round3.sql",
+      "function": "submit_beta_micro",
+      "sameLatestCanonicalFunctionText": true,
+      "sha256": "a70a650d5710b60deea14fd8a422d0b4918b57ec7d10144fe4142ccd407192d9",
+      "sqlChangesCommentsOnly": true
+    },
+    {
+      "path": "migrations/2026-10-09-plan020-catchup.sql",
+      "function": "submit_beta_closing",
+      "sameLatestCanonicalFunctionText": true,
+      "sha256": "e1e2b24c9c73789d32361d309dca166b01fb32593fb9f196b641e437d2ceda6c",
+      "sqlChangesCommentsOnly": true
+    },
+    {
+      "path": "migrations/2026-10-09-plan020-catchup.sql",
+      "function": "submit_beta_review",
+      "sameLatestCanonicalFunctionText": true,
+      "sha256": "57876215142da2b9daa9b693b5720928447687ae92e67566d8ff1236030adf4b",
+      "sqlChangesCommentsOnly": true
+    }
+  ],
+  "limit": "Exact source function text and comment-only own patch; not execution, current live bodies/grants, prerequisites, idempotence or isolation acceptance."
+}

@@ -1,0 +1,20 @@
+{
+  "checkedAt": "2026-10-09T23:18:28.941Z",
+  "settings": [
+    {
+      "singleton": true,
+      "ends_at": "2026-10-18T21:59:00+00:00",
+      "access_hours": 48,
+      "hasExternalFeedbackForm": false
+    }
+  ],
+  "schoolCodeCount": "*/1",
+  "intendedCohortCodeCount": "*/1",
+  "betaProfileMetadata": {
+    "role_note": true,
+    "consent_tracking_at": true,
+    "consent_tracking_version": false,
+    "consent_tracking_revoked_at": false
+  },
+  "limitation": "Local service credentials, read-only hosted configuration and exposed column metadata. Does not prove deployed env/build, policy/function bodies/grants, controller approval, actual signup or isolation. No user rows or code values printed; no writes, charges, uploads or messages."
+}

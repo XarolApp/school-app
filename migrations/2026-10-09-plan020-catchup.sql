@@ -1,5 +1,8 @@
 -- Plan 020 catch-up: only the statements added to supabase-setup.sql since 92e5e0c.
--- Re-runnable. Copied verbatim from supabase-setup.sql; that file stays the source of truth.
+-- Intended for reruns; verify fresh prerequisites/reruns in a disposable database
+-- before a reviewed live migration. Current function text matches the canonical
+-- schema on 2026-10-10; live application/grants are not proven by this file.
+-- supabase-setup.sql stays the source of truth.
 begin;
 alter table public.users add column if not exists gender text;
 alter table public.users drop constraint if exists users_gender_check;

@@ -1,10 +1,13 @@
--- Beta round 3 — 2026-10-08. Paste into Supabase → SQL Editor → Run.
+-- Historical beta round 3 excerpt — 2026-10-08, for an existing installation.
+-- Compare with the current canonical schema and verify in a disposable database
+-- before any reviewed live migration. This is not the complete latest schema.
 -- 1) Fixes record_beta_events (it failed on every signed-in batch, so the
 --    "Co vyzkoušet" checklist never ticked).
 -- 2) submit_beta_micro = the 10-second quick rating; stores feedback but does
 --    NOT renew beta access.
 -- 3) decision_profile.jpz_expected_gain (Přihláška: expected extra points).
--- Same text as supabase-setup.sql; grants are unchanged (same signatures).
+-- Function text matches supabase-setup.sql on 2026-10-10. That comparison does
+-- not prove live bodies/grants; existing function privileges must be verified.
 
 alter table public.decision_profile add column if not exists jpz_expected_gain smallint
   check (jpz_expected_gain between 0 and 100);
