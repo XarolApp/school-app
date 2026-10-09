@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-09T21:33:50.536437+00:00",
-  "commit": "f43654e8fb6099ccf62e6e1d5859d6b552609da6",
+  "checked_at_utc": "2026-10-09T21:42:42.305905+00:00",
+  "commit": "bc1f82653de093bcdb70526ed097f508447c5923",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "pending_or_changed": 550,
-    "current_full_read": 214,
+    "pending_or_changed": 549,
+    "current_full_read": 219,
     "binary_requires_asset_check": 53,
-    "generated_or_audit_artifact": 42,
+    "generated_or_audit_artifact": 44,
     "removed_or_missing": 2
   },
   "files": [
@@ -733,17 +733,21 @@
     },
     {
       "path": "AGENTS.md",
-      "sha256": "3c105f323c09c42c15918e84529a407768949b5be168e6fb9c6d35ac8846b162",
-      "lines": 985,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "021f1a0812a772c9a822096d352d910eef78203dda0bac720de29bbb9edab0a8",
+      "lines": 1016,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "CLAUDE.md",
-      "sha256": "a469decccd36cc139c9ee082f84618ab6f9ad2ef46b4fcf822a3b847e1aca548",
-      "lines": 979,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "854a7bbb04d754c89b783244f0e80e7bafe3de847085290eb9d8f25eca50c015",
+      "lines": 1012,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "DEPLOY.md",
@@ -779,8 +783,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "889f490b45eae73786a9b12d16cd12aea56df448a15d7e15aec952fb8c2d9da5",
-      "lines": 1599,
+      "sha256": "ce137b8dd3c9221df34e9635a37b834de89b17dc1d792e74886792d6d14fa39b",
+      "lines": 1606,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -2697,8 +2701,8 @@
     },
     {
       "path": "frontend/src/App.jsx",
-      "sha256": "aef08d1412e98d6a60442a13306b5b300772da694b9d4c9869dc800b33cadefb",
-      "lines": 141,
+      "sha256": "8f699b26bda2cc15aa691b9416e554560586d63335d896838bdcd9d40e05c915",
+      "lines": 150,
       "status": "pending_or_changed",
       "matching_evidence": []
     },
@@ -2711,8 +2715,8 @@
     },
     {
       "path": "frontend/src/auth.css",
-      "sha256": "4b43a2740a3d12843cded6961767788a708a68ecf55639c71109dd6d9d46ab9d",
-      "lines": 761,
+      "sha256": "bfbd4ed6598ce9476a40d88e5c8fc89b3201e5d898a4d7ffdc1ea12817f411c9",
+      "lines": 772,
       "status": "pending_or_changed",
       "matching_evidence": []
     },
@@ -2903,8 +2907,8 @@
     },
     {
       "path": "frontend/src/components/Layout.jsx",
-      "sha256": "b247e0acf55bc387fd3297ddd191ab8e243e78350e397f3459760dc87e1f84e5",
-      "lines": 302,
+      "sha256": "963f3b08f72ca2986bcedc119df9459ed1dcbee9d186f6a4040c849aee9823bd",
+      "lines": 309,
       "status": "pending_or_changed",
       "matching_evidence": []
     },
@@ -2953,8 +2957,8 @@
     },
     {
       "path": "frontend/src/components/ProtectedRoute.jsx",
-      "sha256": "f4984c910a83b3f8184613a51706e4173264a225f62e0ad3afb7fbebf03ffde4",
-      "lines": 78,
+      "sha256": "591df014798f50b89c023f2ece1588e3fce7b551bb1df3f7e15c916b71625e1b",
+      "lines": 86,
       "status": "pending_or_changed",
       "matching_evidence": []
     },
@@ -3001,12 +3005,10 @@
     },
     {
       "path": "frontend/src/components/decision/DecisionTabs.jsx",
-      "sha256": "2aff28301ba361d208707ef47e81914c8e3c4f5ab7414a8590405e5c5a5ac51e",
-      "lines": 26,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "frontend-coverage.json"
-      ]
+      "sha256": "e12cf05e6d9263e07acabc115ee08efee1137970ce193957465e0a66a535ef3b",
+      "lines": 27,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/components/decision/NoteEditor.jsx",
@@ -3019,12 +3021,10 @@
     },
     {
       "path": "frontend/src/components/decision/PickCard.jsx",
-      "sha256": "f04e85cf865a4573edaea83ff82064a2d67707be98de1d9c44203d0d813dde57",
-      "lines": 123,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "d9de7e71ba048f09731f5629fe225b0c236bbbd169472bf6d2be83dc746fc568",
+      "lines": 124,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/components/decision/PointsInput.jsx",
@@ -3052,6 +3052,20 @@
       "matching_evidence": [
         "root-coverage.json"
       ]
+    },
+    {
+      "path": "frontend/src/components/decision/decisionTabs.css",
+      "sha256": "5d3bc3ee8d34e5de78287cc8df416678f5a1e9767cbc3686d62e5f160735d1c1",
+      "lines": 8,
+      "status": "pending_or_changed",
+      "matching_evidence": []
+    },
+    {
+      "path": "frontend/src/components/decision/pickCard.css",
+      "sha256": "ff08d0b04d1c9881077b9e2d4df9ddd7499882dcf645f59cedf623bfe1b6dea2",
+      "lines": 12,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/components/landing/ProductScreens.jsx",
@@ -3170,7 +3184,8 @@
       "lines": 135,
       "status": "current_full_read",
       "matching_evidence": [
-        "frontend-coverage.json"
+        "frontend-coverage.json",
+        "root-coverage.json"
       ]
     },
     {
@@ -3220,12 +3235,10 @@
     },
     {
       "path": "frontend/src/components/schoolDetail/SchoolActions.jsx",
-      "sha256": "353bd6607612fec2472031b37db8e04ae5f466b1de195fcdb3e4228a0175b53b",
-      "lines": 262,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "58e43d65f9dbc316d476d4da19756c3dc993fd6526e0d8b201beda76cfbd32f6",
+      "lines": 272,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/components/schoolDetail/SchoolHero.jsx",
@@ -3632,8 +3645,10 @@
       "path": "frontend/src/lib/updateWatcher.js",
       "sha256": "dee0938956fdad17d91f3e089b02ae1897a1dfa8f1383fe3d071e2b8e3ca2b26",
       "lines": 147,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/lib/useBottomBarSpace.js",
@@ -3682,8 +3697,10 @@
       "path": "frontend/src/main.jsx",
       "sha256": "608faffc6bc03511e872c1c293e10d8e003860898a8f44d61198fdd8138bdc34",
       "lines": 24,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/pages/Admin.css",
@@ -3826,12 +3843,10 @@
     },
     {
       "path": "frontend/src/pages/SchoolDetail.jsx",
-      "sha256": "1bfd84ca5fffa97009e918924468203b20f3e77dcd0d8f64d5fa4933df8aebb5",
-      "lines": 249,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "7df5c45db14154e7f176d61d8c13090e0d70deb92dbd5b12c17e090c2a5f9394",
+      "lines": 251,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/pages/SdileniView.jsx",
@@ -3851,8 +3866,8 @@
     },
     {
       "path": "frontend/src/pages/Settings.jsx",
-      "sha256": "d9dd6adc717bb40f5fdaab6342487576198bbf04b46b94c0669bb74bd212843a",
-      "lines": 1229,
+      "sha256": "3565806cb60ccab5ef74c50204d42f9faad6ecff180cb309d51c713d62d46189",
+      "lines": 1232,
       "status": "pending_or_changed",
       "matching_evidence": []
     },
@@ -3881,8 +3896,8 @@
     },
     {
       "path": "frontend/src/pages/beta.css",
-      "sha256": "cc372049f70b54a963de8b29bb13168183ee25e49928767f21e9261d063ccaad",
-      "lines": 306,
+      "sha256": "aaee0beea545fbe15f63942685f98d898386a7af71d15ca97a1ea0bb756be8fc",
+      "lines": 311,
       "status": "pending_or_changed",
       "matching_evidence": []
     },
@@ -4143,15 +4158,19 @@
       "path": "frontend/vercel.json",
       "sha256": "12d68c12a1ace800f08b87f8503701ef44dc8ee714fdf89748aabab198060fd2",
       "lines": 21,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/vite.config.js",
       "sha256": "fab6a73a2c8e936ab2699c7f3799e8769bc160e2c3990f9729dc9c646318f841",
       "lines": 28,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "lib/aiUsage.js",
@@ -4460,12 +4479,10 @@
     },
     {
       "path": "plans/020-beta-launch-batch.md",
-      "sha256": "ed88e93f0569bcc3ea5b29a58fe94c50a35ea05846ee1f728d46833bd924a25a",
-      "lines": 614,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "b39add427568d9b6f608ed93cd57d2a8d356b3a0c6779f84f5463f3fa8e04387",
+      "lines": 641,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "plans/README.md",
@@ -5446,22 +5463,22 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "82df311de29758fc24a2296090949375f089782e5c581cadf43eea5180d91e78",
-      "lines": 170,
+      "sha256": "949ef5de2967ab468623a60e2959a9e44e480fd98c0ae4e94eb41df488e0c16e",
+      "lines": 181,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "8ce17b63ccf4e901c56c5bd070cc7e733f560030a5bece05a5ee319a7c09f12c",
-      "lines": 106,
+      "sha256": "6e60b18190078d795b396993694b759f4aba6b0169fe4013486af012f608b293",
+      "lines": 112,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "b23eef5e46564478b13be54f2b56b60188863c74494e3c95e4c10fe52cc8c5ee",
-      "lines": 88,
+      "sha256": "99fc0c125859035050f3db9ac10c0278bb0ad6621353ae68f5ab6a42ffe0c3a2",
+      "lines": 94,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -5513,6 +5530,13 @@
       "path": "reports/deployment-review-2026-10-07/backend-findings.md",
       "sha256": "99b925c3957a32a382259a5b48d8efb3c298a26d007e9350a81d8a8d0e0fbe09",
       "lines": 182,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/backend-tests-2026-10-09.txt",
+      "sha256": "0dddba13a311259b80570ecbef04b75c3dd93de74cd637a7ccb120427ab7cf9a",
+      "lines": 175,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -5574,15 +5598,15 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "19982dc8a5008cfaf5fe0ababce65a722c80cae23f539edc43c19ced6b59b276",
-      "lines": 156,
+      "sha256": "1a4f0299cb86600a91ce49b8c033629e0eed9ea504e1047326b54f14a3274494",
+      "lines": 174,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "6ad6b76e6fa8ae98837cbcd883cf450d2058aae361db5c763f4c767df39cc469",
-      "lines": 6436,
+      "sha256": "8d7eebb99d0d0320df7580e48d808315229c733ae581ecc97b92da095b6a862f",
+      "lines": 6504,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -5771,6 +5795,15 @@
       ]
     },
     {
+      "path": "reports/deployment-review-2026-10-07/probe-current-schema-fields.cjs",
+      "sha256": "6d28a2c7339be7926e18b5b57a2d9ca047eb63629e3ff35c2110bf78468f77b9",
+      "lines": 37,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/probe-data-integrity.cjs",
       "sha256": "c25dc8417817ffb99d59c8cd99c99d3fa9e866826129c9a38b697a34c559e23a",
       "lines": 66,
@@ -5820,7 +5853,7 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/questionnaire-lunch-coverage-copy.png",
-      "sha256": "ba45ff05fde473a5110222a715084de54d4ba7f1e2124254a8302dea1822bc1d",
+      "sha256": "2f3b9c6d281b790dc51b7d7cc6f56b66643c81e53fe8e63dec15505796b12bf9",
       "lines": null,
       "status": "binary_requires_asset_check",
       "matching_evidence": []
@@ -5835,6 +5868,15 @@
       ]
     },
     {
+      "path": "reports/deployment-review-2026-10-07/reproduce-explanation-cache-race.cjs",
+      "sha256": "851c1a87dc3068760aee86bb147e1aa4c30fed684ce009128438d9f4126602c1",
+      "lines": 74,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/reproduce-onboarding-owner-race.cjs",
       "sha256": "10b66a42ae67a4aaee7ab58f055abe18951d04a52098dd59629303f541d16cf6",
       "lines": 33,
@@ -5843,8 +5885,15 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "19757807a77563a5601b3a3a467799137f408d19e84017fb4144cb22d16efc4e",
-      "lines": 2757,
+      "sha256": "54ae7cf13124f046326c0e6b47c11e7e02ccc8a8b172c2f8d9c45c79f01f1187",
+      "lines": 2855,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/schema-fields-2026-10-09.json",
+      "sha256": "a98198dc2e5a2edb78bf0122090d77609965becccec5629b6d717726114e195f",
+      "lines": 50,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6250,8 +6299,10 @@
       "path": "server.js",
       "sha256": "f6914d0d4737c1ee22c26cc97832d439947fc7262cc17005d0235904efd848f1",
       "lines": 3505,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "skills-lock.json",
@@ -6460,8 +6511,10 @@
       "path": "tests/update-watcher.test.mjs",
       "sha256": "a25a6246db9b75946b05cdab97ff84949bb1fa640e9bd0689fd8bffa512e3624",
       "lines": 24,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     }
   ]
 }

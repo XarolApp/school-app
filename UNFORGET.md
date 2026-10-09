@@ -1597,3 +1597,10 @@ Fold that fix into the redesign rather than patching it separately.
 - **Effort:** Medium.
 - **To decide:** which questions belong in the fast version (likely the ones that most change the ranking: school type, interests, location, and any weight-setting questions); whether a fast run can be upgraded to a full one later without starting over; how results show lower confidence for a fast run (the scorer already drops unanswered components and renormalises weights; skipping can raise or lower a score when remaining weights renormalise, and ranking/confidence can change); and whether the onboarding quiz, `/dotaznik` or both get the choice.
 - **Not done yet:** everything above.
+
+## Concurrent on-demand explanation cache writes lose entries — deployment review C21, 2026-10-09
+
+- **Priority:** P2, AI cost/reliability; coordinated backend/database fix.
+- **Reproduced:** the actual `/api/questionnaire/explain/:schoolId` handler with synthetic services returns two successful different-school explanations, then a whole-object JSON cache replacement erases one entry. `node reports/deployment-review-2026-10-07/reproduce-explanation-cache-race.cjs`; no live writes or model calls.
+- **Plan:** atomically merge a single cache key under the original account/run, coordinate same-school generation, and define evidence/model/grammatical cache validity. Preserve ownership and usage attribution.
+- **Acceptance:** concurrent distinct/same-school misses, deletion/default/owner changes during generation, provider/cache failures and retry costs. An atomic merge alone does not deduplicate model calls. See the deployment continuation findings and handoff; the 157 passing automated tests do not cover this race.

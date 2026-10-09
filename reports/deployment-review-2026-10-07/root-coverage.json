@@ -64,32 +64,32 @@
     "reviewer": "root"
   },
   "AGENTS.md": {
-    "sha256": "7387ec9d106dbaf6ef5e748739fa352ba2f230ec1275fe63c90fd771c7627037",
-    "lines": 972,
+    "sha256": "021f1a0812a772c9a822096d352d910eef78203dda0bac720de29bbb9edab0a8",
+    "lines": 1016,
     "read_ranges": [
       [
         1,
-        972
+        1016
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:51:37.844718+00:00",
-    "method": "Full source read; earlier full read plus complete current diff review where applicable. Read coverage does not imply defect-free or full runtime verification."
+    "checked_at_utc": "2026-10-09T21:42:41.962300+00:00",
+    "method": "All 985 pre-edit current lines read in complete bounded ranges 1-170,171-340,341-470,471-620,621-800,801-end; all own current edits inspected. Shared guide reconciliation preserves founder/model policies and pending route clarification. Final own wording/metadata additions inspected; exact paired-guide equality rechecked."
   },
   "CLAUDE.md": {
-    "sha256": "6e529b1b7f27531d908ea84108f26092e4d2b3559953717ac6a9cee33fc897fc",
-    "lines": 968,
+    "sha256": "854a7bbb04d754c89b783244f0e80e7bafe3de847085290eb9d8f25eca50c015",
+    "lines": 1012,
     "read_ranges": [
       [
         1,
-        968
+        1012
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:51:37.844841+00:00",
-    "method": "Full source read; earlier full read plus complete current diff review where applicable. Read coverage does not imply defect-free or full runtime verification."
+    "checked_at_utc": "2026-10-09T21:42:41.962300+00:00",
+    "method": "Full current AGENTS shared content read, entire original pair diff inspected, all own guide edits reviewed, and exact transformed-byte equality asserted for the shared current content. Only graphify prefix/agent-specific names and paths differ; those differences were read explicitly. Final own wording/metadata additions inspected; exact paired-guide equality rechecked."
   },
   "frontend/src/App.jsx": {
     "sha256": "1b72fab35d3be14a790d6105d0f543cf6f741ad3a69dc8d8232e6147c79bba13",
@@ -837,18 +837,18 @@
     "method": "Full source read; earlier full read plus complete current diff review where applicable. Read coverage does not imply defect-free or full runtime verification."
   },
   "frontend/src/main.jsx": {
-    "sha256": "5f09db9026a24144a862480fbf122fc920336ae55db74745789ce1f81e9075aa",
-    "lines": 21,
+    "sha256": "608faffc6bc03511e872c1c293e10d8e003860898a8f44d61198fdd8138bdc34",
+    "lines": 24,
     "read_ranges": [
       [
         1,
-        21
+        24
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:51:37.844591+00:00",
-    "method": "Full source read; earlier full read plus complete current diff review where applicable. Read coverage does not imply defect-free or full runtime verification."
+    "checked_at_utc": "2026-10-09T21:41:03.501885+00:00",
+    "method": "Full current source read, including self-hosted fonts and update watcher entry. Build passes; runtime update acceptance remains open."
   },
   "docs/beta_testing_operations.md": {
     "sha256": "37283aee60a32d8af0730a288e3e74f4413f08a7eb9f06f75b1e93b0923ff388",
@@ -1369,18 +1369,18 @@
     "method": "Full source read across recorded continuation turns, including missing middleware/brainstorm ranges and complete authored diffs. Read means inspected, not defect-free or runtime-approved."
   },
   "reports/deployment-review-2026-10-07/REPORT.md": {
-    "sha256": "b23eef5e46564478b13be54f2b56b60188863c74494e3c95e4c10fe52cc8c5ee",
-    "lines": 88,
+    "sha256": "99fc0c125859035050f3db9ac10c0278bb0ad6621353ae68f5ab6a42ffe0c3a2",
+    "lines": 94,
     "read_ranges": [
       [
         1,
-        88
+        94
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T21:33:50.165512+00:00",
-    "method": "Full current document read through end, then own narrow edits inspected. Review still in progress."
+    "checked_at_utc": "2026-10-09T21:42:41.962300+00:00",
+    "method": "Full current report read previously and all subsequent own additions inspected. Current review remains in progress. Final own wording/metadata additions inspected; exact paired-guide equality rechecked."
   },
   "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md": {
     "sha256": "a6678a14d47405e40e67b17ce1b518f306476f1bf27fefd2d2acf4dba37f0256",
@@ -1705,18 +1705,18 @@
     "method": "Full source read plus complete current authored diff review. Docs reconciled to source/read-only production evidence; read does not imply acceptance."
   },
   "frontend/vercel.json": {
-    "sha256": "0faf96401e6d774a6277f4df8a4883e33c9e5468b685f5ecad85221e01fa79a0",
-    "lines": 3,
+    "sha256": "12d68c12a1ace800f08b87f8503701ef44dc8ee714fdf89748aabab198060fd2",
+    "lines": 21,
     "read_ranges": [
       [
         1,
-        3
+        21
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:52:21.686802+00:00",
-    "method": "Full source read plus complete current authored diff review. Docs reconciled to source/read-only production evidence; read does not imply acceptance."
+    "checked_at_utc": "2026-10-09T21:41:03.501885+00:00",
+    "method": "Full current configuration read. CSP is report-only; production rewritten-route/gate/header/cache checks remain open."
   },
   "package.json": {
     "sha256": "c207257141b4d7d3091f900a8bda124a497749ff82e3c6ac227d95a373e63934",
@@ -2111,18 +2111,18 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "889f490b45eae73786a9b12d16cd12aea56df448a15d7e15aec952fb8c2d9da5",
-    "lines": 1599,
+    "sha256": "ce137b8dd3c9221df34e9635a37b834de89b17dc1d792e74886792d6d14fa39b",
+    "lines": 1606,
     "read_ranges": [
       [
         1,
-        1599
+        1606
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T21:33:50.165512+00:00",
-    "method": "Full original 2,296-line ledger and full reconciliation edits previously read; all current narrow founder-note changes read. Founder confirms note stays private saved context."
+    "checked_at_utc": "2026-10-09T21:42:41.962300+00:00",
+    "method": "Full 2,296-line original ledger and complete reconciliation previously read; all current narrow C21 additions inspected. Final own wording/metadata additions inspected; exact paired-guide equality rechecked."
   },
   "frontend/src/api.js": {
     "sha256": "07b5a72a87fbd88712988bbe465d8a34ec16a1b6f2b127bbdfa82e74e930e003",
@@ -2753,5 +2753,103 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-09T21:33:50.165512+00:00",
     "method": "Entire authored read-only probe inspected; run emits aggregate school coverage only, checks complete response and row cardinality; no data writes or model calls."
+  },
+  "server.js": {
+    "sha256": "f6914d0d4737c1ee22c26cc97832d439947fc7262cc17005d0235904efd848f1",
+    "lines": 3505,
+    "read_ranges": [
+      [
+        1,
+        3505
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:41:03.501885+00:00",
+    "method": "Exact saved 3,328-line c460db0 full-read SHA verified; all 570 lines of the complete current diff read in 1-200,201-390,391-end, then relevant connected routes reread. Source hash checked again. 157 tests pass; C21 reproduced with synthetic services. No live SQL/payment approval."
+  },
+  "frontend/vite.config.js": {
+    "sha256": "fab6a73a2c8e936ab2699c7f3799e8769bc160e2c3990f9729dc9c646318f841",
+    "lines": 28,
+    "read_ranges": [
+      [
+        1,
+        28
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:41:03.501885+00:00",
+    "method": "Full current source read, including build id/dev version endpoint/emitted asset. Build passes; deployment cache/header acceptance remains open."
+  },
+  "frontend/src/lib/updateWatcher.js": {
+    "sha256": "dee0938956fdad17d91f3e089b02ae1897a1dfa8f1383fe3d071e2b8e3ca2b26",
+    "lines": 147,
+    "read_ranges": [
+      [
+        1,
+        147
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:41:03.501885+00:00",
+    "method": "Full current source read; reload/visibility/focus/storage/hold logic inspected. Existing helper tests pass; actual browser scheduling/recovery/restoration acceptance remains open."
+  },
+  "tests/update-watcher.test.mjs": {
+    "sha256": "a25a6246db9b75946b05cdab97ff84949bb1fa640e9bd0689fd8bffa512e3624",
+    "lines": 24,
+    "read_ranges": [
+      [
+        1,
+        24
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:41:03.501885+00:00",
+    "method": "Full current test source read. Two decision-helper tests pass; they do not test browser scheduling or restoration."
+  },
+  "frontend/src/components/schoolDetail/MissingDataGrid.jsx": {
+    "sha256": "ba6ae1465a5a15e0befc9afa579858bb3278caee098e4378b0fb5b941f9ba1a9",
+    "lines": 135,
+    "read_ranges": [
+      [
+        1,
+        135
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:41:03.501885+00:00",
+    "method": "Full current source read 1-end, including real cards, missing-field grouping and number/source fallback. Stored school facts remain source/provenance acceptance work."
+  },
+  "reports/deployment-review-2026-10-07/reproduce-explanation-cache-race.cjs": {
+    "sha256": "851c1a87dc3068760aee86bb147e1aa4c30fed684ce009128438d9f4126602c1",
+    "lines": 74,
+    "read_ranges": [
+      [
+        1,
+        74
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:41:03.501885+00:00",
+    "method": "Entire authored actual-handler synthetic reproduction inspected and executed: both 200 responses, two replacement cache writes, one surviving key. No external service/user mutation."
+  },
+  "reports/deployment-review-2026-10-07/probe-current-schema-fields.cjs": {
+    "sha256": "6d28a2c7339be7926e18b5b57a2d9ca047eb63629e3ff35c2110bf78468f77b9",
+    "lines": 37,
+    "read_ranges": [
+      [
+        1,
+        37
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T21:42:41.962300+00:00",
+    "method": "Full authored read-only OpenAPI probe inspected and executed. Emits expected field/path booleans only; no user rows, RPC calls or schema writes. Metadata is not full grants/behavior approval."
   }
 }
