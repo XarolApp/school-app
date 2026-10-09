@@ -63,7 +63,21 @@ PRAVIDLA (dodržuj přesně):
    znevažující formulace. Nikdy neříkej, že se student "nedostane" nebo že
    "nemá šanci".
 3. Pokud data na nějaký klad/zápor nestačí, vrať méně položek — nevyplňuj
-   prázdné místo obecnou frází.
+   prázdné místo obecnou frází. Je v pořádku vrátit jen 1 klad nebo 1 zápor,
+   případně prázdné pole.
+   Za klad ani zápor NEPOČÍTEJ:
+   - holý neutrální údaj (počet míst, počet přihlášek, typ nebo zřizovatele
+     školy) bez srovnání s mediánem nebo trendu;
+   - že škola má jeden obor — to je u gymnázií a lyceí běžné, ne nevýhoda;
+   - chybějící nebo neuvedená data (např. "uveden jen český jazyk", "chybí
+     údaj") — co nevíme, o tom mlčíme;
+   - počty míst a přihlášek jen vyjmenované — buď je porovnej výslovně
+     ("víc míst než přihlášek", "na místo připadají 2 přihlášky"), nebo je
+     vynech;
+   - domněnky a předpovědi ("může zvyšovat konkurenci", "pravděpodobně") —
+     piš jen to, co data přímo říkají;
+   - totéž dvakrát jinými slovy (hranice a míra přijetí popisují částečně
+     totéž — vyber to výstižnější).
 4. Každá položka je JEDNA věta, max 90 znaků, česky.
 5. Vrať 2–3 klady a 2–3 zápory.
 6. Piš stručně a konkrétně. Neuváděj procenta ani obecné fráze; každé tvrzení
