@@ -1,0 +1,27 @@
+(node:33953) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Leaflet labels keep HTML and attributes as literal text (0.711958ms)
+✔ mixed school contacts produce separate email and phone links (1.145542ms)
+✔ adding a sixth comparison school is rejected without losing existing selections (0.395459ms)
+✔ a selected four-year program does not use the same-name six-year cutoff (0.738ms)
+✔ a one-obor school needs no obor pick; a multi-obor school gets no averaged verdict (0.231167ms)
+✔ an incomplete set of known cutoffs never claims all three schools are risky (0.100041ms)
+✔ missing school data is distinguished from missing student points (0.073625ms)
+✔ complete known risk data retains the existing verdicts (0.113792ms)
+✔ school admission is the newest year only: a cutoff range and a real acceptance ratio (0.612458ms)
+✔ zero admitted remains zero and unknown counts remain null (0.402208ms)
+✔ known zero applicants gives zero applicants per place (0.107458ms)
+✔ decision tools read the founder from the newest school program year (0.862666ms)
+✔ decision matrix uses readable absolute and relative scales, with labels for every value (15.669708ms)
+✔ missing matrix data stays visible but excludes the criterion for every school (0.426958ms)
+✔ comparison tags use plain comparatives for two schools and superlatives for three (3.858458ms)
+✔ school-life comparison rows format structured values and mark missing cells (0.502375ms)
+✔ school-life rows with no usable comparison data are omitted (0.312791ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 533.761792

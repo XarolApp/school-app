@@ -71,7 +71,7 @@ function strongJoinCz(labels) {
  *  notably better — the whole reason match_score belongs in this matrix. */
 function gapNote(row, index, ranked) {
   if (index !== 0 || row.score == null) return null;
-  const shoda = row.breakdown.find((b) => b.criterionId === 'shoda');
+  const shoda = row.breakdown.find((b) => b.criterionId === 'shoda' && b.included);
   if (!shoda) return null;
 
   const best = ranked.reduce((acc, r) =>
@@ -119,7 +119,7 @@ function weakNote(row, ranked) {
   const topMatch = ranked.reduce((acc, r) =>
     (r.school.match_score ?? -1) > (acc.school.match_score ?? -1) ? r : acc
   );
-  const hasShoda = row.breakdown.some((b) => b.criterionId === 'shoda');
+  const hasShoda = row.breakdown.some((b) => b.criterionId === 'shoda' && b.included);
   const prefix =
     hasShoda && topMatch.school.id === row.school.id
       ? 'Sedí ti nejvíc ze všech — ale slabá místa'
@@ -143,7 +143,7 @@ function MaticeEmpty({ pickCount }) {
             <p className="ss-label-caps dp-eyebrow">Rozhodování</p>
             <h1 className="ss-headline-lg h">Rozhodovací matice</h1>
             <p className="ss-body-md dp-subtitle">
-              Nastavíš, na čem ti záleží nejvíc, a matice školy seřadí. Žádná AI, jen počty nad daty z Cermatu.
+              Nastavíš, na čem ti záleží nejvíc, a pevný vzorec školy seřadí podle údajů z Cermatu a webů škol.
             </p>
           </div>
         </div>
@@ -165,7 +165,7 @@ function MaticeEmpty({ pickCount }) {
           </div>
           <div className="dp-ghost-weights" aria-hidden="true">
             {[
-              ['Šance na přijetí', 'Zásadní', 100],
+              ['Podíl přijatých', 'Zásadní', 100],
               ['Shoda s tebou', 'Dost', 66],
               ['Bez školného', 'Trochu', 33],
             ].map(([label, level, pct]) => (
@@ -229,7 +229,7 @@ function MaticeSkeleton({ count }) {
             <div className="dp-matrix-result-head">
               <div className="ss-headline-sm h">Pořadí podle tvých vah</div>
               <p className="ss-caption dp-matrix-result-sub">
-                Procenta ukazují skutečný podíl; počty jsou vůči nejvyšší hodnotě mezi vybranými školami.
+                Shoda je skóre z dotazníku; přijetí a maturita jsou podíly. Počty jsou vůči nejvyšší hodnotě mezi vybranými školami.
               </p>
             </div>
             {Array.from({ length: count }, (_, i) => (
@@ -366,7 +366,7 @@ function Matice() {
         {howOpen && (
           <div className="dp-how-body">
             <p>
-              Procenta (shoda, přijetí a maturita) ukazují skutečný podíl. Počet míst a jazyků se škáluje
+              Shoda je skóre souladu s dotazníkem, ne pravděpodobnost přijetí. Míra přijetí a úspěšnost u maturity jsou podíly. Počet míst a jazyků se škáluje
               podle nejvyšší hodnoty mezi vybranými školami — její proužek dosáhne na konec. Nulová hodnota
               má prázdný proužek.
             </p>
@@ -383,8 +383,8 @@ function Matice() {
               vůbec nezapočítává — u nikoho, aby to nikoho nezvýhodnilo ani neznevýhodnilo.
             </p>
             <p>
-              Žádná AI v tom nefiguruje — je to obyčejná matematika nad daty z Cermatu (a nad tvým
-              dotazníkem, pokud ho máš vyplněný). Pořadí se přepočítá okamžitě po každé změně váhy, takže
+              Pořadí počítá pevný vzorec nad údaji z Cermatu a webů škol (a nad shodou z tvého
+              dotazníku, pokud ho máš vyplněný). Údaje z webů škol mohou být zastaralé. Pořadí se přepočítá po každé změně váhy, takže
               si klidně zkoušej různá nastavení.
             </p>
           </div>
@@ -419,6 +419,8 @@ function Matice() {
                   type="button"
                   key={level.key}
                   className={`dp-segment${matchAvailable && normalizedWeights.shoda === level.key ? ' is-on' : ''}`}
+                  aria-label={`${shodaCriterion.label}: ${level.label}`}
+                  aria-pressed={matchAvailable && normalizedWeights.shoda === level.key}
                   disabled={!matchAvailable}
                   onClick={() => handleShodaClick(level.key)}
                 >
@@ -459,6 +461,8 @@ function Matice() {
                     type="button"
                     key={level.key}
                     className={`dp-segment${normalizedWeights[c.id] === level.key ? ' is-on' : ''}`}
+                    aria-label={`${c.label}: ${level.label}`}
+                    aria-pressed={normalizedWeights[c.id] === level.key}
                     onClick={() => setWeight(c.id, level.key)}
                   >
                     {level.label}
@@ -474,7 +478,7 @@ function Matice() {
             <div className="dp-matrix-result-head">
               <div className="ss-headline-sm h">Pořadí podle tvých vah</div>
               <p className="ss-caption dp-matrix-result-sub">
-                Procenta ukazují skutečný podíl; počty jsou vůči nejvyšší hodnotě mezi vybranými školami.
+                Shoda je skóre z dotazníku; přijetí a maturita jsou podíly. Počty jsou vůči nejvyšší hodnotě mezi vybranými školami.
               </p>
             </div>
             {/* Shown only when the columns stack (ranking first): jump to the weights. */}
@@ -574,8 +578,8 @@ function Matice() {
           </div>
 
           <p className="ss-caption">
-            Výpočet je obyčejná matematika nad daty z Cermatu a tvého dotazníku — žádná AI. Procenta ukazují
-            skutečné hodnoty a počty se porovnávají s nejvyšší hodnotou ve výběru. Kritérium s chybějícími údaji
+            Pořadí počítá pevný vzorec nad údaji z Cermatu, webů škol a shodou z tvého dotazníku. Shoda je skóre,
+            přijetí a maturita jsou podíly; počty se porovnávají s nejvyšší hodnotou ve výběru. Kritérium s chybějícími údaji
             zůstane viditelné, ale do pořadí se nezapočítá u žádné školy.
           </p>
         </div>

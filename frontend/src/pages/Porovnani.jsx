@@ -23,7 +23,7 @@ function CompareView({ schools, rows, pickIds, savingPick, onRemove, onClearAll,
           <h1 className="ss-headline-lg h">Porovnání škol</h1>
           <p className="ss-body-md dp-subtitle">
             {schools.length} {schools.length === 1 ? 'škola' : schools.length < 5 ? 'školy' : 'škol'} vedle sebe,
-            stejné řádky. Čísla jsou z Cermatu, přijímačky 2026.
+            stejné řádky. Údaje o přijímačkách jsou z Cermatu podle dostupného roku každé školy.
           </p>
         </div>
         <div className="dp-header-actions">
@@ -311,7 +311,7 @@ function Porovnani() {
         onRemove={handleRemove} onClearAll={handleClearAll} onAddToPicks={toggle} />
 
       <p className="ss-caption dp-footnote">
-        Hranice přijetí, míra přijetí a počty míst jsou reálná data z Cermatu (1. kolo 2026). Hranice je rozpětí
+        Hranice přijetí, míra přijetí a počty míst jsou data z Cermatu podle dostupného roku každé školy. Hranice je rozpětí
         mezi obory školy. Rok v závorce znamená, že novější data zatím nemáme. Starší roky najdeš v grafu v detailu školy. Klady a zápory jsou automatické shrnutí těchto
         dat, ne názor školy. Údaje v části Život ve škole vycházejí z webů škol a mohou být zastaralé.
       </p>

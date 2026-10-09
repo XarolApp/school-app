@@ -433,18 +433,18 @@
     "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
   },
   "frontend/src/pages/Porovnani.jsx": {
-    "sha256": "41104d5625de8ce604492a42b25d9d3c5fdb88a64cc0b2cf6e634f0f160e0faa",
-    "lines": 365,
+    "sha256": "3bd842440240c65c36f8eeb6eeb0716600bb4438241e7f578ab7b88037a41e20",
+    "lines": 330,
     "read_ranges": [
       [
         1,
-        365
+        330
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:36:06.930005+00:00",
-    "method": "Full source read; earlier read plus complete review of root-authored diff where applicable. Findings recorded separately; complete means read, not defect-free."
+    "checked_at_utc": "2026-10-09T23:17:08.895984+00:00",
+    "method": "Full current source read in bounded complete ranges, plus full reviewed own patch where applicable. Browser/test evidence recorded separately; reading is not defect-free or live/legal/device approval."
   },
   "scripts/beta-preview/server.cjs": {
     "sha256": "0f332c19cf622a182be7198ee9042905a1311b211ec698fdea708ca890ea12e4",
@@ -714,18 +714,18 @@
     "method": "Full source read; earlier full read plus complete current diff review where applicable. Read coverage does not imply defect-free or full runtime verification."
   },
   "frontend/src/index.css": {
-    "sha256": "8ec30dabbb4b9bec271f63f54e2df7654a8ada7101e660da39ed08d1eebea2f5",
-    "lines": 105,
+    "sha256": "861b76185feaf8d691267e50a815d3ce89d443ed0cca6bc67e34be118818e7f5",
+    "lines": 118,
     "read_ranges": [
       [
         1,
-        105
+        118
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:56:39.508779+00:00",
-    "method": "Full source read; current diff reviewed for root changes. Read coverage does not imply runtime verification."
+    "checked_at_utc": "2026-10-09T23:17:08.895984+00:00",
+    "method": "Full current source read in bounded complete ranges, plus full reviewed own patch where applicable. Browser/test evidence recorded separately; reading is not defect-free or live/legal/device approval."
   },
   "frontend/src/App.css": {
     "sha256": "f6a1e61e2087b18f918a192e17a85b6ec70f6bd3a3f794d0c31cfb0b9af51da2",
@@ -982,18 +982,18 @@
     "method": "Full source read; current diff reviewed for root changes. Read coverage does not imply runtime verification."
   },
   "frontend/src/pages/search.css": {
-    "sha256": "e00adbecc4a0851ae1af35407e652190bf41803d67304898292fd11b3b8ac4d5",
-    "lines": 1710,
+    "sha256": "133cfa5bb9a257820136d2b0bb6071725bb530f44d5174b4a650ff954d8f0548",
+    "lines": 1763,
     "read_ranges": [
       [
         1,
-        1710
+        1763
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-07T18:56:39.511575+00:00",
-    "method": "Full source read; current diff reviewed for root changes. Read coverage does not imply runtime verification."
+    "checked_at_utc": "2026-10-09T23:17:08.895984+00:00",
+    "method": "Full current source read in bounded complete ranges, plus full reviewed own patch where applicable. Browser/test evidence recorded separately; reading is not defect-free or live/legal/device approval."
   },
   "frontend/src/pages/onboarding/onboarding.css": {
     "sha256": "932ca5cad10dc6861d20557ae25439ceca8194067a1df30069343488bb6b4eab",
@@ -1024,18 +1024,18 @@
     "method": "Full source read; previous full stylesheet/source read plus complete current diff review where applicable. Read coverage does not imply defect-free or complete runtime verification."
   },
   "frontend/src/components/onboarding/districtMap.css": {
-    "sha256": "576c96cbf19b0a3f3b0114ee81bf63bb7c64fb927676078259fbb4e365420e06",
-    "lines": 20,
+    "sha256": "ea8f3e4b6e38e91c0eba776528f0bf1bad48614d6cf47acb8c9e6c3147be8044",
+    "lines": 26,
     "read_ranges": [
       [
         1,
-        20
+        26
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:17:25.704743+00:00",
-    "method": "Full source read; previous full stylesheet/source read plus complete current diff review where applicable. Read coverage does not imply defect-free or complete runtime verification."
+    "checked_at_utc": "2026-10-09T23:17:08.895984+00:00",
+    "method": "Full current source read in bounded complete ranges, plus full reviewed own patch where applicable. Browser/test evidence recorded separately; reading is not defect-free or live/legal/device approval."
   },
   "frontend/src/pages/onboarding/screens/Cesta.jsx": {
     "sha256": "d892fd4843c26476a57d80318846934889bc1120c0ef4e5fa9de2a8cd5db6fd4",
@@ -1906,7 +1906,7 @@
     "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
   },
   "frontend/src/lib/decisionMatrix.js": {
-    "sha256": "2f9e9f469d09ea71a4fab555b25c7b34b9d0e7f2932aa1718b2567dea1c868c5",
+    "sha256": "66dc17d0e1df489694f9040037acbb25bfba5ca3887520c0c8896093fa6d3bc0",
     "lines": 274,
     "read_ranges": [
       [
@@ -1916,8 +1916,8 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:59:51.340604+00:00",
-    "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
+    "checked_at_utc": "2026-10-09T23:17:08.895984+00:00",
+    "method": "Full current source read in bounded complete ranges, plus full reviewed own patch where applicable. Browser/test evidence recorded separately; reading is not defect-free or live/legal/device approval."
   },
   "frontend/src/components/ParentPayHandoff.jsx": {
     "sha256": "03b062563409c123194f9f4600a872d2b39da0175d0df0e5608a6a1f2d8bcbf0",
@@ -2046,18 +2046,18 @@
     "method": "Full current source read in bounded, untruncated ranges on 9 October; released Phase 9 reviewed. Four beta/social-proof tests pass. Reading is not legal, production or full runtime approval."
   },
   "frontend/src/pages/Matice.jsx": {
-    "sha256": "5ae0760b769c4387ceae49c19830c92e3bf086062a452a80f01905765da1a960",
-    "lines": 600,
+    "sha256": "5083a00557df6e28da4e65643ccbb816b322507245e67063558c25200fdde1ac",
+    "lines": 607,
     "read_ranges": [
       [
         1,
-        600
+        607
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:58:03.933646+00:00",
-    "method": "Full current source read, plus complete own diff where changed. lib/matching.js: verified original backend full-read hash equals 8b7215d and reviewed its complete current diff. Read coverage does not establish runtime acceptance."
+    "checked_at_utc": "2026-10-09T23:17:08.895984+00:00",
+    "method": "Full current source read in bounded complete ranges, plus full reviewed own patch where applicable. Browser/test evidence recorded separately; reading is not defect-free or live/legal/device approval."
   },
   "frontend/src/config/pricing.js": {
     "sha256": "a990be6870eb153e640f67ede9a2d4e1438966a6dc607d079bd7b0b2c3f69ed6",
@@ -3299,5 +3299,89 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-09T23:11:56.474995+00:00",
     "method": "All 1–1238 baseline lines read in six bounded complete ranges plus full own diff. Actual React Settings fixture checks recorded separately; source read does not approve lifecycle/legal/services."
+  },
+  "frontend/src/components/decision/decisionTabs.css": {
+    "sha256": "5d3bc3ee8d34e5de78287cc8df416678f5a1e9767cbc3686d62e5f160735d1c1",
+    "lines": 8,
+    "read_ranges": [
+      [
+        1,
+        8
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T23:17:08.895984+00:00",
+    "method": "Full current source read in bounded complete ranges, plus full reviewed own patch where applicable. Browser/test evidence recorded separately; reading is not defect-free or live/legal/device approval."
+  },
+  "frontend/src/components/decision/matrixMobile.css": {
+    "sha256": "c5fcd4f2c3e43eff3b5902190069732830d3250799ae073d5dccb39cc53782cd",
+    "lines": 8,
+    "read_ranges": [
+      [
+        1,
+        8
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T23:17:08.895984+00:00",
+    "method": "Full current source read in bounded complete ranges, plus full reviewed own patch where applicable. Browser/test evidence recorded separately; reading is not defect-free or live/legal/device approval."
+  },
+  "frontend/src/components/decision/pickCard.css": {
+    "sha256": "ff08d0b04d1c9881077b9e2d4df9ddd7499882dcf645f59cedf623bfe1b6dea2",
+    "lines": 12,
+    "read_ranges": [
+      [
+        1,
+        12
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T23:17:08.895984+00:00",
+    "method": "Full current source read in bounded complete ranges, plus full reviewed own patch where applicable. Browser/test evidence recorded separately; reading is not defect-free or live/legal/device approval."
+  },
+  "frontend/src/pages/savedSchools.css": {
+    "sha256": "63b860e5ce77a80b126a9746600c5c3b71d7707633e921da38767b93412ed0d2",
+    "lines": 21,
+    "read_ranges": [
+      [
+        1,
+        21
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T23:17:08.895984+00:00",
+    "method": "Full current source read in bounded complete ranges, plus full reviewed own patch where applicable. Browser/test evidence recorded separately; reading is not defect-free or live/legal/device approval."
+  },
+  "frontend/src/pages/SavedSchools.jsx": {
+    "sha256": "04184f1f6111c71378ca35edc61b6db9e2e35285f96e49ddba6360efe23698da",
+    "lines": 203,
+    "read_ranges": [
+      [
+        1,
+        203
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T23:17:08.895984+00:00",
+    "method": "Full current source read in bounded complete ranges, plus full reviewed own patch where applicable. Browser/test evidence recorded separately; reading is not defect-free or live/legal/device approval."
+  },
+  "frontend/src/pages/Prihlaska.jsx": {
+    "sha256": "c531437dc9575ce59105f932273f27cd52d639d26c9507763b9e6ab174a0c8fe",
+    "lines": 306,
+    "read_ranges": [
+      [
+        1,
+        306
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-09T23:17:08.895984+00:00",
+    "method": "Full current source read in bounded complete ranges, plus full reviewed own patch where applicable. Browser/test evidence recorded separately; reading is not defect-free or live/legal/device approval."
   }
 }

@@ -42,15 +42,15 @@ export const CRITERIA = [
   },
   {
     id: 'sance',
-    label: 'Šance na přijetí',
+    label: 'Podíl přijatých',
     available: true,
-    tooltip: 'Podíl přijatých uchazečů ze všech přihlášených v posledních přijímačkách podle Cermatu. Vyšší podíl znamená, že škola přijala větší část uchazečů.',
+    tooltip: 'Podíl přijatých uchazečů ze všech přihlášených podle posledních dostupných údajů Cermatu. Jde o historický podíl, ne tvoji pravděpodobnost přijetí.',
   },
   {
     id: 'mista',
     label: 'Počet míst',
     available: true,
-    tooltip: 'Kolik míst škola otevírala v posledních přijímačkách. Víc míst obvykle znamená menší tlak na body.',
+    tooltip: 'Kolik míst škola otevírala podle dostupných údajů Cermatu. Samotný počet míst neurčuje šanci na přijetí.',
   },
   {
     id: 'jazyky',

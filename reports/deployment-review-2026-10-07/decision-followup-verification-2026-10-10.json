@@ -1,0 +1,34 @@
+{
+  "checked_at_utc": "2026-10-09T23:17:08.895984+00:00",
+  "baseline_commit": "d02b8af",
+  "scope": "Actual Matice/Porovnani, actual decision scorer and browser storage in isolated loopback fixture. Synthetic schools/auth/API; tracking disabled; no live writes or print/export.",
+  "checks": {
+    "matrix_no_match_before": "First school falsely said Sedí ti nejvíc ze všech",
+    "matrix_no_match_after": "Unsupported personal-fit prefix absent; other criteria still evaluated",
+    "weight_state": "Podíl přijatých: Zásadní selected and aria-pressed=true; other criteria names/states visible",
+    "copy": "Historical share is distinct from personal probability; questionnaire score is distinct from measured proportions; web sources named",
+    "matrix_phone": {
+      "viewport": 375,
+      "documentWidth": 375
+    },
+    "comparison_phone": {
+      "viewport": 375,
+      "documentWidth": 375,
+      "tableClientWidth": 333,
+      "tableScrollWidth": 400
+    },
+    "decision_tests": {
+      "pass": 17,
+      "fail": 0
+    },
+    "lint": "exit 0, zero errors, eleven existing warnings",
+    "build": "exit 0, large-chunk warnings"
+  },
+  "open": [
+    "C03 global capacity year/per-cell provenance",
+    "C32 newer note edit overwritten",
+    "C02/C16 ownership",
+    "application order/programme scope",
+    "real-device/live tester acceptance"
+  ]
+}
