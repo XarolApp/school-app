@@ -1,7 +1,7 @@
 # Střední na míru
 
 Web app that helps Prague 9th graders (and their parents) choose a secondary school:
-a catalogue of 217 visible schools, Cermat admission data with incomplete
+a catalogue of 194 visible schools (pupils finishing 9th grade only), Cermat admission data with incomplete
 year/programme coverage, an onboarding quiz, a full
 questionnaire, comparison, a decision matrix and application planning.
 

@@ -3,7 +3,8 @@ import { SHARING_ENABLED, SHARING_OFF_NOTE } from '../config/features';
 import { useAuth } from '../components/AuthContext';
 import { clearDraftKey, readDraft } from '../lib/useDraft';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { returnState } from '../lib/internalReturnPath';
 import { Check, ChevronDown, ChevronUp, Circle, ClipboardCheck, Info, Loader, RotateCcw } from 'lucide-react';
 import {
   fetchQuestionnaire,
@@ -178,6 +179,7 @@ function QuestionnaireSkeleton({ view, aiNote }) {
 }
 
 function MatchRow({ match, rank, compact, extraReason = '' }) {
+  const location = useLocation();
   const school = match.school;
   const signals = Array.isArray(match.signals) ? match.signals : [];
   // A run saved while the AI was unavailable has no sentence; the student can
@@ -207,7 +209,7 @@ function MatchRow({ match, rank, compact, extraReason = '' }) {
         <span className="qz-pct-label">shoda</span>
       </div>
       <div className="qz-row-body">
-        <Link className="qz-school" to={`/skoly/${match.school_id}`}>
+        <Link className="qz-school" to={`/skoly/${match.school_id}`} state={returnState(location, 'výsledky dotazníku')}>
           {school?.name || `Škola #${match.school_id}`}
         </Link>
         {school?.district && <div className="qz-meta">{school.district}</div>}

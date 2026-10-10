@@ -46,6 +46,19 @@ export function latestProgramValue(school, field) {
 }
 
 /**
+ * Obor names of the newest year from `school_programs` — after plan 021 these
+ * are only programmes a 9th grader can apply to, unlike the scraped
+ * `school.programs` blob, which can still name an 8-year gymnázium. Returns
+ * null when the school has no rows, so the caller falls back to the blob.
+ */
+export function programNames(school) {
+  const rows = school.school_programs ?? [];
+  if (!rows.length) return null;
+  const newest = Math.max(...rows.map((r) => Number(r.rok) || 0));
+  return [...new Set(rows.filter((r) => (Number(r.rok) || 0) === newest).map((r) => r.obor_nazev).filter(Boolean))];
+}
+
+/**
  * Cermat's "zaměření" is free text. Mostly it names a programme (FOSTRA's
  * "Aspira", a conservatoire's "Hra na housle"), but sometimes it only says HOW
  * the obor is studied: "zkrácené studium", "délka studia dva roky", "dálková",

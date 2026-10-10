@@ -16,6 +16,7 @@
  * Every feature still carries a `known` flag. If a feature is unknown the
  * matcher DROPS it instead of guessing — see matching.js.
  */
+import { programNames } from './schoolPrograms.js';
 
 const norm = (s) =>
   (s || '')
@@ -292,7 +293,7 @@ export function deriveFeatures(school) {
   const programs = school.school_programs ?? [];
   const base = programs.length ? featuresFromPrograms(school, programs) : featuresFromText(school);
 
-  const programList = (school.programs || '')
+  const programList = programNames(school) ?? (school.programs || '')
     .split(/[;\n•]|,(?=\s*[A-ZÁ-Ž])/)
     .map((s) => s.trim())
     .filter(Boolean);

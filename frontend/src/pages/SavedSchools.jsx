@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { returnState } from '../lib/internalReturnPath';
 import { Bookmark, Columns3, ExternalLink, Trash2 } from 'lucide-react';
 import { deleteNote, fetchFavorites, fetchNotes, removeFavorite, saveNote } from '../api';
 import { useAuth } from '../components/AuthContext';
@@ -8,6 +9,7 @@ import { SkeletonPage, Sk } from '../components/PageSkeleton';
 import { readHint, writeHint } from '../lib/skeletonHints';
 import { useToast } from '../components/ToastContext';
 import { withNamesAll } from '../lib/schoolNames';
+import { programNames } from '../lib/schoolPrograms';
 import { COMPARE_EVENT, getCompareSelection, toggleCompareSelection } from '../lib/searchPrefs';
 import { clearDraftKey, readDraft } from '../lib/useDraft';
 import { useG } from '../lib/gender';
@@ -28,6 +30,7 @@ function useCompareIds() {
 
 /** One saved school: link to its page, a note that saves itself, compare + remove. */
 function SavedCard({ school, savedNote, userId, inCompare, onToggleCompare, onRemove }) {
+  const location = useLocation();
   const draftKey = `snm.draft.note.${userId}.${school.id}`;
   // A reload before the note was saved brings the typed text back.
   const [text, setText] = useState(() => readDraft(draftKey, savedNote));
@@ -55,12 +58,12 @@ function SavedCard({ school, savedNote, userId, inCompare, onToggleCompare, onRe
     }
   };
 
-  const programs = String(school.programs || '').split(/[,;]/).map((p) => p.trim()).filter(Boolean).slice(0, 3);
+  const programs = (programNames(school) ?? String(school.programs || '').split(/[,;]/).map((p) => p.trim()).filter(Boolean)).slice(0, 3);
   return (
     <li className="sv-card">
       <div className="sv-card-head">
         <div className="sv-card-title">
-          <h2 className="ss-headline-sm h"><Link to={`/skoly/${school.id}`}>{school.name}</Link></h2>
+          <h2 className="ss-headline-sm h"><Link to={`/skoly/${school.id}`} state={returnState(location, 'uložené školy')}>{school.name}</Link></h2>
           {school.official_name && <p className="sv-official">{school.official_name}</p>}
           {school.location && <p className="sv-meta">{school.location}</p>}
           {programs.length > 0 && <p className="sv-meta">{programs.join(' · ')}</p>}
@@ -84,7 +87,7 @@ function SavedCard({ school, savedNote, userId, inCompare, onToggleCompare, onRe
       </label>
 
       <div className="sv-actions">
-        <Link to={`/skoly/${school.id}`} className="btn btn-secondary btn-sm"><ExternalLink size={14} aria-hidden="true" /> Detail školy</Link>
+        <Link to={`/skoly/${school.id}`} state={returnState(location, 'uložené školy')} className="btn btn-secondary btn-sm"><ExternalLink size={14} aria-hidden="true" /> Detail školy</Link>
         <button type="button" className={`btn btn-secondary btn-sm${inCompare ? ' is-selected' : ''}`} aria-pressed={inCompare} onClick={() => onToggleCompare(school.id)}>
           <Columns3 size={14} aria-hidden="true" /> {inCompare ? 'V porovnání' : 'Přidat k porovnání'}
         </button>

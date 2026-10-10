@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { returnState } from '../lib/internalReturnPath';
 import { Maximize2, Minimize2, MapPin, ChevronUp } from 'lucide-react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -79,6 +80,7 @@ function homePinHtml() {
  * all the time, not just mid-animation.
  */
 function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
+  const location = useLocation();
   const containerRef = useRef(null);
   const mapRef = useRef(null);
   const markersRef = useRef(new Map());
@@ -416,7 +418,7 @@ function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
             </p>
           )}
           <div className="sm-card-actions">
-            <Link to={`/skoly/${selectedRow.id}`} className="ss-btn ss-btn-primary ss-btn-sm">
+            <Link to={`/skoly/${selectedRow.id}`} state={returnState(location, 'mapu')} className="ss-btn ss-btn-primary ss-btn-sm">
               Detail školy
             </Link>
             {renderCardActions && <div className="sm-card-toggles">{renderCardActions(selectedRow)}</div>}

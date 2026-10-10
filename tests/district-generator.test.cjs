@@ -50,7 +50,7 @@ test('district regeneration preserves the matching engine module contract', asyn
   const generated = loadModule(writes.get(path.join(root, 'lib/pragueDistricts.js')));
   const existing = require('../lib/pragueDistricts');
   const frontSource = fs.readFileSync(path.join(root, 'frontend/src/lib/schoolFeatures.js'), 'utf8');
-  const frontHops = vm.runInNewContext(frontSource.replace(/export /g, '') + '\ndistrictHops;');
+  const frontHops = vm.runInNewContext(frontSource.replace(/^import .*$/gm, '').replace(/export /g, '') + '\ndistrictHops;');
   for (const name of ['districtForPoint', 'districtOfSchool', 'districtHops', 'toCoreDistrict']) {
     assert.equal(typeof generated[name], 'function', name);
   }

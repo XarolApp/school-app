@@ -1316,6 +1316,14 @@ function visibleSchool(s) {
   return Boolean(s) && !s.merged_into && !s.hidden_reason;
 }
 
+// Ids of schools users must not see (hidden for 9th graders, or merged away).
+// Small set, read on demand; user data pointing at them is kept but not served.
+async function unavailableSchoolIds() {
+  const { data, error } = await supabase.from('schools').select('id, merged_into, hidden_reason');
+  if (error) throw error;
+  return new Set(data.filter((row) => !visibleSchool(row)).map((row) => row.id));
+}
+
 async function fetchAllSchools(select) {
   const rows = [];
   for (let from = 0; ; from += SUPABASE_PAGE_SIZE) {
@@ -1867,9 +1875,11 @@ app.get('/api/picks', requireAuth, requireAccess, async (req, res) => {
 
   if (error) return res.status(500).json({ error: error.message });
 
-  const schools = await withMatchScores(req.user.id, data.map((row) => row.schools));
+  // Picks on a school hidden for 9th graders stay in the table, just unseen.
+  const shown = data.filter((row) => visibleSchool(row.schools));
+  const schools = await withMatchScores(req.user.id, shown.map((row) => row.schools));
   res.json(
-    data.map((row, i) => ({
+    shown.map((row, i) => ({
       priority: row.priority,
       obor_kkov: row.obor_kkov,
       obor_nazev: row.obor_nazev,
@@ -1909,10 +1919,17 @@ app.put('/api/picks', decisionLimiter, requireAuth, requireAccess, async (req, r
     });
   }
 
-  const { error: deleteError } = await supabase
-    .from('application_picks')
-    .delete()
-    .eq('user_id', req.user.id);
+  let unavailable;
+  try { unavailable = await unavailableSchoolIds(); } catch (err) { return res.status(500).json({ error: err.message }); }
+  if (rows.some((row) => unavailable.has(row.school_id))) {
+    return res.status(400).json({ error: 'Škola už není v nabídce.' });
+  }
+
+  // Replace the visible picks only: a pick on a hidden school is kept (never
+  // deleted), the client just does not see it.
+  let deleteQuery = supabase.from('application_picks').delete().eq('user_id', req.user.id);
+  if (unavailable.size) deleteQuery = deleteQuery.not('school_id', 'in', `(${[...unavailable].join(',')})`);
+  const { error: deleteError } = await deleteQuery;
   if (deleteError) return res.status(500).json({ error: deleteError.message });
 
   if (rows.length) {
@@ -1948,7 +1965,12 @@ app.get('/api/notes', requireAuth, async (req, res) => {
     .eq('user_id', req.user.id);
 
   if (error) return res.status(500).json({ error: error.message });
-  res.json(data);
+  try {
+    const unavailable = await unavailableSchoolIds();
+    return res.json(data.filter((row) => !unavailable.has(row.school_id)));
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
 });
 
 app.put('/api/notes/:schoolId', decisionLimiter, requireAuth, async (req, res) => {
@@ -1960,6 +1982,12 @@ app.put('/api/notes/:schoolId', decisionLimiter, requireAuth, async (req, res) =
   const body = typeof req.body?.body === 'string' ? req.body.body.trim() : '';
   if (body.length > 2000) {
     return res.status(400).json({ error: 'Poznámka je příliš dlouhá (max 2000 znaků).' });
+  }
+
+  try {
+    if ((await unavailableSchoolIds()).has(schoolId)) return res.status(404).json({ error: 'Škola nenalezena.' });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
   }
 
   const { error } = await supabase
@@ -2221,11 +2249,11 @@ app.get('/api/shared-results/:token', requireSharing, shareLimiter, async (req, 
 
   const { data: school, error: schoolError } = await supabase
     .from('schools')
-    .select('id, name, latitude, longitude')
+    .select('id, name, latitude, longitude, merged_into, hidden_reason')
     .eq('id', snapshot.top_school_id)
     .maybeSingle();
   if (schoolError) return res.status(500).json({ error: 'Výsledky se nepodařilo načíst.' });
-  if (!school) return notFound();
+  if (!visibleSchool(school)) return notFound();
 
   const [withDistrict] = withDistricts([school]);
   return res.json({
@@ -2423,11 +2451,11 @@ app.post('/api/result-snapshots', requireSharing, anonLinkLimiter, async (req, r
 
   const { data: school, error: schoolError } = await supabase
     .from('schools')
-    .select('id')
+    .select('id, merged_into, hidden_reason')
     .eq('id', topSchoolId)
     .maybeSingle();
   if (schoolError) return res.status(500).json({ error: 'Výsledek se nepodařilo uložit.' });
-  if (!school) return res.status(400).json({ error: 'Neplatný výsledek.' });
+  if (!visibleSchool(school)) return res.status(400).json({ error: 'Neplatný výsledek.' });
 
   const token = crypto.randomBytes(16).toString('base64url');
   const { error } = await supabase
@@ -2472,7 +2500,7 @@ app.get('/api/shared/:token', requireSharing, shareLimiter, async (req, res) => 
   if (picksResult.error) {
     return res.status(500).json({ error: 'Sdílený výběr se nepodařilo načíst.' });
   }
-  const picks = picksResult.data;
+  const picks = (picksResult.data || []).filter((row) => visibleSchool(row.schools));
 
   let notesById = new Map();
   if (share.include_notes) {

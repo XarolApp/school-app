@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { SHARING_ENABLED, SHARING_OFF_NOTE } from '../../../config/features';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { returnState } from '../../../lib/internalReturnPath';
 import { Confetti, DemoDataNotice, ObButton, ObScreen } from '../../../components/onboarding/ObKit';
 import { countCandidates, explain, tradeoffs } from '../../../lib/matching';
 import { FOCUS_CATEGORIES } from '../../../lib/schoolFeatures';
@@ -116,6 +117,7 @@ function schoolWord(n) {
 }
 
 function Reveal() {
+  const location = useLocation();
   const { role, gender, ranked, schools, goNext, isDemo, schoolsError, cleanedAnswers, answers } = useOnboarding();
   const rankingSignature=useRef(null);
   useEffect(() => {
@@ -227,7 +229,7 @@ function Reveal() {
           <article className="ob-hero-match">
             <p className="ob-hero-rank">{parent ? 'Nejvyšší shoda' : 'Nejlepší shoda'}</p>
             <h2 className="ob-hero-name">
-              <Link to={`/skoly/${top.school.id}`} className="ob-hero-link">
+              <Link to={`/skoly/${top.school.id}`} state={returnState(location, 'výsledek')} className="ob-hero-link">
                 {top.school.name}
               </Link>
             </h2>

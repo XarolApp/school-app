@@ -10,7 +10,7 @@ The site-wide gate uses the shared tester code and protects only the frontend;
 each API endpoint has its own authorization policy. Backend
 https://school-app-production-be43.up.railway.app returns a healthy JSON response;
 its CORS response allows the www origin. CORS does not replace API authorization:
-the anonymous catalogue endpoint currently returns all 217 visible schools and
+the anonymous catalogue endpoint currently returns all 194 visible schools and
 nested data. The premium/public projection boundary remains an open review item.
 
 Local Stripe configuration was verified in **test mode**; the test webhook points

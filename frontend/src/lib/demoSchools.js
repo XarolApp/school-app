@@ -20,7 +20,7 @@ export const DEMO_SCHOOLS = [
     name: 'Gymnázium Na Stráni (ukázka)',
     location: 'Parléřova 2, Praha 6',
     programs:
-      'Gymnázium všeobecné (čtyřleté); Gymnázium (osmileté); rozšířená výuka matematiky a fyziky',
+      'Gymnázium všeobecné (čtyřleté); rozšířená výuka matematiky a fyziky',
     contact: 'info@ukazka-skola.example.cz',
     website: 'https://example.cz',
   },

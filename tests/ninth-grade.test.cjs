@@ -46,3 +46,27 @@ test('the admission import sends hidden-type rows to school_programs_hidden', ()
   const rows = [{ typ_skoly: 'Gymnázia 8letá' }, { typ_skoly: 'Gymnázia 4letá' }];
   assert.deepEqual(rows.filter((r) => !isNinthGradeProgram(r)), [rows[0]]);
 });
+
+test('server hides 9th-grade-excluded schools on every user-facing read', () => {
+  const src = rootFile('server.js');
+  assert.match(src, /function visibleSchool\(s\)[\s\S]{0,80}!s\.hidden_reason/);
+  // catalogue + scoring catalogue, ids, detail (and its merged successor), beta names
+  assert.match(src, /\.is\('merged_into', null\)\s*\.is\('hidden_reason', null\)/);
+  assert.match(src, /\.in\('id', ids\)\.is\('hidden_reason', null\)/);
+  assert.equal((src.match(/\.hidden_reason\) return res\.status\(404\)/g) || []).length, 2);
+  assert.match(src, /select\('name'\)\.is\('merged_into',null\)\.is\('hidden_reason',null\)/);
+  // favourites, picks, notes, shares/snapshots
+  assert.match(src, /\.filter\(visibleSchool\)/);
+  assert.match(src, /const shown = data\.filter\(\(row\) => visibleSchool\(row\.schools\)\)/);
+  assert.match(src, /Škola už není v nabídce/);
+  assert.match(src, /unavailable\.has\(row\.school_id\)/);
+  assert.match(src, /if \(!visibleSchool\(school\)\) return notFound\(\)/);
+});
+
+test('pros/cons and extraction skip hidden schools; extraction prompt carries the 9th-grade rule', () => {
+  assert.match(rootFile('scripts', 'generate-school-proscons.js'), /\.is\('hidden_reason', null\)/);
+  const extract = rootFile('scripts', 'extract-school-details.js');
+  assert.match(extract, /TŘETÍ PRAVIDLO: Aplikace je jen pro žáky 9\. třídy/);
+  assert.match(extract, /Ignorujte údaje platné jen pro víceleté gymnázium/);
+  assert.match(extract, /hidden_reason/);
+});

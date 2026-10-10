@@ -1,9 +1,10 @@
 import { track } from '../lib/betaTrack';
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { returnState } from '../lib/internalReturnPath';
 import { ArrowRight, Check, ChevronDown, Heart, Info, Lightbulb, Plus, TriangleAlert } from 'lucide-react';
 import { fetchSchoolsByIds } from '../api';
-import { getCompareSelection } from '../lib/searchPrefs';
+import { getCompareSelection, setCompareSelection } from '../lib/searchPrefs';
 import { useAuth } from '../components/AuthContext';
 import StatInfo from '../components/StatInfo';
 import {
@@ -250,6 +251,7 @@ function MaticeSkeleton({ count }) {
 
 function Matice() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { isSignedIn } = useAuth();
   const [allSchools, setAllSchools] = useState([]);
   const [selection] = useState(() => getCompareSelection());
@@ -271,7 +273,12 @@ function Matice() {
     setError(null);
     fetchSchoolsByIds(selection)
       .then((data) => {
-        if (!cancelled) setAllSchools(Array.isArray(data) ? data : []);
+        if (cancelled) return;
+        const list = Array.isArray(data) ? data : [];
+        setAllSchools(list);
+        // A school hidden since it was queued (plan 021) drops out of the stored selection.
+        const found = selection.filter((id) => list.some((s) => s.id === id));
+        if (found.length < selection.length) setCompareSelection(found);
       })
       .catch((err) => {
         if (!cancelled) setError(err.message || 'Nepodařilo se načíst školy.');
@@ -502,7 +509,7 @@ function Matice() {
                     <div className={`dp-matrix-rank-badge${i === 0 && r.score != null ? ' is-first' : ''}`}>{r.score == null ? '—' : i + 1}</div>
                     <div className="dp-matrix-row-body">
                       <div className="dp-matrix-row-head">
-                        <Link to={`/skoly/${r.school.id}`} className="h dp-matrix-name">
+                        <Link to={`/skoly/${r.school.id}`} state={returnState(location, 'rozhodovací matici')} className="h dp-matrix-name">
                           {r.school.name}
                         </Link>
                         {r.school.official_name && (

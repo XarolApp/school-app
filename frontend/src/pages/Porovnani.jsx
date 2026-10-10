@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { returnState } from '../lib/internalReturnPath';
 import { fetchSchoolsByIds } from '../api';
 import { ArrowRight, Check, Plus, X } from 'lucide-react';
 import { getCompareSelection, getRecentSchoolIds, toggleCompareSelection, setCompareSelection } from '../lib/searchPrefs';
@@ -16,6 +17,7 @@ import { usePicks } from '../lib/usePicks';
 // same rows and columns filled with grey blocks (row labels are static, the
 // column count is the comparison selection), so nothing moves when data lands.
 function CompareView({ schools, rows, pickIds, savingPick, onRemove, onClearAll, onAddToPicks, skeleton = false }) {
+  const location = useLocation();
   return (
     <>
       <div className="dp-header">
@@ -52,7 +54,7 @@ function CompareView({ schools, rows, pickIds, savingPick, onRemove, onClearAll,
                 ) : (
                   <>
                     <div className="dp-table-head-top">
-                      <Link to={`/skoly/${school.id}`} className="dp-table-head-name h">
+                      <Link to={`/skoly/${school.id}`} state={returnState(location, 'porovnání')} className="dp-table-head-name h">
                         {school.name}
                       </Link>
                       <button
@@ -135,6 +137,7 @@ function CompareView({ schools, rows, pickIds, savingPick, onRemove, onClearAll,
 
 function Porovnani() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [allSchools, setAllSchools] = useState([]);
   const [selection, setSelection] = useState(() => getCompareSelection());
   const { pickIds, toggle, saving: savingPick } = usePicks();
@@ -158,7 +161,12 @@ function Porovnani() {
     } else {
       fetchSchoolsByIds(selection)
         .then((data) => {
-          if (!cancelled) setAllSchools(Array.isArray(data) ? data : []);
+          if (cancelled) return;
+          const list = Array.isArray(data) ? data : [];
+          setAllSchools(list);
+          // A school hidden since it was queued (plan 021) drops out of the stored selection.
+          const found = selection.filter((id) => list.some((s) => s.id === id));
+          if (found.length < selection.length) setSelection(setCompareSelection(found));
         })
         .catch((err) => {
           if (!cancelled) setError(err.message || 'Nepodařilo se načíst školy.');
@@ -283,7 +291,7 @@ function Porovnani() {
               {recent.map((school) => (
                 <div key={school.id} className="dp-recent-card">
                   <div>
-                    <Link to={`/skoly/${school.id}`} className="dp-recent-name">
+                    <Link to={`/skoly/${school.id}`} state={returnState(location, 'porovnání')} className="dp-recent-name">
                       {school.name}
                     </Link>
                     <div className="ss-caption">{school.location}</div>

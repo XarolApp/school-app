@@ -2,7 +2,8 @@ import { track } from '../lib/betaTrack';
 import { Sk } from '../components/PageSkeleton';
 import { readHint, writeHint } from '../lib/skeletonHints';
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { returnState } from '../lib/internalReturnPath';
 import {
   Search as SearchIcon,
   X,
@@ -40,7 +41,7 @@ import {
   compareByCount,
 } from '../lib/schoolSearch';
 import { deriveFeatures, FOCUS_CATEGORIES } from '../lib/schoolFeatures';
-import { summarizeAdmission, formatCutoffRange, isLengthNote } from '../lib/schoolPrograms';
+import { summarizeAdmission, formatCutoffRange, isLengthNote, programNames } from '../lib/schoolPrograms';
 import { kkovGroupOf, kkovGroupName } from '../lib/kkovGroups';
 import { useAuth } from '../components/AuthContext';
 import FavoriteButton from '../components/FavoriteButton';
@@ -214,7 +215,7 @@ function buildRow(school) {
   const p = summarizePrograms(school);
   const districtLabel = districtOf(school); // "Praha N" or null; never invented
 
-  const allProgs = [...new Set(splitPrograms(school.programs || '').map(baseProgram))].filter(Boolean);
+  const allProgs = [...new Set((programNames(school) ?? splitPrograms(school.programs || '')).map(baseProgram))].filter(Boolean);
 
   return {
     id: school.id,
@@ -354,6 +355,7 @@ function ResultsSkeleton({ hasScore }) {
 }
 
 function Search() {
+  const location = useLocation();
   const navigate = useNavigate();
   const [schools, setSchools] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -1369,7 +1371,7 @@ function Search() {
             {recentRows.slice(0, 3).map((row, index) => (
               <span className="ss-recent-item" key={row.id}>
                 {index > 0 && ', '}
-                <Link to={`/skoly/${row.id}`} title={row.name}>
+                <Link to={`/skoly/${row.id}`} state={returnState(location, 'výpis škol')} title={row.name}>
                   {row.name}
                 </Link>
               </span>
@@ -1621,7 +1623,7 @@ function Search() {
                         <li className={`ss-row${isSelected ? ' is-selected' : ''}${hasScore ? ' has-score' : ''}`} key={row.id}>
                           <div className="ss-cell-school">
                             <h3 className="ss-row-name">
-                              <Link to={`/skoly/${row.id}`} className="ss-row-link" title={row.name}>
+                              <Link to={`/skoly/${row.id}`} state={returnState(location, 'výpis škol')} className="ss-row-link" title={row.name}>
                                 {row.name}
                               </Link>
                             </h3>

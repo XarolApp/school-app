@@ -6,6 +6,7 @@
  * round-trip per keystroke. If the database ever grows past a few thousand
  * rows this needs to move behind the API.
  */
+import { programNames } from './schoolPrograms.js';
 
 /**
  * Diacritics and case are noise in a search box. A ninth grader types
@@ -179,7 +180,7 @@ export function buildIndex(schools) {
       school,
       name: [...nameWords, ...glued],
       location: tokenize(school.location).filter((word) => !isNumber(word)),
-      programs: tokenize(school.programs),
+      programs: tokenize((programNames(school) ?? [school.programs]).join(' ')),
       nameText: normalize(
         [school.name, school.official_name, ...(school.search_keywords || [])].join(' ')
       ),

@@ -1,7 +1,8 @@
 import { track } from '../lib/betaTrack';
 import { SkeletonPage, Sk } from '../components/PageSkeleton';
 import { useEffect, useRef, useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
+import { internalReturnPath } from '../lib/internalReturnPath';
 import { fetchSchool, fetchFavorites } from '../api';
 import { useAuth } from '../components/AuthContext';
 import { recordRecentSchool } from '../lib/searchPrefs';
@@ -25,6 +26,7 @@ import './schoolDetail.css';
 function SchoolDetail({ publicView = false }) {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { isSignedIn, hasAccess } = useAuth();
   const [school, setSchool] = useState(null);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -87,17 +89,22 @@ function SchoolDetail({ publicView = false }) {
   const cameFromApp = window.history.state?.idx > 0;
   // Signed out there is no school list to go back to: back means the landing.
   const backHref = publicView ? '/' : '/skoly';
+  // The page that linked here says where it wants "Zpět" to land (router state),
+  // so the way back never depends on what the browser history happens to hold.
+  const from = internalReturnPath(location.state?.from);
+  const fromLabel = typeof location.state?.fromLabel === 'string' ? location.state.fromLabel.slice(0, 40) : '';
   const backLink = (
     <a
-      href={backHref}
+      href={from || backHref}
       className="sd-back"
       onClick={(e) => {
-        if (!cameFromApp) return;
+        if (!from && !cameFromApp) return;
         e.preventDefault();
-        navigate(-1);
+        if (cameFromApp) navigate(-1);
+        else navigate(from);
       }}
     >
-      &larr; {cameFromApp ? 'Zpět' : publicView ? 'Zpět na úvod' : 'Zpět na výpis'}
+      &larr; {from && fromLabel ? `Zpět na ${fromLabel}` : cameFromApp ? 'Zpět' : publicView ? 'Zpět na úvod' : 'Zpět na výpis'}
     </a>
   );
 

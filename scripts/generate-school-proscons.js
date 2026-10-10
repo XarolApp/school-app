@@ -253,6 +253,8 @@ async function main() {
   const { data: schools, error } = await supabase
     .from('schools')
     .select('id, name, admission_cutoff, acceptance_rate, school_programs(*)')
+    .is('merged_into', null)
+    .is('hidden_reason', null)
     .order('name');
 
   if (error) {

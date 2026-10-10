@@ -6,7 +6,7 @@
  * fails) — copy reads the real number through useSchoolCount(). Merged schools
  * are excluded server-side, so it is lower than the raw row count.
  */
-export const SCHOOL_COUNT = 217;
+export const SCHOOL_COUNT = 194;
 
 /** The onboarding quiz (QUESTIONS.length questions). */
 export const QUIZ_MINUTES = 3;
