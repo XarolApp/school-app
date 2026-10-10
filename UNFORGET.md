@@ -67,8 +67,9 @@ stay off; sharing links stay off; feedback/closing answers/private reviews delet
 School e-mail: `docs/beta-school-email-draft.md`.
 
 **Still open before / right after the school e-mail**
-- [ ] **Railway upgrade to Hobby (founder, 11 Oct).** Trial ends about 13 Oct.
-- [ ] Founder phone test with a fresh tester account on the live site, then delete it.
+- [x] Founder phone test on the live site (2026-10-10). Railway upgraded to Hobby (2026-10-10).
+- [x] Tracking-switch race guard applied live 2026-10-10 (`migrations/2026-10-10-tracking-withdrawal-guard.sql`, 2 triggers verified).
+- [ ] OpenRouter input/output logging setting: founder to confirm it is off (training toggles confirmed off).
 - [ ] Founder verifies the vendor facts in the decisions doc, D5 (Supabase region, Brevo
       owner, OpenRouter logging, operator agrees to be named) and writes the dates there.
 - [ ] Reminder: **delete feedback, closing answers and private reviews by 18 Oct 2027**
@@ -1779,3 +1780,10 @@ Confirmed score/weight, historical-admission, commute and local/account-storage 
 - S17 fixed: each parsed/matched admission run refreshes the local unmatched report, including clearing obsolete names when none remain. Offline actual-source tests pass; all 176 root tests pass. The checked-in report/Atlas name list remain historical evidence, not current missing schools. S02/S03 atomic import and provenance remain open. S16 external geometry validation/provenance is required before future boundary refreshes.
 
 - C41/C42: frontend build tooling and marketing renderer still install source-map-js 1.2.1 (high npm advisory; patched 1.2.2). Review/upgrade compatible lockfiles and test builds/renders/audits; production-only backend/frontend audits are zero, and xlsx importer S05 remains separate. Remotion full declaration checking also fails on undefined Timer (own-source skipLibCheck check/renders pass). Before marketing publication verify the encoded clip/audio/platform overlays, clearly labelled mock search/admission visuals and approved access/brand/time claims; the reviewed stills are not publication approval. Standalone seedance-demo was only read/typechecked/audited, not run. See [handoff](reports/deployment-review-2026-10-07/HANDOFF-PLAN.md).
+
+
+## Design/archive review — 10 October 2026 (C44)
+
+- [ ] **C44 — reconcile the historical design library before reusing it:** `design/system/` still ships Fraunces/Public Sans via CDN, a terracotta default, old radius names and proposed criterion-only/paywall/data specimens. Current frontend uses self-hosted Archivo/Archivo Narrow, four palettes/Značka default, match percentages and different radius aliases. Current-design and archive headers now identify that drift; do not restore the old template or its invented school/payment promises into the app. Coordinate one owner for spec/tokens/specimens/source/bundle metadata, preserve founder-approved choices, make draft claims visibly illustrative, verify keyboard/focus/tooltip/radio/type contracts and add reproducible source-to-bundle parity. This export is not imported by the current frontend, so template reconciliation itself is a reuse/polish task, not proof that the beta is broken.
+- [x] **C44 narrow hook defect fixed:** the prototype Input conditionally called `useId` when no explicit ID was supplied, then crashed on an ID change. Source and both identical bundled copies now call it unconditionally; actual local React browser checks pass generated → explicit → generated ID with typed text preserved. No production styling or access/payment behavior changed. Evidence is under `reports/deployment-review-2026-10-07/design-input-*`.
+- [ ] **Dated research-source verification:** the September model/effort guide is now explicitly historical. Its model/allowance/benchmark assertions need primary provider/benchmark verification before budgeting future paid work; it does not override the founder’s confirmed GPT-6.1 Sol xhigh for this review. Old archive setup/pricing/design notes are labelled as snapshots rather than restored as active instructions.
