@@ -34,13 +34,15 @@ checklist depends on it) but make it **consent**:
   weak under GDPR, but being observed is the whole content of a test; the school e-mail
   says so up front. If a parent objects, the child simply does not take part.
 
-**Release assessment still open (LEGAL-01):** a one-click "stop recording" switch in
-Nastavení is not implemented. Giving consent takes one checkbox; withdrawing currently
-requires an e-mail or deleting the entire account. Do not treat the seven-day duration
-as an exemption. The controller/adviser must resolve freely given consent, comparable
-withdrawal and child/guardian authority before accepting this beta gate. See the
-[European Commission's consent guidance](https://commission.europa.eu/law/law-topic/data-protection/information-business-and-organisations/legal-grounds-processing-data_en)
-and [EDPB Guidelines 05/2020](https://www.edpb.europa.eu/documents/guideline/guidelines-052020-on-consent-under-regulation-2016679_en).
+- Withdrawal is as easy as giving consent (added 10 October): a **"Záznam používání"
+  switch in Nastavení**. Switching it off stops recording at once (the server rejects
+  further events and rankings) and deletes this account's recorded events and rankings;
+  testing access and written feedback keep working. It can be switched back on.
+  E-mail withdrawal still works too.
+
+**Status: decided by the founder, 10 October 2026.** Codex's review asked for an adviser
+sign-off; the founder accepted this decision for the one-school, 7-day beta instead.
+Re-assess before any larger cohort.
 
 ## D2 — Review reporting and DSA (LEGAL-02)
 
@@ -76,19 +78,18 @@ rows are not yet deleted) in the same release that re-enables sharing.
 - A public testimonial (only with its own consent): kept until the consent is withdrawn.
 - Accounts: until the user deletes them (unchanged).
 
-**Preliminary DPIA screening, 2026-10-10 — not accepted as a release sign-off:** the
-initial assessment considered one school,
-at most about 170 testers, 7 days, no special-category data collected on purpose,
-no location, no sharing with third parties for their own purposes, no profiling with
-legal effect, data minimised (no e-mail, free text or points in events), deletion on
-request. Its factual assumptions need correction: the optional `cirkevni` answer is
-already stored in `questionnaire_runs.answers` together with `user_id`; it is not
-unlinked from identity. Choosing a church school does not by itself prove a religious
-belief, but optionality alone does not settle whether the processing reveals one.
-Account-linked recommendations, children's data, free-text/screenshot content and map
-location features must be included in a documented controller/adviser risk assessment.
-Do not use this note to conclude that a DPIA is unnecessary. Re-screen before any launch
-beyond this school, and resolve the current cohort's assessment before release acceptance.
+**DPIA screening, 2026-10-10 — decided by the founder: no full DPIA for this beta.**
+One school, at most about 170 testers, 7 days, no special-category data collected on
+purpose, no location stored, no sharing with third parties for their own purposes, no
+profiling with legal effect, data minimised (no e-mail, free text or points in events),
+deletion on request, and usage recording can be switched off in Nastavení.
+
+Fact corrected by Codex's review (kept): the optional church-school answer (`cirkevni`)
+is stored in `questionnaire_runs.answers` with the `user_id`, so it is *not* separated
+from identity. Choosing a church school does not by itself reveal a religious belief, and
+the question is optional; the founder accepts this for the beta. Re-screen before any
+launch beyond this school — at that point consider dropping or reframing that question,
+and include children's data, screenshots and map location in a documented assessment.
 
 ## D5 — Vendors and the operator (LEGAL-05) — founder to verify
 

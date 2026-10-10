@@ -116,6 +116,8 @@ export const fetchBetaMe = () => request('/api/beta/me');
 export const markBetaRepliesRead = () => request('/api/beta/feedback/replies/read', {
   method: 'POST', body: JSON.stringify({}),
 });
+/** The "Záznam používání" switch in Nastavení; off also deletes recorded usage. */
+export const setBetaTracking = (enabled) => request('/api/beta/tracking', { method: 'POST', body: JSON.stringify({ enabled }) });
 export const saveBetaProfile = (role, roleNote = '') => request('/api/beta/profile', {
   method: 'POST', body: JSON.stringify({ role, role_note: roleNote, tracking_notice_accepted: true }),
 });

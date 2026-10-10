@@ -402,11 +402,16 @@ async function optionalAuth(req, res, next) {
   next();
 }
 
+// Usage recording needs the enrollment consent and must not be switched off
+// in Nastavení. select('*') so a missing tracking_paused_at column (SQL not
+// yet applied) reads as "not paused" instead of failing the profile.
+const trackingOn = (row) => Boolean(row?.consent_tracking_at && !row?.tracking_paused_at);
+
 async function closingStateFor(userId) {
   const sync=await supabase.rpc('sync_beta_closing',{p_user_id:userId});
   if (sync.error) return {error:sync.error};
-  const {data,error}=await supabase.from('beta_profile').select('closing_due_at,closing_done_at,consent_tracking_at').eq('user_id',userId).single();
-  return {error,betaTrackingNoticeAccepted:Boolean(data?.consent_tracking_at),closingDueAt:data?.closing_due_at,closingDoneAt:data?.closing_done_at,
+  const {data,error}=await supabase.from('beta_profile').select('*').eq('user_id',userId).single();
+  return {error,betaTrackingNoticeAccepted:trackingOn(data),betaTrackingPaused:Boolean(data?.tracking_paused_at),closingDueAt:data?.closing_due_at,closingDoneAt:data?.closing_done_at,
     closingPaused:Boolean(data?.closing_due_at && !data.closing_done_at && new Date(data.closing_due_at).getTime()+86400000<=Date.now())};
 }
 
@@ -562,6 +567,29 @@ app.post('/api/beta/feedback/replies/read', requireAuth, requireBetaTester, asyn
   if (error) return res.status(500).json({ error: 'Zprávy se nepodařilo označit přečtenými.' });
   res.status(204).end();
 });
+// The "Záznam používání" switch in Nastavení. Off = consent withdrawn: nothing
+// more is recorded and this account's recorded usage (events, rankings) is
+// deleted. Testing access and written feedback are unaffected. On = recording
+// resumes (only for an account that gave consent at enrollment).
+app.post('/api/beta/tracking', requireAuth, requireBetaTester, async (req, res) => {
+  const enabled = req.body?.enabled;
+  if (typeof enabled !== 'boolean') return res.status(400).json({ error: 'Chybí volba.' });
+  const current = await supabase.from('beta_profile').select('*').eq('user_id', req.user.id).single();
+  if (current.error) return res.status(503).json({ error: 'Testování nelze ověřit.' });
+  if (!current.data?.consent_tracking_at) return res.status(403).json({ error: 'Nejdřív je potřeba potvrdit seznámení s testováním.' });
+  const { error } = await supabase.from('beta_profile')
+    .update({ tracking_paused_at: enabled ? null : new Date().toISOString() })
+    .eq('user_id', req.user.id);
+  if (error) return res.status(500).json({ error: 'Nastavení záznamu se nepodařilo uložit.' });
+  if (!enabled) {
+    for (const table of ['beta_events', 'beta_rankings']) {
+      const { error: deleteError } = await supabase.from(table).delete().eq('user_id', req.user.id);
+      if (deleteError) return res.status(500).json({ error: 'Záznam je vypnutý, ale dosavadní data se nepodařilo smazat. Zkus to prosím znovu.' });
+    }
+  }
+  res.json({ enabled });
+});
+
 app.post('/api/beta/profile', requireAuth, requireBetaTester, async (req, res) => {
   const { role, role_note: rawNote, tracking_notice_accepted: accepted } = req.body || {};
   if (!['8','9','rodic','ucitel','jine'].includes(role) || accepted !== true) return res.status(400).json({ error: 'Je potřeba vybrat roli a potvrdit seznámení s testováním.' });
@@ -584,9 +612,9 @@ const betaRankingsLimiter=rateLimit({windowMs:60000,limit:20,standardHeaders:'dr
 app.post('/api/beta/rankings',requireAuth,requireBetaTester,betaRankingsLimiter,async(req,res)=>{
   const ranking=rankingPayload(req.body?.ranking), capture=req.body?.capture_id;
   if (!ranking || !/^[a-f0-9-]{36}$/.test(capture || '') || req.body?.source!=='onboarding') return res.status(400).json({error:'Pořadí nemá správný formát.'});
-  const notice=await supabase.from('beta_profile').select('consent_tracking_at').eq('user_id',req.user.id).single();
+  const notice=await supabase.from('beta_profile').select('*').eq('user_id',req.user.id).single();
   if(notice.error)return res.status(503).json({error:'Testování nelze ověřit.'});
-  if(!notice.data?.consent_tracking_at)return res.status(403).json({error:'Nejdřív je potřeba potvrdit seznámení s testováním.'});
+  if(!trackingOn(notice.data))return res.status(403).json({error:'Záznam používání je vypnutý nebo nepotvrzený.'});
   if(req.body?.ticket){
     const visit=verifyVisitorTicket(BETA_TICKET_SECRET,req.body.ticket,req.body.anon_id);
     if(!visit || visit.code!==req.betaUser.tester_school_code)return res.status(403).json({error:'Pořadí nepatří k této pozvánce.'});
@@ -622,9 +650,9 @@ app.post('/api/beta/events', betaEventsLimiter, async (req, res) => {
     if (result.error) return res.status(503).json({ error: 'Účet nelze ověřit.' });
     profile = result.data;
     if (profile?.subscription_status !== 'beta') return res.status(403).json({ error: 'Sledování je pouze pro beta testery.' });
-    const notice=await supabase.from('beta_profile').select('consent_tracking_at').eq('user_id',user.id).single();
+    const notice=await supabase.from('beta_profile').select('*').eq('user_id',user.id).single();
     if (notice.error) return res.status(503).json({error:'Upozornění nelze ověřit.'});
-    if (!notice.data?.consent_tracking_at) return res.status(403).json({error:'Nejdřív je potřeba potvrdit seznámení s beta testováním.'});
+    if (!trackingOn(notice.data)) return res.status(403).json({error:'Záznam používání je vypnutý nebo nepotvrzený.'});
   } else if (!ticket) return res.status(403).json({ error: 'Chybí testovací přístup.' });
   const settings = await readBetaSettings();
   if (settings.error) return res.status(503).json({ error: 'Testování nelze ověřit.' });
@@ -2613,8 +2641,8 @@ app.post(
     }
 
     if(req.profile?.subscription_status==='beta') {
-      const notice=await supabase.from('beta_profile').select('consent_tracking_at').eq('user_id',req.user.id).single();
-      if(!notice.error && notice.data?.consent_tracking_at) {
+      const notice=await supabase.from('beta_profile').select('*').eq('user_id',req.user.id).single();
+      if(!notice.error && trackingOn(notice.data)) {
         const order=rankingPayload(fullRanking);
         if(order){const logged=await supabase.from('beta_rankings').upsert({user_id:req.user.id,source:'questionnaire',run_id:run.id,capture_id:crypto.randomUUID(),ranking:order},{onConflict:'user_id,source,run_id',ignoreDuplicates:true});
           if(logged.error)console.error('Beta ranking could not be saved:',logged.error.code || 'database unavailable');}

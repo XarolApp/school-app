@@ -1139,3 +1139,22 @@ test('account deletion removes the tester screenshots first and keeps the accoun
   assert.equal((await failing.call('delete', '/api/me')).statusCode, 502);
   assert.equal(failing.deletions, 0);
 });
+
+test('switching usage recording off pauses it and deletes this account\'s recorded usage', async () => {
+  const h = harness({ result: (query) => {
+    if (query.table === 'users') return { data: { id: 'user-test', subscription_status: 'beta' }, error: null };
+    if (query.table === 'beta_profile') return { data: { user_id: 'user-test', consent_tracking_at: '2026-10-10T00:00:00Z' }, error: null };
+    return { data: null, error: null };
+  } });
+  const off = await h.call('post', '/api/beta/tracking', { body: { enabled: false } });
+  assert.equal(off.statusCode, 200);
+  assert.ok(h.queries.some((q) => q.table === 'beta_profile' && q.calls.some(([m, v]) => m === 'update' && v.tracking_paused_at)));
+  for (const table of ['beta_events', 'beta_rankings']) {
+    const q = h.queries.find((x) => x.table === table);
+    assert.ok(q.calls.some(([m]) => m === 'delete') && q.calls.some(([m, col, v]) => m === 'eq' && col === 'user_id' && v === 'user-test'), table);
+  }
+  const on = harness({ result: (query) => query.table === 'users' ? { data: { subscription_status: 'beta' }, error: null } : { data: { consent_tracking_at: '2026-10-10T00:00:00Z' }, error: null } });
+  assert.equal((await on.call('post', '/api/beta/tracking', { body: { enabled: true } })).statusCode, 200);
+  assert.ok(!on.queries.some((q) => q.table === 'beta_events'));
+  assert.equal((await on.call('post', '/api/beta/tracking', { body: {} })).statusCode, 400);
+});

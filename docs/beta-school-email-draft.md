@@ -67,8 +67,8 @@ nám řekl(a), co funguje a co ne.
   se dál. Na konci tě čeká krátký závěrečný dotazník.
 - Je to zdarma. Platební obrazovky v aplikaci jsou jen náhled — nic se neúčtuje.
 - Zaznamenáváme, jak aplikaci používáš (které stránky, které funkce), abychom ji mohli
-  opravit. Děláme to **jen s tvým souhlasem**, který dáš při registraci a můžeš ho
-  kdykoli odvolat. E-mail, hesla ani volné poznámky do záznamu nepatří.
+  opravit. Děláme to **jen s tvým souhlasem**, který dáš při registraci. Vypnout to
+  můžeš kdykoli jedním klepnutím v **Nastavení → Záznam používání** (testovat můžeš dál). E-mail, hesla ani volné poznámky do záznamu nepatří.
 - Účet i všechna data můžeš kdykoli smazat v **Nastavení → Smazat účet**.
 - Rodiče: co přesně ukládáme a proč, najdete v zásadách ochrany osobních údajů na webu.
   Dotazy na info@stredninamiru.cz.
@@ -85,6 +85,3 @@ Díky, že pomáháš!
 - [ ] Doplněno: jméno odesílatele, datum odeslání, případně osobní nabídka návštěvy.
 - [ ] Rozhodni, jestli škola smí text přeposlat, nebo ho chceš poslat rodičům ty sám.
 - [ ] Ověřeno u dashboardů (viz `docs/legal-decisions-2026-10-10.md`, bod D5).
-- [ ] Správce vyřešil otevřené podmínky souhlasu/odvolání, dětských údajů a posouzení
-      rizik v bodech D1 a D4. Tento koncept ani rozhodnutí v dokumentu nejsou právní
-      potvrzení připravenosti; před odesláním ověř i popsané mazání a obnovování přístupu.

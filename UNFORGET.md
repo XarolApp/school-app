@@ -71,7 +71,7 @@ School e-mail: `docs/beta-school-email-draft.md`.
 - [ ] Parents cannot read the privacy page without the gate code. Either put the code in the
       forwarded text (done) or serve legal pages ungated — the SPA assets are gated too, so
       that needs a separate static page.
-- [ ] A one-click "stop recording my usage" switch in Nastavení (withdrawal is by e-mail now).
+- [x] One-click "Záznam používání" switch in Nastavení — done 10 October (off stops recording and deletes recorded events/rankings). **Needs `migrations/2026-10-10-tracking-switch.sql` run in Supabase.**
 - [ ] Before sharing links are re-enabled: privacy text for result/payment links and
       pre-account snapshots (LEGAL-03). Before school reviews are re-enabled: notice and
       action workflow (LEGAL-02).

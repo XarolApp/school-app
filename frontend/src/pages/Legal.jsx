@@ -154,8 +154,9 @@ export function Privacy() {
         a typ zařízení (telefon, tablet nebo počítač). Ukládáme také tvoji testovací roli,
         postup zkoušení, odpovědi v závěrečném dotazníku a pořadí doporučených škol. Účelem je
         zjistit, co funguje a co máme před spuštěním opravit. Právním základem je tvůj souhlas.
-        Odvolat ho můžeš kdykoli e-mailem na info@stredninamiru.cz; zaznamenávání pak ukončíme
-        a dosud zaznamenané události na požádání smažeme. Odvolání nemá vliv na zpracování
+        Odvolat ho můžeš kdykoli jedním klepnutím v Nastavení (přepínač „Záznam používání“)
+        nebo e-mailem na info@stredninamiru.cz; zaznamenávání se tím ukončí a dosud zaznamenané
+        události a pořadí doporučených škol smažeme. Testovat můžeš dál. Odvolání nemá vliv na zpracování
         před ním. Pokud ti ještě nebylo 15 let, zakládáš účet (a tím i tento souhlas) společně
         s rodičem nebo zákonným zástupcem (kapitola 5). Zpětnou vazbu, kterou sám odešleš,
         zpracováváme na základě našeho oprávněného zájmu na zlepšování služby.

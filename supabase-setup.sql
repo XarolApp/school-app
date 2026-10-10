@@ -894,6 +894,8 @@ create table if not exists public.beta_profile (
 -- Free text a tester types after choosing "Jiné"; display-only, never decides access.
 alter table public.beta_profile add column if not exists role_note text
   check (role_note is null or char_length(role_note) <= 80);
+-- Set when the tester switches usage recording off in Nastavení (consent withdrawn).
+alter table public.beta_profile add column if not exists tracking_paused_at timestamptz;
 create table if not exists public.beta_closing_answers (
   user_id uuid primary key references auth.users(id) on delete cascade,
   answers jsonb not null check (jsonb_typeof(answers) = 'object' and octet_length(answers::text) <= 24000),

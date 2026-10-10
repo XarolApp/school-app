@@ -7,7 +7,8 @@ import Captcha, { captchaEnabled } from '../components/Captcha';
 import PasswordInput from '../components/PasswordInput';
 import PasswordStrength from '../components/PasswordStrength';
 import { useToast } from '../components/ToastContext';
-import { deleteAccount, cancelSubscription, withdrawFromContract, updateProfile, fetchShareLinks, deleteShareLink } from '../api';
+import { deleteAccount, cancelSubscription, withdrawFromContract, updateProfile, fetchShareLinks, deleteShareLink, setBetaTracking } from '../api';
+import { betaTracker } from '../lib/betaTrack';
 import { getPlan } from '../config/pricing';
 import { supabase, getRememberMe, setRememberMe } from '../supabaseClient';
 import { DEFAULT_PALETTE, PALETTE_IDS, palettes } from '../design/tokens';
@@ -83,6 +84,57 @@ function SettingsSkeleton() {
         </section>
       </div>
     </SkeletonPage>
+  );
+}
+
+// "Záznam používání" — withdrawing the beta usage-recording consent must be as
+// easy as giving it (LEGAL-01). Off: nothing more is recorded and what was
+// recorded about this account is deleted; testing and feedback keep working.
+function TrackingSwitch({ profile, refreshProfile }) {
+  const on = !profile?.betaTrackingPaused;
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  const toggle = async () => {
+    setBusy(true); setError('');
+    if (on) betaTracker.clear();
+    try {
+      await setBetaTracking(!on);
+      await refreshProfile();
+    } catch (err) {
+      setError(err?.message || 'Nastavení se nepodařilo uložit.');
+    } finally {
+      setBusy(false);
+    }
+  };
+  return (
+    <div className="settings-row beta-tracking-switch">
+      <div className="settings-row-body">
+        <span className="settings-row-label" id="beta-tracking-label">Záznam používání</span>
+        <p className="settings-section-text" id="beta-tracking-text">
+          Během testování zaznamenáváme, které stránky otevíráš a na co klikáš — bez e-mailu,
+          odpovědí z dotazníku a textů, které píšeš. Pomáhá nám to najít místa, kde se lidé
+          ztrácejí, a podle toho se sám odškrtává seznam „Co vyzkoušet“.
+        </p>
+        <p className="settings-section-text">
+          {on
+            ? 'Když záznam vypneš, nic dalšího se už nezaznamená a smažeme i to, co jsme o tvém používání zatím zaznamenali. Testovat můžeš dál a zpětná vazba funguje stejně, jen se seznam „Co vyzkoušet“ přestane sám odškrtávat. Zapnout ho můžeš kdykoli zase.'
+            : 'Záznam je vypnutý: nic o tom, jak web používáš, se neukládá a dřívější záznam jsme smazali. Testovat i posílat zpětnou vazbu můžeš dál. Když ho zase zapneš, budeme zaznamenávat jen od té chvíle.'}
+        </p>
+        {error && <p className="settings-section-text" role="alert">{error}</p>}
+      </div>
+      <button
+        type="button"
+        role="switch"
+        aria-checked={on}
+        aria-labelledby="beta-tracking-label"
+        aria-describedby="beta-tracking-text"
+        className={`btn btn-sm ${on ? 'btn-secondary' : 'btn-primary'}`}
+        disabled={busy}
+        onClick={toggle}
+      >
+        {busy ? 'Ukládám…' : on ? 'Vypnout záznam' : 'Zapnout záznam'}
+      </button>
+    </div>
   );
 }
 
@@ -1010,6 +1062,7 @@ function Settings() {
                   Otevřít externí formulář (přístup neobnoví)
                 </a>
               )}
+              {profile?.betaProgramActive && <TrackingSwitch profile={profile} refreshProfile={refreshProfile} />}
             </div>
           )}
 
