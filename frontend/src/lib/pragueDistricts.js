@@ -8,9 +8,8 @@
 // the nearest edge), so small districts can shrink their label instead of
 // overflowing it.
 //
-// The identical rings, in the identical coordinate space, are also emitted to
-// lib/pragueDistricts.js for scoring — so the shape you click is the shape a
-// school is tested against. Regenerate both together.
+// The unsimplified source rings use this same projection in lib/pragueDistricts.js
+// for scoring. Drawn borders can differ slightly; regenerate both outputs together.
 //
 // Boundaries © OpenStreetMap contributors, ODbL.
 // Web Mercator, Douglas-Peucker simplified at 1px of a 1000-unit

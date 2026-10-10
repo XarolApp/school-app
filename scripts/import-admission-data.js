@@ -387,12 +387,13 @@ async function main() {
     for (const s of neverMatched) console.log(`  - ${s.name}`);
   }
 
+  // Refresh even an empty report so old unmatched names cannot remain as current work.
+  const reportPath = path.join(__dirname, 'admission-import-unmatched.txt');
+  const lines = [...unmatchedNames.entries()].map(
+    ([name, files_]) => `${name}  (seen in: ${[...files_].join(', ')})`
+  );
+  fs.writeFileSync(reportPath, lines.length ? lines.join('\n') + '\n' : '');
   if (unmatchedNames.size) {
-    const reportPath = path.join(__dirname, 'admission-import-unmatched.txt');
-    const lines = [...unmatchedNames.entries()].map(
-      ([name, files_]) => `${name}  (seen in: ${[...files_].join(', ')})`
-    );
-    fs.writeFileSync(reportPath, lines.join('\n') + '\n');
     console.log(`\n${unmatchedNames.size} Cermat school names could not be matched to any DB school.`);
     console.log(`Written to ${reportPath} for manual review.`);
   }

@@ -1,0 +1,146 @@
+{
+  "checkedAt": "2026-10-10T08:45:40.552Z",
+  "lookupPoints": 16115,
+  "drawnPoints": 2231,
+  "parityChecks": 484,
+  "sourceHashes": {
+    "lib/pragueDistricts.js": "14001c5e437dac6cd003e95155a4ad4b25cacbcb806b701dbf953caf97e98819",
+    "frontend/src/lib/pragueDistricts.js": "1bfcc065b32a9ef0f2cf48010dfce8ac279868ad460dd4728ef58268f864cf5b",
+    "frontend/src/lib/schoolFeatures.js": "91200be6ac486a2e7d31495f45dafd25c678c96c77a1278e9267434de52f9c51"
+  },
+  "perDistrict": [
+    {
+      "id": "Praha 1",
+      "rings": 1,
+      "lookupPoints": 246,
+      "labelMembership": true
+    },
+    {
+      "id": "Praha 2",
+      "rings": 1,
+      "lookupPoints": 303,
+      "labelMembership": true
+    },
+    {
+      "id": "Praha 3",
+      "rings": 1,
+      "lookupPoints": 302,
+      "labelMembership": true
+    },
+    {
+      "id": "Praha 4",
+      "rings": 1,
+      "lookupPoints": 1119,
+      "labelMembership": true
+    },
+    {
+      "id": "Praha 5",
+      "rings": 1,
+      "lookupPoints": 915,
+      "labelMembership": true
+    },
+    {
+      "id": "Praha 6",
+      "rings": 1,
+      "lookupPoints": 1308,
+      "labelMembership": true
+    },
+    {
+      "id": "Praha 7",
+      "rings": 1,
+      "lookupPoints": 516,
+      "labelMembership": true
+    },
+    {
+      "id": "Praha 8",
+      "rings": 1,
+      "lookupPoints": 1096,
+      "labelMembership": true
+    },
+    {
+      "id": "Praha 9",
+      "rings": 1,
+      "lookupPoints": 650,
+      "labelMembership": true
+    },
+    {
+      "id": "Praha 10",
+      "rings": 1,
+      "lookupPoints": 943,
+      "labelMembership": true
+    },
+    {
+      "id": "Praha 11",
+      "rings": 1,
+      "lookupPoints": 1020,
+      "labelMembership": true
+    },
+    {
+      "id": "Praha 12",
+      "rings": 1,
+      "lookupPoints": 562,
+      "labelMembership": true
+    },
+    {
+      "id": "Praha 13",
+      "rings": 1,
+      "lookupPoints": 1128,
+      "labelMembership": true
+    },
+    {
+      "id": "Praha 14",
+      "rings": 1,
+      "lookupPoints": 663,
+      "labelMembership": true
+    },
+    {
+      "id": "Praha 15",
+      "rings": 1,
+      "lookupPoints": 996,
+      "labelMembership": true
+    },
+    {
+      "id": "Praha 16",
+      "rings": 1,
+      "lookupPoints": 928,
+      "labelMembership": true
+    },
+    {
+      "id": "Praha 17",
+      "rings": 1,
+      "lookupPoints": 518,
+      "labelMembership": true
+    },
+    {
+      "id": "Praha 18",
+      "rings": 1,
+      "lookupPoints": 514,
+      "labelMembership": true
+    },
+    {
+      "id": "Praha 19",
+      "rings": 1,
+      "lookupPoints": 458,
+      "labelMembership": true
+    },
+    {
+      "id": "Praha 20",
+      "rings": 1,
+      "lookupPoints": 445,
+      "labelMembership": true
+    },
+    {
+      "id": "Praha 21",
+      "rings": 1,
+      "lookupPoints": 619,
+      "labelMembership": true
+    },
+    {
+      "id": "Praha 22",
+      "rings": 1,
+      "lookupPoints": 866,
+      "labelMembership": true
+    }
+  ],
+  "note": "Every stored lookup coordinate inspected by assertions; authored non-data lines read separately. Not a manual read of each coordinate literal, authoritative boundary freshness, exact-edge policy or building geocode validation."
+}

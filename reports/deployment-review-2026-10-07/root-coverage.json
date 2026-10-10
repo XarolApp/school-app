@@ -1231,18 +1231,19 @@
     "method": "Full source read across recorded continuation turns, including missing middleware/brainstorm ranges and complete authored diffs. Read means inspected, not defect-free or runtime-approved."
   },
   "scripts/import-admission-data.js": {
-    "sha256": "c26f6e538ac4061c6807852a8167645c091b16f1fb474ff6cccfd8093004b74a",
-    "lines": 474,
+    "sha256_before": "c26f6e538ac4061c6807852a8167645c091b16f1fb474ff6cccfd8093004b74a",
+    "sha256": "b91fdfda0ee59bfe489fa6a2d75197192f2026bd169b6d7148edf924cb2bf523",
+    "lines": 475,
     "read_ranges": [
       [
         1,
-        474
+        475
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:30:59.014914+00:00",
-    "method": "Full source read across recorded continuation turns, including missing middleware/brainstorm ranges and complete authored diffs. Read means inspected, not defect-free or runtime-approved."
+    "checked_at_utc": "2026-10-10T08:49:57.714581+00:00",
+    "method": "Current frontend geometry and both source lists fully read with repaired bounded-range gaps; two generator/import exact previous full-read hashes plus complete own patches; both new tests fully written/read. Source-list counts are historical snapshots, not live register completeness. Generated backend numeric literal is separately structurally inspected, not claimed manually read."
   },
   "scripts/import-maturita-data.js": {
     "sha256": "0f3e98d70241ba2c6e88a4c5b43d25395cd6ed0cd915f778f99c6498ce312fe9",
@@ -1558,18 +1559,19 @@
     "method": "Generator all 1–325 baseline lines plus full own diff; server-boundary tests all 1–1112 current lines with repaired overlapping ranges; other four exact full-read baselines plus full own parser-only diff; new test fully written/read. Offline/source coverage does not prove live payment/SQL/pipeline acceptance."
   },
   "scripts/build-district-map.js": {
-    "sha256": "84762836f3b81891e79fcb8721c1b183c40b126b5443f507b49a2effa8a8e54b",
-    "lines": 433,
+    "sha256_before": "84762836f3b81891e79fcb8721c1b183c40b126b5443f507b49a2effa8a8e54b",
+    "sha256": "d7ed71f686761c5e68923ed8723609c544f10085ae526ec43c7fe0af8e588255",
+    "lines": 496,
     "read_ranges": [
       [
         1,
-        433
+        496
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:40:57.647645+00:00",
-    "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
+    "checked_at_utc": "2026-10-10T08:49:57.713963+00:00",
+    "method": "Current frontend geometry and both source lists fully read with repaired bounded-range gaps; two generator/import exact previous full-read hashes plus complete own patches; both new tests fully written/read. Source-list counts are historical snapshots, not live register completeness. Generated backend numeric literal is separately structurally inspected, not claimed manually read."
   },
   "scripts/simulate-matching.mjs": {
     "sha256": "cb35a9533db3b10db7454a72d7fea80baaebe7553a20ee68e4c02f6fde8031a9",
@@ -3707,5 +3709,99 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-10T08:41:09.726770+00:00",
     "method": "All baseline lines read in bounded sequential ranges with repaired truncated gaps, then complete own factual documentation patches inspected. Historical proposals remain dated, current source/founder decisions govern. Primary-source factual corrections are not legal approval, vendor verification or hosted acceptance."
+  },
+  "frontend/src/lib/pragueDistricts.js": {
+    "sha256_before": "fba032bb166cf59e6e418627efae4444e8de968b4a14dbdb0d6b7978e2f8b03e",
+    "sha256": "1bfcc065b32a9ef0f2cf48010dfce8ac279868ad460dd4728ef58268f864cf5b",
+    "lines": 198,
+    "read_ranges": [
+      [
+        1,
+        198
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T08:49:57.714664+00:00",
+    "method": "Current frontend geometry and both source lists fully read with repaired bounded-range gaps; two generator/import exact previous full-read hashes plus complete own patches; both new tests fully written/read. Source-list counts are historical snapshots, not live register completeness. Generated backend numeric literal is separately structurally inspected, not claimed manually read."
+  },
+  "scripts/atlas-prague-schools.json": {
+    "sha256_before": null,
+    "sha256": "27be464daaefb7295cc033c73e26d97f4160a9309c7fb00bc8bcaf74a52fb623",
+    "lines": 216,
+    "read_ranges": [
+      [
+        1,
+        216
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T08:49:57.715009+00:00",
+    "method": "Current frontend geometry and both source lists fully read with repaired bounded-range gaps; two generator/import exact previous full-read hashes plus complete own patches; both new tests fully written/read. Source-list counts are historical snapshots, not live register completeness. Generated backend numeric literal is separately structurally inspected, not claimed manually read."
+  },
+  "scripts/admission-import-unmatched.txt": {
+    "sha256_before": null,
+    "sha256": "d405c892b8e7a0c7f93a87cd22ce63fcc1f5d31f7dd69f554dd11a3733266d8a",
+    "lines": 159,
+    "read_ranges": [
+      [
+        1,
+        159
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T08:49:57.715339+00:00",
+    "method": "Current frontend geometry and both source lists fully read with repaired bounded-range gaps; two generator/import exact previous full-read hashes plus complete own patches; both new tests fully written/read. Source-list counts are historical snapshots, not live register completeness. Generated backend numeric literal is separately structurally inspected, not claimed manually read."
+  },
+  "tests/district-generator.test.cjs": {
+    "sha256_before": null,
+    "sha256": "11a047c359a9184b91877f23cf254f9d5dc5a83f050328eadfbf1d1f18796f78",
+    "lines": 70,
+    "read_ranges": [
+      [
+        1,
+        70
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T08:49:57.715541+00:00",
+    "method": "Current frontend geometry and both source lists fully read with repaired bounded-range gaps; two generator/import exact previous full-read hashes plus complete own patches; both new tests fully written/read. Source-list counts are historical snapshots, not live register completeness. Generated backend numeric literal is separately structurally inspected, not claimed manually read."
+  },
+  "tests/import-admission-report.test.cjs": {
+    "sha256_before": null,
+    "sha256": "bfa28dab2fcba28640aa5fd5df76b183da97c81feab014ae8b42c636828fb460",
+    "lines": 35,
+    "read_ranges": [
+      [
+        1,
+        35
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T08:49:57.715674+00:00",
+    "method": "Current frontend geometry and both source lists fully read with repaired bounded-range gaps; two generator/import exact previous full-read hashes plus complete own patches; both new tests fully written/read. Source-list counts are historical snapshots, not live register completeness. Generated backend numeric literal is separately structurally inspected, not claimed manually read."
+  },
+  "lib/pragueDistricts.js": {
+    "sha256": "14001c5e437dac6cd003e95155a4ad4b25cacbcb806b701dbf953caf97e98819",
+    "lines": 141,
+    "read_ranges": [
+      [
+        1,
+        16
+      ],
+      [
+        18,
+        141
+      ]
+    ],
+    "status": "partial_generated_data_verified",
+    "reviewer": "root",
+    "data_line": 17,
+    "data_evidence": "district-geometry-2026-10-10.json",
+    "method": "Every authored non-data line read; the 319,620-character generated REGIONS literal was parsed and all 16,115 coordinate pairs structurally checked with labels/IDs/bounds, separately from manual read coverage. No claim of individually reading every literal or boundary freshness."
   }
 }

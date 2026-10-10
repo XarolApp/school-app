@@ -151,3 +151,6 @@ Pipeline scope follow-up, 10 October (S14 fixed): preserve the new fail-before-w
 
 
 C39 documentation checkpoint: the research brief/results/index and plan 020 now defer to current founder decisions/source. Do not implement historical surface-split, vendor conversion bands, blanket privacy exemptions or presumed DFA rules as current requirements. Resolve actual LEGAL01–10/access/device acceptance using the existing ordered tasks and primary authorities.
+
+
+District/import follow-up (S15/S17 fixed, S16 deferred): preserve generator exports and all-pairs regression, and keep unmatched source reports fresh even for empty results. Before an authorized geometry refresh, validate external district IDs/finite coordinates/ring closure/holes/topology, source date/attribution and real near-border school fixtures. Current stored-coordinate checks and labels pass but are not authoritative boundary/building verification. Keep S02/S03 atomic import/provenance acceptance separate; the checked-in unmatched list is historical.

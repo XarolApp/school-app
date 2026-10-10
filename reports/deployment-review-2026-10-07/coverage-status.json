@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-10T08:41:10.054181+00:00",
-  "commit": "933bbc5de14022ee86a4f68b6ebb87b81b096472",
+  "checked_at_utc": "2026-10-10T08:49:58.086044+00:00",
+  "commit": "9382c6adf0baabf51e919cbbd3b9b8138ea283da",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "pending_or_changed": 465,
-    "current_full_read": 307,
+    "pending_or_changed": 462,
+    "current_full_read": 312,
     "binary_requires_asset_check": 85,
-    "generated_or_audit_artifact": 82,
+    "generated_or_audit_artifact": 88,
     "removed_or_missing": 2
   },
   "files": [
@@ -791,8 +791,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "565cce45a41d90610b5efa9f4dd3f61ef715e5df6a9562fa1790810886285bcc",
-      "lines": 1724,
+      "sha256": "6f9472c6fc79d2af7590dea5535daf023819bb4a872e9b6537341162f72dcf7a",
+      "lines": 1731,
       "status": "pending_or_changed",
       "matching_evidence": []
     },
@@ -3654,10 +3654,12 @@
     },
     {
       "path": "frontend/src/lib/pragueDistricts.js",
-      "sha256": "fba032bb166cf59e6e418627efae4444e8de968b4a14dbdb0d6b7978e2f8b03e",
-      "lines": 199,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "1bfcc065b32a9ef0f2cf48010dfce8ac279868ad460dd4728ef58268f864cf5b",
+      "lines": 198,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/lib/schoolContact.js",
@@ -4446,8 +4448,8 @@
     },
     {
       "path": "lib/pragueDistricts.js",
-      "sha256": "720424bf16f02a566257a989fa703e329e198bf34ac73e995a24165066998b06",
-      "lines": 142,
+      "sha256": "14001c5e437dac6cd003e95155a4ad4b25cacbcb806b701dbf953caf97e98819",
+      "lines": 141,
       "status": "pending_or_changed",
       "matching_evidence": []
     },
@@ -5662,22 +5664,22 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "ff1a355279fa4e230afa59af34bae8b890c7134d2e52ca3102e9605d1727d65e",
-      "lines": 280,
+      "sha256": "e3356c53415d77eb6eefbd09ddfb115a8f11b4b554ce9d367868b827bc3861c3",
+      "lines": 288,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "bfe6da99baeafd301b17da335f1304f9844c665adf87b86632395229e02e8fc6",
-      "lines": 153,
+      "sha256": "6662cdb0308da6c9b38e9405fe353325e87e8709218f8e97bc940066b4e4ee57",
+      "lines": 156,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "4f3e78871f0ecdd921f16de07cd8eeb773c7b77ee0bab3d0baac0fe507e178a2",
-      "lines": 131,
+      "sha256": "8d05d110c71cf77d22d5d2fb98252795de0603a0e7d9f914c2dea902c5c25f6b",
+      "lines": 134,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -5900,15 +5902,15 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "7476ac5beb56d287d9c13fa7f43d548dac4d24826ddca0b99b04331058b775ba",
-      "lines": 341,
+      "sha256": "3623c081a0964a1a01f4a191441fe3cd11ae40203347959a90dfedfd83421f31",
+      "lines": 344,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "edeb5b23edf02142e65a3824bde3eabb54001e845f5ca71e13da9e587fdf3cd1",
-      "lines": 7210,
+      "sha256": "7b7963b5ddf28130a5d67e94ce031140eb605439f19c93a65c291a5f57870fc3",
+      "lines": 7220,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -5944,6 +5946,34 @@
       "path": "reports/deployment-review-2026-10-07/decision-followup-verification-2026-10-10.json",
       "sha256": "c39be40dde5eab7c7c864331b5c1feaa32c225f392d5edbacb0b99e4e22f618b",
       "lines": 34,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/district-generator-all-tests-2026-10-10.txt",
+      "sha256": "6772b1a97757fc0ddf4385c7aac7b72ca4fcb841dccc8d7daf9e7617310c1e85",
+      "lines": 192,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/district-generator-before-2026-10-10.txt",
+      "sha256": "4dc357a6656b40a3c0d93c3e9391bb11dba923f799fd427d4d53863b7ae53ea8",
+      "lines": 30,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/district-geometry-2026-10-10.json",
+      "sha256": "781b95db7fe3c6f67734561370cbcc347b197c83b35ac4be51a0578e063fe6f0",
+      "lines": 146,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/district-import-all-tests-2026-10-10.txt",
+      "sha256": "a120a59458a2289b0192e41def31cbfc3a40f205b04e8bffa932e415e44d1db0",
+      "lines": 194,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6049,6 +6079,13 @@
       "path": "reports/deployment-review-2026-10-07/frontend-lint.txt",
       "sha256": "a24ac8bb8f0cac45c90dab8d4e1d14c5b38f3ce7cf1096cd1d8f2018e554f504",
       "lines": 12,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/import-report-before-2026-10-10.txt",
+      "sha256": "47908b5786b715c8593fcfe242550a8c71b8adcc7b4d9e8b794344c5547c2ead",
+      "lines": 31,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6311,6 +6348,13 @@
       ]
     },
     {
+      "path": "reports/deployment-review-2026-10-07/probe-district-geometry.cjs",
+      "sha256": "a2e408f4475b6feb2c9d3188177cd6694438e7446e22040478c9c488bb2287a4",
+      "lines": 62,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/probe-extracted-coverage.cjs",
       "sha256": "2c4e5ac09294116a1e32ef1143154377b389937a9d73eaea80b03c6e28b4bb08",
       "lines": 51,
@@ -6462,8 +6506,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "aca025a4180da983386f6331b9b8f5014dcb3605ed9bc7e3957718e7553ab96d",
-      "lines": 3711,
+      "sha256": "fd0512a5f89977b2c719b2471521782ed9c72267ba8e3e08b272b6078da5e539",
+      "lines": 3807,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6497,8 +6541,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/script-findings.md",
-      "sha256": "89bae2c8bbeef8ddb202d78a2d093f1442b8efd9f36ff4bea78d11c2bd0c7a36",
-      "lines": 122,
+      "sha256": "19f88640b10fb46e0df0ce4fce81f9bc3d998e3d5626a631cfc5bb4850ded685",
+      "lines": 135,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6704,15 +6748,19 @@
       "path": "scripts/admission-import-unmatched.txt",
       "sha256": "d405c892b8e7a0c7f93a87cd22ce63fcc1f5d31f7dd69f554dd11a3733266d8a",
       "lines": 159,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "scripts/atlas-prague-schools.json",
       "sha256": "27be464daaefb7295cc033c73e26d97f4160a9309c7fb00bc8bcaf74a52fb623",
       "lines": 216,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "scripts/backfill-redizo.js",
@@ -6788,8 +6836,8 @@
     },
     {
       "path": "scripts/build-district-map.js",
-      "sha256": "84762836f3b81891e79fcb8721c1b183c40b126b5443f507b49a2effa8a8e54b",
-      "lines": 433,
+      "sha256": "d7ed71f686761c5e68923ed8723609c544f10085ae526ec43c7fe0af8e588255",
+      "lines": 496,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -6881,8 +6929,8 @@
     },
     {
       "path": "scripts/import-admission-data.js",
-      "sha256": "c26f6e538ac4061c6807852a8167645c091b16f1fb474ff6cccfd8093004b74a",
-      "lines": 474,
+      "sha256": "b91fdfda0ee59bfe489fa6a2d75197192f2026bd169b6d7148edf924cb2bf523",
+      "lines": 475,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -7109,6 +7157,15 @@
       ]
     },
     {
+      "path": "tests/district-generator.test.cjs",
+      "sha256": "11a047c359a9184b91877f23cf254f9d5dc5a83f050328eadfbf1d1f18796f78",
+      "lines": 70,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
+    },
+    {
       "path": "tests/extraction-guards.test.cjs",
       "sha256": "07540af77051e261f6d1b91c2ef7eefa887bab6f768f7250a10cb35be752b1c0",
       "lines": 93,
@@ -7121,6 +7178,15 @@
       "path": "tests/gender-copy.test.mjs",
       "sha256": "e4172e3756ff2c86433fcb2f1b88193d38867efe8fde850a29b25baf0dbd1b84",
       "lines": 12,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
+    },
+    {
+      "path": "tests/import-admission-report.test.cjs",
+      "sha256": "bfa28dab2fcba28640aa5fd5df76b183da97c81feab014ae8b42c636828fb460",
+      "lines": 35,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"

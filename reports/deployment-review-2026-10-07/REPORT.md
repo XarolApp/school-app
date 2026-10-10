@@ -129,3 +129,6 @@ Pipeline/test checkpoint, 10 October (S14): fixed malformed CLI scope values exp
 
 
 Research checkpoint, 10 October: five full document reads correct stale beta/desktop/storage facts, archive paths and legal/platform inaccuracies; see C39 in [continuation findings](continuation-findings.md). Historical metrics/proposals remain dated and confer no compliance or launch approval. No runtime or legal policy changed.
+
+
+Pipeline checkpoint, 10 October: actual offline regressions fix generator exports and stale unmatched-admission reporting; all 176 tests pass. All 16,115 generated lookup points and 22 labels pass local structural checks, while generated numeric-literal manual coverage and boundary freshness are explicitly distinguished. S16 external-geometry validation remains required before future regeneration. Existing geometry/scoring values are unchanged; see [script findings](script-findings.md).

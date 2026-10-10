@@ -1349,8 +1349,11 @@ plus hill-climbing, so it is an empirical bound, not a proof. That historical sa
 old all-or-nothing rule that cost an otherwise perfect school 20 of 113 weight
 for being one district over. `frontend/src/lib/schoolFeatures.js` already had a
 byte-identical copy driving "Podobné školy". They are duplicated deliberately
-(server CommonJS vs browser ESM) but nothing enforces that they stay in step —
-edit one, edit the other.
+(server CommonJS vs browser ESM) and the offline district-generator regression now checks all 484 pairs against both
+current backend and frontend behavior. Keep the tables in step when changing them.
+The generator now preserves these helpers/exports; it previously erased them on
+regeneration. This is a module-contract check, not proof of real-world adjacency
+or authoritative boundary freshness.
 
 ---
 
@@ -1722,3 +1725,7 @@ Confirmed score/weight, historical-admission, commute and local/account-storage 
 
 ## Pipeline command scope — deployment review, 10 October 2026
 - S14 fixed: malformed/missing/nonpositive/noninteger limits no longer fall back to whole-catalogue work in five scripts; missing/blank/flag school selectors and model values fail before work where supported. Sixteen actual-script offline regressions and all 173 repository tests pass, without paid calls or real writes. Preserve the CLI guards; dry runs still may call paid models/write usage logs, and S11/S12 input identity/provenance, cache refresh, partial-failure and regeneration acceptance remain open. [Handoff](reports/deployment-review-2026-10-07/HANDOFF-PLAN.md).
+
+- S15 fixed: district regeneration now preserves `districtHops`/`toCoreDistrict`, which the matching engine requires. An actual-generator offline test reproduces the old missing-export failure and checks all 484 pairs against both current engines; no network or real regeneration. All 16,115 stored lookup points and all 22 label memberships pass local structural checks. Generated geometry freshness/building accuracy/edge policy, invalid external boundary sets and attribution acceptance still require review before a future boundary refresh; see the deployment handoff.
+
+- S17 fixed: each parsed/matched admission run refreshes the local unmatched report, including clearing obsolete names when none remain. Offline actual-source tests pass; all 176 root tests pass. The checked-in report/Atlas name list remain historical evidence, not current missing schools. S02/S03 atomic import and provenance remain open. S16 external geometry validation/provenance is required before future boundary refreshes.
