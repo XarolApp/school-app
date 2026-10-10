@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-10T20:12:04.973438+00:00",
-  "commit": "d4acbf5b6fa5b0531c776166da9d4929cd6ad204",
+  "checked_at_utc": "2026-10-10T20:29:56.182458+00:00",
+  "commit": "f1fcf02a94df712b0eda1044df96ee58adfb6ff3",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "pending_or_changed": 380,
-    "current_full_read": 404,
-    "binary_requires_asset_check": 99,
-    "generated_or_audit_artifact": 125,
+    "pending_or_changed": 368,
+    "current_full_read": 418,
+    "binary_requires_asset_check": 101,
+    "generated_or_audit_artifact": 143,
     "removed_or_missing": 2
   },
   "files": [
@@ -793,8 +793,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "a56d853b022503f30ac0f6f5737052a5e4f8ae448f3b017b0b1ffa86c71be65a",
-      "lines": 1796,
+      "sha256": "e95d706a1df86341af56334149641099e3d6162a0387bd8bd172b0afdf23e0b5",
+      "lines": 1803,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -3005,15 +3005,19 @@
       "path": "frontend/src/components/BetaFeedbackSheet.jsx",
       "sha256": "06b7674a4dca8c2f5b00ce07d6df8c11e8d7411e925013e99e3d397d1b9599ff",
       "lines": 191,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/components/BetaInstructions.jsx",
       "sha256": "45d36bff8872666b7b4f5fd652ab59f576cb44a7127d88e8c247c023a926452c",
       "lines": 150,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/components/BetaMicroQuestions.jsx",
@@ -3632,10 +3636,12 @@
     },
     {
       "path": "frontend/src/lib/authValidation.js",
-      "sha256": "c95b5fcdcbad5e84ab8fb46a3087fafae7f629bcdf9ce6c8c54f71722beba237",
-      "lines": 85,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "5300500d26eef36556cec5823caf6541f05f0bb917251506a4f792ead475e31f",
+      "lines": 90,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/lib/betaCapture.js",
@@ -3820,7 +3826,8 @@
       "lines": 16,
       "status": "current_full_read",
       "matching_evidence": [
-        "frontend-coverage.json"
+        "frontend-coverage.json",
+        "root-coverage.json"
       ]
     },
     {
@@ -4024,10 +4031,12 @@
     },
     {
       "path": "frontend/src/pages/ForgotPassword.jsx",
-      "sha256": "004a6d3481511fd02aeca59aa4be6494a13b2738cdf1151493f0efb7dd7d188e",
-      "lines": 130,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "8556f952a39ba38d3670a0ca1fa6fc70572a7e6aef38429c40b84b8f88a1a175",
+      "lines": 132,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/pages/HandoffStart.jsx",
@@ -4058,10 +4067,12 @@
     },
     {
       "path": "frontend/src/pages/Login.jsx",
-      "sha256": "a032817a8faf32d66c126ce23d57dd279d666703d2784c540d1b393c1715c302",
-      "lines": 252,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "eedad39ef5653f2400e36c3934c2bdf6c2213db3e5d089fe499c5e46d0fc2abc",
+      "lines": 255,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/pages/Matice.jsx",
@@ -4182,10 +4193,12 @@
     },
     {
       "path": "frontend/src/pages/SignUp.jsx",
-      "sha256": "98531d5520a42916e398f906829df1588feb29efcfcf7509c5c8716686c90213",
-      "lines": 328,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "47ebcbdfa21ed74a8ece5bb62830ea8f2ab2eef8e1d7fea1c872c2a65619660b",
+      "lines": 329,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/pages/SubscriptionExpired.jsx",
@@ -4322,10 +4335,12 @@
     },
     {
       "path": "frontend/src/pages/onboarding/screens/CreateAccount.jsx",
-      "sha256": "1fc17ee66539bd3a2709458358eeef61bfab21c8bc42672b57ae3a54189a81f5",
-      "lines": 439,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "033078a72ccfe52b411d19da2b1ad7bf127e0c1dc02d6ab5cfc55aa7ee5733d3",
+      "lines": 444,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/pages/onboarding/screens/Hodnota.jsx",
@@ -4528,10 +4543,12 @@
     },
     {
       "path": "lib/betaAdmin.js",
-      "sha256": "be4a8d5e110d4eed6ec4f6c306467c1758ef2e95a14dc92d9a37311de7f34409",
-      "lines": 145,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "162d8609b8c2f370d78e9044f239207c6a2c511220ab766d29b10151cf0a0637",
+      "lines": 148,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "lib/betaAdminRoutes.js",
@@ -4546,8 +4563,10 @@
       "path": "lib/betaAnalytics.js",
       "sha256": "03d75851b6cb6db6c1d1f1fc367ff561fec148adb98b201776b9aa407096ed0c",
       "lines": 99,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "lib/betaClosing.js",
@@ -4773,8 +4792,10 @@
       "path": "migrations/2026-10-10-feedback-dotaz.sql",
       "sha256": "709d80214ba3d742eaa2de3766c9780df0affa526ce83824acb92f35586de9fc",
       "lines": 29,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "migrations/2026-10-10-tracking-switch.sql",
@@ -5880,22 +5901,22 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "17cb2b148c6a71948d782851a1abeb527a759ebbbab96627ba2736e955895613",
-      "lines": 334,
+      "sha256": "ec162ca070d2e61bf49bb686481803243761000d1a4ec2ca849b23daad227d3c",
+      "lines": 344,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "7cedf722517ce8b689a70a72cc962099f258b8dfc41ec6d263f0a77fe9e8370a",
-      "lines": 205,
+      "sha256": "d16ab593bb43b67847d2b28fc52f9e12e92cb0330aaef5dda0a77d53841214cf",
+      "lines": 214,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "c58f6bea275e8fb7841df6236b70cdb3ccc8b021aeb122a2cd4d9f5b63332d11",
-      "lines": 153,
+      "sha256": "b6ed30364ba0244da30eef0b32a6c9d71d2df74f4486a7666cb5904ed42bb963",
+      "lines": 156,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6068,6 +6089,27 @@
       "matching_evidence": []
     },
     {
+      "path": "reports/deployment-review-2026-10-07/beta-admin-eight-feature-reach-2026-10-10.txt",
+      "sha256": "b0ce7a1f6b5868fcec6d52d2e2bdf7eea1c55b4d094b0a0db4ebd05b3cabba7e",
+      "lines": 216,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/beta-admin-eight-tasks-browser-2026-10-10.png",
+      "sha256": "0434ebd54349219a31ab23429ab427da722158e898ad35bbe6a91341912c730e",
+      "lines": null,
+      "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/beta-admin-eight-tasks-browser-2026-10-10.txt",
+      "sha256": "7b3012688cc26b1f0bd854e1dd379da96a10caadaf8697ce3701242aaf696fdc",
+      "lines": 73,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/beta-cohort-schema-2026-10-10.json",
       "sha256": "0dd12663cb10f9875f383aeb40a5ea434fd27da67c17827fc6b60c7954667ca6",
       "lines": 20,
@@ -6138,6 +6180,20 @@
       "matching_evidence": []
     },
     {
+      "path": "reports/deployment-review-2026-10-07/beta-task-count-after-2026-10-10.txt",
+      "sha256": "ca21094b4870a6a31930d22a8a8f4560e93e25891d113d5329bc387e39b276bd",
+      "lines": 15,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/beta-task-count-before-2026-10-10.txt",
+      "sha256": "c2ee0049c5dca91b800debe2c315c71237612280ffa1f8c4c62647a63a17cbdf",
+      "lines": 38,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/calculating-waiting-catalogue.png",
       "sha256": "0d8ff5bccda024fa31127497e16d1d877ffa69c4d89962ec59de1c1457e07d6e",
       "lines": null,
@@ -6195,8 +6251,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "5c6fafb1bfaf2ec65609ea98f8607a8d341890b3174bb9440f531c60f0debded",
-      "lines": 433,
+      "sha256": "5f53be51cd55034f914aed528f248d0e7c8bb59078e537f13ca7cea3925b4539",
+      "lines": 448,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6209,8 +6265,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "725cbad51896e688e2df719251061e75fba37e898496526c024827119801c660",
-      "lines": 7881,
+      "sha256": "08077e1e2ceeba922058e4c65808e87731478e8b1643cf6f95cacefde21b8268",
+      "lines": 7896,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6359,6 +6415,76 @@
       "sha256": "80b13b3e78b891d184208272994fa182b237fab78fe55059747d012f5d4aaecb",
       "lines": null,
       "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/email-hints-after-2026-10-10.txt",
+      "sha256": "b3a16d0b9ba5d8a8961d8659024161ecfc5f44468ca9508a82098efe9b52eaf6",
+      "lines": 11,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/email-hints-before-2026-10-10.txt",
+      "sha256": "4c8ff20066f04ebf3ae0e37dd23e77d3f480a3cca711e6fe48f2ce7125cd8625",
+      "lines": 57,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/email-hints-build-2026-10-10.txt",
+      "sha256": "30c71b0d000068ec4b5df76cda90840f7f7bae1890b49919422032262250f6c5",
+      "lines": 74,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/email-hints-lint-2026-10-10.txt",
+      "sha256": "5f08f6b132715cf1d0482f684b5621c4fe7e49fc1686d476b15c33c8b8170ebb",
+      "lines": 15,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/email-hints-login-browser-2026-10-10.txt",
+      "sha256": "514cfa523a726cd56c3532238d6a604c29cbcc757375f3fe9fcf9cd0f0fb0afb",
+      "lines": 3,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/email-hints-parent-onboarding-browser-2026-10-10.txt",
+      "sha256": "f2dd6a1d6952cdc578e4e3c2217c244938f246f3e5d42290584f611bf9cbcbbb",
+      "lines": 3,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/email-hints-reset-phone-2026-10-10.png",
+      "sha256": "1a6eda472217b21d02293f1e15af4e4fb5e7be6b0d073351c31c1a77b127da90",
+      "lines": null,
+      "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/email-hints-reset-phone-2026-10-10.txt",
+      "sha256": "f9f1cccbc20b9f6b0b37fa11cbe761f8478aee3fb17674c625f49868e35d171b",
+      "lines": 22,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/email-hints-root-tests-2026-10-10.txt",
+      "sha256": "8270f6f1d8421c7e7d1dfaae9585e48a45d01d0b8fba41bbded75ff23e5efe84",
+      "lines": 210,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/email-hints-signup-browser-2026-10-10.txt",
+      "sha256": "c3ba6f04fee25783adc0a344dff24eb8144a536b05f3a63363830507f705fd0c",
+      "lines": 3,
+      "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
@@ -6698,6 +6824,27 @@
       "matching_evidence": []
     },
     {
+      "path": "reports/deployment-review-2026-10-07/onboarding-count-five-student-2026-10-10.txt",
+      "sha256": "7eba2c151a852e3a8cd3a4101c56136b91b91abcd845cc14b83c4895f6efe3c1",
+      "lines": 47,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/onboarding-count-one-parent-2026-10-10.txt",
+      "sha256": "e106dcf4e8f4979f03c0af86ca14f000c22708bfceef501448c87202d04caa5a",
+      "lines": 49,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/onboarding-count-three-parent-2026-10-10.txt",
+      "sha256": "fe62cabea14d58afd1598d788e30a505889f0f72161a87060cba8a4e4f80e744",
+      "lines": 49,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/orange-theme-rendered-contrast-2026-10-10.json",
       "sha256": "bf85495f44142bbff34aae18e1b360438e0368484588a8e021012f9a34d2d859",
       "lines": 22,
@@ -6892,6 +7039,13 @@
       ]
     },
     {
+      "path": "reports/deployment-review-2026-10-07/probe-quick-feedback-interpretation.cjs",
+      "sha256": "c679ba59f6f5b0960c6b938c0781bb51f2a5c631064d75017dea765e97ff8e4e",
+      "lines": 37,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/probe-services.cjs",
       "sha256": "b47240d76e47550d2a307d302f8714ae7edcbe3074829e02de8d6a334334fe60",
       "lines": 106,
@@ -6951,6 +7105,13 @@
       "sha256": "2f3b9c6d281b790dc51b7d7cc6f56b66643c81e53fe8e63dec15505796b12bf9",
       "lines": null,
       "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/quick-feedback-interpretation-2026-10-10.json",
+      "sha256": "0cf8c86229882cc72c1c9f4f1bc4908d65b69a04ded9fbeeb79afff56879f77b",
+      "lines": 83,
+      "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
@@ -7052,8 +7213,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "65353fab06ad29c3f2af45acd761109cfbd3433c734005b8a706c4eb7f91abcb",
-      "lines": 5261,
+      "sha256": "42bc1ffa2d3d9b32d096f6c64c161bd86bff8f8a246ee8faa06c82ea149b7391",
+      "lines": 5331,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -7550,6 +7711,15 @@
       ]
     },
     {
+      "path": "scripts/read-beta-feedback.js",
+      "sha256": "718a05ce835f5540cc0a67ad74a8cc84eeec3ddfea1be61734beb8c1e856e868",
+      "lines": 12,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
+    },
+    {
       "path": "scripts/reset-test-account.js",
       "sha256": "6ecbdaa782ea2ce66b8f2baa15de8dae5da1c9fa66a8ec0a1d6c0053cbe022b2",
       "lines": 38,
@@ -7657,8 +7827,10 @@
       "path": "supabase-setup.sql",
       "sha256": "0c48666ae06a74f18996acfd39c554b07fb16741512beb0d5f9ec43951133dca",
       "lines": 1520,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "test-google-api.js",
@@ -7697,12 +7869,21 @@
       ]
     },
     {
-      "path": "tests/beta-admin.test.cjs",
-      "sha256": "6e7b6c748a7b67c0ea6390a8b3a8f005f589564d6cff8f4c1ac9caa9ebeecbad",
-      "lines": 33,
+      "path": "tests/auth-email-hints.test.cjs",
+      "sha256": "9079e9818fae6f27252ee71e17c3b97706f56836576471ae51bfcc588fd16039",
+      "lines": 35,
       "status": "current_full_read",
       "matching_evidence": [
-        "backend-coverage.json"
+        "root-coverage.json"
+      ]
+    },
+    {
+      "path": "tests/beta-admin.test.cjs",
+      "sha256": "990014d5145f4958cb6ab999ac5bd12830dab15683a221f20a0d2abebe559dc6",
+      "lines": 41,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
       ]
     },
     {
@@ -7754,8 +7935,10 @@
       "path": "tests/beta-review-fixes.test.cjs",
       "sha256": "7a3b4f1c79cc44efc650be744b72b025017e1b6ca9b0dfcc0077238e802c5da9",
       "lines": 65,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "tests/decision-data.test.mjs",

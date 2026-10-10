@@ -1,0 +1,39 @@
+{
+  "checkedAt": "2026-10-10T20:30:33.937013+00:00",
+  "sourceHashes": {
+    "frontend/src/lib/authValidation.js": "5300500d26eef36556cec5823caf6541f05f0bb917251506a4f792ead475e31f",
+    "frontend/src/pages/Login.jsx": "eedad39ef5653f2400e36c3934c2bdf6c2213db3e5d089fe499c5e46d0fc2abc",
+    "frontend/src/pages/SignUp.jsx": "47ebcbdfa21ed74a8ece5bb62830ea8f2ab2eef8e1d7fea1c872c2a65619660b",
+    "frontend/src/pages/ForgotPassword.jsx": "8556f952a39ba38d3670a0ca1fa6fc70572a7e6aef38429c40b84b8f88a1a175",
+    "frontend/src/pages/onboarding/screens/CreateAccount.jsx": "033078a72ccfe52b411d19da2b1ad7bf127e0c1dc02d6ab5cfc55aa7ee5733d3",
+    "lib/betaAdmin.js": "162d8609b8c2f370d78e9044f239207c6a2c511220ab766d29b10151cf0a0637",
+    "scripts/read-beta-feedback.js": "718a05ce835f5540cc0a67ad74a8cc84eeec3ddfea1be61734beb8c1e856e868",
+    "tests/beta-admin.test.cjs": "990014d5145f4958cb6ab999ac5bd12830dab15683a221f20a0d2abebe559dc6",
+    "tests/auth-email-hints.test.cjs": "9079e9818fae6f27252ee71e17c3b97706f56836576471ae51bfcc588fd16039"
+  },
+  "fixes": {
+    "C48": "Founder chose nonblocking suggestions; actual helper 1/3 before and 3/3 after; four actual forms reach mock handler with original address",
+    "C49": "Admin 9 vs 8 regression before; 7/7 focused tests after; actual Admin displays 8/8/eight reach rows",
+    "C36": "Actual CreateAccount one/three/five count branches checked with real renderer and synthetic catalogue"
+  },
+  "checks": {
+    "rootTests": 192,
+    "rootFailures": 0,
+    "lintWarnings": 11,
+    "lintErrors": 0,
+    "frontendBuild": "passed",
+    "phoneViewport": {
+      "width": 375,
+      "height": 812,
+      "horizontalOverflow": false
+    },
+    "actualMigrationRpcMatchesCanonicalSql": true
+  },
+  "limitations": [
+    "Auth, CAPTCHA, mail, beta RPCs and admin data mocked; no external account/mail/feedback operation",
+    "Current SQL full baseline and Dotaz diff read, migration execution/grants/ordering not accepted",
+    "After the root/lint/build run only narrow source comments/report/probe artifacts changed; runtime changes remain covered",
+    "C50 actual micro handler/admin builder reproduce ambiguous-note interpretation; persistence/prefix modelled",
+    "Full project review and wider actual-device/provider acceptance remain incomplete"
+  ]
+}

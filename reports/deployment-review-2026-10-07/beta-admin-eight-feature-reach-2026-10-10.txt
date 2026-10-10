@@ -1,0 +1,216 @@
+Browser tab: 6, Title: "Izolované ověření e-mailových návrhů", URL: "http://127.0.0.1:5197/email-hints-probe.html?form=admin&view=settings&tab=behaviour".
+1 AXWebArea Izolované ověření e-mailových návrhů, URL: 127.0.0.1:5197/email-hints-probe.html?form=admin&view=settings&tab=behaviour
+	2 container root
+		3 text Izolovaná ukázka: veškeré operace jsou simulované, účet ani e-mail nevzniknou.
+		4 container Simulované odeslání
+			5 text []
+		6 container
+			7 text BETA PROGRAM
+			8 heading Jak si vede testování, Value: 1
+				9 text Jak si vede testování
+			10 text Zkušenosti testerů, používání aplikace a kvalita doporučení.
+			11 button Obnovit
+			12 container Beta přehledy
+				13 button Přehled
+				14 button Zpětná vazba
+				15 button Chování
+				16 button Trychtýře
+				17 button Matching
+				18 button Závěrečný dotazník
+				19 button Recenze
+				20 button Testeři
+				21 button AI náklady
+			22 container
+				23 heading Stránky a viditelný čas, Value: 2
+					24 text Stránky a viditelný čas
+				25 button Stáhnout CSV: Stránky a viditelný čas
+			26 container Stránky a viditelný čas
+				27 table
+					28 row
+						29 cell
+							30 text Stránka
+						31 cell
+							32 text Návštěvy
+						33 cell
+							34 text Průměr viditelného času (s)
+			35 container
+				36 text Zatím žádné záznamy .
+			37 container
+				38 heading Dosah funkcí, Value: 2
+					39 text Dosah funkcí
+				40 button Stáhnout CSV: Dosah funkcí
+			41 container Dosah funkcí
+				42 text Dotazník
+				43 image Dotazník: 100
+				44 text 100
+				45 text Vyhledávání
+				46 image Vyhledávání: 100
+				47 text 100
+				48 text 3 detaily škol
+				49 image 3 detaily škol: 100
+				50 text 100
+				51 text Porovnání
+				52 image Porovnání: 100
+				53 text 100
+				54 text Matice
+				55 image Matice: 100
+				56 text 100
+				57 text Přihláška
+				58 image Přihláška: 100
+				59 text 100
+				60 text Barevné téma
+				61 image Barevné téma: 100
+				62 text 100
+				63 text Platební obrazovky
+				64 image Platební obrazovky: 100
+				65 text 100
+			66 container Dosah funkcí
+				67 table
+					68 row
+						69 cell
+							70 text Funkce
+						71 cell
+							72 text Dosah (%)
+						73 cell
+							74 text Testeři
+					75 row
+						76 cell
+							77 text Dotazník
+						78 cell
+							79 text 100
+						80 cell
+							81 text 1
+					82 row
+						83 cell
+							84 text Vyhledávání
+						85 cell
+							86 text 100
+						87 cell
+							88 text 1
+					89 row
+						90 cell
+							91 text 3 detaily škol
+						92 cell
+							93 text 100
+						94 cell
+							95 text 1
+					96 row
+						97 cell
+							98 text Porovnání
+						99 cell
+							100 text 100
+						101 cell
+							102 text 1
+					103 row
+						104 cell
+							105 text Matice
+						106 cell
+							107 text 100
+						108 cell
+							109 text 1
+					110 row
+						111 cell
+							112 text Přihláška
+						113 cell
+							114 text 100
+						115 cell
+							116 text 1
+					117 row
+						118 cell
+							119 text Barevné téma
+						120 cell
+							121 text 100
+						122 cell
+							123 text 1
+					124 row
+						125 cell
+							126 text Platební obrazovky
+						127 cell
+							128 text 100
+						129 cell
+							130 text 1
+			131 container
+				132 heading Hledané názvy škol, Value: 2
+					133 text Hledané názvy škol
+				134 button Stáhnout CSV: Hledané názvy škol
+			135 container Hledané názvy škol
+				136 table
+					137 row
+						138 cell
+							139 text Položka
+						140 cell
+							141 text Počet
+			142 container
+				143 text Zatím žádné záznamy .
+			144 container
+				145 heading Hledání bez výsledku, Value: 2
+					146 text Hledání bez výsledku
+				147 button Stáhnout CSV: Hledání bez výsledku
+			148 container Hledání bez výsledku
+				149 table
+					150 row
+						151 cell
+							152 text Položka
+						153 cell
+							154 text Počet
+			155 container
+				156 text Zatím žádné záznamy .
+			157 container
+				158 heading Použité filtry, Value: 2
+					159 text Použité filtry
+				160 button Stáhnout CSV: Použité filtry
+			161 container Použité filtry
+				162 table
+					163 row
+						164 cell
+							165 text Položka
+						166 cell
+							167 text Počet
+			168 container
+				169 text Zatím žádné záznamy .
+			170 container
+				171 heading Řazení, Value: 2
+					172 text Řazení
+				173 button Stáhnout CSV: Řazení
+			174 container Řazení
+				175 table
+					176 row
+						177 cell
+							178 text Položka
+						179 cell
+							180 text Počet
+			181 container
+				182 text Zatím žádné záznamy .
+			183 container
+				184 heading Zařízení, Value: 2
+					185 text Zařízení
+				186 button Stáhnout CSV: Zařízení
+			187 container Zařízení
+				188 table
+					189 row
+						190 cell
+							191 text Položka
+						192 cell
+							193 text Počet
+			194 container
+				195 text Zatím žádné záznamy .
+			196 container
+				197 heading Chyby a opakované klikání, Value: 2
+					198 text Chyby a opakované klikání
+				199 button Stáhnout CSV: Chyby a opakované klikání
+			200 container Chyby a opakované klikání
+				201 table
+					202 row
+						203 cell
+							204 text Typ
+						205 cell
+							206 text Stránka
+						207 cell
+							208 text Popis
+						209 cell
+							210 text Počet
+			211 container
+				212 text Zatím žádné záznamy .
+			213 text Aktualizováno  11. 10. 2026 0:30:00  · Přehled používá nejvýše 30 sekund stará data.
+
+The focused UI element is 1 AXWebArea Izolované ověření e-mailových návrhů, URL: 127.0.0.1:5197/email-hints-probe.html?form=admin&view=settings&tab=behaviour

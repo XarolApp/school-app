@@ -1,0 +1,49 @@
+Browser tab: 6, Title: "Izolované ověření e-mailových návrhů", URL: "http://127.0.0.1:5197/email-hints-probe.html?form=onboarding&role=parent".
+1 AXWebArea Izolované ověření e-mailových návrhů, URL: 127.0.0.1:5197/email-hints-probe.html?form=onboarding&role=parent
+	2 container root
+		3 text Izolovaná ukázka: veškeré operace jsou simulované, účet ani e-mail nevzniknou.
+		4 container Simulované odeslání
+			5 text []
+		6 container
+			7 button Zpět
+			8 text Střední na míru
+		9 heading Uložte si svůj výběr škol, Value: 1
+			10 text Uložte si svůj výběr škol
+		11 text Právě jsme vám seřadili 3 školy podle toho, co jste odpověděli. Založte si účet, ať vám výsledek zůstane a nemusíte dotazník vyplňovat znovu.
+		12 container ob-signup
+			13 text Tip
+			14 text Doporučujeme založit účet na jméno a e-mail vašeho dítěte — aplikaci bude nejspíš používat hlavně ono. Za přístup pak můžete zaplatit vy.
+			15 text Jméno
+			16 text field (settable) Jméno, ID: ob-name
+			17 text E-mail
+			18 text field (settable) E-mail
+			19 text Heslo
+			20 container
+				21 text field (settable) Heslo
+				22 checkbox Description: Zobrazit heslo — Heslo, Help: Zobrazit heslo, Value: 0
+			23 container
+				24 checkbox (settable, integer) Description: Souhlasím s obchodními podmínkami a beru na vědomí zásady ochrany osobních údajů., Value: 0, ID: signup-consent
+				25 text Souhlasím s
+				26 link Description: obchodními podmínkami, Value: 127.0.0.1:5197/obchodni-podminky
+				27 text a beru na vědomí
+				28 link Description: zásady ochrany osobních údajů, Value: 127.0.0.1:5197/ochrana-osobnich-udaju
+				29 text .
+			30 text Simulované ověření, žádná externí CAPTCHA.
+		31 container
+			32 text Už máte účet?
+			33 link Description: Přihlásit se, Value: 127.0.0.1:5197/prihlaseni
+		34 button Založit účet
+		35 text TOHLE SI ULOŽÍTE
+		36 container
+			37 text NEJVYŠŠÍ SHODA
+			38 heading Testovací škola 1, Value: 2
+				39 text Testovací škola 1
+			40 text Sedí velmi dobře
+			41 content list
+				42 text Pro část kritérií chybí odpovědi nebo údaje o škole. Doporučení proto vychází jen z dostupných informací.
+		43 content list
+			44 text Celé pořadí 3 škol s důvody
+			45 text Odpovědi, abyste je nemuseli vyplňovat znovu
+			46 text Porovnání škol a plán přihlášek
+
+The focused UI element is 1 AXWebArea Izolované ověření e-mailových návrhů, URL: 127.0.0.1:5197/email-hints-probe.html?form=onboarding&role=parent

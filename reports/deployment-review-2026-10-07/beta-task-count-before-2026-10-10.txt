@@ -1,0 +1,38 @@
+✔ CSV quotes delimiters, line breaks and quotes; neutralizes spreadsheet formulas (0.524542ms)
+✔ matching aggregates complete rankings separately and uses full bottom distribution (9.118625ms)
+✔ admin reports expose aggregate events and pseudonyms; default tester table and CSV omit email (9.539833ms)
+✔ price curves calculate intersections and exclude inconsistent threshold order only from curves (0.136083ms)
+✔ admin reads the newest simulation report for both sources (0.821958ms)
+✖ admin progress matches the eight available beta tasks and ignores disabled sharing (0.51575ms)
+✔ simulation uses reproducible seeded sampling and deterministic school rankings without services (17.310042ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 6
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 97.882458
+
+✖ failing tests:
+
+test at tests/beta-admin.test.cjs:27:1
+✖ admin progress matches the eight available beta tasks and ignores disabled sharing (0.51575ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  9 !== 8
+
+      at TestContext.<anonymous> (/Users/vojtechkadlec/Developer/school-app/tests/beta-admin.test.cjs:31:9)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 9,
+    expected: 8,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

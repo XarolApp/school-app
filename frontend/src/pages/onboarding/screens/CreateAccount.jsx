@@ -6,7 +6,7 @@ import { useOnboarding } from '../useOnboarding';
 import ConfirmEmailWaiting from '../../../components/ConfirmEmailWaiting';
 import { confirmationUrl } from '../../../components/AuthContext';
 import { readPendingConfirmation, clearPendingConfirmation } from '../../../lib/pendingConfirmation';
-import { CAPTCHA_WAIT_LABEL, consentProblem, emailProblem, focusFirstInvalid, problemSummary, nameProblem, onlyProblems, passwordProblem, useRevealError } from '../../../lib/authValidation';
+import { CAPTCHA_WAIT_LABEL, consentProblem, emailProblem, emailSuggestion, focusFirstInvalid, problemSummary, nameProblem, onlyProblems, passwordProblem, useRevealError } from '../../../lib/authValidation';
 import { useAuth } from '../../../components/AuthContext';
 import { useG } from '../../../lib/gender';
 import PasswordInput from '../../../components/PasswordInput';
@@ -18,15 +18,16 @@ import BetaEnrollment from '../../../components/BetaEnrollment';
 import { betaEnrollmentComplete, readBetaEnrollment, saveBetaEnrollment } from '../../../lib/betaEnrollment';
 import { normalizeBetaCode } from '../../../lib/pendingBetaCode';
 import { fetchBetaSchool, startBetaVisit } from '../../../api';
+import { pluralCz } from '../../../lib/pluralCz';
 
 /**
  * Account creation, inside the flow.
  *
- * This is the canonical signup path for Střední na míru — the standalone
- * /registrace page exists only for direct links and returning users. It sits
- * immediately before the paywall because the trial window is opened by a
- * database trigger on account creation, so there has to be an account before
- * there is anything to charge.
+ * Legacy in-flow signup. Current closed-beta signup uses /registrace and the
+ * onboarding route requires a confirmed account with access. Tester preview
+ * navigation skips this screen. The ordinary-account step/access contract
+ * still needs reconciliation (C35/B01); do not restore public onboarding from
+ * this historical design. Its signup trigger's trial start is separate (C07).
  *
  * Copy is framed as CLAIMING the results that already exist (the ranked list
  * from Reveal), not as a generic "make an account" pitch — confirmed pattern
@@ -60,6 +61,7 @@ function CreateAccount() {
     leaveBetaPreview,
   } = useOnboarding();
   const matchCount = ranked?.length || 0;
+  const matchedSchools = `${matchCount} ${pluralCz(matchCount, 'školu', 'školy', 'škol')}`;
   const { signUp, isSignedIn, user } = useAuth();
   const g = useG();
   const parent = role === 'parent';
@@ -166,6 +168,7 @@ function CreateAccount() {
     consent: consentProblem(consent, parent),
   });
   const problems = submitted ? currentProblems() : {};
+  const emailHint = emailSuggestion(email, parent);
   const betaIncomplete = Boolean(betaCode && !betaEnrollmentComplete(betaEnrollment));
   const betaProblemCount = !betaCode ? 0
     : (betaEnrollment.role ? 0 : 1) + (betaEnrollment.role === 'jine' && !betaEnrollment.roleNote.trim() ? 1 : 0) + (betaEnrollment.accepted ? 0 : 1);
@@ -287,7 +290,7 @@ function CreateAccount() {
       label={parent ? 'Tohle si uložíte' : 'Tohle si uložíš'}
       footer={
         <ul className="ob-tm-list">
-          <li>{parent ? `Celé pořadí ${matchCount} škol s důvody` : `Celé pořadí ${matchCount} škol s důvody`}</li>
+          <li>{`Celé pořadí ${matchCount} ${matchCount === 1 ? 'školy' : 'škol'} s důvody`}</li>
           <li>{parent ? 'Odpovědi, abyste je nemuseli vyplňovat znovu' : 'Tvoje odpovědi, ať je nemusíš vyplňovat znovu'}</li>
           <li>Porovnání škol a plán přihlášek</li>
         </ul>
@@ -320,8 +323,8 @@ function CreateAccount() {
       <p className="ob-hint">
         {matchCount > 0
           ? parent
-            ? `Právě jsme vám seřadili ${matchCount} škol podle toho, co jste odpověděli. Založte si účet, ať vám výsledek zůstane a nemusíte dotazník vyplňovat znovu.`
-            : `Právě jsme ti seřadili ${matchCount} škol podle toho, cos ${g('odpověděl', 'odpověděla')}. Založ si účet, ať ti výsledek zůstane a nemusíš dotazník vyplňovat znovu.`
+            ? `Právě jsme vám seřadili ${matchedSchools} podle toho, co jste odpověděli. Založte si účet, ať vám výsledek zůstane a nemusíte dotazník vyplňovat znovu.`
+            : `Právě jsme ti seřadili ${matchedSchools} podle toho, cos ${g('odpověděl', 'odpověděla')}. Založ si účet, ať ti výsledek zůstane a nemusíš dotazník vyplňovat znovu.`
           : parent
             ? 'Založte si účet, ať vám výsledek zůstane a nemusíte dotazník vyplňovat znovu.'
             : 'Založ si účet, ať ti výsledek zůstane a nemusíš dotazník vyplňovat znovu.'}
@@ -399,8 +402,10 @@ function CreateAccount() {
             autoComplete="email"
             required
             aria-invalid={Boolean(problems.email)}
+            aria-describedby={emailHint ? 'ob-email-hint' : undefined}
           />
           {problems.email && <span className="field-error" role="alert">{problems.email}</span>}
+          {emailHint && <span className="field-hint" id="ob-email-hint">{emailHint}</span>}
         </div>
 
         <div className="field">

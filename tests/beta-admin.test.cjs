@@ -24,6 +24,14 @@ test('price curves calculate intersections and exclude inconsistent threshold or
 test('admin reads the newest simulation report for both sources',()=>{
  const dir=mkdtempSync(join(tmpdir(),'beta-simulation-'));try{for(const [name,time] of [['old',1],['new',2]]){const f=join(dir,'matching-simulation-'+name+'.json');writeFileSync(f,JSON.stringify({questionnaire:{schools:[]},onboarding:{schools:[]}}));utimesSync(f,time,time);}assert.equal(latestSimulation(dir).file,'matching-simulation-new.json');}finally{rmSync(dir,{recursive:true,force:true});}
 });
+test('admin progress matches the eight available beta tasks and ignores disabled sharing',()=>{
+ const checklist={dotaznik:true,vyhledavani:true,detail:true,porovnani:true,matice:true,prihlaska:true,tema:true,platby:true,sdileni:true};
+ const data={users:[{id:'tester',created_at:'2026-10-10'}],profiles:[{user_id:'tester',checklist}]};
+ const row=buildAdminReport('testers',data).sections[0].rows[0];
+ assert.equal(row.total,8);assert.equal(row.checklist,8);
+ const reach=buildAdminReport('behaviour',data).sections.find(s=>s.id==='reach');
+ assert.equal(reach.rows.length,8);assert.ok(!reach.rows.some(r=>r.label==='Sdílení'));
+});
 test('simulation uses reproducible seeded sampling and deterministic school rankings without services',()=>{
  const source=readFileSync(join(__dirname,'../scripts/simulate-matching.mjs'),'utf8');
  const code=source.slice(source.indexOf('function rng('),source.indexOf('// --- data '));

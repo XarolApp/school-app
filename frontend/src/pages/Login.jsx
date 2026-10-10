@@ -5,7 +5,7 @@ import Captcha, { captchaEnabled } from '../components/Captcha';
 import PasswordInput from '../components/PasswordInput';
 import { getRememberMe } from '../supabaseClient';
 import { normalizeBetaCode } from '../lib/pendingBetaCode';
-import { CAPTCHA_WAIT_LABEL, emailProblem, focusFirstInvalid, onlyProblems, passwordProblem, useRevealError } from '../lib/authValidation';
+import { CAPTCHA_WAIT_LABEL, emailProblem, emailSuggestion, focusFirstInvalid, onlyProblems, passwordProblem, useRevealError } from '../lib/authValidation';
 import { useG } from '../lib/gender';
 import { internalReturnPath } from '../lib/internalReturnPath';
 
@@ -48,6 +48,7 @@ function Login() {
     password: passwordProblem(form.password, { checkLength: false }),
   });
   const problems = submitted ? computeProblems() : {};
+  const emailHint = emailSuggestion(form.email);
   const captchaWaiting = captchaEnabled && !captchaToken;
   const errorRef = useRevealError(error);
 
@@ -178,8 +179,10 @@ function Login() {
               onChange={handleChange}
               required
               aria-invalid={Boolean(problems.email)}
+              aria-describedby={emailHint ? 'login-email-hint' : undefined}
             />
             {problems.email && <span className="field-error" role="alert">{problems.email}</span>}
+            {emailHint && <span className="field-hint" id="login-email-hint">{emailHint}</span>}
           </div>
 
           <div className="field">

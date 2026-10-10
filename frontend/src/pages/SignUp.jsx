@@ -15,7 +15,7 @@ import ConfirmEmailWaiting from '../components/ConfirmEmailWaiting';
 import { confirmationUrl } from '../components/AuthContext';
 import { readPendingConfirmation, clearPendingConfirmation } from '../lib/pendingConfirmation';
 import {
-  CAPTCHA_WAIT_LABEL, consentProblem, emailProblem, focusFirstInvalid, problemSummary, nameProblem, onlyProblems, passwordProblem, useRevealError,
+  CAPTCHA_WAIT_LABEL, consentProblem, emailProblem, emailSuggestion, focusFirstInvalid, problemSummary, nameProblem, onlyProblems, passwordProblem, useRevealError,
 } from '../lib/authValidation';
 import './beta.css';
 
@@ -95,6 +95,7 @@ function SignUp() {
     consent: consentProblem(consent, betaParent),
   }) : {};
   const betaIncomplete = Boolean(betaCode && !betaEnrollmentComplete(betaEnrollment));
+  const emailHint = emailSuggestion(form.email, betaParent);
   // One count per message actually shown, so the summary never disagrees with the list.
   const betaProblemCount = !betaCode ? 0
     : (betaEnrollment.role ? 0 : 1) + (betaEnrollment.role === 'jine' && !betaEnrollment.roleNote.trim() ? 1 : 0) + (betaEnrollment.accepted ? 0 : 1);
@@ -273,12 +274,12 @@ function SignUp() {
               onChange={handleChange}
               required
               aria-invalid={Boolean(problems.email)}
-              aria-describedby={problems.email ? 'signup-email-error' : undefined}
+              aria-describedby={problems.email ? 'signup-email-error' : 'signup-email-hint'}
             />
             <FieldError id="signup-email-error" message={problems.email} />
             {!problems.email && (
-              <span className="field-hint">
-                Pošleme na něj potvrzovací odkaz, tak ať nemá překlep.
+              <span className="field-hint" id="signup-email-hint">
+                {emailHint || 'Pošleme na něj potvrzovací odkaz, tak ať nemá překlep.'}
               </span>
             )}
           </div>

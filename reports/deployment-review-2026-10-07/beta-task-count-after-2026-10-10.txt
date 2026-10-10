@@ -1,0 +1,15 @@
+✔ CSV quotes delimiters, line breaks and quotes; neutralizes spreadsheet formulas (1.302917ms)
+✔ matching aggregates complete rankings separately and uses full bottom distribution (8.78775ms)
+✔ admin reports expose aggregate events and pseudonyms; default tester table and CSV omit email (10.896042ms)
+✔ price curves calculate intersections and exclude inconsistent threshold order only from curves (0.148167ms)
+✔ admin reads the newest simulation report for both sources (2.827417ms)
+✔ admin progress matches the eight available beta tasks and ignores disabled sharing (0.220458ms)
+✔ simulation uses reproducible seeded sampling and deterministic school rankings without services (22.761041ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 102.489459

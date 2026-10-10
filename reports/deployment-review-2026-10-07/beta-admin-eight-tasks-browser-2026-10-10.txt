@@ -1,0 +1,73 @@
+Browser tab: 6, Title: "Izolované ověření e-mailových návrhů", URL: "http://127.0.0.1:5197/email-hints-probe.html?form=admin&view=settings&tab=testers".
+1 AXWebArea Izolované ověření e-mailových návrhů, URL: 127.0.0.1:5197/email-hints-probe.html?form=admin&view=settings&tab=testers
+	2 container root
+		3 text Izolovaná ukázka: veškeré operace jsou simulované, účet ani e-mail nevzniknou.
+		4 container Simulované odeslání
+			5 text []
+		6 container
+			7 text BETA PROGRAM
+			8 heading Jak si vede testování, Value: 1
+				9 text Jak si vede testování
+			10 text Zkušenosti testerů, používání aplikace a kvalita doporučení.
+			11 button Obnovit
+			12 container Beta přehledy
+				13 button Přehled
+				14 button Zpětná vazba
+				15 button Chování
+				16 button Trychtýře
+				17 button Matching
+				18 button Závěrečný dotazník
+				19 button Recenze
+				20 button Testeři
+				21 button AI náklady
+			22 text Testeři
+			23 text 1
+			24 text Aktivní za 7 dní
+			25 text 0
+			26 container
+				27 heading Testeři a průběh, Value: 2
+					28 text Testeři a průběh
+				29 button Stáhnout CSV: Testeři a průběh
+			30 container Testeři a průběh
+				31 table
+					32 row
+						33 cell
+							34 text Tester
+						35 cell
+							36 text Poslední aktivita
+						37 cell
+							38 text Zpětné vazby
+						39 cell
+							40 text Vyzkoušené funkce
+						41 cell
+							42 text Celkem funkcí
+						43 cell
+							44 text Přístup do
+						45 cell
+							46 text Závěrečný dotazník
+						47 cell
+							48 text Registrace
+						49 cell
+							50 text Akce
+					51 row
+						52 cell
+							53 text Tester #1 · TEST · Jiné
+						54 cell
+							55 text —
+						56 cell
+							57 text 0
+						58 cell
+							59 text 8
+						60 cell
+							61 text 8
+						62 cell
+							63 text —
+						64 cell
+							65 text Zatím není potřeba
+						66 cell
+							67 text 10. 10. 2026 14:00:00
+						68 cell
+							69 button Zobrazit e-mail
+			70 text Aktualizováno  11. 10. 2026 0:30:00  · Přehled používá nejvýše 30 sekund stará data.
+
+The focused UI element is 1 AXWebArea Izolované ověření e-mailových návrhů, URL: 127.0.0.1:5197/email-hints-probe.html?form=admin&view=settings&tab=testers

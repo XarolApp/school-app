@@ -1,0 +1,57 @@
+✖ suspected domain typos do not block syntactically valid addresses (0.833625ms)
+✔ optional suggestions preserve syntax validation (0.160334ms)
+✖ correction hints allow the original address in both voices and omit invalid input (0.105542ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 1
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 54.777
+
+✖ failing tests:
+
+test at tests/auth-email-hints.test.cjs:15:1
+✖ suspected domain typos do not block syntactically valid addresses (0.833625ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + 'Zkontroluj, jestli má být doména @centrum.cz. Oprav ji, ať ti mail dorazí.'
+  - ''
+
+      at TestContext.<anonymous> (/Users/vojtechkadlec/Developer/school-app/tests/auth-email-hints.test.cjs:17:48)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.start (node:internal/test_runner/test:1262:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'Zkontroluj, jestli má být doména @centrum.cz. Oprav ji, ať ti mail dorazí.',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/auth-email-hints.test.cjs:28:1
+✖ correction hints allow the original address in both voices and omit invalid input (0.105542ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + 'object'
+  - 'function'
+
+      at TestContext.<anonymous> (/Users/vojtechkadlec/Developer/school-app/tests/auth-email-hints.test.cjs:29:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'object',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

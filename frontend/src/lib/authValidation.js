@@ -6,8 +6,7 @@ import { useEffect, useRef } from 'react';
 const t = (parent, student, adult) => (parent ? adult : student);
 
 const EMAIL_SHAPE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-// Misspelt big providers no real inbox lives on. Blocking is safe, and it saves
-// the user waiting for a confirmation mail that can never arrive.
+// Suspected provider typos are suggestions only: a domain may be intentional.
 const DOMAIN_TYPOS = {
   'gmial.com': 'gmail.com', 'gmai.com': 'gmail.com', 'gamil.com': 'gmail.com', 'gmail.cz': 'gmail.com', 'gmail.con': 'gmail.com',
   'seznan.cz': 'seznam.cz', 'seznam.com': 'seznam.cz', 'seznam.cs': 'seznam.cz', 'sezanm.cz': 'seznam.cz',
@@ -22,16 +21,22 @@ export function emailProblem(value, parent = false) {
       'V e-mailu chybí zavináč (@). Adresa vypadá třeba takhle: jmeno@seznam.cz.',
       'V e-mailu chybí zavináč (@). Adresa vypadá třeba takhle: jmeno@seznam.cz.');
   }
-  const domain = email.split('@').pop().toLowerCase();
-  if (DOMAIN_TYPOS[domain]) {
-    return t(parent, `Zkontroluj, jestli má být doména @${DOMAIN_TYPOS[domain]}. Oprav ji, ať ti mail dorazí.`, `Zkontrolujte, jestli má být doména @${DOMAIN_TYPOS[domain]}. Opravte ji, ať vám mail dorazí.`);
-  }
   if (!EMAIL_SHAPE.test(email)) {
     return t(parent,
       'Tenhle e-mail nevypadá úplně správně. Zkontroluj překlepy a koncovku, třeba jmeno@seznam.cz.',
       'Tento e-mail nevypadá úplně správně. Zkontrolujte překlepy a koncovku, třeba jmeno@seznam.cz.');
   }
   return '';
+}
+
+/** A nonblocking hint; never changes the address or prevents submission. */
+export function emailSuggestion(value, parent = false) {
+  const email = String(value || '').trim();
+  if (!EMAIL_SHAPE.test(email)) return '';
+  const suggestion = DOMAIN_TYPOS[email.split('@').pop().toLowerCase()];
+  return suggestion ? t(parent,
+    `Zkontroluj, jestli má být doména @${suggestion}. Pokud je zadaná doména správná, můžeš pokračovat bez změny.`,
+    `Zkontrolujte, jestli má být doména @${suggestion}. Pokud je zadaná doména správná, můžete pokračovat bez změny.`) : '';
 }
 
 export function passwordProblem(value, { minLength = 8, parent = false, checkLength = true } = {}) {
@@ -82,4 +87,4 @@ export function useRevealError(message) {
 }
 
 /** Submit label while the CAPTCHA is still working — neutral, not an error. */
-export const CAPTCHA_WAIT_LABEL = 'Ověřuji, že nejsi robot…';
+export const CAPTCHA_WAIT_LABEL = 'Probíhá bezpečnostní ověření…';

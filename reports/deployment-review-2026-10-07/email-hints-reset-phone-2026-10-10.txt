@@ -1,0 +1,22 @@
+Browser tab: 6, Title: "Izolované ověření e-mailových návrhů", URL: "http://127.0.0.1:5197/email-hints-probe.html?form=reset".
+1 AXWebArea Izolované ověření e-mailových návrhů, URL: 127.0.0.1:5197/email-hints-probe.html?form=reset
+	2 container root
+		3 text Izolovaná ukázka: veškeré operace jsou simulované, účet ani e-mail nevzniknou.
+		4 container Simulované odeslání
+			5 text [{"action":"reset","email":"reviewer@seznam.com"}]
+		6 text OBNOVA HESLA
+		7 heading Zapomenuté heslo, Value: 1
+			8 text Zapomenuté heslo
+		9 text Zadej e-mail, kterým se přihlašuješ. Pošleme ti odkaz pro nastavení nového hesla.
+		10 container
+			18 text Simulované odeslání — bez e-mailu.
+			11 text E-mail
+			12 text field (settable) E-mail, Value: <redacted>
+			19 text Zkontroluj, jestli má být doména @seznam.cz. Pokud je zadaná doména správná, můžeš pokračovat bez změny.
+			13 text Simulované ověření, žádná externí CAPTCHA.
+			14 button Poslat odkaz
+		15 container
+			16 text Vzpomněl sis?
+			17 link Description: Zpět na přihlášení, Value: 127.0.0.1:5197/prihlaseni
+
+The focused UI element is 14 button Poslat odkaz

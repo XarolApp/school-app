@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../components/AuthContext';
 import Captcha, { captchaEnabled } from '../components/Captcha';
-import { CAPTCHA_WAIT_LABEL, emailProblem, onlyProblems, useRevealError } from '../lib/authValidation';
+import { CAPTCHA_WAIT_LABEL, emailProblem, emailSuggestion, onlyProblems, useRevealError } from '../lib/authValidation';
 
 function ForgotPassword() {
   const [email, setEmail] = useState('');
@@ -18,6 +18,7 @@ function ForgotPassword() {
     email: emailProblem(email),
   });
   const problems = submitted ? computeProblems() : {};
+  const emailHint = emailSuggestion(email);
 
   const captchaWaiting = captchaEnabled && !captchaToken;
   const errorRef = useRevealError(error);
@@ -98,13 +99,14 @@ function ForgotPassword() {
               type="email"
               name="email"
               autoComplete="email"
-              aria-describedby={error ? 'reset-error' : undefined}
+              aria-describedby={[error && 'reset-error', emailHint && 'reset-email-hint'].filter(Boolean).join(' ') || undefined}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
               aria-invalid={Boolean(problems.email)}
             />
             {problems.email && <span className="field-error" role="alert">{problems.email}</span>}
+            {emailHint && <span className="field-hint" id="reset-email-hint">{emailHint}</span>}
           </div>
 
           <Captcha onVerify={setCaptchaToken} resetKey={captchaKey} />

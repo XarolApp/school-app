@@ -1,0 +1,83 @@
+{
+  "checkedAt": "2026-10-10T20:26:57.054Z",
+  "sourceHashes": {
+    "server": "646ec868b16f3b3adc3956abd9f214cedef0824ec61a074c88ec51a98f8dede9",
+    "admin": "162d8609b8c2f370d78e9044f239207c6a2c511220ab766d29b10151cf0a0637",
+    "schema": "0c48666ae06a74f18996acfd39c554b07fb16741512beb0d5f9ec43951133dca"
+  },
+  "scope": "Actual registered micro handler after mocked auth/limiter middleware and actual admin report function. RPC persistence/prefix modelled from read canonical SQL. No live operation.",
+  "cases": [
+    {
+      "body": {
+        "id": "vyhledavani",
+        "action": "answer",
+        "rating": null,
+        "answers": [],
+        "note": "Ano"
+      },
+      "status": 200,
+      "storedSummary": "Ano",
+      "interpretedMessage": "Rychlé hodnocení · vyhledavani\nNašel(a), co hledal(a)? → Ano",
+      "matchingCards": [
+        {
+          "label": "Úplná pořadí",
+          "value": 0,
+          "unit": ""
+        },
+        {
+          "label": "Hodnocení dotazníku",
+          "value": null,
+          "unit": "/ 5"
+        }
+      ]
+    },
+    {
+      "body": {
+        "id": "dotaznik",
+        "action": "answer",
+        "rating": null,
+        "answers": [],
+        "note": "5/5"
+      },
+      "status": 200,
+      "storedSummary": "5/5",
+      "interpretedMessage": "Rychlé hodnocení · dotaznik\nHodnocení: 5/5",
+      "matchingCards": [
+        {
+          "label": "Úplná pořadí",
+          "value": 0,
+          "unit": ""
+        },
+        {
+          "label": "Hodnocení dotazníku",
+          "value": 5,
+          "unit": "/ 5"
+        }
+      ]
+    },
+    {
+      "body": {
+        "id": "dotaznik",
+        "action": "answer",
+        "rating": null,
+        "answers": [],
+        "note": "Sedí · Tak akorát"
+      },
+      "status": 200,
+      "storedSummary": "Sedí · Tak akorát",
+      "interpretedMessage": "Rychlé hodnocení · dotaznik\nJak realistické přišly výsledky? → Sedí\nA otázky? → Tak akorát",
+      "matchingCards": [
+        {
+          "label": "Úplná pořadí",
+          "value": 0,
+          "unit": ""
+        },
+        {
+          "label": "Hodnocení dotazníku",
+          "value": null,
+          "unit": "/ 5"
+        }
+      ]
+    }
+  ]
+}

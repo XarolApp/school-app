@@ -1,5 +1,5 @@
-// Read-only: prints beta feedback (newest first) without tester ids, e-mails or
-// screenshots. Uses the local .env service key.  node --env-file=.env scripts/read-beta-feedback.js [limit]
+// Read-only: omits tester id, email and screenshot columns. Free-text feedback
+// is printed unchanged and may contain personal data; keep its output private. Uses the local .env service key.  node --env-file=.env scripts/read-beta-feedback.js [limit]
 const { createClient } = require('@supabase/supabase-js');
 const { KINDS } = require('../lib/betaAdmin');
 (async () => {
