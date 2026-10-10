@@ -50,6 +50,20 @@ School e-mail: `docs/beta-school-email-draft.md`.
       day-2 reminder e-mail, season `past_due` dead end, Stripe SDK upgrade (HANDOFF-PLAN
       T2/T3 of the 2026-10-07 review).
 
+## More sign-in and verification options — founder request 2026-10-10
+
+- [ ] **SMS verification** (if possible): confirm the account by a code sent as an SMS
+      instead of, or next to, the e-mail link. Check Supabase phone auth (needs an SMS
+      provider such as Twilio/MessageBird/Vonage, per-message cost, Czech numbers, minors'
+      phone numbers as personal data in the privacy text). Decide whether SMS replaces or
+      supplements the e-mail confirmation; `requireAuth` currently demands a confirmed e-mail.
+- [ ] **Social sign-in: Google, Apple, etc.** ("Pokračovat přes Google/Apple"). Supabase
+      OAuth providers; Apple is required if any social login ships in the iOS app. Needs
+      redirect URLs, provider consoles, privacy-text update, and a decision on how a social
+      account gets the role/beta enrolment and the confirmed-e-mail rule (the provider's
+      verified e-mail should count). Interacts with the Turnstile and confirm-email screens
+      (`ConfirmEmailWaiting.jsx`), which social sign-in would skip.
+
 ## Match percentages: onboarding result screen can still disagree with the app — 2026-10-10
 
 The app's pages (school list, school page, comparison, matrix, questionnaire result) now
