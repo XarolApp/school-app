@@ -1843,3 +1843,7 @@ Evidence: `reports/deployment-review-2026-10-07/ninth-grade-boundaries-2026-10-1
 - [ ] Bug Echo continuation: the same strict reduced-motion/acceleration wording also appears in the pending animate/Expo/Emil guides and uploaded copies. Fully read and reconcile those copies before future reuse; do not alter an unread file or treat static product feedback as a regression. Existing C11/C25/C38 responsive/focus/theme/real-device acceptance remains open.
 
 Evidence: `reports/deployment-review-2026-10-07/motion-guides-verification-2026-10-10.json`. These are documentation checks, not production visual/device verification.
+
+## 9th-grade scope applied (2026-10-10, plan 021)
+
+SQL applied, verify returned visible 194 / hidden 23 / leftover 0. 6/8-year gymnázia, nástavby and 8-year conservatories live in `school_programs_hidden`. Extraction rerun on 56 of 58 affected schools; schools 15 and 94 have no scraped text so their old extracted data was not refreshed (check manually). Structure re-run on the same 56; pros/cons regenerated for all 194. List: `reports/ninth-grade-scope-2026-10-10.json`.
