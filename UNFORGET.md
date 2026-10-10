@@ -69,10 +69,11 @@ School e-mail: `docs/beta-school-email-draft.md`.
 **Still open before / right after the school e-mail**
 - [x] Founder phone test on the live site (2026-10-10). Railway upgraded to Hobby (2026-10-10).
 - [x] Tracking-switch race guard applied live 2026-10-10 (`migrations/2026-10-10-tracking-withdrawal-guard.sql`, 2 triggers verified).
-- [ ] OpenRouter input/output logging setting: founder to confirm it is off (training toggles confirmed off).
+- [x] OpenRouter logging confirmed off by founder 2026-10-10.
+- [x] Applied live 2026-10-10: `migrations/2026-10-10-compare-needs-two.sql` (Porovnání checklist needs 2+ schools).
 - [ ] Founder verifies the vendor facts in the decisions doc, D5 (Supabase region, Brevo
       owner, OpenRouter logging, operator agrees to be named) and writes the dates there.
-- [x] Applied live 2026-10-10: `migrations/2026-10-10-beta-contributions-archive.sql` (keep-anonymised-on-delete, verified).
+- [x] Applied live 2026-10-10: `migrations/2026-10-10-beta-contributions-archive.sql` (peer reports applied; minimised retention on deletion). Read-only metadata confirms table/RPC presence; C46 failure/retry erasure acceptance remains open.
 - [ ] Parents cannot read the privacy page without the gate code. Either put the code in the
       forwarded text (done) or serve legal pages ungated — the SPA assets are gated too, so
       that needs a separate static page.
@@ -1786,3 +1787,12 @@ Confirmed score/weight, historical-admission, commute and local/account-storage 
 - [ ] **C44 — reconcile the historical design library before reusing it:** `design/system/` still ships Fraunces/Public Sans via CDN, a terracotta default, old radius names and proposed criterion-only/paywall/data specimens. Current frontend uses self-hosted Archivo/Archivo Narrow, four palettes/Značka default, match percentages and different radius aliases. Current-design and archive headers now identify that drift; do not restore the old template or its invented school/payment promises into the app. Coordinate one owner for spec/tokens/specimens/source/bundle metadata, preserve founder-approved choices, make draft claims visibly illustrative, verify keyboard/focus/tooltip/radio/type contracts and add reproducible source-to-bundle parity. This export is not imported by the current frontend, so template reconciliation itself is a reuse/polish task, not proof that the beta is broken.
 - [x] **C44 narrow hook defect fixed:** the prototype Input conditionally called `useId` when no explicit ID was supplied, then crashed on an ID change. Source and both identical bundled copies now call it unconditionally; actual local React browser checks pass generated → explicit → generated ID with typed text preserved. No production styling or access/payment behavior changed. Evidence is under `reports/deployment-review-2026-10-07/design-input-*`.
 - [ ] **Dated research-source verification:** the September model/effort guide is now explicitly historical. Its model/allowance/benchmark assertions need primary provider/benchmark verification before budgeting future paid work; it does not override the founder’s confirmed GPT-6.1 Sol xhigh for this review. Old archive setup/pricing/design notes are labelled as snapshots rather than restored as active instructions.
+
+
+## Critical peer-change recheck — 10 October 2026 (C43/C45/C46)
+
+- [x] C45: fixed the new 401 retry replaying account A's mutation under B. Actual-source account-deletion/refresh/owner tests fail in four cases before the fix and all seven pass afterward; three local browser checks also pass. Explicit owner tokens stay pinned. Broader C02/C14/C16 mounted/queued/profile/sign-out races remain open.
+- [ ] C46: new D4 archive flow needs durable, choice-aware account-erasure recovery. Auth deletion failure after archiving leaves a copy; ordinary retry duplicates it, while a retry selecting deletion leaves the first copy. Preserve founder retention/default policy, prevent duplicates, honor the final accepted choice and verify later manual erasure/publication withdrawal. Actual-handler synthetic fault evidence and ordered steps are in the deployment report/handoff. No live deletion occurred.
+- [ ] C43: the latest SQL now checks the pause flag and guards writes; preserve that source fix. Actual PostgreSQL concurrency/grants/fresh-rerun and partial cleanup still need acceptance. Current fault probe leaves paused collection with ranking cleanup incomplete; Settings does not refresh on error and its paused copy can overstate deletion. Verify two tabs, delayed events/rankings, re-enable and retry cleanup.
+- Current canonical schema has 27 RLS-enabled application tables. Read-only metadata at 17:24 Prague exposes archive columns/RPC and pause column; this does not verify their grants, bodies, authenticated isolation or erasure behavior. D5 founder confirmations remain recorded; Brevo operator transfer and OpenRouter input/output logging remain separately open.
+- [ ] C47/B06: new confirmation polling runs every 4 seconds behind the global 300-request/15-minute IP limiter. Thirty same-school waiting clients can consume that budget in about 40 seconds; one client uses 225 polls/window. Coordinate safe polling/backoff/429 recovery, verified proxy topology and accurate provider-outage handling. Source-derived bounds only, no production load test.
