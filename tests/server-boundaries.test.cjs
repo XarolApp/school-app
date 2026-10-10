@@ -16,7 +16,9 @@ function harness({
   authAdmin = null,
   requestReasonsImpl = async () => new Map(),
   env = {},
+  storageListResult = async () => ({ data: [], error: null }),
 } = {}) {
+  const storageRemovals = [];
   const routes = new Map();
   const routeChains = new Map();
   const queries = [];
@@ -37,6 +39,10 @@ function harness({
       },
       getUser: async () => ({ data: { user: authUser }, error: null }),
     },
+    storage: { from: () => ({
+      list: async (prefix) => storageListResult(prefix),
+      remove: async (paths) => { storageRemovals.push(...paths); return { error: null }; },
+    }) },
     rpc(name, args) {
       rpcCalls.push({ name, args });
       return Promise.resolve(rpcResult);
@@ -92,7 +98,7 @@ function harness({
     '\nmodule.exports = { seasonEndsAt, handleStripeWebhook, slimProgramsForList, chargeDueSeasonPasses, paidAccessActive, betaProgramState, betaAccessState, hasPaidStatus, requireAccess, hasLivePlan, accessStateFor, createCheckoutForUser, cancelPlanForUser, withdrawPlanForUser };', {
     module, Date, Buffer, URL, setTimeout, clearTimeout,
     console: { log() {}, warn(...args) { warnings.push(args.join(' ')); }, error() {} },
-      process: { env: { SUPABASE_SERVICE_ROLE_KEY: 'synthetic', STRIPE_SECRET_KEY: stripeEnabled ? 'synthetic' : '', STRIPE_WEBHOOK_SECRET: 'synthetic', DEVELOPER_EMAILS: 'dev@example.com',...env } },
+      process: { env: { SUPABASE_SERVICE_ROLE_KEY: 'synthetic', STRIPE_SECRET_KEY: stripeEnabled ? 'synthetic' : '', STRIPE_WEBHOOK_SECRET: 'synthetic', DEVELOPER_EMAILS: 'dev@example.com', SHARING_ENABLED: 'true',...env } },
     require(name) {
       if (name === 'express') return express;
       if (name === 'cors') return () => () => {};
@@ -122,7 +128,7 @@ function harness({
     },
   }, { filename: 'server.js' });
   return {
-    ...module.exports, routeChains, queries, reasonCalls, rpcCalls, checkoutCalls, paymentIntentCalls, warnings,
+    ...module.exports, storageRemovals, routeChains, queries, reasonCalls, rpcCalls, checkoutCalls, paymentIntentCalls, warnings,
     get subscriptionRetrievals() { return subscriptionRetrievals; },
     get setupIntentRetrievals() { return setupIntentRetrievals; },
     get deletions() { return deletions; }, get cancellations() { return cancellations; },
@@ -1109,4 +1115,27 @@ test('ranking writes reject normal accounts and testers without notice; owner/so
  assert.equal(saved.user_id,'user-test');assert.equal(saved.source,'onboarding');assert.equal(saved.answers,undefined);assert.equal(saved.email,undefined);assert.deepEqual(Array.from(saved.ranking),[2,1]);
  assert.equal((await beta.callChain('post','/api/beta/rankings',{body:{...body,ranking:[2,2]}})).statusCode,400);
  assert.equal((await beta.callChain('post','/api/beta/rankings',{body:{...body,ranking:[2,3]}})).statusCode,400);
+});
+
+test('link sharing is off unless SHARING_ENABLED=true', async () => {
+  const off = harness({ env: { SHARING_ENABLED: '' } });
+  for (const key of ['post /api/share-links', 'get /api/shared/:token', 'post /api/result-snapshots', 'post /api/handoffs', 'get /api/pay-links/:token']) {
+    const [guard] = off.routeChains.get(key);
+    let code = 200; let nexted = false;
+    guard({}, { status(c) { code = c; return { json() {} }; } }, () => { nexted = true; });
+    assert.equal(code, 404, key); assert.equal(nexted, false, key);
+  }
+  const [guard] = harness().routeChains.get('get /api/shared/:token');
+  let nexted = false; guard({}, {}, () => { nexted = true; });
+  assert.equal(nexted, true);
+});
+
+test('account deletion removes the tester screenshots first and keeps the account if that fails', async () => {
+  const h = harness({ storageListResult: async (prefix) => ({ data: [{ name: 'a.png' }, { name: 'b.jpg' }], error: null, prefix }) });
+  assert.equal((await h.call('delete', '/api/me')).statusCode, 204);
+  assert.deepEqual(h.storageRemovals, ['user-test/a.png', 'user-test/b.jpg']);
+  assert.equal(h.deletions, 1);
+  const failing = harness({ storageListResult: async () => ({ data: null, error: { message: 'down' } }) });
+  assert.equal((await failing.call('delete', '/api/me')).statusCode, 502);
+  assert.equal(failing.deletions, 0);
 });

@@ -29,15 +29,19 @@ async function request(path, options = {}) {
     data: { session },
   } = await supabase.auth.getSession();
 
-  const headers = { ...options.headers };
-  if (session?.access_token) {
-    headers.Authorization = `Bearer ${session.access_token}`;
+  // `accessToken` pins a request to one account (the onboarding flush), so a
+  // sign-in as someone else mid-request cannot redirect it to the new account.
+  const { accessToken, ...fetchOptions } = options;
+  const token = accessToken || session?.access_token;
+  const headers = { ...fetchOptions.headers };
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
   }
   if (options.body) {
     headers['Content-Type'] = 'application/json';
   }
 
-  const res = await fetch(`${API_BASE_URL}${path}`, { ...options, headers });
+  const res = await fetch(`${API_BASE_URL}${path}`, { ...fetchOptions, headers });
 
   if (res.status === 204) return null;
 
@@ -116,7 +120,7 @@ export const saveBetaProfile = (role, roleNote = '') => request('/api/beta/profi
   method: 'POST', body: JSON.stringify({ role, role_note: roleNote, tracking_notice_accepted: true }),
 });
 
-export function updateProfile({ name, themePalette, themeMode, gender }) {
+export function updateProfile({ name, themePalette, themeMode, gender }, accessToken) {
   const body = {};
   if (name !== undefined) body.name = name;
   if (themePalette !== undefined) body.theme_palette = themePalette;
@@ -126,6 +130,7 @@ export function updateProfile({ name, themePalette, themeMode, gender }) {
   return request('/api/me', {
     method: 'PATCH',
     body: JSON.stringify(body),
+    accessToken,
   });
 }
 
@@ -135,10 +140,11 @@ export function deleteAccount() {
 
 /** Saves the onboarding quiz's stashed answers to the account, once a session
  *  is confirmed — see lib/pendingOnboardingAnswers.js and AuthContext's flush. */
-export function saveOnboardingAnswers(answers) {
+export function saveOnboardingAnswers(answers, accessToken) {
   return request('/api/me/onboarding-answers', {
     method: 'POST',
     body: JSON.stringify({ answers }),
+    accessToken,
   });
 }
 

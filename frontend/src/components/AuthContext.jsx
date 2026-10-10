@@ -3,6 +3,7 @@ import { supabase, setRememberMe } from '../supabaseClient';
 import { fetchMe, updateProfile, saveOnboardingAnswers } from '../api';
 import { applyTheme } from '../lib/theme';
 import { readOnboardingStash, clearOnboardingStash } from '../lib/pendingOnboardingAnswers';
+import { syncDraftOwner } from '../lib/useDraft';
 import { clearPendingBetaCode, normalizeBetaCode, rememberBetaCode } from '../lib/pendingBetaCode';
 import { writeGenderPreference } from '../lib/onboardingStorage';
 
@@ -59,16 +60,21 @@ async function flushOnboardingStash(activeSession) {
   const email = activeSession.user?.email?.toLowerCase();
   if (!email || email !== stash.email) return false;
 
+  // Both writes carry this session's own token and the stash is cleared only if
+  // it still belongs to the same e-mail, so switching accounts mid-flush can
+  // neither write to the new account nor drop its stash (C16).
+  const token = activeSession.access_token;
+  const clearIfSameOwner = () => { if (readOnboardingStash()?.email === email) clearOnboardingStash(); };
   flushInFlight = true;
   try {
-    await saveOnboardingAnswers(stash.answers);
+    await saveOnboardingAnswers(stash.answers, token);
     if (stash.gender === 'm' || stash.gender === 'f') {
-      await updateProfile({ gender: stash.gender });
+      await updateProfile({ gender: stash.gender }, token);
     }
-    clearOnboardingStash();
+    clearIfSameOwner();
     return true;
   } catch (err) {
-    if (err?.status === 400) clearOnboardingStash();
+    if (err?.status === 400) clearIfSameOwner();
     // 401/403 (not confirmed yet), 5xx, or a network error: keep the stash,
     // the next session (or the next auth-state change) tries again.
     return false;
@@ -114,6 +120,9 @@ export function AuthProvider({ children }) {
   const profileRequestRef = useRef(0);
   const profileIdentityRef = useRef(null);
   const profileReadyRef = useRef(null);
+  // The account of the newest session; a refresh after a slow onboarding flush
+  // must not switch the profile back to an account that has since signed out.
+  const latestUserRef = useRef(null);
 
   const loadProfile = useCallback(async (activeSession) => {
     const requestId = ++profileRequestRef.current;
@@ -161,9 +170,15 @@ export function AuthProvider({ children }) {
       // The server rejected the token itself (account deleted, session revoked):
       // this browser's saved session is dead, so end it instead of showing a
       // signed-in header over a page that errors on everything.
-      if (error?.status === 401 && requestId === profileRequestRef.current) {
-        await supabase.auth.signOut({ scope: 'local' }).catch(() => {});
-        return;
+      // Only for the account this request was made for: a late 401 for A must
+      // not sign out B who signed in meanwhile. A server-side auth outage is
+      // a 503, not a 401, so it never lands here.
+      if (error?.status === 401 && requestId === profileRequestRef.current && profileIdentityRef.current === userId) {
+        const { data: current } = await supabase.auth.getSession();
+        if (current?.session?.user?.id === userId) {
+          await supabase.auth.signOut({ scope: 'local' }).catch(() => {});
+          return;
+        }
       }
       if (requestId === profileRequestRef.current && profileIdentityRef.current === userId) {
         // A failed profile read must not leave stale tester access or expose a
@@ -185,11 +200,13 @@ export function AuthProvider({ children }) {
 
     supabase.auth.getSession().then(async ({ data }) => {
       if (cancelled) return;
+      latestUserRef.current = data.session?.user?.id ?? null;
+      syncDraftOwner(latestUserRef.current);
       setSession(data.session);
       await loadProfile(data.session);
       if (!cancelled) setLoading(false);
       void flushOnboardingStash(data.session).then((saved) => {
-        if (saved && !cancelled) return loadProfile(data.session);
+        if (saved && !cancelled && latestUserRef.current === data.session?.user?.id) return loadProfile(data.session);
       });
     });
 
@@ -205,6 +222,8 @@ export function AuthProvider({ children }) {
         setIsPasswordRecovery(false);
         if (event === 'SIGNED_OUT') writeGenderPreference(null);
       }
+      latestUserRef.current = nextSession?.user?.id ?? null;
+      syncDraftOwner(latestUserRef.current);
       setSession(nextSession);
       // Deferred on purpose: this callback runs inside supabase-js's auth lock,
       // and loadProfile -> api.js calls supabase.auth.getSession(), which waits
@@ -213,7 +232,7 @@ export function AuthProvider({ children }) {
       setTimeout(() => {
         if (cancelled) return;
         void loadProfile(nextSession).then(async () => {
-          if (await flushOnboardingStash(nextSession)) await loadProfile(nextSession);
+          if (await flushOnboardingStash(nextSession) && latestUserRef.current === nextSession?.user?.id) await loadProfile(nextSession);
         });
       }, 0);
     });

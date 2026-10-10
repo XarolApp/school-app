@@ -33,6 +33,13 @@ app.disable('x-powered-by');
 const PORT = process.env.PORT || 5000;
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 const SCHOOL_REVIEWS_ENABLED = process.env.SCHOOL_REVIEWS_ENABLED === 'true';
+// Link sharing (shortlist shares, results/payment links, parent handoffs,
+// pre-account snapshots) is off during the beta, server-side too: creating a
+// link and opening one both answer 404. Owners can still list and revoke
+// links they made earlier. Turn on with SHARING_ENABLED=true together with the
+// frontend flag and the privacy text for these flows (LEGAL-03).
+const SHARING_ENABLED = process.env.SHARING_ENABLED === 'true';
+const requireSharing = (req, res, next) => (SHARING_ENABLED ? next() : res.status(404).json({ error: 'Sdílení odkazem je během beta testování vypnuté.' }));
 
 // The service role key bypasses Row Level Security, which is exactly why the
 // browser must never see it. It lives only here, and it is what lets this
@@ -347,6 +354,11 @@ async function requireAuth(req, res, next) {
 
   const { data, error } = await supabase.auth.getUser(token);
 
+  // An auth-service outage is not a bad token: answer 503 so the browser keeps
+  // its session (it signs itself out on 401).
+  if (error && (error.name === 'AuthRetryableFetchError' || error.status >= 500)) {
+    return res.status(503).json({ error: 'Přihlášení teď nejde ověřit. Zkus to prosím za chvíli.' });
+  }
   if (error || !data?.user) {
     return res.status(401).json({ error: 'Neplatné nebo vypršelé přihlášení.' });
   }
@@ -877,6 +889,18 @@ app.delete('/api/me', requireAuth, async (req, res) => {
         return res.status(502).json({ error: 'Platební údaje se nepodařilo smazat. Účet zatím nebyl smazán; zkus to prosím znovu.' });
       }
     }
+  }
+
+  // Feedback screenshots are stored under "<user id>/" and are not covered by
+  // the database cascade. Remove them first; on failure keep the account so the
+  // deletion can be retried instead of leaving the images behind.
+  // ponytail: one page of 1000 objects; a tester is limited far below that.
+  const bucket = supabase.storage.from('beta-screenshots');
+  const { data: shots, error: listError } = await bucket.list(req.user.id, { limit: 1000 });
+  if (listError) return res.status(502).json({ error: 'Snímky ze zpětné vazby se nepodařilo smazat. Účet zatím nebyl smazán; zkus to prosím znovu.' });
+  if (shots?.length) {
+    const { error: removeError } = await bucket.remove(shots.map((f) => `${req.user.id}/${f.name}`));
+    if (removeError) return res.status(502).json({ error: 'Snímky ze zpětné vazby se nepodařilo smazat. Účet zatím nebyl smazán; zkus to prosím znovu.' });
   }
 
   const { error } = await supabase.auth.admin.deleteUser(req.user.id);
@@ -1928,7 +1952,7 @@ app.put('/api/decision-profile', decisionLimiter, requireAuth, async (req, res) 
 // comment right on it. Never widen that select() without re-reading plan 006
 // §3.4.
 
-app.post('/api/shares', decisionLimiter, requireAuth, requireAccess, async (req, res) => {
+app.post('/api/shares', requireSharing, decisionLimiter, requireAuth, requireAccess, async (req, res) => {
   const token = crypto.randomBytes(16).toString('base64url');
   const includeNotes = req.body?.includeNotes === true;
 
@@ -1968,7 +1992,7 @@ async function requireResultsLinkAccess(req, res, next) {
   return next();
 }
 
-app.post('/api/share-links', decisionLimiter, requireAuth, requireResultsLinkAccess, async (req, res) => {
+app.post('/api/share-links', requireSharing, decisionLimiter, requireAuth, requireResultsLinkAccess, async (req, res) => {
   const { kind } = req.body || {};
   if (kind !== 'results' && kind !== 'payment') {
     return res.status(400).json({ error: 'Neplatný typ odkazu.' });
@@ -2041,7 +2065,7 @@ app.delete('/api/share-links/:token', requireAuth, async (req, res) => {
 
 // Public results reveal only a strict allowlist. Never return answers, JPZ
 // points, run labels, account identity, or subscription state.
-app.get('/api/shared-results/:token', shareLimiter, async (req, res) => {
+app.get('/api/shared-results/:token', requireSharing, shareLimiter, async (req, res) => {
   const notFound = () => res.status(404).json({ error: 'Odkaz nenalezen nebo vypršel.' });
   const { data: share, error: shareError } = await supabase
     .from('share_links')
@@ -2153,7 +2177,7 @@ function paymentLinkNotFound(res) {
   return res.status(404).json({ error: 'Odkaz nenalezen nebo byl zrušen.' });
 }
 
-app.get('/api/pay-links/:token', shareLimiter, async (req, res) => {
+app.get('/api/pay-links/:token', requireSharing, shareLimiter, async (req, res) => {
   const { data: link, error } = await findPaymentLink(req.params.token);
   if (error) return res.status(500).json({ error: 'Platební odkaz se nepodařilo načíst.' });
   if (!link) return paymentLinkNotFound(res);
@@ -2191,7 +2215,7 @@ app.get('/api/pay-links/:token', shareLimiter, async (req, res) => {
   });
 });
 
-app.post('/api/pay-links/:token/checkout', checkoutLimiter, async (req, res) => {
+app.post('/api/pay-links/:token/checkout', requireSharing, checkoutLimiter, async (req, res) => {
   const { data: link, error } = await findPaymentLink(req.params.token);
   if (error) return res.status(500).json({ error: 'Platební odkaz se nepodařilo načíst.' });
   if (!link) return paymentLinkNotFound(res);
@@ -2209,7 +2233,7 @@ app.post('/api/pay-links/:token/checkout', checkoutLimiter, async (req, res) => 
   return res.status(result.status).json(result.body);
 });
 
-app.post('/api/pay-links/:token/cancel', checkoutLimiter, async (req, res) => {
+app.post('/api/pay-links/:token/cancel', requireSharing, checkoutLimiter, async (req, res) => {
   const { data: link, error } = await findPaymentLink(req.params.token);
   if (error) return res.status(500).json({ error: 'Platební odkaz se nepodařilo načíst.' });
   if (!link) return paymentLinkNotFound(res);
@@ -2217,7 +2241,7 @@ app.post('/api/pay-links/:token/cancel', checkoutLimiter, async (req, res) => {
   return res.status(result.status).json(result.body);
 });
 
-app.post('/api/pay-links/:token/withdraw', checkoutLimiter, async (req, res) => {
+app.post('/api/pay-links/:token/withdraw', requireSharing, checkoutLimiter, async (req, res) => {
   const { data: link, error } = await findPaymentLink(req.params.token);
   if (error) return res.status(500).json({ error: 'Platební odkaz se nepodařilo načíst.' });
   if (!link) return paymentLinkNotFound(res);
@@ -2227,7 +2251,7 @@ app.post('/api/pay-links/:token/withdraw', checkoutLimiter, async (req, res) => 
 
 // Anonymous handoffs contain no personal data or quiz answers. The owner secret
 // stays on the parent's device and is required for status and revoke.
-app.post('/api/handoffs', anonLinkLimiter, async (req, res) => {
+app.post('/api/handoffs', requireSharing, anonLinkLimiter, async (req, res) => {
   const token = crypto.randomBytes(16).toString('base64url');
   const ownerSecret = crypto.randomBytes(16).toString('base64url');
   const expires_at = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
@@ -2238,7 +2262,7 @@ app.post('/api/handoffs', anonLinkLimiter, async (req, res) => {
   return res.status(201).json({ token, ownerSecret });
 });
 
-app.get('/api/handoffs/:token', shareLimiter, async (req, res) => {
+app.get('/api/handoffs/:token', requireSharing, shareLimiter, async (req, res) => {
   const ownerSecret = req.get ? req.get('X-Owner-Secret') : req.headers?.['x-owner-secret'];
   const { data: handoff, error } = await supabase
     .from('quiz_handoffs')
@@ -2254,7 +2278,7 @@ app.get('/api/handoffs/:token', shareLimiter, async (req, res) => {
   return res.json({ status: expired ? 'expired' : handoff.status });
 });
 
-app.post('/api/handoffs/:token/revoke', shareLimiter, async (req, res) => {
+app.post('/api/handoffs/:token/revoke', requireSharing, shareLimiter, async (req, res) => {
   const ownerSecret = req.get ? req.get('X-Owner-Secret') : req.headers?.['x-owner-secret'];
   if (!ownerSecret) return res.status(404).json({ error: 'Odkaz nenalezen nebo byl zrušen.' });
   const { data, error } = await supabase
@@ -2271,7 +2295,7 @@ app.post('/api/handoffs/:token/revoke', shareLimiter, async (req, res) => {
   return res.status(204).end();
 });
 
-app.post('/api/handoffs/:token/open', shareLimiter, async (req, res) => {
+app.post('/api/handoffs/:token/open', requireSharing, shareLimiter, async (req, res) => {
   const { data: handoff, error } = await supabase
     .from('quiz_handoffs')
     .select('status, expires_at, opened_at')
@@ -2297,7 +2321,7 @@ app.post('/api/handoffs/:token/open', shareLimiter, async (req, res) => {
   return res.status(204).end();
 });
 
-app.post('/api/handoffs/:token/complete', shareLimiter, async (req, res) => {
+app.post('/api/handoffs/:token/complete', requireSharing, shareLimiter, async (req, res) => {
   const { error } = await supabase
     .from('quiz_handoffs')
     .update({ status: 'completed', completed_at: new Date().toISOString() })
@@ -2309,7 +2333,7 @@ app.post('/api/handoffs/:token/complete', shareLimiter, async (req, res) => {
 
 // A forged snapshot can expose only one real school with a made-up percentage
 // under the results heading; this is accepted because it cannot unlock data.
-app.post('/api/result-snapshots', anonLinkLimiter, async (req, res) => {
+app.post('/api/result-snapshots', requireSharing, anonLinkLimiter, async (req, res) => {
   const { role, topSchoolId, topScore, fittingCount } = req.body || {};
   if (!['student', 'parent'].includes(role) ||
       !Number.isInteger(topSchoolId) ||
@@ -2346,7 +2370,7 @@ app.post('/api/result-snapshots', anonLinkLimiter, async (req, res) => {
 // two (a token oracle). Returns only the selected schools and programmes, plus
 // notes if explicitly included. Never return the owner's name, email, id, JPZ
 // points, trial/subscription status, favourites, or questionnaire answers.
-app.get('/api/shared/:token', shareLimiter, async (req, res) => {
+app.get('/api/shared/:token', requireSharing, shareLimiter, async (req, res) => {
   const { data: share, error: shareError } = await supabase
     .from('shortlist_shares')
     .select('user_id, include_notes')

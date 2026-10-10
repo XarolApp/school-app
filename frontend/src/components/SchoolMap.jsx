@@ -8,6 +8,8 @@ import { escapeHtml } from '../lib/escapeHtml';
 import { summarizeAdmission, formatCutoffRange } from '../lib/schoolPrograms';
 import './SchoolMap.css';
 
+const geocodeCache = new Map();
+
 const PRAGUE_CENTER = [50.0755, 14.4378];
 
 // Real, per-school data only: the pin's number is the newest year's cutoff
@@ -215,7 +217,7 @@ function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
     setAddressError(null);
     navigator.geolocation.getCurrentPosition(
       (pos) => setHomeFromCoords(pos.coords.latitude, pos.coords.longitude),
-      () => setAddressError('Polohu se nepodařilo zjistit, zkus zadat adresu ručně.')
+      () => setAddressError('Polohu se nepodařilo zjistit, zkus zadat ulici nebo zastávku ručně.')
     );
   };
 
@@ -225,15 +227,30 @@ function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
     if (!q) return;
     setAddressLoading(true);
     setAddressError(null);
+    // Public Nominatim: its policy forbids personal data and allows about one
+    // request per second for the whole site, so the field asks for a street,
+    // stop or district (not a home address) and repeated searches are cached.
+    // ponytail: per-tab cache only; switch to an approved geocoding provider
+    // before a cohort bigger than one school (C01).
+    const cacheKey = q.toLowerCase();
+    if (geocodeCache.has(cacheKey)) {
+      const hit = geocodeCache.get(cacheKey);
+      setAddressLoading(false);
+      if (!hit) { setAddressError('Toto místo se nepodařilo najít. Zkus ulici, zastávku nebo čtvrť.'); return; }
+      setHomeFromCoords(hit[0], hit[1]);
+      return;
+    }
     try {
       const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=cz&q=${encodeURIComponent(q)}`;
       const res = await fetch(url, { headers: { Accept: 'application/json' } });
       if (!res.ok) throw new Error('lookup failed');
       const results = await res.json();
       if (!results.length) {
-        setAddressError('Tuto adresu se nepodařilo najít. Zkus ji upřesnit.');
+        geocodeCache.set(cacheKey, null);
+        setAddressError('Toto místo se nepodařilo najít. Zkus ulici, zastávku nebo čtvrť.');
         return;
       }
+      geocodeCache.set(cacheKey, [Number(results[0].lat), Number(results[0].lon)]);
       setHomeFromCoords(Number(results[0].lat), Number(results[0].lon));
     } catch {
       setAddressError('Vyhledání adresy se nepodařilo. Zkus to znovu.');
@@ -268,9 +285,9 @@ function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
             type="text"
             value={addressQuery}
             onChange={(e) => setAddressQuery(e.target.value)}
-            placeholder="Zadej adresu (např. domov)"
+            placeholder="Ulice, zastávka nebo čtvrť"
             className="sm-address-input"
-            aria-label="Adresa"
+            aria-label="Ulice, zastávka nebo čtvrť (bez čísla domu)"
           />
           <button type="submit" className="ss-btn ss-btn-primary ss-btn-sm" disabled={addressLoading}>
             {addressLoading ? 'Hledám…' : 'Najít'}
@@ -279,7 +296,7 @@ function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
         <button type="button" className="sm-locate-btn" onClick={centerOnMe}>
           Najít mě podle polohy
         </button>
-        <p className="ss-caption sm-privacy-note">Polohu držíme jen v paměti této stránky. Zadanou adresu posíláme službě OpenStreetMap pro vyhledání.</p>
+        <p className="ss-caption sm-privacy-note">Polohu držíme jen v paměti této stránky. Zadané místo posíláme službě OpenStreetMap pro vyhledání, proto nepiš číslo domu — stačí ulice, zastávka nebo čtvrť.</p>
         {addressError && <p className="ss-caption sm-address-error">{addressError}</p>}
 
         {homePos && (

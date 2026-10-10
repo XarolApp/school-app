@@ -88,7 +88,7 @@ const ROLES = {
 
 const makeFaq = (SCHOOL_COUNT) => [
   ['Co je Střední na míru?', 'Průvodce výběrem střední školy v Praze. Všechny školy s obory a výsledky přijímaček na jednom místě a dotazník, který z nich vybere ty, které sedí tomu, co hledáš.'],
-  ['Kolik to stojí?', 'Onboarding a první ukázka výsledku jsou zdarma. Databáze, dotazník v aplikaci a nástroje pro rozhodování vyžadují aktivní zkušební období nebo placený přístup. V betě jsou pro registrované testery zdarma výměnou za zpětnou vazbu; platební obrazovky jsou jen náhled.'],
+  ['Kolik to stojí?', 'Registrace pro testery je zdarma. Databáze, dotazník v aplikaci a nástroje pro rozhodování vyžadují aktivní zkušební období nebo placený přístup. V betě jsou pro registrované testery zdarma výměnou za zpětnou vazbu; platební obrazovky jsou jen náhled.'],
   ['Odkud máte data o školách?', 'Obory, kapacity a hranice přijetí jsou z veřejných výsledků jednotné přijímací zkoušky (Cermat), názvy a adresy z rejstříku škol MŠMT, další informace z webů škol a dalších veřejných zdrojů. U přijímacích statistik uvádíme dostupný rok.'],
   ['Znamená vysoké procento shody, že mě vezmou?', 'Ne. Shoda říká, jak škola odpovídá tomu, co jsi napsal. O přijetí rozhodují přijímačky a známky, proto u škol zvlášť ukazujeme hranice přijetí.'],
   ['Platí mi školy za lepší umístění?', 'Ne. Pořadí počítá pevný vzorec z tvých odpovědí a z veřejných dat. Nikdo si v něm nemůže koupit místo.'],
@@ -133,6 +133,7 @@ export default function Landing() {
   const navigate = useNavigate();
   const rootRef = useRef(null);
   const stageRef = useRef(null);
+  const tallStageRef = useRef(false); // hero taller than the screen: no slideshow, plain scrolling
   const canvasRef = useRef(null);
   const labelsRef = useRef(null);
   const tipRef = useRef(null);
@@ -169,14 +170,29 @@ export default function Landing() {
   hoverCtxRef.current = { chip: activeChip, topIds: shortlist.map((s) => s.id) };
 
   // ---------- data ----------
-  // The hero is ~730px tall; on short laptop screens it would overflow the
-  // stage under the sticky top bar. Shrink it to fit instead of clipping.
+  // The hero is ~730px tall; on short screens it would overflow the stage
+  // under the sticky top bar. A mild shrink is fine, but below 85 % the text
+  // gets unreadable (6.5px on a landscape phone, C09): then keep full size and
+  // make the stage taller so the page scrolls instead.
   useEffect(() => {
     const hero = heroRef.current;
-    if (!hero) return undefined;
+    const stage = stageRef.current;
+    if (!hero || !stage) return undefined;
     const fit = () => {
+      stage.style.minHeight = '';
+      hero.parentElement.style.minHeight = '';
+      tallStageRef.current = false;
       const room = hero.parentElement.clientHeight - 48;
-      hero.style.scale = String(Math.min(1, room / hero.offsetHeight));
+      const ratio = room / hero.offsetHeight;
+      if (ratio >= 0.85) {
+        hero.style.scale = String(Math.min(1, ratio));
+        return;
+      }
+      hero.style.scale = '1';
+      tallStageRef.current = true;
+      const needed = `${hero.offsetHeight + 64}px`;
+      stage.style.minHeight = needed;
+      hero.parentElement.style.minHeight = needed;
     };
     fit();
     document.fonts?.ready.then(fit);
@@ -485,7 +501,7 @@ export default function Landing() {
     let lockUntil = 0;
     let touchY = null;
 
-    const atStage = () => window.scrollY <= 2;
+    const atStage = () => !tallStageRef.current && window.scrollY <= 2;
     const leave = () => {
       swallow = true;
       const navH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 0;
@@ -796,7 +812,7 @@ export default function Landing() {
             <span data-count="0">0</span>
             <small> Kč</small>
           </b>
-          <span>za onboarding a první ukázku výsledku</span>
+          <span>registrace pro testery</span>
         </div>
       </section>
 
@@ -994,7 +1010,7 @@ export default function Landing() {
             <p className="l2-plan-name">Zdarma</p>
             <p className="l2-plan-price">0 Kč</p>
             <ul>
-              <li>Onboarding a první ukázka výsledku</li>
+              <li>Registrace pro testery</li>
               <li>Interaktivní mapa na úvodní stránce</li>
               <li>Detail školy otevřený z mapy</li>
             </ul>

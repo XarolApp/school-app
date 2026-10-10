@@ -27,3 +27,20 @@ export function useDraft(key, initial) {
   const clear = useCallback(() => { if (keyRef.current) clearDraftKey(keyRef.current); }, []);
   return [value, setValue, clear];
 }
+
+// Drafts are per tab, not per account. When a different account takes over
+// the tab (sign-out, or sign-in as someone else) every `snm.` draft from the
+// previous one is dropped, so on a shared school computer nobody sees the
+// previous pupil's unsent text (C14). Going from no account to an account
+// keeps them: that is the same person finishing sign-up.
+const OWNER_KEY = 'snm.owner';
+export function syncDraftOwner(userId) {
+  try {
+    const previous = sessionStorage.getItem(OWNER_KEY);
+    if (previous && previous !== (userId || '')) {
+      Object.keys(sessionStorage).filter((k) => k.startsWith('snm.')).forEach((k) => sessionStorage.removeItem(k));
+    }
+    if (userId) sessionStorage.setItem(OWNER_KEY, userId);
+    else sessionStorage.removeItem(OWNER_KEY);
+  } catch { /* storage blocked: there are no drafts either */ }
+}

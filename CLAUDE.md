@@ -285,8 +285,8 @@ npm run dev
 Starts on `http://localhost:5173`. Reads config from `frontend/.env` (also gitignored).
 Without Supabase keys, the development app can render with stubbed auth;
 protected journeys require a configured or explicitly synthetic test session.
-The latest onboarding/detail route restrictions await founder reconciliation
-with the earlier public-exception policy. `VITE_API_BASE_URL` defaults to
+Signed-out visitors only see landing, auth, legal and the view-only landing-map
+school detail; onboarding requires sign-in (founder decision, settled). `VITE_API_BASE_URL` defaults to
 `http://localhost:5000` (the backend's default, before the MacBook override).
 
 **Verify it's working:**
@@ -340,7 +340,10 @@ themselves. Use the browser pane / preview tools for this.
 - The comparison screen supports up to five schools (`COMPARE_LIMIT = 5`). School
   reviews are disabled throughout the feedback beta with
   `SCHOOL_REVIEWS_ENABLED=false`; consented beta website testimonials use a
-  separate flow and table.
+  separate flow and table. Link sharing (shortlist shares, results/payment links, parent handoffs,
+  pre-account snapshots) is off during the beta on the server too:
+  `SHARING_ENABLED` unset makes link creation and opening answer 404; owners can
+  still list/revoke old links.
 - A build id is exposed through `/version.json`. `updateWatcher.js` checks every
   five minutes and when a tab becomes visible, then reloads a changed build after
   30 minutes of inactivity. It waits around dialogs, focused inputs, feedback
@@ -648,8 +651,8 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
    - `/api/handoffs` and `/api/result-snapshots` — public child questionnaire handoff and pre-account result snapshot creation; recipient pages live at `/od-rodice/:token` and `/vysledky/:token`
 
    **The intended access rule:** premium catalogue/decision routes need
-   `requireAccess`; public landing/onboarding and landing-map school details are
-   exceptions. Routes that let someone *manage or erase their own data*
+   `requireAccess`; the public landing page and the view-only landing-map school
+   detail are the only exceptions (onboarding requires sign-in, founder decision 9–10 October). Routes that let someone *manage or erase their own data*
    (removing a favourite, renaming/archiving an answer set, deleting the account)
    need only `requireAuth`. An account whose trial lapsed must never be locked out
    of its own data.
@@ -869,8 +872,9 @@ actionable that follows from them lives in [`UNFORGET.md`](UNFORGET.md) instead.
   in the deployment handoff must pass before live activation.
 - **`/api/schools*` is currently ungated.** Founder clarification 2026-10-07:
   valid trial, paid or beta access is required for premium catalogue/search,
-  comparison, matrix, questionnaire and application tools. Landing and onboarding
-  remain free, **including school details opened from landing-map dots**. Preserve
+  comparison, matrix, questionnaire and application tools. The landing page stays
+  public, **including view-only school details opened from landing-map dots**;
+  onboarding requires sign-in (founder decision 9–10 October, settled). Preserve
   necessary auth/legal/account management and scoped bearer-link journeys. The app
   does not fully match this matrix yet; see UNFORGET "Paid vs free gating". The
   onboarding quiz reads school data before any account exists, so gating it would break

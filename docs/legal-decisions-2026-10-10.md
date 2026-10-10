@@ -55,12 +55,12 @@ contact, decision, notification, redress) is built.
 
 ## D3 — Parent and result links, pre-account snapshots (LEGAL-03)
 
-**Decision.** Sharing controls are off in the frontend (`SHARING_ENABLED = false`).
-This flag is not an API permission boundary: `server.js` still registers result-snapshot,
-handoff and share/payment-link endpoints. Signed-out view-only school detail is also
-intentionally public. Therefore the source does not establish that links or pre-account
-snapshots cannot occur during beta; verify the deployed API access matrix and explicitly
-disable excluded operations server-side if that is the agreed beta scope. The privacy text
+**Decision.** Sharing is off in the frontend (`SHARING_ENABLED = false`) **and on the
+server** (10 October): without `SHARING_ENABLED=true` in Railway, creating or opening a
+shortlist share, results link, parent payment link, quiz handoff or pre-account snapshot
+answers 404. Owners can still list and revoke links made earlier. Signed-out visitors see
+only the landing page, legal pages and the view-only school detail (public school data, no
+personal data). So none of these flows can happen during the beta. The privacy text
 for these flows is **not** added now; add it
 (what each link shows, who can open a forwarded link, expiry/revocation, that expired
 rows are not yet deleted) in the same release that re-enables sharing.

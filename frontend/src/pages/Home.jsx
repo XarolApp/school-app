@@ -30,7 +30,7 @@ const makeFacts = (SCHOOL_COUNT) => [
   { value: String(SCHOOL_COUNT), label: 'pražských středních škol v databázi' },
   { value: String(QUESTION_COUNT), label: `otázek v dotazníku, asi ${QUIZ_MINUTES} minuty` },
   { value: '3 roky', label: 'výsledků přijímaček; dostupnost se liší podle oboru' },
-  { value: '0 Kč', label: 'za onboarding a první ukázku výsledku' },
+  { value: '0 Kč', label: 'registrace pro testery' },
 ];
 
 const STEPS = [
@@ -63,7 +63,7 @@ const makeFaq = (SCHOOL_COUNT) => [
   },
   {
     q: 'Kolik to stojí?',
-    a: 'Onboarding a první ukázka výsledku jsou zdarma. Databáze, dotazník v aplikaci a nástroje pro rozhodování vyžadují aktivní zkušební období nebo placený přístup. V betě jsou pro registrované testery zdarma výměnou za zpětnou vazbu; platební obrazovky jsou jen náhled.',
+    a: 'Registrace pro testery je zdarma. Databáze, dotazník v aplikaci a nástroje pro rozhodování vyžadují aktivní zkušební období nebo placený přístup. V betě jsou pro registrované testery zdarma výměnou za zpětnou vazbu; platební obrazovky jsou jen náhled.',
   },
   {
     q: 'Odkud máte data o školách?',
@@ -365,7 +365,7 @@ function Home() {
           <p className="ls-eyebrow">Cena</p>
           <h2 className="ls-h2">Začátek je zdarma</h2>
           <p className="ls-body">
-            Onboarding a první ukázka výsledku jsou zdarma. Databáze a nástroje pro
+            Registrace pro testery je zdarma. Databáze a nástroje pro
             rozhodování vyžadují aktivní přístup. V betě jsou zdarma pro registrované testery výměnou za zpětnou vazbu.
           </p>
         </div>
@@ -373,7 +373,7 @@ function Home() {
           <div className="ls-price-col">
             <h3 className="ls-list-title">Zdarma</h3>
             <ul className="ls-list">
-              <li>Onboarding a první ukázka výsledku</li>
+              <li>Registrace pro testery</li>
               <li>Úvodní mapa škol</li>
               <li>Detail školy otevřený z mapy</li>
             </ul>

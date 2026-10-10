@@ -13,7 +13,36 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
+## After the beta: deferred Codex findings (logged 2026-10-10, founder decision)
+
+Founder chose to fix C01, C09, C14, C16 (+ follow-up), C29 and C31 before the testers
+arrive (done 10 October, see the readiness section) and to leave these until after the
+beta. Details and reproductions: `reports/deployment-review-2026-10-07/continuation-findings.md`.
+
+- [ ] **C07 — ordinary access trial must start at the first confirmed sign-in**, not at
+      the signup trigger. Once-only server/DB transition with concurrency protection,
+      explicit migration of existing ordinary accounts, no broad live reset. Irrelevant
+      while everyone is a beta tester; required before ordinary accounts/payments.
+- [ ] **C32 — saved-note race:** a completed save of an older note text erases a newer
+      unsaved edit on `/ulozene`. Needs a versioned save or "only clear if unchanged"
+      check. Reproduction: `reproduce-saved-note-race.cjs`.
+- [ ] **C38 — Orange theme contrast:** normal text in the accent colour on its soft
+      accent background is below 4.5:1. Needs a semantic text token, not a palette change.
+      Evidence: `theme-contrast-matrix-2026-10-10.json`.
+- [ ] **C08 — narrow onboarding header crowds the wordmark** (polish).
+
 ## Beta launch readiness — state on 2026-10-10 (read this first)
+
+**Fixed 10 October (Claude, from Codex findings):** link sharing off on the server
+(`SHARING_ENABLED`, 404 for creating/opening links); account deletion removes the tester's
+feedback screenshots first (C31); address search asks for a street/stop/district, not a
+home address, and caches lookups (C01 — a real geocoding provider is still needed before a
+larger cohort); tab drafts are dropped when another account takes over the tab (C14);
+onboarding-answer flush is pinned to its own session (C16); a late 401 for an old account
+no longer signs out the new one, and a Supabase auth outage returns 503 instead of 401
+(C16 follow-up); info bubbles are kept inside the screen (C29); the landing hero no longer
+shrinks below 85 % — short screens scroll normally and skip the step slideshow (C09).
+
 
 **Done (verified or pushed):** single-code access gate (`pristuptestovaciverze`) and one
 internal `beta_schools` row (`PRISTUPTESTOVACIVERZE`, ZŠ Jesenicova, never shown to
