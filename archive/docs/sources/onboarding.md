@@ -1,5 +1,7 @@
 # The Ultimate Master Guide to Mobile & Web App Onboarding
 
+> **Archived, unsourced reference — reviewed 10 October 2026.** The retention/conversion figures, review yields, revenue/valuation claims and named case studies below have no dated primary citations in this document. They are unverified examples, not measured Střední na míru outcomes, causal findings or current benchmarks. Validate any claim before quoting it publicly. Do not copy the health/religion/biometric examples into a school app for minors, collect extra personal data for conversion, fabricate social proof or imply AI work that does not occur. Current beta is free for main feedback messages; its paywall is a preview. Commercial plans remain 690 Kč season after a 3-day saved-card trial and 249 Kč monthly immediately; the mandatory day-2 email is still a real-billing gate. Onboarding requires sign-in. Follow the current [design specification](../../../design/DESIGN.md), [deployment report](../../../reports/deployment-review-2026-10-07/REPORT.md), [handoff](../../../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md) and [UNFORGET](../../../UNFORGET.md). The original examples follow with incorrect implementation instructions corrected.
+
 ---
 
 ## 1. Executive Overview & The Onboarding Imperative
@@ -109,13 +111,13 @@ Every successful onboarding strategy falls into one of three core structural arc
 * **Structure:** A survey or quiz consisting of 15 to 110+ screens asking about goals, habits, physical metrics, or lifestyle preferences.
 
 
-* **Mechanic:** Concludes with an animated "plan calculation" screen that simulates generating a hyper-personalized experience tailored exclusively for the user.
+* **Mechanic:** A loading state may describe actual work while it is running. Do not simulate personalization, AI processing or progress that does not happen; current C26 records the separate calculation-screen acceptance task.
 
 
 * **Psychological Driver:** **Loss Aversion & Sunk Cost.** After spending 5–10 minutes answering personal questions, users feel a strong sense of ownership and investment, making them dramatically more likely to convert on a paywall.
 * **Best Paired With:** **Hard Paywalls** (requiring payment or a free-trial opt-in before accessing the app).
 * **Ideal Categories:** Goal-oriented niches such as fitness, calorie tracking, language learning, finance, and habit building.
-* **App Store Review Benefit:** Apple app reviewers often get bored before making it through a 20+ screen quiz, drastically reducing paywall rejection risks.
+* **App Store review correction:** Quiz length does not establish approval or justify hiding a paywall. Provide reviewers full access and explain purchases/features. See [Apple’s review guidelines](https://developer.apple.com/app-store/review/guidelines/) (submission checklist and §2.3.1), checked 10 October 2026.
 
 ---
 
@@ -231,7 +233,7 @@ Never prompt for App Store reviews randomly or at app launch. Trigger review pro
 
 * *The Setup:* After generating the custom prayer, display a gamified streak graphic (e.g., "Day 1 Prayer Journey Started!" with a fire animation).
 * *The Prompt:* Immediately trigger the native iOS/Android review modal.
-* *The Result:* **1 in 8 users leave a review**. This builds massive social proof (e.g., 13,000+ reviews) and boosts App Store Optimization (ASO) rankings to #1 for core keywords. Non-paying users still contribute valuable distribution power.
+* *Unverified case claim:* This reference reports a 1-in-8 review yield and 13,000+ reviews without dated evidence. Do not promise that yield or ranking. Apple recommends a meaningful completed task without interrupting activity; the native prompt has a three-per-365-day limit. See [Apple’s ratings guidance](https://developer.apple.com/app-store/ratings-and-reviews/), checked 10 October 2026. Beta star feedback is a separate feature and does not renew access.
 
 ---
 
@@ -281,7 +283,7 @@ Cal AI utilizes a 20+ screen questionnaire flow engineered for extreme retention
 │ 8. Honest Expectation: "Weight loss is delayed first 7 days, then     │
 │    fat burn accelerates" (Reduces refunds, builds credibility)         │
 │ 9. App Setup: Apple Health sync, rollover calories, notifications      │
-│10. Performative Calculation: Animated calculation progress wheel       │
+│10. Actual processing: truthful, accessible loading feedback            │
 │11. Monetization: Hard paywall ($49.99/year subscription)               │
 └────────────────────────────────────────────────────────────────────────┘
 
@@ -295,7 +297,7 @@ Key lessons from Cal AI:
 * **Managing Expectations:** Stating that "initial results may be slow for the first 7 days" drastically reduces chargebacks and refund requests while building trust.
 
 
-* **Performative Delays:** The 5-second "generating custom plan" animation increases perceived value, making the user feel the AI is running complex custom calculations.
+* **Processing correction:** Do not add a fake five-second AI calculation. Describe actual deterministic matching, show loading only for real pending work, and handle reduced motion, errors and cancellation. Any perceived-value lift asserted by the original example is unverified.
 
 
 
@@ -420,10 +422,9 @@ Displaying native OS permission dialogs (notifications, microphone, tracking) co
 
 ### Navigating App Store Review Risks
 
-* Hard paywalls attached to short 3-screen flows run a high risk of rejection by Apple App Store reviewers.
-* Hard paywalls attached to **long questionnaire flows** pass review consistently because reviewers see clear value creation, and often click through without blocking.
+* No cited evidence establishes that screen count predicts App Store approval. A long quiz cannot replace accurate purchase disclosures, working access for reviewers or compliance with current guidelines. Review the actual mobile billing/distribution rules when that surface is built; this web beta does not establish native-app approval.
 
-### The "1-Day Free Trial Ending" Transparency Guarantee
+### Generic seven-day trial example — not the current product
 
 * To overcome paywall anxiety, place a prominent callout on your checkout card showing a timeline graphic:
 * *Today:* Trial Starts ($0).
@@ -431,7 +432,7 @@ Displaying native OS permission dialogs (notifications, microphone, tracking) co
 * *Day 7:* Billing begins.
 
 
-* Including this notification promise removes chargeback fears and significantly boosts initial trial conversions.
+* Promise a reminder only when delivery/retry operations exist. This seven-day push example does not match the three-day season trial or its required day-2 email. Beta never saves a card or charges. No conversion or chargeback effect is verified here.
 
 ---
 
@@ -476,4 +477,4 @@ Displaying native OS permission dialogs (notifications, microphone, tracking) co
 1. **Download-to-Trial Conversion Rate:** Target $\ge 10\%$ before investing heavily in adding new product features.
 2. **Day-1 & Day-3 Retention Rates:** Monitor for retention improvements following onboarding length adjustments.
 3. **Quiz Completion Rate:** Aim for $> 70\%$ completion on quiz flows by adding progress bars, gamified micro-animations, and encouraging copy.
-4. **In-Flow Review Conversion:** Target capturing 1 review per 8 onboarding completions by aligning prompts with milestone accomplishments.
+4. **In-Flow Review Conversion:** Measure actual eligible prompts and reviews; the unsourced 1-in-8 example is not a release criterion. Prompt after a meaningful completed task, without interruption or gating access on a rating.

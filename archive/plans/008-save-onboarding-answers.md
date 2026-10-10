@@ -1,13 +1,14 @@
 # 008 — Save onboarding quiz answers to the account (so every student gets a match %)
 
+> **Historical plan — current context checked 10 October 2026.** The translator, source column, onboarding endpoint/stash flush and standalone questionnaire writer exist on `main`. Both browser onboarding and server matching now display percentages; two engines/translated answers still require the intended parity contract (B01/B02), not a claim that equal presentation proves equal scores. Preserve confirmed-session A-token pinning/B-stash protection and C45; remaining C14/C16 owner/cross-device races stay in the handoff. Onboarding now requires sign-in. Never rerun the whole schema on production from this historical plan; verify a disposable fresh install/rerun and the reviewed missing migration. Original dated proposal follows for reference. Current [deployment report](../../reports/deployment-review-2026-10-07/REPORT.md), [handoff](../../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md), [UNFORGET](../../UNFORGET.md) and [design specification](../../design/DESIGN.md) govern further work.
+
 - **Planned:** 2026-09-11, Opus 5, `/plan-then-build`
 - **Base commit:** `a5741d9` (implement AFTER plan 007)
 - **Scope:** new server endpoint + translator module, one schema change, a
   localStorage stash in the frontend, flush on sign-in.
 - **Impact:** HIGH · **Effort:** M · **Risk:** Medium (touches auth lifecycle and
   stores data about minors)
-- **Manual step for the founder:** re-run `supabase-setup.sql` in the Supabase SQL
-  editor after §1 lands (the agent has no database access).
+- **Historical manual step — superseded:** compare the deployed schema/functions with current canonical SQL, verify fresh install/rerun in a disposable database, then apply only the reviewed missing migration. Do not rerun the whole file on production.
 
 ---
 
@@ -271,7 +272,7 @@ stashed locally and saved to the account on first confirmed sign-in.
    Expected (key order may differ): `{"oblasti":["it","technika","ekonomika"],"po_skole":"prace","jazyky":"velmi","casti":["Praha 13","Praha 5"]}` — no `typ`, no `styl`, no `sport`, no `certainty`/`priority`.
    Also: all 22 districts → no `casti`; `{practice:'invalid'}` → `ok: false`; `{}` → translates to `{}` and `isScoreable` false.
 2. `node --check server.js` and `cd frontend && npm run lint` — clean.
-3. **Founder runs `supabase-setup.sql`** in the Supabase SQL editor (manual). Restart the backend.
+3. **Historical schema step — superseded:** verify disposable fresh-install/rerun, grants and the reviewed missing migration before a separately authorized live change. Do not run the whole schema on production from this plan.
 4. Browser: run the onboarding flow to the `ucet` step with a fresh test email the founder controls; after submit, `javascript_tool`: `localStorage.getItem('skolamatch.pendingOnboardingAnswers')` → present, with the lowercased email.
 5. **Founder clicks the confirmation email** (manual), then signs in on the same browser. Network tab: one `POST /api/me/onboarding-answers` → `201 {saved:true}`; stash key gone.
 6. Navigate to `/skoly` → schools show a match %; `/porovnani/matice` → shoda criterion unlocked (plan 007).

@@ -1,5 +1,7 @@
 # Plan 004 — Implement the "School Search" design on `/skoly`
 
+> **Historical plan — current context checked 10 October 2026.** The 92-line search page and proposed synthesized school/cutoff/commute fixtures below are historical. Current Search reads programme/admission/extracted data; stored data is not proof of factual accuracy. The 9 October read-only count is 217 visible / 223 raw schools (six merged), not the old 60-school prototype. Current fonts/brand are Archivo and Střední na míru. Old root/snapshot design paths moved under `design/archive/`; do not copy stand-ins into the real catalogue or reimplement the retired prototype. Current data/access/provenance gates govern. Original dated proposal follows for reference. Current [deployment report](../../reports/deployment-review-2026-10-07/REPORT.md), [handoff](../../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md), [UNFORGET](../../UNFORGET.md) and [design specification](../../design/DESIGN.md) govern further work.
+
 > **On approval, save this verbatim to `plans/004-search-design-import.md`** (the repo's
 > `plans/` dir already holds 001–003) and add a row to `plans/README.md`.
 > **Written against commit `5a8381c`.** If `Search.jsx` or `schoolSearch.js` has changed

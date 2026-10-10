@@ -1,5 +1,7 @@
 # Plan 010 — Slim the `/api/schools` list payload + defeat the 1000-row cap
 
+> **Historical plan — current context checked 10 October 2026.** Paging/slim-list and full `?ids=` helpers exist. The 223/2372-row and 843→215 KB figures are dated September measurements; current read-only visible count is 217 (223 raw). Both matchers now consume enriched programme/extracted facts, so the old “free-text only, seven fields prove no scoring change” assumption is superseded. B01/B02 require actual catalogue/projection/cache parity; C03 covers mixed admission years and capacity provenance. Do not use the old payload size as current performance evidence or casually start the backend against production scheduled workers. Original dated proposal follows for reference. Current [deployment report](../../reports/deployment-review-2026-10-07/REPORT.md), [handoff](../../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md), [UNFORGET](../../UNFORGET.md) and [design specification](../../design/DESIGN.md) govern further work.
+
 ## Context
 
 `UNFORGET.md` tracks this as "Backend pagination": `GET /api/schools` has no

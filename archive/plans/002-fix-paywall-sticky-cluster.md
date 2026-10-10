@@ -1,5 +1,7 @@
 # 002 — Paywall sticky CTA block eats up to 57% of the screen
 
+> **Historical plan — current context checked 10 October 2026.** This concerns the retired single `Paywall.jsx` screen. Current checkout is the five-screen flow, beta screens are optional no-charge previews, prices are 690 Kč season / 249 Kč monthly, and the parental checkout checkbox was deliberately removed. Sharing is disabled for beta. Preserve current payment/cancellation behavior and P01–P09/LEGAL acceptance; the old mock/VAT/refund/consent text is not current product copy. Original dated proposal follows for reference. Current [deployment report](../../reports/deployment-review-2026-10-07/REPORT.md), [handoff](../../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md), [UNFORGET](../../UNFORGET.md) and [design specification](../../design/DESIGN.md) govern further work.
+
 **Written against commit:** `12ede66`
 **Category:** correctness / UX (conversion-critical surface)
 **Impact:** HIGH — this is the reported "scrolling on the paywall doesn't work well"

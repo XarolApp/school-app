@@ -1,5 +1,7 @@
 # Plan 005 — Spacing & typography tokens: emit them, then adopt them site-wide
 
+> **Historical plan — current context checked 10 October 2026.** Spacing/type CSS variables and runtime JS imports now exist. The old 246/118/no-import/no-variable counts, four-warning snapshot and Fraunces/template axes are historical; they do not justify token renumbering or unconditional pixel remaps today. Current portable tokens and generated CSS, Archivo fonts, four palettes and responsive layouts govern. Template/source reconciliation is C44; current theme contrast C38 is deferred after beta. Do not revert another agent's files under the old eight-file scope rule. Original dated proposal follows for reference. Current [deployment report](../../reports/deployment-review-2026-10-07/REPORT.md), [handoff](../../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md), [UNFORGET](../../UNFORGET.md) and [design specification](../../design/DESIGN.md) govern further work.
+
 > **On approval, save verbatim to `plans/005-spacing-typography-migration.md`** and add a
 > row to `plans/README.md` (existing plans: 001–004).
 > **Written against commit `5a8381c`.**

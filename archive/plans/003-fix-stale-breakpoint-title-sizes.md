@@ -1,5 +1,7 @@
 # 003 — Desktop breakpoint still uses pre-redesign title sizes
 
+> **Historical plan — current context checked 10 October 2026.** This concerns the `12ede66` typography snapshot. Current frontend uses self-hosted Archivo/Archivo Narrow and has mobile/desktop layouts; the old Newsreader/type-token and “desktop has no design” assumptions are superseded. Check current `onboarding.css` and `design/DESIGN.md`, then the C08/C09/device acceptance. C08 is explicitly deferred until after beta. Original dated proposal follows for reference. Current [deployment report](../../reports/deployment-review-2026-10-07/REPORT.md), [handoff](../../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md), [UNFORGET](../../UNFORGET.md) and [design specification](../../design/DESIGN.md) govern further work.
+
 **Written against commit:** `12ede66`
 **Category:** tech debt / visual correctness
 **Impact:** LOW-MED — headings *shrink* when the viewport gets wider

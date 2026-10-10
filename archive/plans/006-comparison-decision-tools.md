@@ -1,5 +1,7 @@
 # 006 — Comparison & decision tools (feature-brainstorm.md §5)
 
+> **Historical plan — current context checked 10 October 2026.** Comparison now allows up to five schools; application picks remain three. Founder policy requires valid access for premium tools under the access matrix, onboarding requires sign-in, and beta sharing creation/opening stays disabled server/client-side. The old signed-out comparison/share acceptance is superseded. The old 60-school count, generator/model-price assumptions and certainty/tuition/grade-language copy are historical. Delete-then-insert is not atomic and can lose data (B03); the “no intermediate state” claim below is retracted. Validate current obor/year metadata and C03/B01/B02/S11/S12, and preserve C32's after-beta deferral. Dry runs may call paid models/write usage logs; no automatic regeneration or live SQL rerun. Original dated proposal follows for reference. Current [deployment report](../../reports/deployment-review-2026-10-07/REPORT.md), [handoff](../../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md), [UNFORGET](../../UNFORGET.md) and [design specification](../../design/DESIGN.md) govern further work.
+
 - **Planned:** 2026-09-10, Opus 5, `/plan-then-build`
 - **Base commit:** `1bf53fd`
 - **Design canvas:** https://claude.ai/code/artifact/688789aa-b54c-4a5e-b2b6-17b3ee775899
@@ -137,7 +139,7 @@ statements into the existing section 5.
 -- The three schools this student is actually applying to, in binding DiPSy
 -- order. `priority` is 1..3. No unique constraint on (user_id, priority):
 -- server.js rewrites the whole set on every reorder (delete-then-insert, at
--- most 3 rows), which is simpler and cannot leave a half-swapped state.
+-- most 3 rows), which was assumed simpler here; the atomicity assumption is retracted (B03).
 -- obor_kkov/obor_nazev are optional — a pick without an obor still works, it
 -- just falls back to the school-level cutoff for risk analysis.
 create table if not exists public.application_picks (
@@ -294,7 +296,7 @@ Body: `{ picks: [{ schoolId, oborKkov?, oborNazev? }, ...] }`, ordered, max 3.
 ```
 
 Delete-then-insert, not a diff — at most 3 rows, and it makes reordering a single
-idempotent call with no intermediate state. Same idiom as
+call in this historical design. The no-intermediate-state/idempotence assertion is retracted: separate deletes/inserts can fail or interleave (B03). Same old idiom as
 `import-admission-data.js`'s per-year `school_programs` write.
 
 ### 3.3 `GET /api/picks`

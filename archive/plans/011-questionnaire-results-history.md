@@ -1,5 +1,7 @@
 # Plan 011 — Questionnaire: results screen, run history, unlimited runs, AI-optional
 
+> **Historical plan — current context checked 10 October 2026.** Questionnaire results/history/default/archive flows and AI-optional scoring exist; the page is no longer the 215-line form-only snapshot. Runs are unlimited with abuse limits, and current AI identity/availability/Czech wording require acceptance rather than relying on dated ~$0.0005 estimates or presumed live credits. Both onboarding and standalone now display percentages; scorer/data parity remains B01/B02. Current shared modal, lint warnings, source paths and beta sign-in/access rules supersede old instructions. Free-text private context is stored but excluded from matching/AI (founder decision); no live generation, schema rerun or account operation is authorized by this archive. Original dated proposal follows for reference. Current [deployment report](../../reports/deployment-review-2026-10-07/REPORT.md), [handoff](../../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md), [UNFORGET](../../UNFORGET.md) and [design specification](../../design/DESIGN.md) govern further work.
+
 ## Context
 
 `/dotaznik` works but its results screen is a flat list of 8 rows

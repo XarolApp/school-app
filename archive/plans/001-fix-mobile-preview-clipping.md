@@ -1,5 +1,7 @@
 # 001 — Fix mobile preview harness clipping 28px of the app
 
+> **Historical plan — current context checked 10 October 2026.** The measurements below concern commit `12ede66` and its decorative preview frame. `frontend/public/mobile-preview.html` still exists, but these old measurements do not certify the current onboarding or all phone layouts. Current app/device findings are C08–C11/C29 and the deployment report; inspect the present harness before any change. Original dated proposal follows for reference. Current [deployment report](../../reports/deployment-review-2026-10-07/REPORT.md), [handoff](../../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md), [UNFORGET](../../UNFORGET.md) and [design specification](../../design/DESIGN.md) govern further work.
+
 **Written against commit:** `12ede66`
 **Category:** correctness (dev tooling)
 **Impact:** HIGH — this is the reported "text is not visible on mobile" bug

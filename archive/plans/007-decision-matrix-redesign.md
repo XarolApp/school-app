@@ -1,5 +1,7 @@
 # 007 — Rozhodovací matice redesign + match score as a criterion
 
+> **Historical plan — current context checked 10 October 2026.** The labelled matrix/match criterion and onboarding persistence are implemented; plan 008 is no longer a missing prerequisite. Current comparison allows five schools and premium/sign-in/beta access rules supersede the signed-out checks below. Current matrix criteria/copy name measured data rather than guaranteed admission or personalized plans; C03/B02/B08 remain verification gates. Current shared Modal, fonts/tokens and real-device/theme acceptance govern; old resize/console tools and model routing do not apply to this review. Original dated proposal follows for reference. Current [deployment report](../../reports/deployment-review-2026-10-07/REPORT.md), [handoff](../../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md), [UNFORGET](../../UNFORGET.md) and [design specification](../../design/DESIGN.md) govern further work.
+
 - **Planned:** 2026-09-11, Opus 5, `/plan-then-build`
 - **Base commit:** `a5741d9`
 - **Design canvas (approved: direction A "Rozpis"):**
