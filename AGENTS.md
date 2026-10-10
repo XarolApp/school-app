@@ -881,9 +881,9 @@ actionable that follows from them lives in [`UNFORGET.md`](UNFORGET.md) instead.
   onboarding requires sign-in (founder decision 9–10 October, settled). Preserve
   necessary auth/legal/account management and scoped bearer-link journeys. The app
   does not fully match this matrix yet; see UNFORGET "Paid vs free gating". The
-  onboarding quiz reads school data before any account exists, so gating it would break
-  the funnel at its widest point. RLS still blocks the browser from reading the table
-  directly, so `server.js` remains the only way in. Gating this is tied to the paywall
+  onboarding quiz is free after sign-in and needs an explicit data contract alongside
+  the public landing map and premium catalogue. RLS still blocks direct browser reads
+  of the table, so `server.js` remains the only way in. Gating this is tied to the paywall
   connection work in `UNFORGET.md` — remember `withMatchScores` must survive whatever
   query replaces it, or every percentage in the app disappears with nothing logged.
 - **Displayed admission summaries generally use the newest available year.**

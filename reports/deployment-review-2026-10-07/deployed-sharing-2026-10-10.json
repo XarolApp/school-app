@@ -1,0 +1,41 @@
+{
+  "checkedAtUtc": "2026-10-10T10:41:45.177Z",
+  "checks": [
+    {
+      "endpoint": "/api/me",
+      "status": 401,
+      "error": "Chybí přihlášení.",
+      "cacheControl": null,
+      "serverDate": "Sat, 10 Oct 2026 10:41:45 GMT"
+    },
+    {
+      "endpoint": "/api/shared/review-nonexistent-token",
+      "status": 404,
+      "error": "Sdílení odkazem je během beta testování vypnuté.",
+      "cacheControl": null,
+      "serverDate": "Sat, 10 Oct 2026 10:41:45 GMT"
+    },
+    {
+      "endpoint": "/api/shared-results/review-nonexistent-token",
+      "status": 404,
+      "error": "Sdílení odkazem je během beta testování vypnuté.",
+      "cacheControl": null,
+      "serverDate": "Sat, 10 Oct 2026 10:41:45 GMT"
+    },
+    {
+      "endpoint": "/api/pay-links/review-nonexistent-token",
+      "status": 404,
+      "error": "Sdílení odkazem je během beta testování vypnuté.",
+      "cacheControl": null,
+      "serverDate": "Sat, 10 Oct 2026 10:41:45 GMT"
+    },
+    {
+      "endpoint": "/api/handoffs/review-nonexistent-token",
+      "status": 404,
+      "error": "Sdílení odkazem je během beta testování vypnuté.",
+      "cacheControl": null,
+      "serverDate": "Sat, 10 Oct 2026 10:41:45 GMT"
+    }
+  ],
+  "limitation": "Synthetic nonexistent tokens only. The explicit disabled-sharing error can distinguish the flag from token-not-found; 404 alone cannot. No create/revoke/checkout/erase request, valid share link, authenticated route or user data was inspected."
+}

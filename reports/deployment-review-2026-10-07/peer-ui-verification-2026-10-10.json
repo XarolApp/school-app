@@ -1,0 +1,15 @@
+{
+  "checkedAtUtc": "2026-10-10T10:45:10.987888+00:00",
+  "sourceHashes": {
+    "frontend/src/pages/landing2/Landing.jsx": "e0ad170917bfa07582b5389238b5d555ec0dd630c90077b7d4f3ffc409697d0f",
+    "frontend/src/components/Hint.jsx": "e564cb131e0faf2b72dde54c8730c536bff24111470602e11e82296e77598323",
+    "frontend/src/components/SchoolMap.jsx": "29536b854b575b91d151bd86932d31d1faf398c3f6e346584de367639972fa29",
+    "frontend/src/pages/landing2/landing2.css": "5f0169d7713340f3a7aef013535d59268df264f06057a2c437b05c2bbb83cc9b",
+    "frontend/src/pages/search.css": "133cfa5bb9a257820136d2b0bb6071725bb530f44d5174b4a650ff954d8f0548"
+  },
+  "fixture": "actual components/CSS/fonts, synthetic services and coordinates; installed Leaflet with tiles disabled; no geocoder, location, account, payment or external write",
+  "layoutEvidence": "landing-peer-layout-checks-2026-10-10.json",
+  "mapEvidence": "map-hint-peer-checks-320x740.json",
+  "keyboard": "Enter opens/Escape closes all four map notes and returns focus to the trigger",
+  "limits": "Selected local viewports and opened-note states only. Real browser/device, hover/zoom/large text, fullscreen/rotation, non-WebGL and full journey acceptance remain."
+}

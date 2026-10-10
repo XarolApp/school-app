@@ -112,3 +112,8 @@ banner is switched off (`DRAFT = false`). Operator name, address, e-mail and
 "neplátce DPH" are filled in. There is **no IČO** (a natural person without a trade
 licence has none); this is the founder's recorded risk for a free beta and must be
 resolved before real payments. The facts in D5 are still unverified.
+
+
+## Independent implementation verification note — 10 October 2026
+
+D1 and D4 above remain the founder's decisions. This note adds implementation evidence only: read-only Supabase OpenAPI metadata exposes `beta_profile.tracking_paused_at`, while function bodies/grants and the complete withdrawal journey remain unverified. A synthetic actual-handler probe reproduces an in-flight event submitting its write after withdrawal reports success; the canonical `record_beta_events` function checks the enrollment timestamp but not the pause flag. Independent deletes can also leave pending cleanup after a partial failure. Resolve and test this coordinated lifecycle issue (C43) before relying on the switch's stop/delete promises. See `reports/deployment-review-2026-10-07/tracking-withdrawal-race-2026-10-10.json` and the ordered handoff. No live tracking record or account was modified by this review; this note does not change the approved legal basis or the founder's DPIA decision.

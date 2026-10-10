@@ -1,0 +1,58 @@
+[
+  {
+    "bounds": {
+      "bottom": 563.9140625,
+      "left": 71.5234375,
+      "right": 311.5234375,
+      "top": 414.0078125
+    },
+    "focusedName": "Vysvětlení",
+    "text": "Nejnižší bodový výsledek přijatých uchazečů podle dat Cermatu za rok 2026 (max. 100, tedy 50 + 50). Rozpětí od oboru s nejnižší po obor s nejvyšší hranicí. Historická hranice nezaručuje budoucí přijetí; historii najdeš v detailu školy.",
+    "viewport": [
+      320,
+      740
+    ]
+  },
+  {
+    "bounds": {
+      "bottom": 526.2265625,
+      "left": 8.234375,
+      "right": 248.234375,
+      "top": 414.0078125
+    },
+    "focusedName": "Vysvětlení",
+    "text": "Kolik procent přihlášených škola v roce 2026 přijala, ve všech oborech dohromady. Podrobnosti po oborech a starší roky najdeš v detailu školy.",
+    "viewport": [
+      320,
+      740
+    ]
+  },
+  {
+    "bounds": {
+      "bottom": 551.1796875,
+      "left": 7.8125,
+      "right": 247.8125,
+      "top": 457.8046875
+    },
+    "focusedName": "Vysvětlení",
+    "text": "Počet míst podle dostupných údajů Cermatu ve všech oborech dohromady. Na další rok se počet může změnit.",
+    "viewport": [
+      320,
+      740
+    ]
+  },
+  {
+    "bounds": {
+      "bottom": 551.1796875,
+      "left": 7.8125,
+      "right": 247.8125,
+      "top": 457.8046875
+    },
+    "focusedName": "Vysvětlení",
+    "text": "Jak škola sedí na tvoje odpovědi z dotazníku, ne jak je dobrá. Bez vyplněného dotazníku ji nespočítáme.",
+    "viewport": [
+      320,
+      740
+    ]
+  }
+]

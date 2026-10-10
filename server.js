@@ -354,9 +354,9 @@ async function requireAuth(req, res, next) {
 
   const { data, error } = await supabase.auth.getUser(token);
 
-  // An auth-service outage is not a bad token: answer 503 so the browser keeps
+  // An auth-service outage or throttle is not a bad token: answer 503 so the browser keeps
   // its session (it signs itself out on 401).
-  if (error && (error.name === 'AuthRetryableFetchError' || error.status >= 500)) {
+  if (error && (error.name === 'AuthRetryableFetchError' || error.status === 429 || error.status >= 500)) {
     return res.status(503).json({ error: 'Přihlášení teď nejde ověřit. Zkus to prosím za chvíli.' });
   }
   if (error || !data?.user) {
@@ -636,6 +636,9 @@ app.post('/api/beta/events', betaEventsLimiter, async (req, res) => {
   let user = null;
   if (token) {
     const auth = await supabase.auth.getUser(token);
+    if (auth.error && (auth.error.name === 'AuthRetryableFetchError' || auth.error.status === 429 || auth.error.status >= 500)) {
+      return res.status(503).json({ error: 'Přihlášení teď nejde ověřit. Zkus to prosím za chvíli.' });
+    }
     if (auth.error || !auth.data?.user?.email_confirmed_at) return res.status(401).json({ error: 'Neplatné přihlášení.' });
     user = auth.data.user;
   }

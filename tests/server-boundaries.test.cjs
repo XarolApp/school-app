@@ -13,6 +13,7 @@ function harness({
   paymentIntentResult = { status: 'succeeded' },
   rpcResult = { data: { testerAccessUntil: '2026-09-28T12:00:00.000Z' }, error: null },
   authUser = { id: 'user-test', email: 'tester@example.com', email_confirmed_at: '2026-01-01T00:00:00.000Z' },
+  authResult = null,
   authAdmin = null,
   requestReasonsImpl = async () => new Map(),
   env = {},
@@ -37,7 +38,7 @@ function harness({
         deleteUser: async () => { deletions++; return { error: null }; },
         getUserById: async () => authAdmin || { data: { user: authUser }, error: null },
       },
-      getUser: async () => ({ data: { user: authUser }, error: null }),
+      getUser: async () => authResult || ({ data: { user: authUser }, error: null }),
     },
     storage: { from: () => ({
       list: async (prefix) => storageListResult(prefix),
@@ -1157,4 +1158,22 @@ test('switching usage recording off pauses it and deletes this account\'s record
   assert.equal((await on.call('post', '/api/beta/tracking', { body: { enabled: true } })).statusCode, 200);
   assert.ok(!on.queries.some((q) => q.table === 'beta_events'));
   assert.equal((await on.call('post', '/api/beta/tracking', { body: {} })).statusCode, 400);
+});
+
+test('auth outages remain retryable on profile and beta event endpoints', async () => {
+  for (const error of [{ name: 'AuthRetryableFetchError', status: 0 }, { name: 'AuthApiError', status: 503 }, { name: 'AuthApiError', status: 429 }]) {
+    const h = harness({ authResult: { data: null, error } });
+    assert.equal((await h.callChain('get', '/api/me')).statusCode, 503);
+    assert.equal((await h.call('post', '/api/beta/events', { headers: { authorization: 'Bearer synthetic' } })).statusCode, 503);
+    assert.equal(h.queries.length, 0);
+    assert.equal(h.rpcCalls.length, 0);
+  }
+});
+
+test('authoritative token rejection still answers 401 without recording events', async () => {
+  const h = harness({ authResult: { data: null, error: { name: 'AuthApiError', status: 401 } } });
+  assert.equal((await h.callChain('get', '/api/me')).statusCode, 401);
+  assert.equal((await h.call('post', '/api/beta/events', { headers: { authorization: 'Bearer synthetic' } })).statusCode, 401);
+  assert.equal(h.queries.length, 0);
+  assert.equal(h.rpcCalls.length, 0);
 });

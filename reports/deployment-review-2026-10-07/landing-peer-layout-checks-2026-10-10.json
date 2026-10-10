@@ -1,0 +1,83 @@
+[
+  {
+    "chipFont": "12px",
+    "documentWidth": 667,
+    "paragraphs": [
+      {
+        "font": "11px",
+        "text": "Výběr střední školy · Praha"
+      },
+      {
+        "font": "15px",
+        "text": "Všech 3 pražských středních škol na jedné mapě. Odpovíš na 11 otázek a uvidíš, které odpovídají tomu, co tě baví, kam dojedeš a jak se ti učí."
+      },
+      {
+        "font": "13px",
+        "text": "Zkus to: co tě baví?3 školy"
+      },
+      {
+        "font": "13px",
+        "text": "11 otázek · přeskočit můžeš cokoli"
+      }
+    ],
+    "scale": "1",
+    "viewport": [
+      667,
+      375
+    ]
+  },
+  {
+    "chipFont": "13px",
+    "documentWidth": 812,
+    "paragraphs": [
+      {
+        "font": "11px",
+        "text": "Výběr střední školy · Praha"
+      },
+      {
+        "font": "18px",
+        "text": "Všech 3 pražských středních škol na jedné mapě. Odpovíš na 11 otázek a uvidíš, které odpovídají tomu, co tě baví, kam dojedeš a jak se ti učí."
+      },
+      {
+        "font": "13px",
+        "text": "Zkus to: co tě baví?3 školy"
+      },
+      {
+        "font": "13px",
+        "text": "11 otázek · přeskočit můžeš cokoli"
+      }
+    ],
+    "scale": "1",
+    "viewport": [
+      812,
+      375
+    ]
+  },
+  {
+    "chipFont": "12px",
+    "documentWidth": 320,
+    "paragraphs": [
+      {
+        "font": "11px",
+        "text": "Výběr střední školy · Praha"
+      },
+      {
+        "font": "15px",
+        "text": "Všech 3 pražských středních škol na jedné mapě. Odpovíš na 11 otázek a uvidíš, které odpovídají tomu, co tě baví, kam dojedeš a jak se ti učí."
+      },
+      {
+        "font": "13px",
+        "text": "Zkus to: co tě baví?3 školy"
+      },
+      {
+        "font": "13px",
+        "text": "11 otázek · přeskočit můžeš cokoli"
+      }
+    ],
+    "scale": "1",
+    "viewport": [
+      320,
+      740
+    ]
+  }
+]

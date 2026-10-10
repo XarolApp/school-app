@@ -1,0 +1,12 @@
+{
+  "checkedAtUtc": "2026-10-10T10:33:40.107Z",
+  "serverSha256": "cc4092cb2a5578addede08293be7085167b784f03ddff6823c5e0b7bc00584b9",
+  "schemaSha256": "7573e071fc0fbc4add1a2c01addd3b1ed8d55cc6a7ff98052390b65bb60ac6bb",
+  "switchStatus": 200,
+  "pauseStored": true,
+  "oldRowsDeletionAttempted": true,
+  "delayedEventStatus": 204,
+  "newEventRpcAfterWithdrawal": "record_beta_events",
+  "canonicalRpcChecksPause": false,
+  "limitation": "Actual JS handlers with held synthetic settings read; RPC execution mocked. Canonical SQL inspected, not executed. No hosted mutation or live concurrency claim."
+}

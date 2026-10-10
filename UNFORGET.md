@@ -33,6 +33,11 @@ beta. Details and reproductions: `reports/deployment-review-2026-10-07/continuat
 
 ## Beta launch readiness — state on 2026-10-10 (read this first)
 
+**Independent recheck of the 10 October peer fixes:** C09's short-screen shrinking and C29's opened map-note overflow pass the specific local phone/landscape checks. C16's originating-token/B-stash and ordinary outage branches pass, but late profile/session-read races remain; C14 storage cleanup does not by itself reset every mounted form; C31's one-page limit can leave screenshots after deleting the account. C01's coarse input/per-tab cache does not enforce aggregate provider limits. Preserve the useful source fixes below without treating them as complete lifecycle acceptance. Exact probe hashes and scope are in `reports/deployment-review-2026-10-07/peer-beta-fixes-2026-10-10.json`; ordered remaining work is in the handoff.
+
+- [ ] **C43 — make usage-recording withdrawal atomic with writes and cleanup:** preserve approved D1/D4; an in-flight actual event handler submits a write after pause/deletes report success, and the canonical RPC does not check `tracking_paused_at`. Partial deletes can leave history while the reloaded Settings copy claims it was removed. Coordinate SQL/consent revision or lock, rankings/events, retryable cleanup, queues and accurate switch state. Read-only metadata exposes the pause column; actual live functions/grants/acceptance remain unverified. See `tracking-withdrawal-race-2026-10-10.json` and the handoff. No live record was changed.
+
+
 **Fixed 10 October (Claude, from Codex findings):** link sharing off on the server
 (`SHARING_ENABLED`, 404 for creating/opening links); account deletion removes the tester's
 feedback screenshots first (C31); address search asks for a street/stop/district, not a
@@ -71,7 +76,7 @@ School e-mail: `docs/beta-school-email-draft.md`.
 - [ ] Parents cannot read the privacy page without the gate code. Either put the code in the
       forwarded text (done) or serve legal pages ungated — the SPA assets are gated too, so
       that needs a separate static page.
-- [x] One-click "Záznam používání" switch in Nastavení — done 10 October (off stops recording and deletes recorded events/rankings). **Needs `migrations/2026-10-10-tracking-switch.sql` run in Supabase.**
+- [x] One-click "Záznam používání" switch in Nastavení — implemented 10 October. Read-only metadata at 12:30 Prague exposes `tracking_paused_at`; verify actual schema/functions and migration parity instead of blindly rerunning `migrations/2026-10-10-tracking-switch.sql`. **C43 withdrawal/write concurrency and partial-cleanup acceptance remain open.**
 - [ ] Before sharing links are re-enabled: privacy text for result/payment links and
       pre-account snapshots (LEGAL-03). Before school reviews are re-enabled: notice and
       action workflow (LEGAL-02).
@@ -1728,20 +1733,20 @@ Confirmed score/weight, historical-admission, commute and local/account-storage 
 - C26 deferred: calculation timers display all tasks as complete while school data is still loading. Reproduced with an empty, pending catalogue in the actual component. Reconcile truthful progress/pending/error/retry behavior and reduced-motion delay without changing matching.
 - Complete same-pattern custom-radio keyboard checks in Search/BetaReward and the remaining full source reads; preserve C06/FE-10 evidence questions and the paid-launch lifecycle/calendar gates. [Handoff](reports/deployment-review-2026-10-07/HANDOFF-PLAN.md).
 
-- **10 October solo review:** C27’s CAPTCHA resend starvation is fixed and checked using actual components with synthetic services; real mailbox/CAPTCHA acceptance remains. BetaReward now also has standard radio keyboard behavior (C25). C16 additionally reproduces a late A-token 401 signing out B before B’s deferred profile load, and upstream auth 503 → API 401 → local logout; coordinate immutable owner/session/error classification rather than disabling auth checks.
-- **Beta privacy release gates remain:** the 10 October checkbox/retention product decisions are not legal sign-off. Resolve mandatory observation versus optional tracking, equally easy withdrawal/actual collection stop, child/guardian evidence and account-linked church-school preference risk screening. Sharing is disabled in frontend controls, not all server endpoints. Corrected factual notes live in `docs/legal-decisions-2026-10-10.md`; D5 vendor/operator facts, cleanup and full journeys still need acceptance. Founder tracking-choice answer is pending.
+- **10 October solo review:** C27’s CAPTCHA resend starvation is fixed and checked using actual components with synthetic services; real mailbox/CAPTCHA acceptance remains. BetaReward now also has standard radio keyboard behavior (C25). C16 additionally reproduces a late A-token 401 signing out B before B’s deferred profile load, and historically upstream auth 503 → API 401 → local logout. The latter is fixed by the peer middleware and Codex event/throttle follow-up (181 root tests); coordinate the remaining immutable owner/session races rather than disabling auth checks.
+- **Beta privacy implementation/operations:** founder-approved D1/D4 are recorded in `docs/legal-decisions-2026-10-10.md` after `c17c582`; do not reopen those decisions. The usage-recording switch and server-side sharing guard are implemented, while C43 actual withdrawal/cleanup behavior, deployed flags, D5 vendor/operator facts and full journeys still need acceptance. Re-screen the documented child-data/church-school-preference risks before a larger cohort. Product decisions and metadata alone do not prove implementation or legal compliance.
 
 
 ## Search/map deployment review follow-up — 10 October 2026
 - C28 fixes all-2026 admission claims/hidden older-year context, blank no-data explanation years and “Zobrazit 1 škola” grammar. Search’s custom sort radios now support arrows, wrap, focus and one Tab stop (C25). Actual desktop/phone checks and lint/build pass; scoring, filters and dataset are unchanged. Settings radio acceptance remains.
-- C29 remains a beta UI gate: actual map capacity explanation is visibly off-screen at 375px (left -144.75px); document width is 405px. Read all shared Hint consumers and implement/verify viewport collision handling across phone, landscape/fullscreen, long content and large text. Marker Enter behavior needs real-browser confirmation before a separate diagnosis.
+- C29's original map-capacity overflow is fixed by `7c575ed` and independently verified at 375×812; all four opened map explanations fit 320×740 and pass Enter/Escape/focus checks. Complete every Hint consumer, hover, landscape/fullscreen, long content and large-text/zoom acceptance. Marker Enter behavior still needs real-browser confirmation before a separate diagnosis.
 - Preserve C01 geocoder privacy/request-policy and C03 mixed-year filter metadata gates. Include Search/FavoriteButton account/request ownership and late map lookup/geolocation callbacks in the existing C02/C16 lifecycle plan. See deployment continuation findings and handoff; no production data or external requests were changed.
 
 
 ## Settings ownership and account erasure — deployment review, 10 October 2026
 - C30’s empty-name edit and expired-trial label are fixed; actual desktop/phone checks and lint/build pass. Settings native radios work without changes.
 - C02/C16: actual Settings fixture and callback reproduce A’s queued appearance save executing as B after an account switch; A’s unsaved name remains in B’s form. Bind/cancel queued operations by immutable session/owner, reset each owner’s forms/messages/secret fields and test late success/error/refresh. Resetting the Promise ref alone is insufficient.
-- C31 is a beta erasure gate: DELETE /api/me does not remove screenshots synchronously; orphan cleanup waits until object age exceeds 24h and a successful maintenance run. AI usage records retain nullable-owner run/error/model/time data. Verify actual signed-upload/legacy ownership, define bounded retryable erasure and retained-data rules, and reconcile the all-data-removed notices. Disposable tests must cover uploads, partial Stripe/Storage/Auth failure, retries and foreign-object rejection. No live erasure was attempted. [Handoff](reports/deployment-review-2026-10-07/HANDOFF-PLAN.md).
+- C31 remains a beta erasure gate: `7c575ed` adds synchronous screenshot removal, but its single 1,000-object page can leave files after auth deletion; concurrent signed uploads and complete retry/partial-failure acceptance remain. AI usage records retain nullable-owner run/error/model/time data. Verify actual signed-upload/legacy ownership, define bounded retryable erasure and retained-data rules, and reconcile the all-data-removed notices. Disposable tests must cover uploads, partial Stripe/Storage/Auth failure, retries and foreign-object rejection. No live erasure was attempted. [Handoff](reports/deployment-review-2026-10-07/HANDOFF-PLAN.md).
 
 
 ## Decision/saved-note deployment review — 10 October 2026
@@ -1757,7 +1762,7 @@ Confirmed score/weight, historical-admission, commute and local/account-storage 
 
 ## Landing/result deployment review — 10 October 2026
 - C35/C36 fixed commercial-free database, disabled sharing/browser-only answer/cancellation copy, signed-out looping browse link, admission-year wording, Czech result count agreement and match-confidence label. Role tabs support standard arrows/Home/End/focus/one Tab stop. Actual desktop/phone fixtures and lint/build pass; scores, routes and payments are unchanged.
-- C09 still blocks beta UI acceptance: current 812×375 hero scale renders about 6px body and 4px chip text. Implement readable short-height/landscape reflow and verify large text/zoom/all steps. C10 lacks a keyboard/non-WebGL alternative for public dot-detail access; C11 data/detail retry/cache/motion ownership also remain. Extend C02/C16 to admin open feedback/forms/revealed e-mails.
+- C09's original 6px/4px short-screen shrink is fixed by `7c575ed`: independent 667×375/812×375 checks stay at scale 1 and scroll; 320×740 fits. Complete real-device/browser, large-text/zoom and all-step acceptance. C10 lacks a keyboard/non-WebGL alternative for public dot-detail access; C11 data/detail retry/cache/motion ownership also remain. Extend C02/C16 to admin open feedback/forms/revealed e-mails.
 - Inactive Home still has founder photography/byline placeholders; do not restore it without content/product/browser acceptance. Public metadata improvements and archive/removal of inactive demo code are suggestions; closed-beta indexing remains a policy choice. [Handoff](reports/deployment-review-2026-10-07/HANDOFF-PLAN.md).
 
 

@@ -1,0 +1,117 @@
+{
+  "checkedAtUtc": "2026-10-10T10:22:03.644Z",
+  "sourceHashes": {
+    "frontend/src/components/AuthContext.jsx": "f6b9521599ee222e14ab75facdaa79d907b5b52ee3ea0b5f4dfe794a6347de32",
+    "frontend/src/lib/useDraft.js": "56ecdc23b6e9fb0772460b8eb0578e12e4ece72c526f139fc7b0b75af57771ea",
+    "server.js": "a0547e50494790ab57caca4fa7ecbabed56be7b57ca64bbbed0d8f99257b9da1"
+  },
+  "results": {
+    "lateASuccessBeforeBTimer": {
+      "reproduced": true,
+      "profiles": [
+        {
+          "owner": "A",
+          "profile": null
+        },
+        {
+          "owner": "B",
+          "profile": {
+            "id": "A",
+            "theme_palette": "terakota",
+            "theme_mode": "dark"
+          }
+        }
+      ],
+      "themes": [
+        {
+          "owner": "B",
+          "values": [
+            "terakota",
+            "dark"
+          ]
+        }
+      ],
+      "pendingBTimers": 1
+    },
+    "lateA401WithCurrentBSession": {
+      "passed": true,
+      "signouts": []
+    },
+    "accountChangeDuring401SessionRead": {
+      "reproduced": true,
+      "signouts": [
+        "B"
+      ],
+      "limitation": "Held synthetic session snapshot; real SDK scheduling needs integration acceptance."
+    },
+    "onboardingOwnerPinAndBStash": {
+      "passed": true,
+      "writes": [
+        {
+          "operation": "answers",
+          "token": "synthetic-A",
+          "answers": {
+            "fixture": "A"
+          }
+        },
+        {
+          "operation": "gender",
+          "token": "synthetic-A",
+          "patch": {
+            "gender": "f"
+          }
+        }
+      ],
+      "remainingStash": {
+        "email": "b@example.test",
+        "answers": {
+          "fixture": "B"
+        }
+      }
+    },
+    "authMiddleware": [
+      {
+        "input": {
+          "name": "AuthRetryableFetchError",
+          "status": 0
+        },
+        "status": 503
+      },
+      {
+        "input": {
+          "name": "AuthApiError",
+          "status": 503
+        },
+        "status": 503
+      },
+      {
+        "input": {
+          "name": "AuthApiError",
+          "status": 401
+        },
+        "status": 401
+      }
+    ],
+    "mountedDraftAfterOwnerCleanup": {
+      "reproduced": true,
+      "retainedText": "Synthetic A draft",
+      "persistedAgain": "\"Synthetic A draft\"",
+      "limitation": "Mounted hook only; keyed BetaTools remounts its own subtree. Audit other callers and first-load legacy drafts separately."
+    },
+    "screenshotCleanup": [
+      {
+        "failRemove": false,
+        "status": 204,
+        "deletedAccounts": 1,
+        "objectsRemaining": 1
+      },
+      {
+        "failRemove": true,
+        "status": 502,
+        "deletedAccounts": 0,
+        "objectsRemaining": 1001
+      }
+    ]
+  },
+  "limitation": "No network, real credentials, account changes, bucket operations or full React/SDK journey."
+}
