@@ -167,6 +167,12 @@ function Layout() {
                   <Bookmark size={16} aria-hidden="true" />
                   Uložené
                 </NavLink>
+                {showFeedbackInbox && (
+                  <button type="button" className="navbar-feedback-menu" onClick={() => { setMenuOpen(false); openFeedback(); }}>
+                    <MessageSquare size={16} aria-hidden="true" />
+                    Zpětná vazba
+                  </button>
+                )}
               </>
             )}
 
@@ -268,9 +274,8 @@ function Layout() {
           </div>
 
           {isSignedIn && (
-            <NavLink to="/porovnani" className="navbar-compare-mobile" aria-label={`Porovnání${compareCount ? `, ${compareCount} vybrané` : ''}`}>
-              <Columns3 size={20} aria-hidden="true" />
-              {compareBadge}
+            <NavLink to="/skoly" className="navbar-compare-mobile" aria-label="Školy">
+              <Search size={20} aria-hidden="true" />
             </NavLink>
           )}
           {showFeedbackInbox && feedbackInboxButton(true)}

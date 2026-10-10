@@ -321,7 +321,7 @@ export function AuthProvider({ children }) {
 
     // With email confirmation switched on, Supabase returns a user but no
     // session until the link is clicked.
-    return { needsEmailConfirmation: !data.session };
+    return { needsEmailConfirmation: !data.session, userId: data.user?.id || null };
   };
 
   const signIn = async (email, password, { captchaToken, remember = true } = {}) => {

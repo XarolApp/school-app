@@ -337,6 +337,7 @@ html {
 .navbar-toggle,
 .navbar-compare-mobile,
 .navbar-feedback-mobile,
+.navbar-feedback-menu,
 .navbar-sheet-foot {
   display: none;
 }
@@ -440,7 +441,24 @@ html {
     font-family: var(--heading);
     font-size: var(--fs-headline-sm);
   }
-  .navbar-links > a svg {
+  .navbar-links > .navbar-feedback-menu {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 56px;
+    gap: 14px;
+    padding: 0 14px;
+    border: 0;
+    border-radius: var(--r-button);
+    background: none;
+    color: var(--ink);
+    font-family: var(--heading);
+    font-size: var(--fs-headline-sm);
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .navbar-links > a svg,
+  .navbar-links > .navbar-feedback-menu svg {
     width: 20px;
     height: 20px;
   }

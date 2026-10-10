@@ -30,6 +30,7 @@ function SignUp() {
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [awaitingConfirmation, setAwaitingConfirmation] = useState(Boolean(resumed));
+  const [userId, setUserId] = useState(resumed?.userId || null);
   const [submitted, setSubmitted] = useState(false);
   const [captchaToken, setCaptchaToken] = useState(null);
   const [consent, setConsent] = useState(false);
@@ -152,6 +153,7 @@ function SignUp() {
     }
 
     if (result.needsEmailConfirmation) {
+      setUserId(result.userId);
       setAwaitingConfirmation(true);
       return;
     }
@@ -173,6 +175,7 @@ function SignUp() {
           <ConfirmEmailWaiting
             email={form.email.trim()}
             password={form.password}
+            userId={userId}
             parent={betaParent || Boolean(resumed?.parent)}
             betaCode={confirmedCode}
             emailRedirectTo={confirmationUrl(confirmedCode)}

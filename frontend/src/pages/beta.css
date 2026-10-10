@@ -343,3 +343,6 @@ html[data-menu-open] .beta-reward { display: none; }
   .beta-quick-hint { font-size: 12px; line-height: 1.35; }
   .beta-quick-actions .ss-btn { min-height: 38px; }
 }
+
+/* The phone's round feedback button, drawn inline in the instructions. */
+.beta-guide-chat-icon { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--acc); color: var(--acc-ink); vertical-align: middle; }

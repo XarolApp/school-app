@@ -73,6 +73,7 @@ function CreateAccount() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState(resumed?.email || '');
   const [password, setPassword] = useState('');
+  const [userId, setUserId] = useState(resumed?.userId || null);
   const [captchaToken, setCaptchaToken] = useState(null);
   const [consent, setConsent] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -237,6 +238,7 @@ function CreateAccount() {
     // The confirmation link carries a validated internal continuation through
     // Login and returns this browser to plan selection after sign-in.
     if (result.needsEmailConfirmation) {
+      setUserId(result.userId);
       setAwaitingConfirmation(true);
       return;
     }
@@ -253,6 +255,7 @@ function CreateAccount() {
           source="ob"
           email={email.trim()}
           password={password}
+          userId={userId}
           parent={parent}
           betaCode={betaCode}
           emailRedirectTo={confirmUrl}

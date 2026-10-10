@@ -65,12 +65,12 @@ function guidance(parent, hours, gender) {
       <p>{t('Statistiky z Cermatu i praktické informace z webů škol zpracováváme automaticky, takže se může stát, že něco není pravda. Když na takový údaj narazíš, dej nám vědět.', 'Statistiky z Cermatu i praktické informace z webů škol zpracováváme automaticky, takže se může stát, že něco není pravda. Když na takový údaj narazíte, dejte nám vědět.')}</p>
     </div>,
     how: <>
-      <p>{t('Tlačítko „Zpětná vazba“ je vždy vpravo dole. Můžeš:', 'Tlačítko „Zpětná vazba“ je vždy vpravo dole. Můžete:')}</p>
+      <p>{t('Tlačítko „Zpětná vazba“ je vždy vpravo dole. Na mobilu je to jen kulaté tlačítko s bublinou', 'Tlačítko „Zpětná vazba“ je vždy vpravo dole. Na mobilu je to jen kulaté tlačítko s bublinou')} <span className="beta-guide-chat-icon" aria-label="ikona bubliny"><MessageSquare size={16} aria-hidden="true" /></span>{t(' (najdeš ho i v menu). Můžeš:', ' (najdete ho i v menu). Můžete:')}</p>
       <ul className="beta-guide-list">
         <li>{t('napsat obecnou zprávu o celém webu, nebo', 'napsat obecnou zprávu o celém webu, nebo')}</li>
         <li>{t('označit konkrétní místo na stránce (tlačítko, text, část) a napsat poznámku přímo k němu.', 'označit konkrétní místo na stránce (tlačítko, text, část) a napsat poznámku přímo k němu.')}</li>
       </ul>
-      <ol className="beta-demo" aria-label="Tři kroky zpětné vazby">{[[MousePointer2, t('Klikni na „Zpětná vazba“', 'Klikněte na „Zpětná vazba“')], [SquareMousePointer, t('Označ místo, nebo piš obecně', 'Označte místo, nebo pište obecně')], [MessageSquare, t('Napiš zprávu', 'Napište zprávu')]].map(([Icon, label]) => <li key={label}><Icon size={24} aria-hidden="true" /><span>{label}</span></li>)}</ol>
+      <ol className="beta-demo" aria-label="Tři kroky zpětné vazby">{[[MousePointer2, t('Klikni na „Zpětná vazba“ (na mobilu na bublinu)', 'Klikněte na „Zpětná vazba“ (na mobilu na bublinu)')], [SquareMousePointer, t('Označ místo, nebo piš obecně', 'Označte místo, nebo pište obecně')], [MessageSquare, t('Napiš zprávu', 'Napište zprávu')]].map(([Icon, label]) => <li key={label}><Icon size={24} aria-hidden="true" /><span>{label}</span></li>)}</ol>
       <p>{t('Pošli toho klidně hodně — i „tohle je super, nechte to tak“.', 'Pošlete toho klidně hodně — i „tohle je super, nechte to tak“.')}</p>
     </>,
     contact: <div className="beta-guide-callout">

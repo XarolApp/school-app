@@ -24,7 +24,7 @@ export class ApiError extends Error {
   }
 }
 
-async function request(path, options = {}) {
+async function request(path, options = {}, retried = false) {
   const {
     data: { session },
   } = await supabase.auth.getSession();
@@ -46,6 +46,13 @@ async function request(path, options = {}) {
   if (res.status === 204) return null;
 
   const body = await res.json().catch(() => ({}));
+
+  // A token can be rejected after a laptop sleep or a refresh in another tab.
+  // Refresh once and retry before reporting the session as invalid.
+  if (res.status === 401 && token && !accessToken && !retried) {
+    const { data: refreshed, error: refreshError } = await supabase.auth.refreshSession();
+    if (!refreshError && refreshed?.session) return request(path, options, true);
+  }
 
   if (!res.ok) {
     if (!path.startsWith('/api/beta/') && !path.startsWith('/api/admin/')) track('api_error', { endpoint: path.split('?')[0], status: res.status });
@@ -134,6 +141,12 @@ export function updateProfile({ name, themePalette, themeMode, gender }, accessT
     body: JSON.stringify(body),
     accessToken,
   });
+}
+
+/** Whether the account created a moment ago has opened its confirmation link
+ *  — in any browser. Takes the new account's id, never the e-mail. */
+export function fetchConfirmationStatus(userId) {
+  return request(`/api/auth/confirmation/${encodeURIComponent(userId)}`);
 }
 
 export function deleteAccount() {

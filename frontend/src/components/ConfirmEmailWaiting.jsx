@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAuth } from './AuthContext';
 import { useG } from '../lib/gender';
+import { fetchConfirmationStatus } from '../api';
 import Captcha, { captchaEnabled } from './Captcha';
 import {
   RESEND_COOLDOWN_SECONDS, readPendingConfirmation, savePendingConfirmation, clearPendingConfirmation,
@@ -9,9 +10,10 @@ import {
 // How often we look for the session the confirmation tab wrote. supabase-js
 // also pushes it across tabs, so this is the safety net, not the main route.
 const POLL_MS = 2500;
-// How often we try the password sign-in, which is what works when the link was
-// opened in a different browser (or a private window) that shares no storage.
-const PASSWORD_POLL_MS = 12000;
+// How often we ask the server whether the link was opened in any browser. A
+// different browser or private window shares no storage with this one, so only
+// the server knows; once it says yes we sign in with the password typed here.
+const STATUS_POLL_MS = 4000;
 
 /**
  * "Check your inbox" body shared by the plain sign-up and the onboarding
@@ -22,7 +24,7 @@ const PASSWORD_POLL_MS = 12000;
  * `variant="ob"` uses the onboarding button classes.
  */
 export default function ConfirmEmailWaiting({
-  email, password = '', parent = false, betaCode = null, emailRedirectTo, onConfirmed, onChangeEmail, children, variant = 'page', source = 'signup',
+  email, password = '', userId = null, parent = false, betaCode = null, emailRedirectTo, onConfirmed, onChangeEmail, children, variant = 'page', source = 'signup',
 }) {
   const g = useG();
   const { isSignedIn, emailConfirmed, profileLoading, adoptStoredSession, resendConfirmation, signIn } = useAuth();
@@ -36,12 +38,13 @@ export default function ConfirmEmailWaiting({
   const [status, setStatus] = useState(null);
   const [sending, setSending] = useState(false);
   const [checking, setChecking] = useState(false);
+  const [confirmedElsewhere, setConfirmedElsewhere] = useState(false);
   const checkingRef = useRef(false);
   const captchaTokenRef = useRef(null);
 
   useEffect(() => {
-    savePendingConfirmation({ email, betaCode, parent, emailRedirectTo, sentAt, source });
-  }, [email, betaCode, parent, emailRedirectTo, sentAt, source]);
+    savePendingConfirmation({ email, userId, betaCode, parent, emailRedirectTo, sentAt, source });
+  }, [email, userId, betaCode, parent, emailRedirectTo, sentAt, source]);
 
   useEffect(() => {
     const timer = setInterval(() => setNow(Date.now()), 1000);
@@ -66,40 +69,50 @@ export default function ConfirmEmailWaiting({
 
   useEffect(() => { captchaTokenRef.current = captchaToken; }, [captchaToken]);
 
-  // Same-browser route first; otherwise sign in with the password typed a moment
-  // ago (kept in memory only). That succeeds exactly when the link was opened,
-  // wherever. `manual` is the button: it reports a "not yet" answer.
+  // Same-browser route first; otherwise ask the server, and once the link has
+  // been opened anywhere, sign in with the password typed a moment ago (memory
+  // only). Without it (after a reload) we say it is confirmed and offer login.
+  // `manual` is the button: it reports a "not yet" answer.
   const checkConfirmed = useCallback(async ({ manual = false } = {}) => {
-    if (checkingRef.current) return;
+    if (checkingRef.current || confirmedElsewhere) return;
     checkingRef.current = true;
     if (manual) { setChecking(true); setStatus(null); }
+    const loginHint = parent ? 'přihlaste se tlačítkem „Už mám účet“ níže.' : 'přihlas se tlačítkem „Už mám účet“ níže.';
     try {
       await adoptStoredSession();
-      if (!password) {
-        if (manual) setStatus({ kind: 'error', text: parent ? 'Potvrzení zatím nevidíme. Pokud jste odkaz otevřeli jinde, přihlaste se tlačítkem „Už mám účet“ níže.' : `Potvrzení zatím nevidíme. Pokud jsi odkaz ${g('otevřel', 'otevřela')} jinde, přihlas se tlačítkem „Už mám účet“ níže.` });
+      if (!userId) {
+        if (manual) setStatus({ kind: 'error', text: `Potvrzení odsud nevidíme. Pokud ${parent ? 'jste odkaz otevřeli' : `jsi odkaz ${g('otevřel', 'otevřela')}`}, ${loginHint}` });
+        return;
+      }
+      let confirmed = false;
+      try { ({ confirmed } = await fetchConfirmationStatus(userId)); } catch (err) {
+        if (manual) setStatus({ kind: 'error', text: err.message });
+        return;
+      }
+      if (!confirmed) {
+        if (manual) setStatus({ kind: 'info', text: parent ? 'Zatím nevidíme potvrzení. Klikněte na odkaz v e-mailu a zkuste to znovu.' : 'Zatím nevidíme potvrzení. Klikni na odkaz v e-mailu a zkus to znovu.' });
         return;
       }
       const token = captchaTokenRef.current;
-      if (captchaEnabled && !token) return; // the next widget token triggers another try
-      const result = await signIn(email, password, { captchaToken: token, remember: true });
-      if (captchaEnabled) { setCaptchaToken(null); setCaptchaKey((key) => key + 1); }
-      if (!result.error) return; // the signed-in effect below continues the flow
-      if (manual) {
-        setStatus({ kind: result.needsEmailConfirmation ? 'info' : 'error', text: result.needsEmailConfirmation
-          ? (parent ? 'Zatím nevidíme potvrzení. Klikněte na odkaz v e-mailu a zkuste to znovu.' : 'Zatím nevidíme potvrzení. Klikni na odkaz v e-mailu a zkus to znovu.')
-          : result.error });
+      if (password && captchaEnabled && !token) return; // the next poll retries once the widget has a token
+      if (password) {
+        const result = await signIn(email, password, { captchaToken: token, remember: true });
+        if (captchaEnabled) { setCaptchaToken(null); setCaptchaKey((key) => key + 1); }
+        if (!result.error) return; // the signed-in effect continues the flow
       }
+      setConfirmedElsewhere(true);
+      setStatus({ kind: 'ok', text: `E-mail je ${parent ? 'potvrzený. Teď se, prosím,' : 'potvrzený. Teď se'} ${loginHint}` });
     } finally {
       checkingRef.current = false;
       if (manual) setChecking(false);
     }
-  }, [adoptStoredSession, signIn, email, password, parent, g]);
+  }, [adoptStoredSession, signIn, email, password, userId, parent, g, confirmedElsewhere]);
 
   useEffect(() => {
-    if (!password) return undefined;
-    const timer = setInterval(() => { if (document.visibilityState === 'visible') void checkConfirmed(); }, PASSWORD_POLL_MS);
+    if (!userId || confirmedElsewhere) return undefined;
+    const timer = setInterval(() => { if (document.visibilityState === 'visible') void checkConfirmed(); }, STATUS_POLL_MS);
     return () => clearInterval(timer);
-  }, [password, checkConfirmed]);
+  }, [userId, confirmedElsewhere, checkConfirmed]);
 
   const secondsLeft = Math.max(0, Math.ceil((sentAt + RESEND_COOLDOWN_SECONDS * 1000 - now) / 1000));
   const canResend = secondsLeft === 0 && !sending && (!captchaEnabled || Boolean(captchaToken));
@@ -148,7 +161,7 @@ export default function ConfirmEmailWaiting({
           {parent ? 'Mail nepřišel? Zkontrolujte spam a složku Hromadné. Mail může docházet i minutu.' : 'Mail nepřišel? Mrkni do spamu a do složky Hromadné. Mail může docházet i minutu.'}
         </p>
         <Captcha onVerify={setCaptchaToken} resetKey={captchaKey} />
-        <button type="button" className={buttonClass} onClick={() => checkConfirmed({ manual: true })} disabled={checking || (captchaEnabled && Boolean(password) && !captchaToken)}>
+        <button type="button" className={buttonClass} onClick={() => checkConfirmed({ manual: true })} disabled={checking || confirmedElsewhere}>
           {checking ? 'Kontroluji…' : parent ? 'E-mail jsem už potvrdil' : `Už jsem e-mail ${g('potvrdil', 'potvrdila')}`}
         </button>
         <button type="button" className={buttonClass} onClick={resend} disabled={!canResend}>

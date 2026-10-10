@@ -872,6 +872,17 @@ app.patch('/api/me', requireAuth, async (req, res) => {
 // questionnaire_runs, school_reviews, review_reports and data_reports (all
 // foreign-key it with ON DELETE CASCADE), so this one call removes everything
 // we hold. It needs the admin API, hence the service key.
+// The "check your inbox" screen asks this whether the link was opened anywhere
+// (another browser, a phone). Keyed by the unguessable id signUp returned, not
+// the e-mail, so it cannot be used to probe which addresses have accounts.
+app.get('/api/auth/confirmation/:userId', async (req, res) => {
+  if (!/^[0-9a-f-]{36}$/i.test(req.params.userId)) return res.status(400).json({ error: 'Neplatný požadavek.' });
+  if (!SERVICE_KEY) return res.status(503).json({ error: 'Ověření není nastavené.' });
+  const { data, error } = await supabase.auth.admin.getUserById(req.params.userId);
+  if (error || !data?.user) return res.json({ confirmed: false });
+  res.json({ confirmed: Boolean(data.user.email_confirmed_at) });
+});
+
 app.delete('/api/me', requireAuth, async (req, res) => {
   if (!SERVICE_KEY) {
     return res.status(503).json({ error: 'Mazání účtu není nastavené.' });
