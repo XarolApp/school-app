@@ -1,5 +1,9 @@
 # 020 — Beta launch batch (access gate, comparison, matrix, AI explanations, tester UX)
 
+**Current review, 10 October 2026:** this records the 8–9 October implementation request. Later founder decisions/current fixes supersede its original acceptance wording: beta is free for feedback, paywall screens are optional previews and never invoke Stripe. Only accepted main-form/access-gate messages renew access; quick ratings, events, preview views and closing answers do not. Read-only metadata now shows the intended single cohort, 48-hour access, cutoff 18 October at 23:59 Prague and exposed role-note/consent timestamp fields. This does not prove current SQL definitions/grants, rerun safety, isolation or end-to-end enrollment; do not blindly apply historical SQL.
+
+Current [deployment report](../reports/deployment-review-2026-10-07/REPORT.md) and [handoff](../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md) govern unfinished work: ordinary-account trial starts at first confirmed sign-in (migration pending), immutable account/request ownership, erasure/consent/sharing, mixed-year provenance, real loading/retry state, theme/landscape/tooltip accessibility and real device/service acceptance. Comparison now says historical “Podíl přijatých”; it does not predict a student's chance. Current catalogue scoring is present after `51ff34f`, but complete real-engine/HTTP/cache acceptance and the separate onboarding-versus-standalone policy remain open. Gate policy versus intentionally free public onboarding/detail paths still needs the founder's explicit final matrix. Implementation status and the old model routing below are historical facts, not review approval or instructions to switch this solo reviewer.
+
 **Status:** IMPLEMENTED 2026-10-09. Repository implementation and Phase 13
 documentation are on `origin/main`; see the commit list below. This status does
 not mean production configuration, database migration or beta acceptance is done.
@@ -69,8 +73,9 @@ There is one tester school.
    - Set an HttpOnly, Secure, SameSite=Lax cookie for 180 days.
    - Its value is an HMAC (SHA-256 via Web Crypto) of the normalised key with a fixed
      label, not the raw key. Rotating `SITE_ACCESS_KEY` then locks out everyone.
-   - Rate-limit wrong attempts at minimum: a 600 ms delay on a wrong code. No storage
-     needed.
+   - Historical request: delay a wrong-code response by 600 ms. This adds latency;
+     it is not a request-count limit and does not prevent parallel attempts. Hosted
+     abuse/rate-limit acceptance must assess the actual edge/proxy setup.
 5. **Remove the bypasses.** `/beta/:code` and `/email-overen?beta=` must no longer
    open the gate (founder: "nobody who didn't type this code"). Delete
    `betaGateCode`, `lookupBetaInvitation` and `betaApiUrl` if nothing else uses them,
@@ -194,8 +199,9 @@ bar). The same bug hits šance, místa and jazyky.
    same number.
    - `shoda`: `match_score / 100`. Unchanged.
    - `sance`: acceptance rate (`summarizeAdmission(s).acceptance / 100`, admitted ÷
-     applicants), not the min-maxed cutoff. A Cermat-covered school always has a
-     chance > 0 (founder: "there is always the chance and we know it").
+     applicants), not the min-maxed cutoff. The historical request called this
+     “chance”; current copy correctly describes a past admission proportion. Data
+     coverage alone guarantees neither a positive proportion nor personal admission.
    - `mista`: `kapacita / max(kapacita in set)`.
    - `jazyky`: `count / max(count in set)`.
    - `maturita`: `pct / 100`.
@@ -343,6 +349,10 @@ effort.
 
 **Cost estimate**, to record in this plan's PR description. OpenRouter flex
 pricing, 2026-10-08: $0.05 per M input tokens, $0.25 per M output tokens.
+These are dated planning estimates, not verified current provider costs or a usage
+budget. Confirm the selected model/provider tier and actual billed usage first.
+`--dry-run` skips summary writes but still may make paid calls and write AI usage logs;
+the five-script CLI guards now reject malformed scope values (deployment S14).
 - One questionnaire run with 10 sentences: about 3k input and 2.5k output tokens
   (with reasoning), about $0.0008, or **about 0.02 Kč**.
 - One on-demand explanation: about 1.5k input and 0.7k output tokens, about $0.00025,
@@ -632,6 +642,9 @@ remain release gates.
 ## Founder steps (not for Codex)
 
 These are listed in the chat reply of 2026-10-08:
+Treat this as the dated checklist. The cohort/cutoff observations above supersede
+“not yet configured” assumptions; verify each remaining hosted setting and reviewed
+missing migration rather than repeating already-completed live operations.
 - Vercel and Railway env vars.
 - The new SQL.
 - The single internal `beta_schools` row (`PRISTUPTESTOVACIVERZE`, ZŠ Jesenicova) and the end date (Sunday 18 October 2026, 23:59 Prague).

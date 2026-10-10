@@ -15,7 +15,11 @@ product/research docs, not visual design work. That split happened 2026-08-31; s
 - **`pricing_research.md`** — 2025/2026 subscription pricing + EU minor-payment
   research. Read before touching pricing or plan structure.
 - **`platform_onboarding_research.md`** — web-vs-app onboarding placement research
-  (where the quiz should live given the app is the intended primary surface).
+  (dated proposals, not current architecture or legal approval; read its current-use banner).
+- **`onboarding_conversion_research.md`** — September evidence review with marked
+  gaps/inferences and corrected legal scope; current source/founder decisions govern.
+- **`onboarding_conversion_research_prompt.md`** — historical research brief; refresh
+  its product snapshot before reusing it.
 - **`feature-brainstorm.md`** — full feature roadmap/ratings (🔥/✅/🟡/❌). Read before
   proposing new features or scope — this is the backlog behind CLAUDE.md's shorter
   MVP list, not a duplicate of it.
@@ -29,7 +33,8 @@ product/research docs, not visual design work. That split happened 2026-08-31; s
 ## Archival
 
 - The former **`onboarding.md`** was merged into
-  `.claude/agents/onboarding-architect.md` and is no longer present here.
+  `.claude/agents/onboarding-architect.md`; the historical source is at
+  `archive/docs/sources/onboarding.md`, not in this folder.
 
 ---
 
@@ -46,8 +51,9 @@ product/research docs, not visual design work. That split happened 2026-08-31; s
   for all new `/design` work.
 - **`design/archive/`** — finished, already-implemented design work, kept for history.
 - **`design/research/`** — the design-direction research and Mobbin pattern surveys
-  that used to live here in `docs/sources/`, including `design_system-archived.md`
-  (the *prior* palette, superseded before the current terracotta/moss system).
+  that used to live here in `docs/sources/`. The older `design_system-archived.md`
+  now lives at `archive/design/research/design_system-archived.md`; it records a
+  superseded visual direction, not the current blue/Archivo system.
 
 ## Why the split happened
 

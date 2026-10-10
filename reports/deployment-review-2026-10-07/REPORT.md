@@ -126,3 +126,6 @@ Theme/plan checkpoint, 10 October (C38): actual beta-guide progress in Oran≈æov√
 
 
 Pipeline/test checkpoint, 10 October (S14): fixed malformed CLI scope values expanding work across the catalogue in five scripts, including missing school/model values where supported. Sixteen actual-script offline regressions, five syntax checks and all **173 repository tests** pass; no real scrape/model/query/write occurred. Complete current pros/cons-generator and server-boundary-test source reads are recorded. [Verification](script-cli-verification-2026-10-10.json) and [test output](script-cli-all-tests-2026-10-10.txt). S11/S12 larger pipeline, payment/privacy/owner/device and remaining full-review gates remain open.
+
+
+Research checkpoint, 10 October: five full document reads correct stale beta/desktop/storage facts, archive paths and legal/platform inaccuracies; see C39 in [continuation findings](continuation-findings.md). Historical metrics/proposals remain dated and confer no compliance or launch approval. No runtime or legal policy changed.

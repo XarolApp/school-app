@@ -148,3 +148,6 @@ Theme/plan follow-up, 10 October (C38): current Oranžová normal-text accent-on
 
 
 Pipeline scope follow-up, 10 October (S14 fixed): preserve the new fail-before-work limit/school/model validation in the five scripts and structure mode, with the actual-script offline regression harness. All 173 root tests pass; this is not live pipeline acceptance. Complete S11/S12 input identity/visible-school/provenance and model/prompt-version/failure-exit work before reviewed regeneration. Dry runs still may consume paid calls and persist usage logs; do not treat the filename as a no-write/no-cost guarantee. Verify bounded selection, cached/merged/shared-KKOV schools, mixed years, retries/failures and old summary review in disposable/local evidence before a separately authorized production run.
+
+
+C39 documentation checkpoint: the research brief/results/index and plan 020 now defer to current founder decisions/source. Do not implement historical surface-split, vendor conversion bands, blanket privacy exemptions or presumed DFA rules as current requirements. Resolve actual LEGAL01–10/access/device acceptance using the existing ordered tasks and primary authorities.

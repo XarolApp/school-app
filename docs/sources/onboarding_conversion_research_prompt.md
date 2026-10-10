@@ -1,8 +1,12 @@
 # Research prompt: what makes an onboarding flow actually convert
 
-Paste this into Cowork (or another deep-research tool) as-is. Save the output as
-`onboarding_conversion_research.md` in this same folder — Claude will pick it up
-from there.
+**Historical brief, updated 10 October 2026:** the September flow counts/product
+snapshot below are research inputs, not current implementation instructions. Refresh
+them from source before reuse and keep previous research as dated evidence. Beta is
+free for main feedback with optional payment previews; the web remains a full product,
+desktop layouts exist, and the standalone questionnaire has 31 served questions.
+The mobile framework and cross-device/product decisions remain separate. See the
+[deployment report](../../reports/deployment-review-2026-10-07/REPORT.md).
 
 Written 2026-09-05, to fill a specific gap: this project has research on *where*
 onboarding should live (`platform_onboarding_research.md`, web vs app) and a
@@ -25,25 +29,25 @@ These properties matter and several of them break the assumptions most onboardin
 advice is built on. Please treat them as binding constraints, and flag explicitly
 whenever a finding you report does **not** transfer to a product shaped like this.
 
-- **Used exactly once per person, ever.** One high-school decision, then the user
-  is done forever. There is no habit loop, no D7 retention, no re-engagement, no
-  "streak." Almost all published onboarding advice optimises for retention in a
-  habit product (Duolingo, fitness, meditation). I need to know which findings
-  survive when *retention is irrelevant* and the only outcomes are (a) finishing
-  the flow and (b) paying, both within a single session.
+- **One high-school decision period per student.** This is not a habit/streak
+  product, but shortlist research and beta feedback involve repeat visits over that
+  period. Do not equate one decision with one session or irrelevant retention.
+  Distinguish completing onboarding, returning to decision tools and, outside free
+  beta, purchasing access when transferring habit-product findings.
 - **Web first, and desktop is a first-class surface.** Traffic arrives mostly as
   mobile browsers from TikTok/Instagram influencer links, but the parent persona
   researches on a laptop and students use school computers. The entire existing
-  design is 390px mobile-first and **desktop is undesigned** — this is the single
-  biggest gap I need filled.
+  September brief was 390px mobile-first. Desktop layouts now exist; responsive,
+  landscape, large-text and real-browser acceptance remain review tasks.
 - **Anonymous quiz first, account and payment last.** The user answers ~10
   questions with no account, sees their #1 school match free, then hits a paywall
   for the full ranked list. Registration happens *after* the value is shown.
 - **Two buyer personas branch at screen 2**: the teenager and the parent. Both
   pay independently — neither is a funnel into the other. Voice, proof type and
   price framing all differ by branch.
-- **The audience includes minors in the EU.** GDPR, the DSA (Art. 25) and the
-  Digital Fairness Act are binding. No fake scarcity, no countdown timers, no
+- **The audience includes minors in the EU.** Verify applicable GDPR/consumer-law
+  duties and DSA scope/exclusions. The Digital Fairness Act is an initiative in
+  preparation, not binding law ([EPRS, 5 October 2026](https://eprs.europarl.europa.eu/contents/publications/EPRS/2026/10/EPRS_BRI%282026%29791529.html)). No fake scarcity, no countdown timers, no
   manufactured urgency, no guilt or fear-based copy aimed at a 15-year-old.
 - **High-stakes, anxiety-adjacent decision.** This is one of the first real
   decisions of a teenager's life, and a parent is often anxious about it. Warmth

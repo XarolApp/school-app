@@ -6,14 +6,16 @@ status: research reference, not a decision record
 
 ## Intro
 
-This fills the gap between "where onboarding lives" (`platform_onboarding_research.md`) and "what onboarding screens look like" (`mobbin_pattern_survey.md`): what evidence actually exists on *why* an onboarding flow converts. Source quality is uneven for this topic — almost none of it is peer-reviewed, most is company case studies or agency marketing — so every finding below is labeled:
+**Current use, 10 October 2026:** this is September research, not a current flow contract or conversion/compliance guarantee. The screen counts, anonymous-to-paid sequence and third-party product snapshots are dated assumptions. Beta is free for main feedback, with optional payment previews; desktop layouts exist. One school-decision period can include repeated visits. Use current source/founder decisions and the [deployment report](../../reports/deployment-review-2026-10-07/REPORT.md), especially privacy, genuine loading/progress and access gates. Unverified vendor estimates remain research leads, not product claims or permission to collect data.
+
+This fills the gap between "where onboarding lives" (`platform_onboarding_research.md`) and "what onboarding screens look like" (`design/research/mobbin_pattern_survey.md`): what evidence actually exists on *why* an onboarding flow converts. Source quality is uneven for this topic — almost none of it is peer-reviewed, most is company case studies or agency marketing — so every finding below is labeled:
 
 - **[Peer-reviewed/academic]** — published research, replicated or citable methodology
 - **[Case study]** — a company's own published data or teardown of a real shipped product
 - **[Vendor/marketing]** — content from a tool vendor or growth agency, directionally useful but self-interested
 - **[Inference]** — my own reasoning, not sourced, flagged as such
 
-Střední na míru-specific constraints are treated as binding throughout: single-use (no retention lever), web-first with desktop as first-class, anonymous-quiz-then-paywall, dual persona, EU minor-audience legal constraints, and 23 screens currently under review.
+The original brief assumed a single decision period, web-first with desktop as first-class, anonymous-quiz-then-paywall, dual persona, EU minor-audience constraints and a 23-screen snapshot. These are dated research inputs; they do not override current beta behavior, implemented flows or repeated shortlist/feedback use.
 
 ---
 
@@ -101,17 +103,15 @@ The most-cited academic finding here is Lindgaard, Fernandes, Dudek & Brown (200
 3. **Narrative/problem-framing before the task — [case study evidence only].** Noom and similar quizzes consistently open with stakes/problem-framing before the first question; this is universal practice but I found no controlled study isolating its effect from the rest of the funnel — it's plausible on persuasion-theory grounds (commitment and consistency) but not independently measured.
 4. **Motion/animation as an attention-holder — no evidence found either way** for this specific application (separate from the ambient-animation research already on file); not recommending or discouraging based on evidence, since none exists for this exact question.
 
-**Where "compelling" becomes "dark pattern" under EU law — Article 25 DSA, specifically:**
-Article 25 DSA prohibits online interface designs that "deceive or manipulate" users or "materially distort or impair" their ability to make free, informed decisions. **[Primary legal source — this is binding law, not commentary]** ([DSA Library, Article 25 text and commentary](https://dsa-library.com/article/25/))
+**Legal correction, 10 October 2026 [primary sources]:**
 
-Named practices confirmed as prohibited or clearly high-risk under Article 25 and adjacent EU rules (GDPR, Unfair Commercial Practices Directive):
-- **Pre-checked boxes** for paid options or data sharing — requires affirmative, explicit action instead. Directly relevant if any screen defaults a plan tier or upsell to "on."
-- **Confirmshaming** (e.g., "No thanks, I don't want my child accepted to a good school") — explicitly named as a violation category. This is a real risk for a product built around a stakes-and-anxiety framing; any decline-option copy needs to stay neutral.
-- **Fabricated scarcity/urgency** ("Only 3 spots left," fake countdown timers) — explicitly prohibited when the scarcity is not real. Your brief already rules this out; the legal source confirms it's not just tasteless but legally risky.
-- **Hidden costs disclosed only at final checkout** — treated as manipulative; pricing should be visible before the final commit step, not sprung at the end.
-- **Friction asymmetry** (one-click into something, multi-step to exit/cancel/decline) — named as impairing free choice; relevant to how "skip" or "see full results without paying" options are designed.
+DSA Article 25 applies to online-platform providers within its scope, subject to Article 19 exclusions; Article 25(2) excludes practices covered by GDPR/UCPD. Its examples cover choice prominence, repeated requests and harder termination. “Confirmshaming” is not explicitly named in that article. Do not treat it as a blanket rule for every website. [Official DSA](https://eur-lex.europa.eu/eli/reg/2022/2065/oj/eng).
 
-**Explicitly not addressed in the source I could access:** the DSA Library page I fetched does not itself carry minor-specific provisions distinct from the general Article 25 text — the minors-specific weight comes from the Digital Fairness Act proposal and GDPR's Article 8 (consent age thresholds), which I was not able to fetch primary text for in this pass. **Gap, flagged honestly:** I can confirm Article 25's general prohibitions above from a primary-ish source, but I could not verify the *specific* minor-enhanced provisions (e.g., whether DFA proposals impose a stricter standard for under-18 users specifically, beyond the general ban) from a document I actually read in this session — secondary commentary (Lexology, Osborne Clarke) suggests the DFA proposal does add minor-specific scrutiny, but I did not fetch and verify their content directly, so treat that specific claim as unconfirmed pending your own legal review rather than something I've verified for you. **You should have this checked by someone with EU consumer-law expertise before finalizing copy and defaults — this section is directional, not a compliance sign-off.**
+Pre-ticked boxes do not establish GDPR consent. Consumer Rights Directive Article 22 requires express consent for **additional payments**; this does not automatically forbid preselecting the main plan. [GDPR](https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng), [CRD Article 22](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A02011L0083-20220528).
+
+The Digital Fairness Act remains in preparation, with a proposal expected in Q4 2026, rather than binding enacted rules. [EPRS, 5 October 2026](https://eprs.europarl.europa.eu/contents/publications/EPRS/2026/10/EPRS_BRI%282026%29791529.html).
+
+Keep honest progress, neutral decline copy and transparent prices as product requirements. Assess applicable child-data, consumer-law and platform duties before release; this research supplies no legal approval or chosen processing basis.
 
 **Endowed-progress-effect legal interaction [inference, worth flagging]:** the Nunes & Drèze effect works by giving a *perceived* head start. If Střední na míru's progress bar showed, say, 30% complete after one screen to induce the same effort-boosting effect, that would likely cross into "artificial advancement that misrepresents actual progress" — which Article 25's anti-deception language plausibly captures, even though the academic study itself is not about legality. The safe version is a progress indicator that's accurate but *framed* well (e.g., counting only the questions, not diluting it across throwaway screens), not one that's numerically inflated.
 
@@ -173,7 +173,7 @@ Given that, here's what the two general theories in this document actually predi
 - No comparative data on any of the three reveal/paywall architectures (show #1 free vs. paywall-before-result vs. reveal-all-paywall-depth).
 - No data on whether qualitative match bands cost conversion relative to a numeric score, only that it's well-supported on ethical/product-fit grounds.
 - No case study of a dual-independent-payer minor+parent flow exists to learn from — this is closer to product-design territory you'll be establishing than replicating.
-- No confirmed primary-source detail on Digital Fairness Act minor-specific provisions beyond general Article 25 — get this checked by EU consumer-law counsel before finalizing copy, urgency framing, and default states.
+- The forthcoming DFA is not an enacted compliance checklist. Applicable child-data/consumer/platform rules and future changes require the deployment legal review.
 - No adaptive single-question-mobile/multi-question-desktop example was found, so piloting that pattern would be unvalidated territory, not a known-good approach.
 - Nothing here should be read as approving or rejecting your 23-screen structure as a whole — the evidence only supports relative statements (pre-payoff screens are riskier per-screen than post-reveal ones), not an absolute right-sized number.
 

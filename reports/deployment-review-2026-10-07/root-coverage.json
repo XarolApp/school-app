@@ -1302,18 +1302,19 @@
     "method": "Full current source read in bounded complete ranges, truncated ranges reread; own full diff inspected. Current guide/report/UNFORGET baselines verified against saved full-read hash plus every own edit. Pricing runtime and checkout/polling/sharing handler equality verified. Source read is not Stripe, PostgreSQL, account or deployment acceptance."
   },
   "plans/020-beta-launch-batch.md": {
-    "sha256": "ed88e93f0569bcc3ea5b29a58fe94c50a35ea05846ee1f728d46833bd924a25a",
-    "lines": 614,
+    "sha256_before": "03eff320cf164c3bcd9c4ee9c51ff57bce3a235eab06b755bde0b1b7ed016a6e",
+    "sha256": "553ab6142401f6b376649f9b0bbfb12f3554bde6ffc850c80bfd290fe1665923",
+    "lines": 654,
     "read_ranges": [
       [
         1,
-        614
+        654
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:30:59.016402+00:00",
-    "method": "Full source read across recorded continuation turns, including missing middleware/brainstorm ranges and complete authored diffs. Read means inspected, not defect-free or runtime-approved."
+    "checked_at_utc": "2026-10-10T08:41:09.726295+00:00",
+    "method": "All baseline lines read in bounded sequential ranges with repaired truncated gaps, then complete own factual documentation patches inspected. Historical proposals remain dated, current source/founder decisions govern. Primary-source factual corrections are not legal approval, vendor verification or hosted acceptance."
   },
   "docs/skolamatch_90_point_context.md": {
     "sha256": "dabccc718ee629e12acb7cc5b1cc5acf94499bbb8e6a1658b9a76dbc7b9d7c5f",
@@ -3646,5 +3647,65 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-10T08:28:02.170441+00:00",
     "method": "Generator all 1–325 baseline lines plus full own diff; server-boundary tests all 1–1112 current lines with repaired overlapping ranges; other four exact full-read baselines plus full own parser-only diff; new test fully written/read. Offline/source coverage does not prove live payment/SQL/pipeline acceptance."
+  },
+  "docs/sources/README.md": {
+    "sha256_before": "0f1f86f80be2268a6e72d226c473e6b4468615a0df4e82e9fc23fa66b6de470f",
+    "sha256": "e6e5b480ea50ce8d365b386a8560a5ababd754f1d61e0e6f59976866bb3a141a",
+    "lines": 75,
+    "read_ranges": [
+      [
+        1,
+        75
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T08:41:09.726575+00:00",
+    "method": "All baseline lines read in bounded sequential ranges with repaired truncated gaps, then complete own factual documentation patches inspected. Historical proposals remain dated, current source/founder decisions govern. Primary-source factual corrections are not legal approval, vendor verification or hosted acceptance."
+  },
+  "docs/sources/onboarding_conversion_research.md": {
+    "sha256_before": "441211fb793e4e3ceadd9a820d74e752f903cacc90f208543a8118e1daa8ccf0",
+    "sha256": "dfad8cc7d879f18a2c582c7e3600cb622d162f352bbdd1e652adbe4976b3eedd",
+    "lines": 194,
+    "read_ranges": [
+      [
+        1,
+        194
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T08:41:09.726646+00:00",
+    "method": "All baseline lines read in bounded sequential ranges with repaired truncated gaps, then complete own factual documentation patches inspected. Historical proposals remain dated, current source/founder decisions govern. Primary-source factual corrections are not legal approval, vendor verification or hosted acceptance."
+  },
+  "docs/sources/onboarding_conversion_research_prompt.md": {
+    "sha256_before": "80f65a5206da5472b254098c84dca964028e77bcc49adc2cad335fe70c560a44",
+    "sha256": "48c04e3811978d6736b210609ab06c420a85aa89ed125fbf0c319f520cdbe8ae",
+    "lines": 171,
+    "read_ranges": [
+      [
+        1,
+        171
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T08:41:09.726695+00:00",
+    "method": "All baseline lines read in bounded sequential ranges with repaired truncated gaps, then complete own factual documentation patches inspected. Historical proposals remain dated, current source/founder decisions govern. Primary-source factual corrections are not legal approval, vendor verification or hosted acceptance."
+  },
+  "docs/sources/platform_onboarding_research.md": {
+    "sha256_before": "2ccf91f41e527345cbc57cfdced7544e7d55d354af1b861c3aeb09b7544d9f69",
+    "sha256": "8eaa2c081eb94a24b5625d6f90c5dba20242fdca90aad46d727c3a350fd5c96b",
+    "lines": 321,
+    "read_ranges": [
+      [
+        1,
+        321
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T08:41:09.726770+00:00",
+    "method": "All baseline lines read in bounded sequential ranges with repaired truncated gaps, then complete own factual documentation patches inspected. Historical proposals remain dated, current source/founder decisions govern. Primary-source factual corrections are not legal approval, vendor verification or hosted acceptance."
   }
 }

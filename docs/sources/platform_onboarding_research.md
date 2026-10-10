@@ -6,6 +6,8 @@ status: research reference, not a decision record
 
 # Platform & Onboarding Strategy Research
 
+**Current use, 10 October 2026:** this is dated research and proposed strategy, not an approved architecture or current legal/flow checklist. Web remains a full product including post-purchase tools; mobile is planned with framework undecided. Desktop layouts now exist. Beta is free for main feedback with optional payment previews. Historic conversion/device/commission bands are source-specific estimates, not current Czech teen behavior, our Stripe fees or a proven optimal quiz length. Current source/founder decisions, [design](../../design/DESIGN.md) and [deployment report](../../reports/deployment-review-2026-10-07/REPORT.md) govern; privacy, access, ownership and device acceptance remain open.
+
 ## What this document is about
 
 Střední na míru is a Czech product that helps 9th graders (age ~15) and their parents choose a high school (střední škola). Relevant properties of the product, assumed throughout:
@@ -13,18 +15,18 @@ Střední na míru is a Czech product that helps 9th graders (age ~15) and their
 - **Two surfaces, both real.** A mobile app is planned before public launch and is intended to be the primary way people use the product. A web app (React 19 + Vite) is being built first and remains a permanent, fully-working second surface on both desktop and mobile browsers. Neither is a stub.
 - **The app framework is not yet chosen.** React Native is a candidate because it would allow reuse of existing React components and the deterministic matching/scoring engine.
 - **Onboarding is a 23-screen flow containing a 10-question quiz**, running *before* any registration. The user answers anonymously, sees their #1 school match free, and hits a paywall for the rest. Registration and payment come at the end.
-- **Quiz answers live only in browser `sessionStorage`** — a deliberate GDPR data-minimisation choice, since the user may be a minor and nothing about them is written to the database during onboarding.
+- **Pre-account quiz state uses browser `sessionStorage`.** Current signed-in flows save answers to the account, and beta has separate telemetry/ranking collection. Local storage or absence of an account does not prove anonymity, no server records or exemption from privacy duties; inspect the actual processing/consent boundaries.
 - **Two buyer personas branch at screen 2**: the teenager and the parent. Both pay independently; neither funnels into the other.
 - **Acquisition is influencer/affiliate driven** (Czech teenage TikTok and Instagram), so most traffic arrives as mobile browsers from in-app link previews.
 - **The product is used essentially once per person, ever.** One high school decision. Not a habit or retention product.
-- **The audience includes minors in the EU.** GDPR and the Digital Fairness Act's dark-pattern rules are binding. No manipulative urgency, no fake scarcity.
-- **Visual design is complete for 390px mobile.** Desktop web has no design yet.
+- **The audience includes minors in the EU.** Applicable GDPR/consumer obligations require review. DFA is still in preparation ([EPRS, 5 October 2026](https://eprs.europarl.europa.eu/contents/publications/EPRS/2026/10/EPRS_BRI%282026%29791529.html)); DSA scope/exclusions must be assessed. No manipulative urgency or fake scarcity is a product requirement.
+- **The original brief used a 390px mobile design.** Current desktop layouts exist; complete phone/landscape/zoom/browser acceptance is pending.
 
 ---
 
 ## Verdict
 
-Ten decisions the evidence supports. Each says what to do.
+Ten historical proposals from this research. Their estimates and assumptions do not override the current product decisions above.
 
 1. **Run the entire quiz, the free #1 result, the paywall, and the purchase on web. Do not require an app install anywhere in that flow.** This is option (d) from the original framing. The evidence for it is stronger than for any alternative, and one number drives it: paywall conversion is roughly **6% on web versus 2% in native apps** ([Business of Apps, 2026](https://www.businessofapps.com/data/web-to-app-benchmarks/)). Putting an install between a user and the paywall costs money at the exact moment you are trying to make it.
 
@@ -38,13 +40,13 @@ Ten decisions the evidence supports. Each says what to do.
 
 6. **Keep one question per screen on mobile; group 2–3 related questions per screen on desktop ≥1024px.** Academic survey research finds **no significant completion-rate difference** between paging and scrolling on desktop, while paging measurably *slows* mobile users and lowers their satisfaction ([SurveyMonkey research summary](https://www.surveymonkey.com/curiosity/pros-cons-of-scrolling-and-multiple-pages-in-surveys/)). Grouping on desktop also means a mid-flow abandon preserves the answers already submitted on completed screens.
 
-7. **Keep the quiz at 10 questions.** Quiz-funnel data puts the **9–12 question band at the highest conversion (11.0%)**, above both 6–8 (10.4%) and 13+ (9.9%) ([ConvertFlow, 2026](https://www.convertflow.com/blog/how-to-fix-ecommerce-quiz-funnel-drop-off-in-2026)). The current design is already in the optimal band. Do not shorten it.
+7. **Historical proposal: keep the onboarding quiz at 10 questions.** The cited vendor reports a **9–12 question band at 11.0%**, versus 6–8 at 10.4% and 13+ at 9.9% ([ConvertFlow, 2026](https://www.convertflow.com/blog/how-to-fix-ecommerce-quiz-funnel-drop-off-in-2026)). This does not establish an optimal count for our school-choice flow. Follow current source/founder decisions and test comprehension/drop-off; the separate standalone questionnaire now has 31 definitions.
 
 8. **Do not gate the free #1 result behind an email.** The email gate is the steepest single cliff in a quiz funnel — **30–50% of users who finish the quiz drop at that one step**. Offer email capture only *after* the free result is visible, framed as "where should we send your results?" rather than "unlock your results."
 
 9. **Build no cross-device handoff mechanism for v1.** For a once-per-lifetime product where the whole flow can complete in a single session on one device, deferred deep linking, one-time codes, and QR handoff are all complexity without a payoff — and fingerprint-based deferred deep linking constitutes personal-data processing under GDPR requiring a documented legitimate-interest assessment or explicit consent ([Tolinku](https://tolinku.com/blog/deferred-linking-privacy-considerations/)). If you later need one, use a **short-lived server-side session token in a shareable URL**, not fingerprinting.
 
-10. **Note that Czech law is more permissive here than assumed: the Czech digital age of consent is 15** (Act No. 110/2019 Coll.), so a 15-year-old can validly consent to processing of their own data for information society services ([EuConsent](https://euconsent.eu/digital-age-of-consent-under-the-gdpr/)). Keep the `sessionStorage` design anyway — it is good practice and reduces breach surface — but understand that some 9th graders are 14, and the rule flips for them. Design for the 14-year-old case, not the 15-year-old one.
+10. **Czech child-consent threshold is 15** for the consent-based information-society-service case; it is not a general capacity-to-contract threshold or the basis for every processing operation. Assess actual purposes/bases and younger users. [ÚOOÚ](https://uoou.gov.cz/verejnost/zakladni-prirucka-k-ochrane-udaju), [GDPR Article 8](https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng).
 
 ---
 
@@ -66,9 +68,9 @@ Worse than (a) for this traffic profile. Acquisition is TikTok and Instagram lin
 
 ### (c) Full quiz independently on both, no handoff
 
-Structurally defensible and it is the fallback if the app must ship with quiz parity. The cost is duplicated flow logic across two codebases and two paywall implementations — meaningful for a solo developer, and it doubles the surface area for the DFA-compliance requirements (cancellation clarity, no dark patterns) that must be right on both.
+Structurally defensible as a historical proposal if the app must ship with quiz parity. Duplicated flow logic and payment interfaces increase maintenance and the surface to review for applicable consumer/privacy rules. The forthcoming DFA is not an enacted checklist.
 
-Its deeper problem is that it does not answer the question it appears to answer: if both surfaces run the quiz and the user lands on web, the app is not actually acquiring anyone. It just makes the app *possible* to use standalone without making it *likely*.
+This research's proposed objection is that quiz parity alone does not establish native acquisition. This is a strategy hypothesis, not permission to reduce the current full web product or a settled mobile scope.
 
 ### (d) Quiz on web, app never required — RECOMMENDED
 
@@ -83,7 +85,7 @@ Source: [Business of Apps, Web to App Benchmarks 2026](https://www.businessofapp
 
 The web-to-app industry's own framing supports the same conclusion by omission: **$12.2 billion was spent on web-to-app user acquisition in 2024, about 16% of total UA spend** — that entire industry exists to move users to apps *because apps monetise recurring engagement better*. Your product has no recurring engagement to monetise. The strategic reason to push installs does not apply to a once-per-lifetime purchase.
 
-**Honest counter-case for the app being primary anyway:** the app is a better home for post-purchase use (deadline notifications, shortlist revisits over the Sept–March window, push reminders about application dates), and push notification access genuinely cannot be replicated well on iOS web. That is a real argument — but it is an argument for the app as a *post-purchase* surface, which is compatible with recommendation 3 above, not an argument for putting it in the funnel.
+**Possible native benefit [strategy hypothesis]:** deadline notifications, offline access and shortlist revisits may motivate an app. Web Push is also supported for Home Screen web apps on iOS/iPadOS 16.4+, with user permission initiated by interaction; platform differences require actual device acceptance. It is not evidence that this web app implements push or that native must be the only post-purchase surface. [WebKit](https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/).
 
 ---
 
@@ -119,18 +121,18 @@ The patterns, honestly costed:
 | Pattern | Complexity | GDPR/minor risk | Worth it here? |
 |---|---|---|---|
 | **Deferred deep link (fingerprint)** | High — SDK, attribution vendor, iOS match-rate problems | **High.** IP + device attributes = personal data. Needs documented LIA or explicit consent. Fingerprinting minors' devices is exactly the pattern DFA scrutiny targets. | **No** |
-| **Deferred deep link (Play Install Referrer / iOS clipboard)** | Medium | Low — platform-sanctioned APIs, no fingerprinting | Only if you ship a pre-purchase install prompt, which you shouldn't |
-| **One-time numeric code** | Low — short-lived server row, no account | Low, if the payload is quiz answers only and TTL is short | **Only if a real need appears** |
-| **Magic link (email)** | Medium | **Elevated** — collecting a minor's email creates the personal-data record `sessionStorage` was designed to avoid | **No** |
-| **QR handoff (phone → desktop)** | Low–medium | Low | Niche; see below |
-| **Short-lived server-side session token in URL** | Low | Low with short TTL and no PII in payload | **Best option if you need one** |
+| **Deferred deep link (Play Install Referrer / iOS clipboard)** | Medium | Assess actual identifiers, access and provider terms; platform support is not privacy approval | Only if an approved handoff need appears |
+| **One-time numeric code** | Low — short-lived server row, no account | Assess payload linkability, bearer access and retention; quiz answers may be personal | **Only if a real need appears** |
+| **Magic link (email)** | Medium | An email adds a direct identifier; browser-only state does not establish absence of other personal data | Assess only for an approved handoff need |
+| **QR handoff (phone → desktop)** | Low–medium | Assess the actual linked data and bearer access | Niche; see below |
+| **Short-lived server-side session token in URL** | Low | Short TTL helps; identifiers, linked answers and token exposure still need assessment | **Candidate if a real need appears** |
 
 **The one case worth considering later:** a teen completes the quiz on their phone and wants a parent to see the results on a laptop before paying. That is a plausible dual-persona scenario in this product. If it shows up in real usage, the right answer is a **shareable results URL backed by a short-TTL server token containing quiz answers and match output but no identifiers** — cheap to build, no account required, no fingerprinting, and it doubles as an organic distribution channel. **Flagged as inference:** no data was found on how often this specific parent-review handoff occurs in education purchases. Instrument for it rather than assuming it.
 
 **GDPR notes specific to your setup:**
-- Fingerprint-based deferred deep linking processes personal data and is the one pattern here with a genuine compliance problem. Avoid it.
-- The Czech digital age of consent is **15**, so a 15-year-old can consent for themselves — but **9th graders include 14-year-olds**, for whom parental consent is required. Design to the 14-year-old.
-- Keeping quiz answers in `sessionStorage` remains correct. It is defensible data minimisation and it means an abandoned funnel leaves no record at all.
+- Fingerprint-based deferred deep linking requires review of actual identifiers, purposes, storage/access and applicable rules. Other handoff patterns also need privacy assessment; absence of fingerprinting does not approve them.
+- The Czech **15** threshold concerns the consent-based direct child-service case. Assess guardian verification when that basis applies and the child is younger; it does not settle other bases or contracting capacity.
+- `sessionStorage` limits persistence in that browser. It guarantees neither anonymity nor absence of server/telemetry/provider records after abandonment. Account-linked processing remains subject to the current privacy review.
 
 ---
 
@@ -163,7 +165,7 @@ The practical resolution is that **one-per-screen's advantage is a motivation de
 
 **Quiz-before-registration is correct, on both surfaces. Keep it.**
 
-It is also the GDPR-optimal design, which is a rare alignment of conversion and compliance: no account means no personal data means no consent question during the flow at all.
+Deferring registration can reduce data collection, but no account does not imply no personal data or automatic compliance. Assess actual identifiers, transmissions and purposes. [GDPR Article 4](https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng).
 
 **Do desktop users abandon anonymous multi-step flows more or less than mobile?**
 
@@ -203,8 +205,8 @@ The practical read survives both caveats: your two personas probably split acros
 
 **Other market context:**
 
-- Czech social platform reach (Jan 2025): YouTube 7.99M (74.8%), Facebook 5.00M (46.8%), Instagram 3.70M (34.6%), TikTok 2.01M adults 18+ (23.1%) ([DataReportal Digital 2025: Czechia](https://datareportal.com/reports/digital-2025-czechia)). TikTok's figure **excludes under-18s** — its actual teen reach is materially higher than the published number and not directly measurable from this source. Instagram's parent-generation reach is well-established, which supports running distinct creative for the two personas rather than one campaign.
-- **Czech digital age of consent: 15** (Act No. 110/2019 Coll.), one of the higher settings in the EU, supervised by ÚOOÚ. A 15-year-old consents for themselves; a 14-year-old cannot.
+- Czech social platform reach (Jan 2025): YouTube 7.99M (74.8%), Facebook 5.00M (46.8%), Instagram 3.70M (34.6%), TikTok 2.01M adults 18+ (23.1%) ([DataReportal Digital 2025: Czechia](https://datareportal.com/reports/digital-2025-czechia)). The cited adult figure does not establish the size of the under-18 audience or its relative size. Persona-specific acquisition assumptions need audience evidence.
+- **Czech child-consent threshold: 15** for the GDPR Article 8 case, supervised by ÚOOÚ. This does not decide every child's data-processing basis or contracting capacity.
 - **Education-adjacent convention:** the incumbents ([Atlas školství](https://www.atlasskolstvi.cz/), Infoabsolvent) are **directory-and-filter products** — category navigation, search by city and focus, no algorithmic matching, no quiz, no app. This is a genuine positioning opportunity: guided matching is not what this market currently offers. It is also a caution — Czech users researching schools have been trained by these incumbents to expect browsable directories, so a quiz-only product with no browse mode may feel incomplete to the parent persona.
 - **No Czech-specific app-install friction or app-store-behaviour data was found.** Nothing suggests Czech users install differently from other EU markets, but this is absence of evidence, not evidence of absence.
 
@@ -245,10 +247,10 @@ The general pattern worth copying — quiz → free personalised result → payw
 - **Paywall layout.** Side-by-side plan comparison is possible on desktop and is not on mobile. This matters given the two-option pricing structure from the pricing research.
 - **Progress indication.** A mobile progress bar becomes a step list on desktop, where there is room to show what is coming.
 
-**Should deliberately differ between app and web:**
-- **The web is the purchase surface. The app is the post-purchase surface.** They should not be the same product. The web app's job ends shortly after payment; the app's job starts there.
+**Historical surface-split proposal — not the current product scope:**
+- The research proposed separating purchase from post-purchase use. The current web product remains a full surface, including decision tools; its job does not end after payment.
 - **The app should not contain the quiz at all in v1** — unless you later choose option (c). If the quiz only ever runs pre-purchase and purchase happens on web, quiz code in the app is dead weight in a codebase built by one person.
-- **The app gets what the web genuinely cannot do:** deadline push notifications, offline shortlist access, a home-screen presence through the Sept–March window.
+- Native notification/offline features are possible benefits to evaluate. Home Screen web apps can also support push/offline features with appropriate implementation and platform acceptance; this project does not thereby have them.
 
 ---
 
@@ -256,10 +258,12 @@ The general pattern worth copying — quiz → free personalised result → payw
 
 **The web-first plan is correct and should continue. The answer to Q1 strengthens it rather than changing it.**
 
+The sequencing below is the historical proposal, not an approved launch gate. Desktop layouts now exist, beta has free access, and the mobile framework/scope remain undecided.
+
 If the quiz, the paywall, and the payment all live on web, then **the web app is the entire revenue path**, and the app is a retention and satisfaction surface for users who have already paid. That reorders things:
 
 1. **Ship web complete first** — quiz, free result, paywall, registration, payment, and a basic post-purchase results view. This is a shippable, revenue-generating product on its own.
-2. **Design desktop web before building the app.** Desktop is ~50% of Czech traffic and has no design. Building an app while half the traffic hits an undesigned surface is the wrong order of work.
+2. **Historical proposal: design desktop web before building the app.** The country-level traffic estimate is not our audience split. Current desktop layouts exist; responsive/browser acceptance remains pending.
 3. **Only then build the app**, scoped to post-purchase use.
 
 **On the framework decision:** if the app carries no quiz and no paywall, the code-reuse argument for React Native weakens considerably — the matching engine runs server-side or in shared TypeScript regardless of native framework, and the quiz components would not be reused at all. The remaining shared surface is small. **Flagged as inference, not evidence:** no framework research was conducted here. But the honest observation is that the decision is less constrained than it looked, and should be made on notification quality, developer familiarity, and solo-maintenance burden rather than on component reuse.
@@ -314,4 +318,4 @@ If the quiz, the paywall, and the payment all live on web, then **the web app is
 
 *Not legal advice. The GDPR, minor-consent, and app-store-payment points should be confirmed with a Czech lawyer before the checkout and consent architecture is finalised.*
 
-*Evidence quality note: the strongest findings here are the Czech desktop share, the quiz-length band, and the email-gate drop-off. The weakest are the vendor-published web-to-app case studies and the quiz lead-capture placement bands. Anything labelled "flagged" or "inference" should not be treated as settled.*
+*Evidence quality note: country pageview shares are not teenage user shares. Vendor quiz-length, email-gate and conversion bands are not independently established causal effects for this product. The proposed desktop grouping, app scope and handoffs remain hypotheses, not founder decisions. Treat dated snapshots and all “flagged”/“inference” claims accordingly.*
