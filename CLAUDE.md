@@ -72,12 +72,27 @@ Nothing from it is missing here: its files live on that branch and in git histor
 (The `schoool-app-laptop-progress/` snapshot folder that duplicated it has since been
 deleted.)
 
-**⚠️ Push to GitHub after every meaningful chunk of work.** The user explicitly
-asked for this, having just lost a machine. Do not batch a session's work into one
-push at the very end, and do not wait to be asked — commit and push whenever a
-feature, fix, or coherent piece of work is finished and verified. `.env` files are
-gitignored and must stay that way; check `git status` before a broad `git add` so a
-secret never lands in a commit.
+**⚠️ Commit and push rules — a push to `main` goes live.** Pushing `main` triggers
+Vercel (frontend) and Railway (backend) deployments, so a pushed change reaches real
+testers within minutes. Never batch a session's work into one push at the very end
+(the user lost a machine once), but sort each change into one of two kinds:
+
+- **Small and low-risk → commit and push automatically** after your own verification
+  (tests, lint, build, and the browser preview when the change is visible): a bug fix,
+  a typo or copy tweak, a small CSS/layout fix, a mistake in something we already built,
+  a doc update. Test: if it is wrong, it is obvious and cheap to revert.
+- **New feature, behaviour change, or anything touching auth, payments, access rules,
+  data deletion, the database or tester-visible flows → do NOT push on your own.**
+  Build it, verify it yourself, then stop and tell the founder exactly how to try it
+  on localhost. Commit and push only after they say it works (committing locally to a
+  branch or leaving it uncommitted while waiting is fine). If unsure which kind a change
+  is, treat it as a feature and ask.
+- Anything that needs a Supabase migration or a Railway/Vercel env change: say so, with a
+  one-line verify query, and don't push the code that depends on it until the founder
+  has applied it (or confirm the code tolerates the missing column).
+
+`.env` files are gitignored and must stay that way; check `git status` before a broad
+`git add` so a secret never lands in a commit.
 
 > The archived `archive/context/CONTEXT-HANDOFF.md` records what was in flight at the machine switch —
 > notably the 5-screen paywall flow (`hodnota → cesta → plan → zkusebni →
@@ -432,8 +447,9 @@ it is free access in exchange for feedback, and its paywall is a preview only.
 `subscription_status` accepts `trialing / active / season / past_due / canceled /
 expired / developer / beta`. `'beta'` is exclusive time-boxed access: email must be
 confirmed, access ends at the earlier of the rolling tester deadline and configured
-program cutoff, and only qualifying written in-app feedback renews it; quick feature
-ratings do not. Beta never enters Stripe.
+program cutoff, and qualifying main-form/access-gate messages or quick feature ratings with a
+at least 10 characters of their own writing in an optional note or follow-up field renew it (founder amendment
+10 October). Stars/chips/skip alone do not. Beta never enters Stripe.
 The legacy shared beta code endpoint is retired. The beta schema is defined in its
 delimited `supabase-setup.sql` block. Read-only 8 October checks found all declared
 beta tables and `beta_profile.role_note`; the earlier missing-column diagnosis is
