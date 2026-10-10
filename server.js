@@ -602,7 +602,7 @@ app.post('/api/beta/profile', requireAuth, requireBetaTester, async (req, res) =
 let betaSchoolNamesCache=null, betaSchoolNamesLoading=null;
 async function betaSchoolNames() {
   if (betaSchoolNamesCache && betaSchoolNamesCache.until>Date.now()) return {data:betaSchoolNamesCache.names,error:null};
-  if (!betaSchoolNamesLoading) betaSchoolNamesLoading=supabase.from('schools').select('name').then(result=>{
+  if (!betaSchoolNamesLoading) betaSchoolNamesLoading=supabase.from('schools').select('name').is('merged_into',null).is('hidden_reason',null).then(result=>{
     if (!result.error) betaSchoolNamesCache={names:result.data || [],until:Date.now()+86400000};
     return result;
   }).finally(()=>{betaSchoolNamesLoading=null;});
@@ -1031,10 +1031,10 @@ app.post('/api/beta/review', requireAuth, requireBetaTester, betaClosingLimiter,
   res.status(201).json({saved:true});
 });
 // Quick ten-second rating after a feature is tried. Stored as feedback; the
-// rating alone never renews access, a written note of 10+ characters does.
+// rating alone never renews access, the tester's own words (note or chip follow-up, 10+ characters) do.
 const QUICK_FEATURES = ['dotaznik','vyhledavani','detail','porovnani','matice','prihlaska','tema','platby'];
 app.post('/api/beta/micro', requireAuth, requireBetaTester, betaMicroLimiter, async (req,res) => {
-  const { id, action, rating, answers, note } = req.body || {};
+  const { id, action, rating, answers, note, typed } = req.body || {};
   if (!QUICK_FEATURES.includes(id) || !['answer','skip'].includes(action)) return res.status(400).json({ error: 'Odpověď nemá správný formát.' });
   let summary = null;
   if (action === 'answer') {
@@ -1059,7 +1059,9 @@ app.post('/api/beta/micro', requireAuth, requireBetaTester, betaMicroLimiter, as
   // A rating alone never renews access; the tester's own words in the optional
   // note (same minimum as a written report) do, like "Zpětná vazba" would.
   let accessRenewed = false;
-  const words = action === 'answer' && typeof note === 'string' ? note.trim() : '';
+  // `typed` = the free text from the chip follow-ups (already inside `answers`).
+  const typedTexts = Array.isArray(typed) ? typed.slice(0, 4).filter((x) => typeof x === 'string').map((x) => x.trim().slice(0, 300)) : [];
+  const words = action === 'answer' ? [typeof note === 'string' ? note.trim() : '', ...typedTexts].join(' ').trim() : '';
   if (words.length >= BETA_FEEDBACK_MIN) {
     const { data: settings } = await readBetaSettings();
     const program = betaProgramState(settings);
@@ -1308,6 +1310,12 @@ function withFlatAiSummary(schools) {
 // paging can drop or repeat a row at a page boundary.
 const SUPABASE_PAGE_SIZE = 1000;
 
+// Plan 021: a merged school or one with nothing a 9th grader can apply to
+// (schools.hidden_reason) never reaches a user.
+function visibleSchool(s) {
+  return Boolean(s) && !s.merged_into && !s.hidden_reason;
+}
+
 async function fetchAllSchools(select) {
   const rows = [];
   for (let from = 0; ; from += SUPABASE_PAGE_SIZE) {
@@ -1315,6 +1323,7 @@ async function fetchAllSchools(select) {
       .from('schools')
       .select(select)
       .is('merged_into', null)
+      .is('hidden_reason', null)
       .order('name')
       .order('id')
       .range(from, from + SUPABASE_PAGE_SIZE - 1);
@@ -1487,7 +1496,7 @@ app.get('/api/schools', optionalAuth, async (req, res) => {
     ) {
       return res.status(400).json({ error: 'Neplatný parametr ids.' });
     }
-    const { data, error } = await supabase.from('schools').select(FULL_SELECT).in('id', ids);
+    const { data, error } = await supabase.from('schools').select(FULL_SELECT).in('id', ids).is('hidden_reason', null);
     if (error) return res.status(500).json({ error: error.message });
     return res.json(await withMatchScores(req.user?.id, await withPredecessorPrograms(data)));
   }
@@ -1517,6 +1526,7 @@ app.get('/api/schools/:id', optionalAuth, async (req, res) => {
 
   if (error?.code === 'PGRST116') return res.status(404).json({ error: 'Škola nebyla nalezena.' });
   if (error) return res.status(500).json({ error: error.message });
+  if (data.hidden_reason) return res.status(404).json({ error: 'Škola nebyla nalezena.' });
 
   // An old link to a school that merged away answers with its successor; the
   // page sees a different id than it asked for and redirects.
@@ -1528,6 +1538,7 @@ app.get('/api/schools/:id', optionalAuth, async (req, res) => {
       .eq('id', row.merged_into)
       .single();
     if (successorError) return res.status(500).json({ error: successorError.message });
+    if (successor.hidden_reason) return res.status(404).json({ error: 'Škola nebyla nalezena.' });
     row = successor;
   }
 
@@ -1547,7 +1558,7 @@ app.get('/api/favorites', requireAuth, requireAccess, async (req, res) => {
 
   if (error) return res.status(500).json({ error: error.message });
 
-  const schools = data.map((row) => row.schools).filter((school) => school && !school.merged_into);
+  const schools = data.map((row) => row.schools).filter(visibleSchool);
   res.json(await withMatchScores(req.user.id, schools));
 });
 
@@ -1556,6 +1567,11 @@ app.post('/api/favorites', requireAuth, requireAccess, async (req, res) => {
   if (!Number.isInteger(schoolId)) {
     return res.status(400).json({ error: 'Neplatné ID školy.' });
   }
+
+  const { data: target, error: targetError } = await supabase
+    .from('schools').select('id, merged_into, hidden_reason').eq('id', schoolId).maybeSingle();
+  if (targetError) return res.status(500).json({ error: targetError.message });
+  if (!visibleSchool(target)) return res.status(404).json({ error: 'Škola nenalezena.' });
 
   const { error } = await supabase
     .from('favorites')

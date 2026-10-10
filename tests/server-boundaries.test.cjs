@@ -1083,6 +1083,9 @@ test('quick rating renews access only when the optional note has the tester\'s o
  assert.equal(renewals(),0);
  assert.equal((await send({note:'Dotaznik byl srozumitelny'})).body.accessRenewed,true);
  assert.equal(renewals(),1);
+ assert.equal((await send({answers:['Částečně: nesedí poloha ulice'],typed:['nesedí poloha ulice']})).body.accessRenewed,true);
+ assert.equal(renewals(),2);
+ assert.equal((await send({answers:['Ano'],typed:[]})).body.accessRenewed,false);
 });
 test('beta events refuse a legacy tester before the notice and cache school names after it',async()=>{
  const id='aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';

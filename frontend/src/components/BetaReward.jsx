@@ -60,6 +60,8 @@ export function QuickFeedback({ id, parent = false, onDone, title }) {
   const answers = spec.chips
     .map((_, i) => (picked[i] ? (follow[i]?.trim() ? `${picked[i]}: ${follow[i].trim()}` : picked[i]) : null))
     .filter(Boolean);
+  const typed = spec.chips.map((_, i) => (picked[i] ? follow[i]?.trim() : '')).filter(Boolean);
+  const words = [note.trim(), ...typed].join(' ').trim();
   const onRatingKeyDown = (event, value) => {
     const direction = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[event.key];
     if (!direction) return;
@@ -74,7 +76,7 @@ export function QuickFeedback({ id, parent = false, onDone, title }) {
       // The server only accepts a rating for a ticked feature; send the queued
       // events that tick it first (the paywall end screen comes right after).
       await betaTracker.flush();
-      const result = await submitBetaMicro(skip ? { id, action: 'skip' } : { id, action: 'answer', rating: rating || null, answers, note: note.trim() });
+      const result = await submitBetaMicro(skip ? { id, action: 'skip' } : { id, action: 'answer', rating: rating || null, answers, note: note.trim(), typed });
       if (result?.accessRenewed) await refreshProfile?.();
       setSent(!skip); onDone?.(skip ? 'skip' : 'answer');
     } catch (err) {
@@ -108,7 +110,7 @@ export function QuickFeedback({ id, parent = false, onDone, title }) {
     })}
     <input className="ss-input" maxLength={600} value={note} onChange={(e) => setNote(e.target.value)} placeholder={t('Chceš něco dodat? (nepovinné)', 'Chcete něco dodat? (nepovinné)')} aria-label="Poznámka (nepovinné)" />
     {error && <p role="alert" className="ss-caption">{error}</p>}
-    <p className="beta-quick-hint">{note.trim().length >= 10 ? 'Díky za slova navíc — prodlouží ti to přístup o dalších 48 hodin.' : 'Napiš do poznámky aspoň pár slov a prodloužíš si tím přístup o dalších 48 hodin (jako zpráva přes „Zpětná vazba“).'}</p>
+    <p className="beta-quick-hint">{words.length >= 10 ? 'Díky za slova navíc — prodlouží ti to přístup o dalších 48 hodin.' : 'Napiš do poznámky nebo doplňujícího pole aspoň pár slov a prodloužíš si tím přístup o dalších 48 hodin (jako zpráva přes „Zpětná vazba“).'}</p>
     <div className="beta-quick-actions">
       <button type="button" className="ss-btn ss-btn-secondary ss-btn-sm" disabled={busy} onClick={() => send(true)}>Přeskočit</button>
       <button type="button" className="ss-btn ss-btn-primary ss-btn-sm" disabled={busy || (!rating && !answers.length && !note.trim())} onClick={() => send(false)}>{busy ? 'Ukládám…' : 'Odeslat'}</button>

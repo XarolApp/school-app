@@ -69,7 +69,7 @@ message uses the same feedback renewal path.
 **Founder confirmed 10 October: main feedback messages renew access.**
 The access-gate message uses that same path. **Founder amended later on 10 October:**
 a quick rating also renews the window, but only when the tester typed their own
-words (10+ characters) in its optional note; stars/chips alone, or a skip, never
+words (10+ characters) in its optional note or a chip follow-up field; stars/chips alone, or a skip, never
 renew. Enforced in `POST /api/beta/micro` (`server.js`), not in SQL.
 Viewing a paywall preview, recording usage events, answering the closing form
 or submitting an external form must not be treated as main-feedback renewal.
