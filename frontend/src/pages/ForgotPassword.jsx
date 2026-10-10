@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../components/AuthContext';
 import Captcha, { captchaEnabled } from '../components/Captcha';
-import { captchaProblem, emailProblem, onlyProblems } from '../lib/authValidation';
+import { CAPTCHA_WAIT_LABEL, emailProblem, onlyProblems, useRevealError } from '../lib/authValidation';
 
 function ForgotPassword() {
   const [email, setEmail] = useState('');
@@ -16,9 +16,11 @@ function ForgotPassword() {
 
   const computeProblems = () => onlyProblems({
     email: emailProblem(email),
-    captcha: captchaProblem(captchaToken, captchaEnabled),
   });
   const problems = submitted ? computeProblems() : {};
+
+  const captchaWaiting = captchaEnabled && !captchaToken;
+  const errorRef = useRevealError(error);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -81,7 +83,7 @@ function ForgotPassword() {
 
         <form onSubmit={handleSubmit} className="panel panel-lg auth-form" noValidate>
           {error && (
-            <div className="notice notice-error" role="alert" id="reset-error">
+            <div ref={errorRef} className="notice notice-error" role="alert" id="reset-error">
               <p className="notice-text">{error}</p>
             </div>
           )}
@@ -106,15 +108,14 @@ function ForgotPassword() {
           </div>
 
           <Captcha onVerify={setCaptchaToken} resetKey={captchaKey} />
-          {problems.captcha && <span className="field-error" role="alert">{problems.captcha}</span>}
 
           <button
             type="submit"
             className="btn btn-primary btn-block"
-            disabled={submitting}
+            disabled={submitting || captchaWaiting}
           >
             {submitting && <span className="btn-spinner" aria-hidden="true" />}
-            {submitting ? 'Odesílám…' : 'Poslat odkaz'}
+            {submitting ? 'Odesílám…' : captchaWaiting ? CAPTCHA_WAIT_LABEL : 'Poslat odkaz'}
           </button>
         </form>
 

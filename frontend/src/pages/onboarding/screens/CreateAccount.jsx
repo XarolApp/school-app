@@ -6,7 +6,7 @@ import { useOnboarding } from '../useOnboarding';
 import ConfirmEmailWaiting from '../../../components/ConfirmEmailWaiting';
 import { confirmationUrl } from '../../../components/AuthContext';
 import { readPendingConfirmation, clearPendingConfirmation } from '../../../lib/pendingConfirmation';
-import { captchaProblem, consentProblem, emailProblem, focusFirstInvalid, problemSummary, nameProblem, onlyProblems, passwordProblem } from '../../../lib/authValidation';
+import { CAPTCHA_WAIT_LABEL, consentProblem, emailProblem, focusFirstInvalid, problemSummary, nameProblem, onlyProblems, passwordProblem, useRevealError } from '../../../lib/authValidation';
 import { useAuth } from '../../../components/AuthContext';
 import { useG } from '../../../lib/gender';
 import PasswordInput from '../../../components/PasswordInput';
@@ -81,6 +81,7 @@ function CreateAccount() {
   // failed submit.
   const [captchaKey, setCaptchaKey] = useState(0);
   const [error, setError] = useState(null);
+  const errorRef = useRevealError(error);
   const [busy, setBusy] = useState(false);
   const [awaitingConfirmation, setAwaitingConfirmation] = useState(Boolean(resumed));
 
@@ -163,13 +164,14 @@ function CreateAccount() {
     email: emailProblem(email, parent),
     password: passwordProblem(password, { parent }),
     consent: consentProblem(consent, parent),
-    captcha: captchaProblem(captchaToken, captchaEnabled, parent),
   });
   const problems = submitted ? currentProblems() : {};
   const betaIncomplete = Boolean(betaCode && !betaEnrollmentComplete(betaEnrollment));
   const betaProblemCount = !betaCode ? 0
     : (betaEnrollment.role ? 0 : 1) + (betaEnrollment.role === 'jine' && !betaEnrollment.roleNote.trim() ? 1 : 0) + (betaEnrollment.accepted ? 0 : 1);
   const problemCount = Object.keys(problems).length + (submitted ? betaProblemCount : 0);
+
+  const captchaWaiting = captchaEnabled && !captchaToken;
 
   const submit = async (event) => {
     event.preventDefault();
@@ -306,9 +308,9 @@ function CreateAccount() {
           type="submit"
           form="ob-signup"
           className="ob-btn ob-btn-primary"
-          disabled={busy || Boolean(betaCode && betaState !== 'ready') || Boolean(configuredBetaCode && !betaCode)}
+          disabled={busy || captchaWaiting || Boolean(betaCode && betaState !== 'ready') || Boolean(configuredBetaCode && !betaCode)}
         >
-          {busy ? 'Zakládám účet…' : betaCode ? 'Založit beta účet' : 'Založit účet'}
+          {busy ? 'Zakládám účet…' : captchaWaiting ? CAPTCHA_WAIT_LABEL : betaCode ? 'Založit beta účet' : 'Založit účet'}
         </button>
       }
     >
@@ -340,7 +342,7 @@ function CreateAccount() {
           </div>
         )}
         {error && (
-          <div className="notice notice-error" role="alert">
+          <div ref={errorRef} className="notice notice-error" role="alert">
             <span className="notice-title">Účet se nepodařilo založit</span>
             <p className="notice-text">{error}</p>
           </div>
@@ -422,7 +424,6 @@ function CreateAccount() {
         <ConsentCheckbox id="signup-consent" checked={consent} adult={parent} error={problems.consent} onChange={setConsent} />
 
         <Captcha onVerify={setCaptchaToken} resetKey={captchaKey} />
-        {problems.captcha && <span className="field-error" role="alert">{problems.captcha}</span>}
       </form>
 
       <p className="ob-microcopy ob-signin-hint">

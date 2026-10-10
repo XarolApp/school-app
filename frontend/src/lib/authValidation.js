@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 // One place for the wording of form problems, so every sign-up / log-in form
 // reports the same thing the same way and ALL problems at once (a form that
 // reveals one error per click makes people press the button three times).
@@ -52,12 +53,6 @@ export function consentProblem(accepted, parent = false) {
     'Pro vytvoření účtu potřebujeme váš souhlas s podmínkami.');
 }
 
-export function captchaProblem(token, enabled, parent = false) {
-  return enabled && !token
-    ? t(parent, 'Počkej, až se ověření „nejsem robot“ dokončí, a zkus to znovu.', 'Počkejte, až se ověření „nejsem robot“ dokončí, a zkuste to znovu.')
-    : '';
-}
-
 /** Drops empty entries; the result is `{}` when the form is fine. */
 export function onlyProblems(map) {
   return Object.fromEntries(Object.entries(map).filter(([, message]) => message));
@@ -75,3 +70,16 @@ export function problemSummary(count, parent = false) {
   const places = count === 1 ? 'jedno místo označené' : count < 5 ? `${count} místa označená` : `${count} míst označených`;
   return parent ? `Ještě to nejde odeslat. Opravte ${places} červeně.` : `Ještě to nejde odeslat. Oprav ${places} červeně.`;
 }
+
+/** Ref for an error box: scrolls it into view whenever `message` changes, so a
+ *  server error shown above the fold on a phone is never missed. */
+export function useRevealError(message) {
+  const ref = useRef(null);
+  useEffect(() => {
+    if (message) ref.current?.scrollIntoView?.({ block: 'center', behavior: 'smooth' });
+  }, [message]);
+  return ref;
+}
+
+/** Submit label while the CAPTCHA is still working — neutral, not an error. */
+export const CAPTCHA_WAIT_LABEL = 'Ověřuji, že nejsi robot…';

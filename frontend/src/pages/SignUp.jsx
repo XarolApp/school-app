@@ -15,7 +15,7 @@ import ConfirmEmailWaiting from '../components/ConfirmEmailWaiting';
 import { confirmationUrl } from '../components/AuthContext';
 import { readPendingConfirmation, clearPendingConfirmation } from '../lib/pendingConfirmation';
 import {
-  captchaProblem, consentProblem, emailProblem, focusFirstInvalid, problemSummary, nameProblem, onlyProblems, passwordProblem,
+  CAPTCHA_WAIT_LABEL, consentProblem, emailProblem, focusFirstInvalid, problemSummary, nameProblem, onlyProblems, passwordProblem, useRevealError,
 } from '../lib/authValidation';
 import './beta.css';
 
@@ -93,13 +93,15 @@ function SignUp() {
     email: emailProblem(form.email, betaParent),
     password: passwordProblem(form.password, { parent: betaParent }),
     consent: consentProblem(consent, betaParent),
-    captcha: captchaProblem(captchaToken, captchaEnabled, betaParent),
   }) : {};
   const betaIncomplete = Boolean(betaCode && !betaEnrollmentComplete(betaEnrollment));
   // One count per message actually shown, so the summary never disagrees with the list.
   const betaProblemCount = !betaCode ? 0
     : (betaEnrollment.role ? 0 : 1) + (betaEnrollment.role === 'jine' && !betaEnrollment.roleNote.trim() ? 1 : 0) + (betaEnrollment.accepted ? 0 : 1);
   const problemCount = Object.keys(problems).length + (submitted ? betaProblemCount : 0);
+
+  const captchaWaiting = captchaEnabled && !captchaToken;
+  const errorRef = useRevealError(error);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -111,8 +113,7 @@ function SignUp() {
       email: emailProblem(form.email, betaParent),
       password: passwordProblem(form.password, { parent: betaParent }),
       consent: consentProblem(consent, betaParent),
-      captcha: captchaProblem(captchaToken, captchaEnabled, betaParent),
-    });
+      });
     if (Object.keys(blocking).length || betaIncomplete) {
       requestAnimationFrame(() => focusFirstInvalid());
       return;
@@ -234,7 +235,7 @@ function SignUp() {
           )}
 
           {error && (
-            <div className="notice notice-error" role="alert">
+            <div ref={errorRef} className="notice notice-error" role="alert">
               <p className="notice-text">{error}</p>
             </div>
           )}
@@ -308,15 +309,14 @@ function SignUp() {
           <ConsentCheckbox id="signup-consent" checked={consent} adult={betaParent} error={problems.consent} onChange={setConsent} />
 
           <Captcha onVerify={setCaptchaToken} resetKey={captchaKey} />
-          <FieldError id="signup-captcha-error" message={problems.captcha} />
 
           <button
             type="submit"
             className="btn btn-primary btn-block"
-            disabled={submitting || (betaCode && betaState !== 'ready') || invalidBetaInvite}
+            disabled={submitting || captchaWaiting || (betaCode && betaState !== 'ready') || invalidBetaInvite}
           >
             {submitting && <span className="btn-spinner" aria-hidden="true" />}
-            {submitting ? 'Vytvářím účet…' : betaCode ? 'Vytvořit beta účet' : betaInviteProvided ? 'Přístup nelze ověřit' : `Začít ${trialDaysPhrase()} zdarma`}
+            {submitting ? 'Vytvářím účet…' : captchaWaiting ? CAPTCHA_WAIT_LABEL : betaCode ? 'Vytvořit beta účet' : betaInviteProvided ? 'Přístup nelze ověřit' : `Začít ${trialDaysPhrase()} zdarma`}
           </button>
         </form>
       </div>

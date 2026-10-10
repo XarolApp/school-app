@@ -5,7 +5,7 @@ import Captcha, { captchaEnabled } from '../components/Captcha';
 import PasswordInput from '../components/PasswordInput';
 import { getRememberMe } from '../supabaseClient';
 import { normalizeBetaCode } from '../lib/pendingBetaCode';
-import { captchaProblem, emailProblem, focusFirstInvalid, onlyProblems, passwordProblem } from '../lib/authValidation';
+import { CAPTCHA_WAIT_LABEL, emailProblem, focusFirstInvalid, onlyProblems, passwordProblem, useRevealError } from '../lib/authValidation';
 import { useG } from '../lib/gender';
 import { internalReturnPath } from '../lib/internalReturnPath';
 
@@ -46,9 +46,10 @@ function Login() {
   const computeProblems = () => onlyProblems({
     email: emailProblem(form.email),
     password: passwordProblem(form.password, { checkLength: false }),
-    captcha: captchaProblem(captchaToken, captchaEnabled),
   });
   const problems = submitted ? computeProblems() : {};
+  const captchaWaiting = captchaEnabled && !captchaToken;
+  const errorRef = useRevealError(error);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -148,13 +149,14 @@ function Login() {
           )}
 
           {error && (
-            <div className="notice notice-error" role="alert">
+            <div ref={errorRef} className="notice notice-error" role="alert">
               <p className="notice-text">{error}</p>
               {needsConfirmation && (
                 <button
                   type="button"
                   className="btn btn-secondary btn-sm"
                   onClick={handleResend}
+                  disabled={captchaWaiting}
                 >
                   Poslat potvrzovací odkaz znovu
                 </button>
@@ -218,15 +220,14 @@ function Login() {
           </label>
 
           <Captcha onVerify={setCaptchaToken} resetKey={captchaKey} />
-          {problems.captcha && <span className="field-error" role="alert">{problems.captcha}</span>}
 
           <button
             type="submit"
             className="btn btn-primary btn-block"
-            disabled={submitting}
+            disabled={submitting || captchaWaiting}
           >
             {submitting && <span className="btn-spinner" aria-hidden="true" />}
-            {submitting ? 'Přihlašuji…' : 'Přihlásit se'}
+            {submitting ? 'Přihlašuji…' : captchaWaiting ? CAPTCHA_WAIT_LABEL : 'Přihlásit se'}
           </button>
         </form>
 
