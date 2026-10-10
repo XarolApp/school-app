@@ -47,6 +47,14 @@
  *   - anything below the match threshold is left alone and logged to
  *     scripts/admission-import-unmatched.txt for manual review, never guessed
  *
+ * 9TH-GRADE SCOPE (plan 021): rows a 9th grader cannot apply to (6/8-year
+ * gymnázia, nástavby, 8-year conservatories — lib/ninthGrade.js) go to
+ * `school_programs_hidden`, never `school_programs`. The school-level
+ * cutoff/rate are then recomputed in SQL from visible rows only
+ * (`recompute_school_admission`), and `refresh_school_visibility` hides schools
+ * left with no visible programme. The per-file averages printed below include
+ * hidden rows and are NOT written.
+ *
  * Writes with the service_role key, same reason as geocode-schools.js: RLS
  * blocks the anon key from writing to `schools` at all.
  *
@@ -66,6 +74,7 @@ const fs = require('fs');
 const path = require('path');
 const XLSX = require('xlsx');
 const { createClient } = require('@supabase/supabase-js');
+const { isNinthGradeProgram } = require('../lib/ninthGrade');
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -364,6 +373,9 @@ async function main() {
     .filter((row) => row.school_id !== null)
     .map(({ redizo, ...rest }) => rest); // redizo was only needed to find school_id
 
+  const visibleRows = programRowsToWrite.filter(isNinthGradeProgram);
+  const hiddenRows = programRowsToWrite.filter((row) => !isNinthGradeProgram(row));
+
   // Aggregation step 2: the newest year only, never an average across years.
   const results = [];
   for (const [schoolId, entry] of perSchool.entries()) {
@@ -399,6 +411,7 @@ async function main() {
   }
 
   console.log(`\n${programRowsToWrite.length} school_programs rows ready to write (matched schools only).`);
+  console.log(`  ${visibleRows.length} visible, ${hiddenRows.length} hidden (not for 9th graders) -> school_programs_hidden.`);
 
   if (dryRun) {
     console.log('\n--dry-run: nothing written to Supabase.');
@@ -414,8 +427,6 @@ async function main() {
       .from('schools')
       .update({
         redizo: r.redizo,
-        admission_cutoff: r.admission_cutoff,
-        acceptance_rate: r.acceptance_rate,
         admission_data_updated_at: now,
       })
       .eq('id', r.id);
@@ -429,44 +440,58 @@ async function main() {
 
   console.log(`Updated ${written} of ${results.length} schools.`);
 
-  // school_programs: delete-then-insert per (rok, matched schools this run),
-  // so re-running a year's file is idempotent without needing a unique
-  // constraint (Cermat legitimately publishes several rows per school+obor).
-  const rokGroups = new Map();
-  for (const row of programRowsToWrite) {
-    if (!rokGroups.has(row.rok)) rokGroups.set(row.rok, []);
-    rokGroups.get(row.rok).push(row);
-  }
-
-  let programsWritten = 0;
-  for (const [rok, rowsForYear] of rokGroups.entries()) {
-    const schoolIds = [...new Set(rowsForYear.map((r) => r.school_id))];
-
-    const { error: deleteError } = await supabase
-      .from('school_programs')
-      .delete()
-      .eq('rok', rok)
-      .in('school_id', schoolIds);
-
-    if (deleteError) {
-      console.error(`  ! could not clear existing ${rok} rows: ${deleteError.message}`);
-      continue;
+  // school_programs / school_programs_hidden: delete-then-insert per (rok,
+  // matched schools this run), so re-running a year's file is idempotent
+  // without needing a unique constraint (Cermat legitimately publishes several
+  // rows per school+obor).
+  async function writePrograms(table, rows) {
+    const rokGroups = new Map();
+    for (const row of rows) {
+      if (!rokGroups.has(row.rok)) rokGroups.set(row.rok, []);
+      rokGroups.get(row.rok).push(row);
     }
 
-    const CHUNK = 500;
-    for (let i = 0; i < rowsForYear.length; i += CHUNK) {
-      const chunk = rowsForYear.slice(i, i + CHUNK);
-      const { error: insertError } = await supabase.from('school_programs').insert(chunk);
+    let count = 0;
+    for (const [rok, rowsForYear] of rokGroups.entries()) {
+      const { error: deleteError } = await supabase
+        .from(table)
+        .delete()
+        .eq('rok', rok)
+        .in('school_id', [...new Set(rowsForYear.map((r) => r.school_id))]);
 
-      if (insertError) {
-        console.error(`  ! could not write ${rok} program rows: ${insertError.message}`);
+      if (deleteError) {
+        console.error(`  ! could not clear existing ${table} ${rok} rows: ${deleteError.message}`);
         continue;
       }
-      programsWritten += chunk.length;
+
+      const CHUNK = 500;
+      for (let i = 0; i < rowsForYear.length; i += CHUNK) {
+        const chunk = rowsForYear.slice(i, i + CHUNK);
+        const { error: insertError } = await supabase.from(table).insert(chunk);
+
+        if (insertError) {
+          console.error(`  ! could not write ${table} ${rok} rows: ${insertError.message}`);
+          continue;
+        }
+        count += chunk.length;
+      }
     }
+    return count;
   }
 
-  console.log(`Wrote ${programsWritten} of ${programRowsToWrite.length} school_programs rows.`);
+  const programsWritten = await writePrograms('school_programs', visibleRows);
+  const hiddenWritten = await writePrograms('school_programs_hidden', hiddenRows);
+  console.log(`Wrote ${programsWritten} of ${visibleRows.length} school_programs rows and ${hiddenWritten} of ${hiddenRows.length} hidden rows.`);
+
+  // School-level numbers come from visible rows only; schools left with
+  // nothing a 9th grader can apply to are hidden (and un-hidden again if a
+  // later import brings visible rows back).
+  const touched = [...new Set(programRowsToWrite.map((r) => r.school_id))];
+  for (const fn of ['recompute_school_admission', 'refresh_school_visibility']) {
+    const { error: rpcError } = await supabase.rpc(fn, { p_school_ids: touched });
+    if (rpcError) console.error(`  ! ${fn}: ${rpcError.message}`);
+  }
+  console.log(`Recomputed admission numbers and visibility for ${touched.length} schools.`);
 }
 
 main().catch((err) => {
