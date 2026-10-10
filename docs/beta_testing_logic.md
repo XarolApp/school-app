@@ -66,10 +66,11 @@ cutoff. The feedback row and deadline update use a service-only RPC transaction;
 renewal resets the window rather than stacking another 48 hours. The access-gate
 message uses the same feedback renewal path.
 
-**Founder confirmed 10 October: only main feedback messages renew access.**
-The access-gate message uses that same path. Quick star ratings are stored as
-micro feedback and never renew the window. Settings and guidance distinguish
-these paths; do not restore the historical micro-rating renewal instruction.
+**Founder confirmed 10 October: main feedback messages renew access.**
+The access-gate message uses that same path. **Founder amended later on 10 October:**
+a quick rating also renews the window, but only when the tester typed their own
+words (10+ characters) in its optional note; stars/chips alone, or a skip, never
+renew. Enforced in `POST /api/beta/micro` (`server.js`), not in SQL.
 Viewing a paywall preview, recording usage events, answering the closing form
 or submitting an external form must not be treated as main-feedback renewal.
 

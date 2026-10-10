@@ -5,10 +5,11 @@ import { submitBetaMicro } from '../api';
 import { betaTracker } from '../lib/betaTrack';
 import { doneCount, tasks } from './BetaInstructions';
 import { genderedCopy, useGender } from '../lib/gender';
+import { useAuth } from './AuthContext';
 
 // One ten-second question set per checklist feature. Rating 1–5 plus one or two
-// chip questions; the note is optional. Answers are feedback but never renew
-// access (only a written report does), so the copy does not promise that.
+// chip questions; the note is optional. A rating alone never renews access; a
+// note of 10+ characters does (enforced in server.js).
 // Each question: [student wording, adult wording, options, followUps]. followUps
 // maps an answer to the [student, adult] placeholder of a text box that opens
 // under it, so a negative answer always says *what* — not just "no".
@@ -51,6 +52,7 @@ const ON_PAGE = {
 /** The ten-second form. Used in the reward pop-up and inline (paywall preview end). */
 export function QuickFeedback({ id, parent = false, onDone, title }) {
   const gender = useGender();
+  const { refreshProfile } = useAuth();
   const spec = QUICK[id];
   const [rating, setRating] = useState(0), [picked, setPicked] = useState({}), [follow, setFollow] = useState({}), [note, setNote] = useState('');
   const [busy, setBusy] = useState(false), [error, setError] = useState(''), [sent, setSent] = useState(false);
@@ -72,7 +74,8 @@ export function QuickFeedback({ id, parent = false, onDone, title }) {
       // The server only accepts a rating for a ticked feature; send the queued
       // events that tick it first (the paywall end screen comes right after).
       await betaTracker.flush();
-      await submitBetaMicro(skip ? { id, action: 'skip' } : { id, action: 'answer', rating: rating || null, answers, note: note.trim() });
+      const result = await submitBetaMicro(skip ? { id, action: 'skip' } : { id, action: 'answer', rating: rating || null, answers, note: note.trim() });
+      if (result?.accessRenewed) await refreshProfile?.();
       setSent(!skip); onDone?.(skip ? 'skip' : 'answer');
     } catch (err) {
       // 409: already answered on another tab/device — nothing left to do.
@@ -105,7 +108,7 @@ export function QuickFeedback({ id, parent = false, onDone, title }) {
     })}
     <input className="ss-input" maxLength={600} value={note} onChange={(e) => setNote(e.target.value)} placeholder={t('Chceš něco dodat? (nepovinné)', 'Chcete něco dodat? (nepovinné)')} aria-label="Poznámka (nepovinné)" />
     {error && <p role="alert" className="ss-caption">{error}</p>}
-    <p className="beta-quick-hint">Tohle krátké hodnocení nemění časovač přístupu (zpětná vazba každých 48 h). Ten obnovuje jen zpráva přes „Zpětná vazba“.</p>
+    <p className="beta-quick-hint">{note.trim().length >= 10 ? 'Díky za slova navíc — prodlouží ti to přístup o dalších 48 hodin.' : 'Napiš do poznámky aspoň pár slov a prodloužíš si tím přístup o dalších 48 hodin (jako zpráva přes „Zpětná vazba“).'}</p>
     <div className="beta-quick-actions">
       <button type="button" className="ss-btn ss-btn-secondary ss-btn-sm" disabled={busy} onClick={() => send(true)}>Přeskočit</button>
       <button type="button" className="ss-btn ss-btn-primary ss-btn-sm" disabled={busy || (!rating && !answers.length && !note.trim())} onClick={() => send(false)}>{busy ? 'Ukládám…' : 'Odeslat'}</button>

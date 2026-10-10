@@ -1030,8 +1030,8 @@ app.post('/api/beta/review', requireAuth, requireBetaTester, betaClosingLimiter,
   }
   res.status(201).json({saved:true});
 });
-// Quick ten-second rating after a feature is tried. Stored as feedback, but it
-// never renews access (only a written report does) — see submit_beta_micro.
+// Quick ten-second rating after a feature is tried. Stored as feedback; the
+// rating alone never renews access, a written note of 10+ characters does.
 const QUICK_FEATURES = ['dotaznik','vyhledavani','detail','porovnani','matice','prihlaska','tema','platby'];
 app.post('/api/beta/micro', requireAuth, requireBetaTester, betaMicroLimiter, async (req,res) => {
   const { id, action, rating, answers, note } = req.body || {};
@@ -1056,7 +1056,21 @@ app.post('/api/beta/micro', requireAuth, requireBetaTester, betaMicroLimiter, as
   }
   const { data,error } = await supabase.rpc('submit_beta_micro', { p_user_id: req.user.id, p_id: id, p_session: '00000000-0000-0000-0000-000000000000', p_action: action, p_answer: summary });
   if (error) return res.status(error.code === '23505' ? 409 : error.code === '55000' ? 410 : error.code === '22023' ? 400 : 500).json({ error: 'Hodnocení teď nelze uložit.' });
-  res.json(data);
+  // A rating alone never renews access; the tester's own words in the optional
+  // note (same minimum as a written report) do, like "Zpětná vazba" would.
+  let accessRenewed = false;
+  const words = action === 'answer' && typeof note === 'string' ? note.trim() : '';
+  if (words.length >= BETA_FEEDBACK_MIN) {
+    const { data: settings } = await readBetaSettings();
+    const program = betaProgramState(settings);
+    if (program.programActive) {
+      const { error: renewError } = await supabase.from('users')
+        .update({ tester_access_until: new Date(Date.now() + program.accessHours * 3600000).toISOString() })
+        .eq('id', req.user.id).eq('subscription_status', 'beta');
+      accessRenewed = !renewError;
+    }
+  }
+  res.json({ ...data, accessRenewed });
 });
 app.post('/api/beta/gate', requireAuth, requireBetaTester, betaGateLimiter, async (req,res) => {
   const message = typeof req.body?.message === 'string' ? req.body.message.trim() : '';

@@ -1074,6 +1074,16 @@ test('quick ratings go through submit_beta_micro; skips carry no answer; soft ga
   assert.equal(h.rpcCalls[2].name,'submit_beta_feedback_details'); assert.equal(h.rpcCalls[2].args.p_details.source,'gate');
 });
 
+test('quick rating renews access only when the optional note has the tester\'s own words',async()=>{
+ const h=harness({result:(q)=>({data:q.table==='users'?{subscription_status:'beta'}:q.table==='beta_program_settings'?{ends_at:new Date(Date.now()+86400000).toISOString(),access_hours:48}:null,error:null})});
+ const send=(body)=>h.call('post','/api/beta/micro',{user:{id:'user-test'},body:{id:'dotaznik',action:'answer',rating:4,...body}});
+ const renewals=()=>h.queries.filter(q=>q.table==='users'&&q.calls.some(c=>c[0]==='update'&&c[1]?.tester_access_until)).length;
+ assert.equal((await send({})).body.accessRenewed,false);
+ assert.equal((await send({note:'dobre'})).body.accessRenewed,false);
+ assert.equal(renewals(),0);
+ assert.equal((await send({note:'Dotaznik byl srozumitelny'})).body.accessRenewed,true);
+ assert.equal(renewals(),1);
+});
 test('beta events refuse a legacy tester before the notice and cache school names after it',async()=>{
  const id='aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
  const body={anon_id:id,session_id:id,events:[{name:'search',path:'/skoly',props:{length:8,query:'Gymnazium',results:1}}]};
