@@ -54,6 +54,8 @@ test('visiting search with an empty query does not count as a real search',()=>{
  const {checklistFromEvents}=require('../lib/betaAnalytics');
  assert.equal(checklistFromEvents([{name:'search',props:{length:0}}]).vyhledavani,undefined);
  assert.equal(checklistFromEvents([{name:'search',props:{length:3}}]).vyhledavani,true);
+ assert.equal(checklistFromEvents([{name:'compare_open',props:{count:1}}]).porovnani,undefined);
+ assert.equal(checklistFromEvents([{name:'compare_open',props:{count:2}}]).porovnani,true);
  assert.match(sql,/when 'search' then case when coalesce\(\(v_event->'props'->>'length'\)::numeric,0\)>0/);
 });
 test('daily cleanup removes only server-selected orphans through private Storage',async()=>{

@@ -1049,7 +1049,7 @@ begin
   for v_event in select value from jsonb_array_elements(v_events) loop
     v_key := case v_event->>'name'
       when 'q_finish' then 'dotaznik' when 'result_view' then 'dotaznik'
-      when 'search' then case when coalesce((v_event->'props'->>'length')::numeric,0)>0 then 'vyhledavani' else null end when 'compare_open' then 'porovnani'
+      when 'search' then case when coalesce((v_event->'props'->>'length')::numeric,0)>0 then 'vyhledavani' else null end when 'compare_open' then case when coalesce((v_event->'props'->>'count')::numeric,0)>=2 then 'porovnani' else null end
       when 'matrix_weight' then 'matice' when 'prihlaska_pick' then 'prihlaska'
       when 'theme_change' then 'tema' when 'share_create' then 'sdileni' else null end;
     if v_key is not null then v_checklist := jsonb_set(v_checklist, array[v_key], 'true'::jsonb); end if;
