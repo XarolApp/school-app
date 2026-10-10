@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-10T21:21:38.041353+00:00",
-  "commit": "e8a5ddfb82a9dde9481463ce1b234cdc00e5659f",
+  "checked_at_utc": "2026-10-10T21:26:23.653494+00:00",
+  "commit": "8d71db8abb6dc99c40f16f1e6fbba0beb0569b8a",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "pending_or_changed": 319,
-    "current_full_read": 473,
+    "pending_or_changed": 305,
+    "current_full_read": 487,
     "binary_requires_asset_check": 105,
-    "generated_or_audit_artifact": 171,
+    "generated_or_audit_artifact": 172,
     "removed_or_missing": 2
   },
   "files": [
@@ -40,10 +40,12 @@
     },
     {
       "path": ".agents/skills/animation-vocabulary/SKILL.md",
-      "sha256": "d718b48fe3c7898804d588f050a2e266d82c9f5ef51da256c8cb8b5951527757",
+      "sha256": "85afe50bc59a9a7db6201a1b3df36ceb0ac8c58723cc0c8495fd2de959a2ea43",
       "lines": 173,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/apple-design/SKILL.md",
@@ -208,31 +210,39 @@
     },
     {
       "path": ".agents/skills/find-animation-opportunities/SKILL.md",
-      "sha256": "91c1243164057fbf824088d12faea937878a757a7ac653e8288b775e8b27b882",
-      "lines": 132,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "ed5aabb994c0867c8307f8cb4bd27a12c46a771d029d8f679183d71b4b57b6f2",
+      "lines": 134,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/improve-animations/AUDIT.md",
-      "sha256": "551c8473e20e5f4774680bc24d45e1c68e50992582720905c6b077756b7b5a55",
-      "lines": 115,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "1281ce6c9e53dc4b2086e84b74d24431b5708c63beb507f3a7759d74a1022109",
+      "lines": 117,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/improve-animations/PLAN-TEMPLATE.md",
-      "sha256": "0a08ac8e23fd2082d7ffb86aeed7b789de77328c3cf874b16f1a755f2ef0a6ad",
+      "sha256": "f6a9a8095fe37b7db7ae75e8ceb981b74993a959e92e18e8f1b277b68551f7b7",
       "lines": 73,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/improve-animations/SKILL.md",
-      "sha256": "68f17bbc4671593d2f43dba26a679243e2153ba5f26965fb7d59df52842534ff",
+      "sha256": "8e397a1c689e37f3e863bfa366512c02ee9391c360a81520df7ac5a363da75fd",
       "lines": 101,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/improve/SKILL.md",
@@ -354,17 +364,21 @@
     },
     {
       "path": ".agents/skills/review-animations/SKILL.md",
-      "sha256": "61cf8ac0c4c8e1f63385298c546b16c65ca9aec34abddcd04e821c16712d671d",
-      "lines": 112,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "2d1da3b496a7d0ae742f87571402b50c7b19b8ce8e7eb5e3a3edc67bf7f3e74c",
+      "lines": 114,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/review-animations/STANDARDS.md",
-      "sha256": "e7d3605034acda54ca13e43aec9e64d65b53de20f75b11b8d694e373012fbe07",
-      "lines": 187,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "f14a7da569e58930b6bc7191078f35ad74ccc2f40a5b8441b33c35fda0e15c7e",
+      "lines": 189,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/skill-reviewer/SKILL.md",
@@ -466,10 +480,12 @@
     },
     {
       "path": ".claude/skills/animation-vocabulary/SKILL.md",
-      "sha256": "d718b48fe3c7898804d588f050a2e266d82c9f5ef51da256c8cb8b5951527757",
+      "sha256": "85afe50bc59a9a7db6201a1b3df36ceb0ac8c58723cc0c8495fd2de959a2ea43",
       "lines": 173,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/apple-design/SKILL.md",
@@ -607,31 +623,39 @@
     },
     {
       "path": ".claude/skills/find-animation-opportunities/SKILL.md",
-      "sha256": "91c1243164057fbf824088d12faea937878a757a7ac653e8288b775e8b27b882",
-      "lines": 132,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "ed5aabb994c0867c8307f8cb4bd27a12c46a771d029d8f679183d71b4b57b6f2",
+      "lines": 134,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/improve-animations/AUDIT.md",
-      "sha256": "551c8473e20e5f4774680bc24d45e1c68e50992582720905c6b077756b7b5a55",
-      "lines": 115,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "1281ce6c9e53dc4b2086e84b74d24431b5708c63beb507f3a7759d74a1022109",
+      "lines": 117,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/improve-animations/PLAN-TEMPLATE.md",
-      "sha256": "0a08ac8e23fd2082d7ffb86aeed7b789de77328c3cf874b16f1a755f2ef0a6ad",
+      "sha256": "f6a9a8095fe37b7db7ae75e8ceb981b74993a959e92e18e8f1b277b68551f7b7",
       "lines": 73,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/improve-animations/SKILL.md",
-      "sha256": "68f17bbc4671593d2f43dba26a679243e2153ba5f26965fb7d59df52842534ff",
+      "sha256": "8e397a1c689e37f3e863bfa366512c02ee9391c360a81520df7ac5a363da75fd",
       "lines": 101,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/improve/SKILL.md",
@@ -753,17 +777,21 @@
     },
     {
       "path": ".claude/skills/review-animations/SKILL.md",
-      "sha256": "61cf8ac0c4c8e1f63385298c546b16c65ca9aec34abddcd04e821c16712d671d",
-      "lines": 112,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "2d1da3b496a7d0ae742f87571402b50c7b19b8ce8e7eb5e3a3edc67bf7f3e74c",
+      "lines": 114,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/review-animations/STANDARDS.md",
-      "sha256": "e7d3605034acda54ca13e43aec9e64d65b53de20f75b11b8d694e373012fbe07",
-      "lines": 187,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "f14a7da569e58930b6bc7191078f35ad74ccc2f40a5b8441b33c35fda0e15c7e",
+      "lines": 189,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/skill-reviewer/SKILL.md",
@@ -873,8 +901,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "6a919cc08212957415b03dc41706c8f38fa66c902b3d526ef2f8340f9e15a2ff",
-      "lines": 1836,
+      "sha256": "5eaa226c42d707a768a3ae2ac7ccb24e8a439d18f31bb6ebaf5c6a42c811d891",
+      "lines": 1845,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -6028,8 +6056,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "8eb91646867c40f64830b55c4812137405cd0e46680b3d8ee16066c8788307e7",
-      "lines": 363,
+      "sha256": "47a0c081054c7d09526d1922efefc2b3997445c224915122eb7ee87ad9c62c2f",
+      "lines": 369,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6042,8 +6070,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "2bce730aeea62990b9be8dc544d672a9cb6ebd4591e1bb1e931c301a7cf1b3bd",
-      "lines": 173,
+      "sha256": "dd22543f1b248a130510db1fa748065b71b69716f03a13c7f05df57092219be5",
+      "lines": 176,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6378,8 +6406,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "1e4b45b30889cd87df1fa22911d63d2c0ce4767ded3d1e171092a61ab5e40bea",
-      "lines": 498,
+      "sha256": "c7300509dfd5d156a1fb3ba2350cdbea6856b954c20012607b74a57d57e494a2",
+      "lines": 505,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6392,8 +6420,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "277fe5313b9391cd6076e0e76ed36b2c5457a928037faac3bb33dd87eecb29a9",
-      "lines": 8453,
+      "sha256": "b7f2842f7cdd566ff5b1499e09008e0ac15d77b83d8dc7e6347f2f286afb2a68",
+      "lines": 8455,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6955,6 +6983,13 @@
       "sha256": "b2b2517e5f6000b6db2845d3699a3c6101720dd4aa9dcd0b5620547310605d82",
       "lines": null,
       "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/motion-guides-verification-2026-10-10.json",
+      "sha256": "cca44bd8e97cb58652401c918c2777b50fb985911b554aa97331fe8748be980a",
+      "lines": 106,
+      "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
@@ -7557,8 +7592,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "36188452b2e649bf0c6346c4d05b145f028fc150ca6eac85fbb590cb64ef2872",
-      "lines": 6125,
+      "sha256": "db7ae536913d7d541140404a071ef0cb6dd078767691bce30daf31107c6ffd94",
+      "lines": 6321,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },

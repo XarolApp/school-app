@@ -70,9 +70,9 @@ Hunt for: `@keyframes` on toasts/toggles/rapidly-triggered UI, gesture handlers 
 
 ## 5. Performance
 
-- **Animate `transform` and `opacity` only.** `width`/`height`/`margin`/`padding`/`top`/`left` trigger layout + paint + composite.
+- **Prefer `transform` and `opacity`; verify the actual browser/animation path.** `width`/`height`/`margin`/`padding`/`top`/`left` trigger layout + paint + composite.
 - **`transition: all`** animates unintended properties off-GPU — always a finding.
-- **Framer Motion `x`/`y`/`scale` shorthands are not hardware-accelerated** — they run on the main thread and drop frames under load. Target: the full transform string, `animate={{ transform: "translateX(100px)" }}`.
+- **Framer Motion `x`/`y`/`scale` shorthands are not hardware-accelerated** — the individual-transform path may stay on the main thread; confirm frame behaviour under load. Target: the full transform string, `animate={{ transform: "translateX(100px)" }}`.
 - **Don't drive child transforms via a CSS variable on the parent** — it recalcs styles for all children. Set `transform` directly on the element.
 - CSS (and WAAPI) beat rAF-based JS under load — use CSS for predetermined motion, JS/springs for dynamic and gesture-driven motion.
 - Keep transition-time `filter: blur()` under 20px — heavy blur is expensive, especially in Safari.
@@ -90,7 +90,7 @@ Hunt for: `transition: all`, animated layout properties, Framer Motion shorthand
 }
 ```
 
-Reduced motion means fewer and gentler animations, **not zero** — keep transitions that aid comprehension, remove position changes. In JS: `useReducedMotion()` and branch transform values.
+Reduced motion may simplify or disable nonessential animation; preserve state feedback with static text/styles. Opacity/color transitions are optional. In JS: `useReducedMotion()` and branch transform values.
 
 Hunt for: movement with no `prefers-reduced-motion` handling, ungated `:hover` motion, reduced-motion implementations that nuke all feedback.
 
@@ -113,3 +113,5 @@ The additive category — places that don't animate but should:
 - `translate` percentages (`translateY(100%)` = element's own height) and `clip-path: inset()` reveals as tools for these — no hardcoded pixel offsets.
 
 Report at most a handful, grounded in actual UX seams you observed — not a wishlist.
+
+Reference note (checked 10 October 2026): duration/easing values are craft defaults, not compliance tests. Disable nonessential motion when appropriate ([W3C 2.3.3, Level AAA](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html)); profile acceleration on target browsers ([Motion performance](https://motion.dev/docs/performance)). A reduced-motion implementation with clear static feedback is not a defect.

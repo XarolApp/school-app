@@ -109,10 +109,10 @@ One row per surviving suggestion, ordered by leverage:
 
 | # | Location | Today | Purpose | Frequency | Suggested motion |
 | --- | --- | --- | --- | --- | --- |
-| 1 | `Toast.tsx:41` | New toasts appear instantly | Preventing a jarring change | Occasional | Enter via `@starting-style`: `opacity: 0; translateY(100%)` → settled, `transition: 400ms ease`, exit same edge |
+| 1 | `Toast.tsx:41` | New toasts appear instantly | Preventing a jarring change | Occasional | Enter via `@starting-style`: `opacity: 0; translateY(100%)` → settled, `transition: 200ms ease`, exit same edge |
 | 2 | `Button.tsx:18` | No press feedback | Feedback | Tens/day | `:active { transform: scale(0.97) }`, `transition: transform 160ms ease-out` — subtle enough for the frequency tier |
 
-Every "Suggested motion" cell carries exact values — the curve, the duration, the properties — pulled from this repo's shared vocabulary (`--ease-out: cubic-bezier(0.23, 1, 0.32, 1)`, `--ease-in-out: cubic-bezier(0.77, 0, 0.175, 1)`, `--ease-drawer: cubic-bezier(0.32, 0.72, 0, 1)`), never approximated. Animate `transform` and `opacity` only; include reduced-motion handling (gentler, not zero) and `@media (hover: hover) and (pointer: fine)` gating when the suggestion involves hover.
+Every "Suggested motion" cell carries exact values — the curve, the duration, the properties — pulled from this repo's shared vocabulary (`--ease-out: cubic-bezier(0.23, 1, 0.32, 1)`, `--ease-in-out: cubic-bezier(0.77, 0, 0.175, 1)`, `--ease-drawer: cubic-bezier(0.32, 0.72, 0, 1)`), never approximated. Animate `transform` and `opacity` only; include reduced-motion handling (simplify or disable nonessential motion; preserve legible static feedback) and `@media (hover: hover) and (pointer: fine)` gating when the suggestion involves hover.
 
 ### Part 2 — Rejected candidates (REQUIRED)
 
@@ -130,3 +130,5 @@ One short paragraph: how much motion this interface actually needs, whether it's
 ## Tone
 
 When feel can't be judged from code alone, say so instead of guessing. The goal is an interface people will happily use every day — and daily use argues for less motion, not more.
+
+Reference note (checked 10 October 2026): duration/easing values are craft defaults, not compliance tests. Disable nonessential motion when appropriate ([W3C 2.3.3, Level AAA](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html)); profile acceleration on target browsers ([Motion performance](https://motion.dev/docs/performance)). A reduced-motion implementation with clear static feedback is not a defect.

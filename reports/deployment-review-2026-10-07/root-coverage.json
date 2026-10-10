@@ -2137,18 +2137,18 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "6a919cc08212957415b03dc41706c8f38fa66c902b3d526ef2f8340f9e15a2ff",
-    "lines": 1836,
+    "sha256": "5eaa226c42d707a768a3ae2ac7ccb24e8a439d18f31bb6ebaf5c6a42c811d891",
+    "lines": 1845,
     "read_ranges": [
       [
         1,
-        1836
+        1845
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-10T21:20:51.076901+00:00",
-    "method": "Verified full saved baseline at ed6a69a plus complete current diff and all owned edits read. Source coverage is not SQL/hosted/browser/deployment acceptance.",
+    "checked_at_utc": "2026-10-10T21:26:23.260226+00:00",
+    "method": "Verified full saved baseline at ed6a69a plus complete current diff and all owned edits read. Source coverage is not SQL/hosted/browser/deployment acceptance. Exact current baseline plus authored motion-reference ledger append fully read.",
     "previous_complete_sha256": "6ed953ba5862eb93b5a94deced3360695fd0d101d48882fa3bcb720577bea981"
   },
   "frontend/src/api.js": {
@@ -6121,5 +6121,201 @@
     "checked_at_utc": "2026-10-10T21:20:51.076901+00:00",
     "method": "Complete current bounded read, repairing truncated ranges; every owned edit read. Source coverage is not SQL/hosted/browser/deployment acceptance.",
     "previous_complete_sha256": null
+  },
+  ".agents/skills/review-animations/SKILL.md": {
+    "sha256": "2d1da3b496a7d0ae742f87571402b50c7b19b8ce8e7eb5e3a3edc67bf7f3e74c",
+    "lines": 114,
+    "read_ranges": [
+      [
+        1,
+        114
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:26:23.260226+00:00",
+    "method": "Full seven base guides/references read in bounded outputs; missing hard-rule range reread. Each Claude copy independently byte-equal verified. Complete owned narrow doc/example patches read. No product/animation/device acceptance inferred."
+  },
+  ".claude/skills/review-animations/SKILL.md": {
+    "sha256": "2d1da3b496a7d0ae742f87571402b50c7b19b8ce8e7eb5e3a3edc67bf7f3e74c",
+    "lines": 114,
+    "read_ranges": [
+      [
+        1,
+        114
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:26:23.260226+00:00",
+    "method": "Full seven base guides/references read in bounded outputs; missing hard-rule range reread. Each Claude copy independently byte-equal verified. Complete owned narrow doc/example patches read. No product/animation/device acceptance inferred."
+  },
+  ".agents/skills/review-animations/STANDARDS.md": {
+    "sha256": "f14a7da569e58930b6bc7191078f35ad74ccc2f40a5b8441b33c35fda0e15c7e",
+    "lines": 189,
+    "read_ranges": [
+      [
+        1,
+        189
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:26:23.260226+00:00",
+    "method": "Full seven base guides/references read in bounded outputs; missing hard-rule range reread. Each Claude copy independently byte-equal verified. Complete owned narrow doc/example patches read. No product/animation/device acceptance inferred."
+  },
+  ".claude/skills/review-animations/STANDARDS.md": {
+    "sha256": "f14a7da569e58930b6bc7191078f35ad74ccc2f40a5b8441b33c35fda0e15c7e",
+    "lines": 189,
+    "read_ranges": [
+      [
+        1,
+        189
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:26:23.260226+00:00",
+    "method": "Full seven base guides/references read in bounded outputs; missing hard-rule range reread. Each Claude copy independently byte-equal verified. Complete owned narrow doc/example patches read. No product/animation/device acceptance inferred."
+  },
+  ".agents/skills/find-animation-opportunities/SKILL.md": {
+    "sha256": "ed5aabb994c0867c8307f8cb4bd27a12c46a771d029d8f679183d71b4b57b6f2",
+    "lines": 134,
+    "read_ranges": [
+      [
+        1,
+        134
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:26:23.260226+00:00",
+    "method": "Full seven base guides/references read in bounded outputs; missing hard-rule range reread. Each Claude copy independently byte-equal verified. Complete owned narrow doc/example patches read. No product/animation/device acceptance inferred."
+  },
+  ".claude/skills/find-animation-opportunities/SKILL.md": {
+    "sha256": "ed5aabb994c0867c8307f8cb4bd27a12c46a771d029d8f679183d71b4b57b6f2",
+    "lines": 134,
+    "read_ranges": [
+      [
+        1,
+        134
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:26:23.260226+00:00",
+    "method": "Full seven base guides/references read in bounded outputs; missing hard-rule range reread. Each Claude copy independently byte-equal verified. Complete owned narrow doc/example patches read. No product/animation/device acceptance inferred."
+  },
+  ".agents/skills/animation-vocabulary/SKILL.md": {
+    "sha256": "85afe50bc59a9a7db6201a1b3df36ceb0ac8c58723cc0c8495fd2de959a2ea43",
+    "lines": 173,
+    "read_ranges": [
+      [
+        1,
+        173
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:26:23.260226+00:00",
+    "method": "Full seven base guides/references read in bounded outputs; missing hard-rule range reread. Each Claude copy independently byte-equal verified. Complete owned narrow doc/example patches read. No product/animation/device acceptance inferred."
+  },
+  ".claude/skills/animation-vocabulary/SKILL.md": {
+    "sha256": "85afe50bc59a9a7db6201a1b3df36ceb0ac8c58723cc0c8495fd2de959a2ea43",
+    "lines": 173,
+    "read_ranges": [
+      [
+        1,
+        173
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:26:23.260226+00:00",
+    "method": "Full seven base guides/references read in bounded outputs; missing hard-rule range reread. Each Claude copy independently byte-equal verified. Complete owned narrow doc/example patches read. No product/animation/device acceptance inferred."
+  },
+  ".agents/skills/improve-animations/SKILL.md": {
+    "sha256": "8e397a1c689e37f3e863bfa366512c02ee9391c360a81520df7ac5a363da75fd",
+    "lines": 101,
+    "read_ranges": [
+      [
+        1,
+        101
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:26:23.260226+00:00",
+    "method": "Full seven base guides/references read in bounded outputs; missing hard-rule range reread. Each Claude copy independently byte-equal verified. Complete owned narrow doc/example patches read. No product/animation/device acceptance inferred."
+  },
+  ".claude/skills/improve-animations/SKILL.md": {
+    "sha256": "8e397a1c689e37f3e863bfa366512c02ee9391c360a81520df7ac5a363da75fd",
+    "lines": 101,
+    "read_ranges": [
+      [
+        1,
+        101
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:26:23.260226+00:00",
+    "method": "Full seven base guides/references read in bounded outputs; missing hard-rule range reread. Each Claude copy independently byte-equal verified. Complete owned narrow doc/example patches read. No product/animation/device acceptance inferred."
+  },
+  ".agents/skills/improve-animations/AUDIT.md": {
+    "sha256": "1281ce6c9e53dc4b2086e84b74d24431b5708c63beb507f3a7759d74a1022109",
+    "lines": 117,
+    "read_ranges": [
+      [
+        1,
+        117
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:26:23.260226+00:00",
+    "method": "Full seven base guides/references read in bounded outputs; missing hard-rule range reread. Each Claude copy independently byte-equal verified. Complete owned narrow doc/example patches read. No product/animation/device acceptance inferred."
+  },
+  ".claude/skills/improve-animations/AUDIT.md": {
+    "sha256": "1281ce6c9e53dc4b2086e84b74d24431b5708c63beb507f3a7759d74a1022109",
+    "lines": 117,
+    "read_ranges": [
+      [
+        1,
+        117
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:26:23.260226+00:00",
+    "method": "Full seven base guides/references read in bounded outputs; missing hard-rule range reread. Each Claude copy independently byte-equal verified. Complete owned narrow doc/example patches read. No product/animation/device acceptance inferred."
+  },
+  ".agents/skills/improve-animations/PLAN-TEMPLATE.md": {
+    "sha256": "f6a9a8095fe37b7db7ae75e8ceb981b74993a959e92e18e8f1b277b68551f7b7",
+    "lines": 73,
+    "read_ranges": [
+      [
+        1,
+        73
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:26:23.260226+00:00",
+    "method": "Full seven base guides/references read in bounded outputs; missing hard-rule range reread. Each Claude copy independently byte-equal verified. Complete owned narrow doc/example patches read. No product/animation/device acceptance inferred."
+  },
+  ".claude/skills/improve-animations/PLAN-TEMPLATE.md": {
+    "sha256": "f6a9a8095fe37b7db7ae75e8ceb981b74993a959e92e18e8f1b277b68551f7b7",
+    "lines": 73,
+    "read_ranges": [
+      [
+        1,
+        73
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:26:23.260226+00:00",
+    "method": "Full seven base guides/references read in bounded outputs; missing hard-rule range reread. Each Claude copy independently byte-equal verified. Complete owned narrow doc/example patches read. No product/animation/device acceptance inferred."
   }
 }

@@ -32,9 +32,9 @@ Every animation in the diff is measured against these. A violation is a finding.
 
 6. **Interruptibility.** Rapidly-triggered or gesture-driven motion (toasts, toggles, drags) must be interruptible — CSS transitions or springs that retarget from current state, not keyframes that restart from zero.
 
-7. **GPU-only properties.** Animate `transform` and `opacity` only. Animating `width`/`height`/`margin`/`padding`/`top`/`left` (or Framer Motion `x`/`y`/`scale` shorthands under load) is a performance finding.
+7. **Prefer compositing-friendly properties.** Animate `transform` and `opacity` only. Animating `width`/`height`/`margin`/`padding`/`top`/`left` (or Framer Motion `x`/`y`/`scale` shorthands under load) needs a measured performance review; acceleration depends on the browser and animation path.
 
-8. **Accessibility.** `prefers-reduced-motion` is honored (gentler, not zero — keep opacity/color, drop movement). Hover animations are gated behind `@media (hover: hover) and (pointer: fine)`.
+8. **Accessibility.** `prefers-reduced-motion` is honored: simplify or disable nonessential motion and keep state feedback legible, including through static text/styles. Hover animations are gated behind `@media (hover: hover) and (pointer: fine)`.
 
 9. **Asymmetric enter/exit.** Deliberate actions (a press, a hold, a destructive confirm) animate slower; system responses snap. Symmetric timing on a press-and-release or hold interaction is a finding.
 
@@ -110,3 +110,5 @@ Be specific and cite `file:line`. When a value is needed (a curve, a duration, a
 
 - Prefer CSS transitions/`@starting-style`/WAAPI for predetermined motion; JS/springs for dynamic, interruptible, gesture-driven motion.
 - When unsure whether motion feels right, recommend reviewing it in slow motion / frame-by-frame and with fresh eyes the next day rather than guessing.
+
+Reference note (checked 10 October 2026): duration/easing values are craft defaults, not compliance tests. Disable nonessential motion when appropriate ([W3C 2.3.3, Level AAA](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html)); profile acceleration on target browsers ([Motion performance](https://motion.dev/docs/performance)). A reduced-motion implementation with clear static feedback is not a defect.

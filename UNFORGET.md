@@ -1834,3 +1834,12 @@ Confirmed score/weight, historical-admission, commute and local/account-storage 
 - C51’s refreshed actual-handler probe now also confirms a request can renew from independent `typed` words while saving only `5/5`. C50/C51 stay open; require persisted structured writing, durable renewal/retry and truthful cutoff-aware UI.
 
 Evidence: `reports/deployment-review-2026-10-07/ninth-grade-boundaries-2026-10-10.json`, `ninth-grade-live-2026-10-10.json`, and the updated handoff. No PostgreSQL execution, authenticated cross-account acceptance or deployment clearance is inferred.
+
+
+## Motion-reference review follow-up — 10 October 2026
+
+- C39/C44 narrow reference facts corrected in seven paired guides: nonexistent project vocabulary page, forced-animation reduced-motion rule, guaranteed compositor/dropped-frame claims and inconsistent toast examples. Static state feedback with disabled nonessential movement is valid; W3C 2.3.3 is Level AAA, not an automatic project certification. Current Motion primary docs still describe individual-transform acceleration limits; actual target-browser profiling remains required. Product motion and libraries are unchanged.
+- No motion executor/delegation workflow was invoked. The optional advisor now explicitly respects human/host authorization and the current no-subagent/model/ownership restrictions.
+- [ ] Bug Echo continuation: the same strict reduced-motion/acceleration wording also appears in the pending animate/Expo/Emil guides and uploaded copies. Fully read and reconcile those copies before future reuse; do not alter an unread file or treat static product feedback as a regression. Existing C11/C25/C38 responsive/focus/theme/real-device acceptance remains open.
+
+Evidence: `reports/deployment-review-2026-10-07/motion-guides-verification-2026-10-10.json`. These are documentation checks, not production visual/device verification.

@@ -80,7 +80,7 @@ CSS **transitions** can be interrupted and retargeted mid-animation; **keyframes
 
 ```css
 /* Interruptible — good for dynamic UI */
-.toast { transition: transform 400ms ease; }
+.toast { transition: transform 200ms ease; }
 
 /* Not interruptible — avoid for dynamic UI */
 @keyframes slideIn { from { transform: translateY(100%); } to { transform: translateY(0); } }
@@ -91,7 +91,7 @@ Use `@starting-style` for entry without JS:
 ```css
 .toast {
   opacity: 1; transform: translateY(0);
-  transition: opacity 400ms ease, transform 400ms ease;
+  transition: opacity 200ms ease, transform 200ms ease;
   @starting-style { opacity: 0; transform: translateY(100%); }
 }
 ```
@@ -109,19 +109,19 @@ Slow where the user is deciding, fast where the system responds.
 
 ## Performance
 
-- **Only animate `transform` and `opacity`** — they skip layout/paint and run on the GPU. `padding`/`margin`/`height`/`width`/`top`/`left` trigger all three rendering steps.
+- **Prefer `transform` and `opacity`** — they usually avoid layout/paint; compositor acceleration must be verified in the target browser. `padding`/`margin`/`height`/`width`/`top`/`left` trigger all three rendering steps.
 - **Don't drive child transforms via a CSS variable on the parent** — it recalcs styles for all children. Set `transform` directly on the element.
   ```js
   element.style.setProperty('--swipe-amount', `${d}px`); // bad: recalc on all children
   element.style.transform = `translateY(${d}px)`;        // good: only this element
   ```
-- **Framer Motion shorthands are NOT hardware-accelerated.** `x`/`y`/`scale` run on the main thread via rAF and drop frames under load. Use the full transform string:
+- **Framer Motion shorthands are NOT hardware-accelerated.** The individual-transform path can remain on the main thread; profile it under load rather than asserting dropped frames from source alone. Use the full transform string:
   ```jsx
-  <motion.div animate={{ x: 100 }} />                          // drops frames under load
-  <motion.div animate={{ transform: "translateX(100px)" }} />  // hardware accelerated
+  <motion.div animate={{ x: 100 }} />                          // profile the individual-transform path
+  <motion.div animate={{ transform: "translateX(100px)" }} />  // candidate for acceleration; verify
   ```
 - **CSS animations beat JS under load** — they run off the main thread; rAF-based animations stutter while the browser loads/scripts/paints. Use CSS for predetermined motion, JS for dynamic/interruptible.
-- **WAAPI** gives JS control with CSS performance (hardware-accelerated, interruptible, no library):
+- **WAAPI** gives JavaScript control without a library; supported property/browser paths can run on the compositor:
   ```js
   element.animate([{ clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0 0)' }],
     { duration: 1000, fill: 'forwards', easing: 'cubic-bezier(0.77, 0, 0.175, 1)' });
@@ -173,7 +173,7 @@ const reduce = useReducedMotion();
 const closedX = reduce ? 0 : '-100%';
 ```
 
-Reduced motion means fewer and gentler animations, not zero — keep transitions that aid comprehension, remove movement/position changes.
+Reduced motion may simplify or disable nonessential animation. Static state feedback is valid; an opacity/color transition is optional, not required.
 
 ## Debugging (recommend in reviews when feel is uncertain)
 
@@ -185,3 +185,5 @@ Reduced motion means fewer and gentler animations, not zero — keep transitions
 ## Cohesion
 
 Match motion to the component's personality: playful can be bouncier; a professional dashboard should be crisp and fast. Sonner feels right partly because easing, duration, design, and even the name are in harmony — slightly slower, `ease` rather than `ease-out`, to feel elegant. Opacity + height in entering/exiting lists is trial and error; there's no formula — adjust until it feels right.
+
+Reference note (checked 10 October 2026): duration/easing values are craft defaults, not compliance tests. Disable nonessential motion when appropriate ([W3C 2.3.3, Level AAA](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html)); profile acceleration on target browsers ([Motion performance](https://motion.dev/docs/performance)). A reduced-motion implementation with clear static feedback is not a defect.

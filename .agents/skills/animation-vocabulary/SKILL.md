@@ -55,7 +55,7 @@ Output:
 
 ## Glossary
 
-_A curated snapshot mirroring the project's `/vocabulary` page; keep the two in sync when either changes._
+_A standalone reference glossary. This school-app repository has no `/vocabulary` route; the glossary is not a mirror of a product page._
 
 ### Entrances & Exits — how elements appear and disappear
 - **Fade in / Fade out** — Element appears or disappears by changing opacity.
