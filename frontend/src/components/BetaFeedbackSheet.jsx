@@ -9,7 +9,7 @@ import { captureBetaScreenshot, elementSelector, publicElementText } from '../li
 import { useDraft } from '../lib/useDraft';
 import { genderedCopy, useGender } from '../lib/gender';
 
-const kinds = [['bug','Chyba'],['navrh','Návrh'],['funkce','Nová funkce'],['text','Chybný text/údaj'],['neprehledne','Nepřehledné'],['chvala','Pochvala']];
+const kinds = [['bug','Chyba'],['navrh','Návrh'],['funkce','Nová funkce'],['text','Chybný text/údaj'],['neprehledne','Nepřehledné'],['chvala','Pochvala'],['dotaz','Dotaz']];
 const statuses = { nove: 'Nová', precteno: 'Přečteno', vyreseno: 'Vyřešeno', neudelame: 'Neuděláme' };
 const modes = [['general',MessageSquare,'Obecně k webu'],['mark',SquareMousePointer,'Označit místo'],['text',Pencil,'Navrhnout změnu textu']];
 
