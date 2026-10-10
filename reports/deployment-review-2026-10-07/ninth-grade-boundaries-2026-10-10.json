@@ -1,0 +1,292 @@
+{
+  "checkedAt": "2026-10-10T21:16:27.109Z",
+  "sourceHashes": {
+    "server.js": "ffb3c2174af8028534bccfdc2c66f425f8663c2a6e66f2bfd181f70b23c32294",
+    "tests/server-boundaries.test.cjs": "552d3289d95e9731d0f954d123c21a7b7543e746c43ddb687652567fadc7ac11",
+    "lib/ninthGrade.js": "be811398f0c7c5265bb46bde57fc83612431d68d509e52417eb40f3a53e7a592",
+    "supabase-setup.sql": "c5167dd460a18d83bca4a0d7f5dd728cfeed9c8e482e7f8b66a75478faa73d5d",
+    "migrations/2026-10-10-ninth-grade-scope.sql": "be5a539aaf7a4db56a7c8ab2d4e7f4b669caf95f4ffcb6360fd07c891d21b779",
+    "scripts/import-admission-data.js": "74b321ab0fe695884a66c63e7de66a2bdde8f94fdebe595ff68242e376bc9b9c",
+    "tests/ninth-grade.test.cjs": "2cdc53fc8a104fb468b5a470075e8f98746ed457138effd28fbce3cba8c24abf"
+  },
+  "nullablePredicate": {
+    "scope": "Actual extracted SQL expression evaluated by in-memory SQLite; actual JS predicate. PostgreSQL NULL logic independently documented. Does not execute PostgreSQL, migration, grants or hosted SQL.",
+    "primarySource": "https://www.postgresql.org/docs/current/functions-logical.html",
+    "results": [
+      {
+        "typ_skoly": null,
+        "delka_studia": null,
+        "js": true,
+        "sqlExpression": null
+      },
+      {
+        "typ_skoly": null,
+        "delka_studia": 8,
+        "js": true,
+        "sqlExpression": null
+      },
+      {
+        "typ_skoly": null,
+        "delka_studia": 6,
+        "js": true,
+        "sqlExpression": true
+      },
+      {
+        "typ_skoly": "Konzervatoře",
+        "delka_studia": null,
+        "js": true,
+        "sqlExpression": null
+      },
+      {
+        "typ_skoly": "Konzervatoře",
+        "delka_studia": 8,
+        "js": false,
+        "sqlExpression": false
+      },
+      {
+        "typ_skoly": "Konzervatoře",
+        "delka_studia": 6,
+        "js": true,
+        "sqlExpression": true
+      },
+      {
+        "typ_skoly": "Gymnázia 6letá",
+        "delka_studia": null,
+        "js": false,
+        "sqlExpression": false
+      },
+      {
+        "typ_skoly": "Gymnázia 8letá",
+        "delka_studia": 8,
+        "js": false,
+        "sqlExpression": false
+      },
+      {
+        "typ_skoly": "Nástavby",
+        "delka_studia": null,
+        "js": false,
+        "sqlExpression": false
+      },
+      {
+        "typ_skoly": "Gymnázia 4letá",
+        "delka_studia": null,
+        "js": true,
+        "sqlExpression": true
+      },
+      {
+        "typ_skoly": "",
+        "delka_studia": null,
+        "js": true,
+        "sqlExpression": true
+      },
+      {
+        "typ_skoly": "Unknown",
+        "delka_studia": null,
+        "js": true,
+        "sqlExpression": true
+      }
+    ],
+    "mismatches": [
+      {
+        "typ_skoly": null,
+        "delka_studia": null,
+        "js": true,
+        "sqlExpression": null
+      },
+      {
+        "typ_skoly": null,
+        "delka_studia": 8,
+        "js": true,
+        "sqlExpression": null
+      },
+      {
+        "typ_skoly": "Konzervatoře",
+        "delka_studia": null,
+        "js": true,
+        "sqlExpression": null
+      }
+    ]
+  },
+  "unknownPick": {
+    "scope": "Actual registered PUT handler with modelled successful DELETE and subsequent FK failure; middleware and database synthetic, no hosted write.",
+    "requestedUnknownId": 999999,
+    "status": 500,
+    "body": {
+      "error": "Synthetic unknown-school foreign-key failure"
+    },
+    "originalVisiblePicks": 1,
+    "survivingVisiblePicks": 0,
+    "queryOrder": [
+      {
+        "table": "schools",
+        "calls": [
+          [
+            "select",
+            "id, merged_into, hidden_reason"
+          ]
+        ]
+      },
+      {
+        "table": "application_picks",
+        "calls": [
+          [
+            "delete"
+          ],
+          [
+            "eq",
+            "user_id",
+            "user-test"
+          ]
+        ]
+      },
+      {
+        "table": "application_picks",
+        "calls": [
+          [
+            "insert",
+            [
+              {
+                "user_id": "user-test",
+                "school_id": 999999,
+                "priority": 1,
+                "obor_kkov": null,
+                "obor_nazev": null
+              }
+            ]
+          ]
+        ]
+      }
+    ]
+  },
+  "cachedHiddenExplanation": {
+    "scope": "Actual registered explanation handler with a synthetic old run cache and no visible school. Middleware/database synthetic; no model/hosted operation.",
+    "status": 200,
+    "body": {
+      "reason": "Synthetic cached explanation for a now-hidden school",
+      "cached": true
+    },
+    "schoolVisibilityReads": 0
+  },
+  "importClassificationChange": [
+    {
+      "direction": "visible-to-hidden",
+      "scope": "Actual extracted import writer; in-memory synthetic Supabase delete/insert responses. No import/model/migration/hosted operation.",
+      "tables": {
+        "school_programs": [
+          {
+            "school_id": 1,
+            "rok": 2026,
+            "kkov": "synthetic",
+            "typ_skoly": "Unknown"
+          }
+        ],
+        "school_programs_hidden": [
+          {
+            "school_id": 1,
+            "rok": 2026,
+            "kkov": "synthetic",
+            "typ_skoly": "Gymnázia 8letá"
+          }
+        ]
+      },
+      "queries": [
+        {
+          "table": "school_programs_hidden",
+          "calls": [
+            [
+              "delete"
+            ],
+            [
+              "eq",
+              "rok",
+              2026
+            ],
+            [
+              "in",
+              "school_id",
+              [
+                1
+              ]
+            ]
+          ]
+        },
+        {
+          "table": "school_programs_hidden",
+          "calls": [
+            [
+              "insert",
+              [
+                {
+                  "school_id": 1,
+                  "rok": 2026,
+                  "kkov": "synthetic",
+                  "typ_skoly": "Gymnázia 8letá"
+                }
+              ]
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "direction": "hidden-to-visible",
+      "scope": "Actual extracted import writer; in-memory synthetic Supabase delete/insert responses. No import/model/migration/hosted operation.",
+      "tables": {
+        "school_programs": [
+          {
+            "school_id": 1,
+            "rok": 2026,
+            "kkov": "synthetic",
+            "typ_skoly": "Gymnázia 4letá"
+          }
+        ],
+        "school_programs_hidden": [
+          {
+            "school_id": 1,
+            "rok": 2026,
+            "kkov": "synthetic",
+            "typ_skoly": "Gymnázia 8letá"
+          }
+        ]
+      },
+      "queries": [
+        {
+          "table": "school_programs",
+          "calls": [
+            [
+              "delete"
+            ],
+            [
+              "eq",
+              "rok",
+              2026
+            ],
+            [
+              "in",
+              "school_id",
+              [
+                1
+              ]
+            ]
+          ]
+        },
+        {
+          "table": "school_programs",
+          "calls": [
+            [
+              "insert",
+              [
+                {
+                  "school_id": 1,
+                  "rok": 2026,
+                  "kkov": "synthetic",
+                  "typ_skoly": "Gymnázia 4letá"
+                }
+              ]
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

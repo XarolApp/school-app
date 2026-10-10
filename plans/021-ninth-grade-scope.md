@@ -1,6 +1,6 @@
 # Plan 021 — 9th-grade-only catalogue, plus the back-button bug (#15)
 
-Status: planned 2026-10-10 (Opus 5.5, medium). Implement with Sonnet 5.5, medium.
+Status: original design plan 2026-10-10 (Opus 5.5, medium); source implementation through `7bc008d` is present. Independent read-only checks confirm the stored 194/23/58 scope. Full migration, authenticated/browser and re-extraction acceptance remains open. Preserve the founder’s selected model; this historical routing line does not authorize a switch or delegation.
 
 ## Founder rules (decided 2026-10-10 — do not re-derive)
 
@@ -80,7 +80,7 @@ Re-runnable, one transaction. Mirror into `supabase-setup.sql` right after the
    - The `like` copies the identity column as a plain `bigint` default-less `id`. That is
      fine: rows keep their original id.
 3. `create or replace function public.ninth_grade_program(p_typ text, p_delka int) returns boolean language sql immutable as $$ select not (coalesce(p_typ,'') in ('Gymnázia 6letá','Gymnázia 8letá','Nástavby') or (p_typ = 'Konzervatoře' and p_delka = 8)) $$;`
-   This must stay identical to `lib/ninthGrade.js`; a test enforces it (step 3).
+   This is the intended rule shared with `lib/ninthGrade.js`. Current regex tests check source spelling only; C52 reproduces nullable SQL/JS disagreement, so they do not enforce semantic parity.
 4. Move the rows (atomic):
    ```sql
    with moved as (
@@ -273,8 +273,9 @@ after the SQL and shows them to the founder.
 
 ## Verification checklist
 
-- `npm test` at the root and `npx vitest run` in `frontend/` pass, plus `npm run lint` and
-  `npm run build` in `frontend/`.
+- `npm test` at the root passes, plus `npm run lint` and `npm run build` in
+  `frontend/`. Vitest is not configured in the current frontend package; do not
+  install or download a new runner merely to execute this historical checklist.
 - The PGlite migration test passes, including the second run.
 - Live verify query: 194 / 23 / 0.
 - Browser checks:
@@ -286,3 +287,16 @@ after the SQL and shows them to the founder.
   - the questionnaire runs and shows no hidden school;
   - bug #15 is fixed on `/dotaznik` → detail → Zpět.
 - `report-ninth-grade-scope.js` output is shown to the founder.
+
+## Independent review amendment — 10 October
+
+- The source migration explicitly declares a new identity primary key and copies listed programme-content columns; it does not preserve the old row IDs. Section 2’s `LIKE`/original-ID examples are historical design sketches, not commands to apply. Use the reviewed actual migration and canonical schema. No disposable PostgreSQL/PGlite migration receipt has been established by this review.
+- GET-only, ordered/paginated checks confirm 223 raw schools, 6 merged, 23 hidden, 194 visible, 58 partially affected; programme rows are 2,047 visible-table / 327 hidden-table. No row in either table conflicts with the JS eligibility predicate. This verifies stored scope only, not official completeness/eligibility or current SQL bodies/grants.
+- **C52:** make nullable SQL/JS rules agree and test actual PostgreSQL behaviour rather than regex text. Current data has no unknown type/conservatory-length rows; future imports still need the boundary fixed.
+- **C53/B03:** an unknown school ID passes PUT validation, current choices are deleted, and a subsequent modelled FK failure returns 500 with those choices lost. Validate positive known/visible IDs and programme ownership, then replace atomically.
+- **C54/S02/S03:** an import that changes a programme’s classification leaves its old row in the opposite table. Stage and replace both destination sets for the complete touched school/year scope atomically, including empty sets; preserve unrelated schools/years and fail without publishing partial data.
+- **C55:** cached on-demand explanations return before a visibility check, so an old explanation for a now-hidden school can still be served. Apply the current visibility contract before cache/new generation and exercise real registered-handler paths.
+- **Founder decision in this review:** when a hidden school becomes visible again, its old application choice stays archived until the user explicitly restores it. Current visibility alone would return it automatically. Define persistent archive state and safe order/capacity restoration with C53; retain the data.
+- Review all 58 affected schools’ cached prose/structured facts and stored AI explanations against the eligible programmes; adding prompt instructions does not rewrite old values. Step 8’s paid calls have not been performed by this review. Obtain the approved run scope, dry-run/source review and cost budget before execution.
+
+Evidence and ordered acceptance: `reports/deployment-review-2026-10-07/ninth-grade-boundaries-2026-10-10.json`, `ninth-grade-live-2026-10-10.json`, and `HANDOFF-PLAN.md`. The boundary probe runs actual JS handlers/writer with synthetic services and evaluates the extracted boolean expression in SQLite; it is explicitly not PostgreSQL migration acceptance or a hosted write.

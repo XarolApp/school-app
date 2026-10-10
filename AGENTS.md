@@ -414,7 +414,7 @@ are deployed. See the current deployment report.
 | `beta_program_settings` | singleton beta cutoff, rolling access hours, optional external feedback URL; read-only 2026-10-08: 48 hours, cutoff 18 October 2026 at 23:59 Europe/Prague; no external feedback form configured |
 | `beta_feedback` | tester-authored `bug`/`idea`/`comment` reports, attributed to the tester's school by the server |
 | `beta_contributions_archive` | minimised feedback, closing answers and website reviews copied on account deletion unless the tester chooses deletion; no account/school IDs or screenshots, but free text may identify its author. Service-role only. D4 is the founder's policy; C46 deletion-failure/retry acceptance remains open. |
-| `school_programs_hidden` | **9th-grade scope (plan 021, 2026-10-10):** programmes a pupil finishing 9th grade cannot apply to — `Gymnázia 6letá`, `Gymnázia 8letá`, `Nástavby`, and 8-year `Konzervatoře` (`ninth_grade_program()` in SQL = `lib/ninthGrade.js`) — are moved here, never deleted and never served. A school left with no visible programme gets `schools.hidden_reason = 'not_for_9th_grade'` (23 schools; 58 more lost some obory). Every user-facing read excludes hidden schools (`visibleSchool()` in `server.js`); user data pointing at them (favourites, picks, notes) is kept but not shown. `scripts/import-admission-data.js` does the split on import and calls `recompute_school_admission` / `refresh_school_visibility`. Read-only, service role only. |
+| `school_programs_hidden` | **9th-grade scope (plan 021, 2026-10-10):** programmes a pupil finishing 9th grade cannot apply to — `Gymnázia 6letá`, `Gymnázia 8letá`, `Nástavby`, and 8-year `Konzervatoře` (intended shared rule: `ninth_grade_program()` in SQL and `lib/ninthGrade.js`; nullable parity is open as C52) — are moved here, never deleted and never served. A school left with no visible programme gets `schools.hidden_reason = 'not_for_9th_grade'` (23 schools; 58 more lost some obory). Catalogue/detail/favourites/picks/share reads filter hidden schools (`visibleSchool()` in `server.js`); cached-explanation and write-boundary acceptance remains open as C53/C55; user data pointing at them (favourites, picks, notes) is kept but not shown. Founder decision 10 October: old application choices remain archived if a school returns, until the user explicitly restores them; that lifecycle is not yet implemented. `scripts/import-admission-data.js` does the split on import and calls `recompute_school_admission` / `refresh_school_visibility`. Read-only, service role only. |
 | `school_programs` | one row per obor per school per year, from Cermat's real admission results — `typ_skoly`, `zrizovatel`, `maturitni`, `jpz_povinna`, `jazyk_studia`, `delka_studia`, `zamereni` (Cermat's free-text focus; tells apart programmes sharing one KKOV, e.g. FOSTRA's five gymnázia — splits only the newest year, its wording changes yearly), `kkov`, `kapacita`, `prihlasky`, `prijati`, `cutoff`. No client RLS policy, same as `schools` — server.js only. Declared in `supabase-setup.sql` itself as of 2026-09-08 — it existed in the live database earlier than that (created directly by the import script), so this file didn't yet describe the real schema; fixed rather than left drifting. |
 | `users` | profile mirror of the private `auth.users`: email, name, nullable `gender` (`m`/`f`, selected in the student onboarding branch and editable as an account form-of-address preference), `trial_expires_at`, `subscription_status`, `theme_palette`, `theme_mode`, Stripe ids; beta adds nullable `tester_school_code`, `tester_access_until`, `tester_guidance_seen_at` |
 | `favorites` | `(user_id, school_id)` |
@@ -433,6 +433,8 @@ are deployed. See the current deployment report.
 | `school_extracted_details` | one row per school: scraped prose plus nullable structured values. `scripts/extract-school-details.js --structure` derives six fields from stored prose first, then cached markdown only for missing/non-answer text; it updates only those six columns and skips existing values unless `--force`. Club counts require an explicit number; categories require explicit activity-domain wording. `ma_jidelnu` means lunch is available through school (its own canteen or explicitly arranged elsewhere); the case is reported while the original prose remains available. Dorm and university-continuation fields are display-only pending coverage review. The six structure columns were extracted 2026-09-26 for all 219 cached schools (Luna low, flex route) after a stable paired 20-school dry run; recorded September snapshot (not current live coverage): `ma_jidelnu` 50, `ma_koleje` 6, `krouzky_kategorie` 189, `vyukovy_styl_tagy` 77, `vs_pokracuje_pct` 4, `pocet_krouzku` 0 (unusable). Base extraction (the 13 prose/number/boolean fields) was re-run 2026-09-26 on all 219 cached schools with `openai/gpt-6-luna` at low effort on the half-price flex route (`OPENROUTER_EXTRACT_PROVIDER=openai/flex`), reading the **filtered** markdown in `scripts/data/filtered-schools/` — now the script's default input. Re-run `scripts/filter-scraped-schools.js` after every new scrape, or the extractor reads stale text. |
 
 **Read-only field coverage, 9 October 2026 (before the 9th-grade scope below, which later cut the visible count to 194):** 217 visible schools (223 raw; six merged). Of the visible schools, 214 have an extracted row; non-null/non-empty coverage is lunch 104, dorm 6, club categories 154, teaching-style tags 75, university continuation 4 and explicit club count 0. Explicit `false` counts as known, not missing. These are stored-field counts, not verified school facts, and differ from the 219-school extraction cache. See `reports/deployment-review-2026-10-07/extracted-coverage-2026-10-09.json`.
+
+**Read-only coverage after the 9th-grade filter, 10 October:** 194 visible schools, 191 with extracted rows; known fields: lunch 92 (47.4%), dorm 5, club categories 135, teaching-style tags 70, university continuation 3 and explicit club count 0. The 23 fully hidden and 58 partly affected schools are independently counted. Stored coverage does not verify school facts or programme-specific prose; review/re-extraction of affected cached prose remains open. See `reports/deployment-review-2026-10-07/ninth-grade-live-2026-10-10.json`.
 
 `schools.admission_cutoff` / `acceptance_rate` and every `school_programs` row
 come from `scripts/import-admission-data.js`, which parses Cermat's yearly
@@ -473,7 +475,7 @@ exposed. This resolves a missing-field hypothesis for those names; it does not
 verify current function bodies, constraints, anonymous/authenticated grants or
 behavior. Evidence: `reports/deployment-review-2026-10-07/schema-fields-2026-10-09.json`.
 
-**The canonical schema enables RLS on all 28 application tables** after adding the beta contribution archive on 10 October. Read-only metadata exposes the new archive table/RPC; it does not prove their grants or erasure behavior. Read-only live
+**The canonical schema enables RLS on all 28 application tables** after adding the beta contribution archive and hidden-programme table on 10 October. Read-only metadata exposes the new archive table/RPC; it does not prove their grants or erasure behavior. Read-only live
 checks on 2026-10-07 returned zero rows with the anonymous key; this smoke check
 does not prove policy definitions, authenticated cross-account isolation or RPC
 grants. Tables without a client policy below are intended to be server-only
@@ -859,7 +861,7 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
 
 ## What's NOT Built Yet (MVP Scope)
 
-**Status as of 2026-10-07:** Supabase connected, 223 school rows (194 shown — 6 merged duplicates and 23 hidden for the 9th-grade scope), onboarding flow
+**Catalogue recheck 2026-10-10; feature acceptance remains open:** Supabase connected, 223 school rows (194 shown — 6 merged duplicates and 23 hidden for the 9th-grade scope), onboarding flow
 complete with district map and claim-framing signup, auth ported and wired, design tokens
 applied; see "Design tokens — tokens.js" below for the current palette and font state,
 developer-email bypass confirmed working.
@@ -1019,8 +1021,9 @@ for a desktop layout (or the reverse) is a research error, not a shortcut.
 
 ## Geographic Scope for V1
 
-Prague only: 223 rows in `schools`, 194 shown to users (6 rows are merged duplicates and 23 are hidden by the 9th-grade scope
-with `merged_into` set — use the live count, `useSchoolCount()` / `SCHOOL_COUNT`). Expansion to other Czech cities
+Prague only: read-only 10 October counts are 223 rows in `schools`, 194 shown to users
+(6 merged duplicates with `merged_into` set and 23 hidden by `hidden_reason` for the
+9th-grade scope — use the live count, `useSchoolCount()` / `SCHOOL_COUNT`). Expansion to other Czech cities
 planned for later phases once the Prague version is validated with real users.
 
 ---

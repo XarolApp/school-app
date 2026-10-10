@@ -1,0 +1,23 @@
+{
+  "checkedAt": "2026-10-10T21:20:51.076901+00:00",
+  "commit": "082f31e48deb058527036d17d91417fcc06546f2",
+  "readMethod": "Verified full baseline and every current diff, or new files read completely in bounded outputs; authored review/docs patches read. Source hashes in boundary/live artifacts identify their independent scope. Peer 082f31e single-choice diffs fully read; its browser behavior still needs journey acceptance.",
+  "checks": {
+    "rootTests": {
+      "pass": 198,
+      "fail": 0
+    },
+    "frontendLint": {
+      "errors": 0,
+      "warnings": 11
+    },
+    "frontendBuild": "pass; existing large chunks warning",
+    "offlineActualSourceProbes": "confirmed C51/C52/C53/C54/C55; external service responses synthetic",
+    "readOnlySupabase": "194 visible, 23 hidden, 58 partial; no user rows/RPC/writes"
+  },
+  "decisions": {
+    "returningApplicationChoice": "Retain archived until explicit user restoration; current lifecycle not implemented.",
+    "quickRenewal": "10+ trimmed characters of own writing across optional note/follow-ups; stars/chips/skip alone excluded; capped by program cutoff."
+  },
+  "scopeLimits": "No PostgreSQL migration/grant/isolation execution, hosted account/mail/feedback/payment write, paid generation, dashboard approval or complete browser/device acceptance. Full repository review remains active."
+}

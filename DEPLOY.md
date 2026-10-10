@@ -10,14 +10,17 @@ The site-wide gate uses the shared tester code and protects only the frontend;
 each API endpoint has its own authorization policy. Backend
 https://school-app-production-be43.up.railway.app returns a healthy JSON response;
 its CORS response allows the www origin. CORS does not replace API authorization:
-the anonymous catalogue endpoint currently returns all 194 visible schools and
-nested data. The premium/public projection boundary remains an open review item.
+the 8 October anonymous catalogue probe returned all 217 then-visible schools and
+nested data. A separate read-only database recheck on 10 October confirms 194 visible
+schools after the ninth-grade filter; it does not establish the deployed API
+response. The premium/public projection boundary remains an open review item.
 
 Local Stripe configuration was verified in **test mode**; the test webhook points
 at the Railway URL. This does not verify deployed billing secrets or authorize
 real payments. Check Railway billing/credits and continuity in the dashboard: the
-previous note predicted a trial deadline around 13 October, but its current billing
-state has not been verified. Do not assume that date proves the service will stop.
+previous note predicted a trial deadline around 13 October; the founder reports
+Railway Hobby is active (10 October). Independent dashboard/service-continuity
+acceptance remains open. Do not treat the obsolete trial date as a shutdown date.
 
 The setup below describes the existing topology, not release approval. Git pushes
 are intended to trigger Railway/Vercel deployment; verify each platform's deployed
@@ -123,17 +126,22 @@ schema on production or use production accounts for destructive acceptance tests
 - Use designated synthetic testers to exercise invitation → role/data-use
   acknowledgement → signup → email confirmation → first sign-in → questionnaire →
   search/detail → comparison/matrix → main feedback/renewal → expiry. Separately
-  exercise onboarding and its optional payment preview. Quick ratings must leave
-  the access timer unchanged. Test delayed
+  exercise onboarding and its optional payment preview. Stars/chips alone and
+  skipped quick ratings must leave the timer unchanged;
+  quick feedback with at least 10 characters of the tester’s own writing in its
+  note/follow-ups renews access, bounded by the programme cutoff. Verify both save
+  and renewal outcomes, including C50/C51 failures. Test delayed
   confirmation, recovery, account switching and account management. Do not submit
   real pupil data merely to run a smoke test.
 - Beta is **free for feedback**, with payment screens as a preview. Verify no beta
   journey opens Stripe, starts a purchase trial or requires payment. The observed
   cutoff is 18 October at 23:59 Europe/Prague, with a 48-hour rolling window; check
   the server's current settings before distributing invitations.
-- Preserve the founder's public landing/onboarding and landing-map school-detail
-  exception while enforcing premium access on the rest of the product. Ordinary
-  access trials must start at first confirmed sign-in; that change is still pending.
+- Preserve the public landing/auth/legal pages and view-only landing-map school
+  detail; onboarding requires sign-in, and its quiz is free for signed-in users.
+  Enforce the approved page/API access matrix for the other tools. Ordinary access
+  trials must start at first confirmed sign-in; C07 is deferred until after beta,
+  separately from the beta feedback window and season purchase trial.
 - Save evidence and unresolved manual checks in the current review, then update
   `docs/skolamatch_current_status.md` with what actually passed. Deployed URLs and a
   successful build alone do not mean beta acceptance is complete.

@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-10T21:01:05.626Z",
+  "checkedAt": "2026-10-10T21:13:40.469Z",
   "sourceHashes": {
     "server.js": "ffb3c2174af8028534bccfdc2c66f425f8663c2a6e66f2bfd181f70b23c32294",
     "tests/server-boundaries.test.cjs": "552d3289d95e9731d0f954d123c21a7b7543e746c43ddb687652567fadc7ac11",
@@ -35,6 +35,14 @@
       "testerAccessUntil": "2026-09-28T12:00:00.000Z",
       "accessRenewed": true
     }
+  },
+  "eligibilityWordsNotSaved": {
+    "status": 200,
+    "body": {
+      "testerAccessUntil": "2026-09-28T12:00:00.000Z",
+      "accessRenewed": true
+    },
+    "storedSummary": "5/5"
   },
   "interpretation": [
     {

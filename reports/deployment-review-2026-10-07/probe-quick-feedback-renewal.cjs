@@ -44,6 +44,14 @@ const resultFor = error => q => q.table === 'beta_program_settings' ? { data: se
   const zeroRows = harness({ result: resultFor(null) });
   const emptyUpdate = await zeroRows.call('post', '/api/beta/micro', request);
   assert.equal(emptyUpdate.body.accessRenewed, true);
+  const unsavedWords = harness({ result: resultFor(null) });
+  const independentTyped = await unsavedWords.call('post', '/api/beta/micro', {
+    body: { id: 'dotaznik', action: 'answer', rating: 5, answers: [], note: '',
+      typed: ['Vlastni napsana zpetna vazba'] },
+  });
+  assert.equal(independentTyped.body.accessRenewed, true);
+  const savedWithoutWords = unsavedWords.rpcCalls.at(-1).args.p_answer;
+  assert.equal(savedWithoutWords, '5/5');
   const interpretation = [];
   for (const [id, note] of [['vyhledavani', 'Ano'], ['dotaznik', '5/5'], ['dotaznik', 'Sedí · Tak akorát']]) {
     const h = harness({ result: resultFor(null) });
@@ -62,5 +70,7 @@ const resultFor = error => q => q.table === 'beta_program_settings' ? { data: se
     scope: 'Actual registered JS handler and helpers with mocked middleware, RPC and database. RPC successful commit/23505 guard modelled from read canonical SQL. Zero matched update rows modelled. Actual admin builder. No hosted operation or PostgreSQL acceptance.',
     failedRenewal: { first: { status: first.statusCode, body: first.body }, retry: { status: retry.statusCode, body: retry.body },
       renewalAttemptsAfterRetry: renewalCount(failed), feedbackRpcCalls: failed.rpcCalls.length },
-    zeroMatchedRows: { status: emptyUpdate.statusCode, body: emptyUpdate.body }, interpretation }, null, 2));
+    zeroMatchedRows: { status: emptyUpdate.statusCode, body: emptyUpdate.body },
+    eligibilityWordsNotSaved: { status: independentTyped.statusCode,
+      body: independentTyped.body, storedSummary: savedWithoutWords }, interpretation }, null, 2));
 })().catch(error => { console.error(error); process.exitCode = 1; });

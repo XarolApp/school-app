@@ -12,7 +12,7 @@ Střední na míru fixes this.
 
 ## What does the app do?
 
-1. **School Database** — Clean, searchable information about 194 visible catalogue schools (only programmes open to 9th graders) (programmes, location and contact, plus Cermat results from 2024–2026 where available). Completeness against the official register and universal three-year coverage have not been established.
+1. **School Database** — Clean, searchable information about 194 visible catalogue schools after the ninth-grade filter (programmes, location and contact, plus Cermat results from 2024–2026 where available). Completeness against the official register and universal three-year coverage have not been established.
 2. **Matching** — A questionnaire ranks schools by a deterministic score computed in code; AI-generated explanations are separate from the numeric score. The new on-demand explanation path is under deployment review
 3. **Favorites & Comparison** — Save schools and compare them side-by-side
 
@@ -40,7 +40,7 @@ Prices: Sezónní přístup 690 Kč (3-day free trial, then one charge), Měsí�
 
 ## Where is this built?
 
-Currently targeting **Prague only** for the first version: 223 school rows, 194 shown (6 merged records, 23 hidden because a 9th grader cannot apply), verified by read-only checks on 8 October 2026. Expansion to other Czech cities planned after Prague launches.
+Currently targeting **Prague only** for the first version: 223 school rows, 194 shown (6 merged records, 23 hidden because a 9th grader cannot apply), independently counted by read-only checks on 10 October 2026. This verifies stored catalogue scope, not completeness or eligibility against the official register. Expansion to other Czech cities planned after Prague launches.
 
 ## What's the current stage?
 
