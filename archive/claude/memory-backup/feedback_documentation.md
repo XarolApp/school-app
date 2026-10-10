@@ -8,6 +8,8 @@ metadata:
   modified: 2026-08-03T10:10:42.198Z
 ---
 
+> **Archive status — 10 October 2026.** Archived feedback from August. Keep the documentation habit, but current source/status evidence and founder decisions govern factual updates; this archive does not prove any implementation is complete.
+
 **Always update CLAUDE.md to reflect significant changes before ending the session.**
 
 **Why:** Keeps project docs current and accurate for future sessions. The docs are the source of truth for what's been built.

@@ -198,6 +198,8 @@ components:
 
 # Střední na míru
 
+> **Implementation checkpoint — 10 October 2026.** The approved September colour/type revision below describes the direction; the shipped web implementation is `frontend/src/design/tokens.js`, `frontend/src/design/tokens.css` and the actual components. `design/system/` still contains the earlier Fraunces/Public Sans + terracotta export, including proposed copy and layouts; its values must not override the current web theme. Radius and specimen/API differences are logged as C44 in the deployment review for a coordinated reconciliation, without silently changing approved visual choices. The app uses deterministic match percentages, self-hosted Archivo/Archivo Narrow, and the WebGL landing in `frontend/src/pages/landing2/`; older no-score/ambient-loop passages below are dated design recommendations, not a description of everything currently shipped. Beta is free for main-form feedback, with optional payment previews. The October review still has device/accessibility/motion acceptance open; neither this spec nor a past numerical contrast check proves current component compliance. Research quotations and Mobbin examples retain their original research context.
+
 ## Overview — read this before anything else
 
 > **Third revision, 2026-09-24: colour and type changed, everything else kept.**
@@ -233,10 +235,12 @@ this file is the correction, built on two inputs the first version didn't have:
 query the Mobbin MCP directly before generating anything, but treat it strictly as
 reference, never as a source of truth.** Priority order, always:
 
-1. **`design/system/` first** — the real, built component library (`Button`, `Input`,
+1. **Current shipped tokens/components first** — use `frontend/src/design/tokens.js`,
+   `frontend/src/design/tokens.css` and the connected React components for implemented
+   values. The older `design/system/` library (`Button`, `Input`,
    `Checkbox`, `Card`, `Chip`, `Divider`, `MatchIndicator`, `Tooltip`, tokens,
-   guidelines). This is the template. Its components, colors, spacing, and type scale
-   are not negotiable against anything Mobbin turns up.
+   guidelines) remains a historical design template and needs C44 reconciliation.
+   Do not restore its old fonts, palette or proposed product claims into the app.
 2. **This file, `DESIGN.md`, second** — the prose reasoning and direction behind that
    template, for anything the built components don't cover yet.
 3. **Mobbin third, as a sanity check only.** Before designing any screen, search
@@ -245,7 +249,7 @@ reference, never as a source of truth.** Priority order, always:
    below). Use them to judge whether a layout or interaction choice holds up against
    real products. **Never let a Mobbin example override or blend into this design
    system's own colors, spacing, or components** — if a Mobbin pattern conflicts with
-   `design/system`, `design/system` wins, full stop.
+   the current approved design direction or shipped tokens, those sources win.
 
    **Match the search platform to the surface being designed.** Mobbin's `platform`
    parameter (`ios` / `web`) must reflect what is actually being built: desktop layout
@@ -331,7 +335,7 @@ anywhere in this file for that reason.)
 **The referent: Czech tourist trail markings (turistické značení).** The white–blue–white
 stripe painted on trees, the one every Czech child has followed on a school trip. It is
 the most familiar local sign for *this is the way, you are not lost*, which is the exact
-feeling a 15-year-old choosing between 223 schools is missing. It is a sign you follow
+feeling a 15-year-old choosing between many Prague schools is missing. It is a sign you follow
 by choice, never an instrument that grades you, so it obeys the metaphor rule above.
 The colours are the KČT trail colours, pulled down in chroma until they read as a
 product rather than as paint: blue for the path you take next, green for "this fits
@@ -481,12 +485,14 @@ look the founder rejected, and pairing it with a neutral sans had become a templ
 rather than a decision. Using one superfamily in two widths is a deliberate exception
 to the "pair across classifications" habit: the contrast between the two roles comes
 from width and weight, not from a second family, which also halves the font download.
-Two weights only, 400 for reading and 700 for anything scanned, with 600 allowed for
-headline sizes where 700 closes up the counters. Tabular figures (`'tnum' 1`) on
+The current app self-hosts weights 400, 500, 600 and 700 for both widths. The
+usage scale assigns weights by role (400 for reading, 500/600 for selected data and
+labels, 600/700 for headings and scanned emphasis). Tabular figures (`'tnum' 1`) on
 `data-md`/`data-sm`. Full Czech diacritic support in both widths. Fallbacks:
 `"Archivo Narrow", "Arial Narrow", system-ui, sans-serif` and
 `Archivo, system-ui, "Segoe UI", sans-serif`. SIL Open Font License, loaded from
-Google Fonts until self-hosted.
+local `@fontsource` assets imported in `frontend/src/main.jsx`; the production app
+does not load them from Google Fonts.
 
 Themes never change typefaces (Colors → Themes, rule 1).
 
@@ -667,7 +673,12 @@ one screen in the product where this kind of warmth-building motion belongs
 at all — see the Do's/Don'ts note on why the quiz and results screens are the
 opposite case.
 
-**What ships:**
+**Historical August landing-motion proposal:** The current `landing2/` implementation
+uses WebGL. The proposal below is preserved as research/design history, not a claim
+that the later implementation follows every technique or containment recommendation.
+The review records actual motion, fallback and mobile acceptance separately.
+
+**What the August proposal specified:**
 - **Exactly one idle animation**, small and contained — a corner
   illustration, an icon, or a subtle background gradient/shape **float** (a
   gentle, continuous drift with no fixed destination — the closest glossary
@@ -735,7 +746,7 @@ teen/parent reactions before treating this section as fully settled.
 
 ## ⚠️ ANIMATION BUILD INSTRUCTION — DO NOT IMPLEMENT YET
 
-**This motion spec is DESIGN ONLY. Do not build these animations as part of normal frontend UI work.**
+**This August ambient-loop spec remains DESIGN ONLY. The later landing2/WebGL implementation already exists. Future motion changes need their own explicit scope; this historical instruction does not authorize removing or rebuilding that implementation.**
 
 When the user explicitly says to build them:
 1. Use **Claude Design's dedicated animation tool ONLY** — pass this entire "Motion — landing page" section + `design/research/landing_animation_research.md` to that tool

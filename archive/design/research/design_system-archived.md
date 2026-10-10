@@ -1,4 +1,6 @@
-# ŠkolaMatch visual system — extracted from Claude Design
+# Archived ŠkolaMatch visual system — August extraction
+
+> **Superseded — checked 10 October 2026.** Values and “not built/currently” claims below belong to the 24 August snapshot. Current branding is Střední na míru; Archivo/Archivo Narrow are self-hosted, four light/dark themes exist and desktop/mobile layouts are implemented. The active direction is `design/DESIGN.md`, with runtime tokens in `frontend/src/design/tokens.js`. Commercial prices are 690 Kč season / 249 Kč monthly; season has the three-day purchase trial, monthly none. Cancellation and withdrawal endpoints exist but still need payment lifecycle/receipt acceptance; the old `null`/`false` flags below are not their current values. The statutory 14-day right and implemented 30-day withdrawal benefit need the separate legal/payment boundary checks in the deployment handoff. The schema now includes admission/program/extracted data; email-delivery and full browser acceptance remain gated. Beta is free for main feedback and uses payment previews. Old screen/question counts, placeholder statistics and June/end-date promises below must not be copied into current product copy.
 
 Source: Claude Design project "Seven-screen system launch"
 (`dd433a0f-052b-4f6e-bace-24294db40df1`, file `SkolaMatch.dc.html`), 2026-08-24.

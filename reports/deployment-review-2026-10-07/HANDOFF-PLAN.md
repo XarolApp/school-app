@@ -172,3 +172,16 @@ Preserve the later founder-confirmed signed-in free onboarding, free feedback be
 5. **UI acceptance (C09/C29):** preserve the local fixes now independently verified at 667×375/812×375/320×740 and map-note Enter/Escape checks at 320×740/375×812. Complete real Safari/Chrome/Firefox/mobile, enlarged text/zoom, reduced-motion, fullscreen/rotation, hover and every Hint CSS consumer. Do not list the old 6px hero or demonstrated map-capacity overflow as still reproduced on these new source hashes.
 
 The narrow beta-event 503 Bug Echo correction has 181 passing root tests; it does not implement the coordinated tasks above. Owner/manual gates remain in the existing ordered sections. Coordinate file claims with Claude before editing any shared path.
+
+
+## C44 — reconcile design templates and historical instructions (P2 before reuse)
+
+One agent owns `design/DESIGN.md`, `design/system/` source/tokens/specimens/type contracts/bundle tooling and affected guide references for this task. Coordinate with any active frontend owner; do not replace the approved Archivo/Značka/current layout choices from the old export.
+
+1. Inventory runtime vs exported token names, fonts/weights, palette/mode defaults, radii, match semantics and accessibility/type contracts. Decide whether to update the export or explicitly retain/archive it; use current approved direction and factual runtime evidence, not the old specimen as a product specification.
+2. Preserve the now-unconditional Input hook and its three passing actual-browser ID-change checks. Keep bundle source-hash metadata truthful; create a reproducible generation/parity check, including missing/removed sources and assignment order, instead of declaring the existing bundle fully regenerated.
+3. Mark rendered school/commute/cutoff/pricing examples visibly illustrative if the kit will be shared. Replace unsupported grade-acceptance/PDF/parent-account/year/count promises with approved real capability copy before reuse. Keep real beta free and payment preview boundaries intact.
+4. Verify checkbox visible focus, Input label/hint/error associations, Tooltip description/Escape/viewport behavior, single-choice grouping/arrow keys, interactive-card keyboard access and React/type contract compatibility in the template. Prefer the actual established production primitives where suitable. Do not reopen C38’s explicit after-beta deferral or silently alter palette values.
+5. Validate local specimen loading at mobile/desktop and reduced motion, exact source-to-bundle parity and no third-party font calls if copied into the app. Template checks do not replace the existing real beta device/auth/privacy/payment acceptance.
+
+The September routing-research guide is historical and its assertions are independently unverified. Recheck original primary benchmark/provider/account sources before future budget recommendations; this task’s founder-confirmed GPT-6.1 Sol xhigh remains in force. Archived setup/memory/design records now point at current guides and retain original dated context.

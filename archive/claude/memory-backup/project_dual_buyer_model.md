@@ -8,6 +8,8 @@ metadata:
   modified: 2026-08-16T07:07:09.187Z
 ---
 
+> **Archive status — 10 October 2026.** Archived buyer-model reasoning. The current brand is Střední na míru. Both personas remain relevant, but real beta involves no purchase; commercial age/guardian confirmation is at account creation, with no checkout checkbox. Sharing is disabled by default during beta. Do not read the old copy prohibition as permission to omit current legal/age explanations.
+
 ŠkolaMatch has **two independent buyer personas — students and parents — and both convert.**
 The onboarding asks "Kdo jsi?" (student/parent) up front and branches voice (tykání vs
 vykání), proof type (peer vs authority), motion level, question phrasing (about yourself

@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-10T10:45:52.084256+00:00",
-  "commit": "c17c5826e4c294d894e88dbc43e33037233cc84c",
+  "checked_at_utc": "2026-10-10T11:07:01.839540+00:00",
+  "commit": "3274e69a36a0b5a6ad8fc388bc639105dd8e615b",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "pending_or_changed": 447,
-    "current_full_read": 332,
-    "binary_requires_asset_check": 93,
-    "generated_or_audit_artifact": 107,
+    "pending_or_changed": 386,
+    "current_full_read": 393,
+    "binary_requires_asset_check": 94,
+    "generated_or_audit_artifact": 112,
     "removed_or_missing": 2
   },
   "files": [
@@ -766,10 +766,12 @@
     },
     {
       "path": "Model & Effort Routing Guide  Codex Plus + Claude Pro.md",
-      "sha256": "0cc134167c7ce1edbc4ae5d5d97dc3e83f46ce6f8301c4618841c00641ad358d",
-      "lines": 121,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "43014d7892411f0254fe97ecb88c1ef18fc7012935b9be435af82d9b392a6951",
+      "lines": 123,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "PROJECT-OVERVIEW.md",
@@ -791,8 +793,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "637736b9a0fc8b2066132dd418d6c56369b09160d4d894991c44565a23a4dd82",
-      "lines": 1781,
+      "sha256": "430bed3536b3e44e06929f37767e3b3ea8568d152074dea592d57f36f6694bb6",
+      "lines": 1788,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -800,66 +802,84 @@
     },
     {
       "path": "archive/README.md",
-      "sha256": "f6ef6501acc8f5d81a58e2e9f85e7d659af0e379b7f7732ac15c57cbfc687078",
-      "lines": 8,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "d26cc8e04d18afa4f6083e1e5fce54407f0f84640b73256c510e2ac35ca90b68",
+      "lines": 14,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "archive/claude/memory-backup/MEMORY.md",
-      "sha256": "bb51cc71770ac105e29eec88647c7f0555c505033728db17b3ca26ca55180385",
-      "lines": 5,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "5604b135a257c5edb04f1ca91669c77ea56d9d396b324f58f7d105bb3f1b96a8",
+      "lines": 7,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "archive/claude/memory-backup/feedback_documentation.md",
-      "sha256": "c28d5bfbeec92f1fe47f9836ab2233abe4826aac6da997dfc8f109b4e5feff91",
-      "lines": 15,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "9c5b1575139e8a1531a87d8efc16c0aaacaabac01600ddf76a0a1e886d2a8cc0",
+      "lines": 17,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "archive/claude/memory-backup/feedback_frontend_ux_guide.md",
-      "sha256": "d627adc038017f0cc8d4d850b8378c10828bfbdd6baaf0b2e07f05f43f4ba37c",
-      "lines": 26,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "28df58e5dbb5d6468a74ccd3ae91d1be0339940938d86031c808fd42ebe771be",
+      "lines": 28,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "archive/claude/memory-backup/project_dual_buyer_model.md",
-      "sha256": "3b2e9488fa0914bcf32d9c8e4c7f27a5159cfba9dd2f6b99480ad52a8958e0b0",
-      "lines": 28,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "8ae63854fd625db791efc7ac0e09d439f38bb4117b294340ae1006ca8d210d7c",
+      "lines": 30,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "archive/claude/memory-backup/project_pricing_model.md",
-      "sha256": "5236597a3869e779dc9336696505b6eb531570e1c233877ee55cfb9cf555558a",
-      "lines": 34,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "2dc4303cc0367d2d4422745e6e9dabb8b8ca0e1553e78d67c585b4772ccedc2a",
+      "lines": 36,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "archive/claude/memory-backup/reference_docs_sources.md",
-      "sha256": "468c7c3ee7e7286605bf3f0e0f7d685bc70e7537f6ce1b8ba0eb284b0c01fdd1",
-      "lines": 31,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "f52705e1513230246066e177b1ed7308319435d4d3d5fcdc3c8cf8adb9e90d67",
+      "lines": 33,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "archive/context/CONTEXT-HANDOFF.md",
-      "sha256": "43fcfae34d188f8e839cd5f92d130a44a54522adff59e416a1528015fd851105",
-      "lines": 148,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "ab96aeda1ecbc12bb059f8d2470ed0fcb57e7bd86eee5b62ba91676e53700630",
+      "lines": 150,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "archive/design/research/design_system-archived.md",
-      "sha256": "86cf06dcdbfc47275f94bb2084e3d52ba36fdee7c82d912dd33558162ad62d13",
-      "lines": 116,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "bfd42df61b626789b4792e0d9251006d661d5883afe5f4c1b830f5c2bcc2163f",
+      "lines": 118,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "archive/docs/sources/onboarding.md",
@@ -870,10 +890,12 @@
     },
     {
       "path": "archive/frontend/README.md",
-      "sha256": "1f8fa46483b514305f44e34a47e85e88428c3a667c9494e1583628ef18d7bc79",
-      "lines": 16,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "79c9d2f86761135dc7001a78183cb0d664d746f76c0d790d55450cc986ff333f",
+      "lines": 21,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "archive/plans/001-fix-mobile-preview-clipping.md",
@@ -947,10 +969,12 @@
     },
     {
       "path": "design/DESIGN.md",
-      "sha256": "5420701bcdd8538f704fae26a379eecd7582f1f20dc71870966e0d146920139a",
-      "lines": 801,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "1a87bc8b1fff13370e0f4ffd22802266ff83c368cdd9d0a51a583ca7a7ed1aaa",
+      "lines": 812,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/Logo Concepts Refinement Request/.thumbnail",
@@ -1031,10 +1055,12 @@
     },
     {
       "path": "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/_ds_bundle.js",
-      "sha256": "ba2239770b7bd26f19136f138bfa3808e5ed371d93eec746425d45a3dcaecb16",
-      "lines": 1557,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "d7f92f872c89a7b0a9474d490a434fd25ef0c3786843415145709c432bdb13f5",
+      "lines": 1558,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/_ds_manifest.json",
@@ -1054,64 +1080,82 @@
       "path": "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/styles.css",
       "sha256": "1a9ee88ad77d8dfcac1771b2fe9053d5b94cd2354d70248a10c36c01d60e1e98",
       "lines": 8,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/base.css",
       "sha256": "d309e8325265e58c3f2649b418cfa0d36dfc3ece257ca475a401cbf0ca51557f",
       "lines": 7,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/colors.css",
       "sha256": "7ab99b770532f99b9b8200e3ca0697d3b32693953f191cf639e0a0aff381d2fc",
       "lines": 56,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/elevation.css",
       "sha256": "d3988d3eb46316012275cdff7f9d4e03f4a23db0cc35aff32aa2eb5943d219c6",
       "lines": 7,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/fonts.css",
       "sha256": "a562e9f457559785987e261995d75c08be2c0135541f02e9e707374760106a0b",
       "lines": 6,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/motion.css",
       "sha256": "5dcd07b6371582391d5f3fc1780b98ed409f27b434cc7445b0a65116e81756f8",
       "lines": 7,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/shape.css",
       "sha256": "9d5b99ead230bbaaa5ae4a8375175703c592151f78bfbcb6ecd9d1323934e8d4",
       "lines": 4,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/spacing.css",
       "sha256": "d56314400f7975bd54853acadda41b29ac0f43cb9d1af546c4e5c8afa0242740",
       "lines": 6,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/typography.css",
       "sha256": "538b3dc0da3a19f07af00de7f864649c0a764dcd42aeea6b9bf53c1e36abb069",
       "lines": 34,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/archive/school-search-wireframe/support.js",
@@ -1815,10 +1859,12 @@
     },
     {
       "path": "design/system/SKILL.md",
-      "sha256": "0545a9ca02e7dcf84ae0ca9a82ce6685550210c8caa6ac92ac1cc363d0a9ca99",
+      "sha256": "0aec2658c944ebe747cb791a549bc8996d566967eba09bdf640fa92bf369de8c",
       "lines": 9,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/_adherence.oxlintrc.json",
@@ -1829,10 +1875,12 @@
     },
     {
       "path": "design/system/_ds_bundle.js",
-      "sha256": "ba2239770b7bd26f19136f138bfa3808e5ed371d93eec746425d45a3dcaecb16",
-      "lines": 1557,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "d7f92f872c89a7b0a9474d490a434fd25ef0c3786843415145709c432bdb13f5",
+      "lines": 1558,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/_ds_manifest.json",
@@ -1845,204 +1893,262 @@
       "path": "design/system/components/core/Card.d.ts",
       "sha256": "b91871f48d65c5bd1f8d7be9d1f5215cc958b0b08542d84749696094f75f9041",
       "lines": 18,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/components/core/Card.jsx",
       "sha256": "6b5305d7fbfe04cb5372d9e380cc3b157f4e44b9050cf4ad829f866be246239e",
       "lines": 16,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/components/core/Card.prompt.md",
       "sha256": "3396c38154ca3289692b7d1acb9216bfe76f7dc6b08d5f3f98459f170bb3947f",
       "lines": 10,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/components/core/Chip.d.ts",
       "sha256": "a722407ae9aa2f4d8908dea30341e0d0080e5abb0607cf88ee1fe458a57ac5fd",
       "lines": 11,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/components/core/Chip.jsx",
       "sha256": "efe4aacd6a2d75d7c37a21343420676f0c50612bc99cce1411ecccb485bce982",
       "lines": 18,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/components/core/Chip.prompt.md",
       "sha256": "77324a752957c40a696e34ca4407cbed7d03f4ad48e0e811e82d06ad46be5177",
       "lines": 6,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/components/core/Divider.d.ts",
       "sha256": "d90b17641410ef909de553c06d3718d5257e837e3a1789db9063ddf2de241c6c",
       "lines": 12,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/components/core/Divider.jsx",
       "sha256": "07dc644234ec486e86f2c217201a6eb1ec4a95017dea2cbdc3f33464d25b5987",
       "lines": 9,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/components/core/Divider.prompt.md",
       "sha256": "40c34644825052ac44a215bb506aa59f05ceb597cf36033b5c623113d14852b5",
       "lines": 7,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/components/core/MatchIndicator.d.ts",
       "sha256": "4ee1eb6f57d9f9a788920f7c1727eb9661985fcbbaf3b0232a29c156868cd218",
       "lines": 21,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/components/core/MatchIndicator.jsx",
       "sha256": "93279c23c9d18bf9efaa6d3dcea7c492573445ef89fd7598e885a6730c27d21c",
       "lines": 32,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/components/core/MatchIndicator.prompt.md",
       "sha256": "31ff2da5e40ecc9210ec56b9a90617016bf292123d25b9670bb80951f3bf0329",
       "lines": 11,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/components/core/Tooltip.d.ts",
       "sha256": "45fee11e425d7295369b63c604071bf4f5d7b955aeec2eba248a352d4dbb15ff",
       "lines": 12,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/components/core/Tooltip.jsx",
       "sha256": "03956785a786fd62336985e325c70cf49fe8906512db9290c0e727ed10903b38",
       "lines": 24,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/components/core/Tooltip.prompt.md",
       "sha256": "7f891c2343ee31ce06edcdfa24dcb65c09bec928631eb9059a76fbdd773aa6c6",
       "lines": 9,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/components/core/core.card.html",
       "sha256": "6d02b6c6cd9dd3f201886cc80473caa53e2cdc699e9362803219d929e2854d97",
       "lines": 39,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/components/forms/Button.d.ts",
       "sha256": "df8c6f63c56c9a2dc009f21be646b7b53d5630a18753e1c3a36e92780e96de50",
       "lines": 17,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/components/forms/Button.jsx",
       "sha256": "f6139c25426427b62ad08d44bba10c957f16ecf80c61bc61b8e16709ca115b4a",
       "lines": 31,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/components/forms/Button.prompt.md",
       "sha256": "2d25f1fc7f4106489552f260c415790b102bce253fcdedb06091d51a0d9a6231",
       "lines": 8,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/components/forms/Checkbox.d.ts",
       "sha256": "117602629b7c4efcf1d26828e1d8c4c69c1573aa0a43b21a15abccaf1f51816b",
       "lines": 11,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/components/forms/Checkbox.jsx",
       "sha256": "9d9e595ee8628b5b79cb3ef31f8353e873729d193c501ea6436416627299d1f2",
       "lines": 21,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/components/forms/Checkbox.prompt.md",
       "sha256": "b1f178738eb39babccb36ba6648cb8bf44accd1ab520589d54fa744c59461ccb",
       "lines": 5,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/components/forms/Input.d.ts",
       "sha256": "cdb4b244375dc49d7ce4cc72c234be99fb5b078242f55c1c0e8fef228b9724b0",
       "lines": 14,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/components/forms/Input.jsx",
-      "sha256": "f6730fe923be827a30f66076b9ca06cc895520994b4a19dfa72a5394385fced3",
-      "lines": 30,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "a6970053e9bf821610ab35b0c3a065afbc88591983f3ca2e4b140f78b7f8d13c",
+      "lines": 31,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/components/forms/Input.prompt.md",
       "sha256": "89def3d1d92a26df99df3316496f0ba5ba0b521e675a7d52a6169be90b93fa40",
       "lines": 8,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/components/forms/OptionRow.d.ts",
       "sha256": "b49c3633abef71e4a45f0a5d787c8417055fd3bdf027505c984dedb95a333d9d",
       "lines": 17,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/components/forms/OptionRow.jsx",
       "sha256": "f3c7b7e0080043ec296330f34f835c4c6c385e6cea5b6b1b85aeebe7b2391f7b",
       "lines": 30,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/components/forms/OptionRow.prompt.md",
       "sha256": "4411f5f4d1d959a463da6f152dc11cbf6a88bf13ac4393b456bc85581fa6d6c3",
       "lines": 8,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/components/forms/forms.card.html",
       "sha256": "44cfebe76c16d8be3ad0fa2f91c66b931ada5a579d1a5259568d94dee7c2f9ea",
       "lines": 37,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/guidelines/brand-antipatterns.card.html",
@@ -2158,17 +2264,21 @@
     },
     {
       "path": "design/system/readme.md",
-      "sha256": "47614608380de8421c6eb451c4fc5c31ca7284fdd904bd07ca884afe33ace872",
-      "lines": 359,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "36d8a827c29273c532f989cf5807f12265401a6b388436974f3ddbcc292302d5",
+      "lines": 361,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/styles.css",
       "sha256": "1a9ee88ad77d8dfcac1771b2fe9053d5b94cd2354d70248a10c36c01d60e1e98",
       "lines": 8,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/templates/skolamatch-screen/.thumbnail",
@@ -2181,15 +2291,19 @@
       "path": "design/system/templates/skolamatch-screen/SkolamatchScreen.dc.html",
       "sha256": "1346c1e2418d15be5f89a7c582ba47a2320cdf9f4270c2579be3ed8d1c3322d1",
       "lines": 92,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/templates/skolamatch-screen/ds-base.js",
       "sha256": "20ae0857bffb2b7ddd2a09a08d7c2309f3674236a8c407a55cf2857cfdd535bb",
       "lines": 15,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/templates/skolamatch-screen/support.js",
@@ -2209,113 +2323,145 @@
       "path": "design/system/tokens/base.css",
       "sha256": "d309e8325265e58c3f2649b418cfa0d36dfc3ece257ca475a401cbf0ca51557f",
       "lines": 7,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/tokens/colors.css",
       "sha256": "7ab99b770532f99b9b8200e3ca0697d3b32693953f191cf639e0a0aff381d2fc",
       "lines": 56,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/tokens/elevation.css",
       "sha256": "d3988d3eb46316012275cdff7f9d4e03f4a23db0cc35aff32aa2eb5943d219c6",
       "lines": 7,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/tokens/fonts.css",
       "sha256": "a562e9f457559785987e261995d75c08be2c0135541f02e9e707374760106a0b",
       "lines": 6,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/tokens/motion.css",
       "sha256": "5dcd07b6371582391d5f3fc1780b98ed409f27b434cc7445b0a65116e81756f8",
       "lines": 7,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/tokens/shape.css",
       "sha256": "9d5b99ead230bbaaa5ae4a8375175703c592151f78bfbcb6ecd9d1323934e8d4",
       "lines": 4,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/tokens/spacing.css",
       "sha256": "d56314400f7975bd54853acadda41b29ac0f43cb9d1af546c4e5c8afa0242740",
       "lines": 6,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/tokens/typography.css",
       "sha256": "538b3dc0da3a19f07af00de7f864649c0a764dcd42aeea6b9bf53c1e36abb069",
       "lines": 34,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/ui_kits/skolamatch/Landing.jsx",
       "sha256": "6935a37d7b579e526895592e895b00aa853c7fc9fc6e25dc483b31f70219e8f0",
       "lines": 45,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/ui_kits/skolamatch/Paywall.jsx",
       "sha256": "dacdf146c894a53744c88bb28c85784ddbb794efb4d34f890c3a73d3d6f45351",
       "lines": 59,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/ui_kits/skolamatch/Questionnaire.jsx",
       "sha256": "7f9b3e24a84bf0f46aee11a9efc0180bc3135443847f0c0e7cd8f7a1083c3c13",
       "lines": 57,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/ui_kits/skolamatch/README.md",
-      "sha256": "ac5176828dc54dfa1d9085ce72545d6a93ee9e7d780e79f6d5433d9024e27df0",
-      "lines": 28,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "d73497390c7fdeff3f34a988364eb9ba630b8c98cde0f1a602e3aee7fdedfb5b",
+      "lines": 30,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/ui_kits/skolamatch/Results.jsx",
       "sha256": "677b2b18df74ee97109500f9508cd28720f36e3d7909f3e08230dd68e7ce4cb4",
       "lines": 62,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/ui_kits/skolamatch/SchoolDetail.jsx",
       "sha256": "04f91562082113e2cb006a3c1eb393f903f278e129c7f5aba262207f33b107f3",
       "lines": 77,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/ui_kits/skolamatch/Shell.jsx",
       "sha256": "fa2a23702ef2f49bc21df5f7a83a944b50fad78088eef8f7117144d830c78d4d",
       "lines": 66,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/ui_kits/skolamatch/index.html",
       "sha256": "bbed1462b096b7a9a1c1fffd0a18876334fdf6db032e4a0f7a353db6efb211fe",
       "lines": 50,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/uploads/DESIGN.md",
@@ -2742,12 +2888,10 @@
     },
     {
       "path": "frontend/src/App.css",
-      "sha256": "ca74e4320571f75a1a335abcd5d0e7d624c7b76cd654d3b57bd415f1fc9a6e83",
-      "lines": 624,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "fd516de27ddff25b869d04678d81e549fa12b5cccfd2d271c98cc38594fbafd6",
+      "lines": 642,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/App.jsx",
@@ -2760,12 +2904,10 @@
     },
     {
       "path": "frontend/src/api.js",
-      "sha256": "128735d3c906c00f0c212428271ba089f5b54843320eab1b18c86f7f7ba2099b",
-      "lines": 484,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "c4b59039d54570e4034ed14e8a09cf820c861d2ad2e9daadc32cadaa5d0f990b",
+      "lines": 497,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/auth.css",
@@ -2787,12 +2929,10 @@
     },
     {
       "path": "frontend/src/components/AuthContext.jsx",
-      "sha256": "f6b9521599ee222e14ab75facdaa79d907b5b52ee3ea0b5f4dfe794a6347de32",
+      "sha256": "172aef4bf969a82c86ebe35906edb75b7f54f597c08e28a51a08ee4dfc14b005",
       "lines": 516,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/components/AuthTabs.jsx",
@@ -2832,12 +2972,10 @@
     },
     {
       "path": "frontend/src/components/BetaInstructions.jsx",
-      "sha256": "afe15094706349a3b6dd2a32f8bcbc282b971e0dd742f59f30df879c59da422f",
+      "sha256": "45d36bff8872666b7b4f5fd652ab59f576cb44a7127d88e8c247c023a926452c",
       "lines": 150,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/components/BetaMicroQuestions.jsx",
@@ -2927,12 +3065,10 @@
     },
     {
       "path": "frontend/src/components/ConfirmEmailWaiting.jsx",
-      "sha256": "530abb1c0467242f197640d40c6b1422f2053654174456b865e1f8aeb293963d",
-      "lines": 168,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "d040f3dec1d6f638edf5d8e5f9d6616d870949046951866974efc9254edcfcc4",
+      "lines": 181,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/components/ConsentCheckbox.jsx",
@@ -2973,12 +3109,10 @@
     },
     {
       "path": "frontend/src/components/Layout.jsx",
-      "sha256": "963f3b08f72ca2986bcedc119df9459ed1dcbee9d186f6a4040c849aee9823bd",
-      "lines": 309,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "192b665d8bb5f3980118d360f4699af8fcf0c2bc297daf043fa061175cb85ad9",
+      "lines": 314,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/components/Modal.jsx",
@@ -3036,21 +3170,17 @@
     },
     {
       "path": "frontend/src/components/SchoolMap.css",
-      "sha256": "7237fc024d4af5271f844e8daf6139c9e54b2ee1375e9527d18eadd92ffbcaa6",
-      "lines": 294,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "5a9b660a9ca5c6b72fb3c38e0aca03ab8adca67d23558382453ab35093552a57",
+      "lines": 319,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/components/SchoolMap.jsx",
-      "sha256": "29536b854b575b91d151bd86932d31d1faf398c3f6e346584de367639972fa29",
-      "lines": 419,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "bbf481c2aaac17efcbb086f02dbe366fdc2219fa1083df714f2543d982b5c232",
+      "lines": 430,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/components/SearchFilters.jsx",
@@ -4018,12 +4148,10 @@
     },
     {
       "path": "frontend/src/pages/SignUp.jsx",
-      "sha256": "30eac58e725d46d90072c469d22425f3e3dd9ffe7afe9adf0faeec93b41944f2",
-      "lines": 325,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "2f6f68ba4245bf5d909438b5c4b24cef4816fa6745547f31ec873fb5b7f302e5",
+      "lines": 328,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/pages/SubscriptionExpired.jsx",
@@ -4036,12 +4164,10 @@
     },
     {
       "path": "frontend/src/pages/beta.css",
-      "sha256": "16295f88afca14e6e5361a274564e129f48a43ddd1b125ad0f6ff132d3c02bef",
-      "lines": 345,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "2944d0f3bbf23485d1781f67a41b19b616a049df840f686aa60da2269ea86924",
+      "lines": 348,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/pages/decision.css",
@@ -4162,12 +4288,10 @@
     },
     {
       "path": "frontend/src/pages/onboarding/screens/CreateAccount.jsx",
-      "sha256": "4d93bee19acf40c270999bab03718d5edb569d7e2ed04402f7d0adb8069ed330",
-      "lines": 435,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "f466cbeb4c9a561540d07a35693baf3f4d77cefc4178b69fec10c9b6aa6345eb",
+      "lines": 438,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/pages/onboarding/screens/Hodnota.jsx",
@@ -5692,22 +5816,22 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "57c8ecb35aa3e1c59b19e4e68cc02861d03360b2864ce400c84a77a59483d905",
-      "lines": 312,
+      "sha256": "dcec34589068fc1ec0caa6d764488d355f32854471d0c3f529919b12fb7800d2",
+      "lines": 318,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "321d20843e622a72b3306b256934c4a2fc803db7f93adf332b28ea5154345d24",
-      "lines": 174,
+      "sha256": "35cfe671d36b1e988ff464b2f09d659075f6d59a5a140de3cec015b8e3042f46",
+      "lines": 187,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "4ffd6d73c3a801b709b28ac55d558622355f6f6173b94942df90e65d488a7a1c",
-      "lines": 139,
+      "sha256": "20e6baae18b218910c482c603d4075a2ab0cec0738b151751dbf8497291d3a20",
+      "lines": 144,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -5734,7 +5858,7 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/auth-outage-before-2026-10-10.txt",
-      "sha256": "8a6cd49d3f51ebfb6dccf7ac0197b65d214930c763b1cd34242684bded4af1a3",
+      "sha256": "5ea9ef7169aa02c5b1c40a3102d7338fb927d9732de5c58495bf04f4e2603e5b",
       "lines": 29,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
@@ -5762,7 +5886,7 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/auth-throttle-before-2026-10-10.txt",
-      "sha256": "dd0a1783053f341ae389e8d511eb85dfc99e3b006706849a1f8b4ce527079870",
+      "sha256": "5e05d4c502481c47f844d689e1b0c0a7b6f5de1bc2a6db32da3fcfbefa9fb46c",
       "lines": 29,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
@@ -5965,15 +6089,15 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "38c772f658b64dd2172f94f0a97a736668efbe2f80b63678169e102843caa8dd",
-      "lines": 389,
+      "sha256": "074fc35d890db85b6b114a862e549f60e2392bbb6b79758f2fb3fe5f95c67574",
+      "lines": 404,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "f60d055edf0b8f790b0bc72340b50d65d080cc1f3b9a27c86c1643f16fc5aa11",
-      "lines": 7378,
+      "sha256": "1766cf59635382aadf79eb6874149e85191a5b3c314a7aa95fdeda850a60c4cb",
+      "lines": 7713,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6016,6 +6140,48 @@
       "path": "reports/deployment-review-2026-10-07/deployed-sharing-2026-10-10.json",
       "sha256": "d03c4f84d007a50ae8f466ba07ee5119f6d361b6f46896985f8ab5a51576ea14",
       "lines": 41,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/design-input-archive-bundle-2026-10-10.txt",
+      "sha256": "95cf4bb24a8b05892cb3de0fe15bb31fc999e9f14097f9ff6b310afd81da29e2",
+      "lines": 11,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/design-input-hook-after-2026-10-10.txt",
+      "sha256": "cbdeab1df580a4fac62fd1ad42fbd3627c66d67dd874b91bcf4d19d7c5f85e85",
+      "lines": 12,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/design-input-hook-before-2026-10-10.txt",
+      "sha256": "1d134e5d45141d39c6f42bfc428e6ecec8e5cddbc194447578dbe45502ea70af",
+      "lines": 11,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/design-input-hook-fixed-2026-10-10.png",
+      "sha256": "7f2e5b60e6527b6d50ce53298ffb7d0126925173785364990920088c94b86c50",
+      "lines": null,
+      "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/design-input-system-bundle-2026-10-10.txt",
+      "sha256": "3540a32505056d0e6338bd129ae8c6c7b569a3a1198e4202f21b02ed0f1825bc",
+      "lines": 11,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/design-review-verification-2026-10-10.json",
+      "sha256": "62741548aed28256bb1ce14e0e2e06dcffb73b97c94ba673f580a2da652c0f7f",
+      "lines": 974,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6738,8 +6904,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "abf291c025b4941e2c0d1c3d3534bc5ee8f3499739005863d77277649a51a493",
-      "lines": 4097,
+      "sha256": "0709ca4a82818fd46a1d3b6d5fa83ff3dfc1ec8979d496cb0bbc09af8669c146",
+      "lines": 5043,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -7297,12 +7463,10 @@
     },
     {
       "path": "server.js",
-      "sha256": "a4f7ebd8d5bfabdddd1bbe2ad4630ffd15da4b54352c8a1d43e6817efaefc3c6",
-      "lines": 3601,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "408e8e0b6695ae4cf7b030146a775306dd02f783a0372c6d6c8efcd2e1c7e90f",
+      "lines": 3612,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "skills-lock.json",

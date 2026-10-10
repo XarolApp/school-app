@@ -1,4 +1,6 @@
-# Session handoff — 2026-09-06, moving to the MacBook now
+# Archived session handoff — 2026-09-06
+
+> **Current status — 10 October 2026.** This is a September machine-switch snapshot, not an active setup task list. Dependencies, local environment and browser verification now work on the MacBook. Use current root setup instructions: the local backend uses port 5001 because AirPlay occupies 5000. Memory copies now live in `archive/claude/memory-backup/` and old plans in `archive/plans/`. Stripe Checkout/webhooks and multiple later flow changes are implemented; historical placeholder-card and disabled-sharing statements below are not current facts. The founder settled a three-day purchase trial on the season plan only; monthly charges immediately. Beta is free for feedback with payment previews, and link sharing is disabled by default. Browser checks have since run, but the current deployment report/`UNFORGET.md` still govern remaining responsive, auth, privacy, payment and live-service acceptance. Preserve the checklist and unresolved September notes as history; do not mark today’s work complete from them.
 
 Written because the user is switching machines **for real this time** — not the
 false alarm from 2026-08-31 (see git history if curious). Read this alongside
@@ -12,7 +14,7 @@ Everything described below as "done" is committed and pushed to
 
 ---
 
-## 🖥️ MacBook setup checklist — ACTIVE, do this now
+## 🖥️ Historical MacBook setup checklist — September 2026
 
 - [ ] **1. Install Xcode command line tools** (gets you git)
       `xcode-select --install`
@@ -139,7 +141,7 @@ transfer to the MacBook automatically (new username, new path). Reference copies
 are in `.claude/memory-backup/` inside the repo. Not live memory — same facts as
 `CLAUDE.md`, just with more of the original reasoning. Optional to restore.
 
-## Suggested first move on the MacBook
+## Suggested first move in the September session
 
 1. Work through the setup checklist above.
 2. Run the paywall verification pass (both branches, both widths) — this is the

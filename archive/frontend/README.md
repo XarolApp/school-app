@@ -1,4 +1,9 @@
-# React + Vite
+# Archived React + Vite template
+
+This is the original template description, retained as history. The active app
+lives in `frontend/`; use the root README and its actual package/config files for
+current setup and dependencies. The tool comparisons below are template guidance,
+not a fresh compatibility assessment or the project’s deployment checklist.
 
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 

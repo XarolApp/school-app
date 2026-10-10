@@ -1,0 +1,12 @@
+Actual Input.jsx, synthetic local fixture; omitted ID → explicit ID → omitted ID, existing text preserved and no hook error.
+Browser tab: 5, Title: "127.0.0.1:5197/input-probe.html", URL: "http://127.0.0.1:5197/input-probe.html".
+1 AXWebArea 127.0.0.1:5197/input-probe.html
+	2 container
+		3 heading Ověření návrhového vstupu, Value: 1
+			4 text Ověření návrhového vstupu
+		5 text Izolovaná místní ukázka bez účtu nebo sítě.
+		6 button Přepnout vlastní ID
+		7 text Vlastní ID:  ne Testovací údaj
+		8 text field (settable) Testovací údaj, Value: Zkušební údaj
+
+The focused UI element is 6 button Přepnout vlastní ID

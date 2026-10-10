@@ -8,6 +8,8 @@ metadata:
   modified: 2026-08-23T17:16:27.896Z
 ---
 
+> **Archive status — 10 October 2026.** Archived August reading reminder. The old onboarding research now lives in archive/docs/sources/onboarding.md. Current design is design/DESIGN.md; current flows and readiness are recorded in the deployment review and UNFORGET.
+
 Before building or editing any frontend UI in school-app (components, pages, styling,
 layout) — not just onboarding screens — read
 `docs/sources/claude_code_ui_ux_guide.md` first.

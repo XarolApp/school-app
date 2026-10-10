@@ -1,6 +1,8 @@
 # Střední na míru — Design System
 
-**Version:** alpha · **Source of truth:** `uploads/DESIGN.md` (v2, the corrected direction)
+**Version:** historical alpha export · **Original input:** `uploads/DESIGN.md` (v2).
+
+> **Current status — 10 October 2026.** This export predates the approved September revision. The shipped web app uses Archivo/Archivo Narrow via local `@fontsource`, the four palettes in `frontend/src/design/tokens.js` (Značka default), and different radius aliases. Use `design/DESIGN.md` and the current source for implementation. The Fraunces/Public Sans, terracotta default, criterion-only match specimen, proposed 390 Kč paywall and invented example data below describe this export; they are not current product/payment/data facts. Beta is free for feedback and its payment screens are previews. C44 in the deployment review tracks template/source reconciliation. Do not copy these specimen claims or CDN font loading into production. The input hook-order bug was corrected in the source and both bundle copies on 10 October; the remaining specimen accessibility and bundle-generation checks are still open.
 
 ## What Střední na míru is
 

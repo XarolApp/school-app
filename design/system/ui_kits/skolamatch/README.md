@@ -1,5 +1,7 @@
 # UI kit — Střední na míru
 
+> **Historical prototype — checked 10 October 2026.** This kit is separate from the shipped app. Its hardcoded school facts, commute times, 17 matches, five-school comparison, 2021–2025 coverage, PDF/parent-account promises and 390 Kč price are illustrative proposals, not verified live data or approved offers. Current commercial config is 690 Kč once after the season purchase trial and 249 Kč monthly without a purchase trial; beta is free for main-feedback messages, with optional preview screens. Match percentages, Archivo fonts, Značka/default themes and the landing2 implementation exist in the actual app. Use `design/DESIGN.md`, frontend source, `UNFORGET.md` and the deployment review for current behavior. The generic components still need the C44 accessibility/template reconciliation; opening this kit does not verify beta readiness.
+
 Click-through recreation of the product's surfaces, composed entirely from the
 system's own components (`Button`, `Input`, `Checkbox`, `OptionRow`, `Card`, `Chip`,
 `Divider`, `MatchIndicator`, `Tooltip`). Open `index.html`.

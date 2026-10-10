@@ -8,6 +8,8 @@ metadata:
   modified: 2026-08-23T17:50:07.941Z
 ---
 
+> **Archive status — 10 October 2026.** Archived August reference map. The onboarding source is now archive/docs/sources/onboarding.md; design research is under design/research/. The parental checkout checkbox mentioned below was removed by founder decision on 22 September; current account/age/guardian wording is governed by the active guides and legal review. Use docs/sources/README.md for the current reference map.
+
 `school-app/docs/sources/` holds standing reference documents, consulted for specific
 task types rather than read once and discarded:
 

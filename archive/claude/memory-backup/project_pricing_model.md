@@ -8,6 +8,8 @@ metadata:
   modified: 2026-08-23T18:10:55.279Z
 ---
 
+> **Archive status — 10 October 2026.** Archived August pricing rationale. Current settled amounts are 690 Kč once for season (three-day card-backed purchase trial) and 249 Kč monthly (charged immediately). There is no weekly offer, and beta is free for main feedback with optional payment previews. The parental checkout checkbox was removed by founder decision on 22 September; confirmation occurs at account creation. Digital Fairness Act passages below are historical regulatory reasoning, not a claim of currently applicable enacted rules.
+
 ŠkolaMatch pricing settled 2026-08-23 after three research-driven revisions in one
 session: **Sezónní přístup (one-time, pre-selected, fixed-window framing) + Měsíční
 (recurring, secondary, trust/easy-exit framing). No weekly plan.**

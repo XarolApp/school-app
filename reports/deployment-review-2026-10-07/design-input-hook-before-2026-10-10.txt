@@ -1,0 +1,11 @@
+Actual Input.jsx, synthetic local fixture; toggle from omitted ID to explicit ID.
+Browser tab: 5, Title: "127.0.0.1:5197/input-probe.html", URL: "http://127.0.0.1:5197/input-probe.html".
+1 AXWebArea 127.0.0.1:5197/input-probe.html
+	2 container
+		3 heading Ověření návrhového vstupu, Value: 1
+			4 text Ověření návrhového vstupu
+		5 text Izolovaná místní ukázka bez účtu nebo sítě.
+		6 button Přepnout vlastní ID
+		7 text Vlastní ID:  ano Rendered fewer hooks than expected. This may be caused by an accidental early return statement.
+
+The focused UI element is 6 button Přepnout vlastní ID

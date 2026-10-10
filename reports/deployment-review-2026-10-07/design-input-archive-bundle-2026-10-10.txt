@@ -1,0 +1,11 @@
+Browser tab: 5, Title: "127.0.0.1:5197/input-bundle-probe.html?kind=archive", URL: "http://127.0.0.1:5197/input-bundle-probe.html?kind=archive".
+1 AXWebArea 127.0.0.1:5197/input-bundle-probe.html?kind=archive
+	2 container
+		3 heading Ověření návrhového vstupu, Value: 1
+			4 text Ověření návrhového vstupu
+		5 text Izolovaná místní ukázka bez účtu nebo sítě.
+		6 button Přepnout vlastní ID
+		7 text Vlastní ID:  ne Testovací údaj
+		8 text field (settable) Testovací údaj, Value: Zkušební údaj
+
+The focused UI element is 6 button Přepnout vlastní ID

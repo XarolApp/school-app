@@ -2127,19 +2127,16 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "637736b9a0fc8b2066132dd418d6c56369b09160d4d894991c44565a23a4dd82",
-    "lines": 1781,
+    "status": "complete",
+    "sha256": "430bed3536b3e44e06929f37767e3b3ea8568d152074dea592d57f36f6694bb6",
+    "lines": 1788,
     "read_ranges": [
       [
         1,
-        1781
+        1788
       ]
     ],
-    "status": "complete",
-    "reviewer": "root",
-    "checked_at_utc": "2026-10-10T10:45:51.647857+00:00",
-    "method": "Complete current full source read for AuthContext/Hint/useDraft/new migration; for other existing source/docs, exact saved full-read baseline verified against Git and every subsequent diff inspected in bounded complete ranges, including 7c575ed/c17c582 and own patch. UNFORGET baseline-to-current cumulative diff read in 1–50/51–100/101–155 plus fully reviewed own current patch. New probes fully authored/read and executed with stated limits. Source read does not imply live SQL/SDK/device/payment/legal acceptance.",
-    "previous_complete_sha256": "2d17a288c7fcdbf965aded200dc22571b8443e4d21f85fff281a487864b55b89"
+    "method": "Exact saved full-read baseline plus all reviewed own C44 appended lines; no peer difference in this path."
   },
   "frontend/src/api.js": {
     "sha256": "128735d3c906c00f0c212428271ba089f5b54843320eab1b18c86f7f7ba2099b",
@@ -4093,5 +4090,954 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-10T10:45:51.647857+00:00",
     "method": "Complete current full source read for AuthContext/Hint/useDraft/new migration; for other existing source/docs, exact saved full-read baseline verified against Git and every subsequent diff inspected in bounded complete ranges, including 7c575ed/c17c582 and own patch. UNFORGET baseline-to-current cumulative diff read in 1–50/51–100/101–155 plus fully reviewed own current patch. New probes fully authored/read and executed with stated limits. Source read does not imply live SQL/SDK/device/payment/legal acceptance."
+  },
+  "Model & Effort Routing Guide  Codex Plus + Claude Pro.md": {
+    "status": "complete",
+    "sha256": "43014d7892411f0254fe97ecb88c1ef18fc7012935b9be435af82d9b392a6951",
+    "lines": 123,
+    "read_ranges": [
+      [
+        1,
+        123
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.430630+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "archive/README.md": {
+    "status": "complete",
+    "sha256": "d26cc8e04d18afa4f6083e1e5fce54407f0f84640b73256c510e2ac35ca90b68",
+    "lines": 14,
+    "read_ranges": [
+      [
+        1,
+        14
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.431242+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "archive/claude/memory-backup/MEMORY.md": {
+    "status": "complete",
+    "sha256": "5604b135a257c5edb04f1ca91669c77ea56d9d396b324f58f7d105bb3f1b96a8",
+    "lines": 7,
+    "read_ranges": [
+      [
+        1,
+        7
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.431561+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "archive/claude/memory-backup/feedback_documentation.md": {
+    "status": "complete",
+    "sha256": "9c5b1575139e8a1531a87d8efc16c0aaacaabac01600ddf76a0a1e886d2a8cc0",
+    "lines": 17,
+    "read_ranges": [
+      [
+        1,
+        17
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.431685+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "archive/claude/memory-backup/feedback_frontend_ux_guide.md": {
+    "status": "complete",
+    "sha256": "28df58e5dbb5d6468a74ccd3ae91d1be0339940938d86031c808fd42ebe771be",
+    "lines": 28,
+    "read_ranges": [
+      [
+        1,
+        28
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.431800+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "archive/claude/memory-backup/project_dual_buyer_model.md": {
+    "status": "complete",
+    "sha256": "8ae63854fd625db791efc7ac0e09d439f38bb4117b294340ae1006ca8d210d7c",
+    "lines": 30,
+    "read_ranges": [
+      [
+        1,
+        30
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.432029+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "archive/claude/memory-backup/project_pricing_model.md": {
+    "status": "complete",
+    "sha256": "2dc4303cc0367d2d4422745e6e9dabb8b8ca0e1553e78d67c585b4772ccedc2a",
+    "lines": 36,
+    "read_ranges": [
+      [
+        1,
+        36
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.432135+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "archive/claude/memory-backup/reference_docs_sources.md": {
+    "status": "complete",
+    "sha256": "f52705e1513230246066e177b1ed7308319435d4d3d5fcdc3c8cf8adb9e90d67",
+    "lines": 33,
+    "read_ranges": [
+      [
+        1,
+        33
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.432239+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "archive/context/CONTEXT-HANDOFF.md": {
+    "status": "complete",
+    "sha256": "ab96aeda1ecbc12bb059f8d2470ed0fcb57e7bd86eee5b62ba91676e53700630",
+    "lines": 150,
+    "read_ranges": [
+      [
+        1,
+        150
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.432523+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "archive/design/research/design_system-archived.md": {
+    "status": "complete",
+    "sha256": "bfd42df61b626789b4792e0d9251006d661d5883afe5f4c1b830f5c2bcc2163f",
+    "lines": 118,
+    "read_ranges": [
+      [
+        1,
+        118
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.432786+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "archive/frontend/README.md": {
+    "status": "complete",
+    "sha256": "79c9d2f86761135dc7001a78183cb0d664d746f76c0d790d55450cc986ff333f",
+    "lines": 21,
+    "read_ranges": [
+      [
+        1,
+        21
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.433062+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/DESIGN.md": {
+    "status": "complete",
+    "sha256": "1a87bc8b1fff13370e0f4ffd22802266ff83c368cdd9d0a51a583ca7a7ed1aaa",
+    "lines": 812,
+    "read_ranges": [
+      [
+        1,
+        812
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.433427+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/_ds_bundle.js": {
+    "status": "complete",
+    "sha256": "d7f92f872c89a7b0a9474d490a434fd25ef0c3786843415145709c432bdb13f5",
+    "lines": 1558,
+    "read_ranges": [
+      [
+        1,
+        1558
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.433751+00:00",
+    "method": "Individually SHA-256/byte-compared to the fully read 1557-line main bundle, then both narrow hook/source-hash diffs reviewed and actual archived bundle rendered in React."
+  },
+  "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/styles.css": {
+    "status": "complete",
+    "sha256": "1a9ee88ad77d8dfcac1771b2fe9053d5b94cd2354d70248a10c36c01d60e1e98",
+    "lines": 8,
+    "read_ranges": [
+      [
+        1,
+        8
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.433787+00:00",
+    "method": "Individual byte/hash comparison to completely read design/system/styles.css at the reviewed baseline; identical content reviewed once, copy accounted separately."
+  },
+  "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/base.css": {
+    "status": "complete",
+    "sha256": "d309e8325265e58c3f2649b418cfa0d36dfc3ece257ca475a401cbf0ca51557f",
+    "lines": 7,
+    "read_ranges": [
+      [
+        1,
+        7
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.433820+00:00",
+    "method": "Individual byte/hash comparison to completely read design/system/tokens/base.css at the reviewed baseline; identical content reviewed once, copy accounted separately."
+  },
+  "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/colors.css": {
+    "status": "complete",
+    "sha256": "7ab99b770532f99b9b8200e3ca0697d3b32693953f191cf639e0a0aff381d2fc",
+    "lines": 56,
+    "read_ranges": [
+      [
+        1,
+        56
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.433859+00:00",
+    "method": "Individual byte/hash comparison to completely read design/system/tokens/colors.css at the reviewed baseline; identical content reviewed once, copy accounted separately."
+  },
+  "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/elevation.css": {
+    "status": "complete",
+    "sha256": "d3988d3eb46316012275cdff7f9d4e03f4a23db0cc35aff32aa2eb5943d219c6",
+    "lines": 7,
+    "read_ranges": [
+      [
+        1,
+        7
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.433893+00:00",
+    "method": "Individual byte/hash comparison to completely read design/system/tokens/elevation.css at the reviewed baseline; identical content reviewed once, copy accounted separately."
+  },
+  "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/fonts.css": {
+    "status": "complete",
+    "sha256": "a562e9f457559785987e261995d75c08be2c0135541f02e9e707374760106a0b",
+    "lines": 6,
+    "read_ranges": [
+      [
+        1,
+        6
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.433927+00:00",
+    "method": "Individual byte/hash comparison to completely read design/system/tokens/fonts.css at the reviewed baseline; identical content reviewed once, copy accounted separately."
+  },
+  "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/motion.css": {
+    "status": "complete",
+    "sha256": "5dcd07b6371582391d5f3fc1780b98ed409f27b434cc7445b0a65116e81756f8",
+    "lines": 7,
+    "read_ranges": [
+      [
+        1,
+        7
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.433961+00:00",
+    "method": "Individual byte/hash comparison to completely read design/system/tokens/motion.css at the reviewed baseline; identical content reviewed once, copy accounted separately."
+  },
+  "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/shape.css": {
+    "status": "complete",
+    "sha256": "9d5b99ead230bbaaa5ae4a8375175703c592151f78bfbcb6ecd9d1323934e8d4",
+    "lines": 4,
+    "read_ranges": [
+      [
+        1,
+        4
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.433994+00:00",
+    "method": "Individual byte/hash comparison to completely read design/system/tokens/shape.css at the reviewed baseline; identical content reviewed once, copy accounted separately."
+  },
+  "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/spacing.css": {
+    "status": "complete",
+    "sha256": "d56314400f7975bd54853acadda41b29ac0f43cb9d1af546c4e5c8afa0242740",
+    "lines": 6,
+    "read_ranges": [
+      [
+        1,
+        6
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.434027+00:00",
+    "method": "Individual byte/hash comparison to completely read design/system/tokens/spacing.css at the reviewed baseline; identical content reviewed once, copy accounted separately."
+  },
+  "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/typography.css": {
+    "status": "complete",
+    "sha256": "538b3dc0da3a19f07af00de7f864649c0a764dcd42aeea6b9bf53c1e36abb069",
+    "lines": 34,
+    "read_ranges": [
+      [
+        1,
+        34
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.434063+00:00",
+    "method": "Individual byte/hash comparison to completely read design/system/tokens/typography.css at the reviewed baseline; identical content reviewed once, copy accounted separately."
+  },
+  "design/system/SKILL.md": {
+    "status": "complete",
+    "sha256": "0aec2658c944ebe747cb791a549bc8996d566967eba09bdf640fa92bf369de8c",
+    "lines": 9,
+    "read_ranges": [
+      [
+        1,
+        9
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.434269+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/_ds_bundle.js": {
+    "status": "complete",
+    "sha256": "d7f92f872c89a7b0a9474d490a434fd25ef0c3786843415145709c432bdb13f5",
+    "lines": 1558,
+    "read_ranges": [
+      [
+        1,
+        1558
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.434639+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/components/core/Card.d.ts": {
+    "status": "complete",
+    "sha256": "b91871f48d65c5bd1f8d7be9d1f5215cc958b0b08542d84749696094f75f9041",
+    "lines": 18,
+    "read_ranges": [
+      [
+        1,
+        18
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.434717+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/components/core/Card.jsx": {
+    "status": "complete",
+    "sha256": "6b5305d7fbfe04cb5372d9e380cc3b157f4e44b9050cf4ad829f866be246239e",
+    "lines": 16,
+    "read_ranges": [
+      [
+        1,
+        16
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.434781+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/components/core/Card.prompt.md": {
+    "status": "complete",
+    "sha256": "3396c38154ca3289692b7d1acb9216bfe76f7dc6b08d5f3f98459f170bb3947f",
+    "lines": 10,
+    "read_ranges": [
+      [
+        1,
+        10
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.434843+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/components/core/Chip.d.ts": {
+    "status": "complete",
+    "sha256": "a722407ae9aa2f4d8908dea30341e0d0080e5abb0607cf88ee1fe458a57ac5fd",
+    "lines": 11,
+    "read_ranges": [
+      [
+        1,
+        11
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.434911+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/components/core/Chip.jsx": {
+    "status": "complete",
+    "sha256": "efe4aacd6a2d75d7c37a21343420676f0c50612bc99cce1411ecccb485bce982",
+    "lines": 18,
+    "read_ranges": [
+      [
+        1,
+        18
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.434975+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/components/core/Chip.prompt.md": {
+    "status": "complete",
+    "sha256": "77324a752957c40a696e34ca4407cbed7d03f4ad48e0e811e82d06ad46be5177",
+    "lines": 6,
+    "read_ranges": [
+      [
+        1,
+        6
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.435039+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/components/core/Divider.d.ts": {
+    "status": "complete",
+    "sha256": "d90b17641410ef909de553c06d3718d5257e837e3a1789db9063ddf2de241c6c",
+    "lines": 12,
+    "read_ranges": [
+      [
+        1,
+        12
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.435101+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/components/core/Divider.jsx": {
+    "status": "complete",
+    "sha256": "07dc644234ec486e86f2c217201a6eb1ec4a95017dea2cbdc3f33464d25b5987",
+    "lines": 9,
+    "read_ranges": [
+      [
+        1,
+        9
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.435178+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/components/core/Divider.prompt.md": {
+    "status": "complete",
+    "sha256": "40c34644825052ac44a215bb506aa59f05ceb597cf36033b5c623113d14852b5",
+    "lines": 7,
+    "read_ranges": [
+      [
+        1,
+        7
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.435255+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/components/core/MatchIndicator.d.ts": {
+    "status": "complete",
+    "sha256": "4ee1eb6f57d9f9a788920f7c1727eb9661985fcbbaf3b0232a29c156868cd218",
+    "lines": 21,
+    "read_ranges": [
+      [
+        1,
+        21
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.435329+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/components/core/MatchIndicator.jsx": {
+    "status": "complete",
+    "sha256": "93279c23c9d18bf9efaa6d3dcea7c492573445ef89fd7598e885a6730c27d21c",
+    "lines": 32,
+    "read_ranges": [
+      [
+        1,
+        32
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.435394+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/components/core/MatchIndicator.prompt.md": {
+    "status": "complete",
+    "sha256": "31ff2da5e40ecc9210ec56b9a90617016bf292123d25b9670bb80951f3bf0329",
+    "lines": 11,
+    "read_ranges": [
+      [
+        1,
+        11
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.435456+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/components/core/Tooltip.d.ts": {
+    "status": "complete",
+    "sha256": "45fee11e425d7295369b63c604071bf4f5d7b955aeec2eba248a352d4dbb15ff",
+    "lines": 12,
+    "read_ranges": [
+      [
+        1,
+        12
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.435519+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/components/core/Tooltip.jsx": {
+    "status": "complete",
+    "sha256": "03956785a786fd62336985e325c70cf49fe8906512db9290c0e727ed10903b38",
+    "lines": 24,
+    "read_ranges": [
+      [
+        1,
+        24
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.435581+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/components/core/Tooltip.prompt.md": {
+    "status": "complete",
+    "sha256": "7f891c2343ee31ce06edcdfa24dcb65c09bec928631eb9059a76fbdd773aa6c6",
+    "lines": 9,
+    "read_ranges": [
+      [
+        1,
+        9
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.435641+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/components/core/core.card.html": {
+    "status": "complete",
+    "sha256": "6d02b6c6cd9dd3f201886cc80473caa53e2cdc699e9362803219d929e2854d97",
+    "lines": 39,
+    "read_ranges": [
+      [
+        1,
+        39
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.435705+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/components/forms/Button.d.ts": {
+    "status": "complete",
+    "sha256": "df8c6f63c56c9a2dc009f21be646b7b53d5630a18753e1c3a36e92780e96de50",
+    "lines": 17,
+    "read_ranges": [
+      [
+        1,
+        17
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.435769+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/components/forms/Button.jsx": {
+    "status": "complete",
+    "sha256": "f6139c25426427b62ad08d44bba10c957f16ecf80c61bc61b8e16709ca115b4a",
+    "lines": 31,
+    "read_ranges": [
+      [
+        1,
+        31
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.435833+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/components/forms/Button.prompt.md": {
+    "status": "complete",
+    "sha256": "2d25f1fc7f4106489552f260c415790b102bce253fcdedb06091d51a0d9a6231",
+    "lines": 8,
+    "read_ranges": [
+      [
+        1,
+        8
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.435973+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/components/forms/Checkbox.d.ts": {
+    "status": "complete",
+    "sha256": "117602629b7c4efcf1d26828e1d8c4c69c1573aa0a43b21a15abccaf1f51816b",
+    "lines": 11,
+    "read_ranges": [
+      [
+        1,
+        11
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.436035+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/components/forms/Checkbox.jsx": {
+    "status": "complete",
+    "sha256": "9d9e595ee8628b5b79cb3ef31f8353e873729d193c501ea6436416627299d1f2",
+    "lines": 21,
+    "read_ranges": [
+      [
+        1,
+        21
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.436107+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/components/forms/Checkbox.prompt.md": {
+    "status": "complete",
+    "sha256": "b1f178738eb39babccb36ba6648cb8bf44accd1ab520589d54fa744c59461ccb",
+    "lines": 5,
+    "read_ranges": [
+      [
+        1,
+        5
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.436177+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/components/forms/Input.d.ts": {
+    "status": "complete",
+    "sha256": "cdb4b244375dc49d7ce4cc72c234be99fb5b078242f55c1c0e8fef228b9724b0",
+    "lines": 14,
+    "read_ranges": [
+      [
+        1,
+        14
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.436243+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/components/forms/Input.jsx": {
+    "status": "complete",
+    "sha256": "a6970053e9bf821610ab35b0c3a065afbc88591983f3ca2e4b140f78b7f8d13c",
+    "lines": 31,
+    "read_ranges": [
+      [
+        1,
+        31
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.436856+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/components/forms/Input.prompt.md": {
+    "status": "complete",
+    "sha256": "89def3d1d92a26df99df3316496f0ba5ba0b521e675a7d52a6169be90b93fa40",
+    "lines": 8,
+    "read_ranges": [
+      [
+        1,
+        8
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.436932+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/components/forms/OptionRow.d.ts": {
+    "status": "complete",
+    "sha256": "b49c3633abef71e4a45f0a5d787c8417055fd3bdf027505c984dedb95a333d9d",
+    "lines": 17,
+    "read_ranges": [
+      [
+        1,
+        17
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.436997+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/components/forms/OptionRow.jsx": {
+    "status": "complete",
+    "sha256": "f3c7b7e0080043ec296330f34f835c4c6c385e6cea5b6b1b85aeebe7b2391f7b",
+    "lines": 30,
+    "read_ranges": [
+      [
+        1,
+        30
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.437058+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/components/forms/OptionRow.prompt.md": {
+    "status": "complete",
+    "sha256": "4411f5f4d1d959a463da6f152dc11cbf6a88bf13ac4393b456bc85581fa6d6c3",
+    "lines": 8,
+    "read_ranges": [
+      [
+        1,
+        8
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.437121+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/components/forms/forms.card.html": {
+    "status": "complete",
+    "sha256": "44cfebe76c16d8be3ad0fa2f91c66b931ada5a579d1a5259568d94dee7c2f9ea",
+    "lines": 37,
+    "read_ranges": [
+      [
+        1,
+        37
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.437188+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/readme.md": {
+    "status": "complete",
+    "sha256": "36d8a827c29273c532f989cf5807f12265401a6b388436974f3ddbcc292302d5",
+    "lines": 361,
+    "read_ranges": [
+      [
+        1,
+        361
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.437380+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/styles.css": {
+    "status": "complete",
+    "sha256": "1a9ee88ad77d8dfcac1771b2fe9053d5b94cd2354d70248a10c36c01d60e1e98",
+    "lines": 8,
+    "read_ranges": [
+      [
+        1,
+        8
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.437409+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/templates/skolamatch-screen/SkolamatchScreen.dc.html": {
+    "status": "complete",
+    "sha256": "1346c1e2418d15be5f89a7c582ba47a2320cdf9f4270c2579be3ed8d1c3322d1",
+    "lines": 92,
+    "read_ranges": [
+      [
+        1,
+        92
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.437604+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/templates/skolamatch-screen/ds-base.js": {
+    "status": "complete",
+    "sha256": "20ae0857bffb2b7ddd2a09a08d7c2309f3674236a8c407a55cf2857cfdd535bb",
+    "lines": 15,
+    "read_ranges": [
+      [
+        1,
+        15
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.437666+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/tokens/base.css": {
+    "status": "complete",
+    "sha256": "d309e8325265e58c3f2649b418cfa0d36dfc3ece257ca475a401cbf0ca51557f",
+    "lines": 7,
+    "read_ranges": [
+      [
+        1,
+        7
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.437697+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/tokens/colors.css": {
+    "status": "complete",
+    "sha256": "7ab99b770532f99b9b8200e3ca0697d3b32693953f191cf639e0a0aff381d2fc",
+    "lines": 56,
+    "read_ranges": [
+      [
+        1,
+        56
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.437729+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/tokens/elevation.css": {
+    "status": "complete",
+    "sha256": "d3988d3eb46316012275cdff7f9d4e03f4a23db0cc35aff32aa2eb5943d219c6",
+    "lines": 7,
+    "read_ranges": [
+      [
+        1,
+        7
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.437758+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/tokens/fonts.css": {
+    "status": "complete",
+    "sha256": "a562e9f457559785987e261995d75c08be2c0135541f02e9e707374760106a0b",
+    "lines": 6,
+    "read_ranges": [
+      [
+        1,
+        6
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.437786+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/tokens/motion.css": {
+    "status": "complete",
+    "sha256": "5dcd07b6371582391d5f3fc1780b98ed409f27b434cc7445b0a65116e81756f8",
+    "lines": 7,
+    "read_ranges": [
+      [
+        1,
+        7
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.437816+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/tokens/shape.css": {
+    "status": "complete",
+    "sha256": "9d5b99ead230bbaaa5ae4a8375175703c592151f78bfbcb6ecd9d1323934e8d4",
+    "lines": 4,
+    "read_ranges": [
+      [
+        1,
+        4
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.437845+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/tokens/spacing.css": {
+    "status": "complete",
+    "sha256": "d56314400f7975bd54853acadda41b29ac0f43cb9d1af546c4e5c8afa0242740",
+    "lines": 6,
+    "read_ranges": [
+      [
+        1,
+        6
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.437874+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/tokens/typography.css": {
+    "status": "complete",
+    "sha256": "538b3dc0da3a19f07af00de7f864649c0a764dcd42aeea6b9bf53c1e36abb069",
+    "lines": 34,
+    "read_ranges": [
+      [
+        1,
+        34
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.437906+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/ui_kits/skolamatch/Landing.jsx": {
+    "status": "complete",
+    "sha256": "6935a37d7b579e526895592e895b00aa853c7fc9fc6e25dc483b31f70219e8f0",
+    "lines": 45,
+    "read_ranges": [
+      [
+        1,
+        45
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.438089+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/ui_kits/skolamatch/Paywall.jsx": {
+    "status": "complete",
+    "sha256": "dacdf146c894a53744c88bb28c85784ddbb794efb4d34f890c3a73d3d6f45351",
+    "lines": 59,
+    "read_ranges": [
+      [
+        1,
+        59
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.438154+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/ui_kits/skolamatch/Questionnaire.jsx": {
+    "status": "complete",
+    "sha256": "7f9b3e24a84bf0f46aee11a9efc0180bc3135443847f0c0e7cd8f7a1083c3c13",
+    "lines": 57,
+    "read_ranges": [
+      [
+        1,
+        57
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.438222+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/ui_kits/skolamatch/README.md": {
+    "status": "complete",
+    "sha256": "d73497390c7fdeff3f34a988364eb9ba630b8c98cde0f1a602e3aee7fdedfb5b",
+    "lines": 30,
+    "read_ranges": [
+      [
+        1,
+        30
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.438410+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/ui_kits/skolamatch/Results.jsx": {
+    "status": "complete",
+    "sha256": "677b2b18df74ee97109500f9508cd28720f36e3d7909f3e08230dd68e7ce4cb4",
+    "lines": 62,
+    "read_ranges": [
+      [
+        1,
+        62
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.438472+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/ui_kits/skolamatch/SchoolDetail.jsx": {
+    "status": "complete",
+    "sha256": "04f91562082113e2cb006a3c1eb393f903f278e129c7f5aba262207f33b107f3",
+    "lines": 77,
+    "read_ranges": [
+      [
+        1,
+        77
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.438660+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/ui_kits/skolamatch/Shell.jsx": {
+    "status": "complete",
+    "sha256": "fa2a23702ef2f49bc21df5f7a83a944b50fad78088eef8f7117144d830c78d4d",
+    "lines": 66,
+    "read_ranges": [
+      [
+        1,
+        66
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.438830+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "design/system/ui_kits/skolamatch/index.html": {
+    "status": "complete",
+    "sha256": "bbed1462b096b7a9a1c1fffd0a18876334fdf6db032e4a0f7a353db6efb211fe",
+    "lines": 50,
+    "read_ranges": [
+      [
+        1,
+        50
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T11:05:38.438999+00:00",
+    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
   }
 }

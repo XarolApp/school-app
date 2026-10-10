@@ -3,7 +3,8 @@ import React from 'react';
 export function Input({ label, hint, error, icon, value, placeholder, id, style, ...rest }) {
   const [focus, setFocus] = React.useState(false);
   const invalid = Boolean(error);
-  const inputId = id || React.useId();
+  const generatedId = React.useId();
+  const inputId = id || generatedId;
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-xs)', fontFamily: 'var(--font-sans)' }}>
       {label && <label htmlFor={inputId} style={{ fontSize: 'var(--fs-label-md)', fontWeight: 600, color: 'var(--text-body)' }}>{label}</label>}
