@@ -945,6 +945,14 @@ app.delete('/api/me', requireAuth, async (req, res) => {
     if (removeError) return res.status(502).json({ error: 'Snímky ze zpětné vazby se nepodařilo smazat. Účet zatím nebyl smazán; zkus to prosím znovu.' });
   }
 
+  // Beta feedback, closing answers and the website review are kept without the
+  // account id unless the user ticked "delete them too". Screenshots are never kept.
+  // ponytail: a deleteUser failure after this leaves an archive copy that a retry duplicates.
+  if (req.body?.delete_contributions !== true) {
+    const { error: archiveError } = await supabase.rpc('archive_beta_contributions', { p_user_id: req.user.id });
+    if (archiveError) return res.status(500).json({ error: 'Zpětnou vazbu se nepodařilo anonymizovat. Účet zatím nebyl smazán; zkus to prosím znovu.' });
+  }
+
   const { error } = await supabase.auth.admin.deleteUser(req.user.id);
   if (error) return res.status(500).json({ error: error.message });
 

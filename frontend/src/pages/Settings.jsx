@@ -202,6 +202,7 @@ function Settings() {
   });
   const [emailForm, setEmailForm] = useState({ email: '', password: '' });
   const [deleteConfirm, setDeleteConfirm] = useState('');
+  const [deleteContributions, setDeleteContributions] = useState(false);
   const [captchaToken, setCaptchaToken] = useState(null);
   const [captchaKey, setCaptchaKey] = useState(0);
   const [busy, setBusy] = useState(false);
@@ -446,7 +447,7 @@ function Settings() {
     setError(null);
     setBusy(true);
     try {
-      await deleteAccount();
+      await deleteAccount({ deleteContributions });
       // Half-written answers and drafts live in this tab's sessionStorage; on a
       // shared school computer they must not outlive the account.
       try {
@@ -1221,8 +1222,9 @@ function Settings() {
             <h2 className="settings-section-title">Smazat účet</h2>
             <p className="settings-section-text">
               Trvale odstraní tvůj účet i všechno, co k němu patří: odpovědi v
-              dotazníku, uložené školy, přihlášku, poznámky, zpětné vazby,
-              recenze a případné předplatné. Tohle nejde vzít zpět.
+              dotazníku, uložené školy, přihlášku, poznámky a případné předplatné.
+              Zpětné vazby a recenze z testování ponecháme bez vazby na tebe, pokud
+              níže nezvolíš jejich smazání. Tohle nejde vzít zpět.
             </p>
           </div>
 
@@ -1249,6 +1251,25 @@ function Settings() {
                   required
                 />
               </div>
+
+              {isTester && (
+                <div className="field">
+                  <p className="field-hint">
+                    Tvoje zpětné vazby a recenze nám pomáhají web zlepšovat, proto bychom si je rádi
+                    nechali. Ponecháme je bez jména, e-mailu a vazby na účet; snímky obrazovky smažeme vždy.
+                    Recenzi, ke které jsi dal(a) souhlas se zveřejněním, můžeme dál anonymně ukázat na webu.
+                  </p>
+                  <label className="checkbox-row" htmlFor="settings-delete-contributions">
+                    <input
+                      id="settings-delete-contributions"
+                      type="checkbox"
+                      checked={deleteContributions}
+                      onChange={(e) => setDeleteContributions(e.target.checked)}
+                    />
+                    <span>Smazat i moje zpětné vazby, závěrečné odpovědi a recenze</span>
+                  </label>
+                </div>
+              )}
 
               <div className="settings-form-actions">
                 <button

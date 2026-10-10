@@ -149,8 +149,8 @@ export function fetchConfirmationStatus(userId) {
   return request(`/api/auth/confirmation/${encodeURIComponent(userId)}`);
 }
 
-export function deleteAccount() {
-  return request('/api/me', { method: 'DELETE' });
+export function deleteAccount({ deleteContributions = false } = {}) {
+  return request('/api/me', { method: 'DELETE', body: JSON.stringify({ delete_contributions: deleteContributions }) });
 }
 
 /** Saves the onboarding quiz's stashed answers to the account, once a session

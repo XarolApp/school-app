@@ -13,7 +13,7 @@ test('no anonymous or account event is queued before notice acceptance',async()=
  assert.equal(local.m.size,0);assert.equal(sent.length,0);
  t.setAccount({resolved:true,userId:'beta',tester:true,noticeAccepted:false});t.track('page_view');await t.flush();assert.equal(sent.length,0);
  t.setAccount({resolved:true,userId:'beta',tester:true,noticeAccepted:true});t.track('page_view');await t.flush();assert.equal(sent.length,1);
- assert.match(sql,/where p.user_id = p_user_id and p.consent_tracking_at is not null for update/);
+ assert.match(sql,/where p.user_id = p_user_id and p.consent_tracking_at is not null and p.tracking_paused_at is null for update/);
 });
 test('failed tracking flush cannot reattribute events to the next beta account',async()=>{
  const {createBetaTracker}=await import('../frontend/src/lib/betaTrack.js');let reject;const sent=[];

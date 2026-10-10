@@ -72,8 +72,7 @@ School e-mail: `docs/beta-school-email-draft.md`.
 - [ ] OpenRouter input/output logging setting: founder to confirm it is off (training toggles confirmed off).
 - [ ] Founder verifies the vendor facts in the decisions doc, D5 (Supabase region, Brevo
       owner, OpenRouter logging, operator agrees to be named) and writes the dates there.
-- [ ] Reminder: **delete feedback, closing answers and private reviews by 18 Oct 2027**
-      (manual; no job exists).
+- [ ] Apply `migrations/2026-10-10-beta-contributions-archive.sql` (keep-anonymised-on-delete).
 - [ ] Parents cannot read the privacy page without the gate code. Either put the code in the
       forwarded text (done) or serve legal pages ungated — the SPA assets are gated too, so
       that needs a separate static page.

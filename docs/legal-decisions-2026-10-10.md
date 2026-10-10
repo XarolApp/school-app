@@ -71,10 +71,16 @@ rows are not yet deleted) in the same release that re-enables sharing.
 
 **Retention (now stated in privacy §9):**
 - Usage events and onboarding rankings: deleted 6 months after the beta ends (job exists).
-- Feedback with screenshots, closing answers, private website reviews: deleted or
-  anonymised **no later than 12 months after the beta ends = by 18 October 2027**.
-  There is no automatic job for this yet — the founder deletes them by hand
-  (reminder in UNFORGET). Screenshots without feedback are removed daily by the existing cleanup.
+- Feedback, closing answers, private website reviews: **changed by the founder on
+  2026-10-10** (before any real tester joined, so no earlier promise is broken). Kept while
+  the account exists (legitimate interest: improving the site). On account deletion the
+  user chooses: tick the checkbox → deleted with the account; leave it → copied without
+  account id, school code, screenshots, coordinates or admin notes to
+  `beta_contributions_archive` (`archive_beta_contributions`), originals deleted.
+  Screenshots are always deleted. Free text can still identify a writer, so the archive is
+  minimised rather than guaranteed anonymous; later erasure requests by e-mail are honoured
+  by hand. Public use stays opt-in only (own consent, under-15 fully anonymous) — an
+  opt-out notice is not valid consent for publishing. Not a legal sign-off.
 - A public testimonial (only with its own consent): kept until the consent is withdrawn.
 - Accounts: until the user deletes them (unchanged).
 

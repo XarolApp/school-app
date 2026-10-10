@@ -121,7 +121,7 @@ export function Privacy() {
 
       <h2>6. Jak dlouho údaje uchováváme</h2>
       <ul>
-        <li>Údaje z účtu, dotazníků a tvých seznamů: po dobu existence účtu. Účet můžeš kdykoli smazat v Nastavení a smaže se tím vše výše popsané, včetně tvého předplatného, uložené platební metody a zákazníka u Stripe a všech tvých recenzí.</li>
+        <li>Údaje z účtu, dotazníků a tvých seznamů: po dobu existence účtu. Účet můžeš kdykoli smazat v Nastavení a smaže se tím vše výše popsané, včetně tvého předplatného, uložené platební metody a zákazníka u Stripe. Výjimkou jsou zpětné vazby, závěrečné odpovědi a recenze z beta testování (viz oddíl 9): pokud při mazání nezaškrtneš jejich smazání, ponecháme je bez vazby na účet.</li>
         <li>Neaktivní účty se zatím automaticky nemažou. Kdykoli můžeš účet smazat nebo nás o to požádat e-mailem.</li>
         <li>Záznamy o proběhlých platbách a související účetní doklady musíme uchovávat po dobu, kterou předepisují účetní a daňové předpisy (typicky 5 až 10 let); ty se smazáním účtu neruší.</li>
       </ul>
@@ -177,10 +177,13 @@ export function Privacy() {
       </p>
       <p>
         Jednotlivé události používání a uložená pořadí škol smažeme šest měsíců po stanoveném konci beta programu.
-        Zpětnou vazbu (včetně snímků stránky) a závěrečné odpovědi smažeme nebo anonymizujeme
-        nejpozději 12 měsíců po konci beta programu; soukromé recenze webu také. Veřejně použitou
-        recenzi (jen se samostatným souhlasem) uchováme, dokud souhlas neodvoláš. Právo na výmaz
-        zůstává zachováno a účet můžeš kdykoli smazat v Nastavení. Odvolání souhlasu, námitku,
+        Zpětnou vazbu, závěrečné odpovědi a recenze webu uchováváme po dobu existence účtu, protože
+        nám pomáhají web zlepšovat (oprávněný zájem). Když účet smažeš, smažeme snímky stránky vždy;
+        zprávy, odpovědi a recenze buď smažeme (pokud to při mazání zaškrtneš), nebo je ponecháme bez
+        jména, e-mailu, účtu, školy a technických údajů o zařízení. Do volného textu mohl(a) něco
+        osobního napsat i ty, proto můžeš jejich smazání kdykoli požádat i později e-mailem. Veřejně
+        použitou recenzi (jen se samostatným souhlasem) uchováme, dokud souhlas neodvoláš.
+        Právo na výmaz a námitku zůstává zachováno a účet můžeš kdykoli smazat v Nastavení. Odvolání souhlasu, námitku,
         žádost o přístup nebo výmaz můžeš poslat na info@stredninamiru.cz.
       </p>
       <p>
