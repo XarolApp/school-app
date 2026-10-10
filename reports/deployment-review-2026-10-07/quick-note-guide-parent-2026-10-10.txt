@@ -1,0 +1,76 @@
+- main:
+  - heading "Izolované ověření rozhraní" [level=1]
+  - paragraph: Všechny přihlašovací a e-mailové operace jsou simulované.
+  - button "Ověřit Oranžovou ve světlém režimu (jen tato ukázka)"
+  - button "Obnovit výchozí vzhled ukázky"
+  - region "Co vyzkoušet":
+    - heading "Co vyzkoušet" [level=3]
+    - generic: 0 z 8
+    - paragraph: Používejte web, jako byste opravdu vybírali školu. Vyzkoušené části se odškrtnou samy.
+    - list:
+      - generic "Zatím nevyzkoušeno"
+      - link "Dotazník":
+        - /url: /dotaznik
+      - generic "Zatím nevyzkoušeno"
+      - link "Vyhledávání":
+        - /url: /skoly
+      - generic "Zatím nevyzkoušeno"
+      - link "Detail školy (3×)":
+        - /url: /skoly
+      - generic: 0/3
+      - generic "Zatím nevyzkoušeno"
+      - link "Porovnání":
+        - /url: /porovnani
+      - generic "Zatím nevyzkoušeno"
+      - link "Rozhodovací matice":
+        - /url: /porovnani/matice
+      - generic "Zatím nevyzkoušeno"
+      - link "Přihláška":
+        - /url: /prihlaska
+      - generic "Zatím nevyzkoušeno"
+      - link "Barevné téma":
+        - /url: /nastaveni
+      - generic "Zatím nevyzkoušeno"
+      - link "Platební obrazovky (jen náhled)":
+        - /url: /onboarding/hodnota?betaPreview=1
+  - heading "Co od vás chceme" [level=3]
+  - paragraph: Chceme od vás co nejvíc informací. Každá informace je dobrá informace — i úplná drobnost.
+  - paragraph: "Co máte napsat:"
+  - list:
+    - listitem: Chyby a místa, která nefungují nebo jsou matoucí.
+    - listitem: Funkce a informace, které by se vám hodily.
+    - listitem: "Malé změny: text, tlačítko, pořadí, barva."
+    - listitem: Co se vám líbí a co máme nechat — pozitivní zpětná vazba pomáhá stejně.
+  - paragraph:
+    - strong: Buďte upřímní.
+    - text: Když vám web přijde k ničemu nebo se vám něco vůbec nelíbí, napište to na rovinu. Přesně to potřebujeme slyšet.
+  - paragraph: Nesedí vám nějaký údaj o škole?
+  - paragraph: Statistiky z Cermatu i praktické informace z webů škol zpracováváme automaticky, takže se může stát, že něco není pravda. Když na takový údaj narazíte, dejte nám vědět.
+  - heading "Jak nám dát zpětnou vazbu" [level=3]
+  - paragraph:
+    - text: Tlačítko „Zpětná vazba“ je vždy vpravo dole. Na mobilu je to jen kulaté tlačítko s bublinou
+    - generic "ikona bubliny":
+    - text: "(najdete ho i v menu). Můžete:"
+  - list:
+    - listitem: napsat obecnou zprávu o celém webu, nebo
+    - listitem: označit konkrétní místo na stránce (tlačítko, text, část) a napsat poznámku přímo k němu.
+  - list "Tři kroky zpětné vazby":
+    - generic: Klikněte na „Zpětná vazba“ (na mobilu na bublinu)
+    - generic: Označte místo, nebo pište obecně
+    - generic: Napište zprávu
+  - paragraph: Pošlete toho klidně hodně — i „tohle je super, nechte to tak“.
+  - paragraph: Něco nejde nahlásit tlačítkem?
+  - paragraph:
+    - text: Když nefunguje něco, co přes zpětnou vazbu poslat nejde (třeba přihlášení), napište na
+    - link "info@stredninamiru.cz":
+      - /url: mailto:info@stredninamiru.cz
+    - text: . Během bety to obvykle opravíme do 24 hodin. Na cokoli se můžete zeptat e-mailem i přes zpětnou vazbu.
+  - heading "Jak testování funguje" [level=3]
+  - list:
+    - strong: Zdarma, výměnou za zpětnou vazbu.
+    - text: Chceme aspoň jednu zprávu za 48 hodin. Když se neozvete, sami si o ni řekneme. Bez ní se přístup pozastaví, dokud nám nenapíšete přes „Zpětná vazba“ nebo formulář pro obnovení přístupu. Tato zpráva ho zase obnoví, nejdéle do konce programu. Obnoví ho i rychlé hodnocení s vlastní poznámkou nebo doplněním o celkové délce aspoň 10 znaků, nejdéle do konce programu. Samotné hvězdičky nebo vybrané odpovědi přístup neobnoví.
+    - strong: Platby jsou jen náhled.
+    - text: Nic neplatíte. U platebních obrazovek chceme váš názor, ne peníze.
+    - strong: Na konci krátký dotazník.
+    - text: Po vyzkoušení hlavních funkcí se zeptáme, jak to celé dopadlo. Recenze je samostatná a nepovinná.
+  - button "Zavřít"

@@ -126,7 +126,7 @@ function Layout() {
   }, [accountOpen]);
 
   const compareBadge = compareCount > 0 && (
-    <span className="navbar-count" aria-label={`${compareCount} vybrané`}>
+    <span className="navbar-count" aria-label={`Vybrané školy: ${compareCount}`}>
       {compareCount}
     </span>
   );

@@ -1,0 +1,85 @@
+- main:
+  - heading "Izolované ověření rozhraní" [level=1]
+  - paragraph: Všechny přihlašovací a e-mailové operace jsou simulované.
+  - paragraph: "Simulované účetní prostředí: A"
+  - button "Přepnout na účet B"
+  - button "Dokončit čekající simulované uložení"
+  - status "Simulované požadavky": "[]"
+  - paragraph: Účet
+  - heading "Nastavení" [level=1]
+  - paragraph: Uprav svůj profil a zabezpečení účtu.
+  - heading "Profil" [level=2]
+  - paragraph: Jméno a způsob oslovení.
+  - generic: Jméno
+  - textbox "Jméno": Test A
+  - button "Uložit" [disabled]
+  - group "Jak tě máme oslovovat?":
+    - generic: Jak tě máme oslovovat?
+    - radio "Jako žáka"
+    - generic: Jako žáka
+    - radio "Jako žákyni"
+    - generic: Jako žákyni
+    - radio "Nechci uvádět" [checked]
+    - generic: Nechci uvádět
+    - generic: Používáme jen správný tvar slov. „Nechci uvádět“ znamená mužské tvary.
+  - button "Uložit oslovení" [disabled]
+  - generic: E-mail
+  - generic: A@example.test
+  - button "Změnit e-mail": Změnit
+  - generic: Účet vytvořen
+  - generic: 28. září 2026
+  - heading "Vzhled" [level=2]
+  - paragraph: Barvy a režim se uloží k tvému účtu, takže je uvidíš na každém zařízení.
+  - group "Barvy":
+    - generic: Barvy
+    - radio "Modrá Klidná modrá. Výchozí." [checked]
+    - text: Modrá
+    - generic: Klidná modrá. Výchozí.
+    - radio "Žlutá Černá a žlutá jako zvýrazňovač."
+    - generic: Žlutá
+    - generic: Černá a žlutá jako zvýrazňovač.
+    - radio "Zelená Tmavě zelená, klidná."
+    - generic: Zelená
+    - generic: Tmavě zelená, klidná.
+    - radio "Oranžová Teplá cihlově oranžová."
+    - generic: Oranžová
+    - generic: Teplá cihlově oranžová.
+  - group "Režim":
+    - generic: Režim
+    - radiogroup "Režim":
+      - radio "Podle zařízení" [checked]
+      - text: Podle zařízení
+      - radio "Světlý"
+      - text: Světlý
+      - radio "Tmavý"
+      - text: Tmavý
+    - paragraph: „Podle zařízení“ se řídí nastavením telefonu nebo počítače.
+  - heading "Zabezpečení" [level=2]
+  - paragraph: Heslo a přihlášení na tomhle i ostatních zařízeních.
+  - generic: Heslo
+  - generic: Pro změnu potřebuješ zadat současné heslo.
+  - button "Změnit heslo": Změnit
+  - checkbox "Zůstat přihlášený Vypni na cizím nebo školním počítači — přihlášení pak skončí zavřením prohlížeče." [checked]
+  - text: Zůstat přihlášený
+  - generic: Vypni na cizím nebo školním počítači — přihlášení pak skončí zavřením prohlížeče.
+  - generic: Odhlásit všude
+  - generic: Ukončí přihlášení na všech zařízeních včetně tohoto.
+  - button "Odhlásit všude"
+  - heading "Předplatné" [level=2]
+  - paragraph: Stav tvého přístupu k databázi škol.
+  - generic: Stav
+  - generic: Beta tester
+  - generic: Beta tester
+  - timer "Zbývající čas přístupu":
+    - generic: Přístup zbývá
+    - strong: 24 h 00 min 00 s
+    - generic: Přístup obnoví zpráva přes „Zpětná vazba“ nebo rychlé hodnocení s vlastní poznámkou nebo doplněním o celkové délce aspoň 10 znaků, nejdéle do konce programu. Samotné hvězdičky nebo vybrané odpovědi časovač nemění.
+  - button "Poslat zpětnou vazbu"
+  - generic: Záznam používání
+  - paragraph: Během testování zaznamenáváme, které stránky otevíráš a na co klikáš — bez e-mailu, odpovědí z dotazníku a textů, které píšeš. Pomáhá nám to najít místa, kde se lidé ztrácejí, a podle toho se sám odškrtává seznam „Co vyzkoušet“.
+  - paragraph: Když záznam vypneš, nic dalšího se už nezaznamená a smažeme i to, co jsme o tvém používání zatím zaznamenali. Testovat můžeš dál a zpětná vazba funguje stejně, jen se seznam „Co vyzkoušet“ přestane sám odškrtávat. Zapnout ho můžeš kdykoli zase.
+  - switch "Záznam používání" [checked]: Vypnout záznam
+  - heading "Smazat účet" [level=2]
+  - paragraph: "Trvale odstraní tvůj účet i všechno, co k němu patří: odpovědi v dotazníku, uložené školy, přihlášku, poznámky a případné předplatné. Zpětné vazby a recenze z testování ponecháme bez vazby na tebe, pokud níže nezvolíš jejich smazání. Tohle nejde vzít zpět."
+  - button "Smazat účet"
+  - status

@@ -3,12 +3,19 @@
 Use this gate before every task that changes files, plans work, reviews a diff, runs
 a browser audit, or performs another substantial repository action.
 
-1. Classify the task using the model table in `AGENTS.md` or `CLAUDE.md`.
+1. Classify the task using the applicable routing instructions. The table in
+   `AGENTS.md` / `CLAUDE.md` routes Claude Code; Codex/GPT follows the
+   `.agents/skills/codex-*` workflow and current human/session instructions.
 2. Inspect the active model and effort from a trustworthy session indicator when one
-   is available. Do not infer it from previous turns or from this file.
-3. If the active model or effort is unavailable, ask the user to confirm it before
+   is available. A direct human confirmation for the same continuing task is
+   trusted session evidence; preserve it until changed. Do not infer a model
+   from a task title, skill name, or this file.
+3. If neither a reliable indicator nor an existing same-task human confirmation
+   establishes model/effort, ask the user to confirm it before
    starting model-dependent work.
-4. If it is wrong, stop and tell the user exactly which model and effort to select.
+4. Apply the human's explicit model/effort choice before repository defaults. If
+   a new required stage still has an unsuitable or unconfirmed choice, state the
+   needed model/effort and wait; do not repeat an already-resolved gate.
 5. Continue only after the user confirms the switch or the active session exposes a
    matching model and effort.
 

@@ -1,0 +1,26 @@
+Browser tab: 8, Title: "Izolovaná kontrola navigace", URL: "http://127.0.0.1:5197/navigation-probe.html?view=settings&status=beta&count=5".
+1 AXWebArea Izolovaná kontrola navigace, URL: 127.0.0.1:5197/navigation-probe.html?view=settings&status=beta&count=5
+	2 container root
+		3 link Description: Přeskočit na obsah, Value: 127.0.0.1:5197/navigation-probe.html?view=settings&status=beta&count=5#obsah
+		4 container
+			5 link Description: Střední na míru – domů, Value: 127.0.0.1:5197/
+			6 container Description: Hlavní navigace, ID: navbar-links
+				7 link Description: Školy, Value: 127.0.0.1:5197/skoly
+				8 link Description: Dotazník, Value: 127.0.0.1:5197/dotaznik
+				9 link Description: Porovnání Vybrané školy: 5, Value: 127.0.0.1:5197/porovnani
+				10 link Description: Přihláška, Value: 127.0.0.1:5197/prihlaska
+				11 link Description: Uložené, Value: 127.0.0.1:5197/ulozene
+			12 button Description: Moje zpětné vazby, nové odpovědi: 2, Help: Moje zpětné vazby
+			13 button (collapsed) Test A, Secondary Actions: Expand
+		14 container obsah
+			15 heading Izolovaná kontrola navigace, Value: 1
+				16 text Izolovaná kontrola navigace
+			17 text Syntetický účet a počet škol. Žádné přihlášení, data účtu ani externí operace.
+			18 button Kontrola klávesnice pod menu
+		19 container
+			20 text ©  2026  Střední na míru
+			21 container Právní informace
+				22 link Description: Obchodní podmínky, Value: 127.0.0.1:5197/obchodni-podminky
+				23 link Description: Ochrana osobních údajů, Value: 127.0.0.1:5197/ochrana-osobnich-udaju
+
+The focused UI element is 1 AXWebArea Izolovaná kontrola navigace, URL: 127.0.0.1:5197/navigation-probe.html?view=settings&status=beta&count=5

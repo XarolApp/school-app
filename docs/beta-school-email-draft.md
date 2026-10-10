@@ -77,8 +77,9 @@ Můžeš přidat snímek obrazovky. Buď upřímný(á), přesně to potřebujem
 - Testování končí v **neděli 18. 10. 2026 ve 23:59**.
 - Přístup se po 48 hodinách bez obnovení pozastaví. **Odeslaná zpráva přes hlavní
   formulář Zpětná vazba** (nebo při obnovení přístupu) ho obnoví na dalších 48 hodin,
-  nejdéle do konce testování. Samotné hvězdičkové hodnocení ani závěrečný dotazník
-  přístup neobnovují.
+  nejdéle do konce testování. Obnoví ho i rychlé hodnocení s vlastní poznámkou nebo doplněním
+  o celkové délce aspoň 10 znaků. Samotné hvězdičky, vybrané odpovědi nebo závěrečný
+  dotazník přístup neobnovují.
 - Na konci tě čeká krátký závěrečný dotazník.
 
 **Dobré vědět**
@@ -108,7 +109,9 @@ Tým Střední na míru
 - [x] Zakladatel 10. 10. oznámil průchod živým webem na telefonu (viz `UNFORGET.md`).
       Toto oznámení není nezávislé ověření všech níže uvedených hranic.
 - [ ] Ověř skutečný nový účet a potvrzení e-mailu i na jiném zařízení, obnovení přístupu
-      pouze hlavní zprávou, konec testování a platební náhled bez jediného účtování.
+      hlavní zprávou i rychlým hodnocením s vlastní poznámkou nebo doplněním (celkem aspoň 10 znaků),
+      neobnovení samotnými hvězdičkami/odpověďmi, konec testování a platební náhled
+      bez jediného účtování.
 - [ ] Dokonči retry/selhání mazání účtu a volbu vymazání příspěvků (C46), snímky
       obrazovky (C31) a úplné vypnutí záznamu používání (C43) podle handoff plánu.
 - [ ] Doplněno: jméno odesílatele, datum odeslání, případně osobní nabídka návštěvy.

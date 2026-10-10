@@ -16,6 +16,25 @@ There is no tool that can change the active model or effort level — `/model` a
 or effort change is a spoken instruction to the user, followed by a hard stop until it's
 confirmed. Never assume a switch happened because you told the user to make it.
 
+## Current routing and authorization
+
+The canonical routing guide is `docs/workflows/plan-then-build-collaboration.md`,
+read together with `AGENTS.md` / `CLAUDE.md`. Its September routing update
+supersedes the older graph-only recommendations in skill copies. These are
+repository defaults, not independently verified model benchmarks or a live model
+picker. Confirm available models in the current tool/session before requiring one.
+
+Explicit human model/effort choices override these defaults. Preserve a trusted
+same-task confirmation across a continuing review; do not ask again merely because
+another turn or skill copy repeats the gate. Never infer a switch that was only
+requested. A changed model-dependent stage needs confirmation only when its
+required choice has not already been established.
+
+A stage is a separate pass, not permission to spawn or message agents. Respect the
+human's delegation/cost constraint. One agent can execute sequential passes; claim
+shared files and preserve concurrent edits before mutations. Do not activate this
+workflow solely to interrupt an already-authorized end-to-end review.
+
 ## Phase 0 — Complexity gate (always runs first)
 
 Before doing anything else, judge the task itself against this line:
@@ -86,7 +105,7 @@ means.
 Once the plan is approved, the last thing this phase does is print a short, plain
 message — nothing else:
 
-> Plan approved and saved to `<path>`. Run `/model Codex-sonnet-5` and `/effort medium`
+> Plan approved and saved to `<path>`. Open `/model` and select the configured Claude Sonnet entry and `/effort medium`
 > (adjust if the plan itself calls for more), then tell me to continue — I'll implement
 > it from the plan.
 
@@ -99,7 +118,7 @@ the instruction:
 
 - **Confirm the model actually changed before writing a single line.** If the session is
   still on the Opus-tier model the plan was written on, say so — "Still on Opus — run
-  `/model Codex-sonnet-5` first" — and **do not start implementing.** This is a hard
+  `/model` and select the configured Claude Sonnet entry first" — and **do not start implementing.** This is a hard
   stop: the entire point of the split is cost, and executing the implementation phase on
   Opus defeats it even if the plan is perfect.
 - Once confirmed, follow the plan literally. Don't re-derive or second-guess the

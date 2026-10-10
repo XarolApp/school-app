@@ -63,8 +63,11 @@ where subscription_status = 'beta'
 
 The schema seeds a settings row with `access_hours = 48`, `ends_at = NULL`, and
 no external form. It backfills a missing rolling deadline once for old beta
-profiles. Accepted main-form/access-gate messages renew access; quick star ratings
-do not. The founder confirmed this rule on 10 October. Running the block again
+profiles. Accepted main-form/access-gate messages renew access. Founder amendment
+later on 10 October: quick ratings with at least 10 characters of their own writing in a note
+or follow-up field also renew; stars/chips/skip alone do not. The latter renewal is a
+separate server update after the micro-feedback RPC, so partial-failure/retry
+acceptance remains open; do not describe both paths as one atomic transaction. Running the block again
 does not extend an existing deadline.
 
 ## Configure a cohort

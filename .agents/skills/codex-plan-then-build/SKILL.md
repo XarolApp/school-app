@@ -1,45 +1,51 @@
 ---
 name: codex-plan-then-build
-description: Use the shared Claude Opus 5.5 planning, GPT-6 Luna max or Sol high implementation, and Sol high review workflow for complex repository work.
+description: Use the shared repository planning, implementation and independent review workflow for architecture or multi-system work.
 ---
 
 # Codex plan then build
 
-Use this only for architecture-level, multi-system, schema/API, migration, or
-high-cost-to-undo work. For a small feature or bug fix, use one suitable model
-end-to-end.
+## Current routing and authorization
 
-Read `docs/workflows/plan-then-build-collaboration.md` first. The canonical
-workflow is shared with Claude Code; use its task table when choosing between
-Luna max and Sol high or setting effort.
+The canonical routing guide is `docs/workflows/plan-then-build-collaboration.md`,
+read together with `AGENTS.md` / `CLAUDE.md`. Its September routing update
+supersedes the older graph-only recommendations in skill copies. These are
+repository defaults, not independently verified model benchmarks or a live model
+picker. Confirm available models in the current tool/session before requiring one.
 
-## Standard model gates
+Explicit human model/effort choices override these defaults. Preserve a trusted
+same-task confirmation across a continuing review; do not ask again merely because
+another turn or skill copy repeats the gate. Never infer a switch that was only
+requested. A changed model-dependent stage needs confirmation only when its
+required choice has not already been established.
 
-- Planning: Claude Opus 5.5, `high` by default; use `xhigh` for architecture-heavy
-  decisions.
-- Implementation: GPT-6 Sol high by default for work that justified a planning
-  pass; use GPT-6 Luna max if the approved implementation is straightforward and
-  minimizing cost is the priority.
-- Review: GPT-6 Sol high; escalate payment, security, schema, or release-critical
-  review to Claude Opus 5.5 high with fallback.
+A stage is a separate pass, not permission to spawn or message agents. Respect the
+human's delegation/cost constraint. One agent can execute sequential passes; claim
+shared files and preserve concurrent edits before mutations. Do not activate this
+workflow solely to interrupt an already-authorized end-to-end review.
 
-The normal sequence is **Opus 5.5 plans → Sol high builds → Sol high reviews**.
-Keep review independent by starting a fresh pass against the plan and diff.
+## Default roles
 
-Before planning, confirm Claude Opus 5.5 and its effort. Before implementing,
-confirm the model changed to Sol high (or Luna max for a straightforward plan).
-Before reviewing, confirm Sol high is selected and start an independent pass. If a
-stage's model cannot be confirmed, stop before that stage.
+Shared Codex path: Astra high plans → Luna high/max implements → Sol high reviews. Claude path: Opus 5.5 medium plans → Sonnet 5 medium/high implements → Opus 5.5 low reviews; hard security/payment/schema review uses the high-effort row.
 
-## Required plan contents
+## Plan, implement and review
 
-Write a handoff-ready plan in `plans/` with exact paths and symbols, resolved
-tradeoffs, edge cases, verification commands, browser checks where relevant, and
-explicit scope boundaries. After approval, tell the implementer which plan to read.
+Use the split only for architecture, multi-system/API/schema changes or work that
+is costly to unwind. Handle small fixes with one suitable model. Read the current
+status and source before planning; do not infer completion from an old plan.
 
-## Implementation and review gates
+Write a handoff-ready plan under `plans/`: concrete problem/current behavior, exact
+paths and symbols, resolved decisions, compatibility and edge cases, verification
+commands, browser checks and explicit scope. Do not leave architectural choices for
+the implementer to rediscover. Follow any already-established approval; ask only
+for unresolved decisions or a required new model switch.
 
-The implementer must stop if a material assumption or file path in the plan is
-wrong. The reviewer checks the diff, tests, and running behavior, and reports
-findings by severity. Do not declare completion with unresolved high-severity
-findings. Follow repository push requirements after each coherent commit.
+The implementer reads the current tree and plan. A material mismatch requires a
+plan correction before dependent work; routine naming/structuring choices do not.
+Run the agreed checks and preserve shared edits. Review independently against the
+plan, diff and actual running behavior. Report concrete findings by severity with
+file/line evidence and distinguish verified behavior from manual/provider gates.
+
+Do not claim release readiness with unresolved release-critical findings. Follow
+repository commit/push requirements after each verified coherent chunk. Never put
+secrets in plans, prompts, commits or review evidence.

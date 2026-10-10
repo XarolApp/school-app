@@ -1,6 +1,6 @@
 # SkolaMatch — Launch, Beta, Affiliate & Marketing Execution Plan
 
-> **Current use, 10 October 2026:** this is an execution roadmap, not current deployment approval. Free beta gives access in exchange for main feedback; payment screens are optional previews and must never call Stripe. Only accepted main-form/access-gate messages renew the 48-hour window, bounded by the configured programme cutoff. Resolve the beta gates in the [deployment report](../reports/deployment-review-2026-10-07/REPORT.md) and [handoff](../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md); real billing remains blocked separately. Dates/weeks, recruitment/revenue targets, affiliate tiers, discounts and early-access offers below are planning scenarios, not implemented offers or measured results. Follow [current status](skolamatch_current_status.md), source and later founder decisions.
+> **Current use, 10 October 2026:** this is an execution roadmap, not current deployment approval. Free beta gives access in exchange for main feedback; payment screens are optional previews and must never call Stripe. Accepted main-form/access-gate messages and quick ratings with at least 10 characters of their own writing in an optional note or follow-up field renew the 48-hour window, bounded by the configured programme cutoff (founder amendment later on 10 October). Stars/chips/skip alone do not. Resolve the beta gates in the [deployment report](../reports/deployment-review-2026-10-07/REPORT.md) and [handoff](../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md); real billing remains blocked separately. Dates/weeks, recruitment/revenue targets, affiliate tiers, discounts and early-access offers below are planning scenarios, not implemented offers or measured results. Follow [current status](skolamatch_current_status.md), source and later founder decisions.
 
 ## 0. Mission
 
@@ -745,7 +745,7 @@ Each tester should follow the current flow in [beta operations](beta_testing_ope
 5. Use school/search/comparison/decision tools with free beta access.
 6. Optionally review payment screens as feedback previews; never enter Stripe.
 7. Submit main-form/access-gate feedback to renew the rolling window, up to the programme cutoff.
-8. Give optional quick ratings/closing feedback; these do not renew access.
+8. Give optional quick ratings/closing feedback. A quick rating with at least 10 characters of their own writing in a note or follow-up field renews access; stars/chips/skip alone and the closing form do not.
 
 Ask structured questions:
 

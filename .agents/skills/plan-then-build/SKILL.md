@@ -1,19 +1,35 @@
 ---
 name: plan-then-build
-description: Split complex work into a Claude Opus 5.5 planning pass, GPT-6 Luna max or Sol high implementation, and Sol high review. Use for architecture-level changes, not routine fixes.
+description: Split complex work into a Claude Opus 5.5 planning pass, GPT-6 Luna high/max implementation, and Sol high review. Use for architecture-level changes, not routine fixes.
 ---
 
 # Plan-then-build
 
-Use Claude Opus 5.5 for complex planning, GPT-6 Luna max for value-focused
-implementation, and GPT-6 Sol high for independent review. This follows the supplied
-benchmark chart; use Sol high for implementation when its small score increase is
-worth the extra cost. This skill enforces the complexity gate and model switches.
+Use the canonical shared workflow: Opus 5.5 medium or Astra high plans, Luna high/max implements on Codex (Sonnet 5 medium/high on Claude), and Sol high or Opus 5.5 low reviews. Escalate hard security/payment/schema review under the guide. Explicit current human model choices take precedence.
 
 There is no tool that can change the active model or effort level — `/model` and
 `/effort` are slash commands, not tool calls. Every checkpoint below that needs a model
 or effort change is a spoken instruction to the user, followed by a hard stop until it's
 confirmed. Never assume a switch happened because you told the user to make it.
+
+## Current routing and authorization
+
+The canonical routing guide is `docs/workflows/plan-then-build-collaboration.md`,
+read together with `AGENTS.md` / `CLAUDE.md`. Its September routing update
+supersedes the older graph-only recommendations in skill copies. These are
+repository defaults, not independently verified model benchmarks or a live model
+picker. Confirm available models in the current tool/session before requiring one.
+
+Explicit human model/effort choices override these defaults. Preserve a trusted
+same-task confirmation across a continuing review; do not ask again merely because
+another turn or skill copy repeats the gate. Never infer a switch that was only
+requested. A changed model-dependent stage needs confirmation only when its
+required choice has not already been established.
+
+A stage is a separate pass, not permission to spawn or message agents. Respect the
+human's delegation/cost constraint. One agent can execute sequential passes; claim
+shared files and preserve concurrent edits before mutations. Do not activate this
+workflow solely to interrupt an already-authorized end-to-end review.
 
 ## Phase 0 — Complexity gate (always runs first)
 
@@ -27,7 +43,7 @@ Before doing anything else, judge the task itself against this line:
   reasonably do start to finish without a separate planning pass first.
 
 If the task isn't complex enough, say so plainly, name the model to use instead (usually
-GPT-6 Luna max — the same model this skill would hand off to anyway, so splitting adds a step
+GPT-6 Luna high — per the canonical everyday-implementation row, so splitting adds a step
 for zero benefit), and **stop here.** Do not enter plan mode, do not touch the plan file,
 do not call `ExitPlanMode`.
 
@@ -83,19 +99,16 @@ means.
 Once the plan is approved, the last thing this phase does is print a short, plain
 message — nothing else:
 
-> Plan approved and saved to `<path>`. Switch to GPT-6 Luna max by default, or GPT-6
-> Sol high if the task warrants its modest score increase, then continue.
+> Plan approved and saved to `<path>`. Select the available GPT-6 Luna entry at high for everyday implementation, or max for larger work, unless the human already chose a suitable implementation model, then continue.
 
 No attempt to detect or force the switch. Just the instruction, then stop and wait.
 
-## Phase 3 — Implement (GPT-6 Luna max or Sol high)
+## Phase 3 — Implement (GPT-6 Luna high/max)
 
 This phase has its own gate, run every time — never skip it because Phase 2 already gave
 the instruction:
 
-- **Confirm the model actually changed before writing a single line.** Use Luna max by
-  default or Sol high when justified. Avoid GPT-5.6 Terra for this workflow because the
-  supplied graph shows it dominated by cheaper or more capable options.
+- **Confirm the model actually changed before writing a single line.** Use the canonical Luna high/max row or the explicit current human choice; do not infer a switch from a requested switch.
 - Once confirmed, follow the plan literally. Don't re-derive or second-guess the
   architecture decisions it already made.
 - If execution reveals the plan is incomplete or wrong somewhere that matters — a step

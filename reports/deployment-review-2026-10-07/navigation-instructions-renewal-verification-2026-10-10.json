@@ -1,0 +1,56 @@
+{
+  "checked_at_utc": "2026-10-10T21:01:06.134533+00:00",
+  "commit_at_check": "e722aeedefa5a1cfb035104a0cb36269f99cd266",
+  "scope": "Own copy/instruction reconciliation and actual local components with synthetic services; no auth, feedback, payment or hosted writes. Concurrent catalogue source remains pending independent review.",
+  "source_hashes": {
+    "frontend/src/components/Layout.jsx": "5b421145311515b9746a1ceef333e866f29832aca15e5c8abc04dc8e2a7e2033",
+    "frontend/src/components/BetaInstructions.jsx": "8203e371738e9f519a3ab0ec0281c5254749bf79a7836b02a8f32154face1a89",
+    "frontend/src/pages/Settings.jsx": "23f88fc2c5cb79b6ba87e7a3702854502cb384837556b4bff93bad663b86deb8",
+    ".agents/skills/codex-only-plan-then-build/SKILL.md": "5fb5e95ee4793db63edf617257c2e4076278107af68acfc0ceeb582f0b8ab95c",
+    ".agents/skills/codex-plan-then-build/SKILL.md": "fe90969f788108e0555979cf3e716f7028fd3e7e0e373ef927e486639c27b08e",
+    ".agents/skills/claude-plan-then-build/SKILL.md": "087265346961a766cbc8d883786e29855c841876eda7748f4c12d7c10fa3e3cf",
+    ".agents/skills/claude-only-plan-then-build/SKILL.md": "11f91aaa47d87eaee34123518145e33654e7b8b00eeec7792b327e2d239850a3",
+    ".agents/skills/plan-then-build/SKILL.md": "d30c95ea9d74e15781b5a489ac8cbdf02f07ccb41f32d3f3bc575c418212f408",
+    ".claude/skills/claude-plan-then-build/SKILL.md": "087265346961a766cbc8d883786e29855c841876eda7748f4c12d7c10fa3e3cf",
+    ".claude/skills/plan-then-build/SKILL.md": "b7e6264274d95b939806d076c2f0817168e86f9ccce480eeb9170d1571ce3a6b",
+    ".claude-plugin/marketplace.json": "9f068b827384c1620d2165fa4968354161b07740b4cf610556e5c968b0932913",
+    "plugins/model-gate/.claude-plugin/plugin.json": "77e26f036743eb807c4399236f3f240c95135b778019cbc83d70a2949aaa17a5",
+    "plugins/model-gate/hooks/hooks.json": "7258c0a150e3681c9ef9efbcaca5f60099eb733558d44afc56466dc6b62d1364",
+    ".claude/settings.json": "77f0b10db74592608ab0e7db7f8abf1a5508fc14de0a0aa9576d1572df7ed6fc",
+    ".claude/settings.local.json": "368965ec7016c5fe3561688f9a68f1f12c927379fd0e07e5a2c49a899552ef7e",
+    ".claude/launch.json": "f0d26e05b322f327d616178931fb9254d6b39b46bcabc5f3f721ed8fee69106a",
+    ".codex/agents/onboarding-architect.toml": "69cb80ed95c54edf6732ad45320181eee98d439330cb8a6a6fea239b9d787422",
+    ".claude/agents/onboarding-architect.md": "805b43edcc360ac611ff32c96264eb460743f6513e72416259456d56b4ee3e5b",
+    "plugins/model-gate/hooks/model-gate.js": "d1c04b5635761b6f667e5b3280b389b0123b121b6909380dd8deacb3ec9ad1c4"
+  },
+  "checks": {
+    "json_parses": 6,
+    "toml_parse": true,
+    "routing_frontmatter_and_authorization": 7,
+    "claude_short_skill_copy_parity": true,
+    "model_gate_selftest": "pass, hook unchanged",
+    "frontend_lint": "pass, 11 warnings",
+    "frontend_build": "pass, existing chunk-size warning",
+    "root_suite": "186 pass / 2 fail / 188 tests in changing peer tree: extensionless schoolPrograms import prevents onboarding suite loading; new import also breaks district test VM loader. No full-suite acceptance claim.",
+    "browser": "Actual Settings and parent guide at 375x812 render written-note/follow-up minimum and programme cap with no horizontal overflow. Actual Layout badge at 1/5 verified. Phone menu Tab enters background; C25 open.",
+    "fault_probe": "C51 save succeeds/renewal fails: 200/false, retry 409 without retrying renewal; zero matched update reports true. C50 invented metrics reproduced. Mocked external responses, exact before/after source hash guard."
+  },
+  "coverage_counts": {
+    "pending_or_changed": 373,
+    "current_full_read": 418,
+    "binary_requires_asset_check": 105,
+    "generated_or_audit_artifact": 157,
+    "removed_or_missing": 2
+  },
+  "evidence": [
+    "quick-feedback-renewal-2026-10-10.json",
+    "navigation-phone-focus-2026-10-10.txt",
+    "navigation-count-after-2026-10-10.txt",
+    "navigation-count-five-2026-10-10.txt",
+    "quick-note-settings-phone-2026-10-10.png",
+    "quick-note-guide-phone-2026-10-10.png",
+    "navigation-renewal-root-tests-2026-10-10.txt",
+    "navigation-renewal-lint-2026-10-10.txt",
+    "navigation-renewal-build-2026-10-10.txt"
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "checkedAt": "2026-10-10T21:01:05.626Z",
+  "sourceHashes": {
+    "server.js": "ffb3c2174af8028534bccfdc2c66f425f8663c2a6e66f2bfd181f70b23c32294",
+    "tests/server-boundaries.test.cjs": "552d3289d95e9731d0f954d123c21a7b7543e746c43ddb687652567fadc7ac11",
+    "lib/betaAdmin.js": "9b19c8ee963781c79c5076ef8fba049db80d85d229b9aff66f17beac6ab84bf8",
+    "supabase-setup.sql": "c5167dd460a18d83bca4a0d7f5dd728cfeed9c8e482e7f8b66a75478faa73d5d",
+    "frontend/src/components/BetaReward.jsx": "7755f08721dc8332b731db397c1d6c4c1ecbcb6cd67694dd249d73e5d4333587"
+  },
+  "scope": "Actual registered JS handler and helpers with mocked middleware, RPC and database. RPC successful commit/23505 guard modelled from read canonical SQL. Zero matched update rows modelled. Actual admin builder. No hosted operation or PostgreSQL acceptance.",
+  "failedRenewal": {
+    "first": {
+      "status": 200,
+      "body": {
+        "micro_asked": {
+          "dotaznik": {
+            "done": true
+          }
+        },
+        "accessRenewed": false
+      }
+    },
+    "retry": {
+      "status": 409,
+      "body": {
+        "error": "Hodnocení teď nelze uložit."
+      }
+    },
+    "renewalAttemptsAfterRetry": 1,
+    "feedbackRpcCalls": 2
+  },
+  "zeroMatchedRows": {
+    "status": 200,
+    "body": {
+      "testerAccessUntil": "2026-09-28T12:00:00.000Z",
+      "accessRenewed": true
+    }
+  },
+  "interpretation": [
+    {
+      "id": "vyhledavani",
+      "note": "Ano",
+      "status": 200,
+      "accessRenewed": false,
+      "storedSummary": "Ano",
+      "interpretedMessage": "Rychlé hodnocení · vyhledavani\nNašel(a), co hledal(a)? → Ano",
+      "matchingCards": [
+        {
+          "label": "Úplná pořadí",
+          "value": 0,
+          "unit": ""
+        },
+        {
+          "label": "Hodnocení dotazníku",
+          "value": null,
+          "unit": "/ 5"
+        }
+      ]
+    },
+    {
+      "id": "dotaznik",
+      "note": "5/5",
+      "status": 200,
+      "accessRenewed": false,
+      "storedSummary": "5/5",
+      "interpretedMessage": "Rychlé hodnocení · dotaznik\nHodnocení: 5/5",
+      "matchingCards": [
+        {
+          "label": "Úplná pořadí",
+          "value": 0,
+          "unit": ""
+        },
+        {
+          "label": "Hodnocení dotazníku",
+          "value": 5,
+          "unit": "/ 5"
+        }
+      ]
+    },
+    {
+      "id": "dotaznik",
+      "note": "Sedí · Tak akorát",
+      "status": 200,
+      "accessRenewed": true,
+      "storedSummary": "Sedí · Tak akorát",
+      "interpretedMessage": "Rychlé hodnocení · dotaznik\nJak realistické přišly výsledky? → Sedí\nA otázky? → Tak akorát",
+      "matchingCards": [
+        {
+          "label": "Úplná pořadí",
+          "value": 0,
+          "unit": ""
+        },
+        {
+          "label": "Hodnocení dotazníku",
+          "value": null,
+          "unit": "/ 5"
+        }
+      ]
+    }
+  ]
+}

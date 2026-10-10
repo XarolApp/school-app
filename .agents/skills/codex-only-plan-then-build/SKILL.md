@@ -1,62 +1,51 @@
 ---
 name: codex-only-plan-then-build
-description: Use a Codex-only planning, implementation, and review workflow for complex repository work when Claude Code is unavailable.
+description: Use a Codex-only planning, implementation and review workflow for architecture or multi-system work when Claude Code is unavailable.
 ---
 
-# Codex-only plan then build
+# Codex only plan then build
 
-Use this for architecture-level, multi-system, schema/API, migration, or
-high-cost-to-undo work. Do not use it for a small feature, a local UI change, or
-a straightforward bug fix that one model can finish safely.
+## Current routing and authorization
 
-The workflow is:
+The canonical routing guide is `docs/workflows/plan-then-build-collaboration.md`,
+read together with `AGENTS.md` / `CLAUDE.md`. Its September routing update
+supersedes the older graph-only recommendations in skill copies. These are
+repository defaults, not independently verified model benchmarks or a live model
+picker. Confirm available models in the current tool/session before requiring one.
 
-```text
-GPT-6 Astra plans → GPT-6 Sol xhigh implements → GPT-6 Sol high reviews
-```
+Explicit human model/effort choices override these defaults. Preserve a trusted
+same-task confirmation across a continuing review; do not ask again merely because
+another turn or skill copy repeats the gate. Never infer a switch that was only
+requested. A changed model-dependent stage needs confirmation only when its
+required choice has not already been established.
 
-Use GPT-6 Astra for planning at `high` by default, or `xhigh` for architecture-heavy
-decisions. Implement with GPT-6 Sol xhigh by default when the complexity warrants a
-plan-then-build split; use GPT-6 Luna max if the approved implementation is
-straightforward and minimizing cost is the priority. Review independently with
-GPT-6 Sol high. Escalate payment, security, schema, or release-critical review to
-GPT-6 Astra high. Do not use GPT-5.6 Terra in this workflow: the supplied graph shows
-it dominated by cheaper or more capable options.
+A stage is a separate pass, not permission to spawn or message agents. Respect the
+human's delegation/cost constraint. One agent can execute sequential passes; claim
+shared files and preserve concurrent edits before mutations. Do not activate this
+workflow solely to interrupt an already-authorized end-to-end review.
 
-## Planning gate
+## Default roles
 
-Before planning, confirm that the task is complex enough to justify two model
-switches. Confirm that the active planner is GPT-6 Astra at the appropriate effort.
-If the model cannot be confirmed, stop before planning.
+GPT-6 Astra high plans → GPT-6 Luna high/max implements → GPT-6 Sol high reviews. Escalate hard payment/security/schema/release review to Astra high when the human has not chosen a different suitable review model.
 
-Write an approved, handoff-ready plan under `plans/` containing:
+## Plan, implement and review
 
-- the current behavior and concrete problem;
-- exact files, functions, components, routes, and schema objects;
-- resolved tradeoffs and compatibility constraints;
-- edge cases and explicit scope boundaries;
-- test, build, and browser verification commands.
+Use the split only for architecture, multi-system/API/schema changes or work that
+is costly to unwind. Handle small fixes with one suitable model. Read the current
+status and source before planning; do not infer completion from an old plan.
 
-Do not leave architectural choices for the implementer to rediscover.
+Write a handoff-ready plan under `plans/`: concrete problem/current behavior, exact
+paths and symbols, resolved decisions, compatibility and edge cases, verification
+commands, browser checks and explicit scope. Do not leave architectural choices for
+the implementer to rediscover. Follow any already-established approval; ask only
+for unresolved decisions or a required new model switch.
 
-## Implementation gate
+The implementer reads the current tree and plan. A material mismatch requires a
+plan correction before dependent work; routine naming/structuring choices do not.
+Run the agreed checks and preserve shared edits. Review independently against the
+plan, diff and actual running behavior. Report concrete findings by severity with
+file/line evidence and distinguish verified behavior from manual/provider gates.
 
-After the plan is approved, switch to GPT-6 Sol xhigh by default, or GPT-6 Luna max
-if the implementation is straightforward. Confirm the active model changed from Astra. Read the plan and inspect
-the current tree first.
-If a material assumption, file path, or interface in the plan is wrong, stop and
-report it instead of silently re-architecting. Minor naming and local structuring
-choices may be made normally.
-
-Run the plan's verification before handing off for review. Keep the implementation
-focused on the approved scope and follow the repository's commit and push rules.
-
-## Review gate
-
-Switch to GPT-6 Sol high and review the diff, tests, and running behavior independently
-of the implementation reasoning. Report findings by severity, including concrete
-file and line references where possible. Do not declare the task complete while a
-high-severity finding remains unresolved. For payment, security, schema, or
-release-critical findings, escalate the review to GPT-6 Astra.
-
-Never put secrets in plans, prompts, commits, or review notes.
+Do not claim release readiness with unresolved release-critical findings. Follow
+repository commit/push requirements after each verified coherent chunk. Never put
+secrets in plans, prompts, commits or review evidence.

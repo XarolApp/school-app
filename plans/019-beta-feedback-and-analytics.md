@@ -2,7 +2,7 @@
 
 **Status, updated 10 October:** implementation/history plan, not deployment acceptance. Steps 2–12 were committed and full rankings implemented after the 5 October founder decision; the 121/127-test reports describe their dated snapshots. A fresh read-only check on 10 October exposes `beta_profile.role_note`, a 48-hour window, one current cohort code and cutoff 18 October at 23:59 Europe/Prague. The earlier missing-column/12 October diagnosis is superseded. Fresh/repeated SQL, grants/RLS/Storage isolation, privacy/erasure and complete enrollment/feedback/expiry verification remain gates. See [current evidence](../reports/deployment-review-2026-10-07/beta-cohort-schema-2026-10-10.json) and the deployment handoff; metadata is not proof of a complete migration.
 
-**Current contract:** only messages through the main feedback form or access gate renew access; quick ratings never do (founder confirmed 10 October). Beta is free, payment screens are an optional preview, and no beta Stripe operation is permitted. Plan 020 and the current [logic](../docs/beta_testing_logic.md)/[runbook](../docs/beta_testing_operations.md) supersede this original build specification where behavior differs. The detailed event/UI/endpoint lists below are historical design, not a claim that the deployed app exactly follows every item.
+**Current contract:** messages through the main feedback form or access gate renew access; founder amendment later on 10 October also allows quick ratings with at least 10 characters of their own writing in an optional note or follow-up field. Stars/chips/skip alone never renew. Beta is free, payment screens are an optional preview, and no beta Stripe operation is permitted. Plan 020 and the current [logic](../docs/beta_testing_logic.md)/[runbook](../docs/beta_testing_operations.md) supersede this original build specification where behavior differs. The detailed event/UI/endpoint lists below are historical design, not a claim that the deployed app exactly follows every item.
 **Builds on:** plan 016 (beta program, implemented) and `docs/beta_testing_logic.md`. This plan **extends** 016; it does not replace its access model, tables or routes.
 **Model routing (CLAUDE.md):** planning was Opus 5.5 medium. Build at Sonnet 5 high (large multi-file). Review the tracking/consent and `/admin` access code at Opus 5.5 low.
 
@@ -32,7 +32,7 @@ Where the founder looks at everything: **`/admin`** in the app (section 9).
 | "Suggest a change" | yes — tester edits a text in place, we store before → after |
 | Activity rule | 48h renewal stays; on expiry the account is **not suspended** — a soft gate asks one open question; one real answer unlocks 48h. No points system (it rewards quantity over quality) |
 | Warning | in-app banner 12h before expiry |
-| Micro-questions | original design: max 1 per session, 6 in total, each skippable. Superseded: current quick ratings are feedback but never renew access (10 October founder decision) |
+| Micro-questions | original design: max 1 per session, 6 in total, each skippable. Superseded: quick ratings with at least 10 characters of their own writing in an optional note or follow-up field renew; stars/chips/skip alone do not (later 10 October founder amendment) |
 | Closing questionnaire | appears after the main features were tried (checklist) and day ≥ 2, or for everyone 2 days before `ends_at`; **required** (access pauses until done); text "odpovídej upřímně, nic neodsuzujeme" |
 | Review | optional separate step; saved only, **never published automatically**; founder reviews each before any use |
 | Under-15 reviews | stored; publish only fully anonymous ("Student, 8. třída"), lawyer check before first public use |
@@ -134,7 +134,7 @@ Small bottom card, never a modal:
 4. After the matrix: "Dávalo pořadí v matici smysl?" 1–5.
 5. After the paywall screens: "Byla cena jasná?" ano / spíš ano / ne.
 6. After a theme change: "Proč tohle téma?" (text, optional).
-Current quick ratings are stored as micro feedback and **do not renew access**. The original six-question design is historical; use the current source/runbook before extending it.
+Current quick ratings are stored as micro feedback and **renew only with at least 10 characters of their own writing in an optional note or follow-up field** (later 10 October founder amendment); stars/chips/skip alone do not. The original six-question design is historical; use the current source/runbook before extending it.
 
 ### 7.5 Expiry warning + soft gate
 - 12h before `tester_access_until`: banner "Za 12 hodin se ti přístup pozastaví — stačí poslat jednu připomínku."
