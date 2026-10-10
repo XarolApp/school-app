@@ -39,3 +39,15 @@ test('simulation uses reproducible seeded sampling and deterministic school rank
  const generate=seed=>{const context={SEED:seed,SKIP:.25,QUESTIONS,questionApplies,validateAnswers};vm.createContext(context);vm.runInContext(code+';samples=Array.from({length:30},questionnaireAnswers)',context);const {scoreSchools}=require('../lib/matching');const schools=[{id:1,name:'Gymnázium',programs:'gymnázium'},{id:2,name:'Průmyslová škola',programs:'informatika'}];return JSON.stringify(context.samples.map(a=>({a,ranking:scoreSchools(a,schools)})));};
  assert.equal(generate(42),generate(42));assert.notEqual(generate(42),generate(43));
 });
+test('answer stats: beta only, latest run per tester, small cells and private questions hidden',()=>{
+ const {answerStats}=require('../lib/betaAdmin');
+ const qs=[{id:'a',type:'single',label:'A',options:[{value:'x',label:'X'},{value:'y',label:'Y'}]},{id:'m',type:'multi',label:'M',options:[{value:'p',label:'P'}]},{id:'h',type:'single',label:'H',privateToServer:true,options:[{value:'1',label:'1'}]}];
+ const ids=Array.from({length:8},(_,i)=>'u'+i),runs=ids.map((u,i)=>({user_id:u,created_at:'2026-10-02',answers:{a:i<6?'x':'y',m:['p'],h:'1'}}));
+ runs.push({user_id:'u0',created_at:'2026-10-01',answers:{a:'y'}},{user_id:'outsider',created_at:'2026-10-03',answers:{a:'y'}});
+ const r=answerStats(runs,new Set(ids),qs);
+ assert.equal(r.testers,8);assert.ok(!r.rows.some(x=>x.question==='H'));
+ const x=r.rows.find(x=>x.option==='X'),y=r.rows.find(x=>x.option==='Y');
+ assert.equal(x.count,6);assert.equal(x.respondents,8);assert.equal(y.count,'<5');assert.equal(y.share,null);
+ assert.equal(answerStats(runs.slice(0,3),new Set(ids),qs).rows[0].count,null);
+ assert.ok(!JSON.stringify(r).includes('u0'));
+});

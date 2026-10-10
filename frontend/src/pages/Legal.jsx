@@ -164,7 +164,7 @@ export function Privacy() {
       <p>
         Běžných návštěvníků a účtů se beta sledování netýká. Nepoužíváme analytické služby
         třetích stran, nové cookies ani otisk zařízení. Náhodný identifikátor beta návštěvy
-        a relace ukládáme do localStorage a sessionStorage prohlížeče jen po tvém souhlasu. Do událostí neukládáme e-mail, hesla, volný text odpovědí v dotazníku ani
+        a relace ukládáme do localStorage a sessionStorage prohlížeče jen po tvém souhlasu. Odpovědi v dotazníku vyhodnocujeme pro beta testery také souhrnně a anonymně (kolik testerů vybralo kterou možnost; skupiny menší než 5 neukazujeme a soukromé otázky o zdraví a bodech nezahrnujeme). Do událostí neukládáme e-mail, hesla, volný text odpovědí v dotazníku ani
         počet bodů z přijímacích zkoušek. Hledaný text uchováme jen tehdy, když odpovídá části
         názvu školy; jinak zaznamenáme pouze jeho délku a počet výsledků.
       </p>

@@ -20,7 +20,7 @@ export default function BetaEnrollment({ role, roleNote = '', accepted, onRole, 
     <div className="notice">
       <p className="notice-title">Co během bety zaznamenáváme</p>
       <p className="notice-text">Navštívené stránky, použití funkcí, hledání škol, chyby a typ zařízení nám pomáhají zlepšit web. Nepoužíváme žádné analytické služby třetích stran, nové cookies ani otisk zařízení. Náhodný beta identifikátor ukládáme do úložiště prohlížeče a po registraci ho spojíme s beta účtem.</p>
-      <p className="notice-text">Záznamy používání smažeme 6 měsíců po konci bety, zpětné vazby a závěrečné odpovědi nejpozději po 12 měsících. Snímek stránky vzniká jen na vyžádání, po zakrytí polí; před odesláním ho lze odebrat.</p>
+      <p className="notice-text">Odpovědi v dotazníku vyhodnocujeme také souhrnně a anonymně (kolik testerů vybralo kterou možnost), bez jmen a bez volného textu. Záznamy používání smažeme 6 měsíců po konci bety, zpětné vazby a závěrečné odpovědi nejpozději po 12 měsících. Snímek stránky vzniká jen na vyžádání, po zakrytí polí; před odesláním ho lze odebrat.</p>
       <p className="notice-text">Zaznamenáváme to jen s tvým souhlasem. Odvolat ho můžeš kdykoli jedním klepnutím v Nastavení (přepínač „Záznam používání“) — testovat můžeš dál. Je-li ti méně než 15 let, souhlas dáváš společně s rodičem nebo zákonným zástupcem.</p>
     </div>
     <label className={`checkbox-row consent-row${showErrors && !accepted ? ' is-invalid' : ''}`}>
