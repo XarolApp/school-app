@@ -1,11 +1,11 @@
 {
-  "checked_at_utc": "2026-10-10T11:07:01.839540+00:00",
-  "commit": "3274e69a36a0b5a6ad8fc388bc639105dd8e615b",
+  "checked_at_utc": "2026-10-10T15:09:25.133489+00:00",
+  "commit": "4abf539b4cf8f41c0010b382b12de185be1d96fe",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "pending_or_changed": 386,
-    "current_full_read": 393,
-    "binary_requires_asset_check": 94,
+    "pending_or_changed": 394,
+    "current_full_read": 387,
+    "binary_requires_asset_check": 96,
     "generated_or_audit_artifact": 112,
     "removed_or_missing": 2
   },
@@ -793,7 +793,7 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "430bed3536b3e44e06929f37767e3b3ea8568d152074dea592d57f36f6694bb6",
+      "sha256": "3515e3b1315b9e3d8cfdeaf92a48387d4cb2173c9378cf35f785462f55c1e296",
       "lines": 1788,
       "status": "current_full_read",
       "matching_evidence": [
@@ -1237,6 +1237,20 @@
     {
       "path": "design/brand/ikona-512.png",
       "sha256": "b252ac8d166364620bf270e1738db8416640552418450280d39cf0e615c11c6d",
+      "lines": null,
+      "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "design/brand/logo-1024.png",
+      "sha256": "20cbd05ee1cc3b88b6221d721558320561d63b55b63a75442e06ab79f933cee2",
+      "lines": null,
+      "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "design/brand/logo-512.png",
+      "sha256": "4ca90ea715f2ac482c0c1c9a010cc6e33c5cda9e758606c7bf88504fe6d5e136",
       "lines": null,
       "status": "binary_requires_asset_check",
       "matching_evidence": []
@@ -2500,12 +2514,10 @@
     },
     {
       "path": "docs/beta-school-email-draft.md",
-      "sha256": "fad52472854862dbb8278b9b7100fe0200f267a9479975e4f8c9ef996cbff41d",
-      "lines": 87,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "e01b5383037477d21074ba17eec49c881ebe4c0dbf60b94fc0f7227a74b97908",
+      "lines": 99,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "docs/beta_testing_logic.md",
@@ -2550,12 +2562,10 @@
     },
     {
       "path": "docs/legal-decisions-2026-10-10.md",
-      "sha256": "07c98b5bd8e8b430345d82c02310c0816001bd6953bb9128ea71adc2ef43a121",
-      "lines": 119,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "1279564606339e04cb78b81c9fc1e69570323e6b50198e7d3dffe4e9fb97807b",
+      "lines": 125,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "docs/legal-research/01-withdrawal-button.md",
@@ -2904,7 +2914,7 @@
     },
     {
       "path": "frontend/src/api.js",
-      "sha256": "c4b59039d54570e4034ed14e8a09cf820c861d2ad2e9daadc32cadaa5d0f990b",
+      "sha256": "924a4935183a652fecf440dcc7204876054a01570ec11766adf4cbd1517d65e5",
       "lines": 497,
       "status": "pending_or_changed",
       "matching_evidence": []
@@ -3065,8 +3075,8 @@
     },
     {
       "path": "frontend/src/components/ConfirmEmailWaiting.jsx",
-      "sha256": "d040f3dec1d6f638edf5d8e5f9d6616d870949046951866974efc9254edcfcc4",
-      "lines": 181,
+      "sha256": "7f34cbf97f2a02999d1b268a9b2c80c095a52e50c8cb6850acf12f14b2f85508",
+      "lines": 194,
       "status": "pending_or_changed",
       "matching_evidence": []
     },
@@ -4013,12 +4023,10 @@
     },
     {
       "path": "frontend/src/pages/Legal.jsx",
-      "sha256": "f704818e347ddbd42ddcd808571581410ded101def20048448817f744957ac94",
-      "lines": 389,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "601bade2cc187ee9495d497ce427caff48d32056810db6a6dae68bce07086f94",
+      "lines": 392,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/pages/Login.jsx",
@@ -4130,12 +4138,10 @@
     },
     {
       "path": "frontend/src/pages/Settings.jsx",
-      "sha256": "d50b280d9725cd060d1573da2b230584bd29277ab71011c12c69a93ee1fba21c",
-      "lines": 1293,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "518e024574c1bf190a4b6a69e1cdae6f7fe0955d9efc26779ea54211f44327ee",
+      "lines": 1314,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/pages/SharedResults.jsx",
@@ -4722,6 +4728,13 @@
       ]
     },
     {
+      "path": "migrations/2026-10-10-beta-contributions-archive.sql",
+      "sha256": "d0a54408f71334f94c0a6f0ae7761c50d219089a9abe3bd06757f47bf3feffa8",
+      "lines": 44,
+      "status": "pending_or_changed",
+      "matching_evidence": []
+    },
+    {
       "path": "migrations/2026-10-10-tracking-switch.sql",
       "sha256": "7eb5a976b820ce1a059b792e01e9a421e9952ac5f212d8cada73bed4de6ca16b",
       "lines": 3,
@@ -4729,6 +4742,13 @@
       "matching_evidence": [
         "root-coverage.json"
       ]
+    },
+    {
+      "path": "migrations/2026-10-10-tracking-withdrawal-guard.sql",
+      "sha256": "76ff7c72e425690bdd086e3319e5f8deb7deed561206d3295fc4cd0b638ff788",
+      "lines": 80,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "package-lock.json",
@@ -5816,8 +5836,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "dcec34589068fc1ec0caa6d764488d355f32854471d0c3f529919b12fb7800d2",
-      "lines": 318,
+      "sha256": "32dc7f439e7b1df42c5b398c1d4e593df4eb802823be5638381cc835b63cbadb",
+      "lines": 320,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -5830,8 +5850,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "20e6baae18b218910c482c603d4075a2ab0cec0738b151751dbf8497291d3a20",
-      "lines": 144,
+      "sha256": "01871f2c776db03bc3178835516a71f9b3f0dba1b2973ae82a2aad7af79df555",
+      "lines": 146,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6096,7 +6116,7 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "1766cf59635382aadf79eb6874149e85191a5b3c314a7aa95fdeda850a60c4cb",
+      "sha256": "9335163849c6c36456b13eb39879c80f7b203cc9750f63bc3a163ad7c501de86",
       "lines": 7713,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
@@ -6904,7 +6924,7 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "0709ca4a82818fd46a1d3b6d5fa83ff3dfc1ec8979d496cb0bbc09af8669c146",
+      "sha256": "63156c9bbe31e99cfef398e0c6e647447c9f62c61c23fdbbedc55bc489d9a6e0",
       "lines": 5043,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
@@ -7463,8 +7483,8 @@
     },
     {
       "path": "server.js",
-      "sha256": "408e8e0b6695ae4cf7b030146a775306dd02f783a0372c6d6c8efcd2e1c7e90f",
-      "lines": 3612,
+      "sha256": "ce7707d112e68faa65b1f42d2e7a79566b3230da79976c7f474c3515acd88b90",
+      "lines": 3620,
       "status": "pending_or_changed",
       "matching_evidence": []
     },
@@ -7477,12 +7497,10 @@
     },
     {
       "path": "supabase-setup.sql",
-      "sha256": "7573e071fc0fbc4add1a2c01addd3b1ed8d55cc6a7ff98052390b65bb60ac6bb",
-      "lines": 1460,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "2f76be74518878205f2a05ce8134013d542aba9fb1871aeb5e5e863dfe8b68ac",
+      "lines": 1520,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "test-google-api.js",
@@ -7567,12 +7585,10 @@
     },
     {
       "path": "tests/beta-review-fixes.test.cjs",
-      "sha256": "1ca8717ee72888ca3e3d9f738cbce6e5a4320b0d814ce06d93c0dc6e0db64f43",
+      "sha256": "6b3f964bc9721ee981fc53f4f1f06396d02ef8e6caff8d2faf28fab485119e13",
       "lines": 63,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "tests/decision-data.test.mjs",

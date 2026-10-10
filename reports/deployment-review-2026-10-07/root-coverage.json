@@ -2128,7 +2128,7 @@
   },
   "UNFORGET.md": {
     "status": "complete",
-    "sha256": "430bed3536b3e44e06929f37767e3b3ea8568d152074dea592d57f36f6694bb6",
+    "sha256": "3515e3b1315b9e3d8cfdeaf92a48387d4cb2173c9378cf35f785462f55c1e296",
     "lines": 1788,
     "read_ranges": [
       [
@@ -2136,7 +2136,7 @@
         1788
       ]
     ],
-    "method": "Exact saved full-read baseline plus all reviewed own C44 appended lines; no peer difference in this path."
+    "method": "Complete saved a4aa7fd baseline plus full current git diff a4aa7fd..HEAD reviewed, including own C44 entry already committed by peer. Peer live-application claims are read facts, not independently certified service acceptance."
   },
   "frontend/src/api.js": {
     "sha256": "128735d3c906c00f0c212428271ba089f5b54843320eab1b18c86f7f7ba2099b",
