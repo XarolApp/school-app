@@ -120,8 +120,14 @@ async function main() {
   const force = args.includes('--force');
   const limitArg = args.indexOf('--limit');
   const limit = limitArg !== -1 ? Number(args[limitArg + 1]) : null;
+  if (limitArg !== -1 && (!Number.isSafeInteger(limit) || limit < 1)) {
+    throw new Error('--limit requires a positive integer.');
+  }
   const schoolIdArg = args.indexOf('--school-id');
   const onlySchoolId = schoolIdArg !== -1 ? args[schoolIdArg + 1] : null;
+  if (schoolIdArg !== -1 && (!onlySchoolId?.trim() || onlySchoolId.startsWith('--'))) {
+    throw new Error('--school-id requires a school id.');
+  }
 
   const { data: schools, error } = await supabase
     .from('schools')

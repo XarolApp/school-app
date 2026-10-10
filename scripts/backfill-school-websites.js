@@ -55,6 +55,9 @@ const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
 const limitArg = args.indexOf('--limit');
 const limit = limitArg !== -1 ? Number(args[limitArg + 1]) : null;
+if (limitArg !== -1 && (!Number.isSafeInteger(limit) || limit < 1)) {
+  throw new Error('--limit requires a positive integer.');
+}
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));

@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-10T08:15:20.348300+00:00",
-  "commit": "a5a31f2e37f27bc3a34095eb4cbbce0175e2b5a5",
+  "checked_at_utc": "2026-10-10T08:28:02.493923+00:00",
+  "commit": "e8a821605391863ee2d921b7c2d9de2356f91774",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "pending_or_changed": 472,
-    "current_full_read": 299,
+    "pending_or_changed": 470,
+    "current_full_read": 302,
     "binary_requires_asset_check": 85,
-    "generated_or_audit_artifact": 80,
+    "generated_or_audit_artifact": 82,
     "removed_or_missing": 2
   },
   "files": [
@@ -791,8 +791,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "aaa455fd6176536d1bf7625d31c13f9ac37e1d117131a266fd0ca8928a9a768a",
-      "lines": 1720,
+      "sha256": "565cce45a41d90610b5efa9f4dd3f61ef715e5df6a9562fa1790810886285bcc",
+      "lines": 1724,
       "status": "pending_or_changed",
       "matching_evidence": []
     },
@@ -5652,22 +5652,22 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "7b2941fbcdaeb1564ef125ce0c4c96eaed74aa726f4e71bcf6f3336f45634327",
-      "lines": 268,
+      "sha256": "68c47768965f9a70f7a29311fe2233654f7c53b8fb656cd02154a939acb4edd8",
+      "lines": 276,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "b102c77d1b7b08daa62c76d77fb683b05bcd796d076bbec777d60b370320ee8f",
-      "lines": 147,
+      "sha256": "40c023e9859320baacb0a3f721fb95d1afe60465610793696269ff8875528a95",
+      "lines": 150,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "eb72594fdfb36e852ff2a3cbd11c120acd5a3322039a26a022c3c51316c41008",
-      "lines": 125,
+      "sha256": "7d25bbbc65f6b466a9622c2b3d5b9ffb5ac107795c8f31d54910f74ee8577adb",
+      "lines": 128,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -5890,15 +5890,15 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "154228c64947c07d12e617b9b96a621a1a3a92a53f37435adfd5be5c504dcbc7",
-      "lines": 327,
+      "sha256": "0e1c74396b72d684e1f94f213bcb48b339107a91c1c533e7b4c0ce950a72be40",
+      "lines": 334,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "644f6d8cd0c0c04711ff07f8188e489ecfd9eb1b9913deb64a59e6f5561ae11d",
-      "lines": 7145,
+      "sha256": "0a5eadd2349173a928666ec4df89f18bc09c850f47283d1d0bf2e001ea66eab6",
+      "lines": 7183,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6452,8 +6452,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "2b61d05bcfb797c8a7211c75bafd15e7f307a422b5aa358de04fd9cac6cc1165",
-      "lines": 3615,
+      "sha256": "1bd01dde2646a3c1b1e6288ec06107c18af7f83782c6f50ca177418b5694fa19",
+      "lines": 3650,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6472,9 +6472,23 @@
       "matching_evidence": []
     },
     {
+      "path": "reports/deployment-review-2026-10-07/script-cli-all-tests-2026-10-10.txt",
+      "sha256": "3323c59edd0b44b941c7de3b25a40338d494b3ea536da2e660049652cd7a97aa",
+      "lines": 191,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/script-cli-verification-2026-10-10.json",
+      "sha256": "ce13788232dce317d9700b8ec95f7a6ddf3a0605469a2090d6c18f97bb5dc0a2",
+      "lines": 31,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/script-findings.md",
-      "sha256": "3f8017d0728b6e7e8c4b36f6ddb2e5f2cc3f6300e38f093081686588f1c607cb",
-      "lines": 115,
+      "sha256": "89bae2c8bbeef8ddb202d78a2d093f1442b8efd9f36ff4bea78d11c2bd0c7a36",
+      "lines": 122,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6701,8 +6715,8 @@
     },
     {
       "path": "scripts/backfill-school-websites.js",
-      "sha256": "7c637639887c672ce07669367e48ea0ad55a2d5bb913ca2d74380ff1bbdf8e1e",
-      "lines": 240,
+      "sha256": "b7f9dce8a0c14e40a646ec1be15d486906421649ea8b0c8f12771c26d03be63c",
+      "lines": 243,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -6803,8 +6817,8 @@
     },
     {
       "path": "scripts/extract-school-details.js",
-      "sha256": "252ac800dd9abc8dba558a98ad13709b5c6d63d56a0f9e546c5ffeaedf611956",
-      "lines": 1500,
+      "sha256": "553aafa286bd51267fd71aed66e2123178d1e2daaf96633177ea8caa67c8cecd",
+      "lines": 1509,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -6839,10 +6853,12 @@
     },
     {
       "path": "scripts/generate-school-proscons.js",
-      "sha256": "0a33bae7c2b657eeb4b71196717ae88207f9e4dacf5821b40a78d9fd2b24cd83",
-      "lines": 325,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "b77a16a5343f36aea1c2f8569e503478bf18364f488fc4c941c07b4ff3368d13",
+      "lines": 331,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "scripts/geocode-schools.js",
@@ -6891,8 +6907,8 @@
     },
     {
       "path": "scripts/scrape-schools-free.js",
-      "sha256": "7bb4cc0993c539ccb36a9b365e7477e7fef3881458d1adf74c4412db0241ea47",
-      "lines": 435,
+      "sha256": "7eadb2ae2fdc7ab207e44b10b719485ab73339956168696c80ae23c02a3385fa",
+      "lines": 441,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -6900,8 +6916,8 @@
     },
     {
       "path": "scripts/scrape-schools.js",
-      "sha256": "d0b859939de8bf71409f215f6b0a992b7e264614201aa257ed86fa0d762e9e50",
-      "lines": 202,
+      "sha256": "b94beda4f179b8d791e5b6103e0364aef975e55907bf1f4c8ab82361b9f48f63",
+      "lines": 208,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -7155,11 +7171,22 @@
       ]
     },
     {
+      "path": "tests/script-cli-boundaries.test.cjs",
+      "sha256": "bcdf3fae6d3516cc98e6224bb2e0a64cf46bb334b599524ed4e7367c6e4a572d",
+      "lines": 118,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
+    },
+    {
       "path": "tests/server-boundaries.test.cjs",
       "sha256": "78b1152a17e3b5a85b47726d1d109e23e4a8e04a595f7409716a5516cb196d1e",
       "lines": 1112,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "tests/social-proof.test.cjs",

@@ -1,0 +1,31 @@
+{
+  "checkedAtUtc": "2026-10-10T08:28:02.170441+00:00",
+  "sourceHashes": {
+    "scripts/generate-school-proscons.js": "b77a16a5343f36aea1c2f8569e503478bf18364f488fc4c941c07b4ff3368d13",
+    "scripts/scrape-schools.js": "b94beda4f179b8d791e5b6103e0364aef975e55907bf1f4c8ab82361b9f48f63",
+    "scripts/scrape-schools-free.js": "7eadb2ae2fdc7ab207e44b10b719485ab73339956168696c80ae23c02a3385fa",
+    "scripts/backfill-school-websites.js": "b7f9dce8a0c14e40a646ec1be15d486906421649ea8b0c8f12771c26d03be63c",
+    "scripts/extract-school-details.js": "553aafa286bd51267fd71aed66e2123178d1e2daaf96633177ea8caa67c8cecd",
+    "tests/server-boundaries.test.cjs": "78b1152a17e3b5a85b47726d1d109e23e4a8e04a595f7409716a5516cb196d1e",
+    "tests/script-cli-boundaries.test.cjs": "bcdf3fae6d3516cc98e6224bb2e0a64cf46bb334b599524ed4e7367c6e4a572d"
+  },
+  "beforeHashes": {
+    "scripts/generate-school-proscons.js": "0a33bae7c2b657eeb4b71196717ae88207f9e4dacf5821b40a78d9fd2b24cd83",
+    "scripts/scrape-schools.js": "d0b859939de8bf71409f215f6b0a992b7e264614201aa257ed86fa0d762e9e50",
+    "scripts/scrape-schools-free.js": "7bb4cc0993c539ccb36a9b365e7477e7fef3881458d1adf74c4412db0241ea47",
+    "scripts/backfill-school-websites.js": "7c637639887c672ce07669367e48ea0ad55a2d5bb913ca2d74380ff1bbdf8e1e",
+    "scripts/extract-school-details.js": "252ac800dd9abc8dba558a98ad13709b5c6d63d56a0f9e546c5ffeaedf611956",
+    "tests/server-boundaries.test.cjs": "78b1152a17e3b5a85b47726d1d109e23e4a8e04a595f7409716a5516cb196d1e"
+  },
+  "offlineCliTests": 16,
+  "rootTests": 173,
+  "allPass": true,
+  "syntaxFiles": [
+    "scripts/generate-school-proscons.js",
+    "scripts/scrape-schools.js",
+    "scripts/scrape-schools-free.js",
+    "scripts/backfill-school-websites.js",
+    "scripts/extract-school-details.js"
+  ],
+  "scope": "Actual scripts in Node VM, synthetic credentials, external calls and writes blocked. No paid/live pipeline or data-quality acceptance."
+}

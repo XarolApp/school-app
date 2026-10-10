@@ -239,8 +239,14 @@ async function main() {
   const force = args.includes('--force');
   const limitArg = args.indexOf('--limit');
   const limit = limitArg !== -1 ? Number(args[limitArg + 1]) : null;
+  if (limitArg !== -1 && (!Number.isSafeInteger(limit) || limit < 1)) {
+    throw new Error('--limit requires a positive integer.');
+  }
   const modelArg = args.indexOf('--model');
   const model = modelArg !== -1 ? args[modelArg + 1] : DEFAULT_MODEL;
+  if (modelArg !== -1 && (!model?.trim() || model.startsWith('--'))) {
+    throw new Error('--model requires a model id.');
+  }
 
   console.log(`Model: ${model}${dryRun ? ' (dry run — summary writes skipped; paid calls/usage logs still occur)' : ''}\n`);
 

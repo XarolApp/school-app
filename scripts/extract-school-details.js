@@ -1252,12 +1252,12 @@ async function runStructureMode(args) {
   const limitArg = args.indexOf('--limit');
   if (limitArg !== -1) {
     const limit = Number(args[limitArg + 1]);
-    if (!Number.isInteger(limit) || limit < 1) throw new Error('--limit must be a positive integer');
+    if (!Number.isSafeInteger(limit) || limit < 1) throw new Error('--limit must be a positive integer');
     schoolIds = schoolIds.slice(0, limit);
   }
   const modelArg = args.indexOf('--model');
   const model = modelArg === -1 ? DEFAULT_MODEL : args[modelArg + 1];
-  if (!model) throw new Error('--model requires a model name');
+  if (!model?.trim() || model.startsWith('--')) throw new Error('--model requires a model name');
 
   const [{ data: schools, error: schoolsError }, { data: rows, error: rowsError }] = await Promise.all([
     supabase.from('schools').select('id, name').in('id', allSchoolIds),
@@ -1349,11 +1349,20 @@ async function main() {
   if (args.includes('--fix-public-tuition')) return fixPublicTuition(dryRun);
   const limitArg = args.indexOf('--limit');
   const limit = limitArg !== -1 ? Number(args[limitArg + 1]) : null;
+  if (limitArg !== -1 && (!Number.isSafeInteger(limit) || limit < 1)) {
+    throw new Error('--limit requires a positive integer.');
+  }
   const schoolIdArg = args.indexOf('--school-id');
   const onlySchoolId = schoolIdArg !== -1 ? args[schoolIdArg + 1] : null;
+  if (schoolIdArg !== -1 && (!onlySchoolId?.trim() || onlySchoolId.startsWith('--'))) {
+    throw new Error('--school-id requires one or more school ids.');
+  }
   const onlySchoolIds = onlySchoolId ? onlySchoolId.split(',').map((id) => id.trim()) : null;
   const modelArg = args.indexOf('--model');
   const model = modelArg !== -1 ? args[modelArg + 1] : DEFAULT_MODEL;
+  if (modelArg !== -1 && (!model?.trim() || model.startsWith('--'))) {
+    throw new Error('--model requires a model id.');
+  }
 
   const manifest = loadManifest();
   let schoolIds = Object.keys(manifest);

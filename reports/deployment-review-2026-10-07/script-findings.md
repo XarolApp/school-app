@@ -113,3 +113,10 @@ regressions pass for empty success, errors, invalid JSON and valid/blank text. N
 Google call was made. The separate `test-google-simple.js` still lacks a reliable
 failure exit/result contract; neither probe verifies extraction tools, quality,
 costs or provider terms. Both are manual paid-call diagnostics, outside `npm test`.
+
+
+## S14 — malformed pipeline CLI scopes fixed
+
+Five scripts converted `--limit` using Number without checking it. NaN/zero bypassed the truthiness slice and selected the whole target list; negative limits selected nearly all entries. The normal extract/scrape school selector likewise treated an explicitly missing value as no restriction. These are confirmed command-scope defects, independent of which live records happen to need work. generate-school-proscons, extract-school-details, scrape-schools, scrape-schools-free and backfill-school-websites now reject invalid limits; supported school/model value flags reject missing/blank/next-flag values before work. Structure mode already rejected malformed/negative limits and now consistently requires a safe integer/valid model value. Valid and omitted options retain the existing processing behavior.
+
+`tests/script-cli-boundaries.test.cjs` evaluates each actual full script with its terminal main invocation controlled, synthetic credentials and blocked service/filesystem-write dependencies. Sixteen tests cover missing/malformed/negative/zero/fractional/infinite/unsafe/flag limits, missing/blank/flag school/model values, structure mode and positive/omitted limits reaching the blocked work boundary. All 173 root tests and five script syntax checks pass. No production pipeline, query, model, scrape or write was executed. This does not close S11 paid dry-run semantics or S12 cache/input identity, source-year coverage, model/prompt refresh and failure-exit behavior. See [verification](script-cli-verification-2026-10-10.json) and [test output](script-cli-all-tests-2026-10-10.txt).

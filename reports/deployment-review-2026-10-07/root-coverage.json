@@ -1273,18 +1273,19 @@
     "method": "Full source read across recorded continuation turns, including missing middleware/brainstorm ranges and complete authored diffs. Read means inspected, not defect-free or runtime-approved."
   },
   "scripts/backfill-school-websites.js": {
-    "sha256": "7c637639887c672ce07669367e48ea0ad55a2d5bb913ca2d74380ff1bbdf8e1e",
-    "lines": 240,
+    "sha256_before": "7c637639887c672ce07669367e48ea0ad55a2d5bb913ca2d74380ff1bbdf8e1e",
+    "sha256": "b7f9dce8a0c14e40a646ec1be15d486906421649ea8b0c8f12771c26d03be63c",
+    "lines": 243,
     "read_ranges": [
       [
         1,
-        240
+        243
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:30:59.015862+00:00",
-    "method": "Full source read across recorded continuation turns, including missing middleware/brainstorm ranges and complete authored diffs. Read means inspected, not defect-free or runtime-approved."
+    "checked_at_utc": "2026-10-10T08:28:02.170441+00:00",
+    "method": "Generator all 1–325 baseline lines plus full own diff; server-boundary tests all 1–1112 current lines with repaired overlapping ranges; other four exact full-read baselines plus full own parser-only diff; new test fully written/read. Offline/source coverage does not prove live payment/SQL/pipeline acceptance."
   },
   "frontend/middleware.js": {
     "sha256": "c0477e0bc0e0e8b7aba0deb566ef9f78fdffe12e54c431e7d15397cf275e47b0",
@@ -1469,32 +1470,34 @@
     "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
   },
   "scripts/scrape-schools.js": {
-    "sha256": "d0b859939de8bf71409f215f6b0a992b7e264614201aa257ed86fa0d762e9e50",
-    "lines": 202,
+    "sha256_before": "d0b859939de8bf71409f215f6b0a992b7e264614201aa257ed86fa0d762e9e50",
+    "sha256": "b94beda4f179b8d791e5b6103e0364aef975e55907bf1f4c8ab82361b9f48f63",
+    "lines": 208,
     "read_ranges": [
       [
         1,
-        202
+        208
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:40:57.645865+00:00",
-    "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
+    "checked_at_utc": "2026-10-10T08:28:02.170441+00:00",
+    "method": "Generator all 1–325 baseline lines plus full own diff; server-boundary tests all 1–1112 current lines with repaired overlapping ranges; other four exact full-read baselines plus full own parser-only diff; new test fully written/read. Offline/source coverage does not prove live payment/SQL/pipeline acceptance."
   },
   "scripts/scrape-schools-free.js": {
-    "sha256": "7bb4cc0993c539ccb36a9b365e7477e7fef3881458d1adf74c4412db0241ea47",
-    "lines": 435,
+    "sha256_before": "7bb4cc0993c539ccb36a9b365e7477e7fef3881458d1adf74c4412db0241ea47",
+    "sha256": "7eadb2ae2fdc7ab207e44b10b719485ab73339956168696c80ae23c02a3385fa",
+    "lines": 441,
     "read_ranges": [
       [
         1,
-        435
+        441
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:40:57.646226+00:00",
-    "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
+    "checked_at_utc": "2026-10-10T08:28:02.170441+00:00",
+    "method": "Generator all 1–325 baseline lines plus full own diff; server-boundary tests all 1–1112 current lines with repaired overlapping ranges; other four exact full-read baselines plus full own parser-only diff; new test fully written/read. Offline/source coverage does not prove live payment/SQL/pipeline acceptance."
   },
   "scripts/beta-preview/supabaseClient.js": {
     "sha256": "36f57373f1961fdc41d9524231df37d597af96802a05a60916dbd0c0c8f3a468",
@@ -1539,18 +1542,19 @@
     "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
   },
   "scripts/extract-school-details.js": {
-    "sha256": "252ac800dd9abc8dba558a98ad13709b5c6d63d56a0f9e546c5ffeaedf611956",
-    "lines": 1500,
+    "sha256_before": "252ac800dd9abc8dba558a98ad13709b5c6d63d56a0f9e546c5ffeaedf611956",
+    "sha256": "553aafa286bd51267fd71aed66e2123178d1e2daaf96633177ea8caa67c8cecd",
+    "lines": 1509,
     "read_ranges": [
       [
         1,
-        1500
+        1509
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T23:55:00.162646+00:00",
-    "method": "Full stable current source/document read plus complete reviewed own diff. server.js/extractor original hashes matched previous complete current root reads; only comment patches. Source/settings/runtime, real billing, SQL/device/print/contrast acceptance not inferred."
+    "checked_at_utc": "2026-10-10T08:28:02.170441+00:00",
+    "method": "Generator all 1–325 baseline lines plus full own diff; server-boundary tests all 1–1112 current lines with repaired overlapping ranges; other four exact full-read baselines plus full own parser-only diff; new test fully written/read. Offline/source coverage does not prove live payment/SQL/pipeline acceptance."
   },
   "scripts/build-district-map.js": {
     "sha256": "84762836f3b81891e79fcb8721c1b183c40b126b5443f507b49a2effa8a8e54b",
@@ -1665,18 +1669,19 @@
     "method": "Full source read plus complete current authored diff review. Docs reconciled to source/read-only production evidence; read does not imply acceptance."
   },
   "scripts/generate-school-proscons.js": {
-    "sha256": "f76d24243f6c0f2543637b802998c5f06e8d23e40c22ee91c0e33e350ae170f6",
-    "lines": 311,
+    "sha256_before": "0a33bae7c2b657eeb4b71196717ae88207f9e4dacf5821b40a78d9fd2b24cd83",
+    "sha256": "b77a16a5343f36aea1c2f8569e503478bf18364f488fc4c941c07b4ff3368d13",
+    "lines": 331,
     "read_ranges": [
       [
         1,
-        311
+        331
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:52:21.686184+00:00",
-    "method": "Full source read plus complete current authored diff review. Docs reconciled to source/read-only production evidence; read does not imply acceptance."
+    "checked_at_utc": "2026-10-10T08:28:02.170441+00:00",
+    "method": "Generator all 1–325 baseline lines plus full own diff; server-boundary tests all 1–1112 current lines with repaired overlapping ranges; other four exact full-read baselines plus full own parser-only diff; new test fully written/read. Offline/source coverage does not prove live payment/SQL/pipeline acceptance."
   },
   "lib/aiUsage.js": {
     "sha256": "273343ccfd22e1c5a4300a4d4050503a7d34df3a84443bd701cd724c68dd3998",
@@ -3611,5 +3616,35 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-10T08:15:20.049200+00:00",
     "method": "Full baseline read in bounded ranges (012 truncation repaired with 45–125 reread) plus complete own documentation diff. Historical measurements retained as dated; current overrides verified against actual source and contrast evidence. No hosted/payment/SQL/browser-wide compliance inferred."
+  },
+  "tests/server-boundaries.test.cjs": {
+    "sha256_before": "78b1152a17e3b5a85b47726d1d109e23e4a8e04a595f7409716a5516cb196d1e",
+    "sha256": "78b1152a17e3b5a85b47726d1d109e23e4a8e04a595f7409716a5516cb196d1e",
+    "lines": 1112,
+    "read_ranges": [
+      [
+        1,
+        1112
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T08:28:02.170441+00:00",
+    "method": "Generator all 1–325 baseline lines plus full own diff; server-boundary tests all 1–1112 current lines with repaired overlapping ranges; other four exact full-read baselines plus full own parser-only diff; new test fully written/read. Offline/source coverage does not prove live payment/SQL/pipeline acceptance."
+  },
+  "tests/script-cli-boundaries.test.cjs": {
+    "sha256_before": null,
+    "sha256": "bcdf3fae6d3516cc98e6224bb2e0a64cf46bb334b599524ed4e7367c6e4a572d",
+    "lines": 118,
+    "read_ranges": [
+      [
+        1,
+        118
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T08:28:02.170441+00:00",
+    "method": "Generator all 1–325 baseline lines plus full own diff; server-boundary tests all 1–1112 current lines with repaired overlapping ranges; other four exact full-read baselines plus full own parser-only diff; new test fully written/read. Offline/source coverage does not prove live payment/SQL/pipeline acceptance."
   }
 }
