@@ -95,15 +95,15 @@ and include children's data, screenshots and map location in a documented assess
 
 Facts the legal pages state as settled that only the founder can confirm in dashboards
 (write the date next to each when done):
-- [ ] Controller: Václav Kadlec, Na Lysinách 34, 147 00 Praha, natural person, not a VAT
+- [x] (founder, 2026-10-10) Controller: Václav Kadlec, Na Lysinách 34, 147 00 Praha, natural person, not a VAT
       payer, e-mail info@stredninamiru.cz is monitored. Václav agrees to be named.
-- [ ] Supabase project region is Ireland (eu-west-1): Supabase → Project Settings → General.
-- [ ] Brevo account (sends confirmation and reset e-mails) is registered to the operator.
+- [x] (founder, 2026-10-10: eu-west-1) Supabase project region is Ireland (eu-west-1): Supabase → Project Settings → General.
+- [ ] **Not yet — founder confirmed 2026-10-10 the account is in Vojtěch Kadlec's name.** Accepted for the free beta; must move before real payments. Brevo account (sends confirmation and reset e-mails) is registered to the operator.
       Today it is in the founder's own name — see the UNFORGET Brevo item.
-- [ ] OpenRouter: Settings → Privacy: prompt logging / training off for this key, or the
+- [~] (founder screenshot, 2026-10-10) All four data-training toggles are off (paid/free training endpoints, prompt-publishing endpoints, 1% data discount). The separate input/output logging setting was not in the screenshot — still to confirm. OpenRouter: Settings → Privacy: prompt logging / training off for this key, or the
       limits are acceptable. The AI receives only the questionnaire's multiple-choice
       answers (never free text, points or name) plus the grammatical form for addressing.
-- [ ] Stripe stays in test mode; no live keys during the beta.
+- [x] (founder, 2026-10-10) Stripe stays in test mode; no live keys during the beta.
 
 ## Placeholder check (privacy policy and terms)
 

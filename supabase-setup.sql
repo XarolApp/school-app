@@ -1034,7 +1034,7 @@ begin
   if p_user_id is not null then
     perform 1 from public.users where id = p_user_id and subscription_status = 'beta' for update;
     if not found then raise exception 'Beta account required.' using errcode = '42501'; end if;
-    select p.checklist into v_checklist from public.beta_profile p where p.user_id = p_user_id and p.consent_tracking_at is not null for update;
+    select p.checklist into v_checklist from public.beta_profile p where p.user_id = p_user_id and p.consent_tracking_at is not null and p.tracking_paused_at is null for update;
     if not found then raise exception 'Beta profile missing.' using errcode = '42501'; end if;
     v_checklist := coalesce(v_checklist, '{}'::jsonb);
     if p_join then
@@ -1250,6 +1250,28 @@ create table if not exists public.beta_rankings (
 alter table public.beta_rankings enable row level security;
 create index if not exists beta_rankings_source_created_idx on public.beta_rankings(source,created_at);
 -- No browser policy. Server validates tester/notice and all ordered IDs.
+-- Withdrawal guard (C43): once tracking_paused_at is set, no usage row for that
+-- account can be written, even by a request that passed the server's check just
+-- before the switch. The share lock waits for an in-flight switch update, so a
+-- row either lands before it (and the switch's delete removes it) or is dropped.
+create or replace function public.beta_drop_paused_usage() returns trigger
+language plpgsql security definer set search_path = public, pg_temp as $$
+begin
+  if new.user_id is null then return new; end if;
+  perform 1 from public.beta_profile p
+    where p.user_id = new.user_id and p.consent_tracking_at is not null and p.tracking_paused_at is null
+    for share;
+  if not found then return null; end if;
+  return new;
+end;
+$$;
+revoke all on function public.beta_drop_paused_usage() from public, anon, authenticated;
+drop trigger if exists beta_events_paused_guard on public.beta_events;
+create trigger beta_events_paused_guard before insert or update of user_id on public.beta_events
+  for each row execute function public.beta_drop_paused_usage();
+drop trigger if exists beta_rankings_paused_guard on public.beta_rankings;
+create trigger beta_rankings_paused_guard before insert or update on public.beta_rankings
+  for each row execute function public.beta_drop_paused_usage();
 -- END BETA ANALYTICS BLOCK
 
 
