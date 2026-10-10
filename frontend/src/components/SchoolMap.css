@@ -185,6 +185,31 @@
   background: var(--surface-card);
 }
 
+.sm-panel-show {
+  position: absolute;
+  left: var(--space-md);
+  top: var(--space-md);
+  z-index: 1000;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: var(--shadow);
+}
+.sm-panel-hide {
+  appearance: none;
+  border: 0;
+  background: none;
+  align-self: flex-end;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 4px;
+  font: inherit;
+  font-size: var(--fs-caption);
+  color: var(--text-faint);
+  cursor: pointer;
+}
+
 .sm-privacy-note {
   color: var(--text-faint);
 }

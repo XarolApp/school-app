@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Maximize2, Minimize2 } from 'lucide-react';
+import { Maximize2, Minimize2, MapPin, ChevronUp } from 'lucide-react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import StatInfo from './StatInfo';
@@ -87,6 +87,8 @@ function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
   onSelectRef.current = onSelect;
 
   const [isFullscreen, setIsFullscreen] = useState(false);
+  // Phones start with the panel folded: open it covers half the map.
+  const [panelOpen, setPanelOpen] = useState(() => !window.matchMedia?.('(max-width: 860px)').matches);
 
   // Home location lives ONLY in this component's memory for this page view —
   // never written to localStorage, sessionStorage or the backend. Reloading
@@ -279,7 +281,15 @@ function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
         {isFullscreen ? <Minimize2 size={16} aria-hidden="true" /> : <Maximize2 size={16} aria-hidden="true" />}
       </button>
 
+      {!panelOpen ? (
+        <button type="button" className="sm-locate-btn sm-panel-show" onClick={() => setPanelOpen(true)} aria-expanded="false">
+          <MapPin size={14} aria-hidden="true" /> {homePos ? `Do ${radiusKm} km` : 'Hledat podle adresy'}
+        </button>
+      ) : (
       <div className="sm-locate-panel">
+        <button type="button" className="sm-panel-hide" onClick={() => setPanelOpen(false)} aria-expanded="true">
+          <ChevronUp size={14} aria-hidden="true" /> Skrýt vyhledávání
+        </button>
         <form className="sm-address-form" onSubmit={searchAddress}>
           <input
             type="text"
@@ -322,6 +332,7 @@ function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
           </div>
         )}
       </div>
+      )}
 
       {selectedRow && (
         <div className="sm-card">
