@@ -1,0 +1,746 @@
+{
+  "generated_at": "2026-10-10T21:04:05.652Z",
+  "visible_schools": 194,
+  "hidden_schools": 23,
+  "partially_affected": 58,
+  "hidden": [
+    {
+      "id": 80,
+      "name": "Arcibiskupské gymnázium",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 0
+    },
+    {
+      "id": 64,
+      "name": "Gymnázium a Hudební škola hlavního města Prahy, základní umělecká škola",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 0
+    },
+    {
+      "id": 95,
+      "name": "Gymnázium ALTIS s.r.o.",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 0
+    },
+    {
+      "id": 136,
+      "name": "Gymnázium J. Seiferta o.p.s.",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 0
+    },
+    {
+      "id": 109,
+      "name": "Gymnázium Jaroslava Heyrovského, Praha 5, Mezi Školami 2475",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 0
+    },
+    {
+      "id": 47,
+      "name": "Gymnázium Jiřího Gutha-Jarkovského, Praha 1, Truhlářská 22",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 0
+    },
+    {
+      "id": 231,
+      "name": "Gymnázium Na Pražačce, Praha 3, Nad Ohradou 23",
+      "hidden_types": [
+        "Gymnázia 6letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 0
+    },
+    {
+      "id": 212,
+      "name": "Gymnázium Přírodní škola, z.ú.",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 0
+    },
+    {
+      "id": 230,
+      "name": "Gymnázium, Praha 4, Budějovická 680",
+      "hidden_types": [
+        "Gymnázia 6letá",
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 2,
+      "visible_rows": 0
+    },
+    {
+      "id": 114,
+      "name": "Gymnázium, Praha 5, Nad Kavalírkou 1",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 0
+    },
+    {
+      "id": 130,
+      "name": "Gymnázium, Praha 8, Ústavní 400",
+      "hidden_types": [
+        "Gymnázia 6letá",
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 2,
+      "visible_rows": 0
+    },
+    {
+      "id": 139,
+      "name": "Gymnázium, Praha 9, Chodovická 2250",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 0
+    },
+    {
+      "id": 150,
+      "name": "Křesťanské gymnázium",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 0
+    },
+    {
+      "id": 186,
+      "name": "Lauderova mateřská škola, základní škola a gymnázium při Židovské obci v Praze",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 0
+    },
+    {
+      "id": 69,
+      "name": "Malostranské gymnázium, Praha 1, Josefská 7",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 0
+    },
+    {
+      "id": 113,
+      "name": "Mensa gymnázium, o.p.s.",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 0
+    },
+    {
+      "id": 187,
+      "name": "Německá škola v Praze s.r.o. - zahraniční škola, základní škola a gymnázium",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 0
+    },
+    {
+      "id": 111,
+      "name": "Rakouské gymnázium v Praze o.p.s.",
+      "hidden_types": [
+        "Gymnázia 6letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 0
+    },
+    {
+      "id": 148,
+      "name": "Soukromé gymnázium ARCUS PRAHA 9, s.r.o.",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 0
+    },
+    {
+      "id": 123,
+      "name": "Taneční centrum Praha - konzervatoř, z. ú.",
+      "hidden_types": [
+        "Konzervatoře 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 0
+    },
+    {
+      "id": 70,
+      "name": "Taneční konzervatoř hlavního města Prahy, Praha 1, Křižovnická 7",
+      "hidden_types": [
+        "Konzervatoře 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 0
+    },
+    {
+      "id": 42,
+      "name": "The English College in Prague – Anglické gymnázium, o. p. s.",
+      "hidden_types": [
+        "Gymnázia 6letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 0
+    },
+    {
+      "id": 127,
+      "name": "Trojské gymnázium s.r.o.",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 0
+    }
+  ],
+  "partial": [
+    {
+      "id": 14,
+      "name": "Akademie řemesel Praha – Střední škola technická",
+      "hidden_types": [
+        "Nástavby"
+      ],
+      "hidden_obory": 5,
+      "visible_rows": 74
+    },
+    {
+      "id": 15,
+      "name": "Akademie systémové gastronomie – střední škola s. r. o.",
+      "hidden_types": [
+        "Nástavby"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 3
+    },
+    {
+      "id": 30,
+      "name": "Církevní střední škola Jana Boska",
+      "hidden_types": [
+        "Nástavby"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 6
+    },
+    {
+      "id": 83,
+      "name": "Českoslovanská akademie obchodní, střední odborná škola, Praha 2, Resslova 5",
+      "hidden_types": [
+        "Nástavby"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 6
+    },
+    {
+      "id": 145,
+      "name": "Euroškola Praha střední odborná škola s.r.o.",
+      "hidden_types": [
+        "Nástavby"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 3
+    },
+    {
+      "id": 34,
+      "name": "Gymnázium bratří Čapků a První české soukromé střední odborné učiliště s. r. o.",
+      "hidden_types": [
+        "Nástavby"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 20
+    },
+    {
+      "id": 52,
+      "name": "Gymnázium Čakovice, Praha 9, nám. 25. března 100",
+      "hidden_types": [
+        "Gymnázia 6letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 4
+    },
+    {
+      "id": 82,
+      "name": "Gymnázium Duhovka s.r.o.",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 3
+    },
+    {
+      "id": 92,
+      "name": "Gymnázium Elišky Krásnohorské, Praha 4 - Michle, Ohradní 55",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 3
+    },
+    {
+      "id": 96,
+      "name": "Gymnázium Evolution, s.r.o.",
+      "hidden_types": [
+        "Gymnázia 6letá",
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 2,
+      "visible_rows": 3
+    },
+    {
+      "id": 108,
+      "name": "Gymnázium Christiana Dopplera",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 3
+    },
+    {
+      "id": 120,
+      "name": "Gymnázium Jana Keplera, Praha 6, Parléřova 2",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 3
+    },
+    {
+      "id": 68,
+      "name": "Gymnázium Jana Nerudy, škola hlavního města Prahy, Praha 1, Hellichova 3",
+      "hidden_types": [
+        "Gymnázia 6letá"
+      ],
+      "hidden_obory": 2,
+      "visible_rows": 3
+    },
+    {
+      "id": 87,
+      "name": "Gymnázium Karla Sladkovského, Praha 3, Sladkovského náměstí 8",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 3
+    },
+    {
+      "id": 201,
+      "name": "Gymnázium Kodaňská a Střední odborná škola, a.s.",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 3
+    },
+    {
+      "id": 194,
+      "name": "Gymnázium mezinárodních a veřejných vztahů Praha s.r.o.",
+      "hidden_types": [
+        "Gymnázia 6letá",
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 2,
+      "visible_rows": 2
+    },
+    {
+      "id": 97,
+      "name": "Gymnázium Opatov, Praha 4, Konstantinova 1500",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 3
+    },
+    {
+      "id": 107,
+      "name": "Gymnázium Oty Pavla, Praha 5, Loučanská 520",
+      "hidden_types": [
+        "Gymnázia 6letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 5
+    },
+    {
+      "id": 77,
+      "name": "Gymnázium prof. Jana Patočky, Praha 1, Jindřišská 36",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 3
+    },
+    {
+      "id": 205,
+      "name": "Gymnázium Thomase Manna, z. ú.",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 3
+    },
+    {
+      "id": 155,
+      "name": "Gymnázium, Praha 10, Omská 1300",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 3
+    },
+    {
+      "id": 48,
+      "name": "Gymnázium, Praha 10, Voděradská 2",
+      "hidden_types": [
+        "Gymnázia 6letá",
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 2,
+      "visible_rows": 3
+    },
+    {
+      "id": 229,
+      "name": "Gymnázium, Praha 4, Na Vítězné pláni 1160",
+      "hidden_types": [
+        "Gymnázia 6letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 3
+    },
+    {
+      "id": 91,
+      "name": "Gymnázium, Praha 4, Písnická 760",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 3
+    },
+    {
+      "id": 94,
+      "name": "Gymnázium, Praha 4, Postupická 3150",
+      "hidden_types": [
+        "Gymnázia 6letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 3
+    },
+    {
+      "id": 122,
+      "name": "Gymnázium, Praha 6, Nad Alejí 1952",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 3
+    },
+    {
+      "id": 184,
+      "name": "Gymnázium, Praha 7, Nad Štolou 1",
+      "hidden_types": [
+        "Gymnázia 6letá",
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 2,
+      "visible_rows": 3
+    },
+    {
+      "id": 137,
+      "name": "Gymnázium, Praha 9, Českolipská 373",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 3
+    },
+    {
+      "id": 140,
+      "name": "Gymnázium, Praha 9, Litoměřická 726",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 3
+    },
+    {
+      "id": 144,
+      "name": "Gymnázium, Praha 9, Špitálská 2",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 3
+    },
+    {
+      "id": 117,
+      "name": "Gymnázium, střední odborná škola a Pražská taneční konzervatoř, s.r.o.",
+      "hidden_types": [
+        "Konzervatoře 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 10
+    },
+    {
+      "id": 100,
+      "name": "Klasické gymnázium Modřany a základní škola, s.r.o.",
+      "hidden_types": [
+        "Gymnázia 6letá",
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 2,
+      "visible_rows": 3
+    },
+    {
+      "id": 133,
+      "name": "Královská střední škola, s.r.o.",
+      "hidden_types": [
+        "Nástavby"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 10
+    },
+    {
+      "id": 191,
+      "name": "Královské gymnázium Petrovice s.r.o.",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 3
+    },
+    {
+      "id": 102,
+      "name": "Metropolitní odborná umělecká střední škola Praha 4 s.r.o.",
+      "hidden_types": [
+        "Nástavby"
+      ],
+      "hidden_obory": 3,
+      "visible_rows": 11
+    },
+    {
+      "id": 132,
+      "name": "PORG - gymnázium, základní škola a mateřská škola, o.p.s.",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 3
+    },
+    {
+      "id": 152,
+      "name": "Pražské humanitní gymnázium, školská právnická osoba",
+      "hidden_types": [
+        "Gymnázia 8letá"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 3
+    },
+    {
+      "id": 134,
+      "name": "Soukromá střední škola gastronomie s.r.o.",
+      "hidden_types": [
+        "Nástavby"
+      ],
+      "hidden_obory": 2,
+      "visible_rows": 6
+    },
+    {
+      "id": 180,
+      "name": "Střední odborná škola - Centrum odborné přípravy a Gymnázium",
+      "hidden_types": [
+        "Nástavby"
+      ],
+      "hidden_obory": 2,
+      "visible_rows": 52
+    },
+    {
+      "id": 147,
+      "name": "Střední odborná škola a Střední odborné učiliště, Praha - Čakovice",
+      "hidden_types": [
+        "Nástavby"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 18
+    },
+    {
+      "id": 11,
+      "name": "Střední odborná škola automobilní, informatiky a Gymnázium",
+      "hidden_types": [
+        "Nástavby"
+      ],
+      "hidden_obory": 2,
+      "visible_rows": 27
+    },
+    {
+      "id": 141,
+      "name": "Střední odborná škola Jarov",
+      "hidden_types": [
+        "Nástavby"
+      ],
+      "hidden_obory": 4,
+      "visible_rows": 90
+    },
+    {
+      "id": 146,
+      "name": "Střední odborná škola podnikatelská PROFIT, spol. s r.o.",
+      "hidden_types": [
+        "Nástavby"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 6
+    },
+    {
+      "id": 12,
+      "name": "Střední odborná škola uměleckořemeslná s. r. o.",
+      "hidden_types": [
+        "Nástavby"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 31
+    },
+    {
+      "id": 54,
+      "name": "Střední odborné učiliště kadeřnické, Praha 8, Karlínské náměstí 8/225",
+      "hidden_types": [
+        "Nástavby"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 3
+    },
+    {
+      "id": 116,
+      "name": "Střední průmyslová škola dopravní, a.s.",
+      "hidden_types": [
+        "Nástavby"
+      ],
+      "hidden_obory": 3,
+      "visible_rows": 43
+    },
+    {
+      "id": 169,
+      "name": "Střední škola a Mateřská škola Aloyse Klara",
+      "hidden_types": [
+        "Nástavby"
+      ],
+      "hidden_obory": 2,
+      "visible_rows": 27
+    },
+    {
+      "id": 40,
+      "name": "Střední škola a vyšší odborná škola umělecká a řemeslná",
+      "hidden_types": [
+        "Nástavby"
+      ],
+      "hidden_obory": 3,
+      "visible_rows": 42
+    },
+    {
+      "id": 63,
+      "name": "Střední škola designu a umění, knižní kultury a ekonomiky Náhorní",
+      "hidden_types": [
+        "Nástavby"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 21
+    },
+    {
+      "id": 20,
+      "name": "Střední škola dostihového sportu a jezdectví",
+      "hidden_types": [
+        "Nástavby"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 7
+    },
+    {
+      "id": 98,
+      "name": "Střední škola gastronomická a hotelová s.r.o.",
+      "hidden_types": [
+        "Nástavby"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 27
+    },
+    {
+      "id": 154,
+      "name": "Střední škola gastronomie",
+      "hidden_types": [
+        "Nástavby"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 12
+    },
+    {
+      "id": 124,
+      "name": "Střední škola kosmetiky a hotelnictví BEAN, s.r.o.",
+      "hidden_types": [
+        "Nástavby"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 6
+    },
+    {
+      "id": 58,
+      "name": "Střední škola obchodní",
+      "hidden_types": [
+        "Nástavby"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 12
+    },
+    {
+      "id": 21,
+      "name": "Střední škola podnikání a gastronomie",
+      "hidden_types": [
+        "Nástavby"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 30
+    },
+    {
+      "id": 135,
+      "name": "TRIVIS - Střední škola veřejnoprávní a Vyšší odborná škola prevence kriminality a krizového řízení Praha, s.r.o.",
+      "hidden_types": [
+        "Nástavby"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 3
+    },
+    {
+      "id": 43,
+      "name": "Vyšší odborná škola informačních studií a Střední škola elektrotechniky, multimédií a informatiky",
+      "hidden_types": [
+        "Nástavby"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 16
+    },
+    {
+      "id": 193,
+      "name": "Vyšší policejní škola a Střední policejní škola Ministerstva vnitra v Praze",
+      "hidden_types": [
+        "Nástavby"
+      ],
+      "hidden_obory": 1,
+      "visible_rows": 6
+    }
+  ]
+}

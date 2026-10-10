@@ -137,7 +137,8 @@ function QuizQuestion({ step }) {
   const answered = Array.isArray(value) ? value.length > 0 : Boolean(value);
 
   const selectSingle = (optionValue) => {
-    setAnswer(question.key, optionValue);
+    // Tapping the chosen option again deselects it.
+    setAnswer(question.key, value === optionValue ? '' : optionValue);
     // No auto-advance: an accidental tap that skips a screen is far more
     // annoying on a phone than one extra tap on "Pokračovat".
   };
