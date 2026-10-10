@@ -862,7 +862,7 @@ function Questionnaire() {
                           key={opt.value}
                           className={`qz-option${answers[q.id] === opt.value ? ' is-on' : ''}`}
                           aria-pressed={answers[q.id] === opt.value}
-                          onClick={() => setSingle(q.id, answers[q.id] === opt.value ? '' : opt.value)}
+                          onClick={() => setSingle(q.id, q.optional && answers[q.id] === opt.value ? '' : opt.value)}
                         >
                           {opt.label}
                         </button>
