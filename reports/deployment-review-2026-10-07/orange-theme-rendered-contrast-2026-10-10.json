@@ -1,0 +1,22 @@
+{
+  "observedAt": "2026-10-10T08:11:09.710Z",
+  "fixture": "Loopback actual BetaInstructions and repository theme helper/tokens/CSS; services simulated.",
+  "backgroundImage": "none",
+  "color": "rgb(173, 79, 42)",
+  "containerBackground": "rgb(246, 227, 214)",
+  "containerOpacity": "1",
+  "fontSize": "16px",
+  "fontWeight": "600",
+  "opacity": "1",
+  "ownBackground": "rgba(0, 0, 0, 0)",
+  "palette": "terakota",
+  "rect": {
+    "height": 24.796875,
+    "width": 32.96875,
+    "x": 461.2265625,
+    "y": 204.90625
+  },
+  "text": "0 z 8",
+  "url": "http://127.0.0.1:5197/?view=guide",
+  "theme": "light"
+}

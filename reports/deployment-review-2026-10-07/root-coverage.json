@@ -3536,5 +3536,80 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-09T23:55:00.161856+00:00",
     "method": "Full stable current source/document read plus complete reviewed own diff. server.js/extractor original hashes matched previous complete current root reads; only comment patches. Source/settings/runtime, real billing, SQL/device/print/contrast acceptance not inferred."
+  },
+  "plans/012-ui-system-consolidation.md": {
+    "sha256_before": "840edd5073d415ad8c943678034e09c5259b6cb9486551e4b84668c9d8bbf2da",
+    "sha256": "da14f5cb4a1399a4aa70e5479b3827ffe3a50f2a89547f3c8e88a4f4b8587d84",
+    "lines": 185,
+    "read_ranges": [
+      [
+        1,
+        185
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T08:15:20.049200+00:00",
+    "method": "Full baseline read in bounded ranges (012 truncation repaired with 45–125 reread) plus complete own documentation diff. Historical measurements retained as dated; current overrides verified against actual source and contrast evidence. No hosted/payment/SQL/browser-wide compliance inferred."
+  },
+  "plans/013-skoly-calm-list.md": {
+    "sha256_before": "4e94b5b3205ef134e202e587656f18f0c8d80cf4b8d63620564a730f98fc18ac",
+    "sha256": "f5d54ca1b5d11e3609877ef58f27cd2719903d8c8b16f8063b802ec7cf3d5f42",
+    "lines": 609,
+    "read_ranges": [
+      [
+        1,
+        609
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T08:15:20.049200+00:00",
+    "method": "Full baseline read in bounded ranges (012 truncation repaired with 45–125 reread) plus complete own documentation diff. Historical measurements retained as dated; current overrides verified against actual source and contrast evidence. No hosted/payment/SQL/browser-wide compliance inferred."
+  },
+  "plans/014-colour-themes.md": {
+    "sha256_before": "e605bdd990af52b76e19793f9e32917b4eaf920b480da91ae8f27dde32ca3d52",
+    "sha256": "076f9d40a44bf6bc55b102284479252272ef1089650c222e3407070741a2309f",
+    "lines": 346,
+    "read_ranges": [
+      [
+        1,
+        346
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T08:15:20.049200+00:00",
+    "method": "Full baseline read in bounded ranges (012 truncation repaired with 45–125 reread) plus complete own documentation diff. Historical measurements retained as dated; current overrides verified against actual source and contrast evidence. No hosted/payment/SQL/browser-wide compliance inferred."
+  },
+  "plans/015-desktop-colour.md": {
+    "sha256_before": "cb5961fdaac4325aee95e6df1abc5a9fc436423325859846252f1f8807c95baf",
+    "sha256": "30773d8493a35ed2d7e10f8bc738dc1f4f917b16107d348ef338ddc0182bc8e0",
+    "lines": 303,
+    "read_ranges": [
+      [
+        1,
+        303
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T08:15:20.049200+00:00",
+    "method": "Full baseline read in bounded ranges (012 truncation repaired with 45–125 reread) plus complete own documentation diff. Historical measurements retained as dated; current overrides verified against actual source and contrast evidence. No hosted/payment/SQL/browser-wide compliance inferred."
+  },
+  "plans/017-questionnaire-expansion-and-weights.md": {
+    "sha256_before": "c12dbde9c4e9fd45b3aa326b836003ee2e925df5caca6cc53d36d73023c9bfce",
+    "sha256": "99fe79a944cdc10c57ff28cd14ada17bea3fd7c447405be41abb4ce810f41f01",
+    "lines": 347,
+    "read_ranges": [
+      [
+        1,
+        347
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T08:15:20.049200+00:00",
+    "method": "Full baseline read in bounded ranges (012 truncation repaired with 45–125 reread) plus complete own documentation diff. Historical measurements retained as dated; current overrides verified against actual source and contrast evidence. No hosted/payment/SQL/browser-wide compliance inferred."
   }
 }

@@ -1,0 +1,735 @@
+{
+  "observedAtUtc": "2026-10-10T08:13:54.974Z",
+  "sourceHashes": {
+    "frontend/src/design/tokens.js": "0f79791a886a10c2b4835e293145a2ad0ae4d0a1a161256c55a082b3f8c79d4e",
+    "frontend/src/pages/beta.css": "16295f88afca14e6e5361a274564e129f48a43ddd1b125ad0f6ff132d3c02bef",
+    "frontend/src/components/BetaInstructions.jsx": "afe15094706349a3b6dd2a32f8bcbc282b971e0dd742f59f30df879c59da422f",
+    "frontend/src/lib/theme.js": "15299fe21bf498274bdbe6a2974e2559ae1001a70d765a1d07b416bf3932865d"
+  },
+  "method": "sRGB relative luminance, threshold 0.04045; (Llighter + .05)/(Ldarker + .05); no threshold rounding.",
+  "reference": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html",
+  "scope": "Nine selected token pairs in eight modes; this is not an exhaustive rendered-text/control or WCAG audit. Incidental/disabled/large-text exceptions require actual usage assessment.",
+  "renderedConfirmation": "orange-theme-rendered-contrast-2026-10-10.json and .png: actual BetaInstructions, 16px weight 600, accent on accentSoft, opacity 1; loopback fixture only.",
+  "rows": [
+    {
+      "palette": "znacka",
+      "mode": "light",
+      "foreground": "ink",
+      "background": "bg",
+      "foregroundHex": "#15191E",
+      "backgroundHex": "#F5F6F7",
+      "contrast": 16.313453896951923,
+      "normalText45": true
+    },
+    {
+      "palette": "znacka",
+      "mode": "light",
+      "foreground": "ink2",
+      "background": "surface",
+      "foregroundHex": "#4B525B",
+      "backgroundHex": "#F5F6F7",
+      "contrast": 7.304009327087771,
+      "normalText45": true
+    },
+    {
+      "palette": "znacka",
+      "mode": "light",
+      "foreground": "ink3",
+      "background": "surface2",
+      "foregroundHex": "#5F6670",
+      "backgroundHex": "#EAEDEF",
+      "contrast": 4.931807495133785,
+      "normalText45": true
+    },
+    {
+      "palette": "znacka",
+      "mode": "light",
+      "foreground": "accent",
+      "background": "accentSoft",
+      "foregroundHex": "#1C58A3",
+      "backgroundHex": "#E1EAF6",
+      "contrast": 5.8172917777701185,
+      "normalText45": true
+    },
+    {
+      "palette": "znacka",
+      "mode": "light",
+      "foreground": "accentInk",
+      "background": "accent",
+      "foregroundHex": "#F5F6F7",
+      "backgroundHex": "#1C58A3",
+      "contrast": 6.52555875131981,
+      "normalText45": true
+    },
+    {
+      "palette": "znacka",
+      "mode": "light",
+      "foreground": "ok",
+      "background": "okSoft",
+      "foregroundHex": "#2C7340",
+      "backgroundHex": "#E0EFE3",
+      "contrast": 4.850874453211376,
+      "normalText45": true
+    },
+    {
+      "palette": "znacka",
+      "mode": "light",
+      "foreground": "danger",
+      "background": "dangerSoft",
+      "foregroundHex": "#B0271F",
+      "backgroundHex": "#F7E1DF",
+      "contrast": 5.320146196528547,
+      "normalText45": true
+    },
+    {
+      "palette": "znacka",
+      "mode": "light",
+      "foreground": "matchInk",
+      "background": "matchFill",
+      "foregroundHex": "#F5F6F7",
+      "backgroundHex": "#2C7340",
+      "contrast": 5.34148994162731,
+      "normalText45": true
+    },
+    {
+      "palette": "znacka",
+      "mode": "light",
+      "foreground": "surface",
+      "background": "ok",
+      "foregroundHex": "#F5F6F7",
+      "backgroundHex": "#2C7340",
+      "contrast": 5.34148994162731,
+      "normalText45": true
+    },
+    {
+      "palette": "znacka",
+      "mode": "dark",
+      "foreground": "ink",
+      "background": "bg",
+      "foregroundHex": "#E7EAEE",
+      "backgroundHex": "#131518",
+      "contrast": 15.156203614475364,
+      "normalText45": true
+    },
+    {
+      "palette": "znacka",
+      "mode": "dark",
+      "foreground": "ink2",
+      "background": "surface",
+      "foregroundHex": "#B8BFC8",
+      "backgroundHex": "#1A1D21",
+      "contrast": 9.12060874488819,
+      "normalText45": true
+    },
+    {
+      "palette": "znacka",
+      "mode": "dark",
+      "foreground": "ink3",
+      "background": "surface2",
+      "foregroundHex": "#939BA5",
+      "backgroundHex": "#22262B",
+      "contrast": 5.414263285003037,
+      "normalText45": true
+    },
+    {
+      "palette": "znacka",
+      "mode": "dark",
+      "foreground": "accent",
+      "background": "accentSoft",
+      "foregroundHex": "#7FA8E6",
+      "backgroundHex": "#1D2B3F",
+      "contrast": 5.883419510079375,
+      "normalText45": true
+    },
+    {
+      "palette": "znacka",
+      "mode": "dark",
+      "foreground": "accentInk",
+      "background": "accent",
+      "foregroundHex": "#10151C",
+      "backgroundHex": "#7FA8E6",
+      "contrast": 7.5441482301725244,
+      "normalText45": true
+    },
+    {
+      "palette": "znacka",
+      "mode": "dark",
+      "foreground": "ok",
+      "background": "okSoft",
+      "foregroundHex": "#7DC08E",
+      "backgroundHex": "#1B2E21",
+      "contrast": 6.716943472233095,
+      "normalText45": true
+    },
+    {
+      "palette": "znacka",
+      "mode": "dark",
+      "foreground": "danger",
+      "background": "dangerSoft",
+      "foregroundHex": "#EE8A80",
+      "backgroundHex": "#3A1F1C",
+      "contrast": 6.162635645434967,
+      "normalText45": true
+    },
+    {
+      "palette": "znacka",
+      "mode": "dark",
+      "foreground": "matchInk",
+      "background": "matchFill",
+      "foregroundHex": "#131518",
+      "backgroundHex": "#7DC08E",
+      "contrast": 8.537638639811268,
+      "normalText45": true
+    },
+    {
+      "palette": "znacka",
+      "mode": "dark",
+      "foreground": "surface",
+      "background": "ok",
+      "foregroundHex": "#1A1D21",
+      "backgroundHex": "#7DC08E",
+      "contrast": 7.894826028078694,
+      "normalText45": true
+    },
+    {
+      "palette": "smrk",
+      "mode": "light",
+      "foreground": "ink",
+      "background": "bg",
+      "foregroundHex": "#14201A",
+      "backgroundHex": "#F3F5F2",
+      "contrast": 15.307751697274425,
+      "normalText45": true
+    },
+    {
+      "palette": "smrk",
+      "mode": "light",
+      "foreground": "ink2",
+      "background": "surface",
+      "foregroundHex": "#475650",
+      "backgroundHex": "#F3F5F2",
+      "contrast": 7.055237034736926,
+      "normalText45": true
+    },
+    {
+      "palette": "smrk",
+      "mode": "light",
+      "foreground": "ink3",
+      "background": "surface2",
+      "foregroundHex": "#5C6A63",
+      "backgroundHex": "#E6ECE7",
+      "contrast": 4.738277556859027,
+      "normalText45": true
+    },
+    {
+      "palette": "smrk",
+      "mode": "light",
+      "foreground": "accent",
+      "background": "accentSoft",
+      "foregroundHex": "#1D5842",
+      "backgroundHex": "#DAE9E0",
+      "contrast": 6.614297586163367,
+      "normalText45": true
+    },
+    {
+      "palette": "smrk",
+      "mode": "light",
+      "foreground": "accentInk",
+      "background": "accent",
+      "foregroundHex": "#F3F5F2",
+      "backgroundHex": "#1D5842",
+      "contrast": 7.5803598196077155,
+      "normalText45": true
+    },
+    {
+      "palette": "smrk",
+      "mode": "light",
+      "foreground": "ok",
+      "background": "okSoft",
+      "foregroundHex": "#855A13",
+      "backgroundHex": "#F4E7CF",
+      "contrast": 4.9516001412131425,
+      "normalText45": true
+    },
+    {
+      "palette": "smrk",
+      "mode": "light",
+      "foreground": "danger",
+      "background": "dangerSoft",
+      "foregroundHex": "#9A2E22",
+      "backgroundHex": "#F4DFDA",
+      "contrast": 5.887611274611857,
+      "normalText45": true
+    },
+    {
+      "palette": "smrk",
+      "mode": "light",
+      "foreground": "matchInk",
+      "background": "matchFill",
+      "foregroundHex": "#F3F5F2",
+      "backgroundHex": "#855A13",
+      "contrast": 5.5212098707496935,
+      "normalText45": true
+    },
+    {
+      "palette": "smrk",
+      "mode": "light",
+      "foreground": "surface",
+      "background": "ok",
+      "foregroundHex": "#F3F5F2",
+      "backgroundHex": "#855A13",
+      "contrast": 5.5212098707496935,
+      "normalText45": true
+    },
+    {
+      "palette": "smrk",
+      "mode": "dark",
+      "foreground": "ink",
+      "background": "bg",
+      "foregroundHex": "#E3EAE5",
+      "backgroundHex": "#0F1613",
+      "contrast": 14.999608916688683,
+      "normalText45": true
+    },
+    {
+      "palette": "smrk",
+      "mode": "dark",
+      "foreground": "ink2",
+      "background": "surface",
+      "foregroundHex": "#AEBBB3",
+      "backgroundHex": "#151E1A",
+      "contrast": 8.566896820093405,
+      "normalText45": true
+    },
+    {
+      "palette": "smrk",
+      "mode": "dark",
+      "foreground": "ink3",
+      "background": "surface2",
+      "foregroundHex": "#8E9C95",
+      "backgroundHex": "#1C2722",
+      "contrast": 5.386092431894287,
+      "normalText45": true
+    },
+    {
+      "palette": "smrk",
+      "mode": "dark",
+      "foreground": "accent",
+      "background": "accentSoft",
+      "foregroundHex": "#86C2A5",
+      "backgroundHex": "#1A3027",
+      "contrast": 6.867448690241121,
+      "normalText45": true
+    },
+    {
+      "palette": "smrk",
+      "mode": "dark",
+      "foreground": "accentInk",
+      "background": "accent",
+      "foregroundHex": "#0F1613",
+      "backgroundHex": "#86C2A5",
+      "contrast": 8.976752947092246,
+      "normalText45": true
+    },
+    {
+      "palette": "smrk",
+      "mode": "dark",
+      "foreground": "ok",
+      "background": "okSoft",
+      "foregroundHex": "#E1B770",
+      "backgroundHex": "#33291A",
+      "contrast": 7.610315080507925,
+      "normalText45": true
+    },
+    {
+      "palette": "smrk",
+      "mode": "dark",
+      "foreground": "danger",
+      "background": "dangerSoft",
+      "foregroundHex": "#E9907F",
+      "backgroundHex": "#3A201B",
+      "contrast": 6.247056475701087,
+      "normalText45": true
+    },
+    {
+      "palette": "smrk",
+      "mode": "dark",
+      "foreground": "matchInk",
+      "background": "matchFill",
+      "foregroundHex": "#0F1613",
+      "backgroundHex": "#E1B770",
+      "contrast": 9.793868677204562,
+      "normalText45": true
+    },
+    {
+      "palette": "smrk",
+      "mode": "dark",
+      "foreground": "surface",
+      "background": "ok",
+      "foregroundHex": "#151E1A",
+      "backgroundHex": "#E1B770",
+      "contrast": 9.094337667824824,
+      "normalText45": true
+    },
+    {
+      "palette": "zvyraznovac",
+      "mode": "light",
+      "foreground": "ink",
+      "background": "bg",
+      "foregroundHex": "#151412",
+      "backgroundHex": "#FAFAF8",
+      "contrast": 17.616207308560583,
+      "normalText45": true
+    },
+    {
+      "palette": "zvyraznovac",
+      "mode": "light",
+      "foreground": "ink2",
+      "background": "surface",
+      "foregroundHex": "#4E4B45",
+      "backgroundHex": "#FAFAF8",
+      "contrast": 8.316210667173419,
+      "normalText45": true
+    },
+    {
+      "palette": "zvyraznovac",
+      "mode": "light",
+      "foreground": "ink3",
+      "background": "surface2",
+      "foregroundHex": "#6A675F",
+      "backgroundHex": "#EFEEEA",
+      "contrast": 4.864764665027866,
+      "normalText45": true
+    },
+    {
+      "palette": "zvyraznovac",
+      "mode": "light",
+      "foreground": "accent",
+      "background": "accentSoft",
+      "foregroundHex": "#151412",
+      "backgroundHex": "#FBEFB8",
+      "contrast": 15.903269430633475,
+      "normalText45": true
+    },
+    {
+      "palette": "zvyraznovac",
+      "mode": "light",
+      "foreground": "accentInk",
+      "background": "accent",
+      "foregroundHex": "#FAFAF8",
+      "backgroundHex": "#151412",
+      "contrast": 17.616207308560583,
+      "normalText45": true
+    },
+    {
+      "palette": "zvyraznovac",
+      "mode": "light",
+      "foreground": "ok",
+      "background": "okSoft",
+      "foregroundHex": "#6B5300",
+      "backgroundHex": "#F9E27E",
+      "contrast": 5.6621741903774305,
+      "normalText45": true
+    },
+    {
+      "palette": "zvyraznovac",
+      "mode": "light",
+      "foreground": "danger",
+      "background": "dangerSoft",
+      "foregroundHex": "#B3301D",
+      "backgroundHex": "#F8E0DA",
+      "contrast": 4.96414510961714,
+      "normalText45": true
+    },
+    {
+      "palette": "zvyraznovac",
+      "mode": "light",
+      "foreground": "matchInk",
+      "background": "matchFill",
+      "foregroundHex": "#151412",
+      "backgroundHex": "#F6CF3F",
+      "contrast": 12.199248055589601,
+      "normalText45": true
+    },
+    {
+      "palette": "zvyraznovac",
+      "mode": "light",
+      "foreground": "surface",
+      "background": "ok",
+      "foregroundHex": "#FAFAF8",
+      "backgroundHex": "#6B5300",
+      "contrast": 7.020005820524892,
+      "normalText45": true
+    },
+    {
+      "palette": "zvyraznovac",
+      "mode": "dark",
+      "foreground": "ink",
+      "background": "bg",
+      "foregroundHex": "#F0EDE5",
+      "backgroundHex": "#161512",
+      "contrast": 15.607266929547517,
+      "normalText45": true
+    },
+    {
+      "palette": "zvyraznovac",
+      "mode": "dark",
+      "foreground": "ink2",
+      "background": "surface",
+      "foregroundHex": "#BDB8AD",
+      "backgroundHex": "#1D1B18",
+      "contrast": 8.691983804506515,
+      "normalText45": true
+    },
+    {
+      "palette": "zvyraznovac",
+      "mode": "dark",
+      "foreground": "ink3",
+      "background": "surface2",
+      "foregroundHex": "#9C978E",
+      "backgroundHex": "#25231F",
+      "contrast": 5.400727784569054,
+      "normalText45": true
+    },
+    {
+      "palette": "zvyraznovac",
+      "mode": "dark",
+      "foreground": "accent",
+      "background": "accentSoft",
+      "foregroundHex": "#F6CF3F",
+      "backgroundHex": "#3A3217",
+      "contrast": 8.44118384633446,
+      "normalText45": true
+    },
+    {
+      "palette": "zvyraznovac",
+      "mode": "dark",
+      "foreground": "accentInk",
+      "background": "accent",
+      "foregroundHex": "#161512",
+      "backgroundHex": "#F6CF3F",
+      "contrast": 12.099197313902769,
+      "normalText45": true
+    },
+    {
+      "palette": "zvyraznovac",
+      "mode": "dark",
+      "foreground": "ok",
+      "background": "okSoft",
+      "foregroundHex": "#F6CF3F",
+      "backgroundHex": "#3A3217",
+      "contrast": 8.44118384633446,
+      "normalText45": true
+    },
+    {
+      "palette": "zvyraznovac",
+      "mode": "dark",
+      "foreground": "danger",
+      "background": "dangerSoft",
+      "foregroundHex": "#F0957F",
+      "backgroundHex": "#3B211B",
+      "contrast": 6.559778630318691,
+      "normalText45": true
+    },
+    {
+      "palette": "zvyraznovac",
+      "mode": "dark",
+      "foreground": "matchInk",
+      "background": "matchFill",
+      "foregroundHex": "#161512",
+      "backgroundHex": "#F6CF3F",
+      "contrast": 12.099197313902769,
+      "normalText45": true
+    },
+    {
+      "palette": "zvyraznovac",
+      "mode": "dark",
+      "foreground": "surface",
+      "background": "ok",
+      "foregroundHex": "#1D1B18",
+      "backgroundHex": "#F6CF3F",
+      "contrast": 11.385547233618299,
+      "normalText45": true
+    },
+    {
+      "palette": "terakota",
+      "mode": "light",
+      "foreground": "ink",
+      "background": "bg",
+      "foregroundHex": "#221A13",
+      "backgroundHex": "#FAF6EF",
+      "contrast": 15.910759699322629,
+      "normalText45": true
+    },
+    {
+      "palette": "terakota",
+      "mode": "light",
+      "foreground": "ink2",
+      "background": "surface",
+      "foregroundHex": "#6B6259",
+      "backgroundHex": "#FAF6EF",
+      "contrast": 5.543460350238678,
+      "normalText45": true
+    },
+    {
+      "palette": "terakota",
+      "mode": "light",
+      "foreground": "ink3",
+      "background": "surface2",
+      "foregroundHex": "#6F6557",
+      "backgroundHex": "#F1ECE3",
+      "contrast": 4.856478186252574,
+      "normalText45": true
+    },
+    {
+      "palette": "terakota",
+      "mode": "light",
+      "foreground": "accent",
+      "background": "accentSoft",
+      "foregroundHex": "#AD4F2A",
+      "backgroundHex": "#F6E3D6",
+      "contrast": 4.295904782962447,
+      "normalText45": false
+    },
+    {
+      "palette": "terakota",
+      "mode": "light",
+      "foreground": "accentInk",
+      "background": "accent",
+      "foregroundHex": "#FAF6EF",
+      "backgroundHex": "#AD4F2A",
+      "contrast": 4.961853861138386,
+      "normalText45": true
+    },
+    {
+      "palette": "terakota",
+      "mode": "light",
+      "foreground": "ok",
+      "background": "okSoft",
+      "foregroundHex": "#4F7143",
+      "backgroundHex": "#E6EDDE",
+      "contrast": 4.643838173858005,
+      "normalText45": true
+    },
+    {
+      "palette": "terakota",
+      "mode": "light",
+      "foreground": "danger",
+      "background": "dangerSoft",
+      "foregroundHex": "#7A3020",
+      "backgroundHex": "#F5E2DC",
+      "contrast": 7.394702271272025,
+      "normalText45": true
+    },
+    {
+      "palette": "terakota",
+      "mode": "light",
+      "foreground": "matchInk",
+      "background": "matchFill",
+      "foregroundHex": "#FAF6EF",
+      "backgroundHex": "#4F7143",
+      "contrast": 5.163085431468538,
+      "normalText45": true
+    },
+    {
+      "palette": "terakota",
+      "mode": "light",
+      "foreground": "surface",
+      "background": "ok",
+      "foregroundHex": "#FAF6EF",
+      "backgroundHex": "#4F7143",
+      "contrast": 5.163085431468538,
+      "normalText45": true
+    },
+    {
+      "palette": "terakota",
+      "mode": "dark",
+      "foreground": "ink",
+      "background": "bg",
+      "foregroundHex": "#F2ECE2",
+      "backgroundHex": "#17130E",
+      "contrast": 15.733324790188389,
+      "normalText45": true
+    },
+    {
+      "palette": "terakota",
+      "mode": "dark",
+      "foreground": "ink2",
+      "background": "surface",
+      "foregroundHex": "#D8CFC2",
+      "backgroundHex": "#1F1911",
+      "contrast": 11.302336442361405,
+      "normalText45": true
+    },
+    {
+      "palette": "terakota",
+      "mode": "dark",
+      "foreground": "ink3",
+      "background": "surface2",
+      "foregroundHex": "#B3A895",
+      "backgroundHex": "#2A2216",
+      "contrast": 6.686197350118157,
+      "normalText45": true
+    },
+    {
+      "palette": "terakota",
+      "mode": "dark",
+      "foreground": "accent",
+      "background": "accentSoft",
+      "foregroundHex": "#E08A5C",
+      "backgroundHex": "#3A2617",
+      "contrast": 5.416299402070425,
+      "normalText45": true
+    },
+    {
+      "palette": "terakota",
+      "mode": "dark",
+      "foreground": "accentInk",
+      "background": "accent",
+      "foregroundHex": "#17130E",
+      "backgroundHex": "#E08A5C",
+      "contrast": 7.006988687663192,
+      "normalText45": true
+    },
+    {
+      "palette": "terakota",
+      "mode": "dark",
+      "foreground": "ok",
+      "background": "okSoft",
+      "foregroundHex": "#8FB57E",
+      "backgroundHex": "#24301F",
+      "contrast": 5.982384343176145,
+      "normalText45": true
+    },
+    {
+      "palette": "terakota",
+      "mode": "dark",
+      "foreground": "danger",
+      "background": "dangerSoft",
+      "foregroundHex": "#C97F6A",
+      "backgroundHex": "#33201A",
+      "contrast": 4.93830893626886,
+      "normalText45": true
+    },
+    {
+      "palette": "terakota",
+      "mode": "dark",
+      "foreground": "matchInk",
+      "background": "matchFill",
+      "foregroundHex": "#17130E",
+      "backgroundHex": "#8FB57E",
+      "contrast": 7.9924062570659,
+      "normalText45": true
+    },
+    {
+      "palette": "terakota",
+      "mode": "dark",
+      "foreground": "surface",
+      "background": "ok",
+      "foregroundHex": "#1F1911",
+      "backgroundHex": "#8FB57E",
+      "contrast": 7.531683022706355,
+      "normalText45": true
+    }
+  ]
+}

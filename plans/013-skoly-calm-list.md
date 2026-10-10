@@ -1,5 +1,7 @@
 # 013: `/skoly` redesign: one calm, scannable list
 
+**Current use, 10 October 2026:** the specification and review below describe the September implementation. They are historical evidence, not instructions to restore native sorting, four-school comparison limits, old colors or the measured 223-school snapshot. Current Search has a custom keyboard-operable sort group and a five-school comparison limit; admission wording now exposes older available years. Read the current source and `design/DESIGN.md` before changing layout. [Deployment report](../reports/deployment-review-2026-10-07/REPORT.md) and [handoff](../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md) track current catalogue denominators, mixed-year provenance, ownership, theme/phone/zoom/browser acceptance and remaining release gates. A historical screenshot/test total is not current deployment acceptance.
+
 **Status:** BUILT, reviewed 2026-09-24. Chunks 1–2 by Codex (`c1b6a5c`, `e391a4b`);
 chunk 3 by Codex plus reviewer fixes by Claude Opus 5.5 in the same commit. See
 "Review outcome" at the end of this file for what changed from the plan and what
@@ -8,8 +10,8 @@ is still untested.
 **Approved concept (visual reference, read it first):**
 https://claude.ai/artifact/E2FKsRAozURP9TnuFLSZQq
 
-The concept is the target *layout*. This file is the *contract*. Where they differ,
-this file wins. Every design decision the concept left open is decided below, so the
+For the September implementation, the concept was the target *layout* and this file
+was the *contract*. The historical design decisions left open by the concept are below; the
 implementation pass should make **no** design calls of its own. If something here is
 wrong about the code (a missing prop, a name that doesn't exist), stop and report it
 instead of improvising.

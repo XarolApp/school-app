@@ -1,5 +1,7 @@
 # 015: More colour on desktop /skoly and on Praktické informace
 
+**Current use, 10 October 2026:** this records the September desktop-color implementation and review, not current release acceptance. Later Search rows/clamps and admission-year wording supersede the original card rules and the old no-2026-copy diagnosis below. Current source and `design/DESIGN.md` govern layout/token work. The selected current match-text/fill pairs calculate above 4.5:1, but that does not prove every rendered color usage: C38 separately confirms an Oranžová accent-on-soft text failure. [Deployment report](../reports/deployment-review-2026-10-07/REPORT.md) and [handoff](../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md) retain mixed-year provenance, ownership and full theme/device/browser acceptance. Preserve the dated review measurements as historical evidence.
+
 **Status:** BUILT and reviewed, 2026-09-26 (13c3d1e, 4e0444c, 81ec180). Planned against `f23bab6`. Approved by the founder from the
 concept, with two decisions: keep the Přijato bar, collapse the empty cards.
 

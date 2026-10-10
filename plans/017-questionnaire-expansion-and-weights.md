@@ -1,7 +1,8 @@
 # Plan 017 — Questionnaire expansion: points, reserve, new scored questions, weight questions
 
-Status: APPROVED DECISIONS 2026-09-28, not built. Planned on Opus 5.5 medium;
-execute on Sonnet 5 medium/high.
+Status, 10 October 2026: implemented in the current standalone questionnaire/matcher source, with 31 served question definitions and the effective-weight layer. The September decisions/specification below remain historical; do not implement the same questions again or treat the old planned model routing as a new requirement. Source review and targeted regressions are recorded in the [deployment report](../reports/deployment-review-2026-10-07/REPORT.md), with remaining acceptance in the [handoff](../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md).
+
+Current limits: admission cutoffs/coverage and school-web-derived values require field/year provenance review; three years are not available for every programme. Onboarding and standalone recommendation engines remain separate pending the founder's scoring-policy decision. The optional `poznamka` is private saved context, excluded from matching and AI; its current hint explains this. Church-school preferences and account-linked student answers still require the recorded child-data/legal-basis review. Beta access is free for main feedback, with payment screens only a preview; the separate ordinary-account trial must start at first confirmed sign-in (migration pending).
 
 ## Context
 

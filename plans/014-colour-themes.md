@@ -1,7 +1,8 @@
 # 014: Colour themes (Značka default + 3 options) and a light/dark switch
 
-**Status:** IMPLEMENTED, 2026-09-24. Code and automated checks are complete; signed-in
-browser checks await the founder's Supabase migration. Implementation commits are on `main`.
+**Status:** theme implementation shipped 2026-09-24; the specification below is historical. Current Settings names are Modrá / Žlutá / Zelená / Oranžová (stored ids unchanged), and fonts are self-hosted Archivo Narrow/Archivo. As of 10 October, source and isolated actual-component selection/keyboard checks are recorded; hosted persistence, reload/cross-device behavior and C02/C16 account-owned save queues still require acceptance. Do not blindly rerun this plan's SQL: verify current definitions and a reviewed missing migration in a disposable database first.
+
+**Contrast correction, 10 October 2026:** the former all-text-pairs AA claim is withdrawn. Oranžová light uses `accent #AD4F2A` on `accentSoft #F6E3D6`, measuring **4.296:1**; actual beta-guide progress is 16px/600 informational text using that pair. It falls below the normal-text 4.5:1 threshold. C38 in the [deployment report](../reports/deployment-review-2026-10-07/REPORT.md) / [handoff](../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md) requires coordinated semantic text-token/usage review and all eight rendered theme modes. Existing palette values are preserved pending that review; this plan does not establish whole-site WCAG compliance.
 
 **Visual reference:** https://claude.ai/artifact/KziG32Ki2KCagBrM5eZE1G (the three
 directions on the /skoly page). **Design source of truth:** `design/DESIGN.md`, which
@@ -29,9 +30,10 @@ section before starting.
 
 1. Themes change **colour tokens only**. Fonts, spacing, radii and components are the
    same in every theme. No theme-specific CSS rules anywhere.
-2. The theme values below are final and were contrast-checked: every text pair in all
-   8 theme × mode combinations passes WCAG AA 4.5:1. Do not adjust them. If a screen
-   looks wrong in a theme, report it; don't fix it with a per-theme override.
+2. Use the shared palette/token system. Historical checks did not prove every rendered
+   text/background pair passes WCAG AA; C38 records a confirmed accent-on-soft failure.
+   Correct semantic token usage coherently and recheck actual text, controls and states
+   in all 8 combinations. Do not patch one palette with a screen-specific override.
 3. Mode `system` means "follow `prefers-color-scheme`", and it is the default.
 4. Storage: two columns on `public.users`. The browser keeps a local copy **only** to
    avoid a flash before the profile loads. The account value always wins once loaded.
@@ -146,9 +148,9 @@ heading-family style, keep it (Archivo Narrow has 500).
 
 **Comments.** The long comment blocks above the old `light`/`dark` objects describe the
 warm-paper/terracotta rationale. Replace them with a short pointer: "Values and the
-rules every theme must satisfy: design/DESIGN.md → Colors → Themes. Contrast verified
-for all 8 combinations 2026-09-24; don't edit values without re-running the pairs
-listed there."
+rules every theme must satisfy: design/DESIGN.md → Colors → Themes. September contrast
+checks were limited; see deployment C38 and re-run actual text/background pairs in
+all 8 modes before claiming compliance."
 
 ### 5.2 `gen-tokens-css.mjs`
 
