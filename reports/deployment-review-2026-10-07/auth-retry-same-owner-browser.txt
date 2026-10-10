@@ -1,0 +1,29 @@
+Browser tab: 6, Title: "Account retry review fixture", URL: "http://127.0.0.1:5197/auth-retry-probe.html".
+0 AXWebArea Account retry review fixture, URL: 127.0.0.1:5197/auth-retry-probe.html
+	1 heading Account retry review, Value: 1
+		2 text Account retry review
+	3 text Actual API helper; synthetic sessions and HTTP responses. No network or account operation.
+	4 text Source SHA-256: a545cb179681a87378f41cf928cff50e1ae6c2e539c4bbacf373590af9f8ab8a
+	5 button Switch before rejection
+	6 button Switch during refresh
+	7 button Same account refresh
+	8 text {
+  "pass": true,
+  "scenario": "same",
+  "status": 204,
+  "refreshes": 1,
+  "requests": [
+    {
+      "url": "http://localhost:5000/api/me",
+      "method": "DELETE",
+      "token": "Bearer synthetic-A"
+    },
+    {
+      "url": "http://localhost:5000/api/me",
+      "method": "DELETE",
+      "token": "Bearer synthetic-A-fresh"
+    }
+  ]
+}
+
+The focused UI element is 7 button Same account refresh

@@ -1,0 +1,15 @@
+✔ a delayed account A deletion must not retry under account B (1.99875ms)
+✔ an account change while refreshing must not replay the old mutation (0.546416ms)
+✔ same-owner retry uses the verified refreshed token despite a later session change (0.729583ms)
+✔ a persistent rejection refreshes at most once (0.503209ms)
+✔ explicit owner token does not refresh or redirect to the current session (0.426375ms)
+✔ sign-out before a rejection prevents refresh (0.402292ms)
+✔ failed refresh preserves the original rejection without replay (0.390042ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 56.561667

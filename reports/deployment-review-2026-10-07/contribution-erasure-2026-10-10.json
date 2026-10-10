@@ -1,0 +1,34 @@
+{
+  "checkedAtUtc": "2026-10-10T15:31:07.888Z",
+  "sourceHashes": {
+    "server.js": "646ec868b16f3b3adc3956abd9f214cedef0824ec61a074c88ec51a98f8dede9",
+    "supabase-setup.sql": "d6c672f8cc698e7d5a143173051c4b673d6e1d93839cbf87d2b9315ea17238e0",
+    "frontend/src/pages/Settings.jsx": "d908f9e0ab1c00931a78885346a55e184d98a738b92b2e7c18efe6504a3f9e4e",
+    "migrations/2026-10-10-beta-contributions-archive.sql": "d0a54408f71334f94c0a6f0ae7761c50d219089a9abe3bd06757f47bf3feffa8",
+    "migrations/2026-10-10-tracking-withdrawal-guard.sql": "76ff7c72e425690bdd086e3319e5f8deb7deed561206d3295fc4cd0b638ff788"
+  },
+  "archiveRetry": {
+    "optOutOnRetry": false,
+    "firstStatus": 500,
+    "retryStatus": 204,
+    "authAttempts": 2,
+    "retainedArchiveCopies": 2
+  },
+  "archiveOptOutAfterFailedDeletion": {
+    "optOutOnRetry": true,
+    "firstStatus": 500,
+    "retryStatus": 204,
+    "authAttempts": 2,
+    "retainedArchiveCopies": 1
+  },
+  "withdrawalPartialCleanup": {
+    "status": 500,
+    "paused": true,
+    "retained": {
+      "beta_events": 0,
+      "beta_rankings": 1
+    },
+    "errorText": "Záznam je vypnutý, ale dosavadní data se nepodařilo smazat. Zkus to prosím znovu."
+  },
+  "limitation": "Actual JS handler control flow, synthetic archive/Storage/Auth/PostgREST responses. No hosted mutation, SQL execution, real upload or concurrency certification. Founder D1/D4 retained."
+}

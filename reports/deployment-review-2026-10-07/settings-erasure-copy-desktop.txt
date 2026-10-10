@@ -1,0 +1,4 @@
+Browser tab: 6, Title: "127.0.0.1:5197/?view=settings&status=beta", URL: "http://127.0.0.1:5197/?view=settings&status=beta".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+~				93 checkbox (settable, integer) Description: Smazat i moje zpětné vazby, závěrečné odpovědi a recenze, Value: 1, ID: settings-delete-contributions
+The focused UI element is 93 checkbox (settable, integer) Description: Smazat i moje zpětné vazby, závěrečné odpovědi a recenze, Value: 1, ID: settings-delete-contributions

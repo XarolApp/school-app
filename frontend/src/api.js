@@ -48,10 +48,16 @@ async function request(path, options = {}, retried = false) {
   const body = await res.json().catch(() => ({}));
 
   // A token can be rejected after a laptop sleep or a refresh in another tab.
-  // Refresh once and retry before reporting the session as invalid.
+  // Retry only for the same account, with its verified refreshed token. A
+  // delayed A request must never be replayed as B after an account switch.
   if (res.status === 401 && token && !accessToken && !retried) {
-    const { data: refreshed, error: refreshError } = await supabase.auth.refreshSession();
-    if (!refreshError && refreshed?.session) return request(path, options, true);
+    const { data: current } = await supabase.auth.getSession();
+    if (session?.user?.id && current?.session?.user?.id === session.user.id) {
+      const { data: refreshed, error: refreshError } = await supabase.auth.refreshSession();
+      if (!refreshError && refreshed?.session?.user?.id === session.user.id && refreshed.session.access_token) {
+        return request(path, { ...options, accessToken: refreshed.session.access_token }, true);
+      }
+    }
   }
 
   if (!res.ok) {

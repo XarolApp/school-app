@@ -394,6 +394,7 @@ are deployed. See the current deployment report.
 | `beta_schools` | uppercase school invitation codes and school names; validated by the API and signup trigger |
 | `beta_program_settings` | singleton beta cutoff, rolling access hours, optional external feedback URL; read-only 2026-10-08: 48 hours, cutoff 18 October 2026 at 23:59 Europe/Prague; no external feedback form configured |
 | `beta_feedback` | tester-authored `bug`/`idea`/`comment` reports, attributed to the tester's school by the server |
+| `beta_contributions_archive` | minimised feedback, closing answers and website reviews copied on account deletion unless the tester chooses deletion; no account/school IDs or screenshots, but free text may identify its author. Service-role only. D4 is the founder's policy; C46 deletion-failure/retry acceptance remains open. |
 | `school_programs` | one row per obor per school per year, from Cermat's real admission results — `typ_skoly`, `zrizovatel`, `maturitni`, `jpz_povinna`, `jazyk_studia`, `delka_studia`, `zamereni` (Cermat's free-text focus; tells apart programmes sharing one KKOV, e.g. FOSTRA's five gymnázia — splits only the newest year, its wording changes yearly), `kkov`, `kapacita`, `prihlasky`, `prijati`, `cutoff`. No client RLS policy, same as `schools` — server.js only. Declared in `supabase-setup.sql` itself as of 2026-09-08 — it existed in the live database earlier than that (created directly by the import script), so this file didn't yet describe the real schema; fixed rather than left drifting. |
 | `users` | profile mirror of the private `auth.users`: email, name, nullable `gender` (`m`/`f`, selected in the student onboarding branch and editable as an account form-of-address preference), `trial_expires_at`, `subscription_status`, `theme_palette`, `theme_mode`, Stripe ids; beta adds nullable `tester_school_code`, `tester_access_until`, `tester_guidance_seen_at` |
 | `favorites` | `(user_id, school_id)` |
@@ -451,7 +452,7 @@ exposed. This resolves a missing-field hypothesis for those names; it does not
 verify current function bodies, constraints, anonymous/authenticated grants or
 behavior. Evidence: `reports/deployment-review-2026-10-07/schema-fields-2026-10-09.json`.
 
-**The canonical schema enables RLS on all 26 application tables.** Read-only live
+**The canonical schema enables RLS on all 27 application tables** after adding the beta contribution archive on 10 October. Read-only metadata exposes the new archive table/RPC; it does not prove their grants or erasure behavior. Read-only live
 checks on 2026-10-07 returned zero rows with the anonymous key; this smoke check
 does not prove policy definitions, authenticated cross-account isolation or RPC
 grants. Tables without a client policy below are intended to be server-only

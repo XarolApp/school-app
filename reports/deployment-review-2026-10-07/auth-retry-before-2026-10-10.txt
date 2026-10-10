@@ -1,0 +1,80 @@
+✖ a delayed account A deletion must not retry under account B (2.172458ms)
+✖ an account change while refreshing must not replay the old mutation (0.492417ms)
+✖ same-owner retry uses the verified refreshed token despite a later session change (0.925875ms)
+✔ a persistent rejection refreshes at most once (0.5665ms)
+✔ explicit owner token does not refresh or redirect to the current session (0.41275ms)
+✖ sign-out before a rejection prevents refresh (0.443417ms)
+✔ failed refresh preserves the original rejection without replay (0.440834ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 3
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 50.644417
+
+✖ failing tests:
+
+test at tests/api-session-retry.test.cjs:43:1
+✖ a delayed account A deletion must not retry under account B (2.172458ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/vojtechkadlec/Developer/school-app/tests/api-session-retry.test.cjs:48:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at tests/api-session-retry.test.cjs:54:1
+✖ an account change while refreshing must not replay the old mutation (0.492417ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/vojtechkadlec/Developer/school-app/tests/api-session-retry.test.cjs:58:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at tests/api-session-retry.test.cjs:63:1
+✖ same-owner retry uses the verified refreshed token despite a later session change (0.925875ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + 'Bearer synthetic-B'
+  - 'Bearer synthetic-A-fresh'
+                      ^
+
+      at TestContext.<anonymous> (/Users/vojtechkadlec/Developer/school-app/tests/api-session-retry.test.cjs:70:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'Bearer synthetic-B',
+    expected: 'Bearer synthetic-A-fresh',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/api-session-retry.test.cjs:91:1
+✖ sign-out before a rejection prevents refresh (0.443417ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/Users/vojtechkadlec/Developer/school-app/tests/api-session-retry.test.cjs:94:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

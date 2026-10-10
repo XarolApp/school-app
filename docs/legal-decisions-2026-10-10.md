@@ -106,7 +106,7 @@ Facts the legal pages state as settled that only the founder can confirm in dash
 - [x] (founder, 2026-10-10: eu-west-1) Supabase project region is Ireland (eu-west-1): Supabase → Project Settings → General.
 - [ ] **Not yet — founder confirmed 2026-10-10 the account is in Vojtěch Kadlec's name.** Accepted for the free beta; must move before real payments. Brevo account (sends confirmation and reset e-mails) is registered to the operator.
       Today it is in the founder's own name — see the UNFORGET Brevo item.
-- [~] (founder screenshot, 2026-10-10) All four data-training toggles are off (paid/free training endpoints, prompt-publishing endpoints, 1% data discount). The separate input/output logging setting was not in the screenshot — still to confirm. OpenRouter: Settings → Privacy: prompt logging / training off for this key, or the
+- [x] (founder screenshot, 2026-10-10) All four data-training toggles are off (paid/free training endpoints, prompt-publishing endpoints, 1% data discount). A later founder confirmation on 10 October also reports input/output logging off (`UNFORGET.md`, recorded in `f36e07b`); independent dashboard/key/provider acceptance remains separate. OpenRouter: Settings → Privacy: prompt logging / training off for this key, or the
       limits are acceptable. The AI receives only the questionnaire's multiple-choice
       answers (never free text, points or name) plus the grammatical form for addressing.
 - [x] (founder, 2026-10-10) Stripe stays in test mode; no live keys during the beta.
@@ -117,9 +117,11 @@ Checked 2026-10-10: no `[DOPLNIT]` text remains in `Legal.jsx`; the "pracovní v
 banner is switched off (`DRAFT = false`). Operator name, address, e-mail and
 "neplátce DPH" are filled in. There is **no IČO** (a natural person without a trade
 licence has none); this is the founder's recorded risk for a free beta and must be
-resolved before real payments. The facts in D5 are still unverified.
+resolved before real payments. D5 records dated founder confirmations; independent dashboard/service acceptance remains separate. Brevo's operator transfer remains open. The later input/output-logging confirmation is recorded in D5 above.
 
 
 ## Independent implementation verification note — 10 October 2026
 
-D1 and D4 above remain the founder's decisions. This note adds implementation evidence only: read-only Supabase OpenAPI metadata exposes `beta_profile.tracking_paused_at`, while function bodies/grants and the complete withdrawal journey remain unverified. A synthetic actual-handler probe reproduces an in-flight event submitting its write after withdrawal reports success; the canonical `record_beta_events` function checks the enrollment timestamp but not the pause flag. Independent deletes can also leave pending cleanup after a partial failure. Resolve and test this coordinated lifecycle issue (C43) before relying on the switch's stop/delete promises. See `reports/deployment-review-2026-10-07/tracking-withdrawal-race-2026-10-10.json` and the ordered handoff. No live tracking record or account was modified by this review; this note does not change the approved legal basis or the founder's DPIA decision.
+D1 and D4 above remain the founder's decisions. The earlier `tracking-withdrawal-race-2026-10-10.json` probe records the pre-`238b98a` source: that RPC lacked a pause check. The subsequent canonical SQL and `2026-10-10-tracking-withdrawal-guard.sql` now check the pause flag under a profile lock and guard event/ranking writes. This resolves the source omission; actual PostgreSQL concurrency, grants, fresh/rerun and complete withdrawal acceptance remain unverified. A current synthetic actual-handler failure probe still leaves collection paused with ranking cleanup incomplete (C43); Settings does not refresh the changed state on that error.
+
+Read-only metadata at 17:24 Prague exposes the archive table/RPC and pause column. The new D4 deletion flow has a separate retry defect (C46): a failed Auth deletion after archiving leaves a copy; retrying duplicates it, and choosing deletion on that retry does not remove the earlier copy. Make that implementation retryable and honor the final choice before relying on its erasure promise. Evidence: `reports/deployment-review-2026-10-07/contribution-erasure-2026-10-10.json`, `archive-tracking-schema-2026-10-10.json` and the ordered handoff. No live tracking record or account was modified; these notes do not change the approved legal basis, retention choice or founder's DPIA decision.

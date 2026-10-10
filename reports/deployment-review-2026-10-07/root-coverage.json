@@ -64,34 +64,34 @@
     "reviewer": "root"
   },
   "AGENTS.md": {
-    "sha256": "cecabb6d96e1881b4b1ba2d974b1b9594db1cfa54f94fdc66309e2961b810bd9",
-    "lines": 1020,
+    "sha256": "eea2f424b50a9cd82ac9cdb3b1e8195ba5c365a8ac41022f4b108318ef23e5a1",
+    "lines": 1021,
     "read_ranges": [
       [
         1,
-        1020
+        1021
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-10T10:45:51.647857+00:00",
-    "method": "Complete current full source read for AuthContext/Hint/useDraft/new migration; for other existing source/docs, exact saved full-read baseline verified against Git and every subsequent diff inspected in bounded complete ranges, including 7c575ed/c17c582 and own patch. UNFORGET baseline-to-current cumulative diff read in 1–50/51–100/101–155 plus fully reviewed own current patch. New probes fully authored/read and executed with stated limits. Source read does not imply live SQL/SDK/device/payment/legal acceptance.",
-    "previous_complete_sha256": "021f1a0812a772c9a822096d352d910eef78203dda0bac720de29bbb9edab0a8"
+    "checked_at_utc": "2026-10-10T15:31:07.984520+00:00",
+    "method": "Current helper/confirmation/migrations/legal-decisions/test/archive005 full bounded read. Other source/docs: exact a4aa7fd full-read receipt verified, complete a4aa7fd-to-current diff read and own patch fully authored/reviewed. SQL bodies read, not executed; synthetic/browser probes are qualified evidence, not hosted erasure/legal/device acceptance.",
+    "previous_complete_sha256": "cecabb6d96e1881b4b1ba2d974b1b9594db1cfa54f94fdc66309e2961b810bd9"
   },
   "CLAUDE.md": {
-    "sha256": "3b7b1cc5c3478721f37e89191246dd9f86ebd1476cffe65b02ef190f32dc8b2b",
-    "lines": 1016,
+    "sha256": "374846cd20726f75ee4e1c61c5038dc49d854ea063abe6241331106bfd9f19d6",
+    "lines": 1017,
     "read_ranges": [
       [
         1,
-        1016
+        1017
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-10T10:45:51.647857+00:00",
-    "method": "Complete current full source read for AuthContext/Hint/useDraft/new migration; for other existing source/docs, exact saved full-read baseline verified against Git and every subsequent diff inspected in bounded complete ranges, including 7c575ed/c17c582 and own patch. UNFORGET baseline-to-current cumulative diff read in 1–50/51–100/101–155 plus fully reviewed own current patch. New probes fully authored/read and executed with stated limits. Source read does not imply live SQL/SDK/device/payment/legal acceptance.",
-    "previous_complete_sha256": "854a7bbb04d754c89b783244f0e80e7bafe3de847085290eb9d8f25eca50c015"
+    "checked_at_utc": "2026-10-10T15:31:07.984520+00:00",
+    "method": "Current helper/confirmation/migrations/legal-decisions/test/archive005 full bounded read. Other source/docs: exact a4aa7fd full-read receipt verified, complete a4aa7fd-to-current diff read and own patch fully authored/reviewed. SQL bodies read, not executed; synthetic/browser probes are qualified evidence, not hosted erasure/legal/device acceptance.",
+    "previous_complete_sha256": "3b7b1cc5c3478721f37e89191246dd9f86ebd1476cffe65b02ef190f32dc8b2b"
   },
   "frontend/src/App.jsx": {
     "sha256": "8f699b26bda2cc15aa691b9416e554560586d63335d896838bdcd9d40e05c915",
@@ -1337,7 +1337,7 @@
     "method": "Full source read across recorded continuation turns, including missing middleware/brainstorm ranges and complete authored diffs. Read means inspected, not defect-free or runtime-approved."
   },
   "docs/sources/feature-brainstorm.md": {
-    "sha256": "ae048c6b1cf311290b0ec7f582568f304a9b3fa59e310054ce91ceb75999cfa5",
+    "sha256": "49050ccc4766c2f76120b5274f684efc4cdfa0210140b3e446e76edf1a76641c",
     "lines": 373,
     "read_ranges": [
       [
@@ -1347,8 +1347,9 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:30:59.016749+00:00",
-    "method": "Full source read across recorded continuation turns, including missing middleware/brainstorm ranges and complete authored diffs. Read means inspected, not defect-free or runtime-approved."
+    "checked_at_utc": "2026-10-10T15:31:07.984520+00:00",
+    "method": "Current helper/confirmation/migrations/legal-decisions/test/archive005 full bounded read. Other source/docs: exact a4aa7fd full-read receipt verified, complete a4aa7fd-to-current diff read and own patch fully authored/reviewed. SQL bodies read, not executed; synthetic/browser probes are qualified evidence, not hosted erasure/legal/device acceptance.",
+    "previous_complete_sha256": "ae048c6b1cf311290b0ec7f582568f304a9b3fa59e310054ce91ceb75999cfa5"
   },
   "docs/skolamatch_current_status.md": {
     "sha256": "82d7874830d6c49b2aa1d2ea309eeff9a9680ecf7f51aec0dd34fea9d691eb1d",
@@ -2127,34 +2128,37 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "status": "complete",
-    "sha256": "3515e3b1315b9e3d8cfdeaf92a48387d4cb2173c9378cf35f785462f55c1e296",
-    "lines": 1788,
+    "sha256": "a56d853b022503f30ac0f6f5737052a5e4f8ae448f3b017b0b1ffa86c71be65a",
+    "lines": 1796,
     "read_ranges": [
       [
         1,
-        1788
-      ]
-    ],
-    "method": "Complete saved a4aa7fd baseline plus full current git diff a4aa7fd..HEAD reviewed, including own C44 entry already committed by peer. Peer live-application claims are read facts, not independently certified service acceptance."
-  },
-  "frontend/src/api.js": {
-    "sha256": "128735d3c906c00f0c212428271ba089f5b54843320eab1b18c86f7f7ba2099b",
-    "lines": 484,
-    "read_ranges": [
-      [
-        1,
-        484
+        1796
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-10T10:45:51.647857+00:00",
-    "method": "Complete current full source read for AuthContext/Hint/useDraft/new migration; for other existing source/docs, exact saved full-read baseline verified against Git and every subsequent diff inspected in bounded complete ranges, including 7c575ed/c17c582 and own patch. UNFORGET baseline-to-current cumulative diff read in 1–50/51–100/101–155 plus fully reviewed own current patch. New probes fully authored/read and executed with stated limits. Source read does not imply live SQL/SDK/device/payment/legal acceptance.",
-    "previous_complete_sha256": "2e60c1cacdcddfe855eae350da4a77751375099e4614b76e31f3ed02146106d2"
+    "checked_at_utc": "2026-10-10T15:36:48.310213+00:00",
+    "previous_complete_sha256": "3515e3b1315b9e3d8cfdeaf92a48387d4cb2173c9378cf35f785462f55c1e296",
+    "method": "Exact full 4abf539 receipt verified. Complete subsequent peer diff read; current readiness 1-91 reread and complete own patch/append authored/reviewed. Reported live/vendor checks distinguished from independent acceptance."
+  },
+  "frontend/src/api.js": {
+    "sha256": "a545cb179681a87378f41cf928cff50e1ae6c2e539c4bbacf373590af9f8ab8a",
+    "lines": 503,
+    "read_ranges": [
+      [
+        1,
+        503
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T15:31:07.984520+00:00",
+    "method": "Current helper/confirmation/migrations/legal-decisions/test/archive005 full bounded read. Other source/docs: exact a4aa7fd full-read receipt verified, complete a4aa7fd-to-current diff read and own patch fully authored/reviewed. SQL bodies read, not executed; synthetic/browser probes are qualified evidence, not hosted erasure/legal/device acceptance.",
+    "previous_complete_sha256": "128735d3c906c00f0c212428271ba089f5b54843320eab1b18c86f7f7ba2099b"
   },
   "frontend/src/components/AuthContext.jsx": {
-    "sha256": "f6b9521599ee222e14ab75facdaa79d907b5b52ee3ea0b5f4dfe794a6347de32",
+    "sha256": "172aef4bf969a82c86ebe35906edb75b7f54f597c08e28a51a08ee4dfc14b005",
     "lines": 516,
     "read_ranges": [
       [
@@ -2164,9 +2168,9 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-10T10:45:51.647857+00:00",
-    "method": "Complete current full source read for AuthContext/Hint/useDraft/new migration; for other existing source/docs, exact saved full-read baseline verified against Git and every subsequent diff inspected in bounded complete ranges, including 7c575ed/c17c582 and own patch. UNFORGET baseline-to-current cumulative diff read in 1–50/51–100/101–155 plus fully reviewed own current patch. New probes fully authored/read and executed with stated limits. Source read does not imply live SQL/SDK/device/payment/legal acceptance.",
-    "previous_complete_sha256": "9825804de68a22ee24c9f5443afaa8ab79e9319d13e71cd42c26523fcc97d6aa"
+    "checked_at_utc": "2026-10-10T15:31:07.984520+00:00",
+    "method": "Current helper/confirmation/migrations/legal-decisions/test/archive005 full bounded read. Other source/docs: exact a4aa7fd full-read receipt verified, complete a4aa7fd-to-current diff read and own patch fully authored/reviewed. SQL bodies read, not executed; synthetic/browser probes are qualified evidence, not hosted erasure/legal/device acceptance.",
+    "previous_complete_sha256": "f6b9521599ee222e14ab75facdaa79d907b5b52ee3ea0b5f4dfe794a6347de32"
   },
   "frontend/src/components/ProtectedRoute.jsx": {
     "sha256": "591df014798f50b89c023f2ece1588e3fce7b551bb1df3f7e15c916b71625e1b",
@@ -2517,17 +2521,19 @@
     "method": "Full current source read in bounded ranges on 9 October; unchanged against 8f519d9 when recording. Read coverage is not runtime approval."
   },
   "frontend/src/components/ConfirmEmailWaiting.jsx": {
-    "sha256": "530abb1c0467242f197640d40c6b1422f2053654174456b865e1f8aeb293963d",
-    "lines": 168,
+    "sha256": "7f34cbf97f2a02999d1b268a9b2c80c095a52e50c8cb6850acf12f14b2f85508",
+    "lines": 194,
     "read_ranges": [
       [
         1,
-        168
+        194
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "method": "Full stable current read in bounded ranges, or exact verified full-read baseline plus complete current diff and own reviewed patch. Truncated confirmation/instructions ranges reread; UNFORGET peer additions fully reread after 3bc498c. Source read is not legal/service/runtime approval."
+    "checked_at_utc": "2026-10-10T15:31:07.984520+00:00",
+    "method": "Current helper/confirmation/migrations/legal-decisions/test/archive005 full bounded read. Other source/docs: exact a4aa7fd full-read receipt verified, complete a4aa7fd-to-current diff read and own patch fully authored/reviewed. SQL bodies read, not executed; synthetic/browser probes are qualified evidence, not hosted erasure/legal/device acceptance.",
+    "previous_complete_sha256": "530abb1c0467242f197640d40c6b1422f2053654174456b865e1f8aeb293963d"
   },
   "lib/questionnaire.js": {
     "sha256": "dda2d49fc302b9cf1660b4d859af58b4db73cbea63918bfdeabc2b8ed4fbc635",
@@ -2598,19 +2604,19 @@
     "method": "Full current source read plus complete own redirect-fix diff; two targeted tests and synthetic confirmation component browser check. No production sign-in/mailbox acceptance claimed."
   },
   "frontend/src/pages/Legal.jsx": {
-    "sha256": "f704818e347ddbd42ddcd808571581410ded101def20048448817f744957ac94",
-    "lines": 389,
+    "sha256": "601bade2cc187ee9495d497ce427caff48d32056810db6a6dae68bce07086f94",
+    "lines": 392,
     "read_ranges": [
       [
         1,
-        389
+        392
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-10T10:45:51.647857+00:00",
-    "method": "Complete current full source read for AuthContext/Hint/useDraft/new migration; for other existing source/docs, exact saved full-read baseline verified against Git and every subsequent diff inspected in bounded complete ranges, including 7c575ed/c17c582 and own patch. UNFORGET baseline-to-current cumulative diff read in 1–50/51–100/101–155 plus fully reviewed own current patch. New probes fully authored/read and executed with stated limits. Source read does not imply live SQL/SDK/device/payment/legal acceptance.",
-    "previous_complete_sha256": "d42a95bace6a810164b1ed88d46ca644faec8e50cb67776aec7df5df62593fd6"
+    "checked_at_utc": "2026-10-10T15:31:07.984520+00:00",
+    "method": "Current helper/confirmation/migrations/legal-decisions/test/archive005 full bounded read. Other source/docs: exact a4aa7fd full-read receipt verified, complete a4aa7fd-to-current diff read and own patch fully authored/reviewed. SQL bodies read, not executed; synthetic/browser probes are qualified evidence, not hosted erasure/legal/device acceptance.",
+    "previous_complete_sha256": "f704818e347ddbd42ddcd808571581410ded101def20048448817f744957ac94"
   },
   "frontend/src/config/socialProof.js": {
     "sha256": "70b47b86cd7b03a405aff53b98d66fac9aaccc231a66207a54c9a95752ec86a8",
@@ -2711,19 +2717,19 @@
     "method": "Full current source read in bounded, untruncated ranges on 9 October; released Phase 9 reviewed. Four beta/social-proof tests pass. Reading is not legal, production or full runtime approval."
   },
   "supabase-setup.sql": {
-    "sha256": "7573e071fc0fbc4add1a2c01addd3b1ed8d55cc6a7ff98052390b65bb60ac6bb",
-    "lines": 1460,
+    "sha256": "d6c672f8cc698e7d5a143173051c4b673d6e1d93839cbf87d2b9315ea17238e0",
+    "lines": 1520,
     "read_ranges": [
       [
         1,
-        1460
+        1520
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-10T10:45:51.647857+00:00",
-    "method": "Complete current full source read for AuthContext/Hint/useDraft/new migration; for other existing source/docs, exact saved full-read baseline verified against Git and every subsequent diff inspected in bounded complete ranges, including 7c575ed/c17c582 and own patch. UNFORGET baseline-to-current cumulative diff read in 1–50/51–100/101–155 plus fully reviewed own current patch. New probes fully authored/read and executed with stated limits. Source read does not imply live SQL/SDK/device/payment/legal acceptance.",
-    "previous_complete_sha256": "356bd9832fc1f1ba002e5bc7dd7fe9ebeefe9b41ce7782bc7c35b86881726877"
+    "checked_at_utc": "2026-10-10T15:31:07.984520+00:00",
+    "method": "Current helper/confirmation/migrations/legal-decisions/test/archive005 full bounded read. Other source/docs: exact a4aa7fd full-read receipt verified, complete a4aa7fd-to-current diff read and own patch fully authored/reviewed. SQL bodies read, not executed; synthetic/browser probes are qualified evidence, not hosted erasure/legal/device acceptance. The later 80b60be >=2 comparison-rule diff is also fully read, resolving concurrent snapshot timing; actual SQL execution still unverified.",
+    "previous_complete_sha256": "7573e071fc0fbc4add1a2c01addd3b1ed8d55cc6a7ff98052390b65bb60ac6bb"
   },
   "frontend/src/pages/Questionnaire.jsx": {
     "sha256": "6d563cf4a3438c15f78558e4a5d7312b19523d640f4559a16d2e258ffcd15e02",
@@ -2767,19 +2773,19 @@
     "method": "Entire authored read-only probe inspected; run emits aggregate school coverage only, checks complete response and row cardinality; no data writes or model calls."
   },
   "server.js": {
-    "sha256": "a4f7ebd8d5bfabdddd1bbe2ad4630ffd15da4b54352c8a1d43e6817efaefc3c6",
-    "lines": 3601,
+    "sha256": "646ec868b16f3b3adc3956abd9f214cedef0824ec61a074c88ec51a98f8dede9",
+    "lines": 3619,
     "read_ranges": [
       [
         1,
-        3601
+        3619
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-10T10:45:51.647857+00:00",
-    "method": "Complete current full source read for AuthContext/Hint/useDraft/new migration; for other existing source/docs, exact saved full-read baseline verified against Git and every subsequent diff inspected in bounded complete ranges, including 7c575ed/c17c582 and own patch. UNFORGET baseline-to-current cumulative diff read in 1–50/51–100/101–155 plus fully reviewed own current patch. New probes fully authored/read and executed with stated limits. Source read does not imply live SQL/SDK/device/payment/legal acceptance.",
-    "previous_complete_sha256": "6bf50e0f3aa2a5abbfe9da51fbe23d9f054e79a8df64bfefe4c5b66dc59d41b0"
+    "checked_at_utc": "2026-10-10T15:31:07.984520+00:00",
+    "method": "Current helper/confirmation/migrations/legal-decisions/test/archive005 full bounded read. Other source/docs: exact a4aa7fd full-read receipt verified, complete a4aa7fd-to-current diff read and own patch fully authored/reviewed. SQL bodies read, not executed; synthetic/browser probes are qualified evidence, not hosted erasure/legal/device acceptance.",
+    "previous_complete_sha256": "a4f7ebd8d5bfabdddd1bbe2ad4630ffd15da4b54352c8a1d43e6817efaefc3c6"
   },
   "frontend/vite.config.js": {
     "sha256": "fab6a73a2c8e936ab2699c7f3799e8769bc160e2c3990f9729dc9c646318f841",
@@ -3254,19 +3260,19 @@
     "method": "Full stable current read in bounded ranges, or exact verified full-read baseline plus complete current diff and own reviewed patch. Truncated confirmation/instructions ranges reread; UNFORGET peer additions fully reread after 3bc498c. Source read is not legal/service/runtime approval."
   },
   "docs/legal-decisions-2026-10-10.md": {
-    "sha256": "07c98b5bd8e8b430345d82c02310c0816001bd6953bb9128ea71adc2ef43a121",
-    "lines": 119,
+    "sha256": "045f3c528b07e6e16513c409eb62b7d70fa8ec5f0b1cc9e53a5b6e2c6dc8791a",
+    "lines": 127,
     "read_ranges": [
       [
         1,
-        119
+        127
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-10T10:45:51.647857+00:00",
-    "method": "Complete current full source read for AuthContext/Hint/useDraft/new migration; for other existing source/docs, exact saved full-read baseline verified against Git and every subsequent diff inspected in bounded complete ranges, including 7c575ed/c17c582 and own patch. UNFORGET baseline-to-current cumulative diff read in 1–50/51–100/101–155 plus fully reviewed own current patch. New probes fully authored/read and executed with stated limits. Source read does not imply live SQL/SDK/device/payment/legal acceptance.",
-    "previous_complete_sha256": "c74501d91ba10a8f59fb98fad740ccd8b6140b379adf5a7cd5f729a0052659c3"
+    "checked_at_utc": "2026-10-10T15:31:07.984520+00:00",
+    "method": "Current helper/confirmation/migrations/legal-decisions/test/archive005 full bounded read. Other source/docs: exact a4aa7fd full-read receipt verified, complete a4aa7fd-to-current diff read and own patch fully authored/reviewed. SQL bodies read, not executed; synthetic/browser probes are qualified evidence, not hosted erasure/legal/device acceptance. Own D5 update incorporates later founder-reported logging-off evidence from f36e07b; not independent provider/dashboard verification.",
+    "previous_complete_sha256": "07c98b5bd8e8b430345d82c02310c0816001bd6953bb9128ea71adc2ef43a121"
   },
   "docs/beta-school-email-draft.md": {
     "sha256": "fad52472854862dbb8278b9b7100fe0200f267a9479975e4f8c9ef996cbff41d",
@@ -3313,19 +3319,19 @@
     "previous_complete_sha256": "72d0076ca70179be6b7d71000b3a7b6072cfb3511b307fb09deaa5bbd6be9c12"
   },
   "frontend/src/pages/Settings.jsx": {
-    "sha256": "d50b280d9725cd060d1573da2b230584bd29277ab71011c12c69a93ee1fba21c",
-    "lines": 1293,
+    "sha256": "d908f9e0ab1c00931a78885346a55e184d98a738b92b2e7c18efe6504a3f9e4e",
+    "lines": 1315,
     "read_ranges": [
       [
         1,
-        1293
+        1315
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-10T10:45:51.647857+00:00",
-    "method": "Complete current full source read for AuthContext/Hint/useDraft/new migration; for other existing source/docs, exact saved full-read baseline verified against Git and every subsequent diff inspected in bounded complete ranges, including 7c575ed/c17c582 and own patch. UNFORGET baseline-to-current cumulative diff read in 1–50/51–100/101–155 plus fully reviewed own current patch. New probes fully authored/read and executed with stated limits. Source read does not imply live SQL/SDK/device/payment/legal acceptance.",
-    "previous_complete_sha256": "24bf3f416ba10657f67701edc430d3e2de9251894ee5fbc1b9ded6da88bb51d0"
+    "checked_at_utc": "2026-10-10T15:31:07.984520+00:00",
+    "method": "Current helper/confirmation/migrations/legal-decisions/test/archive005 full bounded read. Other source/docs: exact a4aa7fd full-read receipt verified, complete a4aa7fd-to-current diff read and own patch fully authored/reviewed. SQL bodies read, not executed; synthetic/browser probes are qualified evidence, not hosted erasure/legal/device acceptance.",
+    "previous_complete_sha256": "d50b280d9725cd060d1573da2b230584bd29277ab71011c12c69a93ee1fba21c"
   },
   "frontend/src/components/decision/decisionTabs.css": {
     "sha256": "5d3bc3ee8d34e5de78287cc8df416678f5a1e9767cbc3686d62e5f160735d1c1",
@@ -5039,5 +5045,131 @@
     ],
     "reviewed_at_utc": "2026-10-10T11:05:38.438999+00:00",
     "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+  },
+  "archive/plans/001-fix-mobile-preview-clipping.md": {
+    "status": "complete",
+    "sha256": "b9753191a80a8908aa19b3c3104b69616665f1d2a6aac8d1a863397b8a186091",
+    "lines": 232,
+    "read_ranges": [
+      [
+        1,
+        232
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T15:11:49.522351+00:00",
+    "method": "All archived plan lines read in complete bounded tool ranges. Historical claims/source paths require current-context notes in the ongoing archive reconciliation; old planned behavior is not implemented again."
+  },
+  "archive/plans/002-fix-paywall-sticky-cluster.md": {
+    "status": "complete",
+    "sha256": "9a682cc6e8aac9ae206ce2d0aa4ad843ecaefd32927802fd0614643adc9ce987",
+    "lines": 278,
+    "read_ranges": [
+      [
+        1,
+        278
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T15:11:49.523050+00:00",
+    "method": "All archived plan lines read in complete bounded tool ranges. Historical claims/source paths require current-context notes in the ongoing archive reconciliation; old planned behavior is not implemented again."
+  },
+  "archive/plans/003-fix-stale-breakpoint-title-sizes.md": {
+    "status": "complete",
+    "sha256": "03cf9f4d4421555c4c16e3767746059b3a9191e94e38bef277206fefa87159b4",
+    "lines": 159,
+    "read_ranges": [
+      [
+        1,
+        159
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T15:11:49.523265+00:00",
+    "method": "All archived plan lines read in complete bounded tool ranges. Historical claims/source paths require current-context notes in the ongoing archive reconciliation; old planned behavior is not implemented again."
+  },
+  "archive/plans/004-search-design-import.md": {
+    "status": "complete",
+    "sha256": "32fbf0837cc83c2dfd0783f5013f729fa87c7d1d5c74e98263a285b2204083c2",
+    "lines": 387,
+    "read_ranges": [
+      [
+        1,
+        387
+      ]
+    ],
+    "reviewed_at_utc": "2026-10-10T15:12:41.789287+00:00",
+    "method": "Complete archived 387-line plan read in 1–150/151–280/281–400 output. Its August synthesis/fonts/width/payment/copy instructions are superseded; current-context annotation is pending archive reconciliation, not implementation."
+  },
+  "archive/plans/005-spacing-typography-migration.md": {
+    "sha256": "9b23f25e23f6c7ecdd2e4e2dabdbe16716b8b7bc13abb14314460a2a3ee3cb32",
+    "lines": 385,
+    "read_ranges": [
+      [
+        1,
+        385
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T15:31:07.984520+00:00",
+    "method": "Current helper/confirmation/migrations/legal-decisions/test/archive005 full bounded read. Other source/docs: exact a4aa7fd full-read receipt verified, complete a4aa7fd-to-current diff read and own patch fully authored/reviewed. SQL bodies read, not executed; synthetic/browser probes are qualified evidence, not hosted erasure/legal/device acceptance.",
+    "previous_complete_sha256": "9b23f25e23f6c7ecdd2e4e2dabdbe16716b8b7bc13abb14314460a2a3ee3cb32"
+  },
+  "migrations/2026-10-10-tracking-withdrawal-guard.sql": {
+    "sha256": "76ff7c72e425690bdd086e3319e5f8deb7deed561206d3295fc4cd0b638ff788",
+    "lines": 80,
+    "read_ranges": [
+      [
+        1,
+        80
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T15:31:07.984520+00:00",
+    "method": "Current helper/confirmation/migrations/legal-decisions/test/archive005 full bounded read. Other source/docs: exact a4aa7fd full-read receipt verified, complete a4aa7fd-to-current diff read and own patch fully authored/reviewed. SQL bodies read, not executed; synthetic/browser probes are qualified evidence, not hosted erasure/legal/device acceptance.",
+    "previous_complete_sha256": null
+  },
+  "migrations/2026-10-10-beta-contributions-archive.sql": {
+    "sha256": "d0a54408f71334f94c0a6f0ae7761c50d219089a9abe3bd06757f47bf3feffa8",
+    "lines": 44,
+    "read_ranges": [
+      [
+        1,
+        44
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T15:31:07.984520+00:00",
+    "method": "Current helper/confirmation/migrations/legal-decisions/test/archive005 full bounded read. Other source/docs: exact a4aa7fd full-read receipt verified, complete a4aa7fd-to-current diff read and own patch fully authored/reviewed. SQL bodies read, not executed; synthetic/browser probes are qualified evidence, not hosted erasure/legal/device acceptance.",
+    "previous_complete_sha256": null
+  },
+  "tests/api-session-retry.test.cjs": {
+    "sha256": "f086d2cb0bfcaed6085b3301561ab3563af54f8e8de2019ad9ee0c8eb7c82a49",
+    "lines": 103,
+    "read_ranges": [
+      [
+        1,
+        103
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T15:31:07.984520+00:00",
+    "method": "Current helper/confirmation/migrations/legal-decisions/test/archive005 full bounded read. Other source/docs: exact a4aa7fd full-read receipt verified, complete a4aa7fd-to-current diff read and own patch fully authored/reviewed. SQL bodies read, not executed; synthetic/browser probes are qualified evidence, not hosted erasure/legal/device acceptance.",
+    "previous_complete_sha256": null
+  },
+  "migrations/2026-10-10-compare-needs-two.sql": {
+    "sha256": "fac6ea68475c6874a9c4286d82787296f4978dac826a6afa8c1e6654a68e3363",
+    "lines": 53,
+    "read_ranges": [
+      [
+        1,
+        53
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T15:36:48.310213+00:00",
+    "method": "Full current migration read; comparison rule/source parity inspected. SQL unexecuted; migration ordering and real fresh/rerun/concurrency acceptance remain open."
   }
 }

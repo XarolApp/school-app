@@ -868,10 +868,6 @@ app.patch('/api/me', requireAuth, async (req, res) => {
   res.json(data);
 });
 
-// GDPR erasure. Deleting the auth account cascades to public.users, favorites,
-// questionnaire_runs, school_reviews, review_reports and data_reports (all
-// foreign-key it with ON DELETE CASCADE), so this one call removes everything
-// we hold. It needs the admin API, hence the service key.
 // The "check your inbox" screen asks this whether the link was opened anywhere
 // (another browser, a phone). Keyed by the unguessable id signUp returned, not
 // the e-mail, so it cannot be used to probe which addresses have accounts.
@@ -883,6 +879,9 @@ app.get('/api/auth/confirmation/:userId', async (req, res) => {
   res.json({ confirmed: Boolean(data.user.email_confirmed_at) });
 });
 
+// Account erasure: remove billing/Storage data before deleting auth and its
+// cascading account rows. Beta contributions may be retained in the separate
+// minimised archive under the founder's D4 choice; it is not guaranteed anonymous.
 app.delete('/api/me', requireAuth, async (req, res) => {
   if (!SERVICE_KEY) {
     return res.status(503).json({ error: 'Mazání účtu není nastavené.' });
@@ -950,7 +949,7 @@ app.delete('/api/me', requireAuth, async (req, res) => {
   // ponytail: a deleteUser failure after this leaves an archive copy that a retry duplicates.
   if (req.body?.delete_contributions !== true) {
     const { error: archiveError } = await supabase.rpc('archive_beta_contributions', { p_user_id: req.user.id });
-    if (archiveError) return res.status(500).json({ error: 'Zpětnou vazbu se nepodařilo anonymizovat. Účet zatím nebyl smazán; zkus to prosím znovu.' });
+    if (archiveError) return res.status(500).json({ error: 'Zpětnou vazbu se nepodařilo uložit bez vazby na účet. Účet zatím nebyl smazán; zkus to prosím znovu.' });
   }
 
   const { error } = await supabase.auth.admin.deleteUser(req.user.id);

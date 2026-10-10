@@ -275,7 +275,7 @@ Every feature idea, organized by category. Rated:
 | Browser-storage consent assessment | 🔥 | Necessary auth/preferences and optional analytics require purpose-specific assessment; no universal banner requirement or exemption. [ÚOOÚ guidance](https://uoou.gov.cz/verejnost/qa-otazky-a-odpovedi/cookies) also covers analogous storage. |
 | Data minimization (don't collect what you don't need) | 🔥 | Grades are personal data in this context; being about a child does not itself make them a GDPR Art. 9 special category. Protect them and assess additional sensitive inferences. |
 | Encrypted storage of grades/personal data | 🔥 | |
-| Supabase RLS and service-only grants | 🔥 | Canonical schema enables RLS on all 26 application tables. Anonymous live probes returned zero rows; authenticated cross-account, RPC and Storage isolation still require verification. Do not describe RLS as disabled or blindly rerun production SQL. |
+| Supabase RLS and service-only grants | 🔥 | Canonical schema enables RLS on all 27 application tables after the 10 October beta archive addition. Anonymous live probes returned zero rows; authenticated cross-account, RPC and Storage isolation still require verification. Do not describe RLS as disabled or blindly rerun production SQL. |
 | Rate limiting on API | 🔥 | Stops scrapers stealing your database |
 | Email verification | ✅ | |
 | 2FA | 🟡 | Overkill for a school-search app |

@@ -16,7 +16,7 @@ BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 ## After the beta: deferred Codex findings (logged 2026-10-10, founder decision)
 
 Founder chose to fix C01, C09, C14, C16 (+ follow-up), C29 and C31 before the testers
-arrive (done 10 October, see the readiness section) and to leave these until after the
+arrive (implemented 10 October; remaining acceptance is scoped below) and to leave these until after the
 beta. Details and reproductions: `reports/deployment-review-2026-10-07/continuation-findings.md`.
 
 - [ ] **C07 — ordinary access trial must start at the first confirmed sign-in**, not at
@@ -35,7 +35,7 @@ beta. Details and reproductions: `reports/deployment-review-2026-10-07/continuat
 
 **Independent recheck of the 10 October peer fixes:** C09's short-screen shrinking and C29's opened map-note overflow pass the specific local phone/landscape checks. C16's originating-token/B-stash and ordinary outage branches pass, but late profile/session-read races remain; C14 storage cleanup does not by itself reset every mounted form; C31's one-page limit can leave screenshots after deleting the account. C01's coarse input/per-tab cache does not enforce aggregate provider limits. Preserve the useful source fixes below without treating them as complete lifecycle acceptance. Exact probe hashes and scope are in `reports/deployment-review-2026-10-07/peer-beta-fixes-2026-10-10.json`; ordered remaining work is in the handoff.
 
-- [ ] **C43 — make usage-recording withdrawal atomic with writes and cleanup:** preserve approved D1/D4; an in-flight actual event handler submits a write after pause/deletes report success, and the canonical RPC does not check `tracking_paused_at`. Partial deletes can leave history while the reloaded Settings copy claims it was removed. Coordinate SQL/consent revision or lock, rankings/events, retryable cleanup, queues and accurate switch state. Read-only metadata exposes the pause column; actual live functions/grants/acceptance remain unverified. See `tracking-withdrawal-race-2026-10-10.json` and the handoff. No live record was changed.
+- [ ] **C43 — verify usage-recording withdrawal locks and complete retryable cleanup:** preserve approved D1/D4 and the new SQL pause check/profile lock/event-ranking triggers. The earlier `tracking-withdrawal-race-2026-10-10.json` records pre-guard source. Current partial-delete faults can leave ranking history while collection is paused; Settings does not refresh on error and later paused copy claims deletion. Verify actual PostgreSQL concurrency, queues, two tabs/re-enable, durable cleanup and accurate pending state. Read-only metadata exposes the pause column; live function/grant/fresh-rerun acceptance remains unverified. See current `contribution-erasure-2026-10-10.json` and the handoff. No live record was changed.
 
 
 **Fixed 10 October (Claude, from Codex findings):** link sharing off on the server
@@ -49,7 +49,7 @@ no longer signs out the new one, and a Supabase auth outage returns 503 instead 
 shrinks below 85 % — short screens scroll normally and skip the step slideshow (C09).
 
 
-**Done (verified or pushed):** single-code access gate (`pristuptestovaciverze`) and one
+**Peer/founder-reported checks and pushed work (10 October):** single-code access gate (`pristuptestovaciverze`) and one
 internal `beta_schools` row (`PRISTUPTESTOVACIVERZE`, ZŠ Jesenicova, never shown to
 testers); beta end 18 Oct 2026 23:59 Prague; all test accounts and the `TEST`/`KOD_SKOLY`
 codes deleted (only the admin account remains); plan-020 catch-up SQL applied
@@ -58,12 +58,11 @@ signed-out visitors get a view-only school page; Registrace CTAs; testers start 
 questionnaire; delete-account verified end to end on the live database; match
 percentages identical on every page (verified live); pros/cons regenerated for all 223
 rows with Luna on flex; AI explanation ("Proč tahle shoda") on the questionnaire and
-school page; Railway/Vercel/Supabase/Turnstile variables checked by the founder.
+school page; Railway/Vercel/Supabase/Turnstile variables checked by the founder. These reported checks do not close the independent score/access/erasure/device acceptance above and in the deployment report.
 
 **Legal decisions of 10 Oct (see `docs/legal-decisions-2026-10-10.md`):** beta tracking is
 now explicit consent (wording in `BetaEnrollment.jsx`, `Legal.jsx` §8–9); school reviews
-stay off; sharing links stay off; feedback/closing answers/private reviews deleted by
-**18 Oct 2027**; DPIA screened as not required for one school. Not a legal sign-off.
+stay off; sharing links stay off. Founder later changed D4 on 10 October: feedback/closing answers/private reviews remain while the account exists; account deletion keeps minimised contributions by default, with a checkbox to delete them instead. Screenshots are always deleted. C46 implementation recovery remains open. DPIA screened as not required for one school. Not a legal sign-off.
 School e-mail: `docs/beta-school-email-draft.md`.
 
 **Still open before / right after the school e-mail**
@@ -71,8 +70,7 @@ School e-mail: `docs/beta-school-email-draft.md`.
 - [x] Tracking-switch race guard applied live 2026-10-10 (`migrations/2026-10-10-tracking-withdrawal-guard.sql`, 2 triggers verified).
 - [x] OpenRouter logging confirmed off by founder 2026-10-10.
 - [x] Applied live 2026-10-10: `migrations/2026-10-10-compare-needs-two.sql` (Porovnání checklist needs 2+ schools).
-- [ ] Founder verifies the vendor facts in the decisions doc, D5 (Supabase region, Brevo
-      owner, OpenRouter logging, operator agrees to be named) and writes the dates there.
+- [x] Founder dated the D5 operator/Supabase-region/Stripe-test/training-toggle confirmations on 10 October. The later founder confirmation also reports OpenRouter input/output logging off; Brevo operator transfer remains open. These confirmations are not independent service acceptance.
 - [x] Applied live 2026-10-10: `migrations/2026-10-10-beta-contributions-archive.sql` (peer reports applied; minimised retention on deletion). Read-only metadata confirms table/RPC presence; C46 failure/retry erasure acceptance remains open.
 - [ ] Parents cannot read the privacy page without the gate code. Either put the code in the
       forwarded text (done) or serve legal pages ungated — the SPA assets are gated too, so
@@ -1794,5 +1792,5 @@ Confirmed score/weight, historical-admission, commute and local/account-storage 
 - [x] C45: fixed the new 401 retry replaying account A's mutation under B. Actual-source account-deletion/refresh/owner tests fail in four cases before the fix and all seven pass afterward; three local browser checks also pass. Explicit owner tokens stay pinned. Broader C02/C14/C16 mounted/queued/profile/sign-out races remain open.
 - [ ] C46: new D4 archive flow needs durable, choice-aware account-erasure recovery. Auth deletion failure after archiving leaves a copy; ordinary retry duplicates it, while a retry selecting deletion leaves the first copy. Preserve founder retention/default policy, prevent duplicates, honor the final accepted choice and verify later manual erasure/publication withdrawal. Actual-handler synthetic fault evidence and ordered steps are in the deployment report/handoff. No live deletion occurred.
 - [ ] C43: the latest SQL now checks the pause flag and guards writes; preserve that source fix. Actual PostgreSQL concurrency/grants/fresh-rerun and partial cleanup still need acceptance. Current fault probe leaves paused collection with ranking cleanup incomplete; Settings does not refresh on error and its paused copy can overstate deletion. Verify two tabs, delayed events/rankings, re-enable and retry cleanup.
-- Current canonical schema has 27 RLS-enabled application tables. Read-only metadata at 17:24 Prague exposes archive columns/RPC and pause column; this does not verify their grants, bodies, authenticated isolation or erasure behavior. D5 founder confirmations remain recorded; Brevo operator transfer and OpenRouter input/output logging remain separately open.
+- Current canonical schema has 27 RLS-enabled application tables. Read-only metadata at 17:24 Prague exposes archive columns/RPC and pause column; this does not verify their grants, bodies, authenticated isolation or erasure behavior. D5 founder confirmations remain recorded; Brevo operator transfer remains open; the founder later reports OpenRouter input/output logging off (f36e07b), with independent service acceptance separate.
 - [ ] C47/B06: new confirmation polling runs every 4 seconds behind the global 300-request/15-minute IP limiter. Thirty same-school waiting clients can consume that budget in about 40 seconds; one client uses 225 polls/window. Coordinate safe polling/backoff/429 recovery, verified proxy topology and accurate provider-outage handling. Source-derived bounds only, no production load test.

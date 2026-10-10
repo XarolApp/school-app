@@ -1257,7 +1257,8 @@ function Settings() {
                   <p className="field-hint">
                     Tvoje zpětné vazby a recenze nám pomáhají web zlepšovat, proto bychom si je rádi
                     nechali. Ponecháme je bez jména, e-mailu a vazby na účet; snímky obrazovky smažeme vždy.
-                    Recenzi, ke které jsi dal(a) souhlas se zveřejněním, můžeme dál anonymně ukázat na webu.
+                    Ve volném textu můžou zůstat osobní údaje, které jsi napsal(a). Recenzi, ke které jsi
+                    dal(a) souhlas se zveřejněním, můžeme dál ukázat bez jména; o její smazání můžeš požádat e-mailem.
                   </p>
                   <label className="checkbox-row" htmlFor="settings-delete-contributions">
                     <input

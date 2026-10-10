@@ -1,0 +1,19 @@
+{
+  "checkedAtUtc": "2026-10-10T15:24:28.784Z",
+  "httpStatus": 200,
+  "tables": {
+    "beta_contributions_archive": {
+      "id": true,
+      "kind": true,
+      "content": true,
+      "created_on": true,
+      "archived_at": true
+    },
+    "beta_profile": {
+      "tracking_paused_at": true,
+      "consent_tracking_at": true
+    }
+  },
+  "archiveRpcExposed": true,
+  "limitation": "Read-only OpenAPI metadata, no user rows or RPC execution. Presence does not prove grants, policies, trigger/function bodies, fresh/rerun, concurrency or erasure acceptance."
+}

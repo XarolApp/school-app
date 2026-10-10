@@ -1,0 +1,99 @@
+Browser tab: 6, Title: "127.0.0.1:5197/?view=settings&status=beta", URL: "http://127.0.0.1:5197/?view=settings&status=beta".
+1 AXWebArea 127.0.0.1:5197/?view=settings&status=beta
+	2 container
+		3 heading Izolované ověření rozhraní, Value: 1
+			4 text Izolované ověření rozhraní
+		5 text Všechny přihlašovací a e-mailové operace jsou simulované. Simulované účetní prostředí:  A
+		6 button Přepnout na účet B
+		7 button Dokončit čekající simulované uložení
+		8 container Simulované požadavky
+			9 text []
+		10 text ÚČET
+		11 heading Nastavení, Value: 1
+			12 text Nastavení
+		13 text Uprav svůj profil a zabezpečení účtu.
+		14 heading Profil, Value: 2
+			15 text Profil
+		16 text Jméno a způsob oslovení.
+		17 container
+			18 text Jméno
+			19 text field (settable) Jméno, Value: Test A, ID: settings-name
+			20 button (disabled) Uložit
+		21 container
+			22 container Jak tě máme oslovovat?
+				23 text Jak tě máme oslovovat?
+				24 container
+					25 radio button (settable, integer) Description: Jako žáka, Value: 0
+					26 text Jako žáka
+				27 container
+					28 radio button (settable, integer) Description: Jako žákyni, Value: 0
+					29 text Jako žákyni
+				30 container
+					31 radio button (settable, integer) Description: Nechci uvádět, Value: 1
+					32 text Nechci uvádět
+				33 text Používáme jen správný tvar slov. „Nechci uvádět“ znamená mužské tvary.
+			34 button (disabled) Uložit oslovení
+		35 text E-mail A@example.test
+		36 button (collapsed) Description: Změnit e-mail, Secondary Actions: Expand
+		37 text Účet vytvořen 28. září 2026
+		38 heading Vzhled, Value: 2
+			39 text Vzhled
+		40 text Barvy a režim se uloží k tvému účtu, takže je uvidíš na každém zařízení.
+		41 container Barvy
+			42 text Barvy
+			43 container
+				44 radio button (settable, integer) Description: Modrá Klidná modrá. Výchozí., Value: 1
+				45 text Modrá Klidná modrá. Výchozí.
+			46 container
+				47 radio button (settable, integer) Description: Žlutá Černá a žlutá jako zvýrazňovač., Value: 0
+				48 text Žlutá Černá a žlutá jako zvýrazňovač.
+			49 container
+				50 radio button (settable, integer) Description: Zelená Tmavě zelená, klidná., Value: 0
+				51 text Zelená Tmavě zelená, klidná.
+			52 container
+				53 radio button (settable, integer) Description: Oranžová Teplá cihlově oranžová., Value: 0
+				54 text Oranžová Teplá cihlově oranžová.
+		55 container Režim
+			56 text Režim
+			57 Režim
+				58 radio button (settable, integer) Description: Podle zařízení, Value: 1
+				59 radio button (settable, integer) Description: Světlý, Value: 0
+				60 radio button (settable, integer) Description: Tmavý, Value: 0
+			61 text „Podle zařízení“ se řídí nastavením telefonu nebo počítače.
+		62 heading Zabezpečení, Value: 2
+			63 text Zabezpečení
+		64 text Heslo a přihlášení na tomhle i ostatních zařízeních.
+		65 text Heslo Pro změnu potřebuješ zadat současné heslo.
+		66 button (collapsed) Description: Změnit heslo, Secondary Actions: Expand
+		67 container
+			68 checkbox (settable, integer) Description: Zůstat přihlášený Vypni na cizím nebo školním počítači — přihlášení pak skončí zavřením prohlížeče., Value: 1, ID: settings-remember
+			69 text Zůstat přihlášený Vypni na cizím nebo školním počítači — přihlášení pak skončí zavřením prohlížeče.
+		70 text Odhlásit všude Ukončí přihlášení na všech zařízeních včetně tohoto.
+		71 button Odhlásit všude
+		72 heading Předplatné, Value: 2
+			73 text Předplatné
+		74 text Stav tvého přístupu k databázi škol.
+		75 text Stav Beta tester BETA TESTER
+		76 container Zbývající čas přístupu
+			77 text PŘÍSTUP ZBÝVÁ
+			78 text 24 h 00 min 00 s
+			79 text Přístup obnoví zpráva přes „Zpětná vazba“, nejdéle do konce programu. Rychlé hodnocení časovač nemění.
+		80 button Poslat zpětnou vazbu
+		81 text Záznam používání
+		82 text Během testování zaznamenáváme, které stránky otevíráš a na co klikáš — bez e-mailu, odpovědí z dotazníku a textů, které píšeš. Pomáhá nám to najít místa, kde se lidé ztrácejí, a podle toho se sám odškrtává seznam „Co vyzkoušet“.
+		83 text Když záznam vypneš, nic dalšího se už nezaznamená a smažeme i to, co jsme o tvém používání zatím zaznamenali. Testovat můžeš dál a zpětná vazba funguje stejně, jen se seznam „Co vyzkoušet“ přestane sám odškrtávat. Zapnout ho můžeš kdykoli zase.
+		84 switch Description: Záznam používání, Value: 1
+		85 heading Smazat účet, Value: 2
+			86 text Smazat účet
+		87 text Trvale odstraní tvůj účet i všechno, co k němu patří: odpovědi v dotazníku, uložené školy, přihlášku, poznámky a případné předplatné. Zpětné vazby a recenze z testování ponecháme bez vazby na tebe, pokud níže nezvolíš jejich smazání. Tohle nejde vzít zpět.
+		88 container settings-form-delete
+			89 text Pro potvrzení opiš svůj e-mail
+			90 text field (settable) Pro potvrzení opiš svůj e-mail, ID: settings-delete-confirm
+			91 text Tvoje zpětné vazby a recenze nám pomáhají web zlepšovat, proto bychom si je rádi nechali. Ponecháme je bez jména, e-mailu a vazby na účet; snímky obrazovky smažeme vždy. Ve volném textu můžou zůstat osobní údaje, které jsi napsal(a). Recenzi, ke které jsi dal(a) souhlas se zveřejněním, můžeme dál ukázat bez jména; o její smazání můžeš požádat e-mailem.
+			92 container
+				93 checkbox (settable, integer) Description: Smazat i moje zpětné vazby, závěrečné odpovědi a recenze, Value: 1, ID: settings-delete-contributions
+				94 text Smazat i moje zpětné vazby, závěrečné odpovědi a recenze
+			95 button (disabled) Nenávratně smazat účet
+			96 button Zrušit
+
+The focused UI element is 93 checkbox (settable, integer) Description: Smazat i moje zpětné vazby, závěrečné odpovědi a recenze, Value: 1, ID: settings-delete-contributions

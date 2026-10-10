@@ -1,0 +1,61 @@
+{
+  "checkedAtUtc": "2026-10-10T15:31:07.984520+00:00",
+  "sourceHashes": {
+    "frontend/src/api.js": "a545cb179681a87378f41cf928cff50e1ae6c2e539c4bbacf373590af9f8ab8a",
+    "server.js": "646ec868b16f3b3adc3956abd9f214cedef0824ec61a074c88ec51a98f8dede9",
+    "frontend/src/pages/Settings.jsx": "d908f9e0ab1c00931a78885346a55e184d98a738b92b2e7c18efe6504a3f9e4e",
+    "supabase-setup.sql": "d6c672f8cc698e7d5a143173051c4b673d6e1d93839cbf87d2b9315ea17238e0",
+    "frontend/src/components/AuthContext.jsx": "172aef4bf969a82c86ebe35906edb75b7f54f597c08e28a51a08ee4dfc14b005",
+    "frontend/src/pages/Legal.jsx": "601bade2cc187ee9495d497ce427caff48d32056810db6a6dae68bce07086f94",
+    "frontend/src/components/ConfirmEmailWaiting.jsx": "7f34cbf97f2a02999d1b268a9b2c80c095a52e50c8cb6850acf12f14b2f85508",
+    "migrations/2026-10-10-tracking-withdrawal-guard.sql": "76ff7c72e425690bdd086e3319e5f8deb7deed561206d3295fc4cd0b638ff788",
+    "migrations/2026-10-10-beta-contributions-archive.sql": "d0a54408f71334f94c0a6f0ae7761c50d219089a9abe3bd06757f47bf3feffa8",
+    "docs/legal-decisions-2026-10-10.md": "045f3c528b07e6e16513c409eb62b7d70fa8ec5f0b1cc9e53a5b6e2c6dc8791a",
+    "AGENTS.md": "eea2f424b50a9cd82ac9cdb3b1e8195ba5c365a8ac41022f4b108318ef23e5a1",
+    "CLAUDE.md": "374846cd20726f75ee4e1c61c5038dc49d854ea063abe6241331106bfd9f19d6",
+    "docs/sources/feature-brainstorm.md": "49050ccc4766c2f76120b5274f684efc4cdfa0210140b3e446e76edf1a76641c",
+    "tests/api-session-retry.test.cjs": "f086d2cb0bfcaed6085b3301561ab3563af54f8e8de2019ad9ee0c8eb7c82a49",
+    "UNFORGET.md": "a56d853b022503f30ac0f6f5737052a5e4f8ae448f3b017b0b1ffa86c71be65a"
+  },
+  "authRetry": {
+    "before": {
+      "tests": 7,
+      "passed": 3,
+      "failed": 4
+    },
+    "after": {
+      "tests": 7,
+      "passed": 7
+    },
+    "browserScenarios": [
+      "switch before 401",
+      "switch during refresh",
+      "same-owner success"
+    ],
+    "services": "Synthetic sessions/fetch only, real API helper source with imports/environment replaced."
+  },
+  "validation": {
+    "repositoryTests": 188,
+    "passed": 188,
+    "frontendLintExit": 0,
+    "frontendLintWarnings": 11,
+    "frontendBuildExit": 0
+  },
+  "settingsCopy": {
+    "actualComponent": true,
+    "phoneViewport": {
+      "width": 375,
+      "height": 812,
+      "documentWidth": 375
+    },
+    "deleteCheckbox": "checked then no form submission"
+  },
+  "archiveAndTracking": "contribution-erasure-2026-10-10.json and archive-tracking-schema-2026-10-10.json",
+  "limitation": "No hosted mutation, real account/email/Storage/payment operation, production load test or executed PostgreSQL concurrency. D1/D4 preserved. Whole-project review incomplete.",
+  "peerUpdatesDuringCheck": {
+    "throughCommit": "f36e07bf36b9163222df051eba968a4a9e40b3c3",
+    "comparisonMigration": "Full read; DB execution unverified",
+    "authFormChanges": "65fa9bc observed; full source re-review queued",
+    "vendorLogging": "Later founder confirmation recorded; independent provider acceptance separate"
+  }
+}
