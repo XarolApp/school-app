@@ -17,7 +17,7 @@ Immediately after fixing any bug, before reporting the fix as complete — not a
 
 2. **Search for every place that pattern could recur.** Use Grep for the structural signature of the bug — a specific function call, a missing null check, a hardcoded value that should have come from config, a copy-pasted block. In this codebase specifically, watch for:
    - The same mistake made in both `frontend/src/lib/matching.js` (onboarding scoring) and `lib/matching.js` (standalone questionnaire scoring) — these are separately-maintained, structurally similar files, exactly the kind of pair this skill exists for.
-   - The two `Paywall`-shaped surfaces (`pages/onboarding/screens/Paywall.jsx` and `pages/SubscriptionExpired.jsx`) — a payment-flow bug fixed in one is worth checking in the other.
+   - The paywall flow (`frontend/src/pages/onboarding/screens/Hodnota.jsx`, `Cesta.jsx`, `Plan.jsx`, `Zkusebni.jsx`, `Platba.jsx`) and `frontend/src/pages/SubscriptionExpired.jsx` — a payment-flow bug fixed in one is worth checking in the other.
    - Anywhere `requireAuth`/`requireAccess`/`optionalAuth` gating logic is duplicated by hand rather than reused.
    - Anywhere a hardcoded color/radius/font sneaks in despite the "tokens.js only" rule (CLAUDE.md is explicit that this is a recurring temptation).
 

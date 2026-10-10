@@ -5590,7 +5590,7 @@
     "method": "Full bounded current reads; where amended, verified complete baseline plus all owned edits/current exact differences. Claude copies: complete read common content plus exact platform differences. Runtime read does not mean release acceptance."
   },
   ".agents/skills/skill-reviewer/SKILL.md": {
-    "sha256": "9e2fbd8b88867a660d50f466c6a1a2e87783c013bad32c856172901984169c2c",
+    "sha256": "3516963925ebe8dd7702a4b71974d2d1f0ca851a55e1ed387c5e026534cb1b16",
     "lines": 72,
     "read_ranges": [
       [
@@ -5600,8 +5600,8 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-10T20:59:50.660757+00:00",
-    "method": "Full bounded current reads; where amended, verified complete baseline plus all owned edits/current exact differences. Claude copies: complete read common content plus exact platform differences. Runtime read does not mean release acceptance."
+    "checked_at_utc": "2026-10-10T21:07:14.884159+00:00",
+    "method": "Complete bounded base reads with repaired truncation ranges; each paired copy byte-compared (identical or complete platform differences read). Own seven narrow documentation/example amendments read. Favicon exact bytes match fully read frontend/public/favicon.svg. Optional guides are not proof of installed package APIs or application release acceptance."
   },
   ".claude/skills/skill-reviewer/SKILL.md": {
     "sha256": "de175d841974edfac54ffa1306cbb7e5749ccfb05867d804bf232fa6117a3c92",
@@ -5616,5 +5616,369 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-10T20:59:50.660757+00:00",
     "method": "Full bounded current reads; where amended, verified complete baseline plus all owned edits/current exact differences. Claude copies: complete read common content plus exact platform differences. Runtime read does not mean release acceptance."
+  },
+  ".agents/skills/bug-echo/SKILL.md": {
+    "sha256": "30dbf4a1836cb559bfd20195887f160b6e7500c98379fe8caec0fb4d8863539b",
+    "lines": 44,
+    "read_ranges": [
+      [
+        1,
+        44
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:07:14.884159+00:00",
+    "method": "Complete bounded base reads with repaired truncation ranges; each paired copy byte-compared (identical or complete platform differences read). Own seven narrow documentation/example amendments read. Favicon exact bytes match fully read frontend/public/favicon.svg. Optional guides are not proof of installed package APIs or application release acceptance."
+  },
+  ".agents/skills/prompter/SKILL.md": {
+    "sha256": "2589275b1efed97763a1ee49bb942e64fad7d57eb8f556bbc08aed2d5c9e670c",
+    "lines": 40,
+    "read_ranges": [
+      [
+        1,
+        40
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:07:14.884159+00:00",
+    "method": "Complete bounded base reads with repaired truncation ranges; each paired copy byte-compared (identical or complete platform differences read). Own seven narrow documentation/example amendments read. Favicon exact bytes match fully read frontend/public/favicon.svg. Optional guides are not proof of installed package APIs or application release acceptance."
+  },
+  ".agents/skills/unforget/SKILL.md": {
+    "sha256": "735b2849c97641109e8acd806c69dd16fd91d7b5990730e40c862527d92db3ad",
+    "lines": 56,
+    "read_ranges": [
+      [
+        1,
+        56
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:07:14.884159+00:00",
+    "method": "Complete bounded base reads with repaired truncation ranges; each paired copy byte-compared (identical or complete platform differences read). Own seven narrow documentation/example amendments read. Favicon exact bytes match fully read frontend/public/favicon.svg. Optional guides are not proof of installed package APIs or application release acceptance."
+  },
+  ".agents/skills/ask-sonner/SKILL.md": {
+    "sha256": "be1b04511aadb4d7d81aa8cd2b55c260a626aae534983bc8ae3fbe26bbf48632",
+    "lines": 80,
+    "read_ranges": [
+      [
+        1,
+        80
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:07:14.884159+00:00",
+    "method": "Complete bounded base reads with repaired truncation ranges; each paired copy byte-compared (identical or complete platform differences read). Own seven narrow documentation/example amendments read. Favicon exact bytes match fully read frontend/public/favicon.svg. Optional guides are not proof of installed package APIs or application release acceptance."
+  },
+  ".agents/skills/ask-sonner/API.md": {
+    "sha256": "4bb06f482c5757529e3d7a672a30fbeed42d24919a63e2571384a9ce1549aa7f",
+    "lines": 64,
+    "read_ranges": [
+      [
+        1,
+        64
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:07:14.884159+00:00",
+    "method": "Complete bounded base reads with repaired truncation ranges; each paired copy byte-compared (identical or complete platform differences read). Own seven narrow documentation/example amendments read. Favicon exact bytes match fully read frontend/public/favicon.svg. Optional guides are not proof of installed package APIs or application release acceptance."
+  },
+  ".agents/skills/improve/SKILL.md": {
+    "sha256": "bfe345b389d0e99a619983b7f00e1e39e130f3bc5edb190637a5c308b6dcfe5c",
+    "lines": 122,
+    "read_ranges": [
+      [
+        1,
+        122
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:07:14.884159+00:00",
+    "method": "Complete bounded base reads with repaired truncation ranges; each paired copy byte-compared (identical or complete platform differences read). Own seven narrow documentation/example amendments read. Favicon exact bytes match fully read frontend/public/favicon.svg. Optional guides are not proof of installed package APIs or application release acceptance."
+  },
+  ".agents/skills/improve/references/audit-playbook.md": {
+    "sha256": "587c1b927070f3c28139ad95ac34cc21a7da32618cfeb966cb774e58a865d4c8",
+    "lines": 130,
+    "read_ranges": [
+      [
+        1,
+        130
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:07:14.884159+00:00",
+    "method": "Complete bounded base reads with repaired truncation ranges; each paired copy byte-compared (identical or complete platform differences read). Own seven narrow documentation/example amendments read. Favicon exact bytes match fully read frontend/public/favicon.svg. Optional guides are not proof of installed package APIs or application release acceptance."
+  },
+  ".agents/skills/improve/references/closing-the-loop.md": {
+    "sha256": "5d526bb378e1783bbeb68d7af527776cbe98cde27a1aeccbd13e818e5b73b454",
+    "lines": 96,
+    "read_ranges": [
+      [
+        1,
+        96
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:07:14.884159+00:00",
+    "method": "Complete bounded base reads with repaired truncation ranges; each paired copy byte-compared (identical or complete platform differences read). Own seven narrow documentation/example amendments read. Favicon exact bytes match fully read frontend/public/favicon.svg. Optional guides are not proof of installed package APIs or application release acceptance."
+  },
+  ".agents/skills/improve/references/plan-template.md": {
+    "sha256": "7be76dd3c29442288fa7cee4432fc6e95c2fdbf748c9b356344bf647c5f8722e",
+    "lines": 197,
+    "read_ranges": [
+      [
+        1,
+        197
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:07:14.884159+00:00",
+    "method": "Complete bounded base reads with repaired truncation ranges; each paired copy byte-compared (identical or complete platform differences read). Own seven narrow documentation/example amendments read. Favicon exact bytes match fully read frontend/public/favicon.svg. Optional guides are not proof of installed package APIs or application release acceptance."
+  },
+  ".agents/skills/pick-ui-library/SKILL.md": {
+    "sha256": "4b889bd6c08358499ac4a7202b8af71ffbd3485d2468f7b09d0613bbe7b24bf4",
+    "lines": 77,
+    "read_ranges": [
+      [
+        1,
+        77
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:07:14.884159+00:00",
+    "method": "Complete bounded base reads with repaired truncation ranges; each paired copy byte-compared (identical or complete platform differences read). Own seven narrow documentation/example amendments read. Favicon exact bytes match fully read frontend/public/favicon.svg. Optional guides are not proof of installed package APIs or application release acceptance."
+  },
+  ".agents/skills/prototype/SKILL.md": {
+    "sha256": "2ad8401c4deaddb54947fb65247f790e7b3d8784e35312bcbedbfb1d59cd89ce",
+    "lines": 90,
+    "read_ranges": [
+      [
+        1,
+        90
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:07:14.884159+00:00",
+    "method": "Complete bounded base reads with repaired truncation ranges; each paired copy byte-compared (identical or complete platform differences read). Own seven narrow documentation/example amendments read. Favicon exact bytes match fully read frontend/public/favicon.svg. Optional guides are not proof of installed package APIs or application release acceptance."
+  },
+  ".agents/skills/prototype/PICKER.md": {
+    "sha256": "2ff67166578bdb6727c58ee11fcb781eec766ad7cfc545fd25c735fe3754bfb1",
+    "lines": 198,
+    "read_ranges": [
+      [
+        1,
+        198
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:07:14.884159+00:00",
+    "method": "Complete bounded base reads with repaired truncation ranges; each paired copy byte-compared (identical or complete platform differences read). Own seven narrow documentation/example amendments read. Favicon exact bytes match fully read frontend/public/favicon.svg. Optional guides are not proof of installed package APIs or application release acceptance."
+  },
+  ".claude/skills/bug-echo/SKILL.md": {
+    "sha256": "62d03298caf74b63b05b9c0201c51835cbf18c1ecfddc90bde84d4c23f3dd7de",
+    "lines": 44,
+    "read_ranges": [
+      [
+        1,
+        44
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:07:14.884159+00:00",
+    "method": "Complete bounded base reads with repaired truncation ranges; each paired copy byte-compared (identical or complete platform differences read). Own seven narrow documentation/example amendments read. Favicon exact bytes match fully read frontend/public/favicon.svg. Optional guides are not proof of installed package APIs or application release acceptance."
+  },
+  ".claude/skills/prompter/SKILL.md": {
+    "sha256": "9d736ca5d288d28757a3249488f4eeaf1c1eefb97263d39ccda4533acf379ef8",
+    "lines": 40,
+    "read_ranges": [
+      [
+        1,
+        40
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:07:14.884159+00:00",
+    "method": "Complete bounded base reads with repaired truncation ranges; each paired copy byte-compared (identical or complete platform differences read). Own seven narrow documentation/example amendments read. Favicon exact bytes match fully read frontend/public/favicon.svg. Optional guides are not proof of installed package APIs or application release acceptance."
+  },
+  ".claude/skills/unforget/SKILL.md": {
+    "sha256": "27946b66ec6e3427750b5a5d04313091ef39fdd40dded1200d5d3ac55e354056",
+    "lines": 56,
+    "read_ranges": [
+      [
+        1,
+        56
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:07:14.884159+00:00",
+    "method": "Complete bounded base reads with repaired truncation ranges; each paired copy byte-compared (identical or complete platform differences read). Own seven narrow documentation/example amendments read. Favicon exact bytes match fully read frontend/public/favicon.svg. Optional guides are not proof of installed package APIs or application release acceptance."
+  },
+  ".claude/skills/ask-sonner/SKILL.md": {
+    "sha256": "be1b04511aadb4d7d81aa8cd2b55c260a626aae534983bc8ae3fbe26bbf48632",
+    "lines": 80,
+    "read_ranges": [
+      [
+        1,
+        80
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:07:14.884159+00:00",
+    "method": "Complete bounded base reads with repaired truncation ranges; each paired copy byte-compared (identical or complete platform differences read). Own seven narrow documentation/example amendments read. Favicon exact bytes match fully read frontend/public/favicon.svg. Optional guides are not proof of installed package APIs or application release acceptance."
+  },
+  ".claude/skills/ask-sonner/API.md": {
+    "sha256": "4bb06f482c5757529e3d7a672a30fbeed42d24919a63e2571384a9ce1549aa7f",
+    "lines": 64,
+    "read_ranges": [
+      [
+        1,
+        64
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:07:14.884159+00:00",
+    "method": "Complete bounded base reads with repaired truncation ranges; each paired copy byte-compared (identical or complete platform differences read). Own seven narrow documentation/example amendments read. Favicon exact bytes match fully read frontend/public/favicon.svg. Optional guides are not proof of installed package APIs or application release acceptance."
+  },
+  ".claude/skills/improve/SKILL.md": {
+    "sha256": "1599aa29e9b16424cb767779efac53fa56e3f38be92dff4ac587393a1ad5070a",
+    "lines": 122,
+    "read_ranges": [
+      [
+        1,
+        122
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:07:14.884159+00:00",
+    "method": "Complete bounded base reads with repaired truncation ranges; each paired copy byte-compared (identical or complete platform differences read). Own seven narrow documentation/example amendments read. Favicon exact bytes match fully read frontend/public/favicon.svg. Optional guides are not proof of installed package APIs or application release acceptance."
+  },
+  ".claude/skills/improve/references/audit-playbook.md": {
+    "sha256": "587c1b927070f3c28139ad95ac34cc21a7da32618cfeb966cb774e58a865d4c8",
+    "lines": 130,
+    "read_ranges": [
+      [
+        1,
+        130
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:07:14.884159+00:00",
+    "method": "Complete bounded base reads with repaired truncation ranges; each paired copy byte-compared (identical or complete platform differences read). Own seven narrow documentation/example amendments read. Favicon exact bytes match fully read frontend/public/favicon.svg. Optional guides are not proof of installed package APIs or application release acceptance."
+  },
+  ".claude/skills/improve/references/closing-the-loop.md": {
+    "sha256": "5d526bb378e1783bbeb68d7af527776cbe98cde27a1aeccbd13e818e5b73b454",
+    "lines": 96,
+    "read_ranges": [
+      [
+        1,
+        96
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:07:14.884159+00:00",
+    "method": "Complete bounded base reads with repaired truncation ranges; each paired copy byte-compared (identical or complete platform differences read). Own seven narrow documentation/example amendments read. Favicon exact bytes match fully read frontend/public/favicon.svg. Optional guides are not proof of installed package APIs or application release acceptance."
+  },
+  ".claude/skills/improve/references/plan-template.md": {
+    "sha256": "7be76dd3c29442288fa7cee4432fc6e95c2fdbf748c9b356344bf647c5f8722e",
+    "lines": 197,
+    "read_ranges": [
+      [
+        1,
+        197
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:07:14.884159+00:00",
+    "method": "Complete bounded base reads with repaired truncation ranges; each paired copy byte-compared (identical or complete platform differences read). Own seven narrow documentation/example amendments read. Favicon exact bytes match fully read frontend/public/favicon.svg. Optional guides are not proof of installed package APIs or application release acceptance."
+  },
+  ".claude/skills/pick-ui-library/SKILL.md": {
+    "sha256": "4b889bd6c08358499ac4a7202b8af71ffbd3485d2468f7b09d0613bbe7b24bf4",
+    "lines": 77,
+    "read_ranges": [
+      [
+        1,
+        77
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:07:14.884159+00:00",
+    "method": "Complete bounded base reads with repaired truncation ranges; each paired copy byte-compared (identical or complete platform differences read). Own seven narrow documentation/example amendments read. Favicon exact bytes match fully read frontend/public/favicon.svg. Optional guides are not proof of installed package APIs or application release acceptance."
+  },
+  ".claude/skills/prototype/SKILL.md": {
+    "sha256": "2ad8401c4deaddb54947fb65247f790e7b3d8784e35312bcbedbfb1d59cd89ce",
+    "lines": 90,
+    "read_ranges": [
+      [
+        1,
+        90
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:07:14.884159+00:00",
+    "method": "Complete bounded base reads with repaired truncation ranges; each paired copy byte-compared (identical or complete platform differences read). Own seven narrow documentation/example amendments read. Favicon exact bytes match fully read frontend/public/favicon.svg. Optional guides are not proof of installed package APIs or application release acceptance."
+  },
+  ".claude/skills/prototype/PICKER.md": {
+    "sha256": "2ff67166578bdb6727c58ee11fcb781eec766ad7cfc545fd25c735fe3754bfb1",
+    "lines": 198,
+    "read_ranges": [
+      [
+        1,
+        198
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:07:14.884159+00:00",
+    "method": "Complete bounded base reads with repaired truncation ranges; each paired copy byte-compared (identical or complete platform differences read). Own seven narrow documentation/example amendments read. Favicon exact bytes match fully read frontend/public/favicon.svg. Optional guides are not proof of installed package APIs or application release acceptance."
+  },
+  ".claude/skills/landing-page-design/SKILL.md": {
+    "sha256": "8415e1d169e611ff9c39849161701a4da41ac6f0c61d1cdc99f26bb7fc26e71a",
+    "lines": 417,
+    "read_ranges": [
+      [
+        1,
+        417
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:07:14.884159+00:00",
+    "method": "Complete bounded base reads with repaired truncation ranges; each paired copy byte-compared (identical or complete platform differences read). Own seven narrow documentation/example amendments read. Favicon exact bytes match fully read frontend/public/favicon.svg. Optional guides are not proof of installed package APIs or application release acceptance."
+  },
+  "design/brand/favicon.svg": {
+    "sha256": "c8c5f3efe80d3a5008955b24de19bc1ffb3fb3a1fbc7ab8f2ce6c37e13e2565a",
+    "lines": 1,
+    "read_ranges": [
+      [
+        1,
+        1
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T21:07:14.884159+00:00",
+    "method": "Complete bounded base reads with repaired truncation ranges; each paired copy byte-compared (identical or complete platform differences read). Own seven narrow documentation/example amendments read. Favicon exact bytes match fully read frontend/public/favicon.svg. Optional guides are not proof of installed package APIs or application release acceptance."
   }
 }

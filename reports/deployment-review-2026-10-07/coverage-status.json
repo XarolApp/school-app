@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-10T21:01:59.701996+00:00",
-  "commit": "e722aeedefa5a1cfb035104a0cb36269f99cd266",
+  "checked_at_utc": "2026-10-10T21:07:15.220200+00:00",
+  "commit": "7bc008d1fdde5d8ced299d10cb8c8b6c39eca6bf",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "pending_or_changed": 372,
-    "current_full_read": 419,
+    "pending_or_changed": 347,
+    "current_full_read": 445,
     "binary_requires_asset_check": 105,
-    "generated_or_audit_artifact": 158,
+    "generated_or_audit_artifact": 162,
     "removed_or_missing": 2
   },
   "files": [
@@ -56,22 +56,28 @@
       "path": ".agents/skills/ask-sonner/API.md",
       "sha256": "4bb06f482c5757529e3d7a672a30fbeed42d24919a63e2571384a9ce1549aa7f",
       "lines": 64,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/ask-sonner/SKILL.md",
       "sha256": "be1b04511aadb4d7d81aa8cd2b55c260a626aae534983bc8ae3fbe26bbf48632",
       "lines": 80,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/bug-echo/SKILL.md",
-      "sha256": "967274b88df481787f1c26b49f3f002ddf764793f7ec233df3302d5f34d5c8f5",
+      "sha256": "30dbf4a1836cb559bfd20195887f160b6e7500c98379fe8caec0fb4d8863539b",
       "lines": 44,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/claude-only-plan-then-build/SKILL.md",
@@ -230,31 +236,39 @@
     },
     {
       "path": ".agents/skills/improve/SKILL.md",
-      "sha256": "19c6c60fe668bed47ab164fc3d26dc5978c9ef2f234ba39ce71226d5d1921481",
+      "sha256": "bfe345b389d0e99a619983b7f00e1e39e130f3bc5edb190637a5c308b6dcfe5c",
       "lines": 122,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/improve/references/audit-playbook.md",
       "sha256": "587c1b927070f3c28139ad95ac34cc21a7da32618cfeb966cb774e58a865d4c8",
       "lines": 130,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/improve/references/closing-the-loop.md",
       "sha256": "5d526bb378e1783bbeb68d7af527776cbe98cde27a1aeccbd13e818e5b73b454",
       "lines": 96,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/improve/references/plan-template.md",
       "sha256": "7be76dd3c29442288fa7cee4432fc6e95c2fdbf748c9b356344bf647c5f8722e",
       "lines": 197,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/landing-page-design/SKILL.md",
@@ -297,8 +311,10 @@
       "path": ".agents/skills/pick-ui-library/SKILL.md",
       "sha256": "4b889bd6c08358499ac4a7202b8af71ffbd3485d2468f7b09d0613bbe7b24bf4",
       "lines": 77,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/plan-then-build/SKILL.md",
@@ -311,24 +327,30 @@
     },
     {
       "path": ".agents/skills/prompter/SKILL.md",
-      "sha256": "527285d9795c0c58dd685621ecdd1259b33b8d60bb0de28864b864e97cdf4e07",
+      "sha256": "2589275b1efed97763a1ee49bb942e64fad7d57eb8f556bbc08aed2d5c9e670c",
       "lines": 40,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/prototype/PICKER.md",
-      "sha256": "31a55eec94715cc79942e91e172e539e3031dcd5e2e5ee7c1446cf2caee960a6",
-      "lines": 197,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "2ff67166578bdb6727c58ee11fcb781eec766ad7cfc545fd25c735fe3754bfb1",
+      "lines": 198,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/prototype/SKILL.md",
       "sha256": "2ad8401c4deaddb54947fb65247f790e7b3d8784e35312bcbedbfb1d59cd89ce",
       "lines": 90,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/review-animations/SKILL.md",
@@ -346,7 +368,7 @@
     },
     {
       "path": ".agents/skills/skill-reviewer/SKILL.md",
-      "sha256": "9e2fbd8b88867a660d50f466c6a1a2e87783c013bad32c856172901984169c2c",
+      "sha256": "3516963925ebe8dd7702a4b71974d2d1f0ca851a55e1ed387c5e026534cb1b16",
       "lines": 72,
       "status": "current_full_read",
       "matching_evidence": [
@@ -357,8 +379,10 @@
       "path": ".agents/skills/unforget/SKILL.md",
       "sha256": "735b2849c97641109e8acd806c69dd16fd91d7b5990730e40c862527d92db3ad",
       "lines": 56,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/write-swift/SKILL.md",
@@ -458,22 +482,28 @@
       "path": ".claude/skills/ask-sonner/API.md",
       "sha256": "4bb06f482c5757529e3d7a672a30fbeed42d24919a63e2571384a9ce1549aa7f",
       "lines": 64,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/ask-sonner/SKILL.md",
       "sha256": "be1b04511aadb4d7d81aa8cd2b55c260a626aae534983bc8ae3fbe26bbf48632",
       "lines": 80,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/bug-echo/SKILL.md",
-      "sha256": "c9dc274a9defdc1afa5bd1b0fba6f3f79bbd8b469d6157554fefd3bd34a0dd30",
+      "sha256": "62d03298caf74b63b05b9c0201c51835cbf18c1ecfddc90bde84d4c23f3dd7de",
       "lines": 44,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/claude-plan-then-build/SKILL.md",
@@ -607,36 +637,46 @@
       "path": ".claude/skills/improve/SKILL.md",
       "sha256": "1599aa29e9b16424cb767779efac53fa56e3f38be92dff4ac587393a1ad5070a",
       "lines": 122,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/improve/references/audit-playbook.md",
       "sha256": "587c1b927070f3c28139ad95ac34cc21a7da32618cfeb966cb774e58a865d4c8",
       "lines": 130,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/improve/references/closing-the-loop.md",
       "sha256": "5d526bb378e1783bbeb68d7af527776cbe98cde27a1aeccbd13e818e5b73b454",
       "lines": 96,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/improve/references/plan-template.md",
       "sha256": "7be76dd3c29442288fa7cee4432fc6e95c2fdbf748c9b356344bf647c5f8722e",
       "lines": 197,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/landing-page-design/SKILL.md",
       "sha256": "8415e1d169e611ff9c39849161701a4da41ac6f0c61d1cdc99f26bb7fc26e71a",
       "lines": 417,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/mobbin-core-product-patterns/SKILL.md",
@@ -670,8 +710,10 @@
       "path": ".claude/skills/pick-ui-library/SKILL.md",
       "sha256": "4b889bd6c08358499ac4a7202b8af71ffbd3485d2468f7b09d0613bbe7b24bf4",
       "lines": 77,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/plan-then-build/SKILL.md",
@@ -686,22 +728,28 @@
       "path": ".claude/skills/prompter/SKILL.md",
       "sha256": "9d736ca5d288d28757a3249488f4eeaf1c1eefb97263d39ccda4533acf379ef8",
       "lines": 40,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/prototype/PICKER.md",
-      "sha256": "31a55eec94715cc79942e91e172e539e3031dcd5e2e5ee7c1446cf2caee960a6",
-      "lines": 197,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "2ff67166578bdb6727c58ee11fcb781eec766ad7cfc545fd25c735fe3754bfb1",
+      "lines": 198,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/prototype/SKILL.md",
       "sha256": "2ad8401c4deaddb54947fb65247f790e7b3d8784e35312bcbedbfb1d59cd89ce",
       "lines": 90,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/review-animations/SKILL.md",
@@ -730,8 +778,10 @@
       "path": ".claude/skills/unforget/SKILL.md",
       "sha256": "27946b66ec6e3427750b5a5d04313091ef39fdd40dded1200d5d3ac55e354056",
       "lines": 56,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/write-swift/SKILL.md",
@@ -1277,8 +1327,10 @@
       "path": "design/brand/favicon.svg",
       "sha256": "c8c5f3efe80d3a5008955b24de19bc1ffb3fb3a1fbc7ab8f2ce6c37e13e2565a",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/brand/ikona-512.png",
@@ -5936,22 +5988,22 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "ad78884ab05718a7f341b6a37d0402d992c279d43b374e7e30ed748f522dcd53",
-      "lines": 354,
+      "sha256": "0f2b2508b2f5425edbc2e7602edb694e52397fae2aeaf98ef86a3ce74d7f23ec",
+      "lines": 358,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "eefe8843de489b70bb1c1d960dbfce5cc7ead597d2fa1dfc36ed0eb843b2559d",
-      "lines": 233,
+      "sha256": "ceb77b440770916be3f32cfb62d61fc7ce4141a505cb2c6e365cb7a3b1b4a765",
+      "lines": 235,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "a3355db6d32d6082463a5c7faa86aef41eaaf5c6955b4ff60433e64fee64142e",
-      "lines": 164,
+      "sha256": "35702ea475688c91611d66092cc748faa058129adea06a5b9fb7547d559e627c",
+      "lines": 166,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6286,8 +6338,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "7a87ef701ad93edc3011b7361f9b3b0c4de98823b8b60ccec37710d579e6f3fa",
-      "lines": 472,
+      "sha256": "bc0e614f4438cb765cf5d4672ddceed2e17366a0bb46856ed8f8cd2a699b4586",
+      "lines": 481,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6300,8 +6352,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "5a6b84e629aebc43a3f4b5630f6ae7adb81b130d72167ad608ffdfdcdd4f28fd",
-      "lines": 8240,
+      "sha256": "1451d102e700608d00086f5dacff7e3314da17045733ce197a0db3e26f1f982f",
+      "lines": 8249,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6867,7 +6919,7 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/navigation-build-2026-10-10.txt",
-      "sha256": "065a9dbcddc59af8100e9cb73d918160b585155da0b725b8806c652150964387",
+      "sha256": "9db29df8f39206c78535885f95a5949e3a72ddd411fe39a26055949325cf0467",
       "lines": 74,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
@@ -6930,7 +6982,7 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/navigation-renewal-build-2026-10-10.txt",
-      "sha256": "69db8d11f083e1bf24fa8b39033d207070959ad63b3dd7bba1fc52d00509ad70",
+      "sha256": "eb47af9eef53f99ce2e66e4bb10f843d881186af65026b5cdf0dd993715d1827",
       "lines": 74,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
@@ -6944,7 +6996,7 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/navigation-renewal-root-tests-2026-10-10.txt",
-      "sha256": "8208c8c6db90b9c3ca222734c08bd3e5214daf17caee71b9e0fcbd0686c90ed9",
+      "sha256": "c562fc4c419b09ff45737f3ede6f328be037631e8a9f9ef94b7529cfd88b6abf",
       "lines": 246,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
@@ -7090,6 +7142,13 @@
       "matching_evidence": []
     },
     {
+      "path": "reports/deployment-review-2026-10-07/post-catalogue-root-tests-2026-10-10.txt",
+      "sha256": "94142b543b6455ab2af43c8cd297dc92d4802935b368f9a02af4527039716e9b",
+      "lines": 216,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/probe-beta-current.cjs",
       "sha256": "eab0234293a08cca773c2b09f25975c4bf5aef41fab3b803a58fb6b72883da67",
       "lines": 35,
@@ -7165,6 +7224,13 @@
       ]
     },
     {
+      "path": "reports/deployment-review-2026-10-07/probe-prototype-picker.cjs",
+      "sha256": "cd061810c45565c95f45e1ce1973123573c975d95e7783d3731b1e68158a636b",
+      "lines": 38,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/probe-quick-feedback-interpretation.cjs",
       "sha256": "c679ba59f6f5b0960c6b938c0781bb51f2a5c631064d75017dea765e97ff8e4e",
       "lines": 37,
@@ -7231,6 +7297,20 @@
       "sha256": "e9095dcdcdf2ce37de8dbe50aa29fa51d6898b7cc977803687eb855306dbb999",
       "lines": null,
       "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/prototype-picker-after-2026-10-10.json",
+      "sha256": "fd679ac1c169dbcf223e6e9918bd6317dabe25b9f488b36f4f7cf09ab97f6cc6",
+      "lines": 115,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/prototype-picker-before-2026-10-10.json",
+      "sha256": "89277c8d63442c349a287e2c1ee35f2cd1a4ea747de20b2a2e5eda74ff7ea9ed",
+      "lines": 115,
+      "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
@@ -7381,8 +7461,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "aea24629ba052e54eb8d7cc57140b8c513f0e4a5202f59ef4df92cac842bfa83",
-      "lines": 5620,
+      "sha256": "200c991153fadd44aa9d7e0cbed795c4188ef1e0ccf1424b41baee275d414652",
+      "lines": 5984,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -7609,6 +7689,13 @@
       "path": "reports/matching-simulation-2026-10-04.md",
       "sha256": "34bb3af913829a694af435b67678fe5f7112ce0099eafbe28bd2cc023ba04f2b",
       "lines": 93,
+      "status": "pending_or_changed",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/ninth-grade-scope-2026-10-10.json",
+      "sha256": "0c10fe7790ea276b11a08ce8c227b71ce8cf03e85e516c189ba4df03499eead7",
+      "lines": 746,
       "status": "pending_or_changed",
       "matching_evidence": []
     },

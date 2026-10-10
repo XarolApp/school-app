@@ -9,7 +9,7 @@ Audits one skill's `SKILL.md` (and any bundled `scripts/`, `references/`, `asset
 
 ## When to run this
 
-- Before publishing/committing a new skill to `.Codex/skills/`
+- Before publishing/committing a new skill to `.agents/skills/`
 - When a skill exists but isn't triggering on prompts that should match it, and it's unclear why
 - As a periodic check on skills that have accumulated edits over time and may have drifted
 
@@ -23,7 +23,7 @@ Audits one skill's `SKILL.md` (and any bundled `scripts/`, `references/`, `asset
 ### 2. Discoverability
 - Is the `description` field specific enough to trigger reliably, and does it name concrete contexts/phrases a real user would type — not just an abstract summary of what the skill does?
 - Is the description "a little pushy" (per skill-creator's own guidance) so the model doesn't undertrigger it, without being so broad it triggers on unrelated requests?
-- Does the name collide or overlap meaningfully with another skill in `.Codex/skills/`, such that Codex might pick the wrong one or never disambiguate?
+- Does the name collide or overlap meaningfully with another skill in `.agents/skills/`, such that Codex might pick the wrong one or never disambiguate?
 
 ### 3. Architecture
 - Is `SKILL.md` under ~500 lines, with anything larger deferred to `references/` with clear pointers on when to read them?
@@ -38,7 +38,7 @@ Audits one skill's `SKILL.md` (and any bundled `scripts/`, `references/`, `asset
 ## Process
 
 1. Read the target `SKILL.md` in full, plus any files it references from `scripts/`, `references/`, `assets/`.
-2. Check the skill's `name` and `description` against the other skills already in `.Codex/skills/` (and any project-scoped skills) for overlap or ambiguity.
+2. Check the skill's `name` and `description` against the other skills already in `.agents/skills/` (and any project-scoped skills) for overlap or ambiguity.
 3. Walk each of the four lenses above, noting concrete findings — not "this could be better" but the specific line and specific problem.
 4. If the skill isn't triggering as expected, look specifically for: a description phrased as internal documentation rather than a triggering pattern, missing concrete trigger phrases, or an overlap with a broader skill that's likely winning the match.
 

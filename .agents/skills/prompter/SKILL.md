@@ -24,7 +24,7 @@ If the prompt names a specific file, a specific behavior change, and enough cont
 ## What to do when a prompt does need it
 
 1. State briefly what's ambiguous and why it matters for the outcome (not just "this could be clearer" — say what the two or more readings actually are and how they'd lead to different work).
-2. Propose a specific rewrite, or ask a targeted question (use `AskUserQuestion` if the choice is genuinely the user's to make and can't be inferred from context).
+2. Propose a specific rewrite, or ask a targeted question (use an available user-input tool if the choice is genuinely the user's to make and can't be inferred from context).
 3. Wait for the user's confirmation or correction before proceeding — don't rewrite the prompt and immediately act on your own rewrite without their sign-off, since the whole point is that you might have inferred wrong too.
 
 ## Output format when intervening

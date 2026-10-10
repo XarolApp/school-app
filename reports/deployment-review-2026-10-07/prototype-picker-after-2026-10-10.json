@@ -1,0 +1,115 @@
+{
+  "checkedAt": "2026-10-10T21:05:50.664Z",
+  "sourceRevision": "working tree",
+  "scope": "Actual JS snippets with synthetic DOM and synchronous animation-frame callbacks. No application or browser acceptance.",
+  "results": [
+    {
+      "file": ".agents/skills/prototype/PICKER.md",
+      "sha256": "2ff67166578bdb6727c58ee11fcb781eec766ad7cfc545fd25c735fe3754bfb1",
+      "cases": [
+        {
+          "value": "",
+          "rendered": "variant-1",
+          "expected": "variant-1",
+          "savedUrl": "http://synthetic.test/?v=1"
+        },
+        {
+          "value": "-1",
+          "rendered": "variant-1",
+          "expected": "variant-1",
+          "savedUrl": "http://synthetic.test/?v=1"
+        },
+        {
+          "value": "0",
+          "rendered": "variant-1",
+          "expected": "variant-1",
+          "savedUrl": "http://synthetic.test/?v=1"
+        },
+        {
+          "value": "999",
+          "rendered": "variant-1",
+          "expected": "variant-1",
+          "savedUrl": "http://synthetic.test/?v=1"
+        },
+        {
+          "value": "2.5",
+          "rendered": "variant-1",
+          "expected": "variant-1",
+          "savedUrl": "http://synthetic.test/?v=1"
+        },
+        {
+          "value": "abc",
+          "rendered": "variant-1",
+          "expected": "variant-1",
+          "savedUrl": "http://synthetic.test/?v=1"
+        },
+        {
+          "value": "2",
+          "rendered": "variant-2",
+          "expected": "variant-2",
+          "savedUrl": "http://synthetic.test/?v=2"
+        },
+        {
+          "value": "3",
+          "rendered": "variant-3",
+          "expected": "variant-3",
+          "savedUrl": "http://synthetic.test/?v=3"
+        }
+      ]
+    },
+    {
+      "file": ".claude/skills/prototype/PICKER.md",
+      "sha256": "2ff67166578bdb6727c58ee11fcb781eec766ad7cfc545fd25c735fe3754bfb1",
+      "cases": [
+        {
+          "value": "",
+          "rendered": "variant-1",
+          "expected": "variant-1",
+          "savedUrl": "http://synthetic.test/?v=1"
+        },
+        {
+          "value": "-1",
+          "rendered": "variant-1",
+          "expected": "variant-1",
+          "savedUrl": "http://synthetic.test/?v=1"
+        },
+        {
+          "value": "0",
+          "rendered": "variant-1",
+          "expected": "variant-1",
+          "savedUrl": "http://synthetic.test/?v=1"
+        },
+        {
+          "value": "999",
+          "rendered": "variant-1",
+          "expected": "variant-1",
+          "savedUrl": "http://synthetic.test/?v=1"
+        },
+        {
+          "value": "2.5",
+          "rendered": "variant-1",
+          "expected": "variant-1",
+          "savedUrl": "http://synthetic.test/?v=1"
+        },
+        {
+          "value": "abc",
+          "rendered": "variant-1",
+          "expected": "variant-1",
+          "savedUrl": "http://synthetic.test/?v=1"
+        },
+        {
+          "value": "2",
+          "rendered": "variant-2",
+          "expected": "variant-2",
+          "savedUrl": "http://synthetic.test/?v=2"
+        },
+        {
+          "value": "3",
+          "rendered": "variant-3",
+          "expected": "variant-3",
+          "savedUrl": "http://synthetic.test/?v=3"
+        }
+      ]
+    }
+  ]
+}

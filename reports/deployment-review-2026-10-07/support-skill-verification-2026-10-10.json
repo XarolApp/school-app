@@ -1,0 +1,34 @@
+{
+  "checked_at_utc": "2026-10-10T21:07:55.349151+00:00",
+  "commit_at_check": "7bc008d1fdde5d8ced299d10cb8c8b6c39eca6bf",
+  "scope": "Narrow skill documentation and actual reference-snippet review; no production UI/access/payment/schema/hosted operation. Current peer application independently queued.",
+  "source_hashes": {
+    ".agents/skills/bug-echo/SKILL.md": "30dbf4a1836cb559bfd20195887f160b6e7500c98379fe8caec0fb4d8863539b",
+    ".claude/skills/bug-echo/SKILL.md": "62d03298caf74b63b05b9c0201c51835cbf18c1ecfddc90bde84d4c23f3dd7de",
+    ".agents/skills/prompter/SKILL.md": "2589275b1efed97763a1ee49bb942e64fad7d57eb8f556bbc08aed2d5c9e670c",
+    ".agents/skills/improve/SKILL.md": "bfe345b389d0e99a619983b7f00e1e39e130f3bc5edb190637a5c308b6dcfe5c",
+    ".agents/skills/skill-reviewer/SKILL.md": "3516963925ebe8dd7702a4b71974d2d1f0ca851a55e1ed387c5e026534cb1b16",
+    ".agents/skills/prototype/PICKER.md": "2ff67166578bdb6727c58ee11fcb781eec766ad7cfc545fd25c735fe3754bfb1",
+    ".claude/skills/prototype/PICKER.md": "2ff67166578bdb6727c58ee11fcb781eec766ad7cfc545fd25c735fe3754bfb1"
+  },
+  "checks": {
+    "seven_narrow_document_fixes": true,
+    "metadata_and_current_paywall_paths": true,
+    "advisor_resources": true,
+    "picker_copy_parity": true,
+    "picker_cases": "8 actual snippet cases per copy / 16 total pass; before invalid saved values leave stage blank",
+    "root_tests": "198 pass / 0 fail after peer 7bc008d; does not prove live migration or unresolved review findings"
+  },
+  "coverage_counts": {
+    "pending_or_changed": 347,
+    "current_full_read": 445,
+    "binary_requires_asset_check": 105,
+    "generated_or_audit_artifact": 162,
+    "removed_or_missing": 2
+  },
+  "evidence": [
+    "prototype-picker-before-2026-10-10.json",
+    "prototype-picker-after-2026-10-10.json",
+    "post-catalogue-root-tests-2026-10-10.txt"
+  ]
+}
