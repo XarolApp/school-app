@@ -39,6 +39,10 @@ export default function ConfirmEmailWaiting({
   const [sending, setSending] = useState(false);
   const [checking, setChecking] = useState(false);
   const [confirmedElsewhere, setConfirmedElsewhere] = useState(false);
+  // The CAPTCHA only appears when a request needs it: a resend, or the final
+  // sign-in once the link was opened elsewhere.
+  const [showCaptcha, setShowCaptcha] = useState(false);
+  const [resendQueued, setResendQueued] = useState(false);
   const checkingRef = useRef(false);
   const captchaTokenRef = useRef(null);
 
@@ -94,7 +98,7 @@ export default function ConfirmEmailWaiting({
         return;
       }
       const token = captchaTokenRef.current;
-      if (password && captchaEnabled && !token) return; // the next poll retries once the widget has a token
+      if (password && captchaEnabled && !token) { setShowCaptcha(true); return; } // the next poll retries once the widget has a token
       if (password) {
         const result = await signIn(email, password, { captchaToken: token, remember: true });
         if (captchaEnabled) { setCaptchaToken(null); setCaptchaKey((key) => key + 1); }
@@ -115,7 +119,7 @@ export default function ConfirmEmailWaiting({
   }, [userId, confirmedElsewhere, checkConfirmed]);
 
   const secondsLeft = Math.max(0, Math.ceil((sentAt + RESEND_COOLDOWN_SECONDS * 1000 - now) / 1000));
-  const canResend = secondsLeft === 0 && !sending && (!captchaEnabled || Boolean(captchaToken));
+  const canResend = secondsLeft === 0 && !sending && !resendQueued;
 
   const resend = useCallback(async () => {
     setSending(true);
@@ -142,6 +146,15 @@ export default function ConfirmEmailWaiting({
     setStatus({ kind: 'ok', text: parent ? 'Poslali jsme nový odkaz. Ten starý přestal platit.' : 'Poslali jsme nový odkaz. Ten starý přestal platit.' });
   }, [resendConfirmation, signIn, password, email, captchaToken, emailRedirectTo, betaCode, parent]);
 
+  // First click without a token reveals the CAPTCHA; its token then sends.
+  const onResendClick = () => {
+    if (captchaEnabled && !captchaToken) { setShowCaptcha(true); setResendQueued(true); return; }
+    void resend();
+  };
+  useEffect(() => {
+    if (resendQueued && captchaToken) { setResendQueued(false); void resend(); }
+  }, [resendQueued, captchaToken, resend]);
+
   const buttonClass = variant === 'ob' ? 'ob-btn ob-btn-secondary' : 'btn btn-secondary btn-block';
 
   return (
@@ -160,13 +173,13 @@ export default function ConfirmEmailWaiting({
         <p className="notice-text">
           {parent ? 'Mail nepřišel? Zkontrolujte spam a složku Hromadné. Mail může docházet i minutu.' : 'Mail nepřišel? Mrkni do spamu a do složky Hromadné. Mail může docházet i minutu.'}
         </p>
-        <Captcha onVerify={setCaptchaToken} resetKey={captchaKey} />
         <button type="button" className={buttonClass} onClick={() => checkConfirmed({ manual: true })} disabled={checking || confirmedElsewhere}>
           {checking ? 'Kontroluji…' : parent ? 'E-mail jsem už potvrdil' : `Už jsem e-mail ${g('potvrdil', 'potvrdila')}`}
         </button>
-        <button type="button" className={buttonClass} onClick={resend} disabled={!canResend}>
-          {secondsLeft > 0 ? `Poslat odkaz znovu (za ${secondsLeft} s)` : sending ? 'Odesílám…' : 'Poslat odkaz znovu'}
+        <button type="button" className={buttonClass} onClick={onResendClick} disabled={!canResend}>
+          {secondsLeft > 0 ? `Poslat odkaz znovu (za ${secondsLeft} s)` : sending ? 'Odesílám…' : resendQueued ? 'Čekám na ověření…' : 'Poslat odkaz znovu'}
         </button>
+        {showCaptcha && <Captcha onVerify={setCaptchaToken} resetKey={captchaKey} />}
         {status && (
           <p className={`field-hint confirm-status is-${status.kind}`} role={status.kind === 'error' ? 'alert' : 'status'}>{status.text}</p>
         )}
