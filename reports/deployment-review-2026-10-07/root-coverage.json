@@ -1346,18 +1346,18 @@
     "method": "Full source read across recorded continuation turns, including missing middleware/brainstorm ranges and complete authored diffs. Read means inspected, not defect-free or runtime-approved."
   },
   "docs/skolamatch_current_status.md": {
-    "sha256": "007e00f9e5d85199187acd2b72b52766f41651acd891f16c60136d2a2c198f3d",
-    "lines": 1103,
+    "sha256": "82d7874830d6c49b2aa1d2ea309eeff9a9680ecf7f51aec0dd34fea9d691eb1d",
+    "lines": 1105,
     "read_ranges": [
       [
         1,
-        1103
+        1105
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:30:59.016851+00:00",
-    "method": "Full source read across recorded continuation turns, including missing middleware/brainstorm ranges and complete authored diffs. Read means inspected, not defect-free or runtime-approved."
+    "checked_at_utc": "2026-10-10T09:20:31.747326+00:00",
+    "method": "All eight authored marketing and five standalone-demo files read; all 2064 baseline marketing-plan lines read in continuous bounded ranges; current-status exact full 1103-line baseline receipt plus full own header edits. Complete own patches inspected. Four video scenes rendered as stills, affected result placement re-rendered; no full encoded video or platform acceptance. Standalone paid demo was not run; only typecheck/advisory reads."
   },
   "reports/deployment-review-2026-10-07/probe-services.cjs": {
     "sha256": "b47240d76e47550d2a307d302f8714ae7edcbe3074829e02de8d6a334334fe60",
@@ -3803,5 +3803,201 @@
     "data_line": 17,
     "data_evidence": "district-geometry-2026-10-10.json",
     "method": "Every authored non-data line read; the 319,620-character generated REGIONS literal was parsed and all 16,115 coordinate pairs structurally checked with labels/IDs/bounds, separately from manual read coverage. No claim of individually reading every literal or boundary freshness."
+  },
+  "marketing/tiktok/.gitignore": {
+    "sha256": "9741a6ddd8abb4d22efa14eb0a2749596417ceb0b47a875b74454ab7a15dc5b9",
+    "lines": 2,
+    "read_ranges": [
+      [
+        1,
+        2
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T09:20:31.743009+00:00",
+    "method": "All eight authored marketing and five standalone-demo files read; all 2064 baseline marketing-plan lines read in continuous bounded ranges; current-status exact full 1103-line baseline receipt plus full own header edits. Complete own patches inspected. Four video scenes rendered as stills, affected result placement re-rendered; no full encoded video or platform acceptance. Standalone paid demo was not run; only typecheck/advisory reads."
+  },
+  "marketing/tiktok/package.json": {
+    "sha256": "9e8ada788e72d6e6324b07b130411e5ee77a5245a0ff13a77f743e1c1404b6c7",
+    "lines": 17,
+    "read_ranges": [
+      [
+        1,
+        17
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T09:20:31.743487+00:00",
+    "method": "All eight authored marketing and five standalone-demo files read; all 2064 baseline marketing-plan lines read in continuous bounded ranges; current-status exact full 1103-line baseline receipt plus full own header edits. Complete own patches inspected. Four video scenes rendered as stills, affected result placement re-rendered; no full encoded video or platform acceptance. Standalone paid demo was not run; only typecheck/advisory reads."
+  },
+  "marketing/tiktok/scripts/sfx.mjs": {
+    "sha256": "56e377f3469f0450d82472490322eb4f61b0a82f5d5401e0cf53a5287325084e",
+    "lines": 66,
+    "read_ranges": [
+      [
+        1,
+        66
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T09:20:31.743936+00:00",
+    "method": "All eight authored marketing and five standalone-demo files read; all 2064 baseline marketing-plan lines read in continuous bounded ranges; current-status exact full 1103-line baseline receipt plus full own header edits. Complete own patches inspected. Four video scenes rendered as stills, affected result placement re-rendered; no full encoded video or platform acceptance. Standalone paid demo was not run; only typecheck/advisory reads."
+  },
+  "marketing/tiktok/src/Promo.tsx": {
+    "sha256": "89ae6b177bbdc0997dd2c91323fe3e358bfce3b6c7e7e8fa99c186f850c52330",
+    "lines": 287,
+    "read_ranges": [
+      [
+        1,
+        287
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T09:20:31.744038+00:00",
+    "method": "All eight authored marketing and five standalone-demo files read; all 2064 baseline marketing-plan lines read in continuous bounded ranges; current-status exact full 1103-line baseline receipt plus full own header edits. Complete own patches inspected. Four video scenes rendered as stills, affected result placement re-rendered; no full encoded video or platform acceptance. Standalone paid demo was not run; only typecheck/advisory reads."
+  },
+  "marketing/tiktok/src/Root.tsx": {
+    "sha256": "f008c0a1f640a854d866a23f02821da306d071da78bbddabd31de2f312e64509",
+    "lines": 7,
+    "read_ranges": [
+      [
+        1,
+        7
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T09:20:31.744808+00:00",
+    "method": "All eight authored marketing and five standalone-demo files read; all 2064 baseline marketing-plan lines read in continuous bounded ranges; current-status exact full 1103-line baseline receipt plus full own header edits. Complete own patches inspected. Four video scenes rendered as stills, affected result placement re-rendered; no full encoded video or platform acceptance. Standalone paid demo was not run; only typecheck/advisory reads."
+  },
+  "marketing/tiktok/src/components.tsx": {
+    "sha256": "99f706b76e18f094f83a1c8c17b2bb8e32a120bc6fd2bb4ef215c9584acb7d21",
+    "lines": 106,
+    "read_ranges": [
+      [
+        1,
+        106
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T09:20:31.745669+00:00",
+    "method": "All eight authored marketing and five standalone-demo files read; all 2064 baseline marketing-plan lines read in continuous bounded ranges; current-status exact full 1103-line baseline receipt plus full own header edits. Complete own patches inspected. Four video scenes rendered as stills, affected result placement re-rendered; no full encoded video or platform acceptance. Standalone paid demo was not run; only typecheck/advisory reads."
+  },
+  "marketing/tiktok/src/index.ts": {
+    "sha256": "32185b5fe29233ed658013191cf02a1ba3181fe15dd4c43848136a344887ff0f",
+    "lines": 4,
+    "read_ranges": [
+      [
+        1,
+        4
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T09:20:31.746498+00:00",
+    "method": "All eight authored marketing and five standalone-demo files read; all 2064 baseline marketing-plan lines read in continuous bounded ranges; current-status exact full 1103-line baseline receipt plus full own header edits. Complete own patches inspected. Four video scenes rendered as stills, affected result placement re-rendered; no full encoded video or platform acceptance. Standalone paid demo was not run; only typecheck/advisory reads."
+  },
+  "marketing/tiktok/src/theme.ts": {
+    "sha256": "896b88855ebec5d5647954916b65819a0f4470ee845d5fabc7589ccd3e84f439",
+    "lines": 48,
+    "read_ranges": [
+      [
+        1,
+        48
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T09:20:31.746914+00:00",
+    "method": "All eight authored marketing and five standalone-demo files read; all 2064 baseline marketing-plan lines read in continuous bounded ranges; current-status exact full 1103-line baseline receipt plus full own header edits. Complete own patches inspected. Four video scenes rendered as stills, affected result placement re-rendered; no full encoded video or platform acceptance. Standalone paid demo was not run; only typecheck/advisory reads."
+  },
+  "seedance-demo/.env.example": {
+    "sha256": "807897e42079af894ec00e451702b6085be744f7d5ecb99095cc5508f25556e9",
+    "lines": 1,
+    "read_ranges": [
+      [
+        1,
+        1
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T09:20:31.746954+00:00",
+    "method": "All eight authored marketing and five standalone-demo files read; all 2064 baseline marketing-plan lines read in continuous bounded ranges; current-status exact full 1103-line baseline receipt plus full own header edits. Complete own patches inspected. Four video scenes rendered as stills, affected result placement re-rendered; no full encoded video or platform acceptance. Standalone paid demo was not run; only typecheck/advisory reads."
+  },
+  "seedance-demo/.gitignore": {
+    "sha256": "49791ed0f6e8369fe5dd7b637dba556203c23249fcfcff3fa2080809e2924b88",
+    "lines": 5,
+    "read_ranges": [
+      [
+        1,
+        5
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T09:20:31.746985+00:00",
+    "method": "All eight authored marketing and five standalone-demo files read; all 2064 baseline marketing-plan lines read in continuous bounded ranges; current-status exact full 1103-line baseline receipt plus full own header edits. Complete own patches inspected. Four video scenes rendered as stills, affected result placement re-rendered; no full encoded video or platform acceptance. Standalone paid demo was not run; only typecheck/advisory reads."
+  },
+  "seedance-demo/index.ts": {
+    "sha256": "d0d6506e926340357a46d8b5f0e502a1680d9d30460dd60debe56f6b5063ed9b",
+    "lines": 72,
+    "read_ranges": [
+      [
+        1,
+        72
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T09:20:31.747021+00:00",
+    "method": "All eight authored marketing and five standalone-demo files read; all 2064 baseline marketing-plan lines read in continuous bounded ranges; current-status exact full 1103-line baseline receipt plus full own header edits. Complete own patches inspected. Four video scenes rendered as stills, affected result placement re-rendered; no full encoded video or platform acceptance. Standalone paid demo was not run; only typecheck/advisory reads."
+  },
+  "seedance-demo/package.json": {
+    "sha256": "349cfcd7a62a8c9b3cd1ade457257c26643ad4631fe1b46edc4457389ec3115a",
+    "lines": 24,
+    "read_ranges": [
+      [
+        1,
+        24
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T09:20:31.747054+00:00",
+    "method": "All eight authored marketing and five standalone-demo files read; all 2064 baseline marketing-plan lines read in continuous bounded ranges; current-status exact full 1103-line baseline receipt plus full own header edits. Complete own patches inspected. Four video scenes rendered as stills, affected result placement re-rendered; no full encoded video or platform acceptance. Standalone paid demo was not run; only typecheck/advisory reads."
+  },
+  "seedance-demo/tsconfig.json": {
+    "sha256": "ecb08c2f4ffa3601038470912413a83f5e6b2c8196a01c80915ee7ee34b4ecb2",
+    "lines": 12,
+    "read_ranges": [
+      [
+        1,
+        12
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T09:20:31.747085+00:00",
+    "method": "All eight authored marketing and five standalone-demo files read; all 2064 baseline marketing-plan lines read in continuous bounded ranges; current-status exact full 1103-line baseline receipt plus full own header edits. Complete own patches inspected. Four video scenes rendered as stills, affected result placement re-rendered; no full encoded video or platform acceptance. Standalone paid demo was not run; only typecheck/advisory reads."
+  },
+  "docs/skolamatch_full_launch_marketing_plan_v2.md": {
+    "sha256": "4823fe9b58b0cca23dc0e330881cdb18c6a93430bd984fb10b2b55757b47c74f",
+    "lines": 2018,
+    "read_ranges": [
+      [
+        1,
+        2018
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-10T09:20:31.747221+00:00",
+    "method": "All eight authored marketing and five standalone-demo files read; all 2064 baseline marketing-plan lines read in continuous bounded ranges; current-status exact full 1103-line baseline receipt plus full own header edits. Complete own patches inspected. Four video scenes rendered as stills, affected result placement re-rendered; no full encoded video or platform acceptance. Standalone paid demo was not run; only typecheck/advisory reads."
   }
 }

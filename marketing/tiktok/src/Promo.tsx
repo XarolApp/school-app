@@ -6,7 +6,7 @@ import { BgMesh, Entrance, Finish, LabelCaps, Scene, Sfx, WordReveal, breathe } 
 const c = theme.colors;
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 
-// Copy follows the landing page (frontend/src/pages/Home.jsx), student voice (tykání).
+// Student voice (tykání); catalogue copy must not claim unverified exhaustive coverage.
 // No invented user counts or testimonials; the school/match shown is labelled as an illustration.
 
 // ---------- Scene 1 — hook: tab chaos -------------------------------------------------
@@ -115,7 +115,7 @@ const ResultRow: React.FC<{ i: number; row: (typeof ROWS)[number] }> = ({ i, row
 
 const OnePlace: React.FC = () => (
   <Scene exitAt={76}>
-    <WordReveal text="Všech 223 pražských škol na jednom místě." size={112} delay={3} per={3} />
+    <WordReveal text="Pražské střední školy na jednom místě." size={112} delay={3} per={3} />
     <div style={{ marginTop: 56 }}>
       <Entrance delay={8}><SearchField /></Entrance>
     </div>
@@ -163,7 +163,7 @@ const MatchCard: React.FC = () => {
   const p = spring({ frame: frame - CARD_AT, fps, config: theme.spring.smooth });
   const badge = spring({ frame: frame - CARD_AT - 8, fps, config: theme.spring.firm });
   return (
-    <div style={{ position: "absolute", left: 0, right: 0, top: 640, padding: "40px 42px", borderRadius: theme.radius.card,
+    <div style={{ position: "absolute", left: 0, right: 0, top: 440, padding: "40px 42px", borderRadius: theme.radius.card,
       background: c.bg, border: `2px solid ${c.line}`, boxShadow: theme.shadow,
       opacity: interpolate(p, [0, 0.4], [0, 1], clamp),
       transform: `translateY(${interpolate(p, [0, 1], [420, breathe(frame, 3)])}px) scale(${interpolate(p, [0, 1], [0.92, 1])})` }}>

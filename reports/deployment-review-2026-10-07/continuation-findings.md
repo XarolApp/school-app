@@ -342,3 +342,18 @@ Primary-source corrections: the [DFA proposal is in preparation](https://eprs.eu
 
 
 Operational review checkpoint, 10 October: S15 district-generator module contract and S17 stale import report are fixed with reproduced offline regressions; all 176 tests pass. S16 external-geometry/provenance validation is deferred before any boundary refresh. Full frontend/list reads are receipted; the huge generated backend coordinate row was structurally checked separately from manual read coverage. No current geometry/scoring value or database changed. See [script findings](script-findings.md).
+
+
+## C40 · Fixed marketing count/safe-area mistakes; roadmap reconciled
+
+All eight authored TikTok files, five standalone-demo files and the full 2064-line launch-plan baseline were read. Promo no longer claims all 223 schools; its result card is raised inside the declared bottom-safe boundary, with frame 234 reproduced and re-rendered. Four scene stills were inspected, including the corrected headline/CTA; no full encoded-video/platform/audio acceptance is claimed. Five WAV assets were fully decoded and structurally checked. The launch plan now uses settled 690/249 prices, corrected proposed affiliate arithmetic (690−50=640; 30%=192; remainder448), current free-beta/auth/confirmation boundaries and phase-specific gates. Unapproved 499-promotion/affiliate/acquisition scenarios remain proposals. Current status follows the later project instruction that free onboarding requires sign-in. No site behavior, price configuration, billing, outreach or publishing changed.
+
+## C41 · P2 tool dependency update · source-map-js advisory in two trees
+
+10 October npm registry audits flag source-map-js 1.2.1 in frontend build tooling and the marketing renderer. [GHSA-68fv-2mgg-jv7q](https://github.com/advisories/GHSA-68fv-2mgg-jv7q) describes indexed-source-map event-loop denial of service; 1.2.2 is patched. This proves installed affected dependencies, not a remotely exploitable app route. Backend/frontend production-only audits have zero known advisories; full backend still flags development xlsx (S05), and the standalone-demo audit is zero. Update the two lockfiles through a reviewed compatible dependency change, verify actual input exposure and run website lint/build plus Remotion renders and refreshed audits before untrusted build/render inputs. No dependency/package/lockfile was changed in this review.
+
+## C42 · P3 marketing typecheck and publication acceptance
+
+Actual Remotion renders succeed and authored video source typechecks with skipLibCheck; full declaration checking fails because Remotion's declarations refer to undefined Timer. Define a reproducible supported typecheck command/version setup and review the upstream declaration compatibility; do not claim the complete type surface passed. Before publishing, clearly label all mock search/admission visuals, approve current brand/access/4-minute claims, inspect the full encoded clip/audio and actual platform overlays. This is a separate marketing-tool gate, not website runtime evidence. Standalone untracked seedance-demo typechecks but npm start submits a paid external generation; it was not run or changed. Review bounded requests/error redaction/dependency handling before any separately approved use.
+
+Peer checkpoint: `7c575ed` reports sharing guards, screenshot erasure, owner/draft/auth and short-screen/hint fixes with 178 tests. These changed hashes are pending our re-review and deployed/service acceptance. Preserve its handoff edits; D1/D4 legal choices remain pending the founder. Our 176-test evidence belongs to the earlier `793b1d7` snapshot.

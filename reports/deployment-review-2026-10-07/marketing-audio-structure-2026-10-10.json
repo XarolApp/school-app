@@ -1,0 +1,40 @@
+{
+  "note": "All PCM frames structurally decoded; not a listening, encoded-video or platform acceptance check.",
+  "assets": [
+    {
+      "path": "marketing/tiktok/public/sfx/pad.wav",
+      "seconds": 10.199977324263038,
+      "peak": 0.265869140625,
+      "frames": 449819,
+      "sha256": "59762d167b2a5510d5499814be2c4d9efe73af915c27f65df371f83a173a9251"
+    },
+    {
+      "path": "marketing/tiktok/public/sfx/pop.wav",
+      "seconds": 0.16,
+      "peak": 0.5958251953125,
+      "frames": 7056,
+      "sha256": "05030ca20db22a45ec811a24df3189956cb5ad37a37514743ec75b3a898aad22"
+    },
+    {
+      "path": "marketing/tiktok/public/sfx/thump.wav",
+      "seconds": 0.5,
+      "peak": 0.889923095703125,
+      "frames": 22050,
+      "sha256": "5f4f6b6e6c9fc1f2130e0aefc6f8f8852878f814f93829a9a52fed86ec4ee05d"
+    },
+    {
+      "path": "marketing/tiktok/public/sfx/tick.wav",
+      "seconds": 0.04,
+      "peak": 0.32598876953125,
+      "frames": 1764,
+      "sha256": "65489bb3cb9358cd0c5523e0da1b7cc2dc1b6956486bccbd841e9aabdeff746e"
+    },
+    {
+      "path": "marketing/tiktok/public/sfx/whoosh.wav",
+      "seconds": 0.45,
+      "peak": 0.882171630859375,
+      "frames": 19845,
+      "sha256": "312fd3cee3f0f68948989e0116a509b073bd532ee18a3a0a0b21ec8832b2029c"
+    }
+  ]
+}

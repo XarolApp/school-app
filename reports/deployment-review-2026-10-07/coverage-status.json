@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-10T08:49:58.086044+00:00",
-  "commit": "9382c6adf0baabf51e919cbbd3b9b8138ea283da",
+  "checked_at_utc": "2026-10-10T09:20:32.055034+00:00",
+  "commit": "7c575edf2770db8f73701055918a9a1773544366",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "pending_or_changed": 462,
-    "current_full_read": 312,
-    "binary_requires_asset_check": 85,
-    "generated_or_audit_artifact": 88,
+    "pending_or_changed": 461,
+    "current_full_read": 313,
+    "binary_requires_asset_check": 90,
+    "generated_or_audit_artifact": 96,
     "removed_or_missing": 2
   },
   "files": [
@@ -721,12 +721,10 @@
     },
     {
       "path": ".env.example",
-      "sha256": "2b0b9de05a15aea20b4ac05e74da5da59e55e3f837535736cd3a4e07cfbcbd7a",
-      "lines": 89,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "6358836ddcb1c9fcca0c3dbf6688c8cd1a8676bc7325cdaafc75398a844b657b",
+      "lines": 91,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": ".gitignore",
@@ -739,21 +737,17 @@
     },
     {
       "path": "AGENTS.md",
-      "sha256": "021f1a0812a772c9a822096d352d910eef78203dda0bac720de29bbb9edab0a8",
-      "lines": 1016,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "07dbbef14c3811f0512a64e77326ff2a3cb4d6db03b97c4ceaf637576063270e",
+      "lines": 1020,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "CLAUDE.md",
-      "sha256": "854a7bbb04d754c89b783244f0e80e7bafe3de847085290eb9d8f25eca50c015",
-      "lines": 1012,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "5f38786f15b7a90ba9e47d02994252c42d83496187c8bcd05b2ce7f9d7a096a8",
+      "lines": 1016,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "DEPLOY.md",
@@ -791,8 +785,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "6f9472c6fc79d2af7590dea5535daf023819bb4a872e9b6537341162f72dcf7a",
-      "lines": 1731,
+      "sha256": "d230736859d935078b9ab0a95cc7679a61935e539611abec1ba46d69269f39f9",
+      "lines": 1774,
       "status": "pending_or_changed",
       "matching_evidence": []
     },
@@ -2402,12 +2396,10 @@
     },
     {
       "path": "docs/legal-decisions-2026-10-10.md",
-      "sha256": "c74501d91ba10a8f59fb98fad740ccd8b6140b379adf5a7cd5f729a0052659c3",
+      "sha256": "727a85855c473f7ab11fd6c6469c6eaa27b1e3c5a5834262b5971b531a3acbfe",
       "lines": 113,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "docs/legal-research/01-withdrawal-button.md",
@@ -2501,8 +2493,8 @@
     },
     {
       "path": "docs/skolamatch_current_status.md",
-      "sha256": "007e00f9e5d85199187acd2b72b52766f41651acd891f16c60136d2a2c198f3d",
-      "lines": 1103,
+      "sha256": "82d7874830d6c49b2aa1d2ea309eeff9a9680ecf7f51aec0dd34fea9d691eb1d",
+      "lines": 1105,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -2510,10 +2502,12 @@
     },
     {
       "path": "docs/skolamatch_full_launch_marketing_plan_v2.md",
-      "sha256": "3c401de317c78d6078200b09641eb0108a42cfe35ee3d04e48d375bfd47e9bef",
-      "lines": 2064,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "4823fe9b58b0cca23dc0e330881cdb18c6a93430bd984fb10b2b55757b47c74f",
+      "lines": 2018,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "docs/sources/README.md",
@@ -2756,12 +2750,10 @@
     },
     {
       "path": "frontend/src/api.js",
-      "sha256": "2e60c1cacdcddfe855eae350da4a77751375099e4614b76e31f3ed02146106d2",
-      "lines": 476,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "1ef4f8d8eeb49bb95c52a65638def95cfa357b84f09079d0e8216611ae5f8f0f",
+      "lines": 482,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/auth.css",
@@ -2783,12 +2775,10 @@
     },
     {
       "path": "frontend/src/components/AuthContext.jsx",
-      "sha256": "9825804de68a22ee24c9f5443afaa8ab79e9319d13e71cd42c26523fcc97d6aa",
-      "lines": 497,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "f6b9521599ee222e14ab75facdaa79d907b5b52ee3ea0b5f4dfe794a6347de32",
+      "lines": 516,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/components/AuthTabs.jsx",
@@ -2960,13 +2950,10 @@
     },
     {
       "path": "frontend/src/components/Hint.jsx",
-      "sha256": "72d0076ca70179be6b7d71000b3a7b6072cfb3511b307fb09deaa5bbd6be9c12",
-      "lines": 55,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "frontend-coverage.json",
-        "root-coverage.json"
-      ]
+      "sha256": "e564cb131e0faf2b72dde54c8730c536bff24111470602e11e82296e77598323",
+      "lines": 69,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/components/Layout.jsx",
@@ -3042,12 +3029,10 @@
     },
     {
       "path": "frontend/src/components/SchoolMap.jsx",
-      "sha256": "4001be30cef29b162050d6a1d603003e6b5ebc3c54e4e0ee1f0210743ce54a8a",
-      "lines": 402,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "29536b854b575b91d151bd86932d31d1faf398c3f6e346584de367639972fa29",
+      "lines": 419,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/components/SearchFilters.jsx",
@@ -3772,12 +3757,10 @@
     },
     {
       "path": "frontend/src/lib/useDraft.js",
-      "sha256": "ed41d3a2213bcdb459b04ecaa6de53c305d06dc7a47ac2d541ca2ff5d0e0496a",
-      "lines": 29,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "56ecdc23b6e9fb0772460b8eb0578e12e4ece72c526f139fc7b0b75af57771ea",
+      "lines": 46,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/lib/useMediaQuery.js",
@@ -3871,12 +3854,10 @@
     },
     {
       "path": "frontend/src/pages/Home.jsx",
-      "sha256": "cfe2f48b5d016a66a9ac4f0b25a7bdb6a060bc8b652a165ba106b3d4b469aab0",
+      "sha256": "01573e27795aa72999aaa02798922c87ad5ff7d5a87b88a483a3c2f3c99e53d0",
       "lines": 440,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/pages/Legal.jsx",
@@ -4060,12 +4041,10 @@
     },
     {
       "path": "frontend/src/pages/landing2/Landing.jsx",
-      "sha256": "575a9a8a8d22c05e2f58c889e7996c65e73a3f8d10c1452fe922a1e58073019b",
-      "lines": 1050,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "e0ad170917bfa07582b5389238b5d555ec0dd630c90077b7d4f3ffc409697d0f",
+      "lines": 1066,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/pages/landing2/PragueScene.js",
@@ -4475,8 +4454,10 @@
       "path": "marketing/tiktok/.gitignore",
       "sha256": "9741a6ddd8abb4d22efa14eb0a2749596417ceb0b47a875b74454ab7a15dc5b9",
       "lines": 2,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "marketing/tiktok/package-lock.json",
@@ -4489,8 +4470,10 @@
       "path": "marketing/tiktok/package.json",
       "sha256": "9e8ada788e72d6e6324b07b130411e5ee77a5245a0ff13a77f743e1c1404b6c7",
       "lines": 17,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "marketing/tiktok/public/sfx/pad.wav",
@@ -4531,43 +4514,55 @@
       "path": "marketing/tiktok/scripts/sfx.mjs",
       "sha256": "56e377f3469f0450d82472490322eb4f61b0a82f5d5401e0cf53a5287325084e",
       "lines": 66,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "marketing/tiktok/src/Promo.tsx",
-      "sha256": "d368820a2f129de19b3a3f261803206de74de8cb076984ee2be75b47d9cc8881",
+      "sha256": "89ae6b177bbdc0997dd2c91323fe3e358bfce3b6c7e7e8fa99c186f850c52330",
       "lines": 287,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "marketing/tiktok/src/Root.tsx",
       "sha256": "f008c0a1f640a854d866a23f02821da306d071da78bbddabd31de2f312e64509",
       "lines": 7,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "marketing/tiktok/src/components.tsx",
       "sha256": "99f706b76e18f094f83a1c8c17b2bb8e32a120bc6fd2bb4ef215c9584acb7d21",
       "lines": 106,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "marketing/tiktok/src/index.ts",
       "sha256": "32185b5fe29233ed658013191cf02a1ba3181fe15dd4c43848136a344887ff0f",
       "lines": 4,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "marketing/tiktok/src/theme.ts",
       "sha256": "896b88855ebec5d5647954916b65819a0f4470ee845d5fabc7589ccd3e84f439",
       "lines": 48,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "migrations/2026-10-09-plan020-catchup.sql",
@@ -5664,22 +5659,22 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "e3356c53415d77eb6eefbd09ddfb115a8f11b4b554ce9d367868b827bc3861c3",
-      "lines": 288,
+      "sha256": "c516f9c140c39103d42781c9e8cdb2805f270d1151d726060e8c29ba4dc9e6cb",
+      "lines": 300,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "6662cdb0308da6c9b38e9405fe353325e87e8709218f8e97bc940066b4e4ee57",
-      "lines": 156,
+      "sha256": "52628f5f9ca99a7442269da3270e78260db31b0956e2f84884debfec1bd4f159",
+      "lines": 161,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "8d05d110c71cf77d22d5d2fb98252795de0603a0e7d9f914c2dea902c5c25f6b",
-      "lines": 134,
+      "sha256": "2ff9d5e56efe6ab1f99cdce3dab45f5d8c6c23ce88627e4f192977495d966014",
+      "lines": 137,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -5750,6 +5745,20 @@
       "path": "reports/deployment-review-2026-10-07/backend-findings.md",
       "sha256": "99b925c3957a32a382259a5b48d8efb3c298a26d007e9350a81d8a8d0e0fbe09",
       "lines": 182,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/backend-npm-audit-refresh-2026-10-10.json",
+      "sha256": "2cbe021fcdf7a8bf8e2792f2cceb569f0d8ae4a31bb8f6e3e4a65dda8db16299",
+      "lines": 68,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/backend-npm-prod-audit-refresh-2026-10-10.json",
+      "sha256": "2edd0163d5a31d80c4825a2a45d8004e500ec1f162b91cb412f15fb06ab75ecd",
+      "lines": 22,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -5902,15 +5911,15 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "3623c081a0964a1a01f4a191441fe3cd11ae40203347959a90dfedfd83421f31",
-      "lines": 344,
+      "sha256": "ef8bf06f8d4fdc85fccbf8e58abefdb49a2b690df2ab027dacb060e305f0ebaa",
+      "lines": 359,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "7b7963b5ddf28130a5d67e94ce031140eb605439f19c93a65c291a5f57870fc3",
-      "lines": 7220,
+      "sha256": "dff31348b8488eea1278c7016461bfd72cdac1cc5d46df7a1a3a2ebfd767f929",
+      "lines": 7286,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6083,6 +6092,20 @@
       "matching_evidence": []
     },
     {
+      "path": "reports/deployment-review-2026-10-07/frontend-npm-audit-refresh-2026-10-10.json",
+      "sha256": "9b2481e32b9383a8b618d2d55857fbda8007ee5badd6c3659471cec7509089db",
+      "lines": 52,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/frontend-npm-prod-audit-refresh-2026-10-10.json",
+      "sha256": "4610514d5640834408665b61d22c2630f7ffcc6639bad0de2d613cacc0f1d9cc",
+      "lines": 22,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/import-report-before-2026-10-10.txt",
       "sha256": "47908b5786b715c8593fcfe242550a8c71b8adcc7b4d9e8b794344c5547c2ead",
       "lines": 31,
@@ -6178,6 +6201,62 @@
       "sha256": "7f5a41697ef6880c30816f4993fd05a31af2e0c8b9acb3395668055951909c55",
       "lines": null,
       "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/marketing-audio-structure-2026-10-10.json",
+      "sha256": "e7789fce4c5ca641d5022bdbad710a844870a19a05158030071541c754f8efb5",
+      "lines": 40,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/marketing-npm-audit-2026-10-10.json",
+      "sha256": "148cb535a192e6881cf828505baea34b5f423ff1c7eb78779b3a2599774cfb1e",
+      "lines": 52,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/marketing-promo-cta-295-2026-10-10.png",
+      "sha256": "c7b415407f4896bb0dfde28870ce5110fee11599c5b58507759587ef9c13ad41",
+      "lines": null,
+      "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/marketing-promo-hook-60-2026-10-10.png",
+      "sha256": "1e0107771f14accc052d0b7551e54d09c18e7e7250300a84a88c7d742a5caafe",
+      "lines": null,
+      "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/marketing-promo-place-130-2026-10-10.png",
+      "sha256": "3653e2da21163d80fd79dbabb97208e12c93fe8450b776bbbb888fd38d0f76c9",
+      "lines": null,
+      "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/marketing-promo-quiz-234-before-2026-10-10.png",
+      "sha256": "29d4bbc62da7acd7d74c5d55ef437f9df4a11cc8b5993f83af93f96d215cf2bb",
+      "lines": null,
+      "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/marketing-promo-quiz-234-fixed-2026-10-10.png",
+      "sha256": "043b44e50441ddfc13a24897b596e09ed66d07bbd966c9eed099f75f5fad309c",
+      "lines": null,
+      "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/marketing-verification-2026-10-10.json",
+      "sha256": "3d5eaccfd038545f0451c0e3f380185cad00750397eef9c6ebc2047fb68e6c11",
+      "lines": 37,
+      "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
@@ -6506,8 +6585,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "fd0512a5f89977b2c719b2471521782ed9c72267ba8e3e08b272b6078da5e539",
-      "lines": 3807,
+      "sha256": "78f3116f617b27dfc64baa46a2a25698197cb063a45bc16aa99d578a7de03a7f",
+      "lines": 4003,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6593,6 +6672,13 @@
       "sha256": "07a4e18ac500dadf9d800b847255d4e2b90eb7302cf174c2c06649fdbe3e7acf",
       "lines": null,
       "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/seedance-npm-audit-2026-10-10.json",
+      "sha256": "e8be0bddd490ef922f1d80dd0cea8a8a92606a954330ee28d4c921573f7e54ee",
+      "lines": 22,
+      "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
@@ -6994,22 +7080,28 @@
       "path": "seedance-demo/.env.example",
       "sha256": "807897e42079af894ec00e451702b6085be744f7d5ecb99095cc5508f25556e9",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "seedance-demo/.gitignore",
       "sha256": "49791ed0f6e8369fe5dd7b637dba556203c23249fcfcff3fa2080809e2924b88",
       "lines": 5,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "seedance-demo/index.ts",
       "sha256": "d0d6506e926340357a46d8b5f0e502a1680d9d30460dd60debe56f6b5063ed9b",
       "lines": 72,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "seedance-demo/package-lock.json",
@@ -7022,24 +7114,26 @@
       "path": "seedance-demo/package.json",
       "sha256": "349cfcd7a62a8c9b3cd1ade457257c26643ad4631fe1b46edc4457389ec3115a",
       "lines": 24,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "seedance-demo/tsconfig.json",
       "sha256": "ecb08c2f4ffa3601038470912413a83f5e6b2c8196a01c80915ee7ee34b4ecb2",
       "lines": 12,
-      "status": "pending_or_changed",
-      "matching_evidence": []
-    },
-    {
-      "path": "server.js",
-      "sha256": "6bf50e0f3aa2a5abbfe9da51fbe23d9f054e79a8df64bfefe4c5b66dc59d41b0",
-      "lines": 3546,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
       ]
+    },
+    {
+      "path": "server.js",
+      "sha256": "37266e4e23b5648a0196bd9fa19e9df6eff54455306475cbc02f9fa6b3b371a0",
+      "lines": 3570,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "skills-lock.json",
@@ -7257,12 +7351,10 @@
     },
     {
       "path": "tests/server-boundaries.test.cjs",
-      "sha256": "78b1152a17e3b5a85b47726d1d109e23e4a8e04a595f7409716a5516cb196d1e",
-      "lines": 1112,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "8884a83c9eb23016abcae8457e1a4b5be414cd2e77637ed678348826a34863cb",
+      "lines": 1141,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "tests/social-proof.test.cjs",

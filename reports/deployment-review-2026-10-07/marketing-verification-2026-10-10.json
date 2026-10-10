@@ -1,0 +1,37 @@
+{
+  "checkedAt": "2026-10-10T09:20:31.751564+00:00",
+  "sourceHashes": {
+    "marketing/tiktok/.gitignore": "9741a6ddd8abb4d22efa14eb0a2749596417ceb0b47a875b74454ab7a15dc5b9",
+    "marketing/tiktok/package.json": "9e8ada788e72d6e6324b07b130411e5ee77a5245a0ff13a77f743e1c1404b6c7",
+    "marketing/tiktok/scripts/sfx.mjs": "56e377f3469f0450d82472490322eb4f61b0a82f5d5401e0cf53a5287325084e",
+    "marketing/tiktok/src/Promo.tsx": "89ae6b177bbdc0997dd2c91323fe3e358bfce3b6c7e7e8fa99c186f850c52330",
+    "marketing/tiktok/src/Root.tsx": "f008c0a1f640a854d866a23f02821da306d071da78bbddabd31de2f312e64509",
+    "marketing/tiktok/src/components.tsx": "99f706b76e18f094f83a1c8c17b2bb8e32a120bc6fd2bb4ef215c9584acb7d21",
+    "marketing/tiktok/src/index.ts": "32185b5fe29233ed658013191cf02a1ba3181fe15dd4c43848136a344887ff0f",
+    "marketing/tiktok/src/theme.ts": "896b88855ebec5d5647954916b65819a0f4470ee845d5fabc7589ccd3e84f439",
+    "seedance-demo/.env.example": "807897e42079af894ec00e451702b6085be744f7d5ecb99095cc5508f25556e9",
+    "seedance-demo/.gitignore": "49791ed0f6e8369fe5dd7b637dba556203c23249fcfcff3fa2080809e2924b88",
+    "seedance-demo/index.ts": "d0d6506e926340357a46d8b5f0e502a1680d9d30460dd60debe56f6b5063ed9b",
+    "seedance-demo/package.json": "349cfcd7a62a8c9b3cd1ade457257c26643ad4631fe1b46edc4457389ec3115a",
+    "seedance-demo/tsconfig.json": "ecb08c2f4ffa3601038470912413a83f5e6b2c8196a01c80915ee7ee34b4ecb2",
+    "docs/skolamatch_full_launch_marketing_plan_v2.md": "4823fe9b58b0cca23dc0e330881cdb18c6a93430bd984fb10b2b55757b47c74f",
+    "docs/skolamatch_current_status.md": "82d7874830d6c49b2aa1d2ea309eeff9a9680ecf7f51aec0dd34fea9d691eb1d"
+  },
+  "renderedFrames": [
+    60,
+    130,
+    234,
+    295
+  ],
+  "changedQuizFrameReverified": 234,
+  "changes": [
+    "Count-free headline replaces unsupported all-223 claim",
+    "Illustration card top moved from640 to440 to fit declared bottom-safe boundary"
+  ],
+  "marketingTypecheck": {
+    "ownSourceWithSkipLibCheck": "pass",
+    "fullDeclarations": "fails: Remotion 4.0.530 declarations refer to missing Timer type (delay-render.d.ts:9:31 and index.d.ts:25:35)"
+  },
+  "seedanceTypecheck": "pass; paid script not run",
+  "limits": "Still frames only; full encode/audio playback/platform overlays/access journey/marketing claims require publication acceptance. Five WAVs were decoded/structure-checked separately."
+}

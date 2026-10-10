@@ -1,5 +1,7 @@
 # SkolaMatch — Launch, Beta, Affiliate & Marketing Execution Plan
 
+> **Current use, 10 October 2026:** this is an execution roadmap, not current deployment approval. Free beta gives access in exchange for main feedback; payment screens are optional previews and must never call Stripe. Only accepted main-form/access-gate messages renew the 48-hour window, bounded by the configured programme cutoff. Resolve the beta gates in the [deployment report](../reports/deployment-review-2026-10-07/REPORT.md) and [handoff](../reports/deployment-review-2026-10-07/HANDOFF-PLAN.md); real billing remains blocked separately. Dates/weeks, recruitment/revenue targets, affiliate tiers, discounts and early-access offers below are planning scenarios, not implemented offers or measured results. Follow [current status](skolamatch_current_status.md), source and later founder decisions.
+
 ## 0. Mission
 
 The immediate goal is NOT to build the biggest possible school platform.
@@ -14,7 +16,7 @@ Target progression:
 
 Prague is the first market.
 
-There are approximately **214 Prague schools** in the target database. The current ~60-school database is only the testing subset.
+Read-only catalogue observations on 9 October show **217 visible schools /223 raw rows**. The historical Atlas list contains 214 names; the earlier ~60-school sample was a development snapshot. These counts describe different sets and do not establish complete current register coverage. Use the loaded visible catalogue for product counts.
 
 ---
 
@@ -179,11 +181,13 @@ Both sides have a reason to use the link.
 
 # 5. Recommended Affiliate Offer
 
-For the standard season price, initially test:
+**Affiliate proposal, not a current offer:** the locked ordinary season price is 690 Kč; the 50 Kč discount and commission below require founder approval, refund/tax terms and implementation before use. Beta remains free.
+
+For this proposed scenario:
 
 ### Standard price
 
-**699 CZK**
+**690 CZK**
 
 ### Affiliate customer discount
 
@@ -191,7 +195,7 @@ For the standard season price, initially test:
 
 Customer pays:
 
-**649 CZK**
+**640 CZK**
 
 ### Creator commission
 
@@ -199,11 +203,11 @@ Start at:
 
 **30% of the amount actually paid**
 
-30% × 649 CZK = approximately **195 CZK**
+30% × 640 CZK = approximately **192 CZK**
 
 Your gross revenue after creator commission:
 
-Approximately **454 CZK**
+Approximately **448 CZK**
 
 before payment processing/taxes/other costs.
 
@@ -315,7 +319,7 @@ This is one reason affiliate links can be much stronger than asking creators to 
 
 A 50% customer discount is unnecessary initially.
 
-For a ~699 CZK product:
+For a ~690 CZK product:
 
 **50 CZK off** is a cleaner first test.
 
@@ -347,16 +351,16 @@ with:
 
 Example:
 
-**699 CZK standard → 649 CZK with creator referral**
+**690 CZK standard → 640 CZK with creator referral**
 
 The affiliate offer should be evaluated based on the actual price available at the time.
 
 Do not create a confusing situation where users see:
 
-499 CZK publicly  
-699 CZK normally  
-649 CZK through creator  
-599 CZK through another creator
+- 499 CZK publicly
+- 690 CZK normally
+- 640 CZK through creator
+- 599 CZK through another creator
 
 Keep the pricing hierarchy simple.
 
@@ -403,7 +407,7 @@ Create a launch checklist and identify:
 - Are basic legal/privacy requirements handled?
 - Are emails working?
 
-You do not need all 214 schools completed today.
+Prioritize verified visible-school coverage and the launch gates; historical directory counts are not a completion target.
 
 You need to understand exactly what blocks launch.
 
@@ -431,7 +435,7 @@ Do NOT spend the entire two hours making one beautiful video.
 
 Continue the highest-priority database work.
 
-Focus on getting the architecture ready for all ~214 Prague schools.
+Focus on reliable current catalogue/data pipelines; establish the actual register scope before promising complete Prague coverage.
 
 Do not spend hours manually polishing one school while dozens are missing.
 
@@ -644,76 +648,27 @@ Recruitment continues into Week 2.
 
 # 20. WEEK 1-2 BOUNDARY: RESOLVE UNFORGET LAUNCH BLOCKERS
 
-**Status:** Critical path. These items are tracked in `UNFORGET.md` as half-done or decision-gated blockers. They must be resolved before the Codex audit.
+**Current state, 10 October 2026:** the review is already in progress under the founder's authorization. Historical unfinished-item labels are not instructions to stop it. Complete the current handoff gates before the relevant release.
 
-After completing Week 1 development, before Codex deep audit:
+## Blocker 1: Verify the settled pricing and purchase lifecycle
 
-## Blocker 1: Finalize Pricing Decisions (MANDATORY)
+Prices are locked: **season 690 Kč once, monthly 249 Kč recurring**, season first. The season purchase saves a card for one charge after three days; monthly has no purchase trial. The separate ordinary-account access trial must start at first confirmed sign-in (migration pending). Beta has neither paid checkout nor a purchase trial. Preserve current cancellation/withdrawal wording and distinguish the Terms' 14-day wording from the additional 30-day benefit; applicability, minors, communications and refund lifecycle remain legal/payment acceptance gates. No live-key swap until P01–P09 and mandatory day-2 reminder/communication gates are resolved.
 
-**Tracked in:** `UNFORGET.md` under "Pricing decisions not yet finalized"  
-**Impact:** Blocks real Stripe integration
+## Blocker 2: Verify confirmation/authentication end to end
 
-Decide and lock down:
+The confirmation-wait UI and hosted email confirmation now exist; the old skipped-gate description is obsolete. Preserve confirmed-email checks before access/real checkout. Verify actual mail delivery, same/other-tab return, CAPTCHA resend, duplicate callbacks, account switches, outages and failed profile loads using the handoff. Source/browser fixtures do not establish the whole deployed journey.
 
-1. **Exact prices** (currently placeholders in `frontend/src/config/pricing.js`)
-   - Season pass: 690 Kč?
-   - Monthly: 249 Kč?
-2. **Trial length** (currently 3 days, matching research recommendation but not final)
-3. **Plan display order** (Season first or Monthly first?)
-4. **Refund window** (currently 3 days placeholder — 14 days EU baseline is the real benchmark)
+## Blocker 3: Human approval of AI output/data provenance
 
-Once decided, these values go into Stripe and lock in for launch.
+Inspect current `lib/questionnaire.js`, server explanation paths and `scripts/generate-school-proscons.js` rather than stale line numbers/model proposals. Review actual current Czech output from at least five representative schools, including missing/mixed-year facts and contradictory extraction. Approve tone and factual grounding before paid regeneration; S11/S12 selection/cache/fingerprint/cost/failure gates remain open. Comparison/risk/scoring numbers are deterministic, not AI-generated admission predictions.
 
-## Blocker 2: Email Confirmation Flow (MANDATORY before Stripe)
+## Blocker 4: Resolve current deferred work
 
-**Tracked in:** `UNFORGET.md` under "Onboarding: email confirmation gate temporarily disabled"  
-**Impact:** Unconfirmed users can't use protected routes today, but the flow is broken
-
-Current state: `CreateAccount.jsx` skips the email-check wait, because the confirmation link has nowhere to return to. Fix before Stripe goes live:
-
-**Option A (if same-browser link click):** Make `/prihlaseni?potvrzeno=1` redirect into onboarding's next step instead of breaking the flow.  
-**Option B (robust):** Add a "check your email" gate again, but specifically before the real payment call, not blocking the whole flow.
-
-Either way: **Do not let an unconfirmed email reach the real Stripe checkout.**
-
-## Blocker 3: AI Prompt Human Tuning (MANDATORY for beta)
-
-**Tracked in:** `UNFORGET.md` under "AI feature prompts need real human editing"  
-**Impact:** AI-generated text reaches users; needs tone/voice validation
-
-Current prompts need a human-tuning pass (you, not Claude) reading real generated output:
-
-1. **`lib/questionnaire.js` SYSTEM_PROMPT** (~line 399) — onboarding's "why this school fits you" sentence  
-   - Read real output, approve or rewrite the prompt directly
-2. **`scripts/generate-school-proscons.js` prompt** — school pros/cons  
-   - If wiring Gemini 2.5 Flash (plan 006), do this tuning pass AT THE SAME TIME as the model comparison, not separately
-   - Read generated Czech text; validate it sounds right for a 15-year-old, not robotic
-
-**Done when:** You've read generated output from at least 5 schools and either approved the current prompt or rewritten it and re-run the generation.
-
-## Blocker 4: Fix Half-Done Items
-
-**Tracked in:** `UNFORGET.md` under "Fix school suggestions" and others
-
-Go through UNFORGET.md and identify any remaining items that are:
-- Marked as urgent
-- Blocking launch
-- Half-done (code exists, but incomplete or placeholder)
-
-Current open items worth flagging:
-- **School suggestions:** User flagged this needs fixing (context to be recalled when raising it)
-- **Legal review on paywall contract capacity:** Mostly resolved (Czech law favors minors at 15+), but flag the parental-confirmation screen when you get a Czech consumer-law lawyer's review before Stripe goes live
+Use `UNFORGET.md` and the ordered handoff for auth/request ownership, access policy, transactional picks, privacy/consent/erasure/sharing, provenance and device acceptance. Contractual capacity is not automatically resolved at age 15; that child-consent threshold concerns a specific GDPR case. The checkout parental checkbox was removed by founder decision; obtain applicable Czech consumer-law advice without reintroducing an obsolete screen by assumption.
 
 ## The Gate
 
-**Before Codex audit starts:**
-- [ ] Pricing finalized and locked (all values decided)
-- [ ] Email confirmation flow fixed (unconfirmed emails cannot reach Stripe)
-- [ ] AI prompts human-tuned (at least one pass reading real output)
-- [ ] UNFORGET half-done items identified and either fixed or documented
-- [ ] Any legal blockers flagged (paywall contract review scheduled, if needed)
-
-If any of these is NOT done, the Codex audit cannot start. These are decision/integration points, not feature work, but they unlock everything that follows.
+Record fixes, remaining risks, manual evidence and approvals against the current build. A no-charge beta needs the beta gates; real-money launch additionally needs complete payment/legal/communication acceptance. Do not make unresolved work a prerequisite to examining it, and do not treat passing mock tests as production verification.
 
 ---
 
@@ -746,10 +701,11 @@ An independent senior engineer/security auditor performs a comprehensive adversa
 
 ## The Gate
 
-**Prerequisite to start audit:**
-- Days 1-6 of Week 1 development complete
-- Fake-user testing complete
-- P0 blockers resolved (registration, login, questionnaire, matching, Stripe, paywall, analytics all functional)
+**Current audit inputs:**
+- Use the actual build and source hashes, including concurrent changes.
+- Test ordinary/free/public versus authorized premium/beta boundaries.
+- Keep unresolved items visible; the audit can examine unfinished code.
+- Free-beta acceptance and real-billing acceptance have separate gates.
 
 **Definition of "Pass":**
 - All critical-severity findings resolved or explicitly accepted by founder
@@ -780,16 +736,16 @@ Then recruit the next 10 while the first 10 test.
 
 ## Beta Process
 
-Each tester should:
+Each tester should follow the current flow in [beta operations](beta_testing_operations.md):
 
-1. Enter through the landing page.
-2. Complete onboarding.
-3. See their recommendation.
-4. Explore the result.
-5. Experience the paywall.
-6. Receive free beta access.
-7. Use the product normally.
-8. Report problems.
+1. Enter through the current approved site/invitation gate.
+2. Register and confirm their email.
+3. Review the beta notice/consent and complete the required profile.
+4. Complete the required questionnaire and inspect recommendations.
+5. Use school/search/comparison/decision tools with free beta access.
+6. Optionally review payment screens as feedback previews; never enter Stripe.
+7. Submit main-form/access-gate feedback to renew the rolling window, up to the programme cutoff.
+8. Give optional quick ratings/closing feedback; these do not renew access.
 
 Ask structured questions:
 
@@ -859,9 +815,9 @@ At this point:
 
 **Real customers can buy.**
 
-Recommended initial offer:
+Historical promotion proposal — **not approved/current pricing**. Do not advertise or implement it without a separate founder decision and payment/legal acceptance.
 
-### Early Access Season Pass
+### Proposed Early Access Season Pass
 
 **499 CZK**
 
@@ -1004,7 +960,7 @@ A focused independent review of:
 - No new high-severity vulnerabilities found
 - Deep audit critical/high findings still resolved
 - Any medium-severity findings from beta documented
-- Codex confirms safe to proceed to public launch
+- Current-build review records completed checks, remaining risks and the founder/manual release decision; it provides no blanket safety guarantee
 
 **Public launch cannot proceed until this gate is passed.**
 
@@ -1152,7 +1108,7 @@ The product experience is:
 
 Keep percentage matching.
 
-The percentage solves a real UX problem when there are ~214 schools.
+The percentage can help rank a large catalogue; its interpretation, input completeness and cross-surface consistency still require the deployment checks.
 
 Do NOT replace it with broad labels such as:
 
@@ -1203,11 +1159,13 @@ Never let users interpret the matching score as admission probability.
 
 # 39. AI Features
 
-Current AI features are enough for launch:
+Existing explanations and decision tools require current acceptance:
 
-- personalized explanation
-- comparison
-- DiPSy guidance
+- personalized AI explanation, with verified facts and human-approved output
+- deterministic comparison/matching/risk calculations
+- application/DiPSy guidance with current official rules
+
+Presence in source does not establish readiness; follow the deployment handoff.
 
 Do not delay launch looking for ten more AI features.
 
@@ -1423,18 +1381,18 @@ The ultimate question is:
 
 # 48. Affiliate Unit Economics
 
-For a 699 CZK sale with:
+For a 690 CZK sale with:
 
 - 50 CZK customer discount
-- 30% creator commission on 649 CZK
+- 30% creator commission on 640 CZK
 
 Approximate:
 
-Customer pays: **649 CZK**
+Customer pays: **640 CZK**
 
-Creator: **~195 CZK**
+Creator: **~192 CZK**
 
-Remaining before fees/taxes/other costs: **~454 CZK**
+Remaining before fees/taxes/other costs: **~448 CZK**
 
 This is much healthier than immediately giving away:
 
@@ -1939,11 +1897,7 @@ Write every remaining launch blocker.
 
 Categorize:
 
-**P0 = prevents charging**
-
-**P1 = improves launch**
-
-**P2 = can wait**
+Use current handoff priorities: beta-blocking issues (including privacy/auth/data/device) come before beta; billing blockers come before charging. A P1 can block release. P2/P3 improvements depend on demonstrated impact, not only whether they prevent charging.
 
 Do not code yet.
 
