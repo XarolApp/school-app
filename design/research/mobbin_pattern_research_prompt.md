@@ -1,12 +1,14 @@
 # Research brief — Mobbin pattern survey for a custom design skill
 
-> **How to use this file:** paste everything below the line into Claude Cowork as a
+> **Historical brief, checked 11 October 2026:** the survey and four pattern guides already exist (`design/research/mobbin_pattern_survey.md` and the named repository skills). No additional research/provider/agent run is authorized by reading this file. Current beta is free for feedback, with previews; commercial plans are 690 Kč season / 249 Kč monthly, and mobile remains planned. Refresh old context before separately requested reuse.
+>
+> **Original use:** paste everything below the line into Claude Cowork as a
 > single research task. Cowork has access to the Mobbin MCP. This is a **breadth**
 > task, not a depth task — the goal is a large, structured survey that a later step
 > turns into a reusable Claude Code skill, not a one-off recommendation for
 > Střední na míru specifically.
 
-**Model/effort recommendation (you're budget-constrained on weekly usage):** don't
+**Historical model/effort opinion for that separate survey, not a measured guarantee or current routing gate. Honor the active human/host instructions (this review is founder-confirmed GPT-6.1 Sol xhigh with no subagents). Original recommendation:** don't
 downgrade the model — pattern synthesis across many screens needs real judgment, and
 a weaker model will produce generic, forgettable observations that aren't worth
 turning into a skill. Set **effort to medium, not low.** Low effort risks shallow
@@ -24,8 +26,7 @@ I'm building **Střední na míru**, a Czech web + mobile app that helps 9th gra
 and their parents choose a high school. It's paid (~250 Kč / ~$10), both students
 and parents buy independently, acquisition is TikTok/Instagram influencers, and it's
 used once per person, ever. Full product context, if useful, lives in
-`design_direction_research.md` and `DESIGN.md` in this same `docs/sources/` /
-project-root location — you don't need to read those to do this task, but they exist
+`design/research/design_direction_research.md` and `design/DESIGN.md` — you don't need to read those to do this task, but they exist
 if you want grounding.
 
 **This task is different from the previous research pass.** That one was narrow and
@@ -41,7 +42,7 @@ principle.
 
 ## What I need you to do
 
-Use the Mobbin MCP (`search_screens`, `search_flows`, `search_sections`) to survey a
+For an explicitly authorized new survey, discover the available Mobbin tools/schema; the historical `search_screens` / `search_flows` / `search_sections` names are not proof those tools exist now. Survey a
 **large number of sites and apps** — tens of products per category, not a handful.
 You do **not** need most of them to resemble Střední na míru. Pull from genuinely
 successful, well-regarded products across as many industries as you can reach:

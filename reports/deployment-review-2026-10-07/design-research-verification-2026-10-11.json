@@ -1,0 +1,116 @@
+{
+  "checked_at_utc": "2026-10-11T09:48:23.088865+00:00",
+  "snapshot_commit": "cbc2d2c48e50cb7198941762120d9c4eed06d16a",
+  "files": {
+    "design/research/design_direction_interview.md": {
+      "sha256_before": "08b21c5c2f48d368ce1ed744c187488db80d18d8a07673d5235a8d8afd18d4e3",
+      "sha256_after": "2ca7337108963d9e53edf83cd567832d87a9441f539d86339c4fda0677f1ae94",
+      "lines": 178
+    },
+    "design/research/design_direction_research_prompt.md": {
+      "sha256_before": "cb762d16d0ee450289873cf5d4b5d17f319cea44c5b25f7b78e5db58438fc903",
+      "sha256_after": "e2216cbaa13a0dc0f652f062816d8134edc3e9fb3dd05193febbe84dc246c0c7",
+      "lines": 137
+    },
+    "design/research/mobbin_pattern_research_prompt.md": {
+      "sha256_before": "acc084a3b892c66b3e475324cd53f1a7d78f0cc05281dcea174cadf8e48d9fe3",
+      "sha256_after": "5103d2c2b6d217eca4d740f1773a6dbafb63b2f98fd020c82f61c0fcb096de2e",
+      "lines": 147
+    },
+    "design/research/landing_animation_research_prompt.md": {
+      "sha256_before": "062636d3f9acadb7e74b27a8d48dc2b3659529ec81b171e556e6a284cb204f56",
+      "sha256_after": "c14eb8e6d6bf491c742ade9bb043537b570790ecb85cfde6810a1d6aa06351a7",
+      "lines": 77
+    },
+    "design/research/landing_animation_research.md": {
+      "sha256_before": "513737ed22ba6ff99d65d9a577cc0400b1269b72bed3b466c0db92eb87337510",
+      "sha256_after": "31a5d5de087e7df1712b70f2b1b878e8129d3ea584408f8c841327a6b6f6f5b4",
+      "lines": 117
+    },
+    "design/research/design_direction_research.md": {
+      "sha256_before": "988357711c95db5c7bb6de42c484d7f729347557dcf61ea62bf976d6c9b4f01d",
+      "sha256_after": "32b296df379c677b5e8ed0d40dc9ae582a49d246f252dc39360fe5c9b220cbbb",
+      "lines": 665
+    },
+    "design/DESIGN.md": {
+      "sha256_before": "1a87bc8b1fff13370e0f4ffd22802266ff83c368cdd9d0a51a583ca7a7ed1aaa",
+      "sha256_after": "f1f7a80439595c724a41c49cb0850885b69637f08b811a40a470e86b39b61be2",
+      "lines": 812
+    },
+    "design/system/readme.md": {
+      "sha256_before": "36d8a827c29273c532f989cf5807f12265401a6b388436974f3ddbcc292302d5",
+      "sha256_after": "9fdf045afdadb625c9fa3040a3f9a79df244b40a909285a42136d19eaec1a6b1",
+      "lines": 361
+    },
+    "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/readme.md": {
+      "sha256_before": "9d76f7a92fae77d1a9687c78ebf420a387069709a55db42ba91fef96c1756cbb",
+      "sha256_after": "7dea28278c304a2fd711216a92ca3d04b8f2b15d95e178b8e584f2afa257d56e",
+      "lines": 361
+    },
+    "design/archive/school-search-wireframe/uploads/SKILL.md": {
+      "sha256_before": "8415e1d169e611ff9c39849161701a4da41ac6f0c61d1cdc99f26bb7fc26e71a",
+      "sha256_after": "8415e1d169e611ff9c39849161701a4da41ac6f0c61d1cdc99f26bb7fc26e71a",
+      "lines": 417,
+      "byte_equal_full_base": ".claude/skills/landing-page-design/SKILL.md"
+    }
+  },
+  "copy_difference_proofs": [
+    {
+      "base": "design/system/readme.md",
+      "base_complete_sha256": "36d8a827c29273c532f989cf5807f12265401a6b388436974f3ddbcc292302d5",
+      "copy": "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/readme.md",
+      "copy_before_sha256": "9d76f7a92fae77d1a9687c78ebf420a387069709a55db42ba91fef96c1756cbb",
+      "diff_path": "/private/tmp/design-research-copy-diff-2.txt",
+      "diff_lines": 45,
+      "diff_bytes": 3261
+    }
+  ],
+  "current_design_yaml_byte_preserved": true,
+  "verification": {
+    "proposal_bytes_all_match": true,
+    "whitespace_check_pass": true,
+    "new_authoritative_local_paths_exist": true,
+    "configured_prices": {
+      "season": 690,
+      "monthly": 249
+    },
+    "retention_and_beta_policy": "Founder D1/D4/free beta/after-beta billing acceptance unchanged; no hosted operation."
+  },
+  "primary_source_checks": [
+    {
+      "url": "https://www.ftc.gov/legal-library/browse/cases-proceedings/192-3133-flo-health-inc",
+      "verified": "Final settlement order 22 June 2021."
+    },
+    {
+      "url": "https://www.ftc.gov/reports/bringing-dark-patterns-light",
+      "verified": "2022 report Appendix A explicitly lists Confirm Shaming, Parasocial Relationship Pressure and baseless/fake countdown urgency."
+    },
+    {
+      "url": "https://bpb-us-e1.wpmucdn.com/sites.harvard.edu/dist/b/261/files/2023/03/somerville2013_psychsci.pdf",
+      "verified": "Main-paper methods/results describe 69 peer-observation participants; no verified universal 15.3-year statement. Estimated embarrassment/GSR peaks are sample-specific; transfer to this UI is untested."
+    },
+    {
+      "url": "https://www.cs.cmu.edu/~jbigham/pubs/pdfs/2017/colors.pdf",
+      "verified": "Specific colored backgrounds with black text tested in adults aged 18–60; does not directly test current near-white tokens or Czech teenagers."
+    },
+    {
+      "url": "https://motion.dev/docs/performance",
+      "verified": "Property/browser-dependent compositor acceleration; no universal performance guarantee."
+    },
+    {
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html",
+      "verified": "Autoplay pause/stop/hide analysis is distinct and conditional."
+    },
+    {
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html",
+      "verified": "Nonessential/essential distinction; static information feedback valid."
+    }
+  ],
+  "limits": [
+    "NBER w24471 page/PDF returned internal retrieval errors on multiple canonical URLs; original metrics remain explicitly historical attributed claims requiring primary recheck before public use. No claim that its intervention isolates the effect of a score.",
+    "Official e-Sbirka civil-code page resolved but provided no text through this tool; no fresh legal text/contract-capacity approval claimed. Existing professional real-billing gate remains.",
+    "FTC 2024 Intuit remedy is dated; current appeal status must be checked against primary court records before legal reliance. Do not rely on a search-result secondary summary.",
+    "Two uploaded DESIGN copies still contain the same exact-age claim; their 681/504-line differences are queued for complete reading before edits.",
+    "Full study samples/effect sizes/copyright/license/brand runtime/cost values are not independently validated by simply reading the entire research note. No new redesign, model/provider/connector request, runtime/token/package or hosted write."
+  ]
+}

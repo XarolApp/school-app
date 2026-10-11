@@ -189,3 +189,6 @@ Completed data-run record reconciliation, 11 October: the full 745-line peer sco
 
 
 Design-reference checkpoint, 11 October: all twelve bases and twelve exact Claude copies fully read. Factual contrast/coordinate/weight/font-feature/path/tool claims corrected, and the reference dashboard’s undefined data fixed. Eighteen coordinates, four contrast pairs and two actual-source React SSR renders pass; specification/YAML/function bodies are preserved. [Evidence](design-reference-verification-2026-10-11.json). No current product design/token/dependency, runtime/privacy or deployment gate changed; future exact CLI/font/browser/device acceptance remains C44. Full project review stays active.
+
+
+Historical design-research checkpoint, 11 October: six complete research/prompt/interview reads, two verified full design/readme baselines, one complete archived-readme difference and one exact archived guide copy reconcile current facts and source limits. FTC settlement/date/confirmshaming and unsupported precise-age/storage/price/legal/performance claims corrected; current DESIGN YAML is preserved. [Evidence](design-research-verification-2026-10-11.json). Two uploaded variants and primary-source publication/reuse debts remain C39/C44. No product/token/runtime/privacy or legal policy changed; full review stays active.

@@ -1,10 +1,6 @@
 # Research brief — visual direction for Střední na míru
 
-> **How to use this file:** paste everything below the line into Claude Cowork as a
-> single research task. It is written to be self-contained — Cowork starts with no
-> knowledge of this repo. The output lands back in `docs/sources/` and gets combined
-> with (a) the founder interview and (b) Mobbin reference screens before `DESIGN.md`
-> is rewritten.
+> **Historical August brief, checked 11 October 2026:** output already exists as `design/research/design_direction_research.md`. Current specification is `design/DESIGN.md`; no new Cowork run or rewrite is requested by this audit. Refresh the context below before any separately authorized reuse. Web beta is free for feedback with payment previews; commercial plans are 690 Kč season and 249 Kč monthly. Mobile remains planned, not a shipped app. Use current source/status and founder constraints; the old ~250 Kč description is historical.
 
 ---
 

@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-11T09:34:46.611766+00:00",
-  "commit": "f6c07a04311316ce65a4b97b3e64ebb47447d6c1",
+  "checked_at_utc": "2026-10-11T09:48:23.718610+00:00",
+  "commit": "cbc2d2c48e50cb7198941762120d9c4eed06d16a",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "current_full_read": 528,
+    "current_full_read": 536,
     "binary_requires_asset_check": 105,
-    "pending_or_changed": 266,
-    "generated_or_audit_artifact": 179,
+    "pending_or_changed": 258,
+    "generated_or_audit_artifact": 180,
     "removed_or_missing": 2
   },
   "files": [
@@ -993,8 +993,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "81d981f6828cc9f26cf486d65dc35416490be7941d3036fd25e5bc8dd887adcb",
-      "lines": 1871,
+      "sha256": "5fe778e58d3555ce8a6dae676c80192d9a6d187438a81fb050964a077a141c90",
+      "lines": 1876,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -1191,7 +1191,7 @@
     },
     {
       "path": "design/DESIGN.md",
-      "sha256": "1a87bc8b1fff13370e0f4ffd22802266ff83c368cdd9d0a51a583ca7a7ed1aaa",
+      "sha256": "f1f7a80439595c724a41c49cb0850885b69637f08b811a40a470e86b39b61be2",
       "lines": 812,
       "status": "current_full_read",
       "matching_evidence": [
@@ -1293,10 +1293,12 @@
     },
     {
       "path": "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/readme.md",
-      "sha256": "9d76f7a92fae77d1a9687c78ebf420a387069709a55db42ba91fef96c1756cbb",
-      "lines": 359,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "7dea28278c304a2fd711216a92ca3d04b8f2b15d95e178b8e584f2afa257d56e",
+      "lines": 361,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/styles.css",
@@ -1408,8 +1410,10 @@
       "path": "design/archive/school-search-wireframe/uploads/SKILL.md",
       "sha256": "8415e1d169e611ff9c39849161701a4da41ac6f0c61d1cdc99f26bb7fc26e71a",
       "lines": 417,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/archive/school-search-wireframe/uploads/mcp/mcp-1788032693246-5me4s4.webp",
@@ -1982,45 +1986,57 @@
     },
     {
       "path": "design/research/design_direction_interview.md",
-      "sha256": "08b21c5c2f48d368ce1ed744c187488db80d18d8a07673d5235a8d8afd18d4e3",
-      "lines": 192,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "2ca7337108963d9e53edf83cd567832d87a9441f539d86339c4fda0677f1ae94",
+      "lines": 178,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/research/design_direction_research.md",
-      "sha256": "988357711c95db5c7bb6de42c484d7f729347557dcf61ea62bf976d6c9b4f01d",
-      "lines": 661,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "32b296df379c677b5e8ed0d40dc9ae582a49d246f252dc39360fe5c9b220cbbb",
+      "lines": 665,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/research/design_direction_research_prompt.md",
-      "sha256": "cb762d16d0ee450289873cf5d4b5d17f319cea44c5b25f7b78e5db58438fc903",
-      "lines": 141,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "e2216cbaa13a0dc0f652f062816d8134edc3e9fb3dd05193febbe84dc246c0c7",
+      "lines": 137,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/research/landing_animation_research.md",
-      "sha256": "513737ed22ba6ff99d65d9a577cc0400b1269b72bed3b466c0db92eb87337510",
-      "lines": 113,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "31a5d5de087e7df1712b70f2b1b878e8129d3ea584408f8c841327a6b6f6f5b4",
+      "lines": 117,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/research/landing_animation_research_prompt.md",
-      "sha256": "062636d3f9acadb7e74b27a8d48dc2b3659529ec81b171e556e6a284cb204f56",
-      "lines": 79,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "c14eb8e6d6bf491c742ade9bb043537b570790ecb85cfde6810a1d6aa06351a7",
+      "lines": 77,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/research/mobbin_pattern_research_prompt.md",
-      "sha256": "acc084a3b892c66b3e475324cd53f1a7d78f0cc05281dcea174cadf8e48d9fe3",
-      "lines": 146,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "5103d2c2b6d217eca4d740f1773a6dbafb63b2f98fd020c82f61c0fcb096de2e",
+      "lines": 147,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/research/mobbin_pattern_survey.md",
@@ -2508,7 +2524,7 @@
     },
     {
       "path": "design/system/readme.md",
-      "sha256": "36d8a827c29273c532f989cf5807f12265401a6b388436974f3ddbcc292302d5",
+      "sha256": "9fdf045afdadb625c9fa3040a3f9a79df244b40a909285a42136d19eaec1a6b1",
       "lines": 361,
       "status": "current_full_read",
       "matching_evidence": [
@@ -6143,22 +6159,22 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "764b6e086b35c8d625b6d53c64b8633950be14113b1f130380fab44742151e57",
-      "lines": 404,
+      "sha256": "36402431882228cc99236096e0c364f00948dcaaa641ac7f9ee6bbc8683cec28",
+      "lines": 412,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "e1f295c4b952b59b418e6bcdb473e8850ab33b4d880d309d5d7490e06325c81f",
-      "lines": 261,
+      "sha256": "9ab0dc3d207a788e07bc5d49e4148ce11420b6e213673eef6c085647b4675941",
+      "lines": 264,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "df016f19fc04dcca7ce393c16803f716b55aee958936469beaac84cdeb848ed5",
-      "lines": 191,
+      "sha256": "dff43e8aa7992d2e26c72c8e6c842ca3d996e4b68dd0cf4bc85dd5710f874996",
+      "lines": 194,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6507,8 +6523,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "137a22cf3b20961c2409cc3f06639a6ab460bca74170bc7c928fa0b5c391d73f",
-      "lines": 542,
+      "sha256": "639b7e2f15487723e3ffbe22258fc0acb986d4819efd0125caf6b7cfcf8f5d35",
+      "lines": 545,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6521,8 +6537,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "9071682d1ed938b1071a4d515847ebe732d96161f59996f3e81a0a7919754271",
-      "lines": 8579,
+      "sha256": "6ebe70ffc534296b456c2262d0c3bac8d9049b0766b13d6b56080ef7775f7459",
+      "lines": 8634,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6635,6 +6651,13 @@
       "path": "reports/deployment-review-2026-10-07/design-reference-verification-2026-10-11.json",
       "sha256": "0bbbc60f93ea962bcaf8a3f596d67614a26df1ce922fc7e9baca65cff52a4465",
       "lines": 489,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/design-research-verification-2026-10-11.json",
+      "sha256": "bcc68423da48263dc1ae2bad7eb1502ed7e7ffaf31f8f4d19394e0e1cfe0085e",
+      "lines": 116,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -7714,8 +7737,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "dcd40d7045a6e825cd00fcd30ed773e967fe19e0f7fbe4d34f9b526aff03678e",
-      "lines": 7092,
+      "sha256": "087cba59ac6e9ff84e5b80222a8d2451810598bf3580f3ae0cc72a824f9083d8",
+      "lines": 7215,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },

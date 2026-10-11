@@ -1,6 +1,8 @@
 # ŠkolaMatch — Design System
 
-**Version:** alpha · **Source of truth:** `uploads/DESIGN.md` (v2, the corrected direction)
+**Version:** historical alpha export · **Original input:** `uploads/DESIGN.md` (v2).
+
+> **Current use, checked 11 October 2026:** this archived ŠkolaMatch export predates the shipped Střední na míru design. Use `design/DESIGN.md` and current Archivo/Archivo Narrow/four-palette web tokens; its Fraunces/Public Sans, terracotta default, specimen criteria, 390 Kč paywall, invented data and CDN suggestions are historical examples. Beta is free for feedback with payment previews. C44 tracks source/template/accessibility/bundle-generation acceptance; do not copy this export as current implementation facts.
 
 ## What ŠkolaMatch is
 
@@ -37,8 +39,8 @@ correction: warmth in the brand layer, sobriety in the interface layer.
 
 There is **no institutional-document metaphor anywhere** in this system — no report
 cards, no class register, no teacher's correction pen. Sensitivity to social
-evaluation peaks around age 15.3 (Somerville et al., fMRI, n=69), with arousal
-elevated during *anticipation* as much as evaluation. A product about to tell a
+evaluation/anticipation was studied by Somerville et al. (fMRI, n=69). The earlier
+exact 15.3-year claim is unverified; its application to this UI is design inference. A product about to tell a
 15-year-old what it thinks of their choices cannot visually rhyme with being graded.
 Where a colour or form needs a referent, it comes from something a person owns and
 likes — never an instrument that judges them.

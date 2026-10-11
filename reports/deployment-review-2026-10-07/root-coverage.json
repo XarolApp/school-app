@@ -2138,19 +2138,19 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "81d981f6828cc9f26cf486d65dc35416490be7941d3036fd25e5bc8dd887adcb",
-    "lines": 1871,
+    "sha256": "5fe778e58d3555ce8a6dae676c80192d9a6d187438a81fb050964a077a141c90",
+    "lines": 1876,
     "read_ranges": [
       [
         1,
-        1871
+        1876
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-11T09:34:46.017814+00:00",
-    "previous_complete_sha256": "4edc834d1be39ae5366aeb8b963622e610df77f70a582879fcfa5bb51070967f",
-    "method": "Previous complete receipt hash verified immediately before own append; entire owned append read. No runtime/deployment gate closed."
+    "checked_at_utc": "2026-10-11T09:48:23.088865+00:00",
+    "previous_complete_sha256": "81d981f6828cc9f26cf486d65dc35416490be7941d3036fd25e5bc8dd887adcb",
+    "method": "Previous complete receipt hash verified; complete owned research append read. Existing runtime/privacy/legal/deployment gates preserved."
   },
   "frontend/src/api.js": {
     "sha256": "a545cb179681a87378f41cf928cff50e1ae6c2e539c4bbacf373590af9f8ab8a",
@@ -4257,8 +4257,7 @@
     "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
   },
   "design/DESIGN.md": {
-    "status": "complete",
-    "sha256": "1a87bc8b1fff13370e0f4ffd22802266ff83c368cdd9d0a51a583ca7a7ed1aaa",
+    "sha256": "f1f7a80439595c724a41c49cb0850885b69637f08b811a40a470e86b39b61be2",
     "lines": 812,
     "read_ranges": [
       [
@@ -4266,8 +4265,11 @@
         812
       ]
     ],
-    "reviewed_at_utc": "2026-10-10T11:05:38.433427+00:00",
-    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:48:23.088865+00:00",
+    "previous_complete_sha256": "1a87bc8b1fff13370e0f4ffd22802266ff83c368cdd9d0a51a583ca7a7ed1aaa",
+    "method": "Six research bases fully read (research 1–55/56–110/111–165/166–220/221–275/276–330/331–385/386–440/441–495/496–550/551–605/606–640/641–661; animation initial 1–113 with truncated 38–69 repaired; interview and three prompts whole). Current design/spec and system readme full-receipt baseline hashes verified; archived readme all 45 differing lines read against the full current base. Every exact proposed replacement and all 89 added lines read in complete bounded ranges, including refinements. This does not freshly verify every historical linked paper/brand or legal/service/device acceptance."
   },
   "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/_ds_bundle.js": {
     "status": "complete",
@@ -4803,8 +4805,7 @@
     "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
   },
   "design/system/readme.md": {
-    "status": "complete",
-    "sha256": "36d8a827c29273c532f989cf5807f12265401a6b388436974f3ddbcc292302d5",
+    "sha256": "9fdf045afdadb625c9fa3040a3f9a79df244b40a909285a42136d19eaec1a6b1",
     "lines": 361,
     "read_ranges": [
       [
@@ -4812,8 +4813,11 @@
         361
       ]
     ],
-    "reviewed_at_utc": "2026-10-10T11:05:38.437380+00:00",
-    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:48:23.088865+00:00",
+    "previous_complete_sha256": "36d8a827c29273c532f989cf5807f12265401a6b388436974f3ddbcc292302d5",
+    "method": "Six research bases fully read (research 1–55/56–110/111–165/166–220/221–275/276–330/331–385/386–440/441–495/496–550/551–605/606–640/641–661; animation initial 1–113 with truncated 38–69 repaired; interview and three prompts whole). Current design/spec and system readme full-receipt baseline hashes verified; archived readme all 45 differing lines read against the full current base. Every exact proposed replacement and all 89 added lines read in complete bounded ranges, including refinements. This does not freshly verify every historical linked paper/brand or legal/service/device acceptance."
   },
   "design/system/styles.css": {
     "status": "complete",
@@ -7088,5 +7092,124 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-11T09:34:46.017814+00:00",
     "method": "Twelve bases fully read in bounded complete ranges (SKILL 1–120/121–161; example 1–140/141–244; template 1–172; CLI 1–206; spec 1–190/191–378; color 1–140/141–258; typography 1–160/161–305; anti-slop 1–135/136–246; style 1–135/136–265/266–381; eval/Dashboard/config whole). Each Claude copy independently byte-equal and hashed. Every proposed owned diff read; source specification/YAML/fixture body preservation guarded. Reference coverage is not runtime, CLI, font-license or device acceptance."
+  },
+  "design/research/design_direction_interview.md": {
+    "sha256": "2ca7337108963d9e53edf83cd567832d87a9441f539d86339c4fda0677f1ae94",
+    "lines": 178,
+    "read_ranges": [
+      [
+        1,
+        178
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:48:23.088865+00:00",
+    "previous_complete_sha256": "08b21c5c2f48d368ce1ed744c187488db80d18d8a07673d5235a8d8afd18d4e3",
+    "method": "Six research bases fully read (research 1–55/56–110/111–165/166–220/221–275/276–330/331–385/386–440/441–495/496–550/551–605/606–640/641–661; animation initial 1–113 with truncated 38–69 repaired; interview and three prompts whole). Current design/spec and system readme full-receipt baseline hashes verified; archived readme all 45 differing lines read against the full current base. Every exact proposed replacement and all 89 added lines read in complete bounded ranges, including refinements. This does not freshly verify every historical linked paper/brand or legal/service/device acceptance."
+  },
+  "design/research/design_direction_research_prompt.md": {
+    "sha256": "e2216cbaa13a0dc0f652f062816d8134edc3e9fb3dd05193febbe84dc246c0c7",
+    "lines": 137,
+    "read_ranges": [
+      [
+        1,
+        137
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:48:23.088865+00:00",
+    "previous_complete_sha256": "cb762d16d0ee450289873cf5d4b5d17f319cea44c5b25f7b78e5db58438fc903",
+    "method": "Six research bases fully read (research 1–55/56–110/111–165/166–220/221–275/276–330/331–385/386–440/441–495/496–550/551–605/606–640/641–661; animation initial 1–113 with truncated 38–69 repaired; interview and three prompts whole). Current design/spec and system readme full-receipt baseline hashes verified; archived readme all 45 differing lines read against the full current base. Every exact proposed replacement and all 89 added lines read in complete bounded ranges, including refinements. This does not freshly verify every historical linked paper/brand or legal/service/device acceptance."
+  },
+  "design/research/mobbin_pattern_research_prompt.md": {
+    "sha256": "5103d2c2b6d217eca4d740f1773a6dbafb63b2f98fd020c82f61c0fcb096de2e",
+    "lines": 147,
+    "read_ranges": [
+      [
+        1,
+        147
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:48:23.088865+00:00",
+    "previous_complete_sha256": "acc084a3b892c66b3e475324cd53f1a7d78f0cc05281dcea174cadf8e48d9fe3",
+    "method": "Six research bases fully read (research 1–55/56–110/111–165/166–220/221–275/276–330/331–385/386–440/441–495/496–550/551–605/606–640/641–661; animation initial 1–113 with truncated 38–69 repaired; interview and three prompts whole). Current design/spec and system readme full-receipt baseline hashes verified; archived readme all 45 differing lines read against the full current base. Every exact proposed replacement and all 89 added lines read in complete bounded ranges, including refinements. This does not freshly verify every historical linked paper/brand or legal/service/device acceptance."
+  },
+  "design/research/landing_animation_research_prompt.md": {
+    "sha256": "c14eb8e6d6bf491c742ade9bb043537b570790ecb85cfde6810a1d6aa06351a7",
+    "lines": 77,
+    "read_ranges": [
+      [
+        1,
+        77
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:48:23.088865+00:00",
+    "previous_complete_sha256": "062636d3f9acadb7e74b27a8d48dc2b3659529ec81b171e556e6a284cb204f56",
+    "method": "Six research bases fully read (research 1–55/56–110/111–165/166–220/221–275/276–330/331–385/386–440/441–495/496–550/551–605/606–640/641–661; animation initial 1–113 with truncated 38–69 repaired; interview and three prompts whole). Current design/spec and system readme full-receipt baseline hashes verified; archived readme all 45 differing lines read against the full current base. Every exact proposed replacement and all 89 added lines read in complete bounded ranges, including refinements. This does not freshly verify every historical linked paper/brand or legal/service/device acceptance."
+  },
+  "design/research/landing_animation_research.md": {
+    "sha256": "31a5d5de087e7df1712b70f2b1b878e8129d3ea584408f8c841327a6b6f6f5b4",
+    "lines": 117,
+    "read_ranges": [
+      [
+        1,
+        117
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:48:23.088865+00:00",
+    "previous_complete_sha256": "513737ed22ba6ff99d65d9a577cc0400b1269b72bed3b466c0db92eb87337510",
+    "method": "Six research bases fully read (research 1–55/56–110/111–165/166–220/221–275/276–330/331–385/386–440/441–495/496–550/551–605/606–640/641–661; animation initial 1–113 with truncated 38–69 repaired; interview and three prompts whole). Current design/spec and system readme full-receipt baseline hashes verified; archived readme all 45 differing lines read against the full current base. Every exact proposed replacement and all 89 added lines read in complete bounded ranges, including refinements. This does not freshly verify every historical linked paper/brand or legal/service/device acceptance."
+  },
+  "design/research/design_direction_research.md": {
+    "sha256": "32b296df379c677b5e8ed0d40dc9ae582a49d246f252dc39360fe5c9b220cbbb",
+    "lines": 665,
+    "read_ranges": [
+      [
+        1,
+        665
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:48:23.088865+00:00",
+    "previous_complete_sha256": "988357711c95db5c7bb6de42c484d7f729347557dcf61ea62bf976d6c9b4f01d",
+    "method": "Six research bases fully read (research 1–55/56–110/111–165/166–220/221–275/276–330/331–385/386–440/441–495/496–550/551–605/606–640/641–661; animation initial 1–113 with truncated 38–69 repaired; interview and three prompts whole). Current design/spec and system readme full-receipt baseline hashes verified; archived readme all 45 differing lines read against the full current base. Every exact proposed replacement and all 89 added lines read in complete bounded ranges, including refinements. This does not freshly verify every historical linked paper/brand or legal/service/device acceptance."
+  },
+  "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/readme.md": {
+    "sha256": "7dea28278c304a2fd711216a92ca3d04b8f2b15d95e178b8e584f2afa257d56e",
+    "lines": 361,
+    "read_ranges": [
+      [
+        1,
+        361
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:48:23.088865+00:00",
+    "previous_complete_sha256": "9d76f7a92fae77d1a9687c78ebf420a387069709a55db42ba91fef96c1756cbb",
+    "method": "Six research bases fully read (research 1–55/56–110/111–165/166–220/221–275/276–330/331–385/386–440/441–495/496–550/551–605/606–640/641–661; animation initial 1–113 with truncated 38–69 repaired; interview and three prompts whole). Current design/spec and system readme full-receipt baseline hashes verified; archived readme all 45 differing lines read against the full current base. Every exact proposed replacement and all 89 added lines read in complete bounded ranges, including refinements. This does not freshly verify every historical linked paper/brand or legal/service/device acceptance."
+  },
+  "design/archive/school-search-wireframe/uploads/SKILL.md": {
+    "sha256": "8415e1d169e611ff9c39849161701a4da41ac6f0c61d1cdc99f26bb7fc26e71a",
+    "lines": 417,
+    "read_ranges": [
+      [
+        1,
+        417
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:48:23.088865+00:00",
+    "method": "Explicit byte comparison and own hash for this 417-line archived copy; identical to the fully read current Claude landing guide with matching full receipt. Copy is audit content, not invocation/redesign authority."
   }
 }

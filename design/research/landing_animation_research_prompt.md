@@ -1,8 +1,6 @@
 # Research prompt: ambient/autoplay landing-page animation
 
-Paste this into Cowork (or another research tool) as-is. Save the output as
-`landing_animation_research.md` in this same folder — Claude will pick it up
-from there.
+Historical brief; output already exists as `landing_animation_research.md` in this folder. Reading it does not request another research/model run or landing rewrite. Before separately requested reuse, refresh current `design/DESIGN.md` / product source and verify live examples rather than assuming their current animation. The browser works on this MacBook; current device/reduced-motion acceptance remains in the deployment review.
 
 ---
 
@@ -22,7 +20,7 @@ is explicitly NOT:
 - hover effects or click/press feedback
 - loading spinners or progress indicators
 
-It IS the category of animation Duolingo's own marketing/landing pages use:
+The intended reference category (verify Duolingo's current marketing page separately) is:
 looping illustrations, an idle character animation, a subtle continuous motion
 in a hero graphic, something that feels alive and produced rather than static
 — running by itself, indefinitely or on a loop, the way a hero video or a

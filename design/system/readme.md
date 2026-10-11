@@ -39,8 +39,8 @@ correction: warmth in the brand layer, sobriety in the interface layer.
 
 There is **no institutional-document metaphor anywhere** in this system — no report
 cards, no class register, no teacher's correction pen. Sensitivity to social
-evaluation peaks around age 15.3 (Somerville et al., fMRI, n=69), with arousal
-elevated during *anticipation* as much as evaluation. A product about to tell a
+evaluation/anticipation was studied by Somerville et al. (fMRI, n=69). The earlier
+exact 15.3-year claim is unverified; its application to this UI is design inference. A product about to tell a
 15-year-old what it thinks of their choices cannot visually rhyme with being graded.
 Where a colour or form needs a referent, it comes from something a person owns and
 likes — never an instrument that judges them.

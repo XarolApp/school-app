@@ -286,9 +286,9 @@ noise, or flattering the user about a match that isn't actually strong.
 The first version's single worst decision, independently flagged by the research as
 "the single most damaging idea in the first pass": a visual metaphor built on being
 evaluated — report cards, a class register, a teacher's correction pen. Somerville et
-al. (fMRI, n=69) found sensitivity to social evaluation **peaks at ~15.3 years old** —
-almost exactly this product's primary user — with arousal elevated during
-*anticipation*, not only during the evaluation itself. A product about to tell a
+al. (fMRI, n=69) studied heightened adolescent response to peer evaluation and
+*anticipation*. The earlier precise 15.3-year generalisation is not verified by the
+linked main paper; applying that study to this UI remains a design inference. A product about to tell a
 15-year-old what it thinks of their choices cannot afford to visually rhyme with being
 graded.
 
