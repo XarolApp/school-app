@@ -1,0 +1,76 @@
+{
+  "checked_at_utc": "2026-10-11T09:18:44.259669+00:00",
+  "peer_record_commit": "cb7a550",
+  "peer_run_claim": "Base/structure rerun for 56 of 58; no scraped text for 15/94; pros/cons regenerated for all 194. No independently verified run-output accuracy or paid cost receipt.",
+  "source_scope_report": {
+    "path": "reports/ninth-grade-scope-2026-10-10.json",
+    "sha256": "0c10fe7790ea276b11a08ce8c227b71ce8cf03e85e516c189ba4df03499eead7",
+    "lines": 745,
+    "read_ranges": [
+      [
+        1,
+        180
+      ],
+      [
+        181,
+        360
+      ],
+      [
+        361,
+        550
+      ],
+      [
+        551,
+        745
+      ]
+    ]
+  },
+  "mechanical_checks": {
+    "visible": 194,
+    "hidden": 23,
+    "partial": 58,
+    "unique_disjoint_ids": true,
+    "hidden_zero_visible_rows": true,
+    "partial_positive_visible_rows": true,
+    "manual_exception_ids_present": [
+      15,
+      94
+    ],
+    "raw_minus_merged_minus_hidden": 194
+  },
+  "independent_count_snapshot": {
+    "path": "ninth-grade-live-2026-10-10.json",
+    "checkedAt": "2026-10-10T21:14:52.975Z",
+    "limitation": "Independent read-only stored-row/count check. Does not execute migrations/RPCs or verify function bodies, grants/RLS, authenticated API isolation, external register completeness, programme eligibility or extracted/source facts. Unknown-type records require provenance checks; JS/SQL nullable parity remains a separate source finding."
+  },
+  "documents": {
+    "UNFORGET.md": {
+      "sha256_before": "70ef04779303ec31a4e5c0855f2d1b2b64ba483c6fdacc58cd422a0fdf325e70",
+      "sha256_after": "4edc834d1be39ae5366aeb8b963622e610df77f70a582879fcfa5bb51070967f"
+    },
+    "docs/skolamatch_current_status.md": {
+      "sha256_before": "82d7874830d6c49b2aa1d2ea309eeff9a9680ecf7f51aec0dd34fea9d691eb1d",
+      "sha256_after": "d5a2fabcc5e6f47eaad1ca108194fa0a7114f502d91199865830d0ef4e8289d7"
+    },
+    "plans/021-ninth-grade-scope.md": {
+      "sha256_before": "cddf3bf851f7d71ba7af072f7b475e18d573cbe016aa940f6f6c1d057dbe2da9",
+      "sha256_after": "abfc6ee877d2c4b229c07c2e7f0e748d7697dd7ca72a0956a3b7a00934182b9f"
+    },
+    "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md": {
+      "sha256_before": "849f8993f293ddc3be8c3cebbe2dd326186b3f3f843dafdc7f3ab6e1d0cd7a2d",
+      "sha256_after": "654a6f6ab7dc4ad7b4582a0b4f841fc0e3b0703be56d229ed08eb04e1b9704e8"
+    }
+  },
+  "founder_decisions_preserved": [
+    "Quick ratings with a submitted qualifying written note/follow-up renew, stars/chips/skip alone do not.",
+    "Returning hidden school application choice remains archived until user restoration.",
+    "Ordinary trial first-confirmed-sign-in implementation deferred until after beta.",
+    "Free beta, D1/D4, payment and privacy gates preserved."
+  ],
+  "limitations": [
+    "No SQL/service write or paid extraction/model run performed by this review.",
+    "A count/source receipt does not verify official school/programme facts or derived prose.",
+    "Current active peer questionnaire/matching/special-needs source remains queued.",
+    "Schools 15/94 and completed refreshed outputs need evidence-backed factual acceptance."
+  ]
+}

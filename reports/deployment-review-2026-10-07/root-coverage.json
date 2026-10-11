@@ -1356,18 +1356,19 @@
     "previous_complete_sha256": "ae048c6b1cf311290b0ec7f582568f304a9b3fa59e310054ce91ceb75999cfa5"
   },
   "docs/skolamatch_current_status.md": {
-    "sha256": "82d7874830d6c49b2aa1d2ea309eeff9a9680ecf7f51aec0dd34fea9d691eb1d",
-    "lines": 1105,
+    "sha256": "d5a2fabcc5e6f47eaad1ca108194fa0a7114f502d91199865830d0ef4e8289d7",
+    "lines": 1108,
     "read_ranges": [
       [
         1,
-        1105
+        1108
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-10T09:20:31.747326+00:00",
-    "method": "All eight authored marketing and five standalone-demo files read; all 2064 baseline marketing-plan lines read in continuous bounded ranges; current-status exact full 1103-line baseline receipt plus full own header edits. Complete own patches inspected. Four video scenes rendered as stills, affected result placement re-rendered; no full encoded video or platform acceptance. Standalone paid demo was not run; only typecheck/advisory reads."
+    "checked_at_utc": "2026-10-11T09:18:44.259669+00:00",
+    "previous_complete_sha256": "82d7874830d6c49b2aa1d2ea309eeff9a9680ecf7f51aec0dd34fea9d691eb1d",
+    "method": "Verified saved full baseline plus all subsequent owned complete document diffs; UNFORGET full 5c3e3f4 baseline, Swift append and current record amendment. Read does not approve source facts, full SQL/RLS/grants or deployment."
   },
   "reports/deployment-review-2026-10-07/probe-services.cjs": {
     "sha256": "b47240d76e47550d2a307d302f8714ae7edcbe3074829e02de8d6a334334fe60",
@@ -2137,19 +2138,19 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "a17d3836009adea44b276c9a81d5dc65602f3b2552053efe00caced33b8c9a11",
-    "lines": 1864,
+    "sha256": "4edc834d1be39ae5366aeb8b963622e610df77f70a582879fcfa5bb51070967f",
+    "lines": 1866,
     "read_ranges": [
       [
         1,
-        1864
+        1866
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-11T09:04:20.543954+00:00",
-    "method": "Verified prior complete baseline plus complete own C56 evidence/acceptance append read. D1/D4 unchanged.",
-    "previous_complete_sha256": "05bb50bf7514c50bbba0dbc99820fd4fcc6b7b35cabc936ae97098acefbff78a"
+    "checked_at_utc": "2026-10-11T09:18:44.259669+00:00",
+    "previous_complete_sha256": "a17d3836009adea44b276c9a81d5dc65602f3b2552053efe00caced33b8c9a11",
+    "method": "Verified saved full baseline plus all subsequent owned complete document diffs; UNFORGET full 5c3e3f4 baseline, Swift append and current record amendment. Read does not approve source facts, full SQL/RLS/grants or deployment."
   },
   "frontend/src/api.js": {
     "sha256": "a545cb179681a87378f41cf928cff50e1ae6c2e539c4bbacf373590af9f8ab8a",
@@ -6109,19 +6110,19 @@
     "previous_complete_sha256": null
   },
   "plans/021-ninth-grade-scope.md": {
-    "sha256": "cddf3bf851f7d71ba7af072f7b475e18d573cbe016aa940f6f6c1d057dbe2da9",
-    "lines": 302,
+    "sha256": "abfc6ee877d2c4b229c07c2e7f0e748d7697dd7ca72a0956a3b7a00934182b9f",
+    "lines": 304,
     "read_ranges": [
       [
         1,
-        302
+        304
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-10T21:20:51.076901+00:00",
-    "method": "Complete current bounded read, repairing truncated ranges; every owned edit read. Source coverage is not SQL/hosted/browser/deployment acceptance.",
-    "previous_complete_sha256": null
+    "checked_at_utc": "2026-10-11T09:18:44.259669+00:00",
+    "previous_complete_sha256": "cddf3bf851f7d71ba7af072f7b475e18d573cbe016aa940f6f6c1d057dbe2da9",
+    "method": "Verified saved full baseline plus all subsequent owned complete document diffs; UNFORGET full 5c3e3f4 baseline, Swift append and current record amendment. Read does not approve source facts, full SQL/RLS/grants or deployment."
   },
   ".agents/skills/review-animations/SKILL.md": {
     "sha256": "2d1da3b496a7d0ae742f87571402b50c7b19b8ce8e7eb5e3a3edc67bf7f3e74c",
@@ -6736,5 +6737,20 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-11T09:14:17.984786+00:00",
     "method": "Base full 1–204/205–284/285–344/345–388 reads, owned complete diff, byte-equal Claude copy individually hashed. Source coverage is not native/device or beta deployment acceptance."
+  },
+  "reports/ninth-grade-scope-2026-10-10.json": {
+    "sha256": "0c10fe7790ea276b11a08ce8c227b71ce8cf03e85e516c189ba4df03499eead7",
+    "lines": 746,
+    "read_ranges": [
+      [
+        1,
+        746
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:18:44.259669+00:00",
+    "previous_complete_sha256": null,
+    "method": "Full 745-line bounded sequential source read; list/counter/ID checks against independent GET-only record. Read does not approve source facts, full SQL/RLS/grants or deployment."
   }
 }

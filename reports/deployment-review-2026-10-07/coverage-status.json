@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-11T09:14:18.732366+00:00",
-  "commit": "5c3e3f45c3c9ba9257eff4d3e8544d671f1ba5df",
+  "checked_at_utc": "2026-10-11T09:18:44.800820+00:00",
+  "commit": "476594e74416d726a2486a9db7a7aee97d47bae0",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "current_full_read": 502,
-    "pending_or_changed": 292,
+    "current_full_read": 504,
+    "pending_or_changed": 290,
     "binary_requires_asset_check": 105,
-    "generated_or_audit_artifact": 177,
+    "generated_or_audit_artifact": 178,
     "removed_or_missing": 2
   },
   "files": [
@@ -945,10 +945,12 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "70ef04779303ec31a4e5c0855f2d1b2b64ba483c6fdacc58cd422a0fdf325e70",
+      "sha256": "4edc834d1be39ae5366aeb8b963622e610df77f70a582879fcfa5bb51070967f",
       "lines": 1866,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "archive/README.md",
@@ -2849,8 +2851,8 @@
     },
     {
       "path": "docs/skolamatch_current_status.md",
-      "sha256": "82d7874830d6c49b2aa1d2ea309eeff9a9680ecf7f51aec0dd34fea9d691eb1d",
-      "lines": 1105,
+      "sha256": "d5a2fabcc5e6f47eaad1ca108194fa0a7114f502d91199865830d0ef4e8289d7",
+      "lines": 1108,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -5099,8 +5101,8 @@
     },
     {
       "path": "plans/021-ninth-grade-scope.md",
-      "sha256": "cddf3bf851f7d71ba7af072f7b475e18d573cbe016aa940f6f6c1d057dbe2da9",
-      "lines": 302,
+      "sha256": "abfc6ee877d2c4b229c07c2e7f0e748d7697dd7ca72a0956a3b7a00934182b9f",
+      "lines": 304,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -6093,22 +6095,22 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "371917bf890717bd45ad7551f373b87af3faabf0d7429e73774d310480be1a0b",
-      "lines": 394,
+      "sha256": "06afaafcfe2dee2e700fdeb53bdcc2a6d9631d245c453bfde564ff7ffb5e2393",
+      "lines": 398,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "849f8993f293ddc3be8c3cebbe2dd326186b3f3f843dafdc7f3ab6e1d0cd7a2d",
+      "sha256": "654a6f6ab7dc4ad7b4582a0b4f841fc0e3b0703be56d229ed08eb04e1b9704e8",
       "lines": 258,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "8dcb97a01e3f7f5508d3c3ec72c43e204565a9d8f1f3c339daa06ebf8f41b48a",
-      "lines": 186,
+      "sha256": "2e0b9be3d6e8a285dc78ca55968962c1a65bbc0b211965be4d46cd3f68f91d2d",
+      "lines": 188,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6457,8 +6459,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "ee22dfdd5878da68f94f5af9d44bb73b2a0fc11d5510dbf148a2fd6b171cf206",
-      "lines": 531,
+      "sha256": "3fcbe7bbe54f85eaecd6a339c2112e77fcc9ad6153d32788f51d99e92d04e9c9",
+      "lines": 533,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6471,8 +6473,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "f05a06906d8409a509dbc2e21ebb91262af5451f4505352d341c9b3625a3a952",
-      "lines": 8559,
+      "sha256": "9d88e09b6b3594065ea9ad958daaf5a7bb44f63c6d2981a2f4cfbaaa889c1580",
+      "lines": 8568,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -7657,8 +7659,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "661d9bcdaf93bf5a1fd4a1d02bbd4b8f9707fb7ca4c2324090976c61740880e9",
-      "lines": 6740,
+      "sha256": "4f946af69be0fb6e69bf1594c86b8bc228bd80e171c34693f74d296e19699ced",
+      "lines": 6756,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -7674,6 +7676,13 @@
       "sha256": "12d16c56354c529882b02a0de93ef2c4c147def989be9021f94f5fa1ab6fd31d",
       "lines": null,
       "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/scope-run-record-verification-2026-10-11.json",
+      "sha256": "d691c7b2dcedd34598eb71c0812907d58e3eb23d0607a8c32120034bca75cbdc",
+      "lines": 76,
+      "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
@@ -7906,8 +7915,10 @@
       "path": "reports/ninth-grade-scope-2026-10-10.json",
       "sha256": "0c10fe7790ea276b11a08ce8c227b71ce8cf03e85e516c189ba4df03499eead7",
       "lines": 746,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/special-needs-2026-10-10.json",

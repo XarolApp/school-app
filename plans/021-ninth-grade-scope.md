@@ -1,6 +1,6 @@
 # Plan 021 — 9th-grade-only catalogue, plus the back-button bug (#15)
 
-Status: original design plan 2026-10-10 (Opus 5.5, medium); source implementation through `7bc008d` is present. Independent read-only checks confirm the stored 194/23/58 scope. Full migration, authenticated/browser and re-extraction acceptance remains open. Preserve the founder’s selected model; this historical routing line does not authorize a switch or delegation.
+Status: original design plan 2026-10-10 (Opus 5.5, medium); source implementation through `7bc008d` is present. Independent read-only checks confirm the stored 194/23/58 scope. Full migration, authenticated/browser and factual data acceptance remains open. Released peer record `cb7a550` reports completed base/structure reruns for 56 of 58 and pros/cons for 194; schools 15/94 lacked scraped text and need manual checks. This is a run record, not independent content acceptance. Preserve the founder’s selected model; this historical routing line does not authorize a switch or delegation.
 
 ## Founder rules (decided 2026-10-10 — do not re-derive)
 
@@ -231,6 +231,8 @@ return target explicit, so it does not depend on history:
 
 ## 8. Data run (after both pushes are deployed)
 
+**Historical execution sequence; updated 11 October:** the released peer record reports steps 3–5 already run for the 56 affected schools with scraped text and all 194 pros/cons. Do not rerun these paid commands merely to complete this plan. Inspect current outputs and run/cost evidence; check schools 15 and 94 manually. Any additional write or paid run needs its reviewed scope and authorization.
+
 Run from the repo root with the local `.env`. All paid calls go through OpenRouter flex.
 1. `node --env-file=.env scripts/report-ninth-grade-scope.js`. Confirm 194 visible, 23
    hidden and 58 partial, or explain any difference.
@@ -297,6 +299,6 @@ after the SQL and shows them to the founder.
 - **C54/S02/S03:** an import that changes a programme’s classification leaves its old row in the opposite table. Stage and replace both destination sets for the complete touched school/year scope atomically, including empty sets; preserve unrelated schools/years and fail without publishing partial data.
 - **C55:** cached on-demand explanations return before a visibility check, so an old explanation for a now-hidden school can still be served. Apply the current visibility contract before cache/new generation and exercise real registered-handler paths.
 - **Founder decision in this review:** when a hidden school becomes visible again, its old application choice stays archived until the user explicitly restores it. Current visibility alone would return it automatically. Define persistent archive state and safe order/capacity restoration with C53; retain the data.
-- Review all 58 affected schools’ cached prose/structured facts and stored AI explanations against the eligible programmes; adding prompt instructions does not rewrite old values. Step 8’s paid calls have not been performed by this review. Obtain the approved run scope, dry-run/source review and cost budget before execution.
+- Review all 58 affected schools’ cached prose/structured facts and stored AI explanations against the eligible programmes. This review made no paid calls; the later released peer record reports 56 base/structure reruns and 194 pros/cons already completed. Schools 15/94 retained old extraction because scraped text was absent. Verify those outputs and manual exceptions first; approve scope/source/budget only for additional work.
 
 Evidence and ordered acceptance: `reports/deployment-review-2026-10-07/ninth-grade-boundaries-2026-10-10.json`, `ninth-grade-live-2026-10-10.json`, and `HANDOFF-PLAN.md`. The boundary probe runs actual JS handlers/writer with synthetic services and evaluates the extracted boolean expression in SQLite; it is explicitly not PostgreSQL migration acceptance or a hosted write.

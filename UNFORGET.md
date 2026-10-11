@@ -1846,7 +1846,7 @@ Evidence: `reports/deployment-review-2026-10-07/motion-guides-verification-2026-
 
 ## 9th-grade scope applied (2026-10-10, plan 021)
 
-SQL applied, verify returned visible 194 / hidden 23 / leftover 0. 6/8-year gymnázia, nástavby and 8-year conservatories live in `school_programs_hidden`. Extraction rerun on 56 of 58 affected schools; schools 15 and 94 have no scraped text so their old extracted data was not refreshed (check manually). Structure re-run on the same 56; pros/cons regenerated for all 194. List: `reports/ninth-grade-scope-2026-10-10.json`.
+Released peer run record (`cb7a550`): SQL applied and verify returned visible 194 / hidden 23 / leftover 0; extraction and structure rerun on 56 of 58 affected schools, pros/cons regenerated for 194. Independent GET-only review confirms stored 194/23/58 scope and eligibility partition; it does not verify every live function/grant or extracted fact. Schools 15 and 94 lacked scraped text and kept old extraction: manually check current official sources before accepting those facts. Review completed outputs/run costs before any further paid run. Full affected list: `reports/ninth-grade-scope-2026-10-10.json`; acceptance remains in the deployment handoff.
 
 ## Animation-reference follow-up — 11 October 2026
 

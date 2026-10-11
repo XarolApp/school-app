@@ -8,6 +8,9 @@
 
 > **10 October review checkpoint:** review continues solo; 176 root tests passed at the verified script-fix snapshot `793b1d7`, before subsequent detected backend/test edits. Five pipeline CLI guards, district regeneration exports and stale unmatched-report behavior are fixed with offline regressions; factual copy/research/plan corrections are recorded. Marketing now avoids its unverified all-223 claim. These checks neither complete the full file-by-file review nor approve beta/billing. Use hash-qualified [coverage](../reports/deployment-review-2026-10-07/coverage-status.json), current report and handoff; re-review changed files. Historical logs below remain dated evidence.
 
+
+> **11 October review checkpoint:** the independently checked 10 October catalogue is **223 raw / 6 merged / 23 hidden / 194 visible**, with 58 partially affected schools. The released peer record reports extraction/structure refreshed for 56 of those 58 and pros/cons for 194; schools 15 and 94 had no scraped text and require manual review. Counts and run records do not prove factual accuracy, complete migration/grants or browser/device acceptance. All 198 root tests, frontend lint (11 warnings) and build passed the `082f31e` snapshot; current active matching/special-needs edits require re-review. New C56 consent/statistics findings and C53 application-choice loss/restoration remain beta gates. Preserve written-note quick-feedback renewal and first-confirmed-sign-in ordinary trial work deferred until after beta. Full file review is ongoing; use the current report and handoff.
+
 ## Purpose
 
 This is the **living operational state** of SkolaMatch.
