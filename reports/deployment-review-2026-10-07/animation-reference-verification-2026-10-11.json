@@ -1,0 +1,189 @@
+{
+  "checked_at_utc": "2026-10-11T08:51:55.985417+00:00",
+  "scope": "15 authored reference files, not production animation or a native implementation",
+  "sources": [
+    {
+      "path": ".agents/skills/animate/SKILL.md",
+      "before": "f6317335da2662e92270dc0a6128bea95d7216cd751f86628e3ac6b72804e805",
+      "sha256": "8be5f45df9530b1d9829a08f9398a0816ccd3b2c7daf17dd7fdc270fa165dadd",
+      "lines": 199
+    },
+    {
+      "path": ".claude/skills/animate/SKILL.md",
+      "before": "f6317335da2662e92270dc0a6128bea95d7216cd751f86628e3ac6b72804e805",
+      "sha256": "8be5f45df9530b1d9829a08f9398a0816ccd3b2c7daf17dd7fdc270fa165dadd",
+      "lines": 199
+    },
+    {
+      "path": ".agents/skills/animate/RECIPES.md",
+      "before": "21ff63d84391db8d96ecdf9170095f55a42c836ccc36fd3269c4772bab031ba2",
+      "sha256": "68e130ebb94733970666711b5fa351e30f91526aebe1bc756348d739837da9aa",
+      "lines": 324
+    },
+    {
+      "path": ".claude/skills/animate/RECIPES.md",
+      "before": "21ff63d84391db8d96ecdf9170095f55a42c836ccc36fd3269c4772bab031ba2",
+      "sha256": "68e130ebb94733970666711b5fa351e30f91526aebe1bc756348d739837da9aa",
+      "lines": 324
+    },
+    {
+      "path": ".agents/skills/animate-expo/SKILL.md",
+      "before": "2121fc72ffa476492c1b91ccf96c7b26aade9d1a332dc5834ba3526e1102b00d",
+      "sha256": "efa9ed3c008be5bf2ca0e00298ae89a5d1bc101f6b1ac03d21149349a694370e",
+      "lines": 255
+    },
+    {
+      "path": ".claude/skills/animate-expo/SKILL.md",
+      "before": "2121fc72ffa476492c1b91ccf96c7b26aade9d1a332dc5834ba3526e1102b00d",
+      "sha256": "efa9ed3c008be5bf2ca0e00298ae89a5d1bc101f6b1ac03d21149349a694370e",
+      "lines": 255
+    },
+    {
+      "path": ".agents/skills/animate-expo/RECIPES.md",
+      "before": "1193cb71334da2e2341778dd92bec9ac79d989cb07fd55d661f324ed5871e718",
+      "sha256": "e501c3a2268f0ff20540e0ed22c9bace0592312323f1dca0eb322a13fae8c3f6",
+      "lines": 386
+    },
+    {
+      "path": ".claude/skills/animate-expo/RECIPES.md",
+      "before": "1193cb71334da2e2341778dd92bec9ac79d989cb07fd55d661f324ed5871e718",
+      "sha256": "e501c3a2268f0ff20540e0ed22c9bace0592312323f1dca0eb322a13fae8c3f6",
+      "lines": 386
+    },
+    {
+      "path": ".agents/skills/apple-design/SKILL.md",
+      "before": "11840b24a11d7f94f39c6aaab074750ae4e4de4ef54ee4b1dd97e16ebd485e61",
+      "sha256": "608e16995806ebddcd5c20a739d34508ed2f1a505428d241eb2490472cf966d8",
+      "lines": 282
+    },
+    {
+      "path": ".claude/skills/apple-design/SKILL.md",
+      "before": "11840b24a11d7f94f39c6aaab074750ae4e4de4ef54ee4b1dd97e16ebd485e61",
+      "sha256": "608e16995806ebddcd5c20a739d34508ed2f1a505428d241eb2490472cf966d8",
+      "lines": 282
+    },
+    {
+      "path": ".agents/skills/emil-design-eng/SKILL.md",
+      "before": "e71de849347050c2c573c1cf24d742d5a13459557ecffa6e562f08006f46b5b7",
+      "sha256": "08394c03b2d61f938198c44119777810bf9ee75c8e549554b79653304fb42c32",
+      "lines": 674
+    },
+    {
+      "path": ".claude/skills/emil-design-eng/SKILL.md",
+      "before": "e71de849347050c2c573c1cf24d742d5a13459557ecffa6e562f08006f46b5b7",
+      "sha256": "08394c03b2d61f938198c44119777810bf9ee75c8e549554b79653304fb42c32",
+      "lines": 674
+    },
+    {
+      "path": "design/archive/school-search-wireframe/uploads/SKILL-58306092.md",
+      "before": "f6317335da2662e92270dc0a6128bea95d7216cd751f86628e3ac6b72804e805",
+      "sha256": "8be5f45df9530b1d9829a08f9398a0816ccd3b2c7daf17dd7fdc270fa165dadd",
+      "lines": 199
+    },
+    {
+      "path": "design/archive/school-search-wireframe/uploads/RECIPES.md",
+      "before": "21ff63d84391db8d96ecdf9170095f55a42c836ccc36fd3269c4772bab031ba2",
+      "sha256": "68e130ebb94733970666711b5fa351e30f91526aebe1bc756348d739837da9aa",
+      "lines": 324
+    },
+    {
+      "path": "design/system/uploads/SKILL.md",
+      "before": "e71de849347050c2c573c1cf24d742d5a13459557ecffa6e562f08006f46b5b7",
+      "sha256": "08394c03b2d61f938198c44119777810bf9ee75c8e549554b79653304fb42c32",
+      "lines": 674
+    }
+  ],
+  "equalCopies": true,
+  "markdownStructure": "frontmatter fields/fence balance only; not semantic lint",
+  "actualVelocityExpressions": [
+    {
+      "path": ".agents/skills/animate/RECIPES.md",
+      "actualExpression": "timeTaken > 0 ? Math.abs(swipeAmount) / timeTaken : 0",
+      "cases": [
+        {
+          "timeTaken": -1,
+          "swipeAmount": 2,
+          "velocity": 0
+        },
+        {
+          "timeTaken": 0,
+          "swipeAmount": 2,
+          "velocity": 0
+        },
+        {
+          "timeTaken": 0,
+          "swipeAmount": 0,
+          "velocity": 0
+        },
+        {
+          "timeTaken": 1,
+          "swipeAmount": 2,
+          "velocity": 2
+        },
+        {
+          "timeTaken": 100,
+          "swipeAmount": 2,
+          "velocity": 0.02
+        },
+        {
+          "timeTaken": 100,
+          "swipeAmount": 20,
+          "velocity": 0.2
+        }
+      ]
+    },
+    {
+      "path": ".agents/skills/emil-design-eng/SKILL.md",
+      "actualExpression": "timeTaken > 0 ? Math.abs(swipeAmount) / timeTaken : 0",
+      "cases": [
+        {
+          "timeTaken": -1,
+          "swipeAmount": 2,
+          "velocity": 0
+        },
+        {
+          "timeTaken": 0,
+          "swipeAmount": 2,
+          "velocity": 0
+        },
+        {
+          "timeTaken": 0,
+          "swipeAmount": 0,
+          "velocity": 0
+        },
+        {
+          "timeTaken": 1,
+          "swipeAmount": 2,
+          "velocity": 2
+        },
+        {
+          "timeTaken": 100,
+          "swipeAmount": 2,
+          "velocity": 0.02
+        },
+        {
+          "timeTaken": 100,
+          "swipeAmount": 20,
+          "velocity": 0.2
+        }
+      ]
+    }
+  ],
+  "expoExampleChecks": "Missing Stack import and child-option override corrected by source inspection; no native runtime installed or executed",
+  "primarySources": [
+    "https://motion.dev/docs/performance",
+    "https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html",
+    "https://docs.expo.dev/router/advanced/stack/",
+    "https://docs.expo.dev/router/advanced/modals/",
+    "https://docs.swmansion.com/react-native-gesture-handler/docs/guides/upgrading-to-3/",
+    "https://docs.swmansion.com/react-native-reanimated/docs/device/useReducedMotion/",
+    "https://developer.apple.com/videos/play/wwdc2026/250/",
+    "https://developer.apple.com/videos/play/wwdc2020/10175/"
+  ],
+  "limitations": [
+    "No product motion, native SDK, dependency, paid service or hosted operation changed.",
+    "Velocity snippets still require finite trusted inputs, real pointer sampling/cancellation and device acceptance before adoption.",
+    "Native framework remains undecided; version-specific recipes require SDK compatibility and physical-device checks.",
+    "Peer special-needs/matching/SQL files changed during this documentation pass and remain queued separately."
+  ]
+}

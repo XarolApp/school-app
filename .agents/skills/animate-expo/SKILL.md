@@ -9,7 +9,7 @@ A construction skill for React Native. It turns a request for motion into an imp
 
 Mobile changes three things about animation, and everything in this skill follows from them:
 
-1. **There is no hover.** Every affordance the web puts in hover has to live in press, position, or nothing.
+1. **Touch is the primary input.** Keep every affordance available without hover. Pointer-capable tablets and web/desktop targets may also support hover; preserve their keyboard and pointer access.
 2. **There are two runtimes.** Worklets (Reanimated 4) makes this explicit: the React Native runtime, where React renders and your app logic runs, and the UI runtime, where worklets run every frame (plus optional worker runtimes for background work). An animation that touches the RN runtime stutters the moment the app does anything else. The whole craft is keeping motion on the UI runtime.
 3. **The user's finger is on the element.** Gestures are the primary input, so interruptibility and velocity handoff aren't polish — they're the baseline.
 
@@ -87,7 +87,7 @@ Reach for a shared value only when the value is continuous or interruptible. A p
 
 ### 4. Pick the properties
 
-- **`transform` and `opacity` are free.** Everything else is a layout pass. `width`, `height`, `margin`, `padding`, `flex`, `top`, `left`, `gap` re-run Yoga on every frame for that node *and its siblings*.
+- **Prefer `transform` and `opacity` for cheap movement.** They still cost work; properties such as color do not all trigger layout. Profile the actual device. `width`, `height`, `margin`, `padding`, `flex`, `top`, `left`, `gap` re-run Yoga on every frame for that node *and its siblings*.
 - **The one exception: an absolutely positioned element with no children** — a tab pill, a progress bar fill. It's out of flow, so nothing else re-lays-out, and animating `width` keeps the corner radius that `scaleX` would smear.
 - **Never `scale(0)`.** Start from `scale(0.9–0.97)` + `opacity: 0`. Nothing in the real world appears from nothing.
 - **`transform` is an array and order matters** — `[{ translateY }, { scale }]` scales after moving; reversed, the translate gets scaled too. Keep translate first unless you want the multiplication.
@@ -191,7 +191,7 @@ const y = useSharedValue(reduced ? 0 : SHEET_HEIGHT);
 withSpring(0, { duration: 300, dampingRatio: 0.8, reduceMotion: ReduceMotion.System });
 ```
 
-Reduced motion means **fewer and gentler**, not zero: keep opacity and color changes that explain a state change, drop translation, scale, parallax and overshoot. Screen transitions become `animation: 'fade'`.
+Reduced motion may disable nonessential animation entirely. Keep static state feedback; short opacity/color transitions are optional. Drop nonessential translation, scale, parallax and overshoot. Screen transitions may use `animation: 'none'` or a brief fade. The Reanimated `useReducedMotion` hook reads the startup preference and does not rerender on a later system-setting change; use the installed version's documented accessibility subscription if live changes must be supported.
 
 **Text scales.** `allowFontScaling` is on by default, so any height you measured at default type size is wrong at 200%. Never animate to a hardcoded height — measure with `onLayout`, or animate a transform instead.
 

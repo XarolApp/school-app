@@ -64,25 +64,25 @@ Walk down; stop at the first that fits.
 | --- | --- |
 | Hover, press, color, a state toggle you control with a class or attribute | **CSS transition** |
 | Entry animation on mount, no JS state | **CSS `@starting-style`** |
-| Predetermined motion that must stay smooth while the page is busy loading | **CSS animation** (runs off the main thread) |
+| Predetermined motion that must stay smooth while the page is busy loading | **CSS animation** (compositor-eligible properties may run off the main thread) |
 | Programmatic control with CSS performance, no library | **WAAPI** (`element.animate()`) |
 | Springs, layout animations, exit animations, gesture-driven values | **Motion** (`motion.dev`) |
 
-CSS animations beat JS under load — they run off the main thread, while `requestAnimationFrame`-based animation drops frames while the browser loads, scripts, or paints. Use CSS for predetermined motion, JS for dynamic and interruptible motion.
+CSS/WAAPI animations of compositor-eligible properties can avoid main-thread scheduling under load; `requestAnimationFrame` work can compete with scripts and rendering. Profile the actual browser and properties. Use CSS for predetermined motion, JS for dynamic and interruptible motion.
 
-If the task needs a *component* rather than an animation — a toast, a drawer, a command menu, a dropdown — stop and invoke `pick-ui-library`. Hand-rolling those is how you end up with a `<div>` dropdown and no focus management.
+If the task needs a *component* rather than an animation — a toast, a drawer, a command menu, a dropdown — prefer an existing accessible primitive. Invoke `pick-ui-library` only when explicitly requested, as that skill requires. Hand-rolling those is how you end up with a `<div>` dropdown and no focus management.
 
 ### 4. Pick the properties
 
-- **`transform` and `opacity` only.** They skip layout and paint and run on the GPU. `width`/`height`/`margin`/`padding`/`top`/`left` trigger all three. (`clip-path` is the sanctioned fourth — see RECIPES.md. `height` is tolerated only for accordions, where there's no transform equivalent.)
+- **Prefer `transform` and `opacity`.** They are usually compositor-friendly, but actual acceleration depends on the browser and rendering context. `width`/`height`/`margin`/`padding`/`top`/`left` trigger all three. (`clip-path` is the sanctioned fourth — see RECIPES.md. `height` is tolerated only for accordions, where there's no transform equivalent.)
 - **Never `scale(0)`.** Start from `scale(0.9–0.97)` + `opacity: 0`. Nothing in the real world appears from nothing.
 - **`transform-origin` at the trigger** for popovers, dropdowns, menus, tooltips — `var(--transform-origin)` in Base UI. **Modals are exempt**; they're not anchored to a trigger, so they stay centered.
 - **Percentages in `translate()`** are relative to the element's own size — `translateY(100%)` moves by its own height whatever the content. Prefer over hardcoded pixels.
-- **In Motion, use the full transform string.** `x`/`y`/`scale` shorthands are not hardware-accelerated and drop frames under load:
+- **In Motion, consider the full transform string.** Current Motion documentation describes individual transform shorthands as non-accelerated; a full transform is an acceleration candidate, not a smoothness guarantee:
 
 ```jsx
-<motion.div animate={{ x: 100 }} />                          // drops frames under load
-<motion.div animate={{ transform: "translateX(100px)" }} />  // hardware accelerated
+<motion.div animate={{ x: 100 }} />                          // profile main-thread scheduling under load
+<motion.div animate={{ transform: "translateX(100px)" }} />  // acceleration candidate; profile target browser
 ```
 
 - **Never drive a child's transform from a CSS variable on the parent** — it recalculates styles for every child. Set `transform` on the element directly.
@@ -158,7 +158,7 @@ const reduce = useReducedMotion();
 const closedX = reduce ? 0 : '-100%';
 ```
 
-Reduced motion means **fewer and gentler** animations, not zero — keep transitions that aid comprehension, remove movement and position changes.
+Reduced motion may disable nonessential animations entirely. Preserve understandable static state feedback; short opacity/color transitions are optional when helpful. Remove nonessential movement and position changes.
 
 ## Recipes
 
@@ -181,7 +181,7 @@ Self-check before you finish. Each of these is an automatic block in `review-ani
 | Animating `width`/`height`/`margin`/`padding`/`top`/`left` | `transform` / `opacity` |
 | Motion `x`/`y`/`scale` props under load | Full `transform` string |
 | Ungated `:hover` motion | `@media (hover: hover) and (pointer: fine)` |
-| Missing `prefers-reduced-motion` | Gentler variant, not zero |
+| Missing `prefers-reduced-motion` | Static feedback or a gentle nonessential-motion alternative |
 | Everything entering at once | 30–80ms stagger |
 
 ## Output

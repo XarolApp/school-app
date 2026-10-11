@@ -217,7 +217,7 @@ Also: avoid full-viewport moving backgrounds, slow looping oscillations (near 0.
 
 ## 15. Typography — optical sizing, tracking, leading
 
-Apple designs type to change shape with size; the same discipline applies on the web. (From *The Details of UI Typography*, WWDC 2020.)
+Apple designs type to change shape with size; the same discipline applies on the web. (From [*The Details of UI Typography*, WWDC 2020](https://developer.apple.com/videos/play/wwdc2020/10175/).)
 
 - **Tracking (letter-spacing) is size-specific — never one value for all sizes.** Large display text wants *negative* tracking (letters read too far apart as they grow); small text wants slightly *positive* tracking for legibility. A fixed `letter-spacing` is wrong somewhere. Tighten headings, leave body near `0`.
 - **Leading (line-height) tracks size inversely.** Tight on large headings, looser on body copy. Increase it for scripts with tall ascenders/descenders; tighten it for dense, information-heavy UI.
@@ -238,7 +238,7 @@ Apple designs type to change shape with size; the same discipline applies on the
 
 ## 16. Design foundations — the eight principles
 
-The motion and craft above serve Apple's eight design principles (*Principles of Great Design*, WWDC 2026). Use these as the names you reason with:
+The motion and craft above serve Apple's eight design principles ([*Principles of Great Design*, WWDC 2026](https://developer.apple.com/videos/play/wwdc2026/250/)). Use these as the names you reason with:
 
 1. **Purpose.** Make with intention; decide what *not* to build. Every feature asks for the user's time, attention, and trust — spend that budget only where it pays off.
 2. **Agency.** Keep people in control: offer choices, don't force a single path. Back it with forgiveness — easy undo for slips, a confirmation dialog only for genuinely destructive, irreversible actions (use sparingly; overusing it trains people to click through).
@@ -279,4 +279,4 @@ Tactical rules that serve these:
 | Boundary | Rubber-band, don't hard-stop | progressive resistance |
 | Translucent chrome | `backdrop-filter` layer | content scrolls under |
 | Type tracking | Size-specific, never fixed | tighten large text (`-0.02em`), body near `0` |
-| Reduced motion | Cross-fade, not slide/spring | `@media (prefers-reduced-motion)` |
+| Reduced motion | Static feedback or a brief cross-fade; disable nonessential slide/spring | `@media (prefers-reduced-motion)` |

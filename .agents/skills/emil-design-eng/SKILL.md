@@ -273,7 +273,7 @@ CSS transitions can be interrupted and retargeted mid-animation. Keyframes resta
 ```css
 /* Interruptible - good for UI */
 .toast {
-  transition: transform 400ms ease;
+  transition: transform 200ms ease;
 }
 
 /* Not interruptible - avoid for dynamic UI */
@@ -324,7 +324,7 @@ The modern CSS way to animate element entry without JavaScript:
 .toast {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 400ms ease, transform 400ms ease;
+  transition: opacity 200ms ease, transform 200ms ease;
 
   @starting-style {
     opacity: 0;
@@ -434,7 +434,7 @@ Start with `clip-path: inset(0 0 100% 0)` (hidden from bottom). Animate to `inse
 
 ### Comparison sliders
 
-Overlay two images. Clip the top one with `clip-path: inset(0 50% 0 0)`. Adjust the right inset value based on drag position. No extra DOM elements needed, fully hardware-accelerated.
+Overlay two images. Clip the top one with `clip-path: inset(0 50% 0 0)`. Adjust the right inset value based on drag position. No extra DOM elements are needed for this two-image example. Acceleration of `clip-path` depends on the browser and shape; profile the actual target.
 
 ## Gesture and Drag Interactions
 
@@ -444,7 +444,7 @@ Don't require dragging past a threshold. Calculate velocity: `Math.abs(dragDista
 
 ```js
 const timeTaken = new Date().getTime() - dragStartTime.current.getTime();
-const velocity = Math.abs(swipeAmount) / timeTaken;
+const velocity = timeTaken > 0 ? Math.abs(swipeAmount) / timeTaken : 0;
 
 if (Math.abs(swipeAmount) >= SWIPE_THRESHOLD || velocity > 0.11) {
   dismiss();
@@ -478,7 +478,7 @@ Instead of preventing upward drag entirely, allow it with increasing friction. I
 
 ### Only animate transform and opacity
 
-These properties skip layout and paint, running on the GPU. Animating `padding`, `margin`, `height`, or `width` triggers all three rendering steps.
+These properties are usually compositor-friendly; acceleration depends on the browser and rendering context. Animating `padding`, `margin`, `height`, or `width` triggers all three rendering steps.
 
 ### CSS variables are inheritable
 
@@ -494,13 +494,13 @@ element.style.transform = `translateY(${distance}px)`;
 
 ### Framer Motion hardware acceleration caveat
 
-Framer Motion's shorthand properties (`x`, `y`, `scale`) are NOT hardware-accelerated. They use `requestAnimationFrame` on the main thread. For hardware acceleration, use the full `transform` string:
+Framer Motion's shorthand properties (`x`, `y`, `scale`) are NOT hardware-accelerated. They use `requestAnimationFrame` on the main thread. A full `transform` string is an acceleration candidate; profile it in the target browser:
 
 ```jsx
-// NOT hardware accelerated (convenient but drops frames under load)
+// Individual transform: profile main-thread scheduling under load
 <motion.div animate={{ x: 100 }} />
 
-// Hardware accelerated (stays smooth even when main thread is busy)
+// Full transform: acceleration candidate, not a smoothness guarantee
 <motion.div animate={{ transform: "translateX(100px)" }} />
 ```
 
@@ -508,11 +508,11 @@ This matters when the browser is simultaneously loading content, running scripts
 
 ### CSS animations beat JS under load
 
-CSS animations run off the main thread. When the browser is busy loading a new page, Framer Motion animations (using `requestAnimationFrame`) drop frames. CSS animations remain smooth. Use CSS for predetermined animations; JS for dynamic, interruptible ones.
+CSS/WAAPI animations of compositor-eligible properties can avoid main-thread scheduling under load. JavaScript frame callbacks can compete with scripts and rendering; neither API guarantees smoothness for every property or browser. Profile the actual target. Use CSS for predetermined animations; JS for dynamic, interruptible ones.
 
 ### Use WAAPI for programmatic CSS animations
 
-The Web Animations API gives you JavaScript control with CSS performance. Hardware-accelerated, interruptible, and no library needed.
+The Web Animations API gives you JavaScript control with CSS performance. Interruptible, with no animation-library dependency; hardware acceleration depends on the property and browser.
 
 ```js
 element.animate([{ clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0 0)' }], {
@@ -526,7 +526,7 @@ element.animate([{ clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0 0)'
 
 ### prefers-reduced-motion
 
-Animations can cause motion sickness. Reduced motion means fewer and gentler animations, not zero. Keep opacity and color transitions that aid comprehension. Remove movement and position animations.
+Animations can cause motion sickness. Reduced motion may disable nonessential animations entirely. Keep static state feedback; short opacity/color transitions are optional when helpful. Remove nonessential movement and position animations.
 
 ```css
 @media (prefers-reduced-motion: reduce) {
@@ -556,7 +556,7 @@ Touch devices trigger hover on tap, causing false positives. Gate hover animatio
 
 ## The Sonner Principles (Building Loved Components)
 
-These principles come from building Sonner (13M+ weekly npm downloads) and apply to any component:
+These principles are drawn from the Sonner component reference and may inform other components; this guide does not maintain current npm download figures:
 
 1. **Developer experience is key.** No hooks, no context, no complex setup. Insert `<Toaster />` once, call `toast()` from anywhere. The less friction to adopt, the more people will use it.
 
@@ -669,6 +669,6 @@ When reviewing UI code, check for:
 | Duration > 300ms on UI element             | Reduce to 150-250ms                                              |
 | Hover animation without media query        | Add `@media (hover: hover) and (pointer: fine)`                  |
 | Keyframes on rapidly-triggered element     | Use CSS transitions for interruptibility                         |
-| Framer Motion `x`/`y` props under load     | Use `transform: "translateX()"` for hardware acceleration        |
+| Framer Motion `x`/`y` props under load     | Use `transform: "translateX()"` as an acceleration candidate; profile it |
 | Same enter/exit transition speed           | Make exit faster than enter (e.g., enter 2s, exit 200ms)         |
 | Elements all appear at once                | Add stagger delay (30-80ms between items)                        |

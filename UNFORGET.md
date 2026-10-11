@@ -1847,3 +1847,8 @@ Evidence: `reports/deployment-review-2026-10-07/motion-guides-verification-2026-
 ## 9th-grade scope applied (2026-10-10, plan 021)
 
 SQL applied, verify returned visible 194 / hidden 23 / leftover 0. 6/8-year gymnázia, nástavby and 8-year conservatories live in `school_programs_hidden`. Extraction rerun on 56 of 58 affected schools; schools 15 and 94 have no scraped text so their old extracted data was not refreshed (check manually). Structure re-run on the same 56; pros/cons regenerated for all 194. List: `reports/ninth-grade-scope-2026-10-10.json`.
+
+## Animation-reference follow-up — 11 October 2026
+
+- C39/C44 Bug Echo reference correction completed: animate/Expo/Apple/Emil guides, both recipe bases, all six Claude copies and three exact uploaded copies fully read. Static reduced-motion state feedback is allowed, acceleration is browser-dependent, a missing Expo Stack import and screen-specific reduced-motion override are repaired, and same-millisecond/clock-reversal gesture samples no longer divide by zero. Twelve actual snippet-expression cases pass. This does not change product motion or select/install a mobile framework.
+- [ ] C44 future native/reference adoption: check actual SDK/library compatibility and live accessibility preference changes, finite gesture inputs, cancellation/multi-pointer handling, measured heights at large text and physical iOS/Android behavior. Reference examples require their surrounding components/callbacks/state; do not copy them as complete production screens. Existing product C11/C25/C38 acceptance remains separate. New peer special-needs/matching/schema edits are queued for exact-source review after ownership release.

@@ -261,7 +261,7 @@ The gesture recipe. Springs, not durations, because the user can reverse mid-mot
 ```js
 // Dismiss on a flick, not just on distance
 const timeTaken = Date.now() - dragStartTime.current;
-const velocity = Math.abs(swipeAmount) / timeTaken;
+const velocity = timeTaken > 0 ? Math.abs(swipeAmount) / timeTaken : 0;
 
 if (Math.abs(swipeAmount) >= SWIPE_THRESHOLD || velocity > 0.11) {
   dismiss();
@@ -321,4 +321,4 @@ element.animate(
 );
 ```
 
-Hardware-accelerated, interruptible, no bundle cost.
+Interruptible, with no additional animation-library dependency. Acceleration of this `clip-path` example depends on the target browser and shape; profile it rather than assuming GPU execution.

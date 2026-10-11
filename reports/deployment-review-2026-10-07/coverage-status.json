@@ -1,42 +1,50 @@
 {
-  "checked_at_utc": "2026-10-10T21:26:23.653494+00:00",
-  "commit": "8d71db8abb6dc99c40f16f1e6fbba0beb0569b8a",
+  "checked_at_utc": "2026-10-11T08:52:49.802061+00:00",
+  "commit": "135e6405e169e1b04f50f68e2282f8bf1df271e2",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "pending_or_changed": 305,
-    "current_full_read": 487,
+    "current_full_read": 486,
+    "pending_or_changed": 308,
     "binary_requires_asset_check": 105,
-    "generated_or_audit_artifact": 172,
+    "generated_or_audit_artifact": 173,
     "removed_or_missing": 2
   },
   "files": [
     {
       "path": ".agents/skills/animate-expo/RECIPES.md",
-      "sha256": "1193cb71334da2e2341778dd92bec9ac79d989cb07fd55d661f324ed5871e718",
-      "lines": 385,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "e501c3a2268f0ff20540e0ed22c9bace0592312323f1dca0eb322a13fae8c3f6",
+      "lines": 386,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/animate-expo/SKILL.md",
-      "sha256": "2121fc72ffa476492c1b91ccf96c7b26aade9d1a332dc5834ba3526e1102b00d",
+      "sha256": "efa9ed3c008be5bf2ca0e00298ae89a5d1bc101f6b1ac03d21149349a694370e",
       "lines": 255,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/animate/RECIPES.md",
-      "sha256": "21ff63d84391db8d96ecdf9170095f55a42c836ccc36fd3269c4772bab031ba2",
+      "sha256": "68e130ebb94733970666711b5fa351e30f91526aebe1bc756348d739837da9aa",
       "lines": 324,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/animate/SKILL.md",
-      "sha256": "f6317335da2662e92270dc0a6128bea95d7216cd751f86628e3ac6b72804e805",
+      "sha256": "8be5f45df9530b1d9829a08f9398a0816ccd3b2c7daf17dd7fdc270fa165dadd",
       "lines": 199,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/animation-vocabulary/SKILL.md",
@@ -49,10 +57,12 @@
     },
     {
       "path": ".agents/skills/apple-design/SKILL.md",
-      "sha256": "11840b24a11d7f94f39c6aaab074750ae4e4de4ef54ee4b1dd97e16ebd485e61",
+      "sha256": "608e16995806ebddcd5c20a739d34508ed2f1a505428d241eb2490472cf966d8",
       "lines": 282,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/ask-sonner/API.md",
@@ -203,10 +213,12 @@
     },
     {
       "path": ".agents/skills/emil-design-eng/SKILL.md",
-      "sha256": "e71de849347050c2c573c1cf24d742d5a13459557ecffa6e562f08006f46b5b7",
+      "sha256": "08394c03b2d61f938198c44119777810bf9ee75c8e549554b79653304fb42c32",
       "lines": 674,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/find-animation-opportunities/SKILL.md",
@@ -452,31 +464,39 @@
     },
     {
       "path": ".claude/skills/animate-expo/RECIPES.md",
-      "sha256": "1193cb71334da2e2341778dd92bec9ac79d989cb07fd55d661f324ed5871e718",
-      "lines": 385,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "e501c3a2268f0ff20540e0ed22c9bace0592312323f1dca0eb322a13fae8c3f6",
+      "lines": 386,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/animate-expo/SKILL.md",
-      "sha256": "2121fc72ffa476492c1b91ccf96c7b26aade9d1a332dc5834ba3526e1102b00d",
+      "sha256": "efa9ed3c008be5bf2ca0e00298ae89a5d1bc101f6b1ac03d21149349a694370e",
       "lines": 255,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/animate/RECIPES.md",
-      "sha256": "21ff63d84391db8d96ecdf9170095f55a42c836ccc36fd3269c4772bab031ba2",
+      "sha256": "68e130ebb94733970666711b5fa351e30f91526aebe1bc756348d739837da9aa",
       "lines": 324,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/animate/SKILL.md",
-      "sha256": "f6317335da2662e92270dc0a6128bea95d7216cd751f86628e3ac6b72804e805",
+      "sha256": "8be5f45df9530b1d9829a08f9398a0816ccd3b2c7daf17dd7fdc270fa165dadd",
       "lines": 199,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/animation-vocabulary/SKILL.md",
@@ -489,10 +509,12 @@
     },
     {
       "path": ".claude/skills/apple-design/SKILL.md",
-      "sha256": "11840b24a11d7f94f39c6aaab074750ae4e4de4ef54ee4b1dd97e16ebd485e61",
+      "sha256": "608e16995806ebddcd5c20a739d34508ed2f1a505428d241eb2490472cf966d8",
       "lines": 282,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/ask-sonner/API.md",
@@ -616,10 +638,12 @@
     },
     {
       "path": ".claude/skills/emil-design-eng/SKILL.md",
-      "sha256": "e71de849347050c2c573c1cf24d742d5a13459557ecffa6e562f08006f46b5b7",
+      "sha256": "08394c03b2d61f938198c44119777810bf9ee75c8e549554b79653304fb42c32",
       "lines": 674,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/find-animation-opportunities/SKILL.md",
@@ -901,8 +925,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "5eaa226c42d707a768a3ae2ac7ccb24e8a439d18f31bb6ebaf5c6a42c811d891",
-      "lines": 1845,
+      "sha256": "5d72bc44ba42c7449b9eaae433f1893b0a6f00dfd469f761f08746b05ba5dda0",
+      "lines": 1854,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -1296,17 +1320,21 @@
     },
     {
       "path": "design/archive/school-search-wireframe/uploads/RECIPES.md",
-      "sha256": "21ff63d84391db8d96ecdf9170095f55a42c836ccc36fd3269c4772bab031ba2",
+      "sha256": "68e130ebb94733970666711b5fa351e30f91526aebe1bc756348d739837da9aa",
       "lines": 324,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/archive/school-search-wireframe/uploads/SKILL-58306092.md",
-      "sha256": "f6317335da2662e92270dc0a6128bea95d7216cd751f86628e3ac6b72804e805",
+      "sha256": "8be5f45df9530b1d9829a08f9398a0816ccd3b2c7daf17dd7fdc270fa165dadd",
       "lines": 199,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/archive/school-search-wireframe/uploads/SKILL.md",
@@ -2632,10 +2660,12 @@
     },
     {
       "path": "design/system/uploads/SKILL.md",
-      "sha256": "e71de849347050c2c573c1cf24d742d5a13459557ecffa6e562f08006f46b5b7",
+      "sha256": "08394c03b2d61f938198c44119777810bf9ee75c8e549554b79653304fb42c32",
       "lines": 674,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/to-das.mockup",
@@ -3107,12 +3137,10 @@
     },
     {
       "path": "frontend/src/components/BetaEnrollment.jsx",
-      "sha256": "5d2ec97df4ce360dbe3e9c230f9058fd4e8aaddc9b79d34a63962afe88b27f0b",
+      "sha256": "5591f2feb3e0451de9906fb209918aec36b7b799b3b9dba511ada7be67de6f67",
       "lines": 32,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/components/BetaFeedbackSheet.jsx",
@@ -3347,12 +3375,10 @@
     },
     {
       "path": "frontend/src/components/SearchFilters.jsx",
-      "sha256": "7e8b6af0835b36d7eb58f159a6ff78d5e135079c36d6bf0af4f9b3a501109f35",
-      "lines": 459,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "3f49f8e17631a89201f6f36d4b675ad099af841369cc1b348b0a9027e4ce9710",
+      "lines": 482,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/components/StatInfo.jsx",
@@ -3572,13 +3598,10 @@
     },
     {
       "path": "frontend/src/components/schoolDetail/MissingDataGrid.jsx",
-      "sha256": "ba6ae1465a5a15e0befc9afa579858bb3278caee098e4378b0fb5b941f9ba1a9",
-      "lines": 135,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "frontend-coverage.json",
-        "root-coverage.json"
-      ]
+      "sha256": "c9e78dad533e588994ca0d85d22a7fd8b788b112112f1a141d838e2a3437b761",
+      "lines": 138,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/components/schoolDetail/ProgramCard.jsx",
@@ -3636,12 +3659,10 @@
     },
     {
       "path": "frontend/src/components/schoolDetail/SchoolHero.jsx",
-      "sha256": "0090190aa51b54e8c475e165666529964f1ea39ba64c664a068ea540f0a0a195",
-      "lines": 126,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "5e5d283c77f9d17e934a38aab956cd5b1e48851c6d7ddcc0c8fa0bd31dc21654",
+      "lines": 142,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/components/schoolDetail/SchoolLocation.jsx",
@@ -3895,12 +3916,10 @@
     },
     {
       "path": "frontend/src/lib/matching.js",
-      "sha256": "570d95acb83d19b7dbd2a2930764a3e46bbf893e8924a1314bf5c1e72114cd3c",
-      "lines": 408,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "98a8bcd6f60e8b801e1e71d0112cf0c42f21a0663d69650d6c553d2abbc93127",
+      "lines": 417,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/lib/onboardingStorage.js",
@@ -4176,12 +4195,10 @@
     },
     {
       "path": "frontend/src/pages/Legal.jsx",
-      "sha256": "601bade2cc187ee9495d497ce427caff48d32056810db6a6dae68bce07086f94",
+      "sha256": "ec5a7fc5e0f4f96190b7a632009ccaf4edcc3a2e60050b67a03c4278cb80eee9",
       "lines": 392,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/pages/Login.jsx",
@@ -4266,12 +4283,10 @@
     },
     {
       "path": "frontend/src/pages/SchoolDetail.jsx",
-      "sha256": "ff0bb87e0009b7a4d73e926585922b2eaf8d8129ee2c53c25867dfc8d18c008c",
-      "lines": 258,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "9ea228fc283da264eb39c67b09d5b1851f6bdfd27d47526ebc75f506f33c5b4d",
+      "lines": 259,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/pages/SdileniView.jsx",
@@ -4284,12 +4299,10 @@
     },
     {
       "path": "frontend/src/pages/Search.jsx",
-      "sha256": "49bdaeb14437ad1b5bda5a6bd9354a8e5ec1a54627742456ce837057b26995e0",
-      "lines": 1829,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "fb6d73e245c5bb3a6b908d21c45421c8a114910d9e49e4e65f982fbe490e10d3",
+      "lines": 1876,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "frontend/src/pages/Settings.jsx",
@@ -4663,12 +4676,10 @@
     },
     {
       "path": "lib/betaAdmin.js",
-      "sha256": "9b19c8ee963781c79c5076ef8fba049db80d85d229b9aff66f17beac6ab84bf8",
-      "lines": 148,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "a1f10beabf4b63e2355e38afb520aecfd6833bd0ac7f3e3a2bf22dff0e042648",
+      "lines": 170,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "lib/betaAdminRoutes.js",
@@ -4726,12 +4737,10 @@
     },
     {
       "path": "lib/matching.js",
-      "sha256": "1d6f3a68c60bdbeaedea8698255887925492c81101c287f179460bb499e6b6a2",
-      "lines": 924,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "d4ed3567716a36e8bbf747e3e2a2737183336efffa84f22b6c3e300e10ee65ad",
+      "lines": 946,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "lib/ninthGrade.js",
@@ -4760,12 +4769,10 @@
     },
     {
       "path": "lib/questionnaire.js",
-      "sha256": "dda2d49fc302b9cf1660b4d859af58b4db73cbea63918bfdeabc2b8ed4fbc635",
-      "lines": 929,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "701c7081ab338d3fb2df101e9d9b3d2daee0c89ed59c7ce6aa3d1064a9ee4a57",
+      "lines": 961,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "lib/reviewFilter.js",
@@ -6056,8 +6063,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "47a0c081054c7d09526d1922efefc2b3997445c224915122eb7ee87ad9c62c2f",
-      "lines": 369,
+      "sha256": "2dcd8923ece03553289a540e9fb78c0a3f0f793a1ab6a36eaf3bf7fb3960391c",
+      "lines": 378,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6070,8 +6077,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "dd22543f1b248a130510db1fa748065b71b69716f03a13c7f05df57092219be5",
-      "lines": 176,
+      "sha256": "59209a34b7b54104736c5b43705b21b74b38363722358bb88c8a68148318c80c",
+      "lines": 179,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6087,6 +6094,13 @@
       "sha256": "de949b2fc1a517a501708ae2c4ccb3c51255c37f88e9ebb177b73213c7ce4691",
       "lines": null,
       "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/animation-reference-verification-2026-10-11.json",
+      "sha256": "f755b142961323e623b4a6e041ae7de9ba02415a123c77a8d3aec3b0f7bf636a",
+      "lines": 189,
+      "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
@@ -6406,8 +6420,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "c7300509dfd5d156a1fb3ba2350cdbea6856b954c20012607b74a57d57e494a2",
-      "lines": 505,
+      "sha256": "885ce2f8851b13a298de558394068e473efb62ab2752cb2b098b59dbfa4968da",
+      "lines": 511,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6420,8 +6434,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "b7f2842f7cdd566ff5b1499e09008e0ac15d77b83d8dc7e6347f2f286afb2a68",
-      "lines": 8455,
+      "sha256": "6605e84a422e7953d30c97308417b2b0350105c1d56a735d1f7e7cd29540e010",
+      "lines": 8506,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -7592,8 +7606,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "db7ae536913d7d541140404a071ef0cb6dd078767691bce30daf31107c6ffd94",
-      "lines": 6321,
+      "sha256": "a2825d01718a14c8cf4f6bdbb7cdb077dcf0310c8516679b68b98bff12191324",
+      "lines": 6546,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -7838,6 +7852,13 @@
       "matching_evidence": []
     },
     {
+      "path": "reports/special-needs-2026-10-10.json",
+      "sha256": "35ec0696f788f439a3fce1044b216d809cb9b8536fe00da8dde72c461b184804",
+      "lines": 1698,
+      "status": "pending_or_changed",
+      "matching_evidence": []
+    },
+    {
       "path": "reports/structure-dry-run-2026-09-24-v2.md",
       "sha256": "9906114726ce186d5887060b0bed9f32ced8cc6f48325ac1b636d972c45dd6b3",
       "lines": 962,
@@ -7940,12 +7961,10 @@
     },
     {
       "path": "scripts/beta-preview/database.cjs",
-      "sha256": "219ab51d88148116cc0cccc3830af76f27cf072d67ab28a18bca223ecea531a6",
+      "sha256": "d0a10f16cf53aebf3033a0278e36a9a626b7a3a388fd932de2bc715025578551",
       "lines": 69,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "scripts/beta-preview/server.cjs",
@@ -8030,6 +8049,13 @@
       "matching_evidence": [
         "root-coverage.json"
       ]
+    },
+    {
+      "path": "scripts/extract-special-needs.js",
+      "sha256": "088006d9fa8640a810b6ae963067ca7a477c5ce81e9874557dfff20aa3fcfbed",
+      "lines": 221,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "scripts/filter-config.json",
@@ -8227,12 +8253,10 @@
     },
     {
       "path": "supabase-setup.sql",
-      "sha256": "c5167dd460a18d83bca4a0d7f5dd728cfeed9c8e482e7f8b66a75478faa73d5d",
-      "lines": 1622,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "79d47485e3a458d6729cbd7e77043d832d23b15a38150bd301edd5701ea50261",
+      "lines": 1633,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "test-google-api.js",
@@ -8281,12 +8305,10 @@
     },
     {
       "path": "tests/beta-admin.test.cjs",
-      "sha256": "990014d5145f4958cb6ab999ac5bd12830dab15683a221f20a0d2abebe559dc6",
-      "lines": 41,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "d0ef72ade22e44138940d60ec49a8b6254139bb61868cb022dbdb1348238ef09",
+      "lines": 53,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "tests/beta-analytics.test.cjs",
@@ -8398,12 +8420,10 @@
     },
     {
       "path": "tests/matching-per-obor.test.cjs",
-      "sha256": "967c770813f813c350adb1f45a4e3e6cc66076de13ccdbc4ab17f9c189c72ade",
-      "lines": 30,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "backend-coverage.json"
-      ]
+      "sha256": "149269e6af6c5a5d494ad2c299746fb6360f96385a8831d8ecfa5de63e305e68",
+      "lines": 43,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "tests/ninth-grade.test.cjs",
@@ -8416,12 +8436,10 @@
     },
     {
       "path": "tests/onboarding-ranking.test.mjs",
-      "sha256": "a9e6cac212873e5f18b2718826279987f7aac647f14e0fb372f01c3b3c9757f0",
-      "lines": 87,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "16e4a050e4ffb98de74b55c1e4cb8e40d041fe959b32548d1cd565d45bd50339",
+      "lines": 93,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "tests/provider-diagnostics.test.cjs",

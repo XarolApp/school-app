@@ -1,6 +1,6 @@
 # Expo Animation Recipes
 
-Ready-to-build implementations for the cases that come up most in a React Native app. Start from the recipe, then adapt.
+Reference snippets for a future React Native app, not standalone components. Supply the surrounding component, callbacks, dimensions, safe-area values and reduced-motion state; verify the chosen SDK and installed package versions before adopting them. This web project has not selected its mobile framework.
 
 ---
 
@@ -16,6 +16,7 @@ npx expo install react-native-reanimated react-native-worklets react-native-gest
 
 ```jsx
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Stack } from 'expo-router';
 
 export default function RootLayout() {
   return (
@@ -50,7 +51,7 @@ Three conventions, explained once here instead of in every recipe:
 - **`scheduleOnRN(fn, ...args)` replaces the deprecated `runOnJS(fn)(...args)`** for calling back to the React Native runtime from a worklet.
 - **Gestures are wrapped in `useMemo`.** Rebuilding a gesture on every render can reattach the recognizer and drop a drag that's mid-flight.
 
-**Gesture Handler v3:** Expo installs v2, and the recipes use its `Gesture.Pan()` builder. If the project is already on v3, the builder is legacy — each gesture is a hook taking one config object, with `onStart` → `onActivate`, `onEnd` → `onDeactivate`, and the `success` flag replaced by `event.canceled` (inverted). The hook manages its own identity, so drop the `useMemo`:
+**Gesture Handler version:** These recipes use the v2 `Gesture.Pan()` builder. Check the actual Expo SDK/package combination; do not assume Expo always installs v2. See the [official v3 migration guide](https://docs.swmansion.com/react-native-gesture-handler/docs/guides/upgrading-to-3/). If the project is already on v3, the builder is legacy — each gesture is a hook taking one config object, with `onStart` → `onActivate`, `onEnd` → `onDeactivate`, and the `success` flag replaced by `event.canceled` (inverted). The hook manages its own identity, so drop the `useMemo`:
 
 ```jsx
 const pan = usePanGesture({
@@ -222,7 +223,7 @@ const titleStyle = useAnimatedStyle(() => ({
 <Animated.ScrollView onScroll={onScroll} scrollEventThrottle={16}>
 ```
 
-**Never animate the header's `height` to collapse it.** That runs a layout pass on the header and everything below it on every scroll frame — the one animation guaranteed to stutter, because it's competing with the scroll itself. Give the container a fixed height and translate the content inside it, clipping with `overflow: 'hidden'`.
+**Never animate the header's `height` to collapse it.** That runs a layout pass on the header and everything below it on every scroll frame — a pattern likely to add avoidable work, because it's competing with the scroll itself. Give the container a fixed height and translate the content inside it, clipping with `overflow: 'hidden'`.
 
 `Extrapolation.CLAMP` is not optional: without it, scrolling past 60 keeps driving opacity negative and the header reappears inverted at the bottom of a long list.
 
@@ -308,11 +309,11 @@ This is the sanctioned `width` animation: the pill is absolutely positioned with
 
 ## Screen transitions (Expo Router)
 
-Configure the native stack. Never rebuild a screen transition in JS: the native one runs on the platform side, keeps the interactive back gesture, and matches every other app on the device.
+Configure the native stack after importing `Stack` and obtaining `reduced` inside the layout component. A screen-specific option overrides the stack default, so apply reduced motion to that option too. Never rebuild a screen transition in JS: the native one runs on the platform side, keeps the interactive back gesture, and matches every other app on the device.
 
 ```jsx
 <Stack screenOptions={{ animation: reduced ? 'fade' : 'default' }}>
-  <Stack.Screen name="settings" options={{ animation: 'slide_from_right', animationMatchesGesture: true }} />
+  <Stack.Screen name="settings" options={{ animation: reduced ? 'fade' : 'slide_from_right', animationMatchesGesture: true }} />
   <Stack.Screen name="compose" options={{ presentation: 'modal' }} />
   <Stack.Screen name="filter" options={{
     presentation: 'formSheet',
@@ -328,13 +329,13 @@ Configure the native stack. Never rebuild a screen transition in JS: the native 
 | A self-contained task the user can abandon | `presentation: 'modal'` |
 | A short interruption: picker, filter, share | `presentation: 'formSheet'` with detents |
 | Between tabs | `animation: 'none'` |
-| Reduced motion | `animation: 'fade'` |
+| Reduced motion | `animation: 'none'` or a brief fade, consistently on overridden screens |
 
 `animationMatchesGesture: true` makes the iOS back swipe run your transition in reverse under the finger, instead of the default push. Set it whenever you set a custom `animation`, or dragging back looks like a different app than pushing forward.
 
 `formSheet` is native on both platforms, but not the same on both — the [Expo modal docs](https://docs.expo.dev/router/advanced/modals/#form-sheet-presentation) have the full list:
 
-- **Android caps detents at three.** A longer `sheetAllowedDetents` array works on iOS and silently truncates on Android — design for three.
+- **Android caps detents at three.** Use at most three on Android; verify the installed version's handling of an invalid longer array rather than relying on silent truncation.
 - **`sheetGrabberVisible` is iOS-only.** Android shows no grabber; don't rely on it as the only "this is draggable" affordance.
 - **Android form sheets can't host native headers or nested stacks.** Keep the sheet's content a single screen; if it needs its own navigation, use `presentation: 'modal'` instead.
 - **`fitToContents` needs explicitly sized content.** A `flex: 1` root has no intrinsic height to fit — size the content, or the detent is wrong.

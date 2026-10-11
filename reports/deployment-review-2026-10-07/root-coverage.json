@@ -2137,19 +2137,19 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "5eaa226c42d707a768a3ae2ac7ccb24e8a439d18f31bb6ebaf5c6a42c811d891",
-    "lines": 1845,
+    "sha256": "5d72bc44ba42c7449b9eaae433f1893b0a6f00dfd469f761f08746b05ba5dda0",
+    "lines": 1854,
     "read_ranges": [
       [
         1,
-        1845
+        1854
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-10T21:26:23.260226+00:00",
-    "method": "Verified full saved baseline at ed6a69a plus complete current diff and all owned edits read. Source coverage is not SQL/hosted/browser/deployment acceptance. Exact current baseline plus authored motion-reference ledger append fully read.",
-    "previous_complete_sha256": "6ed953ba5862eb93b5a94deced3360695fd0d101d48882fa3bcb720577bea981"
+    "checked_at_utc": "2026-10-11T08:52:49.250150+00:00",
+    "method": "Verified complete fbded6e baseline plus complete own animation-reference append read; no new application acceptance claim.",
+    "previous_complete_sha256": "5eaa226c42d707a768a3ae2ac7ccb24e8a439d18f31bb6ebaf5c6a42c811d891"
   },
   "frontend/src/api.js": {
     "sha256": "a545cb179681a87378f41cf928cff50e1ae6c2e539c4bbacf373590af9f8ab8a",
@@ -6317,5 +6317,230 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-10T21:26:23.260226+00:00",
     "method": "Full seven base guides/references read in bounded outputs; missing hard-rule range reread. Each Claude copy independently byte-equal verified. Complete owned narrow doc/example patches read. No product/animation/device acceptance inferred."
+  },
+  ".agents/skills/animate/SKILL.md": {
+    "sha256": "8be5f45df9530b1d9829a08f9398a0816ccd3b2c7daf17dd7fdc270fa165dadd",
+    "lines": 199,
+    "read_ranges": [
+      [
+        1,
+        199
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T08:51:55.985417+00:00",
+    "previous_complete_sha256": "f6317335da2662e92270dc0a6128bea95d7216cd751f86628e3ac6b72804e805",
+    "method": "Six base sources fully read in bounded contiguous ranges; truncated Apple/Expo portions repaired in preceding continuation. All current owned diffs inspected. Each Claude/uploaded copy byte-equal and individually hashed. Native/browser performance acceptance is separate."
+  },
+  ".claude/skills/animate/SKILL.md": {
+    "sha256": "8be5f45df9530b1d9829a08f9398a0816ccd3b2c7daf17dd7fdc270fa165dadd",
+    "lines": 199,
+    "read_ranges": [
+      [
+        1,
+        199
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T08:51:55.985417+00:00",
+    "previous_complete_sha256": "f6317335da2662e92270dc0a6128bea95d7216cd751f86628e3ac6b72804e805",
+    "method": "Six base sources fully read in bounded contiguous ranges; truncated Apple/Expo portions repaired in preceding continuation. All current owned diffs inspected. Each Claude/uploaded copy byte-equal and individually hashed. Native/browser performance acceptance is separate."
+  },
+  ".agents/skills/animate/RECIPES.md": {
+    "sha256": "68e130ebb94733970666711b5fa351e30f91526aebe1bc756348d739837da9aa",
+    "lines": 324,
+    "read_ranges": [
+      [
+        1,
+        324
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T08:51:55.985417+00:00",
+    "previous_complete_sha256": "21ff63d84391db8d96ecdf9170095f55a42c836ccc36fd3269c4772bab031ba2",
+    "method": "Six base sources fully read in bounded contiguous ranges; truncated Apple/Expo portions repaired in preceding continuation. All current owned diffs inspected. Each Claude/uploaded copy byte-equal and individually hashed. Native/browser performance acceptance is separate."
+  },
+  ".claude/skills/animate/RECIPES.md": {
+    "sha256": "68e130ebb94733970666711b5fa351e30f91526aebe1bc756348d739837da9aa",
+    "lines": 324,
+    "read_ranges": [
+      [
+        1,
+        324
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T08:51:55.985417+00:00",
+    "previous_complete_sha256": "21ff63d84391db8d96ecdf9170095f55a42c836ccc36fd3269c4772bab031ba2",
+    "method": "Six base sources fully read in bounded contiguous ranges; truncated Apple/Expo portions repaired in preceding continuation. All current owned diffs inspected. Each Claude/uploaded copy byte-equal and individually hashed. Native/browser performance acceptance is separate."
+  },
+  ".agents/skills/animate-expo/SKILL.md": {
+    "sha256": "efa9ed3c008be5bf2ca0e00298ae89a5d1bc101f6b1ac03d21149349a694370e",
+    "lines": 255,
+    "read_ranges": [
+      [
+        1,
+        255
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T08:51:55.985417+00:00",
+    "previous_complete_sha256": "2121fc72ffa476492c1b91ccf96c7b26aade9d1a332dc5834ba3526e1102b00d",
+    "method": "Six base sources fully read in bounded contiguous ranges; truncated Apple/Expo portions repaired in preceding continuation. All current owned diffs inspected. Each Claude/uploaded copy byte-equal and individually hashed. Native/browser performance acceptance is separate."
+  },
+  ".claude/skills/animate-expo/SKILL.md": {
+    "sha256": "efa9ed3c008be5bf2ca0e00298ae89a5d1bc101f6b1ac03d21149349a694370e",
+    "lines": 255,
+    "read_ranges": [
+      [
+        1,
+        255
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T08:51:55.985417+00:00",
+    "previous_complete_sha256": "2121fc72ffa476492c1b91ccf96c7b26aade9d1a332dc5834ba3526e1102b00d",
+    "method": "Six base sources fully read in bounded contiguous ranges; truncated Apple/Expo portions repaired in preceding continuation. All current owned diffs inspected. Each Claude/uploaded copy byte-equal and individually hashed. Native/browser performance acceptance is separate."
+  },
+  ".agents/skills/animate-expo/RECIPES.md": {
+    "sha256": "e501c3a2268f0ff20540e0ed22c9bace0592312323f1dca0eb322a13fae8c3f6",
+    "lines": 386,
+    "read_ranges": [
+      [
+        1,
+        386
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T08:51:55.985417+00:00",
+    "previous_complete_sha256": "1193cb71334da2e2341778dd92bec9ac79d989cb07fd55d661f324ed5871e718",
+    "method": "Six base sources fully read in bounded contiguous ranges; truncated Apple/Expo portions repaired in preceding continuation. All current owned diffs inspected. Each Claude/uploaded copy byte-equal and individually hashed. Native/browser performance acceptance is separate."
+  },
+  ".claude/skills/animate-expo/RECIPES.md": {
+    "sha256": "e501c3a2268f0ff20540e0ed22c9bace0592312323f1dca0eb322a13fae8c3f6",
+    "lines": 386,
+    "read_ranges": [
+      [
+        1,
+        386
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T08:51:55.985417+00:00",
+    "previous_complete_sha256": "1193cb71334da2e2341778dd92bec9ac79d989cb07fd55d661f324ed5871e718",
+    "method": "Six base sources fully read in bounded contiguous ranges; truncated Apple/Expo portions repaired in preceding continuation. All current owned diffs inspected. Each Claude/uploaded copy byte-equal and individually hashed. Native/browser performance acceptance is separate."
+  },
+  ".agents/skills/apple-design/SKILL.md": {
+    "sha256": "608e16995806ebddcd5c20a739d34508ed2f1a505428d241eb2490472cf966d8",
+    "lines": 282,
+    "read_ranges": [
+      [
+        1,
+        282
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T08:51:55.985417+00:00",
+    "previous_complete_sha256": "11840b24a11d7f94f39c6aaab074750ae4e4de4ef54ee4b1dd97e16ebd485e61",
+    "method": "Six base sources fully read in bounded contiguous ranges; truncated Apple/Expo portions repaired in preceding continuation. All current owned diffs inspected. Each Claude/uploaded copy byte-equal and individually hashed. Native/browser performance acceptance is separate."
+  },
+  ".claude/skills/apple-design/SKILL.md": {
+    "sha256": "608e16995806ebddcd5c20a739d34508ed2f1a505428d241eb2490472cf966d8",
+    "lines": 282,
+    "read_ranges": [
+      [
+        1,
+        282
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T08:51:55.985417+00:00",
+    "previous_complete_sha256": "11840b24a11d7f94f39c6aaab074750ae4e4de4ef54ee4b1dd97e16ebd485e61",
+    "method": "Six base sources fully read in bounded contiguous ranges; truncated Apple/Expo portions repaired in preceding continuation. All current owned diffs inspected. Each Claude/uploaded copy byte-equal and individually hashed. Native/browser performance acceptance is separate."
+  },
+  ".agents/skills/emil-design-eng/SKILL.md": {
+    "sha256": "08394c03b2d61f938198c44119777810bf9ee75c8e549554b79653304fb42c32",
+    "lines": 674,
+    "read_ranges": [
+      [
+        1,
+        674
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T08:51:55.985417+00:00",
+    "previous_complete_sha256": "e71de849347050c2c573c1cf24d742d5a13459557ecffa6e562f08006f46b5b7",
+    "method": "Six base sources fully read in bounded contiguous ranges; truncated Apple/Expo portions repaired in preceding continuation. All current owned diffs inspected. Each Claude/uploaded copy byte-equal and individually hashed. Native/browser performance acceptance is separate."
+  },
+  ".claude/skills/emil-design-eng/SKILL.md": {
+    "sha256": "08394c03b2d61f938198c44119777810bf9ee75c8e549554b79653304fb42c32",
+    "lines": 674,
+    "read_ranges": [
+      [
+        1,
+        674
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T08:51:55.985417+00:00",
+    "previous_complete_sha256": "e71de849347050c2c573c1cf24d742d5a13459557ecffa6e562f08006f46b5b7",
+    "method": "Six base sources fully read in bounded contiguous ranges; truncated Apple/Expo portions repaired in preceding continuation. All current owned diffs inspected. Each Claude/uploaded copy byte-equal and individually hashed. Native/browser performance acceptance is separate."
+  },
+  "design/archive/school-search-wireframe/uploads/SKILL-58306092.md": {
+    "sha256": "8be5f45df9530b1d9829a08f9398a0816ccd3b2c7daf17dd7fdc270fa165dadd",
+    "lines": 199,
+    "read_ranges": [
+      [
+        1,
+        199
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T08:51:55.985417+00:00",
+    "previous_complete_sha256": "f6317335da2662e92270dc0a6128bea95d7216cd751f86628e3ac6b72804e805",
+    "method": "Six base sources fully read in bounded contiguous ranges; truncated Apple/Expo portions repaired in preceding continuation. All current owned diffs inspected. Each Claude/uploaded copy byte-equal and individually hashed. Native/browser performance acceptance is separate."
+  },
+  "design/archive/school-search-wireframe/uploads/RECIPES.md": {
+    "sha256": "68e130ebb94733970666711b5fa351e30f91526aebe1bc756348d739837da9aa",
+    "lines": 324,
+    "read_ranges": [
+      [
+        1,
+        324
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T08:51:55.985417+00:00",
+    "previous_complete_sha256": "21ff63d84391db8d96ecdf9170095f55a42c836ccc36fd3269c4772bab031ba2",
+    "method": "Six base sources fully read in bounded contiguous ranges; truncated Apple/Expo portions repaired in preceding continuation. All current owned diffs inspected. Each Claude/uploaded copy byte-equal and individually hashed. Native/browser performance acceptance is separate."
+  },
+  "design/system/uploads/SKILL.md": {
+    "sha256": "08394c03b2d61f938198c44119777810bf9ee75c8e549554b79653304fb42c32",
+    "lines": 674,
+    "read_ranges": [
+      [
+        1,
+        674
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T08:51:55.985417+00:00",
+    "previous_complete_sha256": "e71de849347050c2c573c1cf24d742d5a13459557ecffa6e562f08006f46b5b7",
+    "method": "Six base sources fully read in bounded contiguous ranges; truncated Apple/Expo portions repaired in preceding continuation. All current owned diffs inspected. Each Claude/uploaded copy byte-equal and individually hashed. Native/browser performance acceptance is separate."
   }
 }

@@ -174,3 +174,6 @@ Current ninth-grade-review reconciliation: **473 current full reads / 319 pendin
 
 
 Motion-reference checkpoint: seven base guides/references and all seven byte-identical Claude copies fully read. Narrow documentation corrections allow static reduced-motion feedback, remove a nonexistent vocabulary route, qualify performance guarantees and align toast examples; no product motion/library changed. Same-pattern wording in remaining guides/uploaded copies is explicitly queued for full read. [Verification](motion-guides-verification-2026-10-10.json). Full project review remains active.
+
+
+Animation construction/reference checkpoint, 11 October: six base guides/recipes, six Claude copies and three exact uploaded copies fully read. Narrow reference fixes repair reduced-motion, acceleration/version claims, an Expo import/override and zero-elapsed-time velocity; twelve actual snippet cases pass. [Qualified evidence](animation-reference-verification-2026-10-11.json). No product/native/dependency behavior changed. Current peer matching/special-needs/schema edits are active and remain queued; full review and release approval are still incomplete.
