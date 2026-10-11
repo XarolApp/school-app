@@ -1945,3 +1945,8 @@ All 48 Codex comparison files plus 45 API comparison sources reviewed (1318 orig
 ## Historical tuition outputs and extraction batches — 11 October 2026 (S10)
 
 Twelve full tuition JSON outputs, five full batch ID files and the run log reviewed (18 artifacts/292 lines), all unchanged. Annual arithmetic and batch counts check out, but current eligible programme/form/year/round, named-price/range/month schedules and source-field semantics still need S10 acceptance. Historical 148’s 69000 scalar has programme/year/evidence conflicts;205’s 0-percent counter needs dynamic-source checking. All 219 experiment IDs exist in the220-record backup, whose extra ID is94: different historical scopes, not the current visible catalogue. [Evidence/plan](reports/deployment-review-2026-10-07/tuition-batch-artifact-review-2026-10-11.json). The big backup content remains pending; raw outputs stay untracked, no model/provider/live-data action.
+
+
+## Historical removed values and fifteen-school backup — 11 October 2026 (S10)
+
+Two complete unchanged JSON artifacts/1127 lines reviewed. The 112 removed values affect 77 schools; 31 lack old citations and two source fields have invalid scalar types. Wrong-level ZŠ/MŠ/VOŠ facts and event times make blind restoration unsafe; possible legitimate omissions still need exact current-row/source checks. The ten backup Cermat percentage calculations agree internally, without establishing current official accuracy. [Evidence and ordered acceptance](reports/deployment-review-2026-10-07/loss-backup-artifact-review-2026-10-11.json). Preserve historical data and the official results path; the full 220-record backup remains pending. No live write or model/provider action.

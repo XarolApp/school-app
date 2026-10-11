@@ -1,0 +1,150 @@
+{
+  "checked_at_utc": "2026-10-11T17:15:49.839363+00:00",
+  "snapshot_commit": "d74b7a6fcf3396909c67bf1301a4a2a71bc71302",
+  "files": {
+    "reports/api-comparison/lost-values.json": {
+      "sha256": "3f52ee99e92dcffcb70a9042e674825dc5bbedb76ad3c53f17c543a25bda8ba7",
+      "lines": 674
+    },
+    "reports/api-comparison/backup-before-real-run.json": {
+      "sha256": "237d9fb06e56b652a14e79c65983eb9ba6667d6e9530b8e569ffb28c99204076",
+      "lines": 453
+    }
+  },
+  "source_lines": 1127,
+  "read_method": "Complete raw lost-values source read in four bounded ranges and complete fifteen-record backup read in three bounded ranges. Original files remain unchanged.",
+  "probe": {
+    "loss_count": 112,
+    "loss_schools": 77,
+    "loss_by_field": {
+      "zacatek_hodin": 17,
+      "alternativni_pedagogika": 47,
+      "tuition_czk_per_year": 8,
+      "skolne_poplatky": 8,
+      "krouzky_aktivity": 8,
+      "uplatneni_po_vyuceni": 3,
+      "ma_dodatecne_pozadavky": 7,
+      "pripijimaci_pozadavky_detail": 6,
+      "obedy_ubytovani": 3,
+      "maturita_pass_rate_pct": 2,
+      "vs_uplatneni": 3
+    },
+    "losses_without_old_source": 31,
+    "invalid_old_source_types": [
+      {
+        "school_id": 209,
+        "field": "maturita_pass_rate_pct",
+        "old_value": 96,
+        "old_source": 95.8
+      },
+      {
+        "school_id": 114,
+        "field": "ma_dodatecne_pozadavky",
+        "old_value": true,
+        "old_source": true
+      }
+    ],
+    "backup_count": 15,
+    "backup_models": {
+      "openai/gpt-6-luna": 8,
+      "anthropic/claude-haiku-4.5": 1,
+      "openai/gpt-4o-mini": 6
+    },
+    "backup_dates": {
+      "2026-09-23": 8,
+      "2026-09-22": 7
+    },
+    "all_six_later_structure_fields_null": true,
+    "maturita_ratios": [
+      {
+        "school_id": 9,
+        "numerator": 123,
+        "denominator": 143,
+        "percent": 86.0
+      },
+      {
+        "school_id": 104,
+        "numerator": 46,
+        "denominator": 53,
+        "percent": 86.8
+      },
+      {
+        "school_id": 111,
+        "numerator": 51,
+        "denominator": 51,
+        "percent": 100.0
+      },
+      {
+        "school_id": 125,
+        "numerator": 132,
+        "denominator": 143,
+        "percent": 92.3
+      },
+      {
+        "school_id": 135,
+        "numerator": 169,
+        "denominator": 177,
+        "percent": 95.5
+      },
+      {
+        "school_id": 48,
+        "numerator": 109,
+        "denominator": 112,
+        "percent": 97.3
+      },
+      {
+        "school_id": 60,
+        "numerator": 107,
+        "denominator": 114,
+        "percent": 93.9
+      },
+      {
+        "school_id": 90,
+        "numerator": 34,
+        "denominator": 36,
+        "percent": 94.4
+      },
+      {
+        "school_id": 8,
+        "numerator": 107,
+        "denominator": 115,
+        "percent": 93.0
+      },
+      {
+        "school_id": 146,
+        "numerator": 45,
+        "denominator": 58,
+        "percent": 77.6
+      }
+    ],
+    "orphan_source_urls": [
+      {
+        "school_id": 125,
+        "field": "skolne_poplatky",
+        "source": "https://www.pedevropska.cz/informace-pro-prijate-uchazece-na-vos/"
+      },
+      {
+        "school_id": 125,
+        "field": "tuition_czk_per_year",
+        "source": "https://www.pedevropska.cz/uhrada-skolneho-ve-vos-pozor-nove-cislo-uctu/"
+      }
+    ],
+    "unchanged_originals": true,
+    "ISO_variable_fraction_handling": "Valid historical ISO fractions padded for Python3.9 parsing only; source timestamps unchanged."
+  },
+  "S10_candidates": [
+    "112 removed field values across 77 schools are not 112 proven regressions. 31 have no old citation; school 209 has numeric 95.8 as its maturita source and school 114 has boolean true as its additional-requirements source. Source-field validation must distinguish a current sourced correction from a possible loss before any restore.",
+    "Old school 160 career prose concerns VOŠ/DiS; school 74 requirements concern VOŠ; school 223 food/clubs and school 213 admission concern ZŠ; school 186 alternative teaching and school 191 food concern kindergarten; school 197 club fees concern ZŠ; school 161 fee prose concerns after-school primary care. Blind restoration risks returning wrong-level facts.",
+    "Old start times may describe an opening/orientation day or a VOŠ schedule, rather than normal SŠ timetable. Named programme prices, year/form/month schedules and university/club claims need the same exact eligible-programme evidence as other S10 candidates. Removed false booleans must not be presumed accurate when unknown is appropriate.",
+    "Some removed school-specific clubs, university claims or names may be legitimate omissions. Check the exact current served row against the matching official cached/current source; neither restore nor approve deletion by the word lost alone.",
+    "The fifteen-school backup is a 22–23 September mixed-model snapshot, with all six later structural fields null. Its ten Cermat numerator/denominator percentages are arithmetically consistent, which does not prove current official data or correct school/programme scope. Preserve the existing independently checked official-data path when reconciling extraction.",
+    "School125 has tuition source URLs despite null tuition fields, both pointing to VOŠ content. Other historical backup prose includes old 2019 meal prices, excluded nástavba and unqualified foreign-university admissions. A URL or success log is not proof of applicability or current accuracy."
+  ],
+  "ordered_acceptance": "One S10 data owner compares exact current served rows with immutable old/new extraction, official school-campus/eligible programme/form/year/round sources and scraper/model fingerprints. Classify each removed value as sourced correction, scope removal, unsupported/default cleanup, true regression or unresolved. Restore only confirmed eligible current facts after reviewed dry run and required local/migration approvals; retain raw historical evidence and hidden rows/archived choices.",
+  "limits": [
+    "No original artifact modified or committed.",
+    "No linked official page fetched in this historical-content pass; no current live exposure or correctness inferred.",
+    "The 220-record full backup and remaining extraction files are still pending. No paid rerun/import/live write authorized.",
+    "Variable fractional ISO timestamps were padded only for Python3.9 parser compatibility; valid source timestamps unchanged. Current peer/service/privacy/payment gates remain open."
+  ]
+}

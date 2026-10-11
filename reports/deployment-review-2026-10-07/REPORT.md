@@ -231,3 +231,6 @@ Extraction comparison checkpoint,11 October:93 complete source artifacts/1318 or
 
 
 Tuition/batch checkpoint,11 October: eighteen complete unchanged historical artifacts/292 lines (12 tuition JSON,5 ID files,1 run log). [Evidence](tuition-batch-artifact-review-2026-10-11.json) distinguishes internally correct arithmetic/204 batch counts from S10 current-source/year/round/programme/fee/counter/club/graduate-category acceptance.219 requested experiment schools exist in220 backup records with extra 94; the backup content is not yet fully read. No current school-data mutation/exposure, provider call or release acceptance is inferred.
+
+
+Removed-values checkpoint, 11 October: [two complete historical JSON artifacts/1127 lines](loss-backup-artifact-review-2026-10-11.json) distinguish 112 removals across 77 schools from proven regressions. Wrong school-level sources, absent/type-invalid citations, old event times and programme-specific fees require S10 classification before restoration; genuine omissions remain possible. The fifteen-school backup’s ten Cermat percentage calculations agree internally. Current served facts, source freshness, live exposure and the full 220-record backup are not certified by this check.

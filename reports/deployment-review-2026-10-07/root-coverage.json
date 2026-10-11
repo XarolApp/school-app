@@ -2138,19 +2138,19 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "fc1affce6152ce7c6b51abf31949b32a2ecf5c0d6dd4b3a85b01deb52ab6632b",
-    "lines": 1947,
+    "sha256": "8b27d40f801855f56ee21fc69efef3544724cfa95b3de7673fd1c0b7cc2df902",
+    "lines": 1952,
     "read_ranges": [
       [
         1,
-        1947
+        1952
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-11T17:05:46.278385+00:00",
-    "previous_complete_sha256": "c51e716010295f93e4d497458f472ea41b1da442981e144b496fc9688c88b03a",
-    "method": "Exact fully reviewed baseline plus complete own tuition/batch S10 append inspected.",
+    "checked_at_utc": "2026-10-11T17:15:49.839363+00:00",
+    "previous_complete_sha256": "fc1affce6152ce7c6b51abf31949b32a2ecf5c0d6dd4b3a85b01deb52ab6632b",
+    "method": "Exact fully reviewed baseline plus complete own S10 removed-values/backup append inspected.",
     "evidence": "motion-demo-verification-2026-10-11.json"
   },
   "frontend/src/api.js": {
@@ -10523,5 +10523,33 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-11T17:05:46.278385+00:00",
     "method": "Complete raw source JSON/ID/log read; historical values unchanged. Shape/count review, not current official fact/provider/production acceptance."
+  },
+  "reports/api-comparison/lost-values.json": {
+    "sha256": "3f52ee99e92dcffcb70a9042e674825dc5bbedb76ad3c53f17c543a25bda8ba7",
+    "lines": 674,
+    "read_ranges": [
+      [
+        1,
+        674
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T17:15:49.839363+00:00",
+    "method": "Complete raw source read and historical value/type/arithmetic review; original unchanged, no current official or production acceptance."
+  },
+  "reports/api-comparison/backup-before-real-run.json": {
+    "sha256": "237d9fb06e56b652a14e79c65983eb9ba6667d6e9530b8e569ffb28c99204076",
+    "lines": 453,
+    "read_ranges": [
+      [
+        1,
+        453
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T17:15:49.839363+00:00",
+    "method": "Complete raw source read and historical value/type/arithmetic review; original unchanged, no current official or production acceptance."
   }
 }
