@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-11T16:52:28.829702+00:00",
-  "commit": "7ddd22f294d42a6a4c4d6350f2120d51b9c4db27",
+  "checked_at_utc": "2026-10-11T17:00:49.656667+00:00",
+  "commit": "19d21c2977ae6526eb26a69d5aef8ed80d51541b",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "current_full_read": 656,
+    "current_full_read": 749,
     "binary_requires_asset_check": 105,
-    "pending_or_changed": 138,
-    "generated_or_audit_artifact": 194,
+    "pending_or_changed": 45,
+    "generated_or_audit_artifact": 195,
     "removed_or_missing": 2
   },
   "files": [
@@ -993,8 +993,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "5b9c1e5fab3e0e2336d1938aba7cc001d2e0da7df1bf8c38c13918ee4ac35d3c",
-      "lines": 1937,
+      "sha256": "c51e716010295f93e4d497458f472ea41b1da442981e144b496fc9688c88b03a",
+      "lines": 1942,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -5504,106 +5504,136 @@
       "path": "reports/api-comparison/filtered/104.json",
       "sha256": "48520665fcbc887413ed884f8b38909577b09184446a9f7500490f1f10fe4fb4",
       "lines": 24,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/filtered/111.json",
       "sha256": "e78194d22eadcfed83ee59d57b966c368ebdd9286367453144f7e2d6f3228311",
       "lines": 21,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/filtered/125.json",
       "sha256": "a011b5a4100afd3955247abf354d6ba047c0c9cff356aab1ba2598ab1f9c0444",
       "lines": 19,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/filtered/135.json",
       "sha256": "b614a973a95504dfd4d35bde99cf3ee73b68aba1e648a03b966baeb5128f9769",
       "lines": 26,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/filtered/146.json",
       "sha256": "c33ebb3aeb22a312d5dfde4eb05eb15c7da25e1aa9b897d08128127189f9654e",
       "lines": 25,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/filtered/170.json",
       "sha256": "3ae9041ab57c7dc8620cdee2fd7217875f1b7bc2905ccb349cb9505be2241fc0",
       "lines": 21,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/filtered/199.json",
       "sha256": "54292b15a68fa044f40860c424bed462315e425b77cda8f8ed8190ad9b323d55",
       "lines": 25,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/filtered/212.json",
       "sha256": "1dc13605e07344aa6f7285efd1458e5c47a0d54103fdcc99e28843a3b69d10a7",
       "lines": 20,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/filtered/23.json",
       "sha256": "528bf0b77cee55fa2223fcced25c3e9b6d15729ed4406ade7f1877af32f26454",
       "lines": 25,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/filtered/48.json",
       "sha256": "16cf3d1bb0e5330e1f4cb694b08a97af309179d37368a6ab6d5c30401242b84b",
       "lines": 20,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/filtered/60.json",
       "sha256": "5e5c21cf795ae577637f37cad712ae6b2bb6c8f5d8cab943337863598e52349c",
       "lines": 20,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/filtered/62.json",
       "sha256": "97b2a6a26ea390bbc12a74048a6473161fa3f6b8dfae839051698c02a25c2765",
       "lines": 25,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/filtered/8.json",
       "sha256": "c554d5c54ba405a611d8d06c72257228ec38c938812f3f671b4db41055b3a716",
       "lines": 23,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/filtered/9.json",
       "sha256": "059918dc7339494bea3e9b10b2b5b5fcae30d2fe3f82be3da1b2d6cc5936595d",
       "lines": 22,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/filtered/90.json",
       "sha256": "0185034229db8f3bec010c7e8a9961e34898301ff892be5fc6e2706adaead7c7",
       "lines": 16,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/lost-values.json",
@@ -5616,211 +5646,271 @@
       "path": "reports/api-comparison/orig-a/104.json",
       "sha256": "341efe376937f3a9f3ed0718c894977e6bfb2239733c9ea01744edd3e1927223",
       "lines": 25,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/orig-a/111.json",
       "sha256": "41ffa75f41802443e80b6d745427911a79e25fd0caf9716e0a438bff2f8ae349",
       "lines": 20,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/orig-a/125.json",
       "sha256": "5e1b5e5356dfaefd77e709c9e807410d75490ca51b119d77675d117372480668",
       "lines": 20,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/orig-a/135.json",
       "sha256": "f24b5920aec0fc233e5bec45104ea5e16d8b093c18657b7bb63cc3f3279c95f2",
       "lines": 22,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/orig-a/146.json",
       "sha256": "44e8f22596d81e6f01de44018261515f982fc1622678bf0da6eff2ee509c0e3c",
       "lines": 27,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/orig-a/170.json",
       "sha256": "0185034229db8f3bec010c7e8a9961e34898301ff892be5fc6e2706adaead7c7",
       "lines": 16,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/orig-a/199.json",
       "sha256": "5d8f597415c6e7a79fe5fae36e90e1b5476e96a80382b560d1a7a9477343486b",
       "lines": 25,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/orig-a/212.json",
       "sha256": "109ebb11a28068998c9db736dd7880c8a3cd45a27cf20a4fee7d17c0bc96bb77",
       "lines": 21,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/orig-a/23.json",
       "sha256": "2722aac77a52e5d1a7aed0a9f98c10df225314f33495d6b8132ff90c4371cc2a",
       "lines": 24,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/orig-a/48.json",
       "sha256": "0185034229db8f3bec010c7e8a9961e34898301ff892be5fc6e2706adaead7c7",
       "lines": 16,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/orig-a/60.json",
       "sha256": "3c563d714882bb4e4f6ae302420c1fec8ab4babb960811c2e8c7afe02713f23a",
       "lines": 19,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/orig-a/62.json",
       "sha256": "1d9df82a2c0fad515e05d74da6434b9b6643b9a6fcf4afb761395eed9e583ea3",
       "lines": 25,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/orig-a/8.json",
       "sha256": "0384240d1b76c64020ce7d2ffd377b42ba9d8ecd69c3daea20f9cdf8fb7e910f",
       "lines": 23,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/orig-a/9.json",
       "sha256": "02253d9b0742bd6ee079d87d0d3e571e9b1a493f2dd2c423a50e9f8e6b86bb93",
       "lines": 22,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/orig-a/90.json",
       "sha256": "0185034229db8f3bec010c7e8a9961e34898301ff892be5fc6e2706adaead7c7",
       "lines": 16,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/orig-b/104.json",
       "sha256": "e79a0ce22370d637b79ee0a4d89bfefb656a093bd8594ea2604847154bccdddc",
       "lines": 23,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/orig-b/111.json",
       "sha256": "36296b0b7f4ab96c22f22c42a38b6d8a4a9026c1f1e28befcac22ebf922ce15a",
       "lines": 20,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/orig-b/125.json",
       "sha256": "12480af72313ec438dce1541b562ee9d78558eedb9da6185724010c67b369ef0",
       "lines": 20,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/orig-b/135.json",
       "sha256": "65a59b437a05396ba210a28783f6f12f69a676d0848c0b9df6457627a1840ccb",
       "lines": 22,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/orig-b/146.json",
       "sha256": "d46f97421d872d143bfb7ee28f15071ad4c65f16070504bc8728d22b56f56582",
       "lines": 26,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/orig-b/170.json",
       "sha256": "0185034229db8f3bec010c7e8a9961e34898301ff892be5fc6e2706adaead7c7",
       "lines": 16,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/orig-b/199.json",
       "sha256": "3fb405ded745c713313ed8d8cd86e2a6cb7808668162ce8e1b87de1a1853ba75",
       "lines": 25,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/orig-b/212.json",
       "sha256": "e035f5800f9267b81a3270463e48745731e8b664bcba6b94816e8d55f44d2baa",
       "lines": 20,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/orig-b/23.json",
       "sha256": "0a6410431e3b1807125f454a8b397efc0bf3d78c91bd53d21e2f2e8710d8b55a",
       "lines": 25,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/orig-b/48.json",
       "sha256": "0185034229db8f3bec010c7e8a9961e34898301ff892be5fc6e2706adaead7c7",
       "lines": 16,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/orig-b/60.json",
       "sha256": "5b3317a28a375b9f293b08f4a52fa9cbeee08dd4815a75521698cda98d2a85da",
       "lines": 20,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/orig-b/62.json",
       "sha256": "e2cfae92d5aedeb3303c424580f892e5bc6318a5729ccfac4cc19e620ceaeef8",
       "lines": 25,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/orig-b/8.json",
       "sha256": "a96ce51e7f703fa41635ba64156cb33749161028aff02033390f103ad9df0bd0",
       "lines": 24,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/orig-b/9.json",
       "sha256": "42aa987b899ff08c4c6b9595e5a181c9a44f68d4279becf6c1c5bc9b9826a92b",
       "lines": 22,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/orig-b/90.json",
       "sha256": "e478e1ff1ff7a282bd15ce24daeff3384fc953f24c0be8f9ac404a6c4aead07a",
       "lines": 18,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/tuition-check/113.json",
@@ -6061,356 +6151,452 @@
       "path": "reports/codex-comparison/filtered/104.json",
       "sha256": "f87b731cbaecbc99a195b9e0ff6ba3701cb4e5dd744da100c49a997fc995954c",
       "lines": 16,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/filtered/111.json",
       "sha256": "f87b731cbaecbc99a195b9e0ff6ba3701cb4e5dd744da100c49a997fc995954c",
       "lines": 16,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/filtered/125.json",
       "sha256": "f87b731cbaecbc99a195b9e0ff6ba3701cb4e5dd744da100c49a997fc995954c",
       "lines": 16,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/filtered/135.json",
       "sha256": "f87b731cbaecbc99a195b9e0ff6ba3701cb4e5dd744da100c49a997fc995954c",
       "lines": 16,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/filtered/146.json",
       "sha256": "f87b731cbaecbc99a195b9e0ff6ba3701cb4e5dd744da100c49a997fc995954c",
       "lines": 16,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/filtered/170.json",
       "sha256": "7a78519d9ae604ce0a8fb9808abfd54d10a93a7d9afc0cfe762862f1d719783c",
       "lines": 21,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/filtered/199.json",
       "sha256": "3092251a44af36f45f9fdd1f1109681ce86bbf783f31f02380465baeffbf0ab8",
       "lines": 23,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/filtered/212.json",
       "sha256": "0845a0964a5c5ad618a2912b8a69cddc4d9176be5df2228354f36c3cef96ab3f",
       "lines": 21,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/filtered/23.json",
       "sha256": "f87b731cbaecbc99a195b9e0ff6ba3701cb4e5dd744da100c49a997fc995954c",
       "lines": 16,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/filtered/48.json",
       "sha256": "264e3b68117e4c69a5292ff815e69051383332b80ad8d5fba1c9db5a299fe646",
       "lines": 18,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/filtered/60.json",
       "sha256": "f87b731cbaecbc99a195b9e0ff6ba3701cb4e5dd744da100c49a997fc995954c",
       "lines": 16,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/filtered/62.json",
       "sha256": "f87b731cbaecbc99a195b9e0ff6ba3701cb4e5dd744da100c49a997fc995954c",
       "lines": 16,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/filtered/8.json",
       "sha256": "06b4dcbe04354a809d8e3eb5f73ac0fbfd3271bf45aed189d6a880bba1915f74",
       "lines": 23,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/filtered/9.json",
       "sha256": "cf70ff6e0c3d0a81347109bb2bb9c6f0eb103384e5c3851cdcb84d1ba147a98e",
       "lines": 18,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/filtered/90.json",
       "sha256": "f87b731cbaecbc99a195b9e0ff6ba3701cb4e5dd744da100c49a997fc995954c",
       "lines": 16,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/filtered/_done.txt",
       "sha256": "2ab3bf4d666c31f4a88ef8019fbe18bb63ce25eb3f6ff66199c250d5ae20a00f",
       "lines": 15,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-a/104.json",
       "sha256": "6514a992130635a07857ec90789f71194a631c4854ffba0858676df0ab0ce3b1",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-a/111.json",
       "sha256": "6514a992130635a07857ec90789f71194a631c4854ffba0858676df0ab0ce3b1",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-a/125.json",
       "sha256": "ac43105b9412a1c6b8177361ebeed6a55b914497b35fb39aa07c72ac9a4e6c3f",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-a/135.json",
       "sha256": "6514a992130635a07857ec90789f71194a631c4854ffba0858676df0ab0ce3b1",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-a/146.json",
       "sha256": "4dc0d441aa8bb4244f478bb19ad63a8a3c0b62604b9eea7db11ac1bf98de9d78",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-a/170.json",
       "sha256": "6514a992130635a07857ec90789f71194a631c4854ffba0858676df0ab0ce3b1",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-a/199.json",
       "sha256": "02f018cf6045681f7a2ac1f2a58475d9152c643c0527d4ae3aaf375bcd500ced",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-a/212.json",
       "sha256": "61019e4ba8ecbf9c3ab2b228e49ac2496e0280e79f7eda3ebc528c1d9484b8d8",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-a/23.json",
       "sha256": "ab2b5c8ce06b1d816e66f969cdad7b5f3a44b620d56d3a02499e4896c3c353d8",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-a/48.json",
       "sha256": "6514a992130635a07857ec90789f71194a631c4854ffba0858676df0ab0ce3b1",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-a/60.json",
       "sha256": "6514a992130635a07857ec90789f71194a631c4854ffba0858676df0ab0ce3b1",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-a/62.json",
       "sha256": "00f7dd68097e82e674094bd39bd8abfd237e5f17323e48112445faf76f070177",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-a/8.json",
       "sha256": "6514a992130635a07857ec90789f71194a631c4854ffba0858676df0ab0ce3b1",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-a/9.json",
       "sha256": "db52f76a80ace7553d876e4b88126b326bb0585eb1427dbf6f527d2d34124957",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-a/90.json",
       "sha256": "6514a992130635a07857ec90789f71194a631c4854ffba0858676df0ab0ce3b1",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-a/_done.txt",
       "sha256": "ce4c0b0a47fc11486379c789aef37c64530b695fc943080bd9e6179b0ced76cf",
       "lines": 15,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-b/104.json",
       "sha256": "ee745c5770957ed8a1287778356da73319cd94ea9d5707c1416530355ce86f0b",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-b/111.json",
       "sha256": "6514a992130635a07857ec90789f71194a631c4854ffba0858676df0ab0ce3b1",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-b/125.json",
       "sha256": "6514a992130635a07857ec90789f71194a631c4854ffba0858676df0ab0ce3b1",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-b/135.json",
       "sha256": "c14f44c3eaa0e0d363079adbcee83effde0353f077263188760f6a9212f06766",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-b/146.json",
       "sha256": "a3f7302ddd2763a8b0cd3cb819e3dc68370e6f3edde5b256e1522d6a8f7cd834",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-b/170.json",
       "sha256": "6514a992130635a07857ec90789f71194a631c4854ffba0858676df0ab0ce3b1",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-b/199.json",
       "sha256": "0047ca73b1b83da06c988f0a6c3a9e21723434bb1555bd8a6d2755f0c5b73315",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-b/212.json",
       "sha256": "6514a992130635a07857ec90789f71194a631c4854ffba0858676df0ab0ce3b1",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-b/23.json",
       "sha256": "3d406e5f447cb09d7e96fec7c343757f36f017daad8a0b6be482f8605772e822",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-b/48.json",
       "sha256": "6514a992130635a07857ec90789f71194a631c4854ffba0858676df0ab0ce3b1",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-b/60.json",
       "sha256": "6514a992130635a07857ec90789f71194a631c4854ffba0858676df0ab0ce3b1",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-b/62.json",
       "sha256": "8093d22cfefa6c94e6b9a3595305870ac16dd923f629273d2a9fc46901a77aee",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-b/8.json",
       "sha256": "06172fdb3889beb45e2be434966f9f026988bb8683548a703574792a834ab427",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-b/9.json",
       "sha256": "17d3c5d3ac8f196140af294b6fc4c86279140f678f5dc4fcdcc32d0a553684d4",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-b/90.json",
       "sha256": "6514a992130635a07857ec90789f71194a631c4854ffba0858676df0ab0ce3b1",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/orig-b/_done.txt",
       "sha256": "16e44999141c2db089c0147c6ac3193b6f79c66e709e2371b99d691687da78b6",
       "lines": 15,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "f12fcaad4cb326296d72ab8165fa22f72efa905e928e530aa5295c505301bc75",
-      "lines": 487,
+      "sha256": "9022dab3073930696cb42abed3914654d5850f8495a35b46a82bce6daf8c64e3",
+      "lines": 493,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "ad5d676197440e9f2c083e77816110e987613c33ca5cbba231c9d6ee558a300d",
-      "lines": 297,
+      "sha256": "ba17fb7f6754e84f0c7c5d21184ff306acb630442cdb9efd6f8edcb3deed3d89",
+      "lines": 300,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "9934bf472d6eebbc926f45e39d12c455edbe0eeefa6de0fb46c46dd4564b838a",
-      "lines": 227,
+      "sha256": "53d81daa46b600a5c6827ef497f3b221007b6775c104bbafb7a7136882c83197",
+      "lines": 230,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6723,6 +6909,13 @@
       "matching_evidence": []
     },
     {
+      "path": "reports/deployment-review-2026-10-07/comparison-data-artifact-review-2026-10-11.json",
+      "sha256": "c5d28ebb78eb4ca4ef2e4facc8542b14a18f4ee0a02e2d45b9b1a55dbd74764b",
+      "lines": 953,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/comparison-mixed-years-phone.png",
       "sha256": "5e3cb60abd4f274122c82a25e49e9c4e27aed74bf502a15e139587d32b2e4650",
       "lines": null,
@@ -6759,8 +6952,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "62f51cba174d5e7e41b58be3e00410bedd69bddddcde109e607e67b9dadc8509",
-      "lines": 584,
+      "sha256": "1428c82d3f04fbe8ff3551e8c9655e161651fa0a08bf95f9984510d100466538",
+      "lines": 587,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6773,7 +6966,7 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "feddb59e592aafa2a814b54e06b5f2f05616d4a2ffddb84fcec844144673c1e8",
+      "sha256": "dc145fc616643a64a250bd8a15d8503ac4b7ef6974f0919bdb55e972bd1e645e",
       "lines": 8995,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
@@ -8071,8 +8264,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "afe8a3c441417c2f56db7468e4542cda3bb5b4ab578707b6b555ce24bc640a4c",
-      "lines": 8973,
+      "sha256": "3f29e096ea6f7f6fd123e1d93be9375f29b0012d049261e7a8ffce858ef79de2",
+      "lines": 10275,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
