@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-11T16:15:43.207818+00:00",
-  "commit": "3e8625c50eab1edd9fa859f41a6c40eca344cfe8",
+  "checked_at_utc": "2026-10-11T16:20:54.006050+00:00",
+  "commit": "9a3c26fc22c2230102acf6e45bf61182a361f54f",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "current_full_read": 609,
+    "current_full_read": 614,
     "binary_requires_asset_check": 105,
-    "pending_or_changed": 185,
-    "generated_or_audit_artifact": 190,
+    "pending_or_changed": 180,
+    "generated_or_audit_artifact": 191,
     "removed_or_missing": 2
   },
   "files": [
@@ -993,8 +993,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "dc0ce4e5ffc97a5b7844d0504d7a1ae6d65f24c2dcd5dbceb32ebf3daa82586f",
-      "lines": 1917,
+      "sha256": "11f56ababfd9f0664b4994850823c60f90faf2cd039ef854468350dfc21a8021",
+      "lines": 1922,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -1877,36 +1877,46 @@
       "path": "design/paywall-desktop/Current.dc.html",
       "sha256": "dbd3d3878b69f37cfa76c4c71b8ce47706f94075f9df3955e4a5ba99f57e4a0f",
       "lines": 121,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/paywall-desktop/Discount.dc.html",
       "sha256": "75768f7bd0e3cd9f25410de9723a97a0328d6f6b68b6c6a2eb6cff70a24ac1b0",
       "lines": 125,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/paywall-desktop/Main.dc.html",
       "sha256": "11633dc4b40e24bcfbe365d7b3c646cfec9fd70984845ce918bf134f71f31420",
       "lines": 121,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/paywall-desktop/Mobile.dc.html",
       "sha256": "beefad28e391d31dadf78786bf991e99745febd57d7e808f9f264e8c411bbb57",
       "lines": 105,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/paywall-desktop/OptionB.dc.html",
       "sha256": "d3cee5a4ab0e272dbc6f26405c00f8f67349b58c0b7569b2c95b26285b1c14bc",
       "lines": 146,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/paywall-desktop/canvas.json",
@@ -6303,22 +6313,22 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "b2ff1b51a77929dc7f1b637f0420e5a8ef5ed283d7b8ada816641806967901e8",
-      "lines": 460,
+      "sha256": "acf36f746b55c4ad9cbb6bf8ead9394cfa373c8479d2df6d72c782f80cf1a6f8",
+      "lines": 466,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "b1a86ccb5b8a0699b61a6a14b2632cb19f381f8cca687a3facd1d659641adead",
-      "lines": 285,
+      "sha256": "92306c6114a57abe6f4f42e2b57e3c8306e07afccd76b95f103a11707844ec1e",
+      "lines": 288,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "85233eb94c9ce817efad6c2fbbbfa22e244594ff80a73f4b4545e3ca8fd02e3e",
-      "lines": 215,
+      "sha256": "e82034cd6dea09c213484f084aa4ff19a9898d7de59ca8c24759ce651440ac65",
+      "lines": 218,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6667,8 +6677,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "1428fb530b4b04d80df74d68a21fc11ba828287dc05d3f4305c7c7a6b1c95689",
-      "lines": 572,
+      "sha256": "9d43744a0df39097a13e0d500df67fc509a405e722d1fdebb366504974c248c0",
+      "lines": 575,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6681,7 +6691,7 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "45c4263f5a621ce1fe4185a6959050f4e12f5b3afa7653988c957332c38d0c8d",
+      "sha256": "6c0e921b28278a47c10ef6b9b064e9f14e439560902a818dd2fa5bb90117cfc8",
       "lines": 8873,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
@@ -7555,6 +7565,13 @@
       "matching_evidence": []
     },
     {
+      "path": "reports/deployment-review-2026-10-07/paywall-desktop-source-review-2026-10-11.json",
+      "sha256": "06330f6b62fbf55dac310387fd9094bf13de13316e59b507e53fe49bbeb011ce",
+      "lines": 63,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/peer-beta-fixes-2026-10-10.json",
       "sha256": "ef7d1144449f4566f4333d5e15cd04a90cb4e5c9badf6b1d0381bf3912c5ffb5",
       "lines": 117,
@@ -7951,8 +7968,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "375b388dfe1e7c3624dbd90cc750cb37460b38d71f430fab1a84e1a70a1dba47",
-      "lines": 8315,
+      "sha256": "c2a5068c8457d58f4d483a3a08c13c3beb7c276a41d1f3bec3164fe45bc656d7",
+      "lines": 8385,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },

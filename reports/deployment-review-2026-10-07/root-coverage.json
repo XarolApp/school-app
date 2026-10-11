@@ -2138,19 +2138,19 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "dc0ce4e5ffc97a5b7844d0504d7a1ae6d65f24c2dcd5dbceb32ebf3daa82586f",
-    "lines": 1917,
+    "sha256": "11f56ababfd9f0664b4994850823c60f90faf2cd039ef854468350dfc21a8021",
+    "lines": 1922,
     "read_ranges": [
       [
         1,
-        1917
+        1922
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-11T16:15:06.742199+00:00",
-    "previous_complete_sha256": "8b964b9d6ed12eaaa6ed5f949f852191d54d34d9a770391a5c80577eaf2ff161",
-    "method": "Exact saved complete UNFORGET baseline verified; full own C57/report append inspected.",
+    "checked_at_utc": "2026-10-11T16:20:53.374368+00:00",
+    "previous_complete_sha256": "dc0ce4e5ffc97a5b7844d0504d7a1ae6d65f24c2dcd5dbceb32ebf3daa82586f",
+    "method": "Exact saved complete baseline plus full own historical-paywall append inspected.",
     "evidence": "motion-demo-verification-2026-10-11.json"
   },
   "frontend/src/api.js": {
@@ -8311,5 +8311,75 @@
     "checked_at_utc": "2026-10-11T16:15:06.742199+00:00",
     "method": "Complete original48/62/318/402/93 lines read: short files/full matching MD in one bounded batch; completion1-105/106-210/211-318 and review1-100/101-202/203-303/304-402. Entire authored narrow diffs inspected.",
     "previous_complete_sha256": "34bb3af913829a694af435b67678fe5f7112ce0099eafbe28bd2cc023ba04f2b"
+  },
+  "design/paywall-desktop/Current.dc.html": {
+    "sha256": "dbd3d3878b69f37cfa76c4c71b8ce47706f94075f9df3955e4a5ba99f57e4a0f",
+    "lines": 121,
+    "read_ranges": [
+      [
+        1,
+        121
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:20:53.374368+00:00",
+    "method": "Complete Current/Main121 each, Discount125/Mobile105 and OptionB146 authored HTML/comment/style/attribute/SVG reads. Unchanged source; structural checks do not establish current product or browser/device acceptance."
+  },
+  "design/paywall-desktop/Discount.dc.html": {
+    "sha256": "75768f7bd0e3cd9f25410de9723a97a0328d6f6b68b6c6a2eb6cff70a24ac1b0",
+    "lines": 125,
+    "read_ranges": [
+      [
+        1,
+        125
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:20:53.374368+00:00",
+    "method": "Complete Current/Main121 each, Discount125/Mobile105 and OptionB146 authored HTML/comment/style/attribute/SVG reads. Unchanged source; structural checks do not establish current product or browser/device acceptance."
+  },
+  "design/paywall-desktop/Main.dc.html": {
+    "sha256": "11633dc4b40e24bcfbe365d7b3c646cfec9fd70984845ce918bf134f71f31420",
+    "lines": 121,
+    "read_ranges": [
+      [
+        1,
+        121
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:20:53.374368+00:00",
+    "method": "Complete Current/Main121 each, Discount125/Mobile105 and OptionB146 authored HTML/comment/style/attribute/SVG reads. Unchanged source; structural checks do not establish current product or browser/device acceptance."
+  },
+  "design/paywall-desktop/Mobile.dc.html": {
+    "sha256": "beefad28e391d31dadf78786bf991e99745febd57d7e808f9f264e8c411bbb57",
+    "lines": 105,
+    "read_ranges": [
+      [
+        1,
+        105
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:20:53.374368+00:00",
+    "method": "Complete Current/Main121 each, Discount125/Mobile105 and OptionB146 authored HTML/comment/style/attribute/SVG reads. Unchanged source; structural checks do not establish current product or browser/device acceptance."
+  },
+  "design/paywall-desktop/OptionB.dc.html": {
+    "sha256": "d3cee5a4ab0e272dbc6f26405c00f8f67349b58c0b7569b2c95b26285b1c14bc",
+    "lines": 146,
+    "read_ranges": [
+      [
+        1,
+        146
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:20:53.374368+00:00",
+    "method": "Complete Current/Main121 each, Discount125/Mobile105 and OptionB146 authored HTML/comment/style/attribute/SVG reads. Unchanged source; structural checks do not establish current product or browser/device acceptance."
   }
 }

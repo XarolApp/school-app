@@ -213,3 +213,6 @@ Historical-report reconciliation, 11 October: all three complete 7 October Claud
 
 
 Earlier-beta-report checkpoint, 11 October: five complete dated beta/simulation Markdown reports reconciled; blanket production schema reruns retired and historical consent/renewal/checklist/admin/test claims qualified. All 60 numeric table rows are unchanged and agree with stored JSON; equal exposure is correctly described as a uniform baseline. [Evidence](earlier-beta-report-verification-2026-10-11.json). **C57** adds matching-metric comparability work: the actual admin accepts an incompatible 217-school baseline, yielding synthetic −23 deltas solely from a 23-school scope removal. [Actual-source reproduction](ranking-baseline-2026-10-11.json). No scorer/runtime/provider changed; full review remains active.
+
+
+Desktop-paywall source checkpoint, 11 October: five unchanged complete historical specimens (618 lines, 50 SVGs) reviewed. All SVGs parse, but all five local support-script references are missing. [Evidence](paywall-desktop-source-review-2026-10-11.json) records C44 conditional reuse limits for runtime, monthly/season trial, old counts/access/storage, contractual calendar/daily/VAT copy, hypothetical discount/urgency, fixed-size/nonsemantic controls and fonts. No current frontend/runtime/source/policy changed; full review remains active.

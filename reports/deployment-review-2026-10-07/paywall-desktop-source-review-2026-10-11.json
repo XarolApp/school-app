@@ -1,0 +1,63 @@
+{
+  "checked_at_utc": "2026-10-11T16:20:53.374368+00:00",
+  "snapshot_commit": "9a3c26fc22c2230102acf6e45bf61182a361f54f",
+  "files": {
+    "design/paywall-desktop/Current.dc.html": {
+      "sha256": "dbd3d3878b69f37cfa76c4c71b8ce47706f94075f9df3955e4a5ba99f57e4a0f",
+      "lines": 121,
+      "inline_svg_count": 9,
+      "reference_script_exists": false,
+      "current_source_unchanged": true
+    },
+    "design/paywall-desktop/Discount.dc.html": {
+      "sha256": "75768f7bd0e3cd9f25410de9723a97a0328d6f6b68b6c6a2eb6cff70a24ac1b0",
+      "lines": 125,
+      "inline_svg_count": 8,
+      "reference_script_exists": false,
+      "current_source_unchanged": true
+    },
+    "design/paywall-desktop/Main.dc.html": {
+      "sha256": "11633dc4b40e24bcfbe365d7b3c646cfec9fd70984845ce918bf134f71f31420",
+      "lines": 121,
+      "inline_svg_count": 9,
+      "reference_script_exists": false,
+      "current_source_unchanged": true
+    },
+    "design/paywall-desktop/Mobile.dc.html": {
+      "sha256": "beefad28e391d31dadf78786bf991e99745febd57d7e808f9f264e8c411bbb57",
+      "lines": 105,
+      "inline_svg_count": 9,
+      "reference_script_exists": false,
+      "current_source_unchanged": true
+    },
+    "design/paywall-desktop/OptionB.dc.html": {
+      "sha256": "d3cee5a4ab0e272dbc6f26405c00f8f67349b58c0b7569b2c95b26285b1c14bc",
+      "lines": 146,
+      "inline_svg_count": 15,
+      "reference_script_exists": false,
+      "current_source_unchanged": true
+    }
+  },
+  "read_lines": 618,
+  "inline_svg_xml_parses": 50,
+  "current_frontend_imports": false,
+  "qualification": "Preserved historical visual proposals, including discount hypothesis; not implemented current checkout, billing terms, data/privacy promises or beta flow.",
+  "C44_reuse_items": [
+    "All five reference nonexistent local support.js. Restore a verified intended export/runtime mechanism before standalone use; do not blindly duplicate a library or claim current browser runtime acceptance.",
+    "Fixed1080/390 widths, div/span controls without interactive selection/payment/keyboard semantics, remote Google fonts and inline styling need current responsive primitives, self-hosting and device/focus verification before adoption.",
+    "All five place3-day trial on monthly; approved purchase trial belongs only to season, monthly bills immediately. Beta is free for feedback with zero card/Stripe/purchase-trial activity.",
+    "Old59-school/free-rich-catalogue/browser-only-answer promises conflict with current194-visible count, signed-in saved answers, disabled sharing and premium matrix. Preserve public view-only landing-dot detail.",
+    "End-of-March/daily2/3/8 price framing needs actual contractual calendar/versioned disclosure; preserve690/249 prices rather than guessing a new daily rate.",
+    "VAT/card-data non-storage text needs actual operator/processor facts; Stripe billing identifiers are stored, so do not copy an absolute non-storage claim.",
+    "Discount483 arithmetic equals690*.7 but static9:42/once-only30%offer is hypothetical; ONE_TIME_OFFER_ENABLED is false. No fake urgency or offer enabling is authorized.",
+    "Discount lacks the explicit no-charge draft note in the other four; retain beta preview/no-charge guarantee before adoption.",
+    "C38 accent-soft contrast remains explicitly after-beta deferred; no incidental brand-token change here."
+  ],
+  "verification_limits": [
+    "All50 inline SVGs parse; all five script references are missing, not a passed dependency check",
+    "Initial all-references-exist guard failed before any artifact/ledger mutation; explicit diagnostic confirmed missing file and this evidence records the limitation",
+    "No source, product, pricing, legal policy, provider, database or hosted operation changed",
+    "No actual browser/device/font acceptance claimed for this unchanged source batch",
+    "Historical specimen limits are conditional reuse debts, not demonstrated current shipped checkout defects"
+  ]
+}
