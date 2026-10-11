@@ -1,0 +1,447 @@
+{
+  "checked_at_utc": "2026-10-11T21:29:52.876816+00:00",
+  "commit_before": "e3aedd173133af2bae23a6ccb1fc8ebf97b01797",
+  "status": "Partial source-qualified checkpoint; exhaustive review remains active and three later logs remain pending.",
+  "later_log_progress": {
+    "original_sources": [
+      {
+        "path": "reports/structure-v3/dry-relaxed.txt",
+        "sha256": "d4088495e490655ab39648314c79fcc8fdde3e161622533a9cebc0aebb388aa2",
+        "lines": 6861
+      },
+      {
+        "path": "reports/structure-v3/real-run.txt",
+        "sha256": "198104e356c23c3b060623cbab3af2546b1cc7e36d52f4b7a09d8e4868a39a06",
+        "lines": 6850
+      },
+      {
+        "path": "reports/structure-v3/real-run-2.txt",
+        "sha256": "0ecb8a267e59aa89bfeca4f35ee4fc4679df45aaec4bf1766f62b1765a7d97b9",
+        "lines": 6871
+      }
+    ],
+    "method": "Exact original unique logical lines plus first-occurrence school context; repeats covered only by exact previously read content. No current full-read receipt until all chunks and repeated-context checks complete.",
+    "seed": "Previously complete 628-line dry-a plus all112 dry-b differences at52d9aa5; exact repeated-line mapping and first-occurrence school context are navigation aids.",
+    "new_unique_lines": 2379,
+    "chunks_total": 68,
+    "fully_read_chunks": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33
+    ],
+    "fully_read_unique_range": [
+      1,
+      1355
+    ],
+    "remaining_unique_lines": 1024,
+    "whole_log_receipts_added": false,
+    "repeated_context_checks": "Still pending; deduplication alone does not certify school-specific applicability or complete reading."
+  },
+  "public_read_only_checks": [
+    {
+      "school_id": 27,
+      "url": "https://school-app-production-be43.up.railway.app/api/schools/27",
+      "status": 200,
+      "fetched_at_utc": "2026-10-11T21:17:04.414671+00:00",
+      "sha256": "913a23ac7563c3c0d765dbc787808f65484ec0bb007d3ba543da959f1d67d7ed",
+      "name": "Střední škola knižní kultury s. r. o.",
+      "website": "http://www.sskk.cz/",
+      "selected_public_details": {
+        "model": "openai/gpt-6-luna",
+        "extracted_at": "2026-09-26T12:36:50.207+00:00",
+        "obedy_ubytovani": "Škola nemá vlastní ubytovací kapacity; studenti bydlí v pražských domovech mládeže. Uvedené ceny: dvoulůžkový pokoj obvykle kolem 1 600 Kč, třílůžkový kolem 1 500 Kč; lůžko v KDM kolem 1 400 Kč a v KDS kolem 1 100 Kč. Informace o ceně obědů zde není uvedena.",
+        "ma_jidelnu": true,
+        "ma_koleje": null,
+        "krouzky_aktivity": "Škola pořádá adaptační kurzy, jezdí na lyžařské a turistické kurzy, organizuje odborné praxe v knihkupectvích, knihovnách, nakladatelstvích a redakcích a pořádá exkurze. Zmíněn je také školní klub tvůrčího psaní a literární kritiky.",
+        "krouzky_kategorie": [
+          "sport",
+          "umeni_hudba_divadlo"
+        ],
+        "vyukovy_styl_detail": "Škola je humanitně zaměřená, s důrazem na literaturu, odborné předměty a praxi; absolventi zmiňují komorní prostředí a individuální přístup.",
+        "vyukovy_styl_tagy": [
+          "individualni_pristup"
+        ],
+        "source_urls": {
+          "vs_uplatneni": "https://www.sskk.cz/pro-uchazece/co-delaji-nasi-absolventi/",
+          "obedy_ubytovani": "https://www.sskk.cz/pro-uchazece/ubytovani-mimoprazskych-studentu/",
+          "krouzky_aktivity": "http://www.sskk.cz/",
+          "vyukovy_styl_detail": "https://www.sskk.cz/pro-uchazece/co-o-nas-rikaji-absolventi/",
+          "ma_dodatecne_pozadavky": "https://www.sskk.cz/vysledky-prijimacich-zkousek-4/",
+          "alternativni_pedagogika": "https://www.sskk.cz/pro-uchazece/co-o-nas-rikaji-absolventi/",
+          "pripijimaci_pozadavky_detail": "https://www.sskk.cz/vysledky-prijimacich-zkousek-4/"
+        }
+      }
+    },
+    {
+      "school_id": 67,
+      "url": "https://school-app-production-be43.up.railway.app/api/schools/67",
+      "status": 200,
+      "fetched_at_utc": "2026-10-11T21:17:04.701457+00:00",
+      "sha256": "13a5a3d00bae8c9bf15160359e54726fb743567642a85cfc6562b3c88254afc4",
+      "name": "Vyšší odborná škola grafická a Střední průmyslová škola grafická, Praha 1, Hellichova 22",
+      "website": "http://www.hellichovka.cz/",
+      "selected_public_details": {
+        "model": "openai/gpt-6-luna",
+        "extracted_at": "2026-09-26T12:38:18.036+00:00",
+        "obedy_ubytovani": "Škola uvádí možnosti ubytování ve více domovech mládeže v Praze; ubytování je nutné domluvit přímo s jejich vedením. O obědech text informace neuvádí.",
+        "ma_jidelnu": null,
+        "ma_koleje": null,
+        "krouzky_aktivity": "Text zmiňuje výstavu nejlepších studentských prací při dni otevřených dveří a přípravné výtvarné kurzy pro uchazeče; konkrétní kroužky neuvedeny.",
+        "krouzky_kategorie": [
+          "umeni_hudba_divadlo"
+        ],
+        "vyukovy_styl_detail": null,
+        "vyukovy_styl_tagy": [
+          "projektova_vyuka"
+        ],
+        "source_urls": {
+          "obedy_ubytovani": "https://www.hellichovka.cz/aktuality/moznosti-ubytovani-studentu-v-domovech-mladeze",
+          "skolne_poplatky": "http://www.hellichovka.cz/",
+          "krouzky_aktivity": "https://www.hellichovka.cz/aktuality/den-otevrenych-dveri-24-06-2026",
+          "ma_dodatecne_pozadavky": "https://www.hellichovka.cz/spsg/prijimaci-rizeni",
+          "pripijimaci_pozadavky_detail": "https://www.hellichovka.cz/spsg/prijimaci-rizeni"
+        }
+      }
+    },
+    {
+      "school_id": 99,
+      "url": "https://school-app-production-be43.up.railway.app/api/schools/99",
+      "status": 200,
+      "fetched_at_utc": "2026-10-11T21:23:33.043357+00:00",
+      "sha256": "2f64cfeeb8a3f7421850e354ce9b1c1650ad36375112aff89eeca1495d7ae904",
+      "name": "Střední odborné učiliště, Praha 4, Ohradní 57",
+      "website": "http://www.ohradni.cz/",
+      "selected_public_details": {
+        "model": "openai/gpt-6-luna",
+        "extracted_at": "2026-09-26T12:39:35.783+00:00",
+        "obedy_ubytovani": "Domov mládeže uvádí ubytování pouze pro plnoleté studenty, nástavbové studium, VOŠ a VŠ; dvoulůžkový pokoj stojí 3 970 Kč měsíčně za lůžko a třílůžkový 3 666 Kč měsíčně za lůžko. Informace o obědech nejsou uvedeny.",
+        "ma_jidelnu": null,
+        "ma_koleje": null,
+        "krouzky_aktivity": null,
+        "krouzky_kategorie": [
+          "technika_robotika_it"
+        ],
+        "vyukovy_styl_detail": "Praktická výuka probíhá ve školních dílnách i na pracovištích odborných firem; teoretickou výuku zajišťují vysokoškolsky vzdělaní aprobovaní učitelé.",
+        "vyukovy_styl_tagy": [
+          "praxe_dilny"
+        ],
+        "source_urls": {
+          "zacatek_hodin": "http://www.ohradni.cz/index.php/zkracene-kombinovane-studium/2-uncategorised/236-zahajeni-skolniho-roku-2026-27",
+          "obedy_ubytovani": "http://www.ohradni.cz/index.php/8-organizace-sou-ohradni-praha/105-ubytovani-hostu-a-dospelych-studentu",
+          "vyukovy_styl_detail": "http://www.ohradni.cz/index.php/uvodni-informace1"
+        }
+      }
+    },
+    {
+      "school_id": 103,
+      "url": "https://school-app-production-be43.up.railway.app/api/schools/103",
+      "status": 200,
+      "fetched_at_utc": "2026-10-11T21:23:33.348034+00:00",
+      "sha256": "93b91e23166db82c607f3d832ceb4e4a3985eb27e67d1ed6b99ba8ecc0ecbf33",
+      "name": "Škola Kavčí hory - Mateřská škola, Základní škola a Střední odborná škola služeb, Praha 4, K Sídlišti 840",
+      "website": "http://www.ksidlisti.cz/",
+      "selected_public_details": {
+        "model": "openai/gpt-6-luna",
+        "extracted_at": "2026-09-26T12:39:44.764+00:00",
+        "obedy_ubytovani": null,
+        "ma_jidelnu": null,
+        "ma_koleje": null,
+        "krouzky_aktivity": null,
+        "krouzky_kategorie": [
+          "sport",
+          "umeni_hudba_divadlo",
+          "veda_debata",
+          "technika_robotika_it"
+        ],
+        "vyukovy_styl_detail": null,
+        "vyukovy_styl_tagy": null,
+        "source_urls": {
+          "ma_dodatecne_pozadavky": "http://www.ksidlisti.cz/index.php?a=o-studiu/jednotna-prijimaci-zkouska",
+          "pripijimaci_pozadavky_detail": "http://www.ksidlisti.cz/index.php?a=o-studiu/jednotna-prijimaci-zkouska"
+        }
+      }
+    },
+    {
+      "school_id": 110,
+      "url": "https://school-app-production-be43.up.railway.app/api/schools/110",
+      "status": 200,
+      "fetched_at_utc": "2026-10-11T21:23:33.640890+00:00",
+      "sha256": "721d6df6a92995725d093d7e1b9a25149154e4000956259612271cb16fdd38ce",
+      "name": "Smíchovská střední škola, příspěvková organizace",
+      "website": "http://www.ssps.cz/",
+      "selected_public_details": {
+        "model": "openai/gpt-6-luna",
+        "extracted_at": "2026-09-26T12:40:00.193+00:00",
+        "obedy_ubytovani": null,
+        "ma_jidelnu": false,
+        "ma_koleje": null,
+        "krouzky_aktivity": "Škola nabízí mimoškolní aktivity a kluby; mezi konkrétně uvedenými aktivitami jsou robotika, 3D tisk, virtuální realita, kyberbezpečnost, podcastové studio a tvorba školního časopisu. Na stránce jsou také vyjmenovány kempy Webdays, Techdays, Hackdays Linux, Hackdays Crypto, Robodays a Blenderdays.",
+        "krouzky_kategorie": [
+          "technika_robotika_it"
+        ],
+        "vyukovy_styl_detail": "Škola popisuje progresivní přístup, aktualizované výukové plány, mezioborovou spolupráci a možnost volitelných předmětů i praktické výuky; konkrétní alternativní pedagogickou metodu nejmenuje.",
+        "vyukovy_styl_tagy": [
+          "praxe_dilny"
+        ],
+        "source_urls": {
+          "krouzky_aktivity": "http://www.ssps.cz/skola/pro-uchazece/",
+          "vyukovy_styl_detail": "http://www.ssps.cz/skola/pro-uchazece/",
+          "pripijimaci_pozadavky_detail": "https://ssps.cz/skola/pro-uchazece/prijimaci-rizeni/"
+        }
+      }
+    },
+    {
+      "school_id": 112,
+      "url": "https://school-app-production-be43.up.railway.app/api/schools/112",
+      "status": 200,
+      "fetched_at_utc": "2026-10-11T21:23:33.927543+00:00",
+      "sha256": "944f81d1c7a46b7c238865541a885e542fe7dc594052f2a7aa8c0301dcd96f20",
+      "name": "Střední odborné učiliště, Praha - Radotín",
+      "website": "http://www.klapice.cz/",
+      "selected_public_details": {
+        "model": "openai/gpt-6-luna",
+        "extracted_at": "2026-09-26T12:40:03.519+00:00",
+        "obedy_ubytovani": "Školní jídelna zajišťuje obědy; u oborů je uvedeno, že rodiče oběd hradí. Ubytování se v textu nezmiňuje.",
+        "ma_jidelnu": null,
+        "ma_koleje": null,
+        "krouzky_aktivity": "Škola pořádá sportovní aktivity a soutěže; uvádí například badminton, malý fotbal, nohejbal, volejbal a basketbal. Organizuje také lyžařský kurz a odborné exkurze.",
+        "krouzky_kategorie": [
+          "sport"
+        ],
+        "vyukovy_styl_detail": "Teoretická a praktická výuka se střídá v týdenních cyklech; odborný výcvik probíhá ve škole i na smluvních pracovištích. Výuka zpravidla začíná v 8:00.",
+        "vyukovy_styl_tagy": [
+          "praxe_dilny"
+        ],
+        "source_urls": {
+          "zacatek_hodin": "http://www.klapice.cz/pro-verejnost/dokumenty-skoly/skolni-rad",
+          "obedy_ubytovani": "http://www.klapice.cz/obory-vzdelavani/mechanik-opravar-motorovych-vozidel",
+          "krouzky_aktivity": "http://www.klapice.cz/zajemci-o-studium/vyhody-studia",
+          "vyukovy_styl_detail": "http://www.klapice.cz/pro-verejnost/dokumenty-skoly/skolni-rad",
+          "uplatneni_po_vyuceni": "http://www.klapice.cz/zajemci-o-studium/vyhody-studia",
+          "ma_dodatecne_pozadavky": "http://www.klapice.cz/component/content/article/vysledky-prijimacicho-rizeni-2-kolo?catid=2",
+          "pripijimaci_pozadavky_detail": "http://www.klapice.cz/component/content/article/vysledky-prijimacicho-rizeni-2-kolo?catid=2"
+        }
+      }
+    }
+  ],
+  "actual_current_pure_helper_probes": {
+    "source_path": "scripts/extract-school-details.js",
+    "source_sha256": "f2dec69c84c33edfa3df38ab1652f34547b5737a46d02c4faefbec192c0e89bb",
+    "method": "Evaluate exact pure helper excerpt only; do not require the script, execute main, load env, call AI or create a Supabase client.",
+    "cases": [
+      {
+        "school_id": 99,
+        "field": "krouzky_kategorie",
+        "input": "Robotel SMARTCLASS+ HOMEWORK ## Robotel SMARTCLASS+ HOMEWORK",
+        "kind": "activity",
+        "interpretation": "Product title alone creates a technical activity category; not an activity-domain proof.",
+        "result": {
+          "categories": [
+            "technika_robotika_it"
+          ],
+          "evidence": {
+            "technika_robotika_it": [
+              "Robotel SMARTCLASS+ HOMEWORK ## Robotel SMARTCLASS+ HOMEWORK"
+            ]
+          }
+        }
+      },
+      {
+        "school_id": 110,
+        "field": "ma_jidelnu",
+        "input": "* **další informace:** Pitný režim je zajištěn (stravování není zajištěno – přineste si prosím vlastní – během kempů také není možno opustit budovu školy).",
+        "kind": "dining",
+        "interpretation": "Camp-specific lack of meals is broadened to school-level denial; ordinary meal availability is not established by this input.",
+        "result": {
+          "value": false,
+          "quote": "* **další informace:** Pitný režim je zajištěn (stravování není zajištěno – přineste si prosím vlastní – během kempů také není možno opustit budovu školy)."
+        }
+      },
+      {
+        "school_id": 112,
+        "field": "ma_jidelnu",
+        "input": "Školní jídelna zajišťuje obědy; u oborů je uvedeno, že rodiče oběd hradí.",
+        "kind": "dining",
+        "interpretation": "A generic payment phrase about study programmes nulls a separate school-wide meal statement; current primary school pages confirm meals.",
+        "result": {
+          "value": null,
+          "quote": "u oborů je uvedeno, že rodiče oběd hradí.",
+          "reason": "lunch statement is limited to one school track/building"
+        }
+      }
+    ]
+  },
+  "source_qualified_findings": [
+    {
+      "school_id": 99,
+      "field": "krouzky_kategorie",
+      "status": "Current code/current value corroborated; actual extracurricular offering needs source reconciliation.",
+      "observation": "The robot prefix in Robotel SMARTCLASS+ HOMEWORK satisfies the deterministic technical-category rule despite the title alone naming no student activity. Current API has the technical category but null activity prose and no activity-field citation. Do not infer the school has no real technical clubs."
+    },
+    {
+      "school_id": 110,
+      "field": "ma_jidelnu",
+      "status": "Current code/current value corroborated; quoted source is event-specific, so school-wide false is unsupported by that evidence.",
+      "observation": "Current helper and API return false from camp-only absence of meals. The primary applicant-camp page still scopes the instruction to camps. Current ordinary lunch arrangements at both merged campuses need verification; neither true nor false should be guessed.",
+      "primary_url": "https://ssps.cz/skola/pro-uchazece/letni-skoly-kempy/",
+      "cached_context": "scripts/data/filtered-schools/110.md:1073,1144-1195"
+    },
+    {
+      "school_id": 112,
+      "field": "ma_jidelnu",
+      "status": "Current code/current null reproduced; primary school-wide lunch evidence confirms an omission.",
+      "observation": "Generic programme/payment wording nulls a separate canteen sentence. Current primary advantages page confirms onsite pupil lunches; reconcile the structured field and prose/source mapping using this broader source.",
+      "primary_url": "https://www.klapice.cz/zajemci-o-studium/vyhody-studia"
+    },
+    {
+      "school_id": 27,
+      "field": "ma_jidelnu/obedy_ubytovani/source_urls",
+      "status": "True is corroborated; do not flip the boolean based on an old delay notice.",
+      "observation": "Current official school meal page describes provision through a nearby building. Current served prose cites dorm information. Refresh the overview/citation if intended to cover current meal facts; old2022 registration-delay text alone is not availability evidence.",
+      "primary_url": "https://www.sskk.cz/o-skole/skolni-stravovani/"
+    },
+    {
+      "school_id": 67,
+      "field": "vyukovy_styl_tagy",
+      "status": "Historical applicability candidate; teacher-only misclassification not established.",
+      "observation": "Cached project source explicitly includes project-based teaching and pupils as well as teacher development; the funded project ended2022. Current project tag is present with null style prose. Verify current applicability and structured-field provenance. Current URL was inaccessible through web open.",
+      "primary_url": "https://www.hellichovka.cz/projekty/stredni-prumyslova-skola-graficka-prazske-sablony-ii",
+      "cached_context": "scripts/data/filtered-schools/67.md:1983-1989"
+    },
+    {
+      "school_id": 103,
+      "field": "krouzky_kategorie",
+      "status": "Audience/campus mapping candidate, not blanket false availability.",
+      "observation": "The old fallback mixes admissions lists and child-club headings; current API has four categories without activity prose/citation. The current primary table includes both primary-grade and15+ offerings. Validate each actual eligible audience rather than deleting all categories or assuming every category applies.",
+      "primary_url": "https://www.ksidlisti.cz/index.php?p=zajmove-vzdelavani-kategorie"
+    },
+    {
+      "school_ids": [
+        72,
+        75,
+        84,
+        93,
+        127,
+        132,
+        139,
+        151,
+        159
+      ],
+      "status": "Historical candidates; later runs/current exposure not certified.",
+      "observation": "Talent-exam preparation, curricular programme labels, lower-gymnazium activities, Ostrava campus data, girls-only dorms and old Erasmus/teacher job-shadowing need exact current eligible audience/programme/campus/year mapping."
+    },
+    {
+      "school_ids": [
+        79,
+        88,
+        106,
+        111,
+        147,
+        160,
+        162,
+        164,
+        165,
+        166
+      ],
+      "status": "Historical qualifier/freshness candidates; no current exposure or automatic correction inferred.",
+      "observation": "Retain age/diet/month/meal/dorm/year/temporary reconstruction and event qualifiers; staff/guardian refreshments are not proof of ordinary pupil lunches. Monetary/legal citations require exact current sources, not regex token presence."
+    }
+  ],
+  "activity_scope_question": "Pending founder response: include school trips/sports courses/optional classes, or extracurricular clubs only. Do not impose a broader/narrower policy without the answer. Product branding and other-school/admissions-only facts do not become activity evidence merely because of matching tokens.",
+  "historical_beta_screenshot_visual_checks": {
+    "files": {
+      "reports/beta-verification-2026-10-05/admin-desktop-closing.jpg": {
+        "sha256": "51dc03cfb12cc09c5d5e82945e5546cc07f0e6c22ef38981167aa2333cfd4f33",
+        "visual_read": "view_image high in two complete five-image batches"
+      },
+      "reports/beta-verification-2026-10-05/admin-desktop-matching.jpg": {
+        "sha256": "332271dfd32f1e8bc6e7194166fc4d3aa53926b26d2accf44852946d887aa10f",
+        "visual_read": "view_image high in two complete five-image batches"
+      },
+      "reports/beta-verification-2026-10-05/admin-desktop-overview.jpg": {
+        "sha256": "752cc78f94ee3e3f05652aa3acb0be1936a1deb22a39d19309897a13a91ab56d",
+        "visual_read": "view_image high in two complete five-image batches"
+      },
+      "reports/beta-verification-2026-10-05/admin-mobile-feedback.jpg": {
+        "sha256": "22562991f27492a383e4d928329427042fef437a72e97a55aeba7b275a4cfc66",
+        "visual_read": "view_image high in two complete five-image batches"
+      },
+      "reports/beta-verification-2026-10-05/admin-mobile-overview.jpg": {
+        "sha256": "ee755d69ecfd4603482196e4d7da079367324ecdcb777f03d058ce807181544b",
+        "visual_read": "view_image high in two complete five-image batches"
+      },
+      "reports/beta-verification-2026-10-05/checklist-complete.jpg": {
+        "sha256": "ec8029eb4f516bf4e98254cc2189565cb9518cde10f13eb5624cb48bd6a6a49e",
+        "visual_read": "view_image high in two complete five-image batches"
+      },
+      "reports/beta-verification-2026-10-05/mobile-closing-review.jpg": {
+        "sha256": "301040acedaad417b51cb8db55bb16b1688b85a6d1a8c96c5f886182b58db18c",
+        "visual_read": "view_image high in two complete five-image batches"
+      },
+      "reports/beta-verification-2026-10-05/mobile-screenshot-preview.jpg": {
+        "sha256": "ec9efc93ec59e50864a0d7948aad066d098969c008851ddd971f21e44816cae6",
+        "visual_read": "view_image high in two complete five-image batches"
+      },
+      "reports/beta-verification-2026-10-05/normal-admin-denied.jpg": {
+        "sha256": "ed34e567640426eaf8b224c4637fc8852b3b3ba89c84a7ac7fa5735e5ef8414c",
+        "visual_read": "view_image high in two complete five-image batches"
+      },
+      "reports/beta-verification-2026-10-05/private-profile-masked.jpg": {
+        "sha256": "a230fdaa3e46329ca58038f61785dd156e1aafb8b23ef0a16082a5fb2f1af743",
+        "visual_read": "view_image high in two complete five-image batches"
+      }
+    },
+    "notes": [
+      "Visible local test-tools footer and Místní tester/rodič/synthetic school labels make these dated offline fixtures; no live/current acceptance inferred.",
+      "Admin overview/matching/closing metrics, mobile horizontal tabs, feedback attachment preview/selector and profile masking, permission denial, task checklist and old native review controls inspected.",
+      "Historical ordinary trial label, old checklist/school limits/review styling and sharing affordances must not override current beta/consent/ninth-grade decisions. Existing reports are already qualified.",
+      "Masking one preview and rendering denial are narrow visual evidence, not complete metadata/DOM/network/access isolation or screenshot privacy acceptance."
+    ],
+    "status": "visual content inspected; runtime/current device acceptance remains separate"
+  },
+  "limits": [
+    "Six public school GETs only: no credentials, tester data, accounts, writes, model calls or billing. HTTP200 proves these sampled reads, not all service/auth/isolation behavior.",
+    "Pure exact helper excerpt evaluated without requiring the extraction script, main, dotenv, Supabase or provider. No current source or data mutated.",
+    "Ten additional5October local synthetic screenshot files visually inspected. Their old trial/counter/control/share states and403/masked previews are historical fixtures, not current cross-account/privacy/payment/device acceptance.66 of95 image paths still lack new visual inspection in these two latest asset passes; earlier creation-time checks remain separate.",
+    "Primary search/open results are scoped source evidence. No complete website/corpus read is claimed; inaccessible pages, exact current catalogue/source versions and later log context remain open.",
+    "No whole-log coverage receipt or exhaustive-review completion is claimed. Original three logs and all peer files remain unchanged."
+  ],
+  "handoff": [
+    "One owner claims extraction/validation, source freshness/provenance, affected school facts and downstream feature consumers before mutation. Coordinate active peer matching/special-needs/SQL ownership.",
+    "Resolve founder activity scope; preserve named versus generic/unknown/empty/negative distinctions and student/teacher/applicant/boarder/campus/programme/year audiences.",
+    "Add no-provider regressions for Robotel branding versus real robotics activities; camp-only meal denial versus ordinary provision; generic payment wording versus genuinely one-programme/campus meal restrictions; positive/negative conflicts, old dates, abbreviations and multiple campuses. Validate complete cleanStructureResult including verbatim model-quote escape paths, not helpers alone.",
+    "Build a diff for each currently served affected record using the correct primary school source and immutable source/prompt/model/validator fingerprints. Review later three logs and rank-impact changes. Correct only verified current eligible facts; do not blindly rerun/import historical results or overwrite reliable Cermat values.",
+    "Run reviewed offline fixtures/local API/UI checks and required migration/founder acceptance before controlled data promotion. Preserve archived choices and beta free-feedback/payment-preview policies. No paid/provider/live write is authorized by this checkpoint."
+  ]
+}

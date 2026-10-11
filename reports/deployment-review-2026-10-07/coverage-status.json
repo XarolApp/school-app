@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-11T17:44:10.486889+00:00",
-  "commit": "52d9aa5f0b59e489cde0da439b27d7cfa104c122",
+  "checked_at_utc": "2026-10-11T21:31:18.708695+00:00",
+  "commit": "e3aedd173133af2bae23a6ccb1fc8ebf97b01797",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
     "current_full_read": 771,
     "binary_requires_asset_check": 105,
     "pending_or_changed": 23,
-    "generated_or_audit_artifact": 199,
+    "generated_or_audit_artifact": 200,
     "removed_or_missing": 2
   },
   "files": [
@@ -993,8 +993,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "53aa9a9cc06a38e0ecf35d23e440ac6bd639751786d8cf2fc746a379f3042d85",
-      "lines": 1963,
+      "sha256": "e1dcfe5e039ccb49f70fae5b3a47e4194ecf640fefe6a0fc94b5e9bece2043e3",
+      "lines": 1970,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -6619,22 +6619,22 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "22daa7ff4386b89455c2abc6eac135f87a5d35bc35cb6c0bd18b0be02d5a0c3c",
-      "lines": 520,
+      "sha256": "9d21ab09c84fc90657cfe31ea95221f44e5f76deac8ec02e9c4e2a102c091676",
+      "lines": 526,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "06de777dca19eb5d6117d92db86611b5580201342da9128c8cb20c2b1bf81bc9",
-      "lines": 314,
+      "sha256": "2f2e66883412bb337726da0e5aefc5e4725042b90041e2e497b8841647b2a416",
+      "lines": 317,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "96965678aa39b68d8149c98ed7de1001c5b0bd55331a3ae3e15892a0d475004e",
-      "lines": 242,
+      "sha256": "5c629aa6f040a15fb34b84963205214f12c7534a32c0005474edbecb359bcb73",
+      "lines": 245,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6997,8 +6997,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "ed39de77c56c3429df2caf901f01606a0012ceaad104a3cf71f67b5987586bc6",
-      "lines": 603,
+      "sha256": "d14b58d7e3293025ce5ce259e6b8edef5629df291bb155af62971ec73ece8d94",
+      "lines": 608,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -7011,8 +7011,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "12cdaa7f44cabae12dfd83726f7b444f4b35d27cf51f29ce785208c58325fb50",
-      "lines": 9253,
+      "sha256": "6ee516a5c5eec69d855ddd2f3e4e2f09eb10c685a7ce6813305f01d619afa562",
+      "lines": 9267,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -8316,7 +8316,7 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "31340652751dd01ff3dfc6038d8b98ee1b82bd3c855a53b4f0a399bc63e286ed",
+      "sha256": "9bfc2d72c0d7af6bec6f3b956d6425367a89b6cab6519510832997b82c127b00",
       "lines": 10597,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
@@ -8509,6 +8509,13 @@
       "path": "reports/deployment-review-2026-10-07/setup-comment-verification-2026-10-10.json",
       "sha256": "ab840242708c3f35c96731ea6c8f4afe616fc9adcaa2846dc1d079679d85bc73",
       "lines": 42,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/structure-source-scope-checkpoint-2026-10-11.json",
+      "sha256": "7c9e61d9a683d040e8f0ee6538f6007a7992937849d8da3e9b034a18d94e6e2c",
+      "lines": 447,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },

@@ -2138,20 +2138,20 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "53aa9a9cc06a38e0ecf35d23e440ac6bd639751786d8cf2fc746a379f3042d85",
-    "lines": 1963,
+    "sha256": "e1dcfe5e039ccb49f70fae5b3a47e4194ecf640fefe6a0fc94b5e9bece2043e3",
+    "lines": 1970,
     "read_ranges": [
       [
         1,
-        1963
+        1970
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-11T17:43:27.348581+00:00",
-    "previous_complete_sha256": "ecb5d1dad0694e71f4ee7cd75b1d1b042351774982a4da801417b93c3c7fc9c2",
-    "method": "Exact fully reviewed baseline plus complete own asset/workbook/C58 factual append or status phrase inspected. No source/data/provider acceptance inferred.",
-    "evidence": "motion-demo-verification-2026-10-11.json"
+    "checked_at_utc": "2026-10-11T21:29:52.876816+00:00",
+    "previous_complete_sha256": "53aa9a9cc06a38e0ecf35d23e440ac6bd639751786d8cf2fc746a379f3042d85",
+    "method": "Exact fully reviewed baseline plus full own source-scope/partial-log factual append read; no whole-log receipt or current release acceptance inferred.",
+    "evidence": "structure-source-scope-checkpoint-2026-10-11.json"
   },
   "frontend/src/api.js": {
     "sha256": "a545cb179681a87378f41cf928cff50e1ae6c2e539c4bbacf373590af9f8ab8a",
