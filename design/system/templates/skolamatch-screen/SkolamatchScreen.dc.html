@@ -71,11 +71,14 @@
 class Component extends DCLogic {
   renderVals() {
     const n = this.props.resultCount ?? 24;
-    const plural = n >= 5 ? 'škol' : n === 1 ? 'školu' : 'školy';
+    const few = n >= 2 && n <= 4;
+    const plural = n === 1 ? 'školu' : few ? 'školy' : 'škol';
+    const subject = n === 1 ? 'škola' : few ? 'školy' : 'škol';
+    const verb = few ? 'odpovídají' : 'odpovídá';
     return {
       noop: () => {},
       showActionBar: this.props.showActionBar ?? true,
-      countLabel: n + ' ' + plural + ' odpovídá tvým filtrům',
+      countLabel: n + ' ' + subject + ' ' + verb + ' tvým filtrům',
       ctaLabel: 'Porovnat ' + n + ' ' + plural,
       matchProps: {
         criteria: [

@@ -2138,19 +2138,19 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "0615e677490c799e39bda366d9894b0f3aa6f3fb7a203354894bb2653a5d506c",
-    "lines": 1878,
+    "sha256": "3170e1810083f55bd41477074154731e85baa236201d1810286360b683d28641",
+    "lines": 1884,
     "read_ranges": [
       [
         1,
-        1878
+        1884
       ]
     ],
     "status": "complete",
     "reviewer": "root",
     "checked_at_utc": "2026-10-11T09:48:23.088865+00:00",
     "previous_complete_sha256": "81d981f6828cc9f26cf486d65dc35416490be7941d3036fd25e5bc8dd887adcb",
-    "method": "Previously complete exact HEAD version plus fully reviewed own narrow replacement and appended design cards/upload note; no other changes."
+    "method": "Previously complete exact HEAD version plus fully read own runtime/metadata append; no peer edits."
   },
   "frontend/src/api.js": {
     "sha256": "a545cb179681a87378f41cf928cff50e1ae6c2e539c4bbacf373590af9f8ab8a",
@@ -4833,17 +4833,19 @@
     "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
   },
   "design/system/templates/skolamatch-screen/SkolamatchScreen.dc.html": {
-    "status": "complete",
-    "sha256": "1346c1e2418d15be5f89a7c582ba47a2320cdf9f4270c2579be3ed8d1c3322d1",
-    "lines": 92,
+    "sha256": "a80794552aa32db6af383f6d6dabac3d5fdbf4aac81436f9f8c040e797418fe9",
+    "lines": 95,
     "read_ranges": [
       [
         1,
-        92
+        95
       ]
     ],
-    "reviewed_at_utc": "2026-10-10T11:05:38.437604+00:00",
-    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:13:04.427384+00:00",
+    "method": "Complete 1911-line support base in nine sequential bounded ranges; other two independently hashed byte-identical copies. Complete 36-line SVG mockup reread after combined-output truncation; second exact copy independently hashed. Complete 375-line adherence base in three ranges and exact archived copy. All manifest fields and all 141 token records pretty-printed in four complete groups; archived manifest complete five-field difference read. Full 94-line screen plus complete three-line addition/one-line replacement inspected.",
+    "evidence": "design-runtime-verification-2026-10-11.json"
   },
   "design/system/templates/skolamatch-screen/ds-base.js": {
     "status": "complete",
@@ -7526,5 +7528,140 @@
     "checked_at_utc": "2026-10-11T10:01:44.456338+00:00",
     "method": "19 complete card/thumbnail/SVG contents read; shape card repaired after 11-token truncation. Two uploaded documents reviewed by exact complete previously read cbc2d2c DESIGN source plus all 681/504 difference lines. All authored changes fully read; original frontmatter preserved. Current DESIGN already had full hash evidence and its single changed paragraph was read.",
     "evidence": "design-cards-upload-verification-2026-10-11.json"
+  },
+  "design/system/templates/skolamatch-screen/support.js": {
+    "sha256": "8fe7df74405f3c55f49b7249c74ea1397e65d07dea2b1bd3b4a489bec2e28cbe",
+    "lines": 1911,
+    "read_ranges": [
+      [
+        1,
+        1911
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:13:04.427384+00:00",
+    "method": "Complete 1911-line support base in nine sequential bounded ranges; other two independently hashed byte-identical copies. Complete 36-line SVG mockup reread after combined-output truncation; second exact copy independently hashed. Complete 375-line adherence base in three ranges and exact archived copy. All manifest fields and all 141 token records pretty-printed in four complete groups; archived manifest complete five-field difference read. Full 94-line screen plus complete three-line addition/one-line replacement inspected.",
+    "evidence": "design-runtime-verification-2026-10-11.json"
+  },
+  "design/archive/school-search-wireframe/support.js": {
+    "sha256": "8fe7df74405f3c55f49b7249c74ea1397e65d07dea2b1bd3b4a489bec2e28cbe",
+    "lines": 1911,
+    "read_ranges": [
+      [
+        1,
+        1911
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:13:04.427384+00:00",
+    "method": "Complete 1911-line support base in nine sequential bounded ranges; other two independently hashed byte-identical copies. Complete 36-line SVG mockup reread after combined-output truncation; second exact copy independently hashed. Complete 375-line adherence base in three ranges and exact archived copy. All manifest fields and all 141 token records pretty-printed in four complete groups; archived manifest complete five-field difference read. Full 94-line screen plus complete three-line addition/one-line replacement inspected.",
+    "evidence": "design-runtime-verification-2026-10-11.json"
+  },
+  "design/Logo Concepts Refinement Request/support.js": {
+    "sha256": "8fe7df74405f3c55f49b7249c74ea1397e65d07dea2b1bd3b4a489bec2e28cbe",
+    "lines": 1911,
+    "read_ranges": [
+      [
+        1,
+        1911
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:13:04.427384+00:00",
+    "method": "Complete 1911-line support base in nine sequential bounded ranges; other two independently hashed byte-identical copies. Complete 36-line SVG mockup reread after combined-output truncation; second exact copy independently hashed. Complete 375-line adherence base in three ranges and exact archived copy. All manifest fields and all 141 token records pretty-printed in four complete groups; archived manifest complete five-field difference read. Full 94-line screen plus complete three-line addition/one-line replacement inspected.",
+    "evidence": "design-runtime-verification-2026-10-11.json"
+  },
+  "design/to-das.mockup": {
+    "sha256": "f0118984cac51a8c5571d756ce67159a88cc002318d229fd7be218b67361cace",
+    "lines": 36,
+    "read_ranges": [
+      [
+        1,
+        36
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:13:04.427384+00:00",
+    "method": "Complete 1911-line support base in nine sequential bounded ranges; other two independently hashed byte-identical copies. Complete 36-line SVG mockup reread after combined-output truncation; second exact copy independently hashed. Complete 375-line adherence base in three ranges and exact archived copy. All manifest fields and all 141 token records pretty-printed in four complete groups; archived manifest complete five-field difference read. Full 94-line screen plus complete three-line addition/one-line replacement inspected.",
+    "evidence": "design-runtime-verification-2026-10-11.json"
+  },
+  "design/Logo Concepts Refinement Request/uploads/to-das.mockup": {
+    "sha256": "f0118984cac51a8c5571d756ce67159a88cc002318d229fd7be218b67361cace",
+    "lines": 36,
+    "read_ranges": [
+      [
+        1,
+        36
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:13:04.427384+00:00",
+    "method": "Complete 1911-line support base in nine sequential bounded ranges; other two independently hashed byte-identical copies. Complete 36-line SVG mockup reread after combined-output truncation; second exact copy independently hashed. Complete 375-line adherence base in three ranges and exact archived copy. All manifest fields and all 141 token records pretty-printed in four complete groups; archived manifest complete five-field difference read. Full 94-line screen plus complete three-line addition/one-line replacement inspected.",
+    "evidence": "design-runtime-verification-2026-10-11.json"
+  },
+  "design/system/_adherence.oxlintrc.json": {
+    "sha256": "cfb5d356205ab8fa929feb0b2101211bc4a30e6ca11532638538e3cd3265714f",
+    "lines": 375,
+    "read_ranges": [
+      [
+        1,
+        375
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:13:04.427384+00:00",
+    "method": "Complete 1911-line support base in nine sequential bounded ranges; other two independently hashed byte-identical copies. Complete 36-line SVG mockup reread after combined-output truncation; second exact copy independently hashed. Complete 375-line adherence base in three ranges and exact archived copy. All manifest fields and all 141 token records pretty-printed in four complete groups; archived manifest complete five-field difference read. Full 94-line screen plus complete three-line addition/one-line replacement inspected.",
+    "evidence": "design-runtime-verification-2026-10-11.json"
+  },
+  "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/_adherence.oxlintrc.json": {
+    "sha256": "cfb5d356205ab8fa929feb0b2101211bc4a30e6ca11532638538e3cd3265714f",
+    "lines": 375,
+    "read_ranges": [
+      [
+        1,
+        375
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:13:04.427384+00:00",
+    "method": "Complete 1911-line support base in nine sequential bounded ranges; other two independently hashed byte-identical copies. Complete 36-line SVG mockup reread after combined-output truncation; second exact copy independently hashed. Complete 375-line adherence base in three ranges and exact archived copy. All manifest fields and all 141 token records pretty-printed in four complete groups; archived manifest complete five-field difference read. Full 94-line screen plus complete three-line addition/one-line replacement inspected.",
+    "evidence": "design-runtime-verification-2026-10-11.json"
+  },
+  "design/system/_ds_manifest.json": {
+    "sha256": "43eafda2ebe78618410b346528df348bc3df4e373977ee2eefc9aed0870572e0",
+    "lines": 1,
+    "read_ranges": [
+      [
+        1,
+        1
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:13:04.427384+00:00",
+    "method": "Complete 1911-line support base in nine sequential bounded ranges; other two independently hashed byte-identical copies. Complete 36-line SVG mockup reread after combined-output truncation; second exact copy independently hashed. Complete 375-line adherence base in three ranges and exact archived copy. All manifest fields and all 141 token records pretty-printed in four complete groups; archived manifest complete five-field difference read. Full 94-line screen plus complete three-line addition/one-line replacement inspected.",
+    "evidence": "design-runtime-verification-2026-10-11.json"
+  },
+  "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/_ds_manifest.json": {
+    "sha256": "add5f30279d914f8687e5dd7581282bfebeb07e0462e82f4e3b67f4ed399794d",
+    "lines": 1,
+    "read_ranges": [
+      [
+        1,
+        1
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:13:04.427384+00:00",
+    "method": "Complete 1911-line support base in nine sequential bounded ranges; other two independently hashed byte-identical copies. Complete 36-line SVG mockup reread after combined-output truncation; second exact copy independently hashed. Complete 375-line adherence base in three ranges and exact archived copy. All manifest fields and all 141 token records pretty-printed in four complete groups; archived manifest complete five-field difference read. Full 94-line screen plus complete three-line addition/one-line replacement inspected.",
+    "evidence": "design-runtime-verification-2026-10-11.json"
   }
 }

@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-11T10:02:15.509866+00:00",
-  "commit": "73c930b7b149a54da7c63c7c46533be3d019a551",
+  "checked_at_utc": "2026-10-11T10:13:39.101495+00:00",
+  "commit": "85747ec9f1ef2c35b8d905825f833ddad43fc8ad",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "current_full_read": 557,
+    "current_full_read": 566,
     "binary_requires_asset_check": 105,
-    "pending_or_changed": 237,
-    "generated_or_audit_artifact": 181,
+    "pending_or_changed": 228,
+    "generated_or_audit_artifact": 183,
     "removed_or_missing": 2
   },
   "files": [
@@ -993,8 +993,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "0615e677490c799e39bda366d9894b0f3aa6f3fb7a203354894bb2653a5d506c",
-      "lines": 1878,
+      "sha256": "3170e1810083f55bd41477074154731e85baa236201d1810286360b683d28641",
+      "lines": 1884,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -1223,8 +1223,10 @@
       "path": "design/Logo Concepts Refinement Request/support.js",
       "sha256": "8fe7df74405f3c55f49b7249c74ea1397e65d07dea2b1bd3b4a489bec2e28cbe",
       "lines": 1911,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/Logo Concepts Refinement Request/uploads/DESIGN.md",
@@ -1246,8 +1248,10 @@
       "path": "design/Logo Concepts Refinement Request/uploads/to-das.mockup",
       "sha256": "f0118984cac51a8c5571d756ce67159a88cc002318d229fd7be218b67361cace",
       "lines": 36,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/archive/school-search-wireframe/.thumbnail",
@@ -1274,8 +1278,10 @@
       "path": "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/_adherence.oxlintrc.json",
       "sha256": "cfb5d356205ab8fa929feb0b2101211bc4a30e6ca11532638538e3cd3265714f",
       "lines": 375,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/_ds_bundle.js",
@@ -1290,8 +1296,10 @@
       "path": "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/_ds_manifest.json",
       "sha256": "add5f30279d914f8687e5dd7581282bfebeb07e0462e82f4e3b67f4ed399794d",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/readme.md",
@@ -1387,8 +1395,10 @@
       "path": "design/archive/school-search-wireframe/support.js",
       "sha256": "8fe7df74405f3c55f49b7249c74ea1397e65d07dea2b1bd3b4a489bec2e28cbe",
       "lines": 1911,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/archive/school-search-wireframe/uploads/RECIPES.md",
@@ -2136,8 +2146,10 @@
       "path": "design/system/_adherence.oxlintrc.json",
       "sha256": "cfb5d356205ab8fa929feb0b2101211bc4a30e6ca11532638538e3cd3265714f",
       "lines": 375,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/_ds_bundle.js",
@@ -2150,10 +2162,12 @@
     },
     {
       "path": "design/system/_ds_manifest.json",
-      "sha256": "a21ae7ce20f202c3347fda178bb91a507c846284c52f603cdb7439c8fb7a2273",
+      "sha256": "43eafda2ebe78618410b346528df348bc3df4e373977ee2eefc9aed0870572e0",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/components/core/Card.d.ts",
@@ -2587,8 +2601,8 @@
     },
     {
       "path": "design/system/templates/skolamatch-screen/SkolamatchScreen.dc.html",
-      "sha256": "1346c1e2418d15be5f89a7c582ba47a2320cdf9f4270c2579be3ed8d1c3322d1",
-      "lines": 92,
+      "sha256": "a80794552aa32db6af383f6d6dabac3d5fdbf4aac81436f9f8c040e797418fe9",
+      "lines": 95,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -2607,8 +2621,10 @@
       "path": "design/system/templates/skolamatch-screen/support.js",
       "sha256": "8fe7df74405f3c55f49b7249c74ea1397e65d07dea2b1bd3b4a489bec2e28cbe",
       "lines": 1911,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/thumbnail.html",
@@ -2803,8 +2819,10 @@
       "path": "design/to-das.mockup",
       "sha256": "f0118984cac51a8c5571d756ce67159a88cc002318d229fd7be218b67361cace",
       "lines": 36,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "docs/beta-school-email-draft.md",
@@ -6201,22 +6219,22 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "9a45f7343b290fe3d1a93440ce5bdf990516b5b3db145af8e472be4717d85352",
-      "lines": 418,
+      "sha256": "0af996e09197a5fcfd3fa37e4b9ef97943abd981c7b05701cb5ddf081defb604",
+      "lines": 422,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "549030d3a22bc7769ef46180f3afc5f55c06441f5ca19131219e7655627fc1b7",
-      "lines": 267,
+      "sha256": "93ea77e73ee3629db63512078c5e9569520c166188705b1a1b4c01a6069fa28d",
+      "lines": 270,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "839d0f4d4cf4ec0f6cadbf71f43ec925ec5f5226a743c1d79e7cddfdde811086",
-      "lines": 197,
+      "sha256": "e4710a9249f340727216090722c1d86ef6067db437bc7d21a4aa85e2a7e0d818",
+      "lines": 200,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6565,8 +6583,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "4515067b4d466d4291fe44a6be14d6c41809112d65e5bfddf73cc76537973721",
-      "lines": 548,
+      "sha256": "3230713fa2a98c09c733f2d2d0ee79a52b6a6eb8460f2b13bb54da7041021bbd",
+      "lines": 551,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6579,8 +6597,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "40d69f6f2f1d3dd894041ed17680eb8775d64778bcab2a04f8cf003c2ad01246",
-      "lines": 8704,
+      "sha256": "d50ad168c39035ebdefc17030cb7e030da2e62d1d7b58213e4b8501f03a64e63",
+      "lines": 8736,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6714,6 +6732,20 @@
       "path": "reports/deployment-review-2026-10-07/design-review-verification-2026-10-10.json",
       "sha256": "62741548aed28256bb1ce14e0e2e06dcffb73b97c94ba673f580a2da652c0f7f",
       "lines": 974,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/design-runtime-probe-2026-10-11.cjs",
+      "sha256": "7b7bdc83959f66019a827a593502c50d367ce749654de5a0b439172d65be352b",
+      "lines": 19,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/design-runtime-verification-2026-10-11.json",
+      "sha256": "023d3327c1f0b6f1db6281642c8406535e7619c8ea8378c98ae6021983087b58",
+      "lines": 429,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -7786,8 +7818,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "c2c3f9d4fa94b16ac5aa4fcd2d564ab8b4b17005cd1eb83f03ebc648f89d94b7",
-      "lines": 7530,
+      "sha256": "8fbabb96a91a64cf4d2c4e400f936dd0c8959810b4074644a29e2f0f2f36ea5d",
+      "lines": 7667,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },

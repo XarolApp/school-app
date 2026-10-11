@@ -1,0 +1,429 @@
+{
+  "checked_at_utc": "2026-10-11T10:13:04.427384+00:00",
+  "snapshot_commit": "85747ec9f1ef2c35b8d905825f833ddad43fc8ad",
+  "files": {
+    "design/system/templates/skolamatch-screen/support.js": {
+      "sha256": "8fe7df74405f3c55f49b7249c74ea1397e65d07dea2b1bd3b4a489bec2e28cbe",
+      "lines": 1911
+    },
+    "design/archive/school-search-wireframe/support.js": {
+      "sha256": "8fe7df74405f3c55f49b7249c74ea1397e65d07dea2b1bd3b4a489bec2e28cbe",
+      "lines": 1911
+    },
+    "design/Logo Concepts Refinement Request/support.js": {
+      "sha256": "8fe7df74405f3c55f49b7249c74ea1397e65d07dea2b1bd3b4a489bec2e28cbe",
+      "lines": 1911
+    },
+    "design/to-das.mockup": {
+      "sha256": "f0118984cac51a8c5571d756ce67159a88cc002318d229fd7be218b67361cace",
+      "lines": 36
+    },
+    "design/Logo Concepts Refinement Request/uploads/to-das.mockup": {
+      "sha256": "f0118984cac51a8c5571d756ce67159a88cc002318d229fd7be218b67361cace",
+      "lines": 36
+    },
+    "design/system/_adherence.oxlintrc.json": {
+      "sha256": "cfb5d356205ab8fa929feb0b2101211bc4a30e6ca11532638538e3cd3265714f",
+      "lines": 375
+    },
+    "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/_adherence.oxlintrc.json": {
+      "sha256": "cfb5d356205ab8fa929feb0b2101211bc4a30e6ca11532638538e3cd3265714f",
+      "lines": 375
+    },
+    "design/system/_ds_manifest.json": {
+      "sha256": "43eafda2ebe78618410b346528df348bc3df4e373977ee2eefc9aed0870572e0",
+      "lines": 1
+    },
+    "design/archive/school-search-wireframe/_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/_ds_manifest.json": {
+      "sha256": "add5f30279d914f8687e5dd7581282bfebeb07e0462e82f4e3b67f4ed399794d",
+      "lines": 1
+    },
+    "design/system/templates/skolamatch-screen/SkolamatchScreen.dc.html": {
+      "sha256": "a80794552aa32db6af383f6d6dabac3d5fdbf4aac81436f9f8c040e797418fe9",
+      "lines": 95
+    }
+  },
+  "read_method": "Complete 1911-line support base in nine sequential bounded ranges; other two independently hashed byte-identical copies. Complete 36-line SVG mockup reread after combined-output truncation; second exact copy independently hashed. Complete 375-line adherence base in three ranges and exact archived copy. All manifest fields and all 141 token records pretty-printed in four complete groups; archived manifest complete five-field difference read. Full original screen plus complete three-line addition/one-line replacement inspected.",
+  "probes": [
+    {
+      "kind": "expression",
+      "expr": "\"a==b\"",
+      "actual": true,
+      "expected": "a==b",
+      "pass": false
+    },
+    {
+      "kind": "expression",
+      "expr": "'x!==y'",
+      "actual": false,
+      "expected": "x!==y",
+      "pass": false
+    },
+    {
+      "kind": "expression",
+      "expr": "user.label == \"a==b\"",
+      "actual": false,
+      "expected": true,
+      "pass": false
+    },
+    {
+      "kind": "expression",
+      "expr": "user.answer === 2",
+      "actual": true,
+      "expected": true,
+      "pass": true
+    },
+    {
+      "kind": "expression",
+      "expr": "(user.answer === 2)",
+      "actual": true,
+      "expected": true,
+      "pass": true
+    },
+    {
+      "kind": "expression",
+      "expr": "!false",
+      "actual": true,
+      "expected": true,
+      "pass": true
+    },
+    {
+      "kind": "expression",
+      "expr": "null",
+      "actual": null,
+      "expected": null,
+      "pass": true
+    },
+    {
+      "kind": "css-semicolon",
+      "input": "background-image:url(\"data:image/svg+xml;base64,AAA\");color:red",
+      "actual": {
+        "backgroundImage": "url(\"data:image/svg+xml",
+        "color": "red"
+      },
+      "expected": {
+        "backgroundImage": "url(\"data:image/svg+xml;base64,AAA\")",
+        "color": "red"
+      }
+    },
+    {
+      "kind": "stream-stale",
+      "pass": true
+    },
+    {
+      "kind": "importantify-quoted-semicolon",
+      "pass": true
+    },
+    {
+      "kind": "count-before",
+      "n": 0,
+      "countLabel": "0 školy odpovídá tvým filtrům",
+      "ctaLabel": "Porovnat 0 školy",
+      "expected": [
+        "0 škol odpovídá tvým filtrům",
+        "Porovnat 0 škol"
+      ],
+      "pass": false
+    },
+    {
+      "kind": "count-before",
+      "n": 1,
+      "countLabel": "1 školu odpovídá tvým filtrům",
+      "ctaLabel": "Porovnat 1 školu",
+      "expected": [
+        "1 škola odpovídá tvým filtrům",
+        "Porovnat 1 školu"
+      ],
+      "pass": false
+    },
+    {
+      "kind": "count-before",
+      "n": 2,
+      "countLabel": "2 školy odpovídá tvým filtrům",
+      "ctaLabel": "Porovnat 2 školy",
+      "expected": [
+        "2 školy odpovídají tvým filtrům",
+        "Porovnat 2 školy"
+      ],
+      "pass": false
+    },
+    {
+      "kind": "count-before",
+      "n": 4,
+      "countLabel": "4 školy odpovídá tvým filtrům",
+      "ctaLabel": "Porovnat 4 školy",
+      "expected": [
+        "4 školy odpovídají tvým filtrům",
+        "Porovnat 4 školy"
+      ],
+      "pass": false
+    },
+    {
+      "kind": "count-before",
+      "n": 5,
+      "countLabel": "5 škol odpovídá tvým filtrům",
+      "ctaLabel": "Porovnat 5 škol",
+      "expected": [
+        "5 škol odpovídá tvým filtrům",
+        "Porovnat 5 škol"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "count-before",
+      "n": 24,
+      "countLabel": "24 škol odpovídá tvým filtrům",
+      "ctaLabel": "Porovnat 24 škol",
+      "expected": [
+        "24 škol odpovídá tvým filtrům",
+        "Porovnat 24 škol"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "count-after",
+      "n": 0,
+      "countLabel": "0 škol odpovídá tvým filtrům",
+      "ctaLabel": "Porovnat 0 škol",
+      "expected": [
+        "0 škol odpovídá tvým filtrům",
+        "Porovnat 0 škol"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "count-after",
+      "n": 1,
+      "countLabel": "1 škola odpovídá tvým filtrům",
+      "ctaLabel": "Porovnat 1 školu",
+      "expected": [
+        "1 škola odpovídá tvým filtrům",
+        "Porovnat 1 školu"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "count-after",
+      "n": 2,
+      "countLabel": "2 školy odpovídají tvým filtrům",
+      "ctaLabel": "Porovnat 2 školy",
+      "expected": [
+        "2 školy odpovídají tvým filtrům",
+        "Porovnat 2 školy"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "count-after",
+      "n": 4,
+      "countLabel": "4 školy odpovídají tvým filtrům",
+      "ctaLabel": "Porovnat 4 školy",
+      "expected": [
+        "4 školy odpovídají tvým filtrům",
+        "Porovnat 4 školy"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "count-after",
+      "n": 5,
+      "countLabel": "5 škol odpovídá tvým filtrům",
+      "ctaLabel": "Porovnat 5 škol",
+      "expected": [
+        "5 škol odpovídá tvým filtrům",
+        "Porovnat 5 škol"
+      ],
+      "pass": true
+    },
+    {
+      "kind": "count-after",
+      "n": 24,
+      "countLabel": "24 škol odpovídá tvým filtrům",
+      "ctaLabel": "Porovnat 24 škol",
+      "expected": [
+        "24 škol odpovídá tvým filtrům",
+        "Porovnat 24 škol"
+      ],
+      "pass": true
+    }
+  ],
+  "structural": {
+    "card_metadata": [
+      {
+        "path": "guidelines/brand-antipatterns.card.html",
+        "manifest": "700x200",
+        "source": "700x200",
+        "pass": true
+      },
+      {
+        "path": "guidelines/elevation.card.html",
+        "manifest": "700x180",
+        "source": "700x180",
+        "pass": true
+      },
+      {
+        "path": "guidelines/shape-radii.card.html",
+        "manifest": "700x150",
+        "source": "700x150",
+        "pass": true
+      },
+      {
+        "path": "guidelines/colors-dark.card.html",
+        "manifest": "700x150",
+        "source": "700x150",
+        "pass": true
+      },
+      {
+        "path": "guidelines/colors-ink.card.html",
+        "manifest": "700x150",
+        "source": "700x150",
+        "pass": true
+      },
+      {
+        "path": "guidelines/colors-neutrals.card.html",
+        "manifest": "700x150",
+        "source": "700x150",
+        "pass": true
+      },
+      {
+        "path": "guidelines/colors-primary.card.html",
+        "manifest": "700x150",
+        "source": "700x150",
+        "pass": true
+      },
+      {
+        "path": "guidelines/colors-semantic.card.html",
+        "manifest": "700x150",
+        "source": "700x150",
+        "pass": true
+      },
+      {
+        "path": "components/core/core.card.html",
+        "manifest": "700x380",
+        "source": "700x380",
+        "pass": true
+      },
+      {
+        "path": "components/forms/forms.card.html",
+        "manifest": "700x400",
+        "source": "700x400",
+        "pass": true
+      },
+      {
+        "path": "guidelines/spacing-density.card.html",
+        "manifest": "700x220",
+        "source": "700x220",
+        "pass": true
+      },
+      {
+        "path": "guidelines/spacing-layout.card.html",
+        "manifest": "700x180",
+        "source": "700x180",
+        "pass": true
+      },
+      {
+        "path": "guidelines/spacing-scale.card.html",
+        "manifest": "700x240",
+        "source": "700x240",
+        "pass": true
+      },
+      {
+        "path": "ui_kits/skolamatch/index.html",
+        "manifest": "1280x820",
+        "source": "1280x820",
+        "pass": true
+      },
+      {
+        "path": "guidelines/type-body.card.html",
+        "manifest": "700x200",
+        "source": "700x200",
+        "pass": true
+      },
+      {
+        "path": "guidelines/type-data.card.html",
+        "manifest": "700x170",
+        "source": "700x170",
+        "pass": true
+      },
+      {
+        "path": "guidelines/type-display.card.html",
+        "manifest": "700x150",
+        "source": "700x150",
+        "pass": true
+      },
+      {
+        "path": "guidelines/type-headlines.card.html",
+        "manifest": "700x220",
+        "source": "700x220",
+        "pass": true
+      },
+      {
+        "path": "guidelines/type-labels.card.html",
+        "manifest": "700x150",
+        "source": "700x150",
+        "pass": true
+      }
+    ],
+    "missing_paths": [],
+    "template_and_css_paths_exist": true
+  },
+  "archive_manifest_missing_paths": [
+    "components/core/Card.jsx",
+    "components/core/Chip.jsx",
+    "components/core/Divider.jsx",
+    "components/core/MatchIndicator.jsx",
+    "components/core/Tooltip.jsx",
+    "components/forms/Button.jsx",
+    "components/forms/Checkbox.jsx",
+    "components/forms/Input.jsx",
+    "components/forms/OptionRow.jsx",
+    "guidelines/brand-antipatterns.card.html",
+    "guidelines/elevation.card.html",
+    "guidelines/shape-radii.card.html",
+    "guidelines/colors-dark.card.html",
+    "guidelines/colors-ink.card.html",
+    "guidelines/colors-neutrals.card.html",
+    "guidelines/colors-primary.card.html",
+    "guidelines/colors-semantic.card.html",
+    "components/core/core.card.html",
+    "components/forms/forms.card.html",
+    "guidelines/spacing-density.card.html",
+    "guidelines/spacing-layout.card.html",
+    "guidelines/spacing-scale.card.html",
+    "ui_kits/skolamatch/index.html",
+    "guidelines/type-body.card.html",
+    "guidelines/type-data.card.html",
+    "guidelines/type-display.card.html",
+    "guidelines/type-headlines.card.html",
+    "guidelines/type-labels.card.html",
+    "templates/skolamatch-screen/SkolamatchScreen.dc.html"
+  ],
+  "checks": {
+    "support_syntax": "node --check passes all three exact copies",
+    "current_card_metadata_parity": true,
+    "actual_count_vm": "Four pre-fix string cases fail; all six after cases pass",
+    "actual_browser": "Same actual support/template and exact previously reviewed DS bundle, supplied installed React 19 development build offline. All six counts 0/1/2/4/5/24 and CTA strings pass, components rendered. This does not test the runtime CDN React 18/Babel/SRI branches.",
+    "mockup": "Both SVG files parse as XML with 27 path elements; byte-identical base rendered at 240px. The to dáš! asset is a supplied reference, not evidence of rights to republish it.",
+    "adherence": "Installed oxlint1.76.0 rejects configuration: unknown field x-omelette. Current frontend does not use this config; exporter metadata/tool-adoption task only.",
+    "fixture_repairs": "Initial bundler define option unsupported; removed it and rebuilt without warnings. Initial local fixture omitted DS bundle; actual error recorded, exact reviewed bundle copied, then full component rendering passed. Attempted archive card parity prevalidation found absent cards and wrote nothing; existing archive has29 missing declared paths."
+  },
+  "fixes": [
+    "Historical sample labels use nominative count subject and matching plural verb; CTA retains accusative, zero gets skol genitive.",
+    "Current manifest two card crop heights synchronized to actual checked source; all other fields unchanged. Archived manifest left historical, not silently rebuilt."
+  ],
+  "deferred_C44": [
+    "Generated expression parser treats equality operators inside quoted strings as operators: a==b literal becomes boolean; comparison against that literal fails.",
+    "cssToObj splits quoted/data-URI semicolons and truncates background-image values.",
+    "Recover upstream dc-runtime source or agree reproducible vendor patch/build before changes to three bundles and embedded copies.",
+    "Streaming shimmer has no reduced-motion rule in BASE_CSS; verify preferences and print behaviors before reuse.",
+    "Generated adherence metadata/native-event/input props and color-alias kinds need actual consumer/tool compatibility verification.",
+    "Keep trusted-template/runtime execution boundary and pinned CDN/integrity acceptance separate; no current application vulnerability asserted.",
+    "Historical sample figures/dates/deadline/provider/storage/payment claims must be verified or visibly illustrative before publication."
+  ],
+  "limitations": [
+    "No current app access/privacy/payment/schema/provider change or full-project beta approval.",
+    "Archive manifest missing source/specimen paths may be intentional reduced bundle; do not present it as a complete source-export package.",
+    "Current peer matching/special-needs/schema source remains deferred pending ownership reply."
+  ],
+  "reproduction": "Committed probe pins its pre-fix template to85747ec9f1ef2c35b8d905825f833ddad43fc8ad and reads current after source; no hosted requests."
+}
