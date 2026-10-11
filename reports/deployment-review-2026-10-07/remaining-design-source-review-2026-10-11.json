@@ -1,0 +1,493 @@
+{
+  "checked_at_utc": "2026-10-11T16:45:54.711741+00:00",
+  "snapshot_commit": "0e7facc22335b17a550e24bfb67195ec475e85af",
+  "files": {
+    "design/Logo Concepts Refinement Request/Logo Concepts.dc.html": {
+      "sha256": "ea28cacbaa3a79cbcd149820779ace5629181b46148677d2328e008361ad90e4",
+      "lines": 541,
+      "svg_count": 3,
+      "local_references": [
+        {
+          "reference": "./support.js",
+          "exists": true
+        }
+      ],
+      "source_edited": true,
+      "html_attributes_styles_svg_preserved": true,
+      "original_sha256": "23bdd4ce7848e4836de1b7eb6b7a9814ccde069f37bff54101476e39d6aa258f",
+      "method": "Complete bounded source read; two certain-copy fixes additionally covered by the complete guarded diff",
+      "read_ranges": [
+        [
+          1,
+          541
+        ]
+      ]
+    },
+    "design/Logo Concepts Refinement Request/Mark.dc.html": {
+      "sha256": "0d75a1dd2bf7110f4fc4dd643b25e19d708aa3cc2d81d764865e0b8372cb7891",
+      "lines": 87,
+      "svg_count": 1,
+      "local_references": [
+        {
+          "reference": "./support.js",
+          "exists": true
+        }
+      ],
+      "source_edited": false,
+      "html_attributes_styles_svg_preserved": null,
+      "original_sha256": "0d75a1dd2bf7110f4fc4dd643b25e19d708aa3cc2d81d764865e0b8372cb7891",
+      "method": "Complete bounded source read; two certain-copy fixes additionally covered by the complete guarded diff",
+      "read_ranges": [
+        [
+          1,
+          87
+        ]
+      ]
+    },
+    "design/archive/school-search-wireframe/Landing Page Wireframe.dc.html": {
+      "sha256": "84109954cce5e233ee1b97fa7ecced641415daf654fcda3401cf5441fc4cbead",
+      "lines": 607,
+      "svg_count": 0,
+      "local_references": [
+        {
+          "reference": "./support.js",
+          "exists": true
+        },
+        {
+          "reference": "_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/fonts.css",
+          "exists": true
+        },
+        {
+          "reference": "_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/colors.css",
+          "exists": true
+        },
+        {
+          "reference": "_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/typography.css",
+          "exists": true
+        },
+        {
+          "reference": "_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/spacing.css",
+          "exists": true
+        },
+        {
+          "reference": "_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/shape.css",
+          "exists": true
+        },
+        {
+          "reference": "_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/elevation.css",
+          "exists": true
+        },
+        {
+          "reference": "_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/motion.css",
+          "exists": true
+        },
+        {
+          "reference": "_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/base.css",
+          "exists": true
+        },
+        {
+          "reference": "_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/styles.css",
+          "exists": true
+        },
+        {
+          "reference": "_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/_ds_bundle.js",
+          "exists": true
+        }
+      ],
+      "source_edited": false,
+      "html_attributes_styles_svg_preserved": null,
+      "original_sha256": "84109954cce5e233ee1b97fa7ecced641415daf654fcda3401cf5441fc4cbead",
+      "method": "Complete bounded source read; two certain-copy fixes additionally covered by the complete guarded diff",
+      "read_ranges": [
+        [
+          1,
+          607
+        ]
+      ]
+    },
+    "design/archive/school-search-wireframe/School Search.dc.html": {
+      "sha256": "e0a844d51f3fc773a93cd145b524687fba0680d7ca267e8105d457e4ddfdfef9",
+      "lines": 570,
+      "svg_count": 0,
+      "local_references": [
+        {
+          "reference": "./support.js",
+          "exists": true
+        },
+        {
+          "reference": "_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/fonts.css",
+          "exists": true
+        },
+        {
+          "reference": "_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/colors.css",
+          "exists": true
+        },
+        {
+          "reference": "_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/typography.css",
+          "exists": true
+        },
+        {
+          "reference": "_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/spacing.css",
+          "exists": true
+        },
+        {
+          "reference": "_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/shape.css",
+          "exists": true
+        },
+        {
+          "reference": "_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/elevation.css",
+          "exists": true
+        },
+        {
+          "reference": "_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/motion.css",
+          "exists": true
+        },
+        {
+          "reference": "_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/tokens/base.css",
+          "exists": true
+        },
+        {
+          "reference": "_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/styles.css",
+          "exists": true
+        },
+        {
+          "reference": "_ds/kola-match-system-design-new-90cf52f9-c879-49f7-a4a5-674be5167df8/_ds_bundle.js",
+          "exists": true
+        }
+      ],
+      "source_edited": true,
+      "html_attributes_styles_svg_preserved": true,
+      "original_sha256": "90d2e3c8740d028d1286ca83026a7f46349b5ab2a6f59a69771b5f5f7b22407a",
+      "method": "Complete bounded source read; two certain-copy fixes additionally covered by the complete guarded diff",
+      "read_ranges": [
+        [
+          1,
+          570
+        ]
+      ]
+    },
+    "design/school-page/Main.dc.html": {
+      "sha256": "5470c44aceab8bae9d1752254201b165a9f26c9f416e06c497a806b990e35dfc",
+      "lines": 328,
+      "svg_count": 3,
+      "local_references": [
+        {
+          "reference": "./support.js",
+          "exists": false
+        }
+      ],
+      "source_edited": false,
+      "html_attributes_styles_svg_preserved": null,
+      "original_sha256": "5470c44aceab8bae9d1752254201b165a9f26c9f416e06c497a806b990e35dfc",
+      "method": "Complete bounded source read; two certain-copy fixes additionally covered by the complete guarded diff",
+      "read_ranges": [
+        [
+          1,
+          328
+        ]
+      ]
+    },
+    "design/school-page/Mobil.dc.html": {
+      "sha256": "36a14742c9d84acf6f6e77188fbbe16c216a800ce275b07bfb28faef27804cc6",
+      "lines": 156,
+      "svg_count": 3,
+      "local_references": [
+        {
+          "reference": "./support.js",
+          "exists": false
+        }
+      ],
+      "source_edited": false,
+      "html_attributes_styles_svg_preserved": null,
+      "original_sha256": "36a14742c9d84acf6f6e77188fbbe16c216a800ce275b07bfb28faef27804cc6",
+      "method": "Complete bounded source read; two certain-copy fixes additionally covered by the complete guarded diff",
+      "read_ranges": [
+        [
+          1,
+          156
+        ]
+      ]
+    },
+    "design/school-page/Recenze.dc.html": {
+      "sha256": "7ffb9a6309b858b8a5d2647a8f5556dd4ecbf876dcb6e2d0680298e8c8a39d38",
+      "lines": 126,
+      "svg_count": 2,
+      "local_references": [
+        {
+          "reference": "./support.js",
+          "exists": false
+        }
+      ],
+      "source_edited": false,
+      "html_attributes_styles_svg_preserved": null,
+      "original_sha256": "7ffb9a6309b858b8a5d2647a8f5556dd4ecbf876dcb6e2d0680298e8c8a39d38",
+      "method": "Complete bounded source read; two certain-copy fixes additionally covered by the complete guarded diff",
+      "read_ranges": [
+        [
+          1,
+          126
+        ]
+      ]
+    },
+    "design/search-redesign/FiltryMobil.dc.html": {
+      "sha256": "b6b3fbce325a05332640d7a44ee574af68908c7050241020331d36ea466706ba",
+      "lines": 167,
+      "svg_count": 9,
+      "local_references": [
+        {
+          "reference": "./support.js",
+          "exists": false
+        }
+      ],
+      "source_edited": false,
+      "html_attributes_styles_svg_preserved": null,
+      "original_sha256": "b6b3fbce325a05332640d7a44ee574af68908c7050241020331d36ea466706ba",
+      "method": "Complete bounded source read; two certain-copy fixes additionally covered by the complete guarded diff",
+      "read_ranges": [
+        [
+          1,
+          167
+        ]
+      ]
+    },
+    "design/search-redesign/Main.dc.html": {
+      "sha256": "997db2c62105f8795e8b6c358f0bc7d2d63faba51c70f3ad8f5d20748306ad6e",
+      "lines": 331,
+      "svg_count": 13,
+      "local_references": [
+        {
+          "reference": "./support.js",
+          "exists": false
+        }
+      ],
+      "source_edited": false,
+      "html_attributes_styles_svg_preserved": null,
+      "original_sha256": "997db2c62105f8795e8b6c358f0bc7d2d63faba51c70f3ad8f5d20748306ad6e",
+      "method": "Complete bounded source read; two certain-copy fixes additionally covered by the complete guarded diff",
+      "read_ranges": [
+        [
+          1,
+          331
+        ]
+      ]
+    },
+    "design/search-redesign/MapaDesktop.dc.html": {
+      "sha256": "bb2431c8e8391bc053b6186a08db98f9d15cfe80907d03f6b981835c829a3e35",
+      "lines": 160,
+      "svg_count": 1,
+      "local_references": [
+        {
+          "reference": "./support.js",
+          "exists": false
+        }
+      ],
+      "source_edited": false,
+      "html_attributes_styles_svg_preserved": null,
+      "original_sha256": "bb2431c8e8391bc053b6186a08db98f9d15cfe80907d03f6b981835c829a3e35",
+      "method": "Complete bounded source read; two certain-copy fixes additionally covered by the complete guarded diff",
+      "read_ranges": [
+        [
+          1,
+          160
+        ]
+      ]
+    },
+    "design/search-redesign/MapaMobil.dc.html": {
+      "sha256": "eec89e92b9ee8a485ec0a0b44452c8fc3ff30193a284009c35cbb15ea5992518",
+      "lines": 123,
+      "svg_count": 1,
+      "local_references": [
+        {
+          "reference": "./support.js",
+          "exists": false
+        }
+      ],
+      "source_edited": false,
+      "html_attributes_styles_svg_preserved": null,
+      "original_sha256": "eec89e92b9ee8a485ec0a0b44452c8fc3ff30193a284009c35cbb15ea5992518",
+      "method": "Complete bounded source read; two certain-copy fixes additionally covered by the complete guarded diff",
+      "read_ranges": [
+        [
+          1,
+          123
+        ]
+      ]
+    }
+  },
+  "source_lines": 3196,
+  "svg_xml_parses": 36,
+  "missing_local_support_references": 7,
+  "scope": "Eleven historical school-page/search-redesign/archived-wireframe/logo-refinement sources. The separate11009-line self-contained logo editor remains pending; this receipt does not cover it.",
+  "certain_fixes": [
+    {
+      "path": "design/Logo Concepts Refinement Request/Logo Concepts.dc.html",
+      "changes": "Replace four obsolete eight/ten-concept references with count-neutral wording for the actual twelve directions. Correct the false assertion that all icons/wordmarks are primitive-only vector; SVG text still depends on fonts. No mark, token, layout, style or HTML attribute changed."
+    },
+    {
+      "path": "design/archive/school-search-wireframe/School Search.dc.html",
+      "changes": "Show clear-all for a text-only query; preserve the existing reset. Correct Czech additional-result counts2-4 and nominative relaxed-result count. Describe actual all-filter-preserving sorting and historical2025 cutoff; relaxation copy describes the actual change instead of falsely claiming filter removal. School samples/filtering/scoring/order functions remain unchanged."
+    }
+  ],
+  "actual_source_probes": {
+    "cases": [
+      {
+        "case": "query_only_clear_all",
+        "version": "before",
+        "rows": 1,
+        "hasFilters": false
+      },
+      {
+        "case": "query_only_clear_all",
+        "version": "after",
+        "rows": 1,
+        "hasFilters": true
+      },
+      {
+        "case": "more_count",
+        "rest": 1,
+        "label": "Zobrazit další školu"
+      },
+      {
+        "case": "more_count",
+        "rest": 2,
+        "label": "Zobrazit další 2 školy"
+      },
+      {
+        "case": "more_count",
+        "rest": 3,
+        "label": "Zobrazit další 3 školy"
+      },
+      {
+        "case": "more_count",
+        "rest": 4,
+        "label": "Zobrazit další 4 školy"
+      },
+      {
+        "case": "more_count",
+        "rest": 5,
+        "label": "Zobrazit dalších 5 škol"
+      },
+      {
+        "case": "relaxation_actual_change",
+        "label": "Dojezd do 30 minut místo 10",
+        "message": "Nejvíc výsledků přidá změna „Dojezd do 30 minut místo 10“ — po změně: 3 školy z 24."
+      },
+      {
+        "case": "actual_sort_contract",
+        "sort_options": [
+          {
+            "label": "Splňuje všechna kritéria",
+            "tradeoff": "dále podle nejkratšího dojezdu",
+            "border": "1.5px solid var(--primary)",
+            "bg": "var(--primary-subtle)"
+          },
+          {
+            "label": "Nejkratší dojezd",
+            "tradeoff": "zachovává všechny nastavené filtry",
+            "border": "1px solid var(--border-strong)",
+            "bg": "transparent"
+          },
+          {
+            "label": "Nejnižší hranice přijetí",
+            "tradeoff": "historická hranice z roku 2025",
+            "border": "1px solid var(--border-strong)",
+            "bg": "transparent"
+          }
+        ],
+        "school_count": 24
+      }
+    ],
+    "checks_passed": 9,
+    "source": "Actual inline Component functions, no environment/network/provider/database/tester data"
+  },
+  "actual_mark_probes": {
+    "valid_enum_cases": [
+      {
+        "kind": "fit",
+        "active": "isFit"
+      },
+      {
+        "kind": "roof",
+        "active": "isRoof"
+      },
+      {
+        "kind": "rule",
+        "active": "isRule"
+      },
+      {
+        "kind": "ring",
+        "active": "isRing"
+      },
+      {
+        "kind": "check",
+        "active": "isCheck"
+      },
+      {
+        "kind": "fork",
+        "active": "isFork"
+      },
+      {
+        "kind": "frame",
+        "active": "isFrame"
+      },
+      {
+        "kind": "list",
+        "active": "isList"
+      },
+      {
+        "kind": "monogram",
+        "active": "isMonogram"
+      },
+      {
+        "kind": "monogram2",
+        "active": "isMonogram2"
+      },
+      {
+        "kind": "letter",
+        "active": "isLetter"
+      },
+      {
+        "kind": "letter2",
+        "active": "isLetter2"
+      }
+    ],
+    "fallback_cases": 3,
+    "unsupported": "no branch, editor restricts valid enum",
+    "checks_passed": 16
+  },
+  "actual_local_browser_checks": [
+    "Actual source fixture with local previously reviewed DC runtime/installed React and offline fonts: query-only Jecna returns1of24 and clear-all is visibly available; clicking reset visibly restores24of24 and the additional14-schools button.",
+    "Actual after-logo fixture renders all12 ids1a-1l, corrected font/counter wording,111 rendered SVG instances including36 text elements, and zero sc-logic-error nodes."
+  ],
+  "C44_school_page_reuse": [
+    "Fixed1440/390/880 artboards, content-box mobile390+32-padding overflow, static absolute action bar, nonsemantic section controls and placeholder contacts do not establish current responsive/keyboard/sticky behavior. Old Public Sans/font imports need the current Archivo/Lora source system before adoption.",
+    "Hostivar sample may legitimately have postal Prague10 vs administrative Prague15; do not guess a correction. Source programme/year/subject/cutoff and commute facts before reuse.46.9percent is not a verified current100-point cutoff and2024-2026 average/loni wording mixes cohorts. Historical falling applications do not guarantee easier future admission.",
+    "Capacity354 is not current available places; no-JPZ does not guarantee no school admission exam. Eight-programme sample includes an archived autotronik nastavba excluded by the current ninth-grade scope. Derive counts/details from current eligible programmes and explicit data years.",
+    "Missing-data Nemame must distinguish unknown from absent canteen/clubs. Three sample reviews and verified-badges are illustrative; current beta reviews/sharing are disabled. Teacher/student-name automatic moderation and school verification are unproved. Preserve actual consent/moderation and D1/D4 minimized archive vs erase-contributions semantics; do not promise Settings deletes every review/identifier.",
+    "Review form is div-only with unimplemented textarea/role/year/obor/name controls; ensure real labels, focus, submission and errors if adopted. No review/sharing reactivation is authorized."
+  ],
+  "C44_search_redesign_reuse": [
+    "Static60/23/56/16/14 school/category counters and six/eight-year grammar/nastavba filters are old illustrative scope.56+16-14=58 does not by itself prove a bug against60: missing2 need a qualified denominator/source. Unknown programme types stay visible per the current founder decision.",
+    "Selected four-year grammar and Prague1/9 filters conflict with displayed SOS/Prague10 sample rows. Real current filter semantics must drive rows/counts. Historical acceptance rates are not personalized chance; capacity-labelled free places is misleading and missing hotel data does not prove absence from the2026 first round.",
+    "Mobile filter body says scrolling but uses fixed920 overflow-hidden; fixed844 map/sheet can obscure attribution/content under long text/zoom/keyboard. Mostly nonsemantic div/span actions lack accessible state/labels. Source geometry and percentage pins are schematic, not verified coordinates or actual search/location handling.",
+    "Map attribution must follow the actual provider licence and remain readable/clickable. Restore an accessible list alternative, real pin/list/state behavior, safe areas, focus and independently verified phone/browser acceptance before adoption. Seven missing local support.js references are defects of these exports, not proof of current app runtime failure."
+  ],
+  "C44_archived_wireframe_reuse": [
+    "Landing placeholders61schools/20questions/6minutes/4812completions, fabricated testimonials,2023-2025 samples and2027 dates are dated examples. Real PID/MHD minutes and complete future timeline cannot be inferred from the current approximate commute engine. Public/free catalogue, anonymous onboarding, only-paid-comparison and14day-only refund assumptions conflict with current access and reviewed terms.",
+    "Universal exactly3schools/unchangeable DiPSy instructions require the actual programme limits and current Cermat calendar already logged in the legal/data review. Five of eight FAQs have only questions, so all answers open/AEO is not implemented. Preserve the archive instead of merging divergent drafts/older-version wholesale.",
+    "Search24hardcoded schools have unsourced personalized score/commute/cutoff claims. Public hardcoded ownership is illustrative. Detail/compare/mobile filters/sort controls are partly inert; selection is ephemeral. Offscreen opacity-hidden compare bar remains keyboard-focusable and range labels need real semantics. Criterion-chip grouping/0of0 wording are optional clarity questions, not silently changed product requirements.",
+    "Only actual certain specimen errors above were fixed. The saved school samples, SVGs, styles, HTML attributes and ranking functions are preserved. Bug Echo checked related prototypes/current source references; peer-owned Search/matching were not edited and different grammatical contexts were not treated as proven bugs."
+  ],
+  "C44_logo_refinement_reuse": [
+    "All twelve mark enum branches, three fit fallbacks and unsupported no-branch behavior are checked from the actual inline Component. Fixed640 boards, remote eight-font requests, italic/font dependencies, sample avatar-legibility and broad audience/conversion/exclusivity assertions still need qualified design/font/licence/physical-device review.",
+    "Selected current product branding is unchanged. These historical directions do not supersede current design authority or grant asset rights. Verify geometric vs text export, accessible decorative/name treatment and genuine small-size readability before adoption."
+  ],
+  "verification_limits": [
+    "All11 complete source reads, including initially truncated logo1-180 and landing550-565 repaired by complete bounded rereads. Current hashes verified; two own edits reviewed in full.",
+    "All36 source SVGs parse; local references exist for both logo-refinement and both archived wireframes. All seven school-page/search-redesign support.js files are missing.",
+    "Nine actual search-function probes plus sixteen mark-branch probes pass. Offline browser checks are limited to this isolated prototype, without real account/DB/provider/CDN operations or current-product acceptance.",
+    "The complete diff was reread after an initially truncated tool output. HTML attributes/styles/SVGs and school sample data are byte-preserved across both certain fixes.",
+    "No current product/pricing/access/legal/privacy/payment/schema/provider behavior changed. All broader findings are conditional C44 draft reuse, not required new beta redesigns.",
+    "The separate self-contained logo editor, active Claude files, data/asset accounting and release acceptance remain pending; full review/ready-to-deploy is not claimed."
+  ]
+}

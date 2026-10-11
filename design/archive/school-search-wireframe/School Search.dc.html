@@ -314,9 +314,9 @@ const SCHOOLS = [
 
 const DISTRICTS = [1, 2, 3, 4, 5, 6, 7, 9, 10];
 const SORTS = [
-  { id: 'match', label: 'Nejvíc splněných kritérií', tradeoff: 'nebere ohled na dojezd' },
-  { id: 'travel', label: 'Nejkratší dojezd', tradeoff: 'může vynechat tvůj obor' },
-  { id: 'cut', label: 'Nejnižší hranice přijetí', tradeoff: 'bezpečnější, ne nutně silnější škola' },
+  { id: 'match', label: 'Splňuje všechna kritéria', tradeoff: 'dále podle nejkratšího dojezdu' },
+  { id: 'travel', label: 'Nejkratší dojezd', tradeoff: 'zachovává všechny nastavené filtry' },
+  { id: 'cut', label: 'Nejnižší hranice přijetí', tradeoff: 'historická hranice z roku 2025' },
 ];
 
 const plural = (n, one, few, many) => (n === 1 ? one : n >= 2 && n <= 4 ? few : many);
@@ -469,8 +469,8 @@ class Component extends DCLogic {
     let blame = 'Žádný jednotlivý filtr to sám neuvolní — zruš celou kombinaci a začni od jednoho kritéria.';
     if (helpful.length) {
       const worst = helpful[0];
-      blame = 'Nejvíc omezuje ' + worst.blame + ' — bez něj by odpovídalo ' + worst.gainN + ' ' +
-        skolGen(worst.gainN) + ' z ' + total + '.';
+      blame = 'Nejvíc výsledků přidá změna „' + worst.label + '“ — po změně: ' + worst.gainN + ' ' +
+        skol(worst.gainN) + ' z ' + total + '.';
     }
 
     const nearMisses = SCHOOLS.map((s) => {
@@ -531,7 +531,7 @@ class Component extends DCLogic {
         ? 'odpovídá ' + activeCount + ' ' + plural(activeCount, 'filtru', 'filtrům', 'filtrům') + ' · seznam se mění průběžně, nic se nepotvrzuje'
         : 'bez filtrů · vyber obor nebo městskou část',
       activeChips: chips,
-      hasFilters: chips.length > 0,
+      hasFilters: activeCount > 0,
       onClearAll: () => this.set({ fields: [], districts: [], maxMin: 60, noTalent: false, q: '', page: 10 }),
       clearAllLabel: 'Zrušit všechny filtry (' + total + ' ' + skol(total) + ')',
       sortOptions: SORTS.map((s) => ({
@@ -547,7 +547,7 @@ class Component extends DCLogic {
       hasRows: n > 0,
       isEmpty: n === 0,
       hasMore: rest > 0,
-      moreLabel: 'Zobrazit ' + (rest === 1 ? 'další školu' : 'dalších ' + rest + ' ' + skolGen(rest)),
+      moreLabel: 'Zobrazit ' + (rest === 1 ? 'další školu' : (rest >= 2 && rest <= 4 ? 'další ' : 'dalších ') + rest + ' ' + skolGen(rest)),
       onMore: () => this.set({ page: f.page + 10 }),
       totalLabel: total + ' pražských škol',
       relaxOptions,

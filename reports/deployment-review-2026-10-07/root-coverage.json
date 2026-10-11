@@ -2138,19 +2138,19 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "d536f239eec0fa94a17ce4e270fb962c3c1642798e233fdd0dd50bc77e69a033",
-    "lines": 1927,
+    "sha256": "47dc29f66c239a2e381cfd47f6c51372778c927a971f0a445d1d695a04e65f01",
+    "lines": 1932,
     "read_ranges": [
       [
         1,
-        1927
+        1932
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
-    "previous_complete_sha256": "11f56ababfd9f0664b4994850823c60f90faf2cd039ef854468350dfc21a8021",
-    "method": "Exact saved fully reviewed baseline plus full own28-source historical-draft append inspected.",
+    "checked_at_utc": "2026-10-11T16:45:54.711741+00:00",
+    "previous_complete_sha256": "d536f239eec0fa94a17ce4e270fb962c3c1642798e233fdd0dd50bc77e69a033",
+    "method": "Saved fully reviewed baseline plus complete own11-source historical-draft append inspected.",
     "evidence": "motion-demo-verification-2026-10-11.json"
   },
   "frontend/src/api.js": {
@@ -8773,5 +8773,159 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
     "method": "Complete source read; authored source/comment/style/attribute/geometry coverage. Unchanged historical proposal; evidence does not establish current product/device/browser acceptance."
+  },
+  "design/Logo Concepts Refinement Request/Logo Concepts.dc.html": {
+    "sha256": "ea28cacbaa3a79cbcd149820779ace5629181b46148677d2328e008361ad90e4",
+    "lines": 541,
+    "read_ranges": [
+      [
+        1,
+        541
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:45:54.711741+00:00",
+    "method": "Complete bounded source read; two certain-copy fixes additionally covered by the complete guarded diff; all authored styles/comments/attributes/geometry read. Historical proposal only; current device/provider acceptance not established."
+  },
+  "design/Logo Concepts Refinement Request/Mark.dc.html": {
+    "sha256": "0d75a1dd2bf7110f4fc4dd643b25e19d708aa3cc2d81d764865e0b8372cb7891",
+    "lines": 87,
+    "read_ranges": [
+      [
+        1,
+        87
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:45:54.711741+00:00",
+    "method": "Complete bounded source read; two certain-copy fixes additionally covered by the complete guarded diff; all authored styles/comments/attributes/geometry read. Historical proposal only; current device/provider acceptance not established."
+  },
+  "design/archive/school-search-wireframe/Landing Page Wireframe.dc.html": {
+    "sha256": "84109954cce5e233ee1b97fa7ecced641415daf654fcda3401cf5441fc4cbead",
+    "lines": 607,
+    "read_ranges": [
+      [
+        1,
+        607
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:45:54.711741+00:00",
+    "method": "Complete bounded source read; two certain-copy fixes additionally covered by the complete guarded diff; all authored styles/comments/attributes/geometry read. Historical proposal only; current device/provider acceptance not established."
+  },
+  "design/archive/school-search-wireframe/School Search.dc.html": {
+    "sha256": "e0a844d51f3fc773a93cd145b524687fba0680d7ca267e8105d457e4ddfdfef9",
+    "lines": 570,
+    "read_ranges": [
+      [
+        1,
+        570
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:45:54.711741+00:00",
+    "method": "Complete bounded source read; two certain-copy fixes additionally covered by the complete guarded diff; all authored styles/comments/attributes/geometry read. Historical proposal only; current device/provider acceptance not established."
+  },
+  "design/school-page/Main.dc.html": {
+    "sha256": "5470c44aceab8bae9d1752254201b165a9f26c9f416e06c497a806b990e35dfc",
+    "lines": 328,
+    "read_ranges": [
+      [
+        1,
+        328
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:45:54.711741+00:00",
+    "method": "Complete bounded source read; two certain-copy fixes additionally covered by the complete guarded diff; all authored styles/comments/attributes/geometry read. Historical proposal only; current device/provider acceptance not established."
+  },
+  "design/school-page/Mobil.dc.html": {
+    "sha256": "36a14742c9d84acf6f6e77188fbbe16c216a800ce275b07bfb28faef27804cc6",
+    "lines": 156,
+    "read_ranges": [
+      [
+        1,
+        156
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:45:54.711741+00:00",
+    "method": "Complete bounded source read; two certain-copy fixes additionally covered by the complete guarded diff; all authored styles/comments/attributes/geometry read. Historical proposal only; current device/provider acceptance not established."
+  },
+  "design/school-page/Recenze.dc.html": {
+    "sha256": "7ffb9a6309b858b8a5d2647a8f5556dd4ecbf876dcb6e2d0680298e8c8a39d38",
+    "lines": 126,
+    "read_ranges": [
+      [
+        1,
+        126
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:45:54.711741+00:00",
+    "method": "Complete bounded source read; two certain-copy fixes additionally covered by the complete guarded diff; all authored styles/comments/attributes/geometry read. Historical proposal only; current device/provider acceptance not established."
+  },
+  "design/search-redesign/FiltryMobil.dc.html": {
+    "sha256": "b6b3fbce325a05332640d7a44ee574af68908c7050241020331d36ea466706ba",
+    "lines": 167,
+    "read_ranges": [
+      [
+        1,
+        167
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:45:54.711741+00:00",
+    "method": "Complete bounded source read; two certain-copy fixes additionally covered by the complete guarded diff; all authored styles/comments/attributes/geometry read. Historical proposal only; current device/provider acceptance not established."
+  },
+  "design/search-redesign/Main.dc.html": {
+    "sha256": "997db2c62105f8795e8b6c358f0bc7d2d63faba51c70f3ad8f5d20748306ad6e",
+    "lines": 331,
+    "read_ranges": [
+      [
+        1,
+        331
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:45:54.711741+00:00",
+    "method": "Complete bounded source read; two certain-copy fixes additionally covered by the complete guarded diff; all authored styles/comments/attributes/geometry read. Historical proposal only; current device/provider acceptance not established."
+  },
+  "design/search-redesign/MapaDesktop.dc.html": {
+    "sha256": "bb2431c8e8391bc053b6186a08db98f9d15cfe80907d03f6b981835c829a3e35",
+    "lines": 160,
+    "read_ranges": [
+      [
+        1,
+        160
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:45:54.711741+00:00",
+    "method": "Complete bounded source read; two certain-copy fixes additionally covered by the complete guarded diff; all authored styles/comments/attributes/geometry read. Historical proposal only; current device/provider acceptance not established."
+  },
+  "design/search-redesign/MapaMobil.dc.html": {
+    "sha256": "eec89e92b9ee8a485ec0a0b44452c8fc3ff30193a284009c35cbb15ea5992518",
+    "lines": 123,
+    "read_ranges": [
+      [
+        1,
+        123
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:45:54.711741+00:00",
+    "method": "Complete bounded source read; two certain-copy fixes additionally covered by the complete guarded diff; all authored styles/comments/attributes/geometry read. Historical proposal only; current device/provider acceptance not established."
   }
 }
