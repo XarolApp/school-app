@@ -1,0 +1,48 @@
+{
+  "checked_at_utc": "2026-10-11T16:51:31.743940+00:00",
+  "snapshot_commit": "7ddd22f294d42a6a4c4d6350f2120d51b9c4db27",
+  "original_files": {
+    "reports/beta-verification-2026-10-05/runtime-verification.json": {
+      "sha256": "2fcf402afb1698fdd3d48be4ce904be77a12aca4b71d61efbc4a5e01af330a78",
+      "lines": 60
+    },
+    "reports/beta-verification-2026-10-05/csv-verification.json": {
+      "sha256": "4a9cff732942dad4d2947b4b032337cf49ffd60c1a4811f0b1f880229186c513",
+      "lines": 317
+    },
+    "reports/structure-dry-run-2026-09-24.md": {
+      "sha256": "f78a43948140b01185eab643b9df4c379006c33efed028d555bee0b61afa7ff1",
+      "lines": 720
+    }
+  },
+  "current_files": {
+    "reports/beta-verification-2026-10-05/runtime-verification.json": {
+      "sha256": "2fcf402afb1698fdd3d48be4ce904be77a12aca4b71d61efbc4a5e01af330a78",
+      "lines": 60
+    },
+    "reports/beta-verification-2026-10-05/csv-verification.json": {
+      "sha256": "4a9cff732942dad4d2947b4b032337cf49ffd60c1a4811f0b1f880229186c513",
+      "lines": 317
+    },
+    "reports/structure-dry-run-2026-09-24.md": {
+      "sha256": "f2833778c03726d8d76a34bc9bfc8151ae57d7e1be0c2380f94fe7facc35cfc3",
+      "lines": 722
+    }
+  },
+  "synthetic_csv_exports": 39,
+  "all_csv_export_names_unique": true,
+  "all_csv_recorded_status_200_bom": true,
+  "ordinary_account_recorded_event_deltas": [
+    0,
+    0
+  ],
+  "recorded_stripe_calls": 0,
+  "ten_structure_outputs_parsed_preserved": true,
+  "all_original_quotes_preserved": true,
+  "change": "Dated historical experiment qualifier only; no numeric evidence/source output changed. Club-count rule was subsequently restricted to an explicit number.219 is a historical cached-school denominator, not current projected catalogue.",
+  "limits": [
+    "Both synthetic JSON files are October5 snapshots, not current test reruns/production acceptance.",
+    "September24 meal/dorm/category/teaching/university facts and missing values need current exact-source/provenance/freshness review under S10.",
+    "No live data/private tester/model/provider operation; current C56/C57 and release gates remain open."
+  ]
+}

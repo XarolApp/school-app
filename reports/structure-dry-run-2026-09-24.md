@@ -1,5 +1,7 @@
 # School detail structure dry run — 2026-09-24
 
+> Historical pre-v2 dry run, retained as evidence of the 24 September experiment. The 219-school denominator and projected coverage below are historical cache/evidence-rule counts, not the current visible catalogue or measured live coverage. These older rules could count a listed set of activities as clubs; the current extractor requires an explicit club number. The later 26 September structure run and October ninth-grade projection supersede this experiment for operational status. Use `AGENTS.md`, `docs/skolamatch_current_status.md` and the current deployment report; do not replay this report as a migration or copy its sample values into production.
+
 - Model: `openai/gpt-6-luna`
 - Dataset: 219; targeted: 10.
 - Targeted sample: 10 schools; 10, skipped 0, failed 0, of 10 targeted.

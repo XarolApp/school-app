@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-11T16:45:58.961136+00:00",
-  "commit": "0e7facc22335b17a550e24bfb67195ec475e85af",
+  "checked_at_utc": "2026-10-11T16:52:28.829702+00:00",
+  "commit": "7ddd22f294d42a6a4c4d6350f2120d51b9c4db27",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "current_full_read": 653,
+    "current_full_read": 656,
     "binary_requires_asset_check": 105,
-    "pending_or_changed": 141,
-    "generated_or_audit_artifact": 193,
+    "pending_or_changed": 138,
+    "generated_or_audit_artifact": 194,
     "removed_or_missing": 2
   },
   "files": [
@@ -993,8 +993,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "47dc29f66c239a2e381cfd47f6c51372778c927a971f0a445d1d695a04e65f01",
-      "lines": 1932,
+      "sha256": "5b9c1e5fab3e0e2336d1938aba7cc001d2e0da7df1bf8c38c13918ee4ac35d3c",
+      "lines": 1937,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -5988,8 +5988,10 @@
       "path": "reports/beta-verification-2026-10-05/csv-verification.json",
       "sha256": "4a9cff732942dad4d2947b4b032337cf49ffd60c1a4811f0b1f880229186c513",
       "lines": 317,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/beta-verification-2026-10-05/mobile-closing-review.jpg",
@@ -6023,8 +6025,10 @@
       "path": "reports/beta-verification-2026-10-05/runtime-verification.json",
       "sha256": "2fcf402afb1698fdd3d48be4ce904be77a12aca4b71d61efbc4a5e01af330a78",
       "lines": 60,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/claude-review-2026-10-07/FINDINGS.md",
@@ -6391,22 +6395,22 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "cba1b37a28b0c231a4f801c5872a8bce2a77586c4a504680cccbe5ac1366207d",
-      "lines": 481,
+      "sha256": "f12fcaad4cb326296d72ab8165fa22f72efa905e928e530aa5295c505301bc75",
+      "lines": 487,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "1bf4e930a03593a825735080cf87ea245af2d05ed05e6daf259e29b08346d213",
-      "lines": 294,
+      "sha256": "ad5d676197440e9f2c083e77816110e987613c33ca5cbba231c9d6ee558a300d",
+      "lines": 297,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "4de11222df03fd7ce9c73dd067b7a142203c1dd774a47791ede33bc8924959d8",
-      "lines": 224,
+      "sha256": "9934bf472d6eebbc926f45e39d12c455edbe0eeefa6de0fb46c46dd4564b838a",
+      "lines": 227,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6755,8 +6759,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "e86271d91c4965ba8857b966a2112fbb019abe718492bc1a37cbd4bda9b6fd86",
-      "lines": 581,
+      "sha256": "62f51cba174d5e7e41b58be3e00410bedd69bddddcde109e607e67b9dadc8509",
+      "lines": 584,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6769,8 +6773,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "4e417fc030eb51ea0d57bc9e0ce40f3f28fd036d7e19a7eea89c69e88369bbea",
-      "lines": 8953,
+      "sha256": "feddb59e592aafa2a814b54e06b5f2f05616d4a2ffddb84fcec844144673c1e8",
+      "lines": 8995,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -7156,6 +7160,13 @@
       "path": "reports/deployment-review-2026-10-07/frontend-npm-prod-audit-refresh-2026-10-10.json",
       "sha256": "4610514d5640834408665b61d22c2630f7ffcc6639bad0de2d613cacc0f1d9cc",
       "lines": 22,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/historical-data-artifact-review-2026-10-11.json",
+      "sha256": "3ae62e1853625a9801172be818fda17922a5c499c2ecca8224ccd400e3589254",
+      "lines": 48,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -8060,8 +8071,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "38980c7552ee2b4dcf20b4bb6cba7f1429e6a6a64386405b4db61585469792b6",
-      "lines": 8931,
+      "sha256": "afe8a3c441417c2f56db7468e4542cda3bb5b4ab578707b6b555ce24bc640a4c",
+      "lines": 8973,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -8339,10 +8350,12 @@
     },
     {
       "path": "reports/structure-dry-run-2026-09-24.md",
-      "sha256": "f78a43948140b01185eab643b9df4c379006c33efed028d555bee0b61afa7ff1",
-      "lines": 720,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "f2833778c03726d8d76a34bc9bfc8151ae57d7e1be0c2380f94fe7facc35cfc3",
+      "lines": 722,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/structure-v3/backup-six-columns.json",

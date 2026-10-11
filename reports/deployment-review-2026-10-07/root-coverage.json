@@ -2138,19 +2138,19 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "47dc29f66c239a2e381cfd47f6c51372778c927a971f0a445d1d695a04e65f01",
-    "lines": 1932,
+    "sha256": "5b9c1e5fab3e0e2336d1938aba7cc001d2e0da7df1bf8c38c13918ee4ac35d3c",
+    "lines": 1937,
     "read_ranges": [
       [
         1,
-        1932
+        1937
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-11T16:45:54.711741+00:00",
-    "previous_complete_sha256": "d536f239eec0fa94a17ce4e270fb962c3c1642798e233fdd0dd50bc77e69a033",
-    "method": "Saved fully reviewed baseline plus complete own11-source historical-draft append inspected.",
+    "checked_at_utc": "2026-10-11T16:51:31.743940+00:00",
+    "previous_complete_sha256": "47dc29f66c239a2e381cfd47f6c51372778c927a971f0a445d1d695a04e65f01",
+    "method": "Exact fully reviewed baseline plus complete own dated-data-artifact append inspected.",
     "evidence": "motion-demo-verification-2026-10-11.json"
   },
   "frontend/src/api.js": {
@@ -8927,5 +8927,47 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-11T16:45:54.711741+00:00",
     "method": "Complete bounded source read; two certain-copy fixes additionally covered by the complete guarded diff; all authored styles/comments/attributes/geometry read. Historical proposal only; current device/provider acceptance not established."
+  },
+  "reports/beta-verification-2026-10-05/runtime-verification.json": {
+    "sha256": "2fcf402afb1698fdd3d48be4ce904be77a12aca4b71d61efbc4a5e01af330a78",
+    "lines": 60,
+    "read_ranges": [
+      [
+        1,
+        60
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:51:31.743940+00:00",
+    "method": "Full complete bounded source read plus own dated qualifier where applicable. Immutable historical values retained; not current runtime/service/accuracy acceptance."
+  },
+  "reports/beta-verification-2026-10-05/csv-verification.json": {
+    "sha256": "4a9cff732942dad4d2947b4b032337cf49ffd60c1a4811f0b1f880229186c513",
+    "lines": 317,
+    "read_ranges": [
+      [
+        1,
+        317
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:51:31.743940+00:00",
+    "method": "Full complete bounded source read plus own dated qualifier where applicable. Immutable historical values retained; not current runtime/service/accuracy acceptance."
+  },
+  "reports/structure-dry-run-2026-09-24.md": {
+    "sha256": "f2833778c03726d8d76a34bc9bfc8151ae57d7e1be0c2380f94fe7facc35cfc3",
+    "lines": 722,
+    "read_ranges": [
+      [
+        1,
+        722
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:51:31.743940+00:00",
+    "method": "Full complete bounded source read plus own dated qualifier where applicable. Immutable historical values retained; not current runtime/service/accuracy acceptance."
   }
 }
