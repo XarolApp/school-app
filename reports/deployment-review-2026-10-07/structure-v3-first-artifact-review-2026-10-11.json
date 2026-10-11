@@ -1,0 +1,152 @@
+{
+  "checked_at_utc": "2026-10-11T17:21:00.794592+00:00",
+  "snapshot_commit": "577c325a6aae43b4a34df76f39d1067c0eba1a13",
+  "files": {
+    "reports/structure-v3/backup-six-columns.json": {
+      "sha256": "905260a642503b48ec5d9fd0843f528cf3d1c825f4f269ee9044c6e7ed7c05f1",
+      "lines": 1
+    },
+    "reports/structure-v3/dry-a.txt": {
+      "sha256": "0fae666d6f7b1b272be87dcc30c2dbceefd582b0362e2462e1012997848faa5c",
+      "lines": 628
+    },
+    "reports/structure-v3/dry-b.txt": {
+      "sha256": "4b0afc1bdd0251ce80bf67f789ac48100d6ca62c0523e1350e4f10a9653fbe7a",
+      "lines": 628
+    }
+  },
+  "original_lines": 1257,
+  "read_methods": {
+    "reports/structure-v3/backup-six-columns.json": "All 220 parsed records with all seven fields read in three complete 73/73/74-record groups. Entire original JSON syntax, duplicate keys, record uniqueness, field types, enums and bounds validated; original single-line whitespace not separately reread.",
+    "reports/structure-v3/dry-a.txt": "Complete original 628 lines read in six bounded ranges.",
+    "reports/structure-v3/dry-b.txt": "Exact fully read dry-a baseline plus all 112 complete unified-diff lines read in two bounded ranges; unchanged lines reuse that exact baseline."
+  },
+  "probe": {
+    "backup_records": 220,
+    "backup_field_shapes": {
+      "krouzky_kategorie": {
+        "null": 31,
+        "empty_array": 79,
+        "true": 0,
+        "false": 0,
+        "nonnull": 189
+      },
+      "ma_jidelnu": {
+        "null": 170,
+        "empty_array": 0,
+        "true": 49,
+        "false": 1,
+        "nonnull": 50
+      },
+      "ma_koleje": {
+        "null": 214,
+        "empty_array": 0,
+        "true": 5,
+        "false": 1,
+        "nonnull": 6
+      },
+      "pocet_krouzku": {
+        "null": 220,
+        "empty_array": 0,
+        "true": 0,
+        "false": 0,
+        "nonnull": 0
+      },
+      "vs_pokracuje_pct": {
+        "null": 216,
+        "empty_array": 0,
+        "true": 0,
+        "false": 0,
+        "nonnull": 4
+      },
+      "vyukovy_styl_tagy": {
+        "null": 143,
+        "empty_array": 0,
+        "true": 0,
+        "false": 0,
+        "nonnull": 77
+      }
+    },
+    "backup_university_percentages": [
+      {
+        "school_id": 194,
+        "percent": 95
+      },
+      {
+        "school_id": 114,
+        "percent": 99
+      },
+      {
+        "school_id": 73,
+        "percent": 95
+      },
+      {
+        "school_id": 13,
+        "percent": 81
+      }
+    ],
+    "paired_validated_counts": {
+      "dry-a": {
+        "krouzky_kategorie": 19,
+        "ma_jidelnu": 7,
+        "ma_koleje": 2,
+        "pocet_krouzku": 0,
+        "vs_pokracuje_pct": 1,
+        "vyukovy_styl_tagy": 9
+      },
+      "dry-b": {
+        "krouzky_kategorie": 19,
+        "ma_jidelnu": 7,
+        "ma_koleje": 2,
+        "pocet_krouzku": 0,
+        "vs_pokracuje_pct": 1,
+        "vyukovy_styl_tagy": 9
+      }
+    },
+    "paired_field_differences": [
+      {
+        "school_id": 10,
+        "field": "vyukovy_styl_tagy",
+        "a": [
+          "skupinova_prace"
+        ],
+        "b": [
+          "praxe_dilny",
+          "skupinova_prace"
+        ]
+      },
+      {
+        "school_id": 17,
+        "field": "vyukovy_styl_tagy",
+        "a": [
+          "projektova_vyuka",
+          "individualni_pristup",
+          "diskuze_debata"
+        ],
+        "b": [
+          "projektova_vyuka",
+          "individualni_pristup"
+        ]
+      }
+    ],
+    "dry_b_complete_diff": {
+      "lines": 112,
+      "sha256": "a7dbce7f9e513098bea5bbb6d3faaa81641de2affcf5ecd875a7a563a5947426"
+    },
+    "strict_duplicate_key_types_enum_validation": "pass"
+  },
+  "S10_candidates": [
+    "The paired 20-school dry runs have identical validated non-null counts but different teaching-style tags for schools 10 and 17. Compare values and evidence, not aggregate totals, before calling extraction stable; historical files are not proof of current scorer stability.",
+    "The 220-record backup has 189 non-null club arrays, including 79 empty arrays: only 110 have a category. All 220 explicit club counts are null. Non-null output coverage is not evidence that 189 schools have extracurricular clubs or usable categorical matching evidence.",
+    "Historical strict validators drop some explicit stored phrases, while accepted categories sometimes describe a one-off open-day workshop, premises, curricular electives or marketing prose. Exact-quote matching is necessary but insufficient to establish extracurricular availability, campus/programme applicability, a school-wide teaching style or current freshness.",
+    "In these runs school 16 gets a meal=true from sport-management-specific text; school 13 gets a school-arranged dorm=true from phrasing that it can be arranged elsewhere; school 23 correctly distinguishes meals arranged nearby from own canteen. Keep current canonical meaning and UI qualification aligned, rather than inventing ownership or availability from a boolean.",
+    "The backup has four university percentages 81/95/95/99, without source/date metadata in this six-column snapshot; school-specific continuation, admission, upper-bound and programme percentages need exact contextual evidence before display/scoring. An unknown or empty array must retain its defined meaning instead of becoming zero/false."
+  ],
+  "ordered_acceptance": "Continue S10 with exact current extractor/scorer and per-field official source evidence, including explicit activity availability versus facilities/events/curriculum, school/programme scope, unknown states and meal/dorm semantics. Compare paired field values and downstream rank sensitivity; separate source/date/model versions and preserve original artifacts. Review the three full later logs before interpreting this early strict experiment as the final extraction result. Current data changes remain subject to existing reviewed dry-run/local/migration approvals.",
+  "limits": [
+    "Original untracked artifacts unchanged and unstaged.",
+    "Three later large logs are still pending; deduplicated-line inventory is navigation only, not a complete read.",
+    "No official URL fetched in this historical pass, no current served exposure or provider acceptance inferred.",
+    "No model/import/live operation, application/schema change or current release clearance. Active peer ownership and all beta/privacy/payment decisions preserved."
+  ]
+}

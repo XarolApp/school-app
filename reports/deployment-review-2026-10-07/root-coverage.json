@@ -2138,19 +2138,19 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "8b27d40f801855f56ee21fc69efef3544724cfa95b3de7673fd1c0b7cc2df902",
-    "lines": 1952,
+    "sha256": "ecb5d1dad0694e71f4ee7cd75b1d1b042351774982a4da801417b93c3c7fc9c2",
+    "lines": 1957,
     "read_ranges": [
       [
         1,
-        1952
+        1957
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-11T17:15:49.839363+00:00",
-    "previous_complete_sha256": "fc1affce6152ce7c6b51abf31949b32a2ecf5c0d6dd4b3a85b01deb52ab6632b",
-    "method": "Exact fully reviewed baseline plus complete own S10 removed-values/backup append inspected.",
+    "checked_at_utc": "2026-10-11T17:21:00.794592+00:00",
+    "previous_complete_sha256": "8b27d40f801855f56ee21fc69efef3544724cfa95b3de7673fd1c0b7cc2df902",
+    "method": "Exact fully reviewed baseline plus complete own S10 early-structure append inspected.",
     "evidence": "motion-demo-verification-2026-10-11.json"
   },
   "frontend/src/api.js": {
@@ -10551,5 +10551,47 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-11T17:15:49.839363+00:00",
     "method": "Complete raw source read and historical value/type/arithmetic review; original unchanged, no current official or production acceptance."
+  },
+  "reports/structure-v3/backup-six-columns.json": {
+    "sha256": "905260a642503b48ec5d9fd0843f528cf3d1c825f4f269ee9044c6e7ed7c05f1",
+    "lines": 1,
+    "read_ranges": [
+      [
+        1,
+        1
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T17:21:00.794592+00:00",
+    "method": "All 220 parsed records with all seven fields read in three complete 73/73/74-record groups. Entire original JSON syntax, duplicate keys, record uniqueness, field types, enums and bounds validated; original single-line whitespace not separately reread. Historical review only, no current official or production acceptance."
+  },
+  "reports/structure-v3/dry-a.txt": {
+    "sha256": "0fae666d6f7b1b272be87dcc30c2dbceefd582b0362e2462e1012997848faa5c",
+    "lines": 628,
+    "read_ranges": [
+      [
+        1,
+        628
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T17:21:00.794592+00:00",
+    "method": "Complete original 628 lines read in six bounded ranges. Historical review only, no current official or production acceptance."
+  },
+  "reports/structure-v3/dry-b.txt": {
+    "sha256": "4b0afc1bdd0251ce80bf67f789ac48100d6ca62c0523e1350e4f10a9653fbe7a",
+    "lines": 628,
+    "read_ranges": [
+      [
+        1,
+        628
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T17:21:00.794592+00:00",
+    "method": "Exact fully read dry-a baseline plus all 112 complete unified-diff lines read in two bounded ranges; unchanged lines reuse that exact baseline. Historical review only, no current official or production acceptance."
   }
 }

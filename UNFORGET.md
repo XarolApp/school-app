@@ -1950,3 +1950,8 @@ Twelve full tuition JSON outputs, five full batch ID files and the run log revie
 ## Historical removed values and fifteen-school backup — 11 October 2026 (S10)
 
 Two complete unchanged JSON artifacts/1127 lines reviewed. The 112 removed values affect 77 schools; 31 lack old citations and two source fields have invalid scalar types. Wrong-level ZŠ/MŠ/VOŠ facts and event times make blind restoration unsafe; possible legitimate omissions still need exact current-row/source checks. The ten backup Cermat percentage calculations agree internally, without establishing current official accuracy. [Evidence and ordered acceptance](reports/deployment-review-2026-10-07/loss-backup-artifact-review-2026-10-11.json). Preserve historical data and the official results path; the full 220-record backup remains pending. No live write or model/provider action.
+
+
+## Early structural extraction and six-column backup — 11 October 2026 (S10)
+
+Three complete unchanged historical artifacts/1257 original lines reviewed, including every field of 220 backup records and all 112 differences between the two 20-school logs. Equal output counts hide two teaching-tag differences; 189 non-null club arrays include 79 empty arrays. All explicit club counts remain unknown. [Evidence and ordered acceptance](reports/deployment-review-2026-10-07/structure-v3-first-artifact-review-2026-10-11.json) records exact-source, scope, availability, meals/dorm and percentage checks. Three later full logs remain pending; no current data/provider action or release clearance.
