@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-11T10:35:53.496500+00:00",
-  "commit": "60e9dfa395c6aeb5e6e7ae07bf4be5ba4726b320",
+  "checked_at_utc": "2026-10-11T16:08:32.236456+00:00",
+  "commit": "0ca83183947ed70056541c058aab45384afd3dac",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "current_full_read": 601,
+    "current_full_read": 604,
     "binary_requires_asset_check": 105,
-    "pending_or_changed": 193,
-    "generated_or_audit_artifact": 186,
+    "pending_or_changed": 190,
+    "generated_or_audit_artifact": 187,
     "removed_or_missing": 2
   },
   "files": [
@@ -993,8 +993,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "d91a0c33a616f6e4d674b86417d968cbf0d4a58b948f65d97617ceb1b5a5cc9c",
-      "lines": 1905,
+      "sha256": "8b964b9d6ed12eaaa6ed5f949f852191d54d34d9a770391a5c80577eaf2ff161",
+      "lines": 1911,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -5932,24 +5932,30 @@
     },
     {
       "path": "reports/claude-review-2026-10-07/FINDINGS.md",
-      "sha256": "623f71951abbe4a4b9ecf21c0cbb24551021c6f207284ece75640f2fdb33a901",
-      "lines": 89,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "b71ee4b7ae23ac72f7f024e6f41318c0eae07da2eebfeb5a81af81f11c40582f",
+      "lines": 91,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/claude-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "1a3ad40a5042725332ca592c76c8ea5abcafa75576d36762c89914b096467450",
-      "lines": 68,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "77b84feffe1e29f3272b5c61907253b85542e0d01fec96b558f58904d47e7057",
+      "lines": 69,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/claude-review-2026-10-07/REPORT.md",
-      "sha256": "9848fcf99058e3979c626c9b96e0add18723de79644201e58f6e6b1b327fbe1f",
-      "lines": 106,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "15417e20480c28dd81a995f0964b6d49021c56a1b37c907665b98bcccc86567d",
+      "lines": 119,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/codex-comparison/filtered/104.json",
@@ -6289,22 +6295,22 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "bc071474c6226cea56a9f800a376ab3f884b311fedb1bc53914429382a591f54",
-      "lines": 445,
+      "sha256": "30502b77c9847a5d874670725261a0b56d162a3bc4135378e91f5ee0bacfcba5",
+      "lines": 451,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "5e24100f0ba16644d5f8c3b195e01a67b5aa1edea7d9251399600b544d8de922",
-      "lines": 279,
+      "sha256": "d0ada816c812edf64fb5553353465c71f2c12952a814e3138a6ba81f91417cde",
+      "lines": 282,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "1a8cf4e8af713f204b6c26d27133ad386aac624d36d5a9f6a28e9c3e71b80314",
-      "lines": 209,
+      "sha256": "f4974f48fe243c739807864b4d9d4cb6e7b4a35430dc7c3f9675d1c96c3f04e0",
+      "lines": 212,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6653,8 +6659,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "f3c644a888514982df9e4885d881fe6b76d7279f39b425dca498c3ef2574c22a",
-      "lines": 560,
+      "sha256": "5c589336431eb0c176d06a4d7337886d01521f701e8bb689a010de70c5266fda",
+      "lines": 565,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6667,8 +6673,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "deb6d8b5f395b4ec66742c7557cc03a5a0b707942af6d50ced5b5fa2d866e8be",
-      "lines": 8814,
+      "sha256": "4307f0ec321039aebeadbf543b86979046c9705bb5334d1ba04d8fa3efb97bd3",
+      "lines": 8842,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -7047,6 +7053,13 @@
       "path": "reports/deployment-review-2026-10-07/frontend-npm-prod-audit-refresh-2026-10-10.json",
       "sha256": "4610514d5640834408665b61d22c2630f7ffcc6639bad0de2d613cacc0f1d9cc",
       "lines": 22,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/historical-review-reconciliation-2026-10-11.json",
+      "sha256": "89438cf1bbb0417f575d8971d715b5c9b96229030e23011648e9b7890f974202",
+      "lines": 53,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -7909,8 +7922,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "e031b77aaff78686b0f732f6df468d520ff14f34420e869d4bbc4f866ad1a49e",
-      "lines": 8195,
+      "sha256": "446b42732bd9f8d4cc74ef187d3d8c1dae95f256d6453b4be7d19d5cbb8e6864",
+      "lines": 8240,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },

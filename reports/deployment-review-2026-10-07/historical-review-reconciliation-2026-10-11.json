@@ -1,0 +1,53 @@
+{
+  "checked_at_utc": "2026-10-11T16:08:02.909358+00:00",
+  "snapshot_commit": "0ca83183947ed70056541c058aab45384afd3dac",
+  "files": {
+    "reports/claude-review-2026-10-07/FINDINGS.md": {
+      "sha256": "b71ee4b7ae23ac72f7f024e6f41318c0eae07da2eebfeb5a81af81f11c40582f",
+      "lines": 91,
+      "previous_sha256": "623f71951abbe4a4b9ecf21c0cbb24551021c6f207284ece75640f2fdb33a901"
+    },
+    "reports/claude-review-2026-10-07/HANDOFF-PLAN.md": {
+      "sha256": "77b84feffe1e29f3272b5c61907253b85542e0d01fec96b558f58904d47e7057",
+      "lines": 69,
+      "previous_sha256": "1a3ad40a5042725332ca592c76c8ea5abcafa75576d36762c89914b096467450"
+    },
+    "reports/claude-review-2026-10-07/REPORT.md": {
+      "sha256": "15417e20480c28dd81a995f0964b6d49021c56a1b37c907665b98bcccc86567d",
+      "lines": 119,
+      "previous_sha256": "9848fcf99058e3979c626c9b96e0add18723de79644201e58f6e6b1b327fbe1f"
+    }
+  },
+  "read_method": "Complete original FINDINGS89/HANDOFF68/REPORT106 lines read in bounded outputs; final authored reconciliation and full task replacement inspected. Original FINDINGS89 lines preserved verbatim after dated banner.",
+  "current_evidence": [
+    "services-2026-10-08.json",
+    "schema-fields-2026-10-09.json",
+    "ninth-grade-live-2026-10-10.json",
+    "scope-run-record-verification-2026-10-11.json",
+    "docs/legal-decisions-2026-10-10.md",
+    "AGENTS.md current push rules",
+    "Current exact App/vercel/count-hook/backend header declarations checked without editing"
+  ],
+  "corrections": [
+    "Snapshot service/test counts explicitly dated; no new live probe",
+    "Retired missing-column/expired-key/Railway-trial/TEST-only/cutoff assumptions",
+    "Public signed-in free onboarding and view-only landing-dot detail exception",
+    "Beta preview/sharing/written-feedback/archived-choice/founder deferrals preserved",
+    "Unsafe standalone seasonal due-date-clearing sketch withdrawn in favor of purchase lifecycle plan",
+    "Completed header/gender/year/district/storage/cycle/plural/old-route/doc fixes distinguished from remaining acceptance",
+    "Current push authorization and no-subagents/model constraints replace blanket historical instructions"
+  ],
+  "verification": {
+    "all_T1_T13_ids_preserved": true,
+    "all_local_markdown_link_targets_exist": true,
+    "historical_findings_body_preserved_exactly": true,
+    "stale_execution_instructions_absent_from_reconciled_handoff": true,
+    "no_product_or_hosted_mutation": true
+  },
+  "limits": [
+    "Full repository review remains incomplete",
+    "Service metadata/source changes do not prove PostgreSQL/hosted/privacy/payment/device acceptance",
+    "Claude active source changes remain deferred",
+    "No repeated whole-tree tests for documentation-only edits; prior198-test snapshot is not current acceptance"
+  ]
+}

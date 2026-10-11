@@ -2138,19 +2138,19 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "d91a0c33a616f6e4d674b86417d968cbf0d4a58b948f65d97617ceb1b5a5cc9c",
-    "lines": 1905,
+    "sha256": "8b964b9d6ed12eaaa6ed5f949f852191d54d34d9a770391a5c80577eaf2ff161",
+    "lines": 1911,
     "read_ranges": [
       [
         1,
-        1905
+        1911
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-11T10:35:53.007017+00:00",
-    "previous_complete_sha256": "81d981f6828cc9f26cf486d65dc35416490be7941d3036fd25e5bc8dd887adcb",
-    "method": "Exact prior full-read baseline and complete own historical-motion append/diff read; earlier founder/deployment gates preserved.",
+    "checked_at_utc": "2026-10-11T16:08:02.909358+00:00",
+    "previous_complete_sha256": "d91a0c33a616f6e4d674b86417d968cbf0d4a58b948f65d97617ceb1b5a5cc9c",
+    "method": "Verified exact complete saved baseline plus full authored append inspected; documentation reconciliation only.",
     "evidence": "motion-demo-verification-2026-10-11.json"
   },
   "frontend/src/api.js": {
@@ -8191,5 +8191,50 @@
     "checked_at_utc": "2026-10-11T10:35:53.007017+00:00",
     "method": "Complete four dc-html source reads in two bounded batches; current8-line motion token reread. Full four-line CSS-only diff inspected.",
     "evidence": "motion-demo-verification-2026-10-11.json"
+  },
+  "reports/claude-review-2026-10-07/FINDINGS.md": {
+    "sha256": "b71ee4b7ae23ac72f7f024e6f41318c0eae07da2eebfeb5a81af81f11c40582f",
+    "lines": 91,
+    "read_ranges": [
+      [
+        1,
+        91
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:08:02.909358+00:00",
+    "method": "Complete original FINDINGS89/HANDOFF68/REPORT106 lines read in bounded outputs; final authored reconciliation and full task replacement inspected. Original FINDINGS89 lines preserved verbatim after dated banner.",
+    "previous_complete_sha256": "623f71951abbe4a4b9ecf21c0cbb24551021c6f207284ece75640f2fdb33a901"
+  },
+  "reports/claude-review-2026-10-07/HANDOFF-PLAN.md": {
+    "sha256": "77b84feffe1e29f3272b5c61907253b85542e0d01fec96b558f58904d47e7057",
+    "lines": 69,
+    "read_ranges": [
+      [
+        1,
+        69
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:08:02.909358+00:00",
+    "method": "Complete original FINDINGS89/HANDOFF68/REPORT106 lines read in bounded outputs; final authored reconciliation and full task replacement inspected. Original FINDINGS89 lines preserved verbatim after dated banner.",
+    "previous_complete_sha256": "1a3ad40a5042725332ca592c76c8ea5abcafa75576d36762c89914b096467450"
+  },
+  "reports/claude-review-2026-10-07/REPORT.md": {
+    "sha256": "15417e20480c28dd81a995f0964b6d49021c56a1b37c907665b98bcccc86567d",
+    "lines": 119,
+    "read_ranges": [
+      [
+        1,
+        119
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:08:02.909358+00:00",
+    "method": "Complete original FINDINGS89/HANDOFF68/REPORT106 lines read in bounded outputs; final authored reconciliation and full task replacement inspected. Original FINDINGS89 lines preserved verbatim after dated banner.",
+    "previous_complete_sha256": "9848fcf99058e3979c626c9b96e0add18723de79644201e58f6e6b1b327fbe1f"
   }
 }

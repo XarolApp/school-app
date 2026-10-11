@@ -1903,3 +1903,9 @@ Fourteen complete concept source files and the canvas reviewed. Obsolete 224 cat
 Four complete motion-demo sources and the motion token reviewed. Two animated variants and two static miniatures omitted their initial scales when animation stopped; four base-scale declarations now preserve the documented resting frame. Actual offline matched-CSS branch checks pass all 14 decorative elements; three normal animation durations remain 18.9/20.3/19.6s, with markup/logic/editor props/keyframes byte-preserved. Evidence: `reports/deployment-review-2026-10-07/motion-demo-verification-2026-10-11.json`.
 
 - [ ] C44 before motion-draft adoption: verify real OS reduced-motion preference switching, font/CDN behavior, photo/CTA/mobile adaptation and target-device blur/paint/memory cost. The forced CSS branch fixture does not test the OS preference event, and a fixed 720 px desktop stage is not responsive acceptance. Use current product flow/copy rather than historical 20-question/free-comparison claims. Existing product/device/privacy/payment gates stay open.
+
+
+## Historical review handoff reconciled — 11 October 2026
+
+- The three 7 October Claude reports are fully read and reconciled. T1–T13 preserve dated findings while retiring superseded service/count, anonymous-onboarding, blanket-push and standalone failed-payment recovery instructions. Completed fixes are distinct from deployed acceptance; founder D1/D4, written-note renewal, archived-choice restoration and after-beta deferrals remain authoritative.
+- [ ] Continue the full coverage/device/service/privacy/payment gates in the current deployment handoff; do not execute the original seven-step dashboard list or repeat paid data runs from a historical snapshot. Evidence: `reports/deployment-review-2026-10-07/historical-review-reconciliation-2026-10-11.json`.

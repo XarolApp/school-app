@@ -3,12 +3,25 @@
 Reviewer: Claude Code (Opus 5.5, xhigh), in parallel with Codex (its report: `reports/deployment-review-2026-10-07/`).
 Working log with every finding: [`FINDINGS.md`](FINDINGS.md). Tasks for the next agent: [`HANDOFF-PLAN.md`](HANDOFF-PLAN.md).
 
-## Verdict
+## Current-status reconciliation — 11 October 2026
+
+This is a **7 October evidence snapshot**, not the current release checklist. Use the [continuing full-project report](../deployment-review-2026-10-07/REPORT.md), its [handoff](../deployment-review-2026-10-07/HANDOFF-PLAN.md), `UNFORGET.md` and the reconciled tasks below. The full file review remains incomplete; neither review approves beta deployment or real billing.
+
+- The missing `beta_profile.role_note` diagnosis is retired: read-only metadata exposed it on 8 October and the sampled later fields on 9 October. Actual SQL definitions, grants, fresh installation/reruns, isolation and complete journeys still require acceptance.
+- The later observed cutoff is **18 October 2026, 23:59 Europe/Prague**; the shared invitation configuration supersedes the `TEST`-only setup below. Confirm deployed settings rather than applying the old placeholder SQL. The founder reports Railway Hobby and corrected OpenRouter settings; local key authentication later returned HTTP 200. Production model generation, email and operational acceptance remain separate. Do not treat the old expired-key or trial-expiry diagnosis as current fact.
+- The 10 October read-only catalogue is **223 raw / 6 merged / 23 hidden / 194 visible**, with 58 partially affected schools. The 217 below was correct for the earlier scope. Stored counts and peer refresh records do not establish school-data accuracy or programme/scoring/cache parity.
+- Onboarding is free **with sign-in required**. The public landing and view-only school detail from a landing-map dot remain exceptions. Beta is free for feedback; the paywall is a preview, with no Stripe/card/purchase trial. Sharing creation/opening is disabled during beta; owners may list/revoke existing links. Premium API boundaries remain an implementation/acceptance item.
+- Main feedback and qualifying quick feedback with its own written note/follow-up renew rolling access; stars/chips/skip alone do not. Preserve the programme cutoff and current minimum-length rule; C51 still requires reliable save/renewal recovery. Returning hidden schools' old application choices stay archived until explicit restoration (C53/B03).
+- D1/D4 consent, contribution retention and erasure choices are founder decisions. Preserve them; C43/C46/C56 implementation and privacy/statistics acceptance remain open. School reviews are disabled for beta. C07 ordinary trial initialization, C32, C38 and C08 are explicitly deferred until after beta.
+- Security headers, grammatical preference, storage fallback, several year/district/plural fixes and the `/stara` redirect have since been implemented. Header deployment/CSP, owner isolation and device acceptance remain open. Count-request optimization and wider route splitting remain proposals, not completed fixes.
+- Test/build numbers below describe 7 October. The later 198-test/lint/build checkpoint is the `082f31e` snapshot; active Claude edits require another stable review. Current push rules distinguish verified small fixes/docs from auth/payment/access/deletion/schema/tester-flow changes that require founder localhost approval and any prerequisite migration.
+
+## Historical verdict — 7 October
 
 **Conditional readiness opinion from this reviewer; full review remains in progress in the Codex report.** The seven steps below do not replace the open code, legal, privacy and concurrency gates in the Codex findings. Anonymous zero-row probes establish only that smoke test, not complete authenticated RLS isolation. The P0 items are configuration and data: the live database is one SQL run behind, the beta end date is a test value, the AI key has expired, and the Railway trial runs out around 13 October.
 **Not ready for real payments.** See §4 "Payment gates".
 
-## 1. What was verified (evidence, not assumptions)
+## 1. What was verified on 7 October (evidence, not current acceptance)
 
 | Check | Result |
 |---|---|
@@ -24,14 +37,14 @@ Working log with every finding: [`FINDINGS.md`](FINDINGS.md). Tasks for the next
 | Admission dates in the app | 22. 2. 2027 (přihlášky), 30. 11. 2026 (konzervatoře), JPZ 12.–13. 4. 2027: match public sources |
 | Browser (local, 375 px + desktop) | landing, onboarding, `/skoly`, beta landing, fonts self-hosted (0 requests to Google), no horizontal overflow |
 
-## 2. Founder steps before the first tester (P0)
+## 2. Historical founder steps (superseded by the reconciliation above)
 
-Do these in order. Each has a one-line check.
+These explain the original findings. Do not repeat dashboard changes, migrations or key replacement from this list without checking the current handoff and deployed state.
 
 1. **Apply the reviewed schema update** in Supabase after fresh-install/repeated-run checks in a disposable database. Do not use an unverified production rerun as the diagnostic. Without it, `POST /api/beta/profile` fails for every tester, because the server always writes `role_note`.
    Check: `select column_name from information_schema.columns where table_schema='public' and table_name='beta_profile' and column_name='role_note';` → 1 row. Also `select pg_get_constraintdef(oid) from pg_constraint where conrelid='public.review_reports'::regclass and contype='p';` → `PRIMARY KEY (id)`.
 2. **Set the real beta end date.** The live value 2026-10-12 21:10 UTC is a leftover test value (you confirmed this).
-   `update public.beta_program_settings set ends_at = '2026-MM-DD 23:59:00+01:00' where singleton;` (use +01:00 after 25 October and +02:00 before).
+   The original placeholder update is retired. Prepare any genuinely needed change from the founder-approved local date using the `Europe/Prague` timezone, after checking the current value; do not paste a placeholder timestamp or infer a fresh cutoff from this snapshot.
    Check: `select ends_at at time zone 'Europe/Prague' from public.beta_program_settings;`
 3. **Add the real school codes.** Only `TEST` exists. Use `insert into public.beta_schools (code, school_name) values ('KOD', 'Název') on conflict (code) do update set school_name = excluded.school_name;`
    Check: `select code, school_name from public.beta_schools order by code;`
@@ -59,7 +72,7 @@ Do these in order. Each has a one-line check.
 | 8b7215d + 3149560 | Your decisions: church-school tuition shown as "Zjistit u školy"; data sources named as Cermat, the MŠMT registry, school websites and others | P2 |
 | 3149560 | Docs: CLAUDE/AGENTS, UNFORGET, DEPLOY, PROJECT-OVERVIEW, README, beta runbook/spec and status doc now match reality | — |
 
-## 4. Open findings (not fixed: need a decision, are bigger than a safe fix, or are manual)
+## 4. Findings open at the original checkpoint (see current reconciled handoff)
 
 ### Beta-relevant
 - **Paid vs free gating (your decision today, task T1).** Only the landing page and the onboarding (with its result preview and map) should be free. Today catalogue/comparison/matrix are public, and a lot of copy says "databáze škol zdarma". Later founder clarification in Codex explicitly preserves the public school details opened from landing-map dots; T1 has been corrected to keep that exception. Testers aren't affected (they have full access), but this has to ship as one change: gating plus all copy.
@@ -77,7 +90,7 @@ Do these in order. Each has a one-line check.
 ### Lower priority (P2–P3, in the plan)
 Year "2026" hardcoded in about 8 UI strings (T7) · a fabricated "Praha N" district for un-geocoded schools in Search (0 affected today, T8) · main bundle 1.14 MB and `useSchoolCount` downloading the full 758 KB list to count it (T9) · `/stara` old landing still routed with "[Jméno]" placeholders, `test-google-*.js` leftovers, three DB scripts without dry-run, `localStorage` without try/catch in `supabaseClient`, HMR circular import, analytics noise, `role_year` never collected, "61,5 bodů" (T10) · onboarding matching bias and the plan 018 open findings (already in UNFORGET).
 
-## 5. Things I could not verify — please check by hand
+## 5. Original manual checks — reconcile with current evidence before testing
 
 - **Real devices:** iPhone Safari and an Android phone, full path: invitation → signup → confirm on the other device → first-run guide → feedback with a screenshot → results. Emulation is not Safari.
 - **E-mail delivery:** confirmation and reset mails from Brevo to **seznam.cz**, gmail and a school address, including spam folders. Supabase does not expose the SMTP settings to me.
@@ -87,7 +100,7 @@ Year "2026" hardcoded in about 8 UI strings (T7) · a fabricated "Praha N" distr
 - **Legal facts:** operator identity and address, the DPA with each processor, the Supabase region (policy says eu-west-1), OpenRouter's data-retention settings.
 - **One full paid flow in Stripe test mode** after today's webhook fix (monthly: renew, cancel, withdraw; season: setup, charge, failed charge).
 
-## 6. Suggestions (not broken, would make it better)
+## 6. Historical suggestions (check current implementation before starting)
 
 1. **A "Jak počítáme shodu" page.** It builds trust with parents, and it is exactly the claim I had to delete from the calculating screen.
 2. **A count endpoint, or the count in the HTML.** The landing page downloads 758 KB just to show "217" and the chip counts (shown as "0" until then).

@@ -1,5 +1,7 @@
 # Claude review 2026-10-07 — running findings log
 
+**Snapshot reconciliation, 11 October:** the entries below preserve the original 7 October observations and stable IDs. Their line numbers, counts, service configuration and open/fixed status are historical. The [updated report](REPORT.md#current-status-reconciliation--11-october-2026) and [reconciled handoff](HANDOFF-PLAN.md) take precedence. In particular S1's missing column, S2's cutoff/`TEST` setup, S3's expired-key diagnosis, S4's 217-visible scope and S7's absent-header source diagnosis are superseded; metadata/source changes do not prove functional or deployed acceptance. Founder sign-in/free-beta/preview, written-note renewal, explicit application-choice restoration and D1/D4 decisions remain authoritative. No new live probe was performed for this reconciliation.
+
 Lead-only review (no subagents). IDs are stable; REPORT.md is built from this file.
 Class: SAFE-FIX = fixed directly in this session (100 % bug); DECIDE = needs founder/product/legal call;
 MANUAL = founder must do it in a dashboard/service; PLAN = handed to the fix agent in HANDOFF-PLAN.md.
