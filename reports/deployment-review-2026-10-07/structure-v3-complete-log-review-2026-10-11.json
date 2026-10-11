@@ -1,0 +1,467 @@
+{
+  "checked_at_utc": "2026-10-11T21:53:19.289344+00:00",
+  "commit_before": "32e9bf8e49340907c409b38458ab576018afe2b5",
+  "status": "Three unchanged historical logs fully read; project review remains active.",
+  "sources": [
+    {
+      "path": "reports/structure-v3/dry-relaxed.txt",
+      "sha256": "d4088495e490655ab39648314c79fcc8fdde3e161622533a9cebc0aebb388aa2",
+      "lines": 6861,
+      "records": 219
+    },
+    {
+      "path": "reports/structure-v3/real-run.txt",
+      "sha256": "198104e356c23c3b060623cbab3af2546b1cc7e36d52f4b7a09d8e4868a39a06",
+      "lines": 6850,
+      "records": 219
+    },
+    {
+      "path": "reports/structure-v3/real-run-2.txt",
+      "sha256": "0ecb8a267e59aa89bfeca4f35ee4fc4679df45aaec4bf1766f62b1765a7d97b9",
+      "lines": 6871,
+      "records": 219
+    }
+  ],
+  "read_evidence": {
+    "method": "All exact original line content read: full dry-a baseline and complete dry-b differences, then every2379 new exact line in68 bounded chunks. All20582 original line hashes reconstructed exactly, followed by all219 school cross-run contexts and footer/count checks. Repeated strings reuse identical read content only; six-field inputs, stored prose, ordered IDs and names verified per school. Historical review does not establish current field accuracy, provider reproducibility or deployment acceptance.",
+    "original_lines": 20582,
+    "new_unique_lines": 2379,
+    "chunks_read": 68,
+    "chunks_total": 68,
+    "cross_run_context_rows_read": 219,
+    "school_records": 657,
+    "exact_line_mapping_sha256": "390b1c159b2d1cdc124d097b549caa43b4f831eb6b0cf3ff91a5c9519aa45740",
+    "read_index_sha256": "dcf64ec4cae9598e5e06e1b0dcad417cb93a67f2a942f69c690403dbd40c195f",
+    "all219_inputs_and_stored_prose_equal_across_runs": true
+  },
+  "tuple_legend": {
+    "field_order": [
+      "ma_jidelnu",
+      "ma_koleje",
+      "krouzky_kategorie",
+      "pocet_krouzku",
+      "vyukovy_styl_tagy",
+      "vs_pokracuje_pct"
+    ],
+    "null": "-",
+    "boolean_true": "T",
+    "boolean_false": "F",
+    "empty_array": "[]",
+    "equals": "Same complete output tuple as dry-relaxed, ignoring enum order.",
+    "activities": {
+      "sport": "S",
+      "umeni_hudba_divadlo": "A",
+      "technika_robotika_it": "X",
+      "jazyky": "L",
+      "veda_debata": "V",
+      "jine": "O"
+    },
+    "styles": {
+      "projektova_vyuka": "P",
+      "tradicni_vyklad": "T",
+      "diskuze_debata": "D",
+      "praxe_dilny": "W",
+      "individualni_pristup": "I",
+      "skupinova_prace": "G"
+    }
+  },
+  "per_school_context_table": [
+    "004 T/-/SX/-/-/- | T/-/[]/-/-/- | =",
+    "006 -/-/O/-/G/- | = | =",
+    "007 -/-/S/-/-/- | = | =",
+    "008 -/-/OS/-/-/- | -/-/O/-/-/- | =",
+    "009 -/-/OS/-/-/- | -/-/O/-/-/- | =",
+    "010 T/-/SA/-/G/- | T/-/A/-/WG/- | T/-/SA/-/WG/-",
+    "011 T/-/X/-/-/- | -/-/X/-/-/- | =",
+    "012 T/-/[]/-/-/- | -/-/[]/-/-/- | =",
+    "013 T/T/OV/-/I/81 | T/T/O/-/I/81 | =",
+    "014 -/-/S/-/-/- | = | =",
+    "016 T/-/OS/-/I/- | = | =",
+    "017 -/-/SA/-/DIP/- | -/-/A/-/IP/- | -/-/SA/-/IP/-",
+    "018 -/-/SA/-/-/- | -/-/A/-/-/- | =",
+    "019 -/-/SA/-/W/- | = | =",
+    "020 T/T/SXA/-/-/- | = | =",
+    "021 T/-/-/-/W/- | -/-/-/-/W/- | =",
+    "022 -/-/SXV/-/-/- | -/-/X/-/-/- | =",
+    "023 T/-/S/-/IPG/- | = | =",
+    "024 T/-/O/-/I/- | = | =",
+    "025 T/-/LSXV/-/-/- | -/-/X/-/-/- | =",
+    "026 -/-/-/-/-/- | = | =",
+    "027 T/-/SA/-/I/- | T/-/[]/-/I/- | =",
+    "028 -/-/OSA/-/-/- | -/-/O/-/-/- | =",
+    "029 -/-/S/-/W/- | = | =",
+    "030 T/-/[]/-/W/- | -/-/[]/-/W/- | =",
+    "031 -/-/SA/-/-/- | -/-/[]/-/W/- | =",
+    "032 -/-/-/-/-/- | = | =",
+    "033 T/-/S/-/-/- | -/-/[]/-/-/- | =",
+    "034 -/-/S/-/-/- | -/-/[]/-/-/- | =",
+    "035 T/-/SAV/-/-/- | = | =",
+    "036 T/-/[]/-/-/- | = | =",
+    "037 T/-/S/-/-/- | T/-/[]/-/-/- | T/-/SA/-/-/-",
+    "038 -/-/SA/-/-/- | -/-/A/-/-/- | =",
+    "039 -/-/[]/-/-/- | -/-/[]/-/I/- | -/-/[]/-/I/-",
+    "040 -/-/[]/-/W/- | = | =",
+    "042 -/-/-/-/-/- | = | =",
+    "043 -/-/X/-/W/- | -/-/[]/-/W/- | =",
+    "045 T/-/S/-/-/- | T/-/[]/-/-/- | =",
+    "047 -/-/-/-/-/- | = | =",
+    "048 -/-/SA/-/-/- | = | =",
+    "049 T/-/S/-/W/- | -/-/S/-/W/- | =",
+    "050 T/-/[]/-/G/- | -/-/[]/-/G/- | -/-/A/-/G/-",
+    "051 -/-/-/-/-/- | = | =",
+    "052 -/-/[]/-/-/- | = | =",
+    "053 -/-/-/-/W/- | = | =",
+    "054 -/-/[]/-/W/- | = | =",
+    "056 T/-/S/-/-/- | T/-/[]/-/-/- | =",
+    "057 T/-/[]/-/-/- | -/-/[]/-/-/- | -/-/[]/-/-/-",
+    "058 T/-/S/-/W/- | T/-/[]/-/W/- | =",
+    "059 T/-/SA/-/I/- | -/-/S/-/I/- | =",
+    "060 -/-/-/-/-/- | = | =",
+    "061 -/-/SA/-/I/- | -/-/A/-/I/- | =",
+    "062 -/-/OSA/-/-/- | -/-/OS/-/-/- | =",
+    "063 T/-/A/-/-/- | = | T/-/SA/-/-/-",
+    "064 -/-/A/-/I/- | = | =",
+    "065 -/-/A/-/-/- | = | =",
+    "066 -/-/A/-/-/- | -/-/[]/-/-/- | =",
+    "067 -/-/A/-/P/- | = | =",
+    "068 -/-/A/-/-/- | = | =",
+    "069 T/-/S/-/I/- | -/-/[]/-/I/- | =",
+    "070 -/-/A/-/-/- | = | =",
+    "071 T/-/SAV/-/W/- | T/-/[]/-/W/- | =",
+    "072 -/-/A/-/I/- | -/-/[]/-/I/- | =",
+    "073 -/-/AV/-/P/95 | -/-/A/-/P/95 | -/-/A/-/P/95",
+    "074 -/-/-/-/-/- | = | =",
+    "075 T/-/A/-/-/- | -/-/A/-/-/- | -/-/A/-/-/-",
+    "076 T/F/S/-/-/- | = | =",
+    "077 -/-/A/-/-/- | -/-/[]/-/-/- | =",
+    "078 T/-/OSA/-/-/- | -/-/OSA/-/-/- | =",
+    "079 T/-/OS/-/-/- | -/-/O/-/-/- | T/-/OS/-/P/-",
+    "080 -/-/A/-/P/- | = | -/-/A/-/DP/-",
+    "081 -/-/[]/-/-/- | = | =",
+    "082 T/-/SA/-/-/- | -/-/[]/-/-/- | =",
+    "083 -/-/SXV/-/-/- | -/-/V/-/-/- | =",
+    "084 -/-/S/-/I/- | -/-/[]/-/I/- | T/-/S/-/I/-",
+    "085 T/-/O/-/-/- | = | =",
+    "086 T/-/S/-/-/- | -/-/S/-/-/- | =",
+    "087 T/-/SA/-/-/- | T/-/S/-/-/- | T/-/S/-/-/-",
+    "088 T/-/S/-/-/- | T/-/[]/-/-/- | =",
+    "089 -/-/[]/-/I/- | = | =",
+    "090 -/-/-/-/-/- | = | =",
+    "091 -/-/LSA/-/-/- | -/-/LA/-/-/- | =",
+    "092 T/-/SA/-/-/- | -/-/A/-/-/- | =",
+    "093 -/-/SA/-/-/- | -/-/S/-/-/- | =",
+    "095 T/-/SXAV/-/-/- | -/-/X/-/-/- | =",
+    "096 -/-/-/-/-/- | = | =",
+    "097 T/-/[]/-/-/- | = | =",
+    "098 -/-/-/-/-/- | = | =",
+    "099 -/-/X/-/W/- | = | =",
+    "100 T/-/S/-/-/- | -/-/[]/-/-/- | =",
+    "101 -/-/S/-/-/- | = | =",
+    "102 -/-/-/-/-/- | = | =",
+    "103 -/-/SAV/-/-/- | = | -/-/SXAV/-/-/-",
+    "104 T/-/S/-/-/- | = | =",
+    "105 -/-/[]/-/W/- | -/-/[]/-/-/- | -/-/[]/-/-/-",
+    "106 -/-/O/-/I/- | -/-/O/-/-/- | =",
+    "107 T/-/SA/-/-/- | -/-/A/-/-/- | =",
+    "108 -/-/OAV/-/-/- | = | =",
+    "109 T/-/LSA/-/-/- | -/-/LSA/-/-/- | =",
+    "110 F/-/X/-/-/- | = | F/-/X/-/W/-",
+    "111 T/-/SAV/-/-/- | -/-/S/-/-/- | =",
+    "112 -/-/S/-/W/- | = | =",
+    "113 -/-/SV/-/I/- | -/-/S/-/I/- | =",
+    "114 T/-/SA/-/-/99 | -/-/SA/-/-/99 | =",
+    "115 -/-/[]/-/-/- | = | =",
+    "116 -/-/SX/-/-/- | -/-/X/-/W/- | -/-/X/-/W/-",
+    "117 -/-/[]/-/-/- | = | =",
+    "118 T/-/[]/-/-/- | = | =",
+    "119 T/-/LSXAV/-/G/- | -/-/XA/-/G/- | =",
+    "120 -/-/SAV/-/-/- | -/-/A/-/-/- | =",
+    "121 -/-/X/-/-/- | = | =",
+    "122 T/-/OSA/-/-/- | T/-/OA/-/-/- | =",
+    "123 -/T/A/-/-/- | -/T/[]/-/-/- | =",
+    "124 T/-/-/-/I/- | -/-/-/-/I/- | =",
+    "125 T/-/[]/-/-/- | = | =",
+    "126 -/-/-/-/W/- | = | =",
+    "127 T/-/OS/-/-/- | -/-/O/-/-/- | =",
+    "128 T/-/SA/-/G/- | T/-/[]/-/G/- | =",
+    "129 -/-/O/-/-/- | = | =",
+    "130 T/-/-/-/-/- | = | =",
+    "131 -/-/[]/-/I/- | = | =",
+    "132 T/-/[]/-/-/- | = | =",
+    "133 -/-/S/-/I/- | -/-/[]/-/I/- | =",
+    "134 -/-/-/-/-/- | = | =",
+    "135 T/-/SV/-/-/- | -/-/[]/-/-/- | T/-/S/-/-/-",
+    "136 -/-/S/-/-/- | -/-/[]/-/-/- | =",
+    "137 T/-/SA/-/-/- | -/-/[]/-/-/- | =",
+    "138 T/-/-/-/-/- | -/-/-/-/-/- | -/-/-/-/-/-",
+    "139 T/-/S/-/-/- | = | =",
+    "140 T/-/[]/-/-/- | = | =",
+    "141 T/-/S/-/-/- | = | =",
+    "142 -/-/-/-/-/- | = | =",
+    "143 T/-/-/-/I/- | -/-/-/-/I/- | =",
+    "144 T/-/S/-/-/- | = | =",
+    "145 -/-/[]/-/I/- | = | =",
+    "146 T/-/S/-/IW/- | T/-/[]/-/I/- | =",
+    "147 T/-/S/-/W/- | -/-/[]/-/W/- | =",
+    "148 -/-/S/-/-/- | -/-/[]/-/-/- | =",
+    "149 -/-/S/-/-/- | -/-/[]/-/-/- | =",
+    "150 -/-/S/-/-/- | = | =",
+    "151 T/-/S/-/WP/- | T/-/S/-/W/- | =",
+    "152 -/-/[]/-/IP/- | -/-/[]/-/I/- | =",
+    "153 T/-/S/-/WP/- | -/-/S/-/WP/- | =",
+    "154 T/-/S/-/-/- | T/-/[]/-/-/- | T/-/SV/-/-/-",
+    "155 -/-/-/-/-/- | = | =",
+    "156 -/-/S/-/-/- | = | =",
+    "157 -/-/-/-/-/- | = | =",
+    "158 T/-/-/-/-/- | -/-/-/-/-/- | =",
+    "159 T/-/OS/-/-/- | -/-/O/-/-/- | =",
+    "160 -/-/LX/-/-/- | -/-/X/-/-/- | =",
+    "161 T/-/[]/-/-/- | -/-/[]/-/-/- | =",
+    "162 T/-/A/-/I/- | -/-/A/-/I/- | =",
+    "163 T/-/SXA/-/-/- | -/-/SX/-/-/- | =",
+    "164 T/-/-/-/-/- | -/-/-/-/-/- | =",
+    "165 T/-/SV/-/-/- | -/-/S/-/-/- | T/-/S/-/-/-",
+    "166 T/-/SA/-/-/- | = | =",
+    "167 -/-/[]/-/-/- | = | =",
+    "168 T/-/SA/-/I/- | = | =",
+    "169 T/-/SA/-/-/- | -/-/SA/-/-/- | =",
+    "170 T/-/X/-/-/- | -/-/[]/-/-/- | T/-/S/-/-/-",
+    "171 -/-/SA/-/I/- | = | =",
+    "172 -/-/[]/-/-/- | = | =",
+    "173 T/-/[]/-/-/- | = | =",
+    "174 T/-/A/-/-/- | -/-/[]/-/-/- | =",
+    "175 -/-/[]/-/I/- | = | =",
+    "176 -/-/-/-/-/- | = | =",
+    "177 -/-/-/-/-/- | = | =",
+    "178 T/-/SX/-/W/- | -/-/SX/-/W/- | =",
+    "179 T/T/S/-/-/- | T/T/[]/-/-/- | =",
+    "180 -/-/-/-/-/- | = | =",
+    "181 -/-/S/-/-/- | -/-/[]/-/-/- | =",
+    "182 T/T/SA/-/I/- | -/T/S/-/I/- | =",
+    "183 T/-/SA/-/I/- | -/-/S/-/I/- | =",
+    "184 -/-/LAV/-/G/- | = | =",
+    "185 T/-/S/-/-/- | -/-/[]/-/-/- | =",
+    "186 T/-/SA/-/-/- | T/-/A/-/-/- | =",
+    "187 T/-/OV/-/I/- | -/-/OV/-/I/- | =",
+    "188 -/-/LXA/-/-/- | = | =",
+    "190 -/-/A/-/-/- | = | =",
+    "191 T/-/S/-/I/- | = | =",
+    "192 T/-/SA/-/W/- | -/-/A/-/W/- | =",
+    "193 T/-/SA/-/W/- | T/-/S/-/W/- | T/-/S/-/W/-",
+    "194 T/-/S/-/P/95 | T/-/[]/-/-/95 | T/-/S/-/-/95",
+    "195 T/-/LSA/-/-/- | T/-/A/-/-/- | T/-/LSAV/-/-/-",
+    "196 -/-/O/-/IP/- | = | =",
+    "197 T/-/S/1/-/- | -/-/[]/1/-/- | T/-/S/-/-/-",
+    "198 -/-/A/-/-/- | -/-/[]/-/-/- | =",
+    "199 T/-/OS/-/IP/- | -/-/O/-/IP/- | =",
+    "200 -/-/O/-/W/- | -/-/O/-/-/- | =",
+    "201 -/-/[]/-/-/- | = | =",
+    "202 -/-/SA/-/-/- | -/-/S/-/-/- | =",
+    "203 T/-/SV/-/P/- | -/-/V/-/P/- | =",
+    "204 T/-/[]/-/-/- | = | =",
+    "205 T/-/OSA/-/-/- | -/-/OA/-/P/- | =",
+    "206 -/-/SA/-/P/- | -/-/S/-/-/- | =",
+    "207 T/-/LSXAV/-/-/- | -/-/XV/-/-/- | =",
+    "208 -/-/A/-/W/- | = | -/-/A/-/-/-",
+    "209 -/-/SA/-/-/- | -/-/[]/-/-/- | =",
+    "210 -/-/-/-/-/- | = | =",
+    "211 T/-/L/-/PG/- | -/-/[]/-/PG/- | =",
+    "212 -/-/[]/-/-/- | = | =",
+    "213 -/-/LSA/-/I/- | -/-/[]/-/-/- | -/-/LSA/-/-/-",
+    "214 -/-/-/-/I/- | = | =",
+    "215 T/-/L/-/PGT/- | -/-/[]/-/PGT/- | =",
+    "216 T/-/L/-/PG/- | -/-/[]/-/PG/- | =",
+    "217 T/-/L/-/P/- | -/-/[]/-/PG/- | =",
+    "218 T/-/L/-/G/- | -/-/[]/-/G/- | =",
+    "219 T/-/LSAV/-/P/- | -/-/[]/-/P/- | =",
+    "220 T/-/S/-/I/- | -/-/S/-/I/- | =",
+    "221 -/-/[]/-/-/- | = | =",
+    "222 T/-/S/-/I/- | T/-/[]/-/I/- | =",
+    "223 -/-/SXAV/-/-/- | -/-/SXV/-/-/- | -/-/LSXAV/-/-/-",
+    "224 -/-/LSA/-/P/- | -/-/SA/-/P/- | =",
+    "225 -/-/X/-/I/- | = | =",
+    "226 -/-/-/-/-/- | = | =",
+    "228 T/-/SXV/-/-/- | T/-/X/-/-/- | =",
+    "229 T/-/SA/-/-/- | T/-/S/-/-/- | =",
+    "230 T/-/A/-/-/- | T/-/[]/-/-/- | =",
+    "231 T/-/S/-/-/- | -/-/S/-/-/- | ="
+  ],
+  "runs": {
+    "reports/structure-v3/dry-relaxed.txt": {
+      "fields": {
+        "ma_jidelnu": {
+          "nonnull": 111,
+          "nonempty": 111
+        },
+        "ma_koleje": {
+          "nonnull": 6,
+          "nonempty": 6
+        },
+        "krouzky_kategorie": {
+          "nonnull": 189,
+          "nonempty": 158
+        },
+        "pocet_krouzku": {
+          "nonnull": 1,
+          "nonempty": 1
+        },
+        "vyukovy_styl_tagy": {
+          "nonnull": 79,
+          "nonempty": 79
+        },
+        "vs_pokracuje_pct": {
+          "nonnull": 4,
+          "nonempty": 4
+        }
+      },
+      "records": 219,
+      "footer": [
+        "Processed 219, skipped 0, failed 0, of 219 targeted.",
+        "Model-returned non-null values:",
+        "  ma_jidelnu: 108/219",
+        "  ma_koleje: 14/219",
+        "  krouzky_kategorie: 188/219",
+        "  pocet_krouzku: 1/219",
+        "  vyukovy_styl_tagy: 132/219",
+        "  vs_pokracuje_pct: 4/219",
+        "Validated non-null outputs:",
+        "  ma_jidelnu: 111/219",
+        "  ma_koleje: 6/219",
+        "  krouzky_kategorie: 189/219",
+        "  pocet_krouzku: 1/219",
+        "  vyukovy_styl_tagy: 79/219",
+        "  vs_pokracuje_pct: 4/219",
+        "--dry-run: nothing written to Supabase."
+      ]
+    },
+    "reports/structure-v3/real-run.txt": {
+      "fields": {
+        "ma_jidelnu": {
+          "nonnull": 50,
+          "nonempty": 50
+        },
+        "ma_koleje": {
+          "nonnull": 6,
+          "nonempty": 6
+        },
+        "krouzky_kategorie": {
+          "nonnull": 189,
+          "nonempty": 110
+        },
+        "pocet_krouzku": {
+          "nonnull": 1,
+          "nonempty": 1
+        },
+        "vyukovy_styl_tagy": {
+          "nonnull": 77,
+          "nonempty": 77
+        },
+        "vs_pokracuje_pct": {
+          "nonnull": 4,
+          "nonempty": 4
+        }
+      },
+      "records": 219,
+      "footer": [
+        "Processed 219, skipped 0, failed 0, of 219 targeted.",
+        "Model-returned non-null values:",
+        "  ma_jidelnu: 110/219",
+        "  ma_koleje: 13/219",
+        "  krouzky_kategorie: 188/219",
+        "  pocet_krouzku: 0/219",
+        "  vyukovy_styl_tagy: 129/219",
+        "  vs_pokracuje_pct: 4/219",
+        "Validated non-null outputs:",
+        "  ma_jidelnu: 50/219",
+        "  ma_koleje: 6/219",
+        "  krouzky_kategorie: 189/219",
+        "  pocet_krouzku: 1/219",
+        "  vyukovy_styl_tagy: 77/219",
+        "  vs_pokracuje_pct: 4/219"
+      ]
+    },
+    "reports/structure-v3/real-run-2.txt": {
+      "fields": {
+        "ma_jidelnu": {
+          "nonnull": 108,
+          "nonempty": 108
+        },
+        "ma_koleje": {
+          "nonnull": 6,
+          "nonempty": 6
+        },
+        "krouzky_kategorie": {
+          "nonnull": 189,
+          "nonempty": 159
+        },
+        "pocet_krouzku": {
+          "nonnull": 0,
+          "nonempty": 0
+        },
+        "vyukovy_styl_tagy": {
+          "nonnull": 79,
+          "nonempty": 79
+        },
+        "vs_pokracuje_pct": {
+          "nonnull": 4,
+          "nonempty": 4
+        }
+      },
+      "records": 219,
+      "footer": [
+        "Processed 219, skipped 0, failed 0, of 219 targeted.",
+        "Model-returned non-null values:",
+        "  ma_jidelnu: 108/219",
+        "  ma_koleje: 12/219",
+        "  krouzky_kategorie: 188/219",
+        "  pocet_krouzku: 0/219",
+        "  vyukovy_styl_tagy: 128/219",
+        "  vs_pokracuje_pct: 4/219",
+        "Validated non-null outputs:",
+        "  ma_jidelnu: 108/219",
+        "  ma_koleje: 6/219",
+        "  krouzky_kategorie: 189/219",
+        "  pocet_krouzku: 0/219",
+        "  vyukovy_styl_tagy: 79/219",
+        "  vs_pokracuje_pct: 4/219"
+      ]
+    }
+  },
+  "semantic_run_differences": {
+    "reports/structure-v3/real-run.txt": {
+      "changed_schools": 128,
+      "changed_fields": {
+        "ma_jidelnu": 61,
+        "ma_koleje": 0,
+        "krouzky_kategorie": 97,
+        "pocet_krouzku": 0,
+        "vyukovy_styl_tagy": 16,
+        "vs_pokracuje_pct": 0
+      }
+    },
+    "reports/structure-v3/real-run-2.txt": {
+      "changed_schools": 29,
+      "changed_fields": {
+        "ma_jidelnu": 5,
+        "ma_koleje": 0,
+        "krouzky_kategorie": 14,
+        "pocet_krouzku": 1,
+        "vyukovy_styl_tagy": 11,
+        "vs_pokracuje_pct": 0
+      }
+    }
+  },
+  "qualified_findings": [
+    "Same six selected source inputs and stored prose across all219 records; final outputs differ for128 schools in real-run and29 in real-run-2 relative to dry-relaxed. The exact historical cleaner/model/provider settings are not preserved, so this does not establish random model instability or current-data regressions.",
+    "Final activity arrays are nonempty for158/110/159 schools across dry-relaxed/real-run/real-run-2;189 non-null arrays in each run includes31/79/30 empty arrays. Non-null coverage is not useful activity coverage. Final meal non-null counts111/50/108 differ too; counts are historical, not the current catalogue.",
+    "Historical scope candidates include primary-school boarder clubs183, boarder creative rooms193, curriculum/charity207, mixed campuses209, first-grade teaching214,2021/22 aftercare223, anthropology subject matter224 and third-age computing225. S10 requires applicable pupil/programme/campus/year mapping before correcting actual current fields.",
+    "Existing seven current full-cleaner replays/five public GETs qualify current versus historical errors separately; this checkpoint adds no current reads or writes. Preserve current fee-per-club and kindergarten-meal rejections.",
+    "Unsupported all-enum model outputs for73 and200 and invented quote171 remain negative controls; real cited club/course/trip positives need founder-defined activity semantics. Quote substring presence alone does not establish correct audience or participation."
+  ],
+  "remaining_acceptance": [
+    "Complete current field/provenance/year/audience/campus reconciliation, ranking-impact tests and positive/negative controls in S10 after peer ownership release.",
+    "Pending founder activity scope decision; no broad policy inferred.",
+    "Controlled local/founder/migration acceptance before substantive pipeline or data promotion. No rerun, restore, live data edit or paid provider call authorized by this checkpoint.",
+    "Current peer source/schema/tests still deferred; all payment, privacy, service, device and deployment gates remain open. Ignored scraped-source corpus is not covered by these three log receipts."
+  ]
+}

@@ -2139,20 +2139,20 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "4ec069bc25a47eeebcc53f9e612b8d288f2b62854b9cea50acf18d1b12eab6a7",
-    "lines": 1977,
+    "sha256": "4508b1349dcec9e90e0d010faa4a26d318c352d5e4302d3deb4ae09cc3cbc525",
+    "lines": 1983,
     "read_ranges": [
       [
         1,
-        1977
+        1983
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-11T21:43:30.837371+00:00",
-    "previous_complete_sha256": "e1dcfe5e039ccb49f70fae5b3a47e4194ecf640fefe6a0fc94b5e9bece2043e3",
-    "method": "Exact fully reviewed saved baseline plus complete own append/one-line diagnostic diff read; seven full-cleaner output/null-reason/quote invariance checks. No original-log full-read or current release acceptance inferred.",
-    "evidence": "structure-cleaner-scope-followup-2026-10-11.json"
+    "checked_at_utc": "2026-10-11T21:53:19.289344+00:00",
+    "previous_complete_sha256": "4ec069bc25a47eeebcc53f9e612b8d288f2b62854b9cea50acf18d1b12eab6a7",
+    "method": "Exact fully reviewed unchanged baseline plus complete own appended later-log completion and S10 acceptance qualification.",
+    "evidence": "structure-v3-complete-log-review-2026-10-11.json"
   },
   "frontend/src/api.js": {
     "sha256": "a545cb179681a87378f41cf928cff50e1ae6c2e539c4bbacf373590af9f8ab8a",
@@ -10594,5 +10594,50 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-11T17:21:00.794592+00:00",
     "method": "Exact fully read dry-a baseline plus all 112 complete unified-diff lines read in two bounded ranges; unchanged lines reuse that exact baseline. Historical review only, no current official or production acceptance."
+  },
+  "reports/structure-v3/dry-relaxed.txt": {
+    "sha256": "d4088495e490655ab39648314c79fcc8fdde3e161622533a9cebc0aebb388aa2",
+    "lines": 6861,
+    "read_ranges": [
+      [
+        1,
+        6861
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T21:53:19.289344+00:00",
+    "method": "All exact original line content read: full dry-a baseline and complete dry-b differences, then every2379 new exact line in68 bounded chunks. All20582 original line hashes reconstructed exactly, followed by all219 school cross-run contexts and footer/count checks. Repeated strings reuse identical read content only; six-field inputs, stored prose, ordered IDs and names verified per school. Historical review does not establish current field accuracy, provider reproducibility or deployment acceptance.",
+    "evidence": "structure-v3-complete-log-review-2026-10-11.json"
+  },
+  "reports/structure-v3/real-run.txt": {
+    "sha256": "198104e356c23c3b060623cbab3af2546b1cc7e36d52f4b7a09d8e4868a39a06",
+    "lines": 6850,
+    "read_ranges": [
+      [
+        1,
+        6850
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T21:53:19.289344+00:00",
+    "method": "All exact original line content read: full dry-a baseline and complete dry-b differences, then every2379 new exact line in68 bounded chunks. All20582 original line hashes reconstructed exactly, followed by all219 school cross-run contexts and footer/count checks. Repeated strings reuse identical read content only; six-field inputs, stored prose, ordered IDs and names verified per school. Historical review does not establish current field accuracy, provider reproducibility or deployment acceptance.",
+    "evidence": "structure-v3-complete-log-review-2026-10-11.json"
+  },
+  "reports/structure-v3/real-run-2.txt": {
+    "sha256": "0ecb8a267e59aa89bfeca4f35ee4fc4679df45aaec4bf1766f62b1765a7d97b9",
+    "lines": 6871,
+    "read_ranges": [
+      [
+        1,
+        6871
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T21:53:19.289344+00:00",
+    "method": "All exact original line content read: full dry-a baseline and complete dry-b differences, then every2379 new exact line in68 bounded chunks. All20582 original line hashes reconstructed exactly, followed by all219 school cross-run contexts and footer/count checks. Repeated strings reuse identical read content only; six-field inputs, stored prose, ordered IDs and names verified per school. Historical review does not establish current field accuracy, provider reproducibility or deployment acceptance.",
+    "evidence": "structure-v3-complete-log-review-2026-10-11.json"
   }
 }
