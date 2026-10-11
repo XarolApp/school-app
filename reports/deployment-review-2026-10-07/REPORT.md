@@ -228,3 +228,6 @@ Historical data checkpoint,11 October: both 5 October synthetic runtime/CSV JSON
 
 
 Extraction comparison checkpoint,11 October:93 complete source artifacts/1318 original lines;48 raw Codex files and 15 full API bases plus all 30 complete normalized JSON differences. Duplicate-key/grammar/type/hash checks pass. [Evidence](comparison-data-artifact-review-2026-10-11.json) records the 5-vs-4 log disagreement, four missing field-source URLs, ten variable numeric/booleans and S10 candidate freshness/scope/fee/meal/club semantics. Raw local untracked artifacts and current live data are unchanged; shape/filling is not accuracy. Reconcile actual currently served facts before any promotion; no current beta exposure is inferred from hidden212 or old experiments. Whole review remains active.
+
+
+Tuition/batch checkpoint,11 October: eighteen complete unchanged historical artifacts/292 lines (12 tuition JSON,5 ID files,1 run log). [Evidence](tuition-batch-artifact-review-2026-10-11.json) distinguishes internally correct arithmetic/204 batch counts from S10 current-source/year/round/programme/fee/counter/club/graduate-category acceptance.219 requested experiment schools exist in220 backup records with extra 94; the backup content is not yet fully read. No current school-data mutation/exposure, provider call or release acceptance is inferred.

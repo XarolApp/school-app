@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-11T17:00:49.656667+00:00",
-  "commit": "19d21c2977ae6526eb26a69d5aef8ed80d51541b",
+  "checked_at_utc": "2026-10-11T17:06:17.059376+00:00",
+  "commit": "bf16a424ac0134cc776f9ab97efa99be118e2d41",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "current_full_read": 749,
+    "current_full_read": 766,
     "binary_requires_asset_check": 105,
-    "pending_or_changed": 45,
-    "generated_or_audit_artifact": 195,
+    "pending_or_changed": 28,
+    "generated_or_audit_artifact": 196,
     "removed_or_missing": 2
   },
   "files": [
@@ -993,8 +993,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "c51e716010295f93e4d497458f472ea41b1da442981e144b496fc9688c88b03a",
-      "lines": 1942,
+      "sha256": "fc1affce6152ce7c6b51abf31949b32a2ecf5c0d6dd4b3a85b01deb52ab6632b",
+      "lines": 1947,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -5469,36 +5469,46 @@
       "path": "reports/api-comparison/batch1.ids",
       "sha256": "5752824b077dbe4484150279423224d0ade57a31df14a49b292334bfb5e5414f",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/batch2.ids",
       "sha256": "aecc11c8d817949925aea8df3b6dc1ccc31c46dd230fff2ca40b0de1473ca881",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/batch3.ids",
       "sha256": "8e41616c54dfa4eeeb2c8ef28617c2772b540ab313c5fb49c93298ff57190e1f",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/batch4.ids",
       "sha256": "55e7f3d7c07a70528ffef2c0aa3fb962ed264be11802d032e87e286c2520a332",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/batch5.ids",
       "sha256": "2bfb8de36cd13c367068247714d1c70ba4e5094df9f76a37dffa3b4598575824",
       "lines": 1,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/filtered/104.json",
@@ -5916,85 +5926,109 @@
       "path": "reports/api-comparison/tuition-check/113.json",
       "sha256": "4fb7a238c72b824dc7bed45c0edd6cb27ec1e9855ec60b24e8074a74c021729e",
       "lines": 20,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/tuition-check/127.json",
       "sha256": "b89e745dd7b89633e08871e55c18aae2a363fd0d772897070fe9f0c6719ac698",
       "lines": 23,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/tuition-check/148.json",
       "sha256": "d8c9867b3afbdd20f56ad2da5e2978f4066e5dbc2849871cce69a6dfad6c0c56",
       "lines": 21,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/tuition-check/196.json",
       "sha256": "6ce14d14464cf16f4c01b7b84a9653c39f3f3f10703292466ca47419557081a1",
       "lines": 24,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/tuition-check/200.json",
       "sha256": "de1e898d5a4daac5263eaaa0b4c10a1a91b95f0cd75ccac9ecebb88f3040c6ff",
       "lines": 22,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/tuition-check/201.json",
       "sha256": "ed2f1fb219a9f2e0942499686bba756e66dd76a40c076a13e135a73b8412c181",
       "lines": 24,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/tuition-check/203.json",
       "sha256": "49808206c2da2edfdbe1cb7bbc05f00f2f639e214c016acfe1ec07cf4ab2cd8d",
       "lines": 26,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/tuition-check/205.json",
       "sha256": "1bf87ee105f5e0d0c5a30fe567cf9d0553ec2bc83b82affd82a9db929e96c585",
       "lines": 25,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/tuition-check/206.json",
       "sha256": "1282a8f745bf0d6b824aad3dc462f1d6d97d06fc4e7904840dd4714789a72764",
       "lines": 23,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/tuition-check/207.json",
       "sha256": "768edf4e28daa6884931d64e4a3eec0f769e3e0972ac3ac26acee73edb0ff497",
       "lines": 23,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/tuition-check/218.json",
       "sha256": "b2c120eee2fc8957e8038d1d1b4b66ef7d2763eb40892514663c06d52863fbb4",
       "lines": 24,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/tuition-check/7.json",
       "sha256": "fd7c2091851653f11f132fb63e99678e787fb7aa8f71396c5f1c1187a6c8fc57",
       "lines": 21,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/beta-implementation-claude-review-2-2026-10-05.md",
@@ -6581,22 +6615,22 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "9022dab3073930696cb42abed3914654d5850f8495a35b46a82bce6daf8c64e3",
-      "lines": 493,
+      "sha256": "e28a840a0223e7118990bfe0b62ae299eab641b234e69d62058dc11ec36b7dc9",
+      "lines": 499,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "ba17fb7f6754e84f0c7c5d21184ff306acb630442cdb9efd6f8edcb3deed3d89",
-      "lines": 300,
+      "sha256": "1b3b941ee6328804d885e9ad08cfd4737a1de652cc83f629cf8a8089cb8ca607",
+      "lines": 303,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "53d81daa46b600a5c6827ef497f3b221007b6775c104bbafb7a7136882c83197",
-      "lines": 230,
+      "sha256": "844706942a00d3b343b0f047ffc2f76097ff7259a9226ab4661979e3d52cee58",
+      "lines": 233,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6952,8 +6986,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "1428c82d3f04fbe8ff3551e8c9655e161651fa0a08bf95f9984510d100466538",
-      "lines": 587,
+      "sha256": "93f0f6f21aef90bef4796fa990857a6ccfd32dd5a55770a3ae83ffcc8bf5cc54",
+      "lines": 590,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6966,8 +7000,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "dc145fc616643a64a250bd8a15d8503ac4b7ef6974f0919bdb55e972bd1e645e",
-      "lines": 8995,
+      "sha256": "90097abe823d5f4636b925958d7d66420a0212b697d7eef676a3bb0e3017b975",
+      "lines": 9188,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -8264,8 +8298,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "3f29e096ea6f7f6fd123e1d93be9375f29b0012d049261e7a8ffce858ef79de2",
-      "lines": 10275,
+      "sha256": "236ca9efaff2443a01f772213d19b06ccb214d3579a28df2f2cbe018cd99b615",
+      "lines": 10527,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -8499,6 +8533,13 @@
       "path": "reports/deployment-review-2026-10-07/tracking-withdrawal-race-2026-10-10.json",
       "sha256": "c3f7cbc67a30e91e6a17bbbd4e9fbc555e6c22810d97f3abe4c6ab0f62b5c2d6",
       "lines": 12,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/tuition-batch-artifact-review-2026-10-11.json",
+      "sha256": "2e54615c00ec7b9d88d43fa61eb06cda7a8b85b1c6a70d393da07f2f521635b7",
+      "lines": 132,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },

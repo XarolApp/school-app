@@ -1,0 +1,132 @@
+{
+  "checked_at_utc": "2026-10-11T17:05:46.278385+00:00",
+  "snapshot_commit": "bf16a424ac0134cc776f9ab97efa99be118e2d41",
+  "files": {
+    "reports/api-comparison/tuition-check/7.json": {
+      "sha256": "fd7c2091851653f11f132fb63e99678e787fb7aa8f71396c5f1c1187a6c8fc57",
+      "lines": 21,
+      "nonnull_fields": 4
+    },
+    "reports/api-comparison/tuition-check/113.json": {
+      "sha256": "4fb7a238c72b824dc7bed45c0edd6cb27ec1e9855ec60b24e8074a74c021729e",
+      "lines": 20,
+      "nonnull_fields": 3
+    },
+    "reports/api-comparison/tuition-check/127.json": {
+      "sha256": "b89e745dd7b89633e08871e55c18aae2a363fd0d772897070fe9f0c6719ac698",
+      "lines": 23,
+      "nonnull_fields": 6
+    },
+    "reports/api-comparison/tuition-check/148.json": {
+      "sha256": "d8c9867b3afbdd20f56ad2da5e2978f4066e5dbc2849871cce69a6dfad6c0c56",
+      "lines": 21,
+      "nonnull_fields": 5
+    },
+    "reports/api-comparison/tuition-check/196.json": {
+      "sha256": "6ce14d14464cf16f4c01b7b84a9653c39f3f3f10703292466ca47419557081a1",
+      "lines": 24,
+      "nonnull_fields": 7
+    },
+    "reports/api-comparison/tuition-check/200.json": {
+      "sha256": "de1e898d5a4daac5263eaaa0b4c10a1a91b95f0cd75ccac9ecebb88f3040c6ff",
+      "lines": 22,
+      "nonnull_fields": 5
+    },
+    "reports/api-comparison/tuition-check/201.json": {
+      "sha256": "ed2f1fb219a9f2e0942499686bba756e66dd76a40c076a13e135a73b8412c181",
+      "lines": 24,
+      "nonnull_fields": 7
+    },
+    "reports/api-comparison/tuition-check/203.json": {
+      "sha256": "49808206c2da2edfdbe1cb7bbc05f00f2f639e214c016acfe1ec07cf4ab2cd8d",
+      "lines": 26,
+      "nonnull_fields": 9
+    },
+    "reports/api-comparison/tuition-check/205.json": {
+      "sha256": "1bf87ee105f5e0d0c5a30fe567cf9d0553ec2bc83b82affd82a9db929e96c585",
+      "lines": 25,
+      "nonnull_fields": 8
+    },
+    "reports/api-comparison/tuition-check/206.json": {
+      "sha256": "1282a8f745bf0d6b824aad3dc462f1d6d97d06fc4e7904840dd4714789a72764",
+      "lines": 23,
+      "nonnull_fields": 6
+    },
+    "reports/api-comparison/tuition-check/207.json": {
+      "sha256": "768edf4e28daa6884931d64e4a3eec0f769e3e0972ac3ac26acee73edb0ff497",
+      "lines": 23,
+      "nonnull_fields": 6
+    },
+    "reports/api-comparison/tuition-check/218.json": {
+      "sha256": "b2c120eee2fc8957e8038d1d1b4b66ef7d2763eb40892514663c06d52863fbb4",
+      "lines": 24,
+      "nonnull_fields": 7
+    },
+    "reports/api-comparison/batch1.ids": {
+      "sha256": "5752824b077dbe4484150279423224d0ade57a31df14a49b292334bfb5e5414f",
+      "lines": 1
+    },
+    "reports/api-comparison/batch2.ids": {
+      "sha256": "aecc11c8d817949925aea8df3b6dc1ccc31c46dd230fff2ca40b0de1473ca881",
+      "lines": 1
+    },
+    "reports/api-comparison/batch3.ids": {
+      "sha256": "8e41616c54dfa4eeeb2c8ef28617c2772b540ab313c5fb49c93298ff57190e1f",
+      "lines": 1
+    },
+    "reports/api-comparison/batch4.ids": {
+      "sha256": "55e7f3d7c07a70528ffef2c0aa3fb962ed264be11802d032e87e286c2520a332",
+      "lines": 1
+    },
+    "reports/api-comparison/batch5.ids": {
+      "sha256": "2bfb8de36cd13c367068247714d1c70ba4e5094df9f76a37dffa3b4598575824",
+      "lines": 1
+    },
+    "reports/api-comparison/full-run.log": {
+      "sha256": "9cec91039bbd66e4a5bc6582f67d42d6dead108cdd314cb09a7d8a898942bd0e",
+      "lines": 11
+    }
+  },
+  "source_lines": 292,
+  "read_method": "All12tuition outputs and five full ID files plus their complete run log read. Hashes unchanged; batch/backup set checks do not imply a completed backup read.",
+  "probe": {
+    "tuition_nonnull_fields_without_own_citation": [
+      {
+        "path": "reports/api-comparison/tuition-check/148.json",
+        "field": "tuition_czk_per_year"
+      }
+    ],
+    "batch_sizes": [
+      50,
+      50,
+      50,
+      50,
+      4
+    ],
+    "log_processed_counts_match_ID_files": true,
+    "unique_batch_IDs": 204,
+    "experiment_original15_plus_batch204": 219,
+    "original_batch_overlap": false,
+    "full_backup_unique_school_records": 220,
+    "full_backup_extra_IDs": [
+      94
+    ],
+    "requested_IDs_missing_from_backup": [],
+    "note": "These are dated local experiments; metadata/prose/calendar correctness and current deployed rows remain separate source-review gates."
+  },
+  "S10_candidates": [
+    "148 has a69000 scalar tied in its own prose to2027/28 prima/eight-year grammar while other tracks have other prices; the scalar also lacks its own source URL. This is an exact-source/current-eligible-programme candidate, not automatic authorization to rewrite a historical artifact or live row.",
+    "127 presents2025/26 fees/5th-grade prima admission,113 discusses IQ130/primastyle requirements,201 mixes transfer/eight-year first round with current four-year programmes, and205 mixes eight/four-year prices and admission content. Verify programme/form/year/round before current ninth-grade display/scoring.",
+    "196 annual arithmetic23450x2=46900 is internally consistent but no-differently-listed-price does not prove universal applicability.203 identifies different2025/26 and2026/27 prices;206 explicitly varies payable months12vs10byyear and correctly leaves the scalar unknown. Do not silently choose a range midpoint/currentyear/form/month schedule.",
+    "7 and218 share a Fostra brand but different prices/programme wording; shared-domain programmes/campuses/years need explicit source mappings rather than assuming one school-wide price. Current canonical school/programme identity, not a brand string, determines scope.",
+    "205 cites a webpage0percent university counter and calls it suspect. Verify whether cached scraping captured an uninitialized dynamic counter before showing that as a measured percentage; generic university preparation/recognition is not guaranteed admission or a measured destination/continuation rate.",
+    "196graduate accounting careers and200closed-2025/26cook-waiter track must not be mistaken for current post-apprenticeship employment/active ninth-grade programmes. Curricular projects/graduate ability/after-school clubs remain distinct, and unknown must not become false.",
+    "Five ID batches are50/50/50/50/4,204unique and disjoint from the15experiment schools; the log records exactly those processed counts/zero failures.219experiment IDs are all present in the220record backup, whose one extra ID is94. These are different historical cohorts, not contradictory current catalogue counts or verified current source availability."
+  ],
+  "ordered_acceptance": "Continue S10 with one data owner: exact current official source/scrape checksums, school-campus/eligible programme/form/year/round mapping, scalar-vs-range/month/same-price policy and per-field evidence; reconcile actual served records/unknown states only after a reviewed dry run and required approvals. Preserve raw historical outputs and physical hidden rows/archived choices; no blind import/paid rerun/live write.",
+  "limits": [
+    "All18 raw artifacts remain byte-unchanged and untracked; only own review files will be committed.",
+    "No official linked page fetched in this historical-content pass and no current served fact or production exposure inferred.",
+    "The big backup has only a cohort-set probe here and remains pending for complete content review. Existing15/94 missing-source exceptions and all current service/privacy/payment/peer gates remain open."
+  ]
+}
