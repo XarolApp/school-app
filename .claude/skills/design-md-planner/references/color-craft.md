@@ -1,6 +1,6 @@
 # Color Craft
 
-How to build a palette that looks made rather than picked. Read alongside `anti-slop.md`.
+How to build a palette that looks made rather than picked. Read alongside `anti-slop.md`. These are aesthetic heuristics; verify actual gamut and rendered accessibility, preserve project decisions and do not treat an example palette as physical measurement.
 
 **Contents**
 - [Start from a referent](#1-start-from-a-referent)
@@ -39,7 +39,7 @@ Then write the referent into the DESIGN.md prose. A reader who sees "**Tertiary 
 
 ## 2. Work in OKLCH
 
-OKLCH is `oklch(L C H)`: perceptual lightness (0–1 or 0–100%), chroma (0 to ~0.37), hue angle (0–360°).
+OKLCH is `oklch(L C H)`: perceptual lightness (0–1 or 0–100%), chroma (nonnegative; usable range depends on lightness, hue and target gamut), hue angle (0–360°).
 
 Why it matters here: **in HSL, equal lightness steps are not equally light.** HSL yellow at 50% lightness is dramatically brighter than HSL blue at 50%. Every ramp built in HSL has hot spots and dead zones, and the resulting palette feels subtly wrong in ways that are hard to diagnose. OKLCH's L is perceptually uniform, so a ramp with even L steps actually looks evenly spaced.
 
@@ -53,7 +53,7 @@ Approximate hue angles for orientation:
 | lime | 120–130 | violet | 290–310 |
 | | | magenta | 330–350 |
 
-**Gamut caution.** OKLCH can express colors outside sRGB. Chroma above ~0.20 is unreliable at extreme lightness values and will clip on conversion. Keep chroma under ~0.22 for anything that must render consistently, and always convert to hex and check that the result still looks right.
+**Gamut caution.** OKLCH can express colors outside sRGB. Chroma above ~0.20 is unreliable at extreme lightness values and will clip on conversion. No single chroma cap guarantees sRGB containment; convert/check each lightness/hue combination and inspect any gamut mapping before accepting the result.
 
 **Output format.** Author in OKLCH, ship hex. The DESIGN.md spec accepts `oklch()` values, but hex is the recommended default for tooling breadth. Use hex in the tokens and mention the OKLCH derivation in the prose if it's interesting.
 
@@ -61,7 +61,7 @@ Approximate hue angles for orientation:
 
 ## 3. Build the ramp
 
-A ramp is a family of one hue at multiple lightnesses. Nine steps is conventional (e.g. `50, 100, 200 … 900`); five is often enough.
+A ramp is a family of one hue at multiple lightnesses. Ten steps are common (`50`, then `100` through `900`); this worked example uses nine, ending at `800`. Five may be enough.
 
 Set lightness first, on a perceptual curve rather than linearly:
 
@@ -95,21 +95,21 @@ A ramp with a constant hue angle is mathematically clean and visually synthetic.
 
 ### Worked example
 
-A terracotta primary, sourced from unglazed pottery:
+A material-inspired terracotta ramp. The hex values are fixed; the approximate OKLCH coordinates below are calculated from those values, not an independently documented physical sample:
 
-| Step | OKLCH | Hex (approx) |
+| Step | Computed OKLCH (rounded) | Fixed sRGB hex |
 |---|---|---|
-| 50  | `oklch(0.97 0.010 42)` | `#FAF3EF` |
-| 100 | `oklch(0.93 0.028 40)` | `#F5E4DA` |
-| 200 | `oklch(0.87 0.055 38)` | `#EBCBB8` |
-| 300 | `oklch(0.78 0.088 35)` | `#DBA98D` |
-| 400 | `oklch(0.68 0.115 32)` | `#C68566` |
-| 500 | `oklch(0.58 0.128 30)` | `#AC6647` |
-| 600 | `oklch(0.47 0.118 28)` | `#8B4E34` |
-| 700 | `oklch(0.36 0.095 25)` | `#693A26` |
-| 800 | `oklch(0.24 0.065 20)` | `#472619` |
+| 50  | `oklch(0.9685 0.0093 52.1)` | `#FAF3EF` |
+| 100 | `oklch(0.9298 0.0230 52.7)` | `#F5E4DA` |
+| 200 | `oklch(0.8642 0.0445 52.6)` | `#EBCBB8` |
+| 300 | `oklch(0.7738 0.0706 50.6)` | `#DBA98D` |
+| 400 | `oklch(0.6755 0.0916 46.2)` | `#C68566` |
+| 500 | `oklch(0.5815 0.1008 44.2)` | `#AC6647` |
+| 600 | `oklch(0.4905 0.0910 43.3)` | `#8B4E34` |
+| 700 | `oklch(0.4021 0.0737 43.3)` | `#693A26` |
+| 800 | `oklch(0.3088 0.0547 42.0)` | `#472619` |
 
-Lightness descends on a perceptual curve, chroma peaks at 500, hue bends 42°→20°. Nothing here is a framework default.
+Measured lightness descends, chroma peaks at 500, and hue runs approximately 53°→42° after hex rounding. Nothing here is a framework default.
 
 ### How many ramps
 
@@ -121,7 +121,7 @@ Most systems need fewer than they build. A primary ramp, a neutral ramp, and one
 
 The highest-impact, lowest-visibility change available.
 
-Pure greys (`R=G=B`, or chroma exactly 0) are the loudest signal that a palette was assembled rather than designed. Real environments have no neutral light — everything is tinted by its source and its surroundings.
+Pure greys (`R=G=B`, or chroma exactly 0) are the loudest signal that a palette was assembled rather than designed. Tinted neutrals can connect a surface to its material-inspired palette; neutral greys remain a valid deliberate choice.
 
 Give the neutral ramp a small chroma, typically `0.004–0.020`, at a hue related to the brand:
 
@@ -132,15 +132,15 @@ Give the neutral ramp a small chroma, typically `0.004–0.020`, at a hue relate
 A warm neutral ramp to pair with the terracotta above:
 
 ```
-oklch(0.98 0.004 60)  #FBFAF8
-oklch(0.95 0.006 60)  #F4F2EE
-oklch(0.90 0.008 60)  #E8E4DD
-oklch(0.80 0.010 58)  #CCC6BB
-oklch(0.65 0.010 56)  #9E978C
-oklch(0.50 0.010 54)  #736D63
-oklch(0.38 0.010 52)  #544F47
-oklch(0.28 0.009 50)  #3B372F
-oklch(0.18 0.008 48)  #23201B
+oklch(0.9853 0.0029 84.6)  #FBFAF8
+oklch(0.9616 0.0057 84.6)  #F4F2EE
+oklch(0.9200 0.0104 81.8)  #E8E4DD
+oklch(0.8283 0.0165 82.8)  #CCC6BB
+oklch(0.6792 0.0179 79.3)  #9E978C
+oklch(0.5372 0.0170 80.7)  #736D63
+oklch(0.4299 0.0145 79.7)  #544F47
+oklch(0.3382 0.0147 84.6)  #3B372F
+oklch(0.2451 0.0103 80.6)  #23201B
 ```
 
 Compare `#736D63` against `#737373`. Individually the difference is nearly imperceptible. Across an entire interface it's the difference between a designed surface and a wireframe.
@@ -187,16 +187,16 @@ WCAG 2.x thresholds:
 |---|---|---|
 | Body text (<18pt / <14pt bold) | 4.5:1 | 7:1 |
 | Large text (≥18pt / ≥14pt bold) | 3:1 | 4.5:1 |
-| UI components, focus indicators, graphical objects | 3:1 | — |
+| Required author-styled non-text states/graphics (SC 1.4.11, exceptions apply) | 3:1 against adjacent colors | Separate criteria |
 
 The DESIGN.md linter's `contrast-ratio` rule checks each component's `backgroundColor`/`textColor` pair against 4.5:1, so define those pairs together in the components section — a component with a background and no text color silently skips the check.
 
 Practical guidance:
 
 - **Design to a margin.** Aim for 4.8–5.5:1 rather than exactly 4.5:1. Antialiasing, thin weights, and low-quality displays all erode effective contrast.
-- **Watch mid-tone accents on light backgrounds.** A 500-step accent on white is very often around 3:1 — fine for a button *fill* with white text, failing as *text* on white. Use the 600 or 700 step for links and text.
-- **Placeholder and disabled text** still need to be legible. 3:1 minimum is a reasonable floor even though WCAG technically exempts disabled controls.
-- **Focus indicators need 3:1 against both the component and the background.** This is the requirement most often missed.
+- **Check the text pair independently of the button boundary.** A 3:1 accent/white pair fails AA for normal-size white button text and normal-size accent text on white; reversing foreground/background does not change contrast. Qualifying large text has a 3:1 threshold. Choose colors by the actual measured pair. [W3C text contrast](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html).
+- **Enabled placeholder text** follows the applicable text threshold (normally 4.5:1). Inactive controls are exempt from that criterion, but keep their text legible as a usability choice.
+- **Author-styled non-text state indicators** need the applicable 3:1 contrast against adjacent colors under SC 1.4.11; account for the indicator placement and stated exceptions. Keyboard-focus visibility and stronger focus-area criteria require separate checks. [W3C non-text contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html).
 - **Don't rely on color alone**, per above.
 
 ---
@@ -225,7 +225,7 @@ colors:
   error: "#9B3A2E"
 ```
 
-Keep it to the tokens the system actually uses. Every unreferenced token trips `orphaned-tokens`, and that warning is usually correct — an unused token is a decision nobody needed to make.
+Keep it to the tokens the system actually uses. Every unreferenced color token trips `orphaned-tokens` in the historical CLI baseline, and that warning is usually correct — an unused token is a decision nobody needed to make.
 
 **Use the descriptive name in prose, the systematic name in tokens.** The spec explicitly supports this: prose says "Weathered Terracotta," tokens say `primary`. That pairing is what makes the document readable by a human and usable by a machine.
 
@@ -250,9 +250,11 @@ def contrast(fg, bg):
     lo, hi = sorted((a, b))
     return (hi + 0.05) / (lo + 0.05)
 
-# contrast("#23201B", "#FBFAF8") -> ~14.9:1
+# contrast("#23201B", "#FBFAF8") -> ~15.6:1
 ```
 
-For OKLCH→hex conversion, `culori` (npm) is reliable and available via `npx`. If no converter is at hand, author directly in hex and verify the ramp by checking that computed luminance descends smoothly — an uneven luminance progression is the same defect as an uneven L curve.
+For OKLCH→hex conversion, use a reviewed converter/library with a defined target gamut; `culori` is a library, so verify its installed API rather than assuming it provides an `npx` CLI. If no converter is at hand, author directly in hex and verify the ramp by checking that computed luminance descends smoothly — an uneven luminance progression is the same defect as an uneven L curve.
 
 Run the contrast check on every foreground/background pair you put in the components section *before* linting. It's faster than discovering them as warnings and it forces you to notice pairs you forgot to define.
+
+Coordinate calculations use the sRGB/OKLab matrices described in [CSS Color 4](https://www.w3.org/TR/css-color-4/#ok-lab). Approximate coordinates and token-pair checks do not replace browser/device/state acceptance.

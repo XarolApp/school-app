@@ -1,6 +1,6 @@
 # Style Directions
 
-Fifteen named aesthetic directions with real lineage, concrete values, and honest tradeoffs. Use these to convert "modern and clean" into a choice the user can actually make.
+Fifteen optional aesthetic interpretations with illustrative references, starting values and tradeoffs. Lineage and fit judgments are not independently verified current-product claims; preserve established project decisions and test accessibility regardless of the direction. Use these to convert "modern and clean" into a choice the user can actually make.
 
 **How to use this file:** pick 3–4 directions that genuinely suit the product and present them with their tradeoffs. Don't present a random sample — a payments product and a music app should get different shortlists. Hex values here are **starting anchors**, not final tokens: derive your ramps from them using `color-craft.md` rather than pasting them in.
 

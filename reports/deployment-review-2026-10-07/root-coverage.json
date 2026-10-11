@@ -2138,19 +2138,19 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "4edc834d1be39ae5366aeb8b963622e610df77f70a582879fcfa5bb51070967f",
-    "lines": 1866,
+    "sha256": "81d981f6828cc9f26cf486d65dc35416490be7941d3036fd25e5bc8dd887adcb",
+    "lines": 1871,
     "read_ranges": [
       [
         1,
-        1866
+        1871
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-11T09:18:44.259669+00:00",
-    "previous_complete_sha256": "a17d3836009adea44b276c9a81d5dc65602f3b2552053efe00caced33b8c9a11",
-    "method": "Verified saved full baseline plus all subsequent owned complete document diffs; UNFORGET full 5c3e3f4 baseline, Swift append and current record amendment. Read does not approve source facts, full SQL/RLS/grants or deployment."
+    "checked_at_utc": "2026-10-11T09:34:46.017814+00:00",
+    "previous_complete_sha256": "4edc834d1be39ae5366aeb8b963622e610df77f70a582879fcfa5bb51070967f",
+    "method": "Previous complete receipt hash verified immediately before own append; entire owned append read. No runtime/deployment gate closed."
   },
   "frontend/src/api.js": {
     "sha256": "a545cb179681a87378f41cf928cff50e1ae6c2e539c4bbacf373590af9f8ab8a",
@@ -6752,5 +6752,341 @@
     "checked_at_utc": "2026-10-11T09:18:44.259669+00:00",
     "previous_complete_sha256": null,
     "method": "Full 745-line bounded sequential source read; list/counter/ID checks against independent GET-only record. Read does not approve source facts, full SQL/RLS/grants or deployment."
+  },
+  ".agents/skills/design-md-planner/SKILL.md": {
+    "sha256": "f7cf6e50323ec547c560ddf70c906c84acfce21df6f5426b5768de6638c32360",
+    "lines": 163,
+    "read_ranges": [
+      [
+        1,
+        163
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:34:46.017814+00:00",
+    "method": "Twelve bases fully read in bounded complete ranges (SKILL 1–120/121–161; example 1–140/141–244; template 1–172; CLI 1–206; spec 1–190/191–378; color 1–140/141–258; typography 1–160/161–305; anti-slop 1–135/136–246; style 1–135/136–265/266–381; eval/Dashboard/config whole). Each Claude copy independently byte-equal and hashed. Every proposed owned diff read; source specification/YAML/fixture body preservation guarded. Reference coverage is not runtime, CLI, font-license or device acceptance."
+  },
+  ".agents/skills/design-md-planner/assets/DESIGN.example.md": {
+    "sha256": "9a832a0cc341874bfe8850b0bef00aff5f2ccc8ab29d5882932c4914eabbb18f",
+    "lines": 246,
+    "read_ranges": [
+      [
+        1,
+        246
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:34:46.017814+00:00",
+    "method": "Twelve bases fully read in bounded complete ranges (SKILL 1–120/121–161; example 1–140/141–244; template 1–172; CLI 1–206; spec 1–190/191–378; color 1–140/141–258; typography 1–160/161–305; anti-slop 1–135/136–246; style 1–135/136–265/266–381; eval/Dashboard/config whole). Each Claude copy independently byte-equal and hashed. Every proposed owned diff read; source specification/YAML/fixture body preservation guarded. Reference coverage is not runtime, CLI, font-license or device acceptance."
+  },
+  ".agents/skills/design-md-planner/assets/DESIGN.template.md": {
+    "sha256": "9ff82f880493d9eae77fe095c4a4ada74f2b7b3bef248c9384b1a9af45515b72",
+    "lines": 172,
+    "read_ranges": [
+      [
+        1,
+        172
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:34:46.017814+00:00",
+    "method": "Twelve bases fully read in bounded complete ranges (SKILL 1–120/121–161; example 1–140/141–244; template 1–172; CLI 1–206; spec 1–190/191–378; color 1–140/141–258; typography 1–160/161–305; anti-slop 1–135/136–246; style 1–135/136–265/266–381; eval/Dashboard/config whole). Each Claude copy independently byte-equal and hashed. Every proposed owned diff read; source specification/YAML/fixture body preservation guarded. Reference coverage is not runtime, CLI, font-license or device acceptance."
+  },
+  ".agents/skills/design-md-planner/evals/evals.json": {
+    "sha256": "a6a74dd0d325969cb64a8dab584ea55f963a05d354c8cb316b44588d6379dcdc",
+    "lines": 29,
+    "read_ranges": [
+      [
+        1,
+        29
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:34:46.017814+00:00",
+    "method": "Twelve bases fully read in bounded complete ranges (SKILL 1–120/121–161; example 1–140/141–244; template 1–172; CLI 1–206; spec 1–190/191–378; color 1–140/141–258; typography 1–160/161–305; anti-slop 1–135/136–246; style 1–135/136–265/266–381; eval/Dashboard/config whole). Each Claude copy independently byte-equal and hashed. Every proposed owned diff read; source specification/YAML/fixture body preservation guarded. Reference coverage is not runtime, CLI, font-license or device acceptance."
+  },
+  ".agents/skills/design-md-planner/evals/fixtures/slop-app/src/Dashboard.jsx": {
+    "sha256": "ba407abde65b2a829127965a89fd7a4fe49e860b80d1548db35c2ad41ed409e6",
+    "lines": 74,
+    "read_ranges": [
+      [
+        1,
+        74
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:34:46.017814+00:00",
+    "method": "Twelve bases fully read in bounded complete ranges (SKILL 1–120/121–161; example 1–140/141–244; template 1–172; CLI 1–206; spec 1–190/191–378; color 1–140/141–258; typography 1–160/161–305; anti-slop 1–135/136–246; style 1–135/136–265/266–381; eval/Dashboard/config whole). Each Claude copy independently byte-equal and hashed. Every proposed owned diff read; source specification/YAML/fixture body preservation guarded. Reference coverage is not runtime, CLI, font-license or device acceptance."
+  },
+  ".agents/skills/design-md-planner/evals/fixtures/slop-app/tailwind.config.js": {
+    "sha256": "2cc2ae15e8484bb51c7fc408e605efdf6d790675759322610ee059ba41871a41",
+    "lines": 25,
+    "read_ranges": [
+      [
+        1,
+        25
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:34:46.017814+00:00",
+    "method": "Twelve bases fully read in bounded complete ranges (SKILL 1–120/121–161; example 1–140/141–244; template 1–172; CLI 1–206; spec 1–190/191–378; color 1–140/141–258; typography 1–160/161–305; anti-slop 1–135/136–246; style 1–135/136–265/266–381; eval/Dashboard/config whole). Each Claude copy independently byte-equal and hashed. Every proposed owned diff read; source specification/YAML/fixture body preservation guarded. Reference coverage is not runtime, CLI, font-license or device acceptance."
+  },
+  ".agents/skills/design-md-planner/references/anti-slop.md": {
+    "sha256": "58ca47b5552581df6bafbd5f9339631e68fd0d314126d4ca41fad5c1d4eec642",
+    "lines": 246,
+    "read_ranges": [
+      [
+        1,
+        246
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:34:46.017814+00:00",
+    "method": "Twelve bases fully read in bounded complete ranges (SKILL 1–120/121–161; example 1–140/141–244; template 1–172; CLI 1–206; spec 1–190/191–378; color 1–140/141–258; typography 1–160/161–305; anti-slop 1–135/136–246; style 1–135/136–265/266–381; eval/Dashboard/config whole). Each Claude copy independently byte-equal and hashed. Every proposed owned diff read; source specification/YAML/fixture body preservation guarded. Reference coverage is not runtime, CLI, font-license or device acceptance."
+  },
+  ".agents/skills/design-md-planner/references/cli.md": {
+    "sha256": "d1f684362e1f4e0a2639b2977de3ccecb79df769a95f0837f207217576c52d56",
+    "lines": 206,
+    "read_ranges": [
+      [
+        1,
+        206
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:34:46.017814+00:00",
+    "method": "Twelve bases fully read in bounded complete ranges (SKILL 1–120/121–161; example 1–140/141–244; template 1–172; CLI 1–206; spec 1–190/191–378; color 1–140/141–258; typography 1–160/161–305; anti-slop 1–135/136–246; style 1–135/136–265/266–381; eval/Dashboard/config whole). Each Claude copy independently byte-equal and hashed. Every proposed owned diff read; source specification/YAML/fixture body preservation guarded. Reference coverage is not runtime, CLI, font-license or device acceptance."
+  },
+  ".agents/skills/design-md-planner/references/color-craft.md": {
+    "sha256": "9c24d7f896fa074fe62dfa024e9d414e4d31109d0513cad234870744ab579abc",
+    "lines": 260,
+    "read_ranges": [
+      [
+        1,
+        260
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:34:46.017814+00:00",
+    "method": "Twelve bases fully read in bounded complete ranges (SKILL 1–120/121–161; example 1–140/141–244; template 1–172; CLI 1–206; spec 1–190/191–378; color 1–140/141–258; typography 1–160/161–305; anti-slop 1–135/136–246; style 1–135/136–265/266–381; eval/Dashboard/config whole). Each Claude copy independently byte-equal and hashed. Every proposed owned diff read; source specification/YAML/fixture body preservation guarded. Reference coverage is not runtime, CLI, font-license or device acceptance."
+  },
+  ".agents/skills/design-md-planner/references/designmd-spec.md": {
+    "sha256": "7eeea4bc1ac311ae9d08aef41b95508d93ba89908db4e7452c223db8c2df067e",
+    "lines": 380,
+    "read_ranges": [
+      [
+        1,
+        380
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:34:46.017814+00:00",
+    "method": "Twelve bases fully read in bounded complete ranges (SKILL 1–120/121–161; example 1–140/141–244; template 1–172; CLI 1–206; spec 1–190/191–378; color 1–140/141–258; typography 1–160/161–305; anti-slop 1–135/136–246; style 1–135/136–265/266–381; eval/Dashboard/config whole). Each Claude copy independently byte-equal and hashed. Every proposed owned diff read; source specification/YAML/fixture body preservation guarded. Reference coverage is not runtime, CLI, font-license or device acceptance."
+  },
+  ".agents/skills/design-md-planner/references/style-directions.md": {
+    "sha256": "30a058abf38f46f7ea12cab420a0eddf1715948f2a053f333ae2395b9be1fea2",
+    "lines": 381,
+    "read_ranges": [
+      [
+        1,
+        381
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:34:46.017814+00:00",
+    "method": "Twelve bases fully read in bounded complete ranges (SKILL 1–120/121–161; example 1–140/141–244; template 1–172; CLI 1–206; spec 1–190/191–378; color 1–140/141–258; typography 1–160/161–305; anti-slop 1–135/136–246; style 1–135/136–265/266–381; eval/Dashboard/config whole). Each Claude copy independently byte-equal and hashed. Every proposed owned diff read; source specification/YAML/fixture body preservation guarded. Reference coverage is not runtime, CLI, font-license or device acceptance."
+  },
+  ".agents/skills/design-md-planner/references/typography.md": {
+    "sha256": "d7fbb1b1629fb016ce3f8a0f94f890a488c784f9f9534343a9d236d2d492da24",
+    "lines": 306,
+    "read_ranges": [
+      [
+        1,
+        306
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:34:46.017814+00:00",
+    "method": "Twelve bases fully read in bounded complete ranges (SKILL 1–120/121–161; example 1–140/141–244; template 1–172; CLI 1–206; spec 1–190/191–378; color 1–140/141–258; typography 1–160/161–305; anti-slop 1–135/136–246; style 1–135/136–265/266–381; eval/Dashboard/config whole). Each Claude copy independently byte-equal and hashed. Every proposed owned diff read; source specification/YAML/fixture body preservation guarded. Reference coverage is not runtime, CLI, font-license or device acceptance."
+  },
+  ".claude/skills/design-md-planner/SKILL.md": {
+    "sha256": "f7cf6e50323ec547c560ddf70c906c84acfce21df6f5426b5768de6638c32360",
+    "lines": 163,
+    "read_ranges": [
+      [
+        1,
+        163
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:34:46.017814+00:00",
+    "method": "Twelve bases fully read in bounded complete ranges (SKILL 1–120/121–161; example 1–140/141–244; template 1–172; CLI 1–206; spec 1–190/191–378; color 1–140/141–258; typography 1–160/161–305; anti-slop 1–135/136–246; style 1–135/136–265/266–381; eval/Dashboard/config whole). Each Claude copy independently byte-equal and hashed. Every proposed owned diff read; source specification/YAML/fixture body preservation guarded. Reference coverage is not runtime, CLI, font-license or device acceptance."
+  },
+  ".claude/skills/design-md-planner/assets/DESIGN.example.md": {
+    "sha256": "9a832a0cc341874bfe8850b0bef00aff5f2ccc8ab29d5882932c4914eabbb18f",
+    "lines": 246,
+    "read_ranges": [
+      [
+        1,
+        246
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:34:46.017814+00:00",
+    "method": "Twelve bases fully read in bounded complete ranges (SKILL 1–120/121–161; example 1–140/141–244; template 1–172; CLI 1–206; spec 1–190/191–378; color 1–140/141–258; typography 1–160/161–305; anti-slop 1–135/136–246; style 1–135/136–265/266–381; eval/Dashboard/config whole). Each Claude copy independently byte-equal and hashed. Every proposed owned diff read; source specification/YAML/fixture body preservation guarded. Reference coverage is not runtime, CLI, font-license or device acceptance."
+  },
+  ".claude/skills/design-md-planner/assets/DESIGN.template.md": {
+    "sha256": "9ff82f880493d9eae77fe095c4a4ada74f2b7b3bef248c9384b1a9af45515b72",
+    "lines": 172,
+    "read_ranges": [
+      [
+        1,
+        172
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:34:46.017814+00:00",
+    "method": "Twelve bases fully read in bounded complete ranges (SKILL 1–120/121–161; example 1–140/141–244; template 1–172; CLI 1–206; spec 1–190/191–378; color 1–140/141–258; typography 1–160/161–305; anti-slop 1–135/136–246; style 1–135/136–265/266–381; eval/Dashboard/config whole). Each Claude copy independently byte-equal and hashed. Every proposed owned diff read; source specification/YAML/fixture body preservation guarded. Reference coverage is not runtime, CLI, font-license or device acceptance."
+  },
+  ".claude/skills/design-md-planner/evals/evals.json": {
+    "sha256": "a6a74dd0d325969cb64a8dab584ea55f963a05d354c8cb316b44588d6379dcdc",
+    "lines": 29,
+    "read_ranges": [
+      [
+        1,
+        29
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:34:46.017814+00:00",
+    "method": "Twelve bases fully read in bounded complete ranges (SKILL 1–120/121–161; example 1–140/141–244; template 1–172; CLI 1–206; spec 1–190/191–378; color 1–140/141–258; typography 1–160/161–305; anti-slop 1–135/136–246; style 1–135/136–265/266–381; eval/Dashboard/config whole). Each Claude copy independently byte-equal and hashed. Every proposed owned diff read; source specification/YAML/fixture body preservation guarded. Reference coverage is not runtime, CLI, font-license or device acceptance."
+  },
+  ".claude/skills/design-md-planner/evals/fixtures/slop-app/src/Dashboard.jsx": {
+    "sha256": "ba407abde65b2a829127965a89fd7a4fe49e860b80d1548db35c2ad41ed409e6",
+    "lines": 74,
+    "read_ranges": [
+      [
+        1,
+        74
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:34:46.017814+00:00",
+    "method": "Twelve bases fully read in bounded complete ranges (SKILL 1–120/121–161; example 1–140/141–244; template 1–172; CLI 1–206; spec 1–190/191–378; color 1–140/141–258; typography 1–160/161–305; anti-slop 1–135/136–246; style 1–135/136–265/266–381; eval/Dashboard/config whole). Each Claude copy independently byte-equal and hashed. Every proposed owned diff read; source specification/YAML/fixture body preservation guarded. Reference coverage is not runtime, CLI, font-license or device acceptance."
+  },
+  ".claude/skills/design-md-planner/evals/fixtures/slop-app/tailwind.config.js": {
+    "sha256": "2cc2ae15e8484bb51c7fc408e605efdf6d790675759322610ee059ba41871a41",
+    "lines": 25,
+    "read_ranges": [
+      [
+        1,
+        25
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:34:46.017814+00:00",
+    "method": "Twelve bases fully read in bounded complete ranges (SKILL 1–120/121–161; example 1–140/141–244; template 1–172; CLI 1–206; spec 1–190/191–378; color 1–140/141–258; typography 1–160/161–305; anti-slop 1–135/136–246; style 1–135/136–265/266–381; eval/Dashboard/config whole). Each Claude copy independently byte-equal and hashed. Every proposed owned diff read; source specification/YAML/fixture body preservation guarded. Reference coverage is not runtime, CLI, font-license or device acceptance."
+  },
+  ".claude/skills/design-md-planner/references/anti-slop.md": {
+    "sha256": "58ca47b5552581df6bafbd5f9339631e68fd0d314126d4ca41fad5c1d4eec642",
+    "lines": 246,
+    "read_ranges": [
+      [
+        1,
+        246
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:34:46.017814+00:00",
+    "method": "Twelve bases fully read in bounded complete ranges (SKILL 1–120/121–161; example 1–140/141–244; template 1–172; CLI 1–206; spec 1–190/191–378; color 1–140/141–258; typography 1–160/161–305; anti-slop 1–135/136–246; style 1–135/136–265/266–381; eval/Dashboard/config whole). Each Claude copy independently byte-equal and hashed. Every proposed owned diff read; source specification/YAML/fixture body preservation guarded. Reference coverage is not runtime, CLI, font-license or device acceptance."
+  },
+  ".claude/skills/design-md-planner/references/cli.md": {
+    "sha256": "d1f684362e1f4e0a2639b2977de3ccecb79df769a95f0837f207217576c52d56",
+    "lines": 206,
+    "read_ranges": [
+      [
+        1,
+        206
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:34:46.017814+00:00",
+    "method": "Twelve bases fully read in bounded complete ranges (SKILL 1–120/121–161; example 1–140/141–244; template 1–172; CLI 1–206; spec 1–190/191–378; color 1–140/141–258; typography 1–160/161–305; anti-slop 1–135/136–246; style 1–135/136–265/266–381; eval/Dashboard/config whole). Each Claude copy independently byte-equal and hashed. Every proposed owned diff read; source specification/YAML/fixture body preservation guarded. Reference coverage is not runtime, CLI, font-license or device acceptance."
+  },
+  ".claude/skills/design-md-planner/references/color-craft.md": {
+    "sha256": "9c24d7f896fa074fe62dfa024e9d414e4d31109d0513cad234870744ab579abc",
+    "lines": 260,
+    "read_ranges": [
+      [
+        1,
+        260
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:34:46.017814+00:00",
+    "method": "Twelve bases fully read in bounded complete ranges (SKILL 1–120/121–161; example 1–140/141–244; template 1–172; CLI 1–206; spec 1–190/191–378; color 1–140/141–258; typography 1–160/161–305; anti-slop 1–135/136–246; style 1–135/136–265/266–381; eval/Dashboard/config whole). Each Claude copy independently byte-equal and hashed. Every proposed owned diff read; source specification/YAML/fixture body preservation guarded. Reference coverage is not runtime, CLI, font-license or device acceptance."
+  },
+  ".claude/skills/design-md-planner/references/designmd-spec.md": {
+    "sha256": "7eeea4bc1ac311ae9d08aef41b95508d93ba89908db4e7452c223db8c2df067e",
+    "lines": 380,
+    "read_ranges": [
+      [
+        1,
+        380
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:34:46.017814+00:00",
+    "method": "Twelve bases fully read in bounded complete ranges (SKILL 1–120/121–161; example 1–140/141–244; template 1–172; CLI 1–206; spec 1–190/191–378; color 1–140/141–258; typography 1–160/161–305; anti-slop 1–135/136–246; style 1–135/136–265/266–381; eval/Dashboard/config whole). Each Claude copy independently byte-equal and hashed. Every proposed owned diff read; source specification/YAML/fixture body preservation guarded. Reference coverage is not runtime, CLI, font-license or device acceptance."
+  },
+  ".claude/skills/design-md-planner/references/style-directions.md": {
+    "sha256": "30a058abf38f46f7ea12cab420a0eddf1715948f2a053f333ae2395b9be1fea2",
+    "lines": 381,
+    "read_ranges": [
+      [
+        1,
+        381
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:34:46.017814+00:00",
+    "method": "Twelve bases fully read in bounded complete ranges (SKILL 1–120/121–161; example 1–140/141–244; template 1–172; CLI 1–206; spec 1–190/191–378; color 1–140/141–258; typography 1–160/161–305; anti-slop 1–135/136–246; style 1–135/136–265/266–381; eval/Dashboard/config whole). Each Claude copy independently byte-equal and hashed. Every proposed owned diff read; source specification/YAML/fixture body preservation guarded. Reference coverage is not runtime, CLI, font-license or device acceptance."
+  },
+  ".claude/skills/design-md-planner/references/typography.md": {
+    "sha256": "d7fbb1b1629fb016ce3f8a0f94f890a488c784f9f9534343a9d236d2d492da24",
+    "lines": 306,
+    "read_ranges": [
+      [
+        1,
+        306
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:34:46.017814+00:00",
+    "method": "Twelve bases fully read in bounded complete ranges (SKILL 1–120/121–161; example 1–140/141–244; template 1–172; CLI 1–206; spec 1–190/191–378; color 1–140/141–258; typography 1–160/161–305; anti-slop 1–135/136–246; style 1–135/136–265/266–381; eval/Dashboard/config whole). Each Claude copy independently byte-equal and hashed. Every proposed owned diff read; source specification/YAML/fixture body preservation guarded. Reference coverage is not runtime, CLI, font-license or device acceptance."
   }
 }

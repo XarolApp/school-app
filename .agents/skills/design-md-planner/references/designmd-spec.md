@@ -1,5 +1,7 @@
 <!-- Generated from spec.mdx + spec-config.ts | version: alpha -->
-<!-- Do not edit directly. Run `bun run spec:gen` to regenerate. -->
+<!-- Upstream generated snapshot. Regenerate in the upstream repository, which owns spec.mdx/spec-config.ts; those inputs and its Bun script are not provided here. -->
+
+Bundled historical alpha reference, reviewed 11 October 2026. Verify the exact CLI/version and [current upstream spec](https://github.com/google-labs-code/design.md/blob/main/docs/spec.md) before reuse. This copy is not evidence that every CSS syntax, export or rendered accessibility state has been tested in this repository.
 
 # DESIGN.md Format
 

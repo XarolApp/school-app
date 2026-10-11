@@ -2,7 +2,7 @@
 
 The official tool — "the hands and eyes for design system work." It's the objective check on a DESIGN.md, and it should be run until clean before handing anything off.
 
-Verified against **v0.4.0**.
+Historical reference baseline: **v0.4.0**. This review did not install or execute that CLI. Pin that version to reproduce the examples, or verify the actual installed version/spec before relying on them. The upstream format is alpha and evolving. [Primary repository](https://github.com/google-labs-code/design.md).
 
 **Contents**
 - [Invocation](#invocation)
@@ -16,19 +16,19 @@ Verified against **v0.4.0**.
 
 ## Invocation
 
-No install needed:
+One-off invocation downloads/executes the package if it is not cached, without adding a project dependency:
 
 ```bash
-npx -y @google/design.md@latest lint DESIGN.md
+npx -y @google/design.md@0.4.0 lint DESIGN.md
 ```
 
 **Windows PowerShell** — `design.md` collides with file associations, so use the `designmd` alias:
 
 ```bash
-npx -y -p @google/design.md designmd lint DESIGN.md
+npx -y -p @google/design.md@0.4.0 designmd lint DESIGN.md
 ```
 
-If a project already depends on it, `npm install @google/design.md` and drop the `-y`. All commands accept a file path or `-` for stdin.
+If a project already has the reviewed package version installed, use that local binary; do not reinstall or update it just to invoke it. All commands accept a file path or `-` for stdin.
 
 Requires Node. If `npx` is unavailable, say so plainly rather than skipping the audit silently — an unaudited DESIGN.md should be flagged as such.
 
@@ -58,7 +58,7 @@ design.md spec [--rules] [--format markdown|json]
 Use JSON — it's parseable and the paths point straight at the problem.
 
 ```bash
-npx -y @google/design.md@latest lint --format json DESIGN.md
+npx -y @google/design.md@0.4.0 lint --format json DESIGN.md
 ```
 
 Output shape:
@@ -117,11 +117,11 @@ backgroundColor, textColor, typography, rounded, padding, size, height, width
 
 ### `missing-primary` — warning
 
-Define a `primary` color token. The recommended semantic names are `primary`, `secondary`, `tertiary`, `neutral`, `surface`, `on-surface`, `error`. Without `primary`, a consuming agent auto-generates key colors and you lose control of the palette — which is precisely the failure this skill exists to prevent.
+Define a `primary` color token. The recommended semantic names are `primary`, `secondary`, `tertiary`, `neutral`, `surface`, `on-surface`, `error`. Without `primary`, consuming tools may fall back or generate a color, depending on their behavior — which is precisely the failure this skill exists to prevent.
 
 ### `contrast-ratio` — warning
 
-A component's text fails WCAG AA (4.5:1) against its own background.
+The historical rule uses a conservative 4.5:1 text-pair threshold. WCAG AA permits 3:1 for qualifying large text; actual rendered text, states and non-text indicators still require separate checks. A clean token lint is not full accessibility acceptance.
 
 **Fix the color, not the check.** Deleting `textColor` to silence it makes the design system actively harmful. Darken the text or lighten the background until the pair passes — see the contrast function in `color-craft.md` to compute it before linting rather than discovering it after.
 

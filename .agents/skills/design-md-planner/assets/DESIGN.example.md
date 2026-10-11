@@ -146,6 +146,8 @@ components:
 
 # Kiln
 
+Illustrative design specification, not a deployed app or verified font delivery. Tokens define intent; check actual licensed assets, glyphs, rendered states and the pinned CLI before adopting or claiming compliance.
+
 ## Overview
 
 Kiln is used by people whose hands are dirty. A potter checks it between pulls, on a tablet propped against a shelf in a workshop with north light and clay dust on everything. It holds things that matter and cannot be re-derived: firing schedules, glaze recipes worked out over years, what went into kiln load #418 and what came out of it.
@@ -158,7 +160,7 @@ The system commits to warmth throughout. There is no pure white and no pure blac
 
 ## Colors
 
-The palette is taken from the materials themselves. Every color in Kiln is sampled from something in a working pottery, and that constraint — rather than any preference — is what set the values.
+The palette is material-inspired. The names describe those references; no measured source photographs or sampling record accompany this example.
 
 - **Primary (#8B4E34):** *Fired clay.* The color of earthenware after oxidation firing. Carries all primary interaction: buttons, links, active states. It is a text-safe value (5.8:1 on card, 6.2:1 reversed) precisely so interaction never needs a second, lighter variant.
 - **Secondary (#5F594F):** *Kiln ash.* The warm grey of wood-ash deposit. Reserved for metadata — timestamps, authorship, counts. It reads as recessive without disappearing.
@@ -168,7 +170,7 @@ The palette is taken from the materials themselves. Every color in Kiln is sampl
 - **On-surface (#23201B):** *Iron-rich stoneware body.* The near-black. It carries a trace of the clay hue, which is why body text on this paper looks settled rather than printed on top.
 - **Error (#9B3A2E):** *Overfired iron.* Derived from the same ramp as the primary, not imported from a stock alert palette. A failure in Kiln is a firing that went wrong, and it should look like one.
 
-All neutrals are warm-tinted (OKLCH hue ≈ 55–60, chroma 0.004–0.010). No value in this system has R = G = B. The ramps were built in OKLCH with chroma peaking mid-range and the hue bending from 42° in the tints to 20° in the shades, so the clay colors behave like pigment rather than like a gradient.
+The listed neutral/surface/border/on-surface values are warm-tinted: computed OKLCH hue is about 80–85° and chroma about 0.003–0.011. Their R, G and B channels differ. The terracotta reference ramp in `../references/color-craft.md` reports coordinates calculated from its fixed sRGB hex values; these rounded measurements do not prove a physical sampling or generation process.
 
 ## Typography
 
@@ -180,7 +182,7 @@ Two families, split by job, plus a mono for anything a kiln reports.
 
 **JetBrains Mono** carries measured data — cone numbers, temperatures, kiln IDs, timestamps, glaze percentages. Tabular figures are enabled (`'tnum' 1`) so numeric columns align, which matters constantly in recipe tables. Fallback: `"JetBrains Mono", ui-monospace, SFMono-Regular, monospace`.
 
-The scale runs 11 → 56px on a ≈1.25 ratio, hand-broken at the top so display sits well clear of headline. Tracking is optical: −0.025em at display, neutral through body, +0.12em on uppercase labels. Line height moves inversely with size, 1.05 at display to 1.65 at body-lg. Only two weights are used — 400 and 600 — and no third is permitted, because hierarchy here comes from family and size, not from weight.
+The scale runs 11 → 56px on a ≈1.25 ratio, hand-broken at the top so display sits well clear of headline. Tracking is optical: −0.025em at display, neutral through body, +0.12em on uppercase labels. Line height moves inversely with size, 1.05 at display to 1.65 at body-lg. Three weights are defined — 400 for body/data, 500 for uppercase labels and 600 for headings — and no fourth is permitted, because hierarchy here comes from family and size, not from weight.
 
 All faces are open-licensed and self-hosted; no third-party font CDN is used.
 
@@ -235,10 +237,10 @@ Borders are 1px solid `border` (`#E8E4DD`) at rest and 1px solid `primary` on fo
 - **Do** keep `tertiary` (#2F6B62) exclusively on live-firing indicators. It is the only cool color in the interface and its findability depends entirely on scarcity — a second use anywhere destroys the signal.
 - **Don't** introduce a shadow. If something needs to feel raised, use the Surface→Neutral tonal step or a hairline rule. The absence of shadow is a system-level commitment, not an oversight.
 - **Do** use `data-md`/`data-sm` for every cone number, temperature, kiln ID, percentage, and timestamp. Numbers set in Archivo will not align in columns and will look wrong next to numbers that do.
-- **Don't** add a third font weight. Hierarchy comes from family and size. If a heading isn't reading as a heading, it needs more space above it, not more weight.
+- **Don't** add a fourth font weight. Hierarchy comes from family and size. If a heading isn't reading as a heading, it needs more space above it, not more weight.
 - **Do** cap body text at 68 characters. Recipe and firing notes are read at length.
 - **Don't** center text. The system is flush-left throughout, including headings, empty states, and modals.
-- **Do** pair every error state with an icon and a written message. Studio lighting is bad and roughly 8% of the audience cannot rely on a red/green distinction.
+- **Do** pair every error state with an icon and a written message. Studio lighting is bad and users may not be able to rely on a red/green distinction.
 - **Don't** use pure `#FFFFFF` or `#000000`, including for imagery backgrounds and PDF exports. Every neutral in this system is warm-tinted, and an untinted value next to them reads as a defect.
 - **Do** let index views be denser than record views. The density difference is the primary wayfinding cue in the app.
 - **Don't** wrap content in a card by default. Cards mean "this is one discrete record." A list of fields is a list, with rules between it.

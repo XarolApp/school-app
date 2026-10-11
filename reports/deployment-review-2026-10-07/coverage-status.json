@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-11T09:18:44.800820+00:00",
-  "commit": "476594e74416d726a2486a9db7a7aee97d47bae0",
+  "checked_at_utc": "2026-10-11T09:34:46.611766+00:00",
+  "commit": "f6c07a04311316ce65a4b97b3e64ebb47447d6c1",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "current_full_read": 504,
-    "pending_or_changed": 290,
+    "current_full_read": 528,
     "binary_requires_asset_check": 105,
-    "generated_or_audit_artifact": 178,
+    "pending_or_changed": 266,
+    "generated_or_audit_artifact": 179,
     "removed_or_missing": 2
   },
   "files": [
@@ -129,87 +129,111 @@
     },
     {
       "path": ".agents/skills/design-md-planner/SKILL.md",
-      "sha256": "44d978d12e7fff75b8430dd35885e4074391317bf75a8d97c7ebf549138e90e9",
-      "lines": 161,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "f7cf6e50323ec547c560ddf70c906c84acfce21df6f5426b5768de6638c32360",
+      "lines": 163,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/design-md-planner/assets/DESIGN.example.md",
-      "sha256": "88042e96dbddf569b9af95856c7f6540ce7cca44778e7ae83843d54e984a0d13",
-      "lines": 244,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "9a832a0cc341874bfe8850b0bef00aff5f2ccc8ab29d5882932c4914eabbb18f",
+      "lines": 246,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/design-md-planner/assets/DESIGN.template.md",
       "sha256": "9ff82f880493d9eae77fe095c4a4ada74f2b7b3bef248c9384b1a9af45515b72",
       "lines": 172,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/design-md-planner/evals/evals.json",
       "sha256": "a6a74dd0d325969cb64a8dab584ea55f963a05d354c8cb316b44588d6379dcdc",
       "lines": 29,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/design-md-planner/evals/fixtures/slop-app/src/Dashboard.jsx",
-      "sha256": "406c699fbd9fe9f23fbed6a7fb71aa8236a88e8c16629aea6dea0c25aee433fc",
-      "lines": 63,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "ba407abde65b2a829127965a89fd7a4fe49e860b80d1548db35c2ad41ed409e6",
+      "lines": 74,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/design-md-planner/evals/fixtures/slop-app/tailwind.config.js",
       "sha256": "2cc2ae15e8484bb51c7fc408e605efdf6d790675759322610ee059ba41871a41",
       "lines": 25,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/design-md-planner/references/anti-slop.md",
-      "sha256": "eed0481efe22eace8bf13b120384fb0879a99e2b86a655d7e7c27e4d38beb0d9",
+      "sha256": "58ca47b5552581df6bafbd5f9339631e68fd0d314126d4ca41fad5c1d4eec642",
       "lines": 246,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/design-md-planner/references/cli.md",
-      "sha256": "4373c7f5749bc498f91359800174e76ae8ce107289f21ce06b23a537de44f584",
+      "sha256": "d1f684362e1f4e0a2639b2977de3ccecb79df769a95f0837f207217576c52d56",
       "lines": 206,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/design-md-planner/references/color-craft.md",
-      "sha256": "088784d9b2d70e79545d86d1fd1665303922fa2c1b443f7bbf549566e804ed6e",
-      "lines": 258,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "9c24d7f896fa074fe62dfa024e9d414e4d31109d0513cad234870744ab579abc",
+      "lines": 260,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/design-md-planner/references/designmd-spec.md",
-      "sha256": "761c136e1fb4851a37cb23ad5cce54927bad8b97e9398350e02f8076e9e31524",
-      "lines": 378,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "7eeea4bc1ac311ae9d08aef41b95508d93ba89908db4e7452c223db8c2df067e",
+      "lines": 380,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/design-md-planner/references/style-directions.md",
-      "sha256": "d2ec3b99c28aa0600a4c56d72ee4c7f53c2da2f58aeafb4cbb10396cf2a1603b",
+      "sha256": "30a058abf38f46f7ea12cab420a0eddf1715948f2a053f333ae2395b9be1fea2",
       "lines": 381,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/design-md-planner/references/typography.md",
-      "sha256": "0febf3f9e624d359022cca9d23af742b77527f7dc663cf474e4c49ac8f938120",
-      "lines": 305,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "d7fbb1b1629fb016ce3f8a0f94f890a488c784f9f9534343a9d236d2d492da24",
+      "lines": 306,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/emil-design-eng/SKILL.md",
@@ -564,87 +588,111 @@
     },
     {
       "path": ".claude/skills/design-md-planner/SKILL.md",
-      "sha256": "44d978d12e7fff75b8430dd35885e4074391317bf75a8d97c7ebf549138e90e9",
-      "lines": 161,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "f7cf6e50323ec547c560ddf70c906c84acfce21df6f5426b5768de6638c32360",
+      "lines": 163,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/design-md-planner/assets/DESIGN.example.md",
-      "sha256": "88042e96dbddf569b9af95856c7f6540ce7cca44778e7ae83843d54e984a0d13",
-      "lines": 244,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "9a832a0cc341874bfe8850b0bef00aff5f2ccc8ab29d5882932c4914eabbb18f",
+      "lines": 246,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/design-md-planner/assets/DESIGN.template.md",
       "sha256": "9ff82f880493d9eae77fe095c4a4ada74f2b7b3bef248c9384b1a9af45515b72",
       "lines": 172,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/design-md-planner/evals/evals.json",
       "sha256": "a6a74dd0d325969cb64a8dab584ea55f963a05d354c8cb316b44588d6379dcdc",
       "lines": 29,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/design-md-planner/evals/fixtures/slop-app/src/Dashboard.jsx",
-      "sha256": "406c699fbd9fe9f23fbed6a7fb71aa8236a88e8c16629aea6dea0c25aee433fc",
-      "lines": 63,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "ba407abde65b2a829127965a89fd7a4fe49e860b80d1548db35c2ad41ed409e6",
+      "lines": 74,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/design-md-planner/evals/fixtures/slop-app/tailwind.config.js",
       "sha256": "2cc2ae15e8484bb51c7fc408e605efdf6d790675759322610ee059ba41871a41",
       "lines": 25,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/design-md-planner/references/anti-slop.md",
-      "sha256": "eed0481efe22eace8bf13b120384fb0879a99e2b86a655d7e7c27e4d38beb0d9",
+      "sha256": "58ca47b5552581df6bafbd5f9339631e68fd0d314126d4ca41fad5c1d4eec642",
       "lines": 246,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/design-md-planner/references/cli.md",
-      "sha256": "4373c7f5749bc498f91359800174e76ae8ce107289f21ce06b23a537de44f584",
+      "sha256": "d1f684362e1f4e0a2639b2977de3ccecb79df769a95f0837f207217576c52d56",
       "lines": 206,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/design-md-planner/references/color-craft.md",
-      "sha256": "088784d9b2d70e79545d86d1fd1665303922fa2c1b443f7bbf549566e804ed6e",
-      "lines": 258,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "9c24d7f896fa074fe62dfa024e9d414e4d31109d0513cad234870744ab579abc",
+      "lines": 260,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/design-md-planner/references/designmd-spec.md",
-      "sha256": "761c136e1fb4851a37cb23ad5cce54927bad8b97e9398350e02f8076e9e31524",
-      "lines": 378,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "7eeea4bc1ac311ae9d08aef41b95508d93ba89908db4e7452c223db8c2df067e",
+      "lines": 380,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/design-md-planner/references/style-directions.md",
-      "sha256": "d2ec3b99c28aa0600a4c56d72ee4c7f53c2da2f58aeafb4cbb10396cf2a1603b",
+      "sha256": "30a058abf38f46f7ea12cab420a0eddf1715948f2a053f333ae2395b9be1fea2",
       "lines": 381,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/design-md-planner/references/typography.md",
-      "sha256": "0febf3f9e624d359022cca9d23af742b77527f7dc663cf474e4c49ac8f938120",
-      "lines": 305,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "d7fbb1b1629fb016ce3f8a0f94f890a488c784f9f9534343a9d236d2d492da24",
+      "lines": 306,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/emil-design-eng/SKILL.md",
@@ -945,8 +993,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "4edc834d1be39ae5366aeb8b963622e610df77f70a582879fcfa5bb51070967f",
-      "lines": 1866,
+      "sha256": "81d981f6828cc9f26cf486d65dc35416490be7941d3036fd25e5bc8dd887adcb",
+      "lines": 1871,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -6095,22 +6143,22 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "06afaafcfe2dee2e700fdeb53bdcc2a6d9631d245c453bfde564ff7ffb5e2393",
-      "lines": 398,
+      "sha256": "764b6e086b35c8d625b6d53c64b8633950be14113b1f130380fab44742151e57",
+      "lines": 404,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "654a6f6ab7dc4ad7b4582a0b4f841fc0e3b0703be56d229ed08eb04e1b9704e8",
-      "lines": 258,
+      "sha256": "e1f295c4b952b59b418e6bcdb473e8850ab33b4d880d309d5d7490e06325c81f",
+      "lines": 261,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "2e0b9be3d6e8a285dc78ca55968962c1a65bbc0b211965be4d46cd3f68f91d2d",
-      "lines": 188,
+      "sha256": "df016f19fc04dcca7ce393c16803f716b55aee958936469beaac84cdeb848ed5",
+      "lines": 191,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6459,8 +6507,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "3fcbe7bbe54f85eaecd6a339c2112e77fcc9ad6153d32788f51d99e92d04e9c9",
-      "lines": 533,
+      "sha256": "137a22cf3b20961c2409cc3f06639a6ab460bca74170bc7c928fa0b5c391d73f",
+      "lines": 542,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6473,8 +6521,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "9d88e09b6b3594065ea9ad958daaf5a7bb44f63c6d2981a2f4cfbaaa889c1580",
-      "lines": 8568,
+      "sha256": "9071682d1ed938b1071a4d515847ebe732d96161f59996f3e81a0a7919754271",
+      "lines": 8579,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6580,6 +6628,13 @@
       "path": "reports/deployment-review-2026-10-07/design-input-system-bundle-2026-10-10.txt",
       "sha256": "3540a32505056d0e6338bd129ae8c6c7b569a3a1198e4202f21b02ed0f1825bc",
       "lines": 11,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/design-reference-verification-2026-10-11.json",
+      "sha256": "0bbbc60f93ea962bcaf8a3f596d67614a26df1ce922fc7e9baca65cff52a4465",
+      "lines": 489,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -7659,8 +7714,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "4f946af69be0fb6e69bf1594c86b8bc228bd80e171c34693f74d296e19699ced",
-      "lines": 6756,
+      "sha256": "dcd40d7045a6e825cd00fcd30ed773e967fe19e0f7fbe4d34f9b526aff03678e",
+      "lines": 7092,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },

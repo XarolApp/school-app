@@ -11,6 +11,8 @@ Two jobs, and the second one is the hard one.
 
 **Job two** is taste: produce a system with an actual point of view. This is where almost every attempt fails, so it's worth understanding *why* it fails before starting.
 
+**Repository use, checked 11 October 2026:** this is optional reference guidance. Preserve `design/DESIGN.md`, existing founder product and platform constraints; reviewing this file does not start a redesign or interview. The CLI notes describe a historical v0.4.0 baseline: pin and record the actual tool version, and verify target output before claiming lint or accessibility success. Taste rules are heuristics, not measured universals or release gates.
+
 ## Why AI design looks like AI design
 
 When a model is asked for "a modern, clean design," it returns the statistical center of everything it has seen: indigo-violet primary, Inter, `rounded-2xl` with a soft shadow, a centered hero, a three-column feature grid with icons in tinted rounded squares. Each individual choice is defensible. Together they read as machine-made — not because they're ugly, but because they're **unauthored**. There is no person behind them, no argument, nothing that could have gone differently.
@@ -107,9 +109,9 @@ The condensed version:
 
 ## Step 3 — Write DESIGN.md
 
-Start from `assets/DESIGN.template.md` (a commented skeleton — strip the comments on the way out). `assets/DESIGN.example.md` is a complete worked system that lints with zero errors and zero warnings; read it when you want to see the intended depth of the prose, since that's the part most likely to come out thin. Full format details in `references/designmd-spec.md`.
+Start from `assets/DESIGN.template.md` (a commented skeleton — strip the comments on the way out). `assets/DESIGN.example.md` is an illustrative worked system with a historical clean-lint claim; rerun the pinned CLI before reporting current counts; read it when you want to see the intended depth of the prose, since that's the part most likely to come out thin. Full format details in `references/designmd-spec.md`.
 
-Write it to `DESIGN.md` at the project root unless the user says otherwise — agents look for it there, and that discoverability is most of its value.
+Use the project's existing authoritative design path; in this repository that is `design/DESIGN.md`. Use root `DESIGN.md` for a new project only when no existing system/path is specified.
 
 Sections must appear in this order (any may be omitted, but present ones are ordered): **Overview → Colors → Typography → Layout → Elevation & Depth → Shapes → Components → Do's and Don'ts**.
 
@@ -117,7 +119,7 @@ Two rules of thumb that matter more than they look:
 
 **The prose carries the argument; the tokens carry the values.** The tokens are normative — an agent building UI reads those. The prose is what stops a future agent from making a plausible-but-wrong call in a situation you didn't tokenize. So write the prose as *reasoning*, not as a restatement of the hex codes. "Tertiary (#B8422E) is the sole driver of interaction — used for primary actions and critical highlights only" earns its place. "Tertiary is #B8422E" does not. Use the descriptive color name in prose ("weathered oxide") and the systematic name in tokens (`tertiary`); the spec explicitly supports this pairing and it's what makes the document readable by humans.
 
-**Wire the components section properly.** Components are where tokens become usable, and the linter checks two things through them: `orphaned-tokens` fires on any token no component references, and `contrast-ratio` checks each component's `backgroundColor`/`textColor` pair against WCAG AA (4.5:1). Both are load-bearing. Define components with `{colors.x}` / `{typography.y}` / `{rounded.z}` references rather than literal values, cover the real states (`button-primary`, `button-primary-hover`, `button-secondary`, `input`, `input-error`, `card`, `chip`, `tooltip`), and always define background and text together so contrast is actually checkable.
+**Wire the components section properly.** Components are where tokens become usable, and the linter checks two things through them: `orphaned-tokens` fires on a color token no component references, and `contrast-ratio` checks each component's `backgroundColor`/`textColor` pair against WCAG AA (4.5:1). Both are load-bearing. Define components with `{colors.x}` / `{typography.y}` / `{rounded.z}` references rather than literal values, cover the real states (`button-primary`, `button-primary-hover`, `button-secondary`, `input`, `input-error`, `card`, `chip`, `tooltip`), and always define background and text together so contrast is actually checkable.
 
 **Do's and Don'ts is not filler.** It's the section that survives contact with a future agent under time pressure. Make each line specific and enforceable for *this* system — "Don't introduce a second accent color; if something needs emphasis, use weight or space" — not generic advice like "maintain good contrast."
 
@@ -128,10 +130,10 @@ Two rules of thumb that matter more than they look:
 The official CLI is the objective check. Full command reference and a fix for every rule is in `references/cli.md`.
 
 ```bash
-npx -y @google/design.md@latest lint --format json DESIGN.md
+npx -y @google/design.md@0.4.0 lint --format json DESIGN.md
 ```
 
-(Windows PowerShell: `npx -y -p @google/design.md designmd lint --format json DESIGN.md` — the `design.md` name collides with file associations.)
+(Windows PowerShell: `npx -y -p @google/design.md@0.4.0 designmd lint --format json DESIGN.md` — the `design.md` name collides with file associations.)
 
 Exit code is 1 if there are errors, 0 otherwise. Iterate until:
 

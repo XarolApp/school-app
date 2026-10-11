@@ -1,6 +1,6 @@
 # The Slop Catalog
 
-A field guide to the specific defaults that make a design read as machine-generated, why each one happens, and what to do instead.
+An optional aesthetic field guide. Its prevalence/lineage judgments are opinions rather than a measured current survey; accessibility, task clarity and established project constraints take precedence. It does not authorize redesigning the existing system.
 
 **Contents**
 - [The mechanism](#the-mechanism)
@@ -44,7 +44,7 @@ The reliable test for any token: **can you finish the sentence "this value is wh
 
 **Untouched framework ramps.** Every color pulled straight from Tailwind's default palette with no modification — `emerald-500` for success, `red-500` for error, `amber-500` for warning, `slate-*` for every neutral. The stock semantic triad is as recognizable as the stock accent.
 
-**Pure neutral greys.** `#808080`, `#CCCCCC`, `#F5F5F5`, or any ramp where R=G=B. Real palettes almost never contain true greys, because real light is never neutral.
+**Pure neutral greys.** `#808080`, `#CCCCCC`, `#F5F5F5`, or any ramp where R=G=B. This guide favors tints that relate surfaces to a chosen palette; true greys can also be an intentional choice.
 
 **Pure `#FFFFFF` and `#000000`** used as the page background and body text. Both are physically harsh, and both signal that nobody chose them.
 

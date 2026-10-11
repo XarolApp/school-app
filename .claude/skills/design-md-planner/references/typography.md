@@ -18,7 +18,7 @@ Choosing faces, pairing them, and building a scale that reads as designed. Read 
 
 ## The typeface library
 
-Organized by register. **(F)** = free/open-source, **(C)** = commercial license required. There are strong open options in every category, so a good typographic system never requires a licensing budget.
+Organized by register. **(F)** marks an open/free-family reference, **(C)** a commercial-family reference. These labels are not approval of a particular downloaded file, web/app use, redistribution or current license; inspect its exact primary license and retain required notices. The catalogue is optional aesthetic guidance, not measured current popularity or the project’s installed font list. There are strong open options in every category, so a good typographic system never requires a licensing budget.
 
 ### Neo-grotesque sans — neutral, structural, Swiss
 
@@ -31,7 +31,8 @@ The workhorse category. Neutral but not characterless.
 - **Archivo** (F) — Omnibus-Type. Genuinely good, variable, with a real condensed family. Strongly underused.
 - **Public Sans** (F) — USWDS; neutral, legible, institutionally credible. Used in the DESIGN.md spec's own examples.
 - **Geist** (F) — Vercel; clean, modern, with a matching mono.
-- **Inter** (F) — excellent, and everywhere. Usable *deliberately* — set optical sizing, enable `cv05`/`cv11` for the single-storey alternates, use the variable axes. Reflexive use is the problem, not the face.
+- **Inter** (F) — excellent, and everywhere. Usable *deliberately* — set optical sizing, use `cv05` for lower-case L with a tail and `cv11` for single-storey a, if the exact font build supports them, use the variable axes. Reflexive use is the problem, not the face.
+- **Neue Haas Unica** (C) — a grotesque, not a geometric Futura-style face. [Foundry field guide](https://www.myfonts.com/a/font/content/font-field-guide/neue-haas-unica/).
 - **Helvetica Now** (C) — the good modern Helvetica, with a genuine Micro optical size.
 
 ### Humanist sans — warmer, calligraphic skeleton
@@ -44,7 +45,7 @@ The workhorse category. Neutral but not characterless.
 
 ### Geometric sans — constructed, Bauhaus-descended
 
-- **Futura** (C) / **Neue Haas Unica** (C) — the originals.
+- **Futura** (C) — a geometric reference.
 - **Jost** (F) — a well-made Futura interpretation, variable.
 - **Space Grotesk** (F) — geometric with mono-derived quirks; distinctive without being loud.
 - Avoid **Poppins**, **Montserrat**, **Century Gothic** as defaults — technically fine, but so overused they now signal absence of choice.
@@ -214,7 +215,7 @@ Worth setting explicitly; the spec supports `fontFeature` and `fontVariation` on
 
 - **`tnum` (tabular figures)** — mandatory for tables, prices, timers, any column of numbers. Proportional figures make columns jitter.
 - **`onum` (oldstyle figures)** — figures with ascenders and descenders; excellent in editorial body text, wrong in UI.
-- **`ss01`–`ss20` (stylistic sets)** — face-specific alternates. Inter's `cv05`/`cv11` give a single-storey `a` and `g`; Fraunces' `WONK` axis switches to more idiosyncratic forms.
+- **`ss01`–`ss20` (stylistic sets)** — face-specific alternates. Inter's `cv05` gives lower-case L with a tail and `cv11` gives single-storey `a` ([primary feature list](https://rsms.me/inter/)); Fraunces' `WONK` axis switches to more idiosyncratic forms.
 - **`calt`, `liga`** — contextual alternates and ligatures; on by default, but disable `liga` in code contexts where `!=` shouldn't fuse.
 - **`case`** — adjusts punctuation position for all-caps settings; use it on uppercase labels.
 
@@ -255,9 +256,9 @@ typography:
 
 ## Delivery and fallbacks
 
-- **Self-host** where possible — faster, no third-party dependency, and required by some privacy regimes.
-- **`font-display: swap`** so text is readable during load, with a metrics-matched fallback (`size-adjust`, `ascent-override`) to prevent layout shift.
-- **Subset aggressively** — Latin-only subsets are a fraction of the full file.
+- **Consider self-hosting** to avoid third-party font requests, subject to the actual license and delivery plan. Measure loading performance; privacy obligations depend on the processing and applicable rules, not a universal hosting requirement.
+- **`font-display: swap`** so text is readable during load, with a metrics-matched fallback (`size-adjust`, `ascent-override`) to reduce layout shift; verify actual fallback and font metrics.
+- **Subset for the actual languages**, retaining required glyphs and shaping. For Czech, keep Latin Extended characters such as Č/Ř/Ů and test real text; basic-Latin-only files are insufficient. Measure the resulting payload.
 - **Specify a real fallback stack**, not just `sans-serif`. If the brand face fails to load, the fallback should still be a defensible choice.
 - **Commercial licensing is per-use** — web, app, and desktop are typically separate. If the user's product ships a native app, flag it; a face licensed for web only is a real problem later.
 

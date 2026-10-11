@@ -1,0 +1,489 @@
+{
+  "checked_at_utc": "2026-10-11T09:34:46.017814+00:00",
+  "snapshot_commit": "f6c07a04311316ce65a4b97b3e64ebb47447d6c1",
+  "files": {
+    ".agents/skills/design-md-planner/SKILL.md": {
+      "sha256_before": "44d978d12e7fff75b8430dd35885e4074391317bf75a8d97c7ebf549138e90e9",
+      "sha256_after": "f7cf6e50323ec547c560ddf70c906c84acfce21df6f5426b5768de6638c32360",
+      "lines": 163,
+      "edited": true
+    },
+    ".agents/skills/design-md-planner/assets/DESIGN.example.md": {
+      "sha256_before": "88042e96dbddf569b9af95856c7f6540ce7cca44778e7ae83843d54e984a0d13",
+      "sha256_after": "9a832a0cc341874bfe8850b0bef00aff5f2ccc8ab29d5882932c4914eabbb18f",
+      "lines": 246,
+      "edited": true
+    },
+    ".agents/skills/design-md-planner/assets/DESIGN.template.md": {
+      "sha256_before": "9ff82f880493d9eae77fe095c4a4ada74f2b7b3bef248c9384b1a9af45515b72",
+      "sha256_after": "9ff82f880493d9eae77fe095c4a4ada74f2b7b3bef248c9384b1a9af45515b72",
+      "lines": 172,
+      "edited": false
+    },
+    ".agents/skills/design-md-planner/evals/evals.json": {
+      "sha256_before": "a6a74dd0d325969cb64a8dab584ea55f963a05d354c8cb316b44588d6379dcdc",
+      "sha256_after": "a6a74dd0d325969cb64a8dab584ea55f963a05d354c8cb316b44588d6379dcdc",
+      "lines": 29,
+      "edited": false
+    },
+    ".agents/skills/design-md-planner/evals/fixtures/slop-app/src/Dashboard.jsx": {
+      "sha256_before": "406c699fbd9fe9f23fbed6a7fb71aa8236a88e8c16629aea6dea0c25aee433fc",
+      "sha256_after": "ba407abde65b2a829127965a89fd7a4fe49e860b80d1548db35c2ad41ed409e6",
+      "lines": 74,
+      "edited": true
+    },
+    ".agents/skills/design-md-planner/evals/fixtures/slop-app/tailwind.config.js": {
+      "sha256_before": "2cc2ae15e8484bb51c7fc408e605efdf6d790675759322610ee059ba41871a41",
+      "sha256_after": "2cc2ae15e8484bb51c7fc408e605efdf6d790675759322610ee059ba41871a41",
+      "lines": 25,
+      "edited": false
+    },
+    ".agents/skills/design-md-planner/references/anti-slop.md": {
+      "sha256_before": "eed0481efe22eace8bf13b120384fb0879a99e2b86a655d7e7c27e4d38beb0d9",
+      "sha256_after": "58ca47b5552581df6bafbd5f9339631e68fd0d314126d4ca41fad5c1d4eec642",
+      "lines": 246,
+      "edited": true
+    },
+    ".agents/skills/design-md-planner/references/cli.md": {
+      "sha256_before": "4373c7f5749bc498f91359800174e76ae8ce107289f21ce06b23a537de44f584",
+      "sha256_after": "d1f684362e1f4e0a2639b2977de3ccecb79df769a95f0837f207217576c52d56",
+      "lines": 206,
+      "edited": true
+    },
+    ".agents/skills/design-md-planner/references/color-craft.md": {
+      "sha256_before": "088784d9b2d70e79545d86d1fd1665303922fa2c1b443f7bbf549566e804ed6e",
+      "sha256_after": "9c24d7f896fa074fe62dfa024e9d414e4d31109d0513cad234870744ab579abc",
+      "lines": 260,
+      "edited": true
+    },
+    ".agents/skills/design-md-planner/references/designmd-spec.md": {
+      "sha256_before": "761c136e1fb4851a37cb23ad5cce54927bad8b97e9398350e02f8076e9e31524",
+      "sha256_after": "7eeea4bc1ac311ae9d08aef41b95508d93ba89908db4e7452c223db8c2df067e",
+      "lines": 380,
+      "edited": true
+    },
+    ".agents/skills/design-md-planner/references/style-directions.md": {
+      "sha256_before": "d2ec3b99c28aa0600a4c56d72ee4c7f53c2da2f58aeafb4cbb10396cf2a1603b",
+      "sha256_after": "30a058abf38f46f7ea12cab420a0eddf1715948f2a053f333ae2395b9be1fea2",
+      "lines": 381,
+      "edited": true
+    },
+    ".agents/skills/design-md-planner/references/typography.md": {
+      "sha256_before": "0febf3f9e624d359022cca9d23af742b77527f7dc663cf474e4c49ac8f938120",
+      "sha256_after": "d7fbb1b1629fb016ce3f8a0f94f890a488c784f9f9534343a9d236d2d492da24",
+      "lines": 306,
+      "edited": true
+    },
+    ".claude/skills/design-md-planner/SKILL.md": {
+      "sha256_before": "44d978d12e7fff75b8430dd35885e4074391317bf75a8d97c7ebf549138e90e9",
+      "sha256_after": "f7cf6e50323ec547c560ddf70c906c84acfce21df6f5426b5768de6638c32360",
+      "lines": 163,
+      "edited": true
+    },
+    ".claude/skills/design-md-planner/assets/DESIGN.example.md": {
+      "sha256_before": "88042e96dbddf569b9af95856c7f6540ce7cca44778e7ae83843d54e984a0d13",
+      "sha256_after": "9a832a0cc341874bfe8850b0bef00aff5f2ccc8ab29d5882932c4914eabbb18f",
+      "lines": 246,
+      "edited": true
+    },
+    ".claude/skills/design-md-planner/assets/DESIGN.template.md": {
+      "sha256_before": "9ff82f880493d9eae77fe095c4a4ada74f2b7b3bef248c9384b1a9af45515b72",
+      "sha256_after": "9ff82f880493d9eae77fe095c4a4ada74f2b7b3bef248c9384b1a9af45515b72",
+      "lines": 172,
+      "edited": false
+    },
+    ".claude/skills/design-md-planner/evals/evals.json": {
+      "sha256_before": "a6a74dd0d325969cb64a8dab584ea55f963a05d354c8cb316b44588d6379dcdc",
+      "sha256_after": "a6a74dd0d325969cb64a8dab584ea55f963a05d354c8cb316b44588d6379dcdc",
+      "lines": 29,
+      "edited": false
+    },
+    ".claude/skills/design-md-planner/evals/fixtures/slop-app/src/Dashboard.jsx": {
+      "sha256_before": "406c699fbd9fe9f23fbed6a7fb71aa8236a88e8c16629aea6dea0c25aee433fc",
+      "sha256_after": "ba407abde65b2a829127965a89fd7a4fe49e860b80d1548db35c2ad41ed409e6",
+      "lines": 74,
+      "edited": true
+    },
+    ".claude/skills/design-md-planner/evals/fixtures/slop-app/tailwind.config.js": {
+      "sha256_before": "2cc2ae15e8484bb51c7fc408e605efdf6d790675759322610ee059ba41871a41",
+      "sha256_after": "2cc2ae15e8484bb51c7fc408e605efdf6d790675759322610ee059ba41871a41",
+      "lines": 25,
+      "edited": false
+    },
+    ".claude/skills/design-md-planner/references/anti-slop.md": {
+      "sha256_before": "eed0481efe22eace8bf13b120384fb0879a99e2b86a655d7e7c27e4d38beb0d9",
+      "sha256_after": "58ca47b5552581df6bafbd5f9339631e68fd0d314126d4ca41fad5c1d4eec642",
+      "lines": 246,
+      "edited": true
+    },
+    ".claude/skills/design-md-planner/references/cli.md": {
+      "sha256_before": "4373c7f5749bc498f91359800174e76ae8ce107289f21ce06b23a537de44f584",
+      "sha256_after": "d1f684362e1f4e0a2639b2977de3ccecb79df769a95f0837f207217576c52d56",
+      "lines": 206,
+      "edited": true
+    },
+    ".claude/skills/design-md-planner/references/color-craft.md": {
+      "sha256_before": "088784d9b2d70e79545d86d1fd1665303922fa2c1b443f7bbf549566e804ed6e",
+      "sha256_after": "9c24d7f896fa074fe62dfa024e9d414e4d31109d0513cad234870744ab579abc",
+      "lines": 260,
+      "edited": true
+    },
+    ".claude/skills/design-md-planner/references/designmd-spec.md": {
+      "sha256_before": "761c136e1fb4851a37cb23ad5cce54927bad8b97e9398350e02f8076e9e31524",
+      "sha256_after": "7eeea4bc1ac311ae9d08aef41b95508d93ba89908db4e7452c223db8c2df067e",
+      "lines": 380,
+      "edited": true
+    },
+    ".claude/skills/design-md-planner/references/style-directions.md": {
+      "sha256_before": "d2ec3b99c28aa0600a4c56d72ee4c7f53c2da2f58aeafb4cbb10396cf2a1603b",
+      "sha256_after": "30a058abf38f46f7ea12cab420a0eddf1715948f2a053f333ae2395b9be1fea2",
+      "lines": 381,
+      "edited": true
+    },
+    ".claude/skills/design-md-planner/references/typography.md": {
+      "sha256_before": "0febf3f9e624d359022cca9d23af742b77527f7dc663cf474e4c49ac8f938120",
+      "sha256_after": "d7fbb1b1629fb016ce3f8a0f94f890a488c784f9f9534343a9d236d2d492da24",
+      "lines": 306,
+      "edited": true
+    }
+  },
+  "guarded_edit": {
+    "validated_paths": 24,
+    "allowed_edits": 18,
+    "unchanged_paths": 6,
+    "proofs": [
+      {
+        "path": ".agents/skills/design-md-planner/assets/DESIGN.example.md",
+        "yaml_tokens_byte_preserved": true
+      },
+      {
+        "path": ".agents/skills/design-md-planner/evals/fixtures/slop-app/src/Dashboard.jsx",
+        "original_function_body_byte_preserved": true
+      },
+      {
+        "path": ".agents/skills/design-md-planner/references/designmd-spec.md",
+        "specification_body_byte_preserved": true
+      },
+      {
+        "path": ".claude/skills/design-md-planner/assets/DESIGN.example.md",
+        "yaml_tokens_byte_preserved": true
+      },
+      {
+        "path": ".claude/skills/design-md-planner/evals/fixtures/slop-app/src/Dashboard.jsx",
+        "original_function_body_byte_preserved": true
+      },
+      {
+        "path": ".claude/skills/design-md-planner/references/designmd-spec.md",
+        "specification_body_byte_preserved": true
+      }
+    ],
+    "applied": true
+  },
+  "arithmetic": {
+    "source": ".agents/skills/design-md-planner/references/color-craft.md",
+    "source_sha256": "9c24d7f896fa074fe62dfa024e9d414e4d31109d0513cad234870744ab579abc",
+    "actual_embedded_contrast_function": true,
+    "coordinates": [
+      {
+        "hex": "#FAF3EF",
+        "printed": [
+          0.9685,
+          0.0093,
+          52.1
+        ],
+        "computed": [
+          0.9684702024031703,
+          0.009253453672271938,
+          52.10206988234155
+        ]
+      },
+      {
+        "hex": "#F5E4DA",
+        "printed": [
+          0.9298,
+          0.023,
+          52.7
+        ],
+        "computed": [
+          0.9297546606509461,
+          0.023023496586827855,
+          52.678885020815606
+        ]
+      },
+      {
+        "hex": "#EBCBB8",
+        "printed": [
+          0.8642,
+          0.0445,
+          52.6
+        ],
+        "computed": [
+          0.8642015257354363,
+          0.04451933616040363,
+          52.58838609097316
+        ]
+      },
+      {
+        "hex": "#DBA98D",
+        "printed": [
+          0.7738,
+          0.0706,
+          50.6
+        ],
+        "computed": [
+          0.7738338460629622,
+          0.07059561370829473,
+          50.56606954555277
+        ]
+      },
+      {
+        "hex": "#C68566",
+        "printed": [
+          0.6755,
+          0.0916,
+          46.2
+        ],
+        "computed": [
+          0.6755444111908434,
+          0.09159147241881534,
+          46.227221572769665
+        ]
+      },
+      {
+        "hex": "#AC6647",
+        "printed": [
+          0.5815,
+          0.1008,
+          44.2
+        ],
+        "computed": [
+          0.5815407137795121,
+          0.10083783056801067,
+          44.22008565425792
+        ]
+      },
+      {
+        "hex": "#8B4E34",
+        "printed": [
+          0.4905,
+          0.091,
+          43.3
+        ],
+        "computed": [
+          0.4904924057362614,
+          0.09101891379789293,
+          43.327878707583785
+        ]
+      },
+      {
+        "hex": "#693A26",
+        "printed": [
+          0.4021,
+          0.0737,
+          43.3
+        ],
+        "computed": [
+          0.4021453341611014,
+          0.07370660018861315,
+          43.327902232915434
+        ]
+      },
+      {
+        "hex": "#472619",
+        "printed": [
+          0.3088,
+          0.0547,
+          42.0
+        ],
+        "computed": [
+          0.30880146576920225,
+          0.05473860968632781,
+          41.98048000318575
+        ]
+      },
+      {
+        "hex": "#FBFAF8",
+        "printed": [
+          0.9853,
+          0.0029,
+          84.6
+        ],
+        "computed": [
+          0.9853101926811423,
+          0.0028555898259555314,
+          84.55883845754929
+        ]
+      },
+      {
+        "hex": "#F4F2EE",
+        "printed": [
+          0.9616,
+          0.0057,
+          84.6
+        ],
+        "computed": [
+          0.9615773331289339,
+          0.005740495696567863,
+          84.56637220868703
+        ]
+      },
+      {
+        "hex": "#E8E4DD",
+        "printed": [
+          0.92,
+          0.0104,
+          81.8
+        ],
+        "computed": [
+          0.9200478134001805,
+          0.01036198549159355,
+          81.79465117977215
+        ]
+      },
+      {
+        "hex": "#CCC6BB",
+        "printed": [
+          0.8283,
+          0.0165,
+          82.8
+        ],
+        "computed": [
+          0.828320782696799,
+          0.016531954094746778,
+          82.79027418052551
+        ]
+      },
+      {
+        "hex": "#9E978C",
+        "printed": [
+          0.6792,
+          0.0179,
+          79.3
+        ],
+        "computed": [
+          0.6791854616077274,
+          0.017860730048428544,
+          79.3148228484506
+        ]
+      },
+      {
+        "hex": "#736D63",
+        "printed": [
+          0.5372,
+          0.017,
+          80.7
+        ],
+        "computed": [
+          0.5371689303320563,
+          0.01697252601662226,
+          80.65800535820703
+        ]
+      },
+      {
+        "hex": "#544F47",
+        "printed": [
+          0.4299,
+          0.0145,
+          79.7
+        ],
+        "computed": [
+          0.42985941923890886,
+          0.014467666121390589,
+          79.70291122403047
+        ]
+      },
+      {
+        "hex": "#3B372F",
+        "printed": [
+          0.3382,
+          0.0147,
+          84.6
+        ],
+        "computed": [
+          0.33823669189656674,
+          0.014685034425091616,
+          84.57836242072212
+        ]
+      },
+      {
+        "hex": "#23201B",
+        "printed": [
+          0.2451,
+          0.0103,
+          80.6
+        ],
+        "computed": [
+          0.2450695904698635,
+          0.010282021135920102,
+          80.60902414380439
+        ]
+      }
+    ],
+    "contrasts": [
+      {
+        "foreground": "#23201B",
+        "background": "#FBFAF8",
+        "ratio": 15.558862363381902,
+        "rounded_claim": 15.6,
+        "symmetric": true
+      },
+      {
+        "foreground": "#8B4E34",
+        "background": "#F4F2EE",
+        "ratio": 5.802067531791382,
+        "rounded_claim": 5.8,
+        "symmetric": true
+      },
+      {
+        "foreground": "#8B4E34",
+        "background": "#FBFAF8",
+        "ratio": 6.218939142952535,
+        "rounded_claim": 6.2,
+        "symmetric": true
+      },
+      {
+        "foreground": "#000000",
+        "background": "#FFFFFF",
+        "ratio": 21.0,
+        "rounded_claim": 21.0,
+        "symmetric": true
+      }
+    ],
+    "limits": "Pure arithmetic on fixed hex values, not physical sampling, browser/device accessibility or CLI-lint acceptance."
+  },
+  "fixtures": [
+    {
+      "path": ".agents/skills/design-md-planner/evals/fixtures/slop-app/src/Dashboard.jsx",
+      "actual_source_rendered": true,
+      "vehicle_rows": 2,
+      "synthetic_total_miles": 12400
+    },
+    {
+      "path": ".claude/skills/design-md-planner/evals/fixtures/slop-app/src/Dashboard.jsx",
+      "actual_source_rendered": true,
+      "vehicle_rows": 2,
+      "synthetic_total_miles": 12400
+    }
+  ],
+  "before_fixture": {
+    "path": ".agents/skills/design-md-planner/evals/fixtures/slop-app/src/Dashboard.jsx",
+    "result": "throws",
+    "name": "ReferenceError",
+    "message": "stats is not defined"
+  },
+  "bug_echo": "Only the four corrected Inter-feature lines remain; no stale 14.9:1/55–60/42°→20°/two-weight claims in searched authored Markdown.",
+  "primary_sources": [
+    "https://github.com/google-labs-code/design.md/blob/main/README.md",
+    "https://rsms.me/inter/",
+    "https://www.myfonts.com/a/font/content/font-field-guide/neue-haas-unica/",
+    "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html",
+    "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html",
+    "https://www.w3.org/TR/css-color-4/#ok-lab"
+  ],
+  "probe_limits": [
+    "The initial coordinate extractor read only table rows and failed its expected 18-row assertion; whitespace matching was corrected and all 18 coordinates pass. This was a probe bug, not an additional source defect.",
+    "A previous synthetic SSR probe omitted stripping the module export and failed before rendering; the corrected actual-source transform renders both copies.",
+    "Automatic review rejected an initial edit script because of suspected cross-file overwrite. A separate independent-path proposal/apply validator proved specification bodies, YAML tokens and original fixture function bodies unchanged; the safer action passed normal automatic review. No bypass or remaining approval block.",
+    "No new dependency, network model call, CLI installation/execution, production UI/token edit, framework decision or hosted mutation. Exact font assets/licenses, rendered delivery/states and real devices remain separately checked before future adoption."
+  ]
+}

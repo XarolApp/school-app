@@ -1,3 +1,14 @@
+// Deliberately generic synthetic evaluation fixture, not production data.
+const stats = [
+  { label: "Active vehicles", value: "2", icon: "🚚" },
+  { label: "Drivers", value: "2", icon: "👤" },
+  { label: "Miles", value: "12,400", icon: "🛣️" },
+]
+const rows = [
+  { unit: "V-01", driver: "Driver A", status: "Active", miles: "5,000" },
+  { unit: "V-02", driver: "Driver B", status: "Active", miles: "7,400" },
+]
+
 export default function Dashboard() {
   return (
     <div className="min-h-screen bg-slate-900 text-slate-100 font-sans">
