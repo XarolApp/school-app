@@ -196,17 +196,18 @@ function round1(n) {
   return Math.round(n * 10) / 10;
 }
 
-// A cutoff of null in the raw file means "not admitted by didactic test" (a
-// talent-exam-only obor) — real, not missing. Shared by the school-level
-// average and the per-program row below so the two never disagree.
+// Null means the file has no numeric minimum for admitted test takers. This
+// also occurs in JPZ-required programmes with no admitted test takers; it does
+// not establish a talent-exam-only programme. Preserve null in both the
+// school-level average and the per-program row below.
 function halvedCutoff(row) {
   const cutoff = row[COL.cutoff];
   if (cutoff === null || cutoff === '' || Number.isNaN(Number(cutoff))) return null;
   // ČJ+MA is the SUM of the two tests' separate 0–100 scores, not their
   // average, so it reads 0–200 in the raw file (a strong student can post
-  // 159, 145, etc.). Dividing by 2 turns it into a plain 0–100 "average %
-  // correct across both tests" — the number a 15-year-old can actually
-  // compare against their own practice-test scores.
+  // 159, 145, etc.). Dividing by 2 gives an average percentage on 0–100.
+  // This equals the usual combined point score for two 50-point tests;
+  // adapted tests with different maxima require percentage normalization.
   return Number(cutoff) / 2;
 }
 

@@ -237,3 +237,6 @@ Removed-values checkpoint, 11 October: [two complete historical JSON artifacts/1
 
 
 Structural-extraction checkpoint, 11 October: [three complete unchanged artifacts/1257 original lines](structure-v3-first-artifact-review-2026-10-11.json), using every parsed backup field, full dry-a and all dry-b differences. Identical paired totals hide two teaching-tag differences; the backup’s 189 non-null club arrays include 79 empty arrays. Historical quote validation alone does not establish current extracurricular availability or school/programme applicability. S10 ordered checks remain open; three later logs are still pending.
+
+
+Asset/workbook checkpoint, 11 October: [hash-qualified evidence](asset-workbook-review-2026-10-11.json) records all 95 image decodes, five audio structure checks and three readonly Cermat workbook scans. These checks do not certify rights, all image content, sound playback or live data. Corrected only misleading cutoff and historical stability/non-null coverage wording. New **C58, P1 beta eligible-programme correctness**: the import drops the shortened-study flag and its actual projection/shared-predicate fixture accepts all 37/32/34 flagged Prague rows in 2024/2025/2026. Exact source semantics/current served exposure and a coordinated scope migration remain open; dated catalogue counts are unchanged.

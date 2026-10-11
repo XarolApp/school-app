@@ -1955,3 +1955,9 @@ Two complete unchanged JSON artifacts/1127 lines reviewed. The 112 removed value
 ## Early structural extraction and six-column backup — 11 October 2026 (S10)
 
 Three complete unchanged historical artifacts/1257 original lines reviewed, including every field of 220 backup records and all 112 differences between the two 20-school logs. Equal output counts hide two teaching-tag differences; 189 non-null club arrays include 79 empty arrays. All explicit club counts remain unknown. [Evidence and ordered acceptance](reports/deployment-review-2026-10-07/structure-v3-first-artifact-review-2026-10-11.json) records exact-source, scope, availability, meals/dorm and percentage checks. Three later full logs remain pending; no current data/provider action or release clearance.
+
+
+## C58 — shortened-study scope; asset/workbook checkpoint, 11 October 2026
+
+- [ ] **P1 before ninth-grade beta data acceptance:** the importer drops Cermat’s shortened-study flag. Its actual projection/shared-predicate fixture admits all 37/32/34 flagged Prague rows for 2024/2025/2026, including explicit one-year routes nominally labelled three years. Verify current served exposure and exact source meaning, then preserve the field/source identity and align reviewed JS/SQL/import scope; retain ordinary routes at mixed schools and archived choices. Coordinate C52/C54/B02/B03/S10. This is logged without a data/schema/scorer fix.
+- [Asset/workbook evidence](reports/deployment-review-2026-10-07/asset-workbook-review-2026-10-11.json) records 95 successful image decodes, five PCM sound checks and three readonly workbook scans, plus 19 visually covered paths. The other 76 image paths, sound listening/device/mix/rights, two peer DOCX files and official download/live mapping acceptance remain separate. Null cutoffs can occur in JPZ-required programmes; only that comment and false historical stability/coverage wording were corrected, with executable import text preserved.

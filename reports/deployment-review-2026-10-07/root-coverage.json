@@ -64,7 +64,7 @@
     "reviewer": "root"
   },
   "AGENTS.md": {
-    "sha256": "289dff7be0de95ef3293b3d890950748b853bbfd81ffa5293d52bdf3eb96b30d",
+    "sha256": "c286e50441fbe015af4b7c4eb10c6076073720096099d6574230acbf4c8a2549",
     "lines": 1041,
     "read_ranges": [
       [
@@ -74,12 +74,12 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-10T21:20:51.076901+00:00",
-    "method": "Verified full saved baseline at d70f50d plus complete current diff and all owned edits read. Source coverage is not SQL/hosted/browser/deployment acceptance.",
-    "previous_complete_sha256": "276c40407ce317b5c1cddb9d607be9576896a0d9430103a2fe78380a75180ab8"
+    "checked_at_utc": "2026-10-11T17:43:27.348581+00:00",
+    "method": "Exact fully reviewed baseline plus full current own factual-comment/documentation diff read without truncation; all non-comment executable importer text preserved. C58 broader correction is plan-only.",
+    "previous_complete_sha256": "289dff7be0de95ef3293b3d890950748b853bbfd81ffa5293d52bdf3eb96b30d"
   },
   "CLAUDE.md": {
-    "sha256": "a39f7e71af1caf9ee6a2ddfb719f55e56389cf7aeb428002585d04adeab84300",
+    "sha256": "aa9c9738a5a77ffbafd08be1d2be7397d0a230f45c5b6c8d3005373b38c59926",
     "lines": 1037,
     "read_ranges": [
       [
@@ -89,9 +89,9 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-10T21:20:51.076901+00:00",
-    "method": "Verified full saved baseline at d70f50d plus complete current diff and all owned edits read. Source coverage is not SQL/hosted/browser/deployment acceptance.",
-    "previous_complete_sha256": "f177457e07b9fb9911b3e4f79747e6edb89ad0156f1eb98a4a983793ea566787"
+    "checked_at_utc": "2026-10-11T17:43:27.348581+00:00",
+    "method": "Exact fully reviewed baseline plus full current own factual-comment/documentation diff read without truncation; all non-comment executable importer text preserved. C58 broader correction is plan-only.",
+    "previous_complete_sha256": "a39f7e71af1caf9ee6a2ddfb719f55e56389cf7aeb428002585d04adeab84300"
   },
   "frontend/src/App.jsx": {
     "sha256": "8f699b26bda2cc15aa691b9416e554560586d63335d896838bdcd9d40e05c915",
@@ -1241,19 +1241,19 @@
     "method": "Full source read across recorded continuation turns, including missing middleware/brainstorm ranges and complete authored diffs. Read means inspected, not defect-free or runtime-approved."
   },
   "scripts/import-admission-data.js": {
-    "sha256": "74b321ab0fe695884a66c63e7de66a2bdde8f94fdebe595ff68242e376bc9b9c",
-    "lines": 500,
+    "sha256": "c60379fcff18cd9703ea164f50e1b69dfc394c9781a3b0665ea773be510669cf",
+    "lines": 501,
     "read_ranges": [
       [
         1,
-        500
+        501
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-10T21:20:51.076901+00:00",
-    "method": "Verified full saved baseline at f38631e plus complete current diff and all owned edits read. Source coverage is not SQL/hosted/browser/deployment acceptance.",
-    "previous_complete_sha256": "b91fdfda0ee59bfe489fa6a2d75197192f2026bd169b6d7148edf924cb2bf523"
+    "checked_at_utc": "2026-10-11T17:43:27.348581+00:00",
+    "method": "Exact fully reviewed baseline plus full current own factual-comment/documentation diff read without truncation; all non-comment executable importer text preserved. C58 broader correction is plan-only.",
+    "previous_complete_sha256": "74b321ab0fe695884a66c63e7de66a2bdde8f94fdebe595ff68242e376bc9b9c"
   },
   "scripts/import-maturita-data.js": {
     "sha256": "0f3e98d70241ba2c6e88a4c5b43d25395cd6ed0cd915f778f99c6498ce312fe9",
@@ -1356,7 +1356,7 @@
     "previous_complete_sha256": "ae048c6b1cf311290b0ec7f582568f304a9b3fa59e310054ce91ceb75999cfa5"
   },
   "docs/skolamatch_current_status.md": {
-    "sha256": "d5a2fabcc5e6f47eaad1ca108194fa0a7114f502d91199865830d0ef4e8289d7",
+    "sha256": "f2d0259270104a558e62e0d781cc1643b3c91682a63809675b864b4d6ca061c6",
     "lines": 1108,
     "read_ranges": [
       [
@@ -1366,9 +1366,9 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-11T09:18:44.259669+00:00",
-    "previous_complete_sha256": "82d7874830d6c49b2aa1d2ea309eeff9a9680ecf7f51aec0dd34fea9d691eb1d",
-    "method": "Verified saved full baseline plus all subsequent owned complete document diffs; UNFORGET full 5c3e3f4 baseline, Swift append and current record amendment. Read does not approve source facts, full SQL/RLS/grants or deployment."
+    "checked_at_utc": "2026-10-11T17:43:27.348581+00:00",
+    "previous_complete_sha256": "d5a2fabcc5e6f47eaad1ca108194fa0a7114f502d91199865830d0ef4e8289d7",
+    "method": "Exact fully reviewed baseline plus complete own asset/workbook/C58 factual append or status phrase inspected. No source/data/provider acceptance inferred."
   },
   "reports/deployment-review-2026-10-07/probe-services.cjs": {
     "sha256": "b47240d76e47550d2a307d302f8714ae7edcbe3074829e02de8d6a334334fe60",
@@ -2138,19 +2138,19 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "ecb5d1dad0694e71f4ee7cd75b1d1b042351774982a4da801417b93c3c7fc9c2",
-    "lines": 1957,
+    "sha256": "53aa9a9cc06a38e0ecf35d23e440ac6bd639751786d8cf2fc746a379f3042d85",
+    "lines": 1963,
     "read_ranges": [
       [
         1,
-        1957
+        1963
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-11T17:21:00.794592+00:00",
-    "previous_complete_sha256": "8b27d40f801855f56ee21fc69efef3544724cfa95b3de7673fd1c0b7cc2df902",
-    "method": "Exact fully reviewed baseline plus complete own S10 early-structure append inspected.",
+    "checked_at_utc": "2026-10-11T17:43:27.348581+00:00",
+    "previous_complete_sha256": "ecb5d1dad0694e71f4ee7cd75b1d1b042351774982a4da801417b93c3c7fc9c2",
+    "method": "Exact fully reviewed baseline plus complete own asset/workbook/C58 factual append or status phrase inspected. No source/data/provider acceptance inferred.",
     "evidence": "motion-demo-verification-2026-10-11.json"
   },
   "frontend/src/api.js": {

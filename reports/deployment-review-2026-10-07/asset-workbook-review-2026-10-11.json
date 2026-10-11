@@ -1,0 +1,6148 @@
+{
+  "checked_at_utc": "2026-10-11T17:43:27.348581+00:00",
+  "snapshot_commit": "52d9aa5f0b59e489cde0da439b27d7cfa104c122",
+  "assets": {
+    "images": [
+      {
+        "path": "design/Logo Concepts Refinement Request/.thumbnail",
+        "sha256": "2ba111c6f7995dcb08c85204a1a783fbcdc0d3ab8976d6a9270e63199b1e0ada",
+        "bytes": 23256,
+        "format": "WEBP",
+        "mode": "RGB",
+        "size": [
+          298,
+          468
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "loop",
+          "background",
+          "icc_profile",
+          "timestamp",
+          "duration"
+        ],
+        "pixel_extrema": [
+          [
+            5,
+            255
+          ],
+          [
+            5,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "view_image inspected"
+      },
+      {
+        "path": "design/Logo Concepts Refinement Request/uploads/pasted-1789576013130-0.png",
+        "sha256": "2e5e4cbed6bea8de51a7c498d4ff32e3938cd6761b4291fe923432044af6ca0a",
+        "bytes": 8821,
+        "format": "PNG",
+        "mode": "RGBA",
+        "size": [
+          112,
+          113
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [
+          34665
+        ],
+        "embedded_metadata_keys": [
+          "icc_profile",
+          "exif"
+        ],
+        "alpha_range": [
+          255,
+          255
+        ],
+        "transparent_pixel_fraction": 0.0,
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            27,
+            255
+          ],
+          [
+            26,
+            255
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "view_image inspected"
+      },
+      {
+        "path": "design/archive/school-search-wireframe/.thumbnail",
+        "sha256": "6563c750a0f3ae2b56e5a4840b4d91b18a10cf03bbbbdb69ae87928eedacd090",
+        "bytes": 22168,
+        "format": "WEBP",
+        "mode": "RGB",
+        "size": [
+          640,
+          445
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "loop",
+          "background",
+          "icc_profile",
+          "timestamp",
+          "duration"
+        ],
+        "pixel_extrema": [
+          [
+            23,
+            255
+          ],
+          [
+            20,
+            255
+          ],
+          [
+            12,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "view_image inspected"
+      },
+      {
+        "path": "design/archive/school-search-wireframe/uploads/mcp/mcp-1788032693246-5me4s4.webp",
+        "sha256": "8c459976a9e84c5640f463614dce243fd1dc6c7c62af2178f9d2edff893257e4",
+        "bytes": 90884,
+        "format": "WEBP",
+        "mode": "RGB",
+        "size": [
+          768,
+          523
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "loop",
+          "background",
+          "timestamp",
+          "duration"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "view_image inspected"
+      },
+      {
+        "path": "design/archive/school-search-wireframe/uploads/mcp/mcp-1788032693247-5aeajx.webp",
+        "sha256": "56499cf445110343820abf49ac7aa2ca283c31050259a2b93678a99fa79d5323",
+        "bytes": 48902,
+        "format": "WEBP",
+        "mode": "RGB",
+        "size": [
+          768,
+          521
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "loop",
+          "background",
+          "timestamp",
+          "duration"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "view_image inspected"
+      },
+      {
+        "path": "design/archive/school-search-wireframe/uploads/mcp/mcp-1788032693247-86ipnr.webp",
+        "sha256": "f7757464626c581d3ed4e68a67dc7379665960c5fe35e2f78fd414774767ae89",
+        "bytes": 54740,
+        "format": "WEBP",
+        "mode": "RGB",
+        "size": [
+          768,
+          521
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "loop",
+          "background",
+          "timestamp",
+          "duration"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "view_image inspected"
+      },
+      {
+        "path": "design/archive/school-search-wireframe/uploads/mcp/mcp-1788032693247-d6t5rh.webp",
+        "sha256": "4ac6b775e3e0712080db06c9cb75806016bacb1b1a211a70979e3588b7ba3dbe",
+        "bytes": 36788,
+        "format": "WEBP",
+        "mode": "RGB",
+        "size": [
+          768,
+          521
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "loop",
+          "background",
+          "timestamp",
+          "duration"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "view_image inspected"
+      },
+      {
+        "path": "design/archive/school-search-wireframe/uploads/mcp/mcp-1788032693247-rm0xkm.webp",
+        "sha256": "e5a45c76082f722081e145f90183a6bd9dfe3fcc31287a3e9ad21af7c55123f6",
+        "bytes": 56770,
+        "format": "WEBP",
+        "mode": "RGB",
+        "size": [
+          768,
+          521
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "loop",
+          "background",
+          "timestamp",
+          "duration"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "view_image inspected"
+      },
+      {
+        "path": "design/archive/school-search-wireframe/uploads/mcp/mcp-1788032693247-vkie9n.webp",
+        "sha256": "0e8d2aef5a628c12f8222426a863556268e705467d49e3b1bdfb2598e08aa943",
+        "bytes": 31682,
+        "format": "WEBP",
+        "mode": "RGB",
+        "size": [
+          768,
+          521
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "loop",
+          "background",
+          "timestamp",
+          "duration"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            3,
+            255
+          ],
+          [
+            3,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "view_image inspected"
+      },
+      {
+        "path": "design/brand/ikona-512.png",
+        "sha256": "b252ac8d166364620bf270e1738db8416640552418450280d39cf0e615c11c6d",
+        "bytes": 14309,
+        "format": "PNG",
+        "mode": "RGBA",
+        "size": [
+          512,
+          512
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [
+          34665
+        ],
+        "embedded_metadata_keys": [
+          "srgb",
+          "exif"
+        ],
+        "alpha_range": [
+          255,
+          255
+        ],
+        "transparent_pixel_fraction": 0.0,
+        "pixel_extrema": [
+          [
+            17,
+            255
+          ],
+          [
+            17,
+            255
+          ],
+          [
+            17,
+            255
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "view_image inspected"
+      },
+      {
+        "path": "design/brand/logo-1024.png",
+        "sha256": "20cbd05ee1cc3b88b6221d721558320561d63b55b63a75442e06ab79f933cee2",
+        "bytes": 51594,
+        "format": "PNG",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [
+          34665
+        ],
+        "embedded_metadata_keys": [
+          "srgb",
+          "exif"
+        ],
+        "alpha_range": [
+          255,
+          255
+        ],
+        "transparent_pixel_fraction": 0.0,
+        "pixel_extrema": [
+          [
+            17,
+            255
+          ],
+          [
+            17,
+            255
+          ],
+          [
+            17,
+            255
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "view_image inspected"
+      },
+      {
+        "path": "design/brand/logo-512.png",
+        "sha256": "4ca90ea715f2ac482c0c1c9a010cc6e33c5cda9e758606c7bf88504fe6d5e136",
+        "bytes": 24257,
+        "format": "PNG",
+        "mode": "RGBA",
+        "size": [
+          512,
+          512
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [
+          34665
+        ],
+        "embedded_metadata_keys": [
+          "gamma",
+          "chromaticity",
+          "exif",
+          "xmp",
+          "XML:com.adobe.xmp"
+        ],
+        "alpha_range": [
+          255,
+          255
+        ],
+        "transparent_pixel_fraction": 0.0,
+        "pixel_extrema": [
+          [
+            1,
+            255
+          ],
+          [
+            1,
+            255
+          ],
+          [
+            1,
+            255
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "view_image inspected"
+      },
+      {
+        "path": "design/brand/profil-bile.png",
+        "sha256": "a307a0c857a90b3156ee4ca09261c58392d5e67d0c7b518dc9b4f63dab3a36da",
+        "bytes": 37849,
+        "format": "PNG",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [
+          34665
+        ],
+        "embedded_metadata_keys": [
+          "srgb",
+          "exif"
+        ],
+        "alpha_range": [
+          255,
+          255
+        ],
+        "transparent_pixel_fraction": 0.0,
+        "pixel_extrema": [
+          [
+            17,
+            255
+          ],
+          [
+            17,
+            255
+          ],
+          [
+            17,
+            255
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "view_image inspected"
+      },
+      {
+        "path": "design/brand/profil-cerne.png",
+        "sha256": "ce88fda63d42ca6c7066f77f8ed333da45ffd95a43c85baf7b9aea728337dd7a",
+        "bytes": 37959,
+        "format": "PNG",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [
+          34665
+        ],
+        "embedded_metadata_keys": [
+          "srgb",
+          "exif"
+        ],
+        "alpha_range": [
+          255,
+          255
+        ],
+        "transparent_pixel_fraction": 0.0,
+        "pixel_extrema": [
+          [
+            17,
+            255
+          ],
+          [
+            17,
+            255
+          ],
+          [
+            17,
+            255
+          ],
+          [
+            255,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "view_image inspected"
+      },
+      {
+        "path": "design/system/.thumbnail",
+        "sha256": "cce56cc699d0b6bdbfa88ecd6084198a2711a6fec452bc0df1fc9b8ac62ce457",
+        "bytes": 5602,
+        "format": "WEBP",
+        "mode": "RGB",
+        "size": [
+          640,
+          427
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "loop",
+          "background",
+          "icc_profile",
+          "timestamp",
+          "duration"
+        ],
+        "pixel_extrema": [
+          [
+            76,
+            255
+          ],
+          [
+            45,
+            255
+          ],
+          [
+            24,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "view_image inspected"
+      },
+      {
+        "path": "design/system/templates/skolamatch-screen/.thumbnail",
+        "sha256": "53718f940fd44722b1800abe944dbf60f012ff77d329f3ddc411b8c46a6ba990",
+        "bytes": 16720,
+        "format": "WEBP",
+        "mode": "RGB",
+        "size": [
+          640,
+          432
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "loop",
+          "background",
+          "icc_profile",
+          "timestamp",
+          "duration"
+        ],
+        "pixel_extrema": [
+          [
+            20,
+            255
+          ],
+          [
+            14,
+            255
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "view_image inspected"
+      },
+      {
+        "path": "frontend/public/apple-touch-icon.png",
+        "sha256": "3ef0695e0276bccfc02561b0722cbd18ffa74a08dc3e28040d659929b7ceab76",
+        "bytes": 4574,
+        "format": "PNG",
+        "mode": "RGBA",
+        "size": [
+          180,
+          180
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [],
+        "alpha_range": [
+          0,
+          255
+        ],
+        "transparent_pixel_fraction": 0.037562,
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "view_image inspected"
+      },
+      {
+        "path": "reports/beta-verification-2026-10-05/admin-desktop-closing.jpg",
+        "sha256": "51dc03cfb12cc09c5d5e82945e5546cc07f0e6c22ef38981167aa2333cfd4f33",
+        "bytes": 68889,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          900
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            3,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/beta-verification-2026-10-05/admin-desktop-matching.jpg",
+        "sha256": "332271dfd32f1e8bc6e7194166fc4d3aa53926b26d2accf44852946d887aa10f",
+        "bytes": 62524,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          900
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            5,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/beta-verification-2026-10-05/admin-desktop-overview.jpg",
+        "sha256": "752cc78f94ee3e3f05652aa3acb0be1936a1deb22a39d19309897a13a91ab56d",
+        "bytes": 59970,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          900
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            2,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/beta-verification-2026-10-05/admin-mobile-feedback.jpg",
+        "sha256": "22562991f27492a383e4d928329427042fef437a72e97a55aeba7b275a4cfc66",
+        "bytes": 43191,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          390,
+          844
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            4,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/beta-verification-2026-10-05/admin-mobile-overview.jpg",
+        "sha256": "ee755d69ecfd4603482196e4d7da079367324ecdcb777f03d058ce807181544b",
+        "bytes": 31570,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          390,
+          844
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            1,
+            255
+          ],
+          [
+            4,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/beta-verification-2026-10-05/checklist-complete.jpg",
+        "sha256": "ec8029eb4f516bf4e98254cc2189565cb9518cde10f13eb5624cb48bd6a6a49e",
+        "bytes": 82309,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          900
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            5,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            250
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/beta-verification-2026-10-05/mobile-closing-review.jpg",
+        "sha256": "301040acedaad417b51cb8db55bb16b1688b85a6d1a8c96c5f886182b58db18c",
+        "bytes": 45269,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          390,
+          844
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            2,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/beta-verification-2026-10-05/mobile-screenshot-preview.jpg",
+        "sha256": "ec9efc93ec59e50864a0d7948aad066d098969c008851ddd971f21e44816cae6",
+        "bytes": 35807,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          390,
+          844
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            1,
+            255
+          ],
+          [
+            3,
+            255
+          ],
+          [
+            5,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/beta-verification-2026-10-05/normal-admin-denied.jpg",
+        "sha256": "ed34e567640426eaf8b224c4637fc8852b3b3ba89c84a7ac7fa5735e5ef8414c",
+        "bytes": 27533,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          900
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            2,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/beta-verification-2026-10-05/private-profile-masked.jpg",
+        "sha256": "a230fdaa3e46329ca58038f61785dd156e1aafb8b23ef0a16082a5fb2f1af743",
+        "bytes": 45892,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          900
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            7,
+            255
+          ],
+          [
+            2,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/active-beta-closing-after.png",
+        "sha256": "278c4bd5d838f171642d02e6d437940de8592e450c8a0f45a87f3f6eaaf34303",
+        "bytes": 46967,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          720
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            2,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/admission-roadmap-mobile.jpg",
+        "sha256": "de949b2fc1a517a501708ae2c4ccb3c51255c37f88e9ebb177b73213c7ce4691",
+        "bytes": 45319,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          390,
+          844
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            38,
+            255
+          ],
+          [
+            39,
+            255
+          ],
+          [
+            41,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/auth-retry-browser-2026-10-10.png",
+        "sha256": "18966647d421876f0f6d09b10258c869ec4ab5b4cb3af41cc3df2af2005b2415",
+        "bytes": 63553,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          720
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/beta-admin-eight-tasks-browser-2026-10-10.png",
+        "sha256": "0434ebd54349219a31ab23429ab427da722158e898ad35bbe6a91341912c730e",
+        "bytes": 48020,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          720
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            2,
+            255
+          ],
+          [
+            5,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/beta-invitation-production.png",
+        "sha256": "8cad03c33fa4416c2c37aea3ca217cd2d659fc3aa1ee737d868552bb07022f25",
+        "bytes": 100013,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          884
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            3,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/beta-rating-keyboard-after.png",
+        "sha256": "5f08f19970f5cde3e4a5e66d15e168c99c44551abe4a88341de6cefd3cd53a2c",
+        "bytes": 40140,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          720
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            2,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/beta-renewal-guide-phone.png",
+        "sha256": "c6a8e3b1c1d084b95813d1460d5cf50198e3ba9a1c638348363d4ed331fa480a",
+        "bytes": 149658,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          375,
+          2630
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/beta-renewal-settings-phone.png",
+        "sha256": "1d549c5615a8287ef522d3158121ccb027f1ebc74afd713c610b189fb14383db",
+        "bytes": 125575,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          375,
+          3157
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/beta-review-parent-copy.png",
+        "sha256": "fcede944a13ba94c2f5efc15a72963ef92a3182dbe77c17860955ef86dfffd95",
+        "bytes": 33145,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          720
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/calculating-waiting-catalogue.png",
+        "sha256": "0d8ff5bccda024fa31127497e16d1d877ffa69c4d89962ec59de1c1457e07d6e",
+        "bytes": 27341,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          720
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            254
+          ],
+          [
+            1,
+            255
+          ],
+          [
+            4,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/comparison-mixed-years-phone.png",
+        "sha256": "5e3cb60abd4f274122c82a25e49e9c4e27aed74bf502a15e139587d32b2e4650",
+        "bytes": 73387,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          375,
+          1481
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            4,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/confirmation-resend-captcha-after.png",
+        "sha256": "358a8dc1961206d4a7bdfee3cf6b2eaef77fbd3366959eec4d7e9b686efad68b",
+        "bytes": 40495,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          720
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            2,
+            255
+          ],
+          [
+            6,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/confirmation-resend-captcha-phone.png",
+        "sha256": "9c5055da45450b21bfbf91714f3cd186960868b038d4878d03fbbccf1a6b8588",
+        "bytes": 33266,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          375,
+          812
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            1,
+            255
+          ],
+          [
+            4,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/confirmation-return-after.png",
+        "sha256": "af12d676a99928e59d32cc920852bc5358056626ff799a1e2e6118a76fbd8389",
+        "bytes": 23997,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          720
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "exact byte-identical to visually inspected confirmation-return-before.png"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/confirmation-return-before.png",
+        "sha256": "af12d676a99928e59d32cc920852bc5358056626ff799a1e2e6118a76fbd8389",
+        "bytes": 23997,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          720
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "view_image inspected"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/design-input-hook-fixed-2026-10-10.png",
+        "sha256": "7f2e5b60e6527b6d50ce53298ffb7d0126925173785364990920088c94b86c50",
+        "bytes": 19811,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          720
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/district-map-contrast.png",
+        "sha256": "80b13b3e78b891d184208272994fa182b237fab78fe55059747d012f5d4aaecb",
+        "bytes": 47391,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          720
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            4,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/email-hints-reset-phone-2026-10-10.png",
+        "sha256": "1a6eda472217b21d02293f1e15af4e4fb5e7be6b0d073351c31c1a77b127da90",
+        "bytes": 37047,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          375,
+          812
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/ended-beta-closing-after.png",
+        "sha256": "ecd5ff22248c4cc5aea487d12efc96a513347477088a20f7dd0a43bf22a9440b",
+        "bytes": 23004,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          720
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/ended-beta-closing-before.png",
+        "sha256": "16027195e9f907bdeadee3a779fc6139e31dde1b207e962803c9c44163cbb480",
+        "bytes": 45514,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          720
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            2,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/landing-access-price-phone.png",
+        "sha256": "d0cc7d5074f0b7b5b8bd50818aeaad8036467bf0fa04eee37fca591f6594d88f",
+        "bytes": 45569,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          375,
+          1177
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            2,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/landing-landscape-667.jpg",
+        "sha256": "ba6d06e35f16c9243dbb85fd6ee044c9e04493b40e5c533dfdae383795c438eb",
+        "bytes": 21858,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          667,
+          375
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            2,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/landing-landscape-current.png",
+        "sha256": "0311714c596475cce37178fdb5bda98a5d69d5fc62ce3a757fe5601f6e0cf1f9",
+        "bytes": 21919,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          812,
+          375
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/landing-landscape-peer-fixed-667x375.png",
+        "sha256": "a6da61aacceedc4d8b686a826ecaf80240cdc1591369edb75f21168ea7fe046d",
+        "bytes": 27103,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          667,
+          375
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            8,
+            255
+          ],
+          [
+            9,
+            255
+          ],
+          [
+            11,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/landing-live-count.jpg",
+        "sha256": "2d8dcfe12eaa640ae5edcf050e0c5dd3453e09de8bafdcf33a14fd6b8e61aa64",
+        "bytes": 36755,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          720
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            5,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/landing-peer-fixed-320x740.png",
+        "sha256": "87f403ffbdb749909ee910dc99f51640158ae8eb6b25f692cc936acdc2d6b9c9",
+        "bytes": 23097,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          320,
+          740
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            2,
+            255
+          ],
+          [
+            6,
+            255
+          ],
+          [
+            9,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/landing-phone-320.jpg",
+        "sha256": "72d92e3ae41869c7e8a00b347f55e14cb3b32f7659afb7d2fa8673375e0e242e",
+        "bytes": 30039,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          320,
+          740
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            2,
+            255
+          ],
+          [
+            5,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/legal-updated-date-phone.png",
+        "sha256": "b27572ed8778b5ac52af6dc158da338d16bd1724c5abd02f62a0ec1f54b43087",
+        "bytes": 57069,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          375,
+          812
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            2,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/map-capacity-hint-peer-fixed-375x812.png",
+        "sha256": "7dd2d3215a715aefc09d087d43d2092315c0705584543bfa186aa0008f514920",
+        "bytes": 39997,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          375,
+          812
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            2,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/map-older-year-disclosure-phone.png",
+        "sha256": "7f5a41697ef6880c30816f4993fd05a31af2e0c8b9acb3395668055951909c55",
+        "bytes": 35470,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          375,
+          812
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            2,
+            255
+          ],
+          [
+            3,
+            255
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/marketing-promo-cta-295-2026-10-10.png",
+        "sha256": "c7b415407f4896bb0dfde28870ce5110fee11599c5b58507759587ef9c13ad41",
+        "bytes": 2211917,
+        "format": "PNG",
+        "mode": "RGB",
+        "size": [
+          1080,
+          1920
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [],
+        "pixel_extrema": [
+          [
+            20,
+            244
+          ],
+          [
+            24,
+            246
+          ],
+          [
+            31,
+            248
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/marketing-promo-hook-60-2026-10-10.png",
+        "sha256": "1e0107771f14accc052d0b7551e54d09c18e7e7250300a84a88c7d742a5caafe",
+        "bytes": 2340196,
+        "format": "PNG",
+        "mode": "RGB",
+        "size": [
+          1080,
+          1920
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [],
+        "pixel_extrema": [
+          [
+            20,
+            244
+          ],
+          [
+            24,
+            246
+          ],
+          [
+            30,
+            248
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/marketing-promo-place-130-2026-10-10.png",
+        "sha256": "3653e2da21163d80fd79dbabb97208e12c93fe8450b776bbbb888fd38d0f76c9",
+        "bytes": 2178325,
+        "format": "PNG",
+        "mode": "RGB",
+        "size": [
+          1080,
+          1920
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [],
+        "pixel_extrema": [
+          [
+            20,
+            244
+          ],
+          [
+            24,
+            246
+          ],
+          [
+            30,
+            248
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/marketing-promo-quiz-234-before-2026-10-10.png",
+        "sha256": "29d4bbc62da7acd7d74c5d55ef437f9df4a11cc8b5993f83af93f96d215cf2bb",
+        "bytes": 2226188,
+        "format": "PNG",
+        "mode": "RGB",
+        "size": [
+          1080,
+          1920
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [],
+        "pixel_extrema": [
+          [
+            20,
+            244
+          ],
+          [
+            24,
+            246
+          ],
+          [
+            30,
+            248
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/marketing-promo-quiz-234-fixed-2026-10-10.png",
+        "sha256": "043b44e50441ddfc13a24897b596e09ed66d07bbd966c9eed099f75f5fad309c",
+        "bytes": 2244556,
+        "format": "PNG",
+        "mode": "RGB",
+        "size": [
+          1080,
+          1920
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [],
+        "pixel_extrema": [
+          [
+            20,
+            244
+          ],
+          [
+            24,
+            246
+          ],
+          [
+            30,
+            248
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/matrix-followup-phone.png",
+        "sha256": "c488d7a3f4428c6c0e3cc24227bc91c4a2ecdf34f37e90a1d0fcdec27300c5d9",
+        "bytes": 222469,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          375,
+          4130
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            1,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/matrix-instruction-language.png",
+        "sha256": "106f7d6c0b93cce3b2f38979ad782673f29a6c19867fc640132b304ddcbc60ea",
+        "bytes": 85212,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          720
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            3,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/method-phone-320.jpg",
+        "sha256": "46f30bbe64e0499eaed91aafd7c9b015441b16dccff862a0465f3ad419792f94",
+        "bytes": 34175,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          320,
+          740
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            4,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/monthly-trial-screen-after.png",
+        "sha256": "fdc5710d1cb897a5eb50441551b134a71062c4a08644540ff35ed301715a1dc3",
+        "bytes": 35120,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          375,
+          812
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            10,
+            255
+          ],
+          [
+            11,
+            255
+          ],
+          [
+            15,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/monthly-trial-screen-before.png",
+        "sha256": "b2b2517e5f6000b6db2845d3699a3c6101720dd4aa9dcd0b5620547310605d82",
+        "bytes": 64111,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          745
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            21,
+            255
+          ],
+          [
+            22,
+            255
+          ],
+          [
+            25,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/navigation-count-fixed-2026-10-10.png",
+        "sha256": "ff9cb8e3550d342d0ec0eede37a54cbbb5026c72d1310dc858b73eabce45d96c",
+        "bytes": 27420,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          800
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/navigation-phone-focus-2026-10-10.png",
+        "sha256": "fc3cf070e6f647797a144421d294289406a0fa9009412faf30344059ed9fed88",
+        "bytes": 16097,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          375,
+          812
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            2,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/orange-theme-rendered-contrast-2026-10-10.png",
+        "sha256": "5df872b91f36ca8e90c980c02e2c165972e6a5dc83a1c164224a8f3d39be85c6",
+        "bytes": 86577,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          720
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/payment-beta-parent-desktop.png",
+        "sha256": "b37051232a7703e6a2df0f7fc7356808a8a5a924596da812e8db5cd98fd1ee72",
+        "bytes": 46353,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          720
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            254
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            4,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/payment-beta-parent-phone.png",
+        "sha256": "cab49fd82287fd77fe63e7e9dd82ac6ad82d5088dcebdfd8cd3b2da99e7744ae",
+        "bytes": 36673,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          375,
+          812
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            2,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/payment-parent-unconfirmed-phone.png",
+        "sha256": "4705379d7f8c7aef71a1ef3348e122956b7e53eac098f52ac159760926e43e19",
+        "bytes": 11017,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          375,
+          812
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            254
+          ],
+          [
+            1,
+            255
+          ],
+          [
+            5,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/payment-return-verification-phone.png",
+        "sha256": "c1dd3f06b7e6c08f3c47f037ddcfc1edecfff5a9d0e997f9c31390ce27db4f52",
+        "bytes": 12019,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          375,
+          812
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            254
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            4,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/payment-stripe-information-phone.png",
+        "sha256": "c642d6da5668139d8c40c984d0730089c007994c7ddd8d4d021daf44494d779e",
+        "bytes": 49119,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          375,
+          903
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            3,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/plan-card-information-desktop.png",
+        "sha256": "3ba628f80f4f411f611596ec8fa833458e32350994a348ae5cf25c030d60852b",
+        "bytes": 107421,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          856
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            2,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/plan-keyboard-monthly-after.png",
+        "sha256": "da13222862e8de59455e6e2e8ea6a27c776e62703a17b8c208b40cc8c25012a9",
+        "bytes": 118471,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          856
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            2,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/programme-unknown-desktop.jpg",
+        "sha256": "e9095dcdcdf2ce37de8dbe50aa29fa51d6898b7cc977803687eb855306dbb999",
+        "bytes": 108174,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          720
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/questionnaire-lunch-coverage-copy.png",
+        "sha256": "2f3b9c6d281b790dc51b7d7cc6f56b66643c81e53fe8e63dec15505796b12bf9",
+        "bytes": 66969,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          930
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            1,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/quick-note-guide-phone-2026-10-10.png",
+        "sha256": "fa5c9d4eead79179bafd768778d6b6a81453e169d2e1c695eb2fbc05e9e037b7",
+        "bytes": 55161,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          375,
+          812
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            2,
+            255
+          ],
+          [
+            3,
+            255
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/quick-note-settings-phone-2026-10-10.png",
+        "sha256": "34abb1b0cd33e7a9a264798c4ffd4d67bab5d49ad8679dec366a5c601280e099",
+        "bytes": 48549,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          375,
+          812
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            4,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/quiz-parent-unknown-answer-after.png",
+        "sha256": "f5ba54188d7cc631479121f75832786fc7251a802ae266ebee16656d22515462",
+        "bytes": 68129,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          375,
+          1570
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            2,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/quiz-privacy-admission-copy-desktop.png",
+        "sha256": "9e91880761c4f2fb1c74d9b1140e19e5af8547c68da4b11605965d586256eff9",
+        "bytes": 68533,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          1090
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            2,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/quiz-privacy-admission-copy-phone.png",
+        "sha256": "2586254740ecaba82f6565e9eb6cd0736140979b5d12c60bd323a5942541e023",
+        "bytes": 58500,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          375,
+          1680
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            3,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/result-count-grammar-phone.png",
+        "sha256": "d9b7791fef28ab06ee7e8532b7cc719110bb7ef027b44c2948355ae06f93a26c",
+        "bytes": 68763,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          375,
+          1672
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            2,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/school-missing-data-mobile.jpg",
+        "sha256": "12d16c56354c529882b02a0de93ef2c4c147def989be9021f94f5fa1ab6fd31d",
+        "bytes": 43118,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          390,
+          844
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            3,
+            255
+          ],
+          [
+            7,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/search-missing-data-desktop.jpg",
+        "sha256": "4515e2b6881177234afc5dba42bf0c5cd150dee5e9e14fb9893f97a1f5fa241b",
+        "bytes": 83900,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          720
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            2,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/search-older-year-phone.png",
+        "sha256": "1e930259fff9033c6d2f0cfecb3b248b6e7c293cdb03f7c2dc731e2af6acb139",
+        "bytes": 62639,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          375,
+          1021
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            4,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/search-single-result-cta-phone.png",
+        "sha256": "5998ebbfd686505237c27032d7e160d6b96dead1c31b7488aa384a575854adb2",
+        "bytes": 20513,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          375,
+          812
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            1,
+            255
+          ],
+          [
+            2,
+            255
+          ],
+          [
+            4,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/season-card-storage-trial-phone.png",
+        "sha256": "07a4e18ac500dadf9d800b847255d4e2b90eb7302cf174c2c06649fdbe3e7acf",
+        "bytes": 70819,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          375,
+          1248
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            1,
+            255
+          ],
+          [
+            4,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/settings-erasure-copy-desktop.png",
+        "sha256": "99ba151a9443d3edd52b13af8fdea8e7538a8dc9f6bfd30500f187beb06d1852",
+        "bytes": 66198,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          720
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            2,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/settings-erasure-copy-phone.png",
+        "sha256": "cc8c78e0aec07071b62ee99d5ee36ddf2b32a91d856f7ce353262d3f0fb2f671",
+        "bytes": 47682,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          375,
+          812
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            6,
+            255
+          ],
+          [
+            7,
+            255
+          ],
+          [
+            9,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/settings-expired-trial-phone.png",
+        "sha256": "1824e5dfd191ce1d19de37b701a996e2d562d6d8df65e5e0ba8ca9b1a05559b1",
+        "bytes": 115856,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          375,
+          2948
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/settings-name-owner-draft.png",
+        "sha256": "4d6f2a099ab6209d24553e66368e35c1767c38de03d5b7ebd3fb5ed6130fa0ea",
+        "bytes": 40922,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          720
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      },
+      {
+        "path": "reports/deployment-review-2026-10-07/settings-owner-queue.png",
+        "sha256": "646d588a97ce8843fe4f933d74085e2e5d81341b86aa946493a3d78ce28c05e7",
+        "bytes": 45669,
+        "format": "JPEG",
+        "mode": "RGB",
+        "size": [
+          1280,
+          720
+        ],
+        "frames": 1,
+        "all_frames_decoded": true,
+        "exif_tag_ids": [],
+        "embedded_metadata_keys": [
+          "jfif",
+          "jfif_version",
+          "jfif_unit",
+          "jfif_density"
+        ],
+        "pixel_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "visual_review_this_pass": "not newly visually inspected in this pass"
+      }
+    ],
+    "sounds": [
+      {
+        "path": "marketing/tiktok/public/sfx/pad.wav",
+        "sha256": "59762d167b2a5510d5499814be2c4d9efe73af915c27f65df371f83a173a9251",
+        "bytes": 899682,
+        "channels": 1,
+        "bits": 16,
+        "sample_rate": 44100,
+        "frames": 449819,
+        "duration_seconds": 10.199977,
+        "fully_decoded": true,
+        "peak": 0.265869,
+        "rms": 0.068943,
+        "clipped_samples": 0,
+        "compression": "NONE",
+        "listening_and_runtime_mix_acceptance": "not performed"
+      },
+      {
+        "path": "marketing/tiktok/public/sfx/pop.wav",
+        "sha256": "05030ca20db22a45ec811a24df3189956cb5ad37a37514743ec75b3a898aad22",
+        "bytes": 14156,
+        "channels": 1,
+        "bits": 16,
+        "sample_rate": 44100,
+        "frames": 7056,
+        "duration_seconds": 0.16,
+        "fully_decoded": true,
+        "peak": 0.595825,
+        "rms": 0.141812,
+        "clipped_samples": 0,
+        "compression": "NONE",
+        "listening_and_runtime_mix_acceptance": "not performed"
+      },
+      {
+        "path": "marketing/tiktok/public/sfx/thump.wav",
+        "sha256": "5f4f6b6e6c9fc1f2130e0aefc6f8f8852878f814f93829a9a52fed86ec4ee05d",
+        "bytes": 44144,
+        "channels": 1,
+        "bits": 16,
+        "sample_rate": 44100,
+        "frames": 22050,
+        "duration_seconds": 0.5,
+        "fully_decoded": true,
+        "peak": 0.889923,
+        "rms": 0.240457,
+        "clipped_samples": 0,
+        "compression": "NONE",
+        "listening_and_runtime_mix_acceptance": "not performed"
+      },
+      {
+        "path": "marketing/tiktok/public/sfx/tick.wav",
+        "sha256": "65489bb3cb9358cd0c5523e0da1b7cc2dc1b6956486bccbd841e9aabdeff746e",
+        "bytes": 3572,
+        "channels": 1,
+        "bits": 16,
+        "sample_rate": 44100,
+        "frames": 1764,
+        "duration_seconds": 0.04,
+        "fully_decoded": true,
+        "peak": 0.325989,
+        "rms": 0.053506,
+        "clipped_samples": 0,
+        "compression": "NONE",
+        "listening_and_runtime_mix_acceptance": "not performed"
+      },
+      {
+        "path": "marketing/tiktok/public/sfx/whoosh.wav",
+        "sha256": "312fd3cee3f0f68948989e0116a509b073bd532ee18a3a0a0b21ec8832b2029c",
+        "bytes": 39734,
+        "channels": 1,
+        "bits": 16,
+        "sample_rate": 44100,
+        "frames": 19845,
+        "duration_seconds": 0.45,
+        "fully_decoded": true,
+        "peak": 0.882172,
+        "rms": 0.165218,
+        "clipped_samples": 0,
+        "compression": "NONE",
+        "listening_and_runtime_mix_acceptance": "not performed"
+      }
+    ],
+    "image_duplicate_groups": [
+      [
+        "reports/deployment-review-2026-10-07/confirmation-return-after.png",
+        "reports/deployment-review-2026-10-07/confirmation-return-before.png"
+      ]
+    ],
+    "limits": [
+      "Decode/metadata checks do not certify visual usability, licences or current-build acceptance.",
+      "Peer-owned DOCX handouts deferred; workbook semantic/provenance checks separate.",
+      "No original asset edited."
+    ],
+    "not_decoded_by_image_audio_pass": [
+      {
+        "path": "docs/handouts/hudba-pri-cviceni.docx",
+        "sha256": "92081af165b15476643a5a99afc37e017749de45fe6abed0e6474f2a201a3203",
+        "bytes": 38948
+      },
+      {
+        "path": "docs/handouts/hudba-pri-studiu.docx",
+        "sha256": "5203c2cceaf93afe5edd95176d461c062b63c109d3d773046548304f890d5f09",
+        "bytes": 39298
+      },
+      {
+        "path": "scripts/data/PZ2024_kolo1_skolobory_vysledky.xlsx",
+        "sha256": "7d7411a17cc9bdc6db7f6aa160cc83e6b6116ea7dac79230054b35f691f27840",
+        "bytes": 3249779
+      },
+      {
+        "path": "scripts/data/PZ2025_kolo1_skolobory_vysledky.xlsx",
+        "sha256": "b4016252e34db63aeac538f9983bada503fb79770ac565c63f4a5a230b96bdaf",
+        "bytes": 3617593
+      },
+      {
+        "path": "scripts/data/PZ2026_kolo1_skolobory_vysledky.xlsx",
+        "sha256": "a003441f4beed6fb9c181aa00f9d1a59a9c206ff10f113ad807740e68d5511d5",
+        "bytes": 3825581
+      }
+    ]
+  },
+  "metadata": {
+    "exif_scan": [
+      {
+        "path": "design/Logo Concepts Refinement Request/uploads/pasted-1789576013130-0.png",
+        "root_tags": [
+          "ExifOffset"
+        ],
+        "nested_tags": {
+          "ExifOffset": [
+            "ExifImageWidth",
+            "ExifImageHeight"
+          ]
+        },
+        "xmp_keys": []
+      },
+      {
+        "path": "design/brand/ikona-512.png",
+        "root_tags": [
+          "ExifOffset"
+        ],
+        "nested_tags": {
+          "ExifOffset": [
+            "ExifImageWidth",
+            "ExifImageHeight"
+          ]
+        },
+        "xmp_keys": []
+      },
+      {
+        "path": "design/brand/logo-1024.png",
+        "root_tags": [
+          "ExifOffset"
+        ],
+        "nested_tags": {
+          "ExifOffset": [
+            "ExifImageWidth",
+            "ExifImageHeight"
+          ]
+        },
+        "xmp_keys": []
+      },
+      {
+        "path": "design/brand/logo-512.png",
+        "root_tags": [
+          "ExifOffset"
+        ],
+        "nested_tags": {
+          "ExifOffset": [
+            "ColorSpace",
+            "ExifImageWidth",
+            "ExifImageHeight"
+          ]
+        },
+        "xmp_keys": []
+      },
+      {
+        "path": "design/brand/profil-bile.png",
+        "root_tags": [
+          "ExifOffset"
+        ],
+        "nested_tags": {
+          "ExifOffset": [
+            "ExifImageWidth",
+            "ExifImageHeight"
+          ]
+        },
+        "xmp_keys": []
+      },
+      {
+        "path": "design/brand/profil-cerne.png",
+        "root_tags": [
+          "ExifOffset"
+        ],
+        "nested_tags": {
+          "ExifOffset": [
+            "ExifImageWidth",
+            "ExifImageHeight"
+          ]
+        },
+        "xmp_keys": []
+      }
+    ],
+    "xmp": {
+      "path": "design/brand/logo-512.png",
+      "xml_parse": "pass",
+      "element_names": [
+        "xmpmeta",
+        "RDF",
+        "Description",
+        "PixelXDimension",
+        "PixelYDimension"
+      ],
+      "attribute_names": [
+        "about",
+        "xmptk"
+      ],
+      "values_not_printed": true,
+      "limits": "Metadata structure only; rights/authorship/provenance require actual source confirmation."
+    },
+    "scope": "All nested EXIF fields observed are dimensions/color space; the one embedded XMP document parses and contains dimensions/toolkit metadata. The initial Pillow XMP call lacked defusedxml; the actual embedded XML was then parsed separately. No blanket rights/provenance or unrelated textual metadata clearance."
+  },
+  "visual_notes": [
+    "Five selected brand raster exports render coherently; the small pasted to dáš! logo is a third-party historical reference, not the selected shipped brand.",
+    "Six archived WEBP uploads are watermarked Mobbin screenshots of other products, not reusable school photography; all four extensionless thumbnail files are historical WEBP previews. Conditional C44 rights/sample-state/runtime acceptance remains separate.",
+    "The apple-touch icon has transparent pre-rounded corners. Verify actual iOS home-screen masking/tint before changing the source; no certain defect inferred.",
+    "The two confirmation-return screenshots are byte-identical synthetic states. They cannot demonstrate a visual before/after difference; C18 navigation-target proof is separate."
+  ],
+  "workbooks": [
+    {
+      "path": "scripts/data/PZ2024_kolo1_skolobory_vysledky.xlsx",
+      "sha256": "7d7411a17cc9bdc6db7f6aa160cc83e6b6116ea7dac79230054b35f691f27840",
+      "bytes": 3249779,
+      "zip_CRC": "pass",
+      "macro_parts": false,
+      "external_link_parts": [],
+      "sheets": [
+        {
+          "sheet": "PZ2024_kolo1",
+          "declared_dimensions": [
+            6263,
+            91
+          ],
+          "iterated_rows": 6263,
+          "nonempty_cells": 433650,
+          "cell_types": {
+            "s": 137652,
+            "n": 295998
+          },
+          "formula_count": 0,
+          "error_cells": [],
+          "headers": [
+            "ID_SOF",
+            "ID_SO",
+            "ROK",
+            "KOLO",
+            "IZO",
+            "REDIZO",
+            "NÁZEV ŠKOLY",
+            "ULICE",
+            "OBEC",
+            "PSČ",
+            "KRAJ",
+            "KRAJ - NÁZEV",
+            "OKRES",
+            "OKRES - NÁZEV",
+            "ORP",
+            "ORP-NÁZEV",
+            "ZŘIZOVATEL",
+            "ZŘIZOVATEL - NÁZEV",
+            "ROČNÍK",
+            "MATURITNÍ STATUS",
+            "POVINNOST JPZ",
+            "TYP ŠKOLY",
+            "TYP ŠKOLY - NÁZEV",
+            "SKUPINA OBORŮ (16)",
+            "KKOV",
+            "OBOR - NÁZEV",
+            "ZAMĚŘENÍ OBORU",
+            "FORMA VZDĚLÁVÁNÍ",
+            "DÉLKA STUDIA",
+            "ZKRÁCENÉ STUDIUM",
+            "JAZYK STUDIA",
+            "KAPACITA",
+            "INDEX POPTÁVKY (PŘIHLÁŠKY / KAPACITA)",
+            "PŘIHLÁŠKY CELKEM",
+            "PŘIJATÍ",
+            "PŘIHLÁŠKY - PRIORITA 1",
+            "PŘIHLÁŠKY - PRIORITA 2",
+            "PŘIHLÁŠKY - PRIORITA 3",
+            "PŘIHLÁŠKY - PRIORITA 4",
+            "PŘIHLÁŠKY - PRIORITA 5",
+            "PŘIJATÍ - PRIORITA 1",
+            "PŘIJATÍ - PRIORITA 2",
+            "PŘIJATÍ - PRIORITA 3",
+            "PŘIJATÍ - PRIORITA 4",
+            "PŘIJATÍ - PRIORITA 5",
+            "ČJ+MA - KONALI",
+            "ČJ - KONALI",
+            "MA - KONALI",
+            "ČJ+MA - % SKÓR - PRŮMĚR",
+            "ČJ - % SKÓR - PRŮMĚR",
+            "MA - % SKÓR - PRŮMĚR",
+            "ČJ+MA - % SKÓR - MIN",
+            "ČJ - % SKÓR - MIN",
+            "MA - % SKÓR - MIN",
+            "ČJ+MA - % SKÓR - MAX",
+            "ČJ - % SKÓR - MAX",
+            "MA - % SKÓR - MAX",
+            "ČJ+MA - PERCENTIL - PRŮMĚR",
+            "ČJ - PERCENTIL - PRŮMĚR",
+            "MA - PERCENTIL - PRŮMĚR",
+            "ČJ+MA - PERCENTIL - MIN",
+            "ČJ - PERCENTIL - MIN",
+            "MA - PERCENTIL - MIN",
+            "ČJ+MA - PERCENTIL - MAX",
+            "ČJ - PERCENTIL - MAX",
+            "MA - PERCENTIL - MAX",
+            "ČJ+MA - KONALI (PŘIJATI)",
+            "ČJ - KONALI (PŘIJATI)",
+            "MA - KONALI (PŘIJATI)",
+            "ČJ+MA - % SKÓR - PRŮMĚR (PŘIJATI)",
+            "ČJ - % SKÓR - PRŮMĚR (PŘIJATI)",
+            "MA - % SKÓR - PRŮMĚR (PŘIJATI)",
+            "ČJ+MA - % SKÓR - MIN (PŘIJATI)",
+            "ČJ - % SKÓR - MIN (PŘIJATI)",
+            "MA - % SKÓR - MIN (PŘIJATI)",
+            "ČJ+MA - % SKÓR - MAX (PŘIJATI)",
+            "ČJ - % SKÓR - MAX (PŘIJATI)",
+            "MA - % SKÓR - MAX (PŘIJATI)",
+            "ČJ+MA - PERCENTIL - PRŮMĚR (PŘIJATI)",
+            "ČJ - PERCENTIL - PRŮMĚR (PŘIJATI)",
+            "MA - PERCENTIL - PRŮMĚR (PŘIJATI)",
+            "ČJ+MA - PERCENTIL - MIN (PŘIJATI)",
+            "ČJ - PERCENTIL - MIN (PŘIJATI)",
+            "MA - PERCENTIL - MIN (PŘIJATI)",
+            "ČJ+MA - PERCENTIL - MAX (PŘIJATI)",
+            "ČJ - PERCENTIL - MAX (PŘIJATI)",
+            "MA - PERCENTIL - MAX (PŘIJATI)",
+            "NEPŘIJATI - PŘIJAT NA VYŠŠÍ PRIORITU",
+            "NEPŘIJATI - NEDOSTATEČNÁ KAPACITA",
+            "NEPŘIJATI - NESPLNĚNÍ PODMÍNEK",
+            "NEPŘIJATI - VZDAL SE PŘIJETÍ"
+          ],
+          "years": {
+            "2024": 6262
+          },
+          "prague_rows": 777,
+          "prague_unique_redizo": 201
+        },
+        {
+          "sheet": "vysvetlivky",
+          "declared_dimensions": [
+            69,
+            5
+          ],
+          "iterated_rows": 69,
+          "nonempty_cells": 127,
+          "cell_types": {
+            "s": 127
+          },
+          "formula_count": 0,
+          "error_cells": [],
+          "headers": [
+            "POUŽITÉ UKAZATELE PRO VÝSLEDKY DIDAKTICKÝCH TESTŮ JEDNOTNÝCH PŘIJÍMACÍCH ZKOUŠEK",
+            null,
+            null,
+            null,
+            null
+          ],
+          "years": {},
+          "prague_rows": 0,
+          "prague_unique_redizo": 0
+        }
+      ],
+      "seconds": 2.195
+    },
+    {
+      "path": "scripts/data/PZ2025_kolo1_skolobory_vysledky.xlsx",
+      "sha256": "b4016252e34db63aeac538f9983bada503fb79770ac565c63f4a5a230b96bdaf",
+      "bytes": 3617593,
+      "zip_CRC": "pass",
+      "macro_parts": false,
+      "external_link_parts": [],
+      "sheets": [
+        {
+          "sheet": "PZ2025_kolo1",
+          "declared_dimensions": [
+            6352,
+            91
+          ],
+          "iterated_rows": 6352,
+          "nonempty_cells": 442877,
+          "cell_types": {
+            "s": 139625,
+            "n": 303252
+          },
+          "formula_count": 0,
+          "error_cells": [],
+          "headers": [
+            "ID_SOF",
+            "ID_SO",
+            "ROK",
+            "KOLO",
+            "IZO",
+            "REDIZO",
+            "NÁZEV ŠKOLY",
+            "ULICE",
+            "OBEC",
+            "PSČ",
+            "KRAJ",
+            "KRAJ - NÁZEV",
+            "OKRES",
+            "OKRES - NÁZEV",
+            "ORP",
+            "ORP-NÁZEV",
+            "ZŘIZOVATEL",
+            "ZŘIZOVATEL - NÁZEV",
+            "ROČNÍK",
+            "MATURITNÍ STATUS",
+            "POVINNOST JPZ",
+            "TYP ŠKOLY",
+            "TYP ŠKOLY - NÁZEV",
+            "SKUPINA OBORŮ (16)",
+            "KKOV",
+            "OBOR - NÁZEV",
+            "ZAMĚŘENÍ OBORU",
+            "FORMA VZDĚLÁVÁNÍ",
+            "DÉLKA STUDIA",
+            "ZKRÁCENÉ STUDIUM",
+            "JAZYK STUDIA",
+            "KAPACITA",
+            "INDEX POPTÁVKY (PŘIHLÁŠKY / KAPACITA)",
+            "PŘIHLÁŠKY CELKEM",
+            "PŘIJATÍ",
+            "PŘIHLÁŠKY - PRIORITA 1",
+            "PŘIHLÁŠKY - PRIORITA 2",
+            "PŘIHLÁŠKY - PRIORITA 3",
+            "PŘIHLÁŠKY - PRIORITA 4",
+            "PŘIHLÁŠKY - PRIORITA 5",
+            "PŘIJATÍ - PRIORITA 1",
+            "PŘIJATÍ - PRIORITA 2",
+            "PŘIJATÍ - PRIORITA 3",
+            "PŘIJATÍ - PRIORITA 4",
+            "PŘIJATÍ - PRIORITA 5",
+            "ČJ+MA - KONALI",
+            "ČJ - KONALI",
+            "MA - KONALI",
+            "ČJ+MA - % SKÓR - PRŮMĚR",
+            "ČJ - % SKÓR - PRŮMĚR",
+            "MA - % SKÓR - PRŮMĚR",
+            "ČJ+MA - % SKÓR - MIN",
+            "ČJ - % SKÓR - MIN",
+            "MA - % SKÓR - MIN",
+            "ČJ+MA - % SKÓR - MAX",
+            "ČJ - % SKÓR - MAX",
+            "MA - % SKÓR - MAX",
+            "ČJ+MA - PERCENTIL - PRŮMĚR",
+            "ČJ - PERCENTIL - PRŮMĚR",
+            "MA - PERCENTIL - PRŮMĚR",
+            "ČJ+MA - PERCENTIL - MIN",
+            "ČJ - PERCENTIL - MIN",
+            "MA - PERCENTIL - MIN",
+            "ČJ+MA - PERCENTIL - MAX",
+            "ČJ - PERCENTIL - MAX",
+            "MA - PERCENTIL - MAX",
+            "ČJ+MA - KONALI (PŘIJATI)",
+            "ČJ - KONALI (PŘIJATI)",
+            "MA - KONALI (PŘIJATI)",
+            "ČJ+MA - % SKÓR - PRŮMĚR (PŘIJATI)",
+            "ČJ - % SKÓR - PRŮMĚR (PŘIJATI)",
+            "MA - % SKÓR - PRŮMĚR (PŘIJATI)",
+            "ČJ+MA - % SKÓR - MIN (PŘIJATI)",
+            "ČJ - % SKÓR - MIN (PŘIJATI)",
+            "MA - % SKÓR - MIN (PŘIJATI)",
+            "ČJ+MA - % SKÓR - MAX (PŘIJATI)",
+            "ČJ - % SKÓR - MAX (PŘIJATI)",
+            "MA - % SKÓR - MAX (PŘIJATI)",
+            "ČJ+MA - PERCENTIL - PRŮMĚR (PŘIJATI)",
+            "ČJ - PERCENTIL - PRŮMĚR (PŘIJATI)",
+            "MA - PERCENTIL - PRŮMĚR (PŘIJATI)",
+            "ČJ+MA - PERCENTIL - MIN (PŘIJATI)",
+            "ČJ - PERCENTIL - MIN (PŘIJATI)",
+            "MA - PERCENTIL - MIN (PŘIJATI)",
+            "ČJ+MA - PERCENTIL - MAX (PŘIJATI)",
+            "ČJ - PERCENTIL - MAX (PŘIJATI)",
+            "MA - PERCENTIL - MAX (PŘIJATI)",
+            "NEPŘIJATI - PŘIJAT NA VYŠŠÍ PRIORITU",
+            "NEPŘIJATI - NEDOSTATEČNÁ KAPACITA",
+            "NEPŘIJATI - NESPLNĚNÍ PODMÍNEK",
+            "NEPŘIJATI - VZDAL SE PŘIJETÍ"
+          ],
+          "years": {
+            "2025": 6351
+          },
+          "prague_rows": 795,
+          "prague_unique_redizo": 216
+        },
+        {
+          "sheet": "vysvetlivky",
+          "declared_dimensions": [
+            69,
+            5
+          ],
+          "iterated_rows": 69,
+          "nonempty_cells": 127,
+          "cell_types": {
+            "s": 127
+          },
+          "formula_count": 0,
+          "error_cells": [],
+          "headers": [
+            "POUŽITÉ UKAZATELE PRO VÝSLEDKY DIDAKTICKÝCH TESTŮ JEDNOTNÝCH PŘIJÍMACÍCH ZKOUŠEK",
+            null,
+            null,
+            null,
+            null
+          ],
+          "years": {},
+          "prague_rows": 0,
+          "prague_unique_redizo": 0
+        }
+      ],
+      "seconds": 2.245
+    },
+    {
+      "path": "scripts/data/PZ2026_kolo1_skolobory_vysledky.xlsx",
+      "sha256": "a003441f4beed6fb9c181aa00f9d1a59a9c206ff10f113ad807740e68d5511d5",
+      "bytes": 3825581,
+      "zip_CRC": "pass",
+      "macro_parts": false,
+      "external_link_parts": [],
+      "sheets": [
+        {
+          "sheet": "pz2026_kolo1",
+          "declared_dimensions": [
+            6369,
+            91
+          ],
+          "iterated_rows": 6369,
+          "nonempty_cells": 445769,
+          "cell_types": {
+            "s": 140101,
+            "n": 305668
+          },
+          "formula_count": 0,
+          "error_cells": [],
+          "headers": [
+            "ID_SOF",
+            "ID_SO",
+            "ROK",
+            "KOLO",
+            "IZO",
+            "REDIZO",
+            "NÁZEV ŠKOLY",
+            "ULICE",
+            "OBEC",
+            "PSČ",
+            "KRAJ",
+            "KRAJ - NÁZEV",
+            "OKRES",
+            "OKRES - NÁZEV",
+            "ORP",
+            "ORP-NÁZEV",
+            "ZŘIZOVATEL",
+            "ZŘIZOVATEL - NÁZEV",
+            "ROČNÍK",
+            "MATURITNÍ STATUS",
+            "POVINNOST JPZ",
+            "TYP ŠKOLY",
+            "TYP ŠKOLY - NÁZEV",
+            "SKUPINA OBORŮ (16)",
+            "KKOV",
+            "OBOR - NÁZEV",
+            "ZAMĚŘENÍ OBORU",
+            "FORMA VZDĚLÁVÁNÍ",
+            "DÉLKA STUDIA",
+            "ZKRÁCENÉ STUDIUM",
+            "JAZYK STUDIA",
+            "KAPACITA",
+            "INDEX POPTÁVKY (PŘIHLÁŠKY / KAPACITA)",
+            "PŘIHLÁŠKY CELKEM",
+            "PŘIJATÍ",
+            "PŘIHLÁŠKY - PRIORITA 1",
+            "PŘIHLÁŠKY - PRIORITA 2",
+            "PŘIHLÁŠKY - PRIORITA 3",
+            "PŘIHLÁŠKY - PRIORITA 4",
+            "PŘIHLÁŠKY - PRIORITA 5",
+            "PŘIJATÍ - PRIORITA 1",
+            "PŘIJATÍ - PRIORITA 2",
+            "PŘIJATÍ - PRIORITA 3",
+            "PŘIJATÍ - PRIORITA 4",
+            "PŘIJATÍ - PRIORITA 5",
+            "ČJ+MA - KONALI",
+            "ČJ - KONALI",
+            "MA - KONALI",
+            "ČJ+MA - % SKÓR - PRŮMĚR",
+            "ČJ - % SKÓR - PRŮMĚR",
+            "MA - % SKÓR - PRŮMĚR",
+            "ČJ+MA - % SKÓR - MIN",
+            "ČJ - % SKÓR - MIN",
+            "MA - % SKÓR - MIN",
+            "ČJ+MA - % SKÓR - MAX",
+            "ČJ - % SKÓR - MAX",
+            "MA - % SKÓR - MAX",
+            "ČJ+MA - PERCENTIL - PRŮMĚR",
+            "ČJ - PERCENTIL - PRŮMĚR",
+            "MA - PERCENTIL - PRŮMĚR",
+            "ČJ+MA - PERCENTIL - MIN",
+            "ČJ - PERCENTIL - MIN",
+            "MA - PERCENTIL - MIN",
+            "ČJ+MA - PERCENTIL - MAX",
+            "ČJ - PERCENTIL - MAX",
+            "MA - PERCENTIL - MAX",
+            "ČJ+MA - KONALI (PŘIJATI)",
+            "ČJ - KONALI (PŘIJATI)",
+            "MA - KONALI (PŘIJATI)",
+            "ČJ+MA - % SKÓR - PRŮMĚR (PŘIJATI)",
+            "ČJ - % SKÓR - PRŮMĚR (PŘIJATI)",
+            "MA - % SKÓR - PRŮMĚR (PŘIJATI)",
+            "ČJ+MA - % SKÓR - MIN (PŘIJATI)",
+            "ČJ - % SKÓR - MIN (PŘIJATI)",
+            "MA - % SKÓR - MIN (PŘIJATI)",
+            "ČJ+MA - % SKÓR - MAX (PŘIJATI)",
+            "ČJ - % SKÓR - MAX (PŘIJATI)",
+            "MA - % SKÓR - MAX (PŘIJATI)",
+            "ČJ+MA - PERCENTIL - PRŮMĚR (PŘIJATI)",
+            "ČJ - PERCENTIL - PRŮMĚR (PŘIJATI)",
+            "MA - PERCENTIL - PRŮMĚR (PŘIJATI)",
+            "ČJ+MA - PERCENTIL - MIN (PŘIJATI)",
+            "ČJ - PERCENTIL - MIN (PŘIJATI)",
+            "MA - PERCENTIL - MIN (PŘIJATI)",
+            "ČJ+MA - PERCENTIL - MAX (PŘIJATI)",
+            "ČJ - PERCENTIL - MAX (PŘIJATI)",
+            "MA - PERCENTIL - MAX (PŘIJATI)",
+            "NEPŘIJATI - PŘIJAT NA VYŠŠÍ PRIORITU",
+            "NEPŘIJATI - NEDOSTATEČNÁ KAPACITA",
+            "NEPŘIJATI - NESPLNĚNÍ PODMÍNEK",
+            "NEPŘIJATI - VZDAL SE PŘIJETÍ"
+          ],
+          "years": {
+            "2026": 6368
+          },
+          "prague_rows": 800,
+          "prague_unique_redizo": 212
+        },
+        {
+          "sheet": "vysvetlivky",
+          "declared_dimensions": [
+            69,
+            5
+          ],
+          "iterated_rows": 69,
+          "nonempty_cells": 127,
+          "cell_types": {
+            "s": 127
+          },
+          "formula_count": 0,
+          "error_cells": [],
+          "headers": [
+            "POUŽITÉ UKAZATELE PRO VÝSLEDKY DIDAKTICKÝCH TESTŮ JEDNOTNÝCH PŘIJÍMACÍCH ZKOUŠEK",
+            null,
+            null,
+            null,
+            null
+          ],
+          "years": {},
+          "prague_rows": 0,
+          "prague_unique_redizo": 0
+        }
+      ],
+      "seconds": 2.398
+    }
+  ],
+  "Prague_import_field_boundaries": [
+    {
+      "year": 2024,
+      "source_hash": "7d7411a17cc9bdc6db7f6aa160cc83e6b6116ea7dac79230054b35f691f27840",
+      "required_headers": "all18present",
+      "Prague_rows": 777,
+      "Prague_redizo": 201,
+      "all_national_years": {
+        "2024": 6262
+      },
+      "bounds": {
+        "PŘIHLÁŠKY CELKEM": {
+          "nonnull": 744,
+          "min": 1,
+          "max": 1160,
+          "non_numeric": 0
+        },
+        "PŘIJATÍ": {
+          "nonnull": 744,
+          "min": 0,
+          "max": 223,
+          "non_numeric": 0
+        },
+        "KAPACITA": {
+          "nonnull": 777,
+          "min": 0,
+          "max": 272,
+          "non_numeric": 0
+        },
+        "DÉLKA STUDIA": {
+          "nonnull": 777,
+          "min": 1,
+          "max": 8,
+          "non_numeric": 0
+        },
+        "ČJ+MA - % SKÓR - MIN (PŘIJATI)": {
+          "nonnull": 415,
+          "min": 12,
+          "max": 184,
+          "non_numeric": 0
+        }
+      },
+      "enum_counts": {
+        "MATURITNÍ STATUS": {
+          "maturitní": 565,
+          "nematuritní": 212
+        },
+        "POVINNOST JPZ": {
+          "1": 421,
+          "2": 356
+        },
+        "TYP ŠKOLY - NÁZEV": {
+          "Gymnázia 8letá": 42,
+          "SOŠ": 225,
+          "Lycea": 23,
+          "Konzervatoře": 91,
+          "Gymnázia 4letá": 83,
+          "Gymnázia 6letá": 19,
+          "Nástavby": 43,
+          "SOU s maturitou": 39,
+          "SOU s výuč. listem": 198,
+          "SOU bez výuč. listu": 14
+        },
+        "FORMA VZDĚLÁVÁNÍ": {
+          "den": 725,
+          "dal": 31,
+          "dist": 3,
+          "komb": 12,
+          "vec": 6
+        },
+        "DÉLKA STUDIA": {
+          "8": 47,
+          "4": 365,
+          "6": 105,
+          "5": 8,
+          "2": 57,
+          "3": 193,
+          "1": 2
+        }
+      },
+      "issues": []
+    },
+    {
+      "year": 2025,
+      "source_hash": "b4016252e34db63aeac538f9983bada503fb79770ac565c63f4a5a230b96bdaf",
+      "required_headers": "all18present",
+      "Prague_rows": 795,
+      "Prague_redizo": 216,
+      "all_national_years": {
+        "2025": 6351
+      },
+      "bounds": {
+        "PŘIHLÁŠKY CELKEM": {
+          "nonnull": 767,
+          "min": 1,
+          "max": 818,
+          "non_numeric": 0
+        },
+        "PŘIJATÍ": {
+          "nonnull": 767,
+          "min": 0,
+          "max": 193,
+          "non_numeric": 0
+        },
+        "KAPACITA": {
+          "nonnull": 795,
+          "min": 1,
+          "max": 250,
+          "non_numeric": 0
+        },
+        "DÉLKA STUDIA": {
+          "nonnull": 795,
+          "min": 1,
+          "max": 8,
+          "non_numeric": 0
+        },
+        "ČJ+MA - % SKÓR - MIN (PŘIJATI)": {
+          "nonnull": 449,
+          "min": 0,
+          "max": 168,
+          "non_numeric": 0
+        }
+      },
+      "enum_counts": {
+        "MATURITNÍ STATUS": {
+          "maturitní": 588,
+          "nematuritní": 207
+        },
+        "POVINNOST JPZ": {
+          "1": 456,
+          "2": 339
+        },
+        "TYP ŠKOLY - NÁZEV": {
+          "Gymnázia 8letá": 43,
+          "SOŠ": 222,
+          "Lycea": 29,
+          "Konzervatoře": 81,
+          "Gymnázia 4letá": 109,
+          "Gymnázia 6letá": 20,
+          "Nástavby": 44,
+          "SOU s maturitou": 40,
+          "SOU s výuč. listem": 193,
+          "SOU bez výuč. listu": 14
+        },
+        "FORMA VZDĚLÁVÁNÍ": {
+          "den": 746,
+          "dal": 28,
+          "dist": 4,
+          "komb": 11,
+          "vec": 6
+        },
+        "DÉLKA STUDIA": {
+          "8": 46,
+          "4": 394,
+          "6": 98,
+          "5": 9,
+          "2": 59,
+          "3": 188,
+          "1": 1
+        }
+      },
+      "issues": []
+    },
+    {
+      "year": 2026,
+      "source_hash": "a003441f4beed6fb9c181aa00f9d1a59a9c206ff10f113ad807740e68d5511d5",
+      "required_headers": "all18present",
+      "Prague_rows": 800,
+      "Prague_redizo": 212,
+      "all_national_years": {
+        "2026": 6368
+      },
+      "bounds": {
+        "PŘIHLÁŠKY CELKEM": {
+          "nonnull": 782,
+          "min": 1,
+          "max": 833,
+          "non_numeric": 0
+        },
+        "PŘIJATÍ": {
+          "nonnull": 782,
+          "min": 0,
+          "max": 224,
+          "non_numeric": 0
+        },
+        "KAPACITA": {
+          "nonnull": 800,
+          "min": 1,
+          "max": 281,
+          "non_numeric": 0
+        },
+        "DÉLKA STUDIA": {
+          "nonnull": 800,
+          "min": 1,
+          "max": 8,
+          "non_numeric": 0
+        },
+        "ČJ+MA - % SKÓR - MIN (PŘIJATI)": {
+          "nonnull": 464,
+          "min": 12,
+          "max": 172,
+          "non_numeric": 0
+        }
+      },
+      "enum_counts": {
+        "MATURITNÍ STATUS": {
+          "maturitní": 595,
+          "nematuritní": 205
+        },
+        "POVINNOST JPZ": {
+          "1": 466,
+          "2": 334
+        },
+        "TYP ŠKOLY - NÁZEV": {
+          "SOU s maturitou": 41,
+          "SOŠ": 224,
+          "Lycea": 34,
+          "SOU s výuč. listem": 190,
+          "Nástavby": 44,
+          "Gymnázia 4letá": 112,
+          "Gymnázia 6letá": 19,
+          "Gymnázia 8letá": 42,
+          "Konzervatoře": 79,
+          "SOU bez výuč. listu": 15
+        },
+        "FORMA VZDĚLÁVÁNÍ": {
+          "den": 753,
+          "dal": 30,
+          "komb": 12,
+          "dist": 5
+        },
+        "DÉLKA STUDIA": {
+          "4": 405,
+          "5": 9,
+          "3": 187,
+          "2": 58,
+          "6": 95,
+          "8": 45,
+          "1": 1
+        }
+      },
+      "issues": []
+    }
+  ],
+  "mandatory_JPZ_null_cutoffs": [
+    {
+      "year": 2024,
+      "mandatory_JPZ_null_cutoffs": [
+        {
+          "REDIZO": 600005259,
+          "NÁZEV ŠKOLY": "Střední odborné učiliště",
+          "KKOV": "26-41-L/01",
+          "OBOR - NÁZEV": "Mechanik elektrotechnik",
+          "POVINNOST JPZ": 1,
+          "PŘIJATÍ": 0,
+          "PŘIHLÁŠKY CELKEM": 20,
+          "ČJ+MA - KONALI (PŘIJATI)": 0,
+          "ČJ+MA - % SKÓR - MIN (PŘIJATI)": null
+        },
+        {
+          "REDIZO": 600005798,
+          "NÁZEV ŠKOLY": "SŠ kosmetiky a hotelnictví BEAN, s.r.o.",
+          "KKOV": "64-41-L/51",
+          "OBOR - NÁZEV": "Podnikání",
+          "POVINNOST JPZ": 1,
+          "PŘIJATÍ": 0,
+          "PŘIHLÁŠKY CELKEM": 7,
+          "ČJ+MA - KONALI (PŘIJATI)": 0,
+          "ČJ+MA - % SKÓR - MIN (PŘIJATI)": null
+        },
+        {
+          "REDIZO": 600005836,
+          "NÁZEV ŠKOLY": "Obch. akademie Praha, s.r.o.",
+          "KKOV": "63-41-M/02",
+          "OBOR - NÁZEV": "Obchodní akademie",
+          "POVINNOST JPZ": 1,
+          "PŘIJATÍ": 0,
+          "PŘIHLÁŠKY CELKEM": 12,
+          "ČJ+MA - KONALI (PŘIJATI)": 0,
+          "ČJ+MA - % SKÓR - MIN (PŘIJATI)": null
+        },
+        {
+          "REDIZO": 600006026,
+          "NÁZEV ŠKOLY": "Královská střední škola, s.r.o.",
+          "KKOV": "64-41-L/51",
+          "OBOR - NÁZEV": "Podnikání",
+          "POVINNOST JPZ": 1,
+          "PŘIJATÍ": 0,
+          "PŘIHLÁŠKY CELKEM": 18,
+          "ČJ+MA - KONALI (PŘIJATI)": 0,
+          "ČJ+MA - % SKÓR - MIN (PŘIJATI)": null
+        },
+        {
+          "REDIZO": 600170080,
+          "NÁZEV ŠKOLY": "SOŠ automobilní, informatiky a gymnázium",
+          "KKOV": "39-41-L/51",
+          "OBOR - NÁZEV": "Autotronik",
+          "POVINNOST JPZ": 1,
+          "PŘIJATÍ": 0,
+          "PŘIHLÁŠKY CELKEM": 35,
+          "ČJ+MA - KONALI (PŘIJATI)": 0,
+          "ČJ+MA - % SKÓR - MIN (PŘIJATI)": null
+        },
+        {
+          "REDIZO": 651028922,
+          "NÁZEV ŠKOLY": "1. Slovanské gymnázium a jazyková škola",
+          "KKOV": "79-41-K/41",
+          "OBOR - NÁZEV": "Gymnázium",
+          "POVINNOST JPZ": 1,
+          "PŘIJATÍ": 1,
+          "PŘIHLÁŠKY CELKEM": 6,
+          "ČJ+MA - KONALI (PŘIJATI)": 0,
+          "ČJ+MA - % SKÓR - MIN (PŘIJATI)": null
+        }
+      ]
+    },
+    {
+      "year": 2025,
+      "mandatory_JPZ_null_cutoffs": [
+        {
+          "REDIZO": 600005798,
+          "NÁZEV ŠKOLY": "SŠ kosmetiky a hotelnictví BEAN, s.r.o.",
+          "KKOV": "65-41-L/01",
+          "OBOR - NÁZEV": "Gastronomie",
+          "POVINNOST JPZ": 1,
+          "PŘIJATÍ": 1,
+          "PŘIHLÁŠKY CELKEM": 6,
+          "ČJ+MA - KONALI (PŘIJATI)": 0,
+          "ČJ+MA - % SKÓR - MIN (PŘIJATI)": null
+        },
+        {
+          "REDIZO": 600006000,
+          "NÁZEV ŠKOLY": "SOŠ sociální, o.p.s.",
+          "KKOV": "75-41-M/01",
+          "OBOR - NÁZEV": "Sociální činnost",
+          "POVINNOST JPZ": 1,
+          "PŘIJATÍ": 0,
+          "PŘIHLÁŠKY CELKEM": 3,
+          "ČJ+MA - KONALI (PŘIJATI)": 0,
+          "ČJ+MA - % SKÓR - MIN (PŘIJATI)": null
+        },
+        {
+          "REDIZO": 600006026,
+          "NÁZEV ŠKOLY": "Královská střední škola, s.r.o.",
+          "KKOV": "79-41-K/41",
+          "OBOR - NÁZEV": "Gymnázium",
+          "POVINNOST JPZ": 1,
+          "PŘIJATÍ": 0,
+          "PŘIHLÁŠKY CELKEM": 4,
+          "ČJ+MA - KONALI (PŘIJATI)": 0,
+          "ČJ+MA - % SKÓR - MIN (PŘIJATI)": null
+        },
+        {
+          "REDIZO": 651040370,
+          "NÁZEV ŠKOLY": "Královské gymnázium Petrovice s.r.o.",
+          "KKOV": "79-41-K/41",
+          "OBOR - NÁZEV": "Gymnázium",
+          "POVINNOST JPZ": 1,
+          "PŘIJATÍ": 0,
+          "PŘIHLÁŠKY CELKEM": 5,
+          "ČJ+MA - KONALI (PŘIJATI)": 0,
+          "ČJ+MA - % SKÓR - MIN (PŘIJATI)": null
+        },
+        {
+          "REDIZO": 691009341,
+          "NÁZEV ŠKOLY": "Základní škola a  gymnázium AVIDA s.r.o.",
+          "KKOV": "79-42-K/41",
+          "OBOR - NÁZEV": "Gymnázium se sportovní přípravou",
+          "POVINNOST JPZ": 1,
+          "PŘIJATÍ": 0,
+          "PŘIHLÁŠKY CELKEM": 3,
+          "ČJ+MA - KONALI (PŘIJATI)": 0,
+          "ČJ+MA - % SKÓR - MIN (PŘIJATI)": null
+        },
+        {
+          "REDIZO": 691017301,
+          "NÁZEV ŠKOLY": "Gymnázium FOSTRA Digita s.r.o.",
+          "KKOV": "79-41-K/41",
+          "OBOR - NÁZEV": "Gymnázium",
+          "POVINNOST JPZ": 1,
+          "PŘIJATÍ": 0,
+          "PŘIHLÁŠKY CELKEM": 16,
+          "ČJ+MA - KONALI (PŘIJATI)": 0,
+          "ČJ+MA - % SKÓR - MIN (PŘIJATI)": null
+        },
+        {
+          "REDIZO": 691018791,
+          "NÁZEV ŠKOLY": "PED Academy gymnázium, s.r.o.",
+          "KKOV": "79-41-K/41",
+          "OBOR - NÁZEV": "Gymnázium",
+          "POVINNOST JPZ": 1,
+          "PŘIJATÍ": 0,
+          "PŘIHLÁŠKY CELKEM": 1,
+          "ČJ+MA - KONALI (PŘIJATI)": 0,
+          "ČJ+MA - % SKÓR - MIN (PŘIJATI)": null
+        }
+      ]
+    },
+    {
+      "year": 2026,
+      "mandatory_JPZ_null_cutoffs": [
+        {
+          "REDIZO": 600004856,
+          "NÁZEV ŠKOLY": "SPŠ, SOŠ a G, Praha 2, Podskalská 10",
+          "KKOV": "29-41-M/01",
+          "OBOR - NÁZEV": "Technologie potravin",
+          "POVINNOST JPZ": 1,
+          "PŘIJATÍ": 0,
+          "PŘIHLÁŠKY CELKEM": 3,
+          "ČJ+MA - KONALI (PŘIJATI)": 0,
+          "ČJ+MA - % SKÓR - MIN (PŘIJATI)": null
+        },
+        {
+          "REDIZO": 651028922,
+          "NÁZEV ŠKOLY": "1. Slovanské gymnázium a jazyková škola",
+          "KKOV": "79-41-K/41",
+          "OBOR - NÁZEV": "Gymnázium",
+          "POVINNOST JPZ": 1,
+          "PŘIJATÍ": 0,
+          "PŘIHLÁŠKY CELKEM": 1,
+          "ČJ+MA - KONALI (PŘIJATI)": 0,
+          "ČJ+MA - % SKÓR - MIN (PŘIJATI)": null
+        }
+      ]
+    }
+  ],
+  "workbook_method": "Readonly openpyxl iterated every cell for types/errors/formulas, plus ZIP CRC, macro/external-link parts, exact headers and Prague-field bounds/enums. All 91 headers and all 69 legend rows were read; 2024/2025 complete legend cells and headers are identical to 2026. This is a structural/semantic source check, not a manual read of every national numerical cell or a rendered-sheet review. No workbook saved/imported.",
+  "C58": {
+    "priority": "P1 beta eligible-programme correctness; live exposure still to establish",
+    "confirmed": "Importer projection omits ZKRÁCENÉ STUDIUM; actual shared visibility predicate accepts every flagged Prague source row in these three years. Some 2026 rows explicitly describe one-year study while the nominal DÉLKA STUDIA cell says three years. Length/type alone cannot identify those shortened routes.",
+    "source_rows": {
+      "2024": {
+        "total": 777,
+        "shortened": 37,
+        "forms": {
+          "komb": 4,
+          "dal": 9,
+          "den": 24
+        },
+        "years": {
+          "3": 27,
+          "4": 6,
+          "5": 2,
+          "2": 2
+        },
+        "jpz_required": {
+          "2": 37
+        },
+        "ordinary_and_shortened_same_imported_identity": [],
+        "rows": [
+          {
+            "redizo": 600005259,
+            "name": "Střední odborné učiliště",
+            "kkov": "26-52-H/01",
+            "focus": "",
+            "form": "komb",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 40,
+            "applications": 56,
+            "admitted": 40,
+            "cutoff": null,
+            "source_id": "720a1ce9-39de-4cb7-971d-45f59ce973fc"
+          },
+          {
+            "redizo": 600005259,
+            "name": "Střední odborné učiliště",
+            "kkov": "33-56-H/01",
+            "focus": "",
+            "form": "komb",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 20,
+            "applications": 22,
+            "admitted": 17,
+            "cutoff": null,
+            "source_id": "bff16441-5723-4535-863e-6fe329b20df0"
+          },
+          {
+            "redizo": 600005381,
+            "name": "Akademie řemesel Praha - SŠ technická",
+            "kkov": "26-51-H/02",
+            "focus": "",
+            "form": "dal",
+            "years": 4,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 25,
+            "applications": 124,
+            "admitted": 24,
+            "cutoff": null,
+            "source_id": "154ead16-63f8-4fe5-b405-f09477d83dd7"
+          },
+          {
+            "redizo": 600005381,
+            "name": "Akademie řemesel Praha - SŠ technická",
+            "kkov": "33-56-H/01",
+            "focus": "",
+            "form": "dal",
+            "years": 4,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 25,
+            "applications": 64,
+            "admitted": 24,
+            "cutoff": null,
+            "source_id": "812f0868-3e03-44e5-87c4-18e03a027ea4"
+          },
+          {
+            "redizo": 600005381,
+            "name": "Akademie řemesel Praha - SŠ technická",
+            "kkov": "36-52-H/01",
+            "focus": "",
+            "form": "dal",
+            "years": 4,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 24,
+            "applications": 37,
+            "admitted": 24,
+            "cutoff": null,
+            "source_id": "74bf35c9-0859-464e-99bd-3017698bc229"
+          },
+          {
+            "redizo": 600005381,
+            "name": "Akademie řemesel Praha - SŠ technická",
+            "kkov": "36-64-H/01",
+            "focus": "délka studia dva roky",
+            "form": "dal",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 24,
+            "applications": 14,
+            "admitted": 9,
+            "cutoff": null,
+            "source_id": "7128a5cf-7b1d-4219-9c4d-b2f8eef99dd0"
+          },
+          {
+            "redizo": 600005640,
+            "name": "Střední škola a VOŠ umělecká a řemeslná",
+            "kkov": "33-56-H/01",
+            "focus": "Truhlář (zkrácené denní studium)",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 17,
+            "applications": 18,
+            "admitted": 9,
+            "cutoff": null,
+            "source_id": "445c133e-3884-4912-8945-0a633bb3fd41"
+          },
+          {
+            "redizo": 600005640,
+            "name": "Střední škola a VOŠ umělecká a řemeslná",
+            "kkov": "33-59-H/01",
+            "focus": "Čalouník a dekoratér (zkrácené denní studium)",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 10,
+            "applications": 19,
+            "admitted": 9,
+            "cutoff": null,
+            "source_id": "93f8eb79-10c5-4442-ad89-aca9707c38cc"
+          },
+          {
+            "redizo": 600005640,
+            "name": "Střední škola a VOŠ umělecká a řemeslná",
+            "kkov": "82-51-H/01",
+            "focus": "Umělecké kovářství a zámečnictví (zkrácené denní studium)",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 7,
+            "applications": 10,
+            "admitted": 6,
+            "cutoff": null,
+            "source_id": "aa6fb5ad-7605-4b6b-b4cf-3a7d6a76323e"
+          },
+          {
+            "redizo": 600005640,
+            "name": "Střední škola a VOŠ umělecká a řemeslná",
+            "kkov": "82-51-H/02",
+            "focus": "Umělecké truhlářství a restaurování (zkrácené denní studium)",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 8,
+            "applications": 16,
+            "admitted": 8,
+            "cutoff": null,
+            "source_id": "eb16e5f3-097a-4422-893e-2e8907f5d8f0"
+          },
+          {
+            "redizo": 600005640,
+            "name": "Střední škola a VOŠ umělecká a řemeslná",
+            "kkov": "82-51-H/02",
+            "focus": "Umělecké řezbářství a restaurování (zkrácené denní studium)",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 8,
+            "applications": 1,
+            "admitted": 0,
+            "cutoff": null,
+            "source_id": "2b00a89d-908f-413b-bf56-f038045f7042"
+          },
+          {
+            "redizo": 600005658,
+            "name": "Střední průmyslová škola dopravní, a.s.",
+            "kkov": "23-68-H/01",
+            "focus": "zkrácená forma",
+            "form": "dal",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 22,
+            "applications": 46,
+            "admitted": 16,
+            "cutoff": null,
+            "source_id": "adbc6114-7300-4aaa-bc23-82baa2bdfff7"
+          },
+          {
+            "redizo": 600005658,
+            "name": "Střední průmyslová škola dopravní, a.s.",
+            "kkov": "26-51-H/01",
+            "focus": "zkrácená foma",
+            "form": "dal",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 24,
+            "applications": 60,
+            "admitted": 17,
+            "cutoff": null,
+            "source_id": "ac961a37-e6e9-4f40-a038-b1ced535bcd8"
+          },
+          {
+            "redizo": 600006174,
+            "name": "VOŠ inf.studií a SŠ el.,multimédií a inf",
+            "kkov": "26-52-H/01",
+            "focus": " Mechanik elektronických zařízení",
+            "form": "komb",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 30,
+            "applications": 18,
+            "admitted": 14,
+            "cutoff": null,
+            "source_id": "8ba54d2f-f2f0-40e1-9fc8-586d6e2cea3e"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "23-55-H/01",
+            "focus": "",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 4,
+            "applications": 1,
+            "admitted": 1,
+            "cutoff": null,
+            "source_id": "74fc6fc2-dbb9-4886-b484-a932b0467fae"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "26-52-H/01",
+            "focus": "",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 75,
+            "applications": 10,
+            "admitted": 10,
+            "cutoff": null,
+            "source_id": "a138cd18-58aa-4c11-9ba6-6bff48f7ceb1"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "26-57-H/01",
+            "focus": "",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 10,
+            "applications": 1,
+            "admitted": 1,
+            "cutoff": null,
+            "source_id": "ff94a5d3-4f3b-4d19-8114-82ea0d676f82"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "31-58-H/01",
+            "focus": "",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 5,
+            "applications": 1,
+            "admitted": 1,
+            "cutoff": null,
+            "source_id": "fc9430e6-af67-41b0-af6f-2c9f973417e7"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "33-56-H/01",
+            "focus": "",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 5,
+            "applications": null,
+            "admitted": null,
+            "cutoff": null,
+            "source_id": "c4eaebf2-7ddb-4f4b-b1ab-a1a108498904"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "36-52-H/01",
+            "focus": "",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 10,
+            "applications": 1,
+            "admitted": 0,
+            "cutoff": null,
+            "source_id": "22b1c76f-b87c-4bec-a82e-be23f97c4b46"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "36-56-H/01",
+            "focus": "",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 20,
+            "applications": null,
+            "admitted": null,
+            "cutoff": null,
+            "source_id": "0859db7e-1939-425f-9ee5-2bf70afdfc2c"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "36-64-H/01",
+            "focus": "",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 4,
+            "applications": null,
+            "admitted": null,
+            "cutoff": null,
+            "source_id": "dda332cf-ec2e-4234-beb3-e9a00cd498de"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "36-67-H/01",
+            "focus": "",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 4,
+            "applications": null,
+            "admitted": null,
+            "cutoff": null,
+            "source_id": "9fc87f2d-15a1-4b6d-976b-0b59db7952db"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "36-69-H/01",
+            "focus": "",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 4,
+            "applications": 1,
+            "admitted": 1,
+            "cutoff": null,
+            "source_id": "c65d4c2e-fba8-47f3-a500-cc1c87fe1156"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "39-41-H/01",
+            "focus": "",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 4,
+            "applications": null,
+            "admitted": null,
+            "cutoff": null,
+            "source_id": "1d550ae6-db9f-43ee-ab74-2cc1f91c02a4"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "65-51-H/01",
+            "focus": "",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 20,
+            "applications": null,
+            "admitted": null,
+            "cutoff": null,
+            "source_id": "77fe39fe-050d-4521-94c8-b85c0e136b35"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "66-51-H/01",
+            "focus": "",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 10,
+            "applications": 1,
+            "admitted": 0,
+            "cutoff": null,
+            "source_id": "5131d111-bf09-419d-91d8-5e9b8e3190c8"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "75-31-M/01",
+            "focus": "2leté",
+            "form": "dal",
+            "years": 4,
+            "type": "SOŠ",
+            "jpz_required": 2,
+            "capacity": 90,
+            "applications": 114,
+            "admitted": 74,
+            "cutoff": null,
+            "source_id": "6bf2580c-90e0-4566-833d-2bb847e18dbf"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "75-31-M/01",
+            "focus": "",
+            "form": "komb",
+            "years": 4,
+            "type": "SOŠ",
+            "jpz_required": 2,
+            "capacity": 60,
+            "applications": 32,
+            "admitted": 15,
+            "cutoff": null,
+            "source_id": "2140b2fd-a7d5-4ce1-b633-e8cf1cf27c0c"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "82-51-H/03",
+            "focus": "",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 5,
+            "applications": 12,
+            "admitted": 5,
+            "cutoff": null,
+            "source_id": "e01074ba-d293-487d-ae41-238dd76ef021"
+          },
+          {
+            "redizo": 600006638,
+            "name": "SŠ elektrotechniky a strojírenství",
+            "kkov": "26-52-H/01",
+            "focus": "Chladicí a klimatizační zařízení ",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 22,
+            "applications": 24,
+            "admitted": 22,
+            "cutoff": null,
+            "source_id": "1a3bc06e-fb22-47d6-8b94-e0d7c754cbbe"
+          },
+          {
+            "redizo": 600006662,
+            "name": "Střední pedagog. škola Futurum, s.r.o.",
+            "kkov": "75-31-M/01",
+            "focus": "",
+            "form": "dal",
+            "years": 5,
+            "type": "SOŠ",
+            "jpz_required": 2,
+            "capacity": 50,
+            "applications": 46,
+            "admitted": 30,
+            "cutoff": null,
+            "source_id": "3ef664e7-86ea-4211-bbe8-3147855f225e"
+          },
+          {
+            "redizo": 600019454,
+            "name": "Církevní střední zdravotnická škola",
+            "kkov": "53-41-M/03",
+            "focus": "",
+            "form": "dal",
+            "years": 5,
+            "type": "SOŠ",
+            "jpz_required": 2,
+            "capacity": 30,
+            "applications": 29,
+            "admitted": 28,
+            "cutoff": null,
+            "source_id": "e69477e2-cbde-41d6-8fa9-877fa5fa6838"
+          },
+          {
+            "redizo": 600019471,
+            "name": "Střední zdravotnická škola",
+            "kkov": "53-44-M/01",
+            "focus": "zkrácené studium",
+            "form": "den",
+            "years": 4,
+            "type": "SOŠ",
+            "jpz_required": 2,
+            "capacity": 10,
+            "applications": 10,
+            "admitted": 10,
+            "cutoff": null,
+            "source_id": "2b3f4b17-69a6-4e1f-811a-0090051bef2d"
+          },
+          {
+            "redizo": 600020916,
+            "name": "Základní škola a Střední škola",
+            "kkov": "78-62-C/02",
+            "focus": "",
+            "form": "den",
+            "years": 2,
+            "type": "SOU bez výuč. listu",
+            "jpz_required": 2,
+            "capacity": 9,
+            "applications": 16,
+            "admitted": 10,
+            "cutoff": null,
+            "source_id": "62e5fb9f-c0b0-4e83-988b-be7fe33af967"
+          },
+          {
+            "redizo": 600027686,
+            "name": "Výchovný ústav, SVP Klíčov a střed.škola",
+            "kkov": "65-51-E/02",
+            "focus": "kuchař/kuchařka",
+            "form": "den",
+            "years": 2,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 8,
+            "applications": 6,
+            "admitted": 0,
+            "cutoff": null,
+            "source_id": "286057d8-4512-457b-a7bc-35697810182f"
+          },
+          {
+            "redizo": 600170080,
+            "name": "SOŠ automobilní, informatiky a gymnázium",
+            "kkov": "26-57-H/01",
+            "focus": "",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 30,
+            "applications": 32,
+            "admitted": 27,
+            "cutoff": null,
+            "source_id": "1d61740d-6173-4413-82c3-769a79b5ec44"
+          }
+        ]
+      },
+      "2025": {
+        "total": 795,
+        "shortened": 32,
+        "forms": {
+          "komb": 2,
+          "dal": 9,
+          "den": 21
+        },
+        "years": {
+          "3": 26,
+          "4": 4,
+          "5": 2
+        },
+        "jpz_required": {
+          "2": 32
+        },
+        "ordinary_and_shortened_same_imported_identity": [],
+        "rows": [
+          {
+            "redizo": 600005259,
+            "name": "Střední odborné učiliště",
+            "kkov": "26-52-H/01",
+            "focus": "Elektromechanik pro zařízení a přístroje",
+            "form": "komb",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 40,
+            "applications": 37,
+            "admitted": 33,
+            "cutoff": null,
+            "source_id": "0374845f-908a-4d67-9c12-85f7c70ee487"
+          },
+          {
+            "redizo": 600005259,
+            "name": "Střední odborné učiliště",
+            "kkov": "33-56-H/01",
+            "focus": "Truhlář",
+            "form": "komb",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 20,
+            "applications": 24,
+            "admitted": 15,
+            "cutoff": null,
+            "source_id": "8abf87f2-6b77-4fd4-93e1-f64dbebd78b5"
+          },
+          {
+            "redizo": 600005381,
+            "name": "Akademie řemesel Praha - SŠ technická",
+            "kkov": "26-51-H/02",
+            "focus": "délka studia 2 roky",
+            "form": "dal",
+            "years": 4,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 30,
+            "applications": 96,
+            "admitted": 29,
+            "cutoff": null,
+            "source_id": "cd393b6f-1083-40d8-8693-81adf5f15cf3"
+          },
+          {
+            "redizo": 600005381,
+            "name": "Akademie řemesel Praha - SŠ technická",
+            "kkov": "33-56-H/01",
+            "focus": "délka studia 2 roky",
+            "form": "dal",
+            "years": 4,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 30,
+            "applications": 52,
+            "admitted": 29,
+            "cutoff": null,
+            "source_id": "2c57dfbc-34d3-49d5-bf7d-6325535e0475"
+          },
+          {
+            "redizo": 600005381,
+            "name": "Akademie řemesel Praha - SŠ technická",
+            "kkov": "36-52-H/01",
+            "focus": "délka studia 2 roky",
+            "form": "dal",
+            "years": 4,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 25,
+            "applications": 41,
+            "admitted": 25,
+            "cutoff": null,
+            "source_id": "b2038908-10ae-4817-93f6-cc6dd054cb51"
+          },
+          {
+            "redizo": 600005381,
+            "name": "Akademie řemesel Praha - SŠ technická",
+            "kkov": "36-64-H/01",
+            "focus": "délka studia 2 roky",
+            "form": "dal",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 24,
+            "applications": 17,
+            "admitted": 8,
+            "cutoff": null,
+            "source_id": "dede81e4-46e8-4389-8e47-6199f9d31d85"
+          },
+          {
+            "redizo": 600005640,
+            "name": "Střední škola a VOŠ umělecká a řemeslná",
+            "kkov": "33-56-H/01",
+            "focus": "Truhlář (zkrácené denní studium)",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 10,
+            "applications": 20,
+            "admitted": 8,
+            "cutoff": null,
+            "source_id": "b22b9874-1d7b-42c0-b136-adffc5cf5588"
+          },
+          {
+            "redizo": 600005640,
+            "name": "Střední škola a VOŠ umělecká a řemeslná",
+            "kkov": "33-59-H/01",
+            "focus": "Čalouník a dekoratér (zkrácené denní studium)",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 10,
+            "applications": 7,
+            "admitted": 4,
+            "cutoff": null,
+            "source_id": "f2dbc79d-dac8-4d4b-b0b1-5ca04aea5d29"
+          },
+          {
+            "redizo": 600005640,
+            "name": "Střední škola a VOŠ umělecká a řemeslná",
+            "kkov": "82-51-H/01",
+            "focus": "Umělecké kovářství a zámečnictví (zkrácené denní studium)",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 7,
+            "applications": 8,
+            "admitted": 4,
+            "cutoff": null,
+            "source_id": "a53e6d87-1107-4dc6-8751-2ed868d14112"
+          },
+          {
+            "redizo": 600005640,
+            "name": "Střední škola a VOŠ umělecká a řemeslná",
+            "kkov": "82-51-H/02",
+            "focus": "Umělecké řezbářství a restaurování (zkrácené denní studium)",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 7,
+            "applications": 12,
+            "admitted": 6,
+            "cutoff": null,
+            "source_id": "2a78c27b-f633-418f-a2c3-df12564cf857"
+          },
+          {
+            "redizo": 600005640,
+            "name": "Střední škola a VOŠ umělecká a řemeslná",
+            "kkov": "82-51-H/02",
+            "focus": "Umělecké truhlářství a restaurování (zkrácené denní studium)",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 7,
+            "applications": 6,
+            "admitted": 2,
+            "cutoff": null,
+            "source_id": "8b1a21d4-8997-4598-bca4-759710808249"
+          },
+          {
+            "redizo": 600005658,
+            "name": "Střední průmyslová škola dopravní, a.s.",
+            "kkov": "23-68-H/01",
+            "focus": "zkrácená forma, délka studia 1,5 roku",
+            "form": "dal",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 22,
+            "applications": 68,
+            "admitted": 21,
+            "cutoff": null,
+            "source_id": "dec2fe1f-25dd-48df-ad8b-c2ce1ec4a7ed"
+          },
+          {
+            "redizo": 600005658,
+            "name": "Střední průmyslová škola dopravní, a.s.",
+            "kkov": "26-51-H/01",
+            "focus": "zkrácená forma, délka studia 1,5 roku",
+            "form": "dal",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 69,
+            "applications": 87,
+            "admitted": 61,
+            "cutoff": null,
+            "source_id": "392849a1-df1b-49be-8ce6-c2517bd50d3e"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "23-55-H/01",
+            "focus": "zkrácené jednoleté studium",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 5,
+            "applications": null,
+            "admitted": null,
+            "cutoff": null,
+            "source_id": "d7e08c7c-f3ae-4cf8-ae69-1c19a8eeb0b9"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "26-52-H/01",
+            "focus": "zkrácené jednoleté studium",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 75,
+            "applications": 6,
+            "admitted": 2,
+            "cutoff": null,
+            "source_id": "e41c9e51-80bd-42e7-8cf1-d21679700e40"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "26-57-H/01",
+            "focus": "zkrácené jednoleté studium",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 10,
+            "applications": 1,
+            "admitted": 0,
+            "cutoff": null,
+            "source_id": "1efbf2ed-0f2d-440f-90c1-b6cad9288c30"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "31-58-H/01",
+            "focus": "zkrácené jednoleté studium",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 5,
+            "applications": 1,
+            "admitted": 1,
+            "cutoff": null,
+            "source_id": "201fff65-26e4-4c15-be28-9071f04a2777"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "33-56-H/01",
+            "focus": "zkrácené jednoleté studium",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 5,
+            "applications": 1,
+            "admitted": 0,
+            "cutoff": null,
+            "source_id": "2b96f00b-4a85-424f-be3f-9a9d352befdb"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "36-52-H/01",
+            "focus": "zkrácené jednoleté studium",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 10,
+            "applications": 1,
+            "admitted": 1,
+            "cutoff": null,
+            "source_id": "f4cc5725-8fc7-497e-b431-e664fbe3ba64"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "36-56-H/01",
+            "focus": "zkrácené jednoleté studium",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 20,
+            "applications": 1,
+            "admitted": 1,
+            "cutoff": null,
+            "source_id": "01472e7c-29e7-4e6a-bc79-b9036c62c74d"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "36-64-H/01",
+            "focus": "zkrácené jednoleté studium",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 5,
+            "applications": null,
+            "admitted": null,
+            "cutoff": null,
+            "source_id": "ec73437a-1e1b-4f41-9087-3dc486f34763"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "36-67-H/01",
+            "focus": "zkrácené jednoleté studium",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 5,
+            "applications": 1,
+            "admitted": 0,
+            "cutoff": null,
+            "source_id": "071cdd31-647d-430e-aeca-08388abc9d48"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "36-69-H/01",
+            "focus": "zkrácené jednoleté studium",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 5,
+            "applications": null,
+            "admitted": null,
+            "cutoff": null,
+            "source_id": "f58a26b5-8ae4-4e6e-9056-c3b961b2b6c3"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "39-41-H/01",
+            "focus": "zkrácené jednoleté studium",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 5,
+            "applications": null,
+            "admitted": null,
+            "cutoff": null,
+            "source_id": "200e6686-e31e-4ae0-9ce2-aaee9def7a32"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "65-51-H/01",
+            "focus": "zkrácené jednoleté studium",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 10,
+            "applications": null,
+            "admitted": null,
+            "cutoff": null,
+            "source_id": "7955c1c4-8c1f-4261-a9dd-4a7c3f21fa66"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "66-51-H/01",
+            "focus": "zkrácené jednoleté studium",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 5,
+            "applications": null,
+            "admitted": null,
+            "cutoff": null,
+            "source_id": "39ab5787-534d-4e44-8928-c1a72ef7a630"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "75-31-M/01",
+            "focus": "2leté zkrácené studium",
+            "form": "dal",
+            "years": 4,
+            "type": "SOŠ",
+            "jpz_required": 2,
+            "capacity": 90,
+            "applications": 94,
+            "admitted": 57,
+            "cutoff": null,
+            "source_id": "36dedc3c-d14e-4f4a-b4c6-dc710ac6b095"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "82-51-H/03",
+            "focus": "zkrácené jednoleté studium",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 5,
+            "applications": 12,
+            "admitted": 5,
+            "cutoff": null,
+            "source_id": "06d29ec8-d7cb-44cd-a7fa-74cee2f81e10"
+          },
+          {
+            "redizo": 600006638,
+            "name": "SŠ elektrotechniky a strojírenství",
+            "kkov": "26-52-H/01",
+            "focus": "Chladicí a klimatizační zařízení - délka studia 1 rok",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 24,
+            "applications": 51,
+            "admitted": 24,
+            "cutoff": null,
+            "source_id": "2bdddb87-5657-4fc9-89c4-78381a877bf0"
+          },
+          {
+            "redizo": 600006662,
+            "name": "Střední škola Futurum, s.r.o.",
+            "kkov": "75-31-M/01",
+            "focus": "délka studia dva roky",
+            "form": "dal",
+            "years": 5,
+            "type": "SOŠ",
+            "jpz_required": 2,
+            "capacity": 50,
+            "applications": 44,
+            "admitted": 26,
+            "cutoff": null,
+            "source_id": "7198a8c0-4877-4453-b72a-ff61f56312fb"
+          },
+          {
+            "redizo": 600019454,
+            "name": "Církevní střední zdravotnická škola",
+            "kkov": "53-41-M/03",
+            "focus": "délka studia dva roky",
+            "form": "dal",
+            "years": 5,
+            "type": "SOŠ",
+            "jpz_required": 2,
+            "capacity": 30,
+            "applications": 41,
+            "admitted": 23,
+            "cutoff": null,
+            "source_id": "e8ffd8ac-73d8-4687-994f-ea944a827c85"
+          },
+          {
+            "redizo": 600170080,
+            "name": "SOŠ automobilní, informatiky a gymnázium",
+            "kkov": "26-57-H/01",
+            "focus": "",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 30,
+            "applications": 19,
+            "admitted": 18,
+            "cutoff": null,
+            "source_id": "97e0e155-104a-4d92-bd1a-ced94a20dced"
+          }
+        ]
+      },
+      "2026": {
+        "total": 800,
+        "shortened": 34,
+        "forms": {
+          "den": 23,
+          "dal": 9,
+          "komb": 2
+        },
+        "years": {
+          "3": 28,
+          "4": 4,
+          "5": 2
+        },
+        "jpz_required": {
+          "2": 34
+        },
+        "ordinary_and_shortened_same_imported_identity": [],
+        "rows": [
+          {
+            "redizo": 600170080,
+            "name": "SOŠ automobilní, informatiky a gymnázium",
+            "kkov": "26-57-H/01",
+            "focus": "délka studia jeden rok",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 30,
+            "applications": 41,
+            "admitted": 30,
+            "cutoff": null,
+            "source_id": "78da4e5d-b4db-4e00-925c-12548aaa286d"
+          },
+          {
+            "redizo": 600006638,
+            "name": "SŠ elektrotechniky a strojírenství",
+            "kkov": "26-52-H/01",
+            "focus": "Chladící a klimatizační zařízení - délka studia 1 rok",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 24,
+            "applications": 38,
+            "admitted": 24,
+            "cutoff": null,
+            "source_id": "666ded31-fa0c-4e0f-baae-29799423ecd0"
+          },
+          {
+            "redizo": 600005381,
+            "name": "Akademie řemesel Praha - SŠ technická",
+            "kkov": "23-68-H/01",
+            "focus": "délka studia jeden rok",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 15,
+            "applications": 48,
+            "admitted": 15,
+            "cutoff": null,
+            "source_id": "555cdc78-09bd-48a0-b868-6d2b4ca65108"
+          },
+          {
+            "redizo": 600005381,
+            "name": "Akademie řemesel Praha - SŠ technická",
+            "kkov": "26-51-H/02",
+            "focus": "délka studia jeden rok",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 15,
+            "applications": 53,
+            "admitted": 16,
+            "cutoff": null,
+            "source_id": "2921ead1-63fe-4a8d-aa72-bef79aac6e8f"
+          },
+          {
+            "redizo": 600005381,
+            "name": "Akademie řemesel Praha - SŠ technická",
+            "kkov": "26-51-H/02",
+            "focus": "délka studia dva roky",
+            "form": "dal",
+            "years": 4,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 12,
+            "applications": 118,
+            "admitted": 11,
+            "cutoff": null,
+            "source_id": "d802f0ba-06f4-4073-a179-44f4828fdd1e"
+          },
+          {
+            "redizo": 600005381,
+            "name": "Akademie řemesel Praha - SŠ technická",
+            "kkov": "33-56-H/01",
+            "focus": "délka studia dva roky",
+            "form": "dal",
+            "years": 4,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 12,
+            "applications": 34,
+            "admitted": 12,
+            "cutoff": null,
+            "source_id": "d2e39308-fa94-443e-84a3-0446b2383b10"
+          },
+          {
+            "redizo": 600005381,
+            "name": "Akademie řemesel Praha - SŠ technická",
+            "kkov": "36-52-H/01",
+            "focus": "délka studia dva roky",
+            "form": "dal",
+            "years": 4,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 12,
+            "applications": 45,
+            "admitted": 11,
+            "cutoff": null,
+            "source_id": "73455ca6-411f-48df-8b7c-777e1f03cf4d"
+          },
+          {
+            "redizo": 600005381,
+            "name": "Akademie řemesel Praha - SŠ technická",
+            "kkov": "36-64-H/01",
+            "focus": "délka studia dva roky",
+            "form": "dal",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 12,
+            "applications": 14,
+            "admitted": 12,
+            "cutoff": null,
+            "source_id": "f6c2afee-1182-4ec1-87c5-45506a89885f"
+          },
+          {
+            "redizo": 600005640,
+            "name": "Střední škola a VOŠ umělecká a řemeslná",
+            "kkov": "33-56-H/01",
+            "focus": "zkrácené studium - 1 rok",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 8,
+            "applications": 25,
+            "admitted": 8,
+            "cutoff": null,
+            "source_id": "689ddee7-a929-468e-b762-10120e21aacc"
+          },
+          {
+            "redizo": 600005640,
+            "name": "Střední škola a VOŠ umělecká a řemeslná",
+            "kkov": "33-59-H/01",
+            "focus": "zkrácené studium - 1 rok",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 8,
+            "applications": 22,
+            "admitted": 8,
+            "cutoff": null,
+            "source_id": "5bf9e6b9-3580-4be4-b726-1a2a121c83a8"
+          },
+          {
+            "redizo": 600005640,
+            "name": "Střední škola a VOŠ umělecká a řemeslná",
+            "kkov": "82-51-H/01",
+            "focus": "zkrácené studium - 1 rok",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 6,
+            "applications": 10,
+            "admitted": 4,
+            "cutoff": null,
+            "source_id": "e6a79207-5224-4533-bfb4-8772a1baf651"
+          },
+          {
+            "redizo": 600005640,
+            "name": "Střední škola a VOŠ umělecká a řemeslná",
+            "kkov": "82-51-H/02",
+            "focus": "Umělecké řezbářství - zkrácené studium - 1 rok",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 6,
+            "applications": 14,
+            "admitted": 3,
+            "cutoff": null,
+            "source_id": "093f1a68-95ff-44a8-a568-2f4d307621ec"
+          },
+          {
+            "redizo": 600005640,
+            "name": "Střední škola a VOŠ umělecká a řemeslná",
+            "kkov": "82-51-H/02",
+            "focus": "Umělecké truhlářství - zkrácené studium - 1 rok",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 6,
+            "applications": 15,
+            "admitted": 5,
+            "cutoff": null,
+            "source_id": "a1a9664c-e448-4f07-9a8a-bfc5f67ecc15"
+          },
+          {
+            "redizo": 600005259,
+            "name": "Střední odborné učiliště",
+            "kkov": "26-52-H/01",
+            "focus": "Elektromechanik pro zařízení a přístroje",
+            "form": "komb",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 40,
+            "applications": 36,
+            "admitted": 24,
+            "cutoff": null,
+            "source_id": "7111a5d2-6f51-42f7-ac35-6df28c6e823c"
+          },
+          {
+            "redizo": 600005259,
+            "name": "Střední odborné učiliště",
+            "kkov": "33-56-H/01",
+            "focus": "Truhlář",
+            "form": "komb",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 20,
+            "applications": 23,
+            "admitted": 19,
+            "cutoff": null,
+            "source_id": "5a341684-396f-4df8-81bc-9a8a60b23335"
+          },
+          {
+            "redizo": 600006662,
+            "name": "Střední škola Futurum, s.r.o.",
+            "kkov": "75-31-M/01",
+            "focus": "Délka studia dva roky",
+            "form": "dal",
+            "years": 5,
+            "type": "SOŠ",
+            "jpz_required": 2,
+            "capacity": 50,
+            "applications": 48,
+            "admitted": 33,
+            "cutoff": null,
+            "source_id": "976a5154-3c12-4a3e-9aec-15dde7b37cdb"
+          },
+          {
+            "redizo": 600005658,
+            "name": "Střední průmyslová škola dopravní, a.s.",
+            "kkov": "23-68-H/01",
+            "focus": "zkrácené studium, délka studia 1,5 roku",
+            "form": "dal",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 24,
+            "applications": 53,
+            "admitted": 24,
+            "cutoff": null,
+            "source_id": "d4d5a2ff-34b6-4590-93f8-83aa0c9e09de"
+          },
+          {
+            "redizo": 600005658,
+            "name": "Střední průmyslová škola dopravní, a.s.",
+            "kkov": "26-51-H/01",
+            "focus": "zkrácené studium - délka studia 1,5 roku",
+            "form": "dal",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 80,
+            "applications": 106,
+            "admitted": 74,
+            "cutoff": null,
+            "source_id": "dd5c5402-5e25-43b9-9a5a-dbea457439f5"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "23-55-H/01",
+            "focus": "1leté zkrácené studium",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 5,
+            "applications": null,
+            "admitted": null,
+            "cutoff": null,
+            "source_id": "e093fea8-20d6-458b-ad52-d81675535b23"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "26-52-H/01",
+            "focus": "1leté zkrácené studium",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 75,
+            "applications": 7,
+            "admitted": 5,
+            "cutoff": null,
+            "source_id": "7f8361f0-24f6-48e4-943b-ff2cfbf3f13e"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "26-57-H/01",
+            "focus": "1leté zkrácené studium",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 10,
+            "applications": null,
+            "admitted": null,
+            "cutoff": null,
+            "source_id": "c719b73b-b4ad-481d-abbd-39622f363d52"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "31-58-H/01",
+            "focus": "1leté zkrácené studium",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 5,
+            "applications": 1,
+            "admitted": 1,
+            "cutoff": null,
+            "source_id": "c028d709-cbe9-44db-9780-3eb5079792f6"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "33-56-H/01",
+            "focus": "1leté zkrácené studium",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 5,
+            "applications": 1,
+            "admitted": 0,
+            "cutoff": null,
+            "source_id": "b6f32bb9-96e6-4cd5-98c3-078d52568d1f"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "36-52-H/01",
+            "focus": "1leté zkrácené studium",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 10,
+            "applications": 1,
+            "admitted": 1,
+            "cutoff": null,
+            "source_id": "797c70d3-e75d-42c3-8df3-76f35a25e019"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "36-56-H/01",
+            "focus": "1leté zkrácené studium",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 20,
+            "applications": 1,
+            "admitted": 1,
+            "cutoff": null,
+            "source_id": "e8a26fdb-d64b-4519-9988-aa822dfd4cfb"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "36-64-H/01",
+            "focus": "1leté zkrácené studium",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 5,
+            "applications": null,
+            "admitted": null,
+            "cutoff": null,
+            "source_id": "67a9d9f3-4e24-485a-961c-41fd4c0fd0d6"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "36-67-H/01",
+            "focus": "1leté zkrácené studium",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 5,
+            "applications": 1,
+            "admitted": 0,
+            "cutoff": null,
+            "source_id": "1336610b-d5d7-4a4f-9970-c98bbd0ed5dd"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "36-69-H/01",
+            "focus": "1leté zkrácené studium",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 5,
+            "applications": null,
+            "admitted": null,
+            "cutoff": null,
+            "source_id": "94177452-c9e5-4a85-b522-9889f1973a99"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "39-41-H/01",
+            "focus": "1leté zkrácené studium",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 5,
+            "applications": null,
+            "admitted": null,
+            "cutoff": null,
+            "source_id": "765853e1-23f8-48b3-bc2e-22bd46688626"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "65-51-H/01",
+            "focus": "1leté zkrácené studium",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 20,
+            "applications": 1,
+            "admitted": 1,
+            "cutoff": null,
+            "source_id": "ff070452-bd7c-475c-a9a1-3cfd0220472e"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "66-51-H/01",
+            "focus": "1leté zkrácené studium",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 5,
+            "applications": null,
+            "admitted": null,
+            "cutoff": null,
+            "source_id": "017e5964-6829-449c-91a7-07e3328d8d41"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "75-31-M/01",
+            "focus": "2leté dálkové studium",
+            "form": "dal",
+            "years": 4,
+            "type": "SOŠ",
+            "jpz_required": 2,
+            "capacity": 120,
+            "applications": 47,
+            "admitted": 34,
+            "cutoff": null,
+            "source_id": "4d379478-3429-4158-903c-061c1e3f0b95"
+          },
+          {
+            "redizo": 600006328,
+            "name": "Soukr. SOŠ a Soukr. SOU BEAN, s.r.o.",
+            "kkov": "82-51-H/03",
+            "focus": "1leté zkrácené studium",
+            "form": "den",
+            "years": 3,
+            "type": "SOU s výuč. listem",
+            "jpz_required": 2,
+            "capacity": 5,
+            "applications": 12,
+            "admitted": 5,
+            "cutoff": null,
+            "source_id": "314d2bc2-1733-4ce7-81e5-9647582fbaf4"
+          },
+          {
+            "redizo": 600019454,
+            "name": "Církevní střední zdravotnická škola",
+            "kkov": "53-41-M/03",
+            "focus": "délka studia dva roky",
+            "form": "dal",
+            "years": 5,
+            "type": "SOŠ",
+            "jpz_required": 2,
+            "capacity": 30,
+            "applications": 41,
+            "admitted": 30,
+            "cutoff": null,
+            "source_id": "30b9760e-3883-43f1-8f9a-6313bf019123"
+          }
+        ]
+      }
+    },
+    "actual_importer_projection_fixture_probes": [
+      {
+        "year": 2024,
+        "path": "scripts/data/PZ2024_kolo1_skolobory_vysledky.xlsx",
+        "Prague_program_rows": 777,
+        "flagged_source_rows": 37,
+        "flagged_rows_with_preserved_shortened_field": 0,
+        "flagged_rows_allowed_by_actual_shared_predicate": 37,
+        "scope": "actual importer pure reader with worksheet-decode fixture from openpyxl, plus actual shared predicate; Node xlsx is absent, so real Node workbook decoding and main/import not exercised; no dotenv, Supabase, network or repository file mutation"
+      },
+      {
+        "year": 2025,
+        "path": "scripts/data/PZ2025_kolo1_skolobory_vysledky.xlsx",
+        "Prague_program_rows": 795,
+        "flagged_source_rows": 32,
+        "flagged_rows_with_preserved_shortened_field": 0,
+        "flagged_rows_allowed_by_actual_shared_predicate": 32,
+        "scope": "actual importer pure reader with worksheet-decode fixture from openpyxl, plus actual shared predicate; Node xlsx is absent, so real Node workbook decoding and main/import not exercised; no dotenv, Supabase, network or repository file mutation"
+      },
+      {
+        "year": 2026,
+        "path": "scripts/data/PZ2026_kolo1_skolobory_vysledky.xlsx",
+        "Prague_program_rows": 800,
+        "flagged_source_rows": 34,
+        "flagged_rows_with_preserved_shortened_field": 0,
+        "flagged_rows_allowed_by_actual_shared_predicate": 34,
+        "scope": "actual importer pure reader with worksheet-decode fixture from openpyxl, plus actual shared predicate; Node xlsx is absent, so real Node workbook decoding and main/import not exercised; no dotenv, Supabase, network or repository file mutation"
+      }
+    ],
+    "primary_sources": [
+      {
+        "url": "https://data.cermat.gov.cz/data-a-analyticke-vystupy-jednotna-prijimaci-zkouska/datove-soubory.html",
+        "supports": "Cermat distinguishes shortened study in application data; do not conflate this applicant-level download with the local aggregate workbooks."
+      },
+      {
+        "url": "https://data.cermat.gov.cz/data-a-analyticke-vystupy-jednotna-prijimaci-zkouska/agregovana-data-jpz.html",
+        "supports": "Official aggregate workbook download/provenance page; the 2026 first-round results are dated 17 August 2026. Current official download hashes were not compared with local copies."
+      },
+      {
+        "url": "https://ppropo.mpsv.cz/zakon_561_2004",
+        "supports": "School Act §§84/85 require prior secondary education/qualification for the defined shortened routes; 1–2 years daytime."
+      },
+      {
+        "url": "https://www.bean.cz/pmp",
+        "supports": "School itself distinguishes two-year pedagogy requiring existing maturita from its ordinary route."
+      }
+    ],
+    "uncertainties": [
+      "Exact source flag meanings, anomalous 2024 practical-school records, source programme identity/version and current matched/served row exposure require verification; do not blindly hide ordinary routes or an entire mixed school.",
+      "No ordinary/shortened flag pair has the same tested REDIZO+KKOV+focus+form+nominal-length tuple in these local Prague worksheets; this does not establish identity semantics or absence of collisions under a different projection/year.",
+      "The actual importer pure reader was exercised with an openpyxl-decoded worksheet fixture. Initial real Node decoding did not run because xlsx is absent locally; do not claim the Node XLSX library or main()/live migration was tested."
+    ]
+  },
+  "certain_edits": {
+    "scripts/import-admission-data.js": "Only standalone comments: null cutoff is not proof of talent-only admission; average normalized percentage versus ordinary two-50-point combined score qualified. All non-comment executable text byte-equivalent.",
+    "AGENTS.md": "Only dated extraction claims qualified: equal paired counts had two teaching-tag differences; 189 non-null club arrays include 79 empty arrays.",
+    "CLAUDE.md": "Same exact historical factual qualifications; current policy/model instructions preserved."
+  },
+  "limits": [
+    "103 binary files have structural checks here: 95 images, five sounds and three workbooks. Binary classification remains separate from complete source-line coverage.",
+    "18 unique image files inspected, covering 19 paths through one identical screenshot pair; the other 76 image paths were not newly visually inspected in this pass.",
+    "Two peer DOCX files remain deferred; no sound listening/mix/device/license clearance.",
+    "No current UI/source scoring/access/payment/privacy/schema/data/provider change; all founder beta gates, peer ownership and approval requirements preserved."
+  ]
+}
