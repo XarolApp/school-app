@@ -1756,19 +1756,19 @@
     "method": "Full source read plus complete current authored diff review. Docs reconciled to source/read-only production evidence; read does not imply acceptance."
   },
   "lib/betaAdmin.js": {
-    "sha256": "9b19c8ee963781c79c5076ef8fba049db80d85d229b9aff66f17beac6ab84bf8",
-    "lines": 148,
+    "sha256": "a1f10beabf4b63e2355e38afb520aecfd6833bd0ac7f3e3a2bf22dff0e042648",
+    "lines": 170,
     "read_ranges": [
       [
         1,
-        148
+        170
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-10T21:20:51.076901+00:00",
-    "method": "Verified full saved baseline at ed6a69a plus complete current diff and all owned edits read. Source coverage is not SQL/hosted/browser/deployment acceptance.",
-    "previous_complete_sha256": "162d8609b8c2f370d78e9044f239207c6a2c511220ab766d29b10151cf0a0637"
+    "checked_at_utc": "2026-10-11T09:04:20.543954+00:00",
+    "method": "Verified full fbded6e source baseline plus complete 135e640 diff; betaAdmin module and entire test file additionally reread current. Offline actual-source consent/count/fetch probe is synthetic evidence, not hosted or privacy certification.",
+    "previous_complete_sha256": "9b19c8ee963781c79c5076ef8fba049db80d85d229b9aff66f17beac6ab84bf8"
   },
   "lib/betaAnalytics.js": {
     "sha256": "03d75851b6cb6db6c1d1f1fc367ff561fec148adb98b201776b9aa407096ed0c",
@@ -2137,19 +2137,19 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "05bb50bf7514c50bbba0dbc99820fd4fcc6b7b35cabc936ae97098acefbff78a",
-    "lines": 1858,
+    "sha256": "a17d3836009adea44b276c9a81d5dc65602f3b2552053efe00caced33b8c9a11",
+    "lines": 1864,
     "read_ranges": [
       [
         1,
-        1858
+        1864
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-11T08:58:28.354543+00:00",
-    "method": "Verified prior complete baseline plus complete own historical-survey append read; release acceptance separate.",
-    "previous_complete_sha256": "5d72bc44ba42c7449b9eaae433f1893b0a6f00dfd469f761f08746b05ba5dda0"
+    "checked_at_utc": "2026-10-11T09:04:20.543954+00:00",
+    "method": "Verified prior complete baseline plus complete own C56 evidence/acceptance append read. D1/D4 unchanged.",
+    "previous_complete_sha256": "05bb50bf7514c50bbba0dbc99820fd4fcc6b7b35cabc936ae97098acefbff78a"
   },
   "frontend/src/api.js": {
     "sha256": "a545cb179681a87378f41cf928cff50e1ae6c2e539c4bbacf373590af9f8ab8a",
@@ -2294,7 +2294,7 @@
     "method": "Full 79-line current component and complete own parent-copy diff read; synthetic browser verifies parent vykání and unchanged student wording. No submissions or external service calls."
   },
   "frontend/src/components/BetaEnrollment.jsx": {
-    "sha256": "5d2ec97df4ce360dbe3e9c230f9058fd4e8aaddc9b79d34a63962afe88b27f0b",
+    "sha256": "5591f2feb3e0451de9906fb209918aec36b7b799b3b9dba511ada7be67de6f67",
     "lines": 32,
     "read_ranges": [
       [
@@ -2304,9 +2304,9 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-10T10:45:51.647857+00:00",
-    "method": "Complete current full source read for AuthContext/Hint/useDraft/new migration; for other existing source/docs, exact saved full-read baseline verified against Git and every subsequent diff inspected in bounded complete ranges, including 7c575ed/c17c582 and own patch. UNFORGET baseline-to-current cumulative diff read in 1–50/51–100/101–155 plus fully reviewed own current patch. New probes fully authored/read and executed with stated limits. Source read does not imply live SQL/SDK/device/payment/legal acceptance.",
-    "previous_complete_sha256": "ea9be3f819546fa76c993ed47eed9ca34d360f4a017947fb70b8b0a2055208dc"
+    "checked_at_utc": "2026-10-11T09:04:20.543954+00:00",
+    "method": "Verified full fbded6e source baseline plus complete 135e640 diff; betaAdmin module and entire test file additionally reread current. Offline actual-source consent/count/fetch probe is synthetic evidence, not hosted or privacy certification.",
+    "previous_complete_sha256": "5d2ec97df4ce360dbe3e9c230f9058fd4e8aaddc9b79d34a63962afe88b27f0b"
   },
   "frontend/src/components/BetaSoftGate.jsx": {
     "sha256": "5c9094454c3b8cc99edb07001476b644e4d37f87b8266b09a000989cb0f337a4",
@@ -2617,7 +2617,7 @@
     "method": "Full current source read plus complete own redirect-fix diff; two targeted tests and synthetic confirmation component browser check. No production sign-in/mailbox acceptance claimed."
   },
   "frontend/src/pages/Legal.jsx": {
-    "sha256": "601bade2cc187ee9495d497ce427caff48d32056810db6a6dae68bce07086f94",
+    "sha256": "ec5a7fc5e0f4f96190b7a632009ccaf4edcc3a2e60050b67a03c4278cb80eee9",
     "lines": 392,
     "read_ranges": [
       [
@@ -2627,9 +2627,9 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-10T15:31:07.984520+00:00",
-    "method": "Current helper/confirmation/migrations/legal-decisions/test/archive005 full bounded read. Other source/docs: exact a4aa7fd full-read receipt verified, complete a4aa7fd-to-current diff read and own patch fully authored/reviewed. SQL bodies read, not executed; synthetic/browser probes are qualified evidence, not hosted erasure/legal/device acceptance.",
-    "previous_complete_sha256": "f704818e347ddbd42ddcd808571581410ded101def20048448817f744957ac94"
+    "checked_at_utc": "2026-10-11T09:04:20.543954+00:00",
+    "method": "Verified full fbded6e source baseline plus complete 135e640 diff; betaAdmin module and entire test file additionally reread current. Offline actual-source consent/count/fetch probe is synthetic evidence, not hosted or privacy certification.",
+    "previous_complete_sha256": "601bade2cc187ee9495d497ce427caff48d32056810db6a6dae68bce07086f94"
   },
   "frontend/src/config/socialProof.js": {
     "sha256": "70b47b86cd7b03a405aff53b98d66fac9aaccc231a66207a54c9a95752ec86a8",
@@ -5289,18 +5289,19 @@
     "method": "Complete current file read in bounded ranges with truncated parts reread, or exact verified full baseline plus every subsequent complete diff (canonical SQL/UNFORGET). Own narrow corrections and before/after actual-source/browser checks verified. Full read does not establish live or broad lifecycle acceptance."
   },
   "tests/beta-admin.test.cjs": {
-    "sha256": "990014d5145f4958cb6ab999ac5bd12830dab15683a221f20a0d2abebe559dc6",
-    "lines": 41,
+    "sha256": "d0ef72ade22e44138940d60ec49a8b6254139bb61868cb022dbdb1348238ef09",
+    "lines": 53,
     "read_ranges": [
       [
         1,
-        41
+        53
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-10T20:29:35.187602+00:00",
-    "method": "Complete current file read in bounded ranges with truncated parts reread, or exact verified full baseline plus every subsequent complete diff (canonical SQL/UNFORGET). Own narrow corrections and before/after actual-source/browser checks verified. Full read does not establish live or broad lifecycle acceptance."
+    "checked_at_utc": "2026-10-11T09:04:20.543954+00:00",
+    "method": "Verified full fbded6e source baseline plus complete 135e640 diff; betaAdmin module and entire test file additionally reread current. Offline actual-source consent/count/fetch probe is synthetic evidence, not hosted or privacy certification.",
+    "previous_complete_sha256": "990014d5145f4958cb6ab999ac5bd12830dab15683a221f20a0d2abebe559dc6"
   },
   "tests/auth-email-hints.test.cjs": {
     "sha256": "9079e9818fae6f27252ee71e17c3b97706f56836576471ae51bfcc588fd16039",

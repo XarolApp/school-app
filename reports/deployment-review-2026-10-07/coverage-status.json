@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-11T08:58:28.882704+00:00",
-  "commit": "47941261baebb0fe24f2611ba62413472f55efaf",
+  "checked_at_utc": "2026-10-11T09:04:21.325010+00:00",
+  "commit": "133ae149719f25d88c534d85c0b392c1ab48679f",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "current_full_read": 497,
-    "pending_or_changed": 297,
+    "current_full_read": 501,
+    "pending_or_changed": 293,
     "binary_requires_asset_check": 105,
-    "generated_or_audit_artifact": 174,
+    "generated_or_audit_artifact": 176,
     "removed_or_missing": 2
   },
   "files": [
@@ -941,8 +941,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "05bb50bf7514c50bbba0dbc99820fd4fcc6b7b35cabc936ae97098acefbff78a",
-      "lines": 1858,
+      "sha256": "a17d3836009adea44b276c9a81d5dc65602f3b2552053efe00caced33b8c9a11",
+      "lines": 1864,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -3161,8 +3161,10 @@
       "path": "frontend/src/components/BetaEnrollment.jsx",
       "sha256": "5591f2feb3e0451de9906fb209918aec36b7b799b3b9dba511ada7be67de6f67",
       "lines": 32,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/components/BetaFeedbackSheet.jsx",
@@ -4219,8 +4221,10 @@
       "path": "frontend/src/pages/Legal.jsx",
       "sha256": "ec5a7fc5e0f4f96190b7a632009ccaf4edcc3a2e60050b67a03c4278cb80eee9",
       "lines": 392,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/pages/Login.jsx",
@@ -4700,8 +4704,10 @@
       "path": "lib/betaAdmin.js",
       "sha256": "a1f10beabf4b63e2355e38afb520aecfd6833bd0ac7f3e3a2bf22dff0e042648",
       "lines": 170,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "lib/betaAdminRoutes.js",
@@ -6085,22 +6091,22 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "663eec51606d94d62b0a1ac0cbffb9d221702c3071dd4ca09825762e05a8e96c",
-      "lines": 386,
+      "sha256": "75cc90878648e8c848df617a6571b835ff116fcdffef73bd0fbb55dc33cf1f74",
+      "lines": 390,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "8dcef23419f3269afef6042c208e10ac2f73cbcb482abd3a5236705d0e41b522",
-      "lines": 248,
+      "sha256": "849f8993f293ddc3be8c3cebbe2dd326186b3f3f843dafdc7f3ab6e1d0cd7a2d",
+      "lines": 258,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "ca05d7e59beba2d3ed403e39deb2729cced1c0569fbac80c4ee2ee1f09697d87",
-      "lines": 182,
+      "sha256": "ff9786ed9d0fa410595af34a6a7eb29dfdab1bf86c6a5f3de265d9f64eceab68",
+      "lines": 184,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6301,6 +6307,13 @@
       "matching_evidence": []
     },
     {
+      "path": "reports/deployment-review-2026-10-07/beta-answer-stats-2026-10-11.json",
+      "sha256": "08efab31cb4460b5429ef5d56fed7da8d0b1ad250215eeecda9b014942de6f45",
+      "lines": 56,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/beta-cohort-schema-2026-10-10.json",
       "sha256": "0dd12663cb10f9875f383aeb40a5ea434fd27da67c17827fc6b60c7954667ca6",
       "lines": 20,
@@ -6442,8 +6455,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "d25dba6ed8f4395688b2a5f88f2a4affb732dd79cf164a540993f56059db7806",
-      "lines": 517,
+      "sha256": "5615d305c99a31b283e0c61a3833f183a5431c2c3602742cb19c69fe7f738acf",
+      "lines": 529,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6456,8 +6469,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "3e0672bb3d482d58db27b90f3b96c8e867d823110248e3d9de1007d4fdd12f35",
-      "lines": 8508,
+      "sha256": "1b58b44f26374a50e0fd01801c285d1e931bde423e6847899a81f8d5ffdf80d9",
+      "lines": 8537,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -7309,6 +7322,13 @@
       "matching_evidence": []
     },
     {
+      "path": "reports/deployment-review-2026-10-07/probe-beta-answer-stats.cjs",
+      "sha256": "450cc42823e1d95226369a2260b09829ad9a67913cd014df72896ee5b0b8115b",
+      "lines": 51,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/probe-beta-current.cjs",
       "sha256": "eab0234293a08cca773c2b09f25975c4bf5aef41fab3b803a58fb6b72883da67",
       "lines": 35,
@@ -7635,8 +7655,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "5aff9efec4f1fd707948e827bd6bcc6f8bec1e3d7f0b594b64420894c7ed22c7",
-      "lines": 6711,
+      "sha256": "1f203c889c5c33c9d280b219d5ea70fc4aa7e3fedede5448a1ec29cb6e917870",
+      "lines": 6712,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -8336,8 +8356,10 @@
       "path": "tests/beta-admin.test.cjs",
       "sha256": "d0ef72ade22e44138940d60ec49a8b6254139bb61868cb022dbdb1348238ef09",
       "lines": 53,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "tests/beta-analytics.test.cjs",

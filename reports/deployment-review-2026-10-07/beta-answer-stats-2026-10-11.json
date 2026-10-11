@@ -1,0 +1,56 @@
+{
+  "checked_at_utc": "2026-10-11T09:02:58.768Z",
+  "source": {
+    "path": "lib/betaAdmin.js",
+    "sha256": "a1f10beabf4b63e2355e38afb520aecfd6833bd0ac7f3e3a2bf22dff0e042648"
+  },
+  "method": "Actual current module evaluated in VM; questionnaire schema is a declared synthetic single-choice fixture. No production account/service/env or database writes.",
+  "cases": {
+    "withdrawnTester": {
+      "actualRespondents": 8,
+      "actualXCount": 6,
+      "excludingPausedWouldGiveRespondents": 7,
+      "excludingPausedWouldGiveXCount": 5,
+      "trackingPauseIgnored": true
+    },
+    "smallCell": {
+      "displayedX": {
+        "question": "Synthetic single-choice question",
+        "option": "X",
+        "respondents": 8,
+        "count": 6,
+        "share": 75
+      },
+      "displayedY": {
+        "question": "Synthetic single-choice question",
+        "option": "Y",
+        "respondents": 8,
+        "count": "<5",
+        "share": null
+      },
+      "derivedSuppressedY": 2,
+      "derivation": "respondents minus X for a complete valid binary single-choice fixture"
+    },
+    "mixedSourcePolicyObservation": {
+      "respondentsBefore": 8,
+      "respondentsAfterNewerUnmappedSyntheticRun": 7,
+      "reportedTesters": 8,
+      "sourceNotSelectedByLoader": true,
+      "confirmedProductionBug": false,
+      "qualification": "Real onboarding persistence translates answers into the shared schema. This synthetic omission shows newest-run selection, not an established production schema incompatibility."
+    },
+    "loader": {
+      "questionnaireQuery": {
+        "table": "questionnaire_runs",
+        "columns": "id,user_id,answers,created_at",
+        "filters": []
+      },
+      "ordinaryFixtureRead": true
+    }
+  },
+  "limits": [
+    "Shows consent/count/fetch faults with synthetic fixtures, not successful identification of a real tester. Latest-run behavior alone is not classified as a bug.",
+    "No deployed RLS, grants, report endpoint, retention policy or real cohort anonymity acceptance established.",
+    "Tracking consent applicability follows current enrollment/privacy wording; a coordinated privacy/product decision and implementation remain required."
+  ]
+}
