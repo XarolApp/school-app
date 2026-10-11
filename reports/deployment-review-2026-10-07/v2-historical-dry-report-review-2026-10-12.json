@@ -1,0 +1,50 @@
+{
+  "checked_at_utc": "2026-10-11T22:32:25.219588+00:00",
+  "original_path": "reports/structure-dry-run-2026-09-24-v2.md",
+  "sha256_before": "9906114726ce186d5887060b0bed9f32ced8cc6f48325ac1b636d972c45dd6b3",
+  "sha256_after": "94acf5034d000eff51af1f6433ec372aec05c9cb4eb3c92b84ff0b692da5a863",
+  "original_lines": 962,
+  "current_lines": 964,
+  "all_original_read_ranges": [
+    [
+      1,
+      962
+    ]
+  ],
+  "sample_ids": [
+    10,
+    13,
+    16,
+    19,
+    23,
+    26,
+    42,
+    43,
+    47,
+    48,
+    20,
+    27,
+    86,
+    37,
+    35,
+    82,
+    22,
+    62,
+    123,
+    95
+  ],
+  "pair_rows": 120,
+  "returned_model_values_in_this_attempt": 0,
+  "unavailable_is_not_null": true,
+  "preserved": "All20 input contexts,120 unavailable pairs, numerical tables, dated execution/provider-error history and fallback/cache diagnosis. Seven exact status/projection/recommendation phrases qualified; historical inputs/projections preserved.",
+  "historical_candidates": {
+    "26": "Parked-domain cache with no applicant data, not a current school/site diagnosis.",
+    "42": "English applicants/fees source existed in historical manifest, but generic teasers produced no usable fallback.",
+    "43": "Historical activity fallback mixed admission-exam/subject fragments with general activity intro; source/audience/context gate remains S10.",
+    "47": "Historical404/demo/LoremIpsum cache; refresh/validate content before extracting.",
+    "27": "Historical fallback only describes delayed HM Gastro registration/subsidy; later current arranged-meal verification is recorded separately, so do not revive old null/false assumptions."
+  },
+  "later_completed_evidence": "structure-v3-complete-log-review-2026-10-11.json",
+  "current_acceptance": "Later219-school outputs do not complete failed xhigh pairs, verify current provider/account health, prove current official field support or authorize another write. ActiveS10/C57/C58/currentbeta manual and policy gates preserved.",
+  "verification": "All962 original MD lines read in bounded contiguous ranges; changed phrases authored and reviewed, same-pattern MD search,20unique IDs/120 UNAVAILABLE rows and unchanged tables except dated headers/recommendation copy. No extraction/provider/network/Supabase/SQL/script main execution."
+}

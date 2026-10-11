@@ -2141,17 +2141,17 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "65de1d69c93940bc2a8ea3ccd38db373a60be35c79341c450bb07ba6298c1c8e",
-    "lines": 2000,
+    "sha256": "c417a27e3840df456209f7654c81eed80115ff7c9e03a141c72d2b85febea7c9",
+    "lines": 2003,
     "read_ranges": [
       [
         1,
-        2000
+        2003
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-11T22:27:26.884757+00:00",
+    "checked_at_utc": "2026-10-11T22:32:25.219588+00:00",
     "method": "Prior fully-read hash-matched ledger prefix preserved; this exact source/campus evidence suffix authored/read. Current release gates preserved."
   },
   "frontend/src/api.js": {
@@ -10669,5 +10669,20 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-11T22:27:26.884757+00:00",
     "method": "Every original23-field record parsed with duplicate-key detection; every novel exact string read in full with first school/field context, exact previous string-value reuse only, followed by all220 complete ordered/nonnull/null per-record contexts. Numeric/bool/null/object/array fields preserved. No full-read receipt until every chunk and table is actually read. All1236 novel exact strings,211 exact previous values with45 current hash-matched full receipts and all22023-field contexts read; original records reconstructed exactly. Original untouched. Historical factual/source review is not current official-source/provider/release acceptance."
+  },
+  "reports/structure-dry-run-2026-09-24-v2.md": {
+    "sha256_before": "9906114726ce186d5887060b0bed9f32ced8cc6f48325ac1b636d972c45dd6b3",
+    "sha256_after": "94acf5034d000eff51af1f6433ec372aec05c9cb4eb3c92b84ff0b692da5a863",
+    "lines": 964,
+    "read_ranges": [
+      [
+        1,
+        964
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T22:32:25.219588+00:00",
+    "method": "All962 original MD lines read in contiguous bounded tool ranges; seven exact dated-copy changes authored/read, all20 school contexts/120 unavailable pairs and all numeric tables preserved. Historical model/status/cache evidence is not current source/provider acceptance."
   }
 }
