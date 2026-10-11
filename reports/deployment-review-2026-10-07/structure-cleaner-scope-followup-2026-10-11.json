@@ -1,0 +1,532 @@
+{
+  "checked_at_utc": "2026-10-11T21:43:30.837371+00:00",
+  "commit_before": "8e2fcc29063efaa267eb169cef7a16a53d2e6110",
+  "status": "Partial full-project review checkpoint; no exhaustive-read or deployment acceptance.",
+  "diagnostic_fix": {
+    "before_sha256": "f2dec69c84c33edfa3df38ab1652f34547b5737a46d02c4faefbec192c0e89bb",
+    "after_sha256": "b60db7b27ea5316b10686780841a9ad57fe6ae5540d709d45172873968685efb",
+    "cases": 7,
+    "all_output_objects_unchanged": true,
+    "all_null_reasons_unchanged": true,
+    "all_quote_evidence_unchanged": true,
+    "undefined_case_logs_after": 0,
+    "check": "node --check passed; exact-source replay only; no env/main/provider/live writes"
+  },
+  "full_cleaner_replays": {
+    "method": "Evaluate exact pure helper/constants/cleaner excerpts in an isolated VM with historical logged untruncated model arguments and source input; no require of script, env, Supabase, provider or main execution. Historical input replay is not current full-source validation.",
+    "before_sha256": "f2dec69c84c33edfa3df38ab1652f34547b5737a46d02c4faefbec192c0e89bb",
+    "after_sha256": "b60db7b27ea5316b10686780841a9ad57fe6ae5540d709d45172873968685efb",
+    "source_inputs": "Untruncated historical dry-relaxed school records; exact raw model/evidence replay. Full current source websites are not substituted into historical arguments.",
+    "cases": [
+      {
+        "school_id": 99,
+        "selected_exact_inputs_and_results": {
+          "krouzky_kategorie": {
+            "source": "Robotel SMARTCLASS+ HOMEWORK ## Robotel SMARTCLASS+ HOMEWORK",
+            "model": [],
+            "model_evidence": {
+              "sport": [],
+              "umeni_hudba_divadlo": [],
+              "technika_robotika_it": [],
+              "jazyky": [],
+              "veda_debata": [],
+              "jine": []
+            },
+            "output": [
+              "technika_robotika_it"
+            ],
+            "validated_evidence": {
+              "technika_robotika_it": [
+                "Robotel SMARTCLASS+ HOMEWORK ## Robotel SMARTCLASS+ HOMEWORK"
+              ]
+            }
+          }
+        },
+        "all_active_output_before_and_after": {
+          "ma_jidelnu": null,
+          "ma_koleje": null,
+          "krouzky_kategorie": [
+            "technika_robotika_it"
+          ],
+          "pocet_krouzku": null,
+          "vyukovy_styl_tagy": [
+            "praxe_dilny"
+          ],
+          "vs_pokracuje_pct": null
+        },
+        "notes_after": [
+          "Kept krouzky_kategorie technika_robotika_it: explicit domain wording in source text."
+        ]
+      },
+      {
+        "school_id": 110,
+        "selected_exact_inputs_and_results": {
+          "ma_jidelnu": {
+            "source": "* **další informace:** Pitný režim je zajištěn (stravování není zajištěno – přineste si prosím vlastní – během kempů také není možno opustit budovu školy).",
+            "model": false,
+            "model_evidence": "stravování není zajištěno",
+            "output": false,
+            "validated_evidence": "* **další informace:** Pitný režim je zajištěn (stravování není zajištěno – přineste si prosím vlastní – během kempů také není možno opustit budovu školy)."
+          }
+        },
+        "all_active_output_before_and_after": {
+          "ma_jidelnu": false,
+          "ma_koleje": null,
+          "krouzky_kategorie": [
+            "technika_robotika_it"
+          ],
+          "pocet_krouzku": null,
+          "vyukovy_styl_tagy": null,
+          "vs_pokracuje_pct": null
+        },
+        "notes_after": [
+          "ma_jidelnu case: explicit source denial"
+        ]
+      },
+      {
+        "school_id": 112,
+        "selected_exact_inputs_and_results": {
+          "ma_jidelnu": {
+            "source": "Školní jídelna zajišťuje obědy u oborů je uvedeno, že rodiče oběd hradí.",
+            "model": true,
+            "model_evidence": "Školní jídelna zajišťuje obědy",
+            "output": null,
+            "null_reason": "lunch statement is limited to one school track/building"
+          }
+        },
+        "all_active_output_before_and_after": {
+          "ma_jidelnu": null,
+          "ma_koleje": null,
+          "krouzky_kategorie": [
+            "sport"
+          ],
+          "pocet_krouzku": null,
+          "vyukovy_styl_tagy": [
+            "praxe_dilny"
+          ],
+          "vs_pokracuje_pct": null
+        },
+        "notes_after": [
+          "Nulled ma_jidelnu: evidence applies only to one track/building: „Školní jídelna zajišťuje obědy u oborů je uvedeno, že rodiče oběd hradí.“.",
+          "Dropped model ma_jidelnu=true; deterministic source rule returned null."
+        ]
+      },
+      {
+        "school_id": 191,
+        "selected_exact_inputs_and_results": {
+          "ma_jidelnu": {
+            "source": "Učitelé a vedení školky nemají povinnost informovat jídelnu o nepřítomnosti dítěte.",
+            "model": null,
+            "model_evidence": null,
+            "output": null,
+            "null_reason": "canteen denial does not establish whether school-arranged lunches exist elsewhere"
+          }
+        },
+        "all_active_output_before_and_after": {
+          "ma_jidelnu": null,
+          "ma_koleje": null,
+          "krouzky_kategorie": [
+            "sport"
+          ],
+          "pocet_krouzku": null,
+          "vyukovy_styl_tagy": [
+            "individualni_pristup"
+          ],
+          "vs_pokracuje_pct": null
+        },
+        "notes_after": []
+      },
+      {
+        "school_id": 197,
+        "selected_exact_inputs_and_results": {
+          "pocet_krouzku": {
+            "source": "_Příspěvek za **1 kroužek** činí (2450.- Kč za rok)._ Zaplatit na jednu splátku do **30.1.2027** učet: 2540558389/0800.",
+            "model": 1,
+            "model_evidence": [
+              "1 kroužek"
+            ],
+            "output": null,
+            "null_reason": "no unambiguous explicit numeric count from 0 to 200; lists are never counted"
+          },
+          "krouzky_kategorie": {
+            "source": "Škola také nabízí spoustu mimoškolních aktivit. Kroužky ZŠ – Škola sv. # Kroužky ZŠ * Kroužky ZŠ Kroužky začínají 14. _Příspěvek za **1 kroužek** činí (2450.- Kč za rok)._ Zaplatit na jednu splátku do **30.1.2027** učet: 2540558389/0800. Snažíme se, aby zde děti měly možnost zapojit se do tvořivých, sportovních či relaxačních aktivit, a aby trávily čas se svými spolužáky z jiných ročníků. * Na venkovní aktivity se děti mají převlékat ze školních uniforem do jiného oblečení. po odchodu na kroužek mimo školu) není, až na předem domluvené výjimky, možný.",
+            "model": [
+              "sport",
+              "jine"
+            ],
+            "model_evidence": {
+              "sport": [
+                "sportovních"
+              ],
+              "umeni_hudba_divadlo": [],
+              "technika_robotika_it": [],
+              "jazyky": [],
+              "veda_debata": [],
+              "jine": [
+                "tvořivých či relaxačních aktivit"
+              ]
+            },
+            "output": [
+              "sport"
+            ],
+            "validated_evidence": {
+              "sport": [
+                "sportovních"
+              ]
+            }
+          }
+        },
+        "all_active_output_before_and_after": {
+          "ma_jidelnu": true,
+          "ma_koleje": null,
+          "krouzky_kategorie": [
+            "sport"
+          ],
+          "pocet_krouzku": null,
+          "vyukovy_styl_tagy": null,
+          "vs_pokracuje_pct": null
+        },
+        "notes_after": [
+          "ma_jidelnu case: model quote ověřen ve zdroji",
+          "Dropped krouzky_kategorie sport: source has no explicit activity-domain wording for this category.",
+          "Dropped krouzky_kategorie jine: source has no explicit activity-domain wording for this category.",
+          "Kept krouzky_kategorie sport: model quote verified in source."
+        ]
+      },
+      {
+        "school_id": 208,
+        "selected_exact_inputs_and_results": {
+          "krouzky_kategorie": {
+            "source": "V případě, že váš Účet nebude delší čas vykazovat aktivitu, sami Ve volném čase ráda hraje na hudební nástroje, věnuje se divadlu a tančí.",
+            "model": [
+              "sport",
+              "umeni_hudba_divadlo"
+            ],
+            "model_evidence": {
+              "sport": [],
+              "umeni_hudba_divadlo": [
+                "Ve volném čase ráda hraje na hudební nástroje, věnuje se divadlu a tančí."
+              ],
+              "technika_robotika_it": [],
+              "jazyky": [],
+              "veda_debata": [],
+              "jine": []
+            },
+            "output": [
+              "umeni_hudba_divadlo"
+            ],
+            "validated_evidence": {
+              "umeni_hudba_divadlo": [
+                "V případě, že váš Účet nebude delší čas vykazovat aktivitu, sami Ve volném čase ráda hraje na hudební nástroje, věnuje se divadlu a tančí."
+              ]
+            }
+          }
+        },
+        "all_active_output_before_and_after": {
+          "ma_jidelnu": null,
+          "ma_koleje": null,
+          "krouzky_kategorie": [
+            "umeni_hudba_divadlo"
+          ],
+          "pocet_krouzku": null,
+          "vyukovy_styl_tagy": [
+            "praxe_dilny"
+          ],
+          "vs_pokracuje_pct": null
+        },
+        "notes_after": [
+          "Dropped krouzky_kategorie sport: source has no explicit activity-domain wording for this category."
+        ]
+      },
+      {
+        "school_id": 213,
+        "selected_exact_inputs_and_results": {
+          "krouzky_kategorie": {
+            "source": "### Aktivita Každému dítěti se věnujeme naplno, pozitivně ho motivujeme a zapojujeme ho do různých činností a aktivit. Líbí se nám osobní přístup k dítěti, respektování jeho individuality, volby aktivit, důraz na význam zapojení dítěte do každodenních činností, laskavý přístup, učení k samostatnosti, oblékání. Oceňujeme pravidelné zprávy, vlídnost a nadšení učitelek, hezké prostředí ve školce, předcházení „konfliktů“ mezi dětmi, dobrou rovnováhu mezi cíleným rozvojem a svobodou volby konkrétních aktivit. Údaje, které nám poskytujete, používáme k tomu, abychom Vás kontaktovali zpět a poskytli Vám informace, o které jste nás požádali, nebo pro účely plnění našich povinností vůči Vám, případně za účelem přihlášení do nabízených aktivit zprostředkovávaných nebo pořádaných námi. Tyto detaily drobnosti dotváří prostředí, kde mohou studenti dosahovat svých cílů ve vzdělávání i sportovních aktivitách na nejvyšší úrovni a učíme studenty na nich stavět. V prostředí školky (děti ve věku 3 až 6 let) nabízíme hlubší rozvoj dovedností z oblasti praktického života, hudby a umění a pokročilejší aktivity z oblasti rozvoje intelektu – zdokonalení a tříbení smyslů, matematiky, českého a anglického jazyka. Děti na základě svých vývojových potřeb a vnitřní touhy pracují se zajímavými aktivitami a materiály. Aktivity s vodou patří k nejoblíbenějším venkovním činnostem. Děti při těchto aktivitách nabývají velmi důležitou důvěru ve své schopnosti a zručnosti. Oblékání, svlékání, rozepínání či zapínání oblečení jsou náročné aktivity, které dětem pomáhají prohlubovat koncentraci, zdokonalovat jemnou motoriku a zlepšovat koordinaci oka a ruky. **Připravujeme aktivity, díky kterým děti získávají kontrolu nad svým tělem.** Pomáháme dětem rozvíjet svou hrubou i jemnou motoriku, zlepšovat tělesnou zdatnost, rozpoznávat a respektovat své fyzické možnosti a hranice. Aktivity, jako je například vytváření barevných obrazců, dětem pomáhají procvičovat jemné pohyby jejich ručiček.",
+            "model": [
+              "sport",
+              "umeni_hudba_divadlo",
+              "jazyky"
+            ],
+            "model_evidence": {
+              "sport": [
+                "sportovních aktivitách"
+              ],
+              "umeni_hudba_divadlo": [
+                "hudby a umění"
+              ],
+              "technika_robotika_it": [],
+              "jazyky": [
+                "českého a anglického jazyka"
+              ],
+              "veda_debata": [],
+              "jine": []
+            },
+            "output": [
+              "sport",
+              "umeni_hudba_divadlo",
+              "jazyky"
+            ],
+            "validated_evidence": {
+              "sport": [
+                "sportovních aktivitách"
+              ],
+              "umeni_hudba_divadlo": [
+                "hudby a umění"
+              ],
+              "jazyky": [
+                "českého a anglického jazyka"
+              ]
+            }
+          }
+        },
+        "all_active_output_before_and_after": {
+          "ma_jidelnu": null,
+          "ma_koleje": null,
+          "krouzky_kategorie": [
+            "sport",
+            "umeni_hudba_divadlo",
+            "jazyky"
+          ],
+          "pocet_krouzku": null,
+          "vyukovy_styl_tagy": [
+            "individualni_pristup"
+          ],
+          "vs_pokracuje_pct": null
+        },
+        "notes_after": [
+          "Dropped krouzky_kategorie sport: source has no explicit activity-domain wording for this category.",
+          "Dropped krouzky_kategorie umeni_hudba_divadlo: source has no explicit activity-domain wording for this category.",
+          "Dropped krouzky_kategorie jazyky: source has no explicit activity-domain wording for this category.",
+          "Kept krouzky_kategorie sport: model quote verified in source.",
+          "Kept krouzky_kategorie umeni_hudba_divadlo: model quote verified in source.",
+          "Kept krouzky_kategorie jazyky: model quote verified in source."
+        ]
+      }
+    ]
+  },
+  "public_read_only_checks": [
+    {
+      "school_id": 165,
+      "url": "https://school-app-production-be43.up.railway.app/api/schools/165",
+      "started_at_utc": "2026-10-11T21:38:21.341933+00:00",
+      "status": 200,
+      "response_sha256": "42f1822c7407abba6d18e33926b0bd8736b77a2dabb7257c712c4209f4946588",
+      "name": "Gymnázium, Střední odborná škola, Základní škola a Mateřská škola pro sluchově postižené, Praha 2, Ječná 27",
+      "website": "http://www.jecna27.cz/",
+      "details": {
+        "ma_jidelnu": true,
+        "obedy_ubytovani": "Internát nabízí dvou- až třílůžkové pokoje a stravování 5× denně; cena ubytování a stravování se vypočítává dle zákona č. 108/2005 Sb. Obědy pro pražské žáky mají v některé dny možnost výběru ze dvou jídel; cena je dle vyhlášky 107/2005.",
+        "obedy_ubytovani_citace": null,
+        "krouzky_kategorie": [
+          "sport"
+        ],
+        "pocet_krouzku": null,
+        "krouzky_aktivity": "Uvedeny jsou šachový kroužek, volejbal a judo. Škola pořádá také výměnné pobyty s partnerskými školami v Berlíně a Heidelbergu/Neckargemündu a poznávací zájezd do Anglie jednou za čtyři roky.",
+        "krouzky_aktivity_citace": null,
+        "model": "openai/gpt-6-luna",
+        "extracted_at": "2026-09-26T12:42:19.865+00:00"
+      }
+    },
+    {
+      "school_id": 191,
+      "url": "https://school-app-production-be43.up.railway.app/api/schools/191",
+      "started_at_utc": "2026-10-11T21:38:21.728965+00:00",
+      "status": 200,
+      "response_sha256": "0ad217912e75871dcd3a0bf00cf1b0ba0e3301ff8f7d6f41bfb0bb57ef3d3fe8",
+      "name": "Královské gymnázium Petrovice s.r.o.",
+      "website": "http://www.skolapetrovice.cz/",
+      "details": {
+        "ma_jidelnu": null,
+        "obedy_ubytovani": null,
+        "obedy_ubytovani_citace": null,
+        "krouzky_kategorie": [
+          "umeni_hudba_divadlo",
+          "sport",
+          "veda_debata"
+        ],
+        "pocet_krouzku": null,
+        "krouzky_aktivity": null,
+        "krouzky_aktivity_citace": null,
+        "model": "openai/gpt-6-luna",
+        "extracted_at": "2026-10-10T21:16:43.947+00:00"
+      }
+    },
+    {
+      "school_id": 197,
+      "url": "https://school-app-production-be43.up.railway.app/api/schools/197",
+      "started_at_utc": "2026-10-11T21:38:22.047279+00:00",
+      "status": 200,
+      "response_sha256": "28806d9cf342657c2d369b8f228fc235f76feae7232e451e71370920dbb8843d",
+      "name": "Mateřská škola, základní škola a gymnázium sv. Augustina",
+      "website": "http://www.skolasvatehoaugustina.cz/",
+      "details": {
+        "ma_jidelnu": true,
+        "obedy_ubytovani": "Obědy se vydávají ve školní jídelně od 11:40 do 14:00; cenu ani ubytování text neuvádí.",
+        "obedy_ubytovani_citace": null,
+        "krouzky_kategorie": [
+          "sport"
+        ],
+        "pocet_krouzku": null,
+        "krouzky_aktivity": null,
+        "krouzky_aktivity_citace": null,
+        "model": "openai/gpt-6-luna",
+        "extracted_at": "2026-09-26T16:04:38.306+00:00"
+      }
+    },
+    {
+      "school_id": 208,
+      "url": "https://school-app-production-be43.up.railway.app/api/schools/208",
+      "started_at_utc": "2026-10-11T21:38:22.356553+00:00",
+      "status": 200,
+      "response_sha256": "0471c53ae4c294b8469786604c271eea697c8a2884ac446ef04236c4a9049f6d",
+      "name": "Gymnázium KUDYKAMPUS International s.r.o.",
+      "website": "https://kudykampus.edupage.org",
+      "details": {
+        "ma_jidelnu": null,
+        "obedy_ubytovani": null,
+        "obedy_ubytovani_citace": null,
+        "krouzky_kategorie": null,
+        "pocet_krouzku": null,
+        "krouzky_aktivity": null,
+        "krouzky_aktivity_citace": null,
+        "model": "openai/gpt-6-luna",
+        "extracted_at": "2026-09-26T12:45:00.941+00:00"
+      }
+    },
+    {
+      "school_id": 213,
+      "url": "https://school-app-production-be43.up.railway.app/api/schools/213",
+      "started_at_utc": "2026-10-11T21:38:22.750877+00:00",
+      "status": 200,
+      "response_sha256": "a397d9f5310f60e30229148c7706adbbb25f6719eecaab80bd0d9318c4f5347b",
+      "name": "AVIDA - gymnázium, střední škola a základní škola s.r.o.",
+      "website": "http://www.skolyavida.cz/",
+      "details": {
+        "ma_jidelnu": null,
+        "obedy_ubytovani": null,
+        "obedy_ubytovani_citace": null,
+        "krouzky_kategorie": [
+          "sport",
+          "umeni_hudba_divadlo",
+          "jazyky"
+        ],
+        "pocet_krouzku": null,
+        "krouzky_aktivity": null,
+        "krouzky_aktivity_citace": null,
+        "model": "openai/gpt-6-luna",
+        "extracted_at": "2026-09-26T16:04:54.219+00:00"
+      }
+    }
+  ],
+  "source_qualified_findings": [
+    {
+      "school_id": 165,
+      "field": "obedy_ubytovani",
+      "status": "Current factual type error confirmed; controlled data correction remains pending.",
+      "observation": "Public school prose calls 108/2005 Sb. a zákon, copying the school website. Ministry identifies the instrument as a vyhláška. Correct this factual noun in the served fact/provenance update after confirming the row/version; do not rewrite quoted original source files or infer prices/eligibility/legal compliance.",
+      "school_source": "https://www.jecna27.cz/internat",
+      "authoritative_type_source": "https://msmt.gov.cz/fin-leg/vyhlasky/vyhlasky-ke-skolskemu-zakonu",
+      "cached_context": "scripts/data/filtered-schools/165.md:53,63,115,125"
+    },
+    {
+      "school_id": 213,
+      "field": "krouzky_kategorie",
+      "status": "Current cleaner accepts preschool quotes; same category tuple is served, but database field attribution is missing.",
+      "observation": "The exact model-quote escape accepts art/language quotes explicitly scoped to ages3–6 in the historical input. Current primary AVIDA preschool page confirms this audience. Public categories remain sport/art/language while activity prose/citation are null. Verify immutable provenance before correcting individual fields; do not assume the school lacks real secondary-school activities.",
+      "primary_url": "https://www.skolyavida.cz/skolicka/o-skolicce/pristup-k-detem-v-avida",
+      "cached_context": "scripts/data/filtered-schools/213.md:540,548-550"
+    },
+    {
+      "school_id": 197,
+      "fields": [
+        "pocet_krouzku",
+        "krouzky_kategorie"
+      ],
+      "status": "Historical count bug rejected by current cleaner and count is null live; audience bypass remains reproducible.",
+      "observation": "Fee per1club returns null now, so do not report the obsolete count1 as current. The same exact cleaner still accepts a short sport quote from explicit ZŠ clubs; public sport category is present without activity citation. Current applicable gymnasium activities/source mapping need verification."
+    },
+    {
+      "school_id": 191,
+      "field": "ma_jidelnu",
+      "status": "Historical kindergarten-canteen mistake rejected by current cleaner and field is null live.",
+      "observation": "Do not bulk-fix the obsolete historical true value. Other current categories differ from the old run and need their own source mapping."
+    },
+    {
+      "school_id": 208,
+      "field": "krouzky_kategorie",
+      "status": "Current cleaner vulnerability reproduced on historical input; live category is null, so no currently served hobby category established.",
+      "observation": "A teacher biography’s personal hobbies become art activity through the deterministic domain rule. Current primary biography confirms the teacher audience. Public record name/website changed and current categories are null; verify school/entity/source relationship before any future extraction.",
+      "primary_url": "https://www.gymnaziumkudykampus.cz/edita-domincova/",
+      "cached_context": "scripts/data/filtered-schools/208.md:49-51"
+    },
+    {
+      "school_ids": [
+        99,
+        110,
+        112
+      ],
+      "status": "Seven full-cleaner replays corroborate prior helper-only results.",
+      "observation": "Robotel title still creates technical category, camp-only negative still creates school-wide meal=false and generic programme/payment phrase still nulls independent lunch evidence. The one-line diagnostic change preserves these outputs; substantive fixes remain the coordinated S10 plan."
+    },
+    {
+      "school_ids": [
+        183,
+        193,
+        203,
+        207,
+        209,
+        214,
+        223,
+        224,
+        225,
+        228
+      ],
+      "status": "Historical scope/context candidates only, no current exposure inferred.",
+      "observation": "Primary-school boarder clubs, boarder creative rooms, curriculum/charity context, broader-group activity sites, first-grade teaching,2021/22 aftercare, anthropology subject matter, university-of-third-age computing and own-canteen denial quotes require correct audience/programme/campus/year/semantic attribution. See original source lines and continuation observations; verify current facts before correction."
+    }
+  ],
+  "partial_later_log_progress": {
+    "sources": [
+      {
+        "path": "reports/structure-v3/dry-relaxed.txt",
+        "sha256": "d4088495e490655ab39648314c79fcc8fdde3e161622533a9cebc0aebb388aa2",
+        "lines": 6861
+      },
+      {
+        "path": "reports/structure-v3/real-run.txt",
+        "sha256": "198104e356c23c3b060623cbab3af2546b1cc7e36d52f4b7a09d8e4868a39a06",
+        "lines": 6850
+      },
+      {
+        "path": "reports/structure-v3/real-run-2.txt",
+        "sha256": "0ecb8a267e59aa89bfeca4f35ee4fc4679df45aaec4bf1766f62b1765a7d97b9",
+        "lines": 6871
+      }
+    ],
+    "method": "Exact original unique logical lines plus first-occurrence school context; repeats covered only by exact previously read content. No current full-read receipt until all chunks and repeated-context checks complete.",
+    "new_unique_lines": 2379,
+    "fully_read_chunks": 56,
+    "chunks_total": 68,
+    "fully_read_unique_range": [
+      1,
+      2102
+    ],
+    "remaining_unique_lines": 277,
+    "whole_log_receipts_added": false,
+    "limits": "All three original logs remain pending until remaining lines and repeated-school-context/difference checks are read. Different historical model/validator behavior must not be called nondeterminism without immutable run fingerprints."
+  },
+  "pending_founder_activity_scope": "Existing question unanswered. Trips/courses/optional subjects versus extracurricular clubs is a product decision; teacher, preschool, other-campus and third-age facts still require the correct target audience.",
+  "handoff": [
+    "Coordinate one owner across source selection, full cleaner/model-quote bypass, immutable provenance and affected current rows/consumers after peer release.",
+    "Add offline full-cleaner regressions for preschool/primary-grade/student-versus-teacher/boarder/third-age/programme/campus/year scope and subject matter versus participation. Retain positive real-club/optional-class/trip cases consistent with the founder decision. Preserve current fee-per-club and kindergarten-meal rejection.",
+    "Use current per-field primary sources and immutable old/new diffs; verify actual affected current row values, source provenance and ranking impact. Correct165’s legal-instrument noun without treating an inaccurate school quote as legal authority.",
+    "Finish later-log and repeated context checks. Obtain local founder acceptance and required migration/deployment review before controlled data/pipeline promotion. No historical bulk import, hosted write or paid provider run is authorized by this checkpoint."
+  ],
+  "limits": [
+    "Only five anonymous public GETs, each HTTP200 and hashed; no credentials, accounts, feedback, mail, writes, imports, AI or billing. This is sampled data-read evidence only.",
+    "Exact pure helper/constants/full-cleaner excerpts in isolated VM; script main, env and clients never run. Seven complete six-field output objects, null reasons and citation evidence are unchanged by the diagnostic-only fix.",
+    "Source websites read only for bounded source/type/audience evidence; no full ignored corpus or full legal compliance claimed.",
+    "Shared peer source/schema still deferred. Review remains active; previous service/privacy/payment/device acceptance gates remain open."
+  ]
+}

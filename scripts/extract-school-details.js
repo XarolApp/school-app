@@ -625,7 +625,7 @@ function deriveDining(text) {
     const elsewhere = /blizk\w*|partnersk\w*|jine skole|mimo skolu|vedle/.test(foldForRules(quote));
     return { value: true, quote, note: elsewhere ? 'zajištěno jinde' : 'vlastní jídelna' };
   }
-  if (negatives.length) return { value: false, quote: negatives[0] };
+  if (negatives.length) return { value: false, quote: negatives[0], note: 'explicit source denial' };
   const canteenDenial = quotes.find(hasCanteenDenial);
   if (canteenDenial) return { value: null, quote: canteenDenial, reason: 'canteen denial does not establish whether school-arranged lunches exist elsewhere' };
   return { value: null, quote: null, reason: 'no explicit whole-school meal evidence' };

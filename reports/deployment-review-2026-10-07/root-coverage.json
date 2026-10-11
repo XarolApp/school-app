@@ -1555,7 +1555,7 @@
     "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
   },
   "scripts/extract-school-details.js": {
-    "sha256": "f2dec69c84c33edfa3df38ab1652f34547b5737a46d02c4faefbec192c0e89bb",
+    "sha256": "b60db7b27ea5316b10686780841a9ad57fe6ae5540d709d45172873968685efb",
     "lines": 1532,
     "read_ranges": [
       [
@@ -1565,9 +1565,10 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-10T21:20:51.076901+00:00",
-    "method": "Verified full saved baseline at ed6a69a plus complete current diff and all owned edits read. Source coverage is not SQL/hosted/browser/deployment acceptance.",
-    "previous_complete_sha256": "553aafa286bd51267fd71aed66e2123178d1e2daaf96633177ea8caa67c8cecd"
+    "checked_at_utc": "2026-10-11T21:43:30.837371+00:00",
+    "method": "Exact fully reviewed saved baseline plus complete own append/one-line diagnostic diff read; seven full-cleaner output/null-reason/quote invariance checks. No original-log full-read or current release acceptance inferred.",
+    "previous_complete_sha256": "f2dec69c84c33edfa3df38ab1652f34547b5737a46d02c4faefbec192c0e89bb",
+    "evidence": "structure-cleaner-scope-followup-2026-10-11.json"
   },
   "scripts/build-district-map.js": {
     "sha256_before": "84762836f3b81891e79fcb8721c1b183c40b126b5443f507b49a2effa8a8e54b",
@@ -2138,20 +2139,20 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "e1dcfe5e039ccb49f70fae5b3a47e4194ecf640fefe6a0fc94b5e9bece2043e3",
-    "lines": 1970,
+    "sha256": "4ec069bc25a47eeebcc53f9e612b8d288f2b62854b9cea50acf18d1b12eab6a7",
+    "lines": 1977,
     "read_ranges": [
       [
         1,
-        1970
+        1977
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-11T21:29:52.876816+00:00",
-    "previous_complete_sha256": "53aa9a9cc06a38e0ecf35d23e440ac6bd639751786d8cf2fc746a379f3042d85",
-    "method": "Exact fully reviewed baseline plus full own source-scope/partial-log factual append read; no whole-log receipt or current release acceptance inferred.",
-    "evidence": "structure-source-scope-checkpoint-2026-10-11.json"
+    "checked_at_utc": "2026-10-11T21:43:30.837371+00:00",
+    "previous_complete_sha256": "e1dcfe5e039ccb49f70fae5b3a47e4194ecf640fefe6a0fc94b5e9bece2043e3",
+    "method": "Exact fully reviewed saved baseline plus complete own append/one-line diagnostic diff read; seven full-cleaner output/null-reason/quote invariance checks. No original-log full-read or current release acceptance inferred.",
+    "evidence": "structure-cleaner-scope-followup-2026-10-11.json"
   },
   "frontend/src/api.js": {
     "sha256": "a545cb179681a87378f41cf928cff50e1ae6c2e539c4bbacf373590af9f8ab8a",
