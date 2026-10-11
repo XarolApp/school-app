@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-11T10:29:41.117174+00:00",
-  "commit": "20eb166e03f159afca9f2d98db41279f4ca012d7",
+  "checked_at_utc": "2026-10-11T10:35:53.496500+00:00",
+  "commit": "60e9dfa395c6aeb5e6e7ae07bf4be5ba4726b320",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "current_full_read": 597,
+    "current_full_read": 601,
     "binary_requires_asset_check": 105,
-    "pending_or_changed": 197,
-    "generated_or_audit_artifact": 185,
+    "pending_or_changed": 193,
+    "generated_or_audit_artifact": 186,
     "removed_or_missing": 2
   },
   "files": [
@@ -993,8 +993,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "b0ff21b5fac4861d9ae4a6be0485c175308eda8f4611d72518accad65dfcc9a2",
-      "lines": 1898,
+      "sha256": "d91a0c33a616f6e4d674b86417d968cbf0d4a58b948f65d97617ceb1b5a5cc9c",
+      "lines": 1905,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -1767,29 +1767,37 @@
       "path": "design/motion-demo/CornerDrift.dc.html",
       "sha256": "1f60466c0958f388b762554a6e306bce76caad36d132280c84cb479c7ba21604",
       "lines": 149,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/motion-demo/InFrame.dc.html",
-      "sha256": "c5c3af778c2c18f27125fde1189f24b0274d67516227013f12cbcc80aba2d931",
-      "lines": 131,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "5016762d78aae6580230ac2c1cda971089a9b68ed0e6910310f3afdf91220629",
+      "lines": 132,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/motion-demo/Main.dc.html",
-      "sha256": "5a28068c38307e64efc50286b3b9bee821d0064537fd3085d55e9aa6353293bb",
-      "lines": 144,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "ec09176a825609096ecc837b6edf49877b952161fba5a5a96b1bf95e529e3490",
+      "lines": 145,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/motion-demo/ReducedMotion.dc.html",
-      "sha256": "08cc773b39f545a28120b68b6696be6f6b2cfb1330e40166176a406de9f98727",
+      "sha256": "7bd73a2f1b72f574165e59e82fca856c47ddf3fac4dcaee979fd19759ca3fd1f",
       "lines": 114,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/motion-demo/canvas.json",
@@ -6281,22 +6289,22 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "8de1ffa7a70a9f50a769fbef0eefc2c1f1acb803c8c3909cba26ea3239b7cecc",
-      "lines": 436,
+      "sha256": "bc071474c6226cea56a9f800a376ab3f884b311fedb1bc53914429382a591f54",
+      "lines": 445,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "36fc981aa90a93fbc2cc73a98d9b4a0bf4c9727350e5fd7d164f5cc136ce10af",
-      "lines": 276,
+      "sha256": "5e24100f0ba16644d5f8c3b195e01a67b5aa1edea7d9251399600b544d8de922",
+      "lines": 279,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "c036e44dda1bddf75a954af7f41cbd4006ed98333e96e494e72738f3f7f87133",
-      "lines": 206,
+      "sha256": "1a8cf4e8af713f204b6c26d27133ad386aac624d36d5a9f6a28e9c3e71b80314",
+      "lines": 209,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6645,8 +6653,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "afb848109f9b0951b8c20078ce58ec4a67bc13e412d66075e0fa72e0cb884221",
-      "lines": 557,
+      "sha256": "f3c644a888514982df9e4885d881fe6b76d7279f39b425dca498c3ef2574c22a",
+      "lines": 560,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6659,8 +6667,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "83a9d2cc176444c6ef54235a9c1dc0d52cb89482f7cb2f22233adecbab195fb6",
-      "lines": 8779,
+      "sha256": "deb6d8b5f395b4ec66742c7557cc03a5a0b707942af6d50ced5b5fa2d866e8be",
+      "lines": 8814,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -7281,6 +7289,13 @@
       "matching_evidence": []
     },
     {
+      "path": "reports/deployment-review-2026-10-07/motion-demo-verification-2026-10-11.json",
+      "sha256": "b2e8a60ca2ad286ef8c780629659a255118e5ff1f94dda89441a06ce10908ec8",
+      "lines": 189,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/motion-guides-verification-2026-10-10.json",
       "sha256": "cca44bd8e97cb58652401c918c2777b50fb985911b554aa97331fe8748be980a",
       "lines": 106,
@@ -7894,8 +7909,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "cc991a911c4936753ed01f59e0fa06181a2b06b3a1ce4c314d8f0866ad32839d",
-      "lines": 8133,
+      "sha256": "e031b77aaff78686b0f732f6df468d520ff14f34420e869d4bbc4f866ad1a49e",
+      "lines": 8195,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },

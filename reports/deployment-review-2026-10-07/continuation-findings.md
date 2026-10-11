@@ -555,3 +555,6 @@ Canvas/comparison checkpoint, 11 October: all nine canvas files and eight decisi
 
 
 Logo-source checkpoint, 11 October: all fourteen concept source files and updated canvas reviewed. Catalogue/exactly-three-school/caron-exclusivity wording corrected; all 96 SVGs/styles/element attributes preserved. Actual before/after renders of every board reproduce and resolve canvas cropping without overlap. [Evidence](logo-concepts-verification-2026-10-11.json) limits this to offline fallback rendering and records font/asset/audience/wrapper checks before reuse. Selected product branding and current beta/security/privacy/payment gates unchanged.
+
+
+Motion-draft checkpoint, 11 October: four complete source files and the duration token reviewed. Four minimal base-scale declarations align reduced/static examples with their documented first frame; all 14 actual matched-CSS results and normal 18.9/20.3/19.6s durations pass. [Evidence](motion-demo-verification-2026-10-11.json) distinguishes forced CSS-branch checks from untested OS preference switching, fonts and devices. Current product/motion/privacy/payment/access gates unchanged.

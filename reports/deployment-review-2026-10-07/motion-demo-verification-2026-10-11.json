@@ -1,0 +1,189 @@
+{
+  "checked_at_utc": "2026-10-11T10:35:53.007017+00:00",
+  "snapshot_commit": "60e9dfa395c6aeb5e6e7ae07bf4be5ba4726b320",
+  "files": {
+    "design/motion-demo/CornerDrift.dc.html": {
+      "sha256": "1f60466c0958f388b762554a6e306bce76caad36d132280c84cb479c7ba21604",
+      "lines": 149
+    },
+    "design/motion-demo/InFrame.dc.html": {
+      "sha256": "5016762d78aae6580230ac2c1cda971089a9b68ed0e6910310f3afdf91220629",
+      "lines": 132
+    },
+    "design/motion-demo/Main.dc.html": {
+      "sha256": "ec09176a825609096ecc837b6edf49877b952161fba5a5a96b1bf95e529e3490",
+      "lines": 145
+    },
+    "design/motion-demo/ReducedMotion.dc.html": {
+      "sha256": "7bd73a2f1b72f574165e59e82fca856c47ddf3fac4dcaee979fd19759ca3fd1f",
+      "lines": 114
+    },
+    "design/system/tokens/motion.css": {
+      "sha256": "5dcd07b6371582391d5f3fc1780b98ed409f27b434cc7445b0a65116e81756f8",
+      "lines": 7
+    }
+  },
+  "read_method": "Complete four dc-html source reads in two bounded batches; current8-line motion token reread. Full four-line CSS-only diff inspected.",
+  "reproduction": {
+    "before": [
+      {
+        "source": "Main",
+        "selector": ".bloom-2",
+        "expected_first_scale": 1.04,
+        "actual_transform": "none",
+        "animation": "none"
+      },
+      {
+        "source": "InFrame",
+        "selector": ".sheen-2",
+        "expected_first_scale": 1.05,
+        "actual_transform": "none",
+        "animation": "none"
+      }
+    ],
+    "after_actual_browser": [
+      {
+        "name": "Main",
+        "elements": [
+          {
+            "selector": ".bloom-1",
+            "animation": "none",
+            "scale": 1,
+            "opacity": 0.95
+          },
+          {
+            "selector": ".bloom-2",
+            "animation": "none",
+            "scale": 1.04,
+            "opacity": 0.7
+          }
+        ]
+      },
+      {
+        "name": "CornerDrift",
+        "elements": [
+          {
+            "selector": ".ring-1",
+            "animation": "none",
+            "scale": 1,
+            "opacity": 0.85
+          },
+          {
+            "selector": ".ring-2",
+            "animation": "none",
+            "scale": 1,
+            "opacity": 0.7
+          },
+          {
+            "selector": ".dot",
+            "animation": "none",
+            "scale": 1,
+            "opacity": 0.55
+          }
+        ]
+      },
+      {
+        "name": "InFrame",
+        "elements": [
+          {
+            "selector": ".sheen-1",
+            "animation": "none",
+            "scale": 1,
+            "opacity": 0.9
+          },
+          {
+            "selector": ".sheen-2",
+            "animation": "none",
+            "scale": 1.05,
+            "opacity": 0.75
+          }
+        ]
+      },
+      {
+        "name": "ReducedMotion",
+        "elements": [
+          {
+            "selector": ".a1",
+            "animation": "none",
+            "scale": 1,
+            "opacity": 0.95
+          },
+          {
+            "selector": ".a2",
+            "animation": "none",
+            "scale": 1.04,
+            "opacity": 0.7
+          },
+          {
+            "selector": ".b1",
+            "animation": "none",
+            "scale": 1,
+            "opacity": 0.85
+          },
+          {
+            "selector": ".b2",
+            "animation": "none",
+            "scale": 1,
+            "opacity": 0.7
+          },
+          {
+            "selector": ".b3",
+            "animation": "none",
+            "scale": 1,
+            "opacity": 0.55
+          },
+          {
+            "selector": ".c1",
+            "animation": "none",
+            "scale": 1,
+            "opacity": 0.9
+          },
+          {
+            "selector": ".c2",
+            "animation": "none",
+            "scale": 1.05,
+            "opacity": 0.75
+          }
+        ]
+      }
+    ],
+    "normal_actual_browser": [
+      {
+        "name": "Main",
+        "animation": "driftB",
+        "duration_seconds": 18.9
+      },
+      {
+        "name": "CornerDrift",
+        "animation": "floatB",
+        "duration_seconds": 20.3
+      },
+      {
+        "name": "InFrame",
+        "animation": "inB",
+        "duration_seconds": 19.6
+      }
+    ],
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  "fix": "Retain initial1.04/1.05 transforms on two animated-shape base rules and two corresponding static miniature rules. Animation:none now retains the first-keyframe scale; no timing/color/position/markup/logic/token change.",
+  "verification": {
+    "all_keyframe_definitions_byte_equal": true,
+    "all_dc_logic_editor_props_and_markup_byte_equal": true,
+    "normal_duration_branch_passes": true,
+    "fourteen_actual_reduced_static_element_results_pass": true,
+    "seven_moving_elements_have_animation_none_in_forced_reduce_branch": true,
+    "temporary_browser_viewport_reset": true
+  },
+  "limitations": [
+    "The offline fixture intentionally replaces only @media(prefers-reduced-motion:reduce) with @media all to exercise the exact matched CSS declarations. This is not an OS media-preference event/browser switching acceptance.",
+    "Installed React19/reviewed support and exact source body used, external Google font link removed; actual typography/CDN branch not certified.",
+    "Historical20-question/free-comparison copy and photo-placeholder design remain superseded proposal context; use current frontend/pricing/founder decisions when adopting. No redesign/production flow change.",
+    "Fixed desktop grid and720px overflow-hidden stage do not support mobile without adaptation. Do not transplant as responsive-ready UI.",
+    "Static blur, permanent will-change and infinite durations require target-device paint/composite/memory assessment; transform-only animation does not guarantee cheap rendering. Motion token alone retains ambient14s under reduce; explicit component stop is required and present here.",
+    "Current product WebGL/motion/device/security/privacy/payment/schema acceptance and active peer source review remain open."
+  ]
+}

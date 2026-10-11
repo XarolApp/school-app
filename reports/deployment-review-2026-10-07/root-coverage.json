@@ -2138,20 +2138,20 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "b0ff21b5fac4861d9ae4a6be0485c175308eda8f4611d72518accad65dfcc9a2",
-    "lines": 1898,
+    "sha256": "d91a0c33a616f6e4d674b86417d968cbf0d4a58b948f65d97617ceb1b5a5cc9c",
+    "lines": 1905,
     "read_ranges": [
       [
         1,
-        1898
+        1905
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-11T10:29:40.575645+00:00",
+    "checked_at_utc": "2026-10-11T10:35:53.007017+00:00",
     "previous_complete_sha256": "81d981f6828cc9f26cf486d65dc35416490be7941d3036fd25e5bc8dd887adcb",
-    "method": "Exact prior full-read baseline and complete own historical-logo append/diff read; earlier founder and deployment decisions preserved.",
-    "evidence": "logo-concepts-verification-2026-10-11.json"
+    "method": "Exact prior full-read baseline and complete own historical-motion append/diff read; earlier founder/deployment gates preserved.",
+    "evidence": "motion-demo-verification-2026-10-11.json"
   },
   "frontend/src/api.js": {
     "sha256": "a545cb179681a87378f41cf928cff50e1ae6c2e539c4bbacf373590af9f8ab8a",
@@ -4914,7 +4914,6 @@
     "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
   },
   "design/system/tokens/motion.css": {
-    "status": "complete",
     "sha256": "5dcd07b6371582391d5f3fc1780b98ed409f27b434cc7445b0a65116e81756f8",
     "lines": 7,
     "read_ranges": [
@@ -4923,8 +4922,11 @@
         7
       ]
     ],
-    "reviewed_at_utc": "2026-10-10T11:05:38.437816+00:00",
-    "method": "Complete current baseline read in bounded tool output; all own later changes authored and diff-reviewed. Functional/source findings are scoped in C44."
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:35:53.007017+00:00",
+    "method": "Complete four dc-html source reads in two bounded batches; current8-line motion token reread. Full four-line CSS-only diff inspected.",
+    "evidence": "motion-demo-verification-2026-10-11.json"
   },
   "design/system/tokens/shape.css": {
     "status": "complete",
@@ -8129,5 +8131,65 @@
     "checked_at_utc": "2026-10-11T10:29:40.575645+00:00",
     "method": "Every line of all fourteen dc-html sources read in four complete batches; current42-line canvas reread after title correction; all changed text/crop/row/annotation-y lines read.",
     "evidence": "logo-concepts-verification-2026-10-11.json"
+  },
+  "design/motion-demo/CornerDrift.dc.html": {
+    "sha256": "1f60466c0958f388b762554a6e306bce76caad36d132280c84cb479c7ba21604",
+    "lines": 149,
+    "read_ranges": [
+      [
+        1,
+        149
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:35:53.007017+00:00",
+    "method": "Complete four dc-html source reads in two bounded batches; current8-line motion token reread. Full four-line CSS-only diff inspected.",
+    "evidence": "motion-demo-verification-2026-10-11.json"
+  },
+  "design/motion-demo/InFrame.dc.html": {
+    "sha256": "5016762d78aae6580230ac2c1cda971089a9b68ed0e6910310f3afdf91220629",
+    "lines": 132,
+    "read_ranges": [
+      [
+        1,
+        132
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:35:53.007017+00:00",
+    "method": "Complete four dc-html source reads in two bounded batches; current8-line motion token reread. Full four-line CSS-only diff inspected.",
+    "evidence": "motion-demo-verification-2026-10-11.json"
+  },
+  "design/motion-demo/Main.dc.html": {
+    "sha256": "ec09176a825609096ecc837b6edf49877b952161fba5a5a96b1bf95e529e3490",
+    "lines": 145,
+    "read_ranges": [
+      [
+        1,
+        145
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:35:53.007017+00:00",
+    "method": "Complete four dc-html source reads in two bounded batches; current8-line motion token reread. Full four-line CSS-only diff inspected.",
+    "evidence": "motion-demo-verification-2026-10-11.json"
+  },
+  "design/motion-demo/ReducedMotion.dc.html": {
+    "sha256": "7bd73a2f1b72f574165e59e82fca856c47ddf3fac4dcaee979fd19759ca3fd1f",
+    "lines": 114,
+    "read_ranges": [
+      [
+        1,
+        114
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:35:53.007017+00:00",
+    "method": "Complete four dc-html source reads in two bounded batches; current8-line motion token reread. Full four-line CSS-only diff inspected.",
+    "evidence": "motion-demo-verification-2026-10-11.json"
   }
 }
