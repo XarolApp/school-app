@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-11T09:04:21.325010+00:00",
-  "commit": "133ae149719f25d88c534d85c0b392c1ab48679f",
+  "checked_at_utc": "2026-10-11T09:14:18.732366+00:00",
+  "commit": "5c3e3f45c3c9ba9257eff4d3e8544d671f1ba5df",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "current_full_read": 501,
-    "pending_or_changed": 293,
+    "current_full_read": 502,
+    "pending_or_changed": 292,
     "binary_requires_asset_check": 105,
-    "generated_or_audit_artifact": 176,
+    "generated_or_audit_artifact": 177,
     "removed_or_missing": 2
   },
   "files": [
@@ -420,10 +420,12 @@
     },
     {
       "path": ".agents/skills/write-swift/SKILL.md",
-      "sha256": "2579cb2684245f75a261cbb13aa4a12f7f9441dabdfe3bc2e72dc2f04ec5e9fd",
-      "lines": 388,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "eafa1c69f1de0803ee3e21433cead12bc4d9e2dfedf0fc13f9377aef986e2ba9",
+      "lines": 390,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude-plugin/marketplace.json",
@@ -853,10 +855,12 @@
     },
     {
       "path": ".claude/skills/write-swift/SKILL.md",
-      "sha256": "2579cb2684245f75a261cbb13aa4a12f7f9441dabdfe3bc2e72dc2f04ec5e9fd",
-      "lines": 388,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "eafa1c69f1de0803ee3e21433cead12bc4d9e2dfedf0fc13f9377aef986e2ba9",
+      "lines": 390,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".codex/agents/onboarding-architect.toml",
@@ -941,12 +945,10 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "a17d3836009adea44b276c9a81d5dc65602f3b2552053efe00caced33b8c9a11",
-      "lines": 1864,
-      "status": "current_full_read",
-      "matching_evidence": [
-        "root-coverage.json"
-      ]
+      "sha256": "70ef04779303ec31a4e5c0855f2d1b2b64ba483c6fdacc58cd422a0fdf325e70",
+      "lines": 1866,
+      "status": "pending_or_changed",
+      "matching_evidence": []
     },
     {
       "path": "archive/README.md",
@@ -6091,8 +6093,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "75cc90878648e8c848df617a6571b835ff116fcdffef73bd0fbb55dc33cf1f74",
-      "lines": 390,
+      "sha256": "371917bf890717bd45ad7551f373b87af3faabf0d7429e73774d310480be1a0b",
+      "lines": 394,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6105,8 +6107,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "ff9786ed9d0fa410595af34a6a7eb29dfdab1bf86c6a5f3de265d9f64eceab68",
-      "lines": 184,
+      "sha256": "8dcb97a01e3f7f5508d3c3ec72c43e204565a9d8f1f3c339daa06ebf8f41b48a",
+      "lines": 186,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6455,8 +6457,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "5615d305c99a31b283e0c61a3833f183a5431c2c3602742cb19c69fe7f738acf",
-      "lines": 529,
+      "sha256": "ee22dfdd5878da68f94f5af9d44bb73b2a0fc11d5510dbf148a2fd6b171cf206",
+      "lines": 531,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6469,8 +6471,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "1b58b44f26374a50e0fd01801c285d1e931bde423e6847899a81f8d5ffdf80d9",
-      "lines": 8537,
+      "sha256": "f05a06906d8409a509dbc2e21ebb91262af5451f4505352d341c9b3625a3a952",
+      "lines": 8559,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -7655,8 +7657,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "1f203c889c5c33c9d280b219d5ea70fc4aa7e3fedede5448a1ec29cb6e917870",
-      "lines": 6712,
+      "sha256": "661d9bcdaf93bf5a1fd4a1d02bbd4b8f9707fb7ca4c2324090976c61740880e9",
+      "lines": 6740,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -7848,6 +7850,13 @@
       "path": "reports/deployment-review-2026-10-07/support-skill-verification-2026-10-10.json",
       "sha256": "42089c73e720501260751d6997b4c501c215db17c08652a118bf13a3133056d8",
       "lines": 34,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/swift-reference-verification-2026-10-11.json",
+      "sha256": "6f52a4a431ee8a555caf28e9fffba19428888d5aabc6d9ca7294c4fc2808e383",
+      "lines": 224,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },

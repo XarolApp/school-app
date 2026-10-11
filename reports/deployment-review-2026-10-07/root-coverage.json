@@ -6708,5 +6708,33 @@
     "checked_at_utc": "2026-10-11T08:57:55.671205+00:00",
     "previous_complete_sha256": "68b09961268ea158c24ea224830cb4a3c9a2f9dc61d4ce1eb36a06e70e91b55a",
     "method": "Full 142-line uploaded landing guide read, complete factual amendment diff inspected; current exact-equal to independently reviewed Claude copy."
+  },
+  ".agents/skills/write-swift/SKILL.md": {
+    "sha256": "eafa1c69f1de0803ee3e21433cead12bc4d9e2dfedf0fc13f9377aef986e2ba9",
+    "lines": 390,
+    "read_ranges": [
+      [
+        1,
+        390
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:14:17.984786+00:00",
+    "method": "Base full 1–204/205–284/285–344/345–388 reads, owned complete diff, byte-equal Claude copy individually hashed. Source coverage is not native/device or beta deployment acceptance."
+  },
+  ".claude/skills/write-swift/SKILL.md": {
+    "sha256": "eafa1c69f1de0803ee3e21433cead12bc4d9e2dfedf0fc13f9377aef986e2ba9",
+    "lines": 390,
+    "read_ranges": [
+      [
+        1,
+        390
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T09:14:17.984786+00:00",
+    "method": "Base full 1–204/205–284/285–344/345–388 reads, owned complete diff, byte-equal Claude copy individually hashed. Source coverage is not native/device or beta deployment acceptance."
   }
 }

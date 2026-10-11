@@ -1,0 +1,224 @@
+{
+  "checked_at_utc": "2026-10-11T09:14:17.984786+00:00",
+  "scope": "Two complete bundled Swift references; no Swift app exists in this repository. Mobile framework undecided.",
+  "files": [
+    {
+      "path": ".agents/skills/write-swift/SKILL.md",
+      "sha256_before": "2579cb2684245f75a261cbb13aa4a12f7f9441dabdfe3bc2e72dc2f04ec5e9fd",
+      "sha256_after": "eafa1c69f1de0803ee3e21433cead12bc4d9e2dfedf0fc13f9377aef986e2ba9",
+      "lines": 390,
+      "method": "Base full 1–204/205–284/285–344/345–388 reads, owned complete diff, byte-equal Claude copy individually hashed."
+    },
+    {
+      "path": ".claude/skills/write-swift/SKILL.md",
+      "sha256_before": "2579cb2684245f75a261cbb13aa4a12f7f9441dabdfe3bc2e72dc2f04ec5e9fd",
+      "sha256_after": "eafa1c69f1de0803ee3e21433cead12bc4d9e2dfedf0fc13f9377aef986e2ba9",
+      "lines": 390,
+      "method": "Base full 1–204/205–284/285–344/345–388 reads, owned complete diff, byte-equal Claude copy individually hashed."
+    }
+  ],
+  "compiler": "Apple Swift version 6.4 (swiftlang-6.4.0.34.1 clang-2100.3.34.1)\nTarget: arm64-apple-macosx26.0",
+  "cases": [
+    {
+      "case": "implicit-frozen-sendable",
+      "source": "@frozen public struct Frozen { public var value: Int }\nfunc requireSendable<T: Sendable>(_ value: T) {}\nfunc check(_ value: Frozen) { requireSendable(value) }\n",
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/swiftc",
+        "-emit-sil",
+        "-swift-version",
+        "6",
+        "-strict-concurrency=complete",
+        "-module-cache-path",
+        "/private/tmp/swift-reference-check/cache",
+        "/private/tmp/swift-reference-check/implicit-frozen-sendable.swift",
+        "-o",
+        "/private/tmp/swift-reference-check/implicit-frozen-sendable.sil"
+      ],
+      "expected_compiles": true,
+      "exit_code": 0,
+      "passed": true,
+      "diagnostic": ""
+    },
+    {
+      "case": "private-is-not-filewide",
+      "source": "struct S { private var value = 1 }\nfunc check(_ value: S) -> Int { value.value }\n",
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/swiftc",
+        "-emit-sil",
+        "-swift-version",
+        "6",
+        "-strict-concurrency=complete",
+        "-module-cache-path",
+        "/private/tmp/swift-reference-check/cache",
+        "/private/tmp/swift-reference-check/private-is-not-filewide.swift",
+        "-o",
+        "/private/tmp/swift-reference-check/private-is-not-filewide.sil"
+      ],
+      "expected_compiles": false,
+      "exit_code": 1,
+      "passed": true,
+      "diagnostic": "/private/tmp/swift-reference-check/private-is-not-filewide.swift:2:39: error: 'value' is inaccessible due to 'private' protection level\n1 | struct S { private var value = 1 }\n  |                        `- note: 'value' declared here\n2 | func check(_ value: S) -> Int { value.value }\n  |                                       `- error: 'value' is inaccessible due to 'private' protection level\n3 | \n"
+    },
+    {
+      "case": "fileprivate-is-filewide",
+      "source": "struct S { fileprivate var value = 1 }\nfunc check(_ value: S) -> Int { value.value }\n",
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/swiftc",
+        "-emit-sil",
+        "-swift-version",
+        "6",
+        "-strict-concurrency=complete",
+        "-module-cache-path",
+        "/private/tmp/swift-reference-check/cache",
+        "/private/tmp/swift-reference-check/fileprivate-is-filewide.swift",
+        "-o",
+        "/private/tmp/swift-reference-check/fileprivate-is-filewide.sil"
+      ],
+      "expected_compiles": true,
+      "exit_code": 0,
+      "passed": true,
+      "diagnostic": ""
+    },
+    {
+      "case": "nonthrowing-discard-group",
+      "source": "enum E: Error { case failure }\nfunc check() async { await withDiscardingTaskGroup { group in group.addTask { throw E.failure } } }\n",
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/swiftc",
+        "-emit-sil",
+        "-swift-version",
+        "6",
+        "-strict-concurrency=complete",
+        "-module-cache-path",
+        "/private/tmp/swift-reference-check/cache",
+        "/private/tmp/swift-reference-check/nonthrowing-discard-group.swift",
+        "-o",
+        "/private/tmp/swift-reference-check/nonthrowing-discard-group.sil"
+      ],
+      "expected_compiles": false,
+      "exit_code": 1,
+      "passed": true,
+      "diagnostic": "/private/tmp/swift-reference-check/nonthrowing-discard-group.swift:2:77: error: invalid conversion from throwing function of type '() throws -> Void' to non-throwing function type '@isolated(any) () async -> Void'\n1 | enum E: Error { case failure }\n2 | func check() async { await withDiscardingTaskGroup { group in group.addTask { throw E.failure } } }\n  |                                                                             `- error: invalid conversion from throwing function of type '() throws -> Void' to non-throwing function type '@isolated(any) () async -> Void'\n3 | \n"
+    },
+    {
+      "case": "throwing-discard-group",
+      "source": "enum E: Error { case failure }\nfunc check() async throws { try await withThrowingDiscardingTaskGroup { group in group.addTask { throw E.failure } } }\n",
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/swiftc",
+        "-emit-sil",
+        "-swift-version",
+        "6",
+        "-strict-concurrency=complete",
+        "-module-cache-path",
+        "/private/tmp/swift-reference-check/cache",
+        "/private/tmp/swift-reference-check/throwing-discard-group.swift",
+        "-o",
+        "/private/tmp/swift-reference-check/throwing-discard-group.sil"
+      ],
+      "expected_compiles": true,
+      "exit_code": 0,
+      "passed": true,
+      "diagnostic": ""
+    },
+    {
+      "case": "async-isolation-feature-off",
+      "source": "class NotSendable { var value = 0; func read() async -> Int { value } }\n@MainActor final class Owner { var ns = NotSendable(); func caller() async -> Int { let x = await ns.read(); return x + ns.value } }\n",
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/swiftc",
+        "-emit-sil",
+        "-swift-version",
+        "6",
+        "-strict-concurrency=complete",
+        "-module-cache-path",
+        "/private/tmp/swift-reference-check/cache",
+        "/private/tmp/swift-reference-check/async-isolation-feature-off.swift",
+        "-o",
+        "/private/tmp/swift-reference-check/async-isolation-feature-off.sil"
+      ],
+      "expected_compiles": false,
+      "exit_code": 1,
+      "passed": true,
+      "diagnostic": "/private/tmp/swift-reference-check/async-isolation-feature-off.swift:2:102: error: sending 'self.ns' risks causing data races [#RegionIsolation::SendingRisksDataRace]\n1 | class NotSendable { var value = 0; func read() async -> Int { value } }\n2 | @MainActor final class Owner { var ns = NotSendable(); func caller() async -> Int { let x = await ns.read(); return x + ns.value } }\n  |                                                                                                      |- error: sending 'self.ns' risks causing data races [#RegionIsolation::SendingRisksDataRace]\n  |                                                                                                      `- note: sending main actor-isolated 'self.ns' to @concurrent instance method 'read()' risks causing data races between @concurrent and main actor-isolated uses\n3 | \n\n[#RegionIsolation]: <https://docs.swift.org/compiler/documentation/diagnostics/region-isolation>\n[#SendingRisksDataRace]: <https://docs.swift.org/compiler/documentation/diagnostics/sending-risks-data-race>\n"
+    },
+    {
+      "case": "async-isolation-feature-on",
+      "source": "class NotSendable { var value = 0; func read() async -> Int { value } }\n@MainActor final class Owner { var ns = NotSendable(); func caller() async -> Int { let x = await ns.read(); return x + ns.value } }\n",
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/swiftc",
+        "-emit-sil",
+        "-swift-version",
+        "6",
+        "-strict-concurrency=complete",
+        "-module-cache-path",
+        "/private/tmp/swift-reference-check/cache",
+        "-enable-upcoming-feature",
+        "NonisolatedNonsendingByDefault",
+        "/private/tmp/swift-reference-check/async-isolation-feature-on.swift",
+        "-o",
+        "/private/tmp/swift-reference-check/async-isolation-feature-on.sil"
+      ],
+      "expected_compiles": true,
+      "exit_code": 0,
+      "passed": true,
+      "diagnostic": ""
+    },
+    {
+      "case": "explicit-caller-isolation",
+      "source": "class NotSendable { var value = 0; nonisolated(nonsending) func read() async -> Int { value } }\n@MainActor final class Owner { var ns = NotSendable(); func caller() async -> Int { let x = await ns.read(); return x + ns.value } }\n",
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/swiftc",
+        "-emit-sil",
+        "-swift-version",
+        "6",
+        "-strict-concurrency=complete",
+        "-module-cache-path",
+        "/private/tmp/swift-reference-check/cache",
+        "/private/tmp/swift-reference-check/explicit-caller-isolation.swift",
+        "-o",
+        "/private/tmp/swift-reference-check/explicit-caller-isolation.sil"
+      ],
+      "expected_compiles": true,
+      "exit_code": 0,
+      "passed": true,
+      "diagnostic": ""
+    },
+    {
+      "case": "optional-weak-reference",
+      "source": "class C {}\nfunc check() { weak var value: C?; if let strong = value { _ = strong }; _ = value }\n",
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/swiftc",
+        "-emit-sil",
+        "-swift-version",
+        "6",
+        "-strict-concurrency=complete",
+        "-module-cache-path",
+        "/private/tmp/swift-reference-check/cache",
+        "/private/tmp/swift-reference-check/optional-weak-reference.swift",
+        "-o",
+        "/private/tmp/swift-reference-check/optional-weak-reference.sil"
+      ],
+      "expected_compiles": true,
+      "exit_code": 0,
+      "passed": true,
+      "diagnostic": "/private/tmp/swift-reference-check/optional-weak-reference.swift:2:25: warning: weak variable 'value' was never mutated; consider changing to 'let' constant [#VariableNeverMutated::WeakMutability]\n1 | class C {}\n2 | func check() { weak var value: C?; if let strong = value { _ = strong }; _ = value }\n  |                         `- warning: weak variable 'value' was never mutated; consider changing to 'let' constant [#VariableNeverMutated::WeakMutability]\n3 | \n\n[#VariableNeverMutated]: <https://docs.swift.org/compiler/documentation/diagnostics/variable-never-mutated>\n[#WeakMutability]: <https://docs.swift.org/compiler/documentation/diagnostics/weak-mutability>\n"
+    }
+  ],
+  "primary_sources": {
+    "release": "https://www.swift.org/blog/swift-6.4-released/",
+    "async-isolation": "https://github.com/swiftlang/swift-evolution/blob/main/proposals/0461-async-function-isolation.md",
+    "sendable": "https://github.com/swiftlang/swift-evolution/blob/main/proposals/0302-concurrent-value-and-concurrent-closures.md",
+    "discarding-groups": "https://github.com/swiftlang/swift-evolution/blob/main/proposals/0381-task-group-discard-results.md",
+    "access": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/accesscontrol/",
+    "observable-macro": "https://developer.apple.com/documentation/observation/observable()",
+    "continuation": "https://github.com/swiftlang/swift-evolution/blob/main/proposals/0528-noncopyable-continuation.md",
+    "pack-iteration": "https://github.com/swiftlang/swift-evolution/blob/main/proposals/0408-pack-iteration.md",
+    "raw-identifiers": "https://github.com/swiftlang/swift-evolution/blob/main/proposals/0451-escaped-identifiers.md",
+    "weak-lifetime": "https://developer.apple.com/videos/play/wwdc2024/10173/"
+  },
+  "verification_note": "Initial typecheck-only isolation probe did not run the later region-isolation diagnostic phase; replaced by actor-owned input and emit-sil compilation. Nine final positive/negative cases match expectations. No native product, SDK install, package operation or device acceptance.",
+  "limits": [
+    "Full guide snippets are illustrative and not a standalone compiled project.",
+    "Compiler probes cover the stated facts, not every SwiftUI, logging, performance or deployment-target claim.",
+    "Accepted proposals do not certify target availability; future reuse needs actual compiler/SDK/package and physical-device checks.",
+    "Bug Echo searched dated/role/access/task claims in support docs; no additional unreviewed copy was changed."
+  ]
+}

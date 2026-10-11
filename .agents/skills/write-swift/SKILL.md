@@ -7,7 +7,7 @@ description: How to write modern Swift well — modeling with value types, Swift
 
 How to write Swift the way the language wants to be written, current through Swift 6.4.
 
-**Toolchain baseline: Swift 6.3** (current release as of August 2026). Everything here compiles on 6.3 unless marked ⚠, which flags unreleased Swift 6.4 features. Concurrency guidance assumes the Swift 6.2 model — if the project is on 6.1 or earlier, §3's rules about `async` and `@concurrent` do not apply.
+**Reference checked: 11 October 2026. Swift 6.4 was released on 15 September.** ⚠ marks features requiring 6.4, not unreleased features. These are illustrative snippets, not a compiled application; verify the actual compiler, language mode, feature flags, SDK and deployment target before adoption. This repository has no Swift app and its mobile framework remains undecided. §3 assumes Swift 6.2+ with the stated concurrency settings. [Official release](https://www.swift.org/blog/swift-6.4-released/).
 
 The through-line: **Swift is a progressive-disclosure language. Start with the simplest, most static, most single-threaded thing that works, and buy dynamism — concurrency, reference semantics, existentials, unsafe pointers — only where you can point at the reason.** Every rule below is an application of that.
 
@@ -83,15 +83,15 @@ Start every app entirely on the main thread. Single-threaded code goes a long wa
 
 ### The rule that changed
 
-**In Swift 6.2, marking a function `async` does _not_ move it off the current actor.** It runs where it was called from. This is what makes "the most natural code to write" data-race free by default.
+**With `NonisolatedNonsendingByDefault` enabled, nonisolated async functions inherit the caller's actor.** Without that setting, the older generic-executor behavior remains; explicit `nonisolated(nonsending)` requests caller isolation. An actor-isolated function follows its declared or inferred actor, which can differ from the caller. [SE-0461](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0461-async-function-isolation.md).
 
-- **`@concurrent`** — always switches to the concurrent thread pool. Use it on _your_ CPU-heavy work.
-- **`nonisolated`** — runs wherever it's called from. **This is the right default for library APIs**, because the caller decides. `nonisolated` on a type makes all its members nonisolated (Swift 6.1+).
-- Neither one — stays on the caller's actor.
+- **`@concurrent`** — runs on the generic executor, away from actor isolation. Use it for measured CPU-heavy work; it does not promise a dedicated background thread.
+- **`nonisolated`** — synchronous functions run in the caller context; async behavior depends on the setting above. Consider it for library APIs that should avoid inferred main-actor isolation. On a type it suppresses default isolation; members can still declare their own isolation.
+- Neither one — inspect the function's declared or inferred isolation and the module settings.
 
 ```swift
 nonisolated struct PhotoProcessor {          // decoupled from the main actor
-  @concurrent                                // guaranteed to run in the background
+  @concurrent                                // runs on the generic executor
   func process(_ data: Data) async -> ProcessedPhoto {
     async let sticker = extractSticker(data)  // two independent jobs, in parallel
     async let colors  = extractColors(data)
@@ -112,7 +112,7 @@ Actors guarantee mutual exclusion, not transactions. Between two `await`s on the
 - **Mutate actor state in synchronous methods.** Synchronous code on an actor runs to completion uninterrupted — that's your transaction boundary.
 - **Keep async actor methods thin**, composed of synchronous transactional operations, and leave the actor in a consistent state at every `await`.
 - The classic bug: check cache → `await` download → write cache. Two tasks both miss, both download, the second clobbers the first. Re-check after the `await`, or dedupe the in-flight work.
-- **Actors are not FIFO.** They run highest-priority work first, precisely to avoid priority inversion. If you need ordering, use a task (which runs start to finish) or an `AsyncStream`, not an actor.
+- **Actors are not FIFO.** Scheduling considers priority and does not guarantee submission order. If you need ordering, use a task (which runs start to finish) or an `AsyncStream`, not an actor.
 
 ---
 
@@ -120,9 +120,9 @@ Actors guarantee mutual exclusion, not transactions. Between two `await`s on the
 
 `Sendable` marks a type safe to share across isolation domains. The compiler checks it at every task and actor boundary.
 
-- **Value types are `Sendable` when their storage is** — inferred automatically for non-public types. **Public types never get inferred sendability**: marking a public type `Sendable` is a promise to your clients, so Swift makes you write it.
+- **Eligible structs and enums can infer `Sendable` when their storage is sendable.** This includes non-public types not exposed through `@usableFromInline`, and frozen public structs/enums. Non-frozen public value types require an explicit conformance. [SE-0302](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0302-concurrent-value-and-concurrent-closures.md).
 - **Actors and `@MainActor` classes are implicitly `Sendable`**, because their state is isolated.
-- **Most model classes should be neither `@MainActor` nor `Sendable`.** Keep them non-`Sendable` on purpose — it prevents half the model being mutated on the main thread while the other half is mutated in the background. If they need to leave the main actor, make them `nonisolated`, not `Sendable`.
+- **Most model classes should be neither `@MainActor` nor `Sendable`.** Keep them non-`Sendable` on purpose — it prevents half the model being mutated on the main thread while the other half is mutated in the background. `nonisolated` changes isolation; it does not make shared mutable storage safe. A transfer must still satisfy the isolation and sendability rules.
 - **You can still _send_ a non-`Sendable` object between domains** as long as the sender stops using it. Make all your mutations _before_ handing it off; touching it afterward is the error.
 - Closures capture state too. Only mark a function type `@Sendable` if it genuinely crosses domains.
 - **`@unchecked Sendable` is a promise the compiler can't check.** Reserve it for types with real internal synchronization (a `Mutex`, a lock). Same for `nonisolated(unsafe)` on a global — last resort, not a warning silencer.
@@ -144,11 +144,11 @@ Actors guarantee mutual exclusion, not transactions. Between two `await`s on the
 
 Always prefer structured tasks.
 
-Structured tasks (`async let`, task groups) are scoped like local variables: they can't outlive the block, they're awaited automatically, and they inherit cancellation, priority, and task-local values through the task tree. Unstructured tasks (`Task { }`, `Task.detached`) give you none of that automatically.
+Structured tasks (`async let`, task groups) are scoped like local variables: they can't outlive the block, they're awaited automatically, and they inherit cancellation, priority, and task-local values through the task tree. Unstructured tasks do not get that scoped lifetime or automatic parent cancellation. `Task { }` does inherit priority, task-local values and actor context; detached tasks do not.
 
 - **`async let`** for a fixed, statically known number of concurrent children.
-- **`withTaskGroup`** when the number is dynamic. Task groups conform to `AsyncSequence` — iterate results as they land. Use **`withDiscardingTaskGroup`** when children return nothing: it frees each child's resources immediately and cancels siblings on the first error.
-- **`Task { }`** only when the work's lifetime doesn't fit a scope — reacting to a delegate callback, a button tap, a view appearing. It inherits actor isolation and priority; you must manage cancellation yourself.
+- **`withTaskGroup`** when the number is dynamic. Task groups conform to `AsyncSequence` — iterate results as they land. Use **`withDiscardingTaskGroup`** for nonthrowing children whose results are unused. **`withThrowingDiscardingTaskGroup`** also cancels siblings on a child failure and rethrows the first error. [SE-0381](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0381-task-group-discard-results.md).
+- **`Task { }`** only when the work's lifetime doesn't fit a scope — reacting to a delegate callback, a button tap, a view appearing. It inherits actor isolation, priority and task-local values; you must manage cancellation yourself.
 - **`Task.detached`** almost never. It inherits nothing — not isolation, not priority, not task-locals. If you need a detached root, put a task group _inside_ it rather than detaching repeatedly.
 
 **Cancellation is cooperative.** Cancelling sets a flag; it stops nothing. Check `Task.isCancelled` or `try Task.checkCancellation()` **before starting expensive work**, and in synchronous helpers too. For work that's suspended rather than running (an `AsyncSequence`'s `next()`), use `withTaskCancellationHandler` — and remember the handler runs immediately and concurrently with the body, so the state it touches needs real synchronization (an atomic or a lock, not an actor — you can't guarantee ordering on an actor).
@@ -157,7 +157,7 @@ Structured tasks (`async let`, task groups) are scoped like local variables: the
 
 **Task-local values** (`@TaskLocal`) propagate context — a request ID, a trace span — down the task tree without threading a parameter through every signature. Make them optional so unbound reads have a sensible default.
 
-**Bridging callbacks:** `withCheckedContinuation` / `withCheckedThrowingContinuation`. The contract is **resume exactly once on every path** — never resuming hangs the caller forever; resuming twice is a fatal error. For delegate APIs that fire later, store the continuation and nil it out when you resume. (Swift 6.4 — unreleased — adds a `Continuation` type that checks single-resumption at compile time.)
+**Bridging callbacks:** `withCheckedContinuation` / `withCheckedThrowingContinuation`. The contract is **resume exactly once on every path** — never resuming hangs the caller forever; resuming twice is a fatal error. For delegate APIs that fire later, store the continuation and nil it out when you resume. (Swift 6.4 adds noncopyable `Continuation`: double-resume is rejected at compile time; dropping it without resuming traps at runtime. [SE-0528](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0528-noncopyable-continuation.md).)
 
 **`AsyncSequence`:** iterate with `for await` / `for try await`. Adapt an existing handler- or delegate-based API with `AsyncStream` / `AsyncThrowingStream` — construct the source inside the closure, `yield` from the handler, and clean up in `onTermination`.
 
@@ -208,7 +208,7 @@ Clarity at the point of use is the goal that outranks every other one here.
 
 - **No type prefixes in Swift-only APIs.** Modules disambiguate. Keep prefixes only where the API mirrors an Objective-C one. But avoid very general names from specific frameworks — they read badly out of context and force manual disambiguation.
 - **Drop leading `get`** from async alternatives and from anything that returns its result directly. `persistentPosts`, not `getPersistentPosts`.
-- **Access control is documentation.** `private` (file), `internal` (module, and the default), `package`, `public`. Being explicit at the boundary is what forces the sendability and API-evolution decisions above.
+- **Access control is documentation.** `private` (enclosing declaration and its same-file extensions), `fileprivate` (file), `internal` (module, and the default), `package`, `public` and `open`. [Access-control definitions](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/accesscontrol/). Being explicit at the boundary is what forces the sendability and API-evolution decisions above.
 - **Design the model so illegal states can't be spelled.** Private setters plus a validating mutating method; enums for closed sets; a strongly typed `UUID` instead of a `String`.
 - **Property wrappers** factor out an _access policy_ (`@Argument`, `@Published`, defensive copying, lazy, thread-local) so the declaration site states the policy in one word. Combine with `@dynamicMemberLookup` on a key path to project through a wrapper (that's how `$binding.title` works).
 - **Result builders** for declarative DSLs. **Macros** when the boilerplate is code the compiler could have written (§12).
@@ -241,7 +241,7 @@ Low-level Swift performance is dominated by four costs. Know which one you're pa
 - **`Span` / `RawSpan` / `OutputSpan`** (Swift 6.2) replace `withUnsafeBufferPointer` for direct access to contiguous storage. They're non-escapable, so the compiler ties their lifetime to the container — you get pointer performance with no lifetime bugs, and the retains/releases disappear.
 - **Moving stored properties out of a nested class into the parent struct** removes runtime exclusivity checks.
 - Shipped in Swift 6.3, when you've measured the need: `@inline(always)` (pair with `final` on methods) and `@specialized(where T == ...)` (SE-0460) to pre-specialize a generic for hot concrete types.
-- Landing in Swift 6.4 (**unreleased** — see the note below §15): `borrow`/`mutate` accessors instead of `get`/`set` for large stored values, `UniqueArray`/`UniqueBox`, and `Ref`/`MutableRef` to hoist a repeated lookup out of a loop.
+- Available with a compatible Swift 6.4 toolchain/SDK (see §15): `borrow`/`mutate` accessors instead of `get`/`set` for large stored values, `UniqueArray`/`UniqueBox`, and `Ref`/`MutableRef` to hoist a repeated lookup out of a loop.
 
 **Async functions** keep their state on a per-task slab allocator rather than the C stack, and split into partial functions at each suspension point. The cost profile is similar to sync functions with slightly higher call overhead — which is another reason not to make something `async` that has nothing to await.
 
@@ -252,7 +252,7 @@ Low-level Swift performance is dominated by four costs. Know which one you're pa
 ## 10. ARC and object lifetime
 
 - **An object's guaranteed lifetime ends at its last use, not at the closing brace.** Observed lifetimes are an emergent property of the optimizer and _will_ change. Code that depends on when a `deinit` runs is a latent bug.
-- **`weak`/`unowned` are for breaking reference cycles — nothing else.** Reading a `weak` reference after the strong owner's last use may legitimately give `nil`. Optional binding there is _worse_ than force-unwrap: it turns a loud crash into a silent wrong answer.
+- **Use `weak` when a referenced object may disappear without being kept alive; use `unowned` only with a proven lifetime invariant.** A weak reference can legitimately become `nil`, so optional binding is appropriate when that is an expected state. If the operation requires the object, retain it for the operation or report a missing-object failure. Force-unwrap only a proven invariant (§2). [Apple lifetime guidance](https://developer.apple.com/videos/play/wwdc2024/10173/).
 - **Better than `weak`: don't build the cycle.** Factor the shared data into a third type both sides reference, turning the cycle into a tree.
 - **Next best: redesign the API** so the object is only reachable through a strong reference. `withExtendedLifetime` works but shifts correctness onto you and spreads through a codebase — treat it as a patch, not a design.
 - **Keep `deinit` side effects local.** Publishing metrics or firing a global effect from `deinit` sequences against optimizer decisions. Use `defer` at the call site instead, and leave `deinit` for verification.
@@ -283,7 +283,7 @@ Use **Swift Testing** for new tests. XCTest remains required for exactly three t
 Reach for a macro when you're writing code the compiler could derive — and only then.
 
 - **Macros are type-checked before expansion.** Arguments are checked against the macro's declared signature, so misuse is a clean error at the call site, not a mess inside generated code.
-- **Freestanding (`#foo`)** produce an expression or declaration. **Attached (`@Foo`)** augment a declaration in one of five roles: member, peer, accessor, member-attribute, conformance. Roles compose — `@Observable` is member + member-attribute + conformance.
+- **Freestanding (`#foo`)** produce an expression or declaration. **Attached (`@Foo`)** augment declarations through roles such as `member`, `peer`, `accessor`, `memberAttribute` and `extension`. Roles compose — `@Observable` uses member + memberAttribute + extension; protocol conformances are declared on its extension role. [Apple macro declaration](https://developer.apple.com/documentation/observation/observable()).
 - **Test macros as pure syntax-tree transforms** with `assertMacroExpansion`. It's the fastest loop, and it's how you avoid bugs in code nobody reads. Set a breakpoint in `expansion` and `po` the syntax node to learn its shape.
 - **Emit real diagnostics when the macro doesn't apply.** Throw an error, or use `context.addDiagnostic` for warnings and fix-its at a specific location. Never let a macro silently generate code that won't compile.
 - Expanded code is ordinary Swift: inspectable ("Expand Macro"), debuggable, steppable.
@@ -306,7 +306,7 @@ Reach for a macro when you're writing code the compiler could derive — and onl
 - **"Unsafe" means the API cannot fully validate its input, so violating its preconditions is undefined behavior** — not that it crashes. Safe APIs _do_ trap deliberately; a clean fatal error is the safe outcome.
 - **Prefer `Span` over `Unsafe*Pointer`.** Since Swift 6.2 there is a safe, non-escaping, equally fast way to get at contiguous storage. Reserve raw pointers for C interop.
 - If you must use pointers: keep the unsafe region as small as possible, use **buffer** pointers (address + count) rather than bare pointers so bounds are tracked, never let a pointer escape the closure that vends it, and run the **Address Sanitizer**.
-- Enable **strict memory safety** in security-critical modules — it forces every unsafe use to be acknowledged in source, which is what makes an audit possible. Swift 6.4's `@diagnose` attribute (unreleased) lets you turn it on for individual functions.
+- Enable **strict memory safety** in security-critical modules — it forces every unsafe use to be acknowledged in source, which is what makes an audit possible. Swift 6.4's `@diagnose` attribute lets you turn it on for individual functions.
 - **Interop is bidirectional and incremental.** C, Objective-C, and C++ types map into Swift directly (including C++ value semantics, containers as Swift collections, and move-only types as `~Copyable`). Swift 6.3's `@c` attribute exposes Swift functions back to C (with `@implementation` when the declaration already exists in a header). Adopt Swift one file at a time; don't rewrite.
 
 ---
@@ -315,27 +315,27 @@ Reach for a macro when you're writing code the compiler could derive — and onl
 
 Agents routinely write the older, longer form of all of these.
 
-**Rows marked ⚠ are Swift 6.4, which has not shipped.** The current release is 6.3.x. Their proposals are accepted and implemented in main, so they are safe to plan around and unsafe to write today — check the project's toolchain before using one, and prefer the older form if it targets 6.3 or earlier.
+**Rows marked ⚠ require Swift 6.4.** Availability depends on the installed compiler, SDK, package version and deployment target. A proposal's acceptance alone is not proof that the project can use it; compile against the actual target and keep the older form where compatibility requires it.
 
 | Instead of                                                            | Write                                                                                                    | Since |
 | --------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ----- |
 | Nested ternaries; an immediately-called closure to initialize a `let` | `if`/`switch` **expressions**                                                                            | 5.9   |
-| Overloads for 1, 2, 3… arguments                                      | **parameter packs** (`each T`), and `for` over a pack                                                    | 5.9   |
+| Overloads for 1, 2, 3… arguments                                      | **parameter packs** (`each T`); pack iteration with `for`                                               | packs 5.9; iteration 6.0   |
 | `ObservableObject` + `@Published` on every property                   | **`@Observable`**                                                                                        | 5.9   |
 | Polling an object for changes                                         | **`Observations { ... }`** — an `AsyncSequence` of transactional updates                                 | 6.2   |
 | `NotificationCenter` with stringly-typed `userInfo`                   | concrete notification types (`MainActorMessage` / `AsyncMessage`)                                        | 6.2   |
-| `Process` + pipes for scripting                                       | the **Subprocess** package (`AsyncBufferSequence.strings()` for line-by-line output; 1.0 lands with 6.4) | 6.2+  |
+| `Process` + pipes for scripting                                       | the **Subprocess** package (`AsyncBufferSequence.strings()` for line-by-line output; 1.0 announced with 6.4; separate package) | 6.2+  |
 | Hand-rolled string index math                                         | **Swift Regex** — literals for brevity, `RegexBuilder` for structure                                     | 5.7   |
 | `[String]` of fixed size in a hot path                                | **`InlineArray<N, T>`**                                                                                  | 6.2   |
 | `withUnsafeBufferPointer`                                             | **`.span`** / **`.bytes`** (`RawSpan`) / `OutputSpan`                                                    | 6.2   |
 | Manual `Task.isCancelled` juggling to finish a write                  | `Task` **cancellation shield** (SE-0504)                                                                 | 6.4 ⚠ |
 | Rebuilding a dictionary by hand to use the key                        | **`mapKeyedValues`**                                                                                     | 6.4 ⚠ |
 | `@available(iOS ..., macOS ..., tvOS ..., watchOS ..., visionOS ...)` | **`@available(anyAppleOS ...)`**                                                                         | 6.4 ⚠ |
-| `Rocket.SaturnV` when a type shadows a module                         | **module selector** `Rocket::SaturnV`                                                                    | 6.3   |
+| `Rocket.SaturnV` when a type shadows a module                         | **module selector** `Rocket::SaturnV`                                                                    | 6.4 ⚠   |
 | Blanket "warnings as errors"                                          | **`@diagnose`** per declaration / warning group                                                          | 6.4 ⚠ |
 | `@unchecked Sendable` because of a `weak var`                         | `weak let`; or state non-sendability with **`~Sendable`**                                                | 6.4 ⚠ |
 | Manually parsing binary formats with pointers                         | **Swift Binary Parsing** (`ParserSpan`, overflow-checked parsing initializers)                           | 6.2   |
-| Awkward test function names                                           | **raw identifiers**: `` @Test func `fruits have a tropical climate`() ``                                 | 6.0   |
+| Awkward test function names                                           | **raw identifiers**: `` @Test func `fruits have a tropical climate`() ``                                 | 6.2   |
 
 Also worth knowing: **Swift Regex parsers compose with Foundation's real parsers** (`.date(...)`, `.currency(...)`) — never hand-roll date or number parsing inside a regex. Make the locale explicit rather than inheriting the system's. And use `NegativeLookahead` or `Local` (atomic groups) to stop a pattern backtracking across a whole input.
 
@@ -386,3 +386,5 @@ You can turn strict checking back off and ship; every fix you made is a genuine 
 | Diagnostics in shipping code       | `Logger` + a correlation ID     | `print`                                   |
 | Deciding to optimize               | Instruments on a profiled test  | intuition                                 |
 
+
+Reference-date evidence: [pack iteration, Swift 6.0](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0408-pack-iteration.md), [raw identifiers, Swift 6.2](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0451-escaped-identifiers.md). Future native adoption still needs target-specific compile, device and accessibility checks; this reference does not approve a mobile implementation.
