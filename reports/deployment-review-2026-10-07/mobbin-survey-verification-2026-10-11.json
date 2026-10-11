@@ -1,0 +1,168 @@
+{
+  "checked_at_utc": "2026-10-11T08:57:23.799429+00:00",
+  "sources": [
+    {
+      "path": ".agents/skills/mobbin-landing-page-patterns/SKILL.md",
+      "before": "e9b6b08da427e9f341a7e09bca62cca6803295315fc8be9f66bcbea37bce8d0c",
+      "sha256": "c127720add7a5102ec8caefb00d41952726b250aadf18df83ca3476a185f556d",
+      "lines": 149
+    },
+    {
+      "path": ".claude/skills/mobbin-landing-page-patterns/SKILL.md",
+      "before": "366238b0d72e0ff4c78321b7d46bd150ef8038aec0bbffc8a72988c0abb88157",
+      "sha256": "68ae91b15f40f2eaa9cd36fb03747c8c3181997e8794963de44a23b1dd253387",
+      "lines": 149
+    },
+    {
+      "path": ".agents/skills/mobbin-onboarding-patterns/SKILL.md",
+      "before": "90d795f5ee925233fd2f762da8cd279416da3a7f8096bb312f99c57d27aa0353",
+      "sha256": "7aaf131b3396f38e186d5fa1156ad3b450d4c2215308cf45cd844cab5976d994",
+      "lines": 146
+    },
+    {
+      "path": ".claude/skills/mobbin-onboarding-patterns/SKILL.md",
+      "before": "c40ebf47ec8c70090ef36a72ab55a5cdcb746bf2ffc2d485fbeb6c9a6fe645fd",
+      "sha256": "52802afaad60b115c23d72b95028f336e41c402eb38955f232cb46f269861da7",
+      "lines": 146
+    },
+    {
+      "path": ".agents/skills/mobbin-paywall-patterns/SKILL.md",
+      "before": "63b17316b5e2449f09df50b8bcf77ceb85ec5f5a0ec5e2a92f90f352f50a661c",
+      "sha256": "42c00aec7e2bcfad9c9e740804b2044c68cb45e1b4ff332287d909cbe0f4acea",
+      "lines": 164
+    },
+    {
+      "path": ".claude/skills/mobbin-paywall-patterns/SKILL.md",
+      "before": "c606b20c4a2cea431de5e6dadc404a4ab6c46d29ba8b73fb0de5c93e5faa9251",
+      "sha256": "9043d76a85d0db7e509645d62819ed358133cda51cd1d2909d36cbb5e0c8d274",
+      "lines": 164
+    },
+    {
+      "path": ".agents/skills/mobbin-core-product-patterns/SKILL.md",
+      "before": "28ba59c6ea4d9fbeb88ea6b2a6918b7532ad63ab9949d04384ade6d673989422",
+      "sha256": "ee5c3ca0585c496fd6def19508e20027c76b8357a675dd860975b25268b1c0fe",
+      "lines": 260
+    },
+    {
+      "path": ".claude/skills/mobbin-core-product-patterns/SKILL.md",
+      "before": "e7c9827a6e076b80592cd4c49b751b27009e37ae139fdb27c69061bf125aa901",
+      "sha256": "dce073b2be1842e3c5171877af01e46d2ad8ce26881bff9f44e052efb1d2fba9",
+      "lines": 260
+    },
+    {
+      "path": "design/system/uploads/SKILL-e7c9827a.md",
+      "before": "e7c9827a6e076b80592cd4c49b751b27009e37ae139fdb27c69061bf125aa901",
+      "sha256": "dce073b2be1842e3c5171877af01e46d2ad8ce26881bff9f44e052efb1d2fba9",
+      "lines": 260
+    },
+    {
+      "path": "design/research/mobbin_pattern_survey.md",
+      "before": "f064747dddded57f0349c0abb7f28aa8eade28563b53ff22aae0f8e2c08440c7",
+      "sha256": "9d36a238bc83bede06b1de514cb9d1cc05e27fb3485534a71bd1a9b833b201da",
+      "lines": 640
+    },
+    {
+      "path": "design/system/uploads/SKILL-68b09961.md",
+      "before": "68b09961268ea158c24ea224830cb4a3c9a2f9dc61d4ce1eb36a06e70e91b55a",
+      "sha256": "68ae91b15f40f2eaa9cd36fb03747c8c3181997e8794963de44a23b1dd253387",
+      "lines": 149
+    }
+  ],
+  "listCounts": [
+    {
+      "section": 1,
+      "entries": 111,
+      "distinctExactNamePlatformPairs": 111,
+      "distinctExactNameLabels": 111,
+      "lists": [
+        {
+          "platform": "iOS",
+          "count": 65
+        },
+        {
+          "platform": "Web",
+          "count": 46
+        }
+      ]
+    },
+    {
+      "section": 2,
+      "entries": 82,
+      "distinctExactNamePlatformPairs": 82,
+      "distinctExactNameLabels": 80,
+      "lists": [
+        {
+          "platform": "iOS",
+          "count": 61
+        },
+        {
+          "platform": "Web",
+          "count": 21
+        }
+      ]
+    },
+    {
+      "section": 3,
+      "entries": 129,
+      "distinctExactNamePlatformPairs": 129,
+      "distinctExactNameLabels": 129,
+      "lists": [
+        {
+          "platform": "Web",
+          "count": 129
+        }
+      ]
+    },
+    {
+      "section": 4,
+      "entries": 149,
+      "distinctExactNamePlatformPairs": 123,
+      "distinctExactNameLabels": 119,
+      "lists": [
+        {
+          "platform": "iOS",
+          "count": 33
+        },
+        {
+          "platform": "Web",
+          "count": 22
+        },
+        {
+          "platform": "iOS",
+          "count": 22
+        },
+        {
+          "platform": "Web",
+          "count": 11
+        },
+        {
+          "platform": "Web",
+          "count": 12
+        },
+        {
+          "platform": "iOS",
+          "count": 18
+        },
+        {
+          "platform": "iOS",
+          "count": 8
+        },
+        {
+          "platform": "Web",
+          "count": 23
+        }
+      ]
+    }
+  ],
+  "totalListedEntries": 471,
+  "distinctExactNamePlatformPairs": 362,
+  "distinctExactNameLabels": 347,
+  "reportedSearches": 73,
+  "reportedSearchesIndependentlyVerified": false,
+  "copies": "Four paired guide bodies equal except existing Codex/Claude Design descriptor; both core/landing uploaded copies exact-equal",
+  "limitations": [
+    "Token counts do not canonicalize aliases or establish original captures, experiments, conversion outcomes or current vendor behavior.",
+    "No Mobbin connector request, third-party screenshot rereview, legal certification or product/matching/payment/design change.",
+    "Current founder onboarding/beta/commercial/proof policy remains authoritative; historical checklists are optional observations."
+  ]
+}

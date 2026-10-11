@@ -7,9 +7,16 @@ source: Mobbin MCP (search_screens / search_flows / search_sections), iOS + web
 
 # Mobbin Pattern Survey
 
+
+## Current use and evidence limits — reviewed 11 October 2026
+
+This is the author's 25 August screenshot survey, not a current product/pricing, conversion benchmark or legal-compliance audit. Counts below describe the explicitly listed product/platform labels; aliases and raw search sessions were not independently reconciled. Checklists are optional observations, not release requirements or authority to change founder decisions.
+
+For this project, onboarding requires sign-in and the signed-in quiz is free. Beta access is free for feedback; its payment screens are a preview and must not take a card or charge. The commercial plans remain 690 Kč season (one charge after its three-day purchase trial) and 249 Kč monthly (immediate payment, no purchase trial). Implement and verify a real reminder before promising one. Do not fabricate processing completion, claims, testimonials, dates or admission probabilities. A commitment ritual is not legal consent; minimize sensitive data and preserve current consent/retention decisions. Use source-backed figures even when round, and label missing school facts as unknown rather than false.
+
 Breadth survey of real shipped product screens, organised into four independently-readable sections. Every pattern names a concrete structural or visual mechanism and cites named products. Screens were examined as images, not inferred from metadata.
 
-**Scope:** 73 searches across iOS and web. ~380–400 distinct product/platform combinations (some products appear in more than one section). Coverage gaps are stated honestly at the end of each section and summarised at the close.
+**Scope:** the author reports 73 searches across iOS and web. A mechanical recount of the explicit lists on 11 October finds 471 entries, 362 distinct exact platform/name pairs and 347 distinct exact name labels; these are list counts, not canonical product identities. Some products recur by subsection/platform, and aliases have not been resolved. Raw search sessions and original screenshot observations were not independently re-run. Coverage gaps are stated at the end of each section.
 
 **How to read this:** each section is `products surveyed → patterns → checklist → anti-patterns`. The checklists are the most directly reusable material. The anti-patterns are the "looks competent, is actually templated" list.
 
@@ -19,7 +26,7 @@ Breadth survey of real shipped product screens, organised into four independentl
 
 ## 1.1 Products surveyed
 
-**iOS (63)** — The Outsiders · Acorns · Duolingo · Buddy · Tide Guide · 5 Minute Journal · Liven · Lovi · Paired · Cal AI · Sunlitt · Ten Percent Happier · Nibble · Mesh · Vocabulary · foodpanda · TIDE · Mimo · Orbit · FocusFlight · Ahead · timespent · Peanut · (Not Boring) Timer · Fixtured · QUITTR · Tolan · Placify · Pillow · Tinder · Deepstash · Brilliant · Wanderlog · Cleo AI · Runna · Centr · Equinox+ · Garmin Connect · Strava · Noom · Instacart · Swiggy · Vinted · Shipt · Honest Greens · Woolworths · Bumble · Hinge · happn · Badoo · Lex · KOHO · Formula 1 · Instagram · GoPay · State Farm · Agoda · Turo · Vrbo · eBay · Headspace · Blinkist · Future Pro · Oportun · Headway
+**iOS (65)** — The Outsiders · Acorns · Duolingo · Buddy · Tide Guide · 5 Minute Journal · Liven · Lovi · Paired · Cal AI · Sunlitt · Ten Percent Happier · Nibble · Mesh · Vocabulary · foodpanda · TIDE · Mimo · Orbit · FocusFlight · Ahead · timespent · Peanut · (Not Boring) Timer · Fixtured · QUITTR · Tolan · Placify · Pillow · Tinder · Deepstash · Brilliant · Wanderlog · Cleo AI · Runna · Centr · Equinox+ · Garmin Connect · Strava · Noom · Instacart · Swiggy · Vinted · Shipt · Honest Greens · Woolworths · Bumble · Hinge · happn · Badoo · Lex · KOHO · Formula 1 · Instagram · GoPay · State Farm · Agoda · Turo · Vrbo · eBay · Headspace · Blinkist · Future Pro · Oportun · Headway
 
 **Web (46)** — Homerun · Dub · Linear · Programa · Oku · Clay · Teachable · Rox · incident.io · Typeform · Firecrawl · Zendesk · HoneyBook · OpenTable · TravelPerk · ElevenLabs · TIDAL · Substack · X · Matter · Kajabi · Care.com · Webflow · Teak · Superpower · MasterClass · Skillshare · Function · QuickBooks · Laravel Cloud · Xero · Mixpanel · Selfridges · Codecademy · Stripe · Kit · Grok · Sprout Social · Zapier · Spotify · Readymag · Railway · Popcorn · Lemon Squeezy · Intercom · Gumroad
 
@@ -217,7 +224,7 @@ Breadth survey of real shipped product screens, organised into four independentl
 - **Personalised health pricing addressed to the user, not the buyer.** Noom, Runna, Centr and Superpower all assume payer = subject; a parent buying for a teen sees the teen's name and plan with no account-ownership step.
 - **Positive counter-examples worth copying:** Headspace's retention offer explaining what continues *if you cancel*; Vocabulary's and Noom's absolute charge dates; Xero's in-form cancellation instructions; KOHO's named refusal link; timespent's no-dark-patterns pledge; Shipt's plain-English explanation of card over-authorisation.
 
-*Coverage: 16 searches, ~106 products. Thinnest direction — "money-back guarantee badge" on web returned strong pricing grids but only Teak and HoneyBook surfaced an actual guarantee seal.*
+*Coverage: 16 reported searches, 111 listed platform entries (65 iOS, 46 web). Thinnest direction — "money-back guarantee badge" on web returned strong pricing grids but only Teak and HoneyBook surfaced an actual guarantee seal.*
 
 ---
 
@@ -229,7 +236,7 @@ Breadth survey of real shipped product screens, organised into four independentl
 
 **Web** — Fabric · Clay · Docusign · Zendesk · Headspace · Mindtrip · Monarch · Klook · HoneyBook · Shop · Vercel · Devin · Langdock · Apollo · Uxcel · Hootsuite · Remote · Melio · Workable · Deputy · OKX
 
-≈81 products.
+82 listed product/platform entries (61 iOS, 21 web; 80 distinct exact names).
 
 ## 2.2 Patterns
 
@@ -304,11 +311,11 @@ Breadth survey of real shipped product screens, organised into four independentl
 - **The "welcome to X" carousel of undifferentiated benefit slides.** Believe, Alan, Too Good To Go, Chase UK. Zero ask anything, so the user arrives at signup no more invested than at launch.
 - **Skip that doesn't skip.** Docusign places **Skip ›** directly under Next on a two-dropdown screen — the questions were never needed; the wizard exists to fill a CRM field.
 - **Generic centred-icon permission screens.** Grok Bot's "Allow Push Notifications?" states no benefit at all.
-- **Consent by toggle-wall.** MacroFactor's two acknowledgement toggles over a wall of disclaimer prose, mid-onboarding, with a disabled Accept button — legally sound, momentum-destroying.
+- **Consent by toggle-wall.** MacroFactor's two acknowledgement toggles over a wall of disclaimer prose, mid-onboarding, with a disabled Accept button — legal validity was not assessed; visually dense and momentum-destroying.
 - **Reveal that is just a receipt.** "Personalisation" that echoes the user's own inputs back as a settings summary, with no synthesis, name, or number they didn't already supply.
 - **Countdown scarcity on a personalised plan.** Noom's "PERSONALIZED PLAN RESERVED — EXPIRES IN 14:59" is effective and transparently fake.
 
-*Coverage: 18 searches (11 iOS, 7 web), 81 products. Ran thin: insurance quote questionnaires on web (returned purchase pages, not underwriting flows) and ecommerce product-recommendation quizzes (no classic skincare/apparel quiz surfaced).*
+*Coverage: 18 searches (11 iOS, 7 web), 82 listed platform entries. Ran thin: insurance quote questionnaires on web (returned purchase pages, not underwriting flows) and ecommerce product-recommendation quizzes (no classic skincare/apparel quiz surfaced).*
 
 ---
 
@@ -318,7 +325,7 @@ Breadth survey of real shipped product screens, organised into four independentl
 
 All web. Mixpanel · Superhuman · Aqua · Maze · Craft · Speakeasy · Riverside · Flighty · Headspace · Antimetal · Superpower · The Leap · Analogue Agency · Intercom · Kajabi · Glide · beehiiv · Mailchimp · Daydream · Loom · Mercury · Grammarly · Whereby · Fibery · Customer.io · Attio · Resend · Clay · Charma · Ramp · Coda · Robot.com · Revolut · Titan Intake · Hermes Agent · Savor · Dropbox · Calm · Oryzo · Titan · Railway · Escape Cafe · ClassPass · Trawelt · OpenPhone · ClickUp · Zendesk · DICE · Oku · folk · PamPam · Spline · Grain · Notion · monday.com · Dub · Miro · Sana · Mural · Dovetail · Linear · Jasper · Amplemarket · Selfridges · Shopify Editions · Patreon · Phantom · Airwallex · Kraken · Expensify · Origin · YNAB · OKX · Hims · Hers · Open · Heidi · Care.com · Codecademy · Podia · Coursera · SuperHi · Brilliant · Duolingo · TravelPerk · KAYAK · Kiwi.com · Expedia · Klook · Navan · Mindtrip · Record Club · Posh · Gusto · Zillow · Wave · Linktree · Slash · Teachable · Airtable · Bird · 1Password · Anchor · Farm Minerals · Ditto · mymind · MANA Yerba Maté · NEON · Graza · David · re_ · Tines · Framer · Gamma · Bard · Pi · Elicit · NotebookLM · Disney+ · HBO Max · Telescope · Spotify · Substack · Netflix · Lyssna · Toggl Track · Contra · HoneyBook · Circle
 
-~130 products.
+129 listed web entries.
 
 ## 3.2 Patterns
 
@@ -409,7 +416,7 @@ All web. Mixpanel · Superhuman · Aqua · Maze · Craft · Speakeasy · Riversi
 
 **Definition buried in the help centre.** Intercom's clearest "What is Intercom?" explanation lives in a support article, not on the marketing page. If the plainest sentence about your product is in the docs, the landing page has an identification problem.
 
-*Coverage: 19 searches, ~130 products. Ran thin: dating (returned no dating products at all — drifted to travel/music/events) and insurance (returned logged-in in-app modules rather than pre-signup landing pages). Travel skewed to authenticated booking dashboards.*
+*Coverage: 19 searches, 129 listed web entries. Ran thin: dating (returned no dating products at all — drifted to travel/music/events) and insurance (returned logged-in in-app modules rather than pre-signup landing pages). Travel skewed to authenticated booking dashboards.*
 
 ---
 
@@ -433,7 +440,7 @@ All web. Mixpanel · Superhuman · Aqua · Maze · Craft · Speakeasy · Riversi
 *iOS:* Realtor.com · Opendoor · Redfin · Zillow · Vrbo · Shangri-La Circle · Polestar · Turo
 *Web:* Zillow · Airbnb · TravelPerk · KAYAK · komoot · Care.com · Skillshare · Uxcel · Podia · Deel · MasterClass · Magnific · Contra · Wellfound · Braintrust · Remote · Deputy · Glassdoor · Headspace · Preply · Airtasker · Open · Coursera
 
-~95 product/platform combinations.
+149 listed entries across the four subsections; 123 distinct exact platform/name pairs and 119 distinct exact names.
 
 ## 4.2 Patterns
 
@@ -584,7 +591,7 @@ All web. Mixpanel · Superhuman · Aqua · Maze · Craft · Speakeasy · Riversi
 - **The wall-of-text job post.** Employment facts buried in paragraphs — [Deputy](https://mobbin.com/screens/e8bc2875-5765-4470-be81-2266cd3cb9ba): a 5-row fact table before 400 words of prose.
 - **Generic no-results copy.** "Try less specific search terms" with no reset control — [Thrive Market](https://mobbin.com/screens/3e1f6d8b-6214-4eaf-9610-74802b1d606c), [Calm Sleep](https://mobbin.com/screens/9fce3b79-09ec-433d-bb49-a26a841191f1).
 
-*Coverage: 20 searches (10 iOS, 10 web), ~95 products. Ran genuinely dry on two requested topics — see closing coverage note.*
+*Coverage: 20 searches (10 iOS, 10 web), 149 listed entries / 123 distinct exact platform/name pairs. Ran genuinely dry on two requested topics — see closing coverage note.*
 
 ---
 
@@ -618,11 +625,11 @@ Things that appeared in more than one category and are worth stating once.
 
 # Coverage note
 
-**Totals:** 73 searches (iOS `search_screens`, web `search_screens`, `search_flows`, `search_sections`). ~412 product/platform entries surveyed across the four sections; deduplicating overlaps (Headspace, Noom, Duolingo, Brilliant, Zillow, Turo and others appear in more than one section), roughly **380–400 distinct products**. Industry spread covers fintech/banking/lending, health and mental health, fitness, travel, ecommerce and grocery, productivity, education and courses, dating, insurance, media and streaming, developer tools, consumer social, B2B SaaS, real estate, jobs and mobility.
+**Totals:** 73 reported searches (iOS `search_screens`, web `search_screens`, `search_flows`, `search_sections`). The explicit lists contain **471 entries = 111 paywall + 82 onboarding + 129 landing + 149 core-product**, with **362 distinct exact platform/name pairs** and **347 distinct exact name labels**. These token counts do not resolve aliases or establish the original capture count. Industry spread covers fintech/banking/lending, health and mental health, fitness, travel, ecommerce and grocery, productivity, education and courses, dating, insurance, media and streaming, developer tools, consumer social, B2B SaaS, real estate, jobs and mobility.
 
 **Where Mobbin ran dry — stated rather than silently under-covered:**
 
-- **University / school search and college-match result lists (Section 4).** No such products are indexed. Education queries return course marketplaces (Coursera, Skillshare, Codecademy, Uxcel) and the one Coursera result was a degree *marketing* page, not a match tool. **This is the gap most relevant to a school-choice product** — the closest available analogues are real-estate search (Zillow, Redfin, Realtor.com) and job matching (Wellfound, Braintrust, Wrangle, Contra), which is why those carry disproportionate weight in Section 4.
+- **University / school search and college-match result lists (Section 4).** No such products surfaced in the surveyed queries; this does not establish that none are indexed in the current catalogue. Education queries return course marketplaces (Coursera, Skillshare, Codecademy, Uxcel) and the one Coursera result was a degree *marketing* page, not a match tool. **This is the gap most relevant to a school-choice product** — the closest available analogues are real-estate search (Zillow, Redfin, Realtor.com) and job matching (Wellfound, Braintrust, Wrangle, Contra), which is why those carry disproportionate weight in Section 4.
 - **Consumer insurance comparison (Section 4) and insurance landing pages (Section 3).** No dedicated insurer or aggregator products surfaced. Closest analogues used: Klook travel-insurance tiers, Turo protection tiers, Gusto business-insurance cards.
 - **Insurance quote questionnaires on web (Section 2).** Returned purchase pages rather than underwriting flows.
 - **Dating landing pages (Section 3).** Returned no dating products at all — results drifted to travel, music and events. Dating *app* onboarding (Section 2) was well covered.

@@ -1,14 +1,21 @@
 ---
 name: mobbin-core-product-patterns
-description: Real-shipped-product patterns for search/filter, match/recommendation results, comparison tools, and detail pages — the post-commitment core product experience. Sourced from a 73-search Mobbin survey (~95 products, iOS + web), weighted toward higher-stakes decisions (real estate, jobs, health) since no direct school-search analog exists. Use when designing or reviewing browse, filter, results, comparison, or detail screens — most useful for Codex Design.
+description: Real-shipped-product patterns for search/filter, match/recommendation results, comparison tools, and detail pages — the post-commitment core product experience. Sourced from a 73-search Mobbin survey (123 distinct listed product/platform labels, iOS + web), weighted toward higher-stakes decisions (real estate, jobs, health) since this survey found no direct school-search analogue. Use when designing or reviewing browse, filter, results, comparison, or detail screens — most useful for Codex Design.
 ---
 
 # Core-product patterns: search, match results, comparison, detail pages (sourced via Mobbin)
 
-Source survey: `docs/sources/mobbin_pattern_survey.md` §4 (2026-08-25, ~95
-product/platform combinations, 20 searches). Weighted toward meaningful,
+
+## Current use and evidence limits — reviewed 11 October 2026
+
+This is the author's 25 August screenshot survey, not a current product/pricing, conversion benchmark or legal-compliance audit. Counts below describe the explicitly listed product/platform labels; aliases and raw search sessions were not independently reconciled. Checklists are optional observations, not release requirements or authority to change founder decisions.
+
+For this project, onboarding requires sign-in and the signed-in quiz is free. Beta access is free for feedback; its payment screens are a preview and must not take a card or charge. The commercial plans remain 690 Kč season (one charge after its three-day purchase trial) and 249 Kč monthly (immediate payment, no purchase trial). Implement and verify a real reminder before promising one. Do not fabricate processing completion, claims, testimonials, dates or admission probabilities. A commitment ritual is not legal consent; minimize sensitive data and preserve current consent/retention decisions. Use source-backed figures even when round, and label missing school facts as unknown rather than false.
+
+Source survey: `design/research/mobbin_pattern_survey.md` §4 (2026-08-25, 123 distinct listed product/platform labels
+(149 entries across the four subsections), 20 searches). Weighted toward meaningful,
 infrequent, higher-stakes decisions — real estate, jobs, health, finance — since no
-university/school-search analog exists on Mobbin (closest available: real estate
+university/school-search analogue surfaced in this survey (closest returned: real estate
 search and job matching). Full products-surveyed list and citation links live in
 the source doc — this file has the distilled, actionable version.
 
@@ -246,7 +253,7 @@ the source doc — this file has the distilled, actionable version.
 
 ## Coverage gap — read before applying to a school-search product
 
-No university/school-search or school-match-result product is indexed on Mobbin.
+No university/school-search or school-match-result product surfaced in this August survey; this is not a claim about the entire current Mobbin catalogue.
 Real-estate search (Zillow, Redfin, Realtor.com) and job matching (Wellfound,
 Braintrust, Wrangle, Contra) are the closest available analogues and carry
 disproportionate weight in this file for that reason — treat them as the strongest

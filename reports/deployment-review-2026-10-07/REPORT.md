@@ -177,3 +177,6 @@ Motion-reference checkpoint: seven base guides/references and all seven byte-ide
 
 
 Animation construction/reference checkpoint, 11 October: six base guides/recipes, six Claude copies and three exact uploaded copies fully read. Narrow reference fixes repair reduced-motion, acceleration/version claims, an Expo import/override and zero-elapsed-time velocity; twelve actual snippet cases pass. [Qualified evidence](animation-reference-verification-2026-10-11.json). No product/native/dependency behavior changed. Current peer matching/special-needs/schema edits are active and remain queued; full review and release approval are still incomplete.
+
+
+Historical design survey checkpoint: eleven reference/source/copy files fully read; missing survey paths and inconsistent counts corrected against the explicit lists, with historical/canonical-identity limits stated. [Evidence](mobbin-survey-verification-2026-10-11.json). Current beta, sign-in, commercial trial, consent and truthful-processing/proof policy remain authoritative. No product/dependency/provider operation changed; active peer code is queued separately.

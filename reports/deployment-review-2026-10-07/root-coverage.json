@@ -2137,19 +2137,19 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "5d72bc44ba42c7449b9eaae433f1893b0a6f00dfd469f761f08746b05ba5dda0",
-    "lines": 1854,
+    "sha256": "05bb50bf7514c50bbba0dbc99820fd4fcc6b7b35cabc936ae97098acefbff78a",
+    "lines": 1858,
     "read_ranges": [
       [
         1,
-        1854
+        1858
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-11T08:52:49.250150+00:00",
-    "method": "Verified complete fbded6e baseline plus complete own animation-reference append read; no new application acceptance claim.",
-    "previous_complete_sha256": "5eaa226c42d707a768a3ae2ac7ccb24e8a439d18f31bb6ebaf5c6a42c811d891"
+    "checked_at_utc": "2026-10-11T08:58:28.354543+00:00",
+    "method": "Verified prior complete baseline plus complete own historical-survey append read; release acceptance separate.",
+    "previous_complete_sha256": "5d72bc44ba42c7449b9eaae433f1893b0a6f00dfd469f761f08746b05ba5dda0"
   },
   "frontend/src/api.js": {
     "sha256": "a545cb179681a87378f41cf928cff50e1ae6c2e539c4bbacf373590af9f8ab8a",
@@ -6542,5 +6542,170 @@
     "checked_at_utc": "2026-10-11T08:51:55.985417+00:00",
     "previous_complete_sha256": "e71de849347050c2c573c1cf24d742d5a13459557ecffa6e562f08006f46b5b7",
     "method": "Six base sources fully read in bounded contiguous ranges; truncated Apple/Expo portions repaired in preceding continuation. All current owned diffs inspected. Each Claude/uploaded copy byte-equal and individually hashed. Native/browser performance acceptance is separate."
+  },
+  ".agents/skills/mobbin-landing-page-patterns/SKILL.md": {
+    "sha256": "c127720add7a5102ec8caefb00d41952726b250aadf18df83ca3476a185f556d",
+    "lines": 149,
+    "read_ranges": [
+      [
+        1,
+        149
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T08:57:23.799429+00:00",
+    "previous_complete_sha256": "e9b6b08da427e9f341a7e09bca62cca6803295315fc8be9f66bcbea37bce8d0c",
+    "method": "Four bases and all complete Claude descriptor differences read; uploaded core exact-equal. Survey full 1-633 read, outer-truncated 270-370 repaired. Complete current owned diffs inspected; list count semantics qualified separately."
+  },
+  ".claude/skills/mobbin-landing-page-patterns/SKILL.md": {
+    "sha256": "68ae91b15f40f2eaa9cd36fb03747c8c3181997e8794963de44a23b1dd253387",
+    "lines": 149,
+    "read_ranges": [
+      [
+        1,
+        149
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T08:57:23.799429+00:00",
+    "previous_complete_sha256": "366238b0d72e0ff4c78321b7d46bd150ef8038aec0bbffc8a72988c0abb88157",
+    "method": "Four bases and all complete Claude descriptor differences read; uploaded core exact-equal. Survey full 1-633 read, outer-truncated 270-370 repaired. Complete current owned diffs inspected; list count semantics qualified separately."
+  },
+  ".agents/skills/mobbin-onboarding-patterns/SKILL.md": {
+    "sha256": "7aaf131b3396f38e186d5fa1156ad3b450d4c2215308cf45cd844cab5976d994",
+    "lines": 146,
+    "read_ranges": [
+      [
+        1,
+        146
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T08:57:23.799429+00:00",
+    "previous_complete_sha256": "90d795f5ee925233fd2f762da8cd279416da3a7f8096bb312f99c57d27aa0353",
+    "method": "Four bases and all complete Claude descriptor differences read; uploaded core exact-equal. Survey full 1-633 read, outer-truncated 270-370 repaired. Complete current owned diffs inspected; list count semantics qualified separately."
+  },
+  ".claude/skills/mobbin-onboarding-patterns/SKILL.md": {
+    "sha256": "52802afaad60b115c23d72b95028f336e41c402eb38955f232cb46f269861da7",
+    "lines": 146,
+    "read_ranges": [
+      [
+        1,
+        146
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T08:57:23.799429+00:00",
+    "previous_complete_sha256": "c40ebf47ec8c70090ef36a72ab55a5cdcb746bf2ffc2d485fbeb6c9a6fe645fd",
+    "method": "Four bases and all complete Claude descriptor differences read; uploaded core exact-equal. Survey full 1-633 read, outer-truncated 270-370 repaired. Complete current owned diffs inspected; list count semantics qualified separately."
+  },
+  ".agents/skills/mobbin-paywall-patterns/SKILL.md": {
+    "sha256": "42c00aec7e2bcfad9c9e740804b2044c68cb45e1b4ff332287d909cbe0f4acea",
+    "lines": 164,
+    "read_ranges": [
+      [
+        1,
+        164
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T08:57:23.799429+00:00",
+    "previous_complete_sha256": "63b17316b5e2449f09df50b8bcf77ceb85ec5f5a0ec5e2a92f90f352f50a661c",
+    "method": "Four bases and all complete Claude descriptor differences read; uploaded core exact-equal. Survey full 1-633 read, outer-truncated 270-370 repaired. Complete current owned diffs inspected; list count semantics qualified separately."
+  },
+  ".claude/skills/mobbin-paywall-patterns/SKILL.md": {
+    "sha256": "9043d76a85d0db7e509645d62819ed358133cda51cd1d2909d36cbb5e0c8d274",
+    "lines": 164,
+    "read_ranges": [
+      [
+        1,
+        164
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T08:57:23.799429+00:00",
+    "previous_complete_sha256": "c606b20c4a2cea431de5e6dadc404a4ab6c46d29ba8b73fb0de5c93e5faa9251",
+    "method": "Four bases and all complete Claude descriptor differences read; uploaded core exact-equal. Survey full 1-633 read, outer-truncated 270-370 repaired. Complete current owned diffs inspected; list count semantics qualified separately."
+  },
+  ".agents/skills/mobbin-core-product-patterns/SKILL.md": {
+    "sha256": "ee5c3ca0585c496fd6def19508e20027c76b8357a675dd860975b25268b1c0fe",
+    "lines": 260,
+    "read_ranges": [
+      [
+        1,
+        260
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T08:57:23.799429+00:00",
+    "previous_complete_sha256": "28ba59c6ea4d9fbeb88ea6b2a6918b7532ad63ab9949d04384ade6d673989422",
+    "method": "Four bases and all complete Claude descriptor differences read; uploaded core exact-equal. Survey full 1-633 read, outer-truncated 270-370 repaired. Complete current owned diffs inspected; list count semantics qualified separately."
+  },
+  ".claude/skills/mobbin-core-product-patterns/SKILL.md": {
+    "sha256": "dce073b2be1842e3c5171877af01e46d2ad8ce26881bff9f44e052efb1d2fba9",
+    "lines": 260,
+    "read_ranges": [
+      [
+        1,
+        260
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T08:57:23.799429+00:00",
+    "previous_complete_sha256": "e7c9827a6e076b80592cd4c49b751b27009e37ae139fdb27c69061bf125aa901",
+    "method": "Four bases and all complete Claude descriptor differences read; uploaded core exact-equal. Survey full 1-633 read, outer-truncated 270-370 repaired. Complete current owned diffs inspected; list count semantics qualified separately."
+  },
+  "design/system/uploads/SKILL-e7c9827a.md": {
+    "sha256": "dce073b2be1842e3c5171877af01e46d2ad8ce26881bff9f44e052efb1d2fba9",
+    "lines": 260,
+    "read_ranges": [
+      [
+        1,
+        260
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T08:57:23.799429+00:00",
+    "previous_complete_sha256": "e7c9827a6e076b80592cd4c49b751b27009e37ae139fdb27c69061bf125aa901",
+    "method": "Four bases and all complete Claude descriptor differences read; uploaded core exact-equal. Survey full 1-633 read, outer-truncated 270-370 repaired. Complete current owned diffs inspected; list count semantics qualified separately."
+  },
+  "design/research/mobbin_pattern_survey.md": {
+    "sha256": "9d36a238bc83bede06b1de514cb9d1cc05e27fb3485534a71bd1a9b833b201da",
+    "lines": 640,
+    "read_ranges": [
+      [
+        1,
+        640
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T08:57:23.799429+00:00",
+    "previous_complete_sha256": "f064747dddded57f0349c0abb7f28aa8eade28563b53ff22aae0f8e2c08440c7",
+    "method": "Four bases and all complete Claude descriptor differences read; uploaded core exact-equal. Survey full 1-633 read, outer-truncated 270-370 repaired. Complete current owned diffs inspected; list count semantics qualified separately."
+  },
+  "design/system/uploads/SKILL-68b09961.md": {
+    "sha256": "68ae91b15f40f2eaa9cd36fb03747c8c3181997e8794963de44a23b1dd253387",
+    "lines": 149,
+    "read_ranges": [
+      [
+        1,
+        149
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T08:57:55.671205+00:00",
+    "previous_complete_sha256": "68b09961268ea158c24ea224830cb4a3c9a2f9dc61d4ce1eb36a06e70e91b55a",
+    "method": "Full 142-line uploaded landing guide read, complete factual amendment diff inspected; current exact-equal to independently reviewed Claude copy."
   }
 }

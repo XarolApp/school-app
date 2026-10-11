@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-11T08:52:49.802061+00:00",
-  "commit": "135e6405e169e1b04f50f68e2282f8bf1df271e2",
+  "checked_at_utc": "2026-10-11T08:58:28.882704+00:00",
+  "commit": "47941261baebb0fe24f2611ba62413472f55efaf",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "current_full_read": 486,
-    "pending_or_changed": 308,
+    "current_full_read": 497,
+    "pending_or_changed": 297,
     "binary_requires_asset_check": 105,
-    "generated_or_audit_artifact": 173,
+    "generated_or_audit_artifact": 174,
     "removed_or_missing": 2
   },
   "files": [
@@ -303,31 +303,39 @@
     },
     {
       "path": ".agents/skills/mobbin-core-product-patterns/SKILL.md",
-      "sha256": "28ba59c6ea4d9fbeb88ea6b2a6918b7532ad63ab9949d04384ade6d673989422",
-      "lines": 253,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "ee5c3ca0585c496fd6def19508e20027c76b8357a675dd860975b25268b1c0fe",
+      "lines": 260,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/mobbin-landing-page-patterns/SKILL.md",
-      "sha256": "e9b6b08da427e9f341a7e09bca62cca6803295315fc8be9f66bcbea37bce8d0c",
-      "lines": 142,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "c127720add7a5102ec8caefb00d41952726b250aadf18df83ca3476a185f556d",
+      "lines": 149,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/mobbin-onboarding-patterns/SKILL.md",
-      "sha256": "90d795f5ee925233fd2f762da8cd279416da3a7f8096bb312f99c57d27aa0353",
-      "lines": 139,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "7aaf131b3396f38e186d5fa1156ad3b450d4c2215308cf45cd844cab5976d994",
+      "lines": 146,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/mobbin-paywall-patterns/SKILL.md",
-      "sha256": "63b17316b5e2449f09df50b8bcf77ceb85ec5f5a0ec5e2a92f90f352f50a661c",
-      "lines": 157,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "42c00aec7e2bcfad9c9e740804b2044c68cb45e1b4ff332287d909cbe0f4acea",
+      "lines": 164,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".agents/skills/pick-ui-library/SKILL.md",
@@ -728,31 +736,39 @@
     },
     {
       "path": ".claude/skills/mobbin-core-product-patterns/SKILL.md",
-      "sha256": "e7c9827a6e076b80592cd4c49b751b27009e37ae139fdb27c69061bf125aa901",
-      "lines": 253,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "dce073b2be1842e3c5171877af01e46d2ad8ce26881bff9f44e052efb1d2fba9",
+      "lines": 260,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/mobbin-landing-page-patterns/SKILL.md",
-      "sha256": "366238b0d72e0ff4c78321b7d46bd150ef8038aec0bbffc8a72988c0abb88157",
-      "lines": 142,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "68ae91b15f40f2eaa9cd36fb03747c8c3181997e8794963de44a23b1dd253387",
+      "lines": 149,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/mobbin-onboarding-patterns/SKILL.md",
-      "sha256": "c40ebf47ec8c70090ef36a72ab55a5cdcb746bf2ffc2d485fbeb6c9a6fe645fd",
-      "lines": 139,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "52802afaad60b115c23d72b95028f336e41c402eb38955f232cb46f269861da7",
+      "lines": 146,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/mobbin-paywall-patterns/SKILL.md",
-      "sha256": "c606b20c4a2cea431de5e6dadc404a4ab6c46d29ba8b73fb0de5c93e5faa9251",
-      "lines": 157,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "9043d76a85d0db7e509645d62819ed358133cda51cd1d2909d36cbb5e0c8d274",
+      "lines": 164,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": ".claude/skills/pick-ui-library/SKILL.md",
@@ -925,8 +941,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "5d72bc44ba42c7449b9eaae433f1893b0a6f00dfd469f761f08746b05ba5dda0",
-      "lines": 1854,
+      "sha256": "05bb50bf7514c50bbba0dbc99820fd4fcc6b7b35cabc936ae97098acefbff78a",
+      "lines": 1858,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -1956,10 +1972,12 @@
     },
     {
       "path": "design/research/mobbin_pattern_survey.md",
-      "sha256": "f064747dddded57f0349c0abb7f28aa8eade28563b53ff22aae0f8e2c08440c7",
-      "lines": 633,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "9d36a238bc83bede06b1de514cb9d1cc05e27fb3485534a71bd1a9b833b201da",
+      "lines": 640,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/school-page/Main.dc.html",
@@ -2646,17 +2664,21 @@
     },
     {
       "path": "design/system/uploads/SKILL-68b09961.md",
-      "sha256": "68b09961268ea158c24ea224830cb4a3c9a2f9dc61d4ce1eb36a06e70e91b55a",
-      "lines": 142,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "68ae91b15f40f2eaa9cd36fb03747c8c3181997e8794963de44a23b1dd253387",
+      "lines": 149,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/uploads/SKILL-e7c9827a.md",
-      "sha256": "e7c9827a6e076b80592cd4c49b751b27009e37ae139fdb27c69061bf125aa901",
-      "lines": 253,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "dce073b2be1842e3c5171877af01e46d2ad8ce26881bff9f44e052efb1d2fba9",
+      "lines": 260,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/system/uploads/SKILL.md",
@@ -6063,8 +6085,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "2dcd8923ece03553289a540e9fb78c0a3f0f793a1ab6a36eaf3bf7fb3960391c",
-      "lines": 378,
+      "sha256": "663eec51606d94d62b0a1ac0cbffb9d221702c3071dd4ca09825762e05a8e96c",
+      "lines": 386,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6077,8 +6099,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "59209a34b7b54104736c5b43705b21b74b38363722358bb88c8a68148318c80c",
-      "lines": 179,
+      "sha256": "ca05d7e59beba2d3ed403e39deb2729cced1c0569fbac80c4ee2ee1f09697d87",
+      "lines": 182,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6420,8 +6442,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "885ce2f8851b13a298de558394068e473efb62ab2752cb2b098b59dbfa4968da",
-      "lines": 511,
+      "sha256": "d25dba6ed8f4395688b2a5f88f2a4affb732dd79cf164a540993f56059db7806",
+      "lines": 517,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6434,8 +6456,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "6605e84a422e7953d30c97308417b2b0350105c1d56a735d1f7e7cd29540e010",
-      "lines": 8506,
+      "sha256": "3e0672bb3d482d58db27b90f3b96c8e867d823110248e3d9de1007d4fdd12f35",
+      "lines": 8508,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6983,6 +7005,13 @@
       "sha256": "46f30bbe64e0499eaed91aafd7c9b015441b16dccff862a0465f3ad419792f94",
       "lines": null,
       "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/mobbin-survey-verification-2026-10-11.json",
+      "sha256": "0940bfa726db03dd4c69428f7222e6ebe93145bb0003796d45b74a316684ee52",
+      "lines": 168,
+      "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
@@ -7606,8 +7635,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "a2825d01718a14c8cf4f6bdbb7cdb077dcf0310c8516679b68b98bff12191324",
-      "lines": 6546,
+      "sha256": "5aff9efec4f1fd707948e827bd6bcc6f8bec1e3d7f0b594b64420894c7ed22c7",
+      "lines": 6711,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },

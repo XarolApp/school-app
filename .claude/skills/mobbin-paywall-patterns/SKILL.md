@@ -1,11 +1,18 @@
 ---
 name: mobbin-paywall-patterns
-description: Real-shipped-product patterns for paywall and pricing screens, sourced from a 73-search Mobbin survey (~110 products, iOS + web). Use when designing or reviewing a paywall, pricing table, trial-timeline, or checkout screen — most useful for Claude Design. Not Střední na míru-specific; broad reference material.
+description: Real-shipped-product patterns for paywall and pricing screens, sourced from a 73-search Mobbin survey (111 listed product/platform entries, iOS + web). Use when designing or reviewing a paywall, pricing table, trial-timeline, or checkout screen — most useful for Claude Design. Not Střední na míru-specific; broad reference material.
 ---
 
 # Paywall & pricing patterns (sourced via Mobbin)
 
-Source survey: `docs/sources/mobbin_pattern_survey.md` §1 (2026-08-25, 63 iOS + 46
+
+## Current use and evidence limits — reviewed 11 October 2026
+
+This is the author's 25 August screenshot survey, not a current product/pricing, conversion benchmark or legal-compliance audit. Counts below describe the explicitly listed product/platform labels; aliases and raw search sessions were not independently reconciled. Checklists are optional observations, not release requirements or authority to change founder decisions.
+
+For this project, onboarding requires sign-in and the signed-in quiz is free. Beta access is free for feedback; its payment screens are a preview and must not take a card or charge. The commercial plans remain 690 Kč season (one charge after its three-day purchase trial) and 249 Kč monthly (immediate payment, no purchase trial). Implement and verify a real reminder before promising one. Do not fabricate processing completion, claims, testimonials, dates or admission probabilities. A commitment ritual is not legal consent; minimize sensitive data and preserve current consent/retention decisions. Use source-backed figures even when round, and label missing school facts as unknown rather than false.
+
+Source survey: `design/research/mobbin_pattern_survey.md` §1 (2026-08-25, 65 iOS + 46
 web products, 16 searches). Full products-surveyed list and per-pattern citation
 links live there — this file has the distilled, actionable version.
 
