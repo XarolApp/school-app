@@ -1,0 +1,170 @@
+{
+  "checked_at_utc": "2026-10-11T22:13:46.745460+00:00",
+  "local_review_date": "2026-10-12 Europe/Prague",
+  "commit_before": "ffde7d06122f0cb7b3e5a8ddd56dbcc62005b10f",
+  "status": "Dated read-only current/historical data qualification; exhaustive project review remains active.",
+  "public_school_gets": [
+    {
+      "school_id": 67,
+      "url": "https://school-app-production-be43.up.railway.app/api/schools/67",
+      "started_at_utc": "2026-10-11T22:08:06.397612+00:00",
+      "status": 200,
+      "response_sha256": "13a5a3d00bae8c9bf15160359e54726fb743567642a85cfc6562b3c88254afc4",
+      "name": "Vyšší odborná škola grafická a Střední průmyslová škola grafická, Praha 1, Hellichova 22",
+      "website": "http://www.hellichovka.cz/",
+      "error": null
+    },
+    {
+      "school_id": 89,
+      "url": "https://school-app-production-be43.up.railway.app/api/schools/89",
+      "started_at_utc": "2026-10-11T22:08:06.760582+00:00",
+      "status": 200,
+      "response_sha256": "412aa4b466a7d489c4a56c3bad1b46f04fe5eed53c4cbb90e51bc31ca9008ef6",
+      "name": "Vyšší odborná škola uměleckoprůmyslová a Střední uměleckoprůmyslová škola, Praha 3, Žižkovo náměstí 1",
+      "website": "http://www.sups.cz/",
+      "error": null
+    },
+    {
+      "school_id": 93,
+      "url": "https://school-app-production-be43.up.railway.app/api/schools/93",
+      "started_at_utc": "2026-10-11T22:08:07.059697+00:00",
+      "status": 200,
+      "response_sha256": "445bfaa5e9743e5011b156b56bb355d786b77d9e36d846f12d18c391bfd59f5f",
+      "name": "Konzervatoř Duncan centre, Praha 4, Branická 41",
+      "website": "http://www.duncancentre.cz/",
+      "error": null
+    },
+    {
+      "school_id": 186,
+      "url": "https://school-app-production-be43.up.railway.app/api/schools/186",
+      "started_at_utc": "2026-10-11T22:08:07.394884+00:00",
+      "status": 404,
+      "response_sha256": "a0004812a8612df688b22c6f3e033280598c350f6a514af51461a1c853c79fba",
+      "name": null,
+      "website": null,
+      "error": "Škola nebyla nalezena."
+    }
+  ],
+  "source_article_get": {
+    "url": "https://www.sups.cz/2011/11/uspesnost-pri-maturitach-2010-11/",
+    "final_url": "https://www.sups.cz/2011/11/uspesnost-pri-maturitach-2010-11/",
+    "started_at_utc": "2026-10-11T22:10:55.462624+00:00",
+    "status": 200,
+    "bytes": 251408,
+    "sha256": "40db3833aaca92342f7fba1e3c19fa11ab1e360375a1f334bc7b926f31b991b6"
+  },
+  "confirmed_current_provenance_error": {
+    "school_id": 89,
+    "fields": [
+      "maturita_uspesnost",
+      "maturita_pass_rate_pct"
+    ],
+    "served_year": 2026,
+    "served_pct": 93.3,
+    "served_numerator": 83,
+    "served_denominator": 89,
+    "served_arithmetic_agrees": true,
+    "both_served_source_urls": "https://www.sups.cz/2011/11/uspesnost-pri-maturitach-2010-11/",
+    "actual_article_year": "2010/11",
+    "actual_article_pct": 97.5,
+    "article_read_method": "Public200 HTML parsed to visible text excluding scripts/styles/SVG; complete bounded title/article context read, matches cached filtered89.md492–498. The main article is the2010/11 result, not the2026 Cermat result. No full external site/corpus inspection claimed.",
+    "importer_source": {
+      "path": "scripts/import-maturita-data.js",
+      "sha256": "0f3e98d70241ba2c6e88a4c5b43d25395cd6ed0cd915f778f99c6498ce312fe9",
+      "relevant_lines": [
+        119,
+        124
+      ],
+      "observation": "Actual source projection writes the percentage and annual text only, then upserts byschool_id. It does not replace either source_urls entry; no main/env/client execution."
+    },
+    "fix_status": "Report/handoff only. Keep93.3 while verifying actual official2026 REDIZO/cohort source and replacing both obsolete field provenance entries through the controlled S10 data/import update. Do not restore97.5."
+  },
+  "false_positive_qualifications": {
+    "67": "Current public detail distinguishes secondary artistic talent and Polygrafie JPZ; the old VOŠ completed-maturita requirement is absent.",
+    "89": "Current public detail omits old VOŠ once-per-three-year admissions and tuition is null; obsolete backup values are not current faults.",
+    "93": "Current public admission detail has no historical January dates.2027 conservatoire January testing is compatible with ministry timetable; school-specific date confirmation is separate.",
+    "186": "Current public404; old preschool/ages11–14/eight-year dates do not establish current exposure.",
+    "current_timeline": "Cesta already has22February2027 and30November2026; current hash matches prior full-read evidence. No new calendar source fix required."
+  },
+  "primary_calendar_verification": {
+    "sources": [
+      {
+        "url": "https://msmt.gov.cz/aktuality/prihlasky-na-konzervatore-nove-uz-v-listopadu",
+        "published_date": "2026-10-07",
+        "lines_read": [
+          0,
+          147
+        ]
+      },
+      {
+        "url": "https://msmt.gov.cz/vzdelavani/stredni-vzdelavani/prijimani-do-stredniho-vzdelavani-a-vzdelavani-v-konzervatori/prijimaci-rizeni-konane-ve-skolnim-roce-2026-2027-pro-prijeti-od-skolniho-roku-2027-2028",
+        "lines_read": [
+          0,
+          229
+        ]
+      },
+      {
+        "url": "https://msmt.gov.cz/media/wp-content/uploads/2026/08/Casovy-harmonogram_2026-2027.pdf",
+        "pages": 3,
+        "text_lines_read": [
+          0,
+          173
+        ]
+      },
+      {
+        "url": "https://msmt.gov.cz/media/wp-content/uploads/2026/08/Sdeleni-o-terminech_2026-2027.pdf",
+        "pages": 1,
+        "text_lines_read": [
+          0,
+          37
+        ]
+      },
+      {
+        "url": "https://prijimacky.cermat.gov.cz/menu/jednotna-prijimaci-zkouska/prihlasky-na-ss.html",
+        "lines_read": [
+          0,
+          96
+        ]
+      },
+      {
+        "url": "https://prijimacky.cermat.gov.cz/menu/jednotna-prijimaci-zkouska.html",
+        "lines_read": [
+          0,
+          137
+        ]
+      }
+    ],
+    "finding": "Conservatoires haveNovember applications andJanuary examinations; otherSS hasFebruary deadline with2027 weekend shift.4year and6/8year JPZ dates differ. Do not declare historical January data invalid based on last year rules.",
+    "visual_limit": "Three timetable screenshot requests returned text references to this caller; no new image/device visual acceptance claimed.",
+    "timeline_path": "frontend/src/pages/onboarding/screens/Cesta.jsx",
+    "timeline_sha256": "d892fd4843c26476a57d80318846934889bc1120c0ef4e5fa9de2a8cd5db6fd4"
+  },
+  "partial_backup_read": {
+    "path": "reports/api-comparison/backup-before-full-run.json",
+    "sha256": "f0b2b51fced5eb2c8e521d6135aa0a16c18c57fb9c451266ac5e15699e066420",
+    "lines": 6468,
+    "records": 220,
+    "fields_per_record": 23,
+    "new_exact_strings_total": 1236,
+    "fully_read_chunks": 7,
+    "chunks_total": 23,
+    "new_strings_fully_read": [
+      1,
+      388
+    ],
+    "all220_record_contexts_read": false,
+    "whole_receipt_added": false,
+    "limits": "All remaining16 string chunks and all220 ordered complete/null record contexts remain pending. Exact prior string reuse does not establish correct current source scope or data."
+  },
+  "ordered_handoff": [
+    "Under S10, reconcile89 exact official2026 source/REDIZO/denominator and current row/version before a controlled provenance-only correction. Preserve current93.3 and all unrelated source_urls/fields.",
+    "Coordinate Cermat and extraction writers so replacing a fact also replaces or retires the fact-specific citations. Use immutable field/year/source provenance and conflict-safe merge/ownership acceptance.",
+    "Add offline actual-import projection plus existing-stale-source-map regression with83/89 and unrelated citations preserved; verify no old2010/11 URL remains attached to2026 facts. Require local/founder/migration acceptance before importer or live data promotion.",
+    "Preserve67/89 current secondary admissions fixes; do not resurrect old VOŠ conditions,97.5percent data or school186 public exposure. Calendar checks are programme/year-specific, with current timeline already correct.",
+    "Finish partial full-backup content/context before adding its receipt. Existing peer source/privacy/payment/service/device/SQL gates remain open."
+  ],
+  "safeguards": [
+    "Four unauthenticated school GETs and one public school article GET only; no account, feedback, mail, imports, provider/model calls, secrets or hosted writes.",
+    "No source/website/schema/runtime/policy change. Mixed coordination and active Claude files are excluded from owned changes."
+  ]
+}

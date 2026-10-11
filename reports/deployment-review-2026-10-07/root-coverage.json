@@ -2141,20 +2141,20 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "797228b56cf6fbe063caa8d2d26f3c36489fd327ed0a524b88be37026184b91f",
-    "lines": 1990,
+    "sha256": "81e443cbabd1ee7a4bc7249a8ce6ab8432adb24852c8c719b83ac1d68eb43389",
+    "lines": 1997,
     "read_ranges": [
       [
         1,
-        1990
+        1997
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-11T21:59:56.475576+00:00",
-    "previous_complete_sha256": "4508b1349dcec9e90e0d010faa4a26d318c352d5e4302d3deb4ae09cc3cbc525",
-    "method": "Exact fully reviewed unchanged baseline plus complete own simulation/diagnostic append.",
-    "evidence": "simulation-complete-review-2026-10-11.json"
+    "checked_at_utc": "2026-10-11T22:13:46.745460+00:00",
+    "previous_complete_sha256": "797228b56cf6fbe063caa8d2d26f3c36489fd327ed0a524b88be37026184b91f",
+    "method": "Exact fully read unchanged baseline plus complete own current-admission/provenance/partial-backup qualification append.",
+    "evidence": "admission-source-scope-followup-2026-10-12.json"
   },
   "frontend/src/api.js": {
     "sha256": "a545cb179681a87378f41cf928cff50e1ae6c2e539c4bbacf373590af9f8ab8a",
