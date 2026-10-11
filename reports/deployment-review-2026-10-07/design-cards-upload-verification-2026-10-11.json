@@ -1,0 +1,210 @@
+{
+  "checked_at_utc": "2026-10-11T10:01:44.456338+00:00",
+  "snapshot_commit": "73c930b7b149a54da7c63c7c46533be3d019a551",
+  "files": {
+    "design/system/guidelines/brand-antipatterns.card.html": {
+      "sha256_before": "a9815ed742d836a46a9ca6baba2222b89a43306e063fe0d2834fd2c26ada1b13",
+      "sha256_after": "a9815ed742d836a46a9ca6baba2222b89a43306e063fe0d2834fd2c26ada1b13",
+      "lines": 2
+    },
+    "design/system/guidelines/colors-dark.card.html": {
+      "sha256_before": "a43e5fd160268490706d2da029188b9d185e29f6d195a1fee959876a80ba7996",
+      "sha256_after": "a43e5fd160268490706d2da029188b9d185e29f6d195a1fee959876a80ba7996",
+      "lines": 2
+    },
+    "design/system/guidelines/colors-ink.card.html": {
+      "sha256_before": "00abb0eb337f82b9fee0958f7c20c16c03f4a66fb5e207b52eb27baa44cb8d5c",
+      "sha256_after": "00abb0eb337f82b9fee0958f7c20c16c03f4a66fb5e207b52eb27baa44cb8d5c",
+      "lines": 2
+    },
+    "design/system/guidelines/colors-neutrals.card.html": {
+      "sha256_before": "b7672615773776f7737475c7c91b54a8d4208af5536e799c72ef4aff0438fbd0",
+      "sha256_after": "b7672615773776f7737475c7c91b54a8d4208af5536e799c72ef4aff0438fbd0",
+      "lines": 2
+    },
+    "design/system/guidelines/colors-primary.card.html": {
+      "sha256_before": "f12044352521ccb01eb53a8c325fa75ca3c0c4dcaa185dff593c37ba7c74cea9",
+      "sha256_after": "f12044352521ccb01eb53a8c325fa75ca3c0c4dcaa185dff593c37ba7c74cea9",
+      "lines": 2
+    },
+    "design/system/guidelines/colors-semantic.card.html": {
+      "sha256_before": "d356c0b560a94de67f76f9040fc4af5aa9bdb1db725e82290d8eb3029c83c128",
+      "sha256_after": "d356c0b560a94de67f76f9040fc4af5aa9bdb1db725e82290d8eb3029c83c128",
+      "lines": 2
+    },
+    "design/system/guidelines/elevation.card.html": {
+      "sha256_before": "0ebacf7eec893b7b0d4203f0382de9bde8abe26026077102f84298ae03f3bb9a",
+      "sha256_after": "0ebacf7eec893b7b0d4203f0382de9bde8abe26026077102f84298ae03f3bb9a",
+      "lines": 2
+    },
+    "design/system/guidelines/shape-radii.card.html": {
+      "sha256_before": "3aabdb68c125de8e6c93e69cfac8951f7d6a60a7ab90e36ec2b084038cb5d5b5",
+      "sha256_after": "3aabdb68c125de8e6c93e69cfac8951f7d6a60a7ab90e36ec2b084038cb5d5b5",
+      "lines": 2
+    },
+    "design/system/guidelines/spacing-density.card.html": {
+      "sha256_before": "1bf4be0c14958b49d218b6b38e84ea86bd7956f9df49aa5d12288083c185fb3f",
+      "sha256_after": "f77554a0f0c51caab1e933467e1087942cb8adc3417ef21d862e6e9662a54753",
+      "lines": 2
+    },
+    "design/system/guidelines/spacing-layout.card.html": {
+      "sha256_before": "310784a3d0b59a084a0fa9139ef17554ccb781345fe9c42ac3f6d6a55cb44884",
+      "sha256_after": "310784a3d0b59a084a0fa9139ef17554ccb781345fe9c42ac3f6d6a55cb44884",
+      "lines": 2
+    },
+    "design/system/guidelines/spacing-scale.card.html": {
+      "sha256_before": "d47a4356c42c2ea6d6ac9e8e7ce8173c7032b57212d8cf320608fc569a774c1f",
+      "sha256_after": "a37d2ced960d1d8d4d46b84ac685424304b27bf9c3b91674ad5d06cfa3dd79ef",
+      "lines": 2
+    },
+    "design/system/guidelines/type-body.card.html": {
+      "sha256_before": "4f5d761ead632f6f4b4e003a97db15937762daec42c7d25dac3e443e4d5759c5",
+      "sha256_after": "4f5d761ead632f6f4b4e003a97db15937762daec42c7d25dac3e443e4d5759c5",
+      "lines": 2
+    },
+    "design/system/guidelines/type-data.card.html": {
+      "sha256_before": "bb1563d631f089de563c37b7cca8612feeeb6f30a63120a7679315f9986124a1",
+      "sha256_after": "bb1563d631f089de563c37b7cca8612feeeb6f30a63120a7679315f9986124a1",
+      "lines": 2
+    },
+    "design/system/guidelines/type-display.card.html": {
+      "sha256_before": "59a6ff2c61e1c5b855073038769e4881aaddf985352abe2d89adae6b60c3c23d",
+      "sha256_after": "59a6ff2c61e1c5b855073038769e4881aaddf985352abe2d89adae6b60c3c23d",
+      "lines": 2
+    },
+    "design/system/guidelines/type-headlines.card.html": {
+      "sha256_before": "2a97e3086b9f31fa45b371f4e57cd720c959f9d0511028980b074e2583035e34",
+      "sha256_after": "2a97e3086b9f31fa45b371f4e57cd720c959f9d0511028980b074e2583035e34",
+      "lines": 2
+    },
+    "design/system/guidelines/type-labels.card.html": {
+      "sha256_before": "2d4d30ff1288c48ab5b5815190abcf8af5fb4cda356f9266c72900fc43685aef",
+      "sha256_after": "2d4d30ff1288c48ab5b5815190abcf8af5fb4cda356f9266c72900fc43685aef",
+      "lines": 2
+    },
+    "design/system/thumbnail.html": {
+      "sha256_before": "d5d053d6b27a2c6606dcad06a40f02f148d40b0ca4d256dc6a3ab3652be9775a",
+      "sha256_after": "f0866843ebe4ecf014a44bf96c770b2179cb3fb2874e2ff933d3d51145fa8dbd",
+      "lines": 1
+    },
+    "design/brand/profil-bile.svg": {
+      "sha256_before": "7f442f1767183cc87461b1e31d5fa1c359de76da18b75b2de40cf893b2119865",
+      "sha256_after": "7f442f1767183cc87461b1e31d5fa1c359de76da18b75b2de40cf893b2119865",
+      "lines": 1
+    },
+    "design/brand/profil-cerne.svg": {
+      "sha256_before": "d63e85a22c2738abd82e624238363950a3c98cfcd5e02c52045c1eed83c95aaf",
+      "sha256_after": "d63e85a22c2738abd82e624238363950a3c98cfcd5e02c52045c1eed83c95aaf",
+      "lines": 1
+    },
+    "design/system/uploads/DESIGN.md": {
+      "sha256_before": "faf18a9ad91135633667ce80e8a62e3f3f6bdb137a0b53f4ef4df5848dafa469",
+      "sha256_after": "1cc39f79a44b690ea022cd7986b540293a62249b6cbdd72ce2b098cee0eb3471",
+      "lines": 721
+    },
+    "design/Logo Concepts Refinement Request/uploads/DESIGN.md": {
+      "sha256_before": "ac8fc4dcd805b0d76b5c19e34522b62f120d3413c45a288e26c59d09af8459dd",
+      "sha256_after": "4b5e3f49cf39b6dd339bb1d4b5ad86bab0e8ef125dea26f812008acd08f0eea5",
+      "lines": 753
+    },
+    "design/DESIGN.md": {
+      "sha256_before": "f1f7a80439595c724a41c49cb0850885b69637f08b811a40a470e86b39b61be2",
+      "sha256_after": "6767f2d9226b1089cea01e9368dcf999dc7e99e68af196949886e8430ba978c5",
+      "lines": 812
+    }
+  },
+  "uploaded_copy_proof": [
+    {
+      "base": "design/DESIGN.md",
+      "base_complete_sha256": "1a87bc8b1fff13370e0f4ffd22802266ff83c368cdd9d0a51a583ca7a7ed1aaa",
+      "copy": "design/system/uploads/DESIGN.md",
+      "copy_before_sha256": "faf18a9ad91135633667ce80e8a62e3f3f6bdb137a0b53f4ef4df5848dafa469",
+      "diff_path": "/private/tmp/design-research-copy-diff-0.txt",
+      "diff_lines": 681,
+      "diff_bytes": 40864
+    },
+    {
+      "base": "design/DESIGN.md",
+      "base_complete_sha256": "1a87bc8b1fff13370e0f4ffd22802266ff83c368cdd9d0a51a583ca7a7ed1aaa",
+      "copy": "design/Logo Concepts Refinement Request/uploads/DESIGN.md",
+      "copy_before_sha256": "ac8fc4dcd805b0d76b5c19e34522b62f120d3413c45a288e26c59d09af8459dd",
+      "diff_path": "/private/tmp/design-research-copy-diff-1.txt",
+      "diff_lines": 504,
+      "diff_bytes": 28760
+    }
+  ],
+  "read_method": "19 complete card/thumbnail/SVG contents read; shape card repaired after 11-token truncation. Two uploaded documents reviewed by exact complete previously read cbc2d2c DESIGN source plus all 681/504 difference lines. All authored changes fully read; original frontmatter preserved. Current DESIGN already had full hash evidence and its single changed paragraph was read.",
+  "sources": [
+    "https://github.com/google/fonts/blob/main/ofl/lora/METADATA.pb",
+    "https://bpb-us-e1.wpmucdn.com/sites.harvard.edu/dist/b/261/files/2023/03/somerville2013_psychsci.pdf",
+    "https://www.cs.cmu.edu/~jbigham/pubs/pdfs/2017/colors.pdf"
+  ],
+  "contrast": {
+    "ink_on_surface": 15.910759699322629,
+    "secondary_on_surface": 5.543460350238678,
+    "faint_on_surface": 4.856377701077617,
+    "pure_white_on_primary": 5.34532,
+    "surface_on_primary": 4.96185,
+    "tertiary_on_surface": 5.16309,
+    "tertiary_on_subtle": 4.64384,
+    "error_on_surface": 8.58309
+  },
+  "browser": {
+    "environment": "Actual IAB; isolated localhost static copy, external font import disabled; fallback font rendering only",
+    "cards": "All sixteen declared width-700 cards visited with DOM/text and document dimensions; browser clamps requested height 150 to 160, so this is not an exact 150px crop acceptance. Before fixes, density scrollHeight203 at viewport180; scale scrollHeight224 at actual viewport160.",
+    "after": {
+      "density": [
+        700,
+        220,
+        700,
+        220
+      ],
+      "scale": [
+        700,
+        240,
+        700,
+        240
+      ],
+      "thumbnail": {
+        "viewport": [
+          1280,
+          854
+        ],
+        "main_left_right": [
+          0,
+          960
+        ],
+        "mark_left_right": [
+          84.7890625,
+          875.203125
+        ],
+        "mark_width": 790.4140625,
+        "overflow": false
+      }
+    },
+    "thumbnail_before": {
+      "mark_left_right": [
+        -112.8046875,
+        1072.8125
+      ],
+      "mark_width": 1185.6171875,
+      "main_left_right": [
+        0,
+        960
+      ]
+    },
+    "svg": "Both profile SVGs parsed as XML and actually rendered without clipping in a local 240px image fixture; not raster-export/print/device acceptance"
+  },
+  "fixes": [
+    "Two uploaded historical copies: authority/current product/path/age/contrast/source-transfer annotations and Lora variable-weight correction; preserve original YAML tokens.",
+    "Current DESIGN beta paragraph recognizes founder qualifying quick written-note renewal.",
+    "Historical thumbnail type150→100px prevents fallback clipping; two card declared heights180→220 and150→240 fit actual content."
+  ],
+  "bug_echo": "Searched all design MD/HTML for old precise-age/static-Lora/8.28/thumbnail150 patterns; only these reviewed copies/thumbnail matched. Historical specimen data is illustrative, not production admissions facts.",
+  "limitations": [
+    "No full webfont-loaded historical export acceptance or current product visual redesign.",
+    "Remaining design support/canvas/HTML/adherence files require full review.",
+    "Active peer questionnaire/matching/search/special-needs/schema files remain deferred awaiting ownership clarity.",
+    "Beta/runtime/privacy/legal/real-billing/device/service gates stay open; synthetic/offline review does not clear them."
+  ]
+}

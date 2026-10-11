@@ -198,6 +198,8 @@ components:
 
 # ŠkolaMatch
 
+> **Historical uploaded design — reconciled 11 October 2026.** This preserves the earlier ŠkolaMatch brand, terracotta palette and Lora/Public Sans design proposal; it is not the shipped specification. Current product: **Střední na míru**, self-hosted Archivo/Archivo Narrow, four light/dark palettes and deterministic matching percentages; source authority is `frontend/src/design/tokens.js`, `frontend/src/design/tokens.css`, actual React components and `design/DESIGN.md`. `design/system/` remains an older export (C44). Beta is free for accepted written feedback, including qualifying quick-rating notes; stars/chips alone do not renew, and payment screens are previews without Stripe/card collection. Anonymous landing-dot school details are view-only; current sharing is disabled during beta. Proposed layouts, font hosting, research examples and motion instructions below remain historical intent. The later `frontend/src/pages/landing2/` WebGL landing exists; this document does not authorize replacing it. Current device/accessibility/privacy/payment acceptance is in `reports/deployment-review-2026-10-07/REPORT.md` and `HANDOFF-PLAN.md`.
+
 ## Overview — read this before anything else
 
 This is the **second** DESIGN.md written for ŠkolaMatch. The first one — Archival
@@ -207,7 +209,7 @@ zero errors and was still wrong. Seeing it rendered, the founder's reaction was
 immediate: *it looks like GitHub, n8n, or Supabase.* That diagnosis was correct, and
 this file is the correction, built on two inputs the first version didn't have:
 
-1. **A 131KB sourced research document** (`design/research/design_direction_research.md`
+1. **A historical sourced research document** (`design/research/design_direction_research.md`
    — moved from `docs/sources/` 2026-08-31, see `design/research/`)
    covering warmth-vs-credibility, teen design psychology, colour-and-trust folklore
    vs. evidence, and anxiety-reduction patterns — with `[SOURCED]`/`[CONTESTED]`/
@@ -222,10 +224,7 @@ this file is the correction, built on two inputs the first version didn't have:
 query the Mobbin MCP directly before generating anything, but treat it strictly as
 reference, never as a source of truth.** Priority order, always:
 
-1. **`design/system/` first** — the real, built component library (`Button`, `Input`,
-   `Checkbox`, `Card`, `Chip`, `Divider`, `MatchIndicator`, `Tooltip`, tokens,
-   guidelines). This is the template. Its components, colors, spacing, and type scale
-   are not negotiable against anything Mobbin turns up.
+1. **Current source and `design/DESIGN.md` first.** The `design/system/` component library (`Button`, `Input`, `Checkbox`, `Card`, `Chip`, `Divider`, `MatchIndicator`, `Tooltip`, tokens and guidelines) is a historical export awaiting C44 reconciliation. Preserve it as reference; its older tokens must not override shipped source.
 2. **This file, `DESIGN.md`, second** — the prose reasoning and direction behind that
    template, for anything the built components don't cover yet.
 3. **Mobbin third, as a sanity check only.** Before designing any screen, search
@@ -234,7 +233,7 @@ reference, never as a source of truth.** Priority order, always:
    below). Use them to judge whether a layout or interaction choice holds up against
    real products. **Never let a Mobbin example override or blend into this design
    system's own colors, spacing, or components** — if a Mobbin pattern conflicts with
-   `design/system`, `design/system` wins, full stop.
+   the current approved design direction or shipped tokens, those current sources win.
 
    **Match the search platform to the surface being designed.** Mobbin's `platform`
    parameter (`ios` / `web`) must reflect what is actually being built: desktop layout
@@ -271,9 +270,9 @@ noise, or flattering the user about a match that isn't actually strong.
 The first version's single worst decision, independently flagged by the research as
 "the single most damaging idea in the first pass": a visual metaphor built on being
 evaluated — report cards, a class register, a teacher's correction pen. Somerville et
-al. (fMRI, n=69) found sensitivity to social evaluation **peaks at ~15.3 years old** —
-almost exactly this product's primary user — with arousal elevated during
-*anticipation*, not only during the evaluation itself. A product about to tell a
+al. (fMRI, n=69) studied heightened adolescent response to peer evaluation and
+*anticipation*. The precise 15.3-year generalisation is not verified by the
+[linked main paper](https://bpb-us-e1.wpmucdn.com/sites.harvard.edu/dist/b/261/files/2023/03/somerville2013_psychsci.pdf); applying it to this UI remains a design inference. A product about to tell a
 15-year-old what it thinks of their choices cannot afford to visually rhyme with being
 graded.
 
@@ -324,8 +323,9 @@ anywhere in this file for that reason.)
   restraint Monzo applies to its coral. Its **only** jobs are the primary CTA, the
   questionnaire's selection state, and the logo. It is banned from body text, from
   long-form reading surfaces, and from dense browsing screens — the exact rule
-  Monzo's own brand book states for its accent. White text on this fill holds
-  4.96:1 (`button-primary`); as text on Surface it holds 4.96:1 in the other
+  Monzo's own brand book states for its accent. Surface-coloured text (`#FAF6EF`) on this fill holds
+  4.96:1 (`button-primary`); pure white would hold 5.35:1. As text on Surface,
+  Primary holds 4.96:1 in the other
   direction, so a rare small-label use stays AA-safe, but the standing rule is:
   reach for weight and space before reaching for Primary.
 - **Primary-strong (#8A3E20):** The same terracotta, darker — hover and active
@@ -349,7 +349,7 @@ anywhere in this file for that reason.)
   colours against black text and found **warm backgrounds — peach, orange, yellow —
   read significantly faster than cool ones**, with the same ordering in both
   dyslexic and control groups. That is a readability finding, not a trust finding —
-  it is cited here for exactly that and no more. Surface is the page and any raised
+  it is cited here for exactly that and no more. The [study](https://www.cs.cmu.edu/~jbigham/pubs/pdfs/2017/colors.pdf) tested adults aged 18–60 and specific coloured backgrounds with black text; it does not establish a reading advantage for these near-white tokens or Czech teenagers. Surface is the page and any raised
   content; Neutral sits a half-step down for cards and rows. Neither is white:
   R≠G≠B in both.
 - **On-surface (#221A13):** Near-black with real warmth, not `#000000`. This is the
@@ -367,7 +367,7 @@ anywhere in this file for that reason.)
   payment), never "this is wrong about you." Derived from the same warm family as
   Primary rather than a stock alert red — closer in hue to Primary than a
   typical error/accent pair, which is intentional: this system has one warm
-  family, not two competing ones. Holds 8.28:1 on Surface.
+  family, not two competing ones. Holds 8.58:1 on Surface.
 - **Error-subtle (#F5E2DC):** Wash of Error, fill behind an invalid input — always
   paired with an icon and written message, never colour alone.
 
@@ -430,12 +430,9 @@ different reason: locked at weight 400 everywhere, it read as hushed and
 document-like once paired with hairline structure. Lora is a warm, sturdy
 editorial serif with conventional letterforms and real italics — it keeps the same
 warm-but-authoritative register the family before it was chosen for, without
-either predecessor's specific failure. It is a static family, not a variable font:
-no `SOFT`/`WONK`/`opsz` axes exist to tune, so weight alone (500–600, per the scale
-below) carries what the axis engagement used to. Full Czech diacritic support.
+either predecessor's specific failure. The [Google Fonts family](https://github.com/google/fonts/blob/main/ofl/lora/METADATA.pb) includes a variable `wght` axis from 400 to 700; it does not expose Fraunces' `SOFT`/`WONK`/`opsz` axes. This historical scale uses weights 500–600. Full Czech diacritic support.
 Fallback: `Lora, Georgia, "Times New Roman", serif`. SIL Open Font License,
-self-hosted target (currently Google Fonts CDN, per `index.html` — see CLAUDE.md's
-"Design tokens — tokens.js" section for the live implementation state).
+self-hosted target in this historical proposal; the shipped app now self-hosts Archivo/Archivo Narrow.
 
 **Public Sans** carries the apparatus — body, labels, buttons, captions, and now
 data. Chosen specifically because its own design brief (USWDS) targets "neutral,
@@ -581,7 +578,7 @@ behaviour **independent of whether it was accurate**.
 The `match-indicator` component here is deliberately built to support **met/unmet
 criteria the student themselves supplied** — reflecting the student's own stated
 values back at them, which structurally cannot be a verdict on the person — rather
-than a headline score. **This is not yet finalized against the real matching
+than a headline score. **Historical unresolved design proposal, superseded by shipped deterministic percentages. This was not finalized against the real matching
 engine** (see `design/research/design_direction_interview.md`, "still open" — the
 founder's preference for a percentage is under active reconsideration against this
 evidence, pending access to the production scoring engine). Whatever is decided,
@@ -625,7 +622,7 @@ one screen in the product where this kind of warmth-building motion belongs
 at all — see the Do's/Don'ts note on why the quiz and results screens are the
 opposite case.
 
-**What ships:**
+**What the historical motion proposal specified:**
 - **Exactly one idle animation**, small and contained — a corner
   illustration, an icon, or a subtle background gradient/shape **float** (a
   gentle, continuous drift with no fixed destination — the closest glossary
@@ -693,7 +690,7 @@ teen/parent reactions before treating this section as fully settled.
 
 ## ⚠️ ANIMATION BUILD INSTRUCTION — DO NOT IMPLEMENT YET
 
-**This motion spec is DESIGN ONLY. Do not build these animations as part of normal frontend UI work.**
+**This historical motion proposal is DESIGN ONLY. The later landing2/WebGL implementation already exists; future changes need their own agreed scope.**
 
 When the user explicitly says to build them:
 1. Use **Claude Design's dedicated animation tool ONLY** — pass this entire "Motion — landing page" section + `design/research/landing_animation_research.md` to that tool

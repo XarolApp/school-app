@@ -192,3 +192,6 @@ Design-reference checkpoint, 11 October: all twelve bases and twelve exact Claud
 
 
 Historical design-research checkpoint, 11 October: six complete research/prompt/interview reads, two verified full design/readme baselines, one complete archived-readme difference and one exact archived guide copy reconcile current facts and source limits. FTC settlement/date/confirmshaming and unsupported precise-age/storage/price/legal/performance claims corrected; current DESIGN YAML is preserved. [Evidence](design-research-verification-2026-10-11.json). Two uploaded variants and primary-source publication/reuse debts remain C39/C44. No product/token/runtime/privacy or legal policy changed; full review stays active.
+
+
+Design cards/uploads checkpoint, 11 October: nineteen complete card/thumbnail/SVG reads and both uploaded DESIGN variants fully reviewed; historical authority and confirmed age/font/contrast facts reconciled with YAML tokens preserved. All sixteen cards visited in an isolated offline browser; three printed contrast ratios and both SVG renders checked. Thumbnail fallback text clipping and two specimen crop heights fixed and verified. [Evidence and limits](design-cards-upload-verification-2026-10-11.json) records font and 150px viewport limits. Active peer code remains deferred; whole-project review and beta deployment clearance remain incomplete.

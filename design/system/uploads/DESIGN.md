@@ -202,6 +202,8 @@ components:
 
 # ŠkolaMatch
 
+> **Historical uploaded design — reconciled 11 October 2026.** This preserves the earlier ŠkolaMatch brand, terracotta palette and Fraunces/Public Sans design proposal; it is not the shipped specification. Current product: **Střední na míru**, self-hosted Archivo/Archivo Narrow, four light/dark palettes and deterministic matching percentages; source authority is `frontend/src/design/tokens.js`, `frontend/src/design/tokens.css`, actual React components and `design/DESIGN.md`. `design/system/` remains an older export (C44). Beta is free for accepted written feedback, including qualifying quick-rating notes; stars/chips alone do not renew, and payment screens are previews without Stripe/card collection. Anonymous landing-dot school details are view-only; current sharing is disabled during beta. Proposed layouts, font hosting, research examples and motion instructions below remain historical intent. The later `frontend/src/pages/landing2/` WebGL landing exists; this document does not authorize replacing it. Current device/accessibility/privacy/payment acceptance is in `reports/deployment-review-2026-10-07/REPORT.md` and `HANDOFF-PLAN.md`.
+
 ## Overview — read this before anything else
 
 This is the **second** DESIGN.md written for ŠkolaMatch. The first one — Archival
@@ -211,7 +213,7 @@ zero errors and was still wrong. Seeing it rendered, the founder's reaction was
 immediate: *it looks like GitHub, n8n, or Supabase.* That diagnosis was correct, and
 this file is the correction, built on two inputs the first version didn't have:
 
-1. **A 131KB sourced research document** (`docs/sources/design_direction_research.md`)
+1. **A historical sourced research document** (`design/research/design_direction_research.md`)
    covering warmth-vs-credibility, teen design psychology, colour-and-trust folklore
    vs. evidence, and anxiety-reduction patterns — with `[SOURCED]`/`[CONTESTED]`/
    `[GAP]` flags throughout. Findings are cited by name below; treat `[INFERENCE]`-
@@ -255,9 +257,9 @@ noise, or flattering the user about a match that isn't actually strong.
 The first version's single worst decision, independently flagged by the research as
 "the single most damaging idea in the first pass": a visual metaphor built on being
 evaluated — report cards, a class register, a teacher's correction pen. Somerville et
-al. (fMRI, n=69) found sensitivity to social evaluation **peaks at ~15.3 years old** —
-almost exactly this product's primary user — with arousal elevated during
-*anticipation*, not only during the evaluation itself. A product about to tell a
+al. (fMRI, n=69) studied heightened adolescent response to peer evaluation and
+*anticipation*. The precise 15.3-year generalisation is not verified by the
+[linked main paper](https://bpb-us-e1.wpmucdn.com/sites.harvard.edu/dist/b/261/files/2023/03/somerville2013_psychsci.pdf); applying it to this UI remains a design inference. A product about to tell a
 15-year-old what it thinks of their choices cannot afford to visually rhyme with being
 graded.
 
@@ -308,8 +310,9 @@ anywhere in this file for that reason.)
   restraint Monzo applies to its coral. Its **only** jobs are the primary CTA, the
   questionnaire's selection state, and the logo. It is banned from body text, from
   long-form reading surfaces, and from dense browsing screens — the exact rule
-  Monzo's own brand book states for its accent. White text on this fill holds
-  4.96:1 (`button-primary`); as text on Surface it holds 4.96:1 in the other
+  Monzo's own brand book states for its accent. Surface-coloured text (`#FAF6EF`) on this fill holds
+  4.96:1 (`button-primary`); pure white would hold 5.35:1. As text on Surface,
+  Primary holds 4.96:1 in the other
   direction, so a rare small-label use stays AA-safe, but the standing rule is:
   reach for weight and space before reaching for Primary.
 - **Primary-strong (#8A3E20):** The same terracotta, darker — hover and active
@@ -333,7 +336,7 @@ anywhere in this file for that reason.)
   colours against black text and found **warm backgrounds — peach, orange, yellow —
   read significantly faster than cool ones**, with the same ordering in both
   dyslexic and control groups. That is a readability finding, not a trust finding —
-  it is cited here for exactly that and no more. Surface is the page and any raised
+  it is cited here for exactly that and no more. The [study](https://www.cs.cmu.edu/~jbigham/pubs/pdfs/2017/colors.pdf) tested adults aged 18–60 and specific coloured backgrounds with black text; it does not establish a reading advantage for these near-white tokens or Czech teenagers. Surface is the page and any raised
   content; Neutral sits a half-step down for cards and rows. Neither is white:
   R≠G≠B in both.
 - **On-surface (#221A13):** Near-black with real warmth, not `#000000`. This is the
@@ -351,7 +354,7 @@ anywhere in this file for that reason.)
   payment), never "this is wrong about you." Derived from the same warm family as
   Primary rather than a stock alert red — closer in hue to Primary than a
   typical error/accent pair, which is intentional: this system has one warm
-  family, not two competing ones. Holds 8.28:1 on Surface.
+  family, not two competing ones. Holds 8.58:1 on Surface.
 - **Error-subtle (#F5E2DC):** Wash of Error, fill behind an invalid input — always
   paired with an icon and written message, never colour alone.
 
@@ -551,8 +554,8 @@ behaviour **independent of whether it was accurate**.
 The `match-indicator` component here is deliberately built to support **met/unmet
 criteria the student themselves supplied** — reflecting the student's own stated
 values back at them, which structurally cannot be a verdict on the person — rather
-than a headline score. **This is not yet finalized against the real matching
-engine** (see `docs/sources/design_direction_interview.md`, "still open" — the
+than a headline score. **Historical unresolved design proposal, superseded by shipped deterministic percentages. This was not finalized against the real matching
+engine** (see `design/research/design_direction_interview.md`, "still open" — the
 founder's preference for a percentage is under active reconsideration against this
 evidence, pending access to the production scoring engine). Whatever is decided,
 one rule from the research is non-negotiable regardless of format: **write every
@@ -574,8 +577,8 @@ tooltips here are for genuinely optional supplementary detail only.
 ## Motion — landing page (úvodní stránka)
 
 **Sourcing:** researched via a dedicated prompt
-(`docs/sources/landing_animation_research_prompt.md`), findings in
-`docs/sources/landing_animation_research.md` (2026-08-28). Unlike the Mobbin
+(`design/research/landing_animation_research_prompt.md`), findings in
+`design/research/landing_animation_research.md` (2026-08-28). Unlike the Mobbin
 citations elsewhere in this file, the researcher had no live-browser/devtools
 access — treat the *pattern classification* below as reliable, and any
 specific "site X currently uses library Y" claim as inference, flagged
@@ -594,7 +597,7 @@ here). The landing page is the one screen in the product where this kind of
 warmth-building motion belongs at all — see the Do's/Don'ts note on why the
 quiz and results screens are the opposite case.
 
-**What ships:**
+**What the historical motion proposal specified:**
 - **Exactly one ambient loop**, small and contained — a corner illustration,
   an icon, or a subtle background gradient/shape drift. Never full-screen,
   never the literal subject of the hero (the headline and CTA stay the focal
@@ -656,10 +659,10 @@ teen/parent reactions before treating this section as fully settled.
 
 ## ⚠️ ANIMATION BUILD INSTRUCTION — DO NOT IMPLEMENT YET
 
-**This motion spec is DESIGN ONLY. Do not build these animations as part of normal frontend UI work.**
+**This historical motion proposal is DESIGN ONLY. The later landing2/WebGL implementation already exists; future changes need their own agreed scope.**
 
 When the user explicitly says to build them:
-1. Use **Claude Design's dedicated animation tool ONLY** — pass this entire "Motion — landing page" section + `docs/sources/landing_animation_research.md` to that tool
+1. Use **Claude Design's dedicated animation tool ONLY** — pass this entire "Motion — landing page" section + `design/research/landing_animation_research.md` to that tool
 2. The animation tool handles implementation (Lottie/Rive/CSS, accessibility, performance), NOT hand-written component CSS
 3. This is a separate, gated pass — do not merge animation implementation into routine frontend tasks
 4. Needs explicit user trigger + right configuration before it runs
