@@ -1,0 +1,119 @@
+{
+  "checked_at_utc": "2026-10-11T21:59:56.475576+00:00",
+  "commit_before": "7b258a1e8755b3da22206687b340768de7ac5aca",
+  "status": "Historical simulation fully reviewed; exact statistics diagnostic fixed. Current scorer and deployment acceptance remain open.",
+  "full_read": {
+    "path": "reports/matching-simulation-2026-10-04.json",
+    "sha256": "dd367d161acb52386f441038ca221d2476b35b18a10537e431cc3742df77cbeb",
+    "original_lines": 6965,
+    "records": 434,
+    "summary_duplicate_records": 60,
+    "table_lines": 441,
+    "completed_ranges": [
+      [
+        1,
+        88
+      ],
+      [
+        89,
+        176
+      ],
+      [
+        177,
+        264
+      ],
+      [
+        265,
+        352
+      ],
+      [
+        353,
+        441
+      ]
+    ],
+    "method": "All434 exact full metric records in ordered school context, names reused only from same exact fully read school log or individually printed exceptions; all60 summary records checked byte-value-equivalent to the complete base row. Every key accounted for; no numbers rounded.",
+    "full_read_table_sha256": "29869a7faa3680a2baf021ddb23df09102180d2de33830061a0f8f18b90f6da6",
+    "name_reuse": "All same-ID names compare exactly with fully read219-school extraction log except individually read IDs15/94/189/221/227. All keys/434 full metric rows/60 summary duplicates and metadata accounted for. Numeric values printed exactly, no rounding during review.",
+    "limits": "Equivalent complete structured content/ordered record read; not new literal reread of repetitive JSON punctuation. Every original field accounted for. Historical source/provider/schema/data accuracy is not certified."
+  },
+  "content_checks": {
+    "questionnaire": {
+      "records": 217,
+      "summary_records_identical": 30,
+      "favoured_order_matches_rounded_rank_and_reversal": true,
+      "correlations_recompute": {
+        "has_cutoff": -0.48,
+        "extracted_fields": -0.03,
+        "obory": -0.1,
+        "programs_text_len": -0.2
+      },
+      "ranked_in_counts": {
+        "5000": 217
+      },
+      "rounded_zero_top10_ids": [
+        222,
+        230,
+        231
+      ],
+      "top10_pct_total": 999.4,
+      "bottom10_pct_total": 1000.2
+    },
+    "onboarding": {
+      "records": 217,
+      "summary_records_identical": 30,
+      "favoured_order_matches_rounded_rank_and_reversal": true,
+      "correlations_recompute": {
+        "has_cutoff": -0.23,
+        "extracted_fields": 0.05,
+        "obory": -0.52,
+        "programs_text_len": -0.65
+      },
+      "ranked_in_counts": {
+        "4998": 186,
+        "4996": 31
+      },
+      "rounded_zero_top10_ids": [],
+      "top10_pct_total": 1000.1,
+      "bottom10_pct_total": 999.9
+    }
+  },
+  "diagnostic_fix": {
+    "before_sha256": "cb35a9533db3b10db7454a72d7fea80baaebe7553a20ee68e4c02f6fde8031a9",
+    "after_sha256": "b285a0204ef40e07983c6c89c6f0b439222fb33d50aa036fb0db9d5b84375444",
+    "method": "Actual simulate/pearson/summarise functions only in isolated VM; N=5000 deterministic once/twice/never/three/always top-ten cohort. No script imports/main, env, database, ranker or provider execution.",
+    "actual_counts": [
+      1,
+      2,
+      0,
+      3,
+      5000
+    ],
+    "old_never_top10": 3,
+    "correct_never_top10": 1,
+    "old_percentages_unchanged": [
+      0,
+      0,
+      0,
+      0.1,
+      100
+    ],
+    "all_existing_row_and_other_summary_fields_unchanged": true,
+    "syntax_check": "node --check scripts/simulate-matching.mjs passed",
+    "same_pattern_search": "Only simulation generator and two historical MD lines use never_top10/rounded-zero never wording; both historical MD statements are qualified now. No other source occurrence found.",
+    "hosted_execution": false
+  },
+  "historical_document_update": {
+    "path": "reports/matching-simulation-2026-10-04.md",
+    "before_sha256": "994862de5a2a8adfaedcd0b80add643bedd3f9c3c33942001ac05ce8e12f1619",
+    "after_sha256": "17788eedd40c9d5dff1aa2cbe0f10b597b58c505bbb986a676ae9c502d646fed",
+    "all60_table_rows_and_numeric_results_preserved": true,
+    "change": "Both never-top10 claims describe stored rounded-zero percentages, with explicit missing raw-count limitation and corrected generator behavior."
+  },
+  "remaining_acceptance": [
+    "C57 still requires exact current eligible194-school data/scorer/version/API parity and generated-answer/selection-distribution acceptance after peer release. No rerun or tuning from historical random preferences.",
+    "Raw snapshot is unchanged and lacks exact top-ten counts; its old three rounded zeros do not establish three schools with no top-ten appearances.",
+    "Ranked_in4996/4998 versus5000 and rounded-percentage sums are historical observations, not newly proven scoring faults. Least-favoured tied rounded ranks correctly reverse original stable sorted order.",
+    "ID221 historical name includes trailing tab/newline; verify current source/name normalization before treating it as served UI error.",
+    "No source matching/questionnaire/schema, beta policy, hosted data, account, billing, migration or provider execution."
+  ]
+}

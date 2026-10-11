@@ -1586,18 +1586,20 @@
     "method": "Current frontend geometry and both source lists fully read with repaired bounded-range gaps; two generator/import exact previous full-read hashes plus complete own patches; both new tests fully written/read. Source-list counts are historical snapshots, not live register completeness. Generated backend numeric literal is separately structurally inspected, not claimed manually read."
   },
   "scripts/simulate-matching.mjs": {
-    "sha256": "cb35a9533db3b10db7454a72d7fea80baaebe7553a20ee68e4c02f6fde8031a9",
-    "lines": 273,
+    "sha256": "b285a0204ef40e07983c6c89c6f0b439222fb33d50aa036fb0db9d5b84375444",
+    "lines": 274,
     "read_ranges": [
       [
         1,
-        273
+        274
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:40:57.647982+00:00",
-    "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
+    "checked_at_utc": "2026-10-11T21:59:56.475576+00:00",
+    "method": "Exact fully reviewed unchanged source baseline plus complete two-line diagnostic diff; actual isolated 5000-run count/percentage invariance replay and syntax/same-pattern checks.",
+    "previous_complete_sha256": "cb35a9533db3b10db7454a72d7fea80baaebe7553a20ee68e4c02f6fde8031a9",
+    "evidence": "simulation-complete-review-2026-10-11.json"
   },
   "tests/extraction-guards.test.cjs": {
     "sha256": "07540af77051e261f6d1b91c2ef7eefa887bab6f768f7250a10cb35be752b1c0",
@@ -2139,20 +2141,20 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "4508b1349dcec9e90e0d010faa4a26d318c352d5e4302d3deb4ae09cc3cbc525",
-    "lines": 1983,
+    "sha256": "797228b56cf6fbe063caa8d2d26f3c36489fd327ed0a524b88be37026184b91f",
+    "lines": 1990,
     "read_ranges": [
       [
         1,
-        1983
+        1990
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-11T21:53:19.289344+00:00",
-    "previous_complete_sha256": "4ec069bc25a47eeebcc53f9e612b8d288f2b62854b9cea50acf18d1b12eab6a7",
-    "method": "Exact fully reviewed unchanged baseline plus complete own appended later-log completion and S10 acceptance qualification.",
-    "evidence": "structure-v3-complete-log-review-2026-10-11.json"
+    "checked_at_utc": "2026-10-11T21:59:56.475576+00:00",
+    "previous_complete_sha256": "4508b1349dcec9e90e0d010faa4a26d318c352d5e4302d3deb4ae09cc3cbc525",
+    "method": "Exact fully reviewed unchanged baseline plus complete own simulation/diagnostic append.",
+    "evidence": "simulation-complete-review-2026-10-11.json"
   },
   "frontend/src/api.js": {
     "sha256": "a545cb179681a87378f41cf928cff50e1ae6c2e539c4bbacf373590af9f8ab8a",
@@ -8299,19 +8301,20 @@
     "previous_complete_sha256": "0dd6fb73a831cff1403c4860fd1ef4a5d9d6b9f42c33c907c022e409c57d31b6"
   },
   "reports/matching-simulation-2026-10-04.md": {
-    "sha256": "994862de5a2a8adfaedcd0b80add643bedd3f9c3c33942001ac05ce8e12f1619",
-    "lines": 95,
+    "sha256": "17788eedd40c9d5dff1aa2cbe0f10b597b58c505bbb986a676ae9c502d646fed",
+    "lines": 97,
     "read_ranges": [
       [
         1,
-        95
+        97
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-11T16:15:06.742199+00:00",
-    "method": "Complete original48/62/318/402/93 lines read: short files/full matching MD in one bounded batch; completion1-105/106-210/211-318 and review1-100/101-202/203-303/304-402. Entire authored narrow diffs inspected.",
-    "previous_complete_sha256": "34bb3af913829a694af435b67678fe5f7112ce0099eafbe28bd2cc023ba04f2b"
+    "checked_at_utc": "2026-10-11T21:59:56.475576+00:00",
+    "method": "Exact fully reviewed unchanged baseline plus complete qualified-wording diff; every numeric table preserved.",
+    "previous_complete_sha256": "994862de5a2a8adfaedcd0b80add643bedd3f9c3c33942001ac05ce8e12f1619",
+    "evidence": "simulation-complete-review-2026-10-11.json"
   },
   "design/paywall-desktop/Current.dc.html": {
     "sha256": "dbd3d3878b69f37cfa76c4c71b8ce47706f94075f9df3955e4a5ba99f57e4a0f",
@@ -10639,5 +10642,20 @@
     "checked_at_utc": "2026-10-11T21:53:19.289344+00:00",
     "method": "All exact original line content read: full dry-a baseline and complete dry-b differences, then every2379 new exact line in68 bounded chunks. All20582 original line hashes reconstructed exactly, followed by all219 school cross-run contexts and footer/count checks. Repeated strings reuse identical read content only; six-field inputs, stored prose, ordered IDs and names verified per school. Historical review does not establish current field accuracy, provider reproducibility or deployment acceptance.",
     "evidence": "structure-v3-complete-log-review-2026-10-11.json"
+  },
+  "reports/matching-simulation-2026-10-04.json": {
+    "sha256": "dd367d161acb52386f441038ca221d2476b35b18a10537e431cc3742df77cbeb",
+    "lines": 6965,
+    "read_ranges": [
+      [
+        1,
+        6965
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T21:59:56.475576+00:00",
+    "method": "All434 exact full metric records in ordered school context, names reused only from same exact fully read school log or individually printed exceptions; all60 summary records checked byte-value-equivalent to the complete base row. Every key accounted for; no numbers rounded. All441 table lines read in five complete ranges; exact field/key/duplicate/name and per-surface context checked. Equivalent complete structured content, not repeated punctuation reread.",
+    "evidence": "simulation-complete-review-2026-10-11.json"
   }
 }

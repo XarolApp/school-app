@@ -1981,3 +1981,10 @@ Three complete unchanged historical artifacts/1257 original lines reviewed, incl
 
 - Three unchanged historical logs are now fully read: 20,582 original lines, all 68 exact unique-line chunks, all 219 cross-run school contexts and footer/count checks. [Evidence](reports/deployment-review-2026-10-07/structure-v3-complete-log-review-2026-10-11.json). Six selected inputs and stored prose match for every school; final outputs differ at 128 and 29 schools relative to the relaxed dry run. Exact historical cleaner/provider settings are absent, so this is not proof of model randomness or a current-data regression.
 - [ ] Complete the existing S10 current provenance/audience/campus/year and ranking-impact plan. Preserve genuine activity positives and existing fee/count/meal rejections; include the documented preschool, primary-grade, teacher, boarder and third-age negative controls. Activity policy remains a pending founder decision. No data/pipeline change or release clearance follows from historical read completion.
+
+
+## C57 — full simulation read and diagnostic correction, 11 October 2026
+
+- All 434 exact historical school metric records, 60 duplicate summary records and metadata are now fully read/accounted for. [Evidence](reports/deployment-review-2026-10-07/simulation-complete-review-2026-10-11.json). Rounded ranks/correlations and summary order agree internally; this does not accept current matching or source data.
+- Fixed the generator’s definite false “never in top 10” count: it now stores `top10_count` and counts actual zero appearances. Offline 5000-run once/twice/never/three/always controls change the incorrect count from 3 to 1 with all old row fields/display percentages and other summary values unchanged; syntax and same-pattern checks pass. Historical MD wording is qualified; raw JSON/tables stay preserved.
+- [ ] Keep C57 current cohort/scorer/API-version/distribution gates open after peer release. The old three rounded-zero results cannot reveal the actual never count without missing raw counts; do not rewrite history or tune weights from this snapshot.

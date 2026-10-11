@@ -4,11 +4,13 @@
 
 5000 náhodných sad odpovědí (seed 1, přeskočení 25 %), 217 škol. Odpovědi jsou rovnoměrně náhodné; výsledek popisuje četnost a pořadí v této syntetické distribuci, nikoli reálnou oblíbenost, kauzální vliv úplnosti dat nebo důkaz férovosti doporučení. „±“ v tabulkách je směrodatná odchylka pořadí, nikoli interval spolehlivosti. Počet skutečných pořadí se může lišit od 5000: uložený onboarding má podle školy 4996/4998 pozorování, standalone 5000.
 
+**Upřesnění četnosti:** původní `never_top10` počítal zaokrouhlené procento `0,0 %`, které může znamenat i jeden nebo dva výskyty z 5000. Snapshot přesné počty výskytů neukládá, proto z jeho tří nulových hodnot nelze ověřit, kolik škol se do top 10 skutečně nedostalo. Generátor od opravy 11. října ukládá `top10_count` a používá skutečnou nulu.
+
 ## Dotazník (/dotaznik, lib/matching.js)
 
 - Škol v pořadí: 217; nikdy neohodnoceno: 0
 - Při rovnoměrném náhodném pořadí 217 škol je srovnávací top-10 baseline 10/217 ≈ 4,6 %; není to podmínka férového personalizovaného doporučení.
-- Škol, které se do top 10 nedostaly ani jednou: 3
+- Škol s uloženým zaokrouhleným podílem v top 10 `0,0 %`: 3
 - Korelace průměrného pořadí s úplností dat (záporná = víc dat → lepší pořadí): {"has_cutoff":-0.48,"extracted_fields":-0.03,"obory":-0.1,"programs_text_len":-0.2}
 
 ### 15 nejzvýhodněnějších
@@ -53,7 +55,7 @@
 
 - Škol v pořadí: 217; nikdy neohodnoceno: 0
 - Při rovnoměrném náhodném pořadí 217 škol je srovnávací top-10 baseline 10/217 ≈ 4,6 %; není to podmínka férového personalizovaného doporučení.
-- Škol, které se do top 10 nedostaly ani jednou: 0
+- Škol s uloženým zaokrouhleným podílem v top 10 `0,0 %`: 0
 - Korelace průměrného pořadí s úplností dat (záporná = víc dat → lepší pořadí): {"has_cutoff":-0.23,"extracted_fields":0.05,"obory":-0.52,"programs_text_len":-0.65}
 
 ### 15 nejzvýhodněnějších

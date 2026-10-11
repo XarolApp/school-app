@@ -178,6 +178,7 @@ function simulate(name, schools, makeAnswers, rank) {
       ranked_in: st.count,
       mean_rank: mean && Math.round(mean * 10) / 10,
       sd_rank: sd && Math.round(sd * 10) / 10,
+      top10_count: st.top10,
       top10_pct: Math.round((st.top10 / N) * 1000) / 10,
       bottom10_pct: Math.round((st.bottom10 / N) * 1000) / 10,
       mean_score: st.count ? Math.round((st.scoreSum / st.count) * 10) / 10 : null,
@@ -217,7 +218,7 @@ function summarise(rows) {
     rank_vs_completeness_correlation: corr,
     most_favoured: byMean.slice(0, 15),
     least_favoured: byMean.slice(-15).reverse(),
-    never_top10: ranked.filter((r) => r.top10_pct === 0).length,
+    never_top10: ranked.filter((r) => r.top10_count === 0).length,
   };
 }
 
