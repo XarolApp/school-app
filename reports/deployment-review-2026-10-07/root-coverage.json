@@ -2141,20 +2141,18 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "81e443cbabd1ee7a4bc7249a8ce6ab8432adb24852c8c719b83ac1d68eb43389",
-    "lines": 1997,
+    "sha256": "65de1d69c93940bc2a8ea3ccd38db373a60be35c79341c450bb07ba6298c1c8e",
+    "lines": 2000,
     "read_ranges": [
       [
         1,
-        1997
+        2000
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-11T22:13:46.745460+00:00",
-    "previous_complete_sha256": "797228b56cf6fbe063caa8d2d26f3c36489fd327ed0a524b88be37026184b91f",
-    "method": "Exact fully read unchanged baseline plus complete own current-admission/provenance/partial-backup qualification append.",
-    "evidence": "admission-source-scope-followup-2026-10-12.json"
+    "checked_at_utc": "2026-10-11T22:27:26.884757+00:00",
+    "method": "Prior fully-read hash-matched ledger prefix preserved; this exact source/campus evidence suffix authored/read. Current release gates preserved."
   },
   "frontend/src/api.js": {
     "sha256": "a545cb179681a87378f41cf928cff50e1ae6c2e539c4bbacf373590af9f8ab8a",
@@ -10657,5 +10655,19 @@
     "checked_at_utc": "2026-10-11T21:59:56.475576+00:00",
     "method": "All434 exact full metric records in ordered school context, names reused only from same exact fully read school log or individually printed exceptions; all60 summary records checked byte-value-equivalent to the complete base row. Every key accounted for; no numbers rounded. All441 table lines read in five complete ranges; exact field/key/duplicate/name and per-surface context checked. Equivalent complete structured content, not repeated punctuation reread.",
     "evidence": "simulation-complete-review-2026-10-11.json"
+  },
+  "reports/api-comparison/backup-before-full-run.json": {
+    "sha256": "f0b2b51fced5eb2c8e521d6135aa0a16c18c57fb9c451266ac5e15699e066420",
+    "lines": 6468,
+    "read_ranges": [
+      [
+        1,
+        6468
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T22:27:26.884757+00:00",
+    "method": "Every original23-field record parsed with duplicate-key detection; every novel exact string read in full with first school/field context, exact previous string-value reuse only, followed by all220 complete ordered/nonnull/null per-record contexts. Numeric/bool/null/object/array fields preserved. No full-read receipt until every chunk and table is actually read. All1236 novel exact strings,211 exact previous values with45 current hash-matched full receipts and all22023-field contexts read; original records reconstructed exactly. Original untouched. Historical factual/source review is not current official-source/provider/release acceptance."
   }
 }

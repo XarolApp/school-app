@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-11T22:15:04.481583+00:00",
-  "commit": "ffde7d06122f0cb7b3e5a8ddd56dbcc62005b10f",
+  "checked_at_utc": "2026-10-11T22:28:41.862999+00:00",
+  "commit": "e2c4c5be108735e0c2239c230b0afb302cd7cfce",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "current_full_read": 775,
+    "current_full_read": 776,
     "binary_requires_asset_check": 105,
-    "pending_or_changed": 19,
-    "generated_or_audit_artifact": 204,
+    "pending_or_changed": 18,
+    "generated_or_audit_artifact": 205,
     "removed_or_missing": 2
   },
   "files": [
@@ -993,8 +993,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "81e443cbabd1ee7a4bc7249a8ce6ab8432adb24852c8c719b83ac1d68eb43389",
-      "lines": 1997,
+      "sha256": "65de1d69c93940bc2a8ea3ccd38db373a60be35c79341c450bb07ba6298c1c8e",
+      "lines": 2000,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -5455,8 +5455,10 @@
       "path": "reports/api-comparison/backup-before-full-run.json",
       "sha256": "f0b2b51fced5eb2c8e521d6135aa0a16c18c57fb9c451266ac5e15699e066420",
       "lines": 6468,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/backup-before-real-run.json",
@@ -6619,22 +6621,22 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "db0137eb61f5eaf0e90097b956a4495cd8fd2587a3baea483aa4882902c29a8a",
-      "lines": 556,
+      "sha256": "48f634cc58d54a1dc6d4bf4eaa399eff21909550814dd5189888014fa23536f7",
+      "lines": 562,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "eb785aa17ece6943dacadc3f4b098464c7642d7a6b42ca9f2574b1983afb83c7",
-      "lines": 329,
+      "sha256": "1f7e6bfed93197f3da812dc83972430c465b0391191e37be403c260b24893289",
+      "lines": 332,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "398ddaa93818ba2b1da5586fa453bc648aea75074b54e9d61270b8b56de731a2",
-      "lines": 257,
+      "sha256": "77feab7dcb1bddbe6574c79fd5576c1740aba67fcceb778577a47922adb260d1",
+      "lines": 260,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -7004,8 +7006,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "03442fd445b70a1667f7796732f586fa1b7c7d46fd1190a54f831cc9e7a29515",
-      "lines": 628,
+      "sha256": "7936e8eb8f0fd5a303fe4b2b88611bcd83c75db2f142b8a2365b7d3799d4ff41",
+      "lines": 633,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -7018,8 +7020,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "5d24cc22904bfd6ef8258dbb190048eab86cb357a140975c93e7852856445b67",
-      "lines": 9296,
+      "sha256": "63e75efc61d9e22cb509aba398b5c21c833cf0f1f69c7c3719bbf2a7285cbe6d",
+      "lines": 9312,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -7405,6 +7407,13 @@
       "path": "reports/deployment-review-2026-10-07/frontend-npm-prod-audit-refresh-2026-10-10.json",
       "sha256": "4610514d5640834408665b61d22c2630f7ffcc6639bad0de2d613cacc0f1d9cc",
       "lines": 22,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/full-backup-complete-review-2026-10-12.json",
+      "sha256": "1cfc77f3a3b30599bed140868f6614c2226b40d68d2246c8d232a38c7adfd26a",
+      "lines": 656,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -8323,8 +8332,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "f10e51ab1f140cc8522406e1813becd83c32b68ce941f026f6747e9a196098f3",
-      "lines": 10661,
+      "sha256": "90c513cae07b28d70bafd98fc5599bc6f6c4b50155bea83ab48e175a0ceaed6e",
+      "lines": 10673,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },

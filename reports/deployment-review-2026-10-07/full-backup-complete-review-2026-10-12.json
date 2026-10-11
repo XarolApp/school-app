@@ -1,0 +1,656 @@
+{
+  "checked_at_utc": "2026-10-11T22:27:26.884757+00:00",
+  "commit_before": "e2c4c5be108735e0c2239c230b0afb302cd7cfce",
+  "status": "Complete historical backup read and bounded current public qualification. Whole-project review and release acceptance remain open.",
+  "original": {
+    "path": "reports/api-comparison/backup-before-full-run.json",
+    "sha256": "f0b2b51fced5eb2c8e521d6135aa0a16c18c57fb9c451266ac5e15699e066420",
+    "original_lines": 6468,
+    "records": 220,
+    "keys": [
+      "school_id",
+      "skolne_poplatky",
+      "obedy_ubytovani",
+      "krouzky_aktivity",
+      "maturita_uspesnost",
+      "vs_uplatneni",
+      "uplatneni_po_vyuceni",
+      "source_urls",
+      "model",
+      "extracted_at",
+      "tuition_czk_per_year",
+      "maturita_pass_rate_pct",
+      "zacatek_hodin",
+      "ma_dodatecne_pozadavky",
+      "pripijimaci_pozadavky_detail",
+      "alternativni_pedagogika",
+      "vyukovy_styl_detail",
+      "ma_jidelnu",
+      "ma_koleje",
+      "krouzky_kategorie",
+      "pocet_krouzku",
+      "vyukovy_styl_tagy",
+      "vs_pokracuje_pct"
+    ],
+    "unique_strings": 1447,
+    "known_reused_strings": 211,
+    "new_strings": 1236,
+    "method": "Every original23-field record parsed with duplicate-key detection; every novel exact string read in full with first school/field context, exact previous string-value reuse only, followed by all220 complete ordered/nonnull/null per-record contexts. Numeric/bool/null/object/array fields preserved. No full-read receipt until every chunk and table is actually read."
+  },
+  "read_proof": {
+    "all23_new_string_chunks_read": true,
+    "new_string_range": [
+      1,
+      1236
+    ],
+    "all220_ordered_context_records_read": true,
+    "context_table_lines_read": [
+      1,
+      222
+    ],
+    "reconstructed_all_original_records_exactly": true,
+    "reused_exact_strings_match_unchanged_complete_receipts": true,
+    "reused_source_files": [
+      "reports/api-comparison/backup-before-real-run.json",
+      "reports/api-comparison/lost-values.json",
+      "reports/api-comparison/tuition-check/218.json",
+      "reports/api-comparison/tuition-check/200.json",
+      "reports/structure-v3/dry-relaxed.txt",
+      "reports/codex-comparison/orig-a/23.json",
+      "reports/api-comparison/orig-a/23.json",
+      "reports/codex-comparison/orig-a/9.json",
+      "reports/api-comparison/filtered/104.json",
+      "reports/api-comparison/orig-a/104.json",
+      "reports/codex-comparison/orig-b/104.json",
+      "reports/api-comparison/tuition-check/127.json",
+      "reports/codex-comparison/orig-a/125.json",
+      "reports/api-comparison/orig-a/125.json",
+      "reports/api-comparison/tuition-check/196.json",
+      "reports/api-comparison/orig-a/135.json",
+      "reports/api-comparison/filtered/135.json",
+      "reports/codex-comparison/orig-b/135.json",
+      "reports/api-comparison/filtered/170.json",
+      "reports/codex-comparison/filtered/170.json",
+      "reports/api-comparison/tuition-check/148.json",
+      "reports/api-comparison/tuition-check/7.json",
+      "reports/api-comparison/filtered/48.json",
+      "reports/api-comparison/orig-a/60.json",
+      "reports/api-comparison/filtered/146.json",
+      "reports/codex-comparison/orig-a/146.json",
+      "reports/api-comparison/orig-a/146.json",
+      "reports/api-comparison/tuition-check/203.json",
+      "reports/codex-comparison/filtered/212.json",
+      "reports/codex-comparison/filtered/8.json",
+      "reports/codex-comparison/orig-b/8.json",
+      "reports/api-comparison/filtered/8.json",
+      "reports/codex-comparison/orig-a/62.json",
+      "reports/api-comparison/orig-b/62.json",
+      "reports/api-comparison/orig-a/62.json",
+      "reports/api-comparison/orig-a/111.json",
+      "reports/api-comparison/filtered/111.json",
+      "reports/codex-comparison/filtered/199.json",
+      "reports/api-comparison/orig-a/199.json",
+      "reports/codex-comparison/orig-a/199.json",
+      "reports/api-comparison/orig-b/199.json",
+      "reports/api-comparison/tuition-check/206.json",
+      "reports/api-comparison/tuition-check/201.json",
+      "reports/api-comparison/tuition-check/205.json",
+      "reports/api-comparison/tuition-check/207.json"
+    ],
+    "format_note": "Whitespace-only JSON punctuation is parsed; every key, original value, type, array order and per-school attribution is preserved. This is full exact content/context accounting, not a claim of literal punctuation rereading or official data correctness."
+  },
+  "structural_checks": {
+    "record_count": 220,
+    "same_order_23_keys": true,
+    "unique_ids": 220,
+    "field_nonnull_counts": {
+      "school_id": 220,
+      "skolne_poplatky": 78,
+      "obedy_ubytovani": 104,
+      "krouzky_aktivity": 112,
+      "maturita_uspesnost": 174,
+      "vs_uplatneni": 53,
+      "uplatneni_po_vyuceni": 15,
+      "source_urls": 219,
+      "model": 219,
+      "extracted_at": 220,
+      "tuition_czk_per_year": 32,
+      "maturita_pass_rate_pct": 176,
+      "zacatek_hodin": 39,
+      "ma_dodatecne_pozadavky": 90,
+      "pripijimaci_pozadavky_detail": 131,
+      "alternativni_pedagogika": 100,
+      "vyukovy_styl_detail": 90,
+      "ma_jidelnu": 0,
+      "ma_koleje": 0,
+      "krouzky_kategorie": 0,
+      "pocet_krouzku": 0,
+      "vyukovy_styl_tagy": 0,
+      "vs_pokracuje_pct": 0
+    },
+    "models": {
+      "openai/gpt-4o-mini": 154,
+      "anthropic/claude-haiku-4.5": 24,
+      "openai/gpt-6-luna": 41,
+      "null": 1
+    },
+    "invalid_source_values": [
+      {
+        "school_id": 169,
+        "field": "ma_dodatecne_pozadavky",
+        "value": true,
+        "issue": "non-string citation"
+      },
+      {
+        "school_id": 185,
+        "field": "ma_dodatecne_pozadavky",
+        "value": true,
+        "issue": "non-string citation"
+      },
+      {
+        "school_id": 194,
+        "field": "maturita_pass_rate_pct",
+        "value": 95,
+        "issue": "non-string citation"
+      },
+      {
+        "school_id": 20,
+        "field": "obedy_ubytovani",
+        "value": "http://www.dostihovaskola.cz/stravovani, http://www.dostihovaskola.cz/ubytovani",
+        "issue": "multiple or invalid URL"
+      },
+      {
+        "school_id": 70,
+        "field": "ma_dodatecne_pozadavky",
+        "value": true,
+        "issue": "non-string citation"
+      },
+      {
+        "school_id": 209,
+        "field": "maturita_pass_rate_pct",
+        "value": 95.8,
+        "issue": "non-string citation"
+      },
+      {
+        "school_id": 209,
+        "field": "alternativni_pedagogika",
+        "value": true,
+        "issue": "non-string citation"
+      },
+      {
+        "school_id": 128,
+        "field": "maturita_pass_rate_pct",
+        "value": 100,
+        "issue": "non-string citation"
+      },
+      {
+        "school_id": 172,
+        "field": "alternativni_pedagogika",
+        "value": true,
+        "issue": "non-string citation"
+      },
+      {
+        "school_id": 114,
+        "field": "ma_dodatecne_pozadavky",
+        "value": true,
+        "issue": "non-string citation"
+      },
+      {
+        "school_id": 114,
+        "field": "maturita_pass_rate_pct",
+        "value": 99,
+        "issue": "non-string citation"
+      },
+      {
+        "school_id": 195,
+        "field": "zacatek_hodin",
+        "value": 9,
+        "issue": "non-string citation"
+      },
+      {
+        "school_id": 195,
+        "field": "maturita_pass_rate_pct",
+        "value": 100,
+        "issue": "non-string citation"
+      },
+      {
+        "school_id": 197,
+        "field": "ma_dodatecne_pozadavky",
+        "value": true,
+        "issue": "non-string citation"
+      },
+      {
+        "school_id": 197,
+        "field": "maturita_pass_rate_pct",
+        "value": 94,
+        "issue": "non-string citation"
+      }
+    ]
+  },
+  "citation_qualification": {
+    "nonstring_citations": 14,
+    "joined_url_citations": 1,
+    "literal_field_key_missing_count": 427,
+    "limit": "Missing identical source key is not proof that no supporting source exists: same-row related citations, importer ownership and source-year/cohort need reconciliation. Historical invalid values are not all current exposure. Current extractor copies truthy raw.source_urls entries without type/URL validation at1006/1016/1026; main/model/database paths were never run."
+  },
+  "maturita_arithmetic": {
+    "rows": 174,
+    "all_exact_registered_count_ratios_and_numeric_columns_agree": true,
+    "rounding_method": "Decimal one-decimal ROUND_HALF_UP; Python binary round-to-even produces a false mismatch for77/80=96.25→96.3.",
+    "false_alarm_avoided": {
+      "school_id": 108,
+      "passed": 77,
+      "registered": 80,
+      "exact_pct": 96.25,
+      "served_historical_pct": 96.3,
+      "explanation": "Half-up rounding is coherent. Python round-to-even rounding incorrectly suggests96.2; no percentage bug."
+    },
+    "official_year_source_redizo_and_denominator_acceptance": "Still separate; all174 arithmetic agreements do not verify Cermat cohort definitions or matching."
+  },
+  "historical_correction_candidates": [
+    {
+      "school_id": 67,
+      "ref": "U0059/U0061",
+      "note": "Historical secondary-school admission detail requires already completed maturita and cites VOŠG second-round2026/27 page; applicability to ninth-grade eligible SŠ needs current per-field scope verification."
+    },
+    {
+      "school_id": 186,
+      "ref": "U0098/U0105/U0106",
+      "note": "Historical meal quote explicitly ages11–14; teaching detail explicitly preschool Začít spolu;2027 examination dates need programme6/8-vs4-year attribution before use for ninth graders. No currently served wrong date/style claimed."
+    },
+    {
+      "school_ids": [
+        183,
+        182,
+        169,
+        165
+      ],
+      "ref": "U0003/U0006/U0009/U0017/U0049/U0052",
+      "note": "Primary-school URL, boarding activities/facilities and school-level sports/chess schedules require actual eligible audience/year mapping, not blanket removal."
+    },
+    {
+      "school_id": 184,
+      "ref": "U0079/U0081/U0084",
+      "note": "Historical2026 Cermat pass-rate prose coexists with school URLs for2025 outcomes/profile topics. Check actual indicator/year/denominator/provenance; arithmetic and percentage are checked separately after complete record read."
+    },
+    {
+      "school_id": 30,
+      "ref": "U0153/U0157",
+      "note": "Sociální činnost description requires prior three-year apprenticeship; programme-level eligibility/after-nine scope must remain separate from ordinary Pečovatel/Ošetřovatel entry facts."
+    },
+    {
+      "school_ids": [
+        218,
+        217,
+        23,
+        63,
+        222
+      ],
+      "ref": "U0065/U0070/U0107/U0136/U0023",
+      "note": "Preserve conditional scholarship/programme/year/month-count/meal-age/future-club availability qualifications. A planned club is not a current offered club. No historical fees/counts restored automatically."
+    },
+    {
+      "school_id": 69,
+      "ref": "U0210",
+      "note": "Historical start-time citation explicitly /zshome, requires actual SŠ timetable scope before restoration/current serving claim."
+    },
+    {
+      "school_ids": [
+        81,
+        82,
+        89,
+        54
+      ],
+      "ref": "U0225/U0229/U0236/U0247/U0295/U0298/U0348",
+      "note": "Distance/eight-year/VOŠ/nástavba programme form and prerequisites mix in school-level facts; coordinate applicable ninth-grade programme mapping. Do not blindly reuse or infer current exposure."
+    },
+    {
+      "school_id": 93,
+      "ref": "U0327",
+      "note": "January2027 conservatoire date must be checked against latest2027-specific ministry timetable; annual rules may differ. No date error asserted."
+    },
+    {
+      "school_ids": [
+        36,
+        79,
+        87,
+        88,
+        100,
+        230
+      ],
+      "ref": "U0192/U0194/U0270/U0281/U0369/U0381/U0386",
+      "note": "Approximate70/30 weights agree with100/140 versus40/140, so not arithmetic error. Older2022 meal price, school-opening-day start-time, future club publication,2025/26fee, multi-year admission rate and non-answer admission boilerplate need source/year/indicator/context checks."
+    },
+    {
+      "school_ids": [
+        14,
+        104,
+        92,
+        106,
+        109,
+        110
+      ],
+      "ref": "U0389/U0391/U0401/U0403/U0406/U0408/U0417/U0428/U0439/U0443",
+      "note": "Historical activities mix senior programmes, marketing and actual pupils; employment bonus/company conditions, fee/form/campus and age brackets need source/programme/year qualification.160-point admission weighting itself is coherent; no current field error established."
+    },
+    {
+      "school_id": 103,
+      "ref": "U0397",
+      "note": "Historical requirement says a new JPZ in both first and second rounds. Current primary Cermat rules use first-round JPZ results in second round. Current served detail must be checked before a current correction; no live exposure yet claimed."
+    },
+    {
+      "school_ids": [
+        99,
+        194,
+        105,
+        20,
+        113,
+        112
+      ],
+      "ref": "U0437/U0448/U0453/U0463/U0475/U0478",
+      "note": "Guest/adult dorm audience, Stodulky-campus start-time citation,2024/25 tuition, comma-joined citation URL string, Mensa admission scope and open-day start-time citation need field/audience/year/source checks. School20 employment includes nastavba; school112 programme-payment/null meal concern has separate current-cleaner evidence. No historical facts blindly restored."
+    },
+    {
+      "school_ids": [
+        116,
+        118,
+        209,
+        213,
+        127,
+        124,
+        221,
+        224
+      ],
+      "ref": "U0491/U0504/U0524/U0535/U0552/U0555/U0574/U0583",
+      "note": "Historical older admission-year URL, programme medical requirements, primary-school/preschool context, dated2025/26 tuition, programme-distinct fees, future2027/28 tuition including childcare and transfer-exam requirements require current-year/audience/programme attribution. Not current bugs until current field checked."
+    },
+    {
+      "school_ids": [
+        128,
+        132,
+        135,
+        161,
+        164,
+        168,
+        171,
+        173,
+        174
+      ],
+      "ref": "U0613/U0633/U0662/U0664/U0676/U0685/U0699/U0704/U0707",
+      "note": "Historical2026 application deadline, PO(R)G Ostrava tuition citation in Prague cohort, previous-apprenticeship entry and primary/preparatory/druzina content require scope isolation.173/174 meal text is childcare payment, not meal availability. Ratios/age-specific meal calculations are checked separately; no automatic old data restoration."
+    },
+    {
+      "school_id": 137,
+      "ref": "U0654",
+      "note": "Historical acceptance detail cites older353/2016 regulation. Verify actual current statutory basis/year before displaying as current legal requirements; no legal-source or hosted correction performed."
+    },
+    {
+      "school_ids": [
+        43,
+        148,
+        7,
+        150,
+        152,
+        122,
+        158,
+        114,
+        34
+      ],
+      "ref": "U0725/U0727/U0784/U0806/U0809/U0813/U0833/U0886/U0896/U0908/U0909/U0933",
+      "note": "Historical2020 results citation/truncated mixed-nastavba admission prose, prima-only future fee, English school copy,2024 deadline/tuition, four-versus-eight-year fee, preparation-course fee, possible VOS fee, lower-gym admissions/teaching and one-programme STORYLINE need audience/year/indicator/current source verification. Avoid blanket eligibility/category/fee restoration."
+    },
+    {
+      "school_ids": [
+        78,
+        130,
+        114,
+        13
+      ],
+      "ref": "U0760/U0618/U0901/U0915",
+      "note": "Acceptance in university, applications sent, possible continuation and actual student continuation are different indicators. Numeric ranges and claims need cohort/year/denominator proof before converting to vs_pokracuje_pct; no current numeric discrepancy asserted."
+    },
+    {
+      "school_ids": [
+        12,
+        16,
+        51,
+        146,
+        86,
+        123,
+        211,
+        95,
+        136,
+        203,
+        216,
+        212,
+        215,
+        8,
+        62,
+        111,
+        199,
+        195,
+        162,
+        206
+      ],
+      "ref": "U0946/U0952/U0954/U0965/U0993/U1008/U1017/U1027/U1028/U1029/U1047/U1057/U1059/U1068/U1070/U1079/U1084/U1086/U1089/U1096/U1097/U1100/U1104/U1106/U1129/U1131/U1136",
+      "note": "Historical per-programme/form/semester/year tuition and extra practical/IB fees, scholarship/gender/sibling conditions, boarding availability, eight-year/transfer entry,2014/2019 criteria,2023/24fees,2025/26/2026 exam dates, curriculum as extracurricular activity and monthly tuition without billed-month count require precise source mapping. Candidate-only; preserve explicit source qualifiers and do not restore or change current catalogue policy."
+    },
+    {
+      "school_ids": [
+        191,
+        193,
+        201,
+        202,
+        205,
+        32
+      ],
+      "ref": "U1165/U1175/U1179/U1188/U1197/U1221/U1224/U1226/U1235/U1236",
+      "note": "Historical preschool-daycare price, Sokolov-campus meal citation, police admission weights62.25+31.25+6.25=99.75, eight-year first-year fee,2025/26 fee, lower-gym club availability, transfer-exam page and online programme prerequisites need source/current programme verification. Current source exposure not yet checked; do not autochange extracted quote or claim current numeric error."
+    }
+  ],
+  "public_gets": [
+    {
+      "school_id": 7,
+      "url": "https://school-app-production-be43.up.railway.app/api/schools/7",
+      "started_at_utc": "2026-10-11T22:23:13.700696+00:00",
+      "status": 200,
+      "response_sha256": "de733bd65eddb7572dc41d911f3ee3a2deb6ffc1fe0067d7d30458f97234dcfe",
+      "name": "Gymnázium FOSTRA International s. r. o.",
+      "website": "http://www.fostra.cz/",
+      "error": null
+    },
+    {
+      "school_id": 103,
+      "url": "https://school-app-production-be43.up.railway.app/api/schools/103",
+      "started_at_utc": "2026-10-11T22:23:13.701111+00:00",
+      "status": 200,
+      "response_sha256": "93b91e23166db82c607f3d832ceb4e4a3985eb27e67d1ed6b99ba8ecc0ecbf33",
+      "name": "Škola Kavčí hory - Mateřská škola, Základní škola a Střední odborná škola služeb, Praha 4, K Sídlišti 840",
+      "website": "http://www.ksidlisti.cz/",
+      "error": null
+    },
+    {
+      "school_id": 132,
+      "url": "https://school-app-production-be43.up.railway.app/api/schools/132",
+      "started_at_utc": "2026-10-11T22:23:14.074548+00:00",
+      "status": 200,
+      "response_sha256": "70dfc688b7aafc4e047ffead211b1a1d5cce132d6e5425ac10aac73bb1649cff",
+      "name": "PORG - gymnázium, základní škola a mateřská škola, o.p.s.",
+      "website": "http://www.porg.cz/",
+      "error": null
+    },
+    {
+      "school_id": 137,
+      "url": "https://school-app-production-be43.up.railway.app/api/schools/137",
+      "started_at_utc": "2026-10-11T22:23:14.121478+00:00",
+      "status": 200,
+      "response_sha256": "5a6a4b6394dbfda63ed8f4c3d6ed7ac386ae003f364250703f96a10295c883ce",
+      "name": "Gymnázium, Praha 9, Českolipská 373",
+      "website": "http://www.ceskolipska.cz/",
+      "error": null
+    },
+    {
+      "school_id": 173,
+      "url": "https://school-app-production-be43.up.railway.app/api/schools/173",
+      "started_at_utc": "2026-10-11T22:23:14.411720+00:00",
+      "status": 200,
+      "response_sha256": "b12731ae079bf95bf7e4f578a0d57fdb7d87c1a188fc3bfdc9e47298e9b35e65",
+      "name": "Střední škola, Základní škola a Mateřská škola, Praha 10, Chotouňská 476",
+      "website": "http://www.chotounska.cz/",
+      "error": null
+    },
+    {
+      "school_id": 192,
+      "url": "https://school-app-production-be43.up.railway.app/api/schools/192",
+      "started_at_utc": "2026-10-11T22:23:14.498915+00:00",
+      "status": 200,
+      "response_sha256": "3feccbaa013ea76e53c6b79d410861f9dac59d62dacab96c5def97a0fb95e507",
+      "name": "G.A.P.education, střední škola s.r.o.",
+      "website": "http://www.gape.cz/",
+      "error": null
+    },
+    {
+      "school_id": 193,
+      "url": "https://school-app-production-be43.up.railway.app/api/schools/193",
+      "started_at_utc": "2026-10-11T22:23:14.750807+00:00",
+      "status": 200,
+      "response_sha256": "ad0f00266e6095e46a37c78a6e08e3f6c9b896b71e426a92d70b56bd81e8cad9",
+      "name": "Vyšší policejní škola a Střední policejní škola Ministerstva vnitra v Praze",
+      "website": "http://www.skolamv.cz/",
+      "error": null
+    },
+    {
+      "school_id": 196,
+      "url": "https://school-app-production-be43.up.railway.app/api/schools/196",
+      "started_at_utc": "2026-10-11T22:23:14.820341+00:00",
+      "status": 200,
+      "response_sha256": "d9add8d35b79f66770d1d550ae5249b5cd3189644e370b05c72c436586940e21",
+      "name": "Anglo - německá obchodní akademie a.s.",
+      "website": "http://www.anoa.cz/",
+      "error": null
+    }
+  ],
+  "current_qualifications": {
+    "7": "Old wholly English paragraphs are now Czech descriptions with original programme labels; numeric tuition is null. Programme discount/year/fee proof remains S10, not a current all-English wording bug.",
+    "103": "Old first-and-second-round new-JPZ assertion absent: current text requires a JPZ result without the historical second-round claim. No current second-round wording bug.",
+    "137": "Old353/2016 regulation reference absent from current admission detail; current text separates four-year JPZ/grades/olympiads. No current obsolete-regulation claim.",
+    "173": "Old childcare-payment meal prose absent; current text describes actual canteen/age prices. School-specific over15 wording still needs primary age-bracket confirmation before exact15 correction.",
+    "192": "Old20,000-per-semester stored as annual20,000 is corrected live: text and numeric annual40,000 agree.",
+    "196": "Old23,450-per-semester stored as annual23,450 is corrected live: text and annual46,900 agree.",
+    "193": "Old62.25/31.25/6.25 weight total99.75 absent. Current text explicitly distinguishes Prague and Sokolov meal/accommodation, so no current unqualified Sokolov-only meal claim. Some current source URLs retain literal HTML &amp; entities; click/normalization validity needs verification, not a proven UI failure."
+  },
+  "confirmed_current_campus_mismatch": {
+    "school_id": 132,
+    "public_location": "Lindnerova 517/3, Libeň, 180 00 Praha 8",
+    "public_coordinates": [
+      50.1122325,
+      14.4729657
+    ],
+    "public_redizo": "600006018",
+    "eligible_programmes": [
+      {
+        "id": 6031,
+        "rok": 2024,
+        "kkov": "79-41-K/41",
+        "cutoff": 83,
+        "prijati": 26,
+        "kapacita": 26,
+        "zamereni": "4leté Nový PORG",
+        "maturitni": true,
+        "prihlasky": 96,
+        "school_id": 132,
+        "typ_skoly": "Gymnázia 4letá",
+        "obor_nazev": "Gymnázium",
+        "zrizovatel": "soukromé",
+        "jpz_povinna": true,
+        "delka_studia": 4,
+        "jazyk_studia": "Český",
+        "forma_vzdelavani": "den"
+      },
+      {
+        "id": 6820,
+        "rok": 2025,
+        "kkov": "79-41-K/41",
+        "cutoff": 75,
+        "prijati": 26,
+        "kapacita": 26,
+        "zamereni": "4leté Nový PORG, Praha 4",
+        "maturitni": true,
+        "prihlasky": 69,
+        "school_id": 132,
+        "typ_skoly": "Gymnázia 4letá",
+        "obor_nazev": "Gymnázium",
+        "zrizovatel": "soukromé",
+        "jpz_povinna": true,
+        "delka_studia": 4,
+        "jazyk_studia": "Český",
+        "forma_vzdelavani": "den"
+      },
+      {
+        "id": 7356,
+        "rok": 2026,
+        "kkov": "79-41-K/41",
+        "cutoff": 83,
+        "prijati": 26,
+        "kapacita": 26,
+        "zamereni": "4leté Nový PORG Praha 4",
+        "maturitni": true,
+        "prihlasky": 76,
+        "school_id": 132,
+        "typ_skoly": "Gymnázia 4letá",
+        "obor_nazev": "Gymnázium",
+        "zrizovatel": "soukromé",
+        "jpz_povinna": true,
+        "delka_studia": 4,
+        "jazyk_studia": "Český s výukou vybraných předmětů v cizím jazyce",
+        "forma_vzdelavani": "den"
+      }
+    ],
+    "public_tuition_text": "Roční školné na gymnáziu PORG Ostrava činí pro školní rok 2026/27 144 600 Kč. Cena je uvedena pro toto gymnázium.",
+    "public_annual_tuition": 144600,
+    "public_tuition_source": "https://www.porg.cz/porg-ostrava/gymnazium-ostrava/pro-uchazece/",
+    "public_admission_source": "https://www.porg.cz/porg-ostrava/gymnazium-ostrava/pro-uchazece/",
+    "public_extracted_at": "2026-10-10T21:12:53.325+00:00",
+    "primary_sources": [
+      {
+        "url": "https://www.porg.cz/porg-ostrava/gymnazium-ostrava/pro-uchazece/",
+        "bounded_facts": "The page attributes144,600 to Ostrava2026/27 and the cited admission branch to eight-year prima, not Prague four-year. All231 returned lines read."
+      },
+      {
+        "url": "https://www.porg.cz/novy-porg-praha/",
+        "bounded_facts": "The site distinguishes four-year/eight-year Prague4 campus. All306 returned lines read."
+      },
+      {
+        "url": "https://www.porg.cz/novy-porg-praha/4lete-gymnazium/pro-uchazece/",
+        "bounded_facts": "Prague4 four-year tuition199,100 in2026/27;2027 admission lists JPZ and school OSP. All296 returned lines read."
+      },
+      {
+        "url": "https://www.porg.cz/kontakt/",
+        "bounded_facts": "Shared REDIZO600006018 has Liben billing address; NovyPORG campus Pod Krcskym lesem1300/25 Prague4. Relevant source context65–164 read; no full325-line contact-page claim."
+      }
+    ],
+    "tuition_difference_for_same_stated_year": 54500,
+    "impact": "A school-level address/geocode and fee/requirements can belong to different campuses, misleading cost/location filtering, commute fit and detail comparison. Current UI interaction/actual rank impact not measured.",
+    "fix_status": "Report/handoff only under S10. Coordinate campus/programme/source/year ownership and existing data extractor owner before changing records, IDs, map coordinates, schema or user associations. No hosted write."
+  },
+  "ordered_acceptance": [
+    "Prioritize current132 campus mismatch and existing current89 obsolete2026-result citation over restoring historical candidates. Verify fresh complete rows/version, exact REDIZO/campus/programme and official annual source first.",
+    "Choose explicit per-campus/programme fact ownership; decide whether one legal-entity school retains programme campus metadata or needs a reviewed split. Preserve original physical rows, favourites, notes and picks, and C53 explicit restore semantics.",
+    "Prepare conflict-safe source/field/year merge and local migration plan as needed.132 tuition, coordinates, admission source and all inherited structured activity/style/meal fields require same-campus attribution. Do not silently replace one aggregate address or restore old numbers.",
+    "Validate citation type, one safe URL, HTML entity/query normalization and real field support; preserve unrelated source keys, trace official importer values separately, and add negative controls for numeric/bool/joined URLs and wrong campus/audience/year.",
+    "Add positive/negative per-field controls for ordinary eligible SŠ versus VOS, nastavba, transfer, eight-year, kindergarten, primary, childcare/boarder/teacher/camp facts. Preserve valid arranged meals and named actual SŠ clubs. Founder activity-category question remains unanswered.",
+    "Verify all fees with academic year, programme/form/semester/month-count/scholarship/extras. Keep already-correct19240,000 and19646,900 and corrected103/137/173 prose. Check actual maturity denominator/year source despite coherent174 arithmetic rows.",
+    "Show concrete localhost result, targeted ranking/search/detail/map/compare behaviour and data diff for founder acceptance before reviewed promotion. No provider bulk extraction, migration, import or production update is authorized by this evidence checkpoint."
+  ],
+  "unchanged": [
+    "Original backup and earlier comparison artifacts",
+    "Current source/scoring/access/privacy/payment/schema/provider configuration",
+    "Active peer-owned files"
+  ],
+  "remaining": [
+    "Current peer source ownership/review and acceptance",
+    "Other 18 pending or changed authored inventory files, plus separate binary/generated/external accounting",
+    "Ignored external corpus/remaining asset/device/service/manual gates",
+    "S10/C57/C58 and all existing beta release gates"
+  ]
+}
