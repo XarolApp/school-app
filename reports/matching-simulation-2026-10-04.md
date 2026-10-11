@@ -1,11 +1,13 @@
 # Simulace matchingu — 2026-10-04
 
-5000 náhodných sad odpovědí (seed 1, přeskočení 25 %), 217 škol. Odpovědi jsou rovnoměrně náhodné, takže výsledek ukazuje STRUKTURÁLNÍ zvýhodnění, ne reálnou oblíbenost.
+> **Historický snapshot; upřesnění 11. října 2026.** Jde o tehdejší scorer/katalog a uložený `matching-simulation-2026-10-04.json`, nikoli dnešní 194 viditelných škol či aktuální aktivně měněné scorery. Tabulky a číselné výsledky jsou zachovány. Znovu nespouštět placené generátory/importy ani automaticky přenastavovat váhy podle tohoto záznamu; současné scoring/data acceptance je v [handoffu](deployment-review-2026-10-07/HANDOFF-PLAN.md).
+
+5000 náhodných sad odpovědí (seed 1, přeskočení 25 %), 217 škol. Odpovědi jsou rovnoměrně náhodné; výsledek popisuje četnost a pořadí v této syntetické distribuci, nikoli reálnou oblíbenost, kauzální vliv úplnosti dat nebo důkaz férovosti doporučení. „±“ v tabulkách je směrodatná odchylka pořadí, nikoli interval spolehlivosti. Počet skutečných pořadí se může lišit od 5000: uložený onboarding má podle školy 4996/4998 pozorování, standalone 5000.
 
 ## Dotazník (/dotaznik, lib/matching.js)
 
 - Škol v pořadí: 217; nikdy neohodnoceno: 0
-- Kdyby bylo pořadí férové, každá škola by byla v top 10 v ~4.6 % případů.
+- Při rovnoměrném náhodném pořadí 217 škol je srovnávací top-10 baseline 10/217 ≈ 4,6 %; není to podmínka férového personalizovaného doporučení.
 - Škol, které se do top 10 nedostaly ani jednou: 3
 - Korelace průměrného pořadí s úplností dat (záporná = víc dat → lepší pořadí): {"has_cutoff":-0.48,"extracted_fields":-0.03,"obory":-0.1,"programs_text_len":-0.2}
 
@@ -50,7 +52,7 @@
 ## Onboarding (frontend/src/lib/matching.js)
 
 - Škol v pořadí: 217; nikdy neohodnoceno: 0
-- Kdyby bylo pořadí férové, každá škola by byla v top 10 v ~4.6 % případů.
+- Při rovnoměrném náhodném pořadí 217 škol je srovnávací top-10 baseline 10/217 ≈ 4,6 %; není to podmínka férového personalizovaného doporučení.
 - Škol, které se do top 10 nedostaly ani jednou: 0
 - Korelace průměrného pořadí s úplností dat (záporná = víc dat → lepší pořadí): {"has_cutoff":-0.23,"extracted_fields":0.05,"obory":-0.52,"programs_text_len":-0.65}
 

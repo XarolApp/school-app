@@ -2138,19 +2138,19 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "8b964b9d6ed12eaaa6ed5f949f852191d54d34d9a770391a5c80577eaf2ff161",
-    "lines": 1911,
+    "sha256": "dc0ce4e5ffc97a5b7844d0504d7a1ae6d65f24c2dcd5dbceb32ebf3daa82586f",
+    "lines": 1917,
     "read_ranges": [
       [
         1,
-        1911
+        1917
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-11T16:08:02.909358+00:00",
-    "previous_complete_sha256": "d91a0c33a616f6e4d674b86417d968cbf0d4a58b948f65d97617ceb1b5a5cc9c",
-    "method": "Verified exact complete saved baseline plus full authored append inspected; documentation reconciliation only.",
+    "checked_at_utc": "2026-10-11T16:15:06.742199+00:00",
+    "previous_complete_sha256": "8b964b9d6ed12eaaa6ed5f949f852191d54d34d9a770391a5c80577eaf2ff161",
+    "method": "Exact saved complete UNFORGET baseline verified; full own C57/report append inspected.",
     "evidence": "motion-demo-verification-2026-10-11.json"
   },
   "frontend/src/api.js": {
@@ -8236,5 +8236,80 @@
     "checked_at_utc": "2026-10-11T16:08:02.909358+00:00",
     "method": "Complete original FINDINGS89/HANDOFF68/REPORT106 lines read in bounded outputs; final authored reconciliation and full task replacement inspected. Original FINDINGS89 lines preserved verbatim after dated banner.",
     "previous_complete_sha256": "9848fcf99058e3979c626c9b96e0add18723de79644201e58f6e6b1b327fbe1f"
+  },
+  "reports/beta-implementation-claude-review-2-2026-10-05.md": {
+    "sha256": "ec8363caff2a6a0cffec01c8be17293a6915b7bf3282efc42e34e419370f7e53",
+    "lines": 50,
+    "read_ranges": [
+      [
+        1,
+        50
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:15:06.742199+00:00",
+    "method": "Complete original48/62/318/402/93 lines read: short files/full matching MD in one bounded batch; completion1-105/106-210/211-318 and review1-100/101-202/203-303/304-402. Entire authored narrow diffs inspected.",
+    "previous_complete_sha256": "3fcf2d9e866c7834c0a42c19045f1d3cdc1457c03c308e2f040c8a7db2f301cc"
+  },
+  "reports/beta-implementation-claude-review-2026-10-05.md": {
+    "sha256": "3a9d6d4cecfd27d74fbd6240e7bee67220ae3f1ecbbb057839990e7d8c9a5917",
+    "lines": 64,
+    "read_ranges": [
+      [
+        1,
+        64
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:15:06.742199+00:00",
+    "method": "Complete original48/62/318/402/93 lines read: short files/full matching MD in one bounded batch; completion1-105/106-210/211-318 and review1-100/101-202/203-303/304-402. Entire authored narrow diffs inspected.",
+    "previous_complete_sha256": "87f734e4c38da765ee9142b51bf0a454ad4a7a75f02216598e7a7714c7af03a9"
+  },
+  "reports/beta-implementation-completion-2026-10-05.md": {
+    "sha256": "d6a29b99c55b240e9be5b274d276f8e76b7c859debb0675563eb1630cdff5af5",
+    "lines": 327,
+    "read_ranges": [
+      [
+        1,
+        327
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:15:06.742199+00:00",
+    "method": "Complete original48/62/318/402/93 lines read: short files/full matching MD in one bounded batch; completion1-105/106-210/211-318 and review1-100/101-202/203-303/304-402. Entire authored narrow diffs inspected.",
+    "previous_complete_sha256": "46c123b38e55cc920c2116cc4d44d642ff74bee0b8f890888d15efa76165d40b"
+  },
+  "reports/beta-implementation-review-2026-10-05.md": {
+    "sha256": "fb62b98e26b1a136e0b6966ec12244bdcf6b1718f1ec8df0535cc2e4237a9471",
+    "lines": 407,
+    "read_ranges": [
+      [
+        1,
+        407
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:15:06.742199+00:00",
+    "method": "Complete original48/62/318/402/93 lines read: short files/full matching MD in one bounded batch; completion1-105/106-210/211-318 and review1-100/101-202/203-303/304-402. Entire authored narrow diffs inspected.",
+    "previous_complete_sha256": "0dd6fb73a831cff1403c4860fd1ef4a5d9d6b9f42c33c907c022e409c57d31b6"
+  },
+  "reports/matching-simulation-2026-10-04.md": {
+    "sha256": "994862de5a2a8adfaedcd0b80add643bedd3f9c3c33942001ac05ce8e12f1619",
+    "lines": 95,
+    "read_ranges": [
+      [
+        1,
+        95
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:15:06.742199+00:00",
+    "method": "Complete original48/62/318/402/93 lines read: short files/full matching MD in one bounded batch; completion1-105/106-210/211-318 and review1-100/101-202/203-303/304-402. Entire authored narrow diffs inspected.",
+    "previous_complete_sha256": "34bb3af913829a694af435b67678fe5f7112ce0099eafbe28bd2cc023ba04f2b"
   }
 }

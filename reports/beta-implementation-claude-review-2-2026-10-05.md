@@ -1,5 +1,7 @@
 # Plan 019 — second independent review (Claude, 2026-10-05)
 
+**11 October reconciliation:** the fixes, founder-reported SQL deployment, 121-test result and “none blocking” opinion below are dated 5 October evidence. They do not approve the latest beta. Current code/schema/consent/admin metrics have changed; D1/D4 and the current [report](deployment-review-2026-10-07/REPORT.md)/[handoff](deployment-review-2026-10-07/HANDOFF-PLAN.md) take precedence. C43/C46/C51/C56, authenticated isolation, real PostgreSQL locks/reruns and service/device journeys remain open. Do not rerun the whole schema or a paid simulation from this snapshot. Check current purging/cohort/statistics semantics before implementing the older three suggestions; rankings weighted per run versus per tester are an analysis choice, not proof that equal exposure is fair. Main feedback and qualifying quick-written-note/follow-up feedback renew access; stars/chips/skip alone do not. Sharing/reviews stay disabled; current checklist has eight tasks.
+
 Scope: `e679fb1` (fixes for review 1), `3503dee` (full rankings), `174cb21` (/admin),
 `135a2c6` (Legal), `c8e632e` (browser QA fixes). Root tests 121/121, frontend lint
 0 errors, build passes. Founder applied the whole `supabase-setup.sql` (6 tables +

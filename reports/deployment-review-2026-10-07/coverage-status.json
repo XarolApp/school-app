@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-11T16:08:32.236456+00:00",
-  "commit": "0ca83183947ed70056541c058aab45384afd3dac",
+  "checked_at_utc": "2026-10-11T16:15:43.207818+00:00",
+  "commit": "3e8625c50eab1edd9fa859f41a6c40eca344cfe8",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "current_full_read": 604,
+    "current_full_read": 609,
     "binary_requires_asset_check": 105,
-    "pending_or_changed": 190,
-    "generated_or_audit_artifact": 187,
+    "pending_or_changed": 185,
+    "generated_or_audit_artifact": 190,
     "removed_or_missing": 2
   },
   "files": [
@@ -993,8 +993,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "8b964b9d6ed12eaaa6ed5f949f852191d54d34d9a770391a5c80577eaf2ff161",
-      "lines": 1911,
+      "sha256": "dc0ce4e5ffc97a5b7844d0504d7a1ae6d65f24c2dcd5dbceb32ebf3daa82586f",
+      "lines": 1917,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -5820,31 +5820,39 @@
     },
     {
       "path": "reports/beta-implementation-claude-review-2-2026-10-05.md",
-      "sha256": "3fcf2d9e866c7834c0a42c19045f1d3cdc1457c03c308e2f040c8a7db2f301cc",
-      "lines": 48,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "ec8363caff2a6a0cffec01c8be17293a6915b7bf3282efc42e34e419370f7e53",
+      "lines": 50,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/beta-implementation-claude-review-2026-10-05.md",
-      "sha256": "87f734e4c38da765ee9142b51bf0a454ad4a7a75f02216598e7a7714c7af03a9",
-      "lines": 62,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "3a9d6d4cecfd27d74fbd6240e7bee67220ae3f1ecbbb057839990e7d8c9a5917",
+      "lines": 64,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/beta-implementation-completion-2026-10-05.md",
-      "sha256": "46c123b38e55cc920c2116cc4d44d642ff74bee0b8f890888d15efa76165d40b",
-      "lines": 318,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "d6a29b99c55b240e9be5b274d276f8e76b7c859debb0675563eb1630cdff5af5",
+      "lines": 327,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/beta-implementation-review-2026-10-05.md",
-      "sha256": "0dd6fb73a831cff1403c4860fd1ef4a5d9d6b9f42c33c907c022e409c57d31b6",
-      "lines": 402,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "fb62b98e26b1a136e0b6966ec12244bdcf6b1718f1ec8df0535cc2e4237a9471",
+      "lines": 407,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/beta-verification-2026-10-05/admin-desktop-closing.jpg",
@@ -6295,22 +6303,22 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "30502b77c9847a5d874670725261a0b56d162a3bc4135378e91f5ee0bacfcba5",
-      "lines": 451,
+      "sha256": "b2ff1b51a77929dc7f1b637f0420e5a8ef5ed283d7b8ada816641806967901e8",
+      "lines": 460,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "d0ada816c812edf64fb5553353465c71f2c12952a814e3138a6ba81f91417cde",
-      "lines": 282,
+      "sha256": "b1a86ccb5b8a0699b61a6a14b2632cb19f381f8cca687a3facd1d659641adead",
+      "lines": 285,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "f4974f48fe243c739807864b4d9d4cb6e7b4a35430dc7c3f9675d1c96c3f04e0",
-      "lines": 212,
+      "sha256": "85233eb94c9ce817efad6c2fbbbfa22e244594ff80a73f4b4545e3ca8fd02e3e",
+      "lines": 215,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6659,8 +6667,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "5c589336431eb0c176d06a4d7337886d01521f701e8bb689a010de70c5266fda",
-      "lines": 565,
+      "sha256": "1428fb530b4b04d80df74d68a21fc11ba828287dc05d3f4305c7c7a6b1c95689",
+      "lines": 572,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6673,8 +6681,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "4307f0ec321039aebeadbf543b86979046c9705bb5334d1ba04d8fa3efb97bd3",
-      "lines": 8842,
+      "sha256": "45c4263f5a621ce1fe4185a6959050f4e12f5b3afa7653988c957332c38d0c8d",
+      "lines": 8873,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6865,6 +6873,13 @@
       "sha256": "80b13b3e78b891d184208272994fa182b237fab78fe55059747d012f5d4aaecb",
       "lines": null,
       "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/earlier-beta-report-verification-2026-10-11.json",
+      "sha256": "e666262880afb96b1c711c2000c3b8f8512c2cc120aa3a93532c452a9769ff6c",
+      "lines": 67,
+      "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
@@ -7706,6 +7721,13 @@
       "matching_evidence": []
     },
     {
+      "path": "reports/deployment-review-2026-10-07/probe-ranking-baseline.cjs",
+      "sha256": "5c0a69faca1f8a9dfbfb8cb36463a8d1c4a0d35a3e2055a21e4644360cbf0afe",
+      "lines": 13,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/probe-services.cjs",
       "sha256": "b47240d76e47550d2a307d302f8714ae7edcbe3074829e02de8d6a334334fe60",
       "lines": 106,
@@ -7852,6 +7874,13 @@
       "matching_evidence": []
     },
     {
+      "path": "reports/deployment-review-2026-10-07/ranking-baseline-2026-10-11.json",
+      "sha256": "4b89ca8865247f91ce21e3c4b92640a50fbdd242f0204e95d2644a3f5a4521df",
+      "lines": 65,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/reconcile-coverage.py",
       "sha256": "e64852bc5cd366838a5c4c0d9f9c98ff06f3af5b10f0a9387be2c160033652f5",
       "lines": 61,
@@ -7922,8 +7951,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "446b42732bd9f8d4cc74ef187d3d8c1dae95f256d6453b4be7d19d5cbb8e6864",
-      "lines": 8240,
+      "sha256": "375b388dfe1e7c3624dbd90cc750cb37460b38d71f430fab1a84e1a70a1dba47",
+      "lines": 8315,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -8169,10 +8198,12 @@
     },
     {
       "path": "reports/matching-simulation-2026-10-04.md",
-      "sha256": "34bb3af913829a694af435b67678fe5f7112ce0099eafbe28bd2cc023ba04f2b",
-      "lines": 93,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "994862de5a2a8adfaedcd0b80add643bedd3f9c3c33942001ac05ce8e12f1619",
+      "lines": 95,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/ninth-grade-scope-2026-10-10.json",

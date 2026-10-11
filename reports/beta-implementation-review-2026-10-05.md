@@ -3,13 +3,17 @@
 > Historical report for the first steps 2–9 pass. Current completion and review
 > handoff: [beta-implementation-completion-2026-10-05.md](beta-implementation-completion-2026-10-05.md).
 
+> **11 October reconciliation:** the stopped-work state, missing admin/legal and unanswered full-ranking choice below are historical. The founder approved full rankings in `a039c63`; subsequent implementation/reviews completed that scope. Use the [continuing full-project report](deployment-review-2026-10-07/REPORT.md) and [handoff](deployment-review-2026-10-07/HANDOFF-PLAN.md) for current defects and acceptance. D1/D4 and later source/consent/retention choices supersede the original legal assumptions; no current release approval follows from this report.
+>
+> Current beta has signed-in free onboarding, no Stripe/card/purchase trial, disabled sharing and school reviews, and eight checklist tasks. Main feedback and qualifying quick-written-note/follow-up feedback renew rolling access; stars/chips/skip alone do not. C43/C46/C51/C56 remain open implementation/privacy gates. Keep current migration/push approval rules and Claude ownership; do not execute the original copy-paste request or whole-schema production rerun instruction.
+
 Date: 2026-10-05. Repository: `school-app`, branch `main`.
 Implementation revision to review: `1c58bf9` (last code commit: `02067ad`).
 Status: **partial implementation, not ready to launch**. Build-order steps 2–9
 were implemented and pushed. Work stopped before step 10 on a specification/data
 conflict, as the founder explicitly required. No independent review has run yet.
 
-## Copy-paste review request
+## Historical review request (use the current handoff for new work)
 
 > Review the plan 019 implementation described in
 > `reports/beta-implementation-review-2026-10-05.md` independently. Read AGENTS.md,
@@ -340,7 +344,7 @@ findings:
    stale Stripe objects, non-beta analytics and ordinary users' access/signup.
    Existing boundary tests are useful but do not replace the final browser run.
 
-## 7. Stopping conflict and unfinished scope
+## 7. Historical stopping conflict and unfinished scope (later resolved)
 
 Plan section 6 specifies only top 10 school IDs/ranks in `result_view`. Section 9
 asks for per-school average rank, spread, top/bottom frequency and simulation vs
@@ -375,12 +379,13 @@ Still unimplemented:
 
 ## 8. Deployment prerequisites and SQL reminder
 
-Before deploying/running the new backend against the target Supabase database,
-**the founder must paste the entire `supabase-setup.sql` into the Supabase SQL
-editor**, including both the existing beta block and the new analytics block.
-Do not apply only a copied fragment. This has not been done during implementation.
-SQL should be independently reviewed and the remaining required work completed
-before rollout.
+The original blanket instruction to paste the entire schema into production is
+retired. Compare actual definitions/grants with the intended current schema; verify
+fresh installation and repeated runs in a disposable database, then prepare and
+apply only the missing reviewed migration under current deployment rules. Later
+metadata/table presence does not prove isolation, locking or complete journeys.
+The read-only checks below explain the original five-table snapshot; they are not
+a complete current migration or acceptance checklist.
 
 Plan section 5 verification query (expected result: **5**):
 

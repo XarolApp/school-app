@@ -1,5 +1,9 @@
 # Plan 019 — dokončení implementace a podklady pro Claude Code review
 
+> **Historický snapshot z 5. října; upřesnění 11. října 2026.** Komity, počty testů a lokální průchody níže popisují tehdejší implementaci, nikoli dnešní přijetí releasu. Nezávislá review již proběhla; úplné file-by-file review stále pokračuje v [aktuálním reportu](deployment-review-2026-10-07/REPORT.md) a [handoffu](deployment-review-2026-10-07/HANDOFF-PLAN.md). Full rankings byly schváleny v `a039c63`; admin/legal se později změnily. D1/D4 a současné notices/retence mají přednost před tehdejším právním základem a limity tohoto snapshotu.
+>
+> Zachovat přihlášený bezplatný onboarding, beta přístup za feedback bez Stripe a platební trial pouze jako neaktivní ukázku. Sdílení a školní recenze jsou v betě vypnuté; aktuální checklist má osm úkolů. Hlavní zprávy a kvalifikované rychlé hodnocení s vlastním psaným komentářem/follow-up obnovují rolling přístup do cutoff; samotné hvězdy/chips/skip nikoli. C43/C46/C51/C56 stále vyžadují implementační a privátní/provozní ověření. Aktuální katalog ověřený 10. října má 194 viditelných škol. Dnešní pravidla schválení pushů a migrací nahrazují historické instrukce níže.
+
 Datum: 2026-10-05. Repo: `school-app`, větev `main`.
 Poslední commit s kódem: **`c8e632e`**. Kód kroků **2–12 je implementovaný**;
 místní ověření je dokončené. Nasazení stále vyžaduje aktualizované SQL,
@@ -14,7 +18,7 @@ Zakladatel potvrdil aplikaci předchozího celého SQL a výsledek kontroly **5*
 To je uživatelem oznámená kontrola přítomnosti původních pěti tabulek, nikoli
 ověření aktuálních funkcí, RLS, Storage nebo nového `beta_rankings`.
 
-## 1. Zadání pro Claude Code
+## 1. Historické zadání pro Claude Code (dnes použít aktuální handoff)
 
 > Proveď nezávislé review implementace plan 019 až po commit c8e632e.
 > Nejprve přečti AGENTS.md, schválený plans/019-beta-feedback-and-analytics.md,
@@ -230,11 +234,14 @@ Důkazy: `reports/beta-verification-2026-10-05/` obsahuje JPEG náhledy,
 `csv-verification.json` (39 exportů). Lokální preview má vlastní README,
 výhradně syntetická data, oddělený Vite config a není v produkčním buildu.
 
-## 6. SQL — nutné před nasazením
+## 6. SQL — historické kontroly, současný migrační postup
 
-**Zakladatel musí znovu vložit celý aktuální `supabase-setup.sql` do Supabase
-SQL editoru.** Výsledek 5 byl správný pro původních pět tabulek; novější commity
-upravují funkce a přidávají soukromé `beta_rankings`. Dílčí paste bloku nestačí.
+**Nepouštět celý schema soubor na produkci podle tohoto historického reportu.**
+Přítomnost tabulek a pozdější metadata jsou již zaznamenané v aktuálním review;
+neprokazují definice/granty ani funkční přijetí. Nejprve ověřit fresh install a
+opakované běhy v disposable databázi, porovnat skutečné definice a připravit pouze
+chybějící reviewed migraci. Její aplikace a kontrola musí předcházet závislému
+deployi dle aktuálních projektových pravidel. Výsledek 5/6 není acceptance SQL.
 
 Kontrola z plánu §5 (očekáváno **5**):
 
@@ -296,16 +303,18 @@ databázové credentials nebyly inspektované. User-reported count 5 ji nenahraz
 
 ## 7. Co zbývá a co report netvrdí
 
-- Aplikovat aktuální celé SQL a ověřit nové funkce, šestou tabulku, granty,
-  RLS a private bucket. Re-run celého souboru i reálné lock/transaction chování
-  nebyly v místním mocku ověřeny.
+- Podle současného handoffu ověřit skutečné funkce, granty, RLS/private bucket a
+  připravit pouze potřebnou reviewed migraci po disposable fresh-install/rerun.
+  Reálné lock/transaction chování nebylo v místním mocku ověřeno; celý soubor
+  se na produkci nepouští jako diagnostika.
 - Skutečný Supabase signup trigger s novou role/notice metadata, doručení a
   potvrzení e-mailu, signed upload/read, MIME/size enforcement a Storage cleanup
   musí projít ve skutečném testovacím prostředí.
 - Konfigurovat server-only ADMIN_EMAILS a produkční BETA_TICKET_SECRET,
   rozhodnutý program cutoff/school invitation codes a SMTP. `.env.example`
   je dokumentuje; žádné .env contents nebyly čtené/vypisované ani commitované.
-- Nové admin/full-rankings/legal/QA změny zatím nemají další nezávislé review.
+- V tomto snapshotu ještě nebylo další review admin/full-rankings/legal/QA;
+  pozdější nezávislé review a stále otevřené nálezy jsou v aktuálním reportu.
 - Právní kontrola anonymních recenzí pod 15 let před prvním veřejným použitím
   zůstává dle schváleného plánu. DRAFT/DOPLNIT stále brání tvrzení, že právní
   podklady jsou finální.

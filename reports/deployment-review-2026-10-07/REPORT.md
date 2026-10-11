@@ -210,3 +210,6 @@ Motion-draft checkpoint, 11 October: four complete source files and the duration
 
 
 Historical-report reconciliation, 11 October: all three complete 7 October Claude reports now separate their original observations from current evidence and founder decisions. T1–T13 retire anonymous-onboarding, blanket-push, stale service/count and unsafe standalone season recovery instructions; completed source fixes remain separate from live/device acceptance. [Evidence](historical-review-reconciliation-2026-10-11.json). No runtime/schema/service operation changed; full review remains active.
+
+
+Earlier-beta-report checkpoint, 11 October: five complete dated beta/simulation Markdown reports reconciled; blanket production schema reruns retired and historical consent/renewal/checklist/admin/test claims qualified. All 60 numeric table rows are unchanged and agree with stored JSON; equal exposure is correctly described as a uniform baseline. [Evidence](earlier-beta-report-verification-2026-10-11.json). **C57** adds matching-metric comparability work: the actual admin accepts an incompatible 217-school baseline, yielding synthetic −23 deltas solely from a 23-school scope removal. [Actual-source reproduction](ranking-baseline-2026-10-11.json). No scorer/runtime/provider changed; full review remains active.

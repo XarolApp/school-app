@@ -1,0 +1,67 @@
+{
+  "checked_at_utc": "2026-10-11T16:15:06.742199+00:00",
+  "snapshot_commit": "3e8625c50eab1edd9fa859f41a6c40eca344cfe8",
+  "files": {
+    "reports/beta-implementation-claude-review-2-2026-10-05.md": {
+      "sha256": "ec8363caff2a6a0cffec01c8be17293a6915b7bf3282efc42e34e419370f7e53",
+      "lines": 50,
+      "previous_sha256": "3fcf2d9e866c7834c0a42c19045f1d3cdc1457c03c308e2f040c8a7db2f301cc"
+    },
+    "reports/beta-implementation-claude-review-2026-10-05.md": {
+      "sha256": "3a9d6d4cecfd27d74fbd6240e7bee67220ae3f1ecbbb057839990e7d8c9a5917",
+      "lines": 64,
+      "previous_sha256": "87f734e4c38da765ee9142b51bf0a454ad4a7a75f02216598e7a7714c7af03a9"
+    },
+    "reports/beta-implementation-completion-2026-10-05.md": {
+      "sha256": "d6a29b99c55b240e9be5b274d276f8e76b7c859debb0675563eb1630cdff5af5",
+      "lines": 327,
+      "previous_sha256": "46c123b38e55cc920c2116cc4d44d642ff74bee0b8f890888d15efa76165d40b"
+    },
+    "reports/beta-implementation-review-2026-10-05.md": {
+      "sha256": "fb62b98e26b1a136e0b6966ec12244bdcf6b1718f1ec8df0535cc2e4237a9471",
+      "lines": 407,
+      "previous_sha256": "0dd6fb73a831cff1403c4860fd1ef4a5d9d6b9f42c33c907c022e409c57d31b6"
+    },
+    "reports/matching-simulation-2026-10-04.md": {
+      "sha256": "994862de5a2a8adfaedcd0b80add643bedd3f9c3c33942001ac05ce8e12f1619",
+      "lines": 95,
+      "previous_sha256": "34bb3af913829a694af435b67678fe5f7112ce0099eafbe28bd2cc023ba04f2b"
+    }
+  },
+  "read_method": "Complete original48/62/318/402/93 lines read: short files/full matching MD in one bounded batch; completion1-105/106-210/211-318 and review1-100/101-202/203-303/304-402. Entire authored narrow diffs inspected.",
+  "verification": {
+    "all_original_simulation_tables_byte_preserved": true,
+    "all_sixty_markdown_rows_match_saved_json": true,
+    "uniform_top10_baseline_rounded_pct": 4.6,
+    "all_relative_markdown_links_resolve": true,
+    "unsafe_blanket_production_rerun_instructions_removed": true,
+    "simulation_checks": [
+      {
+        "source": "questionnaire",
+        "all_json_records_shape_range_unique_checked": 217,
+        "markdown_table_rows_verified": 30,
+        "observations_per_school": [
+          5000
+        ]
+      },
+      {
+        "source": "onboarding",
+        "all_json_records_shape_range_unique_checked": 217,
+        "markdown_table_rows_verified": 30,
+        "observations_per_school": [
+          4996,
+          4998
+        ]
+      }
+    ]
+  },
+  "numeric_json_sha256": "dd367d161acb52386f441038ca221d2476b35b18a10537e431cc3742df77cbeb",
+  "new_finding": "C57 actual rankingStats accepts incompatible historical baseline; separate actual-source synthetic reproduction in ranking-baseline-2026-10-11.json",
+  "limits": [
+    "This five-file coverage does not count the6965-line numeric JSON as fully line-read",
+    "Range/shape/table validation is not real school factual verification",
+    "No scorer, weights, SQL, source, consent, access, migration, provider or hosted write changed",
+    "Historical local browser/tests do not close current release/device/privacy/service gates",
+    "Current peer matching/search/special-needs/schema remains deferred"
+  ]
+}

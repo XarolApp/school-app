@@ -1,0 +1,65 @@
+{
+  "checked_at_utc": "2026-10-11T16:13:45.594Z",
+  "source_sha256": "a1f10beabf4b63e2355e38afb520aecfd6833bd0ac7f3e3a2bf22dff0e042648",
+  "method": "Actual exported rankingStats and latestSimulation; synthetic old/new catalogue preserving all surviving relative order. No environment, network, accounts or database calls.",
+  "historical_file": {
+    "name": "matching-simulation-2026-10-04.json",
+    "generated_at": "2026-10-04T21:25:25.013Z",
+    "params": {
+      "n": 5000,
+      "seed": 1,
+      "skip": 0.25,
+      "schools": 217
+    }
+  },
+  "synthetic": {
+    "old_count": 217,
+    "new_count": 194,
+    "excluded_ids": 23,
+    "relative_order_of_all_survivors_unchanged": true,
+    "school_100_unchecked": {
+      "id": 100,
+      "school": "Synthetic school 100",
+      "samples": 1,
+      "mean": 77,
+      "spread": 0,
+      "top10": 0,
+      "bottom10": 0,
+      "simulated_mean": 100,
+      "simulated_top10": 0,
+      "simulated_bottom10": 0,
+      "delta": -23,
+      "cutoff": "Ne",
+      "known_features": 0,
+      "obory": 0
+    },
+    "school_100_same_catalogue": {
+      "id": 100,
+      "school": "Synthetic school 100",
+      "samples": 1,
+      "mean": 77,
+      "spread": 0,
+      "top10": 0,
+      "bottom10": 0,
+      "simulated_mean": 77,
+      "simulated_top10": 0,
+      "simulated_bottom10": 0,
+      "delta": 0,
+      "cutoff": "Ne",
+      "known_features": 0,
+      "obory": 0
+    },
+    "all_survivor_unchecked_deltas": [
+      -23
+    ],
+    "all_same_catalogue_deltas": [
+      0
+    ]
+  },
+  "limits": [
+    "No real tester rankings or private data read",
+    "Does not establish incorrect deterministic school scores or actual user harm",
+    "Synthetic composition change isolates unqualified baseline comparison; current live194 count is independently recorded elsewhere",
+    "Original simulation JSON numeric/table checks do not constitute complete literal-by-literal JSON review"
+  ]
+}

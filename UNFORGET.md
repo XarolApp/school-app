@@ -1909,3 +1909,9 @@ Four complete motion-demo sources and the motion token reviewed. Two animated va
 
 - The three 7 October Claude reports are fully read and reconciled. T1–T13 preserve dated findings while retiring superseded service/count, anonymous-onboarding, blanket-push and standalone failed-payment recovery instructions. Completed fixes are distinct from deployed acceptance; founder D1/D4, written-note renewal, archived-choice restoration and after-beta deferrals remain authoritative.
 - [ ] Continue the full coverage/device/service/privacy/payment gates in the current deployment handoff; do not execute the original seven-step dashboard list or repeat paid data runs from a historical snapshot. Evidence: `reports/deployment-review-2026-10-07/historical-review-reconciliation-2026-10-11.json`.
+
+
+## C57 — simulation/ranking comparability, 11 October 2026
+
+- [ ] P2 before interpreting beta matching metrics: admin automatically loads the historical 217-school simulation and compares raw ranks without scorer/catalogue/projection version checks. Actual exported function with a synthetic 194-school survivor cohort returns −23 for every unchanged relative order; a compatible baseline returns 0. Version/fingerprint both data and scorer, separate cohorts/run versus tester weighting, and suppress or explicitly qualify incompatible comparisons. Preserve original numeric evidence; no silent weight change or paid rerun. Evidence: `reports/deployment-review-2026-10-07/ranking-baseline-2026-10-11.json`.
+- Five earlier beta/simulation Markdown files fully read/reconciled; unsafe production-schema-rerun advice removed, historical review/legal/renewal/checklist claims qualified, and uniform exposure renamed a baseline rather than fairness. All 60 stored numeric table rows are preserved and match JSON. The 6965-line JSON still needs complete data-review accounting.

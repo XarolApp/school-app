@@ -1,5 +1,7 @@
 # Plan 019 steps 2–9 — independent review (Claude, 2026-10-05)
 
+**11 October reconciliation:** this is the first 5 October review snapshot. Its ten findings were subsequently addressed as described in the [second review](beta-implementation-claude-review-2-2026-10-05.md) and completion record; current source has changed again. Historical file:line/test/grant/notice claims are not fresh hosted acceptance. Use the [current report](deployment-review-2026-10-07/REPORT.md) and [handoff](deployment-review-2026-10-07/HANDOFF-PLAN.md), preserving D1/D4, signed-in free onboarding, preview-only beta, disabled sharing/reviews and qualifying written-note renewal. C43/C46/C51/C56 and PostgreSQL/device/service acceptance remain open. The original legitimate-interest notice assumption and all-answer micro renewal description are superseded; do not repeat those instructions as current policy.
+
 Scope: commits `c378a06` … `02067ad` as listed in `reports/beta-implementation-review-2026-10-05.md`.
 Method: read the SQL block, the new server routes, `lib/betaAnalytics.js`, `lib/betaClosing.js`, the tracker and the beta UI components; ran root tests (97/97 pass), frontend lint (0 errors) and build (passes, html2canvas in its own 199 kB chunk). **Not done:** running the SQL in PostgreSQL, a real tester signup, Storage upload, browser pass. Those remain open (step 12).
 

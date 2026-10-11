@@ -1,0 +1,13 @@
+const fs = require('node:fs');
+const crypto = require('node:crypto');
+const { rankingStats, latestSimulation } = require(process.cwd() + '/lib/betaAdmin.js');
+const baselineSchools = Array.from({ length:217 }, (_,i)=>({id:i+1,name:`Synthetic school ${i+1}`,mean_rank:i+1,top10_pct:i<10?100:0,bottom10_pct:i>=207?100:0}));
+const survivingIds = baselineSchools.slice(23).map(s=>s.id);
+const schools = survivingIds.map(id=>({id,name:`Synthetic school ${id}`,admission_cutoff:null,school_programs:[]}));
+const rows = rankingStats([{source:'questionnaire',ranking:survivingIds}],schools,{params:{schools:217},questionnaire:{schools:baselineSchools}},'questionnaire');
+const unchangedOrder = rankingStats([{source:'questionnaire',ranking:survivingIds}],schools,{params:{schools:194},questionnaire:{schools:survivingIds.map((id,i)=>({id,mean_rank:i+1,top10_pct:i<10?100:0,bottom10_pct:i>=184?100:0}))}},'questionnaire');
+const actual = latestSimulation();
+const result = {checked_at_utc:new Date().toISOString(),source_sha256:crypto.createHash('sha256').update(fs.readFileSync('lib/betaAdmin.js')).digest('hex'),method:'Actual exported rankingStats and latestSimulation; synthetic old/new catalogue preserving all surviving relative order. No environment, network, accounts or database calls.',historical_file:{name:actual.file,generated_at:actual.generated_at,params:actual.params},synthetic:{old_count:217,new_count:194,excluded_ids:23,relative_order_of_all_survivors_unchanged:true,school_100_unchecked:rows.find(r=>r.id===100),school_100_same_catalogue:unchangedOrder.find(r=>r.id===100),all_survivor_unchecked_deltas:[...new Set(rows.map(r=>r.delta))],all_same_catalogue_deltas:[...new Set(unchangedOrder.map(r=>r.delta))]},limits:['No real tester rankings or private data read','Does not establish incorrect deterministic school scores or actual user harm','Synthetic composition change isolates unqualified baseline comparison; current live194 count is independently recorded elsewhere','Original simulation JSON numeric/table checks do not constitute complete literal-by-literal JSON review']};
+if(result.synthetic.school_100_unchecked.delta!==-23||result.synthetic.school_100_same_catalogue.delta!==0)throw Error('Unexpected actual function result');
+fs.writeFileSync('reports/deployment-review-2026-10-07/ranking-baseline-2026-10-11.json',JSON.stringify(result,null,2)+'\n');
+process.stdout.write(JSON.stringify({historical:result.historical_file,synthetic:result.synthetic},null,2));
