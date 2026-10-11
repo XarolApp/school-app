@@ -198,3 +198,6 @@ Design cards/uploads checkpoint, 11 October: nineteen complete card/thumbnail/SV
 
 
 Design runtime/metadata checkpoint, 11 October: ten complete runtime/config/manifest/template/reference files reviewed. Czech sample-count wording fixed, six actual VM/browser cases pass, and current manifest/card height parity verified. Generated quoted-expression/CSS parsing, oxlint metadata rejection and reduced archive-package limitations are recorded as C44 future-reuse work in the handoff. [Evidence](design-runtime-verification-2026-10-11.json) distinguishes helper-fixture repairs, installed React 19 checks and untested CDN React 18/SRI branches. Current product, services, consent/privacy/payment gates unchanged; full beta review remains active.
+
+
+Canvas/comparison checkpoint, 11 October: all nine canvas files and eight decision/comparison source files completely reviewed. All 66 artboard references exist; JPZ sum/100 wording and two admission promises corrected, with actual offline desktop/mobile copy checks. [Evidence](design-canvas-comparison-verification-2026-10-11.json) records historical policy/data/legal annotations and incomplete interactive/mobile draft behavior as conditional C44 reuse work. Current beta/access/payment/privacy gates stay open; active peer source remains deferred.

@@ -2138,19 +2138,20 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "3170e1810083f55bd41477074154731e85baa236201d1810286360b683d28641",
-    "lines": 1884,
+    "sha256": "c695221b6fd2abb5ef0d695ee310bc93105df3c42e9d61f0ae4b5af3c0337ce4",
+    "lines": 1891,
     "read_ranges": [
       [
         1,
-        1884
+        1891
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-11T09:48:23.088865+00:00",
+    "checked_at_utc": "2026-10-11T10:22:59.868744+00:00",
     "previous_complete_sha256": "81d981f6828cc9f26cf486d65dc35416490be7941d3036fd25e5bc8dd887adcb",
-    "method": "Previously complete exact HEAD version plus fully read own runtime/metadata append; no peer edits."
+    "method": "Exact prior full-read baseline and complete own nine-line historical-canvas append/diff read. All earlier decisions preserved.",
+    "evidence": "design-canvas-comparison-verification-2026-10-11.json"
   },
   "frontend/src/api.js": {
     "sha256": "a545cb179681a87378f41cf928cff50e1ae6c2e539c4bbacf373590af9f8ab8a",
@@ -7663,5 +7664,260 @@
     "checked_at_utc": "2026-10-11T10:13:04.427384+00:00",
     "method": "Complete 1911-line support base in nine sequential bounded ranges; other two independently hashed byte-identical copies. Complete 36-line SVG mockup reread after combined-output truncation; second exact copy independently hashed. Complete 375-line adherence base in three ranges and exact archived copy. All manifest fields and all 141 token records pretty-printed in four complete groups; archived manifest complete five-field difference read. Full 94-line screen plus complete three-line addition/one-line replacement inspected.",
     "evidence": "design-runtime-verification-2026-10-11.json"
+  },
+  "design/comparison-tools/canvas.json": {
+    "sha256": "cd65131fbce72357b8e295c885acfa4836180490bc16e066fb45a76588aeba79",
+    "lines": 40,
+    "read_ranges": [
+      [
+        1,
+        40
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:22:11.547087+00:00",
+    "method": "Nine canvas JSON files completely read in preceding bounded outputs; 204-line multipage canvas split1–110/111–204. Eight complete decision/comparison dc-html files read; Prihlaska110–158 reread after aggregate-output truncation. All three exact changed lines and complete diff reviewed.",
+    "evidence": "design-canvas-comparison-verification-2026-10-11.json"
+  },
+  "design/decision-matrix/canvas.json": {
+    "sha256": "e988fcfc6ffd378e82c2f29f07f1589ad338adf7138d1191fb461589c5073bac",
+    "lines": 38,
+    "read_ranges": [
+      [
+        1,
+        38
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:22:11.547087+00:00",
+    "method": "Nine canvas JSON files completely read in preceding bounded outputs; 204-line multipage canvas split1–110/111–204. Eight complete decision/comparison dc-html files read; Prihlaska110–158 reread after aggregate-output truncation. All three exact changed lines and complete diff reviewed.",
+    "evidence": "design-canvas-comparison-verification-2026-10-11.json"
+  },
+  "design/logo-concepts/canvas.json": {
+    "sha256": "d363eb411cae8a040aa0931eca3978e2b1a25dcd337649affb4ebf87f647199d",
+    "lines": 42,
+    "read_ranges": [
+      [
+        1,
+        42
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:22:11.547087+00:00",
+    "method": "Nine canvas JSON files completely read in preceding bounded outputs; 204-line multipage canvas split1–110/111–204. Eight complete decision/comparison dc-html files read; Prihlaska110–158 reread after aggregate-output truncation. All three exact changed lines and complete diff reviewed.",
+    "evidence": "design-canvas-comparison-verification-2026-10-11.json"
+  },
+  "design/motion-demo/canvas.json": {
+    "sha256": "05ebc79ff76f9081efc053c47f69f1e2aba62f13dc760c02480e25209433fd05",
+    "lines": 25,
+    "read_ranges": [
+      [
+        1,
+        25
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:22:11.547087+00:00",
+    "method": "Nine canvas JSON files completely read in preceding bounded outputs; 204-line multipage canvas split1–110/111–204. Eight complete decision/comparison dc-html files read; Prihlaska110–158 reread after aggregate-output truncation. All three exact changed lines and complete diff reviewed.",
+    "evidence": "design-canvas-comparison-verification-2026-10-11.json"
+  },
+  "design/onboarding-v2/canvas.json": {
+    "sha256": "6eae1bb6eac959715dffca6dbe16dec7ed31e52caa5a35f986701d758d36a8cf",
+    "lines": 51,
+    "read_ranges": [
+      [
+        1,
+        51
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:22:11.547087+00:00",
+    "method": "Nine canvas JSON files completely read in preceding bounded outputs; 204-line multipage canvas split1–110/111–204. Eight complete decision/comparison dc-html files read; Prihlaska110–158 reread after aggregate-output truncation. All three exact changed lines and complete diff reviewed.",
+    "evidence": "design-canvas-comparison-verification-2026-10-11.json"
+  },
+  "design/paywall-desktop/canvas.json": {
+    "sha256": "17553c044683adb90640896787777553d9e66874a6b30087e9fa8be0d6d1a1c0",
+    "lines": 40,
+    "read_ranges": [
+      [
+        1,
+        40
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:22:11.547087+00:00",
+    "method": "Nine canvas JSON files completely read in preceding bounded outputs; 204-line multipage canvas split1–110/111–204. Eight complete decision/comparison dc-html files read; Prihlaska110–158 reread after aggregate-output truncation. All three exact changed lines and complete diff reviewed.",
+    "evidence": "design-canvas-comparison-verification-2026-10-11.json"
+  },
+  "design/paywall-multipage/canvas.json": {
+    "sha256": "b4fa6ab9b375e4dbc426eb6e306bcfef238772202c95d948d84875d23197d0af",
+    "lines": 204,
+    "read_ranges": [
+      [
+        1,
+        204
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:22:11.547087+00:00",
+    "method": "Nine canvas JSON files completely read in preceding bounded outputs; 204-line multipage canvas split1–110/111–204. Eight complete decision/comparison dc-html files read; Prihlaska110–158 reread after aggregate-output truncation. All three exact changed lines and complete diff reviewed.",
+    "evidence": "design-canvas-comparison-verification-2026-10-11.json"
+  },
+  "design/school-page/canvas.json": {
+    "sha256": "2707ef594a62eb6f8cfd4b7d0c02c02e733983f16e12ead5b743597939adabb5",
+    "lines": 24,
+    "read_ranges": [
+      [
+        1,
+        24
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:22:11.547087+00:00",
+    "method": "Nine canvas JSON files completely read in preceding bounded outputs; 204-line multipage canvas split1–110/111–204. Eight complete decision/comparison dc-html files read; Prihlaska110–158 reread after aggregate-output truncation. All three exact changed lines and complete diff reviewed.",
+    "evidence": "design-canvas-comparison-verification-2026-10-11.json"
+  },
+  "design/search-redesign/canvas.json": {
+    "sha256": "4408ddfdba5bb20dc4da867c068e5331c84a5d530523f08cc12c1ac9b1e7a5bf",
+    "lines": 25,
+    "read_ranges": [
+      [
+        1,
+        25
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:22:11.547087+00:00",
+    "method": "Nine canvas JSON files completely read in preceding bounded outputs; 204-line multipage canvas split1–110/111–204. Eight complete decision/comparison dc-html files read; Prihlaska110–158 reread after aggregate-output truncation. All three exact changed lines and complete diff reviewed.",
+    "evidence": "design-canvas-comparison-verification-2026-10-11.json"
+  },
+  "design/comparison-tools/Main.dc.html": {
+    "sha256": "fb78b9cbbb6f86efd8257557269b997af529e59720909ae27bd7ee14062bea4a",
+    "lines": 244,
+    "read_ranges": [
+      [
+        1,
+        244
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:22:11.547087+00:00",
+    "method": "Nine canvas JSON files completely read in preceding bounded outputs; 204-line multipage canvas split1–110/111–204. Eight complete decision/comparison dc-html files read; Prihlaska110–158 reread after aggregate-output truncation. All three exact changed lines and complete diff reviewed.",
+    "evidence": "design-canvas-comparison-verification-2026-10-11.json"
+  },
+  "design/comparison-tools/Matice.dc.html": {
+    "sha256": "2bb945a80ed7665e083b5bed74c2d12ab074d14ec10049cc4c5cf508a4c30bd9",
+    "lines": 241,
+    "read_ranges": [
+      [
+        1,
+        241
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:22:11.547087+00:00",
+    "method": "Nine canvas JSON files completely read in preceding bounded outputs; 204-line multipage canvas split1–110/111–204. Eight complete decision/comparison dc-html files read; Prihlaska110–158 reread after aggregate-output truncation. All three exact changed lines and complete diff reviewed.",
+    "evidence": "design-canvas-comparison-verification-2026-10-11.json"
+  },
+  "design/comparison-tools/Mobil.dc.html": {
+    "sha256": "cfc0771b57c9856f39fabbac780208eb5954616739df9ad86e61877c3bd5b398",
+    "lines": 172,
+    "read_ranges": [
+      [
+        1,
+        172
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:22:11.547087+00:00",
+    "method": "Nine canvas JSON files completely read in preceding bounded outputs; 204-line multipage canvas split1–110/111–204. Eight complete decision/comparison dc-html files read; Prihlaska110–158 reread after aggregate-output truncation. All three exact changed lines and complete diff reviewed.",
+    "evidence": "design-canvas-comparison-verification-2026-10-11.json"
+  },
+  "design/comparison-tools/Prihlaska.dc.html": {
+    "sha256": "7b88159beed78061510cbacb13b8630a79e77c39bb504a73fccd22534124017c",
+    "lines": 267,
+    "read_ranges": [
+      [
+        1,
+        267
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:22:11.547087+00:00",
+    "method": "Nine canvas JSON files completely read in preceding bounded outputs; 204-line multipage canvas split1–110/111–204. Eight complete decision/comparison dc-html files read; Prihlaska110–158 reread after aggregate-output truncation. All three exact changed lines and complete diff reviewed.",
+    "evidence": "design-canvas-comparison-verification-2026-10-11.json"
+  },
+  "design/comparison-tools/Sdileni.dc.html": {
+    "sha256": "6470a11505ad4ef69fa7ae7087a1cf3a3a34a88dfb0b8bb1e0dbf2dfa7559bde",
+    "lines": 149,
+    "read_ranges": [
+      [
+        1,
+        149
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:22:11.547087+00:00",
+    "method": "Nine canvas JSON files completely read in preceding bounded outputs; 204-line multipage canvas split1–110/111–204. Eight complete decision/comparison dc-html files read; Prihlaska110–158 reread after aggregate-output truncation. All three exact changed lines and complete diff reviewed.",
+    "evidence": "design-canvas-comparison-verification-2026-10-11.json"
+  },
+  "design/decision-matrix/Kompakt.dc.html": {
+    "sha256": "9360f18246f6ef9e00ff652b37ef4d7121074ec39044442245d36c35204d2e47",
+    "lines": 110,
+    "read_ranges": [
+      [
+        1,
+        110
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:22:11.547087+00:00",
+    "method": "Nine canvas JSON files completely read in preceding bounded outputs; 204-line multipage canvas split1–110/111–204. Eight complete decision/comparison dc-html files read; Prihlaska110–158 reread after aggregate-output truncation. All three exact changed lines and complete diff reviewed.",
+    "evidence": "design-canvas-comparison-verification-2026-10-11.json"
+  },
+  "design/decision-matrix/Main.dc.html": {
+    "sha256": "cb6b82f4688c1cc953638faf0a3df8a17cfb181a194eef019bb9910d0b48e12b",
+    "lines": 212,
+    "read_ranges": [
+      [
+        1,
+        212
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:22:11.547087+00:00",
+    "method": "Nine canvas JSON files completely read in preceding bounded outputs; 204-line multipage canvas split1–110/111–204. Eight complete decision/comparison dc-html files read; Prihlaska110–158 reread after aggregate-output truncation. All three exact changed lines and complete diff reviewed.",
+    "evidence": "design-canvas-comparison-verification-2026-10-11.json"
+  },
+  "design/decision-matrix/Vahy.dc.html": {
+    "sha256": "259a3ad5c7bc1dbc4e242b97442265ac3f3457e7b3807b1de3eacd45cab4b865",
+    "lines": 139,
+    "read_ranges": [
+      [
+        1,
+        139
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:22:11.547087+00:00",
+    "method": "Nine canvas JSON files completely read in preceding bounded outputs; 204-line multipage canvas split1–110/111–204. Eight complete decision/comparison dc-html files read; Prihlaska110–158 reread after aggregate-output truncation. All three exact changed lines and complete diff reviewed.",
+    "evidence": "design-canvas-comparison-verification-2026-10-11.json"
   }
 }
