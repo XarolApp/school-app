@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-11T10:23:00.322613+00:00",
-  "commit": "9f555c118e47c43ff6bac06757cf90761639e717",
+  "checked_at_utc": "2026-10-11T10:29:41.117174+00:00",
+  "commit": "20eb166e03f159afca9f2d98db41279f4ca012d7",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "current_full_read": 583,
+    "current_full_read": 597,
     "binary_requires_asset_check": 105,
-    "pending_or_changed": 211,
-    "generated_or_audit_artifact": 184,
+    "pending_or_changed": 197,
+    "generated_or_audit_artifact": 185,
     "removed_or_missing": 2
   },
   "files": [
@@ -993,8 +993,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "c695221b6fd2abb5ef0d695ee310bc93105df3c42e9d61f0ae4b5af3c0337ce4",
-      "lines": 1891,
+      "sha256": "b0ff21b5fac4861d9ae4a6be0485c175308eda8f4611d72518accad65dfcc9a2",
+      "lines": 1898,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -1625,103 +1625,131 @@
       "path": "design/logo-concepts/Cesta.dc.html",
       "sha256": "1f8d99d5f0ea6bd6f655a14400341cfd57134f1a8ef6f777efe51af23f64b472",
       "lines": 87,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/logo-concepts/Hledacek.dc.html",
-      "sha256": "799eb12312bf7010c6276b2dd3bab25feab47537680828e4eafbe134b2bca95e",
+      "sha256": "c8e69010c9a83cdc7d0b2b570a0a46d8f2698512585dd61beb1e61e9d8082bd7",
       "lines": 93,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/logo-concepts/Litera.dc.html",
       "sha256": "6ba600ae4c527ca54eea20c58ea3c2044ee812d4eac81a42d49afb1b18e0394a",
       "lines": 81,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/logo-concepts/Logotyp.dc.html",
       "sha256": "28c7fe97b8a2c9f7f86a7b9256e2cf594e1cde3b662479b10270e86e5f2767f6",
       "lines": 141,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/logo-concepts/Main.dc.html",
-      "sha256": "a75aaf78a58960fc7b367145c08082e5a9d627948ce0ec24f364f74c1d3e37fa",
+      "sha256": "fcb9c6c7c7f82b0516ebaf220f70459c5ccc6cc69cc1f66d08de7e93ba67fa61",
       "lines": 124,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/logo-concepts/Mira.dc.html",
       "sha256": "e49efe14d2b606e5d2648c3bf4484668353d056910ae440c145b0f594b6cb29b",
       "lines": 81,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/logo-concepts/Oblouk.dc.html",
       "sha256": "28b5f18936f4dc3287bcfc5460b67699e8a8d0f400e912d0b66126519f3ea517",
       "lines": 81,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/logo-concepts/Poradi.dc.html",
-      "sha256": "fc5120162828b02e8897cbdac1295024106117212f03db3ae78687a9d10bc42c",
+      "sha256": "4d19708edfbdbee86e586a115141eabae3cd5bf0cd344a0a06e998a51ebafa2e",
       "lines": 93,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/logo-concepts/Shoda.dc.html",
       "sha256": "59485764aa3a2073d46316910a5632f6473c5738931cdc11fafdda62c0e0919a",
       "lines": 93,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/logo-concepts/Spendlik.dc.html",
       "sha256": "fc6ef4d9d9c5fa3eb3f56753b86f770bb5752ea6f9f923b6df6c5009b5d8bf65",
       "lines": 87,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/logo-concepts/TaPrava.dc.html",
       "sha256": "d6d131af747c6f4eebc2ace63a61e8502d6aee1bd24dcde7401a9c4de54d159b",
       "lines": 99,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/logo-concepts/Trychtyr.dc.html",
-      "sha256": "70d711b46e7299ffd561ce350284020b3f9eada693684c653246e42bcafb430f",
+      "sha256": "938bf0425f3458b217c6b400140b2e09859bcd5cbf390c56bbb4a38f79ac52d2",
       "lines": 123,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/logo-concepts/Visacka.dc.html",
       "sha256": "2ae33ed4f7b64058c82472a1f418bcf040877b2064f72054f36023d59bafecf6",
       "lines": 96,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/logo-concepts/Zapad.dc.html",
       "sha256": "94091cd0e9868d83ee1045da5a4cc61183760f736d3567be92f556afb18cd4a7",
       "lines": 87,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/logo-concepts/canvas.json",
-      "sha256": "d363eb411cae8a040aa0931eca3978e2b1a25dcd337649affb4ebf87f647199d",
+      "sha256": "9092ad724809f9760bd9210e39513e8515cbbdd6d845aa103119e14e737f0494",
       "lines": 42,
       "status": "current_full_read",
       "matching_evidence": [
@@ -6253,22 +6281,22 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "c801d59a678baf3e752493f9b121f0f8a88b4395321509e40e853868b673f378",
-      "lines": 427,
+      "sha256": "8de1ffa7a70a9f50a769fbef0eefc2c1f1acb803c8c3909cba26ea3239b7cecc",
+      "lines": 436,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "5764982c7e06027adba638dbdc880d1ba2f4d64c185c4ede88ce1dab9e48325e",
-      "lines": 273,
+      "sha256": "36fc981aa90a93fbc2cc73a98d9b4a0bf4c9727350e5fd7d164f5cc136ce10af",
+      "lines": 276,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "f49320f410c38baaba1b9a5c83da92e511b38e07e8b9c0ba95523117f7a3946c",
-      "lines": 203,
+      "sha256": "c036e44dda1bddf75a954af7f41cbd4006ed98333e96e494e72738f3f7f87133",
+      "lines": 206,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6617,8 +6645,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "4448b87d875112fdaf9f9c86caa59430ebc60cf4ed3a9222e1ebc819d4cca74e",
-      "lines": 554,
+      "sha256": "afb848109f9b0951b8c20078ce58ec4a67bc13e412d66075e0fa72e0cb884221",
+      "lines": 557,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6631,8 +6659,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "90852d25105164aae2ace69812663bcfd8427f0b73476c5bd6d5373868e9217f",
-      "lines": 8777,
+      "sha256": "83a9d2cc176444c6ef54235a9c1dc0d52cb89482f7cb2f22233adecbab195fb6",
+      "lines": 8779,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -7124,6 +7152,13 @@
       "sha256": "b27572ed8778b5ac52af6dc158da338d16bd1724c5abd02f62a0ec1f54b43087",
       "lines": null,
       "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/logo-concepts-verification-2026-10-11.json",
+      "sha256": "3b2432b771c415a7b47ec6d2a918d593f84b8a072462b0d981713c76a075da00",
+      "lines": 369,
+      "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
@@ -7859,8 +7894,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "42bdae3a810892f2592aba1dfa1b20ab0ff7603c2f6b61b3af0808f035aaafee",
-      "lines": 7923,
+      "sha256": "cc991a911c4936753ed01f59e0fa06181a2b06b3a1ce4c314d8f0866ad32839d",
+      "lines": 8133,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },

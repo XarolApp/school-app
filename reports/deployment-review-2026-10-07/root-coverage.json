@@ -2138,20 +2138,20 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "c695221b6fd2abb5ef0d695ee310bc93105df3c42e9d61f0ae4b5af3c0337ce4",
-    "lines": 1891,
+    "sha256": "b0ff21b5fac4861d9ae4a6be0485c175308eda8f4611d72518accad65dfcc9a2",
+    "lines": 1898,
     "read_ranges": [
       [
         1,
-        1891
+        1898
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-11T10:22:59.868744+00:00",
+    "checked_at_utc": "2026-10-11T10:29:40.575645+00:00",
     "previous_complete_sha256": "81d981f6828cc9f26cf486d65dc35416490be7941d3036fd25e5bc8dd887adcb",
-    "method": "Exact prior full-read baseline and complete own nine-line historical-canvas append/diff read. All earlier decisions preserved.",
-    "evidence": "design-canvas-comparison-verification-2026-10-11.json"
+    "method": "Exact prior full-read baseline and complete own historical-logo append/diff read; earlier founder and deployment decisions preserved.",
+    "evidence": "logo-concepts-verification-2026-10-11.json"
   },
   "frontend/src/api.js": {
     "sha256": "a545cb179681a87378f41cf928cff50e1ae6c2e539c4bbacf373590af9f8ab8a",
@@ -7696,7 +7696,7 @@
     "evidence": "design-canvas-comparison-verification-2026-10-11.json"
   },
   "design/logo-concepts/canvas.json": {
-    "sha256": "d363eb411cae8a040aa0931eca3978e2b1a25dcd337649affb4ebf87f647199d",
+    "sha256": "9092ad724809f9760bd9210e39513e8515cbbdd6d845aa103119e14e737f0494",
     "lines": 42,
     "read_ranges": [
       [
@@ -7706,9 +7706,9 @@
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-11T10:22:11.547087+00:00",
-    "method": "Nine canvas JSON files completely read in preceding bounded outputs; 204-line multipage canvas split1–110/111–204. Eight complete decision/comparison dc-html files read; Prihlaska110–158 reread after aggregate-output truncation. All three exact changed lines and complete diff reviewed.",
-    "evidence": "design-canvas-comparison-verification-2026-10-11.json"
+    "checked_at_utc": "2026-10-11T10:29:40.575645+00:00",
+    "method": "Every line of all fourteen dc-html sources read in four complete batches; current42-line canvas reread after title correction; all changed text/crop/row/annotation-y lines read.",
+    "evidence": "logo-concepts-verification-2026-10-11.json"
   },
   "design/motion-demo/canvas.json": {
     "sha256": "05ebc79ff76f9081efc053c47f69f1e2aba62f13dc760c02480e25209433fd05",
@@ -7919,5 +7919,215 @@
     "checked_at_utc": "2026-10-11T10:22:11.547087+00:00",
     "method": "Nine canvas JSON files completely read in preceding bounded outputs; 204-line multipage canvas split1–110/111–204. Eight complete decision/comparison dc-html files read; Prihlaska110–158 reread after aggregate-output truncation. All three exact changed lines and complete diff reviewed.",
     "evidence": "design-canvas-comparison-verification-2026-10-11.json"
+  },
+  "design/logo-concepts/Cesta.dc.html": {
+    "sha256": "1f8d99d5f0ea6bd6f655a14400341cfd57134f1a8ef6f777efe51af23f64b472",
+    "lines": 87,
+    "read_ranges": [
+      [
+        1,
+        87
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:29:40.575645+00:00",
+    "method": "Every line of all fourteen dc-html sources read in four complete batches; current42-line canvas reread after title correction; all changed text/crop/row/annotation-y lines read.",
+    "evidence": "logo-concepts-verification-2026-10-11.json"
+  },
+  "design/logo-concepts/Hledacek.dc.html": {
+    "sha256": "c8e69010c9a83cdc7d0b2b570a0a46d8f2698512585dd61beb1e61e9d8082bd7",
+    "lines": 93,
+    "read_ranges": [
+      [
+        1,
+        93
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:29:40.575645+00:00",
+    "method": "Every line of all fourteen dc-html sources read in four complete batches; current42-line canvas reread after title correction; all changed text/crop/row/annotation-y lines read.",
+    "evidence": "logo-concepts-verification-2026-10-11.json"
+  },
+  "design/logo-concepts/Litera.dc.html": {
+    "sha256": "6ba600ae4c527ca54eea20c58ea3c2044ee812d4eac81a42d49afb1b18e0394a",
+    "lines": 81,
+    "read_ranges": [
+      [
+        1,
+        81
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:29:40.575645+00:00",
+    "method": "Every line of all fourteen dc-html sources read in four complete batches; current42-line canvas reread after title correction; all changed text/crop/row/annotation-y lines read.",
+    "evidence": "logo-concepts-verification-2026-10-11.json"
+  },
+  "design/logo-concepts/Logotyp.dc.html": {
+    "sha256": "28c7fe97b8a2c9f7f86a7b9256e2cf594e1cde3b662479b10270e86e5f2767f6",
+    "lines": 141,
+    "read_ranges": [
+      [
+        1,
+        141
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:29:40.575645+00:00",
+    "method": "Every line of all fourteen dc-html sources read in four complete batches; current42-line canvas reread after title correction; all changed text/crop/row/annotation-y lines read.",
+    "evidence": "logo-concepts-verification-2026-10-11.json"
+  },
+  "design/logo-concepts/Main.dc.html": {
+    "sha256": "fcb9c6c7c7f82b0516ebaf220f70459c5ccc6cc69cc1f66d08de7e93ba67fa61",
+    "lines": 124,
+    "read_ranges": [
+      [
+        1,
+        124
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:29:40.575645+00:00",
+    "method": "Every line of all fourteen dc-html sources read in four complete batches; current42-line canvas reread after title correction; all changed text/crop/row/annotation-y lines read.",
+    "evidence": "logo-concepts-verification-2026-10-11.json"
+  },
+  "design/logo-concepts/Mira.dc.html": {
+    "sha256": "e49efe14d2b606e5d2648c3bf4484668353d056910ae440c145b0f594b6cb29b",
+    "lines": 81,
+    "read_ranges": [
+      [
+        1,
+        81
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:29:40.575645+00:00",
+    "method": "Every line of all fourteen dc-html sources read in four complete batches; current42-line canvas reread after title correction; all changed text/crop/row/annotation-y lines read.",
+    "evidence": "logo-concepts-verification-2026-10-11.json"
+  },
+  "design/logo-concepts/Oblouk.dc.html": {
+    "sha256": "28b5f18936f4dc3287bcfc5460b67699e8a8d0f400e912d0b66126519f3ea517",
+    "lines": 81,
+    "read_ranges": [
+      [
+        1,
+        81
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:29:40.575645+00:00",
+    "method": "Every line of all fourteen dc-html sources read in four complete batches; current42-line canvas reread after title correction; all changed text/crop/row/annotation-y lines read.",
+    "evidence": "logo-concepts-verification-2026-10-11.json"
+  },
+  "design/logo-concepts/Poradi.dc.html": {
+    "sha256": "4d19708edfbdbee86e586a115141eabae3cd5bf0cd344a0a06e998a51ebafa2e",
+    "lines": 93,
+    "read_ranges": [
+      [
+        1,
+        93
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:29:40.575645+00:00",
+    "method": "Every line of all fourteen dc-html sources read in four complete batches; current42-line canvas reread after title correction; all changed text/crop/row/annotation-y lines read.",
+    "evidence": "logo-concepts-verification-2026-10-11.json"
+  },
+  "design/logo-concepts/Shoda.dc.html": {
+    "sha256": "59485764aa3a2073d46316910a5632f6473c5738931cdc11fafdda62c0e0919a",
+    "lines": 93,
+    "read_ranges": [
+      [
+        1,
+        93
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:29:40.575645+00:00",
+    "method": "Every line of all fourteen dc-html sources read in four complete batches; current42-line canvas reread after title correction; all changed text/crop/row/annotation-y lines read.",
+    "evidence": "logo-concepts-verification-2026-10-11.json"
+  },
+  "design/logo-concepts/Spendlik.dc.html": {
+    "sha256": "fc6ef4d9d9c5fa3eb3f56753b86f770bb5752ea6f9f923b6df6c5009b5d8bf65",
+    "lines": 87,
+    "read_ranges": [
+      [
+        1,
+        87
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:29:40.575645+00:00",
+    "method": "Every line of all fourteen dc-html sources read in four complete batches; current42-line canvas reread after title correction; all changed text/crop/row/annotation-y lines read.",
+    "evidence": "logo-concepts-verification-2026-10-11.json"
+  },
+  "design/logo-concepts/TaPrava.dc.html": {
+    "sha256": "d6d131af747c6f4eebc2ace63a61e8502d6aee1bd24dcde7401a9c4de54d159b",
+    "lines": 99,
+    "read_ranges": [
+      [
+        1,
+        99
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:29:40.575645+00:00",
+    "method": "Every line of all fourteen dc-html sources read in four complete batches; current42-line canvas reread after title correction; all changed text/crop/row/annotation-y lines read.",
+    "evidence": "logo-concepts-verification-2026-10-11.json"
+  },
+  "design/logo-concepts/Trychtyr.dc.html": {
+    "sha256": "938bf0425f3458b217c6b400140b2e09859bcd5cbf390c56bbb4a38f79ac52d2",
+    "lines": 123,
+    "read_ranges": [
+      [
+        1,
+        123
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:29:40.575645+00:00",
+    "method": "Every line of all fourteen dc-html sources read in four complete batches; current42-line canvas reread after title correction; all changed text/crop/row/annotation-y lines read.",
+    "evidence": "logo-concepts-verification-2026-10-11.json"
+  },
+  "design/logo-concepts/Visacka.dc.html": {
+    "sha256": "2ae33ed4f7b64058c82472a1f418bcf040877b2064f72054f36023d59bafecf6",
+    "lines": 96,
+    "read_ranges": [
+      [
+        1,
+        96
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:29:40.575645+00:00",
+    "method": "Every line of all fourteen dc-html sources read in four complete batches; current42-line canvas reread after title correction; all changed text/crop/row/annotation-y lines read.",
+    "evidence": "logo-concepts-verification-2026-10-11.json"
+  },
+  "design/logo-concepts/Zapad.dc.html": {
+    "sha256": "94091cd0e9868d83ee1045da5a4cc61183760f736d3567be92f556afb18cd4a7",
+    "lines": 87,
+    "read_ranges": [
+      [
+        1,
+        87
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T10:29:40.575645+00:00",
+    "method": "Every line of all fourteen dc-html sources read in four complete batches; current42-line canvas reread after title correction; all changed text/crop/row/annotation-y lines read.",
+    "evidence": "logo-concepts-verification-2026-10-11.json"
   }
 }

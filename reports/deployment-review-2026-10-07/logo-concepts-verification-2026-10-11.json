@@ -1,0 +1,369 @@
+{
+  "checked_at_utc": "2026-10-11T10:29:40.575645+00:00",
+  "snapshot_commit": "20eb166e03f159afca9f2d98db41279f4ca012d7",
+  "files": {
+    "design/logo-concepts/Cesta.dc.html": {
+      "sha256": "1f8d99d5f0ea6bd6f655a14400341cfd57134f1a8ef6f777efe51af23f64b472",
+      "lines": 87
+    },
+    "design/logo-concepts/Hledacek.dc.html": {
+      "sha256": "c8e69010c9a83cdc7d0b2b570a0a46d8f2698512585dd61beb1e61e9d8082bd7",
+      "lines": 93
+    },
+    "design/logo-concepts/Litera.dc.html": {
+      "sha256": "6ba600ae4c527ca54eea20c58ea3c2044ee812d4eac81a42d49afb1b18e0394a",
+      "lines": 81
+    },
+    "design/logo-concepts/Logotyp.dc.html": {
+      "sha256": "28c7fe97b8a2c9f7f86a7b9256e2cf594e1cde3b662479b10270e86e5f2767f6",
+      "lines": 141
+    },
+    "design/logo-concepts/Main.dc.html": {
+      "sha256": "fcb9c6c7c7f82b0516ebaf220f70459c5ccc6cc69cc1f66d08de7e93ba67fa61",
+      "lines": 124
+    },
+    "design/logo-concepts/Mira.dc.html": {
+      "sha256": "e49efe14d2b606e5d2648c3bf4484668353d056910ae440c145b0f594b6cb29b",
+      "lines": 81
+    },
+    "design/logo-concepts/Oblouk.dc.html": {
+      "sha256": "28b5f18936f4dc3287bcfc5460b67699e8a8d0f400e912d0b66126519f3ea517",
+      "lines": 81
+    },
+    "design/logo-concepts/Poradi.dc.html": {
+      "sha256": "4d19708edfbdbee86e586a115141eabae3cd5bf0cd344a0a06e998a51ebafa2e",
+      "lines": 93
+    },
+    "design/logo-concepts/Shoda.dc.html": {
+      "sha256": "59485764aa3a2073d46316910a5632f6473c5738931cdc11fafdda62c0e0919a",
+      "lines": 93
+    },
+    "design/logo-concepts/Spendlik.dc.html": {
+      "sha256": "fc6ef4d9d9c5fa3eb3f56753b86f770bb5752ea6f9f923b6df6c5009b5d8bf65",
+      "lines": 87
+    },
+    "design/logo-concepts/TaPrava.dc.html": {
+      "sha256": "d6d131af747c6f4eebc2ace63a61e8502d6aee1bd24dcde7401a9c4de54d159b",
+      "lines": 99
+    },
+    "design/logo-concepts/Trychtyr.dc.html": {
+      "sha256": "938bf0425f3458b217c6b400140b2e09859bcd5cbf390c56bbb4a38f79ac52d2",
+      "lines": 123
+    },
+    "design/logo-concepts/Visacka.dc.html": {
+      "sha256": "2ae33ed4f7b64058c82472a1f418bcf040877b2064f72054f36023d59bafecf6",
+      "lines": 96
+    },
+    "design/logo-concepts/Zapad.dc.html": {
+      "sha256": "94091cd0e9868d83ee1045da5a4cc61183760f736d3567be92f556afb18cd4a7",
+      "lines": 87
+    },
+    "design/logo-concepts/canvas.json": {
+      "sha256": "9092ad724809f9760bd9210e39513e8515cbbdd6d845aa103119e14e737f0494",
+      "lines": 42
+    }
+  },
+  "read_method": "Every line of all fourteen dc-html sources read in four complete batches; current42-line canvas reread after title correction; all changed text/crop/row/annotation-y lines read.",
+  "structural": [
+    {
+      "name": "Cesta.dc.html",
+      "fixture": "logo-Cesta.dc.html",
+      "width": 560,
+      "height": 640,
+      "svg_count": 6,
+      "svg_and_style_attributes_unchanged": true
+    },
+    {
+      "name": "Hledacek.dc.html",
+      "fixture": "logo-Hledacek.dc.html",
+      "width": 560,
+      "height": 640,
+      "svg_count": 6,
+      "svg_and_style_attributes_unchanged": true
+    },
+    {
+      "name": "Litera.dc.html",
+      "fixture": "logo-Litera.dc.html",
+      "width": 560,
+      "height": 640,
+      "svg_count": 6,
+      "svg_and_style_attributes_unchanged": true
+    },
+    {
+      "name": "Logotyp.dc.html",
+      "fixture": "logo-Logotyp.dc.html",
+      "width": 880,
+      "height": 960,
+      "svg_count": 16,
+      "svg_and_style_attributes_unchanged": true
+    },
+    {
+      "name": "Main.dc.html",
+      "fixture": "logo-Main.dc.html",
+      "width": 880,
+      "height": 980,
+      "svg_count": 8,
+      "svg_and_style_attributes_unchanged": true
+    },
+    {
+      "name": "Mira.dc.html",
+      "fixture": "logo-Mira.dc.html",
+      "width": 560,
+      "height": 640,
+      "svg_count": 6,
+      "svg_and_style_attributes_unchanged": true
+    },
+    {
+      "name": "Oblouk.dc.html",
+      "fixture": "logo-Oblouk.dc.html",
+      "width": 560,
+      "height": 640,
+      "svg_count": 6,
+      "svg_and_style_attributes_unchanged": true
+    },
+    {
+      "name": "Poradi.dc.html",
+      "fixture": "logo-Poradi.dc.html",
+      "width": 560,
+      "height": 640,
+      "svg_count": 6,
+      "svg_and_style_attributes_unchanged": true
+    },
+    {
+      "name": "Shoda.dc.html",
+      "fixture": "logo-Shoda.dc.html",
+      "width": 560,
+      "height": 640,
+      "svg_count": 6,
+      "svg_and_style_attributes_unchanged": true
+    },
+    {
+      "name": "Spendlik.dc.html",
+      "fixture": "logo-Spendlik.dc.html",
+      "width": 560,
+      "height": 640,
+      "svg_count": 6,
+      "svg_and_style_attributes_unchanged": true
+    },
+    {
+      "name": "TaPrava.dc.html",
+      "fixture": "logo-TaPrava.dc.html",
+      "width": 560,
+      "height": 640,
+      "svg_count": 6,
+      "svg_and_style_attributes_unchanged": true
+    },
+    {
+      "name": "Trychtyr.dc.html",
+      "fixture": "logo-Trychtyr.dc.html",
+      "width": 560,
+      "height": 640,
+      "svg_count": 6,
+      "svg_and_style_attributes_unchanged": true
+    },
+    {
+      "name": "Visacka.dc.html",
+      "fixture": "logo-Visacka.dc.html",
+      "width": 560,
+      "height": 640,
+      "svg_count": 6,
+      "svg_and_style_attributes_unchanged": true
+    },
+    {
+      "name": "Zapad.dc.html",
+      "fixture": "logo-Zapad.dc.html",
+      "width": 560,
+      "height": 640,
+      "svg_count": 6,
+      "svg_and_style_attributes_unchanged": true
+    }
+  ],
+  "checks": {
+    "inline_svg_xml_parse_count": 96,
+    "every_svg_byte_unchanged": true,
+    "all_style_blocks_and_source_element_attributes_byte_unchanged": true,
+    "canvas_existing_files_pages_positive_sizes_and_no_artboard_overlap": true,
+    "bug_echo": "Search across current logo dc-html/canvas found all obsolete224/exactly-three-school/caron-exclusivity occurrences; all corrected. Product itself continues to use its dated catalogue facts and current programme rules."
+  },
+  "actual_browser": [
+    {
+      "name": "Cesta",
+      "width": 560,
+      "before_declared_height": 640,
+      "before_document_scroll_height": 715,
+      "after_declared_height": 800,
+      "after_document_scroll_height": 800,
+      "after_document_scroll_width": 560,
+      "visible_svg_count": 6,
+      "dom_present": true
+    },
+    {
+      "name": "Hledacek",
+      "width": 560,
+      "before_declared_height": 640,
+      "before_document_scroll_height": 715,
+      "after_declared_height": 800,
+      "after_document_scroll_height": 800,
+      "after_document_scroll_width": 560,
+      "visible_svg_count": 6,
+      "dom_present": true
+    },
+    {
+      "name": "Litera",
+      "width": 560,
+      "before_declared_height": 640,
+      "before_document_scroll_height": 694,
+      "after_declared_height": 800,
+      "after_document_scroll_height": 800,
+      "after_document_scroll_width": 560,
+      "visible_svg_count": 6,
+      "dom_present": true
+    },
+    {
+      "name": "Logotyp",
+      "width": 880,
+      "before_declared_height": 960,
+      "before_document_scroll_height": 1128,
+      "after_declared_height": 1200,
+      "after_document_scroll_height": 1200,
+      "after_document_scroll_width": 880,
+      "visible_svg_count": 16,
+      "dom_present": true
+    },
+    {
+      "name": "Main",
+      "width": 880,
+      "before_declared_height": 980,
+      "before_document_scroll_height": 1118,
+      "after_declared_height": 1200,
+      "after_document_scroll_height": 1200,
+      "after_document_scroll_width": 880,
+      "visible_svg_count": 8,
+      "dom_present": true
+    },
+    {
+      "name": "Mira",
+      "width": 560,
+      "before_declared_height": 640,
+      "before_document_scroll_height": 674,
+      "after_declared_height": 800,
+      "after_document_scroll_height": 800,
+      "after_document_scroll_width": 560,
+      "visible_svg_count": 6,
+      "dom_present": true
+    },
+    {
+      "name": "Oblouk",
+      "width": 560,
+      "before_declared_height": 640,
+      "before_document_scroll_height": 715,
+      "after_declared_height": 800,
+      "after_document_scroll_height": 800,
+      "after_document_scroll_width": 560,
+      "visible_svg_count": 6,
+      "dom_present": true
+    },
+    {
+      "name": "Poradi",
+      "width": 560,
+      "before_declared_height": 640,
+      "before_document_scroll_height": 738,
+      "after_declared_height": 800,
+      "after_document_scroll_height": 800,
+      "after_document_scroll_width": 560,
+      "visible_svg_count": 6,
+      "dom_present": true
+    },
+    {
+      "name": "Shoda",
+      "width": 560,
+      "before_declared_height": 640,
+      "before_document_scroll_height": 738,
+      "after_declared_height": 800,
+      "after_document_scroll_height": 800,
+      "after_document_scroll_width": 560,
+      "visible_svg_count": 6,
+      "dom_present": true
+    },
+    {
+      "name": "Spendlik",
+      "width": 560,
+      "before_declared_height": 640,
+      "before_document_scroll_height": 717,
+      "after_declared_height": 800,
+      "after_document_scroll_height": 800,
+      "after_document_scroll_width": 560,
+      "visible_svg_count": 6,
+      "dom_present": true
+    },
+    {
+      "name": "TaPrava",
+      "width": 560,
+      "before_declared_height": 640,
+      "before_document_scroll_height": 674,
+      "after_declared_height": 800,
+      "after_document_scroll_height": 800,
+      "after_document_scroll_width": 560,
+      "visible_svg_count": 6,
+      "dom_present": true
+    },
+    {
+      "name": "Trychtyr",
+      "width": 560,
+      "before_declared_height": 640,
+      "before_document_scroll_height": 717,
+      "after_declared_height": 800,
+      "after_document_scroll_height": 800,
+      "after_document_scroll_width": 560,
+      "visible_svg_count": 6,
+      "dom_present": true
+    },
+    {
+      "name": "Visacka",
+      "width": 560,
+      "before_declared_height": 640,
+      "before_document_scroll_height": 687,
+      "after_declared_height": 800,
+      "after_document_scroll_height": 800,
+      "after_document_scroll_width": 560,
+      "visible_svg_count": 6,
+      "dom_present": true
+    },
+    {
+      "name": "Zapad",
+      "width": 560,
+      "before_declared_height": 640,
+      "before_document_scroll_height": 715,
+      "after_declared_height": 800,
+      "after_document_scroll_height": 800,
+      "after_document_scroll_width": 560,
+      "visible_svg_count": 6,
+      "dom_present": true
+    }
+  ],
+  "fixes": [
+    "Replace obsolete224 assertions with count-neutral many-school concept wording and matching canvas title.",
+    "Correct every-applicant-exactly-three-schools assertion: priority programme choices, up to three without talent tests and up to two with talent tests.",
+    "Remove false Czech exclusivity of caron; retain proposed native-writing brand rationale.",
+    "All14 old canvas heights cropped the rendered source. Increase12 smaller crops to800px and two wider crops to1200px; reposition later rows and associated annotation to retain120px row gaps. No artwork/layout/source style changed."
+  ],
+  "primary_sources": [
+    {
+      "url": "https://prijimacky.cermat.gov.cz/menu/jednotna-prijimaci-zkouska.html",
+      "retrieved": "2026-10-11",
+      "support": "Programme limits in first round and binding priority order; exactly-three-school universal is false."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/unicode-org/cldr/main/common/main/sk.xml",
+      "retrieved": "2026-10-11",
+      "support": "Unicode Slovak main/index exemplar characters include caron-bearing letters; caron is not Czech-exclusive. Charts URL inaccessible; raw official Unicode repository retrieved."
+    }
+  ],
+  "limitations": [
+    "Actual before/after visits use every exact source body and reviewed runtime with installed React19, remote Google font link removed; fallback font rendering only. No frontend imports/product branding selection changed.",
+    "Logotyp splits Stredni and na miru into separate text nodes; simple joined-brand substring returned false, which is not a missing-brand/rendering defect. All16 SVGs and text nodes rendered.",
+    "Draft opinions about instant teen comprehension, competition exclusivity, never-degrading small glyphs and future geography are unvalidated design hypotheses. Test with actual current fonts,16/32/40 sizes, circle crops/email clients, dark mode and physical devices before adoption.",
+    "Export wrapper/base64/embedded-runtime completeness remains separately queued; no generated bundle silently patched.",
+    "Current beta/security/privacy/payment/schema/services approval and active peer-file reviews remain open."
+  ]
+}
