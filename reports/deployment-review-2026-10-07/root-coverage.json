@@ -2138,19 +2138,19 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "11f56ababfd9f0664b4994850823c60f90faf2cd039ef854468350dfc21a8021",
-    "lines": 1922,
+    "sha256": "d536f239eec0fa94a17ce4e270fb962c3c1642798e233fdd0dd50bc77e69a033",
+    "lines": 1927,
     "read_ranges": [
       [
         1,
-        1922
+        1927
       ]
     ],
     "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-11T16:20:53.374368+00:00",
-    "previous_complete_sha256": "dc0ce4e5ffc97a5b7844d0504d7a1ae6d65f24c2dcd5dbceb32ebf3daa82586f",
-    "method": "Exact saved complete baseline plus full own historical-paywall append inspected.",
+    "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
+    "previous_complete_sha256": "11f56ababfd9f0664b4994850823c60f90faf2cd039ef854468350dfc21a8021",
+    "method": "Exact saved fully reviewed baseline plus full own28-source historical-draft append inspected.",
     "evidence": "motion-demo-verification-2026-10-11.json"
   },
   "frontend/src/api.js": {
@@ -8381,5 +8381,397 @@
     "reviewer": "root",
     "checked_at_utc": "2026-10-11T16:20:53.374368+00:00",
     "method": "Complete Current/Main121 each, Discount125/Mobile105 and OptionB146 authored HTML/comment/style/attribute/SVG reads. Unchanged source; structural checks do not establish current product or browser/device acceptance."
+  },
+  "design/onboarding-v2/Calculating.dc.html": {
+    "sha256": "42797710f86dcc8aa7235068a758b9277f1c7234e1f8e7732135e97200a5e7e1",
+    "lines": 96,
+    "read_ranges": [
+      [
+        1,
+        96
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
+    "method": "Complete source read; authored source/comment/style/attribute/geometry coverage. Unchanged historical proposal; evidence does not establish current product/device/browser acceptance."
+  },
+  "design/onboarding-v2/Main.dc.html": {
+    "sha256": "f0813b1336d4bf55a4ef9a5c1830e125c16bf00df5eb2677ec78fd94334d4574",
+    "lines": 137,
+    "read_ranges": [
+      [
+        1,
+        137
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
+    "method": "Complete source read; authored source/comment/style/attribute/geometry coverage. Unchanged historical proposal; evidence does not establish current product/device/browser acceptance."
+  },
+  "design/onboarding-v2/Paywall.dc.html": {
+    "sha256": "97a9d1e11223467d8280b02a176ba52656b29dadb679e9a56b33bb2ce17575ea",
+    "lines": 164,
+    "read_ranges": [
+      [
+        1,
+        164
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
+    "method": "Complete source read; authored source/comment/style/attribute/geometry coverage. Unchanged historical proposal; evidence does not establish current product/device/browser acceptance."
+  },
+  "design/onboarding-v2/QuizDesktop.dc.html": {
+    "sha256": "ddc246b0c73dd9fe04456a3b9e9f97aa733e4b888f8e1cc5e8d4e4f630276cd9",
+    "lines": 175,
+    "read_ranges": [
+      [
+        1,
+        175
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
+    "method": "Complete source read; authored source/comment/style/attribute/geometry coverage. Unchanged historical proposal; evidence does not establish current product/device/browser acceptance."
+  },
+  "design/onboarding-v2/QuizMobile.dc.html": {
+    "sha256": "cc0104d4f7f65e42bb319f564be74b2ec449242f8a0964f0b9b037f8dac20645",
+    "lines": 126,
+    "read_ranges": [
+      [
+        1,
+        126
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
+    "method": "Complete source read; authored source/comment/style/attribute/geometry coverage. Unchanged historical proposal; evidence does not establish current product/device/browser acceptance."
+  },
+  "design/onboarding-v2/Reveal.dc.html": {
+    "sha256": "00f61f854905fd1b239aaa95e4862e9888fb21840648f170bd03c0527458b97e",
+    "lines": 150,
+    "read_ranges": [
+      [
+        1,
+        150
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
+    "method": "Complete source read; authored source/comment/style/attribute/geometry coverage. Unchanged historical proposal; evidence does not establish current product/device/browser acceptance."
+  },
+  "design/onboarding-v2/RoleFork.dc.html": {
+    "sha256": "b752120b00e2bd86ae75d6a21a373968963ec07f34aca63c87e19fd0194640a2",
+    "lines": 113,
+    "read_ranges": [
+      [
+        1,
+        113
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
+    "method": "Complete source read; authored source/comment/style/attribute/geometry coverage. Unchanged historical proposal; evidence does not establish current product/device/browser acceptance."
+  },
+  "design/onboarding-v2/Stakes.dc.html": {
+    "sha256": "8f4eb4b3f4aaf01f26420d191f5e61d4fa6f251bc86d3d9352c9be793f67b01d",
+    "lines": 112,
+    "read_ranges": [
+      [
+        1,
+        112
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
+    "method": "Complete source read; authored source/comment/style/attribute/geometry coverage. Unchanged historical proposal; evidence does not establish current product/device/browser acceptance."
+  },
+  "design/paywall-multipage/Cesta.dc.html": {
+    "sha256": "eb8fca96119310d9d71adef517e050406395298b098b3eff96749478dd8cd53d",
+    "lines": 113,
+    "read_ranges": [
+      [
+        1,
+        113
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
+    "method": "Complete source read; authored source/comment/style/attribute/geometry coverage. Unchanged historical proposal; evidence does not establish current product/device/browser acceptance."
+  },
+  "design/paywall-multipage/Hodnota.dc.html": {
+    "sha256": "d1698104cb49613e8b3e5b783b467a7afea67b012a1ce3f68c09d998c612869b",
+    "lines": 82,
+    "read_ranges": [
+      [
+        1,
+        82
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
+    "method": "Complete source read; authored source/comment/style/attribute/geometry coverage. Unchanged historical proposal; evidence does not establish current product/device/browser acceptance."
+  },
+  "design/paywall-multipage/Main.dc.html": {
+    "sha256": "d8849820c4fb64d700b25cbd794d95474ceaa50963c9e233ea2140198ed96aaa",
+    "lines": 120,
+    "read_ranges": [
+      [
+        1,
+        120
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
+    "method": "Complete source read; authored source/comment/style/attribute/geometry coverage. Unchanged historical proposal; evidence does not establish current product/device/browser acceptance."
+  },
+  "design/paywall-multipage/ParentCesta.dc.html": {
+    "sha256": "69a93529ff84d0e3c38e559bc978e5b4ff0276b47d5d65cd3f4373928792edf7",
+    "lines": 113,
+    "read_ranges": [
+      [
+        1,
+        113
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
+    "method": "Complete base plus every complete parent difference read; authored source/comment/style/attribute/geometry coverage. Unchanged historical proposal; evidence does not establish current product/device/browser acceptance."
+  },
+  "design/paywall-multipage/ParentHodnota.dc.html": {
+    "sha256": "0791ef8c18661da299bfa2e5540856e8227f8896cf108d2a07c8c78d0085b917",
+    "lines": 84,
+    "read_ranges": [
+      [
+        1,
+        84
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
+    "method": "Complete base plus every complete parent difference read; authored source/comment/style/attribute/geometry coverage. Unchanged historical proposal; evidence does not establish current product/device/browser acceptance."
+  },
+  "design/paywall-multipage/ParentMain.dc.html": {
+    "sha256": "51d267361df5d0515bbf40cf49a7d8da7ec04f8136b87ce730a74b1ef418798f",
+    "lines": 120,
+    "read_ranges": [
+      [
+        1,
+        120
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
+    "method": "Complete base plus every complete parent difference read; authored source/comment/style/attribute/geometry coverage. Unchanged historical proposal; evidence does not establish current product/device/browser acceptance."
+  },
+  "design/paywall-multipage/ParentPlatba.dc.html": {
+    "sha256": "cf8c5719eec429637c42a2cd7895efafe39d67b14df923ade93c8bee20e5d17a",
+    "lines": 94,
+    "read_ranges": [
+      [
+        1,
+        94
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
+    "method": "Complete base plus every complete parent difference read; authored source/comment/style/attribute/geometry coverage. Unchanged historical proposal; evidence does not establish current product/device/browser acceptance."
+  },
+  "design/paywall-multipage/ParentWebCesta.dc.html": {
+    "sha256": "573a0d1d0d43355b7717abfa0c1b6676cb82448956bd14b0c0df43c1e6e6de24",
+    "lines": 129,
+    "read_ranges": [
+      [
+        1,
+        129
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
+    "method": "Complete base plus every complete parent difference read; authored source/comment/style/attribute/geometry coverage. Unchanged historical proposal; evidence does not establish current product/device/browser acceptance."
+  },
+  "design/paywall-multipage/ParentWebHodnota.dc.html": {
+    "sha256": "32879f0e4f7ef946a7023d862bda69a7db40170b66bfbaa4c30f4338c341849c",
+    "lines": 94,
+    "read_ranges": [
+      [
+        1,
+        94
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
+    "method": "Complete base plus every complete parent difference read; authored source/comment/style/attribute/geometry coverage. Unchanged historical proposal; evidence does not establish current product/device/browser acceptance."
+  },
+  "design/paywall-multipage/ParentWebPlan.dc.html": {
+    "sha256": "9d32e824f0e7a3581e0189707ea3f9b586aaad14b6ec0aa65e9b48c3529286e2",
+    "lines": 156,
+    "read_ranges": [
+      [
+        1,
+        156
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
+    "method": "Complete base plus every complete parent difference read; authored source/comment/style/attribute/geometry coverage. Unchanged historical proposal; evidence does not establish current product/device/browser acceptance."
+  },
+  "design/paywall-multipage/ParentWebPlatba.dc.html": {
+    "sha256": "4652976c3e4055387a0133a94a6b703d5a7965b48b13f02c6db29eb95d1d9d55",
+    "lines": 104,
+    "read_ranges": [
+      [
+        1,
+        104
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
+    "method": "Complete base plus every complete parent difference read; authored source/comment/style/attribute/geometry coverage. Unchanged historical proposal; evidence does not establish current product/device/browser acceptance."
+  },
+  "design/paywall-multipage/ParentWebZkusebni.dc.html": {
+    "sha256": "6170fa7b7b0e1d167a02e4e3b418b51edef2908c3a7efe10a0fcd664a0e1fa96",
+    "lines": 143,
+    "read_ranges": [
+      [
+        1,
+        143
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
+    "method": "Complete base plus every complete parent difference read; authored source/comment/style/attribute/geometry coverage. Unchanged historical proposal; evidence does not establish current product/device/browser acceptance."
+  },
+  "design/paywall-multipage/ParentZkusebni.dc.html": {
+    "sha256": "4eeaac097c2ea360c52c801c2ea18797e44bb837d2867b47713e36881ee54ff2",
+    "lines": 121,
+    "read_ranges": [
+      [
+        1,
+        121
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
+    "method": "Complete base plus every complete parent difference read; authored source/comment/style/attribute/geometry coverage. Unchanged historical proposal; evidence does not establish current product/device/browser acceptance."
+  },
+  "design/paywall-multipage/Platba.dc.html": {
+    "sha256": "5dd6f3e5f5125c09499c49f48fc8f85c283034c80a67a0aa2b51950199c9bf3b",
+    "lines": 94,
+    "read_ranges": [
+      [
+        1,
+        94
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
+    "method": "Complete source read; authored source/comment/style/attribute/geometry coverage. Unchanged historical proposal; evidence does not establish current product/device/browser acceptance."
+  },
+  "design/paywall-multipage/WebCesta.dc.html": {
+    "sha256": "9ccc52494856da06dacd785ca3e14cbdc5638977b7419f923124a3733f0073bc",
+    "lines": 129,
+    "read_ranges": [
+      [
+        1,
+        129
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
+    "method": "Complete source read; authored source/comment/style/attribute/geometry coverage. Unchanged historical proposal; evidence does not establish current product/device/browser acceptance."
+  },
+  "design/paywall-multipage/WebHodnota.dc.html": {
+    "sha256": "594c86577e0223ad2e9eeec2b4bf039bbfc8d527cc7c70d170ad810b649ff5e7",
+    "lines": 93,
+    "read_ranges": [
+      [
+        1,
+        93
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
+    "method": "Complete source read; authored source/comment/style/attribute/geometry coverage. Unchanged historical proposal; evidence does not establish current product/device/browser acceptance."
+  },
+  "design/paywall-multipage/WebPlan.dc.html": {
+    "sha256": "89733db35230bccfa2723371ef7bb33ff547472772231e643dfa48c17590755d",
+    "lines": 156,
+    "read_ranges": [
+      [
+        1,
+        156
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
+    "method": "Complete source read; authored source/comment/style/attribute/geometry coverage. Unchanged historical proposal; evidence does not establish current product/device/browser acceptance."
+  },
+  "design/paywall-multipage/WebPlatba.dc.html": {
+    "sha256": "155f51567e951c424303176fab7d4aa465b376f11036d973d20a7999c8e03470",
+    "lines": 104,
+    "read_ranges": [
+      [
+        1,
+        104
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
+    "method": "Complete source read; authored source/comment/style/attribute/geometry coverage. Unchanged historical proposal; evidence does not establish current product/device/browser acceptance."
+  },
+  "design/paywall-multipage/WebZkusebni.dc.html": {
+    "sha256": "1612c006f72d2b80ac6726540d00532022bdf04cfc0c8a9479fa6f6ae6509970",
+    "lines": 143,
+    "read_ranges": [
+      [
+        1,
+        143
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
+    "method": "Complete source read; authored source/comment/style/attribute/geometry coverage. Unchanged historical proposal; evidence does not establish current product/device/browser acceptance."
+  },
+  "design/paywall-multipage/Zkusebni.dc.html": {
+    "sha256": "f1deb76dff39e2a6135a05dc230fe02e2cc4d71f81feb0be6f21e0e15ecd35a8",
+    "lines": 121,
+    "read_ranges": [
+      [
+        1,
+        121
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "checked_at_utc": "2026-10-11T16:31:11.521647+00:00",
+    "method": "Complete source read; authored source/comment/style/attribute/geometry coverage. Unchanged historical proposal; evidence does not establish current product/device/browser acceptance."
   }
 }

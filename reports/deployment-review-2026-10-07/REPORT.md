@@ -216,3 +216,6 @@ Earlier-beta-report checkpoint, 11 October: five complete dated beta/simulation 
 
 
 Desktop-paywall source checkpoint, 11 October: five unchanged complete historical specimens (618 lines, 50 SVGs) reviewed. All SVGs parse, but all five local support-script references are missing. [Evidence](paywall-desktop-source-review-2026-10-11.json) records C44 conditional reuse limits for runtime, monthly/season trial, old counts/access/storage, contractual calendar/daily/VAT copy, hypothetical discount/urgency, fixed-size/nonsemantic controls and fonts. No current frontend/runtime/source/policy changed; full review remains active.
+
+
+Onboarding/multipage-paywall checkpoint,11 October:28 complete unchanged historical sources reviewed (3386 lines,153 SVGs; all10 complete parent differences). [Evidence](onboarding-paywall-source-review-2026-10-11.json) records missing runtime references and conditional C44 reuse debts for stale counts/registration/storage, fabricated loading/confidence/outcome claims, sample programmes, application/season dates, monthly/season CTA/timeline, removed checkboxes, disabled sharing and responsive/semantic/font/processor facts. All SVGs parse; no actual current UI/policy/provider change or browser/device acceptance. Full review remains active.

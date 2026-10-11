@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-11T16:20:54.006050+00:00",
-  "commit": "9a3c26fc22c2230102acf6e45bf61182a361f54f",
+  "checked_at_utc": "2026-10-11T16:31:12.674151+00:00",
+  "commit": "0d61be613afab12b184206dccd209b8d8fd48310",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "current_full_read": 614,
+    "current_full_read": 642,
     "binary_requires_asset_check": 105,
-    "pending_or_changed": 180,
-    "generated_or_audit_artifact": 191,
+    "pending_or_changed": 152,
+    "generated_or_audit_artifact": 192,
     "removed_or_missing": 2
   },
   "files": [
@@ -993,8 +993,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "11f56ababfd9f0664b4994850823c60f90faf2cd039ef854468350dfc21a8021",
-      "lines": 1922,
+      "sha256": "d536f239eec0fa94a17ce4e270fb962c3c1642798e233fdd0dd50bc77e69a033",
+      "lines": 1927,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -1812,57 +1812,73 @@
       "path": "design/onboarding-v2/Calculating.dc.html",
       "sha256": "42797710f86dcc8aa7235068a758b9277f1c7234e1f8e7732135e97200a5e7e1",
       "lines": 96,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/onboarding-v2/Main.dc.html",
       "sha256": "f0813b1336d4bf55a4ef9a5c1830e125c16bf00df5eb2677ec78fd94334d4574",
       "lines": 137,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/onboarding-v2/Paywall.dc.html",
       "sha256": "97a9d1e11223467d8280b02a176ba52656b29dadb679e9a56b33bb2ce17575ea",
       "lines": 164,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/onboarding-v2/QuizDesktop.dc.html",
       "sha256": "ddc246b0c73dd9fe04456a3b9e9f97aa733e4b888f8e1cc5e8d4e4f630276cd9",
       "lines": 175,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/onboarding-v2/QuizMobile.dc.html",
       "sha256": "cc0104d4f7f65e42bb319f564be74b2ec449242f8a0964f0b9b037f8dac20645",
       "lines": 126,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/onboarding-v2/Reveal.dc.html",
       "sha256": "00f61f854905fd1b239aaa95e4862e9888fb21840648f170bd03c0527458b97e",
       "lines": 150,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/onboarding-v2/RoleFork.dc.html",
       "sha256": "b752120b00e2bd86ae75d6a21a373968963ec07f34aca63c87e19fd0194640a2",
       "lines": 113,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/onboarding-v2/Stakes.dc.html",
       "sha256": "8f4eb4b3f4aaf01f26420d191f5e61d4fa6f251bc86d3d9352c9be793f67b01d",
       "lines": 112,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/onboarding-v2/canvas.json",
@@ -1931,141 +1947,181 @@
       "path": "design/paywall-multipage/Cesta.dc.html",
       "sha256": "eb8fca96119310d9d71adef517e050406395298b098b3eff96749478dd8cd53d",
       "lines": 113,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/paywall-multipage/Hodnota.dc.html",
       "sha256": "d1698104cb49613e8b3e5b783b467a7afea67b012a1ce3f68c09d998c612869b",
       "lines": 82,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/paywall-multipage/Main.dc.html",
       "sha256": "d8849820c4fb64d700b25cbd794d95474ceaa50963c9e233ea2140198ed96aaa",
       "lines": 120,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/paywall-multipage/ParentCesta.dc.html",
       "sha256": "69a93529ff84d0e3c38e559bc978e5b4ff0276b47d5d65cd3f4373928792edf7",
       "lines": 113,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/paywall-multipage/ParentHodnota.dc.html",
       "sha256": "0791ef8c18661da299bfa2e5540856e8227f8896cf108d2a07c8c78d0085b917",
       "lines": 84,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/paywall-multipage/ParentMain.dc.html",
       "sha256": "51d267361df5d0515bbf40cf49a7d8da7ec04f8136b87ce730a74b1ef418798f",
       "lines": 120,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/paywall-multipage/ParentPlatba.dc.html",
       "sha256": "cf8c5719eec429637c42a2cd7895efafe39d67b14df923ade93c8bee20e5d17a",
       "lines": 94,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/paywall-multipage/ParentWebCesta.dc.html",
       "sha256": "573a0d1d0d43355b7717abfa0c1b6676cb82448956bd14b0c0df43c1e6e6de24",
       "lines": 129,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/paywall-multipage/ParentWebHodnota.dc.html",
       "sha256": "32879f0e4f7ef946a7023d862bda69a7db40170b66bfbaa4c30f4338c341849c",
       "lines": 94,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/paywall-multipage/ParentWebPlan.dc.html",
       "sha256": "9d32e824f0e7a3581e0189707ea3f9b586aaad14b6ec0aa65e9b48c3529286e2",
       "lines": 156,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/paywall-multipage/ParentWebPlatba.dc.html",
       "sha256": "4652976c3e4055387a0133a94a6b703d5a7965b48b13f02c6db29eb95d1d9d55",
       "lines": 104,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/paywall-multipage/ParentWebZkusebni.dc.html",
       "sha256": "6170fa7b7b0e1d167a02e4e3b418b51edef2908c3a7efe10a0fcd664a0e1fa96",
       "lines": 143,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/paywall-multipage/ParentZkusebni.dc.html",
       "sha256": "4eeaac097c2ea360c52c801c2ea18797e44bb837d2867b47713e36881ee54ff2",
       "lines": 121,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/paywall-multipage/Platba.dc.html",
       "sha256": "5dd6f3e5f5125c09499c49f48fc8f85c283034c80a67a0aa2b51950199c9bf3b",
       "lines": 94,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/paywall-multipage/WebCesta.dc.html",
       "sha256": "9ccc52494856da06dacd785ca3e14cbdc5638977b7419f923124a3733f0073bc",
       "lines": 129,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/paywall-multipage/WebHodnota.dc.html",
       "sha256": "594c86577e0223ad2e9eeec2b4bf039bbfc8d527cc7c70d170ad810b649ff5e7",
       "lines": 93,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/paywall-multipage/WebPlan.dc.html",
       "sha256": "89733db35230bccfa2723371ef7bb33ff547472772231e643dfa48c17590755d",
       "lines": 156,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/paywall-multipage/WebPlatba.dc.html",
       "sha256": "155f51567e951c424303176fab7d4aa465b376f11036d973d20a7999c8e03470",
       "lines": 104,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/paywall-multipage/WebZkusebni.dc.html",
       "sha256": "1612c006f72d2b80ac6726540d00532022bdf04cfc0c8a9479fa6f6ae6509970",
       "lines": 143,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/paywall-multipage/Zkusebni.dc.html",
       "sha256": "f1deb76dff39e2a6135a05dc230fe02e2cc4d71f81feb0be6f21e0e15ecd35a8",
       "lines": 121,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/paywall-multipage/canvas.json",
@@ -6313,22 +6369,22 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "acf36f746b55c4ad9cbb6bf8ead9394cfa373c8479d2df6d72c782f80cf1a6f8",
-      "lines": 466,
+      "sha256": "58d6842f0afd0d33726d0b728032121a56b088a774bed73c12f5390d21891169",
+      "lines": 472,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "92306c6114a57abe6f4f42e2b57e3c8306e07afccd76b95f103a11707844ec1e",
-      "lines": 288,
+      "sha256": "d8db1aba221cb2466df4d6d9f0bf33b5720f4ef93dd537ea57539af54a6f4ae9",
+      "lines": 291,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "e82034cd6dea09c213484f084aa4ff19a9898d7de59ca8c24759ce651440ac65",
-      "lines": 218,
+      "sha256": "3b6aa50cc5a2543c15ab3f18976a82e53d818fbb0b1206cbef5e557bc32d158c",
+      "lines": 221,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6677,8 +6733,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "9d43744a0df39097a13e0d500df67fc509a405e722d1fdebb366504974c248c0",
-      "lines": 575,
+      "sha256": "bad4ea040509050f3cbd5d6679450051901c796155713ba75378d02f46350584",
+      "lines": 578,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -6691,8 +6747,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "6c0e921b28278a47c10ef6b9b064e9f14e439560902a818dd2fa5bb90117cfc8",
-      "lines": 8873,
+      "sha256": "37ed87875dc2af9411d808a300fe40da3dbb0c241eda082b425902809d50cada",
+      "lines": 8890,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -7488,6 +7544,13 @@
       "matching_evidence": []
     },
     {
+      "path": "reports/deployment-review-2026-10-07/onboarding-paywall-source-review-2026-10-11.json",
+      "sha256": "ab4965299f0b9c2ed01bfff9f753eeaad3c42b2059d9473a44fc031cca8213d5",
+      "lines": 343,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/orange-theme-rendered-contrast-2026-10-10.json",
       "sha256": "bf85495f44142bbff34aae18e1b360438e0368484588a8e021012f9a34d2d859",
       "lines": 22,
@@ -7968,8 +8031,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "c2a5068c8457d58f4d483a3a08c13c3beb7c276a41d1f3bec3164fe45bc656d7",
-      "lines": 8385,
+      "sha256": "3a5fc8ef325a0ab4b221af4bd098128388d72eefacab10bf5a2e64d8dc0188c7",
+      "lines": 8777,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
