@@ -11,9 +11,9 @@ import Modal from './Modal';
 import BetaClosingQuestionnaire from './BetaClosingQuestionnaire';
 import { betaTracker } from '../lib/betaTrack';
 
-function BetaToolsUI({ profile, canShow, isPasswordRecovery, userId, refreshProfile, beta, refreshBeta, feedback, openFeedback, closeFeedback }) {
+function BetaToolsUI({ profile, canShow, isPasswordRecovery, userId, refreshProfile, beta, refreshBeta, feedback, openFeedback, closeFeedback, closingOpen, setClosingOpen }) {
   const location = useLocation(), navigate = useNavigate();
-  const [closingOpen,setClosingOpen]=useState(false), [guidanceOpen,setGuidanceOpen] = useState(false), [guidanceBusy,setGuidanceBusy] = useState(false), [guidanceError,setGuidanceError] = useState('');
+  const [guidanceOpen,setGuidanceOpen] = useState(false), [guidanceBusy,setGuidanceBusy] = useState(false), [guidanceError,setGuidanceError] = useState('');
   const acknowledged = useRef(false), dismissed = useRef(false);
   const parent = ['rodic','ucitel'].includes(beta?.role);
   const firstRun = !profile?.tester_guidance_seen_at;
@@ -39,8 +39,8 @@ function BetaToolsUI({ profile, canShow, isPasswordRecovery, userId, refreshProf
     return () => window.removeEventListener('skolamatch:beta-access-expired',onExpired);
   }, [canShow,userId,location.pathname,navigate,refreshProfile]);
   return <>
-    {canShow && profile.betaProgramActive && beta?.closing_due_at && !beta.closing_done_at && <div className="beta-banner" data-beta-tools role="status">
-      {profile.closingPaused?'Před pokračováním je potřeba závěrečný dotazník.':'Závěrečný dotazník je připravený. Na odpovědi je 24 hodin.'}
+    {canShow && profile.betaProgramActive && beta?.closing_due_at && !beta.closing_done_at && <div className="beta-banner beta-banner-closing" data-beta-tools role="status">
+      {profile.closingPaused?'Před pokračováním je potřeba závěrečný dotazník.':'Závěrečný dotazník je připravený. Na odpovědi je 24 hodin.'} {parent?'Po odeslání můžete web dál používat až do konce beta testování.':'Po odeslání můžeš web dál používat až do konce beta testování.'}
       <button type="button" className="ss-btn ss-btn-primary" onClick={()=>setClosingOpen(true)}>Vyplnit dotazník</button>
     </div>}
     <div data-beta-tools><Modal open={Boolean(canShow && profile.betaProgramActive && !guidanceOpen && beta && !beta.closing_done_at && (closingOpen || profile.closingPaused))} title="Závěrečný dotazník" onDismiss={()=>setClosingOpen(false)} className="beta-modal beta-closing-modal">
@@ -53,6 +53,7 @@ function BetaToolsUI({ profile, canShow, isPasswordRecovery, userId, refreshProf
     <BetaReward beta={beta} enabled={Boolean(canShow && beta?.consent_tracking_at && profile.betaProgramActive && profile.hasAccess && !guidanceOpen && !feedback.open && !closingOpen && !profile.closingPaused)} onRefresh={refreshBeta} />
     {canShow && profile.betaProgramActive && <div data-beta-tools className={`beta-floating-tools${location.pathname.startsWith('/onboarding/') ? ' is-onboarding' : ''}`}>
       <button type="button" className="beta-help-trigger" aria-label="Pokyny k beta testování" onClick={() => setGuidanceOpen(true)}>?</button>
+      {beta?.closing_due_at && !beta.closing_done_at && <button type="button" className="beta-closing-trigger" onClick={() => { setGuidanceOpen(false); setClosingOpen(true); }}>Závěrečný dotazník</button>}
       <button type="button" className="beta-feedback-trigger" aria-label="Zpětná vazba" onClick={() => { setGuidanceOpen(false); openFeedback(); }}>
         <MessageSquare size={22} aria-hidden="true" className="beta-feedback-icon" /><span className="beta-feedback-label">Zpětná vazba</span>
       </button>
@@ -73,7 +74,7 @@ function BetaToolsUI({ profile, canShow, isPasswordRecovery, userId, refreshProf
 function BetaTools({ children }) {
   const { profile, profileLoading, isSignedIn, emailConfirmed, isTester, isPasswordRecovery, user, refreshProfile } = useAuth();
   const location = useLocation();
-  const [betaState,setBetaState] = useState(null), [feedback,setFeedback] = useState({ open: false, pageUrl: '/', requestId: 0, focusReplies: false });
+  const [betaState,setBetaState] = useState(null), [closingOpen,setClosingOpen] = useState(false), [feedback,setFeedback] = useState({ open: false, pageUrl: '/', requestId: 0, focusReplies: false });
   const currentUser = useRef(user?.id); currentUser.current = user?.id;
   const refreshBeta = useCallback(async () => {
     if (!user?.id || !isTester || !emailConfirmed) return;
@@ -119,9 +120,9 @@ function BetaTools({ children }) {
     else delete document.documentElement.dataset.betaUi;
     return()=>{delete document.documentElement.dataset.betaUi;};
   },[canShow]);
-  return <BetaToolsContext.Provider value={{ openFeedback, beta: betaState, refreshBeta }}>
+  return <BetaToolsContext.Provider value={{ openFeedback, openClosing: () => setClosingOpen(true), beta: betaState, refreshBeta }}>
     {children}
-    <BetaToolsUI key={user?.id || 'anonymous'} profile={profile} canShow={canShow} isPasswordRecovery={isPasswordRecovery} userId={user?.id} refreshProfile={refreshProfile} beta={betaState} refreshBeta={refreshBeta} feedback={feedback} openFeedback={openFeedback} closeFeedback={closeFeedback} />
+    <BetaToolsUI key={user?.id || 'anonymous'} profile={profile} canShow={canShow} isPasswordRecovery={isPasswordRecovery} userId={user?.id} refreshProfile={refreshProfile} beta={betaState} refreshBeta={refreshBeta} feedback={feedback} openFeedback={openFeedback} closeFeedback={closeFeedback} closingOpen={closingOpen} setClosingOpen={setClosingOpen} />
   </BetaToolsContext.Provider>;
 }
 export default BetaTools;

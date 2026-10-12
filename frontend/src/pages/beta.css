@@ -201,6 +201,9 @@ main.beta-page {
 .beta-soft-gate { display:grid; gap:20px; }
 .beta-soft-gate textarea { display:block; width:100%; min-height:140px; margin-top:8px; }
 .beta-banner { display:flex; gap:16px; flex-wrap:wrap; align-items:center; justify-content:center; }
+/* The closing-questionnaire banner used to render after the footer, out of sight. */
+.beta-banner-closing { position:fixed; z-index:29; left:var(--space-md); bottom:calc(var(--bottom-bar-h,0px) + var(--space-md)); max-width:min(440px,calc(100vw - 2 * var(--space-md))); justify-content:flex-start; padding:14px 16px; background:var(--surface); border:2px solid var(--acc); border-radius:var(--r-card); box-shadow:var(--shadow); font-weight:500; }
+@media (max-width:760px) { .beta-banner-closing { bottom:calc(var(--bottom-bar-h,0px) + 76px + env(safe-area-inset-bottom,0px)); } }
 @media(max-width:600px) { .beta-reward { right:16px; bottom:88px; } }
 
 .beta-closing { display:grid; gap:24px; }
@@ -212,8 +215,30 @@ main.beta-page {
 .beta-closing-actions { display:flex; gap:12px; flex-wrap:wrap; justify-content:flex-end; }
 .beta-theme-previews { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
 .beta-theme-preview { border:2px solid; border-radius:var(--r-card); padding:16px; display:grid; gap:12px; cursor:pointer; }
-.beta-theme-mini { padding:12px; border-radius:var(--r-option); font-size:13px; display:grid; gap:12px; }
-.beta-theme-mini span { padding:8px; border-radius:var(--r-button); text-align:center; }
+.beta-theme-mini { padding:12px; border-radius:var(--r-option); font-size:13px; display:grid; gap:10px; }
+/* Animated mini app, one loop per theme card: match bar fills, chip pulses, the
+   button gets pressed. Pure CSS, colours come from the card's own palette. */
+.beta-mini-row { display:flex; align-items:center; gap:8px; }
+.beta-mini-dot { width:10px; height:10px; border-radius:50%; background:var(--mini-acc); flex:none; }
+.beta-mini-chip { margin-left:auto; padding:2px 8px; border-radius:999px; background:var(--mini-acc); color:var(--mini-ink); font-weight:600; animation:beta-mini-pulse 3.6s ease-in-out infinite; }
+.beta-mini-bar { display:block; height:6px; border-radius:999px; background:var(--mini-line); overflow:hidden; }
+.beta-mini-bar > span { display:block; height:100%; width:100%; border-radius:inherit; background:var(--mini-acc); transform-origin:left; animation:beta-mini-fill 3.6s ease-in-out infinite; }
+.beta-mini-btn { padding:8px; border-radius:var(--r-button); text-align:center; background:var(--mini-acc); color:var(--mini-ink); animation:beta-mini-press 3.6s ease-in-out infinite; }
+@keyframes beta-mini-fill { 0% { transform:scaleX(0.15); } 45%,100% { transform:scaleX(0.92); } }
+@keyframes beta-mini-pulse { 0%,40% { transform:scale(1); } 50% { transform:scale(1.12); } 60%,100% { transform:scale(1); } }
+@keyframes beta-mini-press { 0%,70% { transform:scale(1); filter:none; } 78% { transform:scale(0.96); filter:brightness(0.9); } 88%,100% { transform:scale(1); filter:none; } }
+@media (prefers-reduced-motion:reduce) { .beta-mini-chip,.beta-mini-bar > span,.beta-mini-btn { animation:none; } .beta-mini-bar > span { transform:scaleX(0.8); } }
+.beta-price-input { display:flex; align-items:center; gap:8px; margin-top:8px; }
+.beta-price-input .ss-input { margin-top:0; flex:1; }
+.beta-price-input > span { font-weight:600; color:var(--ink2); }
+.beta-closing-ratings { gap:20px; }
+.beta-closing-reassure { color:var(--ink2); margin:0; }
+.beta-notice-check { display:flex; gap:12px; align-items:flex-start; padding:12px; border:1px solid var(--line2); border-radius:var(--r-option); background:var(--surface2); }
+.beta-notice-check input { width:22px; height:22px; flex:none; margin-top:2px; accent-color:var(--acc); }
+/* Closing-questionnaire shortcut next to "Zpětná vazba" — desktop only, the banner covers phones. */
+.beta-closing-trigger { min-height:48px; padding:0 var(--space-md); border:2px solid var(--acc); border-radius:var(--r-button); background:var(--surface); color:var(--acc); box-shadow:var(--shadow); font:inherit; font-weight:600; cursor:pointer; }
+.beta-closing-trigger:hover { background:var(--surface2); }
+@media (max-width:760px) { .beta-closing-trigger { display:none; } }
 @media(max-width:600px) { .beta-closing-options { grid-template-columns:1fr; } .beta-theme-preview { padding:12px; } }
 
 /* --- Tester guidance (BetaInstructions) ---------------------------------- */

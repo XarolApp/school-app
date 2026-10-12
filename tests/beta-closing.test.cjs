@@ -12,12 +12,15 @@ test('closing starts after core features and day two, or two days before cutoff;
  assert.equal(closingDue({created_at:now.toISOString()},{checklist:{}},{ends_at:'2026-10-06T12:00:00Z'},now),now.toISOString());
  assert.equal(closingDue(user,{...core,closing_done_at:now.toISOString()},settings,now),null);
 });
-const valid={selected:'ne',prior:['weby'],nps:8,help:4,useful:['detail'],missing:'',pay:'mozna',prices:{tooCheap:50,good:200,expensive:400,tooExpensive:600},payer:'rodic',plan:'sezona',theme:'smrk',future:'',change:'',ratings:{search:4,detail:4,questionnaire:5,compare:3}};
+const valid={selected:'pul',prior:['weby'],nps:8,help:4,useful:['detail'],missing:'',pay:'mozna',prices:{tooCheap:50,good:200,expensive:400,tooExpensive:600},payer:'rodic',plan:'sezona',theme:'smrk',future:'',change:'',ratings:{search:4,detail:4,questionnaire:5,compare:3}};
 test('closing validation strips extra fields and derives anonymous review label server-side',()=>{
  const p=closingPayload({answers:{...valid,email:'secret',body:87},review:{stars:4,body:'Pomohlo mi porovnani skol.',consent_publish:false,selected_by_admin:true,display_label:'Full name'}},'8');
  assert.equal(p.answers.role,'8');assert.equal(p.answers.email,undefined);assert.equal(p.answers.body,undefined);
  assert.equal(p.review.display_label,'Student, 8. třída');assert.equal(p.review.age_group,'under15');assert.equal(p.review.selected_by_admin,undefined);
  assert.equal(closingPayload({answers:{...valid,nps:11}},'9'),null);
+ assert.equal(closingPayload({answers:{...valid,useful:['detail','matice','porovnani']}},'9'),null);
+ assert.equal(closingPayload({answers:{...valid,useful:['detail','matice']}},'9').answers.useful.length,2);
+ assert.equal(closingPayload({answers:{...valid,selected:'jinak'}},'9'),null);
  assert.equal(closingPayload({answers:{...valid,prices:{...valid.prices,good:-1}}},'9'),null);
  assert.equal(closingPayload({answers:valid,review:{stars:0,body:'text',consent_publish:false}},'9'),null);
 });

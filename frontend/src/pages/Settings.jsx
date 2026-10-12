@@ -157,7 +157,7 @@ function Settings() {
   } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { openFeedback, beta, refreshBeta } = useBetaTools();
+  const { openFeedback, openClosing, beta, refreshBeta } = useBetaTools();
   // Access countdown: the server's clock decides the deadline, ours only ticks.
   const [clock, setClock] = useState(Date.now());
   const betaDeadline = useMemo(() => {
@@ -1053,6 +1053,11 @@ function Settings() {
                   <button type="button" className="btn btn-secondary btn-sm" onClick={openFeedback}>
                     Poslat zpětnou vazbu
                   </button>
+                  {beta?.closing_due_at && !beta.closing_done_at && (
+                    <button type="button" className="btn btn-primary btn-sm" onClick={openClosing}>
+                      Vyplnit závěrečný dotazník
+                    </button>
+                  )}
                   <BetaProgress checklist={beta?.checklist} />
                 </>
               ) : (
