@@ -1,12 +1,12 @@
 {
-  "checked_at_utc": "2026-10-11T22:32:25.568455+00:00",
-  "commit": "7013f97c79034515cfe7a8fcc18de933e773feff",
+  "checked_at_utc": "2026-10-12T08:51:22.607376+00:00",
+  "commit": "1118d0c5246817a40b84118536c4c7a3e73dd532",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "current_full_read": 777,
-    "binary_requires_asset_check": 105,
-    "pending_or_changed": 17,
-    "generated_or_audit_artifact": 206,
+    "current_full_read": 795,
+    "binary_requires_asset_check": 108,
+    "pending_or_changed": 2,
+    "generated_or_audit_artifact": 212,
     "removed_or_missing": 2
   },
   "files": [
@@ -993,8 +993,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "c417a27e3840df456209f7654c81eed80115ff7c9e03a141c72d2b85febea7c9",
-      "lines": 2003,
+      "sha256": "cfc4edb4162a10bf7c2e36ce464dd4a65f9fe43b3911a4d22bd2767aa32cb960",
+      "lines": 2015,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -3445,7 +3445,7 @@
     },
     {
       "path": "frontend/src/components/BetaEnrollment.jsx",
-      "sha256": "5591f2feb3e0451de9906fb209918aec36b7b799b3b9dba511ada7be67de6f67",
+      "sha256": "e79cc9e4050748ddbeeb5a91223d79f6adb73f3079fb36d1db1eb8b7f3725f16",
       "lines": 32,
       "status": "current_full_read",
       "matching_evidence": [
@@ -3687,8 +3687,10 @@
       "path": "frontend/src/components/SearchFilters.jsx",
       "sha256": "3f49f8e17631a89201f6f36d4b675ad099af841369cc1b348b0a9027e4ce9710",
       "lines": 482,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/components/StatInfo.jsx",
@@ -3910,8 +3912,10 @@
       "path": "frontend/src/components/schoolDetail/MissingDataGrid.jsx",
       "sha256": "c9e78dad533e588994ca0d85d22a7fd8b788b112112f1a141d838e2a3437b761",
       "lines": 138,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/components/schoolDetail/ProgramCard.jsx",
@@ -3971,8 +3975,10 @@
       "path": "frontend/src/components/schoolDetail/SchoolHero.jsx",
       "sha256": "5e5d283c77f9d17e934a38aab956cd5b1e48851c6d7ddcc0c8fa0bd31dc21654",
       "lines": 142,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/components/schoolDetail/SchoolLocation.jsx",
@@ -4228,8 +4234,10 @@
       "path": "frontend/src/lib/matching.js",
       "sha256": "98a8bcd6f60e8b801e1e71d0112cf0c42f21a0663d69650d6c553d2abbc93127",
       "lines": 417,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/lib/onboardingStorage.js",
@@ -4568,8 +4576,8 @@
     },
     {
       "path": "frontend/src/pages/Questionnaire.jsx",
-      "sha256": "60767ce6b36578f4d3ab4fc465969a43c584111eb638a48403c69e73d4dc5eb3",
-      "lines": 966,
+      "sha256": "29946ad3cf62121c84a132d0a1c3760df41d870c3f06f5a9505c37cb8c0eac2f",
+      "lines": 964,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -4597,8 +4605,10 @@
       "path": "frontend/src/pages/SchoolDetail.jsx",
       "sha256": "9ea228fc283da264eb39c67b09d5b1851f6bdfd27d47526ebc75f506f33c5b4d",
       "lines": 259,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/pages/SdileniView.jsx",
@@ -4613,8 +4623,10 @@
       "path": "frontend/src/pages/Search.jsx",
       "sha256": "fb6d73e245c5bb3a6b908d21c45421c8a114910d9e49e4e65f982fbe490e10d3",
       "lines": 1876,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "frontend/src/pages/Settings.jsx",
@@ -5053,8 +5065,10 @@
       "path": "lib/matching.js",
       "sha256": "d4ed3567716a36e8bbf747e3e2a2737183336efffa84f22b6c3e300e10ee65ad",
       "lines": 946,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "lib/ninthGrade.js",
@@ -5085,8 +5099,10 @@
       "path": "lib/questionnaire.js",
       "sha256": "701c7081ab338d3fb2df101e9d9b3d2daee0c89ed59c7ce6aa3d1064a9ee4a57",
       "lines": 961,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "lib/reviewFilter.js",
@@ -5446,10 +5462,12 @@
     },
     {
       "path": "reports/TASK_SUMMARY_FOR_AGENTS.md",
-      "sha256": "c631d8ef4bab4b8ad6e8b0deb274f05bebbc999496bee4646f93509e7d352e9f",
-      "lines": 137,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "sha256": "9a937ff9ae2a13f5b3a253c60561e7cbc7e2c9bf67e24976fb1e52d3298cfb9f",
+      "lines": 139,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/api-comparison/backup-before-full-run.json",
@@ -6621,24 +6639,28 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "4719e3319aaccedcf943e277e96f9cad0e1655873ab42feee0c2ef17a7f5902b",
-      "lines": 568,
+      "sha256": "f3b8eab2619e38d4b1a8799720def92b7a6187543e5fc591e5c69e2ff81281ee",
+      "lines": 578,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "b379b38b4252df520524cf80a73b5ea08684c57780ab5bc74382f625bacf6f38",
-      "lines": 335,
-      "status": "generated_or_audit_artifact",
-      "matching_evidence": []
+      "sha256": "e77efdc92bb99dc007ac47cf2056b1888645b81391c5bf0efa7d211a98a91043",
+      "lines": 350,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "f59e55f207635740bcb07718d068a8d1f1204cc376d16b6b20e284ce12e7262d",
-      "lines": 263,
-      "status": "generated_or_audit_artifact",
-      "matching_evidence": []
+      "sha256": "1dd78082ca446deefa94758ef48ef4c1d8f1a44165b4e60f3541bc998fecc560",
+      "lines": 270,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/deployment-review-2026-10-07/active-beta-closing-after.png",
@@ -6865,6 +6887,13 @@
       "matching_evidence": []
     },
     {
+      "path": "reports/deployment-review-2026-10-07/beta-enrollment-retention-copy-2026-10-12.png",
+      "sha256": "6921c95907fda65be5fc33ccb45220f42f9d93685a7cf046555d466d20282dbb",
+      "lines": null,
+      "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/beta-invitation-production.png",
       "sha256": "8cad03c33fa4416c2c37aea3ca217cd2d659fc3aa1ee737d868552bb07022f25",
       "lines": null,
@@ -7006,10 +7035,12 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "92106d2b18df5745c1fecbb6d705374f80a8bdd2358f11528ad72380c4fb3734",
-      "lines": 636,
-      "status": "generated_or_audit_artifact",
-      "matching_evidence": []
+      "sha256": "5487c02087f4b375a70b163c89655885b69b5ef2b64931c2ce107ab3d2c1ce9f",
+      "lines": 671,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/deployment-review-2026-10-07/contribution-erasure-2026-10-10.json",
@@ -7020,8 +7051,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "d8bffc00c10b2448566d23a8c54582dd0211813e718ba5962536c3ee17590dc2",
-      "lines": 9312,
+      "sha256": "c5788fde5034583f36ed3fa8ed628fecb2cb008996daae83e1ab719abc012f5c",
+      "lines": 9441,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -8171,8 +8202,57 @@
       "matching_evidence": []
     },
     {
+      "path": "reports/deployment-review-2026-10-07/questionnaire-conditional-count-2026-10-12.png",
+      "sha256": "1de9d5aa5b46a85308c0ca98f712a637c303af409ca0ab2637f846963a58c2b9",
+      "lines": null,
+      "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/questionnaire-conditional-count-browser-2026-10-12.json",
+      "sha256": "c8257cadfff7c0f5de502932ac4fadb877d6febddbc3e009d7ba0a17899d0b1e",
+      "lines": 6,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/questionnaire-conditional-count-offline-2026-10-12.json",
+      "sha256": "e94f6c58e82b717a21978c1fd5cce71457b696b53c49987dd3396f56364df752",
+      "lines": 27,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/questionnaire-health-offline-probe-2026-10-12.cjs",
+      "sha256": "0f51f961e9a5c94a804ff4710cd0043e8d2aafafecefc900ad46d1bb7b05a20b",
+      "lines": 44,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/questionnaire-health-offline-probe-2026-10-12.json",
+      "sha256": "beda231946281d4aa850e8030578901b622d7c2a1a2e381e610e27fd54d24123",
+      "lines": 66,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/questionnaire-lunch-coverage-copy.png",
       "sha256": "2f3b9c6d281b790dc51b7d7cc6f56b66643c81e53fe8e63dec15505796b12bf9",
+      "lines": null,
+      "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/questionnaire-private-option-marker-2026-10-12.json",
+      "sha256": "aede0175b37f5b76e6b9ca2a9ea082f5e142dfc3b32f176c7b1a05b9475ecac8",
+      "lines": 14,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/questionnaire-private-option-marker-2026-10-12.png",
+      "sha256": "667a532e762cfe51b95427a2b134f68004e3a724d9079cc4454c04ef89533b15",
       "lines": null,
       "status": "binary_requires_asset_check",
       "matching_evidence": []
@@ -8332,8 +8412,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "90e45dc94b6fff12b79192fac4b4ea061a39015f3fd8afbbecfe4314ea04a9a9",
-      "lines": 10688,
+      "sha256": "ca86f2e451c68f5de74a37a1dbc2c9187748f1b1234106c66753acf69066e51c",
+      "lines": 10758,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -8536,6 +8616,34 @@
       "matching_evidence": []
     },
     {
+      "path": "reports/deployment-review-2026-10-07/special-needs-calibration-examples-2026-10-12.json",
+      "sha256": "b0bbd0d08ff53dae23d6af527825dda3f75bfbb6519d6800b269ddb97d1c2d9e",
+      "lines": 68,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/special-needs-integrated-review-2026-10-12.json",
+      "sha256": "2c77d2655a6e648f3be306b9138124e1f2090a6f7c3b0b3b5adf157772e67f2e",
+      "lines": 560,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/special-needs-offline-probes-2026-10-12.cjs",
+      "sha256": "80629d82dc75d0819ef84ca8725bcb4e3249ac0dd34f131ff0114052aa6757ab",
+      "lines": 79,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/special-needs-offline-probes-2026-10-12.json",
+      "sha256": "790277bf87b834c051c480da242273d617d1fcd8cfc52b0a4db20f7a9c79bbce",
+      "lines": 82,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/structure-cleaner-scope-followup-2026-10-11.json",
       "sha256": "a4ea55cd08cfb266d69dc305c652dd5f3ca528a64efddb2883a77431f3be4c9e",
       "lines": 532,
@@ -8650,8 +8758,10 @@
       "path": "reports/special-needs-2026-10-10.json",
       "sha256": "35ec0696f788f439a3fce1044b216d809cb9b8536fe00da8dde72c461b184804",
       "lines": 1698,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "reports/structure-dry-run-2026-09-24-v2.md",
@@ -8774,8 +8884,10 @@
       "path": "scripts/beta-preview/database.cjs",
       "sha256": "d0a10f16cf53aebf3033a0278e36a9a626b7a3a388fd932de2bc715025578551",
       "lines": 69,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "scripts/beta-preview/server.cjs",
@@ -8865,8 +8977,10 @@
       "path": "scripts/extract-special-needs.js",
       "sha256": "088006d9fa8640a810b6ae963067ca7a477c5ce81e9874557dfff20aa3fcfbed",
       "lines": 221,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "scripts/filter-config.json",
@@ -9066,8 +9180,10 @@
       "path": "supabase-setup.sql",
       "sha256": "79d47485e3a458d6729cbd7e77043d832d23b15a38150bd301edd5701ea50261",
       "lines": 1633,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "test-google-api.js",
@@ -9235,8 +9351,10 @@
       "path": "tests/matching-per-obor.test.cjs",
       "sha256": "149269e6af6c5a5d494ad2c299746fb6360f96385a8831d8ecfa5de63e305e68",
       "lines": 43,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "tests/ninth-grade.test.cjs",
@@ -9251,8 +9369,10 @@
       "path": "tests/onboarding-ranking.test.mjs",
       "sha256": "16e4a050e4ffb98de74b55c1e4cb8e40d041fe959b32548d1cd565d45bd50339",
       "lines": 93,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "tests/provider-diagnostics.test.cjs",

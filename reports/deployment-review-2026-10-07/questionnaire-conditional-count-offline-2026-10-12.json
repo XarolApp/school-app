@@ -1,0 +1,27 @@
+{
+  "method": "Actual unchanged helper slices and current question definitions; synthetic validated answers; no HTTP, dotenv, model or database",
+  "before": {
+    "count": 33,
+    "total": 32
+  },
+  "after": [
+    {
+      "state": "ano",
+      "count": 33,
+      "total": 33,
+      "text": "12. října 2026 · 33 z 33 odpovědí"
+    },
+    {
+      "state": "ne",
+      "count": 32,
+      "total": 32,
+      "text": "12. října 2026 · 32 z 32 odpovědí"
+    },
+    {
+      "state": "absent",
+      "count": 31,
+      "total": 32,
+      "text": "12. října 2026 · 31 z 32 odpovědí"
+    }
+  ]
+}

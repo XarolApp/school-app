@@ -89,8 +89,7 @@ function QuestionnaireLoading({ step, reduced }) {
   );
 }
 
-// Mirrors questionApplies in lib/questionnaire.js — kept tiny since no
-// question currently sets showIf, but the server contract allows it.
+// Mirrors the server's conditional-question rules in lib/questionnaire.js.
 function questionApplies(question, answers) {
   return !question.showIf || answers[question.showIf.field] === question.showIf.equals;
 }
@@ -491,7 +490,7 @@ function RunRow({ run, isCurrent, total, busy, onSetDefault, onArchive, onRename
   );
 }
 
-function History({ runs, currentId, total, error, busyId, onBack, onRetake, onSetDefault, onArchive, onRename }) {
+function History({ runs, currentId, questions, error, busyId, onBack, onRetake, onSetDefault, onArchive, onRename }) {
   // Current first, then the rest newest-first, archived last.
   const ordered = [...runs].sort((a, b) => {
     const rank = (r) => (r.id === currentId ? 0 : r.archived_at ? 2 : 1);
@@ -519,7 +518,7 @@ function History({ runs, currentId, total, error, busyId, onBack, onRetake, onSe
             key={run.id}
             run={run}
             isCurrent={run.id === currentId}
-            total={total}
+            total={questions.filter((q) => questionApplies(q, run.answers || {})).length}
             busy={busyId !== null}
             onSetDefault={onSetDefault}
             onArchive={onArchive}
@@ -738,7 +737,6 @@ function Questionnaire() {
   }
 
   const { questions, active, runs } = state.data;
-  const total = questions.filter((q) => questionApplies(q, {})).length;
 
   return (
     <div className={`qz-page${view === 'form' ? ' qz-page-narrow' : ''}`}>
@@ -791,7 +789,7 @@ function Questionnaire() {
         <History
           runs={runs}
           currentId={active?.id}
-          total={total}
+          questions={questions}
           error={historyError}
           busyId={busyId}
           onBack={() => setView('results')}
@@ -821,7 +819,7 @@ function Questionnaire() {
             {questions
               .filter((q) => questionApplies(q, answers))
               .map((q, i, list) => (
-                <div className="field qz-question" key={q.id}>
+                <div className="field qz-question" key={q.id} data-private={q.privateToServer ? '' : undefined}>
                   {q.section && q.section !== list[i - 1]?.section && (
                     <h2 className="ss-headline-md h qz-section">{q.section}</h2>
                   )}

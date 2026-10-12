@@ -1,0 +1,66 @@
+{
+  "method": "Actual current modules, 12 synthetic school rows, intercepted fake fetch; no real HTTP or environment secrets.",
+  "direct_private_answers_absent": true,
+  "no_answer_health_fields_validated_without_separate_consent_input": {
+    "typ": "odborna",
+    "oblasti": [
+      "it"
+    ],
+    "predmety": [
+      "informatika"
+    ],
+    "po_skole": "nevim",
+    "styl": "kombinace",
+    "jazyky": "stredne",
+    "postizeni": "ano",
+    "postizeni_typ": [
+      "sluchove"
+    ],
+    "velikost": "nezalezi"
+  },
+  "inactive_type_omitted_control": {
+    "typ": "odborna",
+    "oblasti": [
+      "it"
+    ],
+    "predmety": [
+      "informatika"
+    ],
+    "po_skole": "nevim",
+    "styl": "kombinace",
+    "jazyky": "stredne",
+    "postizeni": "ne",
+    "velikost": "nezalezi"
+  },
+  "normal_ranking": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    99
+  ],
+  "health_preference_ranking": [
+    99,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "normal_prompt": "ODPOVĚDI STUDENTA:\nJaký typ školy tě láká? Odborná škola s maturitou\nKteré oblasti tě baví nejvíc? IT a programování\nVe kterých předmětech se ti daří? Informatika\nCo plánuješ po střední škole? Ještě nevím\nJak se učíš nejradši? Kombinace obojího\nJak důležitá je pro tebe výuka jazyků? Středně — stačí mi běžná výuka\nJak velkou školu si představuješ? Nezáleží mi na tom\nRod pro oslovení: mužský\n\nVYBRANÉ ŠKOLY:\n[1] Fixture ordinary IT school 1\n  obory: Informační technologie\n  signály shody: pokrývá zájmy: it; navazuje na předměty: informatika; zaměřuje se přesně na tvoje obory\n\n[2] Fixture ordinary IT school 2\n  obory: Informační technologie\n  signály shody: pokrývá zájmy: it; navazuje na předměty: informatika; zaměřuje se přesně na tvoje obory\n\n[3] Fixture ordinary IT school 3\n  obory: Informační technologie\n  signály shody: pokrývá zájmy: it; navazuje na předměty: informatika; zaměřuje se přesně na tvoje obory\n\n[4] Fixture ordinary IT school 4\n  obory: Informační technologie\n  signály shody: pokrývá zájmy: it; navazuje na předměty: informatika; zaměřuje se přesně na tvoje obory\n\n[5] Fixture ordinary IT school 5\n  obory: Informační technologie\n  signály shody: pokrývá zájmy: it; navazuje na předměty: informatika; zaměřuje se přesně na tvoje obory\n\n[6] Fixture ordinary IT school 6\n  obory: Informační technologie\n  signály shody: pokrývá zájmy: it; navazuje na předměty: informatika; zaměřuje se přesně na tvoje obory\n\n[7] Fixture ordinary IT school 7\n  obory: Informační technologie\n  signály shody: pokrývá zájmy: it; navazuje na předměty: informatika; zaměřuje se přesně na tvoje obory\n\n[8] Fixture ordinary IT school 8\n  obory: Informační technologie\n  signály shody: pokrývá zájmy: it; navazuje na předměty: informatika; zaměřuje se přesně na tvoje obory\n\n[9] Fixture ordinary IT school 9\n  obory: Informační technologie\n  signály shody: pokrývá zájmy: it; navazuje na předměty: informatika; zaměřuje se přesně na tvoje obory\n\n[10] Fixture ordinary IT school 10\n  obory: Informační technologie\n  signály shody: pokrývá zájmy: it; navazuje na předměty: informatika; zaměřuje se přesně na tvoje obory",
+  "health_preference_prompt": "ODPOVĚDI STUDENTA:\nJaký typ školy tě láká? Odborná škola s maturitou\nKteré oblasti tě baví nejvíc? IT a programování\nVe kterých předmětech se ti daří? Informatika\nCo plánuješ po střední škole? Ještě nevím\nJak se učíš nejradši? Kombinace obojího\nJak důležitá je pro tebe výuka jazyků? Středně — stačí mi běžná výuka\nJak velkou školu si představuješ? Nezáleží mi na tom\nRod pro oslovení: mužský\n\nVYBRANÉ ŠKOLY:\n[99] Fixture secondary school for pupils with hearing disability\n  obory: Informační technologie\n  signály shody: pokrývá zájmy: it; navazuje na předměty: informatika; zaměřuje se přesně na tvoje obory\n\n[1] Fixture ordinary IT school 1\n  obory: Informační technologie\n  signály shody: pokrývá zájmy: it; navazuje na předměty: informatika; zaměřuje se přesně na tvoje obory\n\n[2] Fixture ordinary IT school 2\n  obory: Informační technologie\n  signály shody: pokrývá zájmy: it; navazuje na předměty: informatika; zaměřuje se přesně na tvoje obory\n\n[3] Fixture ordinary IT school 3\n  obory: Informační technologie\n  signály shody: pokrývá zájmy: it; navazuje na předměty: informatika; zaměřuje se přesně na tvoje obory\n\n[4] Fixture ordinary IT school 4\n  obory: Informační technologie\n  signály shody: pokrývá zájmy: it; navazuje na předměty: informatika; zaměřuje se přesně na tvoje obory\n\n[5] Fixture ordinary IT school 5\n  obory: Informační technologie\n  signály shody: pokrývá zájmy: it; navazuje na předměty: informatika; zaměřuje se přesně na tvoje obory\n\n[6] Fixture ordinary IT school 6\n  obory: Informační technologie\n  signály shody: pokrývá zájmy: it; navazuje na předměty: informatika; zaměřuje se přesně na tvoje obory\n\n[7] Fixture ordinary IT school 7\n  obory: Informační technologie\n  signály shody: pokrývá zájmy: it; navazuje na předměty: informatika; zaměřuje se přesně na tvoje obory\n\n[8] Fixture ordinary IT school 8\n  obory: Informační technologie\n  signály shody: pokrývá zájmy: it; navazuje na předměty: informatika; zaměřuje se přesně na tvoje obory\n\n[9] Fixture ordinary IT school 9\n  obory: Informační technologie\n  signály shody: pokrývá zájmy: it; navazuje na předměty: informatika; zaměřuje se přesně na tvoje obory",
+  "limitation": "School ordering/name exposure supports a health-preference inference risk; it does not establish a diagnosis, actual provider inference, or a production disclosure."
+}

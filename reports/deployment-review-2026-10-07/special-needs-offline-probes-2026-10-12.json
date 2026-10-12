@@ -1,0 +1,82 @@
+{
+  "source_sha256": "088006d9fa8640a810b6ae963067ca7a477c5ce81e9874557dfff20aa3fcfbed",
+  "method": "Exact current helper/function slices executed in VM with fake file/model/database objects; script main and imports excluded.",
+  "fabricated_quote_tail": {
+    "citation_length": 164,
+    "full_citation_in_source": false,
+    "accepted": {
+      "id": 901,
+      "name": "Fixture ordinary secondary school",
+      "nameHit": false,
+      "urceno": [
+        "sluchove"
+      ],
+      "detail": "Střední škola je určena žákům se sluchovým postižením.",
+      "verify": {
+        "stredni_skola_urcena": true,
+        "typy": [
+          "sluchove"
+        ],
+        "citace": "Tato základní škola poskytuje podporu žákům se sluchovým postižením a nabízí speciální výukové pomůc Střední škola je výhradně určena žákům se sluchovým postižením.",
+        "quoteOk": true
+      }
+    }
+  },
+  "wholly_missing_quote_control": {
+    "id": 901,
+    "name": "Fixture ordinary secondary school",
+    "nameHit": false,
+    "urceno": null,
+    "detail": null,
+    "verify": {
+      "stredni_skola_urcena": true,
+      "typy": [
+        "sluchove"
+      ],
+      "citace": "Zcela nepřítomná doslovná citace o jiné škole.",
+      "quoteOk": false
+    }
+  },
+  "failed_secondary_audience_verification": {
+    "id": 901,
+    "name": "Fixture ordinary secondary school",
+    "nameHit": false,
+    "urceno": null,
+    "detail": "Střední škola je určena žákům se sluchovým postižením.",
+    "verify": {
+      "stredni_skola_urcena": false,
+      "typy": [],
+      "citace": "Tato základní škola poskytuje podporu žákům se sluchovým postižením a nabízí speciální výukové pomůc",
+      "quoteOk": true
+    }
+  },
+  "writes_before_later_report_error": [
+    {
+      "column": "school_id",
+      "id": 901,
+      "row": {
+        "urceno_pro_postizeni": null,
+        "specialni_potreby_detail": "Reviewed fixture text."
+      }
+    }
+  ],
+  "write_report_with_only_ids_901": [
+    {
+      "column": "school_id",
+      "id": 901,
+      "row": {
+        "urceno_pro_postizeni": null,
+        "specialni_potreby_detail": "Fixture A."
+      }
+    },
+    {
+      "column": "school_id",
+      "id": 902,
+      "row": {
+        "urceno_pro_postizeni": null,
+        "specialni_potreby_detail": "Fixture B."
+      }
+    }
+  ],
+  "limitations": "Synthetic controls prove code behavior, not that any specific live school value or model response is incorrect. No network, secrets, dotenv, database writes, or provider calls."
+}

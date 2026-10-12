@@ -1,0 +1,560 @@
+{
+  "checked_at_utc": "2026-10-12T08:18:52.523858+00:00",
+  "commit_before_owned_fixes": "1118d0c5246817a40b84118536c4c7a3e73dd532",
+  "scope": "Solo exact-source review of stable peer edits; peer claims preserved; no subagents. Current source is not a production-acceptance claim.",
+  "peer_snapshot": {
+    "lib/questionnaire.js": {
+      "sha256": "701c7081ab338d3fb2df101e9d9b3d2daee0c89ed59c7ce6aa3d1064a9ee4a57",
+      "mtime_ns": 1791670769993310605,
+      "head_sha256": "dda2d49fc302b9cf1660b4d859af58b4db73cbea63918bfdeabc2b8ed4fbc635",
+      "receipts": [
+        [
+          "backend-coverage.json",
+          "a6e2205743a3813ac0a046b89055317563f319a359dfa4dc476a93f33fdf29b2",
+          "complete",
+          [
+            [
+              1,
+              904
+            ]
+          ]
+        ],
+        [
+          "root-coverage.json",
+          "dda2d49fc302b9cf1660b4d859af58b4db73cbea63918bfdeabc2b8ed4fbc635",
+          "complete",
+          [
+            [
+              1,
+              929
+            ]
+          ]
+        ]
+      ]
+    },
+    "lib/matching.js": {
+      "sha256": "d4ed3567716a36e8bbf747e3e2a2737183336efffa84f22b6c3e300e10ee65ad",
+      "mtime_ns": 1791670750600453480,
+      "head_sha256": "1d6f3a68c60bdbeaedea8698255887925492c81101c287f179460bb499e6b6a2",
+      "receipts": [
+        [
+          "backend-coverage.json",
+          "8b691149ec8abdd4a8b16d1483fb44a8e60d7e7b775c6964009fc7ad85590e5e",
+          "complete",
+          [
+            [
+              1,
+              924
+            ]
+          ]
+        ],
+        [
+          "root-coverage.json",
+          "1d6f3a68c60bdbeaedea8698255887925492c81101c287f179460bb499e6b6a2",
+          "complete",
+          [
+            [
+              1,
+              924
+            ]
+          ]
+        ]
+      ]
+    },
+    "frontend/src/lib/matching.js": {
+      "sha256": "98a8bcd6f60e8b801e1e71d0112cf0c42f21a0663d69650d6c553d2abbc93127",
+      "mtime_ns": 1791670800687340230,
+      "head_sha256": "570d95acb83d19b7dbd2a2930764a3e46bbf893e8924a1314bf5c1e72114cd3c",
+      "receipts": [
+        [
+          "frontend-coverage.json",
+          "192a59f678f51634146dcbd0cc6994686e245443dc127cbfec55dbe6cf766ebc",
+          "complete",
+          [
+            [
+              1,
+              410
+            ]
+          ]
+        ],
+        [
+          "root-coverage.json",
+          "570d95acb83d19b7dbd2a2930764a3e46bbf893e8924a1314bf5c1e72114cd3c",
+          "complete",
+          [
+            [
+              1,
+              408
+            ]
+          ]
+        ]
+      ]
+    },
+    "frontend/src/pages/Search.jsx": {
+      "sha256": "fb6d73e245c5bb3a6b908d21c45421c8a114910d9e49e4e65f982fbe490e10d3",
+      "mtime_ns": 1791670837188680071,
+      "head_sha256": "49bdaeb14437ad1b5bda5a6bd9354a8e5ec1a54627742456ce837057b26995e0",
+      "receipts": [
+        [
+          "frontend-coverage.json",
+          "9d73cbc444d64f21bdeabee11335ce7e0be7cfbf3afb27565af8f8a0f70e1581",
+          "pending",
+          []
+        ],
+        [
+          "root-coverage.json",
+          "49bdaeb14437ad1b5bda5a6bd9354a8e5ec1a54627742456ce837057b26995e0",
+          "complete",
+          [
+            [
+              1,
+              1829
+            ]
+          ]
+        ]
+      ]
+    },
+    "frontend/src/components/SearchFilters.jsx": {
+      "sha256": "3f49f8e17631a89201f6f36d4b675ad099af841369cc1b348b0a9027e4ce9710",
+      "mtime_ns": 1791670848088248231,
+      "head_sha256": "7e8b6af0835b36d7eb58f159a6ff78d5e135079c36d6bf0af4f9b3a501109f35",
+      "receipts": [
+        [
+          "frontend-coverage.json",
+          "1a1ce16e4d48ee8cd68ed48f993cacddbebcd1741d98981f4c0b6de08a59e5f5",
+          "pending",
+          []
+        ],
+        [
+          "root-coverage.json",
+          "7e8b6af0835b36d7eb58f159a6ff78d5e135079c36d6bf0af4f9b3a501109f35",
+          "complete",
+          [
+            [
+              1,
+              459
+            ]
+          ]
+        ]
+      ]
+    },
+    "supabase-setup.sql": {
+      "sha256": "79d47485e3a458d6729cbd7e77043d832d23b15a38150bd301edd5701ea50261",
+      "mtime_ns": 1791668606154763181,
+      "head_sha256": "c5167dd460a18d83bca4a0d7f5dd728cfeed9c8e482e7f8b66a75478faa73d5d",
+      "receipts": [
+        [
+          "backend-coverage.json",
+          "9715c3b1e6547de46f813cebe0790e720206eb04ec876e4989a8ad6f77d3bf10",
+          "complete",
+          [
+            [
+              1,
+              1376
+            ]
+          ]
+        ],
+        [
+          "root-coverage.json",
+          "c5167dd460a18d83bca4a0d7f5dd728cfeed9c8e482e7f8b66a75478faa73d5d",
+          "complete",
+          [
+            [
+              1,
+              1622
+            ]
+          ]
+        ]
+      ]
+    },
+    "frontend/src/components/schoolDetail/SchoolHero.jsx": {
+      "sha256": "5e5d283c77f9d17e934a38aab956cd5b1e48851c6d7ddcc0c8fa0bd31dc21654",
+      "mtime_ns": 1791669204705817066,
+      "head_sha256": "0090190aa51b54e8c475e165666529964f1ea39ba64c664a068ea540f0a0a195",
+      "receipts": [
+        [
+          "frontend-coverage.json",
+          "4d566fa85b64fd0990363f9f7279c3c6396ddcb515817de489fbc433a01cad32",
+          "complete",
+          [
+            [
+              1,
+              126
+            ]
+          ]
+        ],
+        [
+          "root-coverage.json",
+          "0090190aa51b54e8c475e165666529964f1ea39ba64c664a068ea540f0a0a195",
+          "complete",
+          [
+            [
+              1,
+              126
+            ]
+          ]
+        ]
+      ]
+    },
+    "frontend/src/components/schoolDetail/MissingDataGrid.jsx": {
+      "sha256": "c9e78dad533e588994ca0d85d22a7fd8b788b112112f1a141d838e2a3437b761",
+      "mtime_ns": 1791669194854209965,
+      "head_sha256": "ba6ae1465a5a15e0befc9afa579858bb3278caee098e4378b0fb5b941f9ba1a9",
+      "receipts": [
+        [
+          "frontend-coverage.json",
+          "ba6ae1465a5a15e0befc9afa579858bb3278caee098e4378b0fb5b941f9ba1a9",
+          "complete",
+          [
+            [
+              1,
+              135
+            ]
+          ]
+        ],
+        [
+          "root-coverage.json",
+          "ba6ae1465a5a15e0befc9afa579858bb3278caee098e4378b0fb5b941f9ba1a9",
+          "complete",
+          [
+            [
+              1,
+              135
+            ]
+          ]
+        ]
+      ]
+    },
+    "frontend/src/pages/SchoolDetail.jsx": {
+      "sha256": "9ea228fc283da264eb39c67b09d5b1851f6bdfd27d47526ebc75f506f33c5b4d",
+      "mtime_ns": 1791669194854773632,
+      "head_sha256": "ff0bb87e0009b7a4d73e926585922b2eaf8d8129ee2c53c25867dfc8d18c008c",
+      "receipts": [
+        [
+          "frontend-coverage.json",
+          "ed2edeed083b77f79c8fb0aa72eca49898718a564f0f32ebc72284746bbefe8b",
+          "complete",
+          [
+            [
+              1,
+              223
+            ]
+          ]
+        ],
+        [
+          "root-coverage.json",
+          "ff0bb87e0009b7a4d73e926585922b2eaf8d8129ee2c53c25867dfc8d18c008c",
+          "complete",
+          [
+            [
+              1,
+              258
+            ]
+          ]
+        ]
+      ]
+    },
+    "scripts/beta-preview/database.cjs": {
+      "sha256": "d0a10f16cf53aebf3033a0278e36a9a626b7a3a388fd932de2bc715025578551",
+      "mtime_ns": 1791669226849584447,
+      "head_sha256": "219ab51d88148116cc0cccc3830af76f27cf072d67ab28a18bca223ecea531a6",
+      "receipts": [
+        [
+          "tooling-coverage.json",
+          "d2a083e98e6e59ab825a0bcfa6d67e885e77e0b6134b07ad6499d6eef3bd7b88",
+          "pending",
+          []
+        ],
+        [
+          "root-coverage.json",
+          "219ab51d88148116cc0cccc3830af76f27cf072d67ab28a18bca223ecea531a6",
+          "complete",
+          [
+            [
+              1,
+              69
+            ]
+          ]
+        ]
+      ]
+    },
+    "tests/matching-per-obor.test.cjs": {
+      "sha256": "149269e6af6c5a5d494ad2c299746fb6360f96385a8831d8ecfa5de63e305e68",
+      "mtime_ns": 1791670779062757328,
+      "head_sha256": "967c770813f813c350adb1f45a4e3e6cc66076de13ccdbc4ab17f9c189c72ade",
+      "receipts": [
+        [
+          "backend-coverage.json",
+          "967c770813f813c350adb1f45a4e3e6cc66076de13ccdbc4ab17f9c189c72ade",
+          "complete",
+          [
+            [
+              1,
+              30
+            ]
+          ]
+        ]
+      ]
+    },
+    "tests/onboarding-ranking.test.mjs": {
+      "sha256": "16e4a050e4ffb98de74b55c1e4cb8e40d041fe959b32548d1cd565d45bd50339",
+      "mtime_ns": 1791670800697454709,
+      "head_sha256": "a9e6cac212873e5f18b2718826279987f7aac647f14e0fb372f01c3b3c9757f0",
+      "receipts": [
+        [
+          "backend-coverage.json",
+          "e0f2312476033bc8b2d2125637a74c3443f867d4857d3b7f2d984d8eef4d67df",
+          "complete",
+          [
+            [
+              1,
+              73
+            ]
+          ]
+        ],
+        [
+          "root-coverage.json",
+          "a9e6cac212873e5f18b2718826279987f7aac647f14e0fb372f01c3b3c9757f0",
+          "complete",
+          [
+            [
+              1,
+              87
+            ]
+          ]
+        ]
+      ]
+    }
+  },
+  "new_full_reads": [
+    {
+      "path": "scripts/extract-special-needs.js",
+      "sha256": "088006d9fa8640a810b6ae963067ca7a477c5ce81e9874557dfff20aa3fcfbed",
+      "lines": 221
+    },
+    {
+      "path": "reports/special-needs-2026-10-10.json",
+      "sha256": "35ec0696f788f439a3fce1044b216d809cb9b8536fe00da8dde72c461b184804",
+      "lines": 1698
+    },
+    {
+      "path": "reports/TASK_SUMMARY_FOR_AGENTS.md",
+      "sha256": "9a937ff9ae2a13f5b3a253c60561e7cbc7e2c9bf67e24976fb1e52d3298cfb9f",
+      "lines": 139
+    }
+  ],
+  "process_checks": "Three name-only process checks found no visible Claude CLI. Stable source hashes were checked before and after reads/owned edits. This is not a claim that every possible editor is observable.",
+  "owned_fixes": [
+    {
+      "path": "frontend/src/components/BetaEnrollment.jsx",
+      "before_sha256": "5591f2feb3e0451de9906fb209918aec36b7b799b3b9dba511ada7be67de6f67",
+      "after_sha256": "e79cc9e4050748ddbeeb5a91223d79f6adb73f3079fb36d1db1eb8b7f3725f16",
+      "scope": "Replace superseded12-month retention promise with founder D1/D4/current Legal copy; no policy/action change"
+    },
+    {
+      "path": "frontend/src/pages/Questionnaire.jsx",
+      "before_sha256": "60767ce6b36578f4d3ab4fc465969a43c584111eb638a48403c69e73d4dc5eb3",
+      "after_sha256": "29946ad3cf62121c84a132d0a1c3760df41d870c3f06f5a9505c37cb8c0eac2f",
+      "scope": "Existing data-private marker on private wrappers; run-specific conditional-question history denominator; stale no-showIf comment"
+    },
+    {
+      "path": "reports/TASK_SUMMARY_FOR_AGENTS.md",
+      "before_sha256": "c631d8ef4bab4b8ad6e8b0deb274f05bebbc999496bee4646f93509e7d352e9f",
+      "after_sha256": "9a937ff9ae2a13f5b3a253c60561e7cbc7e2c9bf67e24976fb1e52d3298cfb9f",
+      "scope": "Historical status/brand/projection/credential-error qualifications; preserve original data/history; remove one pre-existing blank-line trailing space found by staged diff check"
+    }
+  ],
+  "report_accounting": {
+    "records": 194,
+    "unique_ids": 194,
+    "special_types_ids": [
+      61,
+      161,
+      162,
+      163,
+      164,
+      165,
+      166,
+      167,
+      168,
+      169,
+      170,
+      171,
+      172,
+      173,
+      174,
+      175,
+      182,
+      183,
+      222
+    ],
+    "details_ids": [
+      61,
+      65,
+      78,
+      104,
+      122,
+      152,
+      161,
+      162,
+      163,
+      164,
+      165,
+      166,
+      167,
+      168,
+      169,
+      170,
+      171,
+      172,
+      173,
+      174,
+      175,
+      176,
+      182,
+      183,
+      196,
+      222
+    ],
+    "skipped": 83,
+    "errors": 0,
+    "interpretation": "Programme fallback after a failed verification is not automatically a wrong fact. Current writer overrides65/152/172/176 must be considered; historic report values alone do not prove current exposed errors."
+  },
+  "probes": {
+    "extractor": "special-needs-offline-probes-2026-10-12.json",
+    "health_payload": "questionnaire-health-offline-probe-2026-10-12.json",
+    "mask_marker": "questionnaire-private-option-marker-2026-10-12.json",
+    "history_browser": "questionnaire-conditional-count-browser-2026-10-12.json",
+    "history_controls": "questionnaire-conditional-count-offline-2026-10-12.json",
+    "calibration": "special-needs-calibration-examples-2026-10-12.json"
+  },
+  "calibration_examples": {
+    "only_hearing_preference": {
+      "special_raw": 70,
+      "special_display": 81,
+      "breakdown": {},
+      "signals": [],
+      "ordinary_raw": 0,
+      "ordinary_display": 0
+    },
+    "IT_interest_plus_hearing_preference": {
+      "special_practical_raw": 77,
+      "special_practical_display": 87,
+      "special_breakdown": {
+        "oblasti": 0,
+        "typ": 0.8,
+        "predmety": 0,
+        "zamereni": 0
+      },
+      "special_signals": [],
+      "ordinary_IT_raw": 47,
+      "ordinary_IT_display": 59
+    },
+    "limits": "Synthetic actual backend scoreSchools behavior. Founder decision on percentage weighting is pending. No current-catalogue calibration or admission eligibility guarantee."
+  },
+  "public_school_162": {
+    "url": "https://school-app-production-be43.up.railway.app/api/schools/162",
+    "fetch": {
+      "id": 162,
+      "url": "https://school-app-production-be43.up.railway.app/api/schools/162",
+      "status": 200,
+      "at_utc": "2026-10-11T22:45:26.394517+00:00",
+      "response_sha256": "d481f5ed87fdd9662a4674040f2ced64ef1a8984c103c2bc227fb59e43c71857",
+      "name": "Konzervatoř a střední škola Jana Deyla, státní příspěvková organizace",
+      "detail": "Škola se specializuje na výuku žáků se zrakovým postižením a nabízí jim individuální speciální výukové plány; její budova není bezbariérová. Žáci mají k dispozici domov mládeže s vychovateli, kteří mají zkušenosti s žáky se speciálními potřebami, zejména se zrakovým postižením.",
+      "types": [
+        "zrakove"
+      ],
+      "programme_years": [
+        2024,
+        2025,
+        2026
+      ],
+      "programme_codes": [
+        "82-44-M/02",
+        "82-44-P/01",
+        "82-45-P/01"
+      ],
+      "extracted_at": "2026-09-26T12:42:11.489+00:00"
+    },
+    "body_sha256": "d481f5ed87fdd9662a4674040f2ced64ef1a8984c103c2bc227fb59e43c71857",
+    "types": [
+      "zrakove"
+    ],
+    "programme_codes": [
+      "82-44-M/02",
+      "82-44-P/01",
+      "82-45-P/01"
+    ],
+    "years": [
+      2024,
+      2025,
+      2026
+    ],
+    "interpretation": "Current vision-specialization label does not establish exclusive eligibility. Official2024/25 report includes intact students and other support needs; scope/model/filter review required. Existing26September extracted_at is not a special-needs per-field freshness receipt."
+  },
+  "primary_sources": [
+    {
+      "url": "https://www.edpb.europa.eu/system/files/documents/files/file1/edpb_guidelines_202005_consent_en.pdf",
+      "scope": "Relevant consent guidance paragraphs90–108,112–119,130–137; not full PDF review",
+      "finding": "Ordinary contract basis alone does not provide the Article9 exception for special-category data. If relying on explicit consent, establish informed affirmative evidence and practical withdrawal."
+    },
+    {
+      "url": "https://jandeylconservatory.cz/images/documents/VZ/vyrocni-zprava-2024-25.pdf",
+      "scope": "Relevant admissions/student/campus passages on pages13and31; not full PDF review",
+      "finding": "Students include intact and visually impaired students; specialization is not exclusive disability-only eligibility."
+    },
+    {
+      "url": "https://www.jandeylconservatory.cz/index.php/cs/about-school-cz",
+      "scope": "School/about text plus corresponding bounded cached source",
+      "finding": "Scope includes conservatoire and different support contexts; preserve supported inclusion facts."
+    }
+  ],
+  "verification": {
+    "whole_suite_before_owned_JSX_copy_fixes": {
+      "tests": 201,
+      "passed": 201,
+      "failed": 0,
+      "skipped": 0,
+      "duration_ms": 1391.709916
+    },
+    "targeted_peer_matching": {
+      "tests": 32,
+      "passed": 32,
+      "failed": 0
+    },
+    "capture_after_marker": {
+      "tests": 4,
+      "passed": 4,
+      "failed": 0
+    },
+    "lint_after_final_count_fix": {
+      "exit_code": 0,
+      "warnings": 11
+    },
+    "build_after_final_count_fix": {
+      "exit_code": 0,
+      "modules": 2045,
+      "large_chunk_warning": true
+    },
+    "browser": "Actual loopback React+Express/synthetic services: enrollment copy, marked private answer, all33questions submitted to local fixtures,33of33history. No live Supabase, mail, provider or Stripe. Mask-selector/guard coverage is not a claim of a hosted uploaded screenshot test.",
+    "approval_service": "One temporary429 rejected an earlier local click. Exact same semantic action later succeeded after independent work; no bypass and no unresolved rejection.",
+    "local_fixture_stripe_calls": 0,
+    "fixture_scope": "The local backend contains earlier synthetic sessions; counters are not isolated to the33-answer count test. No hosted services were configured."
+  },
+  "limitations": [
+    "Legal/controller basis, health-related inference/provider payload, withdrawal and historical personal-data handling need coherent acceptance.",
+    "Extractor current-source/full-quote/programme/campus/freshness and preflight/atomic write gates remain open.",
+    "Current catalogue/backend/onboarding ranking semantics and weights need founder clarification plus calibration.",
+    "Two authored inventory entries and binary/generated/ignored-corpus/service/device acceptance remain; full goal is not complete.",
+    "No hosted write, provider spend, migration, payment, real signup, mail or release clearance."
+  ],
+  "coverage_checkpoint": {
+    "current_full_read": 795,
+    "pending_or_changed": 2,
+    "binary_requires_asset_check": 108,
+    "generated_or_audit_artifact": 212,
+    "removed_or_missing": 2,
+    "interpretation": "15 previously pending originals now accounted for; current exact receipts for three audit Markdown entries also change their classification. All counts are tracked/untracked inventory classifications, not beta acceptance. Audit screenshots add three binary entries. Ignored scrape corpus is separate."
+  }
+}

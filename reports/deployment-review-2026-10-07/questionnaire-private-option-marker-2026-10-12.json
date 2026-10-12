@@ -1,0 +1,14 @@
+{
+  "environment": "synthetic loopback preview; no submission",
+  "url": "http://127.0.0.1:5175/dotaznik",
+  "ordinaryQuestions": 29,
+  "privateQuestions": 4,
+  "privateWrapper": true,
+  "selected": [
+    {
+      "className": "qz-option is-on",
+      "privateElement": true,
+      "text": "Sluchové postižení"
+    }
+  ]
+}

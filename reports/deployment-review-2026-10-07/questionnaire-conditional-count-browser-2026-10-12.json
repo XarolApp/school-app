@@ -1,0 +1,6 @@
+{
+  "environment": "synthetic loopback fixture; real server handlers; no live services",
+  "url": "http://127.0.0.1:5175/dotaznik",
+  "historyText": "Sada z 12. října 2026\nVÝCHOZÍ\n12. října 2026 · 33 z 33 odpovědí\nPřejmenovat\nArchivovat\n\nVýchozí sadu nejde archivovat. Nejdřív nastav jako výchozí jinou.",
+  "submittedQuestionCount": 33
+}

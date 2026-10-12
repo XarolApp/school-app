@@ -1,0 +1,68 @@
+{
+  "method": "Actual current backend scoreSchools; two synthetic rows; no HTTP, dotenv, providers or database",
+  "schools": [
+    {
+      "id": 1,
+      "name": "Fixture ordinary IT school",
+      "programs": "Informační technologie"
+    },
+    {
+      "id": 2,
+      "name": "Fixture special practical school",
+      "programs": "Praktická škola",
+      "school_extracted_details": {
+        "urceno_pro_postizeni": [
+          "sluchove"
+        ]
+      }
+    }
+  ],
+  "examples": {
+    "only_hearing_preference": [
+      {
+        "school_id": 2,
+        "score": 81,
+        "raw_score": 70,
+        "breakdown": {},
+        "signals": []
+      },
+      {
+        "school_id": 1,
+        "score": 0,
+        "raw_score": 0,
+        "breakdown": {},
+        "signals": []
+      }
+    ],
+    "IT_interest_plus_hearing_preference": [
+      {
+        "school_id": 2,
+        "score": 87,
+        "raw_score": 77,
+        "breakdown": {
+          "oblasti": 0,
+          "typ": 0.8,
+          "predmety": 0,
+          "zamereni": 0
+        },
+        "signals": []
+      },
+      {
+        "school_id": 1,
+        "score": 59,
+        "raw_score": 47,
+        "breakdown": {
+          "oblasti": 1,
+          "typ": 0.8,
+          "predmety": 1,
+          "zamereni": 1
+        },
+        "signals": [
+          "pokrývá zájmy: it",
+          "navazuje na předměty: informatika",
+          "zaměřuje se přesně na tvoje obory"
+        ]
+      }
+    ]
+  }
+}
