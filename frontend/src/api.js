@@ -506,3 +506,5 @@ export async function downloadAdminCsv(table){
   const url=URL.createObjectURL(await res.blob()),link=document.createElement('a');
   link.href=url;link.download='beta-'+table+'.csv';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
+
+export const pingVisit=()=>fetch(API_BASE_URL+'/api/visit',{method:'POST',keepalive:true}).catch(()=>{});

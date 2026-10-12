@@ -384,6 +384,18 @@ function requireAdmin(req, res, next) {
   if (!ADMIN_EMAILS.has((req.user.email || '').toLowerCase())) return res.status(403).json({error:'Tato stránka je jen pro správce.'});
   next();
 }
+// Anonymous visit counter: device class comes from the User-Agent header and is
+// only ever counted per day. No IP, user id or cookie is stored.
+const visitLimiter = rateLimit({ windowMs: 60_000, limit: 20, standardHeaders: 'draft-7', legacyHeaders: false });
+app.post('/api/visit', visitLimiter, async (req, res) => {
+  const ua = String(req.get('user-agent') || '');
+  if (!ua || /bot|crawl|spider|headless|preview|lighthouse|monitor/i.test(ua)) return res.status(204).end();
+  const device = /iPad|Tablet/i.test(ua) || (/Android/i.test(ua) && !/Mobile/i.test(ua)) ? 'tablet'
+    : /Mobi|iPhone|Android/i.test(ua) ? 'mobile' : 'desktop';
+  await supabase.rpc('bump_visit', { p_device: device });
+  res.status(204).end();
+});
+
 registerBetaAdmin(app, supabase, [requireAuth, requireAdmin]);
 
 /**

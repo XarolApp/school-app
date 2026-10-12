@@ -6,11 +6,12 @@ import Modal from '../components/Modal';
 import {fetchAdminReport,fetchAdminFeedback,updateAdminFeedback,selectAdminReview,fetchTesterEmail,downloadAdminCsv} from '../api';
 import './Admin.css';
 
-const TABS=[['overview','Přehled'],['feedback','Zpětná vazba'],['behaviour','Chování'],['funnels','Trychtýře'],['matching','Matching'],['closing','Závěrečný dotazník'],['reviews','Recenze'],['testers','Testeři'],['ai-costs','AI náklady']];
+const TABS=[['overview','Přehled'],['feedback','Zpětná vazba'],['behaviour','Chování'],['funnels','Trychtýře'],['matching','Matching'],['closing','Závěrečný dotazník'],['reviews','Recenze'],['testers','Testeři'],['ai-costs','AI náklady'],['devices','Zařízení']];
 const STATUS={nove:'Nové',precteno:'Přečtené',vyreseno:'Vyřešené',neudelame:'Neuděláme'};
 const SOURCE={button:'Tlačítko',micro:'Krátká otázka',gate:'Obnovení přístupu'};
 const fmt=value=>value==null?'—':typeof value==='number'?new Intl.NumberFormat('cs-CZ',{maximumFractionDigits:value>0&&value<0.01?6:2}).format(value):typeof value==='boolean'?value?'Ano':'Ne':String(value);
 function Chart({section,compact=false}){
+ const [hover,setHover]=useState(null);
  const {rows,kind}=section;
  if(!rows.length||kind==='table')return null;
  if(['bar','funnel'].includes(kind)){
@@ -19,16 +20,42 @@ function Chart({section,compact=false}){
  }
  const scatter=kind==='scatter',price=kind==='prices',points=scatter?rows.filter(r=>r.mean!=null):rows;
  if(!points.length)return <p className="ss-caption">Zatím nejsou uložená pořadí testerů.</p>;
- const W=600,H=compact?70:220,pad=compact?3:30;
- const xmax=Math.max(1,...points.map((r,i)=>scatter?r.known_features:price?r.price:i));
+ const W=600,H=compact?70:260,padL=compact?3:48,padR=compact?3:14,padT=compact?3:22,padB=compact?3:30;
+ const xv=(r,i)=>scatter?r.known_features:price?r.price:i;
+ const xmax=Math.max(1,...points.map(xv));
  const ymax=price?100:Math.max(1,...points.map(r=>scatter?r.mean:Number(r.value)||0));
- const x=(r,i)=>pad+(scatter?r.known_features:price?r.price:i)/xmax*(W-2*pad);
- const y=v=>H-pad-Number(v)/ymax*(H-2*pad);
+ const x=(r,i)=>padL+xv(r,i)/xmax*(W-padL-padR);
+ const y=v=>H-padB-Number(v)/ymax*(H-padT-padB);
  const series=price?['tooCheap','good','expensive','tooExpensive']:['value'];
- return <div className={'admin-plot '+(compact?'admin-spark':'')}><svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={section.title}>
-  {!compact&&<><path d={`M${pad} ${pad}V${H-pad}H${W-pad}`} fill="none" stroke="var(--line2)"/><text x={pad} y="15" fill="var(--ink3)" fontSize="11">{scatter?'Průměrné pořadí (nižší je lepší)':price?'Podíl odpovědí (%)':'Počet / náklad'}</text></>}
-  {scatter?points.map((r,i)=><circle key={r.id} cx={x(r,i)} cy={y(r.mean)} r={Math.abs(r.delta||0)>=20?5:3} fill={Math.abs(r.delta||0)>=20?'var(--danger)':'var(--acc)'} opacity="0.8"><title>{r.school}: pořadí {fmt(r.mean)}, rozdíl {fmt(r.delta)}</title></circle>):series.map((key,i)=><polyline key={key} points={points.map((r,j)=>`${x(r,j)},${y(r[key])}`).join(' ')} fill="none" stroke={['var(--acc)','var(--ink)','var(--ink2)','var(--danger)'][i]} strokeDasharray={i%2?'5 4':undefined} strokeWidth={compact?3:2}/>)}
-  {!compact&&<text x={W-pad} y={H-3} textAnchor="end" fill="var(--ink3)" fontSize="11">{scatter?'Počet známých údajů (0–6)':price?'Cena (Kč)':'Čas →'}</text>}
+ const yOf=r=>scatter?r.mean:price?r.good:r.value;
+ const yTicks=[0,1,2,3,4].map(i=>ymax*i/4),xStep=Math.max(1,Math.ceil(points.length/6));
+ const xTicks=scatter||price?[0,1,2,3,4].map(i=>xmax*i/4):points.map((r,i)=>i).filter(i=>i%xStep===0||i===points.length-1);
+ const xLabel=t=>scatter||price?fmt(Math.round(t*10)/10):points[t].label??t+1;
+ const onMove=e=>{
+  const box=e.currentTarget.getBoundingClientRect(),mx=(e.clientX-box.left)/box.width*W,my=(e.clientY-box.top)/box.height*H;
+  let best=0,d=Infinity;
+  points.forEach((r,i)=>{const dd=scatter?(x(r,i)-mx)**2+(y(r.mean)-my)**2:Math.abs(x(r,i)-mx);if(dd<d){d=dd;best=i;}});
+  setHover(best);
+ };
+ const h=hover!=null&&points[hover];
+ const lines=h?(price?[`Cena: ${fmt(h.price)} Kč`,...['Příliš levné','Výhodné','Drahé','Příliš drahé'].map((n,i)=>`${n}: ${fmt(h[series[i]])} %`)]
+  :scatter?[h.school,`Pořadí: ${fmt(h.mean)}`,`Známých údajů: ${fmt(h.known_features)}`]
+  :[String(h.label??hover+1),`Hodnota: ${fmt(h.value)}`]):[];
+ const tw=Math.max(...lines.map(l=>l.length))*6.4+16,th=lines.length*15+10;
+ const hx=h?x(h,hover):0,tx=hx>W/2?hx-tw-10:hx+10,ty=padT+4;
+ return <div className={'admin-plot '+(compact?'admin-spark':'')}><svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={section.title} onMouseMove={compact?undefined:onMove} onMouseLeave={()=>setHover(null)}>
+  {!compact&&<>
+   {yTicks.map(t=><g key={t}><line x1={padL} x2={W-padR} y1={y(t)} y2={y(t)} stroke="var(--line2)" strokeDasharray="2 4"/><text x={padL-6} y={y(t)+4} textAnchor="end" fill="var(--ink3)" fontSize="11">{fmt(Math.round(t*100)/100)}</text></g>)}
+   {xTicks.map(t=><text key={t} x={scatter||price?padL+t/xmax*(W-padL-padR):x(points[t],t)} y={H-padB+16} textAnchor="middle" fill="var(--ink3)" fontSize="11">{xLabel(t)}</text>)}
+   <path d={`M${padL} ${padT}V${H-padB}H${W-padR}`} fill="none" stroke="var(--line2)"/><text x={padL} y="13" fill="var(--ink3)" fontSize="11">{scatter?'Průměrné pořadí (nižší je lepší)':price?'Podíl odpovědí (%)':'Počet / náklad'}</text></>}
+  {scatter?points.map((r,i)=><circle key={r.id} cx={x(r,i)} cy={y(r.mean)} r={Math.abs(r.delta||0)>=20?5:3} fill={Math.abs(r.delta||0)>=20?'var(--danger)':'var(--acc)'} opacity="0.8"/>):series.map((key,i)=><polyline key={key} points={points.map((r,j)=>`${x(r,j)},${y(r[key])}`).join(' ')} fill="none" stroke={['var(--acc)','var(--ink)','var(--ink2)','var(--danger)'][i]} strokeDasharray={i%2?'5 4':undefined} strokeWidth={compact?3:2}/>)}
+  {!compact&&<text x={W-padR} y={H-3} textAnchor="end" fill="var(--ink3)" fontSize="11">{scatter?'Počet známých údajů (0–6)':price?'Cena (Kč)':'Čas →'}</text>}
+  {h&&<g pointerEvents="none">
+   {!scatter&&<line x1={hx} x2={hx} y1={padT} y2={H-padB} stroke="var(--ink3)"/>}
+   {(price?series.map(k=>h[k]):[yOf(h)]).map((v,i)=><circle key={i} cx={hx} cy={y(v)} r="4" fill="var(--surface)" stroke="var(--acc)" strokeWidth="2"/>)}
+   <rect x={tx} y={ty} width={tw} height={th} rx="6" fill="var(--surface)" stroke="var(--line2)"/>
+   {lines.map((l,i)=><text key={i} x={tx+8} y={ty+16+i*15} fill="var(--ink)" fontSize="11" fontWeight={i?400:600}>{l}</text>)}
+  </g>}
  </svg>{price&&<div className="admin-legend">{['Příliš levné','Výhodné','Drahé','Příliš drahé'].map((s,i)=><span key={s}><i style={{background:['var(--acc)','var(--ink)','var(--ink2)','var(--danger)'][i]}}/>{s}</span>)}</div>}</div>;
 }
 function FeedbackDetail({id,onClose,onSaved}){
@@ -88,6 +115,7 @@ export default function Admin(){
   {busy&&<div className="admin-loading" role="status">Načítání přehledu…</div>}
   {report&&<><div className="admin-stats">{report.cards.map((c,i)=><article key={c.label} className="admin-stat"><p>{c.label}</p><strong>{fmt(c.value)} <small>{c.unit}</small></strong>{spark&&i===2&&<Chart section={spark} compact/>}</article>)}</div>
   {tab==='matching'&&<div className="admin-note"><p>Simulace: <b>{report.simulation?.file||'Soubor zatím není dostupný'}</b>{report.simulation?.n&&` · ${fmt(report.simulation.n)} profilů`}. Každý typ dotazníku se porovnává samostatně.</p><p>Rozdíl alespoň 20 míst je zvýrazněný. Průměr krátké otázky je společný pro oba zdroje; nevytváříme rozdělení, které odpovědi neobsahují. Podíly a rozptyl vycházejí z úplných pořadí, ve kterých byla škola zařazena.</p></div>}
+  {tab==='devices'&&<p className="admin-note">Anonymní počítadlo bez cookies a bez identifikace: návštěva = otevření webu v nové záložce nebo návrat po 30 minutách nečinnosti. Zařízení se určuje z hlavičky prohlížeče, tablety v režimu „počítač“ se počítají jako počítač.</p>}
   {tab==='reviews'&&<p className="admin-note">Výběr je interní. Recenze se automaticky nezveřejňuje; vybrat lze jen recenzi se souhlasem.</p>}
   {tab==='closing'&&<p className="admin-note">Cenové křivky používají odpovědi s postupně rostoucími částkami. Ostatní odpovědi zůstávají uložené. Přijatelný interval ukazuje průsečíky „příliš levné / drahé“ a „výhodné / příliš drahé“; při malém počtu testerů je orientační.</p>}
   <div className="admin-sections">{report.sections.map(s=><section key={tab+s.id} className={'admin-panel admin-panel-'+s.kind}><header><h2 className="ss-headline-md">{s.title}</h2><button className="admin-link" onClick={()=>download(s)} aria-label={'Stáhnout CSV: '+s.title}><Download size={15}/>CSV</button></header><Chart section={s}/><AdminTable key={tab+s.id} section={s} tab={tab} onInspect={setDetail} onReload={reload} onError={setError}/></section>)}</div>

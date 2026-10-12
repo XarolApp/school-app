@@ -1631,3 +1631,20 @@ select
   'trialing'
 from auth.users a
 where not exists (select 1 from public.users u where u.id = a.id);
+
+-- Anonymous device-class visit counter: one row per day and device class, no visitor identifiers.
+create table if not exists public.visit_counts (
+  day date not null,
+  device text not null check (device in ('desktop','mobile','tablet')),
+  visits integer not null default 0,
+  primary key (day, device)
+);
+alter table public.visit_counts enable row level security;
+create or replace function public.bump_visit(p_device text) returns void
+language sql security definer set search_path = public, pg_temp as $$
+  insert into public.visit_counts (day, device, visits)
+  values ((now() at time zone 'Europe/Prague')::date, p_device, 1)
+  on conflict (day, device) do update set visits = public.visit_counts.visits + 1;
+$$;
+revoke all on function public.bump_visit(text) from public, anon, authenticated;
+grant execute on function public.bump_visit(text) to service_role;

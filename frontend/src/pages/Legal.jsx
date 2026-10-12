@@ -34,6 +34,13 @@ export function Privacy() {
       <h2>2. Jaké údaje zpracováváme, proč a na jakém základě</h2>
       <ul>
         <li>
+          <strong>Anonymní statistika návštěv:</strong> při otevření webu se k dennímu počítadlu
+          přičte jedna návštěva podle typu zařízení (počítač, telefon, tablet). Typ poznáme
+          z hlavičky prohlížeče, kterou po zařazení zahodíme. Neukládáme IP adresu, identifikátor
+          ani cookies a údaj nelze spojit s tebou. Účel: vědět, na jakých zařízeních se web
+          používá. Základ: oprávněný zájem.
+        </li>
+        <li>
           <strong>Účet:</strong> e-mail, jméno (které zadáš při registraci), heslo a okamžik potvrzení
           podmínek. Heslo ukládá jen zabezpečená autentizační služba v zahašované
           podobě; my ho nevidíme. Účel: vytvořit ti účet a umožnit přihlášení. Základ: plnění
