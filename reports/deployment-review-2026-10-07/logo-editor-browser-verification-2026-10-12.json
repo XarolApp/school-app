@@ -1,0 +1,115 @@
+{
+  "environment": "actual exported renderer on loopback; read-only; no Save/publish/export",
+  "url": "http://127.0.0.1:5199/stredni-na-miru-logo.html",
+  "artboardBounds": [
+    {
+      "title": "Poradi.dc.html",
+      "bodyScrollHeight": 800,
+      "documentScrollHeight": 800,
+      "hasContent": true,
+      "viewportHeight": 800
+    },
+    {
+      "title": "Shoda.dc.html",
+      "bodyScrollHeight": 800,
+      "documentScrollHeight": 800,
+      "hasContent": true,
+      "viewportHeight": 800
+    },
+    {
+      "title": "Visacka.dc.html",
+      "bodyScrollHeight": 800,
+      "documentScrollHeight": 800,
+      "hasContent": true,
+      "viewportHeight": 800
+    },
+    {
+      "title": "TaPrava.dc.html",
+      "bodyScrollHeight": 800,
+      "documentScrollHeight": 800,
+      "hasContent": true,
+      "viewportHeight": 800
+    },
+    {
+      "title": "Trychtyr.dc.html",
+      "bodyScrollHeight": 800,
+      "documentScrollHeight": 800,
+      "hasContent": true,
+      "viewportHeight": 800
+    },
+    {
+      "title": "Spendlik.dc.html",
+      "bodyScrollHeight": 800,
+      "documentScrollHeight": 800,
+      "hasContent": true,
+      "viewportHeight": 800
+    },
+    {
+      "title": "Logotyp.dc.html",
+      "bodyScrollHeight": 1200,
+      "documentScrollHeight": 1200,
+      "hasContent": true,
+      "viewportHeight": 1200
+    },
+    {
+      "title": "Main.dc.html",
+      "bodyScrollHeight": 1200,
+      "documentScrollHeight": 1200,
+      "hasContent": true,
+      "viewportHeight": 1200
+    },
+    {
+      "title": "Mira.dc.html",
+      "bodyScrollHeight": 800,
+      "documentScrollHeight": 800,
+      "hasContent": true,
+      "viewportHeight": 800
+    },
+    {
+      "title": "Litera.dc.html",
+      "bodyScrollHeight": 800,
+      "documentScrollHeight": 800,
+      "hasContent": true,
+      "viewportHeight": 800
+    },
+    {
+      "title": "Zapad.dc.html",
+      "bodyScrollHeight": 800,
+      "documentScrollHeight": 800,
+      "hasContent": true,
+      "viewportHeight": 800
+    },
+    {
+      "title": "Oblouk.dc.html",
+      "bodyScrollHeight": 800,
+      "documentScrollHeight": 800,
+      "hasContent": true,
+      "viewportHeight": 800
+    },
+    {
+      "title": "Hledacek.dc.html",
+      "bodyScrollHeight": 800,
+      "documentScrollHeight": 800,
+      "hasContent": true,
+      "viewportHeight": 800
+    },
+    {
+      "title": "Cesta.dc.html",
+      "bodyScrollHeight": 800,
+      "documentScrollHeight": 800,
+      "hasContent": true,
+      "viewportHeight": 800
+    }
+  ],
+  "copies": {
+    "main": "The háček draws on familiar Czech writing, although the caron is also used in other languages. Symmetric on purpose: a checkmark is lopsided, a háček is not, which helps distinguish it from a generic UI tick. It also sits over the ř in Střední, so the mark and the name share the same detail.",
+    "hledacek": "A viewfinder closing on one point — narrowing many schools down to yours.",
+    "avatar": "Risk: the wordmark needs a compact companion. Variants E–G above provide avatar and favicon candidates; test the chosen pair together at 40px and 16px."
+  },
+  "oldLogotypBounds": {
+    "viewportHeight": 960,
+    "bodyScrollHeight": 1141,
+    "riskTop": 1038.2890625,
+    "riskBottom": 1078.5859375
+  }
+}

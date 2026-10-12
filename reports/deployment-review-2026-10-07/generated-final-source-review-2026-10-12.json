@@ -1,0 +1,48 @@
+{
+  "checked_at_utc": "2026-10-12T09:23:01.552472+00:00",
+  "commit_before_fixes": "f845acd222485378e5645989e01b51217da82480",
+  "baselines": {
+    "design/logo-concepts/stredni-na-miru-logo.html": "c999d1fc188c7b824cd1f2eee5473097b3969f5b43dcf6ba8cd8c41c833e5b4d",
+    "UNFORGET.md": "cfc4edb4162a10bf7c2e36ce464dd4a65f9fe43b3911a4d22bd2767aa32cb960",
+    "reports/deployment-review-2026-10-07/REPORT.md": "1dd78082ca446deefa94758ef48ef4c1d8f1a44165b4e60f3541bc998fecc560",
+    "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md": "e77efdc92bb99dc007ac47cf2056b1888645b81391c5bf0efa7d211a98a91043",
+    "reports/deployment-review-2026-10-07/continuation-findings.md": "5487c02087f4b375a70b163c89655885b69b5ef2b64931c2ce107ab3d2c1ce9f",
+    "design/logo-concepts/Logotyp.dc.html": "28c7fe97b8a2c9f7f86a7b9256e2cf594e1cde3b662479b10270e86e5f2767f6"
+  },
+  "current_sources": {
+    "lib/pragueDistricts.js": "14001c5e437dac6cd003e95155a4ad4b25cacbcb806b701dbf953caf97e98819",
+    "design/logo-concepts/stredni-na-miru-logo.html": "471e95f405d85a1616bf72f8ea6326ab580df0e449f1a0ac7d1c57d926e6bbcd",
+    "design/logo-concepts/Logotyp.dc.html": "6fe811388b03f989021c8a2b01f19d8f62291b3f418d99364245338306b15330"
+  },
+  "geometry": "geometry-complete-structured-review-2026-10-12.json",
+  "editor_generated": "logo-editor-structural-audit-2026-10-12.json",
+  "copy_and_metadata": "logo-editor-copy-fix-2026-10-12.json",
+  "actual_browser": "logo-editor-browser-verification-2026-10-12.json",
+  "verification": {
+    "geometry_points": 16115,
+    "regions": 22,
+    "zero_edges": 0,
+    "repeated_nonclosing_vertices": 0,
+    "proper_self_crossings": 0,
+    "script_chars": 1987971,
+    "style_chars": 484828,
+    "AST_nodes": 428441,
+    "CSS_declarations": 5010,
+    "direct_critical_sites_reviewed": 26,
+    "embedded_current_authored_files": 15,
+    "embedded_current_source_lines": 1408,
+    "all14_bodies_fit_corrected_frames": true,
+    "same_bug_search": "No obsolete224-school/exactly-three-school/caron-exclusivity/no-avatar phrases remain in logo-concepts. Current-status224match is a dated historical expansion record, preserved.",
+    "peer_hashes_unchanged": true,
+    "outside_document_block_bytes_identical": true,
+    "artboard_markup_styles_SVG_identical": true,
+    "diff_check": "pass"
+  },
+  "limitations": [
+    "Generated literals/editor dependencies are explicitly structurally reviewed, not manually approved token by token; raw human-only vendor read is not claimed.",
+    "Source date/authoritative boundaries, collinear contacts/interdistrict topology/exact-edge policy/building accuracy require S16 acceptance.",
+    "Export self-publish is unavailable locally and was not attempted. Static direct-call inventory cannot prove every alias/indirect call, host permission, licensing or physical-browser behavior; C44 is conditional reuse, not current product adoption.",
+    "Physical assets/ignored scrape corpus and real services/controller/schema/payment/browser acceptance still remain. Source accounting is not whole-goal or beta release approval.",
+    "No current map/scoring/beta/privacy/payment/source-data/schema/provider change; peer source untouched."
+  ]
+}

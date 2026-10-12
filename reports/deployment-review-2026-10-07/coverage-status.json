@@ -1,12 +1,11 @@
 {
-  "checked_at_utc": "2026-10-12T08:51:22.607376+00:00",
-  "commit": "1118d0c5246817a40b84118536c4c7a3e73dd532",
+  "checked_at_utc": "2026-10-12T09:28:43.296280+00:00",
+  "commit": "f845acd222485378e5645989e01b51217da82480",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "current_full_read": 795,
-    "binary_requires_asset_check": 108,
-    "pending_or_changed": 2,
-    "generated_or_audit_artifact": 212,
+    "current_full_read": 797,
+    "binary_requires_asset_check": 109,
+    "generated_or_audit_artifact": 219,
     "removed_or_missing": 2
   },
   "files": [
@@ -993,8 +992,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "cfc4edb4162a10bf7c2e36ce464dd4a65f9fe43b3911a4d22bd2767aa32cb960",
-      "lines": 2015,
+      "sha256": "c184242aefeb4eaa30a3cd6d7d7404d2b5c24618c8ee522b5f6f2cb9be865208",
+      "lines": 2025,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -1658,7 +1657,7 @@
     },
     {
       "path": "design/logo-concepts/Logotyp.dc.html",
-      "sha256": "28c7fe97b8a2c9f7f86a7b9256e2cf594e1cde3b662479b10270e86e5f2767f6",
+      "sha256": "6fe811388b03f989021c8a2b01f19d8f62291b3f418d99364245338306b15330",
       "lines": 141,
       "status": "current_full_read",
       "matching_evidence": [
@@ -1766,10 +1765,12 @@
     },
     {
       "path": "design/logo-concepts/stredni-na-miru-logo.html",
-      "sha256": "c999d1fc188c7b824cd1f2eee5473097b3969f5b43dcf6ba8cd8c41c833e5b4d",
+      "sha256": "471e95f405d85a1616bf72f8ea6326ab580df0e449f1a0ac7d1c57d926e6bbcd",
       "lines": 11009,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "design/motion-demo/CornerDrift.dc.html",
@@ -5092,8 +5093,10 @@
       "path": "lib/pragueDistricts.js",
       "sha256": "14001c5e437dac6cd003e95155a4ad4b25cacbcb806b701dbf953caf97e98819",
       "lines": 141,
-      "status": "pending_or_changed",
-      "matching_evidence": []
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
     },
     {
       "path": "lib/questionnaire.js",
@@ -6639,15 +6642,15 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "f3b8eab2619e38d4b1a8799720def92b7a6187543e5fc591e5c69e2ff81281ee",
-      "lines": 578,
+      "sha256": "68b5ba54fa22cdc9cec1149e3e4054abd3f382a44eee5172ef02ad7c490834dd",
+      "lines": 586,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "e77efdc92bb99dc007ac47cf2056b1888645b81391c5bf0efa7d211a98a91043",
-      "lines": 350,
+      "sha256": "88ccc1290eff7684f269217faf3d7a2b4effd0ffd992b980b0e5c4b0ac09a702",
+      "lines": 357,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -6655,8 +6658,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "1dd78082ca446deefa94758ef48ef4c1d8f1a44165b4e60f3541bc998fecc560",
-      "lines": 270,
+      "sha256": "adeaec6e5452b2e694090862d371452cdd80629ecbd4c4620f772d75e898cc63",
+      "lines": 273,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -7035,8 +7038,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "5487c02087f4b375a70b163c89655885b69b5ef2b64931c2ce107ab3d2c1ce9f",
-      "lines": 671,
+      "sha256": "e28ac82a7c80f241b4825614c063151f5ad32167784e592e872cec546466b4ed",
+      "lines": 678,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -7051,8 +7054,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "c5788fde5034583f36ed3fa8ed628fecb2cb008996daae83e1ab719abc012f5c",
-      "lines": 9441,
+      "sha256": "0987ca5009c7f61fed1e47d476827df105fc95d4d77ce8d6c7fdd775b5f56765",
+      "lines": 9500,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -7449,6 +7452,27 @@
       "matching_evidence": []
     },
     {
+      "path": "reports/deployment-review-2026-10-07/generated-final-source-review-2026-10-12.json",
+      "sha256": "4779656bc51658ae8cb9b2809aff89b02d12be0c5aee9f40c6ea0d8d7c139127",
+      "lines": 48,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/geometry-complete-structured-review-2026-10-12.cjs",
+      "sha256": "8e09f99bc008810b4a2fff7ccd00f77e43a28fc47315cedcabf9f246d857e0b8",
+      "lines": 58,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/geometry-complete-structured-review-2026-10-12.json",
+      "sha256": "1f81d4d2a1c0e54a230d28c40db17a0078dc4c9476a4ad9f348f98e19bcefd9b",
+      "lines": 514,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
       "path": "reports/deployment-review-2026-10-07/historical-data-artifact-review-2026-10-11.json",
       "sha256": "3ae62e1853625a9801172be818fda17922a5c499c2ecca8224ccd400e3589254",
       "lines": 48,
@@ -7578,6 +7602,41 @@
       "path": "reports/deployment-review-2026-10-07/logo-concepts-verification-2026-10-11.json",
       "sha256": "3b2432b771c415a7b47ec6d2a918d593f84b8a072462b0d981713c76a075da00",
       "lines": 369,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/logo-editor-avatar-copy-2026-10-12.png",
+      "sha256": "046cb10ee77d7e474313891f2ef3cb815ff14d59953cda6e0cec5adecd4caa63",
+      "lines": null,
+      "status": "binary_requires_asset_check",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/logo-editor-browser-verification-2026-10-12.json",
+      "sha256": "26f104649cf5643bcc3846b3a507faeab5a0ac2dc5c1d3aa5f656ad6a7c2b630",
+      "lines": 115,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/logo-editor-copy-fix-2026-10-12.json",
+      "sha256": "c8d8307ad45775bca70fe07e96db2c379825e716394c033a17e9017f6bc68f7c",
+      "lines": 139,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/logo-editor-structural-audit-2026-10-12.json",
+      "sha256": "7b0e55a2aa53c7a7bfa37e9d1732fb595131ea50b5b3bd0d7a3575a642d8d1e7",
+      "lines": 258,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/logo-editor-structural-audit-2026-10-12.mjs",
+      "sha256": "683ab78e48511cbaa15e23c95f4bda0b8cdddcead7a8f7fb0cf088ce8e9ed877",
+      "lines": 43,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -8412,8 +8471,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "ca86f2e451c68f5de74a37a1dbc2c9187748f1b1234106c66753acf69066e51c",
-      "lines": 10758,
+      "sha256": "774c53fc8f6145ee8f56efb0ae07392e08ba998f6a40dd54c2ae0df003459eeb",
+      "lines": 10776,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },

@@ -1,0 +1,258 @@
+{
+  "source_sha256": "c999d1fc188c7b824cd1f2eee5473097b3969f5b43dcf6ba8cd8c41c833e5b4d",
+  "script_chars": 1987971,
+  "style_chars": 484828,
+  "script_ast_nodes": 428441,
+  "functions": 7611,
+  "ast_start": 0,
+  "ast_end": 1987971,
+  "node_types": {
+    "Program": 1,
+    "ExpressionStatement": 8321,
+    "CallExpression": 26207,
+    "ArrowFunctionExpression": 4560,
+    "BlockStatement": 8047,
+    "Identifier": 175807,
+    "Literal": 39804,
+    "MemberExpression": 37947,
+    "ArrayPattern": 401,
+    "ArrayExpression": 3106,
+    "FunctionDeclaration": 2248,
+    "SequenceExpression": 7422,
+    "BinaryExpression": 16382,
+    "LogicalExpression": 10601,
+    "UnaryExpression": 8098,
+    "AssignmentExpression": 9759,
+    "VariableDeclaration": 6696,
+    "VariableDeclarator": 14205,
+    "ObjectExpression": 5127,
+    "Property": 17201,
+    "IfStatement": 3816,
+    "ThrowStatement": 257,
+    "NewExpression": 878,
+    "ConditionalExpression": 4150,
+    "TryStatement": 298,
+    "CatchClause": 258,
+    "ReturnStatement": 4937,
+    "AwaitExpression": 319,
+    "SpreadElement": 936,
+    "ObjectPattern": 670,
+    "FunctionExpression": 803,
+    "ChainExpression": 1128,
+    "ForOfStatement": 403,
+    "UpdateExpression": 774,
+    "ContinueStatement": 163,
+    "RestElement": 176,
+    "AssignmentPattern": 580,
+    "ForStatement": 632,
+    "ClassExpression": 23,
+    "ClassBody": 23,
+    "PropertyDefinition": 40,
+    "MethodDefinition": 135,
+    "ThisExpression": 1093,
+    "TemplateLiteral": 593,
+    "TemplateElement": 1376,
+    "BreakStatement": 567,
+    "SwitchStatement": 138,
+    "SwitchCase": 1165,
+    "ForInStatement": 51,
+    "LabeledStatement": 46,
+    "TaggedTemplateExpression": 3,
+    "Super": 8,
+    "DoWhileStatement": 53,
+    "EmptyStatement": 9
+  },
+  "css": {
+    "declarations": 5010,
+    "rules": 2423,
+    "atRules": 263
+  },
+  "interesting": [
+    {
+      "kind": "CallExpression",
+      "name": "fetch",
+      "start": 1959937,
+      "end": 1959951,
+      "context": "t(CTe)}:{};async function Zae(e={}){let t=e.fetch??(a=>fetch(a)),n=e.fetch??(a=>fetch(a,RTe())),r=await Gae(n,t,e.indexFile??Kae);if(!(r instanceof uy))return{state:r.state,origin:\"instance\",ski"
+    },
+    {
+      "kind": "CallExpression",
+      "name": "fetch",
+      "start": 1959912,
+      "end": 1959920,
+      "context": "signal:AbortSignal.timeout(CTe)}:{};async function Zae(e={}){let t=e.fetch??(a=>fetch(a)),n=e.fetch??(a=>fetch(a,RTe())),r=await Gae(n,t,e.indexFile??Kae);if(!(r instanceof uy))return{stat"
+    },
+    {
+      "kind": "MemberExpression",
+      "name": "innerHTML",
+      "start": 1585622,
+      "end": 1585638,
+      "context": "{let r=new DOMParser().parseFromString(t,\"text/html\");Qre(r.body,Vke(r.body)),t=r.body.innerHTML}return t}var toe=new Set([\"script\",\"style\",\"xmp\",\"iframe\",\"noembed\",\"noframes\",\"plaintext\",\"noscrip"
+    },
+    {
+      "kind": "MemberExpression",
+      "name": "innerHTML",
+      "start": 1559692,
+      "end": 1559703,
+      "context": "(!0);for(let o of r.querySelectorAll(`[${zo}]`))o.removeAttribute(zo);return sz(r.innerHTML)}isTextEditable(t){let n=this.element(t);if(!n)return!1;let r=this.tagName(t)??\"\";if(!dP(r)||r===\"h"
+    },
+    {
+      "kind": "MemberExpression",
+      "name": "innerHTML",
+      "start": 1559095,
+      "end": 1559106,
+      "context": "setInnerHtml(t,n){let r=this.element(t);if(!r)return!1;this.classRuleCache=null;r.innerHTML=n;for(let o of r.querySelectorAll(\"*\")){o.removeAttribute(zo);for(let i of[...o.attributes])i.name."
+    },
+    {
+      "kind": "MemberExpression",
+      "name": "innerHTML",
+      "start": 1555848,
+      "end": 1555859,
+      "context": "();return Zv[o]??o})}insertHtml(t,n,r){let o=document.createElement(\"template\");o.innerHTML=this.raw?t:V0(t);let i=[...o.content.children];if(i.length===0)return null;let a=o.content;if(r===\""
+    },
+    {
+      "kind": "MemberExpression",
+      "name": "innerHTML",
+      "start": 1555680,
+      "end": 1555691,
+      "context": "[t.index]??null}topLevelTags(t){let n=document.createElement(\"template\");return n.innerHTML=this.raw?t:V0(t),[...n.content.children].map(r=>{let o=r.tagName.toLowerCase();return Zv[o]??o})}in"
+    },
+    {
+      "kind": "MemberExpression",
+      "name": "innerHTML",
+      "start": 1555166,
+      "end": 1555177,
+      "context": "zo);let o=document.createElement(\"template\");return o.content.appendChild(r),sz(o.innerHTML)}deckSlides(t){let r=[...this.tpl.content.querySelectorAll('x-import[component-from-global-scope=\"d"
+    },
+    {
+      "kind": "MemberExpression",
+      "name": "innerHTML",
+      "start": 1552820,
+      "end": 1552831,
+      "context": "Node&&a.parentNode!==i;)a=a.parentNode;let s=document.createElement(\"template\");s.innerHTML=this.raw?n:V0(n);let c=s.content.firstElementChild;if(!c)return null;let l=i;for(;l instanceof Elem"
+    },
+    {
+      "kind": "MemberExpression",
+      "name": "innerHTML",
+      "start": 1547950,
+      "end": 1547961,
+      "context": "(let n of t.content.querySelectorAll(`[${zo}]`))n.removeAttribute(zo);return sz(t.innerHTML)}snapshot(){let t=new Set([\"SCRIPT\",\"STYLE\",\"NOSCRIPT\"]),n=[],r=(o,i)=>{let a=\"  \".repeat(i),s=this"
+    },
+    {
+      "kind": "MemberExpression",
+      "name": "innerHTML",
+      "start": 1546844,
+      "end": 1546862,
+      "context": "onstructor(t,n){this.raw=n?.raw??!1,this.tpl=document.createElement(\"template\");this.tpl.innerHTML=this.raw?t:V0(t),this.restamp();for(let r of this.byTid.values())Cke(r)&&!r.hasAttribute(\"data-uned"
+    },
+    {
+      "kind": "MemberExpression",
+      "name": "innerHTML",
+      "start": 1156850,
+      "end": 1156861,
+      "context": "o=n[r];for(;o.attributes.length;)o.removeAttribute(o.attributes[0].name)}return t.innerHTML.replace(/\\s+/g,\" \").replace(/^\\s+|\\s+$/g,\"\")}function ySe(e,t,n){let r=i=>{if(i.textContent===\"\"&&!"
+    },
+    {
+      "kind": "MemberExpression",
+      "name": "innerHTML",
+      "start": 1156694,
+      "end": 1156705,
+      "context": "nt:Math.floor(s)})}return n}function vSe(e){let t=document.createElement(\"div\");t.innerHTML=e;let n=t.querySelectorAll(\"*\");for(let r=0;r<n.length;r++){let o=n[r];for(;o.attributes.length;)o."
+    },
+    {
+      "kind": "CallExpression",
+      "name": "postMessage",
+      "start": 1156019,
+      "end": 1156063,
+      "context": ",gF):f.selector.slice(0,gF)})}};window.addEventListener(\"message\",s);let c=()=>{e.contentWindow?.postMessage({type:Vte},\"*\"),a(null)},l=setTimeout(c,t?.timeoutMs??6e4);if(t?.signal){if(t.signal.aborted){c();return}t.signal.a"
+    },
+    {
+      "kind": "CallExpression",
+      "name": "fetch",
+      "start": 1054879,
+      "end": 1054932,
+      "context": "tion\"?new AbortController:void 0,a=setTimeout(()=>i?.abort(),t);try{let s=await fetch(e,{credentials:\"same-origin\",signal:i?.signal});if(!s.ok)throw new Error(\"blob fetch \"+String(s.status));let c=await s.blob();return await new Prom"
+    },
+    {
+      "kind": "CallExpression",
+      "name": "postMessage",
+      "start": 1027099,
+      "end": 1027158,
+      "context": "),window.removeEventListener(\"message\",d)};window.addEventListener(\"message\",d),t.contentWindow?.postMessage({__om_eval:1,id:u,code:i},\"*\")})}function r(i,a){return n(i,a)}let o=new Map;return{reload(){r(\"location.reload()\").catch(()=>{let"
+    },
+    {
+      "kind": "CallExpression",
+      "name": "fetch",
+      "start": 998406,
+      "end": 998414,
+      "context": "sync function Zwe(e,t,n){let r=[],o=new Set;async function i(l){try{let u=await fetch(l);if(!u.ok)throw new Error(\"http \"+u.status);let f=(await u.text()).match(/@font-face\\s*{[^}]*}/g)||["
+    },
+    {
+      "kind": "CallExpression",
+      "name": "postMessage",
+      "start": 982037,
+      "end": 982065,
+      "context": "tListener(\"message\",c),o(f)},u=()=>{a+=1;let f=crypto.randomUUID();i.add(f);try{e.postMessage({__om_ping:f})}catch{l(\"dead\");return}s=setTimeout(()=>{a<n?u():l(\"dead\")},r)};e.addEventListener(\"message\",c),e.s"
+    },
+    {
+      "kind": "MemberExpression",
+      "name": "localStorage",
+      "start": 631275,
+      "end": 631294,
+      "context": "01D even though environment is not a client`);let d=t instanceof Function?t():t;window.localStorage.removeItem(e),c(d),window.dispatchEvent(new StorageEvent(\"local-storage\",{key:e}))});(0,Gi.useEffec"
+    },
+    {
+      "kind": "MemberExpression",
+      "name": "localStorage",
+      "start": 630938,
+      "end": 630957,
+      "context": "n though environment is not a client`);try{let p=d instanceof Function?d(a()):d;window.localStorage.setItem(e,o(p)),c(p),window.dispatchEvent(new StorageEvent(\"local-storage\",{key:e}))}catch(p){conso"
+    },
+    {
+      "kind": "MemberExpression",
+      "name": "localStorage",
+      "start": 630576,
+      "end": 630595,
+      "context": "Gi.useCallback)(()=>{let d=t instanceof Function?t():t;if(xI)return d;try{let p=window.localStorage.getItem(e);return p?i(p):d}catch(p){return console.warn(`Error reading localStorage key \\u201C${e}\\"
+    },
+    {
+      "kind": "CallExpression",
+      "name": "Function",
+      "start": 628175,
+      "end": 628198,
+      "context": "lobal,iye=typeof self==\"object\"&&self&&self.Object===Object&&self,aye=oye||iye||Function(\"return this\")(),sye=Object.prototype,lye=sye.toString,cye=Math.max,uye=Math.min,vI=function(){return aye.Date.now"
+    },
+    {
+      "kind": "MemberExpression",
+      "name": "innerHTML",
+      "start": 160779,
+      "end": 160790,
+      "context": "ow Error(Ze(61));if(n=r.__html,n!=null){if(o.children!=null)throw Error(Ze(60));e.innerHTML=n}}break;case\"children\":typeof r==\"string\"?Bg(e,r):(typeof r==\"number\"||typeof r==\"bigint\")&&Bg(e,\""
+    },
+    {
+      "kind": "MemberExpression",
+      "name": "innerHTML",
+      "start": 157907,
+      "end": 157918,
+      "context": "ow Error(Ze(61));if(n=r.__html,n!=null){if(o.children!=null)throw Error(Ze(60));e.innerHTML=n}}break;case\"multiple\":e.multiple=r&&typeof r!=\"function\"&&typeof r!=\"symbol\";break;case\"muted\":e."
+    },
+    {
+      "kind": "MemberExpression",
+      "name": "innerHTML",
+      "start": 109635,
+      "end": 109646,
+      "context": "p://www.w3.org/1998/Math/MathML\",o);break;case\"script\":i=a.createElement(\"div\"),i.innerHTML=\"<script><\\/script>\",i=i.removeChild(i.firstChild);break;case\"select\":i=typeof r.is==\"string\"?a.cre"
+    },
+    {
+      "kind": "CallExpression",
+      "name": "postMessage",
+      "start": 2999,
+      "end": 3019,
+      "context": "nnel<\"u\"?(PA=new MessageChannel,KH=PA.port2,PA.port1.onmessage=TA,ug=function(){KH.postMessage(null)}):ug=function(){qH(TA,0)};var PA,KH;function MA(e,t){wy=qH(function(){e(Do.unstable_now())},t)}Do.u"
+    }
+  ],
+  "method": "Complete JavaScript and CSS parsed with installed local parsers; all AST nodes traversed and direct critical API/member sites extracted. Generated editor is not executed. Embedded authored files reviewed separately.",
+  "limitations": "Static AST inventory does not prove every alias/indirect call safe, runtime capability permissions, browser compatibility or asset rights; not a manual line-by-line vendor implementation approval.",
+  "applies_after_sha256": "471e95f405d85a1616bf72f8ea6326ab580df0e449f1a0ac7d1c57d926e6bbcd",
+  "editor_and_css_bytes_unchanged_after_fixes": true
+}

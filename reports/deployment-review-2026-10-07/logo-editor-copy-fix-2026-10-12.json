@@ -1,0 +1,139 @@
+{
+  "before_sha256": "c999d1fc188c7b824cd1f2eee5473097b3969f5b43dcf6ba8cd8c41c833e5b4d",
+  "after_sha256": "471e95f405d85a1616bf72f8ea6326ab580df0e449f1a0ac7d1c57d926e6bbcd",
+  "everything_outside_document_block_identical": true,
+  "all_artboard_markup_styles_and_svg_identical": true,
+  "editor_css_capabilities_fonts_identical": true,
+  "all15_embedded_files_exact_current_authored_source": true,
+  "embedded_sources": [
+    {
+      "name": "Main.dc.html",
+      "before_sha256": "a75aaf78a58960fc7b367145c08082e5a9d627948ce0ec24f364f74c1d3e37fa",
+      "after_sha256": "fcb9c6c7c7f82b0516ebaf220f70459c5ccc6cc69cc1f66d08de7e93ba67fa61",
+      "lines": 124,
+      "matches_reviewed_authored_source": true,
+      "changed": true
+    },
+    {
+      "name": "Mira.dc.html",
+      "before_sha256": "e49efe14d2b606e5d2648c3bf4484668353d056910ae440c145b0f594b6cb29b",
+      "after_sha256": "e49efe14d2b606e5d2648c3bf4484668353d056910ae440c145b0f594b6cb29b",
+      "lines": 81,
+      "matches_reviewed_authored_source": true,
+      "changed": false
+    },
+    {
+      "name": "Litera.dc.html",
+      "before_sha256": "6ba600ae4c527ca54eea20c58ea3c2044ee812d4eac81a42d49afb1b18e0394a",
+      "after_sha256": "6ba600ae4c527ca54eea20c58ea3c2044ee812d4eac81a42d49afb1b18e0394a",
+      "lines": 81,
+      "matches_reviewed_authored_source": true,
+      "changed": false
+    },
+    {
+      "name": "Zapad.dc.html",
+      "before_sha256": "94091cd0e9868d83ee1045da5a4cc61183760f736d3567be92f556afb18cd4a7",
+      "after_sha256": "94091cd0e9868d83ee1045da5a4cc61183760f736d3567be92f556afb18cd4a7",
+      "lines": 87,
+      "matches_reviewed_authored_source": true,
+      "changed": false
+    },
+    {
+      "name": "Oblouk.dc.html",
+      "before_sha256": "28b5f18936f4dc3287bcfc5460b67699e8a8d0f400e912d0b66126519f3ea517",
+      "after_sha256": "28b5f18936f4dc3287bcfc5460b67699e8a8d0f400e912d0b66126519f3ea517",
+      "lines": 81,
+      "matches_reviewed_authored_source": true,
+      "changed": false
+    },
+    {
+      "name": "Hledacek.dc.html",
+      "before_sha256": "799eb12312bf7010c6276b2dd3bab25feab47537680828e4eafbe134b2bca95e",
+      "after_sha256": "c8e69010c9a83cdc7d0b2b570a0a46d8f2698512585dd61beb1e61e9d8082bd7",
+      "lines": 93,
+      "matches_reviewed_authored_source": true,
+      "changed": true
+    },
+    {
+      "name": "Cesta.dc.html",
+      "before_sha256": "1f8d99d5f0ea6bd6f655a14400341cfd57134f1a8ef6f777efe51af23f64b472",
+      "after_sha256": "1f8d99d5f0ea6bd6f655a14400341cfd57134f1a8ef6f777efe51af23f64b472",
+      "lines": 87,
+      "matches_reviewed_authored_source": true,
+      "changed": false
+    },
+    {
+      "name": "Poradi.dc.html",
+      "before_sha256": "fc5120162828b02e8897cbdac1295024106117212f03db3ae78687a9d10bc42c",
+      "after_sha256": "4d19708edfbdbee86e586a115141eabae3cd5bf0cd344a0a06e998a51ebafa2e",
+      "lines": 93,
+      "matches_reviewed_authored_source": true,
+      "changed": true
+    },
+    {
+      "name": "Shoda.dc.html",
+      "before_sha256": "59485764aa3a2073d46316910a5632f6473c5738931cdc11fafdda62c0e0919a",
+      "after_sha256": "59485764aa3a2073d46316910a5632f6473c5738931cdc11fafdda62c0e0919a",
+      "lines": 93,
+      "matches_reviewed_authored_source": true,
+      "changed": false
+    },
+    {
+      "name": "Visacka.dc.html",
+      "before_sha256": "2ae33ed4f7b64058c82472a1f418bcf040877b2064f72054f36023d59bafecf6",
+      "after_sha256": "2ae33ed4f7b64058c82472a1f418bcf040877b2064f72054f36023d59bafecf6",
+      "lines": 96,
+      "matches_reviewed_authored_source": true,
+      "changed": false
+    },
+    {
+      "name": "TaPrava.dc.html",
+      "before_sha256": "d6d131af747c6f4eebc2ace63a61e8502d6aee1bd24dcde7401a9c4de54d159b",
+      "after_sha256": "d6d131af747c6f4eebc2ace63a61e8502d6aee1bd24dcde7401a9c4de54d159b",
+      "lines": 99,
+      "matches_reviewed_authored_source": true,
+      "changed": false
+    },
+    {
+      "name": "Trychtyr.dc.html",
+      "before_sha256": "70d711b46e7299ffd561ce350284020b3f9eada693684c653246e42bcafb430f",
+      "after_sha256": "938bf0425f3458b217c6b400140b2e09859bcd5cbf390c56bbb4a38f79ac52d2",
+      "lines": 123,
+      "matches_reviewed_authored_source": true,
+      "changed": true
+    },
+    {
+      "name": "Spendlik.dc.html",
+      "before_sha256": "fc6ef4d9d9c5fa3eb3f56753b86f770bb5752ea6f9f923b6df6c5009b5d8bf65",
+      "after_sha256": "fc6ef4d9d9c5fa3eb3f56753b86f770bb5752ea6f9f923b6df6c5009b5d8bf65",
+      "lines": 87,
+      "matches_reviewed_authored_source": true,
+      "changed": false
+    },
+    {
+      "name": "Logotyp.dc.html",
+      "before_sha256": "28c7fe97b8a2c9f7f86a7b9256e2cf594e1cde3b662479b10270e86e5f2767f6",
+      "after_sha256": "6fe811388b03f989021c8a2b01f19d8f62291b3f418d99364245338306b15330",
+      "lines": 141,
+      "matches_reviewed_authored_source": true,
+      "changed": true
+    },
+    {
+      "name": "canvas.json",
+      "before_sha256": "6738efc11daa2537c2111ce77a546568c5e01160537298840c4a9ae0f6c5643d",
+      "after_sha256": "9092ad724809f9760bd9210e39513e8515cbbdd6d845aa103119e14e737f0494",
+      "lines": 42,
+      "matches_reviewed_authored_source": true,
+      "changed": true
+    }
+  ],
+  "changed_sources": [
+    "Main.dc.html",
+    "Hledacek.dc.html",
+    "Poradi.dc.html",
+    "Trychtyr.dc.html",
+    "Logotyp.dc.html",
+    "canvas.json"
+  ],
+  "canvas_fix": "Propagate already-reviewed current43-line canvas; same14 files/pages/widths/annotations text/launch, larger heights and matching positions. Actual before Logotyp960 viewport/body1141/risk1038–1079."
+}

@@ -1,0 +1,514 @@
+{
+  "sha256": "14001c5e437dac6cd003e95155a4ad4b25cacbcb806b701dbf953caf97e98819",
+  "method": "All140 nonliteral lines reviewed separately; entire319620-character literal parsed and reproduced exactly; every coordinate validated, every district summarized and all nonadjacent segment pairs with overlapping bounding boxes checked for proper crossings.",
+  "perDistrict": [
+    {
+      "id": "Praha 1",
+      "rings": 1,
+      "points": 246,
+      "bbox": [
+        335.2274,
+        269.0061,
+        443.6244,
+        332.0573
+      ],
+      "latRange": [
+        50.07559170628182,
+        50.09542320427532
+      ],
+      "lonRange": [
+        14.38484050921025,
+        14.437976101716743
+      ],
+      "zeroEdges": 0,
+      "repeatedVertices": 0,
+      "properSelfCrossings": 0,
+      "candidatePairs": 6
+    },
+    {
+      "id": "Praha 2",
+      "rings": 1,
+      "points": 303,
+      "bbox": [
+        389.6376,
+        297.0881,
+        466.7444,
+        378.5249
+      ],
+      "latRange": [
+        50.06097099692793,
+        50.086591584423665
+      ],
+      "lonRange": [
+        14.41151207959868,
+        14.449309394139533
+      ],
+      "zeroEdges": 0,
+      "repeatedVertices": 0,
+      "properSelfCrossings": 0,
+      "candidatePairs": 7
+    },
+    {
+      "id": "Praha 3",
+      "rings": 1,
+      "points": 302,
+      "bbox": [
+        443.7876,
+        257.9864,
+        576.9224,
+        332.8049
+      ],
+      "latRange": [
+        50.07535651438297,
+        50.09888838889975
+      ],
+      "lonRange": [
+        14.438056101427975,
+        14.50331802271026
+      ],
+      "zeroEdges": 0,
+      "repeatedVertices": 0,
+      "properSelfCrossings": 0,
+      "candidatePairs": 1
+    },
+    {
+      "id": "Praha 4",
+      "rings": 1,
+      "points": 1119,
+      "bbox": [
+        357.726,
+        356.5262,
+        577.1568,
+        596.2082
+      ],
+      "latRange": [
+        49.99241909395438,
+        50.067893291484694
+      ],
+      "lonRange": [
+        14.395869194889457,
+        14.50343292425626
+      ],
+      "zeroEdges": 0,
+      "repeatedVertices": 0,
+      "properSelfCrossings": 0,
+      "candidatePairs": 24
+    },
+    {
+      "id": "Praha 5",
+      "rings": 1,
+      "points": 915,
+      "bbox": [
+        206.4558,
+        313.9816,
+        399.5437,
+        557.6364
+      ],
+      "latRange": [
+        50.00457309444782,
+        50.081277896342456
+      ],
+      "lonRange": [
+        14.321717403736756,
+        14.41636799344252
+      ],
+      "zeroEdges": 0,
+      "repeatedVertices": 0,
+      "properSelfCrossings": 0,
+      "candidatePairs": 6
+    },
+    {
+      "id": "Praha 6",
+      "rings": 1,
+      "points": 1308,
+      "bbox": [
+        8,
+        101.6167,
+        403.2017,
+        335.6679
+      ],
+      "latRange": [
+        50.07445581563741,
+        50.14803240103177
+      ],
+      "lonRange": [
+        14.224435499999998,
+        14.418161124224639
+      ],
+      "zeroEdges": 0,
+      "repeatedVertices": 0,
+      "properSelfCrossings": 0,
+      "candidatePairs": 11
+    },
+    {
+      "id": "Praha 7",
+      "rings": 1,
+      "points": 516,
+      "bbox": [
+        355.85,
+        158.2757,
+        489.6227,
+        279.1974
+      ],
+      "latRange": [
+        50.09221828996626,
+        50.130231387516574
+      ],
+      "lonRange": [
+        14.394949590365883,
+        14.460524206597825
+      ],
+      "zeroEdges": 0,
+      "repeatedVertices": 0,
+      "properSelfCrossings": 0,
+      "candidatePairs": 10
+    },
+    {
+      "id": "Praha 8",
+      "rings": 1,
+      "points": 1096,
+      "bbox": [
+        350.436,
+        24.1239,
+        584.5679,
+        297.9977
+      ],
+      "latRange": [
+        50.08630549348889,
+        50.172368213009086
+      ],
+      "lonRange": [
+        14.392295678377224,
+        14.50706580329927
+      ],
+      "zeroEdges": 0,
+      "repeatedVertices": 0,
+      "properSelfCrossings": 0,
+      "candidatePairs": 7
+    },
+    {
+      "id": "Praha 9",
+      "rings": 1,
+      "points": 650,
+      "bbox": [
+        520.7144,
+        154.5972,
+        638.0989,
+        297.3624
+      ],
+      "latRange": [
+        50.08650531069915,
+        50.13138729249159
+      ],
+      "lonRange": [
+        14.475765180993193,
+        14.533306394851309
+      ],
+      "zeroEdges": 0,
+      "repeatedVertices": 0,
+      "properSelfCrossings": 0,
+      "candidatePairs": 21
+    },
+    {
+      "id": "Praha 10",
+      "rings": 1,
+      "points": 943,
+      "bbox": [
+        449.5178,
+        284.5492,
+        650.5595,
+        433.8126
+      ],
+      "latRange": [
+        50.04356929733548,
+        50.090535194068174
+      ],
+      "lonRange": [
+        14.440865012857046,
+        14.539414510057327
+      ],
+      "zeroEdges": 0,
+      "repeatedVertices": 0,
+      "properSelfCrossings": 0,
+      "candidatePairs": 9
+    },
+    {
+      "id": "Praha 11",
+      "rings": 1,
+      "points": 1020,
+      "bbox": [
+        507.047,
+        427.4523,
+        732.0737,
+        597.0976
+      ],
+      "latRange": [
+        49.99213880716813,
+        50.0455715110169
+      ],
+      "lonRange": [
+        14.46906549929514,
+        14.579372306995367
+      ],
+      "zeroEdges": 0,
+      "repeatedVertices": 0,
+      "properSelfCrossings": 0,
+      "candidatePairs": 24
+    },
+    {
+      "id": "Praha 12",
+      "rings": 1,
+      "points": 562,
+      "bbox": [
+        357.7278,
+        499.1149,
+        543.7102,
+        687.7446
+      ],
+      "latRange": [
+        49.963563613742956,
+        50.023007392343104
+      ],
+      "lonRange": [
+        14.39587007723921,
+        14.487037591282757
+      ],
+      "zeroEdges": 0,
+      "repeatedVertices": 0,
+      "properSelfCrossings": 0,
+      "candidatePairs": 2
+    },
+    {
+      "id": "Praha 13",
+      "rings": 1,
+      "points": 1128,
+      "bbox": [
+        97.226,
+        365.1324,
+        275.2448,
+        607.3964
+      ],
+      "latRange": [
+        49.9888931096466,
+        50.06518531172097
+      ],
+      "lonRange": [
+        14.268173577409755,
+        14.355437380054639
+      ],
+      "zeroEdges": 0,
+      "repeatedVertices": 0,
+      "properSelfCrossings": 0,
+      "candidatePairs": 3
+    },
+    {
+      "id": "Praha 14",
+      "rings": 1,
+      "points": 663,
+      "bbox": [
+        627.632,
+        181.4867,
+        823.9328,
+        337.1689
+      ],
+      "latRange": [
+        50.07398359482985,
+        50.12293708846786
+      ],
+      "lonRange": [
+        14.528175580039033,
+        14.624401115039973
+      ],
+      "zeroEdges": 0,
+      "repeatedVertices": 0,
+      "properSelfCrossings": 0,
+      "candidatePairs": 6
+    },
+    {
+      "id": "Praha 15",
+      "rings": 1,
+      "points": 996,
+      "bbox": [
+        574.7771,
+        309.8955,
+        820.0786,
+        485.0201
+      ],
+      "latRange": [
+        50.02744620376545,
+        50.08256319383772
+      ],
+      "lonRange": [
+        14.502266408859242,
+        14.622511808134448
+      ],
+      "zeroEdges": 0,
+      "repeatedVertices": 0,
+      "properSelfCrossings": 0,
+      "candidatePairs": 15
+    },
+    {
+      "id": "Praha 16",
+      "rings": 1,
+      "points": 928,
+      "bbox": [
+        198.5371,
+        472.5462,
+        381.0239,
+        756.4287
+      ],
+      "latRange": [
+        49.9419006140879,
+        50.03137421036332
+      ],
+      "lonRange": [
+        14.317835702062553,
+        14.407289692879743
+      ],
+      "zeroEdges": 0,
+      "repeatedVertices": 0,
+      "properSelfCrossings": 0,
+      "candidatePairs": 3
+    },
+    {
+      "id": "Praha 17",
+      "rings": 1,
+      "points": 518,
+      "bbox": [
+        55.1709,
+        325.7952,
+        214.5873,
+        415.6533
+      ],
+      "latRange": [
+        50.049285598799095,
+        50.077561691998575
+      ],
+      "lonRange": [
+        14.247558406727705,
+        14.325703418759929
+      ],
+      "zeroEdges": 0,
+      "repeatedVertices": 0,
+      "properSelfCrossings": 0,
+      "candidatePairs": 3
+    },
+    {
+      "id": "Praha 18",
+      "rings": 1,
+      "points": 514,
+      "bbox": [
+        559.2157,
+        8,
+        698.1584,
+        181.92
+      ],
+      "latRange": [
+        50.12280090884949,
+        50.17743020000001
+      ],
+      "lonRange": [
+        14.494638299140092,
+        14.562747219949273
+      ],
+      "zeroEdges": 0,
+      "repeatedVertices": 0,
+      "properSelfCrossings": 0,
+      "candidatePairs": 14
+    },
+    {
+      "id": "Praha 19",
+      "rings": 1,
+      "points": 458,
+      "bbox": [
+        614.5642,
+        78.2725,
+        783.4719,
+        202.2362
+      ],
+      "latRange": [
+        50.11641540037578,
+        50.155364709375405
+      ],
+      "lonRange": [
+        14.52176981884864,
+        14.604567412125277
+      ],
+      "zeroEdges": 0,
+      "repeatedVertices": 0,
+      "properSelfCrossings": 0,
+      "candidatePairs": 1
+    },
+    {
+      "id": "Praha 20",
+      "rings": 1,
+      "points": 445,
+      "bbox": [
+        721.0464,
+        159.3201,
+        895.7043,
+        286.0141
+      ],
+      "latRange": [
+        50.09007448508602,
+        50.129903197799145
+      ],
+      "lonRange": [
+        14.573966787292363,
+        14.65958309588433
+      ],
+      "zeroEdges": 0,
+      "repeatedVertices": 0,
+      "properSelfCrossings": 0,
+      "candidatePairs": 4
+    },
+    {
+      "id": "Praha 21",
+      "rings": 1,
+      "points": 619,
+      "bbox": [
+        744.5781,
+        233.668,
+        992,
+        402.2018
+      ],
+      "latRange": [
+        50.0535195097289,
+        50.10653451118914
+      ],
+      "lonRange": [
+        14.58550189271213,
+        14.70678670000001
+      ],
+      "zeroEdges": 0,
+      "repeatedVertices": 0,
+      "properSelfCrossings": 0,
+      "candidatePairs": 3
+    },
+    {
+      "id": "Praha 22",
+      "rings": 1,
+      "points": 866,
+      "bbox": [
+        710.9502,
+        372.3111,
+        916.0103,
+        589.7919
+      ],
+      "latRange": [
+        49.994441087497506,
+        50.062926384335555
+      ],
+      "lonRange": [
+        14.56901768751041,
+        14.669536981521702
+      ],
+      "zeroEdges": 0,
+      "repeatedVertices": 0,
+      "properSelfCrossings": 0,
+      "candidatePairs": 8
+    }
+  ],
+  "points": 16115,
+  "limitations": "Generated geometry is reviewed as data; not manual reading of each numeric token. Collinear contacts, authoritative boundary freshness, interdistrict topology, exact-edge policy and building accuracy require S16 acceptance. Source unchanged."
+}

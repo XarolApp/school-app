@@ -2013,3 +2013,13 @@ Evidence and exact ownership boundaries: [integrated review](reports/deployment-
 - [x] Three certain bug/copy repairs verified locally: private-option wrapper masking, history 33 of 33 conditional denominator, and enrollment retention copy aligned with D1/D4/current Legal. Historical task overview is qualified without changing original figures or claiming a current credential failure. No health-consent/weights/data-policy implementation was smuggled into these edits.
 
 201 tests passed before the narrow JSX/copy repairs;32 peer-matching checks and 4 capture checks pass, final lint/build succeed with existing warnings. Current inventory 795 full/2 pending/108 binary/212 generated/2 removed. The logo export, geometry literals, asset/ignored-corpus and real device/service/controller/migration acceptance still require work. Full review and beta readiness remain incomplete.
+
+
+## S16/C44 — complete generated structure and certain prototype fixes, 12 October
+
+- Complete geometry checks cover all 22 districts and 16,115 points; all nonliteral code is read. [Evidence](reports/deployment-review-2026-10-07/generated-final-source-review-2026-10-12.json). Generated numeric tokens were structurally validated, not manually read one by one.
+- [ ] S16: accept authoritative source/date, interdistrict/collinear topology, exact-edge semantics and building accuracy before changing geometry.
+- [x] Historical logo export now matches all 15 reviewed authored sources. Obsolete copy/layout and the contradictory avatar sentence are corrected; all 14 artboards fit in the actual local renderer. Editor/styles/SVG are preserved outside document data.
+- [ ] C44, conditional reuse: accept assets/licences, host capabilities, indirect operations and browsers. Complete generated AST/CSS traversal and 26 direct critical-site contexts are structural checks, not manual vendor implementation approval or current product adoption.
+
+Source accounting: 797 current full/accounted, zero pending, 109 binary assets, 219 generated/audit artifacts and two removed. Asset content, ignored corpus and real device/service/controller/schema/payment acceptance remain open; the review and beta release are not complete.
