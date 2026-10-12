@@ -28,3 +28,16 @@ test('conservatory obory count as art', () => {
   const [m] = scoreSchools({ oblasti: ['umeni'] }, [school(4, 'Tanec')]);
   assert.strictEqual(m.breakdown.oblasti, 1);
 });
+
+test('disability answer: special schools lead for a pupil who needs them, sink for everyone else', () => {
+  const special = (id, types) => ({ ...school(id, 'Informační technologie'), school_extracted_details: { urceno_pro_postizeni: types } });
+  const schools = [school(1, 'Informační technologie'), special(2, ['sluchove']), special(3, ['zrakove']), special(4, ['kombinovane'])];
+  const order = (answers) => scoreSchools({ oblasti: ['it'], ...answers }, schools).map((m) => m.school_id);
+  for (const answers of [{}, { postizeni: 'ne' }]) {
+    assert.strictEqual(order(answers)[0], 1, 'an ordinary school beats every special school');
+  }
+  assert.deepStrictEqual(order({ postizeni: 'ano', postizeni_typ: ['sluchove'] }), [2, 4, 1, 3]);
+  // "ano" without a type gives no basis to reorder.
+  const flat = scoreSchools({ oblasti: ['it'], postizeni: 'ano' }, schools);
+  assert.ok(flat.every((m) => m.score === flat[0].score));
+});

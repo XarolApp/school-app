@@ -85,3 +85,9 @@ test('reserve does not exist without points, and unanswered never lowers confide
   const noCutoff = rankSchools([{ ...SCHOOLS[2], admission_cutoff: null, school_programs: [prog('79-41-K/41')] }], { studyType: 'gymnazium', points: '65', reserve: 'jistota' })[0];
   assert.equal(noCutoff.parts.reserve, undefined);
 });
+
+test('schools only for pupils with a disability rank after every ordinary school', () => {
+  const special = { ...SCHOOLS[1], id: 99, school_extracted_details: { urceno_pro_postizeni: ['sluchove'] } };
+  const r = rankSchools([special, ...SCHOOLS], { focus: ['it'], studyType: 'gymnazium', future: 'vysoka' });
+  assert.equal(r.at(-1).school.id, 99);
+});

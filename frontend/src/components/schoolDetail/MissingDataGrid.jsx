@@ -10,6 +10,7 @@ import {
   Presentation,
   Image,
   Video,
+  Accessibility,
 } from 'lucide-react';
 import { numCz } from '../../lib/comparisonRows';
 
@@ -74,6 +75,8 @@ function MissingDataGrid({ zrizovatel, extracted }) {
     { title: 'Fotky školy', body: EMPTY_INFO, Icon: Image },
     { title: 'Video a prohlídka', body: EMPTY_INFO, Icon: Video },
   ];
+  // Most schools say nothing here, so it only appears when filled — never in "Zatím nemáme".
+  if (e.specialni_potreby_detail) cards.splice(1, 0, { title: 'Žáci se zdravotním postižením', body: e.specialni_potreby_detail, Icon: Accessibility });
   const filledCards = cards.filter((card) => card.body !== EMPTY_INFO);
   const emptyTitles = cards.filter((card) => card.body === EMPTY_INFO).map((card) => card.title);
   const lowerFirst = (title) => title.charAt(0).toLocaleLowerCase('cs-CZ') + title.slice(1);

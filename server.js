@@ -2719,7 +2719,8 @@ app.post(
       if (usageError) console.error('AI run attribution could not be saved:', usageError.code);
     }
 
-    if(req.profile?.subscription_status==='beta') {
+    // A ranking banded by the disability answer would reveal health data (art. 9).
+    if(req.profile?.subscription_status==='beta' && validation.answers.postizeni!=='ano') {
       const notice=await supabase.from('beta_profile').select('*').eq('user_id',req.user.id).single();
       if(!notice.error && trackingOn(notice.data)) {
         const order=rankingPayload(fullRanking);
@@ -2977,6 +2978,41 @@ app.put('/api/questionnaire/runs/:id/default', requireAuth, async (req, res) => 
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+});
+
+// Withdrawal of the art. 9 consent given by answering postizeni = 'ano': the
+// answer leaves every saved run and the stored shortlist is re-scored without it
+// (search percentages are scored live from answers, so they follow at once).
+app.post('/api/questionnaire/health-consent/withdraw', requireAuth, async (req, res) => {
+  const { data: runs, error } = await supabase
+    .from('questionnaire_runs')
+    .select('id, answers, matches')
+    .eq('user_id', req.user.id);
+  if (error) return res.status(500).json({ error: error.message });
+  const affected = (runs || []).filter((run) => run.answers && ('postizeni' in run.answers || 'postizeni_typ' in run.answers));
+  if (!affected.length) return res.json({ updated: 0 });
+
+  let schools;
+  try {
+    schools = await getScoringCatalogue();
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+  for (const run of affected) {
+    const { postizeni, postizeni_typ, ...answers } = run.answers;
+    const oldReasons = new Map((run.matches || []).map((m) => [m.school_id, m.reason]));
+    const matches = scoreSchools(answers, schools).slice(0, REASON_COUNT).map((m) => ({
+      school_id: m.school_id,
+      score: m.score,
+      reason: oldReasons.get(m.school_id) || '',
+      signals: m.signals,
+      breakdown: m.breakdown,
+    }));
+    const { error: updateError } = await supabase.from('questionnaire_runs')
+      .update({ answers, matches }).eq('id', run.id).eq('user_id', req.user.id);
+    if (updateError) return res.status(500).json({ error: 'Údaj se nepodařilo smazat. Zkus to prosím znovu.' });
+  }
+  res.json({ updated: affected.length });
 });
 
 app.patch('/api/questionnaire/runs/:id/archive', requireAuth, async (req, res) => {

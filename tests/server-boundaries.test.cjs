@@ -1190,3 +1190,26 @@ test('authoritative token rejection still answers 401 without recording events',
   assert.equal(h.queries.length, 0);
   assert.equal(h.rpcCalls.length, 0);
 });
+
+test('withdrawing health consent strips the disability answer from only the caller’s runs and re-scores', async () => {
+  const runs = [
+    { id: 1, answers: { typ: 'gymnazium', postizeni: 'ano', postizeni_typ: ['sluchove'] }, matches: [{ school_id: 11, reason: 'Starý důvod.' }] },
+    { id: 2, answers: { typ: 'odborna' }, matches: [] },
+  ];
+  const h = harness({
+    result: (query) => {
+      if (query.table === 'questionnaire_runs') return query.calls.some((c) => c[0] === 'update') ? { data: null, error: null } : { data: runs, error: null };
+      if (query.table === 'schools') return { data: [{ id: 11, name: 'Škola 11', programs: 'Gymnázium' }], error: null };
+      return { data: null, error: null };
+    },
+  });
+  const response = await h.call('post', '/api/questionnaire/health-consent/withdraw');
+  assert.equal(response.statusCode, 200);
+  assert.equal(response.body.updated, 1);
+  const updates = h.queries.filter((q) => q.table === 'questionnaire_runs' && q.calls.some((c) => c[0] === 'update'));
+  assert.equal(updates.length, 1);
+  const payload = updates[0].calls.find((c) => c[0] === 'update')[1];
+  assert.equal(JSON.stringify(payload.answers), JSON.stringify({ typ: 'gymnazium' }));
+  assert.equal(payload.matches[0].reason, 'Starý důvod.');
+  assert.ok(updates[0].calls.some((c) => c[0] === 'eq' && c[1] === 'user_id' && c[2] === 'user-test'));
+});

@@ -23,7 +23,7 @@ export function Privacy() {
   const gender = useGender();
   const g = (masculine, feminine) => (gender === 'f' ? feminine : masculine);
   return (
-    <LegalPage title="Zásady ochrany osobních údajů" updated="10. 10. 2026">
+    <LegalPage title="Zásady ochrany osobních údajů" updated="12. 10. 2026">
       <h2>1. Kdo je správce</h2>
       <p>
         Správcem osobních údajů je Václav Kadlec, Na Lysinách 34, 147 00 Praha, e-mail:
@@ -49,6 +49,17 @@ export function Privacy() {
           dotazníku, včetně volné poznámky, a jaké školy ti vyšly. Účel: doporučit ti školy a ukázat
           je znovu. Základ: plnění smlouvy. Před vytvořením účtu zůstávají odpovědi jen v tvém
           prohlížeči.
+        </li>
+        <li>
+          <strong>Údaj o zdravotním postižení (nepovinný):</strong> pokud v dotazníku uvedeš, že
+          hledáš školu přizpůsobenou žákům se zdravotním postižením, a jakým (např. sluchovým nebo
+          zrakovým). Jde o údaj o zdraví, tedy zvláštní kategorii osobních údajů. Účel: dát na první
+          místa školy, které jsou pro tebe určené. Základ: tvůj výslovný souhlas (čl. 9 odst. 2
+          písm. a) GDPR), který dáváš výběrem této odpovědi. Údaj neposíláme jazykovému modelu
+          ani nikomu dalšímu a nezahrnujeme ho do souhrnů z beta testování. Souhlas můžeš kdykoli
+          odvolat v Nastavení; údaj pak smažeme ze všech tvých dotazníků a školy přepočítáme bez
+          něj. Odvolání nemá vliv na zpracování před ním. Je-li ti méně než 15 let, vyplň tuto
+          otázku s rodičem nebo zákonným zástupcem.
         </li>
         <li>
           <strong>Tvoje práce s aplikací:</strong> oblíbené školy, pořadí přihlášek, poznámky,

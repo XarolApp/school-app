@@ -1,0 +1,1698 @@
+{
+  "model": "openai/gpt-6-luna",
+  "dryRun": true,
+  "results": [
+    {
+      "id": 4,
+      "name": "Střední průmyslová škola strojnická, škola hlavního města Prahy, Praha 1, Betlémská 4/287",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 6,
+      "name": "Anglicko-české gymnázium AMAZON s. r. o.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 7,
+      "name": "Gymnázium FOSTRA International s. r. o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 8,
+      "name": "Obchodní akademie Praha, s. r. o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 9,
+      "name": "MICHAEL – Střední škola, Gymnázium a Vyšší odborná škola, s. r. o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 10,
+      "name": "Střední škola mediální grafiky a tisku, s. r. o.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 11,
+      "name": "Střední odborná škola automobilní, informatiky a Gymnázium",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 12,
+      "name": "Střední odborná škola uměleckořemeslná s. r. o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 13,
+      "name": "Škola mezinárodních a veřejných vztahů Praha, Střední odborná škola, Gymnázium, s. r. o.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 14,
+      "name": "Akademie řemesel Praha – Střední škola technická",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 15,
+      "name": "Akademie systémové gastronomie – střední škola s. r. o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 16,
+      "name": "ART ECON – Gymnázium a Střední odborná škola Praha, s. r. o.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 17,
+      "name": "EDUCAnet – gymnázium, střední odborná škola a základní škola Praha, s. r. o.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 18,
+      "name": "Obchodní akademie, Praha 10, Heroldovy sady 1",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 19,
+      "name": "Střední průmyslová škola stavební Josefa Gočára, Praha 4, Družstevní ochoz 3",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 20,
+      "name": "Střední škola dostihového sportu a jezdectví",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 21,
+      "name": "Střední škola podnikání a gastronomie",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 22,
+      "name": "GAELY – střední škola, s. r. o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 23,
+      "name": "Gymnázium a Sportovní gymnázium se zaměřením na esporty, s. r. o.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 24,
+      "name": "Soukromá střední odborná škola START, s. r. o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 25,
+      "name": "Soukromá střední škola výpočetní techniky s. r. o.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": {
+        "stredni_skola_urcena": false,
+        "typy": [],
+        "citace": "",
+        "quoteOk": false
+      }
+    },
+    {
+      "id": 26,
+      "name": "Střední průmyslová škola zeměměřická a Geografické gymnázium Praha",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 27,
+      "name": "Střední škola knižní kultury s. r. o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 28,
+      "name": "1. Slovanské gymnázium a jazyková škola s právem státní jazykové zkoušky",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 29,
+      "name": "Bezpečnostně právní akademie, s. r. o., střední škola",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 30,
+      "name": "Církevní střední škola Jana Boska",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 31,
+      "name": "EDUSO – Střední odborná škola multimediální a reklamní tvorby, s. r. o.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 32,
+      "name": "Evropská akademie vzdělávání, střední odborné učiliště a střední odborná škola s. r. o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 33,
+      "name": "Gymnázium bezpečnostně právní, s. r. o.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 34,
+      "name": "Gymnázium bratří Čapků a První české soukromé střední odborné učiliště s. r. o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 35,
+      "name": "Gymnázium, Praha 8, U Libeňského zámku 1",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 36,
+      "name": "Hotelová škola, Praha 10, Vršovická 43",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 37,
+      "name": "Křesťanská střední škola, základní škola a mateřská škola Elijáš, Praha 4-Michle",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 38,
+      "name": "Obchodní akademie, Praha 10, Heroldovy sady 1",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 39,
+      "name": "ScioŠkola Žižkov – střední škola, s. r. o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 40,
+      "name": "Střední škola a vyšší odborná škola umělecká a řemeslná",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 43,
+      "name": "Vyšší odborná škola informačních studií a Střední škola elektrotechniky, multimédií a informatiky",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 45,
+      "name": "Obchodní akademie Hovorčovická",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 48,
+      "name": "Gymnázium, Praha 10, Voděradská 2",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 49,
+      "name": "Obchodní akademie Dušní",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 50,
+      "name": "School for Future – gymnázium s. r. o.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 51,
+      "name": "Soukromá střední škola a základní škola (1. KŠPA) Praha s. r. o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 52,
+      "name": "Gymnázium Čakovice, Praha 9, nám. 25. března 100",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 53,
+      "name": "Střední odborná škola civilního letectví, Praha-Ruzyně",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 54,
+      "name": "Střední odborné učiliště kadeřnické, Praha 8, Karlínské náměstí 8/225",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 56,
+      "name": "Střední průmyslová škola elektrotechnická, Praha 2, Ječná 30",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 57,
+      "name": "Střední škola elektrotechniky a strojírenství",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 58,
+      "name": "Střední škola obchodní",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 59,
+      "name": "Střední škola Podnikatelská akademie, s. r. o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 60,
+      "name": "Vyšší odborná škola zdravotnická a Střední zdravotnická škola a gymnázium, Praha 1, Alšovo nábřeží 6",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 61,
+      "name": "Dívčí katolická střední škola",
+      "nameHit": true,
+      "urceno": [
+        "mentalni",
+        "telesne",
+        "kombinovane"
+      ],
+      "detail": "Škola je určena mimo jiné dívkám s mentálním či tělesným postižením a nabízí obor Praktická škola dvouletá. Škola vzdělává také dívky se sociálním znevýhodněním.",
+      "verify": {
+        "stredni_skola_urcena": true,
+        "typy": [
+          "mentalni",
+          "telesne",
+          "kombinovane"
+        ],
+        "citace": "Určena je pro mentálně či fyzicky handicapované a sociálně ohrožené dívky.",
+        "quoteOk": true
+      }
+    },
+    {
+      "id": 62,
+      "name": "Heřmánek Praha, základní škola, gymnázium a střední pedagogická škola, školská právnická osoba",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 63,
+      "name": "Střední škola designu a umění, knižní kultury a ekonomiky Náhorní",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 65,
+      "name": "Pražská konzervatoř, Praha 1, Na Rejdišti 1",
+      "nameHit": false,
+      "urceno": null,
+      "detail": "Vstup do zahrad není bezbariérový.",
+      "verify": {
+        "stredni_skola_urcena": false,
+        "typy": [],
+        "citace": "82-44-P/01 Hudba (Hra na klavír)",
+        "quoteOk": true
+      }
+    },
+    {
+      "id": 66,
+      "name": "Střední průmyslová škola sdělovací techniky, Praha 1, Panská 3",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 67,
+      "name": "Vyšší odborná škola grafická a Střední průmyslová škola grafická, Praha 1, Hellichova 22",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 68,
+      "name": "Gymnázium Jana Nerudy, škola hlavního města Prahy, Praha 1, Hellichova 3",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 71,
+      "name": "Vyšší odborná škola stavební a Střední průmyslová škola stavební, Praha 1, Dušní 17",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 72,
+      "name": "Vyšší odborná škola textilních řemesel a Střední umělecká škola textilních řemesel, Praha 1, U Půjčovny 9",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 73,
+      "name": "GYMNÁZIUM JANA PALACHA PRAHA 1, s.r.o.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 74,
+      "name": "Vyšší odborná škola a Střední průmyslová škola dopravní, Praha 1, Masná 18",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 75,
+      "name": "Konzervatoř a Vyšší odborná škola Jaroslava Ježka",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 76,
+      "name": "Masarykova střední škola chemická, Praha 1, Křemencova 12",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 77,
+      "name": "Gymnázium prof. Jana Patočky, Praha 1, Jindřišská 36",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 78,
+      "name": "Akademické gymnázium a Jazyková škola s právem státní jazykové zkoušky, školy hlavního města Prahy",
+      "nameHit": false,
+      "urceno": null,
+      "detail": "Budova školy je bezbariérově přístupná.",
+      "verify": {
+        "stredni_skola_urcena": false,
+        "typy": [],
+        "citace": "79-41-K/41 Gymnázium (všeobecné)",
+        "quoteOk": true
+      }
+    },
+    {
+      "id": 79,
+      "name": "Českoslovanská akademie obchodní Dr. Edvarda Beneše, střední odborná škola, Praha 2, Resslova 8",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 81,
+      "name": "Obchodní akademie, ŠKOLA 2000, s.r.o.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 82,
+      "name": "Gymnázium Duhovka s.r.o.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 83,
+      "name": "Českoslovanská akademie obchodní, střední odborná škola, Praha 2, Resslova 5",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 84,
+      "name": "Střední škola ekonomická se sportovním zaměřením, s.r.o.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 85,
+      "name": "Střední průmyslová škola potravinářských technologií, Střední odborná škola přírodovědná a veterinární a Gymnázium, Praha 2, Podskalská 10, příspěvková organizace",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 86,
+      "name": "Střední odborná škola sociální svaté Zdislavy",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 87,
+      "name": "Gymnázium Karla Sladkovského, Praha 3, Sladkovského náměstí 8",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 88,
+      "name": "Obchodní akademie, Praha 3, Kubelíkova 37",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 89,
+      "name": "Vyšší odborná škola uměleckoprůmyslová a Střední uměleckoprůmyslová škola, Praha 3, Žižkovo náměstí 1",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 90,
+      "name": "Vyšší odborná škola a Střední umělecká škola Václava Hollara, Praha 3, Hollarovo náměstí 2",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 91,
+      "name": "Gymnázium, Praha 4, Písnická 760",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 92,
+      "name": "Gymnázium Elišky Krásnohorské, Praha 4 - Michle, Ohradní 55",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 93,
+      "name": "Konzervatoř Duncan centre, Praha 4, Branická 41",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 94,
+      "name": "Gymnázium, Praha 4, Postupická 3150",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 96,
+      "name": "Gymnázium Evolution, s.r.o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 97,
+      "name": "Gymnázium Opatov, Praha 4, Konstantinova 1500",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 98,
+      "name": "Střední škola gastronomická a hotelová s.r.o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 99,
+      "name": "Střední odborné učiliště, Praha 4, Ohradní 57",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 100,
+      "name": "Klasické gymnázium Modřany a základní škola, s.r.o.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 101,
+      "name": "Střední škola managementu a služeb s.r.o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 102,
+      "name": "Metropolitní odborná umělecká střední škola Praha 4 s.r.o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 103,
+      "name": "Škola Kavčí hory - Mateřská škola, Základní škola a Střední odborná škola služeb, Praha 4, K Sídlišti 840",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 104,
+      "name": "Evangelická akademie - pedagogické lyceum a střední odborná škola",
+      "nameHit": false,
+      "urceno": null,
+      "detail": "Škola má bezbariérové pouze přízemí.",
+      "verify": {
+        "stredni_skola_urcena": false,
+        "typy": [],
+        "citace": "Škola má bezbariérové pouze přízemí.",
+        "quoteOk": true
+      }
+    },
+    {
+      "id": 105,
+      "name": "Soukromé střední odborné učiliště ATHOZ, spol. s r.o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 106,
+      "name": "Gymnázium, Praha 5, Na Zatlance 11",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 107,
+      "name": "Gymnázium Oty Pavla, Praha 5, Loučanská 520",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 108,
+      "name": "Gymnázium Christiana Dopplera",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 110,
+      "name": "Smíchovská střední škola, příspěvková organizace",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 112,
+      "name": "Střední odborné učiliště, Praha - Radotín",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 116,
+      "name": "Střední průmyslová škola dopravní, a.s.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 117,
+      "name": "Gymnázium, střední odborná škola a Pražská taneční konzervatoř, s.r.o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 118,
+      "name": "Střední odborná škola, Praha 5, Drtinova 3/498",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 119,
+      "name": "Gymnázium, Praha 6, Arabská 14",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 120,
+      "name": "Gymnázium Jana Keplera, Praha 6, Parléřova 2",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 121,
+      "name": "Obchodní akademie a Gymnázium Bubeneč",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 122,
+      "name": "Gymnázium, Praha 6, Nad Alejí 1952",
+      "nameHit": false,
+      "urceno": null,
+      "detail": "Studentům v rekonvalescenci po úrazech škola půjčuje klíč od výtahu; studentům s fyzickým hendikepem jej půjčuje dlouhodobě.",
+      "verify": {
+        "stredni_skola_urcena": false,
+        "typy": [],
+        "citace": "Klíče půjčujeme pouze studentům v rekonvalescenci po úrazech, dlouhodobě zapůjčujeme studentům s fyzickým hendikepem.",
+        "quoteOk": true
+      }
+    },
+    {
+      "id": 124,
+      "name": "Střední škola kosmetiky a hotelnictví BEAN, s.r.o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 125,
+      "name": "Vyšší odborná škola pedagogická a sociální, Střední odborná škola pedagogická a Gymnázium, Praha 6, Evropská 33",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 126,
+      "name": "Vyšší odborná škola oděvního návrhářství a Střední průmyslová škola oděvní, Praha 7, Jablonského 3",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 128,
+      "name": "Karlínské gymnázium, Praha 8, Pernerova 25",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 129,
+      "name": "Karlínská obchodní akademie",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 131,
+      "name": "Střední odborná škola sociální, o.p.s.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 132,
+      "name": "PORG - gymnázium, základní škola a mateřská škola, o.p.s.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 133,
+      "name": "Královská střední škola, s.r.o.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 134,
+      "name": "Soukromá střední škola gastronomie s.r.o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 135,
+      "name": "TRIVIS - Střední škola veřejnoprávní a Vyšší odborná škola prevence kriminality a krizového řízení Praha, s.r.o.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 137,
+      "name": "Gymnázium, Praha 9, Českolipská 373",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 138,
+      "name": "SOUKROMÁ STŘEDNÍ UMĚLECKÁ ŠKOLA DESIGNU, s.r.o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 140,
+      "name": "Gymnázium, Praha 9, Litoměřická 726",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 141,
+      "name": "Střední odborná škola Jarov",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 142,
+      "name": "Střední škola hotelnictví a gastronomie SČMSD Praha, s.r.o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 143,
+      "name": "Soukromá střední odborná škola a Soukromé střední odborné učiliště BEAN, s.r.o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 144,
+      "name": "Gymnázium, Praha 9, Špitálská 2",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 145,
+      "name": "Euroškola Praha střední odborná škola s.r.o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 146,
+      "name": "Střední odborná škola podnikatelská PROFIT, spol. s r.o.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 147,
+      "name": "Střední odborná škola a Střední odborné učiliště, Praha - Čakovice",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 149,
+      "name": "Střední škola ARCUS, s.r.o.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 151,
+      "name": "Střední průmyslová škola elektrotechnická a gymnázium V Úžlabině",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 152,
+      "name": "Pražské humanitní gymnázium, školská právnická osoba",
+      "nameHit": false,
+      "urceno": null,
+      "detail": "Běžné gymnázium. V létě 2026 se má rekonstruovat jedno patro a vybudovat nové prostory, které mají být bezbariérové.",
+      "verify": {
+        "stredni_skola_urcena": false,
+        "typy": [],
+        "citace": "Obory střední školy: 79-41-K/41 Gymnázium (Vzdělání pro 3.tisíciletí)",
+        "quoteOk": false
+      }
+    },
+    {
+      "id": 153,
+      "name": "Střední průmyslová škola a Gymnázium Na Třebešíně",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 154,
+      "name": "Střední škola gastronomie",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 155,
+      "name": "Gymnázium, Praha 10, Omská 1300",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 156,
+      "name": "Futurum - Základní škola, Střední škola a Gymnázium, s.r.o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 157,
+      "name": "Církevní střední zdravotnická škola Jana Pavla II.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 158,
+      "name": "Vyšší odborná škola zdravotnická a Střední zdravotnická škola, Praha 4, 5. května 51",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 159,
+      "name": "Střední zdravotnická škola",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 160,
+      "name": "Vyšší odborná škola a Střední průmyslová škola elektrotechnická Františka Křižíka, Praha 1, Na Příkopě 16",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 161,
+      "name": "Základní škola a Střední škola Karla Herforta, Praha 1, Josefská 4",
+      "nameHit": true,
+      "urceno": [
+        "mentalni"
+      ],
+      "detail": "Střední škola nabízí obor Praktická škola dvouletá pro žáky s různou mírou zdravotního postižení, zejména s mentálním postižením.",
+      "verify": {
+        "stredni_skola_urcena": true,
+        "typy": [
+          "mentalni"
+        ],
+        "citace": "Naše střední škola nabízí studium oboru Praktická škola dvouletá, které umožňuje získat střední vzdělání žákům s různou mírou zdravotního postižení (mentální retardace).",
+        "quoteOk": true
+      }
+    },
+    {
+      "id": 162,
+      "name": "Konzervatoř a střední škola Jana Deyla, státní příspěvková organizace",
+      "nameHit": false,
+      "urceno": [
+        "zrakove"
+      ],
+      "detail": "Škola se specializuje na výuku žáků se zrakovým postižením a nabízí jim individuální speciální výukové plány; její budova není bezbariérová. Žáci mají k dispozici domov mládeže s vychovateli, kteří mají zkušenosti s žáky se speciálními potřebami, zejména se zrakovým postižením.",
+      "verify": {
+        "stredni_skola_urcena": true,
+        "typy": [
+          "zrakove"
+        ],
+        "citace": "Současné zaměření a působení Konzervatoře a střední školy Jana Deyla navazuje na činnost někdejšího Deylova ústavu, založeného v roce 1910 významným očním lékařem a vědcem MUDr. Janem Deylem, a pokračuje ve své specializaci na výuku zrakově postižených",
+        "quoteOk": true
+      }
+    },
+    {
+      "id": 163,
+      "name": "Škola Jaroslava Ježka, Mateřská škola, základní škola, praktická škola a základní umělecká škola pro zrakově postižené, Praha 1, Loretánská 19 a 17",
+      "nameHit": true,
+      "urceno": [
+        "zrakove",
+        "mentalni"
+      ],
+      "detail": "Střední škola je určena žákům se zrakovým postižením a nabízí Praktickou školu dvouletou. Zaměřuje se také na hudební vzdělávání, samostatnou práci s elektronickými pomůckami pro zrakově postižené a rozvoj manuální zručnosti.",
+      "verify": {
+        "stredni_skola_urcena": true,
+        "typy": [
+          "zrakove"
+        ],
+        "citace": "Praktická škola dvouletá (pro zrakově postižené)",
+        "quoteOk": true
+      }
+    },
+    {
+      "id": 164,
+      "name": "Základní škola a Střední škola, Praha 2, Vinohradská 54",
+      "nameHit": true,
+      "urceno": [
+        "mentalni"
+      ],
+      "detail": "Střední škola nabízí obor Praktická škola dvouletá pro žáky s různou mírou zdravotního postižení, konkrétně uvádí mentální postižení. Pro přijetí je potřeba doporučení školského poradenského zařízení.",
+      "verify": {
+        "stredni_skola_urcena": true,
+        "typy": [
+          "mentalni"
+        ],
+        "citace": "střední škola nabízí studium oboru Praktická škola dvouletá, které umožňuje získat střední vzdělání žákům s různou mírou zdravotního postižení (mentální retardace).",
+        "quoteOk": false
+      }
+    },
+    {
+      "id": 165,
+      "name": "Gymnázium, Střední odborná škola, Základní škola a Mateřská škola pro sluchově postižené, Praha 2, Ječná 27",
+      "nameHit": true,
+      "urceno": [
+        "sluchove"
+      ],
+      "detail": "Střední škola je určena žákům se sluchovým postižením; výuka probíhá auditivně orální metodou, tedy mluvenou formou jazyka. Žáci střední školy mohou na internátě využít podporu asistenta pedagoga při přípravě na vyučování.",
+      "verify": {
+        "stredni_skola_urcena": true,
+        "typy": [
+          "sluchove"
+        ],
+        "citace": "# Střední škola pro sluchově postižené",
+        "quoteOk": true
+      }
+    },
+    {
+      "id": 166,
+      "name": "Odborné učiliště pro žáky s více vadami, s.r.o.",
+      "nameHit": true,
+      "urceno": [
+        "kombinovane"
+      ],
+      "detail": "Škola je určena uchazečům se speciálními vzdělávacími potřebami a kombinací vad; k přijetí je potřeba doporučení školského poradenského zařízení. Nabízí obory keramická výroba, textilní a oděvní výroba a zahradnické práce.",
+      "verify": {
+        "stredni_skola_urcena": true,
+        "typy": [
+          "kombinovane"
+        ],
+        "citace": "Ke studiu jsou přijímáni uchazeči se speciálními vzdělávacími potřebami a kombinací vad s doporučením školského poradenského zařízení.",
+        "quoteOk": true
+      }
+    },
+    {
+      "id": 167,
+      "name": "Odborné učiliště Vyšehrad",
+      "nameHit": true,
+      "urceno": [
+        "mentalni"
+      ],
+      "detail": "Škola nabízí obory i praktickou školu žákům s lehkým mentálním postižením; k přihlášce je nutné doporučení z SPC nebo PPP.",
+      "verify": {
+        "stredni_skola_urcena": true,
+        "typy": [
+          "mentalni"
+        ],
+        "citace": "SOUČÁSTÍ PŘIHLÁŠKY MUSÍ BÝT DOPORUČENÍ Z SPC NEBO PPP, ŽE JDE O ŽÁKA/ŽÁKYNI S LEHKÝM MENTÁLNÍM POSTIŽENÍM",
+        "quoteOk": true
+      }
+    },
+    {
+      "id": 168,
+      "name": "Základní škola a Střední škola, Praha 4, Kupeckého 576",
+      "nameHit": true,
+      "urceno": [
+        "mentalni"
+      ],
+      "detail": "Střední škola nabízí obor Praktická škola dvouletá.",
+      "verify": {
+        "stredni_skola_urcena": false,
+        "typy": [],
+        "citace": "",
+        "quoteOk": false
+      }
+    },
+    {
+      "id": 169,
+      "name": "Střední škola a Mateřská škola Aloyse Klara",
+      "nameHit": false,
+      "urceno": [
+        "kombinovane"
+      ],
+      "detail": "Střední škola je určena absolventům základních škol se speciálními vzdělávacími potřebami; nabízí dvouleté, tříleté a čtyřleté obory. Pro přijetí je potřeba doporučení PPP nebo SPC s podpůrným opatřením alespoň 2. stupně.",
+      "verify": {
+        "stredni_skola_urcena": true,
+        "typy": [
+          "kombinovane"
+        ],
+        "citace": "Střední škola připravuje absolventy základních škol, kteří mají speciální vzdělávací potřeby a základních škol praktických ve dvouletých, tříletých a čtyřletých oborech vzdělání.",
+        "quoteOk": true
+      }
+    },
+    {
+      "id": 170,
+      "name": "Střední škola, Základní škola a Mateřská škola pro sluchově postižené, Praha 5, Výmolova 169",
+      "nameHit": true,
+      "urceno": [
+        "sluchove"
+      ],
+      "detail": "Střední škola je určena uchazečům se sluchovým postižením a nabízí obor Asistent zubního technika.",
+      "verify": {
+        "stredni_skola_urcena": true,
+        "typy": [
+          "sluchove"
+        ],
+        "citace": "Uchazeč se sluchovým postižením",
+        "quoteOk": true
+      }
+    },
+    {
+      "id": 171,
+      "name": "Základní škola speciální a Praktická škola, Praha 6, Rooseveltova 8",
+      "nameHit": true,
+      "urceno": [
+        "mentalni",
+        "autismus",
+        "kombinovane"
+      ],
+      "detail": "Střední škola nabízí obor Praktická škola dvouletá a je určena žákům se speciálními vzdělávacími potřebami; text uvádí také žáky se středně těžkým mentálním postižením a autismem.",
+      "verify": {
+        "stredni_skola_urcena": true,
+        "typy": [
+          "mentalni",
+          "autismus",
+          "kombinovane"
+        ],
+        "citace": "Přijímá žáky s mentálním postižením v rozsahu středně těžkého stupně mentální retardace, s diagnózou autismus, s poruchami psychomotorického vývoje a dalšími specifickými poruchami učení.",
+        "quoteOk": true
+      }
+    },
+    {
+      "id": 172,
+      "name": "Základní škola a střední škola waldorfská",
+      "nameHit": true,
+      "urceno": [
+        "kombinovane",
+        "mentalni"
+      ],
+      "detail": "Střední škola je určena žákům s více druhy postižení, s mentálním postižením.",
+      "verify": {
+        "stredni_skola_urcena": true,
+        "typy": [
+          "kombinovane"
+        ],
+        "citace": "78-62-C/02 Praktická škola dvouletá",
+        "quoteOk": true
+      }
+    },
+    {
+      "id": 173,
+      "name": "Střední škola, Základní škola a Mateřská škola, Praha 10, Chotouňská 476",
+      "nameHit": true,
+      "urceno": [
+        "mentalni"
+      ],
+      "detail": "Střední škola nabízí praktickou školu jednoletou pro žáky se speciálními vzdělávacími potřebami.",
+      "verify": {
+        "stredni_skola_urcena": false,
+        "typy": [],
+        "citace": "78-62-C/01 Praktická škola jednoletá",
+        "quoteOk": true
+      }
+    },
+    {
+      "id": 174,
+      "name": "Základní škola a Střední škola, Praha 10, Vachkova 941",
+      "nameHit": true,
+      "urceno": [
+        "mentalni",
+        "kombinovane"
+      ],
+      "detail": "Střední škola nabízí praktickou školu jednoletou a dvouletou pro žáky se středně těžkým mentálním postižením, případně s lehkým mentálním postižením v kombinaci s dalším zdravotním postižením. Žáci si osvojují základní pracovní dovednosti a návyky.",
+      "verify": {
+        "stredni_skola_urcena": true,
+        "typy": [
+          "mentalni",
+          "kombinovane"
+        ],
+        "citace": "Obor je určen žákům se středně těžkým mentálním postižením, případně s lehkým mentálním postižením v kombinaci s dalším zdravotním postižením.",
+        "quoteOk": true
+      }
+    },
+    {
+      "id": 175,
+      "name": "Jedličkův ústav a Mateřská škola a Základní škola a Střední škola",
+      "nameHit": true,
+      "urceno": [
+        "telesne",
+        "kombinovane"
+      ],
+      "detail": "Střední škola je určena žákům s tělesným a kombinovaným postižením. Škola je bezbariérová a ve třídě je vždy asistent pedagoga; nabízí mimo jiné praktickou školu dvouletou a obory keramická výroba a knihařské práce.",
+      "verify": {
+        "stredni_skola_urcena": true,
+        "typy": [
+          "telesne",
+          "kombinovane"
+        ],
+        "citace": "Školy JÚŠ poskytují základní a střední vzdělání (s maturitní zkouškou nebo výučním listem) zaměřené na žáky s tělesným a kombinovaným postižením.",
+        "quoteOk": true
+      }
+    },
+    {
+      "id": 176,
+      "name": "Výchovný ústav, středisko výchovné péče Klíčov a střední škola",
+      "nameHit": false,
+      "urceno": null,
+      "detail": "Škola nabízí dvouleté denní studium oboru Práce ve stravování (kuchař/kuchařka) klientům výchovného ústavu nebo střediska výchovné péče se speciálními vzdělávacími potřebami, kteří jsou v zařízení umístěni. Výuka zohledňuje jejich individuální zvláštnosti.",
+      "verify": {
+        "stredni_skola_urcena": true,
+        "typy": [
+          "kombinovane"
+        ],
+        "citace": "Příprava je organizována jako dvouleté denní studium pro žáky se speciálními vzdělávacími potřebami, umístěné v našem zařízení.",
+        "quoteOk": true
+      }
+    },
+    {
+      "id": 177,
+      "name": "Obchodní akademie Holešovice",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 178,
+      "name": "Střední průmyslová škola na Proseku",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 179,
+      "name": "ŠKOLA EU PRAHA, střední odborná škola a gymnázium",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 180,
+      "name": "Střední odborná škola - Centrum odborné přípravy a Gymnázium",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 181,
+      "name": "Střední odborná škola logistiky a podnikání",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 182,
+      "name": "Gymnázium pro zrakově postižené a Střední odborná škola pro zrakově postižené, Praha 5, Radlická 115",
+      "nameHit": true,
+      "urceno": [
+        "zrakove"
+      ],
+      "detail": "Škola je určena žákům se zrakovým postižením a nabízí jim gymnázium, obchodní akademii, obchodní školu a obor sociální činnost. Ve výuce mohou využít individuální přístup v malém třídním kolektivu.",
+      "verify": {
+        "stredni_skola_urcena": true,
+        "typy": [
+          "zrakove"
+        ],
+        "citace": "Škola poskytuje vzdělání žákům se zrakovým postižením a rovněž žákům se speciálními vzdělávacími potřebami",
+        "quoteOk": true
+      }
+    },
+    {
+      "id": 183,
+      "name": "Střední škola, základní škola a mateřská škola pro sluchově postižené, Praha 5, Holečkova 4",
+      "nameHit": true,
+      "urceno": [
+        "sluchove"
+      ],
+      "detail": "Střední škola je určena žákům se sluchovým postižením.",
+      "verify": {
+        "stredni_skola_urcena": true,
+        "typy": [
+          "sluchove"
+        ],
+        "citace": "Střední odborná škola pro sluchově postižené",
+        "quoteOk": true
+      }
+    },
+    {
+      "id": 184,
+      "name": "Gymnázium, Praha 7, Nad Štolou 1",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 185,
+      "name": "Gymnázium, Praha 10, Přípotoční 1337",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 188,
+      "name": "Střední škola - Waldorfské lyceum",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 189,
+      "name": "Střední odborné učiliště",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 190,
+      "name": "Mezinárodní Konzervatoř Praha - International conservatory Prague, s.r.o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 191,
+      "name": "Královské gymnázium Petrovice s.r.o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 192,
+      "name": "G.A.P.education, střední škola s.r.o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 193,
+      "name": "Vyšší policejní škola a Střední policejní škola Ministerstva vnitra v Praze",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 194,
+      "name": "Gymnázium mezinárodních a veřejných vztahů Praha s.r.o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 195,
+      "name": "Gymnázium Milady Horákové",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 196,
+      "name": "Anglo - německá obchodní akademie a.s.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": "Škola zajišťuje studium i zdravotně postiženým studentům; má bezbariérový přístup a výtah.",
+      "verify": {
+        "stredni_skola_urcena": false,
+        "typy": [],
+        "citace": "Ekonomika a podnikání (specializace jazyková a odborná)",
+        "quoteOk": true
+      }
+    },
+    {
+      "id": 197,
+      "name": "Mateřská škola, základní škola a gymnázium sv. Augustina",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 198,
+      "name": "Střední zahradnická škola a Střední odborné učiliště s.r.o.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 199,
+      "name": "Základní škola Livingston s.r.o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 200,
+      "name": "Gymnázium International a střední odborná škola, s.r.o.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 201,
+      "name": "Gymnázium Kodaňská a Střední odborná škola, a.s.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 202,
+      "name": "1. IT Gymnázium, s.r.o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 203,
+      "name": "Naše lyceum - střední škola s.r.o.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 204,
+      "name": "Gymnázium Paměti národa, s.r.o.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 205,
+      "name": "Gymnázium Thomase Manna, z. ú.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 206,
+      "name": "Gymnázium ARTION",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 207,
+      "name": "Základní škola a gymnázium Leonardo V. Academy",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 209,
+      "name": "ScioŠkola Praha Holešovice - střední škola, s.r.o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 210,
+      "name": "Gymnázium VICTORIA HIGH SCHOOL, s.r.o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 213,
+      "name": "AVIDA - gymnázium, střední škola a základní škola s.r.o.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 214,
+      "name": "Perrott Hill mateřská škola, základní škola a gymnázium s.r.o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 215,
+      "name": "Gymnázium FOSTRA Digita s.r.o.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 219,
+      "name": "Základní škola a gymnázium Minehava, z.s.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 220,
+      "name": "Gymnázium se sportovní přípravou Šeberov",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 221,
+      "name": "PED Academy gymnázium, s.r.o. \t\n",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 222,
+      "name": "Soukromá střední škola IMPULS 2003 s.r.o.  ",
+      "nameHit": true,
+      "urceno": [
+        "mentalni"
+      ],
+      "detail": "Škola je určena žákům s lehkým a středně těžkým mentálním postižením a nabízí také praktickou školu dvouletou, mimo jiné pro žáky s lehkým mentálním postižením v kombinaci s dalším postižením. Výuka rozvíjí samostatnost a pracovní dovednosti a navazuje na vlastní chráněné pracoviště.",
+      "verify": {
+        "stredni_skola_urcena": true,
+        "typy": [
+          "mentalni"
+        ],
+        "citace": "Obor je určen pro žáky s mentálním postižením.",
+        "quoteOk": true
+      }
+    },
+    {
+      "id": 223,
+      "name": "Gymnázium, základní škola a mateřská škola Parentes Praha",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 224,
+      "name": "Gymnázium Laury Bassi s.r.o.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 225,
+      "name": "ERUNI, univerzitní gymnázium a střední odborná škola Praha, z.ú.",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 226,
+      "name": "Gymnázium KUDYKAMPUS International s.r.o.",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 227,
+      "name": "Klinická univerzitní škola EduVia, gymnázium a střední škola pedagogická, příspěvková organizace",
+      "skipped": true,
+      "urceno": null,
+      "detail": null
+    },
+    {
+      "id": 228,
+      "name": "Gymnázium, Praha 2, Botičská 1",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    },
+    {
+      "id": 229,
+      "name": "Gymnázium, Praha 4, Na Vítězné pláni 1160",
+      "nameHit": false,
+      "urceno": null,
+      "detail": null,
+      "verify": null
+    }
+  ]
+}

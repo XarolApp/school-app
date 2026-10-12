@@ -7,7 +7,7 @@ import Captcha, { captchaEnabled } from '../components/Captcha';
 import PasswordInput from '../components/PasswordInput';
 import PasswordStrength from '../components/PasswordStrength';
 import { useToast } from '../components/ToastContext';
-import { deleteAccount, cancelSubscription, withdrawFromContract, updateProfile, fetchShareLinks, deleteShareLink, setBetaTracking } from '../api';
+import { deleteAccount, cancelSubscription, withdrawFromContract, updateProfile, fetchShareLinks, deleteShareLink, setBetaTracking, withdrawHealthConsent } from '../api';
 import { betaTracker } from '../lib/betaTrack';
 import { getPlan } from '../config/pricing';
 import { supabase, getRememberMe, setRememberMe } from '../supabaseClient';
@@ -211,6 +211,7 @@ function Settings() {
   const [shareLinks, setShareLinks] = useState([]);
   const [shareLinksError, setShareLinksError] = useState(null);
   const [deletingShareToken, setDeletingShareToken] = useState(null);
+  const [healthBusy, setHealthBusy] = useState(false);
   const [shareRole] = useState(() => { try { return localStorage.getItem(ROLE_KEY); } catch { return null; } });
 
   const [cachedTheme] = useState(readCachedTheme);
@@ -554,6 +555,18 @@ function Settings() {
       setShareLinksError(err?.message || 'Sdílený odkaz se nepodařilo zrušit.');
     } finally {
       setDeletingShareToken(null);
+    }
+  };
+
+  const handleHealthWithdraw = async () => {
+    setHealthBusy(true);
+    try {
+      const { updated } = await withdrawHealthConsent();
+      toast(updated ? 'Údaj o zdravotním postižení jsme smazali ze všech tvých dotazníků.' : 'V tvých dotaznících žádný takový údaj uložený není.');
+    } catch (err) {
+      toast(err?.message || 'Údaj se nepodařilo smazat. Zkus to prosím znovu.');
+    } finally {
+      setHealthBusy(false);
     }
   };
 
@@ -1220,6 +1233,21 @@ function Settings() {
           )}
         </section>
         )}
+
+        <section className="panel panel-lg settings-section">
+          <div className="settings-section-head">
+            <h2 className="settings-section-title">Údaj o zdravotním postižení</h2>
+            <p className="settings-section-text">
+              Odpověď, že hledáš školu pro žáky se zdravotním postižením, ukládáme jen s tvým souhlasem.
+              Když ho odvoláš, smažeme ji ze všech tvých uložených dotazníků a školy přepočítáme bez ní.
+            </p>
+          </div>
+          <div>
+            <button type="button" className="btn btn-secondary btn-sm" onClick={handleHealthWithdraw} disabled={healthBusy}>
+              {healthBusy ? 'Mažu…' : 'Odvolat souhlas a smazat údaj'}
+            </button>
+          </div>
+        </section>
 
         {/* --- Smazání účtu ---------------------------------------------- */}
         <section className="panel panel-lg settings-section settings-danger">

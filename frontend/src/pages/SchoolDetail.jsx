@@ -185,6 +185,7 @@ function SchoolDetail({ publicView = false }) {
       extracted.uplatneni_po_vyuceni,
       extracted.pripijimaci_pozadavky_detail,
       extracted.vyukovy_styl_detail,
+      extracted.specialni_potreby_detail,
     ].some(Boolean)
     // A confirmed false is real practical info too (MissingDataGrid's
     // pripijimaciBody/vyukovyStylBody render it as a fact, not a gap) —

@@ -260,12 +260,21 @@ function scoreFeatures(school, f, answers, role) {
   };
 }
 
+// Schools only for pupils with a disability (scripts/extract-special-needs.js).
+// The onboarding quiz has no disability question, so they always rank last
+// here; the standalone questionnaire (lib/matching.js) asks and ranks them.
+const isSpecialSchool = (school) => {
+  const e = Array.isArray(school.school_extracted_details) ? school.school_extracted_details[0] : school.school_extracted_details;
+  return Boolean(e?.urceno_pro_postizeni?.length);
+};
+
 export function rankSchools(schools, answers, role = 'student') {
   return schools
     .map((s) => scoreSchool(s, answers, role))
     .filter((r) => r.scored)
     .sort(
       (a, b) =>
+        isSpecialSchool(a.school) - isSpecialSchool(b.school) ||
         b.score - a.score ||
         (b.focusDepth || 0) - (a.focusDepth || 0) ||
         String(a.school.name).localeCompare(String(b.school.name), 'cs')

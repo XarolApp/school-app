@@ -136,6 +136,7 @@ const UNMET_LABELS = {
   ukonceni: 'filtr ukončení studia',
   typySkoly: 'filtr typu školy',
   zrizovatele: 'filtr zřizovatele',
+  postizeni: 'filtr škol pro žáky s postižením',
   jazyky: 'filtr jazyka výuky',
   jpz: 'filtr přijímací zkoušky',
   obor: 'filtr oborů, hranice, míst nebo formy studia',
@@ -229,6 +230,8 @@ function buildRow(school) {
     p,
     // Newest year only (see summarizeAdmission). null = no Cermat rows, not 0.
     admission: summarizeAdmission(school),
+    // Disabilities the school is built for (scripts/extract-special-needs.js); [] = ordinary school.
+    postizeni: (Array.isArray(school.school_extracted_details) ? school.school_extracted_details[0] : school.school_extracted_details)?.urceno_pro_postizeni ?? [],
   };
 }
 
@@ -282,6 +285,17 @@ function rangeLabel(r, f) {
 const FORMA_LABELS = { den: 'Denní', vec: 'Večerní', dal: 'Dálková', komb: 'Kombinovaná', dist: 'Distanční' };
 const formaLabel = (v) => FORMA_LABELS[v] ?? v;
 
+const POSTIZENI_OPTIONS = [
+  ['bezne', 'Běžné školy'],
+  ['sluchove', 'Pro žáky se sluchovým postižením'],
+  ['zrakove', 'Pro žáky se zrakovým postižením'],
+  ['telesne', 'Pro žáky s tělesným postižením'],
+  ['mentalni', 'Pro žáky s mentálním postižením'],
+  ['autismus', 'Pro žáky s autismem'],
+  ['kombinovane', 'Pro žáky s více vadami'],
+];
+const POSTIZENI_LABELS = Object.fromEntries(POSTIZENI_OPTIONS);
+
 const DEFAULT_FILTERS = {
   query: '',
   fields: [],
@@ -289,6 +303,7 @@ const DEFAULT_FILTERS = {
   ukonceni: [], // 'maturitni' | 'nematuritni'
   typySkoly: [],
   zrizovatele: [],
+  postizeni: [], // 'bezne' | urceno_pro_postizeni values
   jazyky: [],
   jpz: [], // 'povinna' | 'nepovinna'
   obory: [], // KKOV codes, matched against one obor at a time — see oborPasses
@@ -561,6 +576,9 @@ function Search() {
     if (f.zrizovatele.length) {
       out.push({ k: 'zrizovatele', met: row.p.zrizovatel != null && f.zrizovatele.includes(row.p.zrizovatel) });
     }
+    if (f.postizeni?.length) {
+      out.push({ k: 'postizeni', met: f.postizeni.some((v) => (v === 'bezne' ? !row.postizeni.length : row.postizeni.includes(v))) });
+    }
     if (f.jazyky.length) {
       out.push({ k: 'jazyky', met: row.p.jazyky.some((j) => f.jazyky.includes(j)) });
     }
@@ -718,6 +736,15 @@ function Search() {
     }))
     .filter((o) => o.count > 0 || o.checked);
 
+  const postizeniOptions = POSTIZENI_OPTIONS
+    .map(([value, label]) => ({
+      value,
+      label,
+      checked: filters.postizeni.includes(value),
+      count: listFor({ ...filters, postizeni: [value] }).length,
+    }))
+    .filter((o) => o.count > 0 || o.checked);
+
   const jazykOptions = jazykFacet
     .map((j) => ({
       value: j.value,
@@ -756,6 +783,7 @@ function Search() {
     filters.ukonceni.length > 0,
     filters.typySkoly.length > 0,
     filters.zrizovatele.length > 0,
+    filters.postizeni.length > 0,
     filters.jazyky.length > 0,
     filters.jpz.length > 0,
     oborFiltersActive(filters),
@@ -766,7 +794,7 @@ function Search() {
   // "filter-count badge on the collapsed control" pattern.
   const rangeCount = (ids) => RANGES.filter((r) => ids.includes(r.id) && rangeActive(filters, r)).length;
   const admissionsActiveCount = rangeCount(['cutoff', 'applicants', 'accepted', 'places']) + filters.jpz.length;
-  const moreActiveCount = filters.jazyky.length + filters.formy.length;
+  const moreActiveCount = filters.jazyky.length + filters.formy.length + filters.postizeni.length;
 
   const chips = [];
   filters.fields.forEach((id) => {
@@ -786,6 +814,9 @@ function Search() {
   filters.typySkoly.forEach((v) => chips.push({ key: `t-${v}`, label: v, onRemove: () => toggleIn('typySkoly', v) }));
   filters.zrizovatele.forEach((v) =>
     chips.push({ key: `z-${v}`, label: v, onRemove: () => toggleIn('zrizovatele', v) })
+  );
+  filters.postizeni.forEach((v) =>
+    chips.push({ key: `pz-${v}`, label: POSTIZENI_LABELS[v] ?? v, onRemove: () => toggleIn('postizeni', v) })
   );
   filters.jazyky.forEach((v) => chips.push({ key: `j-${v}`, label: v, onRemove: () => toggleIn('jazyky', v) }));
   filters.jpz.forEach((v) =>
@@ -877,6 +908,13 @@ function Search() {
       blame: 'omezení zřizovatele',
       label: 'Zrušit omezení zřizovatele',
       apply: () => setPatch({ zrizovatele: [] }),
+    },
+    {
+      key: 'postizeni',
+      active: filters.postizeni.length > 0,
+      blame: 'omezení na školy pro žáky s postižením',
+      label: 'Zrušit omezení škol pro žáky s postižením',
+      apply: () => setPatch({ postizeni: [] }),
     },
     {
       key: 'jazyky',
@@ -1079,6 +1117,7 @@ function Search() {
       districtOptions={districtOptions}
       fieldOptions={fieldOptions}
       zrizovatelOptions={zrizovatelOptions}
+      postizeniOptions={postizeniOptions}
       jpzOptions={jpzOptions}
       jazykOptions={jazykOptions}
       oborOptions={oborOptions}
@@ -1169,13 +1208,14 @@ function Search() {
       id: 'dalsi',
       label: 'Další',
       activeCount: moreActiveCount,
-      onClear: () => setPatch({ jazyky: [], formy: [] }),
+      onClear: () => setPatch({ jazyky: [], formy: [], postizeni: [] }),
       content: (
         <DalsiGroup
           filters={filters}
           setPatch={setPatch}
           jazykOptions={jazykOptions}
           formaOptions={formaOptions}
+          postizeniOptions={postizeniOptions}
           toggleIn={toggleIn}
           year={dataYear}
         />

@@ -4,6 +4,19 @@ import { matchBand } from '../../lib/decisionMatrix';
 import { Clock } from 'lucide-react';
 import InfoHint from './InfoHint';
 
+const POSTIZENI = {
+  sluchove: 'sluchovým postižením', zrakove: 'zrakovým postižením', telesne: 'tělesným postižením',
+  mentalni: 'mentálním postižením', autismus: 'autismem', kombinovane: 'více vadami',
+};
+
+// "Pro žáky se sluchovým postižením" — so a pupil sees it before reading the obory.
+function postizeniLabel(types) {
+  const words = (Array.isArray(types) ? types : []).map((t) => POSTIZENI[t]).filter(Boolean);
+  if (!words.length) return null;
+  const text = words.length > 1 ? `${words.slice(0, -1).join(', ')} a ${words.at(-1)}` : words[0];
+  return `Pro žáky ${/^[szšž]/.test(text) ? 'se' : 's'} ${text}`;
+}
+
 function ukonceniLabel(entries) {
   const anyMaturita = entries.some((e) => e.maturitni === true);
   const anyNematuritni = entries.some((e) => e.maturitni === false);
@@ -80,6 +93,9 @@ function SchoolHero({ school, programEntries, extracted }) {
             {current.oborCount} {oborWord(current.oborCount)}
             {current.year ? ` pro ${current.year}` : ''}
           </span>
+        )}
+        {postizeniLabel(extracted?.urceno_pro_postizeni) && (
+          <span className="sd-chip">{postizeniLabel(extracted.urceno_pro_postizeni)}</span>
         )}
         {typeof zacatekHodin === 'number' && (
           <span className="sd-chip">Výuka od {zacatekHodin}:00</span>

@@ -302,6 +302,25 @@ export function ZrizovatelGroup({ zrizovatelOptions, toggleIn }) {
   );
 }
 
+const POSTIZENI_NOTE =
+  'Některé střední školy jsou určené jen žákům s určitým zdravotním postižením. Údaje jsme sesbírali z webů škol, před přihláškou si je ověř.';
+
+export function PostizeniGroup({ postizeniOptions, toggleIn }) {
+  return (
+    <NamedGroup title="Zdravotní postižení" note={POSTIZENI_NOTE}>
+      {postizeniOptions.map((option) => (
+        <CheckOption
+          key={option.value}
+          checked={option.checked}
+          label={option.label}
+          count={option.count}
+          onChange={() => toggleIn('postizeni', option.value)}
+        />
+      ))}
+    </NamedGroup>
+  );
+}
+
 const JAZYK_NOTE =
   'Jazyk, ve kterém se obor vyučuje. „Český“ je celé studium v češtině. „Český s výukou vybraných předmětů v cizím jazyce“ se učí česky, jen některé předměty cizím jazykem (který jazyk a které předměty, zatím nevíme). „Bilingva“ je dvojjazyčné studium, kde se velká část výuky vede v cizím jazyce. Zdroj: výsledky přijímaček z Cermatu.';
 const FORMA_NOTE =
@@ -352,11 +371,12 @@ export function FormaGroup({ formaOptions, toggleIn }) {
   );
 }
 
-export function DalsiGroup({ jazykOptions, formaOptions, toggleIn }) {
+export function DalsiGroup({ jazykOptions, formaOptions, postizeniOptions, toggleIn }) {
   return (
     <>
       <JazykGroup jazykOptions={jazykOptions} toggleIn={toggleIn} />
       <FormaGroup formaOptions={formaOptions} toggleIn={toggleIn} />
+      <PostizeniGroup postizeniOptions={postizeniOptions} toggleIn={toggleIn} />
     </>
   );
 }
@@ -371,6 +391,7 @@ function SearchFilters({
   districtOptions,
   fieldOptions,
   zrizovatelOptions,
+  postizeniOptions,
   jpzOptions,
   jazykOptions,
   oborOptions,
@@ -452,6 +473,12 @@ function SearchFilters({
           </FacetSection>
         </>
       )}
+
+      <hr className="ss-divider" />
+
+      <FacetSection title="Zdravotní postižení" activeCount={filters.postizeni.length}>
+        <PostizeniGroup postizeniOptions={postizeniOptions} toggleIn={toggleIn} />
+      </FacetSection>
     </>
   );
 }

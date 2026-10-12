@@ -529,6 +529,17 @@ alter table public.school_extracted_details add column if not exists pocet_krouz
 alter table public.school_extracted_details add column if not exists vyukovy_styl_tagy text[];
 alter table public.school_extracted_details add column if not exists vs_pokracuje_pct numeric;
 
+-- Special-needs schools, written by scripts/extract-special-needs.js.
+-- urceno_pro_postizeni: the SECONDARY school itself is primarily for pupils with
+-- these disabilities (a ZŠ/MŠ-only special part does not count). Null = no evidence.
+-- specialni_potreby_detail: what support the school describes, for "Praktické informace".
+alter table public.school_extracted_details add column if not exists urceno_pro_postizeni text[];
+alter table public.school_extracted_details add column if not exists specialni_potreby_detail text;
+do $$ begin
+  alter table public.school_extracted_details add constraint school_extracted_details_urceno_pro_postizeni_check
+    check (urceno_pro_postizeni <@ array['sluchove','zrakove','telesne','mentalni','autismus','kombinovane']::text[]);
+exception when duplicate_object then null; end $$;
+
 alter table public.school_extracted_details enable row level security;
 -- No client policy — same reasoning as school_ai_summary: this is
 -- scraped/AI-derived school data, read only through server.js's service-role

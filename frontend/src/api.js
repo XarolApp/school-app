@@ -203,6 +203,11 @@ export function setDefaultQuestionnaireRun(id) {
   return request(`/api/questionnaire/runs/${id}/default`, { method: 'PUT' });
 }
 
+// Removes the disability answer (GDPR art. 9 consent) from every saved run.
+export function withdrawHealthConsent() {
+  return request('/api/questionnaire/health-consent/withdraw', { method: 'POST' });
+}
+
 export function archiveQuestionnaireRun(id, archived) {
   return request(`/api/questionnaire/runs/${id}/archive`, {
     method: 'PATCH',
