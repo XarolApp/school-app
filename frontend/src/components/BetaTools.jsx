@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { MessageSquare } from 'lucide-react';
+import { MessageSquare, X } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { acknowledgeBetaGuidance, fetchBetaMe } from '../api';
 import { BetaToolsContext } from './BetaToolsContext';
@@ -13,7 +13,7 @@ import { betaTracker } from '../lib/betaTrack';
 
 function BetaToolsUI({ profile, canShow, isPasswordRecovery, userId, refreshProfile, beta, refreshBeta, feedback, openFeedback, closeFeedback, closingOpen, setClosingOpen }) {
   const location = useLocation(), navigate = useNavigate();
-  const [guidanceOpen,setGuidanceOpen] = useState(false), [guidanceBusy,setGuidanceBusy] = useState(false), [guidanceError,setGuidanceError] = useState('');
+  const [bannerHidden,setBannerHidden]=useState(false), [guidanceOpen,setGuidanceOpen] = useState(false), [guidanceBusy,setGuidanceBusy] = useState(false), [guidanceError,setGuidanceError] = useState('');
   const acknowledged = useRef(false), dismissed = useRef(false);
   const parent = ['rodic','ucitel'].includes(beta?.role);
   const firstRun = !profile?.tester_guidance_seen_at;
@@ -39,9 +39,10 @@ function BetaToolsUI({ profile, canShow, isPasswordRecovery, userId, refreshProf
     return () => window.removeEventListener('skolamatch:beta-access-expired',onExpired);
   }, [canShow,userId,location.pathname,navigate,refreshProfile]);
   return <>
-    {canShow && profile.betaProgramActive && beta?.closing_due_at && !beta.closing_done_at && <div className="beta-banner beta-banner-closing" data-beta-tools role="status">
+    {canShow && profile.betaProgramActive && beta?.closing_due_at && !beta.closing_done_at && !bannerHidden && <div className="beta-banner beta-banner-closing" data-beta-tools role="status">
       {profile.closingPaused?'Před pokračováním je potřeba závěrečný dotazník.':'Závěrečný dotazník je připravený. Na odpovědi je 24 hodin.'} {parent?'Po odeslání můžete web dál používat až do konce beta testování.':'Po odeslání můžeš web dál používat až do konce beta testování.'}
       <button type="button" className="ss-btn ss-btn-primary" onClick={()=>setClosingOpen(true)}>Vyplnit dotazník</button>
+      <button type="button" className="beta-banner-close" aria-label="Skrýt oznámení" onClick={()=>setBannerHidden(true)}><X size={18} aria-hidden="true" /></button>
     </div>}
     <div data-beta-tools><Modal open={Boolean(canShow && profile.betaProgramActive && !guidanceOpen && beta && !beta.closing_done_at && (closingOpen || profile.closingPaused))} title="Závěrečný dotazník" onDismiss={()=>setClosingOpen(false)} className="beta-modal beta-closing-modal">
       <BetaClosingQuestionnaire role={beta?.role} onDone={()=>{setClosingOpen(false);void refreshBeta();void refreshProfile();}} />

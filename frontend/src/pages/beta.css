@@ -203,6 +203,10 @@ main.beta-page {
 .beta-banner { display:flex; gap:16px; flex-wrap:wrap; align-items:center; justify-content:center; }
 /* The closing-questionnaire banner used to render after the footer, out of sight. */
 .beta-banner-closing { position:fixed; z-index:29; left:var(--space-md); bottom:calc(var(--bottom-bar-h,0px) + var(--space-md)); max-width:min(440px,calc(100vw - 2 * var(--space-md))); justify-content:flex-start; padding:14px 16px; background:var(--surface); border:2px solid var(--acc); border-radius:var(--r-card); box-shadow:var(--shadow); font-weight:500; }
+/* Hide button: absolute so it does not take its own row when the text wraps. */
+.beta-banner-closing { padding-right:44px; }
+.beta-banner-close { position:absolute; top:8px; right:8px; width:32px; height:32px; display:grid; place-items:center; border:0; border-radius:50%; background:transparent; color:var(--ink2); cursor:pointer; }
+.beta-banner-close:hover { background:var(--surface2); color:var(--ink); }
 @media (max-width:760px) { .beta-banner-closing { bottom:calc(var(--bottom-bar-h,0px) + 76px + env(safe-area-inset-bottom,0px)); } }
 @media(max-width:600px) { .beta-reward { right:16px; bottom:88px; } }
 
