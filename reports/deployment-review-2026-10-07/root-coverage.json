@@ -1392,29 +1392,29 @@
   },
   "reports/deployment-review-2026-10-07/REPORT.md": {
     "status": "reviewed",
-    "sha256": "adeaec6e5452b2e694090862d371452cdd80629ecbd4c4620f772d75e898cc63",
-    "lines": 273,
+    "sha256": "6545add3a26fc73461f79f3f8feb672a859cf52244c89b37e30200ace4e329f0",
+    "lines": 276,
     "read_ranges": [
       [
         1,
-        273
+        276
       ]
     ],
-    "review_kind": "unchanged fully read HEAD plus complete owned appendix",
-    "note": "Prior exact source read retained; full owned generated-checkpoint appendix reviewed. Explicit generated-method and remaining acceptance limits preserved."
+    "review_kind": "unchanged fully read HEAD plus complete owned asset appendix",
+    "note": "All new text read; prior complete prefix preserved; dated source checkpoint and unverified font/browser/legal/marketing limits explicit."
   },
   "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md": {
     "status": "reviewed",
-    "sha256": "88ccc1290eff7684f269217faf3d7a2b4effd0ffd992b980b0e5c4b0ac09a702",
-    "lines": 357,
+    "sha256": "28a4bb33a620c73a78a70f1c46785ffda6508d5d40192625463931e03b1d9b82",
+    "lines": 366,
     "read_ranges": [
       [
         1,
-        357
+        366
       ]
     ],
-    "review_kind": "unchanged fully read HEAD plus complete owned appendix",
-    "note": "Prior exact source read retained; full owned generated-checkpoint appendix reviewed. Explicit generated-method and remaining acceptance limits preserved."
+    "review_kind": "unchanged fully read HEAD plus complete owned asset appendix",
+    "note": "All new text read; prior complete prefix preserved; dated source checkpoint and unverified font/browser/legal/marketing limits explicit."
   },
   "reports/deployment-review-2026-10-07/script-findings.md": {
     "sha256": "67e42c93ea061f4892aa3494ed0063f009e3b03d2f238bb84d76efa1f0cbd0e7",
@@ -2147,16 +2147,16 @@
   },
   "UNFORGET.md": {
     "status": "reviewed",
-    "sha256": "c184242aefeb4eaa30a3cd6d7d7404d2b5c24618c8ee522b5f6f2cb9be865208",
-    "lines": 2025,
+    "sha256": "cece0f25e143f04283949534e930ea6bbe0858c5e113332ee1edfeecb9e92ea1",
+    "lines": 2034,
     "read_ranges": [
       [
         1,
-        2025
+        2034
       ]
     ],
-    "review_kind": "unchanged fully read HEAD plus complete owned appendix",
-    "note": "Prior exact source read retained; full owned generated-checkpoint appendix reviewed. Explicit generated-method and remaining acceptance limits preserved."
+    "review_kind": "unchanged fully read HEAD plus complete owned asset appendix",
+    "note": "All new text read; prior complete prefix preserved; dated source checkpoint and unverified font/browser/legal/marketing limits explicit."
   },
   "frontend/src/api.js": {
     "sha256": "a545cb179681a87378f41cf928cff50e1ae6c2e539c4bbacf373590af9f8ab8a",
@@ -3064,16 +3064,16 @@
   },
   "reports/deployment-review-2026-10-07/continuation-findings.md": {
     "status": "reviewed",
-    "sha256": "e28ac82a7c80f241b4825614c063151f5ad32167784e592e872cec546466b4ed",
-    "lines": 678,
+    "sha256": "e993856625c3edf3427123236a7a4020473a4ffa3c692000d5a5fde3344da615",
+    "lines": 689,
     "read_ranges": [
       [
         1,
-        678
+        689
       ]
     ],
-    "review_kind": "unchanged fully read HEAD plus complete owned appendix",
-    "note": "Prior exact source read retained; full owned generated-checkpoint appendix reviewed. Explicit generated-method and remaining acceptance limits preserved."
+    "review_kind": "unchanged fully read HEAD plus complete owned asset appendix",
+    "note": "All new text read; prior complete prefix preserved; dated source checkpoint and unverified font/browser/legal/marketing limits explicit."
   },
   "frontend/src/components/schoolDetail/SimilarSchools.jsx": {
     "sha256": "30490c3d420119d7e6754521ded1e7a7a9d32d53d2f53cb58666cfee50fee9ec",

@@ -2023,3 +2023,12 @@ Evidence and exact ownership boundaries: [integrated review](reports/deployment-
 - [ ] C44, conditional reuse: accept assets/licences, host capabilities, indirect operations and browsers. Complete generated AST/CSS traversal and 26 direct critical-site contexts are structural checks, not manual vendor implementation approval or current product adoption.
 
 Source accounting: 797 current full/accounted, zero pending, 109 binary assets, 219 generated/audit artifacts and two removed. Asset content, ignored corpus and real device/service/controller/schema/payment acceptance remain open; the review and beta release are not complete.
+
+
+## Asset completion and font-notice acceptance, 13 October
+
+- [x] All 99 current images inspected, including 122 complete image sections; two untouched handouts fully read and all four rendered pages inspected. Five sound files exactly match reviewed deterministic synthesis. [Evidence](reports/deployment-review-2026-10-07/asset-complete-visual-review-2026-10-13.json). Historical screenshots remain dated evidence, not current deployment acceptance.
+- [ ] **C62, P2 before beta:** verify actual compressed WOFF2 metadata/deployed licence notices. Local text build has no full OFL text; fallback font names contain copyright/licence URLs. If absent, package both exact installed licences as public static notices and verify build/deployed bytes. No font/CDN or pricing/privacy change. See ordered handoff.
+- [ ] C25: actual target-browser fonts/Czech glyphs and iOS icon crop/tint. The isolated beta preview reports no loaded font faces; Safari produced no result before interruption.
+- [ ] Marketing: subjective listening/final-video mix/device/platform-overlay acceptance before publishing. Generated parity does not replace playback. C44 third-party reference reuse and conditional handout scientific acceptance remain separate.
+- [ ] Re-review seven peer commits after 345b95b and current uncommitted peer sources before closing current exact-source coverage. No original/peer source changed in this asset checkpoint.

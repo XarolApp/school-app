@@ -1,0 +1,859 @@
+{
+  "method": "All24 referenced WOFF1 table directories and complete name records decoded using standard-library zlib; WOFF2 headers/length/hash parity against build checked separately. WOFF2 full decompression and cmap semantic acceptance not claimed. All8 CSS references to Latin/Latin-ext/Vietnamese subsets read; each weight consistent by mechanical diff.",
+  "fonts": [
+    {
+      "path": "frontend/node_modules/@fontsource/archivo/files/archivo-vietnamese-400-normal.woff",
+      "sha256": "e4ea7e722fb396f5195a463a1743ef1eb38268a8b518337d74ae66b0bf777c5e",
+      "woff2_path": "frontend/node_modules/@fontsource/archivo/files/archivo-vietnamese-400-normal.woff2",
+      "woff2_sha256": "df8f5bfcc9225e329063d6daba87aa2dfd76e82b09acdc7167e91cdf70669724",
+      "tables": [
+        "GDEF",
+        "GPOS",
+        "GSUB",
+        "OS/2",
+        "STAT",
+        "cmap",
+        "gasp",
+        "glyf",
+        "head",
+        "hhea",
+        "hmtx",
+        "loca",
+        "maxp",
+        "name",
+        "post"
+      ],
+      "names": {
+        "0": "Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)",
+        "1": "Archivo",
+        "2": "Regular",
+        "14": "http://scripts.sil.org/OFL"
+      },
+      "fsType": 0
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-ext-400-normal.woff",
+      "sha256": "c51b215300a784fd3f82f39fdf26b9aa8c800330c30aec63b81e69bd63523b90",
+      "woff2_path": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-ext-400-normal.woff2",
+      "woff2_sha256": "c7807623d82636e295e0f51ff6dc56e0caa58b9b12600956e90fd9767087ed1a",
+      "tables": [
+        "GDEF",
+        "GPOS",
+        "GSUB",
+        "OS/2",
+        "STAT",
+        "cmap",
+        "gasp",
+        "glyf",
+        "head",
+        "hhea",
+        "hmtx",
+        "loca",
+        "maxp",
+        "name",
+        "post"
+      ],
+      "names": {
+        "0": "Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)",
+        "1": "Archivo",
+        "2": "Regular",
+        "14": "http://scripts.sil.org/OFL"
+      },
+      "fsType": 0
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-400-normal.woff",
+      "sha256": "9c0a51442fdc30e015f734d04fd957ae00e3f39cc07817050735da301c0d7eda",
+      "woff2_path": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-400-normal.woff2",
+      "woff2_sha256": "07f9160163da2ec0f6376ef9d27a2bb8163f98019ba798da4baafb154e30056e",
+      "tables": [
+        "GDEF",
+        "GPOS",
+        "GSUB",
+        "OS/2",
+        "STAT",
+        "cmap",
+        "gasp",
+        "glyf",
+        "head",
+        "hhea",
+        "hmtx",
+        "loca",
+        "maxp",
+        "name",
+        "post"
+      ],
+      "names": {
+        "0": "Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)",
+        "1": "Archivo",
+        "2": "Regular",
+        "14": "http://scripts.sil.org/OFL"
+      },
+      "fsType": 0
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo/files/archivo-vietnamese-500-normal.woff",
+      "sha256": "f6c437774bd017d792dbae2e4910dc3f959c5f873f5a15493da073ad1576ca64",
+      "woff2_path": "frontend/node_modules/@fontsource/archivo/files/archivo-vietnamese-500-normal.woff2",
+      "woff2_sha256": "7cc8285fcfff80802f17658061513cbbf4fd41f25153145fe5d65a155df957a8",
+      "tables": [
+        "GDEF",
+        "GPOS",
+        "GSUB",
+        "OS/2",
+        "STAT",
+        "cmap",
+        "gasp",
+        "glyf",
+        "head",
+        "hhea",
+        "hmtx",
+        "loca",
+        "maxp",
+        "name",
+        "post"
+      ],
+      "names": {
+        "0": "Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)",
+        "1": "Archivo Medium",
+        "2": "Regular",
+        "14": "http://scripts.sil.org/OFL"
+      },
+      "fsType": 0
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-ext-500-normal.woff",
+      "sha256": "5948a0a7c85f96ade7059645974df324da342dad761724225e4a990b5241b53f",
+      "woff2_path": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-ext-500-normal.woff2",
+      "woff2_sha256": "28cec7e09bdc84d89729f161eadaead32eb25b7ce7de26117fb82d0834c432d9",
+      "tables": [
+        "GDEF",
+        "GPOS",
+        "GSUB",
+        "OS/2",
+        "STAT",
+        "cmap",
+        "gasp",
+        "glyf",
+        "head",
+        "hhea",
+        "hmtx",
+        "loca",
+        "maxp",
+        "name",
+        "post"
+      ],
+      "names": {
+        "0": "Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)",
+        "1": "Archivo Medium",
+        "2": "Regular",
+        "14": "http://scripts.sil.org/OFL"
+      },
+      "fsType": 0
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-500-normal.woff",
+      "sha256": "29719fa13f06afbcc46f373e9e94f4ade13aca0fc997e7b4d35fea203cad776c",
+      "woff2_path": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-500-normal.woff2",
+      "woff2_sha256": "ab74eca5ad115fe4cfec82ba641e5d37e4d92c58dfb1bfc1e464e9039c9d17cf",
+      "tables": [
+        "GDEF",
+        "GPOS",
+        "GSUB",
+        "OS/2",
+        "STAT",
+        "cmap",
+        "gasp",
+        "glyf",
+        "head",
+        "hhea",
+        "hmtx",
+        "loca",
+        "maxp",
+        "name",
+        "post"
+      ],
+      "names": {
+        "0": "Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)",
+        "1": "Archivo Medium",
+        "2": "Regular",
+        "14": "http://scripts.sil.org/OFL"
+      },
+      "fsType": 0
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo/files/archivo-vietnamese-600-normal.woff",
+      "sha256": "8f89cdd5be97467cbe82d254e415f0a3826554139ba9d04f8f45e8fae2fa3193",
+      "woff2_path": "frontend/node_modules/@fontsource/archivo/files/archivo-vietnamese-600-normal.woff2",
+      "woff2_sha256": "082f80ae3fadb0d7e82f5356b47e95cc0196e5fc02c151774a072c17ec664c40",
+      "tables": [
+        "GDEF",
+        "GPOS",
+        "GSUB",
+        "OS/2",
+        "STAT",
+        "cmap",
+        "gasp",
+        "glyf",
+        "head",
+        "hhea",
+        "hmtx",
+        "loca",
+        "maxp",
+        "name",
+        "post"
+      ],
+      "names": {
+        "0": "Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)",
+        "1": "Archivo SemiBold",
+        "2": "Regular",
+        "14": "http://scripts.sil.org/OFL"
+      },
+      "fsType": 0
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-ext-600-normal.woff",
+      "sha256": "d8831f616cdc533c52ac92f25e77bb90fd743559cf36655b50c0afa7a7f54c51",
+      "woff2_path": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-ext-600-normal.woff2",
+      "woff2_sha256": "cd902f80bcf11cc6545648c156415deded5336611928c0fb6b02325ad3af13f0",
+      "tables": [
+        "GDEF",
+        "GPOS",
+        "GSUB",
+        "OS/2",
+        "STAT",
+        "cmap",
+        "gasp",
+        "glyf",
+        "head",
+        "hhea",
+        "hmtx",
+        "loca",
+        "maxp",
+        "name",
+        "post"
+      ],
+      "names": {
+        "0": "Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)",
+        "1": "Archivo SemiBold",
+        "2": "Regular",
+        "14": "http://scripts.sil.org/OFL"
+      },
+      "fsType": 0
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-600-normal.woff",
+      "sha256": "d8536b902812ad5fd85a6da4a11d88057415ed98f6b27b600a3f6497d6340df6",
+      "woff2_path": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-600-normal.woff2",
+      "woff2_sha256": "d9e8c29fdd348edde2a4f9aae438e569dd165bbbdebda78495824a2d9aaa67e8",
+      "tables": [
+        "GDEF",
+        "GPOS",
+        "GSUB",
+        "OS/2",
+        "STAT",
+        "cmap",
+        "gasp",
+        "glyf",
+        "head",
+        "hhea",
+        "hmtx",
+        "loca",
+        "maxp",
+        "name",
+        "post"
+      ],
+      "names": {
+        "0": "Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)",
+        "1": "Archivo SemiBold",
+        "2": "Regular",
+        "14": "http://scripts.sil.org/OFL"
+      },
+      "fsType": 0
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo/files/archivo-vietnamese-700-normal.woff",
+      "sha256": "1e20a5b946298a6fd59176ee88ea2289e32cc84f868c04852fb593ce9fecb004",
+      "woff2_path": "frontend/node_modules/@fontsource/archivo/files/archivo-vietnamese-700-normal.woff2",
+      "woff2_sha256": "bfa65d40f59e5c2a8b038be3c739ab2715c854d97b4c51312e40b4cb9e27f656",
+      "tables": [
+        "GDEF",
+        "GPOS",
+        "GSUB",
+        "OS/2",
+        "STAT",
+        "cmap",
+        "gasp",
+        "glyf",
+        "head",
+        "hhea",
+        "hmtx",
+        "loca",
+        "maxp",
+        "name",
+        "post"
+      ],
+      "names": {
+        "0": "Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)",
+        "1": "Archivo",
+        "2": "Bold",
+        "14": "http://scripts.sil.org/OFL"
+      },
+      "fsType": 0
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-ext-700-normal.woff",
+      "sha256": "8675624710e4b763f2af76709282e89d4d825207ac437b38ec52d5fb8a0fa835",
+      "woff2_path": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-ext-700-normal.woff2",
+      "woff2_sha256": "8affe3b4758ec03c7c1a8b40c119209cbb1815fd836160570f94935ce9a683ec",
+      "tables": [
+        "GDEF",
+        "GPOS",
+        "GSUB",
+        "OS/2",
+        "STAT",
+        "cmap",
+        "gasp",
+        "glyf",
+        "head",
+        "hhea",
+        "hmtx",
+        "loca",
+        "maxp",
+        "name",
+        "post"
+      ],
+      "names": {
+        "0": "Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)",
+        "1": "Archivo",
+        "2": "Bold",
+        "14": "http://scripts.sil.org/OFL"
+      },
+      "fsType": 0
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-700-normal.woff",
+      "sha256": "7eb23fce17c3957646f50e7ef4936bf70cc93ce602123cbf34bf52be15b5f8f8",
+      "woff2_path": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-700-normal.woff2",
+      "woff2_sha256": "abada6cd4c92a9a706f6d7ed3189f322ff43dd78b9402c7d1137465b861d2a04",
+      "tables": [
+        "GDEF",
+        "GPOS",
+        "GSUB",
+        "OS/2",
+        "STAT",
+        "cmap",
+        "gasp",
+        "glyf",
+        "head",
+        "hhea",
+        "hmtx",
+        "loca",
+        "maxp",
+        "name",
+        "post"
+      ],
+      "names": {
+        "0": "Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)",
+        "1": "Archivo",
+        "2": "Bold",
+        "14": "http://scripts.sil.org/OFL"
+      },
+      "fsType": 0
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-vietnamese-400-normal.woff",
+      "sha256": "8f26f92646dc4e1955c7f2d441ac0b584102791bab725d2664fcb6499caec777",
+      "woff2_path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-vietnamese-400-normal.woff2",
+      "woff2_sha256": "46224f0f0e4f621a5ea2bf68cd25cd5954c1fd73640a48ad27d61c4297f105b1",
+      "tables": [
+        "GDEF",
+        "GPOS",
+        "GSUB",
+        "OS/2",
+        "STAT",
+        "cmap",
+        "gasp",
+        "glyf",
+        "head",
+        "hhea",
+        "hmtx",
+        "loca",
+        "maxp",
+        "name",
+        "post"
+      ],
+      "names": {
+        "0": "Copyright 2019 The Archivo Narrow Project Authors (https://github.com/Omnibus-Type/ArchivoNarrow)",
+        "1": "Archivo Narrow",
+        "2": "Regular",
+        "14": "https://scripts.sil.org/OFL"
+      },
+      "fsType": 0
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-ext-400-normal.woff",
+      "sha256": "d80b7f4091da0ef2a7297045c61ed1731ecb9c9f00225b4d5b1c12e7d13cbd88",
+      "woff2_path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-ext-400-normal.woff2",
+      "woff2_sha256": "e34541922a09e3477853bc33465deb78be88f696e635f36c3a06d53e4f39bf7e",
+      "tables": [
+        "GDEF",
+        "GPOS",
+        "GSUB",
+        "OS/2",
+        "STAT",
+        "cmap",
+        "gasp",
+        "glyf",
+        "head",
+        "hhea",
+        "hmtx",
+        "loca",
+        "maxp",
+        "name",
+        "post"
+      ],
+      "names": {
+        "0": "Copyright 2019 The Archivo Narrow Project Authors (https://github.com/Omnibus-Type/ArchivoNarrow)",
+        "1": "Archivo Narrow",
+        "2": "Regular",
+        "14": "https://scripts.sil.org/OFL"
+      },
+      "fsType": 0
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-400-normal.woff",
+      "sha256": "8c824ef3ef5fa1155da601a572e817a36e11f0c296fdd898dcc47b62b162f8d0",
+      "woff2_path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-400-normal.woff2",
+      "woff2_sha256": "50e835187413b9d25833ccd7c9638673e64112aafd64004f48fc613ace27e354",
+      "tables": [
+        "GDEF",
+        "GPOS",
+        "GSUB",
+        "OS/2",
+        "STAT",
+        "cmap",
+        "gasp",
+        "glyf",
+        "head",
+        "hhea",
+        "hmtx",
+        "loca",
+        "maxp",
+        "name",
+        "post"
+      ],
+      "names": {
+        "0": "Copyright 2019 The Archivo Narrow Project Authors (https://github.com/Omnibus-Type/ArchivoNarrow)",
+        "1": "Archivo Narrow",
+        "2": "Regular",
+        "14": "https://scripts.sil.org/OFL"
+      },
+      "fsType": 0
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-vietnamese-500-normal.woff",
+      "sha256": "4e3035600d0f2c628ad090165b5c688b2d61b906936bb34b9606e0c73eb79d6e",
+      "woff2_path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-vietnamese-500-normal.woff2",
+      "woff2_sha256": "76d5aa42f903a904f88eb56e0541a7155553f462a1280b859f1c1c9747d62fb4",
+      "tables": [
+        "GDEF",
+        "GPOS",
+        "GSUB",
+        "OS/2",
+        "STAT",
+        "cmap",
+        "gasp",
+        "glyf",
+        "head",
+        "hhea",
+        "hmtx",
+        "loca",
+        "maxp",
+        "name",
+        "post"
+      ],
+      "names": {
+        "0": "Copyright 2019 The Archivo Narrow Project Authors (https://github.com/Omnibus-Type/ArchivoNarrow)",
+        "1": "Archivo Narrow Medium",
+        "2": "Regular",
+        "14": "https://scripts.sil.org/OFL"
+      },
+      "fsType": 0
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-ext-500-normal.woff",
+      "sha256": "218c30e4b6a206dc6bcd0d906f2ce3e8e61d46b3111662155333f56c2c4008f1",
+      "woff2_path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-ext-500-normal.woff2",
+      "woff2_sha256": "5ce451965ac7127fcb317ddd93c7d70695db18af22e793cbe9721ffc13df66ff",
+      "tables": [
+        "GDEF",
+        "GPOS",
+        "GSUB",
+        "OS/2",
+        "STAT",
+        "cmap",
+        "gasp",
+        "glyf",
+        "head",
+        "hhea",
+        "hmtx",
+        "loca",
+        "maxp",
+        "name",
+        "post"
+      ],
+      "names": {
+        "0": "Copyright 2019 The Archivo Narrow Project Authors (https://github.com/Omnibus-Type/ArchivoNarrow)",
+        "1": "Archivo Narrow Medium",
+        "2": "Regular",
+        "14": "https://scripts.sil.org/OFL"
+      },
+      "fsType": 0
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-500-normal.woff",
+      "sha256": "675c57bbfacefe48b4803e52388bee21fa2a2b1030f67ecb1c746c9ffe778c8c",
+      "woff2_path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-500-normal.woff2",
+      "woff2_sha256": "240e62e49fe484a5a9ff702a15f52c91ef9a33263885da76d06d382ab5ae50b4",
+      "tables": [
+        "GDEF",
+        "GPOS",
+        "GSUB",
+        "OS/2",
+        "STAT",
+        "cmap",
+        "gasp",
+        "glyf",
+        "head",
+        "hhea",
+        "hmtx",
+        "loca",
+        "maxp",
+        "name",
+        "post"
+      ],
+      "names": {
+        "0": "Copyright 2019 The Archivo Narrow Project Authors (https://github.com/Omnibus-Type/ArchivoNarrow)",
+        "1": "Archivo Narrow Medium",
+        "2": "Regular",
+        "14": "https://scripts.sil.org/OFL"
+      },
+      "fsType": 0
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-vietnamese-600-normal.woff",
+      "sha256": "3d4982248abf9cadd6ddd7a5c71dc8637eeaa40338148bf1464b8531c76a70c7",
+      "woff2_path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-vietnamese-600-normal.woff2",
+      "woff2_sha256": "7271ec2926e4e22ecf0c11fe3e35bafad385a19f29f10437e40333c27479aa74",
+      "tables": [
+        "GDEF",
+        "GPOS",
+        "GSUB",
+        "OS/2",
+        "STAT",
+        "cmap",
+        "gasp",
+        "glyf",
+        "head",
+        "hhea",
+        "hmtx",
+        "loca",
+        "maxp",
+        "name",
+        "post"
+      ],
+      "names": {
+        "0": "Copyright 2019 The Archivo Narrow Project Authors (https://github.com/Omnibus-Type/ArchivoNarrow)",
+        "1": "Archivo Narrow SemiBold",
+        "2": "Regular",
+        "14": "https://scripts.sil.org/OFL"
+      },
+      "fsType": 0
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-ext-600-normal.woff",
+      "sha256": "f33d80ffcc2b275046733a07f8db3c3c96a6cd029fe5e63a25de81ccd1e94cd0",
+      "woff2_path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-ext-600-normal.woff2",
+      "woff2_sha256": "6476f2404d429ee11785aa5e7d2b9245a8bd9ec2180073c288da0c2e14302ff9",
+      "tables": [
+        "GDEF",
+        "GPOS",
+        "GSUB",
+        "OS/2",
+        "STAT",
+        "cmap",
+        "gasp",
+        "glyf",
+        "head",
+        "hhea",
+        "hmtx",
+        "loca",
+        "maxp",
+        "name",
+        "post"
+      ],
+      "names": {
+        "0": "Copyright 2019 The Archivo Narrow Project Authors (https://github.com/Omnibus-Type/ArchivoNarrow)",
+        "1": "Archivo Narrow SemiBold",
+        "2": "Regular",
+        "14": "https://scripts.sil.org/OFL"
+      },
+      "fsType": 0
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-600-normal.woff",
+      "sha256": "b2338e9fb52c783fc3ce5090b5bcd8980ca508a055d038f4f1715ee18f67a65f",
+      "woff2_path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-600-normal.woff2",
+      "woff2_sha256": "9bfc794b14b5e62a09e9734d943c1f6d79d48e4ea7b601074968d90af9f4b66f",
+      "tables": [
+        "GDEF",
+        "GPOS",
+        "GSUB",
+        "OS/2",
+        "STAT",
+        "cmap",
+        "gasp",
+        "glyf",
+        "head",
+        "hhea",
+        "hmtx",
+        "loca",
+        "maxp",
+        "name",
+        "post"
+      ],
+      "names": {
+        "0": "Copyright 2019 The Archivo Narrow Project Authors (https://github.com/Omnibus-Type/ArchivoNarrow)",
+        "1": "Archivo Narrow SemiBold",
+        "2": "Regular",
+        "14": "https://scripts.sil.org/OFL"
+      },
+      "fsType": 0
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-vietnamese-700-normal.woff",
+      "sha256": "567209dab75aa2771c4292fa077356a586931e64a295080a098cf20d6282790f",
+      "woff2_path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-vietnamese-700-normal.woff2",
+      "woff2_sha256": "b09332a95c297693b88c38ffafaaf806b5b9ac253632c4dd1f8645c9e86d363e",
+      "tables": [
+        "GDEF",
+        "GPOS",
+        "GSUB",
+        "OS/2",
+        "STAT",
+        "cmap",
+        "gasp",
+        "glyf",
+        "head",
+        "hhea",
+        "hmtx",
+        "loca",
+        "maxp",
+        "name",
+        "post"
+      ],
+      "names": {
+        "0": "Copyright 2019 The Archivo Narrow Project Authors (https://github.com/Omnibus-Type/ArchivoNarrow)",
+        "1": "Archivo Narrow",
+        "2": "Bold",
+        "14": "https://scripts.sil.org/OFL"
+      },
+      "fsType": 0
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-ext-700-normal.woff",
+      "sha256": "0950c656a889dab2fd68a9e58eca363aecff36b1a5c01f5397e08e13feda22cc",
+      "woff2_path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-ext-700-normal.woff2",
+      "woff2_sha256": "146b1f02c8b3ab29b767569524edcb5a83929212bbda070c0b8b7ab770e50c9a",
+      "tables": [
+        "GDEF",
+        "GPOS",
+        "GSUB",
+        "OS/2",
+        "STAT",
+        "cmap",
+        "gasp",
+        "glyf",
+        "head",
+        "hhea",
+        "hmtx",
+        "loca",
+        "maxp",
+        "name",
+        "post"
+      ],
+      "names": {
+        "0": "Copyright 2019 The Archivo Narrow Project Authors (https://github.com/Omnibus-Type/ArchivoNarrow)",
+        "1": "Archivo Narrow",
+        "2": "Bold",
+        "14": "https://scripts.sil.org/OFL"
+      },
+      "fsType": 0
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-700-normal.woff",
+      "sha256": "41d185818de0c98750d65149b4468c34f77ba99692812c31bae7109b08669413",
+      "woff2_path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-700-normal.woff2",
+      "woff2_sha256": "062eae97e718b8a39ff5861d08046755eaf4c6f27f9a0fe861116d9d1305d6bf",
+      "tables": [
+        "GDEF",
+        "GPOS",
+        "GSUB",
+        "OS/2",
+        "STAT",
+        "cmap",
+        "gasp",
+        "glyf",
+        "head",
+        "hhea",
+        "hmtx",
+        "loca",
+        "maxp",
+        "name",
+        "post"
+      ],
+      "names": {
+        "0": "Copyright 2019 The Archivo Narrow Project Authors (https://github.com/Omnibus-Type/ArchivoNarrow)",
+        "1": "Archivo Narrow",
+        "2": "Bold",
+        "14": "https://scripts.sil.org/OFL"
+      },
+      "fsType": 0
+    }
+  ],
+  "fontsource_versions": "5.3.0",
+  "runtime_imports": "Archivo and Archivo Narrow normal400/500/600/700 only; same-origin bundled, no external font CDN.",
+  "limitations": "font rights and actual target-browser Czechs/missing glyphs need separate acceptance.",
+  "build_woff2_exact_source_parity": [
+    {
+      "path": "frontend/dist/assets/archivo-vietnamese-600-normal-anCjMumA.woff2",
+      "sha256": "082f80ae3fadb0d7e82f5356b47e95cc0196e5fc02c151774a072c17ec664c40",
+      "matches_source": "frontend/node_modules/@fontsource/archivo/files/archivo-vietnamese-600-normal.woff2"
+    },
+    {
+      "path": "frontend/dist/assets/archivo-narrow-latin-400-normal-BON_owyT.woff2",
+      "sha256": "50e835187413b9d25833ccd7c9638673e64112aafd64004f48fc613ace27e354",
+      "matches_source": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-400-normal.woff2"
+    },
+    {
+      "path": "frontend/dist/assets/archivo-vietnamese-700-normal-nuAQAQa7.woff2",
+      "sha256": "bfa65d40f59e5c2a8b038be3c739ab2715c854d97b4c51312e40b4cb9e27f656",
+      "matches_source": "frontend/node_modules/@fontsource/archivo/files/archivo-vietnamese-700-normal.woff2"
+    },
+    {
+      "path": "frontend/dist/assets/archivo-latin-ext-400-normal-B5tPZzqW.woff2",
+      "sha256": "c7807623d82636e295e0f51ff6dc56e0caa58b9b12600956e90fd9767087ed1a",
+      "matches_source": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-ext-400-normal.woff2"
+    },
+    {
+      "path": "frontend/dist/assets/archivo-narrow-latin-600-normal-l2jiltzb.woff2",
+      "sha256": "9bfc794b14b5e62a09e9734d943c1f6d79d48e4ea7b601074968d90af9f4b66f",
+      "matches_source": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-600-normal.woff2"
+    },
+    {
+      "path": "frontend/dist/assets/archivo-narrow-latin-ext-600-normal-DNmONYTo.woff2",
+      "sha256": "6476f2404d429ee11785aa5e7d2b9245a8bd9ec2180073c288da0c2e14302ff9",
+      "matches_source": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-ext-600-normal.woff2"
+    },
+    {
+      "path": "frontend/dist/assets/archivo-latin-500-normal-CGugC8dq.woff2",
+      "sha256": "ab74eca5ad115fe4cfec82ba641e5d37e4d92c58dfb1bfc1e464e9039c9d17cf",
+      "matches_source": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-500-normal.woff2"
+    },
+    {
+      "path": "frontend/dist/assets/archivo-latin-700-normal-D9cHMWGj.woff2",
+      "sha256": "abada6cd4c92a9a706f6d7ed3189f322ff43dd78b9402c7d1137465b861d2a04",
+      "matches_source": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-700-normal.woff2"
+    },
+    {
+      "path": "frontend/dist/assets/archivo-vietnamese-500-normal-k0drYPZA.woff2",
+      "sha256": "7cc8285fcfff80802f17658061513cbbf4fd41f25153145fe5d65a155df957a8",
+      "matches_source": "frontend/node_modules/@fontsource/archivo/files/archivo-vietnamese-500-normal.woff2"
+    },
+    {
+      "path": "frontend/dist/assets/archivo-narrow-latin-500-normal-BH-FPhCi.woff2",
+      "sha256": "240e62e49fe484a5a9ff702a15f52c91ef9a33263885da76d06d382ab5ae50b4",
+      "matches_source": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-500-normal.woff2"
+    },
+    {
+      "path": "frontend/dist/assets/archivo-latin-ext-500-normal-RFhg4CpD.woff2",
+      "sha256": "28cec7e09bdc84d89729f161eadaead32eb25b7ce7de26117fb82d0834c432d9",
+      "matches_source": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-ext-500-normal.woff2"
+    },
+    {
+      "path": "frontend/dist/assets/archivo-narrow-vietnamese-600-normal-B3iMS2rD.woff2",
+      "sha256": "7271ec2926e4e22ecf0c11fe3e35bafad385a19f29f10437e40333c27479aa74",
+      "matches_source": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-vietnamese-600-normal.woff2"
+    },
+    {
+      "path": "frontend/dist/assets/archivo-vietnamese-400-normal-BF4g3tCF.woff2",
+      "sha256": "df8f5bfcc9225e329063d6daba87aa2dfd76e82b09acdc7167e91cdf70669724",
+      "matches_source": "frontend/node_modules/@fontsource/archivo/files/archivo-vietnamese-400-normal.woff2"
+    },
+    {
+      "path": "frontend/dist/assets/archivo-narrow-latin-700-normal-DtADLsoy.woff2",
+      "sha256": "062eae97e718b8a39ff5861d08046755eaf4c6f27f9a0fe861116d9d1305d6bf",
+      "matches_source": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-700-normal.woff2"
+    },
+    {
+      "path": "frontend/dist/assets/archivo-latin-ext-700-normal-DD_nkw6b.woff2",
+      "sha256": "8affe3b4758ec03c7c1a8b40c119209cbb1815fd836160570f94935ce9a683ec",
+      "matches_source": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-ext-700-normal.woff2"
+    },
+    {
+      "path": "frontend/dist/assets/archivo-latin-ext-600-normal-Dm61iqcg.woff2",
+      "sha256": "cd902f80bcf11cc6545648c156415deded5336611928c0fb6b02325ad3af13f0",
+      "matches_source": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-ext-600-normal.woff2"
+    },
+    {
+      "path": "frontend/dist/assets/archivo-narrow-vietnamese-500-normal-CbuGBAYj.woff2",
+      "sha256": "76d5aa42f903a904f88eb56e0541a7155553f462a1280b859f1c1c9747d62fb4",
+      "matches_source": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-vietnamese-500-normal.woff2"
+    },
+    {
+      "path": "frontend/dist/assets/archivo-latin-600-normal-3BBy0ZsW.woff2",
+      "sha256": "d9e8c29fdd348edde2a4f9aae438e569dd165bbbdebda78495824a2d9aaa67e8",
+      "matches_source": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-600-normal.woff2"
+    },
+    {
+      "path": "frontend/dist/assets/archivo-narrow-latin-ext-500-normal-CEqYmuFE.woff2",
+      "sha256": "5ce451965ac7127fcb317ddd93c7d70695db18af22e793cbe9721ffc13df66ff",
+      "matches_source": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-ext-500-normal.woff2"
+    },
+    {
+      "path": "frontend/dist/assets/archivo-narrow-latin-ext-700-normal-DCLoHMFv.woff2",
+      "sha256": "146b1f02c8b3ab29b767569524edcb5a83929212bbda070c0b8b7ab770e50c9a",
+      "matches_source": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-ext-700-normal.woff2"
+    },
+    {
+      "path": "frontend/dist/assets/archivo-narrow-vietnamese-700-normal-VsvP8OcS.woff2",
+      "sha256": "b09332a95c297693b88c38ffafaaf806b5b9ac253632c4dd1f8645c9e86d363e",
+      "matches_source": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-vietnamese-700-normal.woff2"
+    },
+    {
+      "path": "frontend/dist/assets/archivo-narrow-vietnamese-400-normal-uH49xrTy.woff2",
+      "sha256": "46224f0f0e4f621a5ea2bf68cd25cd5954c1fd73640a48ad27d61c4297f105b1",
+      "matches_source": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-vietnamese-400-normal.woff2"
+    },
+    {
+      "path": "frontend/dist/assets/archivo-latin-400-normal-C81ewxNO.woff2",
+      "sha256": "07f9160163da2ec0f6376ef9d27a2bb8163f98019ba798da4baafb154e30056e",
+      "matches_source": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-400-normal.woff2"
+    },
+    {
+      "path": "frontend/dist/assets/archivo-narrow-latin-ext-400-normal-BzcuidUP.woff2",
+      "sha256": "e34541922a09e3477853bc33465deb78be88f696e635f36c3a06d53e4f39bf7e",
+      "matches_source": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-ext-400-normal.woff2"
+    }
+  ],
+  "CSS_complete_mechanical_diffs": [
+    "archivo/500.css equals complete400.css after exact weight replacement",
+    "archivo/600.css equals complete400.css after exact weight replacement",
+    "archivo/700.css equals complete400.css after exact weight replacement",
+    "archivo-narrow/500.css equals complete400.css after exact weight replacement",
+    "archivo-narrow/600.css equals complete400.css after exact weight replacement",
+    "archivo-narrow/700.css equals complete400.css after exact weight replacement"
+  ],
+  "build_full_OFL_text_matches": []
+}

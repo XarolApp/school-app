@@ -1,0 +1,947 @@
+{
+  "checked_at_utc": "2026-10-13T19:07:24.443103+00:00",
+  "review_performed": "12 October before Safari interruption; current image hashes rechecked 13 October",
+  "snapshot_commit": "3fb779431583ec9893f8a44ef049e7c7e9f8c172",
+  "images": [
+    {
+      "path": "design/Logo Concepts Refinement Request/.thumbnail",
+      "sha256": "2ba111c6f7995dcb08c85204a1a783fbcdc0d3ab8976d6a9270e63199b1e0ada",
+      "size": [
+        298,
+        468
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "design/Logo Concepts Refinement Request/uploads/pasted-1789576013130-0.png",
+      "sha256": "2e5e4cbed6bea8de51a7c498d4ff32e3938cd6761b4291fe923432044af6ca0a",
+      "size": [
+        112,
+        113
+      ],
+      "format": "PNG"
+    },
+    {
+      "path": "design/archive/school-search-wireframe/.thumbnail",
+      "sha256": "6563c750a0f3ae2b56e5a4840b4d91b18a10cf03bbbbdb69ae87928eedacd090",
+      "size": [
+        640,
+        445
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "design/archive/school-search-wireframe/uploads/mcp/mcp-1788032693246-5me4s4.webp",
+      "sha256": "8c459976a9e84c5640f463614dce243fd1dc6c7c62af2178f9d2edff893257e4",
+      "size": [
+        768,
+        523
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "design/archive/school-search-wireframe/uploads/mcp/mcp-1788032693247-5aeajx.webp",
+      "sha256": "56499cf445110343820abf49ac7aa2ca283c31050259a2b93678a99fa79d5323",
+      "size": [
+        768,
+        521
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "design/archive/school-search-wireframe/uploads/mcp/mcp-1788032693247-86ipnr.webp",
+      "sha256": "f7757464626c581d3ed4e68a67dc7379665960c5fe35e2f78fd414774767ae89",
+      "size": [
+        768,
+        521
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "design/archive/school-search-wireframe/uploads/mcp/mcp-1788032693247-d6t5rh.webp",
+      "sha256": "4ac6b775e3e0712080db06c9cb75806016bacb1b1a211a70979e3588b7ba3dbe",
+      "size": [
+        768,
+        521
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "design/archive/school-search-wireframe/uploads/mcp/mcp-1788032693247-rm0xkm.webp",
+      "sha256": "e5a45c76082f722081e145f90183a6bd9dfe3fcc31287a3e9ad21af7c55123f6",
+      "size": [
+        768,
+        521
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "design/archive/school-search-wireframe/uploads/mcp/mcp-1788032693247-vkie9n.webp",
+      "sha256": "0e8d2aef5a628c12f8222426a863556268e705467d49e3b1bdfb2598e08aa943",
+      "size": [
+        768,
+        521
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "design/brand/ikona-512.png",
+      "sha256": "b252ac8d166364620bf270e1738db8416640552418450280d39cf0e615c11c6d",
+      "size": [
+        512,
+        512
+      ],
+      "format": "PNG"
+    },
+    {
+      "path": "design/brand/logo-1024.png",
+      "sha256": "20cbd05ee1cc3b88b6221d721558320561d63b55b63a75442e06ab79f933cee2",
+      "size": [
+        1024,
+        1024
+      ],
+      "format": "PNG"
+    },
+    {
+      "path": "design/brand/logo-512.png",
+      "sha256": "4ca90ea715f2ac482c0c1c9a010cc6e33c5cda9e758606c7bf88504fe6d5e136",
+      "size": [
+        512,
+        512
+      ],
+      "format": "PNG"
+    },
+    {
+      "path": "design/brand/profil-bile.png",
+      "sha256": "a307a0c857a90b3156ee4ca09261c58392d5e67d0c7b518dc9b4f63dab3a36da",
+      "size": [
+        1024,
+        1024
+      ],
+      "format": "PNG"
+    },
+    {
+      "path": "design/brand/profil-cerne.png",
+      "sha256": "ce88fda63d42ca6c7066f77f8ed333da45ffd95a43c85baf7b9aea728337dd7a",
+      "size": [
+        1024,
+        1024
+      ],
+      "format": "PNG"
+    },
+    {
+      "path": "design/system/.thumbnail",
+      "sha256": "cce56cc699d0b6bdbfa88ecd6084198a2711a6fec452bc0df1fc9b8ac62ce457",
+      "size": [
+        640,
+        427
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "design/system/templates/skolamatch-screen/.thumbnail",
+      "sha256": "53718f940fd44722b1800abe944dbf60f012ff77d329f3ddc411b8c46a6ba990",
+      "size": [
+        640,
+        432
+      ],
+      "format": "WEBP"
+    },
+    {
+      "path": "frontend/public/apple-touch-icon.png",
+      "sha256": "3ef0695e0276bccfc02561b0722cbd18ffa74a08dc3e28040d659929b7ceab76",
+      "size": [
+        180,
+        180
+      ],
+      "format": "PNG"
+    },
+    {
+      "path": "reports/beta-verification-2026-10-05/admin-desktop-closing.jpg",
+      "sha256": "51dc03cfb12cc09c5d5e82945e5546cc07f0e6c22ef38981167aa2333cfd4f33",
+      "size": [
+        1280,
+        900
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/beta-verification-2026-10-05/admin-desktop-matching.jpg",
+      "sha256": "332271dfd32f1e8bc6e7194166fc4d3aa53926b26d2accf44852946d887aa10f",
+      "size": [
+        1280,
+        900
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/beta-verification-2026-10-05/admin-desktop-overview.jpg",
+      "sha256": "752cc78f94ee3e3f05652aa3acb0be1936a1deb22a39d19309897a13a91ab56d",
+      "size": [
+        1280,
+        900
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/beta-verification-2026-10-05/admin-mobile-feedback.jpg",
+      "sha256": "22562991f27492a383e4d928329427042fef437a72e97a55aeba7b275a4cfc66",
+      "size": [
+        390,
+        844
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/beta-verification-2026-10-05/admin-mobile-overview.jpg",
+      "sha256": "ee755d69ecfd4603482196e4d7da079367324ecdcb777f03d058ce807181544b",
+      "size": [
+        390,
+        844
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/beta-verification-2026-10-05/checklist-complete.jpg",
+      "sha256": "ec8029eb4f516bf4e98254cc2189565cb9518cde10f13eb5624cb48bd6a6a49e",
+      "size": [
+        1280,
+        900
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/beta-verification-2026-10-05/mobile-closing-review.jpg",
+      "sha256": "301040acedaad417b51cb8db55bb16b1688b85a6d1a8c96c5f886182b58db18c",
+      "size": [
+        390,
+        844
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/beta-verification-2026-10-05/mobile-screenshot-preview.jpg",
+      "sha256": "ec9efc93ec59e50864a0d7948aad066d098969c008851ddd971f21e44816cae6",
+      "size": [
+        390,
+        844
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/beta-verification-2026-10-05/normal-admin-denied.jpg",
+      "sha256": "ed34e567640426eaf8b224c4637fc8852b3b3ba89c84a7ac7fa5735e5ef8414c",
+      "size": [
+        1280,
+        900
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/beta-verification-2026-10-05/private-profile-masked.jpg",
+      "sha256": "a230fdaa3e46329ca58038f61785dd156e1aafb8b23ef0a16082a5fb2f1af743",
+      "size": [
+        1280,
+        900
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/active-beta-closing-after.png",
+      "sha256": "278c4bd5d838f171642d02e6d437940de8592e450c8a0f45a87f3f6eaaf34303",
+      "size": [
+        1280,
+        720
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/admission-roadmap-mobile.jpg",
+      "sha256": "de949b2fc1a517a501708ae2c4ccb3c51255c37f88e9ebb177b73213c7ce4691",
+      "size": [
+        390,
+        844
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/auth-retry-browser-2026-10-10.png",
+      "sha256": "18966647d421876f0f6d09b10258c869ec4ab5b4cb3af41cc3df2af2005b2415",
+      "size": [
+        1280,
+        720
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/beta-admin-eight-tasks-browser-2026-10-10.png",
+      "sha256": "0434ebd54349219a31ab23429ab427da722158e898ad35bbe6a91341912c730e",
+      "size": [
+        1280,
+        720
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/beta-enrollment-retention-copy-2026-10-12.png",
+      "sha256": "6921c95907fda65be5fc33ccb45220f42f9d93685a7cf046555d466d20282dbb",
+      "size": [
+        1280,
+        986
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/beta-invitation-production.png",
+      "sha256": "8cad03c33fa4416c2c37aea3ca217cd2d659fc3aa1ee737d868552bb07022f25",
+      "size": [
+        1280,
+        884
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/beta-rating-keyboard-after.png",
+      "sha256": "5f08f19970f5cde3e4a5e66d15e168c99c44551abe4a88341de6cefd3cd53a2c",
+      "size": [
+        1280,
+        720
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/beta-renewal-guide-phone.png",
+      "sha256": "c6a8e3b1c1d084b95813d1460d5cf50198e3ba9a1c638348363d4ed331fa480a",
+      "size": [
+        375,
+        2630
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/beta-renewal-settings-phone.png",
+      "sha256": "1d549c5615a8287ef522d3158121ccb027f1ebc74afd713c610b189fb14383db",
+      "size": [
+        375,
+        3157
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/beta-review-parent-copy.png",
+      "sha256": "fcede944a13ba94c2f5efc15a72963ef92a3182dbe77c17860955ef86dfffd95",
+      "size": [
+        1280,
+        720
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/calculating-waiting-catalogue.png",
+      "sha256": "0d8ff5bccda024fa31127497e16d1d877ffa69c4d89962ec59de1c1457e07d6e",
+      "size": [
+        1280,
+        720
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/comparison-mixed-years-phone.png",
+      "sha256": "5e3cb60abd4f274122c82a25e49e9c4e27aed74bf502a15e139587d32b2e4650",
+      "size": [
+        375,
+        1481
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/confirmation-resend-captcha-after.png",
+      "sha256": "358a8dc1961206d4a7bdfee3cf6b2eaef77fbd3366959eec4d7e9b686efad68b",
+      "size": [
+        1280,
+        720
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/confirmation-resend-captcha-phone.png",
+      "sha256": "9c5055da45450b21bfbf91714f3cd186960868b038d4878d03fbbccf1a6b8588",
+      "size": [
+        375,
+        812
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/confirmation-return-after.png",
+      "sha256": "af12d676a99928e59d32cc920852bc5358056626ff799a1e2e6118a76fbd8389",
+      "size": [
+        1280,
+        720
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/confirmation-return-before.png",
+      "sha256": "af12d676a99928e59d32cc920852bc5358056626ff799a1e2e6118a76fbd8389",
+      "size": [
+        1280,
+        720
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/design-input-hook-fixed-2026-10-10.png",
+      "sha256": "7f2e5b60e6527b6d50ce53298ffb7d0126925173785364990920088c94b86c50",
+      "size": [
+        1280,
+        720
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/district-map-contrast.png",
+      "sha256": "80b13b3e78b891d184208272994fa182b237fab78fe55059747d012f5d4aaecb",
+      "size": [
+        1280,
+        720
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/email-hints-reset-phone-2026-10-10.png",
+      "sha256": "1a6eda472217b21d02293f1e15af4e4fb5e7be6b0d073351c31c1a77b127da90",
+      "size": [
+        375,
+        812
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/ended-beta-closing-after.png",
+      "sha256": "ecd5ff22248c4cc5aea487d12efc96a513347477088a20f7dd0a43bf22a9440b",
+      "size": [
+        1280,
+        720
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/ended-beta-closing-before.png",
+      "sha256": "16027195e9f907bdeadee3a779fc6139e31dde1b207e962803c9c44163cbb480",
+      "size": [
+        1280,
+        720
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/landing-access-price-phone.png",
+      "sha256": "d0cc7d5074f0b7b5b8bd50818aeaad8036467bf0fa04eee37fca591f6594d88f",
+      "size": [
+        375,
+        1177
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/landing-landscape-667.jpg",
+      "sha256": "ba6d06e35f16c9243dbb85fd6ee044c9e04493b40e5c533dfdae383795c438eb",
+      "size": [
+        667,
+        375
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/landing-landscape-current.png",
+      "sha256": "0311714c596475cce37178fdb5bda98a5d69d5fc62ce3a757fe5601f6e0cf1f9",
+      "size": [
+        812,
+        375
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/landing-landscape-peer-fixed-667x375.png",
+      "sha256": "a6da61aacceedc4d8b686a826ecaf80240cdc1591369edb75f21168ea7fe046d",
+      "size": [
+        667,
+        375
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/landing-live-count.jpg",
+      "sha256": "2d8dcfe12eaa640ae5edcf050e0c5dd3453e09de8bafdcf33a14fd6b8e61aa64",
+      "size": [
+        1280,
+        720
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/landing-peer-fixed-320x740.png",
+      "sha256": "87f403ffbdb749909ee910dc99f51640158ae8eb6b25f692cc936acdc2d6b9c9",
+      "size": [
+        320,
+        740
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/landing-phone-320.jpg",
+      "sha256": "72d92e3ae41869c7e8a00b347f55e14cb3b32f7659afb7d2fa8673375e0e242e",
+      "size": [
+        320,
+        740
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/legal-updated-date-phone.png",
+      "sha256": "b27572ed8778b5ac52af6dc158da338d16bd1724c5abd02f62a0ec1f54b43087",
+      "size": [
+        375,
+        812
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/logo-editor-avatar-copy-2026-10-12.png",
+      "sha256": "046cb10ee77d7e474313891f2ef3cb815ff14d59953cda6e0cec5adecd4caa63",
+      "size": [
+        1280,
+        720
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/map-capacity-hint-peer-fixed-375x812.png",
+      "sha256": "7dd2d3215a715aefc09d087d43d2092315c0705584543bfa186aa0008f514920",
+      "size": [
+        375,
+        812
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/map-older-year-disclosure-phone.png",
+      "sha256": "7f5a41697ef6880c30816f4993fd05a31af2e0c8b9acb3395668055951909c55",
+      "size": [
+        375,
+        812
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/marketing-promo-cta-295-2026-10-10.png",
+      "sha256": "c7b415407f4896bb0dfde28870ce5110fee11599c5b58507759587ef9c13ad41",
+      "size": [
+        1080,
+        1920
+      ],
+      "format": "PNG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/marketing-promo-hook-60-2026-10-10.png",
+      "sha256": "1e0107771f14accc052d0b7551e54d09c18e7e7250300a84a88c7d742a5caafe",
+      "size": [
+        1080,
+        1920
+      ],
+      "format": "PNG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/marketing-promo-place-130-2026-10-10.png",
+      "sha256": "3653e2da21163d80fd79dbabb97208e12c93fe8450b776bbbb888fd38d0f76c9",
+      "size": [
+        1080,
+        1920
+      ],
+      "format": "PNG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/marketing-promo-quiz-234-before-2026-10-10.png",
+      "sha256": "29d4bbc62da7acd7d74c5d55ef437f9df4a11cc8b5993f83af93f96d215cf2bb",
+      "size": [
+        1080,
+        1920
+      ],
+      "format": "PNG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/marketing-promo-quiz-234-fixed-2026-10-10.png",
+      "sha256": "043b44e50441ddfc13a24897b596e09ed66d07bbd966c9eed099f75f5fad309c",
+      "size": [
+        1080,
+        1920
+      ],
+      "format": "PNG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/matrix-followup-phone.png",
+      "sha256": "c488d7a3f4428c6c0e3cc24227bc91c4a2ecdf34f37e90a1d0fcdec27300c5d9",
+      "size": [
+        375,
+        4130
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/matrix-instruction-language.png",
+      "sha256": "106f7d6c0b93cce3b2f38979ad782673f29a6c19867fc640132b304ddcbc60ea",
+      "size": [
+        1280,
+        720
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/method-phone-320.jpg",
+      "sha256": "46f30bbe64e0499eaed91aafd7c9b015441b16dccff862a0465f3ad419792f94",
+      "size": [
+        320,
+        740
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/monthly-trial-screen-after.png",
+      "sha256": "fdc5710d1cb897a5eb50441551b134a71062c4a08644540ff35ed301715a1dc3",
+      "size": [
+        375,
+        812
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/monthly-trial-screen-before.png",
+      "sha256": "b2b2517e5f6000b6db2845d3699a3c6101720dd4aa9dcd0b5620547310605d82",
+      "size": [
+        1280,
+        745
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/navigation-count-fixed-2026-10-10.png",
+      "sha256": "ff9cb8e3550d342d0ec0eede37a54cbbb5026c72d1310dc858b73eabce45d96c",
+      "size": [
+        1280,
+        800
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/navigation-phone-focus-2026-10-10.png",
+      "sha256": "fc3cf070e6f647797a144421d294289406a0fa9009412faf30344059ed9fed88",
+      "size": [
+        375,
+        812
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/orange-theme-rendered-contrast-2026-10-10.png",
+      "sha256": "5df872b91f36ca8e90c980c02e2c165972e6a5dc83a1c164224a8f3d39be85c6",
+      "size": [
+        1280,
+        720
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/payment-beta-parent-desktop.png",
+      "sha256": "b37051232a7703e6a2df0f7fc7356808a8a5a924596da812e8db5cd98fd1ee72",
+      "size": [
+        1280,
+        720
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/payment-beta-parent-phone.png",
+      "sha256": "cab49fd82287fd77fe63e7e9dd82ac6ad82d5088dcebdfd8cd3b2da99e7744ae",
+      "size": [
+        375,
+        812
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/payment-parent-unconfirmed-phone.png",
+      "sha256": "4705379d7f8c7aef71a1ef3348e122956b7e53eac098f52ac159760926e43e19",
+      "size": [
+        375,
+        812
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/payment-return-verification-phone.png",
+      "sha256": "c1dd3f06b7e6c08f3c47f037ddcfc1edecfff5a9d0e997f9c31390ce27db4f52",
+      "size": [
+        375,
+        812
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/payment-stripe-information-phone.png",
+      "sha256": "c642d6da5668139d8c40c984d0730089c007994c7ddd8d4d021daf44494d779e",
+      "size": [
+        375,
+        903
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/plan-card-information-desktop.png",
+      "sha256": "3ba628f80f4f411f611596ec8fa833458e32350994a348ae5cf25c030d60852b",
+      "size": [
+        1280,
+        856
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/plan-keyboard-monthly-after.png",
+      "sha256": "da13222862e8de59455e6e2e8ea6a27c776e62703a17b8c208b40cc8c25012a9",
+      "size": [
+        1280,
+        856
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/programme-unknown-desktop.jpg",
+      "sha256": "e9095dcdcdf2ce37de8dbe50aa29fa51d6898b7cc977803687eb855306dbb999",
+      "size": [
+        1280,
+        720
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/questionnaire-conditional-count-2026-10-12.png",
+      "sha256": "1de9d5aa5b46a85308c0ca98f712a637c303af409ca0ab2637f846963a58c2b9",
+      "size": [
+        1280,
+        720
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/questionnaire-lunch-coverage-copy.png",
+      "sha256": "2f3b9c6d281b790dc51b7d7cc6f56b66643c81e53fe8e63dec15505796b12bf9",
+      "size": [
+        1280,
+        930
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/questionnaire-private-option-marker-2026-10-12.png",
+      "sha256": "667a532e762cfe51b95427a2b134f68004e3a724d9079cc4454c04ef89533b15",
+      "size": [
+        1280,
+        720
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/quick-note-guide-phone-2026-10-10.png",
+      "sha256": "fa5c9d4eead79179bafd768778d6b6a81453e169d2e1c695eb2fbc05e9e037b7",
+      "size": [
+        375,
+        812
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/quick-note-settings-phone-2026-10-10.png",
+      "sha256": "34abb1b0cd33e7a9a264798c4ffd4d67bab5d49ad8679dec366a5c601280e099",
+      "size": [
+        375,
+        812
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/quiz-parent-unknown-answer-after.png",
+      "sha256": "f5ba54188d7cc631479121f75832786fc7251a802ae266ebee16656d22515462",
+      "size": [
+        375,
+        1570
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/quiz-privacy-admission-copy-desktop.png",
+      "sha256": "9e91880761c4f2fb1c74d9b1140e19e5af8547c68da4b11605965d586256eff9",
+      "size": [
+        1280,
+        1090
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/quiz-privacy-admission-copy-phone.png",
+      "sha256": "2586254740ecaba82f6565e9eb6cd0736140979b5d12c60bd323a5942541e023",
+      "size": [
+        375,
+        1680
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/result-count-grammar-phone.png",
+      "sha256": "d9b7791fef28ab06ee7e8532b7cc719110bb7ef027b44c2948355ae06f93a26c",
+      "size": [
+        375,
+        1672
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/school-missing-data-mobile.jpg",
+      "sha256": "12d16c56354c529882b02a0de93ef2c4c147def989be9021f94f5fa1ab6fd31d",
+      "size": [
+        390,
+        844
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/search-missing-data-desktop.jpg",
+      "sha256": "4515e2b6881177234afc5dba42bf0c5cd150dee5e9e14fb9893f97a1f5fa241b",
+      "size": [
+        1280,
+        720
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/search-older-year-phone.png",
+      "sha256": "1e930259fff9033c6d2f0cfecb3b248b6e7c293cdb03f7c2dc731e2af6acb139",
+      "size": [
+        375,
+        1021
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/search-single-result-cta-phone.png",
+      "sha256": "5998ebbfd686505237c27032d7e160d6b96dead1c31b7488aa384a575854adb2",
+      "size": [
+        375,
+        812
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/season-card-storage-trial-phone.png",
+      "sha256": "07a4e18ac500dadf9d800b847255d4e2b90eb7302cf174c2c06649fdbe3e7acf",
+      "size": [
+        375,
+        1248
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/settings-erasure-copy-desktop.png",
+      "sha256": "99ba151a9443d3edd52b13af8fdea8e7538a8dc9f6bfd30500f187beb06d1852",
+      "size": [
+        1280,
+        720
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/settings-erasure-copy-phone.png",
+      "sha256": "cc8c78e0aec07071b62ee99d5ee36ddf2b32a91d856f7ce353262d3f0fb2f671",
+      "size": [
+        375,
+        812
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/settings-expired-trial-phone.png",
+      "sha256": "1824e5dfd191ce1d19de37b701a996e2d562d6d8df65e5e0ba8ca9b1a05559b1",
+      "size": [
+        375,
+        2948
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/settings-name-owner-draft.png",
+      "sha256": "4d6f2a099ab6209d24553e66368e35c1767c38de03d5b7ebd3fb5ed6130fa0ea",
+      "size": [
+        1280,
+        720
+      ],
+      "format": "JPEG"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/settings-owner-queue.png",
+      "sha256": "646d588a97ce8843fe4f933d74085e2e5d81341b86aa946493a3d78ce28c05e7",
+      "size": [
+        1280,
+        720
+      ],
+      "format": "JPEG"
+    }
+  ],
+  "visual_method": "Every one of99 image paths inspected in31 contact sheets at native phone width and up to640px desktop width;122 panels cover all image sections, including long phone screenshots. Original frames decoded earlier; no pixel or original file changed.",
+  "all_31_sheets_viewed": true,
+  "all_122_panels_viewed": true,
+  "notes": [
+    "Brand exports and apple-touch mark render coherently. Actual iOS home-screen crop/tint remains manual.",
+    "Six watermarked Mobbin references and pasted to-das logo are third-party historical references; do not republish without rights acceptance.",
+    "Historical design thumbnails retain historical brand, counts and dates. Test screenshots are dated evidence and include synthetic cohorts/counts. Old trial/retention/quick-note/beta dates are not current runtime promises. Preserve before-state screenshots.",
+    "Confirmation-return pair is byte-identical, so cannot establish visual before/after difference. Current routing proof is separate.",
+    "Small-phone method screenshot wraps the brand into multiple lines; current physical target-device/header acceptance remains C25, without inferring a present bug from a dated image."
+  ],
+  "handouts": [
+    {
+      "path": "docs/handouts/hudba-pri-studiu.docx",
+      "sha256": "5203c2cceaf93afe5edd95176d461c062b63c109d3d773046548304f890d5f09",
+      "all_XML_parts_parsed": true,
+      "all_document_text_read": true,
+      "paragraphs": 30,
+      "rendered_pages": 2,
+      "all_pages_visually_inspected": true,
+      "tracked_changes": 0,
+      "comments_media_macros": false,
+      "source": "https://www.nu.edu/blog/can-music-help-you-study-and-focus/",
+      "source_check": "Citation publication/title-year and attributed advice agree with referenced university blog. Source fidelity is not independent scientific validation; learning-style/brain mechanism claims need qualified evidence if ever promoted into product advice."
+    },
+    {
+      "path": "docs/handouts/hudba-pri-cviceni.docx",
+      "sha256": "92081af165b15476643a5a99afc37e017749de45fe6abed0e6474f2a201a3203",
+      "all_XML_parts_parsed": true,
+      "all_document_text_read": true,
+      "paragraphs": 21,
+      "rendered_pages": 2,
+      "all_pages_visually_inspected": true,
+      "tracked_changes": 0,
+      "comments_media_macros": false,
+      "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8167645/",
+      "source_check": "The four numerical example groups and outcome/limitation distinction agree with the cited review; no independently repeated experiment or universal training recommendation is implied."
+    }
+  ],
+  "renderer": "Bundled Python and bundled override/soffice through documents render_docx.py; original SHA unchanged. Four full page PNGs visually inspected.",
+  "handout_runtime_reference_search": "No handout filenames or path references found in frontend/src, frontend/public, server.js or authored scripts; not proof of every external distribution. Peer originals remain untracked/unstaged.",
+  "font_evidence": "font-build-provenance-2026-10-13.json",
+  "audio_evidence": "audio-generator-parity-2026-10-13.json",
+  "limits": [
+    "Snapshot visual review does not verify current full-app gestures/keyboard/storage/CAPTCHA/browser/device acceptance.",
+    "Safari attempt was interrupted before a result. No Safari pass is claimed. The isolated beta-preview DOM reported Archivo body declaration but an empty document.fonts collection; preview alone does not verify production font loading.",
+    "Five audio waveforms already decode with no clipped samples and now match deterministic authored synthesis exactly. Listening, final-video mix/physical playback remain manual marketing gates.",
+    "WOFF1 name directories are decoded, WOFF2 headers/build hashes agree, but complete WOFF2 metadata/glyph decoding is not claimed; dependency fonts remain outside authored-source line coverage.",
+    "No product source, peer assets, service/schema/data/provider or legal policy changed; new commits during interruption require separate current-source delta review."
+  ]
+}
