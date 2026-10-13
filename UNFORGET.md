@@ -2054,3 +2054,7 @@ C64 copy verification, 13 October: actual current synthetic dialog/banner, adult
 - [ ] S18/S10: recover already-corrupted168/195 inputs and review smaller12/164 retained corruption; reconcile exact current source/campus/year/REDIZO/health/structure/citation/rank facts before promotion. No guessed repair, paid rerun or live write.
 - [ ] C66: apply ready scalar-number guard/regression after peer release; true/false/arrays/whitespace currently become JPZ scores. Check connected onboarding/profile coercion boundaries. [Patch](reports/deployment-review-2026-10-07/numeric-shape-guard-2026-10-13.patch). Candidate209-test pass is not a current pass after guard rollback.
 - [ ] Re-review final concurrent lazy-explanation/API/pending-layout/server/test/style changes. All four immutable prior reads are complete but later hashes changed. Preserve health/owner/hidden-school gates and require localhost founder acceptance before feature push. [Snapshot evidence](reports/deployment-review-2026-10-07/deferred-source-review-2026-10-13.json).
+
+## Feature explanations needed — 13 October
+
+- [ ] Write detailed, founder-readable explanations of how each product feature works (questionnaire scoring and ranking, the AI explanations and their lazy fill order, the school page "Proč tahle shoda" card, admissions/cutoff display, beta access and trial rules, sharing links). Aim for a plain-language guide a new team member or the founder can read without the code. Include what each feature deliberately does NOT do, and where the rules live in code.
