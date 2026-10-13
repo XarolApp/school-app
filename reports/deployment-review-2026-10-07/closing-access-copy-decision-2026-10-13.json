@@ -1,0 +1,71 @@
+{
+  "date": "2026-10-13",
+  "base_commit": "091c5cfa9a5069756442c1bc5d9ddc84d7030afb",
+  "decision": "Founder: testing continues after closing completion, with written feedback still required every 48 hours until global cutoff.",
+  "source_change": "Exactly the student/adult reassure paragraphs in closing dialog and banner; no access/RPC/schema behavior change.",
+  "files": [
+    {
+      "path": "frontend/src/components/BetaClosingQuestionnaire.jsx",
+      "sha256_before": "4019a711331cccc41bcc89a28775a1ddb220f19222a7eb7d93eaecb0c3ea4917",
+      "sha256_after": "843d90a3e230d622220a0459d1867b1b62920849ee45f205da72bc34ba316ed2",
+      "lines": 84,
+      "method": "Fully reviewed exact baseline plus complete own copy-only replacement/checkpoint text read in this turn"
+    },
+    {
+      "path": "frontend/src/components/BetaTools.jsx",
+      "sha256_before": "bb5dc57148bb640c77c544f5df3445440d8141d39bc48bd853edd7b2f76b36ad",
+      "sha256_after": "90c9cb09bcd0c0daa6161b341f898a016518fd8a7efb58c00926f6c496d547fa",
+      "lines": 129,
+      "method": "Fully reviewed exact baseline plus complete own copy-only replacement/checkpoint text read in this turn"
+    },
+    {
+      "path": "docs/skolamatch_current_status.md",
+      "sha256_before": "f2d0259270104a558e62e0d781cc1643b3c91682a63809675b864b4d6ca061c6",
+      "sha256_after": "88e9c9ccdd16f3be32d8751038e37b5e6da7f798834681e6ed737fba58f3b956",
+      "lines": 1112,
+      "method": "Fully reviewed exact baseline plus complete own copy-only replacement/checkpoint text read in this turn"
+    },
+    {
+      "path": "UNFORGET.md",
+      "sha256_before": "aa59d51584216a492a04b4d555aa88f44632c4f33970308ee23a13b25286ba96",
+      "sha256_after": "05f40776c1d712aad666e309ebd2db4855d0f2fb1a2ff1f2ec5aae50334df281",
+      "lines": 2047,
+      "method": "Fully reviewed exact baseline plus complete own copy-only replacement/checkpoint text read in this turn"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/REPORT.md",
+      "sha256_before": "bdec8faa8a8ca0d11b4221b556aed431fa68a4b485e9858d6240e68ce6ec47f6",
+      "sha256_after": "096e95c35cd223865cd87bad6a65ae31c2108ba3ca9e655209bb428b6ef9ba98",
+      "lines": 279,
+      "method": "Fully reviewed exact baseline plus complete own copy-only replacement/checkpoint text read in this turn"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
+      "sha256_before": "7304b1c7ee67a42b128940440b7b6a50dd3cc096be716e7d5519de4cfcae8bd7",
+      "sha256_after": "9efb003e4f8f5b381c3d4843b18e304bb9b4ef14fc17b9a0a4410f49b736b853",
+      "lines": 376,
+      "method": "Fully reviewed exact baseline plus complete own copy-only replacement/checkpoint text read in this turn"
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
+      "sha256_before": "40cf35aa23be77ce8fbf2adf5b3a2d96cbfc493cd5e64f1a0ab59b189afc9a8c",
+      "sha256_after": "9978e6f54ed25aa5fb59494e9291413320bde2de748c45f9671ede987e153f11",
+      "lines": 706,
+      "method": "Fully reviewed exact baseline plus complete own copy-only replacement/checkpoint text read in this turn"
+    }
+  ],
+  "verification": {
+    "local_url": "http://127.0.0.1:5175/dotaznik",
+    "environment": "Actual current React and Express; synthetic loopback auth/database only, no hosted account or writes.",
+    "dom": "Current student dialog and status banner both show the full conditional 48-hour sentence; source checks confirm matching adult variants.",
+    "screenshot": "closing-access-feedback-copy-2026-10-13.png",
+    "lint": "pass, 11 existing warnings",
+    "build": "pass, existing chunk warnings",
+    "access_control": "Existing expired-completed rolling-access pure control remains valid; unchanged access helper/RPC. Real deployed transitions not independently accepted."
+  },
+  "limits": [
+    "Four active peer files deferred; no peer sources edited.",
+    "Real Safari/iOS/Android, SQL/grants/profile transitions, controller/health-derived-data and payments gates remain open.",
+    "Review not complete; current counts classify evidence, not release approval."
+  ]
+}

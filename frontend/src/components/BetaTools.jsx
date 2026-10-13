@@ -40,7 +40,7 @@ function BetaToolsUI({ profile, canShow, isPasswordRecovery, userId, refreshProf
   }, [canShow,userId,location.pathname,navigate,refreshProfile]);
   return <>
     {canShow && profile.betaProgramActive && beta?.closing_due_at && !beta.closing_done_at && !bannerHidden && <div className="beta-banner beta-banner-closing" data-beta-tools role="status">
-      {profile.closingPaused?'Před pokračováním je potřeba závěrečný dotazník.':'Závěrečný dotazník je připravený. Na odpovědi je 24 hodin.'} {parent?'Po odeslání můžete web dál používat až do konce beta testování.':'Po odeslání můžeš web dál používat až do konce beta testování.'}
+      {profile.closingPaused?'Před pokračováním je potřeba závěrečný dotazník.':'Závěrečný dotazník je připravený. Na odpovědi je 24 hodin.'} {parent?'Závěrečným dotazníkem testování nekončí. Web můžete dál používat do konce bety, pokud nám aspoň jednou za 48 hodin pošlete zpětnou vazbu.':'Závěrečným dotazníkem testování nekončí. Web můžeš dál používat do konce bety, pokud nám aspoň jednou za 48 hodin pošleš zpětnou vazbu.'}
       <button type="button" className="ss-btn ss-btn-primary" onClick={()=>setClosingOpen(true)}>Vyplnit dotazník</button>
       <button type="button" className="beta-banner-close" aria-label="Skrýt oznámení" onClick={()=>setBannerHidden(true)}><X size={18} aria-hidden="true" /></button>
     </div>}

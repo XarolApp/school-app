@@ -48,7 +48,7 @@ export default function BetaClosingQuestionnaire({role,onDone,onCancel,reviewOnl
   return <div className="beta-closing" ref={rootRef}>
     <p className="ss-eyebrow">{step+1} / 5 · {[parent?'O Vás':'O tobě','Hodnota','Placení','Vzhled a budoucnost','Nepovinná recenze'][step]}</p>
     <p className="beta-closing-honest">{parent?'Odpovídejte upřímně':'Odpovídej upřímně'} — nic neodsuzujeme, špatná zpráva nám pomůže víc než pochvala.</p>
-    <p className="ss-body-sm beta-closing-reassure">{parent?'Po odeslání můžete web dál používat až do konce beta testování.':'Po odeslání můžeš web dál používat až do konce beta testování.'}</p>
+    <p className="ss-body-sm beta-closing-reassure">{parent?'Závěrečným dotazníkem testování nekončí. Web můžete dál používat do konce bety, pokud nám aspoň jednou za 48 hodin pošlete zpětnou vazbu.':'Závěrečným dotazníkem testování nekončí. Web můžeš dál používat do konce bety, pokud nám aspoň jednou za 48 hodin pošleš zpětnou vazbu.'}</p>
     {step===0 && <>
       <p>Role: {({'8':'8. třída','9':'9. třída',rodic:'Rodič',ucitel:'Učitel',jine:'Jiné'})[role]}</p>
       <Choice label={parent?'Máte už školu vybranou?':'Máš už školu vybranou?'} value={a.selected} options={['ano','pul','zatim_ne'].map((v,i)=>[v,['Ano, definitivně','Tak z půlky','Zatím vůbec'][i]])} onChange={v=>set('selected',v)} />

@@ -316,8 +316,8 @@
     "method": "Complete current file read in bounded ranges with truncated parts reread, or exact verified full baseline plus every subsequent complete diff (canonical SQL/UNFORGET). Own narrow corrections and before/after actual-source/browser checks verified. Full read does not establish live or broad lifecycle acceptance."
   },
   "frontend/src/components/BetaTools.jsx": {
-    "status": "reviewed",
-    "sha256": "bb5dc57148bb640c77c544f5df3445440d8141d39bc48bd853edd7b2f76b36ad",
+    "status": "complete_after_concurrent_change",
+    "sha256": "90c9cb09bcd0c0daa6161b341f898a016518fd8a7efb58c00926f6c496d547fa",
     "lines": 129,
     "read_ranges": [
       [
@@ -325,9 +325,10 @@
         129
       ]
     ],
-    "review_kind": "Exact unchanged fully read baseline plus every complete current diff/connected integration range and owned fixes",
-    "baseline": "345b95b",
-    "note": "Current committed delta and connected ranges fully read; owned fixes verified. Existing privacy/access/source acceptance remains explicit."
+    "reviewer": "root",
+    "previous_complete_sha256": "bb5dc57148bb640c77c544f5df3445440d8141d39bc48bd853edd7b2f76b36ad",
+    "method": "Fully reviewed exact baseline plus complete own copy-only replacement/checkpoint text read in this turn",
+    "note": "C64 copy decision only; unchanged access and separate manual gates preserved."
   },
   "plans/README.md": {
     "sha256": "b92c5c1689c530a44dbcd5ffd1d9d30072f8d6c84dd72bd7cfeb16d90d1be7a0",
@@ -1360,19 +1361,19 @@
     "previous_complete_sha256": "ae048c6b1cf311290b0ec7f582568f304a9b3fa59e310054ce91ceb75999cfa5"
   },
   "docs/skolamatch_current_status.md": {
-    "sha256": "f2d0259270104a558e62e0d781cc1643b3c91682a63809675b864b4d6ca061c6",
-    "lines": 1108,
+    "status": "complete_after_concurrent_change",
+    "sha256": "88e9c9ccdd16f3be32d8751038e37b5e6da7f798834681e6ed737fba58f3b956",
+    "lines": 1112,
     "read_ranges": [
       [
         1,
-        1108
+        1112
       ]
     ],
-    "status": "complete",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-11T17:43:27.348581+00:00",
-    "previous_complete_sha256": "d5a2fabcc5e6f47eaad1ca108194fa0a7114f502d91199865830d0ef4e8289d7",
-    "method": "Exact fully reviewed baseline plus complete own asset/workbook/C58 factual append or status phrase inspected. No source/data/provider acceptance inferred."
+    "previous_complete_sha256": "f2d0259270104a558e62e0d781cc1643b3c91682a63809675b864b4d6ca061c6",
+    "method": "Fully reviewed exact baseline plus complete own copy-only replacement/checkpoint text read in this turn",
+    "note": "C64 copy decision only; unchanged access and separate manual gates preserved."
   },
   "reports/deployment-review-2026-10-07/probe-services.cjs": {
     "sha256": "b47240d76e47550d2a307d302f8714ae7edcbe3074829e02de8d6a334334fe60",
@@ -1389,21 +1390,23 @@
     "method": "Full source read across recorded continuation turns, including missing middleware/brainstorm ranges and complete authored diffs. Read means inspected, not defect-free or runtime-approved."
   },
   "reports/deployment-review-2026-10-07/REPORT.md": {
-    "status": "reviewed",
-    "sha256": "bdec8faa8a8ca0d11b4221b556aed431fa68a4b485e9858d6240e68ce6ec47f6",
-    "lines": 279,
+    "status": "complete_after_concurrent_change",
+    "sha256": "c5fb44a6bacc3f9ad5e8adf41bc3f46b194a93c9a4bcbf3d34de94d728c01dae",
+    "lines": 281,
     "read_ranges": [
       [
         1,
-        279
+        281
       ]
     ],
-    "review_kind": "unchanged fully read HEAD plus complete owned committed-delta appendix",
-    "note": "All new current-source and live-read qualifications reviewed; prior dated evidence preserved."
+    "reviewer": "root",
+    "previous_complete_sha256": "bdec8faa8a8ca0d11b4221b556aed431fa68a4b485e9858d6240e68ce6ec47f6",
+    "method": "Fully reviewed exact baseline plus complete own copy-only replacement/checkpoint text read in this turn",
+    "note": "C64 copy decision only; unchanged access and separate manual gates preserved."
   },
   "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md": {
-    "status": "reviewed",
-    "sha256": "7304b1c7ee67a42b128940440b7b6a50dd3cc096be716e7d5519de4cfcae8bd7",
+    "status": "complete_after_concurrent_change",
+    "sha256": "9efb003e4f8f5b381c3d4843b18e304bb9b4ef14fc17b9a0a4410f49b736b853",
     "lines": 376,
     "read_ranges": [
       [
@@ -1411,8 +1414,10 @@
         376
       ]
     ],
-    "review_kind": "unchanged fully read HEAD plus complete owned committed-delta appendix",
-    "note": "All new current-source and live-read qualifications reviewed; prior dated evidence preserved."
+    "reviewer": "root",
+    "previous_complete_sha256": "7304b1c7ee67a42b128940440b7b6a50dd3cc096be716e7d5519de4cfcae8bd7",
+    "method": "Fully reviewed exact baseline plus complete own copy-only replacement/checkpoint text read in this turn",
+    "note": "C64 copy decision only; unchanged access and separate manual gates preserved."
   },
   "reports/deployment-review-2026-10-07/script-findings.md": {
     "sha256": "67e42c93ea061f4892aa3494ed0063f009e3b03d2f238bb84d76efa1f0cbd0e7",
@@ -2143,17 +2148,19 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "status": "reviewed",
-    "sha256": "aa59d51584216a492a04b4d555aa88f44632c4f33970308ee23a13b25286ba96",
-    "lines": 2047,
+    "status": "complete_after_concurrent_change",
+    "sha256": "ac2059fd88f8efe53cde2e1dfbf0b183b4165a8954f56e30837b298cb4218dca",
+    "lines": 2049,
     "read_ranges": [
       [
         1,
-        2047
+        2049
       ]
     ],
-    "review_kind": "unchanged fully read HEAD plus complete owned committed-delta appendix",
-    "note": "All new current-source and live-read qualifications reviewed; prior dated evidence preserved."
+    "reviewer": "root",
+    "previous_complete_sha256": "aa59d51584216a492a04b4d555aa88f44632c4f33970308ee23a13b25286ba96",
+    "method": "Fully reviewed exact baseline plus complete own copy-only replacement/checkpoint text read in this turn",
+    "note": "C64 copy decision only; unchanged access and separate manual gates preserved."
   },
   "frontend/src/api.js": {
     "status": "reviewed",
@@ -2283,8 +2290,8 @@
     "method": "Full current source read in bounded ranges; beta closing file reread completely after truncated combined output. Released Phase 6 checked after commit; own complete diffs inspected. Coverage is not full runtime approval. Account ownership findings C13/C14/C16 remain."
   },
   "frontend/src/components/BetaClosingQuestionnaire.jsx": {
-    "status": "reviewed",
-    "sha256": "4019a711331cccc41bcc89a28775a1ddb220f19222a7eb7d93eaecb0c3ea4917",
+    "status": "complete_after_concurrent_change",
+    "sha256": "843d90a3e230d622220a0459d1867b1b62920849ee45f205da72bc34ba316ed2",
     "lines": 84,
     "read_ranges": [
       [
@@ -2292,9 +2299,10 @@
         84
       ]
     ],
-    "review_kind": "Exact unchanged fully read baseline plus every complete current diff/connected integration range and owned fixes",
-    "baseline": "345b95b",
-    "note": "Current committed delta and connected ranges fully read; owned fixes verified. Existing privacy/access/source acceptance remains explicit."
+    "reviewer": "root",
+    "previous_complete_sha256": "4019a711331cccc41bcc89a28775a1ddb220f19222a7eb7d93eaecb0c3ea4917",
+    "method": "Fully reviewed exact baseline plus complete own copy-only replacement/checkpoint text read in this turn",
+    "note": "C64 copy decision only; unchanged access and separate manual gates preserved."
   },
   "frontend/src/components/BetaEnrollment.jsx": {
     "sha256": "e79cc9e4050748ddbeeb5a91223d79f6adb73f3079fb36d1db1eb8b7f3725f16",
@@ -3056,17 +3064,19 @@
     "method": "Full current source read in complete bounded ranges (including previous-turn api.js 1-180/181-360/361-end and tokens.js 1-150/151-end); all subsequent own narrow diffs inspected. App/ProtectedRoute reread after bc1f826. Read is not runtime/service or legal acceptance."
   },
   "reports/deployment-review-2026-10-07/continuation-findings.md": {
-    "status": "reviewed",
-    "sha256": "40cf35aa23be77ce8fbf2adf5b3a2d96cbfc493cd5e64f1a0ab59b189afc9a8c",
-    "lines": 706,
+    "status": "complete_after_concurrent_change",
+    "sha256": "88cede2b7b84381ac8a9cbe15f73e39adaf1d5d84c52c0b5459b701647b2f6dd",
+    "lines": 708,
     "read_ranges": [
       [
         1,
-        706
+        708
       ]
     ],
-    "review_kind": "unchanged fully read HEAD plus complete owned committed-delta appendix",
-    "note": "All new current-source and live-read qualifications reviewed; prior dated evidence preserved."
+    "reviewer": "root",
+    "previous_complete_sha256": "40cf35aa23be77ce8fbf2adf5b3a2d96cbfc493cd5e64f1a0ab59b189afc9a8c",
+    "method": "Fully reviewed exact baseline plus complete own copy-only replacement/checkpoint text read in this turn",
+    "note": "C64 copy decision only; unchanged access and separate manual gates preserved."
   },
   "frontend/src/components/schoolDetail/SimilarSchools.jsx": {
     "sha256": "30490c3d420119d7e6754521ded1e7a7a9d32d53d2f53cb58666cfee50fee9ec",
