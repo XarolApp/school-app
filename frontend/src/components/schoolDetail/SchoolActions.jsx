@@ -166,7 +166,7 @@ function SchoolActions({ school, isFavorite, onFavoriteChange, barRef, publicVie
   const compareButton = (
     <button type="button" className="ss-btn ss-btn-secondary" onClick={handleCompare}>
       <Scale size={16} aria-hidden="true" />
-      {compared ? 'K porovnání' : 'Přidat k porovnání'}
+      {compared ? 'Přidána k porovnání' : 'Přidat k porovnání'}
     </button>
   );
   const shareButton = (
