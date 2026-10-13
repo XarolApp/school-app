@@ -1,11 +1,11 @@
 {
-  "checked_at_utc": "2026-10-13T20:25:37.058848+00:00",
-  "commit": "a89a911aa7c8466db49baad90595f74d26dd8eac",
+  "checked_at_utc": "2026-10-13T20:46:14.447464+00:00",
+  "commit": "b59a5d695e3d243371f03e74fdb4b66e9109bb96",
   "note": "Current hash plus full read-range evidence only. Read does not mean defect-free. Generated/binary classification is not review completion. Ignored external scrape corpora are outside this tracked/untracked inventory and require separate accounting.",
   "counts": {
-    "current_full_read": 791,
+    "current_full_read": 794,
     "binary_requires_asset_check": 111,
-    "generated_or_audit_artifact": 231,
+    "generated_or_audit_artifact": 234,
     "pending_or_changed": 12,
     "removed_or_missing": 2
   },
@@ -993,8 +993,8 @@
     },
     {
       "path": "UNFORGET.md",
-      "sha256": "128baa22661575d817e3c3266213c68bce1ae68692dfa61d1e84dfcfa5fd7bc0",
-      "lines": 2056,
+      "sha256": "135ff0181a7864b746dabba493b3020f6140c6cdc92a9482c4c125e6fe63e5c8",
+      "lines": 2067,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -3135,8 +3135,8 @@
     },
     {
       "path": "docs/skolamatch_current_status.md",
-      "sha256": "3bc70c13ac2ee77fd1a10e0e7508df34a278b33677db7bef13f3cb954df20ae5",
-      "lines": 1114,
+      "sha256": "06c97bf6e9b825ea9a923687794513158844635334f3528cd7b4a48df02ee309",
+      "lines": 1116,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -3341,6 +3341,33 @@
       "path": "frontend/public/favicon.svg",
       "sha256": "c8c5f3efe80d3a5008955b24de19bc1ffb3fb3a1fbc7ab8f2ce6c37e13e2565a",
       "lines": 1,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
+    },
+    {
+      "path": "frontend/public/font-licenses/Archivo-Narrow-OFL.txt",
+      "sha256": "d75534d749c6421b070453af6a3fcbfbcb4bb2b9186392dfbe5a567535e806d5",
+      "lines": 93,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
+    },
+    {
+      "path": "frontend/public/font-licenses/Archivo-OFL.txt",
+      "sha256": "c3c8402eec0e31dc9a76851235b1c02a0bb821488b2db8e35bcc2ab60ca8fc2b",
+      "lines": 93,
+      "status": "current_full_read",
+      "matching_evidence": [
+        "root-coverage.json"
+      ]
+    },
+    {
+      "path": "frontend/public/font-licenses/README.md",
+      "sha256": "3d64714c35123b226c171ba3bc9a1cbdd34d49ea420ec489633b5dc16c356c19",
+      "lines": 11,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -3667,8 +3694,8 @@
     },
     {
       "path": "frontend/src/components/ReasonPending.jsx",
-      "sha256": "1f732adb1319516cbdb9abd7d09e0c2223ac978c6d82429820d03f2b450a0756",
-      "lines": 32,
+      "sha256": "855647ca436927b31f655fde727d803149de81d18a6749299cebaace59aaafaf",
+      "lines": 34,
       "status": "pending_or_changed",
       "matching_evidence": []
     },
@@ -4606,8 +4633,8 @@
     },
     {
       "path": "frontend/src/pages/Questionnaire.jsx",
-      "sha256": "b6a17db6997034ae39d4c4632c66d309d5ffe9bc1e9322bc52425c951e914172",
-      "lines": 1025,
+      "sha256": "dd01b2ed5e63300527439709e8e926f027af7cedb27d8556c501078ae8329145",
+      "lines": 1033,
       "status": "pending_or_changed",
       "matching_evidence": []
     },
@@ -4944,8 +4971,8 @@
     },
     {
       "path": "frontend/src/pages/questionnaire.css",
-      "sha256": "47a85249098ecd236f63dd70905a396073e037285f2e46a893b5c535a5f4d69a",
-      "lines": 543,
+      "sha256": "9f4b40f58fd92d8993b17567f4c63dbc1ce2cadb554ef0384c1ae2fc6c156758",
+      "lines": 555,
       "status": "pending_or_changed",
       "matching_evidence": []
     },
@@ -6659,14 +6686,14 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/COORDINATION.md",
-      "sha256": "23acb5c32006eaf68d889f72446992f13dcedada5614a33bd687605be4cfaf7e",
-      "lines": 612,
+      "sha256": "e1651d38660d4157b14f00e2a0e5575732d22ed1546d5daeca55593e6e0fa495",
+      "lines": 616,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
     {
       "path": "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md",
-      "sha256": "d6edc1eb8a6874adb6ede019d205cb15632fa900447be49938e5e0b351615aa2",
+      "sha256": "066ce3255b1fb1676ebcf9bec6b246a0ea3fe6d231914dbf8a7477af333e7df2",
       "lines": 382,
       "status": "current_full_read",
       "matching_evidence": [
@@ -6675,8 +6702,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/REPORT.md",
-      "sha256": "ec6ace49be98aeaeedca50395175d9f97bb4c6c954e5e9678e94589be8c17e03",
-      "lines": 283,
+      "sha256": "bd7a716b0b8acc65b95880e065ed556c303fa863dd12c8b2424e5e1a7ad4ad05",
+      "lines": 285,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -7090,8 +7117,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/continuation-findings.md",
-      "sha256": "df9a7cdb90599a7e053999f1f4b0da6598c9e027a72611440b598f57feb3d672",
-      "lines": 716,
+      "sha256": "b3ef1eecde3f1005984f40f1677d69ef8087b8384e1eb33c8efc871336315219",
+      "lines": 720,
       "status": "current_full_read",
       "matching_evidence": [
         "root-coverage.json"
@@ -7106,8 +7133,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/coverage-status.json",
-      "sha256": "3f176d63c5db42bf8a8bce3b924009e4bd6b670720e3432d89d53777afd3a2d9",
-      "lines": 9613,
+      "sha256": "08421948488e7fedc5ab6a89eb776867793a1018647a68ad0b433d0defa361b5",
+      "lines": 9629,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -7430,6 +7457,13 @@
       "path": "reports/deployment-review-2026-10-07/font-build-provenance-2026-10-13.json",
       "sha256": "7f754a183b0cfd1ec9352daea2d8b9eda35bd615a7dc33071df5271497a5ed45",
       "lines": 859,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/font-licence-copy-verification-2026-10-13.json",
+      "sha256": "b71d8324717d99d8147e5a950cb470b81b9bf60a8f39ca3ef9bd80b52ed92d82",
+      "lines": 48,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -8572,8 +8606,8 @@
     },
     {
       "path": "reports/deployment-review-2026-10-07/root-coverage.json",
-      "sha256": "ba92e7ca67d390ee3b76071622c7a69feacc5433444edbab2b78a1afe19e5bea",
-      "lines": 10827,
+      "sha256": "bc2b84ae03f4a969f7a3e02b4558cb29974f838aa2bc139ba742e7271664be57",
+      "lines": 10866,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },
@@ -8907,6 +8941,20 @@
       "path": "reports/deployment-review-2026-10-07/v2-historical-dry-report-review-2026-10-12.json",
       "sha256": "f782bdf7f74f92e0caca21d637fb517b8087989677631bd11762260f93835168",
       "lines": 50,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/woff2-name-cmap-review-2026-10-13.cjs",
+      "sha256": "a1833f8c0559f7a17008412bb18b57dae3b7425f505d42c060a334e43d9e0ad4",
+      "lines": 50,
+      "status": "generated_or_audit_artifact",
+      "matching_evidence": []
+    },
+    {
+      "path": "reports/deployment-review-2026-10-07/woff2-name-cmap-review-2026-10-13.json",
+      "sha256": "e2640711b2a3ac90fd3f9fa6dad49da19041534c69e1b62a2603c4c36b990640",
+      "lines": 8185,
       "status": "generated_or_audit_artifact",
       "matching_evidence": []
     },

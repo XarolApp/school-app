@@ -2028,8 +2028,8 @@ Source accounting: 797 current full/accounted, zero pending, 109 binary assets, 
 ## Asset completion and font-notice acceptance, 13 October
 
 - [x] All 99 current images inspected, including 122 complete image sections; two untouched handouts fully read and all four rendered pages inspected. Five sound files exactly match reviewed deterministic synthesis. [Evidence](reports/deployment-review-2026-10-07/asset-complete-visual-review-2026-10-13.json). Historical screenshots remain dated evidence, not current deployment acceptance.
-- [ ] **C62, P2 before beta:** verify actual compressed WOFF2 metadata/deployed licence notices. Local text build has no full OFL text; fallback font names contain copyright/licence URLs. If absent, package both exact installed licences as public static notices and verify build/deployed bytes. No font/CDN or pricing/privacy change. See ordered handoff.
-- [ ] C25: actual target-browser fonts/Czech glyphs and iOS icon crop/tint. The isolated beta preview reports no loaded font faces; Safari produced no result before interruption.
+- [ ] **C62 deployed notice verification:** actual WOFF2 metadata is checked and both exact installed notices are now bundled with build/local HTTP byte parity. Verify deployed notice responses after publishing. Font/browser/rights acceptance remains separate; do not redo the packaging fix. See ordered handoff.
+- [ ] C25: actual target-browser fonts/Czech glyphs and iOS icon crop/tint. The readonly font enumeration was empty, which does not establish font-load failure; Safari produced no result before interruption.
 - [ ] Marketing: subjective listening/final-video mix/device/platform-overlay acceptance before publishing. Generated parity does not replace playback. C44 third-party reference reuse and conditional handout scientific acceptance remain separate.
 - [ ] Re-review seven peer commits after 345b95b and current uncommitted peer sources before closing current exact-source coverage. No original/peer source changed in this asset checkpoint.
 
@@ -2058,3 +2058,10 @@ C64 copy verification, 13 October: actual current synthetic dialog/banner, adult
 ## Feature explanations needed — 13 October
 
 - [ ] Write detailed, founder-readable explanations of how each product feature works (questionnaire scoring and ranking, the AI explanations and their lazy fill order, the school page "Proč tahle shoda" card, admissions/cutoff display, beta access and trial rules, sharing links). Aim for a plain-language guide a new team member or the founder can read without the code. Include what each feature deliberately does NOT do, and where the rules live in code.
+
+### 13 October font/header acceptance update
+
+- [x] C62 local source/build notice packaging: all 24 WOFF2 metadata streams checked; exact installed copyright/OFL notices copied unchanged to public/build files and verified through local HTTP. All eight used family/weight unions map the chosen Czech/number/price/dash sample. [Evidence](reports/deployment-review-2026-10-07/font-licence-copy-verification-2026-10-13.json).
+- [ ] C62 deployed notice bytes: verify after publishing; physical text/shaping/iOS-icon checks remain C25, separate from glyph mapping.
+- [x] C12 missing public-root headers: 13 October HEAD verifies the configured enforcement headers and report-only CSP. Unlocked-provider/private-cache/asset/version checks remain independent; CSP content enforcement is not established.
+- [x] Main handoff corrected: preserve already-fixed C09/CLI guard/header configuration and coarse map input; keep sharing/reviews disabled during beta and C07/C08/C32/C38 after-beta choices intact.

@@ -1,0 +1,8185 @@
+{
+  "date": "2026-10-13",
+  "method": "All24 actual shipped-parity WOFF2 streams Brotli-decompressed; complete directories and untransformed name/maxp/cmap tables decoded with bounds checks. Names/license metadata and format4/12 character-to-glyph mappings reviewed; transformed outlines not reconstructed or visually accepted.",
+  "sources": [
+    "https://www.w3.org/TR/WOFF2/",
+    "https://learn.microsoft.com/en-us/typography/opentype/spec/name",
+    "https://learn.microsoft.com/en-us/typography/opentype/spec/cmap"
+  ],
+  "files": [
+    {
+      "path": "frontend/node_modules/@fontsource/archivo/files/archivo-vietnamese-400-normal.woff2",
+      "sha256": "df8f5bfcc9225e329063d6daba87aa2dfd76e82b09acdc7167e91cdf70669724",
+      "decompressedBytes": 20272,
+      "nameTableVersion": 0,
+      "tableDirectory": [
+        {
+          "tag": "GDEF",
+          "version": 0,
+          "originalLength": 64,
+          "length": 64,
+          "offset": 0,
+          "transformed": false
+        },
+        {
+          "tag": "GPOS",
+          "version": 0,
+          "originalLength": 2178,
+          "length": 2178,
+          "offset": 64,
+          "transformed": false
+        },
+        {
+          "tag": "GSUB",
+          "version": 0,
+          "originalLength": 424,
+          "length": 424,
+          "offset": 2242,
+          "transformed": false
+        },
+        {
+          "tag": "OS/2",
+          "version": 0,
+          "originalLength": 96,
+          "length": 96,
+          "offset": 2666,
+          "transformed": false
+        },
+        {
+          "tag": "STAT",
+          "version": 0,
+          "originalLength": 94,
+          "length": 94,
+          "offset": 2762,
+          "transformed": false
+        },
+        {
+          "tag": "cmap",
+          "version": 0,
+          "originalLength": 392,
+          "length": 392,
+          "offset": 2856,
+          "transformed": false
+        },
+        {
+          "tag": "gasp",
+          "version": 0,
+          "originalLength": 8,
+          "length": 8,
+          "offset": 3248,
+          "transformed": false
+        },
+        {
+          "tag": "glyf",
+          "version": 0,
+          "originalLength": 17648,
+          "length": 14213,
+          "offset": 3256,
+          "transformed": true
+        },
+        {
+          "tag": "loca",
+          "version": 0,
+          "originalLength": 274,
+          "length": 0,
+          "offset": 17469,
+          "transformed": true
+        },
+        {
+          "tag": "head",
+          "version": 0,
+          "originalLength": 54,
+          "length": 54,
+          "offset": 17469,
+          "transformed": false
+        },
+        {
+          "tag": "hhea",
+          "version": 0,
+          "originalLength": 36,
+          "length": 36,
+          "offset": 17523,
+          "transformed": false
+        },
+        {
+          "tag": "hmtx",
+          "version": 0,
+          "originalLength": 504,
+          "length": 504,
+          "offset": 17559,
+          "transformed": false
+        },
+        {
+          "tag": "maxp",
+          "version": 0,
+          "originalLength": 32,
+          "length": 32,
+          "offset": 18063,
+          "transformed": false
+        },
+        {
+          "tag": "name",
+          "version": 0,
+          "originalLength": 684,
+          "length": 684,
+          "offset": 18095,
+          "transformed": false
+        },
+        {
+          "tag": "post",
+          "version": 0,
+          "originalLength": 1486,
+          "length": 1486,
+          "offset": 18779,
+          "transformed": false
+        },
+        {
+          "tag": "prep",
+          "version": 0,
+          "originalLength": 7,
+          "length": 7,
+          "offset": 20265,
+          "transformed": false
+        }
+      ],
+      "nameRecords": [
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 0,
+          "text": "Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 1,
+          "text": "Archivo SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 2,
+          "text": "Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 3,
+          "text": "2.001;OMNI;ArchivoSemiBold-Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 4,
+          "text": "Archivo SemiBold Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 5,
+          "text": "Version 2.001"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 6,
+          "text": "ArchivoSemiBold-Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 14,
+          "text": "http://scripts.sil.org/OFL"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 256,
+          "text": "Weight"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 257,
+          "text": "Width"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 261,
+          "text": "Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 279,
+          "text": "Normal"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 282,
+          "text": "Italic"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 283,
+          "text": "Roman"
+        }
+      ],
+      "name13Present": false,
+      "name14": [
+        "http://scripts.sil.org/OFL"
+      ],
+      "extendedMetadata": null,
+      "requiredGlyphsPresent": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false,
+        "8": false,
+        "9": false,
+        "A": true,
+        "Á": true,
+        "B": false,
+        "C": false,
+        "Č": false,
+        "D": false,
+        "Ď": false,
+        "E": false,
+        "É": false,
+        "Ě": false,
+        "F": false,
+        "G": false,
+        "H": false,
+        "I": false,
+        "Í": false,
+        "J": false,
+        "K": false,
+        "L": false,
+        "M": false,
+        "N": false,
+        "Ň": false,
+        "O": false,
+        "Ó": false,
+        "P": false,
+        "Q": false,
+        "R": false,
+        "Ř": false,
+        "S": false,
+        "Š": false,
+        "T": false,
+        "Ť": false,
+        "U": false,
+        "Ú": false,
+        "Ů": false,
+        "V": false,
+        "W": false,
+        "X": false,
+        "Y": false,
+        "Ý": false,
+        "Z": false,
+        "Ž": false,
+        "a": false,
+        "á": false,
+        "b": false,
+        "c": false,
+        "č": false,
+        "d": false,
+        "ď": false,
+        "e": false,
+        "é": false,
+        "ě": false,
+        "f": false,
+        "g": false,
+        "h": false,
+        "i": false,
+        "í": false,
+        "j": false,
+        "k": false,
+        "l": false,
+        "m": false,
+        "n": false,
+        "ň": false,
+        "o": false,
+        "ó": false,
+        "p": false,
+        "q": false,
+        "r": false,
+        "ř": false,
+        "s": false,
+        "š": false,
+        "t": false,
+        "ť": false,
+        "u": false,
+        "ú": false,
+        "ů": false,
+        "v": false,
+        "w": false,
+        "x": false,
+        "y": false,
+        "ý": false,
+        "z": false,
+        "ž": false,
+        " ": true,
+        ".": false,
+        "–": false,
+        "—": false
+      }
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-ext-400-normal.woff2",
+      "sha256": "c7807623d82636e295e0f51ff6dc56e0caa58b9b12600956e90fd9767087ed1a",
+      "decompressedBytes": 38387,
+      "nameTableVersion": 0,
+      "tableDirectory": [
+        {
+          "tag": "GDEF",
+          "version": 0,
+          "originalLength": 112,
+          "length": 112,
+          "offset": 0,
+          "transformed": false
+        },
+        {
+          "tag": "GPOS",
+          "version": 0,
+          "originalLength": 5310,
+          "length": 5310,
+          "offset": 112,
+          "transformed": false
+        },
+        {
+          "tag": "GSUB",
+          "version": 0,
+          "originalLength": 630,
+          "length": 630,
+          "offset": 5422,
+          "transformed": false
+        },
+        {
+          "tag": "OS/2",
+          "version": 0,
+          "originalLength": 96,
+          "length": 96,
+          "offset": 6052,
+          "transformed": false
+        },
+        {
+          "tag": "STAT",
+          "version": 0,
+          "originalLength": 94,
+          "length": 94,
+          "offset": 6148,
+          "transformed": false
+        },
+        {
+          "tag": "cmap",
+          "version": 0,
+          "originalLength": 904,
+          "length": 904,
+          "offset": 6242,
+          "transformed": false
+        },
+        {
+          "tag": "gasp",
+          "version": 0,
+          "originalLength": 8,
+          "length": 8,
+          "offset": 7146,
+          "transformed": false
+        },
+        {
+          "tag": "glyf",
+          "version": 0,
+          "originalLength": 33068,
+          "length": 26104,
+          "offset": 7154,
+          "transformed": true
+        },
+        {
+          "tag": "loca",
+          "version": 0,
+          "originalLength": 602,
+          "length": 0,
+          "offset": 33258,
+          "transformed": true
+        },
+        {
+          "tag": "head",
+          "version": 0,
+          "originalLength": 54,
+          "length": 54,
+          "offset": 33258,
+          "transformed": false
+        },
+        {
+          "tag": "hhea",
+          "version": 0,
+          "originalLength": 36,
+          "length": 36,
+          "offset": 33312,
+          "transformed": false
+        },
+        {
+          "tag": "hmtx",
+          "version": 0,
+          "originalLength": 1200,
+          "length": 1200,
+          "offset": 33348,
+          "transformed": false
+        },
+        {
+          "tag": "maxp",
+          "version": 0,
+          "originalLength": 32,
+          "length": 32,
+          "offset": 34548,
+          "transformed": false
+        },
+        {
+          "tag": "name",
+          "version": 0,
+          "originalLength": 684,
+          "length": 684,
+          "offset": 34580,
+          "transformed": false
+        },
+        {
+          "tag": "post",
+          "version": 0,
+          "originalLength": 3116,
+          "length": 3116,
+          "offset": 35264,
+          "transformed": false
+        },
+        {
+          "tag": "prep",
+          "version": 0,
+          "originalLength": 7,
+          "length": 7,
+          "offset": 38380,
+          "transformed": false
+        }
+      ],
+      "nameRecords": [
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 0,
+          "text": "Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 1,
+          "text": "Archivo SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 2,
+          "text": "Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 3,
+          "text": "2.001;OMNI;ArchivoSemiBold-Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 4,
+          "text": "Archivo SemiBold Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 5,
+          "text": "Version 2.001"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 6,
+          "text": "ArchivoSemiBold-Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 14,
+          "text": "http://scripts.sil.org/OFL"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 256,
+          "text": "Weight"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 257,
+          "text": "Width"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 261,
+          "text": "Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 279,
+          "text": "Normal"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 282,
+          "text": "Italic"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 283,
+          "text": "Roman"
+        }
+      ],
+      "name13Present": false,
+      "name14": [
+        "http://scripts.sil.org/OFL"
+      ],
+      "extendedMetadata": null,
+      "requiredGlyphsPresent": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false,
+        "8": false,
+        "9": false,
+        "A": true,
+        "Á": true,
+        "B": false,
+        "C": false,
+        "Č": true,
+        "D": false,
+        "Ď": true,
+        "E": false,
+        "É": false,
+        "Ě": true,
+        "F": false,
+        "G": false,
+        "H": false,
+        "I": false,
+        "Í": false,
+        "J": false,
+        "K": false,
+        "L": false,
+        "M": false,
+        "N": false,
+        "Ň": true,
+        "O": false,
+        "Ó": false,
+        "P": false,
+        "Q": false,
+        "R": false,
+        "Ř": true,
+        "S": false,
+        "Š": true,
+        "T": false,
+        "Ť": true,
+        "U": false,
+        "Ú": false,
+        "Ů": true,
+        "V": false,
+        "W": false,
+        "X": false,
+        "Y": false,
+        "Ý": false,
+        "Z": false,
+        "Ž": true,
+        "a": false,
+        "á": false,
+        "b": false,
+        "c": false,
+        "č": true,
+        "d": false,
+        "ď": true,
+        "e": false,
+        "é": false,
+        "ě": true,
+        "f": false,
+        "g": false,
+        "h": false,
+        "i": false,
+        "í": false,
+        "j": false,
+        "k": false,
+        "l": false,
+        "m": false,
+        "n": false,
+        "ň": true,
+        "o": false,
+        "ó": false,
+        "p": false,
+        "q": false,
+        "r": false,
+        "ř": true,
+        "s": false,
+        "š": true,
+        "t": false,
+        "ť": true,
+        "u": false,
+        "ú": false,
+        "ů": true,
+        "v": false,
+        "w": false,
+        "x": false,
+        "y": false,
+        "ý": false,
+        "z": false,
+        "ž": true,
+        " ": true,
+        ".": false,
+        "–": false,
+        "—": false
+      }
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-400-normal.woff2",
+      "sha256": "07f9160163da2ec0f6376ef9d27a2bb8163f98019ba798da4baafb154e30056e",
+      "decompressedBytes": 33921,
+      "nameTableVersion": 0,
+      "tableDirectory": [
+        {
+          "tag": "GDEF",
+          "version": 0,
+          "originalLength": 94,
+          "length": 94,
+          "offset": 0,
+          "transformed": false
+        },
+        {
+          "tag": "GPOS",
+          "version": 0,
+          "originalLength": 7446,
+          "length": 7446,
+          "offset": 94,
+          "transformed": false
+        },
+        {
+          "tag": "GSUB",
+          "version": 0,
+          "originalLength": 1290,
+          "length": 1290,
+          "offset": 7540,
+          "transformed": false
+        },
+        {
+          "tag": "OS/2",
+          "version": 0,
+          "originalLength": 96,
+          "length": 96,
+          "offset": 8830,
+          "transformed": false
+        },
+        {
+          "tag": "STAT",
+          "version": 0,
+          "originalLength": 94,
+          "length": 94,
+          "offset": 8926,
+          "transformed": false
+        },
+        {
+          "tag": "cmap",
+          "version": 0,
+          "originalLength": 686,
+          "length": 686,
+          "offset": 9020,
+          "transformed": false
+        },
+        {
+          "tag": "gasp",
+          "version": 0,
+          "originalLength": 8,
+          "length": 8,
+          "offset": 9706,
+          "transformed": false
+        },
+        {
+          "tag": "glyf",
+          "version": 0,
+          "originalLength": 26528,
+          "length": 20573,
+          "offset": 9714,
+          "transformed": true
+        },
+        {
+          "tag": "loca",
+          "version": 0,
+          "originalLength": 602,
+          "length": 0,
+          "offset": 30287,
+          "transformed": true
+        },
+        {
+          "tag": "head",
+          "version": 0,
+          "originalLength": 54,
+          "length": 54,
+          "offset": 30287,
+          "transformed": false
+        },
+        {
+          "tag": "hhea",
+          "version": 0,
+          "originalLength": 36,
+          "length": 36,
+          "offset": 30341,
+          "transformed": false
+        },
+        {
+          "tag": "hmtx",
+          "version": 0,
+          "originalLength": 1200,
+          "length": 1200,
+          "offset": 30377,
+          "transformed": false
+        },
+        {
+          "tag": "maxp",
+          "version": 0,
+          "originalLength": 32,
+          "length": 32,
+          "offset": 31577,
+          "transformed": false
+        },
+        {
+          "tag": "name",
+          "version": 0,
+          "originalLength": 684,
+          "length": 684,
+          "offset": 31609,
+          "transformed": false
+        },
+        {
+          "tag": "post",
+          "version": 0,
+          "originalLength": 1621,
+          "length": 1621,
+          "offset": 32293,
+          "transformed": false
+        },
+        {
+          "tag": "prep",
+          "version": 0,
+          "originalLength": 7,
+          "length": 7,
+          "offset": 33914,
+          "transformed": false
+        }
+      ],
+      "nameRecords": [
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 0,
+          "text": "Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 1,
+          "text": "Archivo SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 2,
+          "text": "Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 3,
+          "text": "2.001;OMNI;ArchivoSemiBold-Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 4,
+          "text": "Archivo SemiBold Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 5,
+          "text": "Version 2.001"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 6,
+          "text": "ArchivoSemiBold-Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 14,
+          "text": "http://scripts.sil.org/OFL"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 256,
+          "text": "Weight"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 257,
+          "text": "Width"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 261,
+          "text": "Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 279,
+          "text": "Normal"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 282,
+          "text": "Italic"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 283,
+          "text": "Roman"
+        }
+      ],
+      "name13Present": false,
+      "name14": [
+        "http://scripts.sil.org/OFL"
+      ],
+      "extendedMetadata": null,
+      "requiredGlyphsPresent": {
+        "0": true,
+        "1": true,
+        "2": true,
+        "3": true,
+        "4": true,
+        "5": true,
+        "6": true,
+        "7": true,
+        "8": true,
+        "9": true,
+        "A": true,
+        "Á": true,
+        "B": true,
+        "C": true,
+        "Č": false,
+        "D": true,
+        "Ď": false,
+        "E": true,
+        "É": true,
+        "Ě": false,
+        "F": true,
+        "G": true,
+        "H": true,
+        "I": true,
+        "Í": true,
+        "J": true,
+        "K": true,
+        "L": true,
+        "M": true,
+        "N": true,
+        "Ň": false,
+        "O": true,
+        "Ó": true,
+        "P": true,
+        "Q": true,
+        "R": true,
+        "Ř": false,
+        "S": true,
+        "Š": false,
+        "T": true,
+        "Ť": false,
+        "U": true,
+        "Ú": true,
+        "Ů": false,
+        "V": true,
+        "W": true,
+        "X": true,
+        "Y": true,
+        "Ý": true,
+        "Z": true,
+        "Ž": false,
+        "a": true,
+        "á": true,
+        "b": true,
+        "c": true,
+        "č": false,
+        "d": true,
+        "ď": false,
+        "e": true,
+        "é": true,
+        "ě": false,
+        "f": true,
+        "g": true,
+        "h": true,
+        "i": true,
+        "í": true,
+        "j": true,
+        "k": true,
+        "l": true,
+        "m": true,
+        "n": true,
+        "ň": false,
+        "o": true,
+        "ó": true,
+        "p": true,
+        "q": true,
+        "r": true,
+        "ř": false,
+        "s": true,
+        "š": false,
+        "t": true,
+        "ť": false,
+        "u": true,
+        "ú": true,
+        "ů": false,
+        "v": true,
+        "w": true,
+        "x": true,
+        "y": true,
+        "ý": true,
+        "z": true,
+        "ž": false,
+        " ": true,
+        ".": true,
+        "–": true,
+        "—": true
+      }
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo/files/archivo-vietnamese-500-normal.woff2",
+      "sha256": "7cc8285fcfff80802f17658061513cbbf4fd41f25153145fe5d65a155df957a8",
+      "decompressedBytes": 20176,
+      "nameTableVersion": 0,
+      "tableDirectory": [
+        {
+          "tag": "GDEF",
+          "version": 0,
+          "originalLength": 64,
+          "length": 64,
+          "offset": 0,
+          "transformed": false
+        },
+        {
+          "tag": "GPOS",
+          "version": 0,
+          "originalLength": 2178,
+          "length": 2178,
+          "offset": 64,
+          "transformed": false
+        },
+        {
+          "tag": "GSUB",
+          "version": 0,
+          "originalLength": 424,
+          "length": 424,
+          "offset": 2242,
+          "transformed": false
+        },
+        {
+          "tag": "OS/2",
+          "version": 0,
+          "originalLength": 96,
+          "length": 96,
+          "offset": 2666,
+          "transformed": false
+        },
+        {
+          "tag": "STAT",
+          "version": 0,
+          "originalLength": 90,
+          "length": 90,
+          "offset": 2762,
+          "transformed": false
+        },
+        {
+          "tag": "cmap",
+          "version": 0,
+          "originalLength": 392,
+          "length": 392,
+          "offset": 2852,
+          "transformed": false
+        },
+        {
+          "tag": "gasp",
+          "version": 0,
+          "originalLength": 8,
+          "length": 8,
+          "offset": 3244,
+          "transformed": false
+        },
+        {
+          "tag": "glyf",
+          "version": 0,
+          "originalLength": 17636,
+          "length": 14091,
+          "offset": 3252,
+          "transformed": true
+        },
+        {
+          "tag": "loca",
+          "version": 0,
+          "originalLength": 274,
+          "length": 0,
+          "offset": 17343,
+          "transformed": true
+        },
+        {
+          "tag": "head",
+          "version": 0,
+          "originalLength": 54,
+          "length": 54,
+          "offset": 17343,
+          "transformed": false
+        },
+        {
+          "tag": "hhea",
+          "version": 0,
+          "originalLength": 36,
+          "length": 36,
+          "offset": 17397,
+          "transformed": false
+        },
+        {
+          "tag": "hmtx",
+          "version": 0,
+          "originalLength": 504,
+          "length": 504,
+          "offset": 17433,
+          "transformed": false
+        },
+        {
+          "tag": "maxp",
+          "version": 0,
+          "originalLength": 32,
+          "length": 32,
+          "offset": 17937,
+          "transformed": false
+        },
+        {
+          "tag": "name",
+          "version": 0,
+          "originalLength": 714,
+          "length": 714,
+          "offset": 17969,
+          "transformed": false
+        },
+        {
+          "tag": "post",
+          "version": 0,
+          "originalLength": 1486,
+          "length": 1486,
+          "offset": 18683,
+          "transformed": false
+        },
+        {
+          "tag": "prep",
+          "version": 0,
+          "originalLength": 7,
+          "length": 7,
+          "offset": 20169,
+          "transformed": false
+        }
+      ],
+      "nameRecords": [
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 0,
+          "text": "Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 1,
+          "text": "Archivo SemiBold Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 2,
+          "text": "Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 3,
+          "text": "2.001;OMNI;ArchivoSemiBold-Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 4,
+          "text": "Archivo SemiBold Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 5,
+          "text": "Version 2.001"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 6,
+          "text": "ArchivoSemiBold-Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 14,
+          "text": "http://scripts.sil.org/OFL"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 16,
+          "text": "Archivo SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 17,
+          "text": "Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 256,
+          "text": "Weight"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 257,
+          "text": "Width"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 262,
+          "text": "Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 279,
+          "text": "Normal"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 282,
+          "text": "Italic"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 283,
+          "text": "Roman"
+        }
+      ],
+      "name13Present": false,
+      "name14": [
+        "http://scripts.sil.org/OFL"
+      ],
+      "extendedMetadata": null,
+      "requiredGlyphsPresent": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false,
+        "8": false,
+        "9": false,
+        "A": true,
+        "Á": true,
+        "B": false,
+        "C": false,
+        "Č": false,
+        "D": false,
+        "Ď": false,
+        "E": false,
+        "É": false,
+        "Ě": false,
+        "F": false,
+        "G": false,
+        "H": false,
+        "I": false,
+        "Í": false,
+        "J": false,
+        "K": false,
+        "L": false,
+        "M": false,
+        "N": false,
+        "Ň": false,
+        "O": false,
+        "Ó": false,
+        "P": false,
+        "Q": false,
+        "R": false,
+        "Ř": false,
+        "S": false,
+        "Š": false,
+        "T": false,
+        "Ť": false,
+        "U": false,
+        "Ú": false,
+        "Ů": false,
+        "V": false,
+        "W": false,
+        "X": false,
+        "Y": false,
+        "Ý": false,
+        "Z": false,
+        "Ž": false,
+        "a": false,
+        "á": false,
+        "b": false,
+        "c": false,
+        "č": false,
+        "d": false,
+        "ď": false,
+        "e": false,
+        "é": false,
+        "ě": false,
+        "f": false,
+        "g": false,
+        "h": false,
+        "i": false,
+        "í": false,
+        "j": false,
+        "k": false,
+        "l": false,
+        "m": false,
+        "n": false,
+        "ň": false,
+        "o": false,
+        "ó": false,
+        "p": false,
+        "q": false,
+        "r": false,
+        "ř": false,
+        "s": false,
+        "š": false,
+        "t": false,
+        "ť": false,
+        "u": false,
+        "ú": false,
+        "ů": false,
+        "v": false,
+        "w": false,
+        "x": false,
+        "y": false,
+        "ý": false,
+        "z": false,
+        "ž": false,
+        " ": true,
+        ".": false,
+        "–": false,
+        "—": false
+      }
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-ext-500-normal.woff2",
+      "sha256": "28cec7e09bdc84d89729f161eadaead32eb25b7ce7de26117fb82d0834c432d9",
+      "decompressedBytes": 39119,
+      "nameTableVersion": 0,
+      "tableDirectory": [
+        {
+          "tag": "GDEF",
+          "version": 0,
+          "originalLength": 118,
+          "length": 118,
+          "offset": 0,
+          "transformed": false
+        },
+        {
+          "tag": "GPOS",
+          "version": 0,
+          "originalLength": 5316,
+          "length": 5316,
+          "offset": 118,
+          "transformed": false
+        },
+        {
+          "tag": "GSUB",
+          "version": 0,
+          "originalLength": 692,
+          "length": 692,
+          "offset": 5434,
+          "transformed": false
+        },
+        {
+          "tag": "OS/2",
+          "version": 0,
+          "originalLength": 96,
+          "length": 96,
+          "offset": 6126,
+          "transformed": false
+        },
+        {
+          "tag": "STAT",
+          "version": 0,
+          "originalLength": 90,
+          "length": 90,
+          "offset": 6222,
+          "transformed": false
+        },
+        {
+          "tag": "cmap",
+          "version": 0,
+          "originalLength": 904,
+          "length": 904,
+          "offset": 6312,
+          "transformed": false
+        },
+        {
+          "tag": "gasp",
+          "version": 0,
+          "originalLength": 8,
+          "length": 8,
+          "offset": 7216,
+          "transformed": false
+        },
+        {
+          "tag": "glyf",
+          "version": 0,
+          "originalLength": 33852,
+          "length": 26600,
+          "offset": 7224,
+          "transformed": true
+        },
+        {
+          "tag": "loca",
+          "version": 0,
+          "originalLength": 612,
+          "length": 0,
+          "offset": 33824,
+          "transformed": true
+        },
+        {
+          "tag": "head",
+          "version": 0,
+          "originalLength": 54,
+          "length": 54,
+          "offset": 33824,
+          "transformed": false
+        },
+        {
+          "tag": "hhea",
+          "version": 0,
+          "originalLength": 36,
+          "length": 36,
+          "offset": 33878,
+          "transformed": false
+        },
+        {
+          "tag": "hmtx",
+          "version": 0,
+          "originalLength": 1220,
+          "length": 1220,
+          "offset": 33914,
+          "transformed": false
+        },
+        {
+          "tag": "maxp",
+          "version": 0,
+          "originalLength": 32,
+          "length": 32,
+          "offset": 35134,
+          "transformed": false
+        },
+        {
+          "tag": "name",
+          "version": 0,
+          "originalLength": 714,
+          "length": 714,
+          "offset": 35166,
+          "transformed": false
+        },
+        {
+          "tag": "post",
+          "version": 0,
+          "originalLength": 3232,
+          "length": 3232,
+          "offset": 35880,
+          "transformed": false
+        },
+        {
+          "tag": "prep",
+          "version": 0,
+          "originalLength": 7,
+          "length": 7,
+          "offset": 39112,
+          "transformed": false
+        }
+      ],
+      "nameRecords": [
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 0,
+          "text": "Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 1,
+          "text": "Archivo SemiBold Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 2,
+          "text": "Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 3,
+          "text": "2.001;OMNI;ArchivoSemiBold-Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 4,
+          "text": "Archivo SemiBold Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 5,
+          "text": "Version 2.001"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 6,
+          "text": "ArchivoSemiBold-Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 14,
+          "text": "http://scripts.sil.org/OFL"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 16,
+          "text": "Archivo SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 17,
+          "text": "Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 256,
+          "text": "Weight"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 257,
+          "text": "Width"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 262,
+          "text": "Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 279,
+          "text": "Normal"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 282,
+          "text": "Italic"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 283,
+          "text": "Roman"
+        }
+      ],
+      "name13Present": false,
+      "name14": [
+        "http://scripts.sil.org/OFL"
+      ],
+      "extendedMetadata": null,
+      "requiredGlyphsPresent": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false,
+        "8": false,
+        "9": false,
+        "A": true,
+        "Á": true,
+        "B": false,
+        "C": false,
+        "Č": true,
+        "D": false,
+        "Ď": true,
+        "E": false,
+        "É": false,
+        "Ě": true,
+        "F": false,
+        "G": false,
+        "H": false,
+        "I": false,
+        "Í": false,
+        "J": false,
+        "K": false,
+        "L": false,
+        "M": false,
+        "N": false,
+        "Ň": true,
+        "O": false,
+        "Ó": false,
+        "P": false,
+        "Q": false,
+        "R": false,
+        "Ř": true,
+        "S": false,
+        "Š": true,
+        "T": false,
+        "Ť": true,
+        "U": false,
+        "Ú": false,
+        "Ů": true,
+        "V": false,
+        "W": false,
+        "X": false,
+        "Y": false,
+        "Ý": false,
+        "Z": false,
+        "Ž": true,
+        "a": false,
+        "á": false,
+        "b": false,
+        "c": false,
+        "č": true,
+        "d": false,
+        "ď": true,
+        "e": false,
+        "é": false,
+        "ě": true,
+        "f": false,
+        "g": false,
+        "h": false,
+        "i": false,
+        "í": false,
+        "j": false,
+        "k": false,
+        "l": false,
+        "m": false,
+        "n": false,
+        "ň": true,
+        "o": false,
+        "ó": false,
+        "p": false,
+        "q": false,
+        "r": false,
+        "ř": true,
+        "s": false,
+        "š": true,
+        "t": false,
+        "ť": true,
+        "u": false,
+        "ú": false,
+        "ů": true,
+        "v": false,
+        "w": false,
+        "x": false,
+        "y": false,
+        "ý": false,
+        "z": false,
+        "ž": true,
+        " ": true,
+        ".": false,
+        "–": false,
+        "—": false
+      }
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-500-normal.woff2",
+      "sha256": "ab74eca5ad115fe4cfec82ba641e5d37e4d92c58dfb1bfc1e464e9039c9d17cf",
+      "decompressedBytes": 34187,
+      "nameTableVersion": 0,
+      "tableDirectory": [
+        {
+          "tag": "GDEF",
+          "version": 0,
+          "originalLength": 100,
+          "length": 100,
+          "offset": 0,
+          "transformed": false
+        },
+        {
+          "tag": "GPOS",
+          "version": 0,
+          "originalLength": 7454,
+          "length": 7454,
+          "offset": 100,
+          "transformed": false
+        },
+        {
+          "tag": "GSUB",
+          "version": 0,
+          "originalLength": 1342,
+          "length": 1342,
+          "offset": 7554,
+          "transformed": false
+        },
+        {
+          "tag": "OS/2",
+          "version": 0,
+          "originalLength": 96,
+          "length": 96,
+          "offset": 8896,
+          "transformed": false
+        },
+        {
+          "tag": "STAT",
+          "version": 0,
+          "originalLength": 90,
+          "length": 90,
+          "offset": 8992,
+          "transformed": false
+        },
+        {
+          "tag": "cmap",
+          "version": 0,
+          "originalLength": 686,
+          "length": 686,
+          "offset": 9082,
+          "transformed": false
+        },
+        {
+          "tag": "gasp",
+          "version": 0,
+          "originalLength": 8,
+          "length": 8,
+          "offset": 9768,
+          "transformed": false
+        },
+        {
+          "tag": "glyf",
+          "version": 0,
+          "originalLength": 26840,
+          "length": 20699,
+          "offset": 9776,
+          "transformed": true
+        },
+        {
+          "tag": "loca",
+          "version": 0,
+          "originalLength": 606,
+          "length": 0,
+          "offset": 30475,
+          "transformed": true
+        },
+        {
+          "tag": "head",
+          "version": 0,
+          "originalLength": 54,
+          "length": 54,
+          "offset": 30475,
+          "transformed": false
+        },
+        {
+          "tag": "hhea",
+          "version": 0,
+          "originalLength": 36,
+          "length": 36,
+          "offset": 30529,
+          "transformed": false
+        },
+        {
+          "tag": "hmtx",
+          "version": 0,
+          "originalLength": 1208,
+          "length": 1208,
+          "offset": 30565,
+          "transformed": false
+        },
+        {
+          "tag": "maxp",
+          "version": 0,
+          "originalLength": 32,
+          "length": 32,
+          "offset": 31773,
+          "transformed": false
+        },
+        {
+          "tag": "name",
+          "version": 0,
+          "originalLength": 714,
+          "length": 714,
+          "offset": 31805,
+          "transformed": false
+        },
+        {
+          "tag": "post",
+          "version": 0,
+          "originalLength": 1661,
+          "length": 1661,
+          "offset": 32519,
+          "transformed": false
+        },
+        {
+          "tag": "prep",
+          "version": 0,
+          "originalLength": 7,
+          "length": 7,
+          "offset": 34180,
+          "transformed": false
+        }
+      ],
+      "nameRecords": [
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 0,
+          "text": "Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 1,
+          "text": "Archivo SemiBold Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 2,
+          "text": "Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 3,
+          "text": "2.001;OMNI;ArchivoSemiBold-Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 4,
+          "text": "Archivo SemiBold Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 5,
+          "text": "Version 2.001"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 6,
+          "text": "ArchivoSemiBold-Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 14,
+          "text": "http://scripts.sil.org/OFL"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 16,
+          "text": "Archivo SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 17,
+          "text": "Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 256,
+          "text": "Weight"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 257,
+          "text": "Width"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 262,
+          "text": "Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 279,
+          "text": "Normal"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 282,
+          "text": "Italic"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 283,
+          "text": "Roman"
+        }
+      ],
+      "name13Present": false,
+      "name14": [
+        "http://scripts.sil.org/OFL"
+      ],
+      "extendedMetadata": null,
+      "requiredGlyphsPresent": {
+        "0": true,
+        "1": true,
+        "2": true,
+        "3": true,
+        "4": true,
+        "5": true,
+        "6": true,
+        "7": true,
+        "8": true,
+        "9": true,
+        "A": true,
+        "Á": true,
+        "B": true,
+        "C": true,
+        "Č": false,
+        "D": true,
+        "Ď": false,
+        "E": true,
+        "É": true,
+        "Ě": false,
+        "F": true,
+        "G": true,
+        "H": true,
+        "I": true,
+        "Í": true,
+        "J": true,
+        "K": true,
+        "L": true,
+        "M": true,
+        "N": true,
+        "Ň": false,
+        "O": true,
+        "Ó": true,
+        "P": true,
+        "Q": true,
+        "R": true,
+        "Ř": false,
+        "S": true,
+        "Š": false,
+        "T": true,
+        "Ť": false,
+        "U": true,
+        "Ú": true,
+        "Ů": false,
+        "V": true,
+        "W": true,
+        "X": true,
+        "Y": true,
+        "Ý": true,
+        "Z": true,
+        "Ž": false,
+        "a": true,
+        "á": true,
+        "b": true,
+        "c": true,
+        "č": false,
+        "d": true,
+        "ď": false,
+        "e": true,
+        "é": true,
+        "ě": false,
+        "f": true,
+        "g": true,
+        "h": true,
+        "i": true,
+        "í": true,
+        "j": true,
+        "k": true,
+        "l": true,
+        "m": true,
+        "n": true,
+        "ň": false,
+        "o": true,
+        "ó": true,
+        "p": true,
+        "q": true,
+        "r": true,
+        "ř": false,
+        "s": true,
+        "š": false,
+        "t": true,
+        "ť": false,
+        "u": true,
+        "ú": true,
+        "ů": false,
+        "v": true,
+        "w": true,
+        "x": true,
+        "y": true,
+        "ý": true,
+        "z": true,
+        "ž": false,
+        " ": true,
+        ".": true,
+        "–": true,
+        "—": true
+      }
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo/files/archivo-vietnamese-600-normal.woff2",
+      "sha256": "082f80ae3fadb0d7e82f5356b47e95cc0196e5fc02c151774a072c17ec664c40",
+      "decompressedBytes": 20057,
+      "nameTableVersion": 0,
+      "tableDirectory": [
+        {
+          "tag": "GDEF",
+          "version": 0,
+          "originalLength": 64,
+          "length": 64,
+          "offset": 0,
+          "transformed": false
+        },
+        {
+          "tag": "GPOS",
+          "version": 0,
+          "originalLength": 2082,
+          "length": 2082,
+          "offset": 64,
+          "transformed": false
+        },
+        {
+          "tag": "GSUB",
+          "version": 0,
+          "originalLength": 424,
+          "length": 424,
+          "offset": 2146,
+          "transformed": false
+        },
+        {
+          "tag": "OS/2",
+          "version": 0,
+          "originalLength": 96,
+          "length": 96,
+          "offset": 2570,
+          "transformed": false
+        },
+        {
+          "tag": "STAT",
+          "version": 0,
+          "originalLength": 90,
+          "length": 90,
+          "offset": 2666,
+          "transformed": false
+        },
+        {
+          "tag": "cmap",
+          "version": 0,
+          "originalLength": 392,
+          "length": 392,
+          "offset": 2756,
+          "transformed": false
+        },
+        {
+          "tag": "gasp",
+          "version": 0,
+          "originalLength": 8,
+          "length": 8,
+          "offset": 3148,
+          "transformed": false
+        },
+        {
+          "tag": "glyf",
+          "version": 0,
+          "originalLength": 17640,
+          "length": 14052,
+          "offset": 3156,
+          "transformed": true
+        },
+        {
+          "tag": "loca",
+          "version": 0,
+          "originalLength": 274,
+          "length": 0,
+          "offset": 17208,
+          "transformed": true
+        },
+        {
+          "tag": "head",
+          "version": 0,
+          "originalLength": 54,
+          "length": 54,
+          "offset": 17208,
+          "transformed": false
+        },
+        {
+          "tag": "hhea",
+          "version": 0,
+          "originalLength": 36,
+          "length": 36,
+          "offset": 17262,
+          "transformed": false
+        },
+        {
+          "tag": "hmtx",
+          "version": 0,
+          "originalLength": 504,
+          "length": 504,
+          "offset": 17298,
+          "transformed": false
+        },
+        {
+          "tag": "maxp",
+          "version": 0,
+          "originalLength": 32,
+          "length": 32,
+          "offset": 17802,
+          "transformed": false
+        },
+        {
+          "tag": "name",
+          "version": 0,
+          "originalLength": 730,
+          "length": 730,
+          "offset": 17834,
+          "transformed": false
+        },
+        {
+          "tag": "post",
+          "version": 0,
+          "originalLength": 1486,
+          "length": 1486,
+          "offset": 18564,
+          "transformed": false
+        },
+        {
+          "tag": "prep",
+          "version": 0,
+          "originalLength": 7,
+          "length": 7,
+          "offset": 20050,
+          "transformed": false
+        }
+      ],
+      "nameRecords": [
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 0,
+          "text": "Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 1,
+          "text": "Archivo SemiBold SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 2,
+          "text": "Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 3,
+          "text": "2.001;OMNI;ArchivoSemiBold-SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 4,
+          "text": "Archivo SemiBold SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 5,
+          "text": "Version 2.001"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 6,
+          "text": "ArchivoSemiBold-SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 14,
+          "text": "http://scripts.sil.org/OFL"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 16,
+          "text": "Archivo SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 17,
+          "text": "SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 256,
+          "text": "Weight"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 257,
+          "text": "Width"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 263,
+          "text": "SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 279,
+          "text": "Normal"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 282,
+          "text": "Italic"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 283,
+          "text": "Roman"
+        }
+      ],
+      "name13Present": false,
+      "name14": [
+        "http://scripts.sil.org/OFL"
+      ],
+      "extendedMetadata": null,
+      "requiredGlyphsPresent": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false,
+        "8": false,
+        "9": false,
+        "A": true,
+        "Á": true,
+        "B": false,
+        "C": false,
+        "Č": false,
+        "D": false,
+        "Ď": false,
+        "E": false,
+        "É": false,
+        "Ě": false,
+        "F": false,
+        "G": false,
+        "H": false,
+        "I": false,
+        "Í": false,
+        "J": false,
+        "K": false,
+        "L": false,
+        "M": false,
+        "N": false,
+        "Ň": false,
+        "O": false,
+        "Ó": false,
+        "P": false,
+        "Q": false,
+        "R": false,
+        "Ř": false,
+        "S": false,
+        "Š": false,
+        "T": false,
+        "Ť": false,
+        "U": false,
+        "Ú": false,
+        "Ů": false,
+        "V": false,
+        "W": false,
+        "X": false,
+        "Y": false,
+        "Ý": false,
+        "Z": false,
+        "Ž": false,
+        "a": false,
+        "á": false,
+        "b": false,
+        "c": false,
+        "č": false,
+        "d": false,
+        "ď": false,
+        "e": false,
+        "é": false,
+        "ě": false,
+        "f": false,
+        "g": false,
+        "h": false,
+        "i": false,
+        "í": false,
+        "j": false,
+        "k": false,
+        "l": false,
+        "m": false,
+        "n": false,
+        "ň": false,
+        "o": false,
+        "ó": false,
+        "p": false,
+        "q": false,
+        "r": false,
+        "ř": false,
+        "s": false,
+        "š": false,
+        "t": false,
+        "ť": false,
+        "u": false,
+        "ú": false,
+        "ů": false,
+        "v": false,
+        "w": false,
+        "x": false,
+        "y": false,
+        "ý": false,
+        "z": false,
+        "ž": false,
+        " ": true,
+        ".": false,
+        "–": false,
+        "—": false
+      }
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-ext-600-normal.woff2",
+      "sha256": "cd902f80bcf11cc6545648c156415deded5336611928c0fb6b02325ad3af13f0",
+      "decompressedBytes": 38957,
+      "nameTableVersion": 0,
+      "tableDirectory": [
+        {
+          "tag": "GDEF",
+          "version": 0,
+          "originalLength": 118,
+          "length": 118,
+          "offset": 0,
+          "transformed": false
+        },
+        {
+          "tag": "GPOS",
+          "version": 0,
+          "originalLength": 5184,
+          "length": 5184,
+          "offset": 118,
+          "transformed": false
+        },
+        {
+          "tag": "GSUB",
+          "version": 0,
+          "originalLength": 692,
+          "length": 692,
+          "offset": 5302,
+          "transformed": false
+        },
+        {
+          "tag": "OS/2",
+          "version": 0,
+          "originalLength": 96,
+          "length": 96,
+          "offset": 5994,
+          "transformed": false
+        },
+        {
+          "tag": "STAT",
+          "version": 0,
+          "originalLength": 90,
+          "length": 90,
+          "offset": 6090,
+          "transformed": false
+        },
+        {
+          "tag": "cmap",
+          "version": 0,
+          "originalLength": 904,
+          "length": 904,
+          "offset": 6180,
+          "transformed": false
+        },
+        {
+          "tag": "gasp",
+          "version": 0,
+          "originalLength": 8,
+          "length": 8,
+          "offset": 7084,
+          "transformed": false
+        },
+        {
+          "tag": "glyf",
+          "version": 0,
+          "originalLength": 33792,
+          "length": 26554,
+          "offset": 7092,
+          "transformed": true
+        },
+        {
+          "tag": "loca",
+          "version": 0,
+          "originalLength": 612,
+          "length": 0,
+          "offset": 33646,
+          "transformed": true
+        },
+        {
+          "tag": "head",
+          "version": 0,
+          "originalLength": 54,
+          "length": 54,
+          "offset": 33646,
+          "transformed": false
+        },
+        {
+          "tag": "hhea",
+          "version": 0,
+          "originalLength": 36,
+          "length": 36,
+          "offset": 33700,
+          "transformed": false
+        },
+        {
+          "tag": "hmtx",
+          "version": 0,
+          "originalLength": 1220,
+          "length": 1220,
+          "offset": 33736,
+          "transformed": false
+        },
+        {
+          "tag": "maxp",
+          "version": 0,
+          "originalLength": 32,
+          "length": 32,
+          "offset": 34956,
+          "transformed": false
+        },
+        {
+          "tag": "name",
+          "version": 0,
+          "originalLength": 730,
+          "length": 730,
+          "offset": 34988,
+          "transformed": false
+        },
+        {
+          "tag": "post",
+          "version": 0,
+          "originalLength": 3232,
+          "length": 3232,
+          "offset": 35718,
+          "transformed": false
+        },
+        {
+          "tag": "prep",
+          "version": 0,
+          "originalLength": 7,
+          "length": 7,
+          "offset": 38950,
+          "transformed": false
+        }
+      ],
+      "nameRecords": [
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 0,
+          "text": "Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 1,
+          "text": "Archivo SemiBold SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 2,
+          "text": "Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 3,
+          "text": "2.001;OMNI;ArchivoSemiBold-SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 4,
+          "text": "Archivo SemiBold SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 5,
+          "text": "Version 2.001"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 6,
+          "text": "ArchivoSemiBold-SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 14,
+          "text": "http://scripts.sil.org/OFL"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 16,
+          "text": "Archivo SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 17,
+          "text": "SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 256,
+          "text": "Weight"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 257,
+          "text": "Width"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 263,
+          "text": "SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 279,
+          "text": "Normal"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 282,
+          "text": "Italic"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 283,
+          "text": "Roman"
+        }
+      ],
+      "name13Present": false,
+      "name14": [
+        "http://scripts.sil.org/OFL"
+      ],
+      "extendedMetadata": null,
+      "requiredGlyphsPresent": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false,
+        "8": false,
+        "9": false,
+        "A": true,
+        "Á": true,
+        "B": false,
+        "C": false,
+        "Č": true,
+        "D": false,
+        "Ď": true,
+        "E": false,
+        "É": false,
+        "Ě": true,
+        "F": false,
+        "G": false,
+        "H": false,
+        "I": false,
+        "Í": false,
+        "J": false,
+        "K": false,
+        "L": false,
+        "M": false,
+        "N": false,
+        "Ň": true,
+        "O": false,
+        "Ó": false,
+        "P": false,
+        "Q": false,
+        "R": false,
+        "Ř": true,
+        "S": false,
+        "Š": true,
+        "T": false,
+        "Ť": true,
+        "U": false,
+        "Ú": false,
+        "Ů": true,
+        "V": false,
+        "W": false,
+        "X": false,
+        "Y": false,
+        "Ý": false,
+        "Z": false,
+        "Ž": true,
+        "a": false,
+        "á": false,
+        "b": false,
+        "c": false,
+        "č": true,
+        "d": false,
+        "ď": true,
+        "e": false,
+        "é": false,
+        "ě": true,
+        "f": false,
+        "g": false,
+        "h": false,
+        "i": false,
+        "í": false,
+        "j": false,
+        "k": false,
+        "l": false,
+        "m": false,
+        "n": false,
+        "ň": true,
+        "o": false,
+        "ó": false,
+        "p": false,
+        "q": false,
+        "r": false,
+        "ř": true,
+        "s": false,
+        "š": true,
+        "t": false,
+        "ť": true,
+        "u": false,
+        "ú": false,
+        "ů": true,
+        "v": false,
+        "w": false,
+        "x": false,
+        "y": false,
+        "ý": false,
+        "z": false,
+        "ž": true,
+        " ": true,
+        ".": false,
+        "–": false,
+        "—": false
+      }
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-600-normal.woff2",
+      "sha256": "d9e8c29fdd348edde2a4f9aae438e569dd165bbbdebda78495824a2d9aaa67e8",
+      "decompressedBytes": 34102,
+      "nameTableVersion": 0,
+      "tableDirectory": [
+        {
+          "tag": "GDEF",
+          "version": 0,
+          "originalLength": 100,
+          "length": 100,
+          "offset": 0,
+          "transformed": false
+        },
+        {
+          "tag": "GPOS",
+          "version": 0,
+          "originalLength": 7382,
+          "length": 7382,
+          "offset": 100,
+          "transformed": false
+        },
+        {
+          "tag": "GSUB",
+          "version": 0,
+          "originalLength": 1342,
+          "length": 1342,
+          "offset": 7482,
+          "transformed": false
+        },
+        {
+          "tag": "OS/2",
+          "version": 0,
+          "originalLength": 96,
+          "length": 96,
+          "offset": 8824,
+          "transformed": false
+        },
+        {
+          "tag": "STAT",
+          "version": 0,
+          "originalLength": 90,
+          "length": 90,
+          "offset": 8920,
+          "transformed": false
+        },
+        {
+          "tag": "cmap",
+          "version": 0,
+          "originalLength": 686,
+          "length": 686,
+          "offset": 9010,
+          "transformed": false
+        },
+        {
+          "tag": "gasp",
+          "version": 0,
+          "originalLength": 8,
+          "length": 8,
+          "offset": 9696,
+          "transformed": false
+        },
+        {
+          "tag": "glyf",
+          "version": 0,
+          "originalLength": 26816,
+          "length": 20670,
+          "offset": 9704,
+          "transformed": true
+        },
+        {
+          "tag": "loca",
+          "version": 0,
+          "originalLength": 606,
+          "length": 0,
+          "offset": 30374,
+          "transformed": true
+        },
+        {
+          "tag": "head",
+          "version": 0,
+          "originalLength": 54,
+          "length": 54,
+          "offset": 30374,
+          "transformed": false
+        },
+        {
+          "tag": "hhea",
+          "version": 0,
+          "originalLength": 36,
+          "length": 36,
+          "offset": 30428,
+          "transformed": false
+        },
+        {
+          "tag": "hmtx",
+          "version": 0,
+          "originalLength": 1208,
+          "length": 1208,
+          "offset": 30464,
+          "transformed": false
+        },
+        {
+          "tag": "maxp",
+          "version": 0,
+          "originalLength": 32,
+          "length": 32,
+          "offset": 31672,
+          "transformed": false
+        },
+        {
+          "tag": "name",
+          "version": 0,
+          "originalLength": 730,
+          "length": 730,
+          "offset": 31704,
+          "transformed": false
+        },
+        {
+          "tag": "post",
+          "version": 0,
+          "originalLength": 1661,
+          "length": 1661,
+          "offset": 32434,
+          "transformed": false
+        },
+        {
+          "tag": "prep",
+          "version": 0,
+          "originalLength": 7,
+          "length": 7,
+          "offset": 34095,
+          "transformed": false
+        }
+      ],
+      "nameRecords": [
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 0,
+          "text": "Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 1,
+          "text": "Archivo SemiBold SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 2,
+          "text": "Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 3,
+          "text": "2.001;OMNI;ArchivoSemiBold-SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 4,
+          "text": "Archivo SemiBold SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 5,
+          "text": "Version 2.001"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 6,
+          "text": "ArchivoSemiBold-SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 14,
+          "text": "http://scripts.sil.org/OFL"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 16,
+          "text": "Archivo SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 17,
+          "text": "SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 256,
+          "text": "Weight"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 257,
+          "text": "Width"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 263,
+          "text": "SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 279,
+          "text": "Normal"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 282,
+          "text": "Italic"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 283,
+          "text": "Roman"
+        }
+      ],
+      "name13Present": false,
+      "name14": [
+        "http://scripts.sil.org/OFL"
+      ],
+      "extendedMetadata": null,
+      "requiredGlyphsPresent": {
+        "0": true,
+        "1": true,
+        "2": true,
+        "3": true,
+        "4": true,
+        "5": true,
+        "6": true,
+        "7": true,
+        "8": true,
+        "9": true,
+        "A": true,
+        "Á": true,
+        "B": true,
+        "C": true,
+        "Č": false,
+        "D": true,
+        "Ď": false,
+        "E": true,
+        "É": true,
+        "Ě": false,
+        "F": true,
+        "G": true,
+        "H": true,
+        "I": true,
+        "Í": true,
+        "J": true,
+        "K": true,
+        "L": true,
+        "M": true,
+        "N": true,
+        "Ň": false,
+        "O": true,
+        "Ó": true,
+        "P": true,
+        "Q": true,
+        "R": true,
+        "Ř": false,
+        "S": true,
+        "Š": false,
+        "T": true,
+        "Ť": false,
+        "U": true,
+        "Ú": true,
+        "Ů": false,
+        "V": true,
+        "W": true,
+        "X": true,
+        "Y": true,
+        "Ý": true,
+        "Z": true,
+        "Ž": false,
+        "a": true,
+        "á": true,
+        "b": true,
+        "c": true,
+        "č": false,
+        "d": true,
+        "ď": false,
+        "e": true,
+        "é": true,
+        "ě": false,
+        "f": true,
+        "g": true,
+        "h": true,
+        "i": true,
+        "í": true,
+        "j": true,
+        "k": true,
+        "l": true,
+        "m": true,
+        "n": true,
+        "ň": false,
+        "o": true,
+        "ó": true,
+        "p": true,
+        "q": true,
+        "r": true,
+        "ř": false,
+        "s": true,
+        "š": false,
+        "t": true,
+        "ť": false,
+        "u": true,
+        "ú": true,
+        "ů": false,
+        "v": true,
+        "w": true,
+        "x": true,
+        "y": true,
+        "ý": true,
+        "z": true,
+        "ž": false,
+        " ": true,
+        ".": true,
+        "–": true,
+        "—": true
+      }
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo/files/archivo-vietnamese-700-normal.woff2",
+      "sha256": "bfa65d40f59e5c2a8b038be3c739ab2715c854d97b4c51312e40b4cb9e27f656",
+      "decompressedBytes": 20050,
+      "nameTableVersion": 0,
+      "tableDirectory": [
+        {
+          "tag": "GDEF",
+          "version": 0,
+          "originalLength": 64,
+          "length": 64,
+          "offset": 0,
+          "transformed": false
+        },
+        {
+          "tag": "GPOS",
+          "version": 0,
+          "originalLength": 2136,
+          "length": 2136,
+          "offset": 64,
+          "transformed": false
+        },
+        {
+          "tag": "GSUB",
+          "version": 0,
+          "originalLength": 424,
+          "length": 424,
+          "offset": 2200,
+          "transformed": false
+        },
+        {
+          "tag": "OS/2",
+          "version": 0,
+          "originalLength": 96,
+          "length": 96,
+          "offset": 2624,
+          "transformed": false
+        },
+        {
+          "tag": "STAT",
+          "version": 0,
+          "originalLength": 90,
+          "length": 90,
+          "offset": 2720,
+          "transformed": false
+        },
+        {
+          "tag": "cmap",
+          "version": 0,
+          "originalLength": 392,
+          "length": 392,
+          "offset": 2810,
+          "transformed": false
+        },
+        {
+          "tag": "gasp",
+          "version": 0,
+          "originalLength": 8,
+          "length": 8,
+          "offset": 3202,
+          "transformed": false
+        },
+        {
+          "tag": "glyf",
+          "version": 0,
+          "originalLength": 17628,
+          "length": 14061,
+          "offset": 3210,
+          "transformed": true
+        },
+        {
+          "tag": "loca",
+          "version": 0,
+          "originalLength": 274,
+          "length": 0,
+          "offset": 17271,
+          "transformed": true
+        },
+        {
+          "tag": "head",
+          "version": 0,
+          "originalLength": 54,
+          "length": 54,
+          "offset": 17271,
+          "transformed": false
+        },
+        {
+          "tag": "hhea",
+          "version": 0,
+          "originalLength": 36,
+          "length": 36,
+          "offset": 17325,
+          "transformed": false
+        },
+        {
+          "tag": "hmtx",
+          "version": 0,
+          "originalLength": 504,
+          "length": 504,
+          "offset": 17361,
+          "transformed": false
+        },
+        {
+          "tag": "maxp",
+          "version": 0,
+          "originalLength": 32,
+          "length": 32,
+          "offset": 17865,
+          "transformed": false
+        },
+        {
+          "tag": "name",
+          "version": 0,
+          "originalLength": 660,
+          "length": 660,
+          "offset": 17897,
+          "transformed": false
+        },
+        {
+          "tag": "post",
+          "version": 0,
+          "originalLength": 1486,
+          "length": 1486,
+          "offset": 18557,
+          "transformed": false
+        },
+        {
+          "tag": "prep",
+          "version": 0,
+          "originalLength": 7,
+          "length": 7,
+          "offset": 20043,
+          "transformed": false
+        }
+      ],
+      "nameRecords": [
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 0,
+          "text": "Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 1,
+          "text": "Archivo SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 2,
+          "text": "Bold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 3,
+          "text": "2.001;OMNI;ArchivoSemiBold-Bold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 4,
+          "text": "Archivo SemiBold Bold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 5,
+          "text": "Version 2.001"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 6,
+          "text": "ArchivoSemiBold-Bold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 14,
+          "text": "http://scripts.sil.org/OFL"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 256,
+          "text": "Weight"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 257,
+          "text": "Width"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 264,
+          "text": "Bold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 279,
+          "text": "Normal"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 282,
+          "text": "Italic"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 283,
+          "text": "Roman"
+        }
+      ],
+      "name13Present": false,
+      "name14": [
+        "http://scripts.sil.org/OFL"
+      ],
+      "extendedMetadata": null,
+      "requiredGlyphsPresent": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false,
+        "8": false,
+        "9": false,
+        "A": true,
+        "Á": true,
+        "B": false,
+        "C": false,
+        "Č": false,
+        "D": false,
+        "Ď": false,
+        "E": false,
+        "É": false,
+        "Ě": false,
+        "F": false,
+        "G": false,
+        "H": false,
+        "I": false,
+        "Í": false,
+        "J": false,
+        "K": false,
+        "L": false,
+        "M": false,
+        "N": false,
+        "Ň": false,
+        "O": false,
+        "Ó": false,
+        "P": false,
+        "Q": false,
+        "R": false,
+        "Ř": false,
+        "S": false,
+        "Š": false,
+        "T": false,
+        "Ť": false,
+        "U": false,
+        "Ú": false,
+        "Ů": false,
+        "V": false,
+        "W": false,
+        "X": false,
+        "Y": false,
+        "Ý": false,
+        "Z": false,
+        "Ž": false,
+        "a": false,
+        "á": false,
+        "b": false,
+        "c": false,
+        "č": false,
+        "d": false,
+        "ď": false,
+        "e": false,
+        "é": false,
+        "ě": false,
+        "f": false,
+        "g": false,
+        "h": false,
+        "i": false,
+        "í": false,
+        "j": false,
+        "k": false,
+        "l": false,
+        "m": false,
+        "n": false,
+        "ň": false,
+        "o": false,
+        "ó": false,
+        "p": false,
+        "q": false,
+        "r": false,
+        "ř": false,
+        "s": false,
+        "š": false,
+        "t": false,
+        "ť": false,
+        "u": false,
+        "ú": false,
+        "ů": false,
+        "v": false,
+        "w": false,
+        "x": false,
+        "y": false,
+        "ý": false,
+        "z": false,
+        "ž": false,
+        " ": true,
+        ".": false,
+        "–": false,
+        "—": false
+      }
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-ext-700-normal.woff2",
+      "sha256": "8affe3b4758ec03c7c1a8b40c119209cbb1815fd836160570f94935ce9a683ec",
+      "decompressedBytes": 38993,
+      "nameTableVersion": 0,
+      "tableDirectory": [
+        {
+          "tag": "GDEF",
+          "version": 0,
+          "originalLength": 118,
+          "length": 118,
+          "offset": 0,
+          "transformed": false
+        },
+        {
+          "tag": "GPOS",
+          "version": 0,
+          "originalLength": 5304,
+          "length": 5304,
+          "offset": 118,
+          "transformed": false
+        },
+        {
+          "tag": "GSUB",
+          "version": 0,
+          "originalLength": 692,
+          "length": 692,
+          "offset": 5422,
+          "transformed": false
+        },
+        {
+          "tag": "OS/2",
+          "version": 0,
+          "originalLength": 96,
+          "length": 96,
+          "offset": 6114,
+          "transformed": false
+        },
+        {
+          "tag": "STAT",
+          "version": 0,
+          "originalLength": 90,
+          "length": 90,
+          "offset": 6210,
+          "transformed": false
+        },
+        {
+          "tag": "cmap",
+          "version": 0,
+          "originalLength": 904,
+          "length": 904,
+          "offset": 6300,
+          "transformed": false
+        },
+        {
+          "tag": "gasp",
+          "version": 0,
+          "originalLength": 8,
+          "length": 8,
+          "offset": 7204,
+          "transformed": false
+        },
+        {
+          "tag": "glyf",
+          "version": 0,
+          "originalLength": 33792,
+          "length": 26540,
+          "offset": 7212,
+          "transformed": true
+        },
+        {
+          "tag": "loca",
+          "version": 0,
+          "originalLength": 612,
+          "length": 0,
+          "offset": 33752,
+          "transformed": true
+        },
+        {
+          "tag": "head",
+          "version": 0,
+          "originalLength": 54,
+          "length": 54,
+          "offset": 33752,
+          "transformed": false
+        },
+        {
+          "tag": "hhea",
+          "version": 0,
+          "originalLength": 36,
+          "length": 36,
+          "offset": 33806,
+          "transformed": false
+        },
+        {
+          "tag": "hmtx",
+          "version": 0,
+          "originalLength": 1220,
+          "length": 1220,
+          "offset": 33842,
+          "transformed": false
+        },
+        {
+          "tag": "maxp",
+          "version": 0,
+          "originalLength": 32,
+          "length": 32,
+          "offset": 35062,
+          "transformed": false
+        },
+        {
+          "tag": "name",
+          "version": 0,
+          "originalLength": 660,
+          "length": 660,
+          "offset": 35094,
+          "transformed": false
+        },
+        {
+          "tag": "post",
+          "version": 0,
+          "originalLength": 3232,
+          "length": 3232,
+          "offset": 35754,
+          "transformed": false
+        },
+        {
+          "tag": "prep",
+          "version": 0,
+          "originalLength": 7,
+          "length": 7,
+          "offset": 38986,
+          "transformed": false
+        }
+      ],
+      "nameRecords": [
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 0,
+          "text": "Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 1,
+          "text": "Archivo SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 2,
+          "text": "Bold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 3,
+          "text": "2.001;OMNI;ArchivoSemiBold-Bold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 4,
+          "text": "Archivo SemiBold Bold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 5,
+          "text": "Version 2.001"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 6,
+          "text": "ArchivoSemiBold-Bold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 14,
+          "text": "http://scripts.sil.org/OFL"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 256,
+          "text": "Weight"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 257,
+          "text": "Width"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 264,
+          "text": "Bold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 279,
+          "text": "Normal"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 282,
+          "text": "Italic"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 283,
+          "text": "Roman"
+        }
+      ],
+      "name13Present": false,
+      "name14": [
+        "http://scripts.sil.org/OFL"
+      ],
+      "extendedMetadata": null,
+      "requiredGlyphsPresent": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false,
+        "8": false,
+        "9": false,
+        "A": true,
+        "Á": true,
+        "B": false,
+        "C": false,
+        "Č": true,
+        "D": false,
+        "Ď": true,
+        "E": false,
+        "É": false,
+        "Ě": true,
+        "F": false,
+        "G": false,
+        "H": false,
+        "I": false,
+        "Í": false,
+        "J": false,
+        "K": false,
+        "L": false,
+        "M": false,
+        "N": false,
+        "Ň": true,
+        "O": false,
+        "Ó": false,
+        "P": false,
+        "Q": false,
+        "R": false,
+        "Ř": true,
+        "S": false,
+        "Š": true,
+        "T": false,
+        "Ť": true,
+        "U": false,
+        "Ú": false,
+        "Ů": true,
+        "V": false,
+        "W": false,
+        "X": false,
+        "Y": false,
+        "Ý": false,
+        "Z": false,
+        "Ž": true,
+        "a": false,
+        "á": false,
+        "b": false,
+        "c": false,
+        "č": true,
+        "d": false,
+        "ď": true,
+        "e": false,
+        "é": false,
+        "ě": true,
+        "f": false,
+        "g": false,
+        "h": false,
+        "i": false,
+        "í": false,
+        "j": false,
+        "k": false,
+        "l": false,
+        "m": false,
+        "n": false,
+        "ň": true,
+        "o": false,
+        "ó": false,
+        "p": false,
+        "q": false,
+        "r": false,
+        "ř": true,
+        "s": false,
+        "š": true,
+        "t": false,
+        "ť": true,
+        "u": false,
+        "ú": false,
+        "ů": true,
+        "v": false,
+        "w": false,
+        "x": false,
+        "y": false,
+        "ý": false,
+        "z": false,
+        "ž": true,
+        " ": true,
+        ".": false,
+        "–": false,
+        "—": false
+      }
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo/files/archivo-latin-700-normal.woff2",
+      "sha256": "abada6cd4c92a9a706f6d7ed3189f322ff43dd78b9402c7d1137465b861d2a04",
+      "decompressedBytes": 34061,
+      "nameTableVersion": 0,
+      "tableDirectory": [
+        {
+          "tag": "GDEF",
+          "version": 0,
+          "originalLength": 100,
+          "length": 100,
+          "offset": 0,
+          "transformed": false
+        },
+        {
+          "tag": "GPOS",
+          "version": 0,
+          "originalLength": 7394,
+          "length": 7394,
+          "offset": 100,
+          "transformed": false
+        },
+        {
+          "tag": "GSUB",
+          "version": 0,
+          "originalLength": 1342,
+          "length": 1342,
+          "offset": 7494,
+          "transformed": false
+        },
+        {
+          "tag": "OS/2",
+          "version": 0,
+          "originalLength": 96,
+          "length": 96,
+          "offset": 8836,
+          "transformed": false
+        },
+        {
+          "tag": "STAT",
+          "version": 0,
+          "originalLength": 90,
+          "length": 90,
+          "offset": 8932,
+          "transformed": false
+        },
+        {
+          "tag": "cmap",
+          "version": 0,
+          "originalLength": 686,
+          "length": 686,
+          "offset": 9022,
+          "transformed": false
+        },
+        {
+          "tag": "gasp",
+          "version": 0,
+          "originalLength": 8,
+          "length": 8,
+          "offset": 9708,
+          "transformed": false
+        },
+        {
+          "tag": "glyf",
+          "version": 0,
+          "originalLength": 26812,
+          "length": 20687,
+          "offset": 9716,
+          "transformed": true
+        },
+        {
+          "tag": "loca",
+          "version": 0,
+          "originalLength": 606,
+          "length": 0,
+          "offset": 30403,
+          "transformed": true
+        },
+        {
+          "tag": "head",
+          "version": 0,
+          "originalLength": 54,
+          "length": 54,
+          "offset": 30403,
+          "transformed": false
+        },
+        {
+          "tag": "hhea",
+          "version": 0,
+          "originalLength": 36,
+          "length": 36,
+          "offset": 30457,
+          "transformed": false
+        },
+        {
+          "tag": "hmtx",
+          "version": 0,
+          "originalLength": 1208,
+          "length": 1208,
+          "offset": 30493,
+          "transformed": false
+        },
+        {
+          "tag": "maxp",
+          "version": 0,
+          "originalLength": 32,
+          "length": 32,
+          "offset": 31701,
+          "transformed": false
+        },
+        {
+          "tag": "name",
+          "version": 0,
+          "originalLength": 660,
+          "length": 660,
+          "offset": 31733,
+          "transformed": false
+        },
+        {
+          "tag": "post",
+          "version": 0,
+          "originalLength": 1661,
+          "length": 1661,
+          "offset": 32393,
+          "transformed": false
+        },
+        {
+          "tag": "prep",
+          "version": 0,
+          "originalLength": 7,
+          "length": 7,
+          "offset": 34054,
+          "transformed": false
+        }
+      ],
+      "nameRecords": [
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 0,
+          "text": "Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 1,
+          "text": "Archivo SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 2,
+          "text": "Bold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 3,
+          "text": "2.001;OMNI;ArchivoSemiBold-Bold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 4,
+          "text": "Archivo SemiBold Bold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 5,
+          "text": "Version 2.001"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 6,
+          "text": "ArchivoSemiBold-Bold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 14,
+          "text": "http://scripts.sil.org/OFL"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 256,
+          "text": "Weight"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 257,
+          "text": "Width"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 264,
+          "text": "Bold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 279,
+          "text": "Normal"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 282,
+          "text": "Italic"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 283,
+          "text": "Roman"
+        }
+      ],
+      "name13Present": false,
+      "name14": [
+        "http://scripts.sil.org/OFL"
+      ],
+      "extendedMetadata": null,
+      "requiredGlyphsPresent": {
+        "0": true,
+        "1": true,
+        "2": true,
+        "3": true,
+        "4": true,
+        "5": true,
+        "6": true,
+        "7": true,
+        "8": true,
+        "9": true,
+        "A": true,
+        "Á": true,
+        "B": true,
+        "C": true,
+        "Č": false,
+        "D": true,
+        "Ď": false,
+        "E": true,
+        "É": true,
+        "Ě": false,
+        "F": true,
+        "G": true,
+        "H": true,
+        "I": true,
+        "Í": true,
+        "J": true,
+        "K": true,
+        "L": true,
+        "M": true,
+        "N": true,
+        "Ň": false,
+        "O": true,
+        "Ó": true,
+        "P": true,
+        "Q": true,
+        "R": true,
+        "Ř": false,
+        "S": true,
+        "Š": false,
+        "T": true,
+        "Ť": false,
+        "U": true,
+        "Ú": true,
+        "Ů": false,
+        "V": true,
+        "W": true,
+        "X": true,
+        "Y": true,
+        "Ý": true,
+        "Z": true,
+        "Ž": false,
+        "a": true,
+        "á": true,
+        "b": true,
+        "c": true,
+        "č": false,
+        "d": true,
+        "ď": false,
+        "e": true,
+        "é": true,
+        "ě": false,
+        "f": true,
+        "g": true,
+        "h": true,
+        "i": true,
+        "í": true,
+        "j": true,
+        "k": true,
+        "l": true,
+        "m": true,
+        "n": true,
+        "ň": false,
+        "o": true,
+        "ó": true,
+        "p": true,
+        "q": true,
+        "r": true,
+        "ř": false,
+        "s": true,
+        "š": false,
+        "t": true,
+        "ť": false,
+        "u": true,
+        "ú": true,
+        "ů": false,
+        "v": true,
+        "w": true,
+        "x": true,
+        "y": true,
+        "ý": true,
+        "z": true,
+        "ž": false,
+        " ": true,
+        ".": true,
+        "–": true,
+        "—": true
+      }
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-vietnamese-400-normal.woff2",
+      "sha256": "46224f0f0e4f621a5ea2bf68cd25cd5954c1fd73640a48ad27d61c4297f105b1",
+      "decompressedBytes": 10452,
+      "nameTableVersion": 0,
+      "tableDirectory": [
+        {
+          "tag": "GDEF",
+          "version": 0,
+          "originalLength": 188,
+          "length": 188,
+          "offset": 0,
+          "transformed": false
+        },
+        {
+          "tag": "GPOS",
+          "version": 0,
+          "originalLength": 1630,
+          "length": 1630,
+          "offset": 188,
+          "transformed": false
+        },
+        {
+          "tag": "GSUB",
+          "version": 0,
+          "originalLength": 406,
+          "length": 406,
+          "offset": 1818,
+          "transformed": false
+        },
+        {
+          "tag": "OS/2",
+          "version": 0,
+          "originalLength": 96,
+          "length": 96,
+          "offset": 2224,
+          "transformed": false
+        },
+        {
+          "tag": "STAT",
+          "version": 0,
+          "originalLength": 72,
+          "length": 72,
+          "offset": 2320,
+          "transformed": false
+        },
+        {
+          "tag": "cmap",
+          "version": 0,
+          "originalLength": 396,
+          "length": 396,
+          "offset": 2392,
+          "transformed": false
+        },
+        {
+          "tag": "gasp",
+          "version": 0,
+          "originalLength": 8,
+          "length": 8,
+          "offset": 2788,
+          "transformed": false
+        },
+        {
+          "tag": "glyf",
+          "version": 0,
+          "originalLength": 5476,
+          "length": 4776,
+          "offset": 2796,
+          "transformed": true
+        },
+        {
+          "tag": "loca",
+          "version": 0,
+          "originalLength": 302,
+          "length": 0,
+          "offset": 7572,
+          "transformed": true
+        },
+        {
+          "tag": "head",
+          "version": 0,
+          "originalLength": 54,
+          "length": 54,
+          "offset": 7572,
+          "transformed": false
+        },
+        {
+          "tag": "hhea",
+          "version": 0,
+          "originalLength": 36,
+          "length": 36,
+          "offset": 7626,
+          "transformed": false
+        },
+        {
+          "tag": "hmtx",
+          "version": 0,
+          "originalLength": 600,
+          "length": 600,
+          "offset": 7662,
+          "transformed": false
+        },
+        {
+          "tag": "maxp",
+          "version": 0,
+          "originalLength": 32,
+          "length": 32,
+          "offset": 8262,
+          "transformed": false
+        },
+        {
+          "tag": "name",
+          "version": 0,
+          "originalLength": 650,
+          "length": 650,
+          "offset": 8294,
+          "transformed": false
+        },
+        {
+          "tag": "post",
+          "version": 0,
+          "originalLength": 1501,
+          "length": 1501,
+          "offset": 8944,
+          "transformed": false
+        },
+        {
+          "tag": "prep",
+          "version": 0,
+          "originalLength": 7,
+          "length": 7,
+          "offset": 10445,
+          "transformed": false
+        }
+      ],
+      "nameRecords": [
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 0,
+          "text": "Copyright 2019 The Archivo Narrow Project Authors (https://github.com/Omnibus-Type/ArchivoNarrow)"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 1,
+          "text": "Archivo Narrow"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 2,
+          "text": "Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 3,
+          "text": "3.002;OMNI;ArchivoNarrow-Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 4,
+          "text": "Archivo Narrow Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 5,
+          "text": "Version 3.002"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 6,
+          "text": "ArchivoNarrow-Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 14,
+          "text": "https://scripts.sil.org/OFL"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 256,
+          "text": "Weight"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 257,
+          "text": "Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 261,
+          "text": "Italic"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 262,
+          "text": "Roman"
+        }
+      ],
+      "name13Present": false,
+      "name14": [
+        "https://scripts.sil.org/OFL"
+      ],
+      "extendedMetadata": null,
+      "requiredGlyphsPresent": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false,
+        "8": false,
+        "9": false,
+        "A": true,
+        "Á": true,
+        "B": false,
+        "C": false,
+        "Č": false,
+        "D": false,
+        "Ď": false,
+        "E": false,
+        "É": false,
+        "Ě": false,
+        "F": false,
+        "G": false,
+        "H": false,
+        "I": false,
+        "Í": false,
+        "J": false,
+        "K": false,
+        "L": false,
+        "M": false,
+        "N": false,
+        "Ň": false,
+        "O": false,
+        "Ó": false,
+        "P": false,
+        "Q": false,
+        "R": false,
+        "Ř": false,
+        "S": false,
+        "Š": false,
+        "T": false,
+        "Ť": false,
+        "U": false,
+        "Ú": false,
+        "Ů": false,
+        "V": false,
+        "W": false,
+        "X": false,
+        "Y": false,
+        "Ý": false,
+        "Z": false,
+        "Ž": false,
+        "a": false,
+        "á": false,
+        "b": false,
+        "c": false,
+        "č": false,
+        "d": false,
+        "ď": false,
+        "e": false,
+        "é": false,
+        "ě": false,
+        "f": false,
+        "g": false,
+        "h": false,
+        "i": false,
+        "í": false,
+        "j": false,
+        "k": false,
+        "l": false,
+        "m": false,
+        "n": false,
+        "ň": false,
+        "o": false,
+        "ó": false,
+        "p": false,
+        "q": false,
+        "r": false,
+        "ř": false,
+        "s": false,
+        "š": false,
+        "t": false,
+        "ť": false,
+        "u": false,
+        "ú": false,
+        "ů": false,
+        "v": false,
+        "w": false,
+        "x": false,
+        "y": false,
+        "ý": false,
+        "z": false,
+        "ž": false,
+        " ": true,
+        ".": false,
+        "–": false,
+        "—": false
+      }
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-ext-400-normal.woff2",
+      "sha256": "e34541922a09e3477853bc33465deb78be88f696e635f36c3a06d53e4f39bf7e",
+      "decompressedBytes": 24252,
+      "nameTableVersion": 0,
+      "tableDirectory": [
+        {
+          "tag": "GDEF",
+          "version": 0,
+          "originalLength": 368,
+          "length": 368,
+          "offset": 0,
+          "transformed": false
+        },
+        {
+          "tag": "GPOS",
+          "version": 0,
+          "originalLength": 3842,
+          "length": 3842,
+          "offset": 368,
+          "transformed": false
+        },
+        {
+          "tag": "GSUB",
+          "version": 0,
+          "originalLength": 916,
+          "length": 916,
+          "offset": 4210,
+          "transformed": false
+        },
+        {
+          "tag": "OS/2",
+          "version": 0,
+          "originalLength": 96,
+          "length": 96,
+          "offset": 5126,
+          "transformed": false
+        },
+        {
+          "tag": "STAT",
+          "version": 0,
+          "originalLength": 72,
+          "length": 72,
+          "offset": 5222,
+          "transformed": false
+        },
+        {
+          "tag": "cmap",
+          "version": 0,
+          "originalLength": 876,
+          "length": 876,
+          "offset": 5294,
+          "transformed": false
+        },
+        {
+          "tag": "gasp",
+          "version": 0,
+          "originalLength": 8,
+          "length": 8,
+          "offset": 6170,
+          "transformed": false
+        },
+        {
+          "tag": "glyf",
+          "version": 0,
+          "originalLength": 14880,
+          "length": 12407,
+          "offset": 6178,
+          "transformed": true
+        },
+        {
+          "tag": "loca",
+          "version": 0,
+          "originalLength": 720,
+          "length": 0,
+          "offset": 18585,
+          "transformed": true
+        },
+        {
+          "tag": "head",
+          "version": 0,
+          "originalLength": 54,
+          "length": 54,
+          "offset": 18585,
+          "transformed": false
+        },
+        {
+          "tag": "hhea",
+          "version": 0,
+          "originalLength": 36,
+          "length": 36,
+          "offset": 18639,
+          "transformed": false
+        },
+        {
+          "tag": "hmtx",
+          "version": 0,
+          "originalLength": 1436,
+          "length": 1436,
+          "offset": 18675,
+          "transformed": false
+        },
+        {
+          "tag": "maxp",
+          "version": 0,
+          "originalLength": 32,
+          "length": 32,
+          "offset": 20111,
+          "transformed": false
+        },
+        {
+          "tag": "name",
+          "version": 0,
+          "originalLength": 650,
+          "length": 650,
+          "offset": 20143,
+          "transformed": false
+        },
+        {
+          "tag": "post",
+          "version": 0,
+          "originalLength": 3452,
+          "length": 3452,
+          "offset": 20793,
+          "transformed": false
+        },
+        {
+          "tag": "prep",
+          "version": 0,
+          "originalLength": 7,
+          "length": 7,
+          "offset": 24245,
+          "transformed": false
+        }
+      ],
+      "nameRecords": [
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 0,
+          "text": "Copyright 2019 The Archivo Narrow Project Authors (https://github.com/Omnibus-Type/ArchivoNarrow)"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 1,
+          "text": "Archivo Narrow"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 2,
+          "text": "Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 3,
+          "text": "3.002;OMNI;ArchivoNarrow-Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 4,
+          "text": "Archivo Narrow Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 5,
+          "text": "Version 3.002"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 6,
+          "text": "ArchivoNarrow-Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 14,
+          "text": "https://scripts.sil.org/OFL"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 256,
+          "text": "Weight"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 257,
+          "text": "Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 261,
+          "text": "Italic"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 262,
+          "text": "Roman"
+        }
+      ],
+      "name13Present": false,
+      "name14": [
+        "https://scripts.sil.org/OFL"
+      ],
+      "extendedMetadata": null,
+      "requiredGlyphsPresent": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false,
+        "8": false,
+        "9": false,
+        "A": true,
+        "Á": true,
+        "B": false,
+        "C": false,
+        "Č": true,
+        "D": false,
+        "Ď": true,
+        "E": false,
+        "É": false,
+        "Ě": true,
+        "F": false,
+        "G": false,
+        "H": false,
+        "I": false,
+        "Í": false,
+        "J": false,
+        "K": false,
+        "L": false,
+        "M": false,
+        "N": false,
+        "Ň": true,
+        "O": false,
+        "Ó": false,
+        "P": false,
+        "Q": false,
+        "R": false,
+        "Ř": true,
+        "S": false,
+        "Š": true,
+        "T": false,
+        "Ť": true,
+        "U": false,
+        "Ú": false,
+        "Ů": true,
+        "V": false,
+        "W": false,
+        "X": false,
+        "Y": false,
+        "Ý": false,
+        "Z": false,
+        "Ž": true,
+        "a": false,
+        "á": false,
+        "b": false,
+        "c": false,
+        "č": true,
+        "d": false,
+        "ď": true,
+        "e": false,
+        "é": false,
+        "ě": true,
+        "f": false,
+        "g": false,
+        "h": false,
+        "i": false,
+        "í": false,
+        "j": false,
+        "k": false,
+        "l": false,
+        "m": false,
+        "n": false,
+        "ň": true,
+        "o": false,
+        "ó": false,
+        "p": false,
+        "q": false,
+        "r": false,
+        "ř": true,
+        "s": false,
+        "š": true,
+        "t": false,
+        "ť": true,
+        "u": false,
+        "ú": false,
+        "ů": true,
+        "v": false,
+        "w": false,
+        "x": false,
+        "y": false,
+        "ý": false,
+        "z": false,
+        "ž": true,
+        " ": true,
+        ".": false,
+        "–": false,
+        "—": false
+      }
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-400-normal.woff2",
+      "sha256": "50e835187413b9d25833ccd7c9638673e64112aafd64004f48fc613ace27e354",
+      "decompressedBytes": 23139,
+      "nameTableVersion": 0,
+      "tableDirectory": [
+        {
+          "tag": "GDEF",
+          "version": 0,
+          "originalLength": 282,
+          "length": 282,
+          "offset": 0,
+          "transformed": false
+        },
+        {
+          "tag": "GPOS",
+          "version": 0,
+          "originalLength": 3718,
+          "length": 3718,
+          "offset": 282,
+          "transformed": false
+        },
+        {
+          "tag": "GSUB",
+          "version": 0,
+          "originalLength": 1494,
+          "length": 1494,
+          "offset": 4000,
+          "transformed": false
+        },
+        {
+          "tag": "OS/2",
+          "version": 0,
+          "originalLength": 96,
+          "length": 96,
+          "offset": 5494,
+          "transformed": false
+        },
+        {
+          "tag": "STAT",
+          "version": 0,
+          "originalLength": 72,
+          "length": 72,
+          "offset": 5590,
+          "transformed": false
+        },
+        {
+          "tag": "cmap",
+          "version": 0,
+          "originalLength": 698,
+          "length": 698,
+          "offset": 5662,
+          "transformed": false
+        },
+        {
+          "tag": "gasp",
+          "version": 0,
+          "originalLength": 8,
+          "length": 8,
+          "offset": 6360,
+          "transformed": false
+        },
+        {
+          "tag": "glyf",
+          "version": 0,
+          "originalLength": 16236,
+          "length": 12948,
+          "offset": 6368,
+          "transformed": true
+        },
+        {
+          "tag": "loca",
+          "version": 0,
+          "originalLength": 638,
+          "length": 0,
+          "offset": 19316,
+          "transformed": true
+        },
+        {
+          "tag": "head",
+          "version": 0,
+          "originalLength": 54,
+          "length": 54,
+          "offset": 19316,
+          "transformed": false
+        },
+        {
+          "tag": "hhea",
+          "version": 0,
+          "originalLength": 36,
+          "length": 36,
+          "offset": 19370,
+          "transformed": false
+        },
+        {
+          "tag": "hmtx",
+          "version": 0,
+          "originalLength": 1272,
+          "length": 1272,
+          "offset": 19406,
+          "transformed": false
+        },
+        {
+          "tag": "maxp",
+          "version": 0,
+          "originalLength": 32,
+          "length": 32,
+          "offset": 20678,
+          "transformed": false
+        },
+        {
+          "tag": "name",
+          "version": 0,
+          "originalLength": 650,
+          "length": 650,
+          "offset": 20710,
+          "transformed": false
+        },
+        {
+          "tag": "post",
+          "version": 0,
+          "originalLength": 1772,
+          "length": 1772,
+          "offset": 21360,
+          "transformed": false
+        },
+        {
+          "tag": "prep",
+          "version": 0,
+          "originalLength": 7,
+          "length": 7,
+          "offset": 23132,
+          "transformed": false
+        }
+      ],
+      "nameRecords": [
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 0,
+          "text": "Copyright 2019 The Archivo Narrow Project Authors (https://github.com/Omnibus-Type/ArchivoNarrow)"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 1,
+          "text": "Archivo Narrow"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 2,
+          "text": "Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 3,
+          "text": "3.002;OMNI;ArchivoNarrow-Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 4,
+          "text": "Archivo Narrow Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 5,
+          "text": "Version 3.002"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 6,
+          "text": "ArchivoNarrow-Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 14,
+          "text": "https://scripts.sil.org/OFL"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 256,
+          "text": "Weight"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 257,
+          "text": "Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 261,
+          "text": "Italic"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 262,
+          "text": "Roman"
+        }
+      ],
+      "name13Present": false,
+      "name14": [
+        "https://scripts.sil.org/OFL"
+      ],
+      "extendedMetadata": null,
+      "requiredGlyphsPresent": {
+        "0": true,
+        "1": true,
+        "2": true,
+        "3": true,
+        "4": true,
+        "5": true,
+        "6": true,
+        "7": true,
+        "8": true,
+        "9": true,
+        "A": true,
+        "Á": true,
+        "B": true,
+        "C": true,
+        "Č": false,
+        "D": true,
+        "Ď": false,
+        "E": true,
+        "É": true,
+        "Ě": false,
+        "F": true,
+        "G": true,
+        "H": true,
+        "I": true,
+        "Í": true,
+        "J": true,
+        "K": true,
+        "L": true,
+        "M": true,
+        "N": true,
+        "Ň": false,
+        "O": true,
+        "Ó": true,
+        "P": true,
+        "Q": true,
+        "R": true,
+        "Ř": false,
+        "S": true,
+        "Š": false,
+        "T": true,
+        "Ť": false,
+        "U": true,
+        "Ú": true,
+        "Ů": false,
+        "V": true,
+        "W": true,
+        "X": true,
+        "Y": true,
+        "Ý": true,
+        "Z": true,
+        "Ž": false,
+        "a": true,
+        "á": true,
+        "b": true,
+        "c": true,
+        "č": false,
+        "d": true,
+        "ď": false,
+        "e": true,
+        "é": true,
+        "ě": false,
+        "f": true,
+        "g": true,
+        "h": true,
+        "i": true,
+        "í": true,
+        "j": true,
+        "k": true,
+        "l": true,
+        "m": true,
+        "n": true,
+        "ň": false,
+        "o": true,
+        "ó": true,
+        "p": true,
+        "q": true,
+        "r": true,
+        "ř": false,
+        "s": true,
+        "š": false,
+        "t": true,
+        "ť": false,
+        "u": true,
+        "ú": true,
+        "ů": false,
+        "v": true,
+        "w": true,
+        "x": true,
+        "y": true,
+        "ý": true,
+        "z": true,
+        "ž": false,
+        " ": true,
+        ".": true,
+        "–": true,
+        "—": true
+      }
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-vietnamese-500-normal.woff2",
+      "sha256": "76d5aa42f903a904f88eb56e0541a7155553f462a1280b859f1c1c9747d62fb4",
+      "decompressedBytes": 10603,
+      "nameTableVersion": 0,
+      "tableDirectory": [
+        {
+          "tag": "GDEF",
+          "version": 0,
+          "originalLength": 188,
+          "length": 188,
+          "offset": 0,
+          "transformed": false
+        },
+        {
+          "tag": "GPOS",
+          "version": 0,
+          "originalLength": 1756,
+          "length": 1756,
+          "offset": 188,
+          "transformed": false
+        },
+        {
+          "tag": "GSUB",
+          "version": 0,
+          "originalLength": 406,
+          "length": 406,
+          "offset": 1944,
+          "transformed": false
+        },
+        {
+          "tag": "OS/2",
+          "version": 0,
+          "originalLength": 96,
+          "length": 96,
+          "offset": 2350,
+          "transformed": false
+        },
+        {
+          "tag": "STAT",
+          "version": 0,
+          "originalLength": 68,
+          "length": 68,
+          "offset": 2446,
+          "transformed": false
+        },
+        {
+          "tag": "cmap",
+          "version": 0,
+          "originalLength": 396,
+          "length": 396,
+          "offset": 2514,
+          "transformed": false
+        },
+        {
+          "tag": "gasp",
+          "version": 0,
+          "originalLength": 8,
+          "length": 8,
+          "offset": 2910,
+          "transformed": false
+        },
+        {
+          "tag": "glyf",
+          "version": 0,
+          "originalLength": 5480,
+          "length": 4775,
+          "offset": 2918,
+          "transformed": true
+        },
+        {
+          "tag": "loca",
+          "version": 0,
+          "originalLength": 302,
+          "length": 0,
+          "offset": 7693,
+          "transformed": true
+        },
+        {
+          "tag": "head",
+          "version": 0,
+          "originalLength": 54,
+          "length": 54,
+          "offset": 7693,
+          "transformed": false
+        },
+        {
+          "tag": "hhea",
+          "version": 0,
+          "originalLength": 36,
+          "length": 36,
+          "offset": 7747,
+          "transformed": false
+        },
+        {
+          "tag": "hmtx",
+          "version": 0,
+          "originalLength": 600,
+          "length": 600,
+          "offset": 7783,
+          "transformed": false
+        },
+        {
+          "tag": "maxp",
+          "version": 0,
+          "originalLength": 32,
+          "length": 32,
+          "offset": 8383,
+          "transformed": false
+        },
+        {
+          "tag": "name",
+          "version": 0,
+          "originalLength": 680,
+          "length": 680,
+          "offset": 8415,
+          "transformed": false
+        },
+        {
+          "tag": "post",
+          "version": 0,
+          "originalLength": 1501,
+          "length": 1501,
+          "offset": 9095,
+          "transformed": false
+        },
+        {
+          "tag": "prep",
+          "version": 0,
+          "originalLength": 7,
+          "length": 7,
+          "offset": 10596,
+          "transformed": false
+        }
+      ],
+      "nameRecords": [
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 0,
+          "text": "Copyright 2019 The Archivo Narrow Project Authors (https://github.com/Omnibus-Type/ArchivoNarrow)"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 1,
+          "text": "Archivo Narrow Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 2,
+          "text": "Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 3,
+          "text": "3.002;OMNI;ArchivoNarrow-Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 4,
+          "text": "Archivo Narrow Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 5,
+          "text": "Version 3.002"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 6,
+          "text": "ArchivoNarrow-Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 14,
+          "text": "https://scripts.sil.org/OFL"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 16,
+          "text": "Archivo Narrow"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 17,
+          "text": "Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 256,
+          "text": "Weight"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 258,
+          "text": "Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 261,
+          "text": "Italic"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 262,
+          "text": "Roman"
+        }
+      ],
+      "name13Present": false,
+      "name14": [
+        "https://scripts.sil.org/OFL"
+      ],
+      "extendedMetadata": null,
+      "requiredGlyphsPresent": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false,
+        "8": false,
+        "9": false,
+        "A": true,
+        "Á": true,
+        "B": false,
+        "C": false,
+        "Č": false,
+        "D": false,
+        "Ď": false,
+        "E": false,
+        "É": false,
+        "Ě": false,
+        "F": false,
+        "G": false,
+        "H": false,
+        "I": false,
+        "Í": false,
+        "J": false,
+        "K": false,
+        "L": false,
+        "M": false,
+        "N": false,
+        "Ň": false,
+        "O": false,
+        "Ó": false,
+        "P": false,
+        "Q": false,
+        "R": false,
+        "Ř": false,
+        "S": false,
+        "Š": false,
+        "T": false,
+        "Ť": false,
+        "U": false,
+        "Ú": false,
+        "Ů": false,
+        "V": false,
+        "W": false,
+        "X": false,
+        "Y": false,
+        "Ý": false,
+        "Z": false,
+        "Ž": false,
+        "a": false,
+        "á": false,
+        "b": false,
+        "c": false,
+        "č": false,
+        "d": false,
+        "ď": false,
+        "e": false,
+        "é": false,
+        "ě": false,
+        "f": false,
+        "g": false,
+        "h": false,
+        "i": false,
+        "í": false,
+        "j": false,
+        "k": false,
+        "l": false,
+        "m": false,
+        "n": false,
+        "ň": false,
+        "o": false,
+        "ó": false,
+        "p": false,
+        "q": false,
+        "r": false,
+        "ř": false,
+        "s": false,
+        "š": false,
+        "t": false,
+        "ť": false,
+        "u": false,
+        "ú": false,
+        "ů": false,
+        "v": false,
+        "w": false,
+        "x": false,
+        "y": false,
+        "ý": false,
+        "z": false,
+        "ž": false,
+        " ": true,
+        ".": false,
+        "–": false,
+        "—": false
+      }
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-ext-500-normal.woff2",
+      "sha256": "5ce451965ac7127fcb317ddd93c7d70695db18af22e793cbe9721ffc13df66ff",
+      "decompressedBytes": 24512,
+      "nameTableVersion": 0,
+      "tableDirectory": [
+        {
+          "tag": "GDEF",
+          "version": 0,
+          "originalLength": 368,
+          "length": 368,
+          "offset": 0,
+          "transformed": false
+        },
+        {
+          "tag": "GPOS",
+          "version": 0,
+          "originalLength": 4076,
+          "length": 4076,
+          "offset": 368,
+          "transformed": false
+        },
+        {
+          "tag": "GSUB",
+          "version": 0,
+          "originalLength": 916,
+          "length": 916,
+          "offset": 4444,
+          "transformed": false
+        },
+        {
+          "tag": "OS/2",
+          "version": 0,
+          "originalLength": 96,
+          "length": 96,
+          "offset": 5360,
+          "transformed": false
+        },
+        {
+          "tag": "STAT",
+          "version": 0,
+          "originalLength": 68,
+          "length": 68,
+          "offset": 5456,
+          "transformed": false
+        },
+        {
+          "tag": "cmap",
+          "version": 0,
+          "originalLength": 876,
+          "length": 876,
+          "offset": 5524,
+          "transformed": false
+        },
+        {
+          "tag": "gasp",
+          "version": 0,
+          "originalLength": 8,
+          "length": 8,
+          "offset": 6400,
+          "transformed": false
+        },
+        {
+          "tag": "glyf",
+          "version": 0,
+          "originalLength": 14884,
+          "length": 12407,
+          "offset": 6408,
+          "transformed": true
+        },
+        {
+          "tag": "loca",
+          "version": 0,
+          "originalLength": 720,
+          "length": 0,
+          "offset": 18815,
+          "transformed": true
+        },
+        {
+          "tag": "head",
+          "version": 0,
+          "originalLength": 54,
+          "length": 54,
+          "offset": 18815,
+          "transformed": false
+        },
+        {
+          "tag": "hhea",
+          "version": 0,
+          "originalLength": 36,
+          "length": 36,
+          "offset": 18869,
+          "transformed": false
+        },
+        {
+          "tag": "hmtx",
+          "version": 0,
+          "originalLength": 1436,
+          "length": 1436,
+          "offset": 18905,
+          "transformed": false
+        },
+        {
+          "tag": "maxp",
+          "version": 0,
+          "originalLength": 32,
+          "length": 32,
+          "offset": 20341,
+          "transformed": false
+        },
+        {
+          "tag": "name",
+          "version": 0,
+          "originalLength": 680,
+          "length": 680,
+          "offset": 20373,
+          "transformed": false
+        },
+        {
+          "tag": "post",
+          "version": 0,
+          "originalLength": 3452,
+          "length": 3452,
+          "offset": 21053,
+          "transformed": false
+        },
+        {
+          "tag": "prep",
+          "version": 0,
+          "originalLength": 7,
+          "length": 7,
+          "offset": 24505,
+          "transformed": false
+        }
+      ],
+      "nameRecords": [
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 0,
+          "text": "Copyright 2019 The Archivo Narrow Project Authors (https://github.com/Omnibus-Type/ArchivoNarrow)"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 1,
+          "text": "Archivo Narrow Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 2,
+          "text": "Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 3,
+          "text": "3.002;OMNI;ArchivoNarrow-Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 4,
+          "text": "Archivo Narrow Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 5,
+          "text": "Version 3.002"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 6,
+          "text": "ArchivoNarrow-Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 14,
+          "text": "https://scripts.sil.org/OFL"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 16,
+          "text": "Archivo Narrow"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 17,
+          "text": "Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 256,
+          "text": "Weight"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 258,
+          "text": "Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 261,
+          "text": "Italic"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 262,
+          "text": "Roman"
+        }
+      ],
+      "name13Present": false,
+      "name14": [
+        "https://scripts.sil.org/OFL"
+      ],
+      "extendedMetadata": null,
+      "requiredGlyphsPresent": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false,
+        "8": false,
+        "9": false,
+        "A": true,
+        "Á": true,
+        "B": false,
+        "C": false,
+        "Č": true,
+        "D": false,
+        "Ď": true,
+        "E": false,
+        "É": false,
+        "Ě": true,
+        "F": false,
+        "G": false,
+        "H": false,
+        "I": false,
+        "Í": false,
+        "J": false,
+        "K": false,
+        "L": false,
+        "M": false,
+        "N": false,
+        "Ň": true,
+        "O": false,
+        "Ó": false,
+        "P": false,
+        "Q": false,
+        "R": false,
+        "Ř": true,
+        "S": false,
+        "Š": true,
+        "T": false,
+        "Ť": true,
+        "U": false,
+        "Ú": false,
+        "Ů": true,
+        "V": false,
+        "W": false,
+        "X": false,
+        "Y": false,
+        "Ý": false,
+        "Z": false,
+        "Ž": true,
+        "a": false,
+        "á": false,
+        "b": false,
+        "c": false,
+        "č": true,
+        "d": false,
+        "ď": true,
+        "e": false,
+        "é": false,
+        "ě": true,
+        "f": false,
+        "g": false,
+        "h": false,
+        "i": false,
+        "í": false,
+        "j": false,
+        "k": false,
+        "l": false,
+        "m": false,
+        "n": false,
+        "ň": true,
+        "o": false,
+        "ó": false,
+        "p": false,
+        "q": false,
+        "r": false,
+        "ř": true,
+        "s": false,
+        "š": true,
+        "t": false,
+        "ť": true,
+        "u": false,
+        "ú": false,
+        "ů": true,
+        "v": false,
+        "w": false,
+        "x": false,
+        "y": false,
+        "ý": false,
+        "z": false,
+        "ž": true,
+        " ": true,
+        ".": false,
+        "–": false,
+        "—": false
+      }
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-500-normal.woff2",
+      "sha256": "240e62e49fe484a5a9ff702a15f52c91ef9a33263885da76d06d382ab5ae50b4",
+      "decompressedBytes": 23271,
+      "nameTableVersion": 0,
+      "tableDirectory": [
+        {
+          "tag": "GDEF",
+          "version": 0,
+          "originalLength": 282,
+          "length": 282,
+          "offset": 0,
+          "transformed": false
+        },
+        {
+          "tag": "GPOS",
+          "version": 0,
+          "originalLength": 3838,
+          "length": 3838,
+          "offset": 282,
+          "transformed": false
+        },
+        {
+          "tag": "GSUB",
+          "version": 0,
+          "originalLength": 1494,
+          "length": 1494,
+          "offset": 4120,
+          "transformed": false
+        },
+        {
+          "tag": "OS/2",
+          "version": 0,
+          "originalLength": 96,
+          "length": 96,
+          "offset": 5614,
+          "transformed": false
+        },
+        {
+          "tag": "STAT",
+          "version": 0,
+          "originalLength": 68,
+          "length": 68,
+          "offset": 5710,
+          "transformed": false
+        },
+        {
+          "tag": "cmap",
+          "version": 0,
+          "originalLength": 698,
+          "length": 698,
+          "offset": 5778,
+          "transformed": false
+        },
+        {
+          "tag": "gasp",
+          "version": 0,
+          "originalLength": 8,
+          "length": 8,
+          "offset": 6476,
+          "transformed": false
+        },
+        {
+          "tag": "glyf",
+          "version": 0,
+          "originalLength": 16240,
+          "length": 12934,
+          "offset": 6484,
+          "transformed": true
+        },
+        {
+          "tag": "loca",
+          "version": 0,
+          "originalLength": 638,
+          "length": 0,
+          "offset": 19418,
+          "transformed": true
+        },
+        {
+          "tag": "head",
+          "version": 0,
+          "originalLength": 54,
+          "length": 54,
+          "offset": 19418,
+          "transformed": false
+        },
+        {
+          "tag": "hhea",
+          "version": 0,
+          "originalLength": 36,
+          "length": 36,
+          "offset": 19472,
+          "transformed": false
+        },
+        {
+          "tag": "hmtx",
+          "version": 0,
+          "originalLength": 1272,
+          "length": 1272,
+          "offset": 19508,
+          "transformed": false
+        },
+        {
+          "tag": "maxp",
+          "version": 0,
+          "originalLength": 32,
+          "length": 32,
+          "offset": 20780,
+          "transformed": false
+        },
+        {
+          "tag": "name",
+          "version": 0,
+          "originalLength": 680,
+          "length": 680,
+          "offset": 20812,
+          "transformed": false
+        },
+        {
+          "tag": "post",
+          "version": 0,
+          "originalLength": 1772,
+          "length": 1772,
+          "offset": 21492,
+          "transformed": false
+        },
+        {
+          "tag": "prep",
+          "version": 0,
+          "originalLength": 7,
+          "length": 7,
+          "offset": 23264,
+          "transformed": false
+        }
+      ],
+      "nameRecords": [
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 0,
+          "text": "Copyright 2019 The Archivo Narrow Project Authors (https://github.com/Omnibus-Type/ArchivoNarrow)"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 1,
+          "text": "Archivo Narrow Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 2,
+          "text": "Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 3,
+          "text": "3.002;OMNI;ArchivoNarrow-Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 4,
+          "text": "Archivo Narrow Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 5,
+          "text": "Version 3.002"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 6,
+          "text": "ArchivoNarrow-Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 14,
+          "text": "https://scripts.sil.org/OFL"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 16,
+          "text": "Archivo Narrow"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 17,
+          "text": "Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 256,
+          "text": "Weight"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 258,
+          "text": "Medium"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 261,
+          "text": "Italic"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 262,
+          "text": "Roman"
+        }
+      ],
+      "name13Present": false,
+      "name14": [
+        "https://scripts.sil.org/OFL"
+      ],
+      "extendedMetadata": null,
+      "requiredGlyphsPresent": {
+        "0": true,
+        "1": true,
+        "2": true,
+        "3": true,
+        "4": true,
+        "5": true,
+        "6": true,
+        "7": true,
+        "8": true,
+        "9": true,
+        "A": true,
+        "Á": true,
+        "B": true,
+        "C": true,
+        "Č": false,
+        "D": true,
+        "Ď": false,
+        "E": true,
+        "É": true,
+        "Ě": false,
+        "F": true,
+        "G": true,
+        "H": true,
+        "I": true,
+        "Í": true,
+        "J": true,
+        "K": true,
+        "L": true,
+        "M": true,
+        "N": true,
+        "Ň": false,
+        "O": true,
+        "Ó": true,
+        "P": true,
+        "Q": true,
+        "R": true,
+        "Ř": false,
+        "S": true,
+        "Š": false,
+        "T": true,
+        "Ť": false,
+        "U": true,
+        "Ú": true,
+        "Ů": false,
+        "V": true,
+        "W": true,
+        "X": true,
+        "Y": true,
+        "Ý": true,
+        "Z": true,
+        "Ž": false,
+        "a": true,
+        "á": true,
+        "b": true,
+        "c": true,
+        "č": false,
+        "d": true,
+        "ď": false,
+        "e": true,
+        "é": true,
+        "ě": false,
+        "f": true,
+        "g": true,
+        "h": true,
+        "i": true,
+        "í": true,
+        "j": true,
+        "k": true,
+        "l": true,
+        "m": true,
+        "n": true,
+        "ň": false,
+        "o": true,
+        "ó": true,
+        "p": true,
+        "q": true,
+        "r": true,
+        "ř": false,
+        "s": true,
+        "š": false,
+        "t": true,
+        "ť": false,
+        "u": true,
+        "ú": true,
+        "ů": false,
+        "v": true,
+        "w": true,
+        "x": true,
+        "y": true,
+        "ý": true,
+        "z": true,
+        "ž": false,
+        " ": true,
+        ".": true,
+        "–": true,
+        "—": true
+      }
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-vietnamese-600-normal.woff2",
+      "sha256": "7271ec2926e4e22ecf0c11fe3e35bafad385a19f29f10437e40333c27479aa74",
+      "decompressedBytes": 10622,
+      "nameTableVersion": 0,
+      "tableDirectory": [
+        {
+          "tag": "GDEF",
+          "version": 0,
+          "originalLength": 188,
+          "length": 188,
+          "offset": 0,
+          "transformed": false
+        },
+        {
+          "tag": "GPOS",
+          "version": 0,
+          "originalLength": 1756,
+          "length": 1756,
+          "offset": 188,
+          "transformed": false
+        },
+        {
+          "tag": "GSUB",
+          "version": 0,
+          "originalLength": 406,
+          "length": 406,
+          "offset": 1944,
+          "transformed": false
+        },
+        {
+          "tag": "OS/2",
+          "version": 0,
+          "originalLength": 96,
+          "length": 96,
+          "offset": 2350,
+          "transformed": false
+        },
+        {
+          "tag": "STAT",
+          "version": 0,
+          "originalLength": 68,
+          "length": 68,
+          "offset": 2446,
+          "transformed": false
+        },
+        {
+          "tag": "cmap",
+          "version": 0,
+          "originalLength": 396,
+          "length": 396,
+          "offset": 2514,
+          "transformed": false
+        },
+        {
+          "tag": "gasp",
+          "version": 0,
+          "originalLength": 8,
+          "length": 8,
+          "offset": 2910,
+          "transformed": false
+        },
+        {
+          "tag": "glyf",
+          "version": 0,
+          "originalLength": 5476,
+          "length": 4778,
+          "offset": 2918,
+          "transformed": true
+        },
+        {
+          "tag": "loca",
+          "version": 0,
+          "originalLength": 302,
+          "length": 0,
+          "offset": 7696,
+          "transformed": true
+        },
+        {
+          "tag": "head",
+          "version": 0,
+          "originalLength": 54,
+          "length": 54,
+          "offset": 7696,
+          "transformed": false
+        },
+        {
+          "tag": "hhea",
+          "version": 0,
+          "originalLength": 36,
+          "length": 36,
+          "offset": 7750,
+          "transformed": false
+        },
+        {
+          "tag": "hmtx",
+          "version": 0,
+          "originalLength": 600,
+          "length": 600,
+          "offset": 7786,
+          "transformed": false
+        },
+        {
+          "tag": "maxp",
+          "version": 0,
+          "originalLength": 32,
+          "length": 32,
+          "offset": 8386,
+          "transformed": false
+        },
+        {
+          "tag": "name",
+          "version": 0,
+          "originalLength": 696,
+          "length": 696,
+          "offset": 8418,
+          "transformed": false
+        },
+        {
+          "tag": "post",
+          "version": 0,
+          "originalLength": 1501,
+          "length": 1501,
+          "offset": 9114,
+          "transformed": false
+        },
+        {
+          "tag": "prep",
+          "version": 0,
+          "originalLength": 7,
+          "length": 7,
+          "offset": 10615,
+          "transformed": false
+        }
+      ],
+      "nameRecords": [
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 0,
+          "text": "Copyright 2019 The Archivo Narrow Project Authors (https://github.com/Omnibus-Type/ArchivoNarrow)"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 1,
+          "text": "Archivo Narrow SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 2,
+          "text": "Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 3,
+          "text": "3.002;OMNI;ArchivoNarrow-SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 4,
+          "text": "Archivo Narrow SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 5,
+          "text": "Version 3.002"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 6,
+          "text": "ArchivoNarrow-SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 14,
+          "text": "https://scripts.sil.org/OFL"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 16,
+          "text": "Archivo Narrow"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 17,
+          "text": "SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 256,
+          "text": "Weight"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 259,
+          "text": "SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 261,
+          "text": "Italic"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 262,
+          "text": "Roman"
+        }
+      ],
+      "name13Present": false,
+      "name14": [
+        "https://scripts.sil.org/OFL"
+      ],
+      "extendedMetadata": null,
+      "requiredGlyphsPresent": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false,
+        "8": false,
+        "9": false,
+        "A": true,
+        "Á": true,
+        "B": false,
+        "C": false,
+        "Č": false,
+        "D": false,
+        "Ď": false,
+        "E": false,
+        "É": false,
+        "Ě": false,
+        "F": false,
+        "G": false,
+        "H": false,
+        "I": false,
+        "Í": false,
+        "J": false,
+        "K": false,
+        "L": false,
+        "M": false,
+        "N": false,
+        "Ň": false,
+        "O": false,
+        "Ó": false,
+        "P": false,
+        "Q": false,
+        "R": false,
+        "Ř": false,
+        "S": false,
+        "Š": false,
+        "T": false,
+        "Ť": false,
+        "U": false,
+        "Ú": false,
+        "Ů": false,
+        "V": false,
+        "W": false,
+        "X": false,
+        "Y": false,
+        "Ý": false,
+        "Z": false,
+        "Ž": false,
+        "a": false,
+        "á": false,
+        "b": false,
+        "c": false,
+        "č": false,
+        "d": false,
+        "ď": false,
+        "e": false,
+        "é": false,
+        "ě": false,
+        "f": false,
+        "g": false,
+        "h": false,
+        "i": false,
+        "í": false,
+        "j": false,
+        "k": false,
+        "l": false,
+        "m": false,
+        "n": false,
+        "ň": false,
+        "o": false,
+        "ó": false,
+        "p": false,
+        "q": false,
+        "r": false,
+        "ř": false,
+        "s": false,
+        "š": false,
+        "t": false,
+        "ť": false,
+        "u": false,
+        "ú": false,
+        "ů": false,
+        "v": false,
+        "w": false,
+        "x": false,
+        "y": false,
+        "ý": false,
+        "z": false,
+        "ž": false,
+        " ": true,
+        ".": false,
+        "–": false,
+        "—": false
+      }
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-ext-600-normal.woff2",
+      "sha256": "6476f2404d429ee11785aa5e7d2b9245a8bd9ec2180073c288da0c2e14302ff9",
+      "decompressedBytes": 24528,
+      "nameTableVersion": 0,
+      "tableDirectory": [
+        {
+          "tag": "GDEF",
+          "version": 0,
+          "originalLength": 368,
+          "length": 368,
+          "offset": 0,
+          "transformed": false
+        },
+        {
+          "tag": "GPOS",
+          "version": 0,
+          "originalLength": 4076,
+          "length": 4076,
+          "offset": 368,
+          "transformed": false
+        },
+        {
+          "tag": "GSUB",
+          "version": 0,
+          "originalLength": 916,
+          "length": 916,
+          "offset": 4444,
+          "transformed": false
+        },
+        {
+          "tag": "OS/2",
+          "version": 0,
+          "originalLength": 96,
+          "length": 96,
+          "offset": 5360,
+          "transformed": false
+        },
+        {
+          "tag": "STAT",
+          "version": 0,
+          "originalLength": 68,
+          "length": 68,
+          "offset": 5456,
+          "transformed": false
+        },
+        {
+          "tag": "cmap",
+          "version": 0,
+          "originalLength": 876,
+          "length": 876,
+          "offset": 5524,
+          "transformed": false
+        },
+        {
+          "tag": "gasp",
+          "version": 0,
+          "originalLength": 8,
+          "length": 8,
+          "offset": 6400,
+          "transformed": false
+        },
+        {
+          "tag": "glyf",
+          "version": 0,
+          "originalLength": 14864,
+          "length": 12407,
+          "offset": 6408,
+          "transformed": true
+        },
+        {
+          "tag": "loca",
+          "version": 0,
+          "originalLength": 720,
+          "length": 0,
+          "offset": 18815,
+          "transformed": true
+        },
+        {
+          "tag": "head",
+          "version": 0,
+          "originalLength": 54,
+          "length": 54,
+          "offset": 18815,
+          "transformed": false
+        },
+        {
+          "tag": "hhea",
+          "version": 0,
+          "originalLength": 36,
+          "length": 36,
+          "offset": 18869,
+          "transformed": false
+        },
+        {
+          "tag": "hmtx",
+          "version": 0,
+          "originalLength": 1436,
+          "length": 1436,
+          "offset": 18905,
+          "transformed": false
+        },
+        {
+          "tag": "maxp",
+          "version": 0,
+          "originalLength": 32,
+          "length": 32,
+          "offset": 20341,
+          "transformed": false
+        },
+        {
+          "tag": "name",
+          "version": 0,
+          "originalLength": 696,
+          "length": 696,
+          "offset": 20373,
+          "transformed": false
+        },
+        {
+          "tag": "post",
+          "version": 0,
+          "originalLength": 3452,
+          "length": 3452,
+          "offset": 21069,
+          "transformed": false
+        },
+        {
+          "tag": "prep",
+          "version": 0,
+          "originalLength": 7,
+          "length": 7,
+          "offset": 24521,
+          "transformed": false
+        }
+      ],
+      "nameRecords": [
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 0,
+          "text": "Copyright 2019 The Archivo Narrow Project Authors (https://github.com/Omnibus-Type/ArchivoNarrow)"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 1,
+          "text": "Archivo Narrow SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 2,
+          "text": "Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 3,
+          "text": "3.002;OMNI;ArchivoNarrow-SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 4,
+          "text": "Archivo Narrow SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 5,
+          "text": "Version 3.002"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 6,
+          "text": "ArchivoNarrow-SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 14,
+          "text": "https://scripts.sil.org/OFL"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 16,
+          "text": "Archivo Narrow"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 17,
+          "text": "SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 256,
+          "text": "Weight"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 259,
+          "text": "SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 261,
+          "text": "Italic"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 262,
+          "text": "Roman"
+        }
+      ],
+      "name13Present": false,
+      "name14": [
+        "https://scripts.sil.org/OFL"
+      ],
+      "extendedMetadata": null,
+      "requiredGlyphsPresent": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false,
+        "8": false,
+        "9": false,
+        "A": true,
+        "Á": true,
+        "B": false,
+        "C": false,
+        "Č": true,
+        "D": false,
+        "Ď": true,
+        "E": false,
+        "É": false,
+        "Ě": true,
+        "F": false,
+        "G": false,
+        "H": false,
+        "I": false,
+        "Í": false,
+        "J": false,
+        "K": false,
+        "L": false,
+        "M": false,
+        "N": false,
+        "Ň": true,
+        "O": false,
+        "Ó": false,
+        "P": false,
+        "Q": false,
+        "R": false,
+        "Ř": true,
+        "S": false,
+        "Š": true,
+        "T": false,
+        "Ť": true,
+        "U": false,
+        "Ú": false,
+        "Ů": true,
+        "V": false,
+        "W": false,
+        "X": false,
+        "Y": false,
+        "Ý": false,
+        "Z": false,
+        "Ž": true,
+        "a": false,
+        "á": false,
+        "b": false,
+        "c": false,
+        "č": true,
+        "d": false,
+        "ď": true,
+        "e": false,
+        "é": false,
+        "ě": true,
+        "f": false,
+        "g": false,
+        "h": false,
+        "i": false,
+        "í": false,
+        "j": false,
+        "k": false,
+        "l": false,
+        "m": false,
+        "n": false,
+        "ň": true,
+        "o": false,
+        "ó": false,
+        "p": false,
+        "q": false,
+        "r": false,
+        "ř": true,
+        "s": false,
+        "š": true,
+        "t": false,
+        "ť": true,
+        "u": false,
+        "ú": false,
+        "ů": true,
+        "v": false,
+        "w": false,
+        "x": false,
+        "y": false,
+        "ý": false,
+        "z": false,
+        "ž": true,
+        " ": true,
+        ".": false,
+        "–": false,
+        "—": false
+      }
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-600-normal.woff2",
+      "sha256": "9bfc794b14b5e62a09e9734d943c1f6d79d48e4ea7b601074968d90af9f4b66f",
+      "decompressedBytes": 23292,
+      "nameTableVersion": 0,
+      "tableDirectory": [
+        {
+          "tag": "GDEF",
+          "version": 0,
+          "originalLength": 282,
+          "length": 282,
+          "offset": 0,
+          "transformed": false
+        },
+        {
+          "tag": "GPOS",
+          "version": 0,
+          "originalLength": 3844,
+          "length": 3844,
+          "offset": 282,
+          "transformed": false
+        },
+        {
+          "tag": "GSUB",
+          "version": 0,
+          "originalLength": 1494,
+          "length": 1494,
+          "offset": 4126,
+          "transformed": false
+        },
+        {
+          "tag": "OS/2",
+          "version": 0,
+          "originalLength": 96,
+          "length": 96,
+          "offset": 5620,
+          "transformed": false
+        },
+        {
+          "tag": "STAT",
+          "version": 0,
+          "originalLength": 68,
+          "length": 68,
+          "offset": 5716,
+          "transformed": false
+        },
+        {
+          "tag": "cmap",
+          "version": 0,
+          "originalLength": 698,
+          "length": 698,
+          "offset": 5784,
+          "transformed": false
+        },
+        {
+          "tag": "gasp",
+          "version": 0,
+          "originalLength": 8,
+          "length": 8,
+          "offset": 6482,
+          "transformed": false
+        },
+        {
+          "tag": "glyf",
+          "version": 0,
+          "originalLength": 16236,
+          "length": 12933,
+          "offset": 6490,
+          "transformed": true
+        },
+        {
+          "tag": "loca",
+          "version": 0,
+          "originalLength": 638,
+          "length": 0,
+          "offset": 19423,
+          "transformed": true
+        },
+        {
+          "tag": "head",
+          "version": 0,
+          "originalLength": 54,
+          "length": 54,
+          "offset": 19423,
+          "transformed": false
+        },
+        {
+          "tag": "hhea",
+          "version": 0,
+          "originalLength": 36,
+          "length": 36,
+          "offset": 19477,
+          "transformed": false
+        },
+        {
+          "tag": "hmtx",
+          "version": 0,
+          "originalLength": 1272,
+          "length": 1272,
+          "offset": 19513,
+          "transformed": false
+        },
+        {
+          "tag": "maxp",
+          "version": 0,
+          "originalLength": 32,
+          "length": 32,
+          "offset": 20785,
+          "transformed": false
+        },
+        {
+          "tag": "name",
+          "version": 0,
+          "originalLength": 696,
+          "length": 696,
+          "offset": 20817,
+          "transformed": false
+        },
+        {
+          "tag": "post",
+          "version": 0,
+          "originalLength": 1772,
+          "length": 1772,
+          "offset": 21513,
+          "transformed": false
+        },
+        {
+          "tag": "prep",
+          "version": 0,
+          "originalLength": 7,
+          "length": 7,
+          "offset": 23285,
+          "transformed": false
+        }
+      ],
+      "nameRecords": [
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 0,
+          "text": "Copyright 2019 The Archivo Narrow Project Authors (https://github.com/Omnibus-Type/ArchivoNarrow)"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 1,
+          "text": "Archivo Narrow SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 2,
+          "text": "Regular"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 3,
+          "text": "3.002;OMNI;ArchivoNarrow-SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 4,
+          "text": "Archivo Narrow SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 5,
+          "text": "Version 3.002"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 6,
+          "text": "ArchivoNarrow-SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 14,
+          "text": "https://scripts.sil.org/OFL"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 16,
+          "text": "Archivo Narrow"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 17,
+          "text": "SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 256,
+          "text": "Weight"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 259,
+          "text": "SemiBold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 261,
+          "text": "Italic"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 262,
+          "text": "Roman"
+        }
+      ],
+      "name13Present": false,
+      "name14": [
+        "https://scripts.sil.org/OFL"
+      ],
+      "extendedMetadata": null,
+      "requiredGlyphsPresent": {
+        "0": true,
+        "1": true,
+        "2": true,
+        "3": true,
+        "4": true,
+        "5": true,
+        "6": true,
+        "7": true,
+        "8": true,
+        "9": true,
+        "A": true,
+        "Á": true,
+        "B": true,
+        "C": true,
+        "Č": false,
+        "D": true,
+        "Ď": false,
+        "E": true,
+        "É": true,
+        "Ě": false,
+        "F": true,
+        "G": true,
+        "H": true,
+        "I": true,
+        "Í": true,
+        "J": true,
+        "K": true,
+        "L": true,
+        "M": true,
+        "N": true,
+        "Ň": false,
+        "O": true,
+        "Ó": true,
+        "P": true,
+        "Q": true,
+        "R": true,
+        "Ř": false,
+        "S": true,
+        "Š": false,
+        "T": true,
+        "Ť": false,
+        "U": true,
+        "Ú": true,
+        "Ů": false,
+        "V": true,
+        "W": true,
+        "X": true,
+        "Y": true,
+        "Ý": true,
+        "Z": true,
+        "Ž": false,
+        "a": true,
+        "á": true,
+        "b": true,
+        "c": true,
+        "č": false,
+        "d": true,
+        "ď": false,
+        "e": true,
+        "é": true,
+        "ě": false,
+        "f": true,
+        "g": true,
+        "h": true,
+        "i": true,
+        "í": true,
+        "j": true,
+        "k": true,
+        "l": true,
+        "m": true,
+        "n": true,
+        "ň": false,
+        "o": true,
+        "ó": true,
+        "p": true,
+        "q": true,
+        "r": true,
+        "ř": false,
+        "s": true,
+        "š": false,
+        "t": true,
+        "ť": false,
+        "u": true,
+        "ú": true,
+        "ů": false,
+        "v": true,
+        "w": true,
+        "x": true,
+        "y": true,
+        "ý": true,
+        "z": true,
+        "ž": false,
+        " ": true,
+        ".": true,
+        "–": true,
+        "—": true
+      }
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-vietnamese-700-normal.woff2",
+      "sha256": "b09332a95c297693b88c38ffafaaf806b5b9ac253632c4dd1f8645c9e86d363e",
+      "decompressedBytes": 10456,
+      "nameTableVersion": 0,
+      "tableDirectory": [
+        {
+          "tag": "GDEF",
+          "version": 0,
+          "originalLength": 188,
+          "length": 188,
+          "offset": 0,
+          "transformed": false
+        },
+        {
+          "tag": "GPOS",
+          "version": 0,
+          "originalLength": 1666,
+          "length": 1666,
+          "offset": 188,
+          "transformed": false
+        },
+        {
+          "tag": "GSUB",
+          "version": 0,
+          "originalLength": 406,
+          "length": 406,
+          "offset": 1854,
+          "transformed": false
+        },
+        {
+          "tag": "OS/2",
+          "version": 0,
+          "originalLength": 96,
+          "length": 96,
+          "offset": 2260,
+          "transformed": false
+        },
+        {
+          "tag": "STAT",
+          "version": 0,
+          "originalLength": 68,
+          "length": 68,
+          "offset": 2356,
+          "transformed": false
+        },
+        {
+          "tag": "cmap",
+          "version": 0,
+          "originalLength": 396,
+          "length": 396,
+          "offset": 2424,
+          "transformed": false
+        },
+        {
+          "tag": "gasp",
+          "version": 0,
+          "originalLength": 8,
+          "length": 8,
+          "offset": 2820,
+          "transformed": false
+        },
+        {
+          "tag": "glyf",
+          "version": 0,
+          "originalLength": 5468,
+          "length": 4772,
+          "offset": 2828,
+          "transformed": true
+        },
+        {
+          "tag": "loca",
+          "version": 0,
+          "originalLength": 302,
+          "length": 0,
+          "offset": 7600,
+          "transformed": true
+        },
+        {
+          "tag": "head",
+          "version": 0,
+          "originalLength": 54,
+          "length": 54,
+          "offset": 7600,
+          "transformed": false
+        },
+        {
+          "tag": "hhea",
+          "version": 0,
+          "originalLength": 36,
+          "length": 36,
+          "offset": 7654,
+          "transformed": false
+        },
+        {
+          "tag": "hmtx",
+          "version": 0,
+          "originalLength": 600,
+          "length": 600,
+          "offset": 7690,
+          "transformed": false
+        },
+        {
+          "tag": "maxp",
+          "version": 0,
+          "originalLength": 32,
+          "length": 32,
+          "offset": 8290,
+          "transformed": false
+        },
+        {
+          "tag": "name",
+          "version": 0,
+          "originalLength": 626,
+          "length": 626,
+          "offset": 8322,
+          "transformed": false
+        },
+        {
+          "tag": "post",
+          "version": 0,
+          "originalLength": 1501,
+          "length": 1501,
+          "offset": 8948,
+          "transformed": false
+        },
+        {
+          "tag": "prep",
+          "version": 0,
+          "originalLength": 7,
+          "length": 7,
+          "offset": 10449,
+          "transformed": false
+        }
+      ],
+      "nameRecords": [
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 0,
+          "text": "Copyright 2019 The Archivo Narrow Project Authors (https://github.com/Omnibus-Type/ArchivoNarrow)"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 1,
+          "text": "Archivo Narrow"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 2,
+          "text": "Bold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 3,
+          "text": "3.002;OMNI;ArchivoNarrow-Bold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 4,
+          "text": "Archivo Narrow Bold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 5,
+          "text": "Version 3.002"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 6,
+          "text": "ArchivoNarrow-Bold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 14,
+          "text": "https://scripts.sil.org/OFL"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 256,
+          "text": "Weight"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 260,
+          "text": "Bold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 261,
+          "text": "Italic"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 262,
+          "text": "Roman"
+        }
+      ],
+      "name13Present": false,
+      "name14": [
+        "https://scripts.sil.org/OFL"
+      ],
+      "extendedMetadata": null,
+      "requiredGlyphsPresent": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false,
+        "8": false,
+        "9": false,
+        "A": true,
+        "Á": true,
+        "B": false,
+        "C": false,
+        "Č": false,
+        "D": false,
+        "Ď": false,
+        "E": false,
+        "É": false,
+        "Ě": false,
+        "F": false,
+        "G": false,
+        "H": false,
+        "I": false,
+        "Í": false,
+        "J": false,
+        "K": false,
+        "L": false,
+        "M": false,
+        "N": false,
+        "Ň": false,
+        "O": false,
+        "Ó": false,
+        "P": false,
+        "Q": false,
+        "R": false,
+        "Ř": false,
+        "S": false,
+        "Š": false,
+        "T": false,
+        "Ť": false,
+        "U": false,
+        "Ú": false,
+        "Ů": false,
+        "V": false,
+        "W": false,
+        "X": false,
+        "Y": false,
+        "Ý": false,
+        "Z": false,
+        "Ž": false,
+        "a": false,
+        "á": false,
+        "b": false,
+        "c": false,
+        "č": false,
+        "d": false,
+        "ď": false,
+        "e": false,
+        "é": false,
+        "ě": false,
+        "f": false,
+        "g": false,
+        "h": false,
+        "i": false,
+        "í": false,
+        "j": false,
+        "k": false,
+        "l": false,
+        "m": false,
+        "n": false,
+        "ň": false,
+        "o": false,
+        "ó": false,
+        "p": false,
+        "q": false,
+        "r": false,
+        "ř": false,
+        "s": false,
+        "š": false,
+        "t": false,
+        "ť": false,
+        "u": false,
+        "ú": false,
+        "ů": false,
+        "v": false,
+        "w": false,
+        "x": false,
+        "y": false,
+        "ý": false,
+        "z": false,
+        "ž": false,
+        " ": true,
+        ".": false,
+        "–": false,
+        "—": false
+      }
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-ext-700-normal.woff2",
+      "sha256": "146b1f02c8b3ab29b767569524edcb5a83929212bbda070c0b8b7ab770e50c9a",
+      "decompressedBytes": 24228,
+      "nameTableVersion": 0,
+      "tableDirectory": [
+        {
+          "tag": "GDEF",
+          "version": 0,
+          "originalLength": 368,
+          "length": 368,
+          "offset": 0,
+          "transformed": false
+        },
+        {
+          "tag": "GPOS",
+          "version": 0,
+          "originalLength": 3848,
+          "length": 3848,
+          "offset": 368,
+          "transformed": false
+        },
+        {
+          "tag": "GSUB",
+          "version": 0,
+          "originalLength": 916,
+          "length": 916,
+          "offset": 4216,
+          "transformed": false
+        },
+        {
+          "tag": "OS/2",
+          "version": 0,
+          "originalLength": 96,
+          "length": 96,
+          "offset": 5132,
+          "transformed": false
+        },
+        {
+          "tag": "STAT",
+          "version": 0,
+          "originalLength": 68,
+          "length": 68,
+          "offset": 5228,
+          "transformed": false
+        },
+        {
+          "tag": "cmap",
+          "version": 0,
+          "originalLength": 876,
+          "length": 876,
+          "offset": 5296,
+          "transformed": false
+        },
+        {
+          "tag": "gasp",
+          "version": 0,
+          "originalLength": 8,
+          "length": 8,
+          "offset": 6172,
+          "transformed": false
+        },
+        {
+          "tag": "glyf",
+          "version": 0,
+          "originalLength": 14852,
+          "length": 12405,
+          "offset": 6180,
+          "transformed": true
+        },
+        {
+          "tag": "loca",
+          "version": 0,
+          "originalLength": 720,
+          "length": 0,
+          "offset": 18585,
+          "transformed": true
+        },
+        {
+          "tag": "head",
+          "version": 0,
+          "originalLength": 54,
+          "length": 54,
+          "offset": 18585,
+          "transformed": false
+        },
+        {
+          "tag": "hhea",
+          "version": 0,
+          "originalLength": 36,
+          "length": 36,
+          "offset": 18639,
+          "transformed": false
+        },
+        {
+          "tag": "hmtx",
+          "version": 0,
+          "originalLength": 1436,
+          "length": 1436,
+          "offset": 18675,
+          "transformed": false
+        },
+        {
+          "tag": "maxp",
+          "version": 0,
+          "originalLength": 32,
+          "length": 32,
+          "offset": 20111,
+          "transformed": false
+        },
+        {
+          "tag": "name",
+          "version": 0,
+          "originalLength": 626,
+          "length": 626,
+          "offset": 20143,
+          "transformed": false
+        },
+        {
+          "tag": "post",
+          "version": 0,
+          "originalLength": 3452,
+          "length": 3452,
+          "offset": 20769,
+          "transformed": false
+        },
+        {
+          "tag": "prep",
+          "version": 0,
+          "originalLength": 7,
+          "length": 7,
+          "offset": 24221,
+          "transformed": false
+        }
+      ],
+      "nameRecords": [
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 0,
+          "text": "Copyright 2019 The Archivo Narrow Project Authors (https://github.com/Omnibus-Type/ArchivoNarrow)"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 1,
+          "text": "Archivo Narrow"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 2,
+          "text": "Bold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 3,
+          "text": "3.002;OMNI;ArchivoNarrow-Bold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 4,
+          "text": "Archivo Narrow Bold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 5,
+          "text": "Version 3.002"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 6,
+          "text": "ArchivoNarrow-Bold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 14,
+          "text": "https://scripts.sil.org/OFL"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 256,
+          "text": "Weight"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 260,
+          "text": "Bold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 261,
+          "text": "Italic"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 262,
+          "text": "Roman"
+        }
+      ],
+      "name13Present": false,
+      "name14": [
+        "https://scripts.sil.org/OFL"
+      ],
+      "extendedMetadata": null,
+      "requiredGlyphsPresent": {
+        "0": false,
+        "1": false,
+        "2": false,
+        "3": false,
+        "4": false,
+        "5": false,
+        "6": false,
+        "7": false,
+        "8": false,
+        "9": false,
+        "A": true,
+        "Á": true,
+        "B": false,
+        "C": false,
+        "Č": true,
+        "D": false,
+        "Ď": true,
+        "E": false,
+        "É": false,
+        "Ě": true,
+        "F": false,
+        "G": false,
+        "H": false,
+        "I": false,
+        "Í": false,
+        "J": false,
+        "K": false,
+        "L": false,
+        "M": false,
+        "N": false,
+        "Ň": true,
+        "O": false,
+        "Ó": false,
+        "P": false,
+        "Q": false,
+        "R": false,
+        "Ř": true,
+        "S": false,
+        "Š": true,
+        "T": false,
+        "Ť": true,
+        "U": false,
+        "Ú": false,
+        "Ů": true,
+        "V": false,
+        "W": false,
+        "X": false,
+        "Y": false,
+        "Ý": false,
+        "Z": false,
+        "Ž": true,
+        "a": false,
+        "á": false,
+        "b": false,
+        "c": false,
+        "č": true,
+        "d": false,
+        "ď": true,
+        "e": false,
+        "é": false,
+        "ě": true,
+        "f": false,
+        "g": false,
+        "h": false,
+        "i": false,
+        "í": false,
+        "j": false,
+        "k": false,
+        "l": false,
+        "m": false,
+        "n": false,
+        "ň": true,
+        "o": false,
+        "ó": false,
+        "p": false,
+        "q": false,
+        "r": false,
+        "ř": true,
+        "s": false,
+        "š": true,
+        "t": false,
+        "ť": true,
+        "u": false,
+        "ú": false,
+        "ů": true,
+        "v": false,
+        "w": false,
+        "x": false,
+        "y": false,
+        "ý": false,
+        "z": false,
+        "ž": true,
+        " ": true,
+        ".": false,
+        "–": false,
+        "—": false
+      }
+    },
+    {
+      "path": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-latin-700-normal.woff2",
+      "sha256": "062eae97e718b8a39ff5861d08046755eaf4c6f27f9a0fe861116d9d1305d6bf",
+      "decompressedBytes": 23120,
+      "nameTableVersion": 0,
+      "tableDirectory": [
+        {
+          "tag": "GDEF",
+          "version": 0,
+          "originalLength": 260,
+          "length": 260,
+          "offset": 0,
+          "transformed": false
+        },
+        {
+          "tag": "GPOS",
+          "version": 0,
+          "originalLength": 3772,
+          "length": 3772,
+          "offset": 260,
+          "transformed": false
+        },
+        {
+          "tag": "GSUB",
+          "version": 0,
+          "originalLength": 1494,
+          "length": 1494,
+          "offset": 4032,
+          "transformed": false
+        },
+        {
+          "tag": "OS/2",
+          "version": 0,
+          "originalLength": 96,
+          "length": 96,
+          "offset": 5526,
+          "transformed": false
+        },
+        {
+          "tag": "STAT",
+          "version": 0,
+          "originalLength": 68,
+          "length": 68,
+          "offset": 5622,
+          "transformed": false
+        },
+        {
+          "tag": "cmap",
+          "version": 0,
+          "originalLength": 698,
+          "length": 698,
+          "offset": 5690,
+          "transformed": false
+        },
+        {
+          "tag": "gasp",
+          "version": 0,
+          "originalLength": 8,
+          "length": 8,
+          "offset": 6388,
+          "transformed": false
+        },
+        {
+          "tag": "glyf",
+          "version": 0,
+          "originalLength": 16212,
+          "length": 12925,
+          "offset": 6396,
+          "transformed": true
+        },
+        {
+          "tag": "loca",
+          "version": 0,
+          "originalLength": 638,
+          "length": 0,
+          "offset": 19321,
+          "transformed": true
+        },
+        {
+          "tag": "head",
+          "version": 0,
+          "originalLength": 54,
+          "length": 54,
+          "offset": 19321,
+          "transformed": false
+        },
+        {
+          "tag": "hhea",
+          "version": 0,
+          "originalLength": 36,
+          "length": 36,
+          "offset": 19375,
+          "transformed": false
+        },
+        {
+          "tag": "hmtx",
+          "version": 0,
+          "originalLength": 1272,
+          "length": 1272,
+          "offset": 19411,
+          "transformed": false
+        },
+        {
+          "tag": "maxp",
+          "version": 0,
+          "originalLength": 32,
+          "length": 32,
+          "offset": 20683,
+          "transformed": false
+        },
+        {
+          "tag": "name",
+          "version": 0,
+          "originalLength": 626,
+          "length": 626,
+          "offset": 20715,
+          "transformed": false
+        },
+        {
+          "tag": "post",
+          "version": 0,
+          "originalLength": 1772,
+          "length": 1772,
+          "offset": 21341,
+          "transformed": false
+        },
+        {
+          "tag": "prep",
+          "version": 0,
+          "originalLength": 7,
+          "length": 7,
+          "offset": 23113,
+          "transformed": false
+        }
+      ],
+      "nameRecords": [
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 0,
+          "text": "Copyright 2019 The Archivo Narrow Project Authors (https://github.com/Omnibus-Type/ArchivoNarrow)"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 1,
+          "text": "Archivo Narrow"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 2,
+          "text": "Bold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 3,
+          "text": "3.002;OMNI;ArchivoNarrow-Bold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 4,
+          "text": "Archivo Narrow Bold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 5,
+          "text": "Version 3.002"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 6,
+          "text": "ArchivoNarrow-Bold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 14,
+          "text": "https://scripts.sil.org/OFL"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 256,
+          "text": "Weight"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 260,
+          "text": "Bold"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 261,
+          "text": "Italic"
+        },
+        {
+          "platform": 3,
+          "encoding": 1,
+          "language": 1033,
+          "id": 262,
+          "text": "Roman"
+        }
+      ],
+      "name13Present": false,
+      "name14": [
+        "https://scripts.sil.org/OFL"
+      ],
+      "extendedMetadata": null,
+      "requiredGlyphsPresent": {
+        "0": true,
+        "1": true,
+        "2": true,
+        "3": true,
+        "4": true,
+        "5": true,
+        "6": true,
+        "7": true,
+        "8": true,
+        "9": true,
+        "A": true,
+        "Á": true,
+        "B": true,
+        "C": true,
+        "Č": false,
+        "D": true,
+        "Ď": false,
+        "E": true,
+        "É": true,
+        "Ě": false,
+        "F": true,
+        "G": true,
+        "H": true,
+        "I": true,
+        "Í": true,
+        "J": true,
+        "K": true,
+        "L": true,
+        "M": true,
+        "N": true,
+        "Ň": false,
+        "O": true,
+        "Ó": true,
+        "P": true,
+        "Q": true,
+        "R": true,
+        "Ř": false,
+        "S": true,
+        "Š": false,
+        "T": true,
+        "Ť": false,
+        "U": true,
+        "Ú": true,
+        "Ů": false,
+        "V": true,
+        "W": true,
+        "X": true,
+        "Y": true,
+        "Ý": true,
+        "Z": true,
+        "Ž": false,
+        "a": true,
+        "á": true,
+        "b": true,
+        "c": true,
+        "č": false,
+        "d": true,
+        "ď": false,
+        "e": true,
+        "é": true,
+        "ě": false,
+        "f": true,
+        "g": true,
+        "h": true,
+        "i": true,
+        "í": true,
+        "j": true,
+        "k": true,
+        "l": true,
+        "m": true,
+        "n": true,
+        "ň": false,
+        "o": true,
+        "ó": true,
+        "p": true,
+        "q": true,
+        "r": true,
+        "ř": false,
+        "s": true,
+        "š": false,
+        "t": true,
+        "ť": false,
+        "u": true,
+        "ú": true,
+        "ů": false,
+        "v": true,
+        "w": true,
+        "x": true,
+        "y": true,
+        "ý": true,
+        "z": true,
+        "ž": false,
+        " ": true,
+        ".": true,
+        "–": true,
+        "—": true
+      }
+    }
+  ],
+  "combinedRequiredGlyphCoverage": [
+    {
+      "font": "frontend/node_modules/@fontsource/archivo/files/archivo-combined-400-normal.woff2",
+      "missing": []
+    },
+    {
+      "font": "frontend/node_modules/@fontsource/archivo/files/archivo-combined-500-normal.woff2",
+      "missing": []
+    },
+    {
+      "font": "frontend/node_modules/@fontsource/archivo/files/archivo-combined-600-normal.woff2",
+      "missing": []
+    },
+    {
+      "font": "frontend/node_modules/@fontsource/archivo/files/archivo-combined-700-normal.woff2",
+      "missing": []
+    },
+    {
+      "font": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-combined-400-normal.woff2",
+      "missing": []
+    },
+    {
+      "font": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-combined-500-normal.woff2",
+      "missing": []
+    },
+    {
+      "font": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-combined-600-normal.woff2",
+      "missing": []
+    },
+    {
+      "font": "frontend/node_modules/@fontsource/archivo-narrow/files/archivo-narrow-combined-700-normal.woff2",
+      "missing": []
+    }
+  ],
+  "limitations": [
+    "This is metadata/glyph mapping, not complete WOFF2 conformance, outline/shaping/kerning quality, font rights legal acceptance or actual target-browser/physical text rendering.",
+    "Required glyph string is a deliberate Czech/number/price/dash sample, not every possible Unicode/product/user character."
+  ]
+}

@@ -1361,18 +1361,18 @@
     "previous_complete_sha256": "ae048c6b1cf311290b0ec7f582568f304a9b3fa59e310054ce91ceb75999cfa5"
   },
   "docs/skolamatch_current_status.md": {
-    "sha256": "3bc70c13ac2ee77fd1a10e0e7508df34a278b33677db7bef13f3cb954df20ae5",
-    "lines": 1114,
+    "sha256": "06c97bf6e9b825ea9a923687794513158844635334f3528cd7b4a48df02ee309",
+    "lines": 1116,
     "read_ranges": [
       [
         1,
-        1114
+        1116
       ]
     ],
     "status": "complete_after_concurrent_change",
     "reviewer": "root",
-    "previous_complete_sha256": "88e9c9ccdd16f3be32d8751038e37b5e6da7f798834681e6ed737fba58f3b956",
-    "method": "Exact prior full-read baseline plus complete own decoder/comment/status/corpus/C66 append and all narrow differences read; script-findings entire139-line HEAD baseline reread and S08/S11 resolved CLI text corrected. No peer feature or deployed acceptance inferred."
+    "previous_complete_sha256": "3bc70c13ac2ee77fd1a10e0e7508df34a278b33677db7bef13f3cb954df20ae5",
+    "method": "Exact full baseline plus complete own current-plan/C62/C12 append and differences; UNFORGET b59a5d6 four-line committed diff fully read. Separate font/browser/legal/service/peer-source limits preserved."
   },
   "reports/deployment-review-2026-10-07/probe-services.cjs": {
     "sha256": "b47240d76e47550d2a307d302f8714ae7edcbe3074829e02de8d6a334334fe60",
@@ -1389,21 +1389,21 @@
     "method": "Full source read across recorded continuation turns, including missing middleware/brainstorm ranges and complete authored diffs. Read means inspected, not defect-free or runtime-approved."
   },
   "reports/deployment-review-2026-10-07/REPORT.md": {
-    "sha256": "ec6ace49be98aeaeedca50395175d9f97bb4c6c954e5e9678e94589be8c17e03",
-    "lines": 283,
+    "sha256": "bd7a716b0b8acc65b95880e065ed556c303fa863dd12c8b2424e5e1a7ad4ad05",
+    "lines": 285,
     "read_ranges": [
       [
         1,
-        283
+        285
       ]
     ],
     "status": "complete_after_concurrent_change",
     "reviewer": "root",
-    "previous_complete_sha256": "c5fb44a6bacc3f9ad5e8adf41bc3f46b194a93c9a4bcbf3d34de94d728c01dae",
-    "method": "Exact prior full-read baseline plus complete own decoder/comment/status/corpus/C66 append and all narrow differences read; script-findings entire139-line HEAD baseline reread and S08/S11 resolved CLI text corrected. No peer feature or deployed acceptance inferred."
+    "previous_complete_sha256": "ec6ace49be98aeaeedca50395175d9f97bb4c6c954e5e9678e94589be8c17e03",
+    "method": "Exact full baseline plus complete own current-plan/C62/C12 append and differences; UNFORGET b59a5d6 four-line committed diff fully read. Separate font/browser/legal/service/peer-source limits preserved."
   },
   "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md": {
-    "sha256": "d6edc1eb8a6874adb6ede019d205cb15632fa900447be49938e5e0b351615aa2",
+    "sha256": "066ce3255b1fb1676ebcf9bec6b246a0ea3fe6d231914dbf8a7477af333e7df2",
     "lines": 382,
     "read_ranges": [
       [
@@ -1413,8 +1413,8 @@
     ],
     "status": "complete_after_concurrent_change",
     "reviewer": "root",
-    "previous_complete_sha256": "9efb003e4f8f5b381c3d4843b18e304bb9b4ef14fc17b9a0a4410f49b736b853",
-    "method": "Exact prior full-read baseline plus complete own decoder/comment/status/corpus/C66 append and all narrow differences read; script-findings entire139-line HEAD baseline reread and S08/S11 resolved CLI text corrected. No peer feature or deployed acceptance inferred."
+    "previous_complete_sha256": "d6edc1eb8a6874adb6ede019d205cb15632fa900447be49938e5e0b351615aa2",
+    "method": "Exact full baseline plus complete own current-plan/C62/C12 append and differences; UNFORGET b59a5d6 four-line committed diff fully read. Separate font/browser/legal/service/peer-source limits preserved."
   },
   "reports/deployment-review-2026-10-07/script-findings.md": {
     "sha256": "3c8910390507c172abe783b40676a1b00b87443bf0c60820c53afdfb59278b89",
@@ -2144,18 +2144,18 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "sha256": "128baa22661575d817e3c3266213c68bce1ae68692dfa61d1e84dfcfa5fd7bc0",
-    "lines": 2056,
+    "sha256": "135ff0181a7864b746dabba493b3020f6140c6cdc92a9482c4c125e6fe63e5c8",
+    "lines": 2067,
     "read_ranges": [
       [
         1,
-        2056
+        2067
       ]
     ],
     "status": "complete_after_concurrent_change",
     "reviewer": "root",
-    "previous_complete_sha256": "ac2059fd88f8efe53cde2e1dfbf0b183b4165a8954f56e30837b298cb4218dca",
-    "method": "Exact prior full-read baseline plus complete own decoder/comment/status/corpus/C66 append and all narrow differences read; script-findings entire139-line HEAD baseline reread and S08/S11 resolved CLI text corrected. No peer feature or deployed acceptance inferred."
+    "previous_complete_sha256": "b6f95c747ccc2bb17338aa817c537b886ec11228d909d03b71de8faf32b84e06",
+    "method": "Exact full baseline plus complete own current-plan/C62/C12 append and differences; UNFORGET b59a5d6 four-line committed diff fully read. Separate font/browser/legal/service/peer-source limits preserved."
   },
   "frontend/src/api.js": {
     "status": "reviewed",
@@ -3058,18 +3058,18 @@
     "method": "Full current source read in complete bounded ranges (including previous-turn api.js 1-180/181-360/361-end and tokens.js 1-150/151-end); all subsequent own narrow diffs inspected. App/ProtectedRoute reread after bc1f826. Read is not runtime/service or legal acceptance."
   },
   "reports/deployment-review-2026-10-07/continuation-findings.md": {
-    "sha256": "df9a7cdb90599a7e053999f1f4b0da6598c9e027a72611440b598f57feb3d672",
-    "lines": 716,
+    "sha256": "b3ef1eecde3f1005984f40f1677d69ef8087b8384e1eb33c8efc871336315219",
+    "lines": 720,
     "read_ranges": [
       [
         1,
-        716
+        720
       ]
     ],
     "status": "complete_after_concurrent_change",
     "reviewer": "root",
-    "previous_complete_sha256": "88cede2b7b84381ac8a9cbe15f73e39adaf1d5d84c52c0b5459b701647b2f6dd",
-    "method": "Exact prior full-read baseline plus complete own decoder/comment/status/corpus/C66 append and all narrow differences read; script-findings entire139-line HEAD baseline reread and S08/S11 resolved CLI text corrected. No peer feature or deployed acceptance inferred."
+    "previous_complete_sha256": "df9a7cdb90599a7e053999f1f4b0da6598c9e027a72611440b598f57feb3d672",
+    "method": "Exact full baseline plus complete own current-plan/C62/C12 append and differences; UNFORGET b59a5d6 four-line committed diff fully read. Separate font/browser/legal/service/peer-source limits preserved."
   },
   "frontend/src/components/schoolDetail/SimilarSchools.jsx": {
     "sha256": "30490c3d420119d7e6754521ded1e7a7a9d32d53d2f53cb58666cfee50fee9ec",
@@ -10823,5 +10823,44 @@
     "status": "complete",
     "reviewer": "root",
     "method": "Every new line fully written/read; meaningful offline actual-fetch fixtures and CLI controls pass. No services/cache writes."
+  },
+  "frontend/public/font-licenses/Archivo-OFL.txt": {
+    "sha256": "c3c8402eec0e31dc9a76851235b1c02a0bb821488b2db8e35bcc2ab60ca8fc2b",
+    "lines": 93,
+    "read_ranges": [
+      [
+        1,
+        93
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "method": "README fully written/read; licences exact93-line copies of both installed OFL/copyright notices previously fully read in the font asset review; source/public/build/local HTTP hashes match. No font changes."
+  },
+  "frontend/public/font-licenses/Archivo-Narrow-OFL.txt": {
+    "sha256": "d75534d749c6421b070453af6a3fcbfbcb4bb2b9186392dfbe5a567535e806d5",
+    "lines": 93,
+    "read_ranges": [
+      [
+        1,
+        93
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "method": "README fully written/read; licences exact93-line copies of both installed OFL/copyright notices previously fully read in the font asset review; source/public/build/local HTTP hashes match. No font changes."
+  },
+  "frontend/public/font-licenses/README.md": {
+    "sha256": "3d64714c35123b226c171ba3bc9a1cbdd34d49ea420ec489633b5dc16c356c19",
+    "lines": 11,
+    "read_ranges": [
+      [
+        1,
+        11
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "method": "README fully written/read; licences exact93-line copies of both installed OFL/copyright notices previously fully read in the font asset review; source/public/build/local HTTP hashes match. No font changes."
   }
 }

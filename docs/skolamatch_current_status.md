@@ -1112,3 +1112,5 @@ Do not merely describe what should happen.
 **Tell the founder what to do, in what order, why it matters, how to do it, and what "done" means.**
 
 Then update this file so the next decision starts from the new reality.
+
+> **13 October font/header verification:** all 24 actual WOFF2 streams and complete name records are decoded; eight family/weight unions map the chosen Czech/number/price/dash sample. Exact installed font copyright/OFL notices are now bundled as public static text, verified against built/local HTTP bytes. This is source packaging/glyph mapping, not target-browser shaping/rights acceptance. Deployed notice bytes still need verification. Public-root HEAD now confirms configured security headers with report-only CSP; unlocked/provider/private-cache acceptance remains open. Current handoff preserves the completed landing fix, disabled beta sharing/reviews, coarse map input and explicit after-beta decisions. Claude's a8be399 lazy-explanation feature is committed; its final 12-file review is next.

@@ -1,0 +1,48 @@
+{
+  "date": "2026-10-13",
+  "fonts": [
+    {
+      "source": "frontend/node_modules/@fontsource/archivo/LICENSE",
+      "destination": "frontend/public/font-licenses/Archivo-OFL.txt",
+      "sha256": "c3c8402eec0e31dc9a76851235b1c02a0bb821488b2db8e35bcc2ab60ca8fc2b",
+      "lines": 93,
+      "localBuiltHttp": {
+        "status": 200,
+        "sha256": "c3c8402eec0e31dc9a76851235b1c02a0bb821488b2db8e35bcc2ab60ca8fc2b",
+        "matches": true
+      }
+    },
+    {
+      "source": "frontend/node_modules/@fontsource/archivo-narrow/LICENSE",
+      "destination": "frontend/public/font-licenses/Archivo-Narrow-OFL.txt",
+      "sha256": "d75534d749c6421b070453af6a3fcbfbcb4bb2b9186392dfbe5a567535e806d5",
+      "lines": 93,
+      "localBuiltHttp": {
+        "status": 200,
+        "sha256": "d75534d749c6421b070453af6a3fcbfbcb4bb2b9186392dfbe5a567535e806d5",
+        "matches": true
+      }
+    }
+  ],
+  "local_source_build_http": "All two notice files are exact installed-source/public/build/local-GET SHA matches; build passes with existing chunk warnings.",
+  "browser_limit": "IAB declined the standalone .md preview with a client block. This does not prove product or deployed notice failure; no browser notice pass claimed.",
+  "gate_head": {
+    "date": "2026-10-13T20:33:30Z",
+    "url": "https://www.stredninamiru.cz/",
+    "status": 200,
+    "cache_control": "no-store",
+    "csp_mode": "report-only",
+    "x_frame_options": "DENY",
+    "x_content_type_options": "nosniff",
+    "referrer_policy": "strict-origin-when-cross-origin",
+    "permissions_policy": "geolocation=(self), camera=(), microphone=()",
+    "hsts": "max-age=63072000",
+    "robots": "noindex, nofollow"
+  },
+  "limits": [
+    "Public-root HEAD does not accept unlocked pages, provider flows, authenticated cache behavior or enforcement of CSP content rules.",
+    "New peer feature changed while build ran; green build is not independent feature acceptance.",
+    "Recheck deployed notice GET/bytes after publishing; no live account/mail/billing/data operations."
+  ],
+  "licence_source": "https://openfontlicense.org/open-font-license-official-text/"
+}
