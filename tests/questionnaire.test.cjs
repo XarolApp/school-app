@@ -193,13 +193,13 @@ test('questionnaire explanations use the flex model schema and keep private answ
     assert.equal(request.response_format.type, 'json_schema');
     assert.equal(request.response_format.json_schema.strict, true);
     assert.equal(request.response_format.json_schema.schema.properties.reasons.items.properties.school_id.type, 'integer');
-    assert.equal(request.max_tokens, 4000);
+    assert.equal(request.max_tokens, 12000);
     assert.equal(timeoutMs, 120_000);
     const prompt = request.messages[1].content;
     assert.match(prompt, /Rod pro oslovení: ženský/);
     assert.match(prompt, /Spíš extrovert/);
     assert.doesNotMatch(prompt, /55|plus10|soukromý text/);
-    assert.match(request.messages[0].content, /Krátké ukázky/);
+    assert.match(request.messages[0].content, /Ukázka \(školy i data/);
   } finally {
     global.fetch = originalFetch;
     AbortSignal.timeout = originalTimeout;

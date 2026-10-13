@@ -2820,13 +2820,16 @@ app.post(
       const schools = await getScoringCatalogue();
       const school = schools.find((entry) => entry.id === schoolId);
       if (!school) return res.status(404).json({ error: 'Škola nebyla nalezena.' });
-      const match = scoreSchools(run.answers, schools).find((entry) => entry.school_id === schoolId);
+      const fullOrder = scoreSchools(run.answers, schools);
+      const match = fullOrder.find((entry) => entry.school_id === schoolId);
       if (!match) return res.status(404).json({ error: 'Školu se nepodařilo vyhodnotit.' });
 
       const reasons = await requestReasons({
         answers: run.answers,
         shortlist: [match],
         byId: new Map([[schoolId, school]]),
+        fullOrder,
+        nameById: new Map(schools.map((entry) => [entry.id, entry])),
         apiKey: OPENROUTER_API_KEY,
         model: OPENROUTER_MODEL,
         referer: FRONTEND_URL,
