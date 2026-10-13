@@ -1,0 +1,417 @@
+{
+  "checked_at_utc": "2026-10-13T19:45:56.205104+00:00",
+  "head": "76cbb9813142c0c44f6be9e3cbee30a08b22e7ee",
+  "reviewed_sources": [
+    {
+      "path": "frontend/src/App.jsx",
+      "sha256": "880f448420d9b822befe8a11da29268c9141ff163ffade395e812699f42c5857",
+      "lines": 152,
+      "base": "345b95b",
+      "method": "Exact unchanged fully read baseline plus every complete current diff/connected integration range and owned fixes"
+    },
+    {
+      "path": "frontend/src/api.js",
+      "sha256": "8f9d4a260571ed6daca26e5fcd87930bf152cdee151866b33b40b927c3a4d6c6",
+      "lines": 510,
+      "base": "345b95b",
+      "method": "Exact unchanged fully read baseline plus every complete current diff/connected integration range and owned fixes"
+    },
+    {
+      "path": "frontend/src/components/BetaClosingQuestionnaire.jsx",
+      "sha256": "4019a711331cccc41bcc89a28775a1ddb220f19222a7eb7d93eaecb0c3ea4917",
+      "lines": 84,
+      "base": "345b95b",
+      "method": "Exact unchanged fully read baseline plus every complete current diff/connected integration range and owned fixes"
+    },
+    {
+      "path": "frontend/src/components/BetaInstructions.jsx",
+      "sha256": "8864dc53e0b7e578eec777ed39944d193e45d65bf0044915981fc28ee574b647",
+      "lines": 153,
+      "base": "345b95b",
+      "method": "Exact unchanged fully read baseline plus every complete current diff/connected integration range and owned fixes"
+    },
+    {
+      "path": "frontend/src/components/BetaTools.jsx",
+      "sha256": "bb5dc57148bb640c77c544f5df3445440d8141d39bc48bd853edd7b2f76b36ad",
+      "lines": 129,
+      "base": "345b95b",
+      "method": "Exact unchanged fully read baseline plus every complete current diff/connected integration range and owned fixes"
+    },
+    {
+      "path": "frontend/src/components/SearchFilters.jsx",
+      "sha256": "8a8f4172d236802c37990eecffcf72c30e0ca0273094a5700c0c99967225421b",
+      "lines": 486,
+      "base": "345b95b previous complete receipt",
+      "method": "Exact unchanged fully read baseline plus every complete current diff/connected integration range and owned fixes"
+    },
+    {
+      "path": "frontend/src/lib/scrollTop.js",
+      "sha256": "715ccdb94089c8b0eaae1f9df0143049badcb115fc1306e4b4dca61240c763eb",
+      "lines": 23,
+      "base": null,
+      "method": "Entire new or current file fully read"
+    },
+    {
+      "path": "frontend/src/lib/visitPing.js",
+      "sha256": "586bafaedff9483a740d8a59634b282d9827b9394079a10014f94eadf0cbc675",
+      "lines": 20,
+      "base": null,
+      "method": "Entire new or current file fully read"
+    },
+    {
+      "path": "frontend/src/main.jsx",
+      "sha256": "0e3d7a999faaa20896025c7f4cb322d3863c28e36159b26ee29923c69521984d",
+      "lines": 26,
+      "base": "345b95b",
+      "method": "Exact unchanged fully read baseline plus every complete current diff/connected integration range and owned fixes"
+    },
+    {
+      "path": "frontend/src/pages/Admin.jsx",
+      "sha256": "7066dbad0b942993864721d5eddcba572fbfebc0ca2b12078fe4a51175189d54",
+      "lines": 126,
+      "base": "345b95b",
+      "method": "Exact unchanged fully read baseline plus every complete current diff/connected integration range and owned fixes"
+    },
+    {
+      "path": "frontend/src/pages/Legal.jsx",
+      "sha256": "3c34c7db85d482602cfbe722d731672de18a049fde6cfdcead3b55b221b3e4b7",
+      "lines": 410,
+      "base": "345b95b",
+      "method": "Exact unchanged fully read baseline plus every complete current diff/connected integration range and owned fixes"
+    },
+    {
+      "path": "frontend/src/pages/Search.jsx",
+      "sha256": "c04751b3c30c418086285407079e11f2237e6dcc3e4c7fae9e49fdabb708a0e6",
+      "lines": 1869,
+      "base": "345b95b previous complete receipt",
+      "method": "Exact unchanged fully read baseline plus every complete current diff/connected integration range and owned fixes"
+    },
+    {
+      "path": "frontend/src/pages/Settings.jsx",
+      "sha256": "278a6000547cbd5d217745201667dc14e57ffbb201ea2f884828816f47e496fa",
+      "lines": 1348,
+      "base": "345b95b",
+      "method": "Exact unchanged fully read baseline plus every complete current diff/connected integration range and owned fixes"
+    },
+    {
+      "path": "frontend/src/pages/beta.css",
+      "sha256": "fcc8433175f40c54b31b3c64a1e67c11473b01764366bfeed9fef4f001b4f7b0",
+      "lines": 377,
+      "base": "345b95b",
+      "method": "Exact unchanged fully read baseline plus every complete current diff/connected integration range and owned fixes"
+    },
+    {
+      "path": "lib/betaAdmin.js",
+      "sha256": "0585437d61506afd94174012cbd518cd12c29d28aa09a93cf3c89fcc2a251848",
+      "lines": 185,
+      "base": "345b95b",
+      "method": "Exact unchanged fully read baseline plus every complete current diff/connected integration range and owned fixes"
+    },
+    {
+      "path": "lib/betaAdminRoutes.js",
+      "sha256": "8413924f44f454bf7522801af494d5d0e05430d003833da76abf7a0fd818c4f7",
+      "lines": 55,
+      "base": null,
+      "method": "Entire new or current file fully read"
+    },
+    {
+      "path": "lib/betaClosing.js",
+      "sha256": "8cf33e7fb8a8fa8884c257dc1bae2f074e3bd126d3a4e116b3de51f393c76e5c",
+      "lines": 48,
+      "base": "345b95b",
+      "method": "Exact unchanged fully read baseline plus every complete current diff/connected integration range and owned fixes"
+    },
+    {
+      "path": "server.js",
+      "sha256": "92e56d6756ce61379501a7f33384ccf8ecbe9738e9676c985bfff52df690a032",
+      "lines": 3728,
+      "base": "345b95b",
+      "method": "Exact unchanged fully read baseline plus every complete current diff/connected integration range and owned fixes"
+    },
+    {
+      "path": "supabase-setup.sql",
+      "sha256": "b0396c8e8adb35638962b77175743ef9a4e60095d147f857930de391579ba7aa",
+      "lines": 1650,
+      "base": "d1ac355",
+      "method": "Exact unchanged fully read baseline plus every complete current diff/connected integration range and owned fixes"
+    },
+    {
+      "path": "tests/beta-closing.test.cjs",
+      "sha256": "77891270b8c16e1fafe7af85939b70293718ceb270f9a770a80973ca4d5b5b19",
+      "lines": 38,
+      "base": "345b95b",
+      "method": "Exact unchanged fully read baseline plus every complete current diff/connected integration range and owned fixes"
+    },
+    {
+      "path": "tests/questionnaire.test.cjs",
+      "sha256": "4c493574348f6a663e989db05f269abf2f7b510f42210523f9d277253389186e",
+      "lines": 221,
+      "base": "345b95b",
+      "method": "Exact unchanged fully read baseline plus every complete current diff/connected integration range and owned fixes"
+    },
+    {
+      "path": "tests/server-boundaries.test.cjs",
+      "sha256": "fcebce7d2fc717192a3dee8db08c9646054c061c17adf82c9ae5a606fb59be53",
+      "lines": 1215,
+      "base": "345b95b",
+      "method": "Exact unchanged fully read baseline plus every complete current diff/connected integration range and owned fixes"
+    }
+  ],
+  "deferred_active_peer_paths": [
+    "frontend/src/components/schoolDetail/SchoolActions.jsx",
+    "frontend/src/pages/SchoolDetail.jsx",
+    "frontend/src/pages/schoolDetail.css",
+    "lib/questionnaire.js"
+  ],
+  "own_fixes": [
+    "Seven Prague calendar buckets independent of UTC time of day and DST",
+    "Visit return handler ignores background activity/visibility; first-open ping preserved and no device identifiers/storage added",
+    "Closing price caption matches existing end-of-March season terms",
+    "Old persisted closing draft with3 selected features cannot advance past the new max2 step"
+  ],
+  "calendar_controls": {
+    "cases": [
+      {
+        "label": "after Prague midnight",
+        "now": "2026-10-12T22:30:00Z",
+        "PragueDay": "2026-10-13",
+        "count": 7
+      },
+      {
+        "label": "Prague afternoon",
+        "now": "2026-10-13T12:30:00Z",
+        "PragueDay": "2026-10-13",
+        "count": 7
+      },
+      {
+        "label": "DST fall-back first",
+        "now": "2026-10-25T00:30:00Z",
+        "PragueDay": "2026-10-25",
+        "count": 7
+      },
+      {
+        "label": "DST fall-back second",
+        "now": "2026-10-25T01:30:00Z",
+        "PragueDay": "2026-10-25",
+        "count": 7
+      },
+      {
+        "label": "DST spring forward",
+        "now": "2026-03-29T01:30:00Z",
+        "PragueDay": "2026-03-29",
+        "count": 7
+      }
+    ],
+    "empty": 0,
+    "same_pattern": "Remaining ms-days expression handles full event timestamps as a rolling window, not calendar buckets; preserved."
+  },
+  "hide_before": [
+    {
+      "at": 0,
+      "visibility": "visible"
+    },
+    {
+      "at": 1860000,
+      "visibility": "hidden"
+    }
+  ],
+  "hide_after": {
+    "calls": [
+      {
+        "at": 0,
+        "visibility": "visible"
+      },
+      {
+        "at": 1860100,
+        "visibility": "visible"
+      },
+      {
+        "at": 5460100,
+        "visibility": "visible"
+      }
+    ],
+    "initial_open": 1,
+    "no_background_ping": true,
+    "one_on_return": true,
+    "no_focus_pointer_duplicate": true,
+    "active_short_gap_no_visit": true,
+    "long_visible_gap_adds_visit": true
+  },
+  "old_draft_controls": [
+    {
+      "selections": 0,
+      "frontend": true,
+      "backend": true
+    },
+    {
+      "selections": 1,
+      "frontend": true,
+      "backend": true
+    },
+    {
+      "selections": 2,
+      "frontend": true,
+      "backend": true
+    },
+    {
+      "selections": 3,
+      "frontend": false,
+      "backend": false
+    }
+  ],
+  "core_handler_probes": {
+    "withdrawal": [
+      {
+        "mode": "success",
+        "status": 200,
+        "response": {
+          "updated": 2
+        },
+        "updates": 2,
+        "health_remaining": [
+          false,
+          false
+        ],
+        "old_reason_retained": true,
+        "extra_reason_retained": true
+      },
+      {
+        "mode": "partial",
+        "status": 500,
+        "response": {
+          "error": "Údaj se nepodařilo smazat. Zkus to prosím znovu."
+        },
+        "updates": 2,
+        "health_remaining": [
+          false,
+          true
+        ],
+        "old_reason_retained": true,
+        "extra_reason_retained": true
+      },
+      {
+        "mode": "zero-affected",
+        "status": 200,
+        "response": {
+          "updated": 2
+        },
+        "updates": 2,
+        "health_remaining": [
+          true,
+          true
+        ],
+        "old_reason_retained": true,
+        "extra_reason_retained": true
+      }
+    ],
+    "missing_visit_rpc_still_returns": 204,
+    "missing_visit_table_rejects_all_admin_snapshot": "42P01",
+    "limits": "Actual core handlers with synthetic services; auth/RLS, scoring accuracy, transactions and deployed schema are not verified."
+  },
+  "closing_access_contract": {
+    "profile": {
+      "subscription_status": "beta",
+      "tester_access_until": "2026-10-13T19:00:00Z",
+      "closing_done_at": "2026-10-13T19:10:00Z"
+    },
+    "settings": {
+      "ends_at": "2026-10-18T21:59:00Z",
+      "access_hours": 48
+    },
+    "now": "2026-10-13T19:20:00Z",
+    "state": {
+      "programEndsAt": "2026-10-18T21:59:00.000Z",
+      "accessHours": 48,
+      "programActive": true,
+      "feedbackFormUrl": null,
+      "effectiveAccessUntil": "2026-10-13T19:00:00.000Z",
+      "hasAccess": false,
+      "expired": true,
+      "programEnded": false
+    },
+    "method": "Actual current pure access helper; canonical submit_beta_closing only sets closing_done_at. Deployed SQL body remains unverified; no actual tester action."
+  },
+  "live_schema_metadata": {
+    "timestamp": "2026-10-13T19:37:02.586Z",
+    "method": "Read-only OpenAPI GETs; modern non-JWT keys used only as apikey headers; no RPC call or data write",
+    "rows": [
+      {
+        "label": "service_role",
+        "key_kind": "secret",
+        "status": 200,
+        "visit_table_present": true,
+        "bump_visit_present": true,
+        "error_code": null
+      },
+      {
+        "label": "configured_backend_key",
+        "key_kind": "publishable",
+        "status": 401,
+        "visit_table_present": false,
+        "bump_visit_present": false,
+        "error_code": null
+      },
+      {
+        "label": "frontend_key",
+        "key_kind": "publishable",
+        "status": 401,
+        "visit_table_present": false,
+        "bump_visit_present": false,
+        "error_code": null
+      }
+    ],
+    "limit": "OpenAPI is cache/config/privilege dependent. Presence/absence does not prove current function implementation, table RLS policies or cross-account isolation. Earlier configured-key401 with a non-JWT Bearer is not evidence of a broken credential."
+  },
+  "live_public_read_and_auth": {
+    "timestamp": "2026-10-13T19:38:34.978Z",
+    "method": "Read-only SDK table HEAD and public auth-settings GET; no account creation, mail, RPC, data write or key output",
+    "publishable_visit_head": {
+      "status": 200,
+      "error_code": null,
+      "count": 0
+    },
+    "auth_settings": {
+      "status": 200,
+      "signup_disabled": false,
+      "email_autoconfirm": false,
+      "email_auth_enabled": true
+    },
+    "limits": "Endpoint-specific OpenAPI401 does not establish an invalid key. A zero anonymous row count is not a full RLS/role/function-grant audit; settings do not prove email delivery."
+  },
+  "live_beta_settings": {
+    "timestamp": "2026-10-13T19:42:36.892Z",
+    "method": "Read-only singleton beta settings",
+    "status": 200,
+    "error_code": null,
+    "ends_at": "2026-10-18T21:59:00+00:00",
+    "access_hours": 48,
+    "external_feedback_form_configured": false
+  },
+  "browser": {
+    "url": "http://127.0.0.1:5175/dotaznik",
+    "actual_current_React": true,
+    "services": "fresh synthetic loopback Express/Supabase/mail/AI/Stripe traps; no hosted tester created",
+    "two_checked_features_disable_unchecked_choices": true,
+    "two_restored_selections_allow_continue_after_validation_fix": true,
+    "caption_visible": "přístup až do konce března",
+    "device_report_empty_state_renders": true,
+    "draft_step_and_answers_survive_preview_refresh": true,
+    "screenshot": "closing-season-caption-2026-10-13.png",
+    "attempts": "One batched native click closed the dialog after accessibility IDs changed; stable semantic retry verified the restored draft and limit. No failure is inferred for actual site input from that tool attempt. Initial stale synthetic session required a seeded-account switch; preview has no refreshSession implementation, so it does not prove real auth refresh behavior."
+  },
+  "validation": {
+    "full_backend_suite": "202 passed before the last two frontend-only guard/step checks",
+    "targeted_admin_closing": "11 passed",
+    "final_frontend_lint": "exit0 after all narrow changes; existing warnings",
+    "final_frontend_build": "exit0 after all narrow changes; existing large chunks",
+    "same_pattern": "Other visibility handlers explicitly distinguish hidden/visible; old full-timestamp activeSince is an intentional rolling window, not daily buckets.",
+    "diff_check": "pass after all narrow changes and owned appendices"
+  },
+  "limits": [
+    "Four actively owned uncommitted peer sources remain deferred; current AI question/consent prompt review is not complete.",
+    "Health core-handler probes do not verify auth/RLS/scoring accuracy/live data/transactions. Current success preserves old reason/extra_reasons; failure partially updates; zero affected rows can report success. C59 remains open.",
+    "Live visit table3 rows/service OpenAPI RPC presence and publishable zero-row/auth settings checks do not certify deployed SQL body/grants/cross-account isolation or delivery. Endpoint-specific OpenAPI401 is not a credential failure; same project/key and successful data/auth requests corroborate validity.",
+    "C64 access promise requires founder ruling; actual pure helper/canonical SQL mismatch is not a verified live SQL body. No access behavior changed.",
+    "Remaining corpus/browser/device/service/controller/payment/calibration acceptance is unchanged; no complete-goal or beta release claim."
+  ]
+}

@@ -2032,3 +2032,16 @@ Source accounting: 797 current full/accounted, zero pending, 109 binary assets, 
 - [ ] C25: actual target-browser fonts/Czech glyphs and iOS icon crop/tint. The isolated beta preview reports no loaded font faces; Safari produced no result before interruption.
 - [ ] Marketing: subjective listening/final-video mix/device/platform-overlay acceptance before publishing. Generated parity does not replace playback. C44 third-party reference reuse and conditional handout scientific acceptance remain separate.
 - [ ] Re-review seven peer commits after 345b95b and current uncommitted peer sources before closing current exact-source coverage. No original/peer source changed in this asset checkpoint.
+
+
+## Current committed features and narrow corrections, 13 October
+
+[22-source exact review and controls](reports/deployment-review-2026-10-07/post-interruption-source-review-2026-10-13.json). Four active peer files remain deferred: SchoolActions, SchoolDetail, schoolDetail.css and lib/questionnaire.js; preserve them and review after release.
+
+- [x] Seven-day visit count now uses seven Prague dates; idle departure no longer counts as return. Midnight/DST/background/duplicate controls pass; no identifiers/storage added.
+- [x] C65: closing price caption matches March end; older three-feature drafts cannot advance past the max-two step. Current UI and actual-expression/server controls verified.
+- [ ] C59, P1: extend the existing health withdrawal/notice implementation to accepted consent/guardian/payload/derived-data and atomic retry semantics. Actual core controls retain old/extra reasons, partially clear on later error and can report success with zero affected rows. Do not duplicate the existing feature or claim the new test closes the privacy gate.
+- [ ] C63, P2: visit RPC error observability, optional admin-load fault isolation and deployed SQL/grant acceptance. Table/RPC metadata exists live; publishable HEAD200 returns0 rows. No live RPC/write was performed.
+- [ ] C64, P1: founder completion-access rule is pending. New until-beta-end copy differs from canonical completion RPC/pure rolling-access semantics. Implement the chosen rule coherently after confirmation, with localhost/migration acceptance for any access change; preserve feedback, cutoff and ordinary/Stripe trial separation.
+
+202 backend tests pass before the final two frontend-only checks;11 targeted tests and final lint/build pass. Current inventory795 full/accounted/4 pending/110 binary/224 generated/2 removed. Live settings rechecked: 18 October23:59 Prague,48 hours,no external form; email auto-confirm is disabled. Public metadata401 is not an auth failure (data/auth requests succeed). Device/corpus/controller/service/payment acceptance and whole goal remain open.

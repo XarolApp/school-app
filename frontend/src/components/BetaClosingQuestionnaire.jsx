@@ -36,7 +36,7 @@ export default function BetaClosingQuestionnaire({role,onDone,onCancel,reviewOnl
   const [review,setReview,clearReview]=useDraft('snm.draft.beta.closing.review',{stars:null,body:'',consent_publish:false});
   useScrollTopOnStep(rootRef,step);
   const set=(key,value)=>setA(prev=>({...prev,[key]:value}));
-  const valid=[Boolean(a.selected),a.nps!==null&&a.help!==null,Boolean(a.pay&&a.payer&&a.plan)&&Object.values(a.prices).every(v=>v!==''&&Number(v)>=0&&Number(v)<=100000),Boolean(a.theme)&&Object.values(a.ratings).every(v=>v!==null),true][step];
+  const valid=[Boolean(a.selected),a.nps!==null&&a.help!==null&&a.useful.length<=2,Boolean(a.pay&&a.payer&&a.plan)&&Object.values(a.prices).every(v=>v!==''&&Number(v)>=0&&Number(v)<=100000),Boolean(a.theme)&&Object.values(a.ratings).every(v=>v!==null),true][step];
   const submit=async(withReview)=>{setBusy(true);onBusyChange?.(true);setError('');try{if(reviewOnly){await submitBetaReview(review);clearReview();onDone();}else{await submitBetaClosing({answers:{...a,prices:Object.fromEntries(Object.entries(a.prices).map(([k,v])=>[k,Number(v)]))},review:withReview?review:null});clearStep();clearA();clearReview();onDone();}}catch(e){setError(e.message);}finally{setBusy(false);onBusyChange?.(false);}};
   if (reviewOnly) return <div className="beta-closing">
     <p className="ss-eyebrow">Nepovinná recenze webu</p>
@@ -62,7 +62,7 @@ export default function BetaClosingQuestionnaire({role,onDone,onCancel,reviewOnl
     </>}
     {step===2 && <>
       <Choice label={voice('Zaplatil(a) bys za přístup?','Zaplatili byste za přístup?')} value={a.pay} options={['ano','mozna','ne'].map((v,i)=>[v,['Ano','Možná','Ne'][i]])} onChange={v=>set('pay',v)} />
-      <p>Jakou cenu by měl mít sezónní přístup (jednorázová platba, přístup až do podání přihlášek)?</p>
+      <p>Jakou cenu by měl mít sezónní přístup (jednorázová platba, přístup až do konce března)?</p>
       {['tooCheap','good','expensive','tooExpensive'].map((key,i)=><label key={key} className="ss-field-label">{['Příliš levné — pochybnosti o kvalitě','Výhodné','Drahé, ale ještě přijatelné','Příliš drahé'][i]}<span className="beta-price-input"><input className="ss-input" type="number" inputMode="numeric" min="0" max="100000" value={a.prices[key]} onChange={e=>set('prices',{...a.prices,[key]:e.target.value})} /><span aria-hidden="true">Kč</span></span></label>)}
        <Choice label={parent?'Kdo by pravděpodobně platil?':'Kdo by pravděpodobně platil?'} value={a.payer} options={['ja','rodic','spolu'].map((v,i)=>[v,['Já','Rodič','Spolu'][i]])} onChange={v=>set('payer',v)} />
        <Choice label={voice('Jaký přístup by sis spíš koupil(a)?','Jaký přístup byste si spíš koupili?')} value={a.plan} options={[["mesic","Měsíční"],["sezona","Sezónní"]]} onChange={v=>set('plan',v)} />

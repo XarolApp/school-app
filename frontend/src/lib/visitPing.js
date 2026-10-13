@@ -9,6 +9,7 @@ export function startVisitPing() {
   let last = Date.now();
   pingVisit();
   const touch = () => {
+    if (document.visibilityState !== 'visible') return;
     const now = Date.now();
     if (now - last >= IDLE_MS) pingVisit();
     last = now;
