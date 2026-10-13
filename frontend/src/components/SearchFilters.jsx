@@ -442,7 +442,7 @@ function SearchFilters({
 
       <hr className="ss-divider" />
 
-      <FacetSection title="Přijímačky a místa" activeCount={admissionsActiveCount}>
+      <FacetSection title="Přijímačky a body" activeCount={admissionsActiveCount}>
         <AdmissionsGroup
           filters={filters}
           setPatch={setPatch}

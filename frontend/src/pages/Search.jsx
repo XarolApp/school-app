@@ -1180,7 +1180,7 @@ function Search() {
     },
     {
       id: 'admissions',
-      label: 'Přijímačky a místa',
+      label: 'Přijímačky a body',
       activeCount: admissionsActiveCount,
       onClear: () =>
         setPatch({
