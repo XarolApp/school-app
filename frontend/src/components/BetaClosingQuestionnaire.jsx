@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { useScrollTopOnStep } from '../lib/scrollTop';
 import { useDraft } from '../lib/useDraft';
 import { Star } from 'lucide-react';
 import { submitBetaClosing } from '../api';
@@ -27,11 +28,13 @@ function ReviewFields({role,parent,review,setReview}) {
   </>;
 }
 export default function BetaClosingQuestionnaire({role,onDone,onCancel,reviewOnly=false,onBusyChange}) {
+  const rootRef=useRef(null);
   const gender=useGender();
   const parent=['rodic','ucitel'].includes(role),[step,setStep,clearStep]=useDraft('snm.draft.beta.closing.step',0),[busy,setBusy]=useState(false),[error,setError]=useState('');
   const voice=(student,adult)=>parent?adult:genderedCopy(student,gender);
   const [a,setA,clearA]=useDraft('snm.draft.beta.closing.answers',{selected:'',prior:[],nps:null,help:null,useful:[],missing:'',pay:'',prices:{tooCheap:'',good:'',expensive:'',tooExpensive:''},payer:'',plan:'',theme:'',future:'',change:'',ratings:{search:null,detail:null,questionnaire:null,compare:null}});
   const [review,setReview,clearReview]=useDraft('snm.draft.beta.closing.review',{stars:null,body:'',consent_publish:false});
+  useScrollTopOnStep(rootRef,step);
   const set=(key,value)=>setA(prev=>({...prev,[key]:value}));
   const valid=[Boolean(a.selected),a.nps!==null&&a.help!==null,Boolean(a.pay&&a.payer&&a.plan)&&Object.values(a.prices).every(v=>v!==''&&Number(v)>=0&&Number(v)<=100000),Boolean(a.theme)&&Object.values(a.ratings).every(v=>v!==null),true][step];
   const submit=async(withReview)=>{setBusy(true);onBusyChange?.(true);setError('');try{if(reviewOnly){await submitBetaReview(review);clearReview();onDone();}else{await submitBetaClosing({answers:{...a,prices:Object.fromEntries(Object.entries(a.prices).map(([k,v])=>[k,Number(v)]))},review:withReview?review:null});clearStep();clearA();clearReview();onDone();}}catch(e){setError(e.message);}finally{setBusy(false);onBusyChange?.(false);}};
@@ -42,7 +45,7 @@ export default function BetaClosingQuestionnaire({role,onDone,onCancel,reviewOnl
     {error&&<p role="alert">{error}</p>}
     <div className="beta-closing-actions"><ObButton variant="secondary" disabled={busy} onClick={onCancel}>Zpět ke zpětné vazbě</ObButton><ObButton disabled={busy || !review.stars || review.body.trim().length<10} onClick={()=>submit(true)}>{busy?'Ukládáme…':'Odeslat recenzi'}</ObButton></div>
   </div>;
-  return <div className="beta-closing">
+  return <div className="beta-closing" ref={rootRef}>
     <p className="ss-eyebrow">{step+1} / 5 · {[parent?'O Vás':'O tobě','Hodnota','Placení','Vzhled a budoucnost','Nepovinná recenze'][step]}</p>
     <p className="beta-closing-honest">{parent?'Odpovídejte upřímně':'Odpovídej upřímně'} — nic neodsuzujeme, špatná zpráva nám pomůže víc než pochvala.</p>
     <p className="ss-body-sm beta-closing-reassure">{parent?'Po odeslání můžete web dál používat až do konce beta testování.':'Po odeslání můžeš web dál používat až do konce beta testování.'}</p>

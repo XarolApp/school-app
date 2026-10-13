@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Check, MousePointer2, SquareMousePointer, MessageSquare } from 'lucide-react';
 import { ObButton } from './onboarding/ObKit';
@@ -6,6 +6,7 @@ import BetaEnrollment from './BetaEnrollment';
 import { saveBetaProfile } from '../api';
 import { betaEnrollmentComplete } from '../lib/betaEnrollment';
 import { useDraft } from '../lib/useDraft';
+import { useScrollTopOnStep } from '../lib/scrollTop';
 import { genderedCopy, useGender } from '../lib/gender';
 
 const SUPPORT_EMAIL = 'info@stredninamiru.cz';
@@ -104,6 +105,8 @@ function Enrollment({ beta, onRefresh }) {
 export default function BetaInstructions({ beta, hours = 48, onDone, onRefresh, busy, reference = false }) {
   // Kept per tab: a reload on step 3 must not send the tester back to step 1.
   const [step, setStep, clearStep] = useDraft('snm.beta.guide.step', 0);
+  const rootRef = useRef(null);
+  useScrollTopOnStep(rootRef, step);
   const gender = useGender();
   const navigate = useNavigate();
   const parent = beta?.role === 'rodic' || beta?.role === 'ucitel';
@@ -139,7 +142,7 @@ export default function BetaInstructions({ beta, hours = 48, onDone, onRefresh, 
   // First step of testing is the questionnaire; once it is done the last
   // button just closes the guide.
   const startWithQuestionnaire = !beta.checklist?.dotaznik;
-  return <div className="beta-instructions">
+  return <div className="beta-instructions" ref={rootRef}>
     <p className="eyebrow">Pokyny · {step + 1} ze {steps.length}</p>
     <h3 className="ss-headline-md">{steps[step][0]}</h3>
     <div className="beta-guide-body">{steps[step][1]}</div>

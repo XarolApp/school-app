@@ -6,6 +6,7 @@ import { ToastProvider } from './components/ToastContext';
 import BetaTools from './components/BetaTools';
 import BetaTracking from './components/BetaTracking';
 import ProtectedRoute from './components/ProtectedRoute';
+import { ScrollToTop } from './lib/scrollTop';
 // Default landing (3D map). three.js + GSAP load only on this route.
 const Landing = lazy(() => import('./pages/landing2/Landing'));
 const Admin = lazy(() => import('./pages/Admin'));
@@ -62,6 +63,7 @@ import { LoadingSpinner } from './components/PageSkeleton';
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <AuthProvider>
         <BetaTracking />
         {/* Inside the router so any route can fire a toast, outside <Routes>
