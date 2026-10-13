@@ -980,18 +980,18 @@
     "method": "Complete current source read in bounded ranges, including rereading truncated gaps. tokens.css/App.css/auth.css full reads immediately before compaction and hashes bound after resumption. No edits; reading does not establish rendered contrast, browser/device/print or accessibility acceptance."
   },
   "frontend/src/pages/schoolDetail.css": {
-    "sha256": "72b4854ec84ad1934e45fba5a1e3e1863c9bcbc2b53116d2430ef4cf40cc8615",
-    "lines": 1174,
+    "sha256": "34197a53217d7a9d83dbfaf1a63a488cb4be07b3e4b639f9ca3aaa57f218ed18",
+    "lines": 1175,
     "read_ranges": [
       [
         1,
-        1174
+        1175
       ]
     ],
-    "status": "complete",
+    "status": "complete_after_concurrent_change",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-09T23:55:00.163022+00:00",
-    "method": "Full stable current source/document read plus complete reviewed own diff. server.js/extractor original hashes matched previous complete current root reads; only comment patches. Source/settings/runtime, real billing, SQL/device/print/contrast acceptance not inferred."
+    "previous_complete_sha256": "72b4854ec84ad1934e45fba5a1e3e1863c9bcbc2b53116d2430ef4cf40cc8615",
+    "method": "Exact previous full-read hash/ref plus every complete difference and connected integration ranges; immutable snapshot; later peer hashes invalidate current completion."
   },
   "frontend/src/pages/search.css": {
     "sha256": "133cfa5bb9a257820136d2b0bb6071725bb530f44d5174b4a650ff954d8f0548",
@@ -1361,19 +1361,18 @@
     "previous_complete_sha256": "ae048c6b1cf311290b0ec7f582568f304a9b3fa59e310054ce91ceb75999cfa5"
   },
   "docs/skolamatch_current_status.md": {
-    "status": "complete_after_concurrent_change",
-    "sha256": "88e9c9ccdd16f3be32d8751038e37b5e6da7f798834681e6ed737fba58f3b956",
-    "lines": 1112,
+    "sha256": "3bc70c13ac2ee77fd1a10e0e7508df34a278b33677db7bef13f3cb954df20ae5",
+    "lines": 1114,
     "read_ranges": [
       [
         1,
-        1112
+        1114
       ]
     ],
+    "status": "complete_after_concurrent_change",
     "reviewer": "root",
-    "previous_complete_sha256": "f2d0259270104a558e62e0d781cc1643b3c91682a63809675b864b4d6ca061c6",
-    "method": "Fully reviewed exact baseline plus complete own copy-only replacement/checkpoint text read in this turn",
-    "note": "C64 copy decision only; unchanged access and separate manual gates preserved."
+    "previous_complete_sha256": "88e9c9ccdd16f3be32d8751038e37b5e6da7f798834681e6ed737fba58f3b956",
+    "method": "Exact prior full-read baseline plus complete own decoder/comment/status/corpus/C66 append and all narrow differences read; script-findings entire139-line HEAD baseline reread and S08/S11 resolved CLI text corrected. No peer feature or deployed acceptance inferred."
   },
   "reports/deployment-review-2026-10-07/probe-services.cjs": {
     "sha256": "b47240d76e47550d2a307d302f8714ae7edcbe3074829e02de8d6a334334fe60",
@@ -1390,48 +1389,46 @@
     "method": "Full source read across recorded continuation turns, including missing middleware/brainstorm ranges and complete authored diffs. Read means inspected, not defect-free or runtime-approved."
   },
   "reports/deployment-review-2026-10-07/REPORT.md": {
-    "status": "complete_after_concurrent_change",
-    "sha256": "c5fb44a6bacc3f9ad5e8adf41bc3f46b194a93c9a4bcbf3d34de94d728c01dae",
-    "lines": 281,
+    "sha256": "ec6ace49be98aeaeedca50395175d9f97bb4c6c954e5e9678e94589be8c17e03",
+    "lines": 283,
     "read_ranges": [
       [
         1,
-        281
+        283
       ]
     ],
+    "status": "complete_after_concurrent_change",
     "reviewer": "root",
-    "previous_complete_sha256": "bdec8faa8a8ca0d11b4221b556aed431fa68a4b485e9858d6240e68ce6ec47f6",
-    "method": "Fully reviewed exact baseline plus complete own copy-only replacement/checkpoint text read in this turn",
-    "note": "C64 copy decision only; unchanged access and separate manual gates preserved."
+    "previous_complete_sha256": "c5fb44a6bacc3f9ad5e8adf41bc3f46b194a93c9a4bcbf3d34de94d728c01dae",
+    "method": "Exact prior full-read baseline plus complete own decoder/comment/status/corpus/C66 append and all narrow differences read; script-findings entire139-line HEAD baseline reread and S08/S11 resolved CLI text corrected. No peer feature or deployed acceptance inferred."
   },
   "reports/deployment-review-2026-10-07/HANDOFF-PLAN.md": {
-    "status": "complete_after_concurrent_change",
-    "sha256": "9efb003e4f8f5b381c3d4843b18e304bb9b4ef14fc17b9a0a4410f49b736b853",
-    "lines": 376,
+    "sha256": "d6edc1eb8a6874adb6ede019d205cb15632fa900447be49938e5e0b351615aa2",
+    "lines": 382,
     "read_ranges": [
       [
         1,
-        376
+        382
       ]
     ],
+    "status": "complete_after_concurrent_change",
     "reviewer": "root",
-    "previous_complete_sha256": "7304b1c7ee67a42b128940440b7b6a50dd3cc096be716e7d5519de4cfcae8bd7",
-    "method": "Fully reviewed exact baseline plus complete own copy-only replacement/checkpoint text read in this turn",
-    "note": "C64 copy decision only; unchanged access and separate manual gates preserved."
+    "previous_complete_sha256": "9efb003e4f8f5b381c3d4843b18e304bb9b4ef14fc17b9a0a4410f49b736b853",
+    "method": "Exact prior full-read baseline plus complete own decoder/comment/status/corpus/C66 append and all narrow differences read; script-findings entire139-line HEAD baseline reread and S08/S11 resolved CLI text corrected. No peer feature or deployed acceptance inferred."
   },
   "reports/deployment-review-2026-10-07/script-findings.md": {
-    "sha256": "67e42c93ea061f4892aa3494ed0063f009e3b03d2f238bb84d76efa1f0cbd0e7",
-    "lines": 75,
+    "sha256": "3c8910390507c172abe783b40676a1b00b87443bf0c60820c53afdfb59278b89",
+    "lines": 143,
     "read_ranges": [
       [
         1,
-        75
+        143
       ]
     ],
-    "status": "complete",
+    "status": "complete_after_concurrent_change",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-08T21:40:57.648486+00:00",
-    "method": "Full source read in complete sequential ranges, dense preview database reread after truncation; full authored diffs inspected. Extractor regression reproduced before fix and targeted tests passed. Read is not runtime/service approval."
+    "previous_complete_sha256": "19f88640b10fb46e0df0ce4fce81f9bc3d998e3d5626a631cfc5bb4850ded685",
+    "method": "Exact prior full-read baseline plus complete own decoder/comment/status/corpus/C66 append and all narrow differences read; script-findings entire139-line HEAD baseline reread and S08/S11 resolved CLI text corrected. No peer feature or deployed acceptance inferred."
   },
   "scripts/geocode-schools.js": {
     "sha256": "dd928bac23644ec082c8a216793d72763a4eb6a9df47d1739c2f6db779b34607",
@@ -1505,19 +1502,18 @@
     "method": "Generator all 1–325 baseline lines plus full own diff; server-boundary tests all 1–1112 current lines with repaired overlapping ranges; other four exact full-read baselines plus full own parser-only diff; new test fully written/read. Offline/source coverage does not prove live payment/SQL/pipeline acceptance."
   },
   "scripts/scrape-schools-free.js": {
-    "sha256_before": "7bb4cc0993c539ccb36a9b365e7477e7fef3881458d1adf74c4412db0241ea47",
-    "sha256": "7eadb2ae2fdc7ab207e44b10b719485ab73339956168696c80ae23c02a3385fa",
-    "lines": 441,
+    "sha256": "2efe5b43df1690aa28cbc531a676af75d0793439c153245e5fc571a7b6a921c9",
+    "lines": 476,
     "read_ranges": [
       [
         1,
-        441
+        476
       ]
     ],
-    "status": "complete",
+    "status": "complete_after_concurrent_change",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-10T08:28:02.170441+00:00",
-    "method": "Generator all 1–325 baseline lines plus full own diff; server-boundary tests all 1–1112 current lines with repaired overlapping ranges; other four exact full-read baselines plus full own parser-only diff; new test fully written/read. Offline/source coverage does not prove live payment/SQL/pipeline acceptance."
+    "previous_complete_sha256": "7eadb2ae2fdc7ab207e44b10b719485ab73339956168696c80ae23c02a3385fa",
+    "method": "Exact prior full-read baseline plus complete own decoder/comment/status/corpus/C66 append and all narrow differences read; script-findings entire139-line HEAD baseline reread and S08/S11 resolved CLI text corrected. No peer feature or deployed acceptance inferred."
   },
   "scripts/beta-preview/supabaseClient.js": {
     "sha256": "36f57373f1961fdc41d9524231df37d597af96802a05a60916dbd0c0c8f3a468",
@@ -2148,19 +2144,18 @@
     "method": "Full source read and complete own diff review. Diagnostic failure reproduced with old source and synthetic Response; matrix tooltip browser-verified; pricing exports/function bodies unchanged."
   },
   "UNFORGET.md": {
-    "status": "complete_after_concurrent_change",
-    "sha256": "ac2059fd88f8efe53cde2e1dfbf0b183b4165a8954f56e30837b298cb4218dca",
-    "lines": 2049,
+    "sha256": "128baa22661575d817e3c3266213c68bce1ae68692dfa61d1e84dfcfa5fd7bc0",
+    "lines": 2056,
     "read_ranges": [
       [
         1,
-        2049
+        2056
       ]
     ],
+    "status": "complete_after_concurrent_change",
     "reviewer": "root",
-    "previous_complete_sha256": "aa59d51584216a492a04b4d555aa88f44632c4f33970308ee23a13b25286ba96",
-    "method": "Fully reviewed exact baseline plus complete own copy-only replacement/checkpoint text read in this turn",
-    "note": "C64 copy decision only; unchanged access and separate manual gates preserved."
+    "previous_complete_sha256": "ac2059fd88f8efe53cde2e1dfbf0b183b4165a8954f56e30837b298cb4218dca",
+    "method": "Exact prior full-read baseline plus complete own decoder/comment/status/corpus/C66 append and all narrow differences read; script-findings entire139-line HEAD baseline reread and S08/S11 resolved CLI text corrected. No peer feature or deployed acceptance inferred."
   },
   "frontend/src/api.js": {
     "status": "reviewed",
@@ -2445,32 +2440,32 @@
     "method": "Full current source read in bounded ranges on 9 October; unchanged against 8f519d9 when recording. Read coverage is not runtime approval."
   },
   "frontend/src/pages/SchoolDetail.jsx": {
-    "sha256": "9ea228fc283da264eb39c67b09d5b1851f6bdfd27d47526ebc75f506f33c5b4d",
-    "lines": 259,
+    "sha256": "ab3dcc7a2b2f89fffc162699aa5b3136e53650e6a6e8a9e5b706ca228e48db9f",
+    "lines": 261,
     "read_ranges": [
       [
         1,
-        259
+        261
       ]
     ],
     "status": "complete_after_concurrent_change",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-12T08:18:52.523858+00:00",
-    "previous_complete_sha256": "ff0bb87e0009b7a4d73e926585922b2eaf8d8129ee2c53c25867dfc8d18c008c",
-    "method": "Existing exact HEAD full-read receipt plus every complete current diff and connected changed integration ranges; read-only stable peer snapshot. No peer edits or staging."
+    "previous_complete_sha256": "9ea228fc283da264eb39c67b09d5b1851f6bdfd27d47526ebc75f506f33c5b4d",
+    "method": "Exact previous full-read hash/ref plus every complete difference and connected integration ranges; immutable snapshot; later peer hashes invalidate current completion."
   },
   "frontend/src/components/schoolDetail/SchoolActions.jsx": {
-    "sha256": "5a8cc34c0f4455ff0b8fb3054c729f0b85606b9a6b10fab9497ff770d3c87716",
-    "lines": 272,
+    "sha256": "7baae946650a35a93845a582aaf64341b1e1129959480acb29059289a78d9623",
+    "lines": 277,
     "read_ranges": [
       [
         1,
-        272
+        277
       ]
     ],
-    "status": "complete",
+    "status": "complete_after_concurrent_change",
     "reviewer": "root",
-    "method": "Full stable current read in bounded ranges, or exact verified full-read baseline plus complete current diff and own reviewed patch. Truncated confirmation/instructions ranges reread; UNFORGET peer additions fully reread after 3bc498c. Source read is not legal/service/runtime approval."
+    "previous_complete_sha256": "5a8cc34c0f4455ff0b8fb3054c729f0b85606b9a6b10fab9497ff770d3c87716",
+    "method": "Exact previous full-read hash/ref plus every complete difference and connected integration ranges; immutable snapshot; later peer hashes invalidate current completion."
   },
   "frontend/src/pages/SharedResults.jsx": {
     "sha256": "37ac74dcdbee92b2aa57cd5079487249f20aef3e2a7109cd110e64e987e51b38",
@@ -2558,19 +2553,18 @@
     "previous_complete_sha256": "530abb1c0467242f197640d40c6b1422f2053654174456b865e1f8aeb293963d"
   },
   "lib/questionnaire.js": {
-    "sha256": "701c7081ab338d3fb2df101e9d9b3d2daee0c89ed59c7ce6aa3d1064a9ee4a57",
-    "lines": 961,
+    "sha256": "6c8992fff244b8f67f5b539989daf88c041887ff5b366e02d40e5ab97911bc4c",
+    "lines": 1041,
     "read_ranges": [
       [
         1,
-        961
+        1041
       ]
     ],
     "status": "complete_after_concurrent_change",
     "reviewer": "root",
-    "checked_at_utc": "2026-10-12T08:18:52.523858+00:00",
-    "previous_complete_sha256": "dda2d49fc302b9cf1660b4d859af58b4db73cbea63918bfdeabc2b8ed4fbc635",
-    "method": "Existing exact HEAD full-read receipt plus every complete current diff and connected changed integration ranges; read-only stable peer snapshot. No peer edits or staging."
+    "previous_complete_sha256": "701c7081ab338d3fb2df101e9d9b3d2daee0c89ed59c7ce6aa3d1064a9ee4a57",
+    "method": "All1041 current lines read in six complete bounded ranges; immutable snapshot; later peer hashes invalidate current completion."
   },
   "frontend/src/pages/EmailConfirmed.jsx": {
     "sha256": "25067f5a868bb89ae9855093dd81b96284e3d2f5326301559cde0803ce93b95d",
@@ -3064,19 +3058,18 @@
     "method": "Full current source read in complete bounded ranges (including previous-turn api.js 1-180/181-360/361-end and tokens.js 1-150/151-end); all subsequent own narrow diffs inspected. App/ProtectedRoute reread after bc1f826. Read is not runtime/service or legal acceptance."
   },
   "reports/deployment-review-2026-10-07/continuation-findings.md": {
-    "status": "complete_after_concurrent_change",
-    "sha256": "88cede2b7b84381ac8a9cbe15f73e39adaf1d5d84c52c0b5459b701647b2f6dd",
-    "lines": 708,
+    "sha256": "df9a7cdb90599a7e053999f1f4b0da6598c9e027a72611440b598f57feb3d672",
+    "lines": 716,
     "read_ranges": [
       [
         1,
-        708
+        716
       ]
     ],
+    "status": "complete_after_concurrent_change",
     "reviewer": "root",
-    "previous_complete_sha256": "40cf35aa23be77ce8fbf2adf5b3a2d96cbfc493cd5e64f1a0ab59b189afc9a8c",
-    "method": "Fully reviewed exact baseline plus complete own copy-only replacement/checkpoint text read in this turn",
-    "note": "C64 copy decision only; unchanged access and separate manual gates preserved."
+    "previous_complete_sha256": "88cede2b7b84381ac8a9cbe15f73e39adaf1d5d84c52c0b5459b701647b2f6dd",
+    "method": "Exact prior full-read baseline plus complete own decoder/comment/status/corpus/C66 append and all narrow differences read; script-findings entire139-line HEAD baseline reread and S08/S11 resolved CLI text corrected. No peer feature or deployed acceptance inferred."
   },
   "frontend/src/components/schoolDetail/SimilarSchools.jsx": {
     "sha256": "30490c3d420119d7e6754521ded1e7a7a9d32d53d2f53cb58666cfee50fee9ec",
@@ -10817,5 +10810,18 @@
     "review_kind": "Entire new or current file fully read",
     "baseline": null,
     "note": "Current committed delta and connected ranges fully read; owned fixes verified. Existing privacy/access/source acceptance remains explicit."
+  },
+  "tests/school-scrape-encoding.test.cjs": {
+    "sha256": "22856e47d4593e579b9bfe379907474d8508bbbd871c78132bde8d01eded5f6e",
+    "lines": 73,
+    "read_ranges": [
+      [
+        1,
+        73
+      ]
+    ],
+    "status": "complete",
+    "reviewer": "root",
+    "method": "Every new line fully written/read; meaningful offline actual-fetch fixtures and CLI controls pass. No services/cache writes."
   }
 }

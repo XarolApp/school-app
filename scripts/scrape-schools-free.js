@@ -179,6 +179,41 @@ function htmlToMarkdown(html) {
   }
 }
 
+function decodePageBytes(bytes, contentType) {
+  const buffer = Buffer.from(bytes);
+  // BOM takes precedence over declarations. Keep UTF-8 as the existing fallback.
+  if (buffer[0] === 0xef && buffer[1] === 0xbb && buffer[2] === 0xbf) return new TextDecoder('utf-8').decode(buffer);
+  if (buffer[0] === 0xff && buffer[1] === 0xfe) return new TextDecoder('utf-16le').decode(buffer);
+  if (buffer[0] === 0xfe && buffer[1] === 0xff) return new TextDecoder('utf-16be').decode(buffer);
+  const labels = [];
+  const header = contentType.match(/\bcharset\s*=\s*(?:"([^"]+)"|'([^']+)'|([^\s;]+))/i);
+  if (header) labels.push({ label: header[1] || header[2] || header[3], meta: false });
+  // Legacy Czech sites often declare windows-1250 only in an early meta tag.
+  const prefix = buffer.subarray(0, 1024).toString('latin1').replace(/<!--[\s\S]*?(?:-->|$)/g, '');
+  for (const tag of prefix.match(/<meta\b[^>]*>/gi) || []) {
+    const attrs = {};
+    for (const match of tag.matchAll(/([^\s"'<>/=]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+)))?/g)) {
+      const name = match[1].toLowerCase();
+      if (!(name in attrs)) attrs[name] = match[2] ?? match[3] ?? match[4] ?? '';
+    }
+    if (attrs.charset) labels.push({ label: attrs.charset, meta: true });
+    else if (attrs['http-equiv']?.toLowerCase() === 'content-type') {
+      const meta = (attrs.content || '').match(/\bcharset\s*=\s*([^\s;]+)/i);
+      if (meta) labels.push({ label: meta[1], meta: true });
+    }
+  }
+  for (const { label, meta } of labels) {
+    try {
+      let decoder = new TextDecoder(label.trim());
+      // An ASCII HTML meta declaration of UTF-16 is interpreted as UTF-8.
+      if (meta && decoder.encoding.startsWith('utf-16')) decoder = new TextDecoder('utf-8');
+      return decoder.decode(buffer);
+    }
+    catch (error) { if (!(error instanceof RangeError)) throw error; }
+  }
+  return new TextDecoder('utf-8').decode(buffer);
+}
+
 async function fetchText(url, timeoutMs, { allowXml = false } = {}) {
   const res = await fetch(url, {
     headers: { 'User-Agent': USER_AGENT, Accept: 'text/html,application/xhtml+xml' },
@@ -191,7 +226,7 @@ async function fetchText(url, timeoutMs, { allowXml = false } = {}) {
   if (type && !allowed.test(type)) {
     throw new Error(`non-HTML content-type: ${type.split(';')[0]}`);
   }
-  return res.text();
+  return decodePageBytes(await res.arrayBuffer(), type);
 }
 
 /** Free renderer for JS-only sites. Returns markdown, or null if unavailable. */

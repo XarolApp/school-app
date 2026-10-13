@@ -1,0 +1,32 @@
+[
+  {
+    "url": "http://www.modraskola.cz/",
+    "finalUrl": "http://www.modraskola.cz/",
+    "status": 200,
+    "bytes": 11509,
+    "contentType": "text/html",
+    "metaEncodingDeclarations": [
+      "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=windows-1250\" />"
+    ],
+    "chosenDeclaredLabel": "windows-1250",
+    "utf8ReplacementCount": 241,
+    "declaredReplacementCount": 0,
+    "titleUtf8": "Z�kladn� a St�edn� �kola Kupeck�ho 576, Praha 4",
+    "titleDeclared": "Základní a Střední škola Kupeckého 576, Praha 4"
+  },
+  {
+    "url": "https://www.gymh.cz/",
+    "finalUrl": "https://www.gymh.cz/",
+    "status": 200,
+    "bytes": 13733,
+    "contentType": "text/html",
+    "metaEncodingDeclarations": [
+      "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=windows-1250\">"
+    ],
+    "chosenDeclaredLabel": "windows-1250",
+    "utf8ReplacementCount": 550,
+    "declaredReplacementCount": 0,
+    "titleUtf8": "Gymn�zium Milady Hor�kov�",
+    "titleDeclared": "Gymnázium Milady Horákové"
+  }
+]

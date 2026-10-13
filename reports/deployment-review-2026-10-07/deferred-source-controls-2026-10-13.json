@@ -1,0 +1,75 @@
+{
+  "method": "Entire immutable current questionnaire source evaluated with blocked provider dependency and synthetic rows/answers. No dotenv, real HTTP or hosted write.",
+  "numericTypeControls": [
+    {
+      "input": true,
+      "accepted": true,
+      "cleanBody": 1
+    },
+    {
+      "input": false,
+      "accepted": true,
+      "cleanBody": 0
+    },
+    {
+      "input": [],
+      "accepted": true,
+      "cleanBody": 0
+    },
+    {
+      "input": [
+        12
+      ],
+      "accepted": true,
+      "cleanBody": 12
+    },
+    {
+      "input": {},
+      "accepted": false,
+      "cleanBody": null
+    },
+    {
+      "input": " ",
+      "accepted": true,
+      "cleanBody": 0
+    },
+    {
+      "input": 0,
+      "accepted": true,
+      "cleanBody": 0
+    },
+    {
+      "input": 100,
+      "accepted": true,
+      "cleanBody": 100
+    },
+    {
+      "input": "12",
+      "accepted": true,
+      "cleanBody": 12
+    },
+    {
+      "input": -1,
+      "accepted": false,
+      "cleanBody": null
+    },
+    {
+      "input": 101,
+      "accepted": false,
+      "cleanBody": null
+    },
+    {
+      "input": 1.5,
+      "accepted": false,
+      "cleanBody": null
+    }
+  ],
+  "healthPayload": {
+    "directAnswersAbsent": true,
+    "privateNoteAbsent": true,
+    "specialistNameAbsentWithoutPreference": true,
+    "specialistNamePresentWithPreference": true,
+    "maxTokens": 12000,
+    "claimLimit": "Identifying name/order exposure supports inference risk; no real diagnosis, provider inference or live disclosure proved."
+  }
+}

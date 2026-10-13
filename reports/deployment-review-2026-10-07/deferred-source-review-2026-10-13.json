@@ -1,0 +1,91 @@
+{
+  "date": "2026-10-13",
+  "method": "Immutable snapshots reviewed read-only while originals preserved. Hash recheck after review detects later peer changes; old complete reads do not approve new versions.",
+  "files": [
+    {
+      "path": "frontend/src/components/schoolDetail/SchoolActions.jsx",
+      "sha256": "7baae946650a35a93845a582aaf64341b1e1129959480acb29059289a78d9623",
+      "lines": 277,
+      "baseline_sha256": "5a8cc34c0f4455ff0b8fb3054c729f0b85606b9a6b10fab9497ff770d3c87716",
+      "baseline_ref": "345b95b",
+      "snapshot": "/private/tmp/deferred-review-snapshot-2026-10-13/SchoolActions.jsx",
+      "diff": "/private/tmp/deferred-review-snapshot-2026-10-13/SchoolActions.jsx.diff",
+      "required_review": "Complete difference against exact previous full read",
+      "source_mtime": 1791896116.594543,
+      "current_sha256": "3d40f7345e1dd8d452195649ff651f4e75e976357633e85c42b4e6cf8037ba37",
+      "still_current": false,
+      "reviewed_ranges": [
+        [
+          1,
+          277
+        ]
+      ],
+      "method": "Exact previous full-read hash/ref plus every complete difference and connected integration ranges"
+    },
+    {
+      "path": "frontend/src/pages/SchoolDetail.jsx",
+      "sha256": "ab3dcc7a2b2f89fffc162699aa5b3136e53650e6a6e8a9e5b706ca228e48db9f",
+      "lines": 261,
+      "baseline_sha256": "9ea228fc283da264eb39c67b09d5b1851f6bdfd27d47526ebc75f506f33c5b4d",
+      "baseline_ref": "6f4fc67",
+      "snapshot": "/private/tmp/deferred-review-snapshot-2026-10-13/SchoolDetail.jsx",
+      "diff": "/private/tmp/deferred-review-snapshot-2026-10-13/SchoolDetail.jsx.diff",
+      "required_review": "Complete difference against exact previous full read",
+      "source_mtime": 1791896116.5950727,
+      "current_sha256": "3bd78ad61543543d890bd7d74aabea99607bf5c06a298b43cc86a0fbb3a0024d",
+      "still_current": false,
+      "reviewed_ranges": [
+        [
+          1,
+          261
+        ]
+      ],
+      "method": "Exact previous full-read hash/ref plus every complete difference and connected integration ranges"
+    },
+    {
+      "path": "frontend/src/pages/schoolDetail.css",
+      "sha256": "34197a53217d7a9d83dbfaf1a63a488cb4be07b3e4b639f9ca3aaa57f218ed18",
+      "lines": 1175,
+      "baseline_sha256": "72b4854ec84ad1934e45fba5a1e3e1863c9bcbc2b53116d2430ef4cf40cc8615",
+      "baseline_ref": "345b95b",
+      "snapshot": "/private/tmp/deferred-review-snapshot-2026-10-13/schoolDetail.css",
+      "diff": "/private/tmp/deferred-review-snapshot-2026-10-13/schoolDetail.css.diff",
+      "required_review": "Complete difference against exact previous full read",
+      "source_mtime": 1791896116.595513,
+      "current_sha256": "49a1e86d3438e4107e1415c6782a964db67eac99066c2ce88c5c9c6252ebb8fc",
+      "still_current": false,
+      "reviewed_ranges": [
+        [
+          1,
+          1175
+        ]
+      ],
+      "method": "Exact previous full-read hash/ref plus every complete difference and connected integration ranges"
+    },
+    {
+      "path": "lib/questionnaire.js",
+      "sha256": "6c8992fff244b8f67f5b539989daf88c041887ff5b366e02d40e5ab97911bc4c",
+      "lines": 1041,
+      "baseline_sha256": "701c7081ab338d3fb2df101e9d9b3d2daee0c89ed59c7ce6aa3d1064a9ee4a57",
+      "baseline_ref": null,
+      "snapshot": "/private/tmp/deferred-review-snapshot-2026-10-13/questionnaire.js",
+      "diff": null,
+      "required_review": "Full current source",
+      "source_mtime": 1791896116.5959713,
+      "current_sha256": "c7c2cb37c55baca9d984c28241ef28fa361478c3faeb2813fb209dfc29decba0",
+      "still_current": false,
+      "reviewed_ranges": [
+        [
+          1,
+          1041
+        ]
+      ],
+      "method": "All1041 current lines read in six complete bounded ranges"
+    }
+  ],
+  "concurrency": "Claude last observed edit/preview12:55/19:59; subsequent a89a911 and active lazy-explanation changes appeared during review. Numeric guard was briefly applied after a failed pre-write assertion; only that own hunk was removed. No peer changes reverted/staged. The failing candidate test was removed from active tests and retained in the handoff patch.",
+  "numeric_guard": "Candidate scalar-type guard rejects bool/array/blank coercions while preserving numeric scalars, strings, omission and0/100. Before1 failing/1passing regression; temporary candidate209 full tests pass; those209 do not describe the rolled-back current worktree. Revalidate after peer release before application.",
+  "portal": "New portal/slot/margin fully reviewed at snapshot; main SchoolDetail loading unmounts SchoolActions on school change. Existing same-access account/request ownership C02/C16 remains open. Actual current explanation/phone/keyboard/scroll and lazy-provider acceptance remain independent.",
+  "privacy": "Current full question notice, private answer/note filters, adjacent-school inference payload and12000-token draft reviewed. C59 controller/guardian consent, health-derived payload/withdrawal/privacy promise remains unresolved; private text absent is not zero inference.",
+  "verification": "Charset source/5fixture tests +16CLI tests pass;207 backend tests pass at the pre-concurrent-change snapshot. Later peer changes require new verification."
+}
