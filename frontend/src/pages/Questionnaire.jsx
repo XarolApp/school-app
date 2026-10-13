@@ -1,4 +1,5 @@
 import { track } from '../lib/betaTrack';
+import ReasonPending from '../components/ReasonPending';
 import { SHARING_ENABLED, SHARING_OFF_NOTE } from '../config/features';
 import { useAuth } from '../components/AuthContext';
 import { clearDraftKey, readDraft } from '../lib/useDraft';
@@ -51,9 +52,13 @@ const SUBMIT_STEPS = [
   'Ukládám tvoje odpovědi',
   'Počítám shodu s každou školou',
   'Řadím školy podle shody',
-  'Píšu vysvětlení k nejlepším školám',
-  'Ještě chvilku — kontroluju texty',
+  'Píšu vysvětlení k nejlepší škole',
+  'Ještě chvilku — kontroluju text',
 ];
+// Slow first steps, quicker later ones: a wait that speeds up feels shorter.
+// The last step has no timer and holds until the server answers.
+const STEP_MS = [4500, 3600, 2800, 2200];
+const FINISH_STEP_MS = 220;
 
 function QuestionnaireLoading({ step, reduced }) {
   return (
@@ -78,7 +83,10 @@ function QuestionnaireLoading({ step, reduced }) {
               </span>
               {state === 'now' && (
                 <span className={`ob-calc-bar${reduced ? ' is-static' : ''}`} aria-hidden="true">
-                  <span className="ob-calc-bar-fill" />
+                  <span
+                    className={`ob-calc-bar-fill${STEP_MS[i] ? ' qz-step-timed' : ''}`}
+                    style={STEP_MS[i] ? { animationDuration: `${STEP_MS[i]}ms` } : undefined}
+                  />
                 </span>
               )}
             </li>
@@ -177,12 +185,12 @@ function QuestionnaireSkeleton({ view, aiNote }) {
   );
 }
 
-function MatchRow({ match, rank, compact, extraReason = '' }) {
+function MatchRow({ match, rank, compact, runId, extraReason = '', pending = false, queued = false, ahead = 0 }) {
   const location = useLocation();
   const school = match.school;
   const signals = Array.isArray(match.signals) ? match.signals : [];
-  // A run saved while the AI was unavailable has no sentence; the student can
-  // ask for it here (the server caches it, so a second click costs nothing).
+  // Rows the automatic fill could not reach (AI down, or the page was left)
+  // keep a manual button; the server caches the result, so it costs once.
   const [generated, setGenerated] = useState('');
   const [explaining, setExplaining] = useState(false);
   const [explainError, setExplainError] = useState('');
@@ -191,7 +199,7 @@ function MatchRow({ match, rank, compact, extraReason = '' }) {
     setExplaining(true);
     setExplainError('');
     try {
-      const result = await explainQuestionnaireSchool(match.school_id);
+      const result = await explainQuestionnaireSchool(match.school_id, runId);
       setGenerated(result.reason || '');
     } catch (err) {
       setExplainError(err.message || 'Vysvětlení teď nejde vytvořit.');
@@ -218,11 +226,16 @@ function MatchRow({ match, rank, compact, extraReason = '' }) {
             <p className="qz-reason">{reason}</p>
           </div>
         )}
-        {!compact && !reason && (
+        {!compact && !reason && (pending || queued || explaining) && (
+          <div className="qz-why">
+            <ReasonPending queued={queued && !explaining} ahead={ahead} />
+          </div>
+        )}
+        {!compact && !reason && !pending && !queued && !explaining && (
           <div className="qz-why">
             {signals.length > 0 && <p className="qz-reason qz-reason-quiet">Shoda podle: {signals.join(' · ')}</p>}
-            <button type="button" className="ss-btn ss-btn-secondary ss-btn-sm qz-why-button" onClick={explain} disabled={explaining}>
-              {explaining ? 'Píšu vysvětlení…' : 'Získat vysvětlení'}
+            <button type="button" className="ss-btn ss-btn-secondary ss-btn-sm qz-why-button" onClick={explain}>
+              Získat vysvětlení
             </button>
             {explainError && <p className="qz-why-error" role="alert">{explainError}</p>}
           </div>
@@ -316,6 +329,36 @@ function Results({ active, runCount, onRetake, onOpenHistory }) {
   const rest = matches.slice(TOP_COUNT);
   const hasSentences = top.some((m) => m.reason);
 
+  // Submission writes only #1's explanation; #2–#10 are written here, one at a
+  // time, top down. Only for runs scored with the AI (model set), and it stops
+  // at the first failure — those rows fall back to their manual button.
+  const [filled, setFilled] = useState({});
+  const [pendingId, setPendingId] = useState(null);
+  const reasonOf = (m) => m.reason || active.extra_reasons?.[String(m.school_id)] || filled[m.school_id] || '';
+  useEffect(() => {
+    if (!active.model) return undefined;
+    let cancelled = false;
+    setFilled({});
+    (async () => {
+      for (const m of (active.matches ?? []).slice(0, TOP_COUNT)) {
+        if (cancelled) return;
+        if (m.reason || active.extra_reasons?.[String(m.school_id)]) continue;
+        setPendingId(m.school_id);
+        try {
+          const result = await explainQuestionnaireSchool(m.school_id, active.id);
+          if (cancelled) return;
+          setFilled((current) => ({ ...current, [m.school_id]: result.reason || '' }));
+        } catch {
+          break;
+        }
+      }
+      if (!cancelled) setPendingId(null);
+    })();
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- restart only for another run
+  }, [active.id]);
+  const pendingIndex = pendingId == null ? -1 : top.findIndex((m) => m.school_id === pendingId);
+
   return (
     <>
       <div className="qz-runbar">
@@ -370,9 +413,25 @@ function Results({ active, runCount, onRetake, onOpenHistory }) {
         </span>
       </div>
 
+      {pendingIndex >= 0 && (
+        <p className="qz-filling" role="status">
+          <Loader size={16} aria-hidden="true" />
+          Vysvětlení k dalším školám píšu postupně, od {pendingIndex + 1}. místa dolů. Pořadí už platí, můžeš si ho
+          zatím prohlížet.
+        </p>
+      )}
       <ol className="qz-list">
         {top.map((m, i) => (
-          <MatchRow key={m.school_id} match={m} rank={i + 1} extraReason={active.extra_reasons?.[String(m.school_id)]} />
+          <MatchRow
+            key={m.school_id}
+            match={m}
+            rank={i + 1}
+            runId={active.id}
+            extraReason={reasonOf(m)}
+            pending={i === pendingIndex}
+            queued={pendingIndex >= 0 && i > pendingIndex && !reasonOf(m)}
+            ahead={pendingIndex >= 0 ? top.slice(pendingIndex, i).filter((other) => !reasonOf(other)).length : 0}
+          />
         ))}
         {showAll &&
           rest.map((m, i) => <MatchRow key={m.school_id} match={m} rank={TOP_COUNT + i + 1} compact />)}
@@ -564,6 +623,8 @@ function Questionnaire() {
   }, [view]);
   const [submitting, setSubmitting] = useState(false);
   const [submitStep, setSubmitStep] = useState(0);
+  const submitStepRef = useRef(0);
+  submitStepRef.current = submitStep;
   const [submitError, setSubmitError] = useState(null);
   const [confirmRetake, setConfirmRetake] = useState(false);
   const [afterSubmit, setAfterSubmit] = useState(null);
@@ -577,7 +638,10 @@ function Questionnaire() {
       if (!submitting) setSubmitStep(0);
       return undefined;
     }
-    const timer = setTimeout(() => setSubmitStep((step) => Math.min(step + 1, SUBMIT_STEPS.length - 1)), 2500);
+    const timer = setTimeout(
+      () => setSubmitStep((step) => Math.min(step + 1, SUBMIT_STEPS.length - 1)),
+      STEP_MS[submitStep] ?? 0
+    );
     return () => clearTimeout(timer);
   }, [submitting, submitStep]);
 
@@ -657,6 +721,11 @@ function Questionnaire() {
       await submitQuestionnaire(answers);
       completed.current = true;
       await refresh();
+      // Answer is in: tick the remaining steps off quickly instead of jumping.
+      for (let step = submitStepRef.current + 1; step < SUBMIT_STEPS.length; step++) {
+        setSubmitStep(step);
+        if (!reduced) await new Promise((resolve) => setTimeout(resolve, FINISH_STEP_MS));
+      }
       setAnswers({});
       setView('results');
       if (previous) setAfterSubmit({ previous });

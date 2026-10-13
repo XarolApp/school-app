@@ -529,3 +529,27 @@
   .qz-notes-toggle svg.is-open { transform: rotate(180deg); }
 }
 @media (max-width: 600px) { .qz-page[aria-busy='true'] > .qz-note { display: none; } }
+
+/* Submit steps with a known length fill once, left to right, in that time
+   (duration set inline from STEP_MS), instead of the endless sweep. */
+.ob-calc-bar-fill.qz-step-timed {
+  width: 100%;
+  transform-origin: left;
+  animation-name: qz-step-fill;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+@keyframes qz-step-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* "#2–#10 are being written" line above the list while the fill runs. */
+.qz-filling {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin: 0 0 var(--space-sm);
+  font-size: var(--fs-body-sm);
+  color: var(--ink2);
+}
+.qz-filling svg { flex: none; color: var(--accent); animation: ss-spin 1.2s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .qz-filling svg { animation: none; } }

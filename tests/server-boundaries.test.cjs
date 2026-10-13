@@ -163,7 +163,7 @@ test('on-demand questionnaire explanations are authenticated, access-gated and l
   const handlers = h.routeChains.get('post /api/questionnaire/explain/:schoolId');
   assert.equal(handlers.length, 4);
   const limiter = handlers[2];
-  assert.equal(limiter.options.limit, 30);
+  assert.equal(limiter.options.limit, 60);
   assert.equal(limiter.options.windowMs, 60 * 60 * 1000);
   assert.equal(limiter.options.keyGenerator({ user: { id: 'student-a' } }), 'student-a');
   assert.equal((await h.call('post', '/api/questionnaire/explain/:schoolId', { params: { schoolId: '0' } })).statusCode, 400);

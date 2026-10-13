@@ -188,8 +188,9 @@ export function submitQuestionnaire(answers) {
   });
 }
 
-export function explainQuestionnaireSchool(schoolId) {
-  return request(`/api/questionnaire/explain/${schoolId}`, { method: 'POST' });
+export function explainQuestionnaireSchool(schoolId, runId) {
+  const query = runId ? `?run=${encodeURIComponent(runId)}` : '';
+  return request(`/api/questionnaire/explain/${schoolId}${query}`, { method: 'POST' });
 }
 
 export function renameQuestionnaireRun(id, label) {

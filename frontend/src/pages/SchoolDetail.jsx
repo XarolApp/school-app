@@ -3,7 +3,7 @@ import { SkeletonPage, Sk } from '../components/PageSkeleton';
 import { useEffect, useRef, useState } from 'react';
 import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
 import { internalReturnPath } from '../lib/internalReturnPath';
-import { fetchSchool, fetchFavorites } from '../api';
+import { fetchSchool, fetchFavorites, fetchQuestionnaire } from '../api';
 import { useAuth } from '../components/AuthContext';
 import { recordRecentSchool } from '../lib/searchPrefs';
 import { groupProgramsByObor, schoolHistory } from '../lib/schoolPrograms';
@@ -12,6 +12,7 @@ import SectionNav from '../components/schoolDetail/SectionNav';
 import SchoolHero from '../components/schoolDetail/SchoolHero';
 import SchoolActions from '../components/schoolDetail/SchoolActions';
 import CutoffExplainer from '../components/schoolDetail/CutoffExplainer';
+import SchoolExplanation from '../components/schoolDetail/SchoolExplanation';
 import HistoryChart from '../components/schoolDetail/HistoryChart';
 import ProgramList from '../components/schoolDetail/ProgramList';
 import SchoolLocation from '../components/schoolDetail/SchoolLocation';
@@ -29,6 +30,9 @@ function SchoolDetail({ publicView = false }) {
   const location = useLocation();
   const { isSignedIn, hasAccess } = useAuth();
   const [school, setSchool] = useState(null);
+  // Loaded with the school so "Proč tahle shoda" is there on first paint.
+  const [questionnaire, setQuestionnaire] = useState(null);
+  const showExplanation = isSignedIn && hasAccess && !publicView;
   const [isFavorite, setIsFavorite] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -42,9 +46,14 @@ function SchoolDetail({ publicView = false }) {
     setLoading(true);
     setError(null);
     setSchool(null);
-    fetchSchool(id)
-      .then((s) => {
+    setQuestionnaire(null);
+    const questionnaireLoad = showExplanation
+      ? fetchQuestionnaire().then((data) => ({ active: data.active ?? null }), () => ({ failed: true }))
+      : Promise.resolve(null);
+    Promise.all([fetchSchool(id), questionnaireLoad])
+      .then(([s, q]) => {
         if (cancelled) return;
+        setQuestionnaire(q);
         // The API answers an old (merged-away) id with its successor school.
         if (String(s.id) !== String(id)) {
           navigate(`/skoly/${s.id}`, { replace: true });
@@ -56,7 +65,7 @@ function SchoolDetail({ publicView = false }) {
       .catch((err) => { if (!cancelled) setError(err); })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
-  }, [id, loadTick, navigate]);
+  }, [id, loadTick, navigate, showExplanation]);
 
   useEffect(() => {
     if (!school || !pageRef.current) return;
@@ -128,6 +137,13 @@ function SchoolDetail({ publicView = false }) {
             <Sk w="70%" h={22} className="is-strong" />
           </div>
         </div>
+        {showExplanation && (
+          <div className="sd-explanation sd-explanation-cta">
+            <Sk w={22} h={22} r="50%" className="is-strong" />
+            <div className="sd-explanation-copy"><Sk w={160} h={22} className="is-strong" style={{ marginBottom: 8 }} /><Sk w="85%" h={14} className="is-strong" /></div>
+            <Sk w={170} h={44} className="is-strong" />
+          </div>
+        )}
         <SectionNav />
         <CutoffExplainer />
         <div className="sd-section-head"><h2 className="sd-section-title">Obory a přijímačky</h2><Sk w={180} h={16} /></div>
@@ -202,6 +218,8 @@ function SchoolDetail({ publicView = false }) {
         <SchoolHero school={school} programEntries={programEntries} extracted={extracted} />
         <SchoolActions school={school} isFavorite={isFavorite} onFavoriteChange={setIsFavorite} barRef={barRef} publicView={publicView} />
       </div>
+
+      {showExplanation && questionnaire && <SchoolExplanation key={school.id} school={school} questionnaire={questionnaire} />}
 
       <SectionNav />
 

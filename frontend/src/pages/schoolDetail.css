@@ -253,6 +253,9 @@
   border: 1px solid var(--line);
   border-radius: var(--r-card);
 }
+/* Grey blocks on this already-grey card need the darker line colour. */
+.sd-explanation .ss-sk { background: var(--line); }
+.sd-explanation .reason-pending-bar { background: var(--surface); }
 .sd-explanation h3 {
   margin: 0 0 var(--space-xs);
   font-family: var(--heading);
@@ -264,6 +267,21 @@
   font-size: var(--fs-body-sm);
   line-height: var(--lh-body-sm);
   color: var(--ink2);
+}
+/* No text yet: icon, short pitch and the button on one row (stacked on phones). */
+.sd-explanation-cta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+.sd-explanation-icon { flex: none; color: var(--accent); }
+.sd-explanation-copy { flex: 1; min-width: 0; display: grid; gap: var(--space-xs); }
+.sd-explanation-copy h3 { margin: 0; }
+.sd-explanation-cta .ss-btn { flex: none; }
+@media (max-width: 640px) {
+  .sd-explanation-cta { flex-direction: column; align-items: stretch; }
+  .sd-explanation-cta .sd-explanation-icon { display: none; }
+  .sd-explanation-cta .ss-btn { justify-content: center; }
 }
 .sd-actions-divider {
   height: 1px;

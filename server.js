@@ -275,7 +275,8 @@ const questionnaireLimiter = rateLimit({
 // quota.
 const questionnaireExplainLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
-  limit: 30,
+  // The results page fills #2–#10 through this route after every submission.
+  limit: 60,
   keyGenerator: (req) => req.user.id,
   standardHeaders: 'draft-7',
   legacyHeaders: false,
@@ -2788,10 +2789,14 @@ app.post(
     }
 
     try {
-      const { data: run, error: runError } = await scoringRunQuery(
-        req.user.id,
-        'id, answers, matches, extra_reasons'
-      );
+      // ?run= targets a specific own run (the results page filling a run that
+      // is no longer the default); without it, the scoring run.
+      const runId = Number(req.query?.run);
+      const columns = 'id, answers, matches, extra_reasons';
+      const { data: run, error: runError } = Number.isSafeInteger(runId) && runId > 0
+        ? await supabase.from('questionnaire_runs').select(columns)
+          .eq('id', runId).eq('user_id', req.user.id).is('archived_at', null).maybeSingle()
+        : await scoringRunQuery(req.user.id, columns);
       if (runError) throw runError;
       if (!run) {
         return res.status(404).json({

@@ -596,3 +596,34 @@ textarea.ss-input {
 @media (prefers-reduced-motion: reduce) { .ss-sk { animation: none; } }
 /* Blocks on an already-grey panel need the darker line colour to show. */
 .ss-sk.is-strong { background: var(--line); }
+
+/* ReasonPending: an AI explanation being written (results list, school page). */
+.reason-pending { display: grid; gap: var(--space-xs); width: 100%; }
+.reason-pending-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  color: var(--accent);
+}
+.reason-pending.is-queued .reason-pending-label { color: var(--ink3); font-weight: 500; }
+.reason-pending-bar {
+  display: block;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+}
+/* Fast at first, then crawling towards 92 %: never "done" before the text is. */
+.reason-pending-bar > span {
+  display: block;
+  height: 100%;
+  width: 92%;
+  border-radius: 999px;
+  background: var(--accent);
+  transform-origin: left;
+  animation: reason-fill 30s cubic-bezier(0.1, 0.7, 0.3, 1) forwards;
+}
+@keyframes reason-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@media (prefers-reduced-motion: reduce) { .reason-pending-bar > span { animation: none; transform: scaleX(0.5); } }
