@@ -1,0 +1,36 @@
+{
+  "checkedAt": "2026-10-14T06:44:43.409Z",
+  "origin": "https://school-app-production-be43.up.railway.app",
+  "method": "Three anonymous GETs of health/me/public school feed; aggregates only, no credentials/account/data/provider/migration/billing writes.",
+  "checks": [
+    {
+      "path": "/",
+      "status": 200,
+      "health": "ok",
+      "cacheControl": null,
+      "vary": "Origin",
+      "allowOrigin": "https://www.stredninamiru.cz"
+    },
+    {
+      "path": "/api/me",
+      "status": 401,
+      "cacheControl": null,
+      "vary": "Origin",
+      "allowOrigin": "https://www.stredninamiru.cz"
+    },
+    {
+      "path": "/api/schools",
+      "status": 200,
+      "schoolCount": 192,
+      "uniqueSchoolIds": 192,
+      "nestedProgramRows": 688,
+      "hiddenRows": 0,
+      "cacheControl": null,
+      "vary": "Origin, accept-encoding",
+      "allowOrigin": "https://www.stredninamiru.cz"
+    }
+  ],
+  "limits": [
+    "Health and anonymous feed reachability do not prove authenticated journeys, factual fields, private caching, RLS or provider behavior."
+  ]
+}

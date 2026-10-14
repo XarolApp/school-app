@@ -1,0 +1,105 @@
+{
+  "checkedAt": "2026-10-14",
+  "reviewObjectiveComplete": true,
+  "betaReleaseApproved": false,
+  "realBillingApproved": false,
+  "sourceCoverage": {
+    "current_full_read": 808,
+    "binary_requires_asset_check": 113,
+    "generated_or_audit_artifact": 245,
+    "removed_or_missing": 2
+  },
+  "requirements": [
+    {
+      "requirement": "File-by-file authored source/docs and subsequent peer changes",
+      "evidence": [
+        "coverage-status.json",
+        "root-coverage.json",
+        "backend-coverage.json",
+        "frontend-coverage.json",
+        "legal-docs-coverage.json",
+        "tooling-coverage.json",
+        "final-lazy-source-review-2026-10-14.json"
+      ],
+      "result": "Zero pending current authored hashes; full baseline plus complete deltas/new files. Generated literals/vendor code and binary/external source semantics use explicit separate methods."
+    },
+    {
+      "requirement": "Deep legal/privacy/payment/security review",
+      "evidence": [
+        "backend-findings.md",
+        "legal-docs-findings.md",
+        "continuation-findings.md",
+        "HANDOFF-PLAN.md"
+      ],
+      "result": "Current defects, prior fixes/retractions, founder decisions, architectural work and manual contract/processor/operator/DB/billing acceptance distinguished. No real charge or live destructive test."
+    },
+    {
+      "requirement": "Confirmed small bugs fixed and verified",
+      "evidence": [
+        "REPORT.md",
+        "final-root-tests-2026-10-14.log",
+        "final-frontend-lint-2026-10-14.log",
+        "final-frontend-build-2026-10-14.log",
+        "lazy-explanation-ui-verification-2026-10-14.json"
+      ],
+      "result": "211 tests pass; final lint/build pass with existing warnings. Numeric/copy/count/decoder and earlier narrow fixes recorded. Broader lifecycle/policy fixes deferred as requested."
+    },
+    {
+      "requirement": "Wording/numbers/dates and current Markdown reconciliation",
+      "evidence": [
+        "REPORT.md",
+        "FINAL-RELEASE-CHECKLIST.md",
+        "final-catalogue-count-2026-10-14.json",
+        "final-public-api-readonly-2026-10-14.json"
+      ],
+      "result": "Current192visible count/API/metadata/fallback/docs agree. Raw/merged/hidden and dated194/217 snapshots remain distinct; existing dates/pricing/beta/privacy and historical claims reconciled in reviewed MD."
+    },
+    {
+      "requirement": "Services and real-device/browser concerns",
+      "evidence": [
+        "services-2026-10-08.json",
+        "post-interruption-source-review-2026-10-13.json",
+        "final-public-api-readonly-2026-10-14.json",
+        "deployed-font-notices-2026-10-14.json",
+        "lazy-explanation-ui-verification-2026-10-14.json",
+        "FINAL-RELEASE-CHECKLIST.md"
+      ],
+      "result": "Permitted read-only checks and synthetic actual UI evidence recorded; actual provider/mail/auth/RLS/device/cache/controller limits explicitly listed for manual verification. Latest phone override did not apply."
+    },
+    {
+      "requirement": "Binary/generated/ignored corpus accounting without skipped or fabricated method",
+      "evidence": [
+        "asset-complete-visual-review-2026-10-13.json",
+        "geometry-complete-structured-review-2026-10-12.json",
+        "school-corpus-structural-review-2026-10-13.json",
+        "woff2-name-cmap-review-2026-10-13.json",
+        "deployed-font-notices-2026-10-14.json"
+      ],
+      "result": "Separate structural/visual/audio/document/font receipts;438 external MD files/all219 replays. Manual semantic source facts, subjective playback/rights/physical devices remain expressly unverified."
+    },
+    {
+      "requirement": "Avoid overlapping Claude edits and no new subagents",
+      "evidence": [
+        "COORDINATION.md",
+        "deferred-source-review-2026-10-13.json",
+        "final-lazy-source-review-2026-10-14.json"
+      ],
+      "result": "Changing peer paths deferred, exact immutable/final differences reviewed after release; narrow own hunks preserved peer work. Mixed coordination/original untracked artifacts excluded from own commit."
+    },
+    {
+      "requirement": "Unfinished-work report, agent plan, suggestions and manual handoff",
+      "evidence": [
+        "FINAL-RELEASE-CHECKLIST.md",
+        "HANDOFF-PLAN.md",
+        "REPORT.md",
+        "../../UNFORGET.md"
+      ],
+      "result": "All identified release work assigned ordered ownership/reproductions/acceptance; manual evidence and pending founder semantics named; payment/after-beta/optional recommendations distinct."
+    }
+  ],
+  "limits": [
+    "Review completion is not an assertion that every school fact/legal obligation/service/device is correct. The explicit manual handoff is part of the requested deliverable.",
+    "Any subsequent file change invalidates its prior hash and requires re-review."
+  ],
+  "evidenceFormatting": "Saved frontend build stdout has trailing whitespace stripped; original output remains in the temporary build log. Diagnostic text and exit result are unchanged."
+}

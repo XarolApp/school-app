@@ -1,0 +1,133 @@
+{
+  "checkedAt": "2026-10-14",
+  "files": [
+    {
+      "path": "frontend/src/api.js",
+      "sha256": "962ea87a5828def8802f43e426a5509265935c1690353d00bc84c77b04ea26b6",
+      "lines": 511,
+      "method": "Exact fully read previous baseline SHA plus every complete final peer diff; connected integration contexts read",
+      "baseline_sha256": "8f9d4a260571ed6daca26e5fcd87930bf152cdee151866b33b40b927c3a4d6c6",
+      "reviewed_peer_sha256": "962ea87a5828def8802f43e426a5509265935c1690353d00bc84c77b04ea26b6"
+    },
+    {
+      "path": "frontend/src/components/ReasonPending.jsx",
+      "sha256": "855647ca436927b31f655fde727d803149de81d18a6749299cebaace59aaafaf",
+      "lines": 34,
+      "method": "All lines of new source read",
+      "baseline_sha256": null,
+      "reviewed_peer_sha256": "855647ca436927b31f655fde727d803149de81d18a6749299cebaace59aaafaf"
+    },
+    {
+      "path": "frontend/src/components/schoolDetail/SchoolActions.jsx",
+      "sha256": "3d40f7345e1dd8d452195649ff651f4e75e976357633e85c42b4e6cf8037ba37",
+      "lines": 197,
+      "method": "Exact fully read previous baseline SHA plus every complete final peer diff; connected integration contexts read",
+      "baseline_sha256": "7baae946650a35a93845a582aaf64341b1e1129959480acb29059289a78d9623",
+      "reviewed_peer_sha256": "3d40f7345e1dd8d452195649ff651f4e75e976357633e85c42b4e6cf8037ba37"
+    },
+    {
+      "path": "frontend/src/components/schoolDetail/SchoolExplanation.jsx",
+      "sha256": "0dd9d52e3690d96d95b43c062d4577672d619a2f121aa069cb9dd8ea49d78ee2",
+      "lines": 100,
+      "method": "All lines of new source read",
+      "baseline_sha256": null,
+      "reviewed_peer_sha256": "0dd9d52e3690d96d95b43c062d4577672d619a2f121aa069cb9dd8ea49d78ee2"
+    },
+    {
+      "path": "frontend/src/pages/Questionnaire.jsx",
+      "sha256": "ede4a4fc782d93984bb45f116d154667ef215abdfbd176066807bf22f13297c5",
+      "lines": 1033,
+      "method": "Exact fully read previous baseline SHA plus every complete final peer diff; connected integration contexts read; every subsequent own numeric/copy diff fully read and tested",
+      "baseline_sha256": "29946ad3cf62121c84a132d0a1c3760df41d870c3f06f5a9505c37cb8c0eac2f",
+      "reviewed_peer_sha256": "dd01b2ed5e63300527439709e8e926f027af7cedb27d8556c501078ae8329145"
+    },
+    {
+      "path": "frontend/src/pages/SchoolDetail.jsx",
+      "sha256": "3bd78ad61543543d890bd7d74aabea99607bf5c06a298b43cc86a0fbb3a0024d",
+      "lines": 277,
+      "method": "Exact fully read previous baseline SHA plus every complete final peer diff; connected integration contexts read",
+      "baseline_sha256": "ab3dcc7a2b2f89fffc162699aa5b3136e53650e6a6e8a9e5b706ca228e48db9f",
+      "reviewed_peer_sha256": "3bd78ad61543543d890bd7d74aabea99607bf5c06a298b43cc86a0fbb3a0024d"
+    },
+    {
+      "path": "frontend/src/pages/questionnaire.css",
+      "sha256": "9f4b40f58fd92d8993b17567f4c63dbc1ce2cadb554ef0384c1ae2fc6c156758",
+      "lines": 555,
+      "method": "Exact fully read previous baseline SHA plus every complete final peer diff; connected integration contexts read",
+      "baseline_sha256": "3de0404ddcf35c67a2c132fab2f1a65138e8df2d0819820339038e50337e8f8b",
+      "reviewed_peer_sha256": "9f4b40f58fd92d8993b17567f4c63dbc1ce2cadb554ef0384c1ae2fc6c156758"
+    },
+    {
+      "path": "frontend/src/pages/schoolDetail.css",
+      "sha256": "49a1e86d3438e4107e1415c6782a964db67eac99066c2ce88c5c9c6252ebb8fc",
+      "lines": 1192,
+      "method": "Exact fully read previous baseline SHA plus every complete final peer diff; connected integration contexts read",
+      "baseline_sha256": "34197a53217d7a9d83dbfaf1a63a488cb4be07b3e4b639f9ca3aaa57f218ed18",
+      "reviewed_peer_sha256": "49a1e86d3438e4107e1415c6782a964db67eac99066c2ce88c5c9c6252ebb8fc"
+    },
+    {
+      "path": "frontend/src/styles/ui.css",
+      "sha256": "cee2d736c0e5d0fe7c4958b80663085eec426b157e5995f4573594a7fac9e58e",
+      "lines": 629,
+      "method": "Exact fully read previous baseline SHA plus every complete final peer diff; connected integration contexts read",
+      "baseline_sha256": "1ecf78bb01c2a3b2e61279dd1c5dfe8ac9ca96339ab1676c33464ea6e9b6aefe",
+      "reviewed_peer_sha256": "cee2d736c0e5d0fe7c4958b80663085eec426b157e5995f4573594a7fac9e58e"
+    },
+    {
+      "path": "lib/questionnaire.js",
+      "sha256": "eccf5b51cb499370e023e253749f1ba842e3d792d81cd2b4455348c05364e207",
+      "lines": 1044,
+      "method": "Exact fully read previous baseline SHA plus every complete final peer diff; connected integration contexts read; every subsequent own numeric/copy diff fully read and tested",
+      "baseline_sha256": "6c8992fff244b8f67f5b539989daf88c041887ff5b366e02d40e5ab97911bc4c",
+      "reviewed_peer_sha256": "c7c2cb37c55baca9d984c28241ef28fa361478c3faeb2813fb209dfc29decba0"
+    },
+    {
+      "path": "server.js",
+      "sha256": "c3f765af9c6bf1516a1197d31a0c77e73619c338196e6d0907497c4411a1de82",
+      "lines": 3737,
+      "method": "Exact fully read previous baseline SHA plus every complete final peer diff; connected integration contexts read; every subsequent own numeric/copy diff fully read and tested",
+      "baseline_sha256": "92e56d6756ce61379501a7f33384ccf8ecbe9738e9676c985bfff52df690a032",
+      "reviewed_peer_sha256": "385429bf73150d16552472ef16da13a50daba719d66aff320c997c25baf0d6ec"
+    },
+    {
+      "path": "tests/server-boundaries.test.cjs",
+      "sha256": "1609f3145644ddde90a94178235f58d099121a79fe31b757f4468ecd120ca6ed",
+      "lines": 1252,
+      "method": "Exact fully read previous baseline SHA plus every complete final peer diff; connected integration contexts read; every subsequent own numeric/copy diff fully read and tested",
+      "baseline_sha256": "fcebce7d2fc717192a3dee8db08c9646054c061c17adf82c9ae5a606fb59be53",
+      "reviewed_peer_sha256": "6213c11d7b0d182decef0fb339f933c969e5348f6554fb672488692ff0829cf2"
+    },
+    {
+      "path": "lib/onboardingAnswers.js",
+      "sha256": "37105119fd031b6a766b91e587b7271b55edee7e10d39e1683588345e028f687",
+      "lines": 162,
+      "read_ranges": [
+        [
+          1,
+          162
+        ]
+      ],
+      "status": "complete",
+      "reviewer": "root",
+      "method": "All 39 new regression-test lines read; meaningful malformed/valid/omission controls run"
+    },
+    {
+      "path": "tests/numeric-input-shapes.test.cjs",
+      "sha256": "097ba34e32230050d20424c182772160b7f7635ecdb6a1cb5ddb7ef6866fae6f",
+      "lines": 39,
+      "read_ranges": [
+        [
+          1,
+          39
+        ]
+      ],
+      "status": "complete",
+      "reviewer": "root",
+      "method": "All 39 new regression-test lines read; meaningful malformed/valid/omission controls run"
+    }
+  ],
+  "limits": [
+    "Source read and local tests do not certify physical devices, real providers, deployed schema, privacy/operator acceptance or real billing.",
+    "Peer a8be399/b59a5d6 were independently published; this review did not authorize that feature publication."
+  ]
+}

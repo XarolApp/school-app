@@ -1,0 +1,22 @@
+{
+  "checkedAt": "2026-10-14T06:35:30.549Z",
+  "sourceSha256": "c3f765af9c6bf1516a1197d31a0c77e73619c338196e6d0907497c4411a1de82",
+  "method": "Actual full current registered handler via reviewed test harness; cloned in-memory run snapshots, fake provider barriers and fake DB. No dotenv, real account/network/model/cache/db writes.",
+  "differentSchools": {
+    "returnedBoth200": true,
+    "providerCalls": 2,
+    "finalExtraReasons": {
+      "12": "Synthetic reason12"
+    },
+    "lostOneCachedReason": true
+  },
+  "sameSchool": {
+    "returnedBoth200": true,
+    "providerCalls": 2,
+    "notDeduplicatedInFlight": true
+  },
+  "limits": [
+    "Does not prove deployed PostgreSQL timing or provider spending; handler lost-update/duplicate-call boundary is reproduced locally.",
+    "Requires coordinated atomic cache merge, owner/run/deletion/health-revision and hidden-school policy; not a blind whole-row write patch."
+  ]
+}

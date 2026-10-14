@@ -327,7 +327,6 @@ function Results({ active, runCount, onRetake, onOpenHistory }) {
   const matches = active.matches ?? [];
   const top = matches.slice(0, TOP_COUNT);
   const rest = matches.slice(TOP_COUNT);
-  const hasSentences = top.some((m) => m.reason);
 
   // Submission writes only #1's explanation; #2–#10 are written here, one at a
   // time, top down. Only for runs scored with the AI (model set), and it stops
@@ -335,6 +334,7 @@ function Results({ active, runCount, onRetake, onOpenHistory }) {
   const [filled, setFilled] = useState({});
   const [pendingId, setPendingId] = useState(null);
   const reasonOf = (m) => m.reason || active.extra_reasons?.[String(m.school_id)] || filled[m.school_id] || '';
+  const hasSentences = top.some(reasonOf);
   useEffect(() => {
     if (!active.model) return undefined;
     let cancelled = false;
@@ -392,14 +392,14 @@ function Results({ active, runCount, onRetake, onOpenHistory }) {
         </p>
       </div>
 
-      {!hasSentences && (
+      {!hasSentences && pendingId === null && (
         <div className="qz-note qz-note-strong">
           <Info size={18} aria-hidden="true" />
           <div>
-            <div className="qz-note-title">U téhle sady chybí slovní zdůvodnění</div>
+            <div className="qz-note-title">U téhle sady zatím nejsou slovní vysvětlení</div>
             <p className="ss-body-sm">
-              Píše ho jazykový model při odeslání dotazníku a ten nebyl dostupný. Procenta i důvody shody u škol
-              počítá aplikace sama a jsou úplné.
+              Slovní vysvětlení píše jazykový model. U jednotlivých škol si je můžeš nechat vytvořit.
+              Pořadí a procentuální shodu počítá aplikace samostatně.
             </p>
           </div>
         </div>

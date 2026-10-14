@@ -1,0 +1,40 @@
+{
+  "checkedAt": "2026-10-14T06:29:07.892Z",
+  "credentialSource": "documented existing public cohort in frontend/.env.example",
+  "explicitHumanApproval": true,
+  "method": "Existing public cohort viewer-gate credential from frontend configuration; cookie held only in memory and not recorded. Reads exact notice bytes. Gate POST establishes this client viewer cookie only; no Supabase user/account, consent, feedback, mail, billing, RPC, provider or database mutation.",
+  "gate": {
+    "status": 204,
+    "accepted": true,
+    "cookiePresent": true
+  },
+  "files": [
+    {
+      "path": "/font-licenses/Archivo-OFL.txt",
+      "status": 200,
+      "contentType": "text/plain; charset=utf-8",
+      "deployedSha256": "c3c8402eec0e31dc9a76851235b1c02a0bb821488b2db8e35bcc2ab60ca8fc2b",
+      "expectedSha256": "c3c8402eec0e31dc9a76851235b1c02a0bb821488b2db8e35bcc2ab60ca8fc2b",
+      "exactBytes": true,
+      "looksLikeGateHtml": false
+    },
+    {
+      "path": "/font-licenses/Archivo-Narrow-OFL.txt",
+      "status": 200,
+      "contentType": "text/plain; charset=utf-8",
+      "deployedSha256": "d75534d749c6421b070453af6a3fcbfbcb4bb2b9186392dfbe5a567535e806d5",
+      "expectedSha256": "d75534d749c6421b070453af6a3fcbfbcb4bb2b9186392dfbe5a567535e806d5",
+      "exactBytes": true,
+      "looksLikeGateHtml": false
+    },
+    {
+      "path": "/font-licenses/README.md",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "deployedSha256": "3d64714c35123b226c171ba3bc9a1cbdd34d49ea420ec489633b5dc16c356c19",
+      "expectedSha256": "3d64714c35123b226c171ba3bc9a1cbdd34d49ea420ec489633b5dc16c356c19",
+      "exactBytes": true,
+      "looksLikeGateHtml": false
+    }
+  ]
+}

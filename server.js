@@ -2041,7 +2041,11 @@ app.get('/api/decision-profile', requireAuth, async (req, res) => {
 });
 
 app.put('/api/decision-profile', decisionLimiter, requireAuth, async (req, res) => {
-  const whole = (raw) => (raw === null || raw === undefined || raw === '' ? null : Number(raw));
+  const whole = (raw) => {
+    if (raw === null || raw === undefined || raw === '') return null;
+    const numeric = typeof raw === 'number' || (typeof raw === 'string' && raw.trim() !== '');
+    return numeric ? Number(raw) : NaN;
+  };
   const jpzPoints = whole(req.body?.jpzPoints);
   const expectedGain = whole(req.body?.expectedGain);
   if (jpzPoints !== null && (!Number.isInteger(jpzPoints) || jpzPoints < 0 || jpzPoints > 100)) {

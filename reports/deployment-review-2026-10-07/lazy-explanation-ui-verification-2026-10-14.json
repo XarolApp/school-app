@@ -1,0 +1,35 @@
+{
+  "checkedAt": "2026-10-14",
+  "method": "Current React/Vite and actual registered Express routes in reviewed loopback VM with disposable auth/DB and intercepted fake model methods; no dotenv/live model/Stripe/account/database calls. Synthetic run seeded; GET recomputes current deterministic matching, then sequential fake explanations fill top ten.",
+  "actualViewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "requestedPhoneViewportApplied": false,
+  "observed": {
+    "queuedAndWritingStatesVisible": true,
+    "allTenReasonsEventuallyShown": true,
+    "savedReasonShownOnSchoolDetail": true,
+    "noConsoleErrorsInFinalResult": true,
+    "resultDocumentWidth": 1280,
+    "wrongMissingProviderWarningBeforeFix": true,
+    "missingWarningAfterFix": false,
+    "reasonsAfterFix": 10,
+    "syntheticReasonCalls": 11,
+    "stripeCalls": 0,
+    "detailDocumentWidth": 1304,
+    "closedDetailTooltipRight": 1304.5
+  },
+  "limits": [
+    "Viewport override did not apply; no current 320px or physical-phone pass claimed.",
+    "Seeded run is synthetic; not real questionnaire-submit/provider acceptance or ranking calibration.",
+    "Full account/run switch, StrictMode/multi-tab, failure/retry, hidden-school/health-withdrawal and reduced-motion acceptance remain open."
+  ],
+  "countFollowup": {
+    "sharedFallback": 192,
+    "publicProductionApi": 192,
+    "schoolOnlySupabaseVisible": 192,
+    "syntheticLandingRenderedCount": 30,
+    "syntheticLandingLiveHookOverridesFallback": true
+  }
+}

@@ -158,6 +158,43 @@ function harness({
   };
 }
 
+test('decision profile rejects malformed numeric shapes before database writes', async () => {
+  for (const field of ['jpzPoints', 'expectedGain']) {
+    for (const value of [true, false, [], [12], {}, ' ', '\t\n']) {
+      const h = harness();
+      const body = { jpzPoints: 40, expectedGain: 5, [field]: value };
+      const response = await h.call('put', '/api/decision-profile', { body });
+      assert.equal(response.statusCode, 400, `${field}: ${JSON.stringify(value)}`);
+      assert.equal(h.queries.length, 0);
+    }
+  }
+});
+
+test('decision profile preserves numeric boundaries and empty-point clearing', async () => {
+  for (const value of [0, 100, '0', '100', ' 12 ']) {
+    const h = harness();
+    const response = await h.call('put', '/api/decision-profile', {
+      body: { jpzPoints: value, expectedGain: '5' },
+    });
+    assert.equal(response.statusCode, 200);
+    const row = h.queries[0].calls.find(([method]) => method === 'upsert')[1];
+    assert.equal(row.jpz_points, Number(value));
+    assert.equal(row.jpz_expected_gain, 5);
+    assert.equal(row.jpz_source, 'nanecisto');
+  }
+  for (const value of ['', null, undefined]) {
+    const h = harness();
+    const response = await h.call('put', '/api/decision-profile', {
+      body: { jpzPoints: value, expectedGain: 5 },
+    });
+    assert.equal(response.statusCode, 200);
+    const row = h.queries[0].calls.find(([method]) => method === 'upsert')[1];
+    assert.equal(row.jpz_points, null);
+    assert.equal(row.jpz_expected_gain, null);
+    assert.equal(row.jpz_source, null);
+  }
+});
+
 test('on-demand questionnaire explanations are authenticated, access-gated and limited per account', async () => {
   const h = harness();
   const handlers = h.routeChains.get('post /api/questionnaire/explain/:schoolId');

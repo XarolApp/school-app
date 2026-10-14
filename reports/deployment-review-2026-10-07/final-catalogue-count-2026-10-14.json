@@ -1,0 +1,142 @@
+{
+  "checkedAt": "2026-10-14T06:46:17.185Z",
+  "method": "Read-only school identity/visibility metadata only; no user tables/RPC/provider/schema/data writes. Credential not recorded.",
+  "rawSchools": 223,
+  "mergedSchools": 6,
+  "hiddenSchools": 25,
+  "visibleSchools": 192,
+  "hidden": [
+    {
+      "id": 42,
+      "name": "The English College in Prague – Anglické gymnázium, o. p. s.",
+      "hidden_reason": "not_for_9th_grade"
+    },
+    {
+      "id": 47,
+      "name": "Gymnázium Jiřího Gutha-Jarkovského, Praha 1, Truhlářská 22",
+      "hidden_reason": "not_for_9th_grade"
+    },
+    {
+      "id": 64,
+      "name": "Gymnázium a Hudební škola hlavního města Prahy, základní umělecká škola",
+      "hidden_reason": "not_for_9th_grade"
+    },
+    {
+      "id": 69,
+      "name": "Malostranské gymnázium, Praha 1, Josefská 7",
+      "hidden_reason": "not_for_9th_grade"
+    },
+    {
+      "id": 70,
+      "name": "Taneční konzervatoř hlavního města Prahy, Praha 1, Křižovnická 7",
+      "hidden_reason": "not_for_9th_grade"
+    },
+    {
+      "id": 80,
+      "name": "Arcibiskupské gymnázium",
+      "hidden_reason": "not_for_9th_grade"
+    },
+    {
+      "id": 95,
+      "name": "Gymnázium ALTIS s.r.o.",
+      "hidden_reason": "not_for_9th_grade"
+    },
+    {
+      "id": 109,
+      "name": "Gymnázium Jaroslava Heyrovského, Praha 5, Mezi Školami 2475",
+      "hidden_reason": "not_for_9th_grade"
+    },
+    {
+      "id": 111,
+      "name": "Rakouské gymnázium v Praze o.p.s.",
+      "hidden_reason": "not_for_9th_grade"
+    },
+    {
+      "id": 113,
+      "name": "Mensa gymnázium, o.p.s.",
+      "hidden_reason": "not_for_9th_grade"
+    },
+    {
+      "id": 114,
+      "name": "Gymnázium, Praha 5, Nad Kavalírkou 1",
+      "hidden_reason": "not_for_9th_grade"
+    },
+    {
+      "id": 123,
+      "name": "Taneční centrum Praha - konzervatoř, z. ú.",
+      "hidden_reason": "not_for_9th_grade"
+    },
+    {
+      "id": 127,
+      "name": "Trojské gymnázium s.r.o.",
+      "hidden_reason": "not_for_9th_grade"
+    },
+    {
+      "id": 130,
+      "name": "Gymnázium, Praha 8, Ústavní 400",
+      "hidden_reason": "not_for_9th_grade"
+    },
+    {
+      "id": 136,
+      "name": "Gymnázium J. Seiferta o.p.s.",
+      "hidden_reason": "not_for_9th_grade"
+    },
+    {
+      "id": 139,
+      "name": "Gymnázium, Praha 9, Chodovická 2250",
+      "hidden_reason": "not_for_9th_grade"
+    },
+    {
+      "id": 148,
+      "name": "Soukromé gymnázium ARCUS PRAHA 9, s.r.o.",
+      "hidden_reason": "not_for_9th_grade"
+    },
+    {
+      "id": 150,
+      "name": "Křesťanské gymnázium",
+      "hidden_reason": "not_for_9th_grade"
+    },
+    {
+      "id": 176,
+      "name": "Výchovný ústav, středisko výchovné péče Klíčov a střední škola",
+      "hidden_reason": "restricted_audience"
+    },
+    {
+      "id": 186,
+      "name": "Lauderova mateřská škola, základní škola a gymnázium při Židovské obci v Praze",
+      "hidden_reason": "not_for_9th_grade"
+    },
+    {
+      "id": 187,
+      "name": "Německá škola v Praze s.r.o. - zahraniční škola, základní škola a gymnázium",
+      "hidden_reason": "not_for_9th_grade"
+    },
+    {
+      "id": 189,
+      "name": "Střední odborné učiliště",
+      "hidden_reason": "restricted_audience"
+    },
+    {
+      "id": 212,
+      "name": "Gymnázium Přírodní škola, z.ú.",
+      "hidden_reason": "not_for_9th_grade"
+    },
+    {
+      "id": 230,
+      "name": "Gymnázium, Praha 4, Budějovická 680",
+      "hidden_reason": "not_for_9th_grade"
+    },
+    {
+      "id": 231,
+      "name": "Gymnázium Na Pražačce, Praha 3, Nad Ohradou 23",
+      "hidden_reason": "not_for_9th_grade"
+    }
+  ],
+  "limits": [
+    "Does not verify why visibility changed, programme eligibility, source facts or deployed SQL bodies/grants. Historical 194 snapshot remains dated evidence."
+  ],
+  "hiddenReasonCounts": {
+    "not_for_9th_grade": 23,
+    "restricted_audience": 2
+  }
+}

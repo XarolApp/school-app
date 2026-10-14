@@ -2052,8 +2052,8 @@ C64 copy verification, 13 October: actual current synthetic dialog/banner, adult
 
 - [x] S18 narrow decoder repair: declared legacy Czech encodings, BOM/header/meta and existing UTF-8 fallback;21 targeted tests pass. Original438 caches unchanged; all 219 pair replays/manifests/totals match. Structural source accounting is separate from manual semantic factual acceptance.
 - [ ] S18/S10: recover already-corrupted168/195 inputs and review smaller12/164 retained corruption; reconcile exact current source/campus/year/REDIZO/health/structure/citation/rank facts before promotion. No guessed repair, paid rerun or live write.
-- [ ] C66: apply ready scalar-number guard/regression after peer release; true/false/arrays/whitespace currently become JPZ scores. Check connected onboarding/profile coercion boundaries. [Patch](reports/deployment-review-2026-10-07/numeric-shape-guard-2026-10-13.patch). Candidate209-test pass is not a current pass after guard rollback.
-- [ ] Re-review final concurrent lazy-explanation/API/pending-layout/server/test/style changes. All four immutable prior reads are complete but later hashes changed. Preserve health/owner/hidden-school gates and require localhost founder acceptance before feature push. [Snapshot evidence](reports/deployment-review-2026-10-07/deferred-source-review-2026-10-13.json).
+- [x] C66 fixed,14 October: questionnaire/onboarding/profile reject malformed numeric shapes; four regression tests and all211 tests pass. Valid scalar/string boundaries and established omission/clear behavior preserved. The old candidate patch is historical: do not apply it.
+- [x] Final peer source review,14 October: all twelve lazy-explanation/API/server/test/style sources and b59a5d6 guide TODO reviewed at exact hashes. [Current receipt](reports/deployment-review-2026-10-07/final-lazy-source-review-2026-10-14.json). Source read does not close health/owner/hidden-school/runtime/device acceptance; peer feature publication was independent.
 
 ## Feature explanations needed — 13 October
 
@@ -2062,6 +2062,21 @@ C64 copy verification, 13 October: actual current synthetic dialog/banner, adult
 ### 13 October font/header acceptance update
 
 - [x] C62 local source/build notice packaging: all 24 WOFF2 metadata streams checked; exact installed copyright/OFL notices copied unchanged to public/build files and verified through local HTTP. All eight used family/weight unions map the chosen Czech/number/price/dash sample. [Evidence](reports/deployment-review-2026-10-07/font-licence-copy-verification-2026-10-13.json).
-- [ ] C62 deployed notice bytes: verify after publishing; physical text/shaping/iOS-icon checks remain C25, separate from glyph mapping.
+- [x] C62 deployed notice bytes,14 October: three HTTP200 responses byte-match local notices after the explicitly approved limited viewer session. [Proof](reports/deployment-review-2026-10-07/deployed-font-notices-2026-10-14.json). Physical text/shaping/iOS-icon checks remain C25.
 - [x] C12 missing public-root headers: 13 October HEAD verifies the configured enforcement headers and report-only CSP. Unlocked-provider/private-cache/asset/version checks remain independent; CSP content enforcement is not established.
 - [x] Main handoff corrected: preserve already-fixed C09/CLI guard/header configuration and coarse map input; keep sharing/reviews disabled during beta and C07/C08/C32/C38 after-beta choices intact.
+
+
+## Final full-project review — 14 October
+
+The authored source/doc review and current Markdown reconciliation are complete at their recorded hashes; every known remaining beta/billing task, manual evidence gap and improvement is consolidated in [FINAL-RELEASE-CHECKLIST](reports/deployment-review-2026-10-07/FINAL-RELEASE-CHECKLIST.md) and the detailed handoff. This supersedes earlier in-progress statements as current status; dated checkpoint counts/limits remain historical. Release approval is still pending.
+
+- [x] Current source/doc hashes fully accounted; final211 tests, lint zero errors/11 warnings and build pass with chunk warnings. Exact final peer diffs preserved; no new subagents.
+- [x] C35 false unavailable-model warning repaired and actual desktop verified; cached/filled reasons now count and queued generation has factual wording.
+- [ ] C21 coherent atomic cache/deduplication/owner-run-revision repair: refreshed current-handler fake-service controls reproduce lost cache entry and duplicate same-school generation. Keep C55/C59 withdrawal/visibility validity in the same design.
+- [ ] C25/C29 school-detail tooltip: actual1280px desktop produces1304px document width from a closed tip atx1304.5. Current new-card phone viewport attempt did not apply; verify real phones and open/closed keyboard/touch edge cases.
+- [ ] Founder/manual/legal/service/database/device acceptance in the final checklist; no live tester/account/mail/feedback/RPC/migration/AI/charge actions claimed.
+
+Preserve the peer's plain-language feature-guide TODO, explicitly after-beta items and every founder pricing/beta/health/archiving decision. No beta-ready or real-billing claim follows from completed source coverage.
+
+Final count recheck,14 October:192visible/223raw/6merged/25hidden;23ninth-grade and2restricted-audience (176/189). API/Supabase metadata agree. README/shared fallback/instruction mirrors updated; retain historical194 snapshots and S10 eligibility/source acceptance. [Evidence](reports/deployment-review-2026-10-07/final-catalogue-count-2026-10-14.json).

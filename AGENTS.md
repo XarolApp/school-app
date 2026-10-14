@@ -436,6 +436,9 @@ are deployed. See the current deployment report.
 
 **Read-only coverage after the 9th-grade filter, 10 October:** 194 visible schools, 191 with extracted rows; known fields: lunch 92 (47.4%), dorm 5, club categories 135, teaching-style tags 70, university continuation 3 and explicit club count 0. The 23 fully hidden and 58 partly affected schools are independently counted. Stored coverage does not verify school facts or programme-specific prose; review/re-extraction of affected cached prose remains open. See `reports/deployment-review-2026-10-07/ninth-grade-live-2026-10-10.json`.
 
+**Latest read-only catalogue count, 14 October 2026:** the deployed public API returns **192 schools**; school-only Supabase metadata agrees: **223 raw, 6 merged, 25 hidden** (23 `not_for_9th_grade`, 2 `restricted_audience`: schools176/189). Earlier194-school counts/coverage below are dated10 October snapshots, not today's denominator. The shared frontend fallback is192; `useSchoolCount()` still follows the live feed. Stored visibility does not prove programme/source eligibility or complete catalogue coverage. See [current count evidence](reports/deployment-review-2026-10-07/final-catalogue-count-2026-10-14.json) and [public API check](reports/deployment-review-2026-10-07/final-public-api-readonly-2026-10-14.json).
+
+
 `schools.admission_cutoff` / `acceptance_rate` and every `school_programs` row
 come from `scripts/import-admission-data.js`, which parses Cermat's yearly
 jednotná přijímací zkouška results file and matches it to `schools` by REDIZO
