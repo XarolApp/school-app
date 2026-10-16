@@ -13,7 +13,10 @@ const POLL_MS = 2500;
 // How often we ask the server whether the link was opened in any browser. A
 // different browser or private window shares no storage with this one, so only
 // the server knows; once it says yes we sign in with the password typed here.
+// Starts at 4 s and slows to 30 s: a class waiting on one school IP would
+// otherwise burn the shared rate limit. Returning to the tab checks at once.
 const STATUS_POLL_MS = 4000;
+const STATUS_POLL_MAX_MS = 30000;
 
 /**
  * "Check your inbox" body shared by the plain sign-up and the onboarding
@@ -114,8 +117,17 @@ export default function ConfirmEmailWaiting({
 
   useEffect(() => {
     if (!userId || confirmedElsewhere) return undefined;
-    const timer = setInterval(() => { if (document.visibilityState === 'visible') void checkConfirmed(); }, STATUS_POLL_MS);
-    return () => clearInterval(timer);
+    let timer, delay = STATUS_POLL_MS;
+    const tick = () => {
+      if (document.visibilityState === 'visible') void checkConfirmed();
+      delay = Math.min(delay * 1.5, STATUS_POLL_MAX_MS);
+      timer = setTimeout(tick, delay);
+    };
+    timer = setTimeout(tick, delay);
+    const back = () => { if (document.visibilityState === 'visible') void checkConfirmed(); };
+    window.addEventListener('focus', back);
+    document.addEventListener('visibilitychange', back);
+    return () => { clearTimeout(timer); window.removeEventListener('focus', back); document.removeEventListener('visibilitychange', back); };
   }, [userId, confirmedElsewhere, checkConfirmed]);
 
   const secondsLeft = Math.max(0, Math.ceil((sentAt + RESEND_COOLDOWN_SECONDS * 1000 - now) / 1000));

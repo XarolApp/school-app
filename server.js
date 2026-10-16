@@ -236,9 +236,11 @@ if (process.env.TRUST_PROXY === 'true') {
   app.set('trust proxy', 1);
 }
 
+// Outer per-IP budget only. A class on one school Wi-Fi shares an IP, so this
+// is sized for ~30 students at once; costly routes have their own per-user limits.
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  limit: 300,
+  limit: 1500,
   standardHeaders: 'draft-7',
   legacyHeaders: false,
   message: { error: 'Příliš mnoho požadavků. Zkus to prosím za chvíli.' },

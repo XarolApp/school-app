@@ -196,16 +196,15 @@
   text-transform: none;
   letter-spacing: normal;
   color: var(--ink2);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 150ms ease;
+  /* display, not visibility: a hidden-but-laid-out bubble near the right
+     edge widened the page (1304px document at a 1280px window). */
+  display: none;
   z-index: 30;
   pointer-events: none;
 }
 .sd-info-hint:hover .sd-info-hint-tip,
 .sd-info-hint.is-open .sd-info-hint-tip {
-  opacity: 1;
-  visibility: visible;
+  display: block;
 }
 @media (max-width: 600px) {
   /* Pinned to the viewport, not the icon: an icon near either edge pushed the

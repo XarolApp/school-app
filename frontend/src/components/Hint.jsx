@@ -16,16 +16,18 @@ function Hint({ text, label, size = 12, wrapClass, tipClass }) {
   // Keep an opened note inside the viewport whatever the consumer's CSS
   // placement (map card cells at 375px ran off-screen, C29). The CSS
   // `translate` property composes with the consumers' own transform.
-  useLayoutEffect(() => {
+  // Also run on hover, since consumers' CSS previews the note on :hover.
+  const place = () => {
     const tip = ref.current?.querySelector('[role="note"]');
     if (!tip) return;
     tip.style.translate = '';
-    if (!open) return;
+    if (getComputedStyle(tip).display === 'none' || getComputedStyle(tip).visibility === 'hidden') return;
     const { left, right } = tip.getBoundingClientRect();
     const edge = 8, width = document.documentElement.clientWidth;
     const shift = left < edge ? edge - left : right > width - edge ? width - edge - right : 0;
     if (shift) tip.style.translate = `${Math.round(shift)}px 0`;
-  }, [open]);
+  };
+  useLayoutEffect(place, [open]);
 
   useEffect(() => {
     if (!open) return undefined;
@@ -47,7 +49,7 @@ function Hint({ text, label, size = 12, wrapClass, tipClass }) {
   }, [open]);
 
   return (
-    <span ref={ref} className={`${wrapClass}${open ? ' is-open' : ''}`}>
+    <span ref={ref} className={`${wrapClass}${open ? ' is-open' : ''}`} onPointerEnter={place}>
       <button
         type="button"
         className="hint-btn"
