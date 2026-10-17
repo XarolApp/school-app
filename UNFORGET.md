@@ -2080,3 +2080,7 @@ The authored source/doc review and current Markdown reconciliation are complete 
 Preserve the peer's plain-language feature-guide TODO, explicitly after-beta items and every founder pricing/beta/health/archiving decision. No beta-ready or real-billing claim follows from completed source coverage.
 
 Final count recheck,14 October:192visible/223raw/6merged/25hidden;23ninth-grade and2restricted-audience (176/189). API/Supabase metadata agree. README/shared fallback/instruction mirrors updated; retain historical194 snapshots and S10 eligibility/source acceptance. [Evidence](reports/deployment-review-2026-10-07/final-catalogue-count-2026-10-14.json).
+
+## Review follow-up — paid-launch chunks (17 October)
+
+- [ ] Go through the 14 October deployment review (`reports/deployment-review-2026-10-07/FINAL-RELEASE-CHECKLIST.md`, `HANDOFF-PLAN.md`) and decide what to act on before real billing. Split the work into agent-sized chunks: `plans/022-paid-launch-chunks.md`. Chunk 0 (founder decisions) comes first.
