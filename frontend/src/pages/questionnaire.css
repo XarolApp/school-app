@@ -365,6 +365,27 @@
   gap: var(--space-sm);
   flex-wrap: wrap;
 }
+/* Read-only answers of one saved run, opened from its row. */
+.qz-run-answers-wrap {
+  flex-basis: 100%;
+  border-top: 1px solid var(--line);
+  padding-top: var(--space-md);
+}
+.qz-run-answers {
+  display: grid;
+  gap: var(--space-sm) var(--space-lg);
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  margin: 0;
+}
+.qz-run-answer dt {
+  font-size: var(--fs-caption);
+  color: var(--ink3);
+}
+.qz-run-answer dd {
+  margin: 2px 0 0;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
 .qz-run-hint {
   flex-basis: 100%;
   margin: 0;

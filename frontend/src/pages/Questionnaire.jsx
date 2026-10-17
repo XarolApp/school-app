@@ -115,6 +115,30 @@ function answeredCount(answers) {
   return Object.values(answers || {}).filter((v) => (Array.isArray(v) ? v.length : v != null && v !== '')).length;
 }
 
+// One answer as readable text: option labels for choices, the raw value otherwise.
+function answerText(question, value) {
+  if (value == null || value === '' || (Array.isArray(value) && !value.length)) return null;
+  const label = (v) => question.options?.find((o) => o.value === v)?.label ?? String(v);
+  return Array.isArray(value) ? value.map(label).join(', ') : label(value);
+}
+
+function RunAnswers({ run, questions }) {
+  const answers = run.answers || {};
+  return (
+    <dl className="qz-run-answers">
+      {questions.filter((q) => questionApplies(q, answers)).map((q) => {
+        const text = answerText(q, answers[q.id]);
+        return (
+          <div key={q.id} className="qz-run-answer">
+            <dt>{q.label}</dt>
+            <dd className={text ? undefined : 'qz-muted'}>{text || 'Přeskočeno'}</dd>
+          </div>
+        );
+      })}
+    </dl>
+  );
+}
+
 function runMeta(run, total) {
   const origin = run.source === 'onboarding' ? ' · z úvodu do aplikace' : '';
   return `${formatDate(run.created_at)}${origin} · ${answeredCount(run.answers)} z ${total} odpovědí`;
@@ -455,8 +479,9 @@ function Results({ active, runCount, onRetake, onOpenHistory }) {
   );
 }
 
-function RunRow({ run, isCurrent, total, busy, onSetDefault, onArchive, onRename }) {
+function RunRow({ run, questions, isCurrent, total, busy, onSetDefault, onArchive, onRename }) {
   const [editing, setEditing] = useState(false);
+  const [showAnswers, setShowAnswers] = useState(false);
   const [draft, setDraft] = useState(run.label || '');
   const archived = Boolean(run.archived_at);
 
@@ -514,6 +539,15 @@ function RunRow({ run, isCurrent, total, busy, onSetDefault, onArchive, onRename
           </>
         ) : (
           <>
+            <button
+              type="button"
+              className="ss-btn ss-btn-secondary ss-btn-sm"
+              aria-expanded={showAnswers}
+              aria-controls={`run-answers-${run.id}`}
+              onClick={() => setShowAnswers((v) => !v)}
+            >
+              {showAnswers ? 'Skrýt odpovědi' : 'Zobrazit odpovědi'}
+            </button>
             {!isCurrent && !archived && (
               <button type="button" className="ss-btn ss-btn-secondary ss-btn-sm" disabled={busy} onClick={() => onSetDefault(run.id)}>
                 Nastavit jako výchozí
@@ -542,6 +576,11 @@ function RunRow({ run, isCurrent, total, busy, onSetDefault, onArchive, onRename
           </>
         )}
       </div>
+      {showAnswers && !editing && (
+        <div id={`run-answers-${run.id}`} className="qz-run-answers-wrap">
+          <RunAnswers run={run} questions={questions} />
+        </div>
+      )}
       {isCurrent && !editing && (
         <p className="ss-caption qz-muted qz-run-hint">Výchozí sadu nejde archivovat. Nejdřív nastav jako výchozí jinou.</p>
       )}
@@ -576,6 +615,7 @@ function History({ runs, currentId, questions, error, busyId, onBack, onRetake, 
           <RunRow
             key={run.id}
             run={run}
+            questions={questions}
             isCurrent={run.id === currentId}
             total={questions.filter((q) => questionApplies(q, run.answers || {})).length}
             busy={busyId !== null}
