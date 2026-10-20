@@ -10,7 +10,7 @@
  * "neuvedeno" and are muted.
  */
 
-import { summarizeCurrentYear, groupProgramsByObor, latestProgramValue, summarizeAdmission, formatCutoffRange } from './schoolPrograms';
+import { summarizeCurrentYear, groupProgramsByObor, latestProgramValue, summarizeAdmission, formatCutoffRange, schoolHistory } from './schoolPrograms';
 import { formatClubCategories, formatTeachingStyles } from './schoolDetailTagLabels';
 
 export const numCz = (v, digits = 1) => (v == null ? null : v.toLocaleString('cs-CZ', { maximumFractionDigits: digits }));
@@ -73,6 +73,49 @@ function detailRow(id, label, values) {
 
 function yesNo(value) {
   return value === true ? 'Ano' : value === false ? 'Ne' : null;
+}
+
+const HISTORY_YEARS = 3;
+
+// "Vývoj": the same admission numbers for the last three years the compared
+// schools have data for, one row per year (newest first), plus the change of
+// the lowest cutoff since each school's oldest year in that window. A school
+// with no row for a year says "bez dat" — never a zero or a guess.
+function historySection(schools) {
+  const histories = schools.map((s) => schoolHistory(groupProgramsByObor(s)));
+  const years = [...new Set(histories.flatMap((h) => h.map((p) => p.year)))].sort((a, b) => b - a).slice(0, HISTORY_YEARS);
+  if (years.length < 2) return null;
+
+  const at = (h, year) => h.find((p) => p.year === year);
+  const range = (p) => formatCutoffRange({ cutoffMin: p.cutoffMin, cutoffMax: p.cutoffMax });
+  const yearRows = years.map((year) => ({
+    id: `historie-${year}`,
+    label: `Hranice v roce ${year}`,
+    values: histories.map((h) => {
+      const p = at(h, year);
+      const text = p && range(p);
+      if (!text) return { text: 'bez dat', isBest: false, isMuted: true };
+      const sub = [p.acceptance != null ? `přijato ${numCz(p.acceptance)} %` : null, p.prihlasky != null && p.kapacita > 0 ? `${numCz(p.prihlasky / p.kapacita)}× na místo` : null].filter(Boolean).join(' · ');
+      return { text, sub, isBest: false };
+    }),
+  }));
+
+  const oldest = years.at(-1);
+  const trend = histories.map((h) => {
+    const first = h.filter((p) => p.cutoffMin != null && p.year >= oldest)[0];
+    const last = h.filter((p) => p.cutoffMin != null && p.year >= oldest).at(-1);
+    if (!first || !last || first.year === last.year) return null;
+    return { delta: last.cutoffMin - first.cutoffMin, from: first.year };
+  });
+  const trendRow = {
+    id: 'historie-trend',
+    label: 'Změna nejnižší hranice',
+    info: `Rozdíl nejnižší hranice mezi nejstarším a nejnovějším rokem, který pro školu máme (od ${oldest}). Kladné číslo = škola je teď náročnější na vstup, záporné = lehčí. Hranice se mění i podle ročníku, ne jen podle školy.`,
+    values: trend.map((t) => (t
+      ? { text: `${t.delta > 0 ? '+' : t.delta < 0 ? '−' : ''}${numCz(Math.abs(t.delta))} b.`, sub: `od ${t.from}`, isBest: false }
+      : { text: 'bez dat', isBest: false, isMuted: true })),
+  };
+  return { id: 'vyvoj', title: 'Vývoj přijímaček', subtitle: `poslední ${years.length} roky`, rows: [...yearRows, trendRow] };
 }
 
 export function buildComparisonRows(schools) {
@@ -191,8 +234,10 @@ export function buildComparisonRows(schools) {
       : []),
   ].filter(Boolean);
 
+  const vyvoj = historySection(schools);
   return [
     admissionsSection,
+    ...(vyvoj ? [vyvoj] : []),
     skolaSection,
     ...(schoolLifeRows.length ? [{ id: 'zivot', title: 'Život ve škole', rows: schoolLifeRows }] : []),
   ];

@@ -90,6 +90,7 @@ function CompareView({ schools, rows, pickIds, savingPick, onRemove, onClearAll,
                   {row.values.map((v, i) => (
                     <div className={`dp-table-cell${v.isBest ? ' is-best' : ''}${v.isMuted ? ' is-muted' : ''}`} key={schools[i].id}>
                       {skeleton ? <Sk w="55%" h={24} /> : <strong>{v.text}</strong>}
+                      {v.sub && <span className="dp-cell-sub">{v.sub}</span>}
                       {v.tag && <span className="dp-best-tag">{v.tag}</span>}
                     </div>
                   ))}

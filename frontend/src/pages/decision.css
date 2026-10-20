@@ -545,6 +545,7 @@
   border-left: 1px solid var(--line);
   font-size: var(--fs-body-md);
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 8px;
   min-width: 0;
@@ -555,6 +556,12 @@
 }
 
 .dp-table-cell.is-muted {
+  color: var(--ink3);
+}
+.dp-cell-sub {
+  flex-basis: 100%;
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
   color: var(--ink3);
 }
 .dp-best-tag {

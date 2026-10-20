@@ -342,3 +342,24 @@ test('school-life rows with no usable comparison data are omitted', () => {
   const schools = [comparisonSchool(1, 30, 90, 27, 30), comparisonSchool(2, 40, 80, 48, 40)];
   assert.equal(buildComparisonRows(schools).some((section) => section.id === 'zivot'), false);
 });
+
+test('comparison history lists the last three years and the cutoff change, with gaps shown as no data', () => {
+  const school = (id, years) => ({
+    id,
+    name: `Škola ${id}`,
+    school_programs: years.map(([rok, cutoff]) => ({
+      kkov: '79-41-K/41', obor_nazev: 'Gymnázium', rok, cutoff, prihlasky: 100, prijati: 50, kapacita: 25,
+    })),
+  });
+  const rows = buildComparisonRows([
+    school(1, [[2024, 30], [2025, 33], [2026, 38]]),
+    school(2, [[2025, 40], [2026, 41]]),
+  ]);
+  const vyvoj = rows.find((section) => section.id === 'vyvoj');
+  assert.deepEqual(vyvoj.rows.map((r) => r.id), ['historie-2026', 'historie-2025', 'historie-2024', 'historie-trend']);
+  assert.equal(vyvoj.rows[2].values[1].text, 'bez dat');
+  assert.equal(vyvoj.rows[0].values[0].sub, 'přijato 50 % · 4× na místo');
+  assert.deepEqual(vyvoj.rows[3].values.map((v) => v.text), ['+8 b.', '+1 b.']);
+  // One year only: nothing to compare over time, so no section.
+  assert.equal(buildComparisonRows([school(3, [[2026, 40]])]).some((s) => s.id === 'vyvoj'), false);
+});
