@@ -1648,3 +1648,10 @@ language sql security definer set search_path = public, pg_temp as $$
 $$;
 revoke all on function public.bump_visit(text) from public, anon, authenticated;
 grant execute on function public.bump_visit(text) to service_role;
+
+-- Launch waitlist (gate page): service role only, no client policy.
+create table if not exists public.launch_waitlist (
+  email text primary key check (email = lower(email) and length(email) <= 254),
+  created_at timestamptz not null default now()
+);
+alter table public.launch_waitlist enable row level security;

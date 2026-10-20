@@ -62,16 +62,26 @@ function gatePage({ wrongKey = false, returnTo = '/', setup = false } = {}) {
   const form = setup ? '' : `<form method="POST" action="/__gate">
       <input type="hidden" name="returnTo" value="${escapeHtml(safeReturnTo(returnTo))}">
       <label for="access-key">Přístupový kód</label>
-      <div class="field"><input id="access-key" type="password" name="key" autocomplete="off" autocapitalize="none" required autofocus><button class="reveal" type="button" aria-label="Zobrazit kód" aria-pressed="false">Zobrazit</button></div>
+      <div class="field"><input id="access-key" type="password" name="key" autocomplete="off" autocapitalize="none" required><button class="reveal" type="button" aria-label="Zobrazit kód" aria-pressed="false">Zobrazit</button></div>
       ${error}
       <button class="submit" type="submit">Vstoupit</button>
     </form>`;
   const content = setup
     ? '<h1>Stránka se právě nastavuje.</h1>'
-    : `<h1>Střední na míru je teď v testovací verzi.</h1>
-      <p class="intro">Pokud jsi tester, zadej přístupový kód z e-mailu od školy.</p>
+    : `<h1>Střední na míru ještě není spuštěné.</h1>
+      <p class="intro">Doděláváme poslední detaily. Nech nám tady e-mail a pošleme ti zprávu hned, jak otevřeme.</p>
+      <form id="waitlist" novalidate>
+        <label for="wl-email">Tvůj e-mail</label>
+        <input id="wl-email" type="email" name="email" autocomplete="email" required>
+        <p class="error" role="alert" hidden></p>
+        <button class="submit" type="submit">Dej mi vědět</button>
+        <p class="note">Použijeme ho jen na jednu zprávu o spuštění. Zpracování a odhlášení: <a href="mailto:info@stredninamiru.cz">info@stredninamiru.cz</a></p>
+      </form>
+      <p class="done" role="status" hidden>Díky! Ozveme se, jakmile to bude hotové.</p>
+      <details class="tester"><summary>Jsem tester</summary>
+      <p class="intro">Zadej přístupový kód z e-mailu od školy.</p>
       ${form}
-      <p class="footer">Nejste tester? Spuštění chystáme — <a href="mailto:info@stredninamiru.cz">info@stredninamiru.cz</a></p>`;
+      </details>`;
   const html = `<!doctype html>
 <html lang="cs">
 <head>
@@ -96,6 +106,13 @@ function gatePage({ wrongKey = false, returnTo = '/', setup = false } = {}) {
   .submit:hover { background: #16467F; }
   .error { margin: 10px 0 0; color: #B0271F; font-size: .92rem; }
   .footer { margin: 24px 0 0; color: #5F6670; font-size: .9rem; }
+  .note { margin: 12px 0 0; color: #5F6670; font-size: .85rem; }
+  .done { margin: 0; padding: 14px; border-radius: 8px; background: #EAEDEF; font-weight: 600; }
+  .tester { margin-top: 24px; padding-top: 16px; border-top: 1px solid #DCE0E4; }
+  .tester summary { cursor: pointer; color: #4B525B; font-weight: 600; }
+  .tester .intro { margin: 12px 0; }
+  #waitlist input { width: 100%; }
+  [hidden] { display: none; }
   a { color: #1C58A3; }
   @media (max-width: 420px) { main { padding: 24px; } .field { flex-wrap: wrap; } .field input { flex-basis: 100%; } .reveal { margin-left: auto; } }
 </style>
@@ -103,10 +120,22 @@ function gatePage({ wrongKey = false, returnTo = '/', setup = false } = {}) {
 <body>
 <main>${content}</main>
 ${setup ? '' : `<script>
-  const form = document.querySelector('form');
+  const wl = document.querySelector('#waitlist');
+  wl.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const err = wl.querySelector('.error'); err.hidden = true;
+    const btn = wl.querySelector('.submit'); btn.disabled = true;
+    try {
+      const r = await fetch('/__waitlist', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: wl.email.value }) });
+      if (r.ok) { wl.hidden = true; document.querySelector('.done').hidden = false; return; }
+      err.textContent = r.status === 400 ? 'Zadej platný e-mail.' : 'Nepodařilo se uložit. Zkus to prosím znovu.';
+    } catch { err.textContent = 'Nepodařilo se uložit. Zkus to prosím znovu.'; }
+    err.hidden = false; btn.disabled = false;
+  });
+  const form = document.querySelector('form[action="/__gate"]');
   const input = document.querySelector('#access-key');
   const reveal = document.querySelector('.reveal');
-  const submit = document.querySelector('.submit');
+  const submit = form.querySelector('.submit');
   const showError = (message) => {
     let error = form.querySelector('.error');
     if (!error) { error = document.createElement('p'); error.className = 'error'; error.setAttribute('role', 'alert'); form.insertBefore(error, submit); }
@@ -180,6 +209,16 @@ export default async function middleware(request) {
     return new Response('User-agent: *\nDisallow: /\n', {
       headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' },
     });
+  }
+  if (url.pathname === '/__waitlist') {
+    if (request.method !== 'POST') return new Response('Method not allowed', { status: 405, headers: { Allow: 'POST' } });
+    if (Number(request.headers.get('content-length') || 0) > 2048) return jsonResponse({ ok: false }, 413);
+    const upstream = await fetch(`${process.env.WAITLIST_API_URL || 'https://school-app-production-be43.up.railway.app'}/api/waitlist`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Forwarded-For': request.headers.get('x-forwarded-for') || '' },
+      body: JSON.stringify({ email: (await request.json().catch(() => ({}))).email }),
+    }).catch(() => null);
+    return jsonResponse({ ok: upstream?.ok === true }, upstream ? upstream.status : 502);
   }
   if (url.pathname === '/__gate' || url.pathname === '/version.json') {
     if (url.pathname === '/version.json') return;

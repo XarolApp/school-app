@@ -19,7 +19,7 @@ test('every page, including beta and email confirmation links, requires the type
     const response = await middleware(new Request(`https://school.test${path}`));
     assert.equal(response.status, 200);
     const html = await response.text();
-    assert.match(html, /Střední na míru je teď v testovací verzi/);
+    assert.match(html, /Střední na míru ještě není spuštěné/);
     assert.match(html, /<form method="POST" action="\/__gate">/);
     assert.match(html, /fetch\('\/__gate', \{ method: 'POST'/);
     assert.match(html, /location\.reload\(\)/);

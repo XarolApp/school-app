@@ -2377,6 +2377,18 @@ app.post('/api/pay-links/:token/withdraw', requireSharing, checkoutLimiter, asyn
 
 // Anonymous handoffs contain no personal data or quiz answers. The owner secret
 // stays on the parent's device and is required for status and revoke.
+// Gate-page "tell me when it launches" signup. Always answers ok so the form
+// cannot be used to test whether an address is already on the list.
+app.post('/api/waitlist', anonLinkLimiter, async (req, res) => {
+  const email = String(req.body?.email || '').trim().toLowerCase();
+  if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+    return res.status(400).json({ error: 'Zadej platný e-mail.' });
+  }
+  const { error } = await supabase.from('launch_waitlist').upsert({ email }, { onConflict: 'email', ignoreDuplicates: true });
+  if (error) return res.status(500).json({ error: 'Nepodařilo se uložit. Zkus to prosím znovu.' });
+  res.json({ ok: true });
+});
+
 app.post('/api/handoffs', requireSharing, anonLinkLimiter, async (req, res) => {
   const token = crypto.randomBytes(16).toString('base64url');
   const ownerSecret = crypto.randomBytes(16).toString('base64url');
