@@ -7,6 +7,8 @@ const express = require('express');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const crypto = require('crypto');
+const fs = require('node:fs');
+const path = require('node:path');
 const { logAiUsage } = require('./lib/aiUsage');
 const { sanitizeEvent, visitorTicket, verifyVisitorTicket, feedbackDetails } = require('./lib/betaAnalytics');
 require('dotenv').config();
@@ -31,6 +33,21 @@ const {
 const app = express();
 app.disable('x-powered-by');
 const PORT = process.env.PORT || 5000;
+const COMMUTE_MATRIX_PATH = path.join(__dirname, 'lib', 'data', 'commute-matrix.json');
+let commuteMatrix = null;
+try {
+  const loadedMatrix = JSON.parse(fs.readFileSync(COMMUTE_MATRIX_PATH, 'utf8'));
+  if (
+    typeof loadedMatrix.feedDate === 'string' &&
+    Array.isArray(loadedMatrix.stops) &&
+    loadedMatrix.schools &&
+    typeof loadedMatrix.schools === 'object' &&
+    !Array.isArray(loadedMatrix.schools)
+  ) commuteMatrix = loadedMatrix;
+  else throw new Error('matrix shape is invalid');
+} catch (error) {
+  console.warn(`[commute] matrix unavailable; commute endpoints return 503 (${error.message})`);
+}
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 const SCHOOL_REVIEWS_ENABLED = process.env.SCHOOL_REVIEWS_ENABLED === 'true';
 // Link sharing (shortlist shares, results/payment links, parent handoffs,
@@ -1503,6 +1520,30 @@ const LIST_SELECT = '*, school_programs(*), school_extracted_details(*)';
 // school_extracted_details joined so /porovnani's decision matrix can score
 // maturita_pass_rate_pct / tuition_czk_per_year, not just the pros/cons text.
 const FULL_SELECT = '*, school_programs(*), school_ai_summary(*), school_extracted_details(*)';
+
+app.get('/api/commute/stops', (req, res) => {
+  if (!commuteMatrix) return res.status(503).json({ error: 'Odhad dojezdu je dočasně nedostupný.' });
+  res.set('Cache-Control', 'public, max-age=86400');
+  res.json({ feedDate: commuteMatrix.feedDate, stops: commuteMatrix.stops });
+});
+
+app.get('/api/schools/:id/commute', optionalAuth, async (req, res) => {
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id)) return res.status(400).json({ error: 'Neplatné ID školy.' });
+  if (!commuteMatrix) return res.status(503).json({ error: 'Odhad dojezdu je dočasně nedostupný.' });
+
+  const { data, error } = await supabase.from('schools')
+    .select('id, merged_into, hidden_reason')
+    .eq('id', id)
+    .maybeSingle();
+  if (error) return res.status(500).json({ error: error.message });
+  if (!visibleSchool(data)) return res.status(404).json({ error: 'Škola nebyla nalezena.' });
+
+  const minutes = commuteMatrix.schools[String(id)];
+  if (!Array.isArray(minutes)) return res.status(404).json({ error: 'Odhad dojezdu pro tuto školu není k dispozici.' });
+  res.set('Cache-Control', 'public, max-age=86400');
+  res.json({ feedDate: commuteMatrix.feedDate, minutes });
+});
 
 app.get('/api/schools', optionalAuth, async (req, res) => {
   // ?ids=1,2,3 — the comparison surfaces need full per-obor rows (the risk

@@ -18,6 +18,8 @@ function harness({
   requestReasonsImpl = async () => new Map(),
   env = {},
   storageListResult = async () => ({ data: [], error: null }),
+  commuteMatrix = null,
+  commuteMatrixPresent = false,
 } = {}) {
   const storageRemovals = [];
   const routes = new Map();
@@ -66,6 +68,16 @@ function harness({
       return chain;
     },
   };
+  const realFs = require('node:fs');
+  const fsModule = {
+    readFileSync(filePath, ...args) {
+      if (String(filePath).endsWith('/lib/data/commute-matrix.json')) {
+        if (!commuteMatrixPresent) throw Object.assign(new Error('ENOENT'), { code: 'ENOENT' });
+        return JSON.stringify(commuteMatrix);
+      }
+      return realFs.readFileSync(filePath, ...args);
+    },
+  };
   const stripe = {
     webhooks: { constructEvent: (event) => event },
     subscriptions: {
@@ -97,8 +109,11 @@ function harness({
   const module = { exports: {} };
   vm.runInNewContext(source.slice(0, source.lastIndexOf('\nif (stripe)')) +
     '\nmodule.exports = { seasonEndsAt, handleStripeWebhook, slimProgramsForList, chargeDueSeasonPasses, paidAccessActive, betaProgramState, betaAccessState, hasPaidStatus, requireAccess, hasLivePlan, accessStateFor, createCheckoutForUser, cancelPlanForUser, withdrawPlanForUser };', {
-    module, Date, Buffer, URL, setTimeout, clearTimeout,
-    console: { log() {}, warn(...args) { warnings.push(args.join(' ')); }, error() {} },
+    module, Date, Buffer, URL, setTimeout, clearTimeout, __dirname: join(__dirname, '..'),
+    console: { log() {}, warn(...args) {
+      const message = args.join(' ');
+      if (!message.startsWith('[commute] matrix unavailable;')) warnings.push(message);
+    }, error() {} },
       process: { env: { SUPABASE_SERVICE_ROLE_KEY: 'synthetic', STRIPE_SECRET_KEY: stripeEnabled ? 'synthetic' : '', STRIPE_WEBHOOK_SECRET: 'synthetic', DEVELOPER_EMAILS: 'dev@example.com', SHARING_ENABLED: 'true',...env } },
     require(name) {
       if (name === 'express') return express;
@@ -124,6 +139,8 @@ function harness({
           return requestReasonsImpl(options);
         },
       };
+      if (name === 'node:fs') return fsModule;
+      if (name === 'node:path') return require('node:path');
       if (name.startsWith('./lib/')) return {};
       return require(name);
     },
@@ -1249,4 +1266,42 @@ test('withdrawing health consent strips the disability answer from only the call
   assert.equal(JSON.stringify(payload.answers), JSON.stringify({ typ: 'gymnazium' }));
   assert.equal(payload.matches[0].reason, 'Starý důvod.');
   assert.ok(updates[0].calls.some((c) => c[0] === 'eq' && c[1] === 'user_id' && c[2] === 'user-test'));
+});
+
+test('commute endpoints expose the static stops and an aligned school column', async () => {
+  const matrix = { feedDate: '2026-10-18', stops: [{ id: 'pid-1040-andel', name: 'Anděl', lat: 50.07, lon: 14.4 }], schools: { 12: [24] } };
+  const h = harness({
+    commuteMatrix: matrix,
+    commuteMatrixPresent: true,
+    result: () => ({ data: { id: 12, merged_into: null, hidden_reason: null }, error: null }),
+  });
+  const stops = await h.call('get', '/api/commute/stops');
+  assert.equal(stops.statusCode, 200);
+  assert.equal(JSON.stringify(stops.body), JSON.stringify({ feedDate: matrix.feedDate, stops: matrix.stops }));
+  const commute = await h.call('get', '/api/schools/:id/commute', { params: { id: '12' } });
+  assert.equal(commute.statusCode, 200);
+  assert.equal(JSON.stringify(commute.body), JSON.stringify({ feedDate: matrix.feedDate, minutes: [24] }));
+});
+
+test('commute endpoint rejects malformed ids and hidden or merged schools', async () => {
+  const matrix = { feedDate: '2026-10-18', stops: [], schools: { 12: [24] } };
+  const validMatrix = { commuteMatrix: matrix, commuteMatrixPresent: true };
+  const badId = harness(validMatrix);
+  assert.equal((await badId.call('get', '/api/schools/:id/commute', { params: { id: '12x' } })).statusCode, 400);
+  assert.equal(badId.queries.length, 0);
+
+  for (const school of [
+    { id: 12, hidden_reason: 'not_for_9th_grade', merged_into: null },
+    { id: 12, hidden_reason: null, merged_into: 13 },
+  ]) {
+    const h = harness({ ...validMatrix, result: () => ({ data: school, error: null }) });
+    assert.equal((await h.call('get', '/api/schools/:id/commute', { params: { id: '12' } })).statusCode, 404);
+  }
+});
+
+test('commute endpoints return 503 when the generated matrix is missing', async () => {
+  const h = harness();
+  assert.equal((await h.call('get', '/api/commute/stops')).statusCode, 503);
+  assert.equal((await h.call('get', '/api/schools/:id/commute', { params: { id: '12' } })).statusCode, 503);
+  assert.equal(h.queries.length, 0);
 });

@@ -240,6 +240,14 @@ export function fetchSchool(id) {
   return request(`/api/schools/${id}`).then(withNames);
 }
 
+export function fetchCommuteStops() {
+  return request('/api/commute/stops');
+}
+
+export function fetchSchoolCommute(schoolId) {
+  return request(`/api/schools/${schoolId}/commute`);
+}
+
 export function fetchFavorites() {
   return request('/api/favorites');
 }

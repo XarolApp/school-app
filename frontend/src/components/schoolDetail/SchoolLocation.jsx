@@ -5,6 +5,7 @@ import { parseSchoolContact } from '../../lib/schoolContact';
 import 'leaflet/dist/leaflet.css';
 import '../SchoolMap.css';
 import { summarizeAdmission, formatCutoffRange } from '../../lib/schoolPrograms';
+import CommuteTime from './CommuteTime';
 
 /**
  * A single static pin — deliberately NOT the full SchoolMap component (that
@@ -118,6 +119,7 @@ function SchoolLocation({ school }) {
             <div className="sd-location-field-value is-placeholder">Nemáme tuto informaci.</div>
           </div>
         </div>
+        <CommuteTime schoolId={school.id} />
         {streetViewUrl && (
           <a
             href={streetViewUrl}

@@ -16,6 +16,7 @@ design/**/skolamatch-*.html
 # via scripts/scrape-schools.js. See docs/firecrawl-extraction-task.md.
 scripts/data/scraped-schools/
 scripts/data/filtered-schools/
+scripts/data/gtfs/
 
 # graphify output (generated)
 graphify-out/

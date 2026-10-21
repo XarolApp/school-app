@@ -23,7 +23,7 @@ export function Privacy() {
   const gender = useGender();
   const g = (masculine, feminine) => (gender === 'f' ? feminine : masculine);
   return (
-    <LegalPage title="Zásady ochrany osobních údajů" updated="12. 10. 2026">
+    <LegalPage title="Zásady ochrany osobních údajů" updated="18. 10. 2026">
       <h2>1. Kdo je správce</h2>
       <p>
         Správcem osobních údajů je Václav Kadlec, Na Lysinách 34, 147 00 Praha, e-mail:
@@ -72,6 +72,14 @@ export function Privacy() {
           <strong>Tvoje práce s aplikací:</strong> oblíbené školy, pořadí přihlášek, poznámky,
           počet bodů z přijímacích zkoušek (jen pokud ho zadáš), odkazy pro sdílení seznamu
           rodičům. Účel: poskytnout tyto funkce. Základ: plnění smlouvy.
+        </li>
+        <li>
+          <strong>Odhad cesty MHD (nepovinně):</strong> když zadáš zastávku nebo povolíš polohu,
+          nejbližší zastávku určíme přímo v prohlížeči. Souřadnice neodesíláme na náš server;
+          vybranou zastávku ukládáme jen v tomto prohlížeči. Odhad počítáme z jízdních řádů
+          <a href="https://pid.cz/o-systemu/opendata/" target="_blank" rel="noopener noreferrer"> PID</a>
+          {' '}pod licencí{' '}
+          <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.
         </li>
         <li>
           <strong>Recenze škol a hlášení chyb:</strong> text recenze, tvoje role (např. student,
