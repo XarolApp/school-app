@@ -75,6 +75,7 @@ function App() {
             <Routes>
               <Route path="/pro/prihlaseni" element={<CreatorSignIn />} />
               <Route path="/pro/:token" element={<CreatorClaimDev />} />
+              <Route path="/pro/:slug/:token" element={<CreatorClaimDev />} />
               {/* Onboarding sits OUTSIDE the Layout on purpose: the nav bar is a
                   distraction and an exit during a 23-screen narrative flow. */}
               {/* Closed beta: every app page needs a signed-in, confirmed account

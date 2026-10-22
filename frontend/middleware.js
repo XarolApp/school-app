@@ -264,7 +264,7 @@ export default async function middleware(request) {
     }).catch(() => null);
     return jsonResponse({ ok: upstream?.ok === true }, upstream ? upstream.status : 502);
   }
-  const creatorPath = /^\/pro\/([A-Za-z0-9_-]{40,64})$/.exec(url.pathname);
+  const creatorPath = /^\/pro\/(?:[a-z0-9-]{1,40}\/)?([A-Za-z0-9_-]{40,64})$/.exec(url.pathname);
   if (creatorPath && (request.method === 'GET' || request.method === 'HEAD')) {
     // Link-preview bots and mail scanners GET this URL; only the button's POST may claim a device.
     return messagePage('Náhled Střední na míru', 'Otevři si osobní náhled aplikace.', 200, {

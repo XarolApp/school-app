@@ -215,3 +215,24 @@ test('creator edge errors use the gate for unknown links and no-store pages for 
     globalThis.fetch = originalFetch;
   }
 });
+
+test('creator link may carry the creator name before the token, and only the token is claimed', async () => {
+  const originalFetch = globalThis.fetch;
+  const originalClaimSecret = process.env.CREATOR_CLAIM_SECRET;
+  process.env.CREATOR_CLAIM_SECRET = 'shared-creator-secret';
+  const token = 'A'.repeat(43);
+  let claimed;
+  globalThis.fetch = async (url, options) => {
+    claimed = JSON.parse(options.body).token;
+    return Response.json({ tokenHash: 'one-time-hash' }, { status: 200 });
+  };
+  try {
+    const response = await middleware(new Request(`https://school.test/pro/kristyna-novakova/${token}`, { method: 'POST' }));
+    assert.equal(response.status, 303);
+    assert.equal(claimed, token);
+  } finally {
+    globalThis.fetch = originalFetch;
+    if (originalClaimSecret === undefined) delete process.env.CREATOR_CLAIM_SECRET;
+    else process.env.CREATOR_CLAIM_SECRET = originalClaimSecret;
+  }
+});
