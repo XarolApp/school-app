@@ -130,6 +130,7 @@ function harness({
       if (name === './lib/betaClosing') return require('../lib/betaClosing');
       if (name === './lib/betaAnalytics') return require('../lib/betaAnalytics');
       if (name === './lib/aiUsage') return require('../lib/aiUsage');
+      if (name === './lib/creatorLinks') return require('../lib/creatorLinks');
       if (name === './lib/pragueDistricts') return { districtOfSchool: (school) => school.district ?? null };
       if (name === './lib/matching') return { scoreSchools: (_answers, schools) => schools.map((school, index) => ({ school_id: school.id, score: 100 - index })) };
       if (name === './lib/questionnaire') return {
@@ -368,6 +369,57 @@ test('beta access wins over a long normal trial and the developer email allowlis
   assert.equal(reached, false);
   assert.equal(res.statusCode, 402);
   assert.equal(res.body.code, 'BETA_ACCESS_EXPIRED');
+});
+
+test('creator access requires an active creator link and reports schema outages separately', async () => {
+  const profile = { id: 'user-test', subscription_status: 'creator' };
+  const active = harness({ result: (query) => query.table === 'users'
+    ? { data: profile, error: null }
+    : query.table === 'creator_links'
+      ? { data: { revoked_at: null, last_active_at: new Date().toISOString() }, error: null }
+      : { data: null, error: null } });
+  assert.equal((await active.accessStateFor('user-test', 'dev@example.com')).hasAccess, true);
+
+  for (const link of [null, { revoked_at: '2026-10-22T00:00:00.000Z', last_active_at: null }]) {
+    const denied = harness({ result: (query) => query.table === 'users'
+      ? { data: profile, error: null }
+      : query.table === 'creator_links' ? { data: link, error: null } : { data: null, error: null } });
+    const state = await denied.accessStateFor('user-test', 'dev@example.com');
+    assert.equal(state.hasAccess, false);
+    assert.equal(state.httpStatus, 403);
+    assert.equal(state.body.code, 'CREATOR_REVOKED');
+  }
+
+  const unavailable = harness({ result: (query) => query.table === 'users'
+    ? { data: profile, error: null }
+    : query.table === 'creator_links' ? { data: null, error: new Error('missing relation') } : { data: null, error: null } });
+  const failed = await unavailable.accessStateFor('user-test', 'dev@example.com');
+  assert.equal(failed.httpStatus, 503);
+  assert.equal(failed.body.code, 'CREATOR_ACCESS_UNAVAILABLE');
+});
+
+test('creator accounts are excluded from subscription status and cannot create Stripe checkout sessions', async () => {
+  const profile = {
+    id: 'user-test', email: 'creator@example.com', subscription_status: 'creator',
+    trial_expires_at: '2999-01-01T00:00:00.000Z',
+  };
+  const h = harness({ result: (query) => query.table === 'users'
+    ? { data: profile, error: null }
+    : query.table === 'creator_links'
+      ? { data: { revoked_at: null, last_active_at: new Date().toISOString() }, error: null }
+      : { data: null, error: null } });
+  const me = await h.call('get', '/api/me', { user: { id: 'user-test', email: profile.email } });
+  assert.equal(me.body.isCreator, true);
+  assert.equal(me.body.hasAccess, true);
+  assert.equal(me.body.trialActive, false);
+  assert.equal(me.body.subscribed, false);
+  assert.equal(me.body.canWithdraw, false);
+  assert.equal(me.body.trialDaysLeft, 0);
+
+  const checkout = await h.createCheckoutForUser({ userId: 'user-test', email: profile.email, planId: 'season' });
+  assert.equal(checkout.status, 403);
+  assert.equal(checkout.body.code, 'CREATOR_CHECKOUT_DISABLED');
+  assert.equal(h.checkoutCalls.length, 0);
 });
 
 test('tester check-in through a developer email does not restore beta access', async () => {

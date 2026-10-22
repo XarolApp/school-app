@@ -27,6 +27,7 @@ const SUBSCRIPTION_LABELS = {
   expired: 'Zkušební období skončilo',
   developer: 'Vývojářský účet',
   beta: 'Beta tester',
+  creator: 'Tvůrce',
 };
 
 // Named by colour, in the order people scan them: blue, yellow, green, orange.
@@ -147,6 +148,7 @@ function Settings() {
     hasAccess,
     isDeveloper,
     isTester,
+    isCreator,
     trialDaysLeft,
     changePassword,
     changeEmail,
@@ -473,12 +475,13 @@ function Settings() {
   // inside its 3-day trial (cancelling there prevents the charge outright). A
   // season pass that has already been charged has nothing recurring to stop —
   // cancellationTerms() in pricing.js explains the trial and non-renewal.
-  const canCancel =
+  const canCancel = !isCreator && (
     (profile?.plan_id === 'monthly' && !profile?.cancel_at_period_end && (status === 'active' || status === 'past_due')) ||
     (status === 'trialing' && (
       Boolean(profile?.stripe_subscription_id) ||
       (profile?.plan_id === 'season' && Boolean(profile?.season_charge_due_at))
-    ));
+    ))
+  );
 
   const handleCancelSubscription = async () => {
     setError(null);
@@ -681,6 +684,7 @@ function Settings() {
             </div>
           </form>
 
+          {!isCreator && <>
           <div className="settings-row">
             <div className="settings-row-body">
               <span className="settings-row-label">E-mail</span>
@@ -759,6 +763,7 @@ function Settings() {
               </div>
             </form>
           )}
+          </>}
 
           {memberSince && (
             <div className="settings-row">
@@ -853,10 +858,11 @@ function Settings() {
           <div className="settings-section-head">
             <h2 className="settings-section-title">Zabezpečení</h2>
             <p className="settings-section-text">
-              Heslo a přihlášení na tomhle i ostatních zařízeních.
+              {isCreator ? 'Přihlášení na tomhle i ostatních zařízeních.' : 'Heslo a přihlášení na tomhle i ostatních zařízeních.'}
             </p>
           </div>
 
+          {!isCreator && <>
           <div className="settings-row">
             <div className="settings-row-body">
               <span className="settings-row-label">Heslo</span>
@@ -965,6 +971,7 @@ function Settings() {
               </div>
             </form>
           )}
+          </>}
 
           <div className="settings-row">
             <label className="checkbox-row" htmlFor="settings-remember">
@@ -1039,7 +1046,9 @@ function Settings() {
                 )}
               </span>
             </div>
-            {isDeveloper || status === 'beta' ? (
+            {isCreator ? (
+              <span className="badge">Tvůrce</span>
+            ) : isDeveloper || status === 'beta' ? (
               <span className="badge">{isDeveloper ? 'Vývojář' : 'Beta tester'}</span>
             ) : (
               !hasAccess && (
@@ -1085,7 +1094,7 @@ function Settings() {
             </div>
           )}
 
-          {canCancel &&
+          {!isCreator && canCancel &&
             (openForm === 'cancel' ? (
               <div id="settings-form-cancel" className="settings-form settings-form-inset">
                 {error && (
@@ -1132,7 +1141,7 @@ function Settings() {
               </div>
             ))}
 
-          {profile?.canWithdraw &&
+          {!isCreator && profile?.canWithdraw &&
             (openForm === 'withdraw' ? (
               <div id="settings-form-withdraw" className="settings-form settings-form-inset">
                 {error && (
@@ -1250,6 +1259,7 @@ function Settings() {
         </section>
 
         {/* --- Smazání účtu ---------------------------------------------- */}
+        {!isCreator && (
         <section className="panel panel-lg settings-section settings-danger">
           <div className="settings-section-head">
             <h2 className="settings-section-title">Smazat účet</h2>
@@ -1340,6 +1350,7 @@ function Settings() {
             </button>
           )}
         </section>
+        )}
       </div>
     </div>
   );

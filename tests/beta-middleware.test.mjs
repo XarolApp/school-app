@@ -122,3 +122,96 @@ test('missing key stays open locally and fails closed in production', async () =
   assert.equal(blankKey.status, 503);
   assert.match(await blankKey.text(), /Stránka se právě nastavuje\./);
 });
+
+test('creator edge claim sets device and gate cookies, then redirects with a no-referrer token hash', async () => {
+  const originalFetch = globalThis.fetch;
+  const originalClaimSecret = process.env.CREATOR_CLAIM_SECRET;
+  const originalSiteKeyForTest = process.env.SITE_ACCESS_KEY;
+  process.env.CREATOR_CLAIM_SECRET = 'shared-creator-secret';
+  process.env.SITE_ACCESS_KEY = 'beta test code';
+  const token = 'A'.repeat(43);
+  const device = 'b'.repeat(64);
+  const calls = [];
+  globalThis.fetch = async (url, options) => {
+    calls.push({ url: String(url), options });
+    return Response.json({ tokenHash: 'one-time-hash' }, { status: 200 });
+  };
+  try {
+    const response = await middleware(new Request(`https://school.test/pro/${token}`, {
+      method: 'POST',
+      headers: { 'user-agent': 'Creator Browser', 'x-forwarded-for': '203.0.113.10' },
+    }));
+    assert.equal(response.status, 303);
+    assert.equal(response.headers.get('location'), '/pro/prihlaseni#t=one-time-hash');
+    assert.equal(response.headers.get('cache-control'), 'no-store');
+    assert.equal(response.headers.get('referrer-policy'), 'no-referrer');
+
+    const cookies = response.headers.getSetCookie?.() ?? response.headers.get('set-cookie').split(', ');
+    assert.equal(cookies.length, 2);
+    assert.match(cookies[0], /^sm_creator_device=[a-f0-9]{64};/);
+    assert.match(cookies[0], /Max-Age=34560000; HttpOnly; Secure; SameSite=Lax/);
+    assert.match(cookies[1], /^sm_access=[a-f0-9]{64};/);
+    assert.match(cookies[1], /HttpOnly; Secure; SameSite=Lax/);
+
+    assert.equal(calls.length, 1);
+    assert.match(calls[0].url, /\/api\/creator\/claim$/);
+    assert.equal(calls[0].options.headers['X-Creator-Claim-Secret'], 'shared-creator-secret');
+    assert.equal(calls[0].options.headers['X-Forwarded-For'], '203.0.113.10');
+    assert.deepEqual(JSON.parse(calls[0].options.body), { token, device: cookies[0].split('=')[1].split(';')[0], userAgent: 'Creator Browser' });
+  } finally {
+    globalThis.fetch = originalFetch;
+    if (originalClaimSecret === undefined) delete process.env.CREATOR_CLAIM_SECRET;
+    else process.env.CREATOR_CLAIM_SECRET = originalClaimSecret;
+    if (originalSiteKeyForTest === undefined) delete process.env.SITE_ACCESS_KEY;
+    else process.env.SITE_ACCESS_KEY = originalSiteKeyForTest;
+  }
+});
+
+test('creator link GET (bots, scanners) shows an open button and never claims a device', async () => {
+  const originalFetch = globalThis.fetch;
+  const token = 'A'.repeat(43);
+  let fetched = 0;
+  globalThis.fetch = async () => { fetched += 1; return Response.json({ tokenHash: 'x' }); };
+  try {
+    for (const method of ['GET', 'HEAD']) {
+      const response = await middleware(new Request(`https://school.test/pro/${token}`, { method }));
+      assert.equal(response.status, 200);
+      assert.equal(response.headers.get('cache-control'), 'no-store');
+      assert.equal(response.headers.get('referrer-policy'), 'no-referrer');
+      assert.match(response.headers.get('x-robots-tag'), /noindex/);
+      assert.equal(response.headers.get('set-cookie'), null);
+      if (method === 'GET') assert.match(await response.text(), new RegExp(`<form method="post" action="/pro/${token}">[^]*Otevřít náhled`));
+    }
+    assert.equal(fetched, 0);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test('creator edge errors use the gate for unknown links and no-store pages for blocked or unavailable claims', async () => {
+  const originalFetch = globalThis.fetch;
+  const token = 'A'.repeat(43);
+  try {
+    globalThis.fetch = async () => new Response('{}', { status: 404 });
+    const unknown = await middleware(new Request(`https://school.test/pro/${token}`, { method: 'POST' }));
+    assert.equal(unknown.status, 200);
+    assert.match(await unknown.text(), /Střední na míru ještě není spuštěné/);
+    assert.equal(unknown.headers.get('referrer-policy'), 'no-referrer');
+
+    globalThis.fetch = async () => new Response('{}', { status: 409 });
+    const blocked = await middleware(new Request(`https://school.test/pro/${token}`, { method: 'POST' }));
+    assert.equal(blocked.status, 409);
+    assert.match(await blocked.text(), /Tento odkaz už je aktivní na jiných zařízeních/);
+    assert.equal(blocked.headers.get('cache-control'), 'no-store');
+    assert.equal(blocked.headers.get('referrer-policy'), 'no-referrer');
+
+    globalThis.fetch = async () => new Response('{}', { status: 503 });
+    const unavailable = await middleware(new Request(`https://school.test/pro/${token}`, { method: 'POST' }));
+    assert.equal(unavailable.status, 503);
+    assert.match(await unavailable.text(), /Náhled se teď nepodařilo otevřít/);
+    assert.equal(unavailable.headers.get('cache-control'), 'no-store');
+    assert.equal(unavailable.headers.get('referrer-policy'), 'no-referrer');
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});

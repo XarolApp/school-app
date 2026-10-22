@@ -2084,3 +2084,14 @@ Final count recheck,14 October:192visible/223raw/6merged/25hidden;23ninth-grade 
 ## Review follow-up — paid-launch chunks (17 October)
 
 - [ ] Go through the 14 October deployment review (`reports/deployment-review-2026-10-07/FINAL-RELEASE-CHECKLIST.md`, `HANDOFF-PLAN.md`) and decide what to act on before real billing. Split the work into agent-sized chunks: `plans/022-paid-launch-chunks.md`. Chunk 0 (founder decisions) comes first.
+
+## Creator preview links — 22 October 2026
+
+### 7. Creator preview links and outreach
+- **Found:** 2026-10-22 while implementing `plans/024-creator-preview-links.md`.
+- **Urgency:** High before creator previews are used with outreach.
+- **Risk of fixing now:** Applying the new access schema or deploying without the matching secrets would break creator claims; keep the feature local until its migration and non-production acceptance are complete.
+- **Risk of NOT fixing:** Creator links cannot be used until the database and both hosted environments are configured.
+- **Effort:** Small operational follow-up after the implementation.
+- **Release/context:** The older plan-020 `/pristup/<code>` proposal is superseded by plan 024's `/pro/<token>` flow. Before rollout, verify the migration from a fresh disposable database and a rerun, apply it in non-production, set the same 32+ character `CREATOR_CLAIM_SECRET` on Railway and Vercel, then verify the full creator journey. Do not push the feature to `main` before the founder accepts that journey.
+- **Deferred for later:** Creator filming and affiliate tracking.

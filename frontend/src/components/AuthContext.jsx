@@ -461,7 +461,7 @@ export function AuthProvider({ children }) {
     return {};
   };
 
-  const refreshProfile = useCallback(() => loadProfile(session), [loadProfile, session]);
+  const refreshProfile = useCallback((activeSession = session) => loadProfile(activeSession), [loadProfile, session]);
 
   // The confirmation link opens in a new tab, which signs in there. supabase-js
   // broadcasts that to this tab too; this is the fallback for when the
@@ -497,6 +497,7 @@ export function AuthProvider({ children }) {
     requestPasswordReset,
     updatePassword,
     changePassword,
+    isCreator: Boolean(profile?.isCreator),
     changeEmail,
     updateName,
     signOutEverywhere,

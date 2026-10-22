@@ -411,12 +411,14 @@ are deployed. See the current deployment report.
 |---|---|
 | `schools` | id, created_at, name, location, programs, contact, website, latitude, longitude, `redizo`, `admission_cutoff`, `acceptance_rate`, `admission_data_updated_at` |
 | `beta_schools` | uppercase school invitation codes and school names; validated by the API and signup trigger |
+| `creator_links` | creator name/note, hashed preview token, linked creator account, two-device limit, open/activity counters and revocation state; service-role only |
+| `creator_devices` | hashed device ids and first/last seen times plus browser user-agent; service-role only, claimed atomically through `claim_creator_device()` |
 | `beta_program_settings` | singleton beta cutoff, rolling access hours, optional external feedback URL; read-only 2026-10-08: 48 hours, cutoff 18 October 2026 at 23:59 Europe/Prague; no external feedback form configured |
 | `beta_feedback` | tester-authored `bug`/`idea`/`comment` reports, attributed to the tester's school by the server |
 | `beta_contributions_archive` | minimised feedback, closing answers and website reviews copied on account deletion unless the tester chooses deletion; no account/school IDs or screenshots, but free text may identify its author. Service-role only. D4 is the founder's policy; C46 deletion-failure/retry acceptance remains open. |
 | `school_programs_hidden` | **9th-grade scope (plan 021, 2026-10-10):** programmes a pupil finishing 9th grade cannot apply to — `Gymnázia 6letá`, `Gymnázia 8letá`, `Nástavby`, and 8-year `Konzervatoře` (intended shared rule: `ninth_grade_program()` in SQL and `lib/ninthGrade.js`; nullable parity is open as C52) — are moved here, never deleted and never served. A school left with no visible programme gets `schools.hidden_reason = 'not_for_9th_grade'` (23 schools; 58 more lost some obory). Catalogue/detail/favourites/picks/share reads filter hidden schools (`visibleSchool()` in `server.js`); cached-explanation and write-boundary acceptance remains open as C53/C55; user data pointing at them (favourites, picks, notes) is kept but not shown. Founder decision 10 October: old application choices remain archived if a school returns, until the user explicitly restores them; that lifecycle is not yet implemented. `scripts/import-admission-data.js` does the split on import and calls `recompute_school_admission` / `refresh_school_visibility`. Read-only, service role only. |
 | `school_programs` | one row per obor per school per year, from Cermat's real admission results — `typ_skoly`, `zrizovatel`, `maturitni`, `jpz_povinna`, `jazyk_studia`, `delka_studia`, `zamereni` (Cermat's free-text focus; tells apart programmes sharing one KKOV, e.g. FOSTRA's five gymnázia — splits only the newest year, its wording changes yearly), `kkov`, `kapacita`, `prihlasky`, `prijati`, `cutoff`. No client RLS policy, same as `schools` — server.js only. Declared in `supabase-setup.sql` itself as of 2026-09-08 — it existed in the live database earlier than that (created directly by the import script), so this file didn't yet describe the real schema; fixed rather than left drifting. |
-| `users` | profile mirror of the private `auth.users`: email, name, nullable `gender` (`m`/`f`, selected in the student onboarding branch and editable as an account form-of-address preference), `trial_expires_at`, `subscription_status`, `theme_palette`, `theme_mode`, Stripe ids; beta adds nullable `tester_school_code`, `tester_access_until`, `tester_guidance_seen_at` |
+| `users` | profile mirror of the private `auth.users`: email, name, nullable `gender` (`m`/`f`, selected in the student onboarding branch and editable as an account form-of-address preference), `trial_expires_at`, `subscription_status`, `theme_palette`, `theme_mode`, Stripe ids; beta adds nullable `tester_school_code`, `tester_access_until`, `tester_guidance_seen_at`; creator preview accounts use `subscription_status = 'creator'` |
 | `favorites` | `(user_id, school_id)` |
 | `questionnaire_runs` | one row per completed *standalone* questionnaire: answers, matches, `extra_reasons` (JSONB map keyed by school id, populated on demand), `label`, `is_default`, `archived_at`, `source` (`'questionnaire'` or `'onboarding'` — the latter written once per account from the onboarding quiz via `POST /api/me/onboarding-answers`) |
 | `school_reviews` | one row per (school, user): `role`, `role_year`, `obor_nazev`, `body`, `show_name`, `verified`, `status`. No client RLS policy — server.js only. The feature is disabled during beta with `SCHOOL_REVIEWS_ENABLED=false`; see the separate consented beta website-review flow. |
@@ -455,13 +457,15 @@ in frontend pricing and the server payment flow. Beta has no paid/free purchase 
 it is free access in exchange for feedback, and its paywall is a preview only.
 
 `subscription_status` accepts `trialing / active / season / past_due / canceled /
-expired / developer / beta`. `'beta'` is exclusive time-boxed access: email must be
+expired / developer / beta / creator`. `'beta'` is exclusive time-boxed access: email must be
 confirmed, access ends at the earlier of the rolling tester deadline and configured
 program cutoff, and qualifying main-form/access-gate messages or quick feature ratings with
 at least 10 characters of their own writing in an optional note or follow-up field renew it (founder amendment
 10 October). Stars/chips/skip alone do not. Beta never enters Stripe.
-The legacy shared beta code endpoint is retired. The beta schema is defined in its
-delimited `supabase-setup.sql` block. Read-only 8 October checks found all declared
+The legacy shared beta code endpoint is retired. Creator preview links are founder-managed,
+single-use URLs with a two-device cap and no payment or beta-feedback access; see
+`plans/024-creator-preview-links.md`. The beta schema is defined in its delimited
+`supabase-setup.sql` block. Read-only 8 October checks found all declared
 beta tables and `beta_profile.role_note`; the earlier missing-column diagnosis is
 resolved. This does not prove the latest columns, constraints, functions or grants
 are deployed. Prepare and verify only the missing reviewed migration; do not

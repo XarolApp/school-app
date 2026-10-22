@@ -512,6 +512,7 @@ function OnboardingFlow() {
   }
 
   if (betaPreview && PAYWALL_STEP_IDS.has(step.id) && !role) {
+  if (profile?.isCreator && PAYWALL_STEP_IDS.has(step.id)) return <Navigate to="/dotaznik" replace />;
     return (
       <div className="ob-root ob-role-none" data-step={step.id}>
         {quizSaveNotice}

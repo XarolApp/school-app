@@ -52,6 +52,8 @@ import ParentPay from './pages/ParentPay';
 import HandoffStart from './pages/HandoffStart';
 import NotFound from './pages/NotFound';
 import BetaLanding from './pages/BetaLanding';
+import CreatorSignIn from './pages/CreatorSignIn';
+import CreatorClaimDev from './pages/CreatorClaimDev';
 import EmailConfirmed from './pages/EmailConfirmed';
 import SavedSchools from './pages/SavedSchools';
 import OnboardingFlow from './pages/onboarding/OnboardingFlow';
@@ -71,6 +73,8 @@ function App() {
         <BetaTools>
           <ToastProvider>
             <Routes>
+              <Route path="/pro/prihlaseni" element={<CreatorSignIn />} />
+              <Route path="/pro/:token" element={<CreatorClaimDev />} />
               {/* Onboarding sits OUTSIDE the Layout on purpose: the nav bar is a
                   distraction and an exit during a 23-screen narrative flow. */}
               {/* Closed beta: every app page needs a signed-in, confirmed account

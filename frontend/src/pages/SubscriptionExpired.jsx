@@ -104,6 +104,16 @@ function Paywall() {
       window.location.href = url;
     } catch (err) {
       delete document.documentElement.dataset.snmStripeRedirecting;
+  if (profile?.isCreator) {
+    return (
+      <div className="page page-paywall">
+        <div className="auth-layout">
+          <p className="lede">Náhled pro tvůrce byl ukončen. Pokud jde o omyl, napiš nám na info@stredninamiru.cz.</p>
+          <button type="button" className="btn btn-secondary btn-block" onClick={signOut}>Odhlásit se</button>
+        </div>
+      </div>
+    );
+  }
       setRedirecting(false);
       setError(
         err.code === 'STRIPE_NOT_CONFIGURED'

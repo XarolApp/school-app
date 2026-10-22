@@ -59,6 +59,7 @@ const stub = {
     onAuthStateChange: () => ({ data: { subscription: { unsubscribe() {} } } }),
     signUp: async () => ({ data: {}, error: NOT_CONFIGURED }),
     signInWithPassword: async () => ({ data: {}, error: NOT_CONFIGURED }),
+    verifyOtp: async () => ({ data: {}, error: NOT_CONFIGURED }),
     signOut: async () => ({ error: null }),
     resend: async () => ({ error: NOT_CONFIGURED }),
     resetPasswordForEmail: async () => ({ error: NOT_CONFIGURED }),

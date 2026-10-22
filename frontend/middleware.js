@@ -7,6 +7,36 @@ const COOKIE_NAME = 'sm_access';
 const MAX_AGE_SECONDS = 60 * 60 * 24 * 180;
 const COOKIE_LABEL = 'stredni-na-miru:site-access:v1';
 const WRONG_CODE_DELAY_MS = 600;
+const API_ORIGIN = (process.env.WAITLIST_API_URL || 'https://school-app-production-be43.up.railway.app').replace(/\/+$/, '');
+const CREATOR_DEVICE_COOKIE = 'sm_creator_device';
+const CREATOR_DEVICE_MAX_AGE = 60 * 60 * 24 * 400;
+const PAGE_STYLES = `
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body { min-height: 100vh; margin: 0; padding: 24px; display: grid; place-items: center; background: #F5F6F7; color: #15191E; font: 16px/1.5 system-ui, sans-serif; }
+  main { width: min(100%, 440px); padding: 32px; background: #F5F6F7; border: 1px solid #DCE0E4; border-radius: 16px; box-shadow: 0 18px 40px -20px rgba(21,25,30,.18); }
+  h1 { margin: 0 0 12px; font-size: clamp(1.45rem, 6vw, 1.8rem); line-height: 1.2; letter-spacing: -.02em; }
+  .intro { margin: 0 0 24px; color: #4B525B; }
+  label { display: block; margin-bottom: 6px; font-weight: 600; }
+  .field { display: flex; gap: 8px; }
+  input { min-width: 0; flex: 1; height: 48px; padding: 0 12px; border: 1px solid #C4CBD2; border-radius: 8px; background: #F5F6F7; color: #15191E; font: inherit; }
+  input:focus-visible, button:focus-visible, a:focus-visible { outline: 3px solid #1C58A3; outline-offset: 2px; }
+  button { min-height: 48px; border: 0; border-radius: 8px; font: inherit; font-weight: 600; cursor: pointer; }
+  .reveal { padding: 0 10px; background: #EAEDEF; color: #15191E; }
+  .submit { width: 100%; margin-top: 12px; background: #1C58A3; color: #F5F6F7; }
+  .submit:hover { background: #16467F; }
+  .error { margin: 10px 0 0; color: #B0271F; font-size: .92rem; }
+  .footer { margin: 24px 0 0; color: #5F6670; font-size: .9rem; }
+  .note { margin: 12px 0 0; color: #5F6670; font-size: .85rem; }
+  .done { margin: 0; padding: 14px; border-radius: 8px; background: #EAEDEF; font-weight: 600; }
+  .tester { margin-top: 24px; padding-top: 16px; border-top: 1px solid #DCE0E4; }
+  .tester summary { cursor: pointer; color: #4B525B; font-weight: 600; }
+  .tester .intro { margin: 12px 0; }
+  #waitlist input { width: 100%; }
+  [hidden] { display: none; }
+  a { color: #1C58A3; }
+  @media (max-width: 420px) { main { padding: 24px; } .field { flex-wrap: wrap; } .field input { flex-basis: 100%; } .reveal { margin-left: auto; } }
+`;
 
 function normalizeAccessKey(value) {
   return String(value || '')
@@ -89,33 +119,7 @@ function gatePage({ wrongKey = false, returnTo = '/', setup = false } = {}) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Střední na míru — testovací verze</title>
-<style>
-  :root { color-scheme: light; }
-  * { box-sizing: border-box; }
-  body { min-height: 100vh; margin: 0; padding: 24px; display: grid; place-items: center; background: #F5F6F7; color: #15191E; font: 16px/1.5 system-ui, sans-serif; }
-  main { width: min(100%, 440px); padding: 32px; background: #F5F6F7; border: 1px solid #DCE0E4; border-radius: 16px; box-shadow: 0 18px 40px -20px rgba(21,25,30,.18); }
-  h1 { margin: 0 0 12px; font-size: clamp(1.45rem, 6vw, 1.8rem); line-height: 1.2; letter-spacing: -.02em; }
-  .intro { margin: 0 0 24px; color: #4B525B; }
-  label { display: block; margin-bottom: 6px; font-weight: 600; }
-  .field { display: flex; gap: 8px; }
-  input { min-width: 0; flex: 1; height: 48px; padding: 0 12px; border: 1px solid #C4CBD2; border-radius: 8px; background: #F5F6F7; color: #15191E; font: inherit; }
-  input:focus-visible, button:focus-visible, a:focus-visible { outline: 3px solid #1C58A3; outline-offset: 2px; }
-  button { min-height: 48px; border: 0; border-radius: 8px; font: inherit; font-weight: 600; cursor: pointer; }
-  .reveal { padding: 0 10px; background: #EAEDEF; color: #15191E; }
-  .submit { width: 100%; margin-top: 12px; background: #1C58A3; color: #F5F6F7; }
-  .submit:hover { background: #16467F; }
-  .error { margin: 10px 0 0; color: #B0271F; font-size: .92rem; }
-  .footer { margin: 24px 0 0; color: #5F6670; font-size: .9rem; }
-  .note { margin: 12px 0 0; color: #5F6670; font-size: .85rem; }
-  .done { margin: 0; padding: 14px; border-radius: 8px; background: #EAEDEF; font-weight: 600; }
-  .tester { margin-top: 24px; padding-top: 16px; border-top: 1px solid #DCE0E4; }
-  .tester summary { cursor: pointer; color: #4B525B; font-weight: 600; }
-  .tester .intro { margin: 12px 0; }
-  #waitlist input { width: 100%; }
-  [hidden] { display: none; }
-  a { color: #1C58A3; }
-  @media (max-width: 420px) { main { padding: 24px; } .field { flex-wrap: wrap; } .field input { flex-basis: 100%; } .reveal { margin-left: auto; } }
-</style>
+<style>${PAGE_STYLES}</style>
 </head>
 <body>
 <main>${content}</main>
@@ -169,6 +173,30 @@ ${setup ? '' : `<script>
     headers: {
       'Content-Type': 'text/html; charset=utf-8',
       'Cache-Control': 'no-store',
+      'Referrer-Policy': 'no-referrer',
+      'X-Robots-Tag': 'noindex, nofollow',
+    },
+  });
+}
+
+function messagePage(title, text, status, form) {
+  const html = `<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Střední na míru</title>
+<style>${PAGE_STYLES}</style>
+</head>
+<body><main><h1>${escapeHtml(title)}</h1><p class="intro">${escapeHtml(text)}</p>${form ? `<form method="post" action="${escapeHtml(form.action)}"><button class="submit" type="submit">${escapeHtml(form.label)}</button></form>` : ''}</main></body>
+</html>`;
+  return new Response(html, {
+    status,
+    headers: {
+      'Content-Type': 'text/html; charset=utf-8',
+      'Cache-Control': 'no-store',
+      'Referrer-Policy': 'no-referrer',
       'X-Robots-Tag': 'noindex, nofollow',
     },
   });
@@ -198,6 +226,22 @@ function cookieValue(request) {
   return item ? item.slice(COOKIE_NAME.length + 1) : '';
 }
 
+function creatorDeviceValue(request) {
+  const prefix = `${CREATOR_DEVICE_COOKIE}=`;
+  const item = (request.headers.get('cookie') || '').split(';').map((part) => part.trim())
+    .find((part) => part.startsWith(prefix));
+  return item ? item.slice(prefix.length) : '';
+}
+
+function newCreatorDeviceId() {
+  const bytes = crypto.getRandomValues(new Uint8Array(32));
+  return Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0')).join('');
+}
+
+function setCreatorDeviceCookie(value) {
+  return `${CREATOR_DEVICE_COOKIE}=${value}; Path=/; Max-Age=${CREATOR_DEVICE_MAX_AGE}; HttpOnly; Secure; SameSite=Lax`;
+}
+
 function jsonResponse(body, status, headers = {}) {
   return Response.json(body, { status, headers: { 'Cache-Control': 'no-store', ...headers } });
 }
@@ -213,12 +257,59 @@ export default async function middleware(request) {
   if (url.pathname === '/__waitlist') {
     if (request.method !== 'POST') return new Response('Method not allowed', { status: 405, headers: { Allow: 'POST' } });
     if (Number(request.headers.get('content-length') || 0) > 2048) return jsonResponse({ ok: false }, 413);
-    const upstream = await fetch(`${process.env.WAITLIST_API_URL || 'https://school-app-production-be43.up.railway.app'}/api/waitlist`, {
+    const upstream = await fetch(`${API_ORIGIN}/api/waitlist`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-Forwarded-For': request.headers.get('x-forwarded-for') || '' },
       body: JSON.stringify({ email: (await request.json().catch(() => ({}))).email }),
     }).catch(() => null);
     return jsonResponse({ ok: upstream?.ok === true }, upstream ? upstream.status : 502);
+  }
+  const creatorPath = /^\/pro\/([A-Za-z0-9_-]{40,64})$/.exec(url.pathname);
+  if (creatorPath && (request.method === 'GET' || request.method === 'HEAD')) {
+    // Link-preview bots and mail scanners GET this URL; only the button's POST may claim a device.
+    return messagePage('Náhled Střední na míru', 'Otevři si osobní náhled aplikace.', 200, {
+      action: url.pathname,
+      label: 'Otevřít náhled',
+    });
+  }
+  if (creatorPath && request.method === 'POST') {
+    const token = creatorPath[1];
+    const storedDevice = creatorDeviceValue(request);
+    const device = /^[a-f0-9]{64}$/.test(storedDevice) ? storedDevice : newCreatorDeviceId();
+    const upstream = await fetch(`${API_ORIGIN}/api/creator/claim`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Creator-Claim-Secret': process.env.CREATOR_CLAIM_SECRET || '',
+        'X-Forwarded-For': request.headers.get('x-forwarded-for') || '',
+      },
+      body: JSON.stringify({ token, device, userAgent: request.headers.get('user-agent') || '' }),
+    }).catch(() => null);
+
+    if (upstream?.status === 409) {
+      return messagePage(
+        'Zařízení už jsou obsazená',
+        'Tento odkaz už je aktivní na jiných zařízeních. Napiš nám na info@stredninamiru.cz a přidáme ti další.',
+        409,
+      );
+    }
+    if (upstream?.status === 404) return gatePage();
+    if (!upstream?.ok) return messagePage('Zkus to prosím za chvíli', 'Náhled se teď nepodařilo otevřít.', 503);
+
+    const claim = await upstream.json().catch(() => null);
+    if (typeof claim?.tokenHash !== 'string' || !claim.tokenHash) {
+      return messagePage('Zkus to prosím za chvíli', 'Náhled se teď nepodařilo otevřít.', 503);
+    }
+
+    const headers = new Headers({
+      Location: `/pro/prihlaseni#t=${encodeURIComponent(claim.tokenHash)}`,
+      'Cache-Control': 'no-store',
+      'Referrer-Policy': 'no-referrer',
+    });
+    headers.append('Set-Cookie', setCreatorDeviceCookie(device));
+    const accessKey = normalizeAccessKey(process.env.SITE_ACCESS_KEY);
+    if (accessKey) headers.append('Set-Cookie', setAccessCookie(await accessCookieValue(accessKey)));
+    return new Response(null, { status: 303, headers });
   }
   if (url.pathname === '/__gate' || url.pathname === '/version.json') {
     if (url.pathname === '/version.json') return;

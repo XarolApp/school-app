@@ -1,12 +1,13 @@
-import {useEffect,useState} from 'react';
+import {useCallback,useEffect,useState} from 'react';
 import {useSearchParams,Link} from 'react-router-dom';
 import {ShieldCheck,Download,RefreshCw,ArrowUpRight,X,Mail,MessageSquare} from 'lucide-react';
 import {useAuth} from '../components/AuthContext';
 import Modal from '../components/Modal';
 import {fetchAdminReport,fetchAdminFeedback,updateAdminFeedback,selectAdminReview,fetchTesterEmail,downloadAdminCsv} from '../api';
+import CreatorManagement from './CreatorManagement';
 import './Admin.css';
 
-const TABS=[['overview','Přehled'],['feedback','Zpětná vazba'],['behaviour','Chování'],['funnels','Trychtýře'],['matching','Matching'],['closing','Závěrečný dotazník'],['reviews','Recenze'],['testers','Testeři'],['ai-costs','AI náklady'],['devices','Zařízení']];
+const TABS=[['overview','Přehled'],['feedback','Zpětná vazba'],['behaviour','Chování'],['funnels','Trychtýře'],['matching','Matching'],['closing','Závěrečný dotazník'],['reviews','Recenze'],['testers','Testeři'],['ai-costs','AI náklady'],['devices','Zařízení'],['creators','Tvůrci']];
 const STATUS={nove:'Nové',precteno:'Přečtené',vyreseno:'Vyřešené',neudelame:'Neuděláme'};
 const SOURCE={button:'Tlačítko',micro:'Krátká otázka',gate:'Obnovení přístupu'};
 const fmt=value=>value==null?'—':typeof value==='number'?new Intl.NumberFormat('cs-CZ',{maximumFractionDigits:value>0&&value<0.01?6:2}).format(value):typeof value==='boolean'?value?'Ano':'Ne':String(value);
@@ -101,26 +102,27 @@ export default function Admin(){
  const {loading,isSignedIn,user}=useAuth();const [params,setParams]=useSearchParams();
  const tab=TABS.some(([id])=>id===params.get('tab'))?params.get('tab'):'overview';
  const [report,setReport]=useState(null),[error,setError]=useState(''),[status,setStatus]=useState(null),[busy,setBusy]=useState(false),[refresh,setRefresh]=useState(0),[detail,setDetail]=useState(null);
- useEffect(()=>{if(loading||!isSignedIn)return;let live=true;setBusy(true);setError('');setReport(null);fetchAdminReport(tab).then(d=>{if(live){setReport(d);setStatus(200);}}).catch(e=>{if(live){setError(e.message);setStatus(e.status);}}).finally(()=>live&&setBusy(false));return()=>{live=false;};},[tab,refresh,loading,isSignedIn,user?.id]);
+ useEffect(()=>{if(loading||!isSignedIn)return;let live=true;setError('');setReport(null);if(tab==='creators'){setStatus(null);setBusy(false);return()=>{live=false;};}setBusy(true);fetchAdminReport(tab).then(d=>{if(live){setReport(d);setStatus(200);}}).catch(e=>{if(live){setError(e.message);setStatus(e.status);}}).finally(()=>live&&setBusy(false));return()=>{live=false;};},[tab,refresh,loading,isSignedIn,user?.id]);
  const reload=()=>setRefresh(n=>n+1);
+ const denyCreatorTab=useCallback(()=>setStatus(403),[]);
  const download=async s=>{try{await downloadAdminCsv(tab+'--'+s.id);}catch(e){setError(e.message);}};
  if(loading)return <section className="admin"><p role="status">Ověřování přihlášení…</p></section>;
  if(!isSignedIn||status===401)return <section className="admin admin-denied"><ShieldCheck size={36}/><h1 className="ss-headline-lg">Přihlášení správce</h1><p>Pro přístup k přehledům se přihlaste.</p><Link className="ss-btn ss-btn-primary" to="/prihlaseni">Přihlásit se</Link></section>;
- if(status===403)return <section className="admin admin-denied"><ShieldCheck size={36}/><p className="ss-caption">403 · Přístup odepřen</p><h1 className="ss-headline-lg">Jen pro správce</h1><p>Tento účet nemá oprávnění zobrazit beta přehledy.</p><Link className="ss-btn ss-btn-secondary" to="/skoly">Zpět do aplikace</Link></section>;
+ if(status===403)return <section className="admin admin-denied"><ShieldCheck size={36}/><p className="ss-caption">403 · Přístup odepřen</p><h1 className="ss-headline-lg">Jen pro správce</h1><p>Tento účet nemá oprávnění k této části administrace.</p><Link className="ss-btn ss-btn-secondary" to="/skoly">Zpět do aplikace</Link></section>;
  const spark=report?.sections.find(s=>s.id==='activity');
  return <section className="admin">
-  <header className="admin-header"><div><p className="admin-kicker"><ShieldCheck size={16}/>Beta program</p><h1 className="ss-headline-lg">Jak si vede testování</h1><p className="ss-body-sm">Zkušenosti testerů, používání aplikace a kvalita doporučení.</p></div><button className="ss-btn ss-btn-secondary" disabled={busy} onClick={reload}><RefreshCw size={16}/>Obnovit</button></header>
-  <nav className="admin-tabs" aria-label="Beta přehledy">{TABS.map(([id,label])=><button key={id} aria-current={id===tab?'page':undefined} onClick={()=>setParams({tab:id})}>{label}</button>)}</nav>
+  <header className="admin-header"><div><p className="admin-kicker"><ShieldCheck size={16}/>{tab==='creators'?'Partnerský program':'Beta program'}</p><h1 className="ss-headline-lg">{tab==='creators'?'Náhledy pro tvůrce':'Jak si vede testování'}</h1><p className="ss-body-sm">{tab==='creators'?'Spravuj jednorázové odkazy a přístup tvůrců k ukázkovému účtu.':'Zkušenosti testerů, používání aplikace a kvalita doporučení.'}</p></div><button className="ss-btn ss-btn-secondary" disabled={busy} onClick={reload}><RefreshCw size={16}/>Obnovit</button></header>
+  <nav className="admin-tabs" aria-label="Přehledy správce">{TABS.map(([id,label])=><button key={id} aria-current={id===tab?'page':undefined} onClick={()=>setParams({tab:id})}>{label}</button>)}</nav>
   {error&&<p className="admin-error" role="alert">{error}</p>}
   {busy&&<div className="admin-loading" role="status">Načítání přehledu…</div>}
-  {report&&<><div className="admin-stats">{report.cards.map((c,i)=><article key={c.label} className="admin-stat"><p>{c.label}</p><strong>{fmt(c.value)} <small>{c.unit}</small></strong>{spark&&i===2&&<Chart section={spark} compact/>}</article>)}</div>
+  {tab==='creators'?<CreatorManagement refresh={refresh} onForbidden={denyCreatorTab}/>:report&&<><div className="admin-stats">{report.cards.map((c,i)=><article key={c.label} className="admin-stat"><p>{c.label}</p><strong>{fmt(c.value)} <small>{c.unit}</small></strong>{spark&&i===2&&<Chart section={spark} compact/>}</article>)}</div>
   {tab==='matching'&&<div className="admin-note"><p>Simulace: <b>{report.simulation?.file||'Soubor zatím není dostupný'}</b>{report.simulation?.n&&` · ${fmt(report.simulation.n)} profilů`}. Každý typ dotazníku se porovnává samostatně.</p><p>Rozdíl alespoň 20 míst je zvýrazněný. Průměr krátké otázky je společný pro oba zdroje; nevytváříme rozdělení, které odpovědi neobsahují. Podíly a rozptyl vycházejí z úplných pořadí, ve kterých byla škola zařazena.</p></div>}
   {tab==='devices'&&<p className="admin-note">Anonymní počítadlo bez cookies a bez identifikace: návštěva = otevření webu v nové záložce nebo návrat po 30 minutách nečinnosti. Zařízení se určuje z hlavičky prohlížeče, tablety v režimu „počítač“ se počítají jako počítač.</p>}
   {tab==='reviews'&&<p className="admin-note">Výběr je interní. Recenze se automaticky nezveřejňuje; vybrat lze jen recenzi se souhlasem.</p>}
   {tab==='closing'&&<p className="admin-note">Cenové křivky používají odpovědi s postupně rostoucími částkami. Ostatní odpovědi zůstávají uložené. Přijatelný interval ukazuje průsečíky „příliš levné / drahé“ a „výhodné / příliš drahé“; při malém počtu testerů je orientační.</p>}
   <div className="admin-sections">{report.sections.map(s=><section key={tab+s.id} className={'admin-panel admin-panel-'+s.kind}><header><h2 className="ss-headline-md">{s.title}</h2><button className="admin-link" onClick={()=>download(s)} aria-label={'Stáhnout CSV: '+s.title}><Download size={15}/>CSV</button></header><Chart section={s}/><AdminTable key={tab+s.id} section={s} tab={tab} onInspect={setDetail} onReload={reload} onError={setError}/></section>)}</div>
   <p className="ss-caption admin-updated">Aktualizováno {new Date(report.generated_at).toLocaleString('cs-CZ')} · Přehled používá nejvýše 30 sekund stará data.</p></>}
-  {!busy&&!report&&!error&&<p><MessageSquare size={20}/>Přehled se připravuje.</p>}
+  {tab!=='creators'&&!busy&&!report&&!error&&<p><MessageSquare size={20}/>Přehled se připravuje.</p>}
   {detail!=null&&<FeedbackDetail key={detail} id={detail} onClose={()=>setDetail(null)} onSaved={reload}/>}
  </section>;
 }

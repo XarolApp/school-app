@@ -1,5 +1,6 @@
 const { rankingPayload } = require('./lib/betaRankings');
 const { registerBetaAdmin } = require('./lib/betaAdminRoutes');
+const { registerCreatorLinks } = require('./lib/creatorLinks');
 const { betaLimitOptions } = require('./lib/betaLimits');
 const { cleanupBetaScreenshots } = require('./lib/betaMaintenance');
 const { closingPayload, reviewPayload } = require('./lib/betaClosing');
@@ -416,6 +417,7 @@ app.post('/api/visit', visitLimiter, async (req, res) => {
   res.status(204).end();
 });
 
+registerCreatorLinks(app, supabase, { requireAuth, requireAdmin, saveOnboardingRun });
 registerBetaAdmin(app, supabase, [requireAuth, requireAdmin]);
 
 /**
@@ -488,6 +490,46 @@ async function accessStateFor(userId, email) {
         },
         profile,
       };
+    }
+    return { hasAccess: true, httpStatus: 200, body: null, profile };
+  }
+
+  if (profile.subscription_status === 'creator') {
+    const { data: link, error: linkError } = await supabase
+      .from('creator_links')
+      .select('revoked_at,last_active_at')
+      .eq('user_id', userId)
+      .maybeSingle();
+    if (linkError) {
+      return {
+        hasAccess: false,
+        httpStatus: 503,
+        body: { error: 'Náhled pro tvůrce se teď nepodařilo ověřit.', code: 'CREATOR_ACCESS_UNAVAILABLE' },
+        profile,
+      };
+    }
+    if (!link || link.revoked_at) {
+      return {
+        hasAccess: false,
+        httpStatus: 403,
+        body: { error: 'Náhled pro tvůrce byl ukončen.', code: 'CREATOR_REVOKED' },
+        profile,
+      };
+    }
+
+    const lastActiveAt = Date.parse(link.last_active_at || '');
+    if (!Number.isFinite(lastActiveAt) || Date.now() - lastActiveAt >= 10 * 60 * 1000) {
+      void (async () => {
+        try {
+          const { error } = await supabase.from('creator_links')
+            .update({ last_active_at: new Date().toISOString() })
+            .eq('user_id', userId)
+            .is('revoked_at', null);
+          if (error) console.warn('Could not update creator last activity:', error.message);
+        } catch (error) {
+          console.warn('Could not update creator last activity:', error.message);
+        }
+      })();
     }
     return { hasAccess: true, httpStatus: 200, body: null, profile };
   }
@@ -783,7 +825,7 @@ app.get('/api/me', requireAuth, async (req, res) => {
   // Promote allowlisted accounts on first sight, so the stored status matches
   // what the allowlist says and RLS agrees with the API.
   if (
-    profile.subscription_status !== 'beta' &&
+    !['beta', 'creator'].includes(profile.subscription_status) &&
     isDeveloperEmail(profile.email) &&
     profile.subscription_status !== 'developer'
   ) {
@@ -797,9 +839,11 @@ app.get('/api/me', requireAuth, async (req, res) => {
   }
 
   const isTester = profile.subscription_status === 'beta';
+  const isCreator = profile.subscription_status === 'creator';
   const now = new Date();
-  const isDeveloper = !isTester && profile.subscription_status === 'developer';
+  const isDeveloper = !isTester && !isCreator && profile.subscription_status === 'developer';
   let beta = null;
+  let creatorAccess = null;
   if (isTester) {
     const { data: settings, error: settingsError } = await readBetaSettings();
     if (settingsError || !settings) {
@@ -813,18 +857,23 @@ app.get('/api/me', requireAuth, async (req, res) => {
     beta = {...betaAccessState(profile, settings, now),...closing};
     if (closing.closingPaused) beta.hasAccess=false;
   }
-  const trialActive = !isTester && new Date(profile.trial_expires_at) > now;
-  const subscribed = !isTester && paidAccessActive(profile);
-  const hasAccess = isTester ? beta.hasAccess : trialActive || subscribed;
+  if (isCreator) {
+    creatorAccess = await accessStateFor(req.user.id, req.user.email);
+    if (creatorAccess.httpStatus === 503) return res.status(503).json(creatorAccess.body);
+  }
+  const trialActive = !isTester && !isCreator && new Date(profile.trial_expires_at) > now;
+  const subscribed = !isTester && !isCreator && paidAccessActive(profile);
+  const hasAccess = isTester ? beta.hasAccess : isCreator ? creatorAccess.hasAccess : trialActive || subscribed;
 
   res.json({
     ...profile,
     isTester,
+    isCreator,
     isDeveloper,
     trialActive,
     subscribed,
-    canWithdraw: !isTester && canWithdraw(profile),
-    withdrawalEndsAt: isTester ? null : withdrawalWindowEnd(profile),
+    canWithdraw: !isTester && !isCreator && canWithdraw(profile),
+    withdrawalEndsAt: isTester || isCreator ? null : withdrawalWindowEnd(profile),
     hasAccess,
     trialDaysLeft: trialActive && !subscribed
       ? Math.ceil((new Date(profile.trial_expires_at) - new Date()) / 86400000)
@@ -921,11 +970,14 @@ app.delete('/api/me', requireAuth, async (req, res) => {
 
   const { data: profile, error: profileError } = await supabase
     .from('users')
-    .select('stripe_subscription_id, stripe_customer_id')
+    .select('stripe_subscription_id, stripe_customer_id, subscription_status')
     .eq('id', req.user.id)
     .single();
 
   if (profileError) return res.status(500).json({ error: 'Nepodařilo se ověřit předplatné. Zkus to prosím znovu.' });
+  if (profile?.subscription_status === 'creator') {
+    return res.status(403).json({ error: 'Účet s náhledem pro tvůrce spravuje Střední na míru.' });
+  }
 
   // Cancel before deleting: once the account is gone the webhook can no longer
   // match the customer back to a row, and the card would keep being charged
@@ -1192,15 +1244,15 @@ async function syncJpzPoints(userId, points) {
  * see frontend's lib/pendingOnboardingAnswers.js for why it cannot simply run
  * inside the onboarding flow itself (no session exists yet at that point).
  */
-app.post('/api/me/onboarding-answers', requireAuth, async (req, res) => {
-  const validation = validateOnboardingAnswers(req.body?.answers);
+async function saveOnboardingRun(userId, rawAnswers) {
+  const validation = validateOnboardingAnswers(rawAnswers);
   if (!validation.ok) {
-    return res.status(400).json({ error: validation.error });
+    return { status: 400, body: { error: validation.error }, matches: [] };
   }
 
   const translated = translateOnboardingAnswers(validation.answers);
   if (!isScoreable(translated)) {
-    return res.status(200).json({ saved: false, reason: 'nothing_to_score' });
+    return { status: 200, body: { saved: false, reason: 'nothing_to_score' }, matches: [] };
   }
 
   // Same rows and joins as every other scorer (buildRunResult, POST
@@ -1210,10 +1262,10 @@ app.post('/api/me/onboarding-answers', requireAuth, async (req, res) => {
   try {
     schools = await fetchAllSchools('*, school_programs(*), school_extracted_details(*)');
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return { status: 500, body: { error: err.message }, matches: [] };
   }
   if (!schools.length) {
-    return res.status(503).json({ error: 'V databázi zatím nejsou žádné školy.' });
+    return { status: 503, body: { error: 'V databázi zatím nejsou žádné školy.' }, matches: [] };
   }
 
   const matches = scoreSchools(translated, withDistricts(schools))
@@ -1223,7 +1275,7 @@ app.post('/api/me/onboarding-answers', requireAuth, async (req, res) => {
   const { data: run, error: insertError } = await supabase
     .from('questionnaire_runs')
     .insert({
-      user_id: req.user.id,
+      user_id: userId,
       answers: translated,
       matches,
       model: null,
@@ -1238,9 +1290,9 @@ app.post('/api/me/onboarding-answers', requireAuth, async (req, res) => {
     // Unique violation on questionnaire_runs_one_onboarding_idx — a second tab
     // or a retry flushed the same stash after the first save already landed.
     if (insertError.code === '23505') {
-      return res.status(200).json({ saved: false, reason: 'already_saved' });
+      return { status: 200, body: { saved: false, reason: 'already_saved' }, matches: [] };
     }
-    return res.status(500).json({ error: insertError.message });
+    return { status: 500, body: { error: insertError.message }, matches: [] };
   }
 
   // The onboarding run is the account's first, so it becomes the default that
@@ -1248,14 +1300,19 @@ app.post('/api/me/onboarding-answers', requireAuth, async (req, res) => {
   // looked default because scoringRunQuery falls back to "newest" when nothing
   // is flagged — which stops being true the moment a second run exists.
   try {
-    await setDefaultRun(req.user.id, run.id);
+    await setDefaultRun(userId, run.id);
   } catch (err) {
     console.error('onboarding run saved but could not be flagged default:', err.message);
   }
 
-  await syncJpzPoints(req.user.id, translated.body);
+  await syncJpzPoints(userId, translated.body);
 
-  res.status(201).json({ saved: true });
+  return { status: 201, body: { saved: true }, matches };
+}
+
+app.post('/api/me/onboarding-answers', requireAuth, async (req, res) => {
+  const result = await saveOnboardingRun(req.user.id, req.body?.answers);
+  return res.status(result.status).json(result.body);
 });
 
 /* ---------------------------------------------------------------------------
@@ -3215,6 +3272,16 @@ async function createCheckoutForUser({ userId, email, planId, successPath, cance
       body: {
         error: 'Beta účty nemohou zahájit placený přístup.',
         code: 'BETA_CHECKOUT_DISABLED',
+      },
+    };
+  }
+
+  if (profile.subscription_status === 'creator') {
+    return {
+      status: 403,
+      body: {
+        error: 'Účty s náhledem pro tvůrce nemohou zahájit placený přístup.',
+        code: 'CREATOR_CHECKOUT_DISABLED',
       },
     };
   }

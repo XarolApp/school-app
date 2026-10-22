@@ -49,7 +49,7 @@ function useCompareCount() {
 const dayWord = (n) => (n === 1 ? 'den' : n < 5 ? 'dny' : 'dní');
 
 function Layout() {
-  const { isSignedIn, isTester, emailConfirmed, signOut, trialDaysLeft, hasAccess, profile, user } = useAuth();
+  const { isSignedIn, isTester, isCreator, emailConfirmed, signOut, trialDaysLeft, hasAccess, profile, user } = useAuth();
   const { openFeedback, beta } = useBetaTools();
   const [menuOpen, setMenuOpen] = useState(false);
   // Lets floating UI outside the navbar (beta buttons, reward card) step aside
@@ -141,6 +141,7 @@ function Layout() {
           <Link to="/" className="navbar-brand" aria-label="Střední na míru – domů">
             <NavbarMark />
             <span>Střední na míru</span>
+            {isCreator && <span className="badge">Náhled pro tvůrce</span>}
           </Link>
 
           <nav id="navbar-links" className={`navbar-links${menuOpen ? ' is-open' : ''}`} aria-label="Hlavní navigace">

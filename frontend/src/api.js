@@ -517,3 +517,10 @@ export async function downloadAdminCsv(table){
 }
 
 export const pingVisit=()=>fetch(API_BASE_URL+'/api/visit',{method:'POST',keepalive:true}).catch(()=>{});
+export const fetchAdminCreators=()=>request('/api/admin/creators');
+export const createAdminCreator=body=>request('/api/admin/creators',{method:'POST',body:JSON.stringify(body)});
+export const rotateAdminCreatorLink=id=>request(`/api/admin/creators/${encodeURIComponent(id)}/rotate`,{method:'POST',body:JSON.stringify({})});
+export const resetAdminCreatorDevices=id=>request(`/api/admin/creators/${encodeURIComponent(id)}/reset-devices`,{method:'POST',body:JSON.stringify({})});
+export const revokeAdminCreator=id=>request(`/api/admin/creators/${encodeURIComponent(id)}/revoke`,{method:'POST',body:JSON.stringify({})});
+export const restoreAdminCreator=id=>request(`/api/admin/creators/${encodeURIComponent(id)}/restore`,{method:'POST',body:JSON.stringify({})});
+export const claimCreatorLink=body=>request('/api/creator/claim',{method:'POST',body:JSON.stringify(body)});
