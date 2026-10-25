@@ -137,6 +137,7 @@ function CommuteTime({ schoolId }) {
               <p className="sd-commute-time">cca {totalMinutes} min</p>
               <p className="sd-commute-route">MHD ze zastávky {selectedStop.name} · ranní špička, podle jízdních řádů PID</p>
               {walkToStopMinutes > 0 && <p className="sd-commute-walk">Včetně cca {walkToStopMinutes} min pěšky k zastávce.</p>}
+              <p className="sd-commute-walk">Čas je orientační a nemusí být vždy přesný – skutečná cesta se může lišit (zpoždění, přestupy, tempo chůze).</p>
             </>
           )}
           <button
