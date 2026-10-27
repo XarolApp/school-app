@@ -321,8 +321,8 @@ themselves. Use the browser pane / preview tools for this.
 - **AI:** GPT-6 Luna via OpenRouter (`OPENROUTER_MODEL=openai/gpt-6-luna`,
   `OPENROUTER_PROVIDER=openai/flex`) writes questionnaire explanation sentences
   and on-demand school reasons. Matching and scores are deterministic JavaScript;
-  AI never produces a score. Gemini remains in the separate scraping pipeline.
-- **Scraping:** n8n + Firecrawl + Gemini 2.5 Flash Lite (external workflow, not in this repo)
+  AI never produces a score.
+- **Scraping:** Firecrawl via `scripts/scrape-schools.js`, then `scripts/extract-school-details.js` (the old n8n workflow is retired)
 - **Payments:** Stripe Checkout + webhooks are implemented and covered by deterministic
   boundary tests. Monthly uses a subscription; season uses Setup mode followed by one
   scheduled PaymentIntent after the trial. Live keys and real-money end-to-end testing
@@ -488,7 +488,7 @@ grants. Tables without a client policy below are intended to be server-only
   every school read goes through `server.js` with the service-role key. That is what
   makes a paywall on school data possible at all.
 
-`service_role` bypasses RLS entirely, so both `server.js` and the n8n scraper keep
+`service_role` bypasses RLS entirely, so `server.js` and the scripts in `scripts/` keep
 working. Never put that key in `frontend/.env`.
 
 ---
@@ -679,17 +679,6 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
    (removing a favourite, renaming/archiving an answer set, deleting the account)
    need only `requireAuth`. An account whose trial lapsed must never be locked out
    of its own data.
-
-2. **Original n8n scraping workflow design** (external; current deployed workflow
-   not inspected by the October review — the ~60 items below are historical):
-   - Scrapes atlasskolstvi.cz directory (Prague region, pages 1-3) via Firecrawl
-   - AI extraction (Gemini 2.5 Flash Lite) pulls `{name, url}` pairs from each page
-   - Aggregates + splits into ~60 individual school items
-   - Loops through each school's individual profile page, scrapes it via Firecrawl
-   - AI extraction pulls structured `{name, location, programs, contact, website}`
-   - Validates required fields (name, location not empty)
-   - Inserts into Supabase `schools` table
-   - Logs result (Success/Needs Review) to a Google Sheet for tracking
 
 3. **GitHub repo:** `school-app` under account `XarolApp`
 
