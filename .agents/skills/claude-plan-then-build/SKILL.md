@@ -8,8 +8,7 @@ description: Claude Code handoff for the canonical shared planning, implementati
 ## Current routing and authorization
 
 The canonical routing guide is `docs/workflows/plan-then-build-collaboration.md`,
-read together with `AGENTS.md` / `CLAUDE.md`. Its September routing update
-supersedes the older graph-only recommendations in skill copies. These are
+read together with `AGENTS.md` / `CLAUDE.md`. These are
 repository defaults, not independently verified model benchmarks or a live model
 picker. Confirm available models in the current tool/session before requiring one.
 
@@ -26,7 +25,7 @@ workflow solely to interrupt an already-authorized end-to-end review.
 
 ## Default roles
 
-Use the canonical guide to choose the available side: Astra high → Luna high/max → Sol high, or Opus 5.5 medium → Sonnet 5 medium/high → Opus 5.5 low. Do not require a second planner; escalate hard review under the guide and current human instructions.
+Use the canonical guide to choose the available side: Astra high → Luna high/max → Sol high, or Opus 5.5 medium → Sonnet 5.5 medium/high → Opus 5.5 low. Do not require a second planner; escalate hard review under the guide and current human instructions.
 
 ## Plan, implement and review
 

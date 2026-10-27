@@ -8,8 +8,7 @@ description: Use a Codex-only planning, implementation and review workflow for a
 ## Current routing and authorization
 
 The canonical routing guide is `docs/workflows/plan-then-build-collaboration.md`,
-read together with `AGENTS.md` / `CLAUDE.md`. Its September routing update
-supersedes the older graph-only recommendations in skill copies. These are
+read together with `AGENTS.md` / `CLAUDE.md`. These are
 repository defaults, not independently verified model benchmarks or a live model
 picker. Confirm available models in the current tool/session before requiring one.
 

@@ -5,7 +5,7 @@ description: Split complex work into a Claude Opus 5.5 planning pass, GPT-6 Luna
 
 # Plan-then-build
 
-Use the canonical shared workflow: Opus 5.5 medium or Astra high plans, Luna high/max implements on Codex (Sonnet 5 medium/high on Claude), and Sol high or Opus 5.5 low reviews. Escalate hard security/payment/schema review under the guide. Explicit current human model choices take precedence.
+Use the canonical shared workflow: Opus 5.5 medium or Astra high plans, Luna high/max implements on Codex (Sonnet 5.5 medium/high on Claude), and Sol high or Opus 5.5 low reviews. Escalate hard security/payment/schema review under the guide. Explicit current human model choices take precedence.
 
 There is no tool that can change the active model or effort level — `/model` and
 `/effort` are slash commands, not tool calls. Every checkpoint below that needs a model
@@ -15,8 +15,7 @@ confirmed. Never assume a switch happened because you told the user to make it.
 ## Current routing and authorization
 
 The canonical routing guide is `docs/workflows/plan-then-build-collaboration.md`,
-read together with `AGENTS.md` / `CLAUDE.md`. Its September routing update
-supersedes the older graph-only recommendations in skill copies. These are
+read together with `AGENTS.md` / `CLAUDE.md`. These are
 repository defaults, not independently verified model benchmarks or a live model
 picker. Confirm available models in the current tool/session before requiring one.
 

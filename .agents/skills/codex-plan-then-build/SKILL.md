@@ -8,8 +8,7 @@ description: Use the shared repository planning, implementation and independent 
 ## Current routing and authorization
 
 The canonical routing guide is `docs/workflows/plan-then-build-collaboration.md`,
-read together with `AGENTS.md` / `CLAUDE.md`. Its September routing update
-supersedes the older graph-only recommendations in skill copies. These are
+read together with `AGENTS.md` / `CLAUDE.md`. These are
 repository defaults, not independently verified model benchmarks or a live model
 picker. Confirm available models in the current tool/session before requiring one.
 
@@ -26,7 +25,7 @@ workflow solely to interrupt an already-authorized end-to-end review.
 
 ## Default roles
 
-Shared Codex path: Astra high plans → Luna high/max implements → Sol high reviews. Claude path: Opus 5.5 medium plans → Sonnet 5 medium/high implements → Opus 5.5 low reviews; hard security/payment/schema review uses the high-effort row.
+Shared Codex path: Astra high plans → Luna high/max implements → Sol high reviews. Claude path: Opus 5.5 medium plans → Sonnet 5.5 medium/high implements → Opus 5.5 low reviews; hard security/payment/schema review uses the high-effort row.
 
 ## Plan, implement and review
 
