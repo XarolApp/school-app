@@ -5,7 +5,7 @@ description: Maintain a single UNFORGET.md file tracking all deferred work — p
 
 # Unforget
 
-A single `UNFORGET.md` at the repo root holds every piece of deferred work — not a scratch TODO list, a durable ledger that survives context resets and session boundaries. This project already tracks a lot of deferred work informally inside `CLAUDE.md` (the "DECISIONS YOU NEED TO MAKE" and "What's NOT Built Yet" sections) — `UNFORGET.md` is for the smaller-grained, noisier stuff that doesn't deserve permanent placement in CLAUDE.md: a bug you noticed while doing something else, a plan the user paused mid-way, a "come back to this" from an audit.
+A single `UNFORGET.md` at the repo root holds every piece of deferred work — not a scratch TODO list, a durable ledger that survives context resets and session boundaries. `CLAUDE.md` holds current architecture and locked decisions only; every remaining task, pending decision and deferred item — the standing backlog, a bug noticed while doing something else, a plan the user paused mid-way, an audit finding — goes here.
 
 ## Why this exists
 
@@ -35,7 +35,7 @@ memory of this conversation can act on it without re-deriving the problem.
 - A plan or task gets interrupted partway through and won't resume in this session
 - An audit (`/improve`, code review, this skill's own review) surfaces a finding that isn't being fixed immediately
 
-Don't log routine TODOs already tracked in CLAUDE.md's own roadmap sections (Stripe integration, trial reminder email, etc.) — that would just duplicate the existing tracking. `UNFORGET.md` is for things that fell out of a specific conversation or task, not the project's known standing backlog.
+Search `UNFORGET.md` for the item first and update an existing entry instead of adding a duplicate.
 
 ## When to read it
 
@@ -45,12 +45,12 @@ Don't log routine TODOs already tracked in CLAUDE.md's own roadmap sections (Str
 
 ## Workflow
 
-**Adding an entry:** Read the existing file (create it if missing, with a one-line header explaining its purpose), append the new entry under the correct section, keep entries in reverse-chronological order (newest first) so the freshest deferred work is easiest to find.
+**Adding an entry:** Search the existing file for the item first and read its top for the format (create the file if missing, with a one-line header explaining its purpose), then append the new entry under the correct section, keep entries in reverse-chronological order (newest first) so the freshest deferred work is easiest to find.
 
-**Answering "what's blocking this release":** Read the whole file, filter by the `Release/context` field and by urgency, and summarize — don't just paste the raw file back, synthesize it into a short prioritized list.
+**Answering "what's blocking this release":** Search the file (it is too large to read in full) for the `Release/context` field and urgency, read only the matching entries, and summarize — don't just paste the raw file back, synthesize it into a short prioritized list.
 
 **Closing an entry:** When deferred work actually gets done, move the entry to a `## Resolved` section at the bottom with the date and a one-line note on what was done, rather than deleting it outright — a short resolved log is useful history and costs nothing to keep.
 
 ## What this is not
 
-This is not a replacement for CLAUDE.md's structured roadmap sections, and it's not a replacement for git commit messages or PR descriptions. It's specifically for the connective tissue — things that would otherwise only exist in someone's memory of a conversation that already ended.
+This is not a replacement for git commit messages or PR descriptions. It is the single ledger of what is left, so that nothing exists only in someone's memory of a conversation that already ended.

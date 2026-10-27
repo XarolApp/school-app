@@ -11,19 +11,19 @@ confirm or switch before beginning work that depends on a specific model. For a
 simple question that does not depend on a model choice, answer normally.
 
 If the selected model is a poor fit, state the recommended model and effort and wait
-for the user to switch before executing the task or producing the requested work.
-Do not claim that the project instructions themselves can inspect the model picker.
-Run the `model-gate` skill before these tasks when it is available; its instructions
-are also mirrored in `docs/workflows/model-gate.md`.
+for the user to switch before executing the task or producing the requested work —
+unless the user has explicitly told you to proceed on the current model, which
+overrides these defaults. Do not claim that the project instructions themselves can
+inspect the model picker. Follow `docs/workflows/model-gate.md` before these tasks.
 
 Claude-only: this file only routes within Claude Code. Codex/GPT routing (when that
 tool is used) lives in the `.agents/skills/codex-*` skills, not here.
 
 | Task | Claude | Why |
 |---|---|---|
-| Tiny, mechanical edit: typo, label rename, one obvious CSS value, boilerplate | Claude Haiku 4.5 | Anthropic's own guidance names exactly this class as Haiku work |
-| Everyday coding from a detailed plan: add an endpoint, build a component to spec, write tests, fix a known bug | Claude Sonnet 5, medium | Default-tier implementation work |
-| Larger multi-file implementation; fixing failing tests after an implementation | Claude Sonnet 5, high (Claude Code default) | |
+| Tiny, mechanical edit: typo, label rename, one obvious CSS value, boilerplate | Claude Haiku 5.5 | Anthropic's own guidance names exactly this class as Haiku work |
+| Everyday coding from a detailed plan: add an endpoint, build a component to spec, write tests, fix a known bug | Claude Sonnet 5.5, medium | Default-tier implementation work |
+| Larger multi-file implementation; fixing failing tests after an implementation | Claude Sonnet 5.5, high (Claude Code default) | |
 | Code review, and debugging (including a task Sonnet already failed on) | Claude Opus 5.5, low | Opus 5.5 at its lowest effort caught more known bugs than a higher-effort predecessor at high — more effort did not help this task shape |
 | Planning / architecture design | Claude Opus 5.5, medium | Benchmarked above Opus's own max effort on this task shape — more effort did not help here either |
 | Hard debugging, refactors touching many parts of the codebase; math/science/security-heavy work (auth audits, algorithm design) | Claude Opus 5.5, high | This is the task shape where more effort does help |
@@ -39,19 +39,17 @@ the task, not by reflex — several of the rows above are ones where a *higher* 
 level scored the same or worse on the benchmarked task shape.
 
 For the plan-then-build workflow, planning and execution are separate stages: plan at
-Opus 5.5 medium (the planning row above), then execute at Sonnet 5 medium/high per
+Opus 5.5 medium (the planning row above), then execute at Sonnet 5.5 medium/high per
 the implementation rows. Use the dedicated plan-then-build skill for stage gates.
 These recommendations follow the founder-provided benchmark data (dated 2026-09-23)
 and are practical starting points, not universal performance guarantees.
 
 ## ⚠️ Current working setup — read this first
 
-**Machine: the MacBook, as of 2026-09-06.** The move that was announced (and then
-didn't happen) on 2026-08-31 has now actually happened — the Windows laptop is no
-longer the working machine. The archived `archive/context/CONTEXT-HANDOFF.md` contained the
-**active, do-it-now work** on a fresh MacBook session, not dormant reference —
-run through it if `node_modules`, `.env`, or a working `npm run dev` aren't
-already confirmed present.
+**Machine: the MacBook, as of 2026-09-06.** The Windows laptop is no longer the
+working machine. If `node_modules`, `.env`, or a working `npm run dev` aren't
+already confirmed present, set them up from "Quick Start" below; the archived
+`archive/context/CONTEXT-HANDOFF.md` is a September snapshot and history only.
 
 **The Browser pane / preview tools work on the MacBook** (confirmed 2026-10-07:
 landing, onboarding, `/skoly` and the beta landing were checked at 375×812 and
@@ -148,14 +146,14 @@ I will:
 
 ## Parallel Work Pattern — The "Don't Stare at Me" Rule
 
-**When you use `/claude-only-plan-then-build` or give me any task that will take 20+ minutes:**
+**When you use `/claude-plan-then-build` or give me any task that will take 20+ minutes:**
 
 I will:
 1. Execute the longer development/code task
 2. **Simultaneously identify manual work you can do in parallel** so you're not waiting idle
 3. Give you explicit instructions on what to do while I work
 
-**Example structure:**
+**Example structure (illustrative — fit the options to the actual task):**
 
 > "I'm going to spend 30 minutes implementing Stripe. While I do that, you can:
 > 
@@ -220,28 +218,23 @@ remains a full second surface (see "Platform Strategy"). It:
   consequential (same demographic pays for Spotify, Duolingo Super). Parents also pay,
   independently. Neither is a funnel into the other — see the onboarding agent section
   below for how this is implemented in the flow.
-- **Pricing structure — settled through three passes of research, not guessed.**
-  Pass 1 (2026-08-23): recurring monthly + weekly. Pass 2 (same day): dropped weekly
-  — it converts well specifically because users lose track of a small recurring
-  charge, a consumer-protection risk considered in the pricing research, especially
-  where the payer may be a minor. That pass landed on monthly-pre-selected +
-  season-secondary. The [Commission's 2026 programme](https://commission.europa.eu/document/download/aa8d20ed-148f-4eaa-b8ea-92be7acdaee6_en?filename=CWP_2026_explained-version6_0.pdf) schedules the Digital Fairness Act
-  initiative for Q4; it does not establish an enacted compliance rule. Pass 3
-  (same day, follow-up research specifically on single-lifetime-use apps): **flipped
-  the default to season.** The pricing rationale assumes a focused school-selection
-  window per student; parents with several children and later reuse are possible.
-  UWorld was used as an exam-prep analogy: its [SAT plans](https://collegeprep.uworld.com/sat/online-prep-course/)
-  offer fixed access windows and call them subscriptions. This supports window
-  framing, not an assertion that UWorld never sells subscriptions or that its
-  pricing behavior automatically predicts this product.
-  **Current, final structure: Sezónní přístup (one-time, pre-selected, fixed-window
-  framing — never "lifetime access") + Měsíční (recurring, secondary, framed as the
+- **Pricing structure — settled by research (`docs/sources/pricing_research.md`; agent
+  ruling C-8).** **Sezónní přístup (one-time, pre-selected, fixed-window framing —
+  never "lifetime access") + Měsíční (recurring, secondary, framed as the
   trust/easy-exit option for an unfamiliar brand, not a discount decoy).** Two plans,
   not more — Hick's Law makes extra tiers cost conversion at the worst possible
-  moment. Re-open this decision only if paid CPI ad acquisition (Meta/Google) is ever
-  added — that changes the CAC math this rests on. See agent ruling C-8 for full
-  reasoning, and `docs/sources/pricing_research.md` for both research passes.
-  Already implemented in `frontend/src/config/pricing.js`.
+  moment. No weekly plan: it converts well specifically because users lose track of a
+  small recurring charge, a consumer-protection risk, especially where the payer may
+  be a minor (the [Commission's 2026 programme](https://commission.europa.eu/document/download/aa8d20ed-148f-4eaa-b8ea-92be7acdaee6_en?filename=CWP_2026_explained-version6_0.pdf)
+  schedules the Digital Fairness Act initiative for Q4; it is not an enacted rule).
+  Season is the default because the pricing rationale assumes a focused
+  school-selection window per student; parents with several children and later reuse
+  are possible. UWorld's [SAT plans](https://collegeprep.uworld.com/sat/online-prep-course/)
+  are the exam-prep analogy: fixed access windows, called subscriptions. That supports
+  window framing; it does not show UWorld never sells subscriptions or that its
+  pricing behaviour predicts this product's. Re-open this decision only if paid CPI
+  ad acquisition (Meta/Google) is ever added — that changes the CAC math this rests
+  on. Already implemented in `frontend/src/config/pricing.js`.
 - **No payment checkbox.** The parental-confirmation checkbox at checkout was
   removed by founder decision on 2026-09-22 (commit `9a8f8cc`). The age / guardian
   confirmation happens once, at account creation (`ConsentCheckbox`). Minors' refunds
@@ -405,7 +398,7 @@ are deployed. See the current deployment report.
 
 | Table | What it holds |
 |---|---|
-| `schools` | id, created_at, name, location, programs, contact, website, latitude, longitude, `redizo`, `admission_cutoff`, `acceptance_rate`, `admission_data_updated_at` |
+| `schools` | id, created_at, name, location, programs, contact, website, latitude, longitude, `redizo`, `admission_cutoff`, `acceptance_rate`, `admission_data_updated_at`, `merged_into`, `hidden_reason` |
 | `beta_schools` | uppercase school invitation codes and school names; validated by the API and signup trigger |
 | `creator_links` | creator name/note, hashed preview token, linked creator account, two-device limit, open/activity counters and revocation state; service-role only |
 | `creator_devices` | hashed device ids and first/last seen times plus browser user-agent; service-role only, claimed atomically through `claim_creator_device()` |
@@ -430,11 +423,14 @@ are deployed. See the current deployment report.
 | `school_ai_summary` | one row per school: cached `pros`/`cons` (jsonb), `model`, `data_fingerprint`. Written by `scripts/generate-school-proscons.js`, **not generated per request** — see plan 006 §1.3 for why |
 | `school_extracted_details` | one row per school: scraped prose plus nullable structured values. `scripts/extract-school-details.js --structure` derives six fields from stored prose first, then cached markdown only for missing/non-answer text; it updates only those six columns and skips existing values unless `--force`. Club counts require an explicit number; categories require explicit activity-domain wording. `ma_jidelnu` means lunch is available through school (its own canteen or explicitly arranged elsewhere); the case is reported while the original prose remains available. Dorm and university-continuation fields are display-only pending coverage review. The six structure columns were extracted 2026-09-26 for all 219 cached schools (Luna low, flex route) after paired 20-school dry runs (matching non-null totals, but two teaching-tag differences; see the [historical evidence](reports/deployment-review-2026-10-07/structure-v3-first-artifact-review-2026-10-11.json)); recorded September snapshot (not current live coverage; these are non-null counts, not confirmed availability): `ma_jidelnu` 50, `ma_koleje` 6, `krouzky_kategorie` 189 (including 79 empty arrays), `vyukovy_styl_tagy` 77, `vs_pokracuje_pct` 4, `pocet_krouzku` 0 (unusable). Base extraction (the 13 prose/number/boolean fields) was re-run 2026-09-26 on all 219 cached schools with `openai/gpt-6-luna` at low effort on the half-price flex route (`OPENROUTER_EXTRACT_PROVIDER=openai/flex`), reading the **filtered** markdown in `scripts/data/filtered-schools/` — now the script's default input. Re-run `scripts/filter-scraped-schools.js` after every new scrape, or the extractor reads stale text. |
 
-**Read-only field coverage, 9 October 2026 (before the 9th-grade scope below, which later cut the visible count to 194):** 217 visible schools (223 raw; six merged). Of the visible schools, 214 have an extracted row; non-null/non-empty coverage is lunch 104, dorm 6, club categories 154, teaching-style tags 75, university continuation 4 and explicit club count 0. Explicit `false` counts as known, not missing. These are stored-field counts, not verified school facts, and differ from the 219-school extraction cache. See `reports/deployment-review-2026-10-07/extracted-coverage-2026-10-09.json`.
+**Field-coverage snapshots (stored-field counts, not verified school facts):** 9 October,
+before the 9th-grade scope — `reports/deployment-review-2026-10-07/extracted-coverage-2026-10-09.json`;
+10 October, after it (194 visible schools, 191 with extracted rows; lunch known for 92
+(47.4%), dorm 5, club categories 135, teaching-style tags 70, university continuation 3,
+explicit club count 0) — `reports/deployment-review-2026-10-07/ninth-grade-live-2026-10-10.json`.
+Review/re-extraction of cached prose affected by the 9th-grade filter remains open.
 
-**Read-only coverage after the 9th-grade filter, 10 October:** 194 visible schools, 191 with extracted rows; known fields: lunch 92 (47.4%), dorm 5, club categories 135, teaching-style tags 70, university continuation 3 and explicit club count 0. The 23 fully hidden and 58 partly affected schools are independently counted. Stored coverage does not verify school facts or programme-specific prose; review/re-extraction of affected cached prose remains open. See `reports/deployment-review-2026-10-07/ninth-grade-live-2026-10-10.json`.
-
-**Latest read-only catalogue count, 14 October 2026:** the deployed public API returns **192 schools**; school-only Supabase metadata agrees: **223 raw, 6 merged, 25 hidden** (23 `not_for_9th_grade`, 2 `restricted_audience`: schools176/189). Earlier194-school counts/coverage below are dated10 October snapshots, not today's denominator. The shared frontend fallback is192; `useSchoolCount()` still follows the live feed. Stored visibility does not prove programme/source eligibility or complete catalogue coverage. See [current count evidence](reports/deployment-review-2026-10-07/final-catalogue-count-2026-10-14.json) and [public API check](reports/deployment-review-2026-10-07/final-public-api-readonly-2026-10-14.json).
+**Latest read-only catalogue count, 14 October 2026:** the deployed public API returns **192 schools**; school-only Supabase metadata agrees: **223 raw, 6 merged, 25 hidden** (23 `not_for_9th_grade`, 2 `restricted_audience`: schools 176/189). Earlier 194-school counts/coverage above are dated 10 October snapshots, not today's denominator. The shared frontend fallback is 192; `useSchoolCount()` still follows the live feed. Stored visibility does not prove programme/source eligibility or complete catalogue coverage. See [current count evidence](reports/deployment-review-2026-10-07/final-catalogue-count-2026-10-14.json) and [public API check](reports/deployment-review-2026-10-07/final-public-api-readonly-2026-10-14.json).
 
 
 `schools.admission_cutoff` / `acceptance_rate` and every `school_programs` row
@@ -478,7 +474,7 @@ exposed. This resolves a missing-field hypothesis for those names; it does not
 verify current function bodies, constraints, anonymous/authenticated grants or
 behavior. Evidence: `reports/deployment-review-2026-10-07/schema-fields-2026-10-09.json`.
 
-**The canonical schema enables RLS on all 28 application tables** after adding the beta contribution archive and hidden-programme table on 10 October. Read-only metadata exposes the new archive table/RPC; it does not prove their grants or erasure behavior. Read-only live
+**The canonical schema enables RLS on every application table**, including the beta contribution archive and hidden-programme tables added on 10 October. Read-only metadata exposes the new archive table/RPC; it does not prove their grants or erasure behavior. Read-only live
 checks on 2026-10-07 returned zero rows with the anonymous key; this smoke check
 does not prove policy definitions, authenticated cross-account isolation or RPC
 grants. Tables without a client policy below are intended to be server-only
@@ -666,7 +662,7 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
 
 1. **Backend server** (`server.js`) — Express, connected to Supabase via `.env`.
    - `GET /`, `GET /test-db` — health checks
-   - `GET /api/schools`, `GET /api/schools/:id` — **deliberately ungated** (see
+   - `GET /api/schools`, `GET /api/schools/:id` — **currently ungated** (see
      Known Issues). They take `optionalAuth`: a signed-in caller also gets
      `match_score` on every school, an anonymous one gets the same rows without it.
    - `GET/PATCH/DELETE /api/me` — profile, rename, GDPR erasure
@@ -700,12 +696,6 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
 4. **React frontend** (`frontend/`) — Vite + React Router
    - Plan 018 link pages never create a session or give app access. Results links mirror the child's current entitlement when opened; the payment link is the parent's only surface for checkout, cancellation and withdrawal.
    - Standalone recipient routes: `/vysledky/:token` (read-only results), `/platba-rodice/:token` (parent checkout/plan management) and `/od-rodice/:token` (child quiz handoff).
-
-   - Pages: Home, Search, School Detail, Sign Up
-   - Navigation bar + Layout wrapping all pages
-   - Basic styling (colors, buttons, forms)
-   - `api.js` fetch helper; localized errors/retry behavior need per-journey acceptance
-   - Verified working on localhost:5173
 
 5. **Onboarding agent** (`.claude/agents/onboarding-architect.md`) — a scoped subagent
    for onboarding, quiz flow, paywall, pricing and conversion work only. Merges
@@ -864,14 +854,14 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
 
 ## What's NOT Built Yet (MVP Scope)
 
-**Catalogue recheck 2026-10-10; feature acceptance remains open:** Supabase connected, 223 school rows (194 shown — 6 merged duplicates and 23 hidden for the 9th-grade scope), onboarding flow
+**Catalogue recheck 2026-10-14; feature acceptance remains open:** Supabase connected, 223 school rows (192 shown — 6 merged duplicates and 25 hidden: 23 for the 9th-grade scope, 2 restricted-audience), onboarding flow
 complete with district map and claim-framing signup, auth ported and wired, design tokens
 applied; see "Design tokens — tokens.js" below for the current palette and font state,
 developer-email bypass confirmed working.
 
 **Every remaining task, decision, and deferred item is tracked in [`UNFORGET.md`](UNFORGET.md)
 — that file is the single source of truth for "what's left," not this section.** See
-"Keeping This File Useful" below for why deferred work lives there now, not here.
+"Keeping This File Useful" below for why deferred work lives there, not here.
 
 Explicitly OUT of MVP scope (post-launch): open-ended AI chat assistant.
 
@@ -880,9 +870,8 @@ Explicitly OUT of MVP scope (post-launch): open-ended AI chat assistant.
 requires explicit publication consent and is not a school review. Q&A remains
 deferred — see `UNFORGET.md`.
 
-**The mobile app is NOT out of scope — it is planned before public launch, and it is
-intended to be the PRIMARY surface.** (Corrected 2026-08-24; an earlier version of
-this file wrongly listed it as post-launch.) The build order is web-first because
+**The mobile app is in scope — it is planned before public launch, and it is
+intended to be the PRIMARY surface.** The build order is web-first because
 that is what exists today, but the end state is a mobile app as the main way people
 use Střední na míru, with the browser as a fully working secondary surface — not a stub.
 Nothing built now should assume web is the only client. See "Platform Strategy".
@@ -958,7 +947,7 @@ this theme plan does not change them.
 **Before any non-trivial frontend visual change, check `design/DESIGN.md` first.**
 ("Non-trivial" — a color/spacing/typography choice, a new component, a layout
 decision. Not: renaming a button's label, fixing a typo.) This is in addition to, not
-instead of, the standing UX-guide-read rule below.
+instead of, the standing UX-guide-read rule above.
 
 ```
 design/
@@ -1024,9 +1013,9 @@ for a desktop layout (or the reverse) is a research error, not a shortcut.
 
 ## Geographic Scope for V1
 
-Prague only: read-only 10 October counts are 223 rows in `schools`, 194 shown to users
-(6 merged duplicates with `merged_into` set and 23 hidden by `hidden_reason` for the
-9th-grade scope — use the live count, `useSchoolCount()` / `SCHOOL_COUNT`). Expansion to other Czech cities
+Prague only: as of 14 October, 223 rows in `schools`, 192 shown to users
+(6 merged duplicates with `merged_into` set and 25 hidden by `hidden_reason` — use the
+live count, `useSchoolCount()` / `SCHOOL_COUNT`). Expansion to other Czech cities
 planned for later phases once the Prague version is validated with real users.
 
 ---
