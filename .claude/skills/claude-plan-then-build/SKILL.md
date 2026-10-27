@@ -25,7 +25,7 @@ workflow solely to interrupt an already-authorized end-to-end review.
 
 ## Default roles
 
-Plan at Opus 5.5 medium, implement at Sonnet 5.5 medium/high, review at Opus 5.5 low (the CLAUDE.md routing table; Codex routing lives in the `codex-*` skills). Do not require a second planner; escalate hard review under the guide and current human instructions.
+Plan at Opus 5.5 medium, implement at Sonnet 5.5 medium/high, review at Opus 5.5 high (this workflow overrides the CLAUDE.md table's lower review effort; Codex routing lives in the `codex-*` skills). Do not require a second planner; escalate hard review under the guide and current human instructions.
 
 ## Plan, implement and review
 

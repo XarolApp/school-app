@@ -25,7 +25,7 @@ workflow solely to interrupt an already-authorized end-to-end review.
 
 ## Default roles
 
-Use the canonical guide to choose the available side: Astra high → Luna high/max → Sol high, or Opus 5.5 medium → Sonnet 5.5 medium/high → Opus 5.5 low. Do not require a second planner; escalate hard review under the guide and current human instructions.
+Use the canonical guide to choose the available side: Astra high → Luna high/max → Sol high, or Opus 5.5 medium → Sonnet 5.5 medium/high → Opus 5.5 high. Do not require a second planner; escalate hard review under the guide and current human instructions.
 
 ## Plan, implement and review
 

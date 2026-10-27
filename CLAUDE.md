@@ -174,7 +174,7 @@ I will:
 - Landing page copy drafting
 - Analytics setup planning
 
-**Why this matters:** The founder has ~5 hours/day. If the AI is coding for 30 minutes, those 30 minutes should not be "wait for the AI." They should be spent on high-leverage manual work (like actual creator outreach) that only the founder can do.
+**Why this matters:** The founder has roughly 2–4 hours/day. If the AI is coding for 30 minutes, those 30 minutes should not be "wait for the AI." They should be spent on high-leverage manual work (like actual creator outreach) that only the founder can do.
 
 ---
 
