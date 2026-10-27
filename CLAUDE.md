@@ -24,7 +24,7 @@ tool is used) lives in the `.agents/skills/codex-*` skills, not here.
 | Tiny, mechanical edit: typo, label rename, one obvious CSS value, boilerplate | Claude Haiku 5.5 | Anthropic's own guidance names exactly this class as Haiku work |
 | Everyday coding from a detailed plan: add an endpoint, build a component to spec, write tests, fix a known bug | Claude Sonnet 5.5, medium | Default-tier implementation work |
 | Larger multi-file implementation; fixing failing tests after an implementation | Claude Sonnet 5.5, high (Claude Code default) | |
-| Code review, and debugging (including a task Sonnet already failed on) | Claude Opus 5.5, low | Opus 5.5 at its lowest effort caught more known bugs than a higher-effort predecessor at high — more effort did not help this task shape |
+| Code review, and debugging (including a task Sonnet already failed on) | Claude Opus 5.5, high | Founder decision (27 Oct): reviews run at high effort. The 2026-09-23 benchmark found Opus 5.5 at low already caught more known bugs than a higher-effort predecessor at high |
 | Planning / architecture design | Claude Opus 5.5, medium | Benchmarked above Opus's own max effort on this task shape — more effort did not help here either |
 | Hard debugging, refactors touching many parts of the codebase; math/science/security-heavy work (auth audits, algorithm design) | Claude Opus 5.5, high | This is the task shape where more effort does help |
 | Long unattended runs over ~30 minutes: migrations, multi-repo changes | Claude Opus 5.5, xhigh | Anthropic designed this effort tier for exactly this |
