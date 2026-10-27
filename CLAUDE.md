@@ -40,7 +40,7 @@ level scored the same or worse on the benchmarked task shape.
 
 For the plan-then-build workflow, planning and execution are separate stages: plan at
 Opus 5.5 medium (the planning row above), then execute at Sonnet 5.5 medium/high per
-the implementation rows. Use the dedicated plan-then-build skill for stage gates.
+the implementation rows. Use the dedicated `claude-plan-then-build` skill for stage gates.
 These recommendations follow the founder-provided benchmark data (dated 2026-09-23)
 and are practical starting points, not universal performance guarantees.
 
