@@ -24,6 +24,7 @@ BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 ## Plan 022 paid launch — status 2026-10-28 (founder)
 
 - [x] Chunks 1–8 implemented, committed locally (`cf33dc2`, `a189570`), independently reviewed (founder).
+- [x] Cloud review 2026-10-28 (plan 022): 4 findings, see `reports/plan-022-cloud-review-2026-10-28.md`; F1+F2 fixed in `f0a8d1d`, F3+F4 already fixed in `521aa8b`; plan 025 review `reports/plan-025-cloud-review.md`: 2 low, both fixed (`3972e8b`, `21589f8`).
 - [x] Picks migration (`2026-10-23-atomic-application-picks.sql`, `v_kkov` fix) re-run on production 2026-10-28: `function_exists` true, `client_can_call` false. No re-run is pending.
 - [ ] Confirm every plan 022 / 025 migration is on production with the check query before pushing (see the report); `2026-10-28-revenue-model.sql` is new and uncommitted.
 - [ ] Stripe test-mode run (season, monthly, cancel, withdrawal) — founder gate before live keys.

@@ -5,7 +5,7 @@ review). I checked them against `plans/025-revenue-and-payments-launch.md` §0�
 handoff (`docs/handouts/plan-025-cloud-handoff.md`). No production Supabase or Stripe was touched,
 and email/reminder copy and `TRIAL_REMINDER_IMPLEMENTED` were left alone.
 
-**Result: 2 findings (0 high, 0 medium, 2 low). 1 fixed in this commit, 1 reported only.** The
+**Result: 2 findings (0 high, 0 medium, 2 low). both fixed (finding 1 in `3972e8b`, finding 2 in `21589f8`).** The
 money paths the handoff asks about (amounts, double charges, webhook replay/ordering, access without
 payment, refunds, monthly after 22 Feb, trial abuse, a parent's card reaching a child) had no
 higher-severity defect I could show.
@@ -28,7 +28,7 @@ higher-severity defect I could show.
 - **Test:** `tests/server-boundaries.test.cjs`, last test. It fails without the fix (119/120) and
   passes with it.
 
-### 2. LOW — not fixed (reported): a withdrawal racing the hourly refund sweep can refund in full
+### 2. LOW — fixed in `21589f8`: a withdrawal racing the hourly refund sweep can refund in full
 
 - **Where:** `server.js` `withdrawPlanForUser`. It sets `status='withdrawn', refund_status='pending'`
   first and only later computes and stores `refund_amount_minor`, after several Stripe calls.
@@ -37,7 +37,8 @@ higher-severity defect I could show.
 - **Scenario:** the hourly worker runs inside that 1–2 second window, or the process dies in it.
   The pro-rata deduction (§4.7) is lost and the full remaining amount is refunded. The odds are
   small and the loss is limited to the deduction (days used), never more than the person paid.
-- **Why not fixed here:** the clean fix moves the quote (PaymentIntent retrieve plus
+- **Fix (`21589f8`):** `withdrawPlanForUser` now retrieves the PaymentIntent and computes the quote before the first write, and stores `refund_amount_minor` in the same update that sets `refund_status='pending'`, so the sweep never sees `pending` without the amount. Test: last test in `tests/server-boundaries.test.cjs` (fails without the fix). The sweep itself was not changed: a null amount is legitimate for a pre-access season cancellation (full refund) and cannot be told apart from the old gap.
+- **Why it was not fixed in the first review:** the clean fix moves the quote (PaymentIntent retrieve plus
   `withdrawalQuote`) before the first status write, and that reorders the whole withdrawal money
   path. That is more than a targeted change. Suggested fix: compute and store `refund_amount_minor`
   in the same update that sets `refund_status='pending'`.
@@ -144,6 +145,5 @@ browser checks of the paywall with a signed-in account.
 3. **The localhost test script** `docs/handouts/plan-025-founder-test.md`: browser checks of the
    paywall, Settings, the cancel/restore screens and ParentPay with a signed-in account, plus case 9
    (3-D Secure card `4000 0025 0000 3155`).
-4. **Decide on finding 2**: fix it now (move the quote before the first status write) or accept it
-   for launch.
+4. ~~Decide on finding 2~~ — fixed (see above).
 5. Push to `main` only after 1–3 pass. Nothing in this review was pushed to `main`.
