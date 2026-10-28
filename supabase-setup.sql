@@ -41,7 +41,7 @@ create table if not exists public.users (
   id uuid primary key references auth.users (id) on delete cascade,
   email text not null,
   name text,
-  trial_expires_at timestamptz not null,
+  trial_expires_at timestamptz,
   subscription_status text not null default 'trialing'
     check (subscription_status in ('trialing', 'active', 'season', 'past_due', 'canceled', 'expired', 'developer', 'beta', 'creator')),
   stripe_customer_id text,
@@ -610,115 +610,6 @@ alter table public.users drop constraint if exists users_subscription_status_che
 alter table public.users add constraint users_subscription_status_check
   check (subscription_status in ('trialing', 'active', 'season', 'past_due', 'canceled', 'expired', 'developer', 'beta', 'creator'));
 
--- Creator preview links: each creator owns an isolated demo account, and the
--- server stores only a hash of the link code and device identifiers.
-create table if not exists public.creator_links (
-  id uuid primary key default gen_random_uuid(),
-  name text not null check (char_length(btrim(name)) between 1 and 80),
-  note text check (note is null or char_length(note) <= 200),
-  token_hash text not null unique,
-  user_id uuid not null unique references public.users(id) on delete cascade,
-  max_devices smallint not null default 2 check (max_devices between 1 and 5),
-  created_at timestamptz not null default now(),
-  revoked_at timestamptz,
-  last_opened_at timestamptz,
-  last_active_at timestamptz,
-  open_count integer not null default 0,
-  blocked_attempts integer not null default 0,
-  last_blocked_at timestamptz
-);
-
-create table if not exists public.creator_devices (
-  link_id uuid not null references public.creator_links(id) on delete cascade,
-  device_hash text not null,
-  user_agent text check (user_agent is null or char_length(user_agent) <= 200),
-  first_seen timestamptz not null default now(),
-  last_seen timestamptz not null default now(),
-  primary key (link_id, device_hash)
-);
-
-alter table public.creator_links enable row level security;
-alter table public.creator_devices enable row level security;
-revoke all on table public.creator_links, public.creator_devices from public, anon, authenticated;
-grant all on table public.creator_links, public.creator_devices to service_role;
-
-create or replace function public.claim_creator_device(
-  p_token_hash text,
-  p_device_hash text,
-  p_user_agent text
-)
-returns table(result text, user_id uuid)
-language plpgsql
-security definer
-set search_path = public
-as $$
-declare
-  v_link public.creator_links%rowtype;
-  v_device_exists boolean;
-  v_device_count integer;
-begin
-  select * into v_link
-  from public.creator_links
-  where token_hash = p_token_hash
-  for update;
-
-  if not found then
-    return query select 'not_found'::text, null::uuid;
-    return;
-  end if;
-
-  if v_link.revoked_at is not null then
-    return query select 'revoked'::text, null::uuid;
-    return;
-  end if;
-
-  select exists (
-    select 1 from public.creator_devices
-    where link_id = v_link.id and device_hash = p_device_hash
-  ) into v_device_exists;
-
-  if v_device_exists then
-    update public.creator_devices
-    set last_seen = now()
-    where link_id = v_link.id and device_hash = p_device_hash;
-  else
-    select count(*)::integer into v_device_count
-    from public.creator_devices
-    where link_id = v_link.id;
-
-    if v_device_count >= v_link.max_devices then
-      update public.creator_links
-      set blocked_attempts = blocked_attempts + 1,
-          last_blocked_at = now()
-      where id = v_link.id;
-      return query select 'blocked'::text, null::uuid;
-      return;
-    end if;
-
-    insert into public.creator_devices (link_id, device_hash, user_agent)
-    values (v_link.id, p_device_hash, left(p_user_agent, 200));
-  end if;
-
-  update public.creator_links
-  set open_count = open_count + 1,
-      last_opened_at = now()
-  where id = v_link.id;
-
-  return query select 'ok'::text, v_link.user_id;
-end;
-$$;
-
-revoke all on function public.claim_creator_device(text, text, text) from public, anon, authenticated;
-grant execute on function public.claim_creator_device(text, text, text) to service_role;
-
--- Verify: two tables, creator status accepted, and the atomic claim RPC exists.
--- select (select count(*) from information_schema.tables where table_schema='public' and table_name in ('creator_links','creator_devices')) as tables_2,
---        (select pg_get_constraintdef(oid) like '%creator%' from pg_constraint where conname='users_subscription_status_check' and conrelid='public.users'::regclass) as status_ok,
---        (select count(*) from pg_proc where proname='claim_creator_device' and pronamespace='public'::regnamespace) as fn_1;
--- Chunk 2 of plan 022: claim season charges, serialize cancellation and track refunds.
--- Apply only after review; never run this against production from an agent.
-
-
 -- The retired shared-code endpoint could turn a paid account into beta. Stop
 -- if any such profile still has billing state; inspect it before proceeding.
 do $$
@@ -806,7 +697,7 @@ begin
       new.id,
       new.email,
       nullif(new.raw_user_meta_data ->> 'name', ''),
-      clock_timestamp() + interval '3 days',
+      null,
       'trialing'
     );
   end if;
@@ -819,6 +710,28 @@ create trigger on_auth_user_created
   after insert on auth.users
   for each row
   execute function public.handle_new_user();
+
+alter table public.users alter column trial_expires_at drop not null;
+
+-- The ordinary trial starts once, at the first confirmed authenticated request
+-- (server.js requireAuth), so a delayed e-mail confirmation cannot consume it.
+-- Only an untouched trialing row with no window yet is updated; creator, beta,
+-- developer and paid rows and existing accounts keep their current values.
+create or replace function public.start_ordinary_trial(p_user_id uuid)
+returns timestamptz
+language sql
+security definer
+set search_path = public, pg_temp
+as $$
+  update public.users u
+     set trial_expires_at = clock_timestamp() + interval '3 days'
+   where u.id = p_user_id
+     and u.trial_expires_at is null
+     and u.subscription_status = 'trialing'
+  returning u.trial_expires_at;
+$$;
+revoke all on function public.start_ordinary_trial(uuid) from public, anon, authenticated;
+grant execute on function public.start_ordinary_trial(uuid) to service_role;
 
 -- RLS uses one access function. Beta takes an exclusive CASE branch so a
 -- signup trial, paid state or developer address cannot extend tester access.
@@ -1406,30 +1319,52 @@ create table if not exists public.beta_contributions_archive (
   archived_at timestamptz not null default now()
 );
 alter table public.beta_contributions_archive enable row level security;
-create or replace function public.archive_beta_contributions(p_user_id uuid)
-returns integer language plpgsql security definer set search_path = public, pg_temp as $$
-declare v_count integer := 0; v_rows integer;
+-- Returns the ids it created so a failed account deletion can take its own copy
+-- back out (remove_beta_archive_rows) instead of leaving a duplicate for the retry.
+drop function if exists public.archive_beta_contributions(uuid);
+create function public.archive_beta_contributions(p_user_id uuid)
+returns bigint[] language plpgsql security definer set search_path = public, pg_temp as $$
+declare v_ids bigint[] := '{}'; v_new bigint[];
 begin
-  insert into public.beta_contributions_archive(kind, content, created_on)
-  select 'feedback', jsonb_strip_nulls(jsonb_build_object('type', f.type, 'kind', f.kind, 'page_url', f.page_url,
-    'message', f.message, 'selector', f.selector, 'element_text', f.element_text,
-    'text_before', f.text_before, 'text_after', f.text_after, 'status', f.status)), f.created_at::date
-  from public.beta_feedback f where f.user_id = p_user_id;
-  get diagnostics v_rows = row_count; v_count := v_count + v_rows;
-  insert into public.beta_contributions_archive(kind, content, created_on)
-  select 'closing', c.answers, c.created_at::date from public.beta_closing_answers c where c.user_id = p_user_id;
-  get diagnostics v_rows = row_count; v_count := v_count + v_rows;
-  insert into public.beta_contributions_archive(kind, content, created_on)
-  select 'review', jsonb_strip_nulls(jsonb_build_object('stars', r.stars, 'body', r.body, 'consent_publish', r.consent_publish,
-    'consent_text_version', r.consent_text_version, 'consent_at', r.consent_at, 'age_group', r.age_group,
-    'selected_by_admin', r.selected_by_admin)), r.created_at::date
-  from public.beta_reviews r where r.user_id = p_user_id;
-  get diagnostics v_rows = row_count; v_count := v_count + v_rows;
-  return v_count;
+  with ins as (
+    insert into public.beta_contributions_archive(kind, content, created_on)
+    select 'feedback', jsonb_strip_nulls(jsonb_build_object('type', f.type, 'kind', f.kind, 'page_url', f.page_url,
+      'message', f.message, 'selector', f.selector, 'element_text', f.element_text,
+      'text_before', f.text_before, 'text_after', f.text_after, 'status', f.status)), f.created_at::date
+    from public.beta_feedback f where f.user_id = p_user_id
+    returning id
+  ) select coalesce(array_agg(id), '{}') into v_new from ins;
+  v_ids := v_ids || v_new;
+  with ins as (
+    insert into public.beta_contributions_archive(kind, content, created_on)
+    select 'closing', c.answers, c.created_at::date from public.beta_closing_answers c where c.user_id = p_user_id
+    returning id
+  ) select coalesce(array_agg(id), '{}') into v_new from ins;
+  v_ids := v_ids || v_new;
+  with ins as (
+    insert into public.beta_contributions_archive(kind, content, created_on)
+    select 'review', jsonb_strip_nulls(jsonb_build_object('stars', r.stars, 'body', r.body, 'consent_publish', r.consent_publish,
+      'consent_text_version', r.consent_text_version, 'consent_at', r.consent_at, 'age_group', r.age_group,
+      'selected_by_admin', r.selected_by_admin)), r.created_at::date
+    from public.beta_reviews r where r.user_id = p_user_id
+    returning id
+  ) select coalesce(array_agg(id), '{}') into v_new from ins;
+  return v_ids || v_new;
 end;
 $$;
 revoke all on function public.archive_beta_contributions(uuid) from public, anon, authenticated;
 grant execute on function public.archive_beta_contributions(uuid) to service_role;
+create or replace function public.remove_beta_archive_rows(p_ids bigint[])
+returns integer language plpgsql security definer set search_path = public, pg_temp as $$
+declare v_rows integer;
+begin
+  delete from public.beta_contributions_archive where id = any(coalesce(p_ids, '{}'));
+  get diagnostics v_rows = row_count;
+  return v_rows;
+end;
+$$;
+revoke all on function public.remove_beta_archive_rows(bigint[]) from public, anon, authenticated;
+grant execute on function public.remove_beta_archive_rows(bigint[]) to service_role;
 -- END BETA ANALYTICS BLOCK
 
 
@@ -1736,7 +1671,7 @@ select
   a.id,
   a.email,
   nullif(a.raw_user_meta_data ->> 'name', ''),
-  now() + interval '3 days',
+  null,
   'trialing'
 from auth.users a
 where not exists (select 1 from public.users u where u.id = a.id);
@@ -1758,9 +1693,836 @@ $$;
 revoke all on function public.bump_visit(text) from public, anon, authenticated;
 grant execute on function public.bump_visit(text) to service_role;
 
+
+-- Plan 022: paid purchase ledger and replay-safe Stripe events
+alter table public.users
+  add column if not exists stripe_last_event_created bigint not null default 0;
+
+create table if not exists public.purchases (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references public.users(id) on delete cascade,
+  plan text not null check (plan in ('season', 'monthly')),
+  checkout_context text not null default 'self' check (checkout_context in ('self', 'parent')),
+  price_amount_minor integer not null check (price_amount_minor > 0),
+  currency text not null check (currency = 'czk'),
+  status text not null default 'pending'
+    check (status in ('pending', 'active', 'canceled', 'withdrawn', 'refunded', 'failed')),
+  stripe_checkout_session_id text,
+  stripe_setup_intent_id text,
+  stripe_payment_intent_id text,
+  stripe_subscription_id text,
+  access_starts_at timestamptz,
+  access_ends_at timestamptz,
+  created_at timestamptz not null default now(),
+  completed_at timestamptz,
+  updated_at timestamptz not null default now(),
+  last_stripe_event_created bigint not null default 0
+);
+
+create unique index if not exists purchases_one_pending_per_user_plan
+  on public.purchases (user_id, plan)
+  where status = 'pending';
+create unique index if not exists purchases_stripe_checkout_session_unique
+  on public.purchases (stripe_checkout_session_id)
+  where stripe_checkout_session_id is not null;
+create unique index if not exists purchases_stripe_setup_intent_unique
+  on public.purchases (stripe_setup_intent_id)
+  where stripe_setup_intent_id is not null;
+create unique index if not exists purchases_stripe_payment_intent_unique
+  on public.purchases (stripe_payment_intent_id)
+  where stripe_payment_intent_id is not null;
+create unique index if not exists purchases_stripe_subscription_unique
+  on public.purchases (stripe_subscription_id)
+  where stripe_subscription_id is not null;
+create index if not exists purchases_user_created_idx
+  on public.purchases (user_id, created_at desc);
+
+create table if not exists public.stripe_webhook_events (
+  event_id text primary key,
+  event_type text not null,
+  event_created bigint not null,
+  outcome text not null default 'processing'
+    check (outcome in ('processing', 'applied', 'duplicate', 'stale', 'unmatched', 'ignored')),
+  processed_at timestamptz
+);
+
+alter table public.purchases enable row level security;
+alter table public.stripe_webhook_events enable row level security;
+revoke all on table public.purchases, public.stripe_webhook_events from public, anon, authenticated;
+grant all on table public.purchases, public.stripe_webhook_events to service_role;
+
+create or replace function public.apply_stripe_purchase_event(
+  p_event_id text,
+  p_event_type text,
+  p_event_created bigint,
+  p_user_id uuid,
+  p_purchase_id uuid,
+  p_purchase_status text,
+  p_checkout_session_id text,
+  p_setup_intent_id text,
+  p_payment_intent_id text,
+  p_subscription_id text,
+  p_access_starts_at timestamptz,
+  p_access_ends_at timestamptz,
+  p_profile_patch jsonb default '{}'::jsonb
+)
+returns text
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+declare
+  v_purchase public.purchases%rowtype;
+  v_user public.users%rowtype;
+  v_inserted_event text;
+  v_status_allowed boolean := true;
+  v_profile_eligible boolean := true;
+  v_status text;
+  v_updated_user uuid;
+begin
+  if p_event_id is null or length(p_event_id) = 0
+     or p_event_type is null or length(p_event_type) = 0
+     or p_event_created is null or p_event_created < 0 then
+    raise exception 'Invalid Stripe event identity';
+  end if;
+  if coalesce(jsonb_typeof(p_profile_patch), 'object') <> 'object' then
+    raise exception 'Stripe profile patch must be a JSON object';
+  end if;
+  if exists (
+    select 1
+      from jsonb_object_keys(coalesce(p_profile_patch, '{}'::jsonb)) as k(key)
+     where key not in (
+       'subscription_status', 'trial_expires_at', 'stripe_customer_id',
+       'stripe_payment_method_id', 'stripe_setup_intent_id',
+       'stripe_subscription_id', 'plan_id', 'season_charge_due_at',
+       'plan_started_at', 'last_paid_at', 'access_expires_at',
+       'cancel_at_period_end'
+     )
+  ) then
+    raise exception 'Stripe profile patch contains a protected field';
+  end if;
+  if p_purchase_status is not null and p_purchase_status not in
+     ('pending', 'active', 'canceled', 'withdrawn', 'refunded', 'failed') then
+    raise exception 'Invalid purchase status';
+  end if;
+
+  insert into public.stripe_webhook_events(event_id, event_type, event_created)
+  values (p_event_id, p_event_type, p_event_created)
+  on conflict (event_id) do nothing
+  returning event_id into v_inserted_event;
+
+  if v_inserted_event is null then
+    return 'duplicate';
+  end if;
+
+  if p_purchase_id is not null and p_user_id is null then
+    select user_id into p_user_id from public.purchases where id = p_purchase_id;
+  end if;
+
+  if p_user_id is not null then
+    select * into v_user
+      from public.users
+     where id = p_user_id
+     for update;
+    if not found or v_user.subscription_status = 'beta' then
+      update public.stripe_webhook_events
+         set outcome = 'ignored', processed_at = now()
+       where event_id = p_event_id;
+      return 'ignored';
+    end if;
+    if p_event_created < v_user.stripe_last_event_created then
+      update public.stripe_webhook_events
+         set outcome = 'stale', processed_at = now()
+       where event_id = p_event_id;
+      return 'stale';
+    end if;
+  end if;
+
+  if p_purchase_id is not null then
+    select * into v_purchase
+      from public.purchases
+     where id = p_purchase_id
+     for update;
+
+    if not found or (p_user_id is not null and v_purchase.user_id <> p_user_id) then
+      update public.stripe_webhook_events
+         set outcome = 'unmatched', processed_at = now()
+       where event_id = p_event_id;
+      return 'unmatched';
+    end if;
+
+    if p_event_created < v_purchase.last_stripe_event_created
+       or (p_checkout_session_id is not null
+           and v_purchase.stripe_checkout_session_id is not null
+           and v_purchase.stripe_checkout_session_id <> p_checkout_session_id) then
+      update public.stripe_webhook_events
+         set outcome = 'stale', processed_at = now()
+       where event_id = p_event_id;
+      return 'stale';
+    end if;
+
+    if p_purchase_status is not null then
+      v_status_allowed := case v_purchase.status
+        when 'pending' then p_purchase_status in ('pending', 'active', 'canceled', 'failed')
+        when 'active' then p_purchase_status in ('active', 'canceled', 'withdrawn', 'refunded')
+        when 'canceled' then p_purchase_status in ('canceled', 'withdrawn', 'refunded')
+        when 'withdrawn' then p_purchase_status in ('withdrawn', 'refunded')
+        when 'failed' then p_purchase_status in ('failed', 'refunded')
+        when 'refunded' then p_purchase_status = 'refunded'
+        else false
+      end;
+      if not v_status_allowed then
+        update public.stripe_webhook_events
+           set outcome = 'stale', processed_at = now()
+         where event_id = p_event_id;
+        return 'stale';
+      end if;
+    end if;
+
+    v_status := case when p_purchase_status is not null and v_status_allowed
+      then p_purchase_status else v_purchase.status end;
+
+    update public.purchases
+       set status = v_status,
+           stripe_checkout_session_id = coalesce(p_checkout_session_id, stripe_checkout_session_id),
+           stripe_setup_intent_id = coalesce(p_setup_intent_id, stripe_setup_intent_id),
+           stripe_payment_intent_id = coalesce(p_payment_intent_id, stripe_payment_intent_id),
+           stripe_subscription_id = coalesce(p_subscription_id, stripe_subscription_id),
+           access_starts_at = coalesce(p_access_starts_at, access_starts_at),
+           access_ends_at = coalesce(p_access_ends_at, access_ends_at),
+           completed_at = case when v_status = 'active' then coalesce(completed_at, now()) else completed_at end,
+           updated_at = now(),
+           last_stripe_event_created = p_event_created
+     where id = p_purchase_id;
+
+    v_profile_eligible := not exists (
+        select 1 from public.purchases newer
+         where newer.user_id = v_purchase.user_id
+           and newer.id <> v_purchase.id
+           and newer.created_at > v_purchase.created_at
+           and newer.status in ('pending', 'active')
+      );
+  end if;
+
+  if p_user_id is not null and v_profile_eligible then
+    update public.users as u
+       set (subscription_status, trial_expires_at, stripe_customer_id,
+            stripe_payment_method_id, stripe_setup_intent_id, stripe_subscription_id,
+            plan_id, season_charge_due_at, plan_started_at, last_paid_at,
+            access_expires_at, cancel_at_period_end, stripe_last_event_created) = (
+         select patched.subscription_status, patched.trial_expires_at, patched.stripe_customer_id,
+                patched.stripe_payment_method_id, patched.stripe_setup_intent_id,
+                patched.stripe_subscription_id, patched.plan_id, patched.season_charge_due_at,
+                patched.plan_started_at, patched.last_paid_at, patched.access_expires_at,
+                patched.cancel_at_period_end, p_event_created
+           from jsonb_populate_record(u, p_profile_patch) as patched
+       )
+     where u.id = p_user_id
+       and u.subscription_status <> 'beta'
+       and u.stripe_last_event_created <= p_event_created
+     returning id into v_updated_user;
+
+    if v_updated_user is null then
+      update public.stripe_webhook_events
+         set outcome = 'stale', processed_at = now()
+       where event_id = p_event_id;
+      return 'stale';
+    end if;
+  end if;
+
+  update public.stripe_webhook_events
+     set outcome = 'applied', processed_at = now()
+   where event_id = p_event_id;
+  return 'applied';
+end;
+$$;
+
+revoke all on function public.apply_stripe_purchase_event(
+  text, text, bigint, uuid, uuid, text, text, text, text, text,
+  timestamptz, timestamptz, jsonb
+) from public, anon, authenticated;
+grant execute on function public.apply_stripe_purchase_event(
+  text, text, bigint, uuid, uuid, text, text, text, text, text,
+  timestamptz, timestamptz, jsonb
+) to service_role;
+
+-- Verify: returns two rows, with zero policies on the ledger tables.
+-- select tablename, rowsecurity from pg_tables where schemaname='public' and tablename in ('purchases','stripe_webhook_events');
+-- select proname from pg_proc where proname='apply_stripe_purchase_event';
+
 -- Launch waitlist (gate page): service role only, no client policy.
 create table if not exists public.launch_waitlist (
   email text primary key check (email = lower(email) and length(email) <= 254),
   created_at timestamptz not null default now()
 );
 alter table public.launch_waitlist enable row level security;
+
+-- Creator preview links: each creator owns an isolated demo account, and the
+-- server stores only a hash of the link code and device identifiers.
+create table if not exists public.creator_links (
+  id uuid primary key default gen_random_uuid(),
+  name text not null check (char_length(btrim(name)) between 1 and 80),
+  note text check (note is null or char_length(note) <= 200),
+  token_hash text not null unique,
+  user_id uuid not null unique references public.users(id) on delete cascade,
+  max_devices smallint not null default 2 check (max_devices between 1 and 5),
+  created_at timestamptz not null default now(),
+  revoked_at timestamptz,
+  last_opened_at timestamptz,
+  last_active_at timestamptz,
+  open_count integer not null default 0,
+  blocked_attempts integer not null default 0,
+  last_blocked_at timestamptz
+);
+
+create table if not exists public.creator_devices (
+  link_id uuid not null references public.creator_links(id) on delete cascade,
+  device_hash text not null,
+  user_agent text check (user_agent is null or char_length(user_agent) <= 200),
+  first_seen timestamptz not null default now(),
+  last_seen timestamptz not null default now(),
+  primary key (link_id, device_hash)
+);
+
+alter table public.creator_links enable row level security;
+alter table public.creator_devices enable row level security;
+revoke all on table public.creator_links, public.creator_devices from public, anon, authenticated;
+grant all on table public.creator_links, public.creator_devices to service_role;
+
+create or replace function public.claim_creator_device(
+  p_token_hash text,
+  p_device_hash text,
+  p_user_agent text
+)
+returns table(result text, user_id uuid)
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_link public.creator_links%rowtype;
+  v_device_exists boolean;
+  v_device_count integer;
+begin
+  select * into v_link
+  from public.creator_links
+  where token_hash = p_token_hash
+  for update;
+
+  if not found then
+    return query select 'not_found'::text, null::uuid;
+    return;
+  end if;
+
+  if v_link.revoked_at is not null then
+    return query select 'revoked'::text, null::uuid;
+    return;
+  end if;
+
+  select exists (
+    select 1 from public.creator_devices
+    where link_id = v_link.id and device_hash = p_device_hash
+  ) into v_device_exists;
+
+  if v_device_exists then
+    update public.creator_devices
+    set last_seen = now()
+    where link_id = v_link.id and device_hash = p_device_hash;
+  else
+    select count(*)::integer into v_device_count
+    from public.creator_devices
+    where link_id = v_link.id;
+
+    if v_device_count >= v_link.max_devices then
+      update public.creator_links
+      set blocked_attempts = blocked_attempts + 1,
+          last_blocked_at = now()
+      where id = v_link.id;
+      return query select 'blocked'::text, null::uuid;
+      return;
+    end if;
+
+    insert into public.creator_devices (link_id, device_hash, user_agent)
+    values (v_link.id, p_device_hash, left(p_user_agent, 200));
+  end if;
+
+  update public.creator_links
+  set open_count = open_count + 1,
+      last_opened_at = now()
+  where id = v_link.id;
+
+  return query select 'ok'::text, v_link.user_id;
+end;
+$$;
+
+revoke all on function public.claim_creator_device(text, text, text) from public, anon, authenticated;
+grant execute on function public.claim_creator_device(text, text, text) to service_role;
+
+-- Verify: two tables, creator status accepted, and the atomic claim RPC exists.
+-- select (select count(*) from information_schema.tables where table_schema='public' and table_name in ('creator_links','creator_devices')) as tables_2,
+--        (select pg_get_constraintdef(oid) like '%creator%' from pg_constraint where conname='users_subscription_status_check' and conrelid='public.users'::regclass) as status_ok,
+--        (select count(*) from pg_proc where proname='claim_creator_device' and pronamespace='public'::regnamespace) as fn_1;
+-- Chunk 2 of plan 022: claim season charges, serialize cancellation and track refunds.
+-- Apply only after review; never run this against production from an agent.
+
+alter table public.purchases
+  add column if not exists season_charge_status text not null default 'not_due'
+    check (season_charge_status in ('not_due', 'ready', 'processing', 'requires_action', 'declined', 'retryable', 'succeeded', 'canceled')),
+  add column if not exists season_charge_claimed_at timestamptz,
+  add column if not exists season_charge_attempts integer not null default 0 check (season_charge_attempts >= 0),
+  add column if not exists season_charge_error_code text check (season_charge_error_code is null or char_length(season_charge_error_code) <= 80),
+  add column if not exists cancel_requested_at timestamptz,
+  add column if not exists season_charge_idempotency_key text,
+  add column if not exists refund_status text not null default 'none'
+    check (refund_status in ('none', 'pending', 'failed', 'succeeded')),
+  add column if not exists refund_attempts integer not null default 0 check (refund_attempts >= 0),
+  add column if not exists stripe_refund_id text;
+
+create index if not exists purchases_due_season_charge_idx
+  on public.purchases (season_charge_status, season_charge_claimed_at)
+  where plan = 'season' and status = 'active';
+
+-- Existing completed setup sessions have not yet entered this state machine.
+update public.purchases
+   set season_charge_status = 'ready', updated_at = now()
+ where plan = 'season'
+   and status = 'active'
+   and stripe_setup_intent_id is not null
+   and season_charge_status = 'not_due'
+   and cancel_requested_at is null;
+
+-- Keep the exact old worker key on already-active purchases so an ambiguous
+-- pre-migration request is replayed under the same Stripe key. New purchases
+-- get a key derived from their immutable purchase id when claimed below.
+update public.purchases p
+   set season_charge_idempotency_key = 'season:' || p.user_id::text || ':' ||
+       to_char(u.season_charge_due_at at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"')
+  from public.users u
+ where u.id = p.user_id
+   and p.plan = 'season'
+   and p.status = 'active'
+   and p.season_charge_idempotency_key is null
+   and u.season_charge_due_at is not null;
+
+create or replace function public.prepare_season_charge()
+returns trigger
+language plpgsql
+set search_path = public, pg_temp
+as $$
+begin
+  if new.plan = 'season'
+     and new.status = 'active'
+     and new.stripe_setup_intent_id is not null
+     and new.season_charge_status = 'not_due'
+     and new.cancel_requested_at is null then
+    new.season_charge_status := 'ready';
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists purchases_prepare_season_charge on public.purchases;
+create trigger purchases_prepare_season_charge
+before insert or update of status, stripe_setup_intent_id on public.purchases
+for each row execute function public.prepare_season_charge();
+
+create or replace function public.claim_due_season_charges(p_now timestamptz default now())
+returns table (
+  purchase_id uuid,
+  user_id uuid,
+  stripe_customer_id text,
+  stripe_payment_method_id text,
+  season_charge_due_at timestamptz,
+  attempt_number integer,
+  stripe_payment_intent_id text,
+  season_charge_idempotency_key text
+)
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+begin
+  return query
+  with candidates as (
+    select p.id
+      from public.purchases p
+      join public.users u on u.id = p.user_id
+     where p.plan = 'season'
+       and p.status = 'active'
+       and p.season_charge_status in ('ready', 'retryable', 'processing')
+       and (p.season_charge_status <> 'processing'
+            or p.season_charge_claimed_at < p_now - interval '30 minutes')
+       and p.cancel_requested_at is null
+       and u.plan_id = 'season'
+       and u.subscription_status = 'trialing'
+       and u.season_charge_due_at <= p_now
+       and u.stripe_customer_id is not null
+       and u.stripe_payment_method_id is not null
+     order by u.season_charge_due_at, p.created_at
+     for update of p skip locked
+     limit 50
+  ), claimed as (
+    update public.purchases p
+       set season_charge_status = 'processing',
+           season_charge_claimed_at = p_now,
+           season_charge_attempts = p.season_charge_attempts + 1,
+           season_charge_idempotency_key = coalesce(p.season_charge_idempotency_key, 'season:' || p.id::text),
+           updated_at = p_now
+      from candidates c
+     where p.id = c.id
+     returning p.id, p.user_id, p.season_charge_attempts,
+               p.stripe_payment_intent_id, p.season_charge_idempotency_key
+  )
+  select c.id, c.user_id, u.stripe_customer_id, u.stripe_payment_method_id,
+         u.season_charge_due_at, c.season_charge_attempts, c.stripe_payment_intent_id,
+         c.season_charge_idempotency_key
+    from claimed c
+    join public.users u on u.id = c.user_id;
+end;
+$$;
+
+create or replace function public.set_season_charge_state(
+  p_purchase_id uuid,
+  p_state text,
+  p_payment_intent_id text default null,
+  p_error_code text default null
+)
+returns text
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+declare
+  v_purchase public.purchases%rowtype;
+  v_state text := p_state;
+begin
+  if p_state not in ('processing', 'requires_action', 'declined', 'retryable', 'succeeded', 'canceled') then
+    raise exception 'Invalid season charge state';
+  end if;
+  select * into v_purchase from public.purchases where id = p_purchase_id for update;
+  if not found or v_purchase.plan <> 'season' then return 'not_found'; end if;
+  if v_purchase.cancel_requested_at is not null and p_state in ('requires_action', 'declined', 'retryable') then
+    v_state := 'canceled';
+  end if;
+  if v_purchase.season_charge_status in ('succeeded', 'canceled')
+     and v_state not in ('succeeded', v_purchase.season_charge_status) then
+    return v_purchase.season_charge_status;
+  end if;
+  update public.purchases
+     set season_charge_status = v_state,
+         stripe_payment_intent_id = coalesce(p_payment_intent_id, stripe_payment_intent_id),
+         season_charge_error_code = left(p_error_code, 80),
+         season_charge_claimed_at = case when v_state = 'processing' then now() else null end,
+         updated_at = now()
+   where id = p_purchase_id;
+  return v_state;
+end;
+$$;
+
+create or replace function public.request_season_charge_cancel(p_user_id uuid, p_purchase_id uuid)
+returns table(result text, payment_intent_id text, charge_status text)
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+declare
+  v_purchase public.purchases%rowtype;
+begin
+  select * into v_purchase from public.purchases
+   where id = p_purchase_id and user_id = p_user_id and plan = 'season'
+   for update;
+  if not found then
+    return query select 'not_found'::text, null::text, null::text;
+    return;
+  end if;
+  if v_purchase.season_charge_status = 'succeeded' then
+    return query select 'already_charged'::text, v_purchase.stripe_payment_intent_id, v_purchase.season_charge_status;
+    return;
+  end if;
+  if v_purchase.season_charge_status = 'canceled' then
+    return query select 'canceled'::text, v_purchase.stripe_payment_intent_id, v_purchase.season_charge_status;
+    return;
+  end if;
+
+  update public.purchases
+     set cancel_requested_at = coalesce(cancel_requested_at, now()),
+         season_charge_status = case
+           when season_charge_status in ('not_due', 'ready', 'retryable', 'declined') then 'canceled'
+           else season_charge_status
+         end,
+         updated_at = now()
+   where id = p_purchase_id;
+
+  if v_purchase.season_charge_status in ('not_due', 'ready', 'retryable', 'declined') then
+    update public.users
+       set plan_id = null, subscription_status = 'canceled',
+           season_charge_due_at = null, stripe_payment_method_id = null
+     where id = p_user_id and plan_id = 'season' and subscription_status in ('trialing', 'past_due');
+    return query select 'canceled'::text, v_purchase.stripe_payment_intent_id, 'canceled'::text;
+    return;
+  end if;
+
+  return query select 'cancellation_requested'::text, v_purchase.stripe_payment_intent_id,
+                      v_purchase.season_charge_status;
+end;
+$$;
+
+create or replace function public.finish_season_charge_cancel(p_user_id uuid, p_purchase_id uuid)
+returns text
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+declare
+  v_purchase public.purchases%rowtype;
+begin
+  select * into v_purchase from public.purchases
+   where id = p_purchase_id and user_id = p_user_id and plan = 'season'
+   for update;
+  if not found then return 'not_found'; end if;
+  if v_purchase.season_charge_status = 'succeeded' and v_purchase.refund_status <> 'succeeded' then return 'already_charged'; end if;
+  update public.purchases
+     set season_charge_status = 'canceled', cancel_requested_at = coalesce(cancel_requested_at, now()), updated_at = now()
+   where id = p_purchase_id;
+  update public.users
+     set plan_id = null, subscription_status = 'canceled',
+         season_charge_due_at = null, stripe_payment_method_id = null
+   where id = p_user_id and plan_id = 'season' and subscription_status in ('trialing', 'past_due');
+  return 'canceled';
+end;
+$$;
+
+create or replace function public.set_purchase_refund_state(
+  p_user_id uuid,
+  p_purchase_id uuid,
+  p_state text,
+  p_refund_id text default null
+)
+returns text
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+declare
+  v_purchase public.purchases%rowtype;
+begin
+  if p_state not in ('pending', 'failed', 'succeeded') then raise exception 'Invalid refund state'; end if;
+  select * into v_purchase from public.purchases
+   where id = p_purchase_id and user_id = p_user_id
+   for update;
+  if not found then return 'not_found'; end if;
+  if v_purchase.refund_status = 'succeeded' then return 'succeeded'; end if;
+  update public.purchases
+     set status = 'withdrawn',
+         refund_status = p_state,
+         refund_attempts = refund_attempts + case when p_state = 'pending' and p_refund_id is null then 1 else 0 end,
+         stripe_refund_id = coalesce(p_refund_id, stripe_refund_id),
+         updated_at = now()
+   where id = p_purchase_id;
+  return p_state;
+end;
+$$;
+
+revoke all on function public.prepare_season_charge() from public, anon, authenticated;
+revoke all on function public.claim_due_season_charges(timestamptz) from public, anon, authenticated;
+revoke all on function public.set_season_charge_state(uuid, text, text, text) from public, anon, authenticated;
+revoke all on function public.request_season_charge_cancel(uuid, uuid) from public, anon, authenticated;
+revoke all on function public.finish_season_charge_cancel(uuid, uuid) from public, anon, authenticated;
+revoke all on function public.set_purchase_refund_state(uuid, uuid, text, text) from public, anon, authenticated;
+grant execute on function public.claim_due_season_charges(timestamptz) to service_role;
+grant execute on function public.set_season_charge_state(uuid, text, text, text) to service_role;
+grant execute on function public.request_season_charge_cancel(uuid, uuid) to service_role;
+grant execute on function public.finish_season_charge_cancel(uuid, uuid) to service_role;
+grant execute on function public.set_purchase_refund_state(uuid, uuid, text, text) to service_role;
+
+-- Verify: charge-state counts; no client policies or function grants.
+-- select season_charge_status, count(*) from public.purchases where plan='season' group by 1 order by 1;
+-- select tablename, count(*) as policies from pg_policies where schemaname='public' and tablename='purchases' group by tablename;
+-- select proname, has_function_privilege('anon', p.oid, 'execute') as anon_exec, has_function_privilege('authenticated', p.oid, 'execute') as user_exec from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and proname in ('claim_due_season_charges','set_season_charge_state','request_season_charge_cancel','finish_season_charge_cancel','set_purchase_refund_state');
+
+-- ----------------------------------------------------------------------------
+-- Paid-launch chunk 3 — gated catalogue and resumable onboarding
+-- Mirrored by migrations/2026-10-22-paid-catalogue-boundary.sql.
+-- ----------------------------------------------------------------------------
+
+alter table public.users add column if not exists onboarding_completed_at timestamptz;
+
+create table if not exists public.onboarding_progress (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  step_id text not null check (
+    step_id in ('welcome','role','stakes','calculating','reveal','commitment','proof',
+      'hodnota','cesta','ucet','plan','zkusebni','platba','hotovo')
+    or step_id ~ '^q([1-9]|1[01])$'
+  ),
+  role text check (role is null or role in ('student','parent')),
+  answers jsonb not null default '{}'::jsonb check (jsonb_typeof(answers) = 'object'),
+  intents jsonb not null default '[]'::jsonb check (jsonb_typeof(intents) = 'array'),
+  commitment text check (commitment is null or commitment in ('maximalne','hodne','zjistuji')),
+  gender text check (gender is null or gender in ('m','f','u')),
+  plan_id text not null default 'season' check (plan_id in ('season','monthly')),
+  updated_at timestamptz not null default now()
+);
+alter table public.onboarding_progress enable row level security;
+revoke all on public.onboarding_progress from public, anon, authenticated;
+grant all on table public.onboarding_progress to service_role;
+
+create table if not exists public.paid_launch_schema_markers (
+  marker text primary key,
+  applied_at timestamptz not null default now()
+);
+alter table public.paid_launch_schema_markers enable row level security;
+revoke all on public.paid_launch_schema_markers from public, anon, authenticated;
+grant all on table public.paid_launch_schema_markers to service_role;
+
+do $$
+begin
+  if not exists (
+    select 1 from public.paid_launch_schema_markers
+     where marker = '2026-10-22-paid-catalogue-boundary'
+  ) then
+    update public.users
+       set onboarding_completed_at = coalesce(onboarding_completed_at, created_at, now())
+     where onboarding_completed_at is null;
+    insert into public.paid_launch_schema_markers(marker)
+    values ('2026-10-22-paid-catalogue-boundary');
+  end if;
+end;
+$$;
+
+create or replace function public.complete_paid_onboarding(p_user_id uuid, p_purchase_id uuid)
+returns boolean
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+begin
+  if p_user_id is null or p_purchase_id is null then return false; end if;
+  if exists (
+    select 1 from public.users u join public.purchases p on p.user_id = u.id
+     where u.id = p_user_id and u.onboarding_completed_at is not null
+       and p.id = p_purchase_id and p.plan in ('season','monthly')
+  ) then
+    delete from public.onboarding_progress where user_id = p_user_id;
+    return true;
+  end if;
+  update public.users u
+     set onboarding_completed_at = coalesce(u.onboarding_completed_at, now())
+   where u.id = p_user_id
+     and exists (
+       select 1 from public.purchases p where p.id = p_purchase_id
+         and p.user_id = p_user_id and p.status = 'active' and p.plan in ('season','monthly')
+     )
+     and u.subscription_status in ('trialing','active','season','past_due');
+  if not found then return false; end if;
+  delete from public.onboarding_progress where user_id = p_user_id;
+  return true;
+end;
+$$;
+revoke all on function public.complete_paid_onboarding(uuid, uuid) from public, anon, authenticated;
+grant execute on function public.complete_paid_onboarding(uuid, uuid) to service_role;
+
+-- Verify after applying: both counts should be zero for existing accounts.
+-- select count(*) filter (where onboarding_completed_at is null) as incomplete_accounts,
+--   (select count(*) from public.onboarding_progress p join public.users u on u.id=p.user_id
+--     where u.onboarding_completed_at is not null) as completed_with_draft from public.users;
+
+create or replace function public.save_application_picks(p_user_id uuid, p_picks jsonb)
+returns integer
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+declare
+  pick jsonb;
+  sid bigint;
+  v_kkov text;
+  pos integer := 0;
+  seen bigint[] := '{}';
+begin
+  if p_user_id is null or p_picks is null or jsonb_typeof(p_picks) <> 'array' then
+    raise exception 'Invalid picks' using errcode = '22023', hint = 'INVALID_PICKS';
+  end if;
+  if jsonb_array_length(p_picks) > 3 then
+    raise exception 'Too many picks' using errcode = '22023', hint = 'TOO_MANY_PICKS';
+  end if;
+
+  -- Two saves for one account queue here, so the stored list is always one
+  -- complete request, never a mix of two.
+  perform pg_advisory_xact_lock(hashtextextended('application_picks:' || p_user_id::text, 0));
+
+  for pick in select value from jsonb_array_elements(p_picks) loop
+    if jsonb_typeof(pick) <> 'object' or (pick ->> 'school_id') !~ '^[0-9]{1,15}$' then
+      raise exception 'Invalid pick' using errcode = '22023', hint = 'INVALID_PICKS';
+    end if;
+    sid := (pick ->> 'school_id')::bigint;
+    if sid = any(seen) then
+      raise exception 'Duplicate school' using errcode = '22023', hint = 'INVALID_PICKS';
+    end if;
+    seen := seen || sid;
+    if not exists (
+      select 1 from public.schools s
+       where s.id = sid and s.merged_into is null and s.hidden_reason is null
+    ) then
+      raise exception 'School unavailable' using errcode = '22023', hint = 'SCHOOL_UNAVAILABLE';
+    end if;
+    v_kkov := nullif(pick ->> 'obor_kkov', '');
+    if v_kkov is not null and not exists (
+      select 1 from public.school_programs p where p.school_id = sid and p.kkov = v_kkov
+    ) then
+      raise exception 'Programme does not belong to school' using errcode = '22023', hint = 'INVALID_PROGRAM';
+    end if;
+  end loop;
+
+  -- Picks on a hidden school are kept (never deleted); only visible picks are replaced.
+  delete from public.application_picks ap
+   where ap.user_id = p_user_id
+     and exists (
+       select 1 from public.schools s
+        where s.id = ap.school_id and s.merged_into is null and s.hidden_reason is null
+     );
+
+  for pick in select value from jsonb_array_elements(p_picks) loop
+    pos := pos + 1;
+    insert into public.application_picks (user_id, school_id, priority, obor_kkov, obor_nazev)
+    values (
+      p_user_id,
+      (pick ->> 'school_id')::bigint,
+      pos,
+      left(nullif(pick ->> 'obor_kkov', ''), 40),
+      left(nullif(pick ->> 'obor_nazev', ''), 200)
+    );
+  end loop;
+  return pos;
+end;
+$$;
+revoke all on function public.save_application_picks(uuid, jsonb) from public, anon, authenticated;
+grant execute on function public.save_application_picks(uuid, jsonb) to service_role;
+
+create or replace function public.cache_questionnaire_reason(
+  p_user_id uuid, p_run_id bigint, p_school_id text, p_answers jsonb, p_reason text
+)
+returns boolean
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+begin
+  if p_user_id is null or p_run_id is null or p_answers is null
+     or p_school_id is null or p_school_id !~ '^[0-9]{1,15}$'
+     or p_reason is null or btrim(p_reason) = '' or char_length(p_reason) > 2000 then
+    return false;
+  end if;
+  -- One key merged into the stored map: two schools generated in parallel both
+  -- stay cached. The answers must still be the ones the sentence was written
+  -- for, so a re-score or consent withdrawal in between is never overwritten.
+  update public.questionnaire_runs r
+     set extra_reasons = coalesce(r.extra_reasons, '{}'::jsonb)
+                         || jsonb_build_object(p_school_id, p_reason)
+   where r.id = p_run_id
+     and r.user_id = p_user_id
+     and r.answers = p_answers;
+  return found;
+end;
+$$;
+revoke all on function public.cache_questionnaire_reason(uuid, bigint, text, jsonb, text) from public, anon, authenticated;
+grant execute on function public.cache_questionnaire_reason(uuid, bigint, text, jsonb, text) to service_role;

@@ -13,6 +13,15 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
+## Fix the top bar when the account is on trial — founder request 2026-10-27
+
+- [ ] Founder says the top bar (navbar) needs fixing while an account is on trial. What exactly looks wrong is not recorded yet — ask for a screenshot or description first. Starting points: the trial label ("Zkušební verze · ještě N dní", `showTrial` / `navbar-trial` in `frontend/src/components/Layout.jsx`, lines ~71 and ~191) and its CSS. Check desktop and 375px mobile, and the beta/creator cases (`showTrial` is already off for testers).
+
+## Rename the page names in URLs — founder request 2026-10-25
+
+- [ ] Founder wants the URL page names renamed (current routes are in `frontend/src/App.jsx`: `/skoly`, `/porovnani`, `/prihlaska`, `/ulozene`, `/dotaznik`, `/prihlaseni`, `/registrace`, `/predplatne`, `/nastaveni`, `/onboarding/:stepId`, …). Which names, and to what, is not decided yet — ask first.
+- Before renaming: the auth components hardcode several of these in redirects (see CLAUDE.md "Routes are Czech"), and Supabase redirect URLs, Stripe success/cancel URLs, emailed links, share/parent links and the Vercel config may point at the old paths. Keep the old paths as `<Navigate replace>` redirects so existing links keep working. Touches tester-visible flows, so do not push without the founder's go-ahead.
+
 ## After the beta: deferred Codex findings (logged 2026-10-10, founder decision)
 
 Founder chose to fix C01, C09, C14, C16 (+ follow-up), C29 and C31 before the testers
@@ -1245,7 +1254,7 @@ revokes the link. No email delivery was added.
 - Test actual access/cancellation states and webhook ordering, and deliver a dated durable confirmation with the correct payer and access end. Treat copy/UI polish separately from money-integrity blockers.
 
 ## Search data — no fabricated district fallback; remaining interpretation checks
-- Search uses stored admission/programme/extracted facts. Codex removed the deterministic invented district fallback (`f098f6c`); missing geography/admissions remain unknown. Commute time is unavailable, not a real routing metric.
+- Search uses stored admission/programme/extracted facts. Codex removed the deterministic invented district fallback (`f098f6c`); missing geography/admissions remain unknown. Plan 023 adds a separate, approximate PID timetable estimate to school detail; it is not part of search ranking and has not passed the planned IDOS spot check.
 - All 217 visible live schools had coordinates in the 8 October probe, but this does not establish address/building precision or official catalogue completeness.
 - Data-source/year/qualification wording and missing-data cases received fixes/browser checks. Scoring/projection consistency, programme focus/form and refresh provenance remain B01/B02/C03/S03/S07/S12; do not declare every rendered statistic correct from this pipeline description.
 
@@ -1263,10 +1272,8 @@ elsewhere in the app.
 
 ---
 
-## Public-transit commute requires a provider, licence and accuracy decision
-- Current map radius is straight-line distance, not MHD travel time. Keep unavailable commute controls honest; do not substitute haversine distance under a transit label.
-- Evaluate current Google Routes TRANSIT capabilities/billing/terms or self-hosted OpenTripPlanner with PID GTFS before implementation. The old $200/month Google Maps credit estimate is obsolete: [Google replaced it with per-SKU free usage caps on 1 March 2025](https://developers.google.com/maps/billing-and-pricing/faq).
-- Verify storage/caching permissions, departure/arrival/date context, costs, privacy and service reliability. District-centre precomputation is an approximation, not a personalised home-to-school journey. Founder/provider choice remains pending.
+## Public-transit commute provider decision — resolved by plan 023
+- The Google/OTP/Golemio provider and storage questions below were superseded on 2026-10-16 by the founder's choice: precompute school-detail estimates from PID's public GTFS feed under CC BY 4.0. The implementation and remaining acceptance are recorded under the 18 October follow-up at the bottom of this file.
 
 ## Cermat admission data — first-round decision retained; coverage varies
 - The 58/60-school and 697-row figures describe the 8 September snapshot, not the current catalogue. Read-only 8 October: 217 visible schools have programme rows, four have only older admission summaries, and 650 active programme cards cover available years 2024–2026. Cutoff coverage: 248 none, 27 one year, 39 two, 336 at least three.
@@ -1537,7 +1544,7 @@ Fold that fix into the redesign rather than patching it separately.
 - Do not add a hero photograph or ambient animation to the current page merely to satisfy this old mockup. Preserve the founder's animation/design trigger and image-rights requirements if A is revisited.
 - Audit the actual public landing links/footer, responsive readability, school-dot access, count/completeness claims and WebGL fallback. See C06/C09/C10 and the current browser evidence.
 
-## Resolved
+## Resolved through 10 October
 
 **Historical completion log:** dated entries below preserve what was done then. Their model, font, bundle-size, school-count, scoring-projection and browser-tool descriptions are not current deployment evidence. Current read-only facts and unresolved gates appear above and in the deployment report.
 
@@ -1689,13 +1696,8 @@ Fold that fix into the redesign rather than patching it separately.
   'developer'` on first `/api/me` call); just needed a backend restart to pick
   up the `.env` addition.
 
-## Public-transit travel time to school (commute questions deferred until this exists) — 2026-09-24
-- **Found:** 2026-09-24, questionnaire brainstorm. "How far will you commute" and "do transit connections matter" were approved as good questions but cut from the first build: nothing in the app knows how long a bus/tram/metro ride to a school takes (`SchoolMap.jsx` only does straight-line radius).
-- **Urgency:** Medium — a real differentiator for a Prague school picker, but not a launch blocker.
-- **Effort:** Small — one-off precompute script + one lookup table.
-- **Plan (cheapest):** precompute a district×school matrix instead of live per-user routing. 22 správní obvody (`lib/pragueDistricts.js`) × 223 schools = 4,906 elements, fixed weekday arrival ~7:30. Google Routes API `computeRouteMatrix` TRANSIT: 100 elements/request → ~50 requests; $5–10 per 1,000 elements with 5,000–10,000 free/month, so likely $0 (verify which tier transit bills under). Store minutes in a table, score by time bucket. Re-run each December when PID timetables change.
-- **Check first:** Google Maps ToS restricts storing/caching API results beyond a short window — confirm before persisting durations. Fallback with no such restriction: OpenTripPlanner self-hosted on PID's open GTFS (free data, costs hosting), or Golemio API.
-- **Not done yet:** everything above; no questions were added to the questionnaire for this.
+## Public-transit travel-time brainstorm — superseded by plan 023
+- The 2026-09-24 district-centre/Google matrix proposal is historical and was replaced by the founder's stop-based PID GTFS design in `plans/023-mhd-commute-times.md`. No commute questions were added to questionnaire scoring.
 
 ## Optional free-text note is private saved context — founder decision 2026-10-09
 - The standalone questionnaire has `poznamka` (“Chceš něco doplnit?”), optional and capped at 500 characters. It is stored with the user's run; `describeAnswers()` explicitly excludes text fields from external AI prompts. It does not drive numeric scoring.
@@ -2085,7 +2087,74 @@ Final count recheck,14 October:192visible/223raw/6merged/25hidden;23ninth-grade 
 
 - [ ] Go through the 14 October deployment review (`reports/deployment-review-2026-10-07/FINAL-RELEASE-CHECKLIST.md`, `HANDOFF-PLAN.md`) and decide what to act on before real billing. Split the work into agent-sized chunks: `plans/022-paid-launch-chunks.md`. Chunk 0 (founder decisions) comes first.
 
-## Creator preview links — 22 October 2026
+## Commute acceptance and follow-ups — plan 023, 18 October 2026
+
+### PID commute estimate: manual accuracy acceptance
+- **Found:** 2026-10-18, implementing `plans/023-mhd-commute-times.md`.
+- **Urgency:** Medium — this is the remaining accuracy gate before relying on the new estimate.
+- **Effort:** Small; compare the planned 10 student-style trips with IDOS for a Tuesday 07:00 departure. Accept at median absolute difference ≤5 minutes and no pair over 10 minutes; record results in `reports/commute-spot-check-2026-10.md`.
+- **Release/context:** Founder review before pushing this tester-visible feature to `main`.
+- **Not done yet:** IDOS comparisons. Browser denial was checked locally and the manual picker remained available; repeat on the founder's supported browser/device if needed during acceptance.
+
+### Commute sorting/filtering in the school list
+- **Found:** 2026-10-18, explicitly deferred by plan 023 §5.
+- **Urgency:** Low — useful follow-up, not required to show a school-detail estimate.
+- **Effort:** Medium; reuse the generated matrix only after the current accuracy gate passes.
+- **Release/context:** Future search feature; do not blend it into the deterministic questionnaire score.
+- **Not done yet:** Search does not sort or filter schools by commute time.
+
+### Free-text address for the commute estimate
+- **Found:** 2026-10-18, explicitly deferred by plan 023 §1.
+- **Urgency:** Low — stop-name entry and browser geolocation cover v1.
+- **Effort:** Medium; choose and review a geocoder (self-hosted RÚIAN or Mapy.cz) and its privacy/cost terms before any address is sent.
+- **Release/context:** Future input feature; no address is currently sent or stored.
+- **Not done yet:** Address search.
+
+## Creator affiliate program — build list, 21 October 2026
+
+Context: creator outreach starts before the paid launch (strategy doc "Střední na míru — Creator Affiliate Strategy", Google Sheet tab "Kreátoři – affiliate"). Nothing below is built yet. Outreach can start without it, but no tracked sale or payout is possible until items 1–4 exist. Terms in the strategy: first purchase only, 30% base with marginal tiers 30/35/40%, founding partners 35%, 120-day revenue window, payout 31+ days after the sale, minimum payout 300 Kč, clawback on refund, customer discount 10 % (changed from 50 Kč on 2026-10-22, founder decision; the 640 Kč example no longer applies), first-touch attribution within 60 days plus a backup code.
+
+### 1. Affiliate data model and migration
+- **Found:** 2026-10-21, strategy review.
+- **Urgency:** High — blocks every other affiliate item.
+- **Effort:** Small–medium; tables `affiliates`, `referral_attributions`, `commissions` (statuses pending, approved, paid, reversed), service-role only, in `supabase-setup.sql` re-runnable with a verify query; founder applies it.
+- **Release/context:** Fits plan 022 chunk 1 (purchase ledger); do not run SQL against production.
+- **Not done yet:** No tables, no code.
+
+### 2. Referral links and attribution capture
+- **Found:** 2026-10-21.
+- **Urgency:** High.
+- **Effort:** Medium; `?ref=` capture, first-touch storage for 60 days, `POST /api/me/referral` after sign-in, backup code field at sign-up/checkout. Verify that the closed-site gate (`frontend/middleware.js`) keeps the query string and does not drop attribution while a visitor enters the tester code.
+- **Release/context:** Pairs with the gate/access matrix decision (plan 022 chunk 0/3).
+- **Not done yet:** No `ref` handling anywhere; the bio link is plain `stredninamiru.cz`.
+
+### 3. Stripe: discount code and referral metadata
+- **Found:** 2026-10-21.
+- **Urgency:** High before any real sale.
+- **Effort:** Medium; 10 % first-purchase discount (was 50 Kč; founder decision 2026-10-22) as a coupon/promotion code, referral id in Checkout metadata, correct handling of both flows (season pass = Setup mode then scheduled PaymentIntent after the 3-day trial; monthly = subscription). A commission is created only after the real payment succeeds (webhook), never at checkout start.
+- **Release/context:** Test mode only until live billing is approved; no live keys.
+- **Not done yet:** No coupon, no metadata, no commission creation in `/webhooks/stripe`.
+
+### 4. Commission engine, refunds and clawback
+- **Found:** 2026-10-21.
+- **Urgency:** High before the first payout.
+- **Effort:** Medium; compute tiers from sales, apply the 120-day window, mark commissions payable only 31+ days after the sale, reverse on refund/dispute/withdrawal. Founder decisions needed before coding: (a) commission base (gross price vs. net of VAT/Stripe fees, and price after the 10 % discount); (b) the 2026-10-22 outreach messages promise creators a flat 35 % on the first purchase, so confirm whether 35 % becomes the base rate instead of 30 % base / 35 % founding.
+- **Release/context:** Prices live in `frontend/src/config/pricing.js` and `SEASON_PRICE_CZK` in `server.js`; do not change prices.
+- **Not done yet:** Nothing.
+
+### 5. Admin view and creator reporting
+- **Found:** 2026-10-21.
+- **Urgency:** Medium.
+- **Effort:** Small–medium; admin page (clicks, sign-ups, sales, commission status per creator) and a simple monthly report for creators. Only aggregated numbers; never student identities, to creators.
+- **Release/context:** Reuse the existing admin charts.
+- **Not done yet:** Nothing.
+
+### 6. Legal, tax and payout (founder/manual)
+- **Found:** 2026-10-21.
+- **Urgency:** High before any money is paid; not needed to start conversations.
+- **Effort:** Founder decisions plus a draft by Claude: IČO/accountant route and the 11,999 Kč/month DPP limit, who is the operator in the contract, Czech affiliate agreement and creator kit, ad-labeling clause ("reklama" / "placená spolupráce"; lawyer to confirm), privacy-policy update.
+- **Minors:** several candidate creators are likely under 18 (@adel.svit, @tonicka_1135, @dashques) — needs guardian consent and a parent payment-link path; skip them until decided.
+- **Not done yet:** Open questions in the strategy doc are unanswered.
 
 ### 7. Creator preview links and outreach
 - **Found:** 2026-10-22 while implementing `plans/024-creator-preview-links.md`.
@@ -2095,3 +2164,7 @@ Final count recheck,14 October:192visible/223raw/6merged/25hidden;23ninth-grade 
 - **Effort:** Small operational follow-up after the implementation.
 - **Release/context:** The older plan-020 `/pristup/<code>` proposal is superseded by plan 024's `/pro/<token>` flow. Before rollout, verify the migration from a fresh disposable database and a rerun, apply it in non-production, set the same 32+ character `CREATOR_CLAIM_SECRET` on Railway and Vercel, then verify the full creator journey. Do not push the feature to `main` before the founder accepts that journey.
 - **Deferred for later:** Creator filming and affiliate tracking.
+
+## Resolved
+
+- **Public-transit provider and data-storage decision** — resolved 2026-10-18 by plan 023: use PID's public GTFS under CC BY 4.0, precompute stop-to-school estimates, and keep the selected stop local. This supersedes the 2026-09-24 Google district-matrix/OTP/Golemio brainstorm; accuracy acceptance remains open above.

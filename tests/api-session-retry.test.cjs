@@ -36,7 +36,7 @@ function harness({ onFetch, onRefresh, onSession } = {}) {
   vm.createContext(context);
   vm.runInContext(source.replace(/^import .*;\n/gm, '').replace(/\bexport (?=(?:async )?(?:function|class|const))/g, '')
     .replace('import.meta.env.VITE_API_BASE_URL', 'undefined')
-    + '\nthis.api = { deleteAccount, updateProfile, fetchMe };', context);
+    + '\nthis.api = { deleteAccount, updateProfile, fetchMe, setApiAccount };', context);
   return { api: context.api, requests, get refreshes() { return refreshes; } };
 }
 
@@ -100,4 +100,24 @@ test('failed refresh preserves the original rejection without replay', async () 
   await assert.rejects(h.api.fetchMe(), (error) => error.status === 401);
   assert.equal(h.refreshes, 1);
   assert.equal(h.requests.length, 1);
+});
+
+test('a response for account A is dropped once account B took over the tab', async () => {
+  const h = harness({ onFetch: ({ change }) => { h.api.setApiAccount('B'); change(session('B')); return { ...response(200), json: async () => ({ id: 'A', name: 'private to A' }) }; } });
+  h.api.setApiAccount('A');
+  await assert.rejects(h.api.fetchMe(), (error) => error.code === 'ACCOUNT_CHANGED' && error.status === 0);
+});
+
+test('a response is kept when the account did not change, or only reported itself late', async () => {
+  const same = harness({ onFetch: () => ({ ...response(200), json: async () => ({ id: 'A' }) }) });
+  same.api.setApiAccount('A');
+  assert.equal((await same.api.fetchMe()).id, 'A');
+
+  // Supabase already holds B's session while AuthContext still says A; it catches up mid-flight.
+  const late = harness({
+    onSession: ({ change }) => change(session('B')),
+    onFetch: () => { late.api.setApiAccount('B'); return { ...response(200), json: async () => ({ id: 'B' }) }; },
+  });
+  late.api.setApiAccount('A');
+  assert.equal((await late.api.fetchMe()).id, 'B');
 });

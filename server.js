@@ -449,17 +449,44 @@ async function closingStateFor(userId) {
     closingPaused:Boolean(data?.closing_due_at && !data.closing_done_at && new Date(data.closing_due_at).getTime()+86400000<=Date.now())};
 }
 
+// Chunk 4: the ordinary trial window opens once, on the first confirmed request
+// that reads the profile. The RPC only touches a 'trialing' row with no window,
+// so parallel first requests share one window and later sign-ins never extend it.
+async function ensureTrialStarted(userId, profile) {
+  if (profile.trial_expires_at || profile.subscription_status !== 'trialing') return profile;
+  const started = await supabase.rpc('start_ordinary_trial', { p_user_id: userId });
+  if (started.error) return profile; // no window recorded means no trial access
+  const { data } = await supabase.from('users').select('trial_expires_at').eq('id', userId).single();
+  return data ? { ...profile, trial_expires_at: data.trial_expires_at } : profile;
+}
+
+// An account with an active purchase but no completion marker (the Stripe event
+// that should have set it was lost, reordered or failed) is completed here, so a
+// paid account is never stuck in onboarding. Needs a ledger row: no purchase, no heal.
+async function healOnboarding(userId, profile) {
+  if (profile.onboarding_completed_at || !['trialing', 'active', 'season', 'past_due'].includes(profile.subscription_status)) return profile;
+  const { data: purchase } = await supabase.from('purchases').select('id')
+    .eq('user_id', userId).eq('status', 'active').in('plan', ['season', 'monthly'])
+    .order('created_at', { ascending: false }).limit(1).maybeSingle();
+  if (!purchase?.id) return profile;
+  const { data: done } = await supabase.rpc('complete_paid_onboarding', { p_user_id: userId, p_purchase_id: purchase.id });
+  return done === true ? { ...profile, onboarding_completed_at: new Date().toISOString() } : profile;
+}
+
 // One account-access rule shared by protected routes and public result links.
 async function accessStateFor(userId, email) {
-  const { data: profile, error } = await supabase
+  let { data: profile, error } = await supabase
     .from('users')
-    .select('trial_expires_at, subscription_status, access_expires_at, tester_access_until, tester_school_code, created_at, gender')
+    .select('trial_expires_at, subscription_status, access_expires_at, tester_access_until, tester_school_code, created_at, gender, onboarding_completed_at')
     .eq('id', userId)
     .single();
 
   if (error || !profile) {
     return { hasAccess: false, httpStatus: 403, body: { error: 'Profil účtu nenalezen.' }, profile: null };
   }
+
+  profile = await ensureTrialStarted(userId, profile);
+  profile = await healOnboarding(userId, profile);
 
   if (profile.subscription_status === 'beta') {
     const { data: settings, error: settingsError } = await readBetaSettings();
@@ -540,6 +567,15 @@ async function accessStateFor(userId, email) {
       httpStatus: 200,
       body: null,
       profile: { ...profile, subscription_status: 'developer' },
+    };
+  }
+
+  if (!profile.onboarding_completed_at) {
+    return {
+      hasAccess: false,
+      httpStatus: 403,
+      body: { error: 'Nejdřív dokonči úvodní průchod a ověřený nákup.', code: 'ONBOARDING_INCOMPLETE' },
+      profile,
     };
   }
 
@@ -772,7 +808,7 @@ const PROFILE_COLUMNS =
   'id, email, name, created_at, trial_expires_at, subscription_status, ' +
   'stripe_subscription_id, access_expires_at, plan_id, season_charge_due_at, cancel_at_period_end, ' +
   'plan_started_at, last_paid_at, theme_palette, theme_mode, gender, tester_school_code, ' +
-  'tester_access_until, tester_guidance_seen_at';
+  'tester_access_until, tester_guidance_seen_at, onboarding_completed_at';
 
 // 14 days is the statutory minimum for everyone (§1829). Extended to 30 here
 // so the SAME self-service button also delivers the "full refund within 30
@@ -808,6 +844,19 @@ app.get('/api/me', requireAuth, async (req, res) => {
     .single();
 
   if (error) return res.status(404).json({ error: error.message });
+  profile = await ensureTrialStarted(req.user.id, profile);
+  profile = await healOnboarding(req.user.id, profile);
+
+  let onboardingStep = 'welcome';
+  if (!profile.onboarding_completed_at) {
+    const { data: progress, error: progressError } = await supabase
+      .from('onboarding_progress')
+      .select('step_id')
+      .eq('user_id', req.user.id)
+      .maybeSingle();
+    if (progressError) return res.status(503).json({ error: 'Pokračování v onboardingu se nepodařilo ověřit.' });
+    onboardingStep = progress?.step_id || onboardingStep;
+  }
 
   // Changing an email updates auth.users, but the copy in public.users was
   // written once by the signup trigger and would otherwise stay stale forever.
@@ -863,10 +912,18 @@ app.get('/api/me', requireAuth, async (req, res) => {
   }
   const trialActive = !isTester && !isCreator && new Date(profile.trial_expires_at) > now;
   const subscribed = !isTester && !isCreator && paidAccessActive(profile);
-  const hasAccess = isTester ? beta.hasAccess : isCreator ? creatorAccess.hasAccess : trialActive || subscribed;
+  const onboardingComplete = Boolean(profile.onboarding_completed_at) || isDeveloper || isTester || isCreator;
+  const hasAccess = isTester
+    ? beta.hasAccess
+    : isCreator
+      ? creatorAccess.hasAccess
+      : onboardingComplete && (trialActive || subscribed);
 
   res.json({
     ...profile,
+    onboardingCompletedAt: profile.onboarding_completed_at,
+    onboardingStep,
+    onboardingComplete,
     isTester,
     isCreator,
     isDeveloper,
@@ -1019,25 +1076,45 @@ app.delete('/api/me', requireAuth, async (req, res) => {
   // Feedback screenshots are stored under "<user id>/" and are not covered by
   // the database cascade. Remove them first; on failure keep the account so the
   // deletion can be retried instead of leaving the images behind.
-  // ponytail: one page of 1000 objects; a tester is limited far below that.
+  // List every page first (storage lists at most 1000 per call, and removing while
+  // paging would shift the offsets), then remove in batches.
   const bucket = supabase.storage.from('beta-screenshots');
-  const { data: shots, error: listError } = await bucket.list(req.user.id, { limit: 1000 });
-  if (listError) return res.status(502).json({ error: 'Snímky ze zpětné vazby se nepodařilo smazat. Účet zatím nebyl smazán; zkus to prosím znovu.' });
-  if (shots?.length) {
-    const { error: removeError } = await bucket.remove(shots.map((f) => `${req.user.id}/${f.name}`));
-    if (removeError) return res.status(502).json({ error: 'Snímky ze zpětné vazby se nepodařilo smazat. Účet zatím nebyl smazán; zkus to prosím znovu.' });
+  const screenshotFailure = { error: 'Snímky ze zpětné vazby se nepodařilo smazat. Účet zatím nebyl smazán; zkus to prosím znovu.' };
+  const screenshotPaths = [];
+  for (let offset = 0; ; offset += 1000) {
+    const { data: page, error: listError } = await bucket.list(req.user.id, { limit: 1000, offset });
+    if (listError) return res.status(502).json(screenshotFailure);
+    screenshotPaths.push(...(page || []).map((f) => `${req.user.id}/${f.name}`));
+    if (!page || page.length < 1000) break;
+  }
+  for (let i = 0; i < screenshotPaths.length; i += 1000) {
+    const { error: removeError } = await bucket.remove(screenshotPaths.slice(i, i + 1000));
+    if (removeError) return res.status(502).json(screenshotFailure);
   }
 
   // Beta feedback, closing answers and the website review are kept without the
   // account id unless the user ticked "delete them too". Screenshots are never kept.
-  // ponytail: a deleteUser failure after this leaves an archive copy that a retry duplicates.
+  let archivedIds = [];
   if (req.body?.delete_contributions !== true) {
-    const { error: archiveError } = await supabase.rpc('archive_beta_contributions', { p_user_id: req.user.id });
+    const { data: archived, error: archiveError } = await supabase.rpc('archive_beta_contributions', { p_user_id: req.user.id });
     if (archiveError) return res.status(500).json({ error: 'Zpětnou vazbu se nepodařilo uložit bez vazby na účet. Účet zatím nebyl smazán; zkus to prosím znovu.' });
+    archivedIds = Array.isArray(archived) ? archived : [];
   }
 
   const { error } = await supabase.auth.admin.deleteUser(req.user.id);
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) {
+    // The account may still exist, so the next try archives (or deletes) from
+    // scratch: take this try's archive copy back out first. Only when the account
+    // is confirmed present; a deletion that did succeed keeps its copy.
+    if (archivedIds.length) {
+      const { data: still, error: lookupError } = await supabase.auth.admin.getUserById(req.user.id);
+      if (!lookupError && still?.user) {
+        const { error: undoError } = await supabase.rpc('remove_beta_archive_rows', { p_ids: archivedIds });
+        if (undoError) console.error('Archive copy of a failed account deletion could not be removed:', undoError.code || 'database unavailable');
+      }
+    }
+    return res.status(500).json({ error: error.message });
+  }
 
   res.status(204).end();
 });
@@ -1315,17 +1392,93 @@ app.post('/api/me/onboarding-answers', requireAuth, async (req, res) => {
   return res.status(result.status).json(result.body);
 });
 
+const ONBOARDING_STEPS = new Set([
+  'welcome','role','stakes','calculating','reveal','commitment','proof',
+  'hodnota','cesta','ucet','plan','zkusebni','platba','hotovo',
+]);
+const ONBOARDING_INTENTS = new Set(['srovnat','porovnat','sance','obor','rodice','terminy','dojezd']);
+function validOnboardingStep(value) {
+  return ONBOARDING_STEPS.has(value) || /^q([1-9]|1[01])$/.test(value || '');
+}
+
+app.get('/api/me/onboarding-progress', requireAuth, async (req, res) => {
+  const { data: profile, error: profileError } = await supabase
+    .from('users')
+    .select('onboarding_completed_at')
+    .eq('id', req.user.id)
+    .single();
+  if (profileError) return res.status(503).json({ error: 'Stav onboardingu se nepodařilo ověřit.' });
+  if (profile.onboarding_completed_at) return res.json({ completed: true });
+
+  const { data, error } = await supabase.from('onboarding_progress')
+    .select('step_id,role,answers,intents,commitment,gender,plan_id,updated_at')
+    .eq('user_id', req.user.id)
+    .maybeSingle();
+  if (error) return res.status(503).json({ error: 'Pokračování v onboardingu se nepodařilo načíst.' });
+  res.set('Cache-Control', 'no-store');
+  res.json({
+    completed: false,
+    stepId: data?.step_id || 'welcome',
+    role: data?.role || null,
+    answers: data?.answers || {},
+    intents: data?.intents || [],
+    commitment: data?.commitment || null,
+    gender: data?.gender || null,
+    planId: data?.plan_id || 'season',
+    updatedAt: data?.updated_at || null,
+  });
+});
+
+app.put('/api/me/onboarding-progress', requireAuth, async (req, res) => {
+  const body = req.body || {};
+  if (!validOnboardingStep(body.stepId)) return res.status(400).json({ error: 'Neplatný krok onboardingu.' });
+  if (body.role !== null && body.role !== undefined && !['student','parent'].includes(body.role)) {
+    return res.status(400).json({ error: 'Neplatná role v onboardingu.' });
+  }
+  const checkedAnswers = validateOnboardingAnswers(body.answers || {});
+  if (!checkedAnswers.ok) return res.status(400).json({ error: checkedAnswers.error });
+  if (!Array.isArray(body.intents) || body.intents.length > ONBOARDING_INTENTS.size ||
+      new Set(body.intents).size !== body.intents.length || !body.intents.every((value) => ONBOARDING_INTENTS.has(value))) {
+    return res.status(400).json({ error: 'Neplatný výběr v onboardingu.' });
+  }
+  if (body.commitment !== null && body.commitment !== undefined && !['maximalne','hodne','zjistuji'].includes(body.commitment)) {
+    return res.status(400).json({ error: 'Neplatná odpověď v onboardingu.' });
+  }
+  if (body.gender !== null && body.gender !== undefined && !['m','f','u'].includes(body.gender)) {
+    return res.status(400).json({ error: 'Neplatné oslovení v onboardingu.' });
+  }
+  if (!['season','monthly'].includes(body.planId)) return res.status(400).json({ error: 'Neplatný plán v onboardingu.' });
+  if (JSON.stringify(body).length > 32_000) return res.status(413).json({ error: 'Rozpracovaný onboarding je příliš velký.' });
+
+  const { data: profile, error: profileError } = await supabase
+    .from('users')
+    .select('onboarding_completed_at')
+    .eq('id', req.user.id)
+    .single();
+  if (profileError) return res.status(503).json({ error: 'Stav onboardingu se nepodařilo ověřit.' });
+  if (profile.onboarding_completed_at) return res.status(409).json({ error: 'Tento účet už onboarding dokončil.' });
+
+  const { error } = await supabase.from('onboarding_progress').upsert({
+    user_id: req.user.id,
+    step_id: body.stepId,
+    role: body.role || null,
+    answers: checkedAnswers.answers,
+    intents: body.intents,
+    commitment: body.commitment || null,
+    gender: body.gender || null,
+    plan_id: body.planId,
+    updated_at: new Date().toISOString(),
+  }, { onConflict: 'user_id' });
+  if (error) return res.status(503).json({ error: 'Rozpracovaný onboarding se nepodařilo uložit.' });
+  res.status(204).end();
+});
+
 /* ---------------------------------------------------------------------------
  * Schools
  *
- * ⚠️ DELIBERATELY UNGATED. These two routes take `optionalAuth` and NOT
- * `requireAuth`/`requireAccess`, unlike everything else below.
- *
- * The 23-screen onboarding flow reads school data during the quiz — before any
- * account exists — so gating these would break the funnel at its widest point.
- * Gate them once the onboarding paywall is wired to real trial/access state;
- * until then, RLS on `schools` still blocks the browser from reading the table
- * directly, so this server remains the only way in.
+ * Anonymous users get the public landing-map projection and view-only detail.
+ * Full catalogue data requires access, except the scoped authenticated request
+ * used by an account that has not completed onboarding yet.
  * ------------------------------------------------------------------------- */
 
 /**
@@ -1577,6 +1730,28 @@ const LIST_SELECT = '*, school_programs(*), school_extracted_details(*)';
 // school_extracted_details joined so /porovnani's decision matrix can score
 // maturita_pass_rate_pct / tuition_czk_per_year, not just the pros/cons text.
 const FULL_SELECT = '*, school_programs(*), school_ai_summary(*), school_extracted_details(*)';
+const PUBLIC_LIST_SELECT = `id,name,official_name,location,contact,website,latitude,longitude,school_programs(${LIST_PROGRAM_FIELDS.join(',')})`;
+const PUBLIC_DETAIL_SELECT = 'id,name,official_name,location,contact,website,latitude,longitude,merged_into,hidden_reason,school_programs(*),school_extracted_details(*)';
+
+function publicSchoolDetail(school) {
+  const { id, name, official_name, location, contact, website, latitude, longitude, district, school_programs, school_extracted_details } = school;
+  return { id, name, official_name, location, contact, website, latitude, longitude, district, school_programs, school_extracted_details };
+}
+
+async function catalogueMode(req, onboarding = false) {
+  if (!req.user) {
+    return onboarding
+      ? { error: { status: 401, body: { error: 'Pro onboarding se přihlas.' } } }
+      : { mode: 'public' };
+  }
+  const access = await accessStateFor(req.user.id, req.user.email);
+  if (access.hasAccess) return { mode: 'full' };
+  if (access.httpStatus === 503) return { error: { status: 503, body: access.body } };
+  if (onboarding && access.body?.code === 'ONBOARDING_INCOMPLETE') return { mode: 'onboarding' };
+  return onboarding
+    ? { error: { status: access.httpStatus, body: access.body } }
+    : { mode: 'public' };
+}
 
 app.get('/api/commute/stops', (req, res) => {
   if (!commuteMatrix) return res.status(503).json({ error: 'Odhad dojezdu je dočasně nedostupný.' });
@@ -1603,6 +1778,7 @@ app.get('/api/schools/:id/commute', optionalAuth, async (req, res) => {
 });
 
 app.get('/api/schools', optionalAuth, async (req, res) => {
+  const onboardingScope = req.query.scope === 'onboarding';
   // ?ids=1,2,3 — the comparison surfaces need full per-obor rows (the risk
   // analysis reads per-obor cutoffs) and the cached pros/cons, but only for
   // the handful of schools a student actually selected.
@@ -1617,20 +1793,33 @@ app.get('/api/schools', optionalAuth, async (req, res) => {
     ) {
       return res.status(400).json({ error: 'Neplatný parametr ids.' });
     }
+    const permission = await catalogueMode(req);
+    if (permission.error) return res.status(permission.error.status).json(permission.error.body);
+    if (permission.mode !== 'full') return res.status(402).json({ error: 'Pro porovnání je potřeba aktivní přístup.', code: 'PAYMENT_REQUIRED' });
     const { data, error } = await supabase.from('schools').select(FULL_SELECT).in('id', ids).is('hidden_reason', null);
     if (error) return res.status(500).json({ error: error.message });
     return res.json(await withMatchScores(req.user?.id, await withPredecessorPrograms(data)));
   }
 
+  const permission = await catalogueMode(req, onboardingScope);
+  if (permission.error) return res.status(permission.error.status).json(permission.error.body);
+
   let rows;
   try {
-    rows = await fetchAllSchools(LIST_SELECT);
+    rows = await fetchAllSchools(permission.mode === 'public' ? PUBLIC_LIST_SELECT : LIST_SELECT);
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
 
   const slim = rows.map((s) => ({ ...s, school_programs: slimProgramsForList(s.school_programs) }));
-  res.json(await withMatchScores(req.user?.id, slim));
+  if (permission.mode === 'public') {
+    return res.json(withDistricts(slim).map(({
+      id, name, official_name, location, contact, website, latitude, longitude, district, school_programs,
+    }) => ({ id, name, official_name, location, contact, website, latitude, longitude, district, school_programs })));
+  }
+  res.set('Cache-Control', 'private, no-store');
+  if (permission.mode === 'onboarding') return res.json(slim);
+  res.json(await withMatchScores(req.user.id, slim));
 });
 
 app.get('/api/schools/:id', optionalAuth, async (req, res) => {
@@ -1639,9 +1828,13 @@ app.get('/api/schools/:id', optionalAuth, async (req, res) => {
     return res.status(400).json({ error: 'Neplatné ID školy.' });
   }
 
+  const permission = await catalogueMode(req);
+  if (permission.error) return res.status(permission.error.status).json(permission.error.body);
+  const select = permission.mode === 'full' ? FULL_SELECT : PUBLIC_DETAIL_SELECT;
+
   const { data, error } = await supabase
     .from('schools')
-    .select('*, school_programs(*), school_ai_summary(*), school_extracted_details(*)')
+    .select(select)
     .eq('id', id)
     .single();
 
@@ -1655,7 +1848,7 @@ app.get('/api/schools/:id', optionalAuth, async (req, res) => {
   if (row.merged_into) {
     const { data: successor, error: successorError } = await supabase
       .from('schools')
-      .select('*, school_programs(*), school_ai_summary(*), school_extracted_details(*)')
+      .select(select)
       .eq('id', row.merged_into)
       .single();
     if (successorError) return res.status(500).json({ error: successorError.message });
@@ -1663,7 +1856,14 @@ app.get('/api/schools/:id', optionalAuth, async (req, res) => {
     row = successor;
   }
 
-  const [school] = await withMatchScores(req.user?.id, await withPredecessorPrograms([row]));
+  const programs = await withPredecessorPrograms([row]);
+  if (permission.mode !== 'full') {
+    const [school] = withDistricts(programs).map(publicSchoolDetail);
+    res.set('Cache-Control', 'private, no-store');
+    return res.json(school);
+  }
+  const [school] = await withMatchScores(req.user.id, programs);
+  res.set('Cache-Control', 'private, no-store');
   res.json(school);
 });
 
@@ -2024,33 +2224,30 @@ app.put('/api/picks', decisionLimiter, requireAuth, requireAccess, async (req, r
     }
     seen.add(schoolId);
     rows.push({
-      user_id: req.user.id,
       school_id: schoolId,
-      priority: rows.length + 1,
       obor_kkov: typeof pick.oborKkov === 'string' ? pick.oborKkov.slice(0, 40) : null,
       obor_nazev: typeof pick.oborNazev === 'string' ? pick.oborNazev.slice(0, 200) : null,
     });
   }
 
-  let unavailable;
-  try { unavailable = await unavailableSchoolIds(); } catch (err) { return res.status(500).json({ error: err.message }); }
-  if (rows.some((row) => unavailable.has(row.school_id))) {
-    return res.status(400).json({ error: 'Škola už není v nabídce.' });
+  // One transaction in the database: validate visibility and programmes, then
+  // replace the visible picks. Hidden-school picks are kept.
+  const { data: saved, error } = await supabase.rpc('save_application_picks', {
+    p_user_id: req.user.id,
+    p_picks: rows,
+  });
+  if (error) {
+    const message = {
+      SCHOOL_UNAVAILABLE: 'Škola už není v nabídce.',
+      INVALID_PROGRAM: 'Tento obor už u školy není v nabídce. Vyber jiný.',
+      TOO_MANY_PICKS: 'Do přihlášky patří nejvýš 3 školy.',
+      INVALID_PICKS: 'Neplatný formát.',
+    }[error.hint];
+    if (message) return res.status(400).json({ error: message, code: error.hint });
+    return res.status(500).json({ error: error.message });
   }
 
-  // Replace the visible picks only: a pick on a hidden school is kept (never
-  // deleted), the client just does not see it.
-  let deleteQuery = supabase.from('application_picks').delete().eq('user_id', req.user.id);
-  if (unavailable.size) deleteQuery = deleteQuery.not('school_id', 'in', `(${[...unavailable].join(',')})`);
-  const { error: deleteError } = await deleteQuery;
-  if (deleteError) return res.status(500).json({ error: deleteError.message });
-
-  if (rows.length) {
-    const { error: insertError } = await supabase.from('application_picks').insert(rows);
-    if (insertError) return res.status(500).json({ error: insertError.message });
-  }
-
-  res.status(200).json({ ok: true, count: rows.length });
+  res.status(200).json({ ok: true, count: typeof saved === 'number' ? saved : rows.length });
 });
 
 app.delete('/api/picks/:schoolId', requireAuth, async (req, res) => {
@@ -2453,6 +2650,7 @@ app.post('/api/pay-links/:token/checkout', requireSharing, checkoutLimiter, asyn
     planId: req.body?.planId,
     successPath: '/platba-rodice/' + req.params.token,
     cancelPath: '/platba-rodice/' + req.params.token,
+    checkoutContext: 'parent',
   });
   return res.status(result.status).json(result.body);
 });
@@ -2893,6 +3091,8 @@ app.post(
   }
 );
 
+const explainInFlight = new Map();
+
 app.post(
   '/api/questionnaire/explain/:schoolId',
   requireAuth,
@@ -2945,37 +3145,47 @@ app.post(
       const match = fullOrder.find((entry) => entry.school_id === schoolId);
       if (!match) return res.status(404).json({ error: 'Školu se nepodařilo vyhodnotit.' });
 
-      const reasons = await requestReasons({
-        answers: run.answers,
-        shortlist: [match],
-        byId: new Map([[schoolId, school]]),
-        fullOrder,
-        nameById: new Map(schools.map((entry) => [entry.id, entry])),
-        apiKey: OPENROUTER_API_KEY,
-        model: OPENROUTER_MODEL,
-        referer: FRONTEND_URL,
-        gender: req.profile?.gender === 'f' ? 'f' : 'm',
-        onUsage: (outcome) => logAiUsage(supabase, {
-          ...outcome,
-          source: 'explain',
-          model: OPENROUTER_MODEL,
-          userId: req.user.id,
-          runId: run.id,
-        }),
-      });
-      const reason = reasons.get(schoolId);
-      if (!reason) throw new Error('Model nevrátil vysvětlení školy.');
+      // The same school asked twice at once shares one model call. The key
+      // includes the run id, which belongs to exactly one account.
+      const inFlightKey = `${run.id}:${schoolId}`;
+      let pending = explainInFlight.get(inFlightKey);
+      if (!pending) {
+        pending = (async () => {
+          const reasons = await requestReasons({
+            answers: run.answers,
+            shortlist: [match],
+            byId: new Map([[schoolId, school]]),
+            fullOrder,
+            nameById: new Map(schools.map((entry) => [entry.id, entry])),
+            apiKey: OPENROUTER_API_KEY,
+            model: OPENROUTER_MODEL,
+            referer: FRONTEND_URL,
+            gender: req.profile?.gender === 'f' ? 'f' : 'm',
+            onUsage: (outcome) => logAiUsage(supabase, {
+              ...outcome,
+              source: 'explain',
+              model: OPENROUTER_MODEL,
+              userId: req.user.id,
+              runId: run.id,
+            }),
+          });
+          const generated = reasons.get(schoolId);
+          if (!generated) throw new Error('Model nevrátil vysvětlení školy.');
 
-      const extraReasons = {
-        ...(run.extra_reasons && typeof run.extra_reasons === 'object' ? run.extra_reasons : {}),
-        [String(schoolId)]: reason,
-      };
-      const { error: updateError } = await supabase
-        .from('questionnaire_runs')
-        .update({ extra_reasons: extraReasons })
-        .eq('id', run.id)
-        .eq('user_id', req.user.id);
-      if (updateError) throw updateError;
+          const { data: cachedOk, error: cacheError } = await supabase.rpc('cache_questionnaire_reason', {
+            p_user_id: req.user.id,
+            p_run_id: run.id,
+            p_school_id: String(schoolId),
+            p_answers: run.answers,
+            p_reason: generated,
+          });
+          if (cacheError) throw cacheError;
+          if (!cachedOk) throw new Error('Odpovědi se mezitím změnily.');
+          return generated;
+        })().finally(() => explainInFlight.delete(inFlightKey));
+        explainInFlight.set(inFlightKey, pending);
+      }
+      const reason = await pending;
 
       return res.json({ reason, cached: false });
     } catch (err) {
@@ -3220,6 +3430,8 @@ app.patch('/api/questionnaire/runs/:id/archive', requireAuth, async (req, res) =
 // This is now the 2nd place this number lives (was previously encoded only as
 // a Stripe Price; season no longer has one). Change both together.
 const SEASON_PRICE_CZK = 690;
+// Mirrors the locked monthly Stripe Price and is stored in the purchase ledger.
+const MONTHLY_PRICE_CZK = 249;
 
 // Must mirror the seasonal purchase TRIAL_DAYS in frontend/src/config/pricing.js.
 // The ordinary-account access trial is separate (first-confirmed-sign-in change pending).
@@ -3246,7 +3458,47 @@ app.post('/api/me/redeem-beta-code', requireAuth, (req, res) => {
   });
 });
 
-async function createCheckoutForUser({ userId, email, planId, successPath, cancelPath }) {
+async function findPendingPurchase(userId, planId, checkoutContext) {
+  return supabase
+    .from('purchases')
+    .select('id, stripe_checkout_session_id, checkout_context')
+    .eq('user_id', userId)
+    .eq('plan', planId)
+    .eq('status', 'pending')
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+}
+
+async function reservePurchase({ userId, planId, checkoutContext }) {
+  const existing = await findPendingPurchase(userId, planId, checkoutContext);
+  if (existing.error) throw existing.error;
+  if (existing.data) return existing.data;
+
+  const { data, error } = await supabase
+    .from('purchases')
+    .insert({
+      user_id: userId,
+      plan: planId,
+      checkout_context: checkoutContext,
+      price_amount_minor: (planId === 'season' ? SEASON_PRICE_CZK : MONTHLY_PRICE_CZK) * 100,
+      currency: 'czk',
+      status: 'pending',
+    })
+    .select('id, stripe_checkout_session_id, checkout_context')
+    .single();
+
+  if (!error) return data;
+  if (error.code !== '23505') throw error;
+
+  // A simultaneous request inserted the unique pending row. Both requests
+  // will use the same Stripe idempotency key derived from that row.
+  const raced = await findPendingPurchase(userId, planId, checkoutContext);
+  if (raced.error || !raced.data) throw raced.error || error;
+  return raced.data;
+}
+
+async function createCheckoutForUser({ userId, email, planId, successPath, cancelPath, checkoutContext = 'self' }) {
   if (planId !== 'season' && planId !== 'monthly') {
     return { status: 400, body: { error: 'Neplatný plán.' } };
   }
@@ -3321,24 +3573,10 @@ async function createCheckoutForUser({ userId, email, planId, successPath, cance
 
   if (planId === 'season') {
     try {
-      const session = await stripe.checkout.sessions.create({
-        mode: 'setup',
-        currency: 'czk',
-        ...billingCustomer,
-        ...(email === undefined ? { customer_creation: 'always' } : {}),
-        success_url: successUrl,
-        cancel_url: cancelUrl,
-        client_reference_id: userId,
-        metadata: { plan_id: 'season', app_user_id: userId },
-        custom_text: {
-          submit: {
-            message: 'Uložíme jen platební metodu, nic se nestrhává hned. Za ' +
-              SEASON_TRIAL_DAYS + ' dny proběhne jednorázová platba ' +
-              SEASON_PRICE_CZK + ' Kč za celou sezónu (září–březen) — pak už nic dalšího.',
-          },
-        },
+      return await createTrackedCheckout({
+        userId, planId, checkoutContext, amount: SEASON_PRICE_CZK * 100,
+        successUrl, cancelUrl, billingCustomer, email,
       });
-      return { status: 200, body: { url: session.url } };
     } catch (err) {
       return { status: 500, body: { error: err.message } };
     }
@@ -3353,21 +3591,105 @@ async function createCheckoutForUser({ userId, email, planId, successPath, cance
   }
 
   try {
-    const session = await stripe.checkout.sessions.create({
-      mode: 'subscription',
-      line_items: [{ price: priceId, quantity: 1 }],
-      ...billingCustomer,
-      success_url: successUrl,
-      cancel_url: cancelUrl,
-      client_reference_id: userId,
-      subscription_data: {
-        metadata: { plan_id: planId, app_user_id: userId },
-      },
+    return await createTrackedCheckout({
+      userId, planId, checkoutContext, amount: MONTHLY_PRICE_CZK * 100,
+      successUrl, cancelUrl, billingCustomer, email, priceId,
     });
-    return { status: 200, body: { url: session.url } };
   } catch (err) {
     return { status: 500, body: { error: err.message } };
   }
+}
+
+async function createTrackedCheckout({
+  userId, planId, checkoutContext, amount, successUrl, cancelUrl,
+  billingCustomer, email, priceId,
+}) {
+  let purchase = await reservePurchase({ userId, planId, checkoutContext });
+  if (purchase.checkout_context !== checkoutContext) {
+    // An open checkout started from the other side (student vs parent link) has
+    // the wrong return URLs: close it and start a fresh one for this caller.
+    if (purchase.stripe_checkout_session_id) {
+      try { await stripe.checkout.sessions.expire(purchase.stripe_checkout_session_id); } catch { /* already closed */ }
+    }
+    const { error } = await supabase.from('purchases')
+      .update({ status: 'failed', updated_at: new Date().toISOString() })
+      .eq('id', purchase.id).eq('status', 'pending');
+    if (error) throw error;
+    purchase = await reservePurchase({ userId, planId, checkoutContext });
+  }
+  if (purchase.stripe_checkout_session_id) {
+    let existingSession;
+    try {
+      existingSession = await stripe.checkout.sessions.retrieve(purchase.stripe_checkout_session_id);
+    } catch {
+      throw new Error('Nepodařilo se ověřit rozpracovanou platbu. Zkus to prosím znovu.');
+    }
+    if (existingSession.status === 'open' && existingSession.url) {
+      return { status: 200, body: { url: existingSession.url } };
+    }
+    if (existingSession.status === 'complete') {
+      return {
+        status: 409,
+        body: { error: 'Platba se právě potvrzuje. Obnov stránku za chvíli.', code: 'CHECKOUT_PROCESSING' },
+      };
+    }
+    if (existingSession.status !== 'expired') {
+      throw new Error('Rozpracovanou platbu se nepodařilo bezpečně ověřit.');
+    }
+
+    const { error } = await supabase
+      .from('purchases')
+      .update({ status: 'failed', updated_at: new Date().toISOString() })
+      .eq('id', purchase.id)
+      .eq('status', 'pending');
+    if (error) throw error;
+    purchase = await reservePurchase({ userId, planId, checkoutContext });
+  }
+
+  const metadata = { plan_id: planId, app_user_id: userId, purchase_id: purchase.id };
+  const sessionParams = planId === 'season'
+    ? {
+        mode: 'setup',
+        currency: 'czk',
+        ...billingCustomer,
+        ...(email === undefined ? { customer_creation: 'always' } : {}),
+        success_url: successUrl,
+        cancel_url: cancelUrl,
+        client_reference_id: userId,
+        metadata,
+        custom_text: {
+          submit: {
+            message: 'Uložíme jen platební metodu, nic se nestrhává hned. Za ' +
+              SEASON_TRIAL_DAYS + ' dny proběhne jednorázová platba ' +
+              SEASON_PRICE_CZK + ' Kč za celou sezónu (září–březen) — pak už nic dalšího.',
+          },
+        },
+      }
+    : {
+        mode: 'subscription',
+        line_items: [{ price: priceId, quantity: 1 }],
+        ...billingCustomer,
+        success_url: successUrl,
+        cancel_url: cancelUrl,
+        client_reference_id: userId,
+        metadata,
+        subscription_data: { metadata },
+      };
+
+  const session = await stripe.checkout.sessions.create(sessionParams, {
+    idempotencyKey: `snm-checkout:${purchase.id}`,
+  });
+  const { error: saveError } = await supabase
+    .from('purchases')
+    .update({
+      price_amount_minor: amount,
+      stripe_checkout_session_id: session.id,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', purchase.id)
+    .eq('status', 'pending');
+  if (saveError) throw saveError;
+  return { status: 200, body: { url: session.url } };
 }
 
 app.post('/api/checkout', checkoutLimiter, requireAuth, async (req, res) => {
@@ -3392,7 +3714,7 @@ async function cancelPlanForUser(userId) {
 
   const { data: profile, error: profileError } = await supabase
     .from('users')
-    .select('stripe_subscription_id, plan_id, subscription_status')
+    .select('stripe_subscription_id, plan_id, subscription_status, season_charge_due_at')
     .eq('id', userId)
     .single();
 
@@ -3400,24 +3722,88 @@ async function cancelPlanForUser(userId) {
     return { status: 500, body: { error: 'Nepodařilo se ověřit předplatné. Zkus to prosím znovu.' } };
   }
 
-  if (profile?.plan_id === 'season' && profile.subscription_status === 'trialing') {
-    const { error } = await supabase
-      .from('users')
-      .update({
-        plan_id: null,
-        subscription_status: 'canceled',
-        season_charge_due_at: null,
+  if (profile?.plan_id === 'season' && ['trialing', 'past_due'].includes(profile.subscription_status) && profile.season_charge_due_at) {
+    const { data: purchase, error: purchaseError } = await supabase
+      .from('purchases')
+      .select('id')
+      .eq('user_id', userId)
+      .eq('plan', 'season')
+      .eq('status', 'active')
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    if (purchaseError) {
+      return { status: 500, body: { error: 'Platební stav se nepodařilo ověřit.' } };
+    }
+    if (!purchase?.id) {
+      // Legacy trial rows pre-date the purchase ledger. They have no queued
+      // Stripe charge to cancel, so clearing the schedule is safe.
+      const { error } = await supabase.from('users').update({
+        plan_id: null, subscription_status: 'canceled', season_charge_due_at: null,
         stripe_payment_method_id: null,
-      })
-      .eq('id', userId);
-    if (error) {
-      return { status: 500, body: { error: 'Předplatné se nepodařilo zrušit. Zkus to prosím znovu.' } };
+      }).eq('id', userId).eq('subscription_status', 'trialing');
+      if (error) return { status: 500, body: { error: 'Předplatné se nepodařilo zrušit. Zkus to prosím znovu.' } };
+      return { status: 200, body: { cancelled: 'immediately', accessUntil: null } };
+    }
+
+    const { data: cancelRows, error: cancelError } = await supabase.rpc('request_season_charge_cancel', {
+      p_user_id: userId, p_purchase_id: purchase.id,
+    });
+    if (cancelError) return { status: 500, body: { error: 'Zrušení se nepodařilo bezpečně uložit.' } };
+    const cancellation = Array.isArray(cancelRows) ? cancelRows[0] : cancelRows;
+    if (cancellation?.result === 'already_charged') {
+      return { status: 409, body: { code: 'SEASON_ALREADY_CHARGED', error: 'Jednorázová platba už proběhla; sezónní přístup se neobnovuje.' } };
+    }
+    if (cancellation?.result === 'cancellation_requested' && cancellation.payment_intent_id) {
+      try {
+        const intent = await stripe.paymentIntents.retrieve(cancellation.payment_intent_id);
+        if (intent.status === 'succeeded') {
+          await supabase.rpc('set_season_charge_state', {
+            p_purchase_id: purchase.id, p_state: 'succeeded', p_payment_intent_id: intent.id,
+          });
+          const refundStatus = await refundCanceledSeasonPurchase({
+            purchaseId: purchase.id, userId, paymentIntentId: intent.id, finishSeasonCancel: true,
+          });
+          return { status: refundStatus === 'pending' ? 202 : 200, body: {
+            cancelled: refundStatus === 'pending' ? 'pending' : 'immediately', accessUntil: null,
+          } };
+        }
+        if (!['canceled', 'processing'].includes(intent.status)) {
+          await stripe.paymentIntents.cancel(intent.id);
+        }
+        if (intent.status !== 'processing') {
+          await supabase.rpc('finish_season_charge_cancel', { p_user_id: userId, p_purchase_id: purchase.id });
+          return { status: 200, body: { cancelled: 'immediately', accessUntil: null } };
+        }
+      } catch (err) {
+        console.error('Season charge cancellation is pending:', err.code || err.type || 'stripe_error');
+        return { status: 202, body: { cancelled: 'pending', accessUntil: null } };
+      }
+    }
+    if (cancellation?.result === 'cancellation_requested') {
+      return { status: 202, body: { cancelled: 'pending', accessUntil: null } };
+    }
+    if (cancellation?.result === 'not_found') {
+      return { status: 500, body: { error: 'Platební záznam se nepodařilo ověřit.' } };
     }
     return { status: 200, body: { cancelled: 'immediately', accessUntil: null } };
   }
 
   if (!profile?.stripe_subscription_id) {
     return { status: 400, body: { error: 'Žádné aktivní předplatné k zrušení.' } };
+  }
+
+  const { data: monthlyPurchase, error: monthlyPurchaseError } = await supabase.from('purchases')
+    .select('id').eq('user_id', userId).eq('plan', 'monthly').eq('status', 'active')
+    .order('created_at', { ascending: false }).limit(1).maybeSingle();
+  if (monthlyPurchaseError) {
+    return { status: 500, body: { error: 'Platební stav se nepodařilo ověřit.' } };
+  }
+  if (monthlyPurchase?.id) {
+    const { error } = await supabase.from('purchases').update({
+      cancel_requested_at: new Date().toISOString(), updated_at: new Date().toISOString(),
+    }).eq('id', monthlyPurchase.id).eq('user_id', userId).eq('status', 'active');
+    if (error) return { status: 500, body: { error: 'Zrušení se nepodařilo bezpečně uložit.' } };
   }
 
   try {
@@ -3455,17 +3841,26 @@ async function withdrawPlanForUser(userId) {
 
   const { data: profile, error: profileError } = await supabase
     .from('users')
-    .select(
-      'stripe_customer_id, stripe_subscription_id, plan_id, subscription_status, ' +
-        'plan_started_at, last_paid_at'
-    )
+    .select('stripe_customer_id, stripe_subscription_id, plan_id, subscription_status, plan_started_at, last_paid_at')
     .eq('id', userId)
     .single();
   if (profileError) {
     return { status: 500, body: { error: 'Nepodařilo se ověřit předplatné. Zkus to prosím znovu.' } };
   }
 
-  if (!canWithdraw(profile)) {
+  const { data: purchase, error: purchaseError } = await supabase
+    .from('purchases')
+    .select('id, plan, status, stripe_payment_intent_id, stripe_subscription_id, refund_status, refund_attempts, season_charge_status')
+    .eq('user_id', userId)
+    .in('status', ['active', 'withdrawn'])
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (purchaseError) {
+    return { status: 500, body: { error: 'Platební záznam se nepodařilo ověřit.' } };
+  }
+  const retryingRefund = purchase?.status === 'withdrawn' && ['pending', 'failed'].includes(purchase.refund_status);
+  if (!canWithdraw(profile) && !retryingRefund) {
     return {
       status: 400,
       body: {
@@ -3476,6 +3871,18 @@ async function withdrawPlanForUser(userId) {
   }
 
   try {
+    // Record the request before contacting Stripe, so a process crash cannot
+    // make a retry look like a fresh or unrelated purchase.
+    if (purchase && purchase.status !== 'withdrawn') {
+      const { error } = await supabase.from('purchases').update({
+        status: 'withdrawn',
+        cancel_requested_at: new Date().toISOString(),
+        refund_status: purchase.stripe_payment_intent_id ? 'pending' : 'none',
+        updated_at: new Date().toISOString(),
+      }).eq('id', purchase.id).eq('user_id', userId);
+      if (error) throw error;
+    }
+
     if (profile.stripe_subscription_id) {
       const sub = await stripe.subscriptions.retrieve(profile.stripe_subscription_id);
       if (!['canceled', 'incomplete_expired'].includes(sub.status)) {
@@ -3483,54 +3890,104 @@ async function withdrawPlanForUser(userId) {
       }
     }
 
-    let refundedHaleru = 0;
-    if (profile.stripe_customer_id) {
-      const since = Math.floor(new Date(profile.plan_started_at).getTime() / 1000) - 3600;
-      const payments = await stripe.paymentIntents.list({
-        customer: profile.stripe_customer_id,
-        created: { gte: since },
-        limit: 100,
+    let paymentIntentId = purchase?.stripe_payment_intent_id || null;
+    if (!paymentIntentId && purchase?.plan === 'monthly' && profile.stripe_subscription_id) {
+      const sub = await stripe.subscriptions.retrieve(profile.stripe_subscription_id, {
+        expand: ['latest_invoice.payment_intent'],
       });
-      for (const intent of payments.data) {
-        if (intent.status !== 'succeeded') continue;
-        try {
-          const refund = await stripe.refunds.create(
-            { payment_intent: intent.id, reason: 'requested_by_customer' },
-            { idempotencyKey: 'withdraw:' + intent.id }
-          );
-          refundedHaleru += refund.amount;
-        } catch (err) {
-          if (err.code !== 'charge_already_refunded') throw err;
-        }
+      const latestInvoice = sub.latest_invoice;
+      const paymentIntent = typeof latestInvoice === 'object' ? latestInvoice.payment_intent : null;
+      paymentIntentId = typeof paymentIntent === 'string' ? paymentIntent : paymentIntent?.id || null;
+      if (paymentIntentId) {
+        await supabase.from('purchases').update({ stripe_payment_intent_id: paymentIntentId })
+          .eq('id', purchase.id).eq('user_id', userId).throwOnError();
       }
     }
 
-    const { error } = await supabase
-      .from('users')
-      .update({
-        plan_id: null,
-        subscription_status: 'canceled',
-        access_expires_at: new Date().toISOString(),
-        season_charge_due_at: null,
-        stripe_payment_method_id: null,
-        cancel_at_period_end: false,
-      })
-      .eq('id', userId);
+    let refundStatus = 'none';
+    let refundedHaleru = 0;
+    if (purchase && paymentIntentId) {
+      const intent = await stripe.paymentIntents.retrieve(paymentIntentId);
+      if (intent.status !== 'succeeded') {
+        refundStatus = await refundCanceledSeasonPurchase({ purchaseId: purchase.id, userId, paymentIntentId });
+      }
+      const existing = intent.status === 'succeeded'
+        ? await stripe.refunds.list({ payment_intent: paymentIntentId, limit: 100 })
+        : { data: [] };
+      const settled = (existing.data || []).find((refund) => refund.status === 'succeeded' || refund.status === 'pending');
+      if (intent.status !== 'succeeded') {
+        // The related charge has not settled, so there is nothing to refund.
+      } else if (settled?.status === 'succeeded') {
+        refundStatus = 'succeeded';
+        refundedHaleru = settled.amount;
+      } else if (settled?.status === 'pending') {
+        refundStatus = 'pending';
+      } else {
+        const failed = (existing.data || []).filter((refund) => refund.status === 'failed').length;
+        const attempt = Math.max(Number(purchase.refund_attempts) || 0, failed) + 1;
+        const { error: pendingError } = await supabase.rpc('set_purchase_refund_state', {
+          p_user_id: userId, p_purchase_id: purchase.id, p_state: 'pending', p_refund_id: null,
+        });
+        if (pendingError) throw pendingError;
+        try {
+          const refund = await stripe.refunds.create({
+            payment_intent: paymentIntentId,
+            reason: 'requested_by_customer',
+          }, { idempotencyKey: `withdraw:${purchase.id}:attempt:${attempt}` });
+          refundStatus = refund.status === 'succeeded' ? 'succeeded'
+            : refund.status === 'failed' ? 'failed' : 'pending';
+          refundedHaleru = refund.status === 'succeeded' ? refund.amount : 0;
+          const { error: saveRefundError } = await supabase.rpc('set_purchase_refund_state', {
+            p_user_id: userId, p_purchase_id: purchase.id,
+            p_state: refundStatus, p_refund_id: refund.id,
+          });
+          if (saveRefundError) throw saveRefundError;
+        } catch (err) {
+          const { error: saveRefundError } = await supabase.rpc('set_purchase_refund_state', {
+            p_user_id: userId, p_purchase_id: purchase.id, p_state: 'failed', p_refund_id: null,
+          });
+          if (saveRefundError) throw saveRefundError;
+          console.error('Purchase-linked refund failed:', err.code || err.type || 'stripe_error');
+          refundStatus = 'failed';
+        }
+      }
+      if (settled) {
+        const { error: stateError } = await supabase.rpc('set_purchase_refund_state', {
+          p_user_id: userId, p_purchase_id: purchase.id,
+          p_state: refundStatus, p_refund_id: settled.id,
+        });
+        if (stateError) throw stateError;
+      }
+    }
+
+    const at = new Date().toISOString();
+    const { error } = await supabase.from('users').update({
+      plan_id: null,
+      subscription_status: 'canceled',
+      access_expires_at: at,
+      season_charge_due_at: null,
+      stripe_payment_method_id: null,
+      cancel_at_period_end: false,
+    }).eq('id', userId);
     if (error) throw error;
 
     return {
-      status: 200,
-      body: { withdrawn: true, refundedCzk: refundedHaleru / 100, at: new Date().toISOString() },
+      status: refundStatus === 'failed' ? 202 : 200,
+      body: {
+        withdrawn: true,
+        refundedCzk: refundedHaleru / 100,
+        refundStatus,
+        at,
+      },
     };
   } catch (err) {
-    console.error('Withdrawal failed:', err.message);
+    console.error('Withdrawal failed:', err.code || err.type || 'stripe_error');
     return {
       status: 502,
-      body: { error: 'Odstoupení se nepodařilo dokončit. Zkus to prosím znovu; nic se nestrhne dvakrát.' },
+      body: { error: 'Odstoupení se zatím nepodařilo dokončit. Zkus to prosím znovu; případnou platbu zkontrolujeme podle konkrétní objednávky.' },
     };
   }
 }
-
 app.post('/api/subscription/withdraw', checkoutLimiter, requireAuth, async (req, res) => {
   const result = await withdrawPlanForUser(req.user.id);
   return res.status(result.status).json(result.body);
@@ -3538,6 +3995,82 @@ app.post('/api/subscription/withdraw', checkoutLimiter, requireAuth, async (req,
 
 // Subscription state is only ever written here, from a Stripe-signed event.
 // Nothing the browser sends can grant itself access.
+async function applyStripePurchaseEvent(event, {
+  userId = null,
+  purchaseId = null,
+  purchaseStatus = null,
+  checkoutSessionId = null,
+  setupIntentId = null,
+  paymentIntentId = null,
+  subscriptionId = null,
+  accessStartsAt = null,
+  accessEndsAt = null,
+  profilePatch = {},
+} = {}) {
+  const eventCreated = Number.isSafeInteger(event.created) && event.created >= 0
+    ? event.created
+    : Math.floor(Date.now() / 1000);
+  const { data, error } = await supabase.rpc('apply_stripe_purchase_event', {
+    p_event_id: event.id,
+    p_event_type: event.type,
+    p_event_created: eventCreated,
+    p_user_id: userId,
+    p_purchase_id: purchaseId,
+    p_purchase_status: purchaseStatus,
+    p_checkout_session_id: checkoutSessionId,
+    p_setup_intent_id: setupIntentId,
+    p_payment_intent_id: paymentIntentId,
+    p_subscription_id: subscriptionId,
+    p_access_starts_at: accessStartsAt,
+    p_access_ends_at: accessEndsAt,
+    p_profile_patch: profilePatch,
+  });
+  if (error) throw error;
+  return data;
+}
+
+async function completeOnboardingAfterCheckout(userId, purchaseId, outcome) {
+  if (!userId || !purchaseId || !['applied', 'duplicate'].includes(outcome)) return;
+  const { data, error } = await supabase.rpc('complete_paid_onboarding', {
+    p_user_id: userId,
+    p_purchase_id: purchaseId,
+  });
+  if (error) throw error;
+  if (data !== true) {
+    // e.g. the purchase was cancelled before this event arrived: nothing to retry.
+    console.warn('Paid onboarding completion skipped: no matching active purchase');
+  }
+}
+
+async function findStripePurchase({ purchaseId, subscriptionId, userId }) {
+  let query = supabase.from('purchases').select('id, user_id, cancel_requested_at, stripe_payment_intent_id, refund_status');
+  if (purchaseId) query = query.eq('id', purchaseId);
+  else if (subscriptionId) query = query.eq('stripe_subscription_id', subscriptionId);
+  else if (userId) query = query.eq('user_id', userId).eq('plan', 'season').eq('status', 'active');
+  else return null;
+  const { data, error } = await query.order('created_at', { ascending: false }).limit(1).maybeSingle();
+  if (error) throw error;
+  return data || null;
+}
+
+async function findStripeUser(column, value) {
+  if (!value) return null;
+  const { data, error } = await supabase
+    .from('users')
+    .select('id, subscription_status, stripe_setup_intent_id')
+    .eq(column, value)
+    .limit(1)
+    .maybeSingle();
+  if (error) throw error;
+  return data || null;
+}
+
+function purchaseStatusFromStripe(status) {
+  if (['canceled', 'paused'].includes(status)) return 'canceled';
+  if (['incomplete', 'incomplete_expired'].includes(status)) return 'failed';
+  return 'active';
+}
+
 async function handleStripeWebhook(req, res) {
   if (!stripe || !process.env.STRIPE_WEBHOOK_SECRET) {
     return res.status(503).end();
@@ -3554,44 +4087,43 @@ async function handleStripeWebhook(req, res) {
     return res.status(400).send(`Webhook signature failed: ${err.message}`);
   }
 
-  const object = event.data.object;
-
+  const object = event.data?.object || {};
   try {
-    // Season: mode:'setup' sessions have no subscription — they only save a
-    // payment method for chargeDueSeasonPasses() to bill later. Handled first
-    // and separately because object.subscription is absent here.
     if (event.type === 'checkout.session.completed' && object.mode === 'setup') {
-      const { data: currentProfile, error: profileError } = await supabase
-        .from('users')
-        .select('stripe_setup_intent_id, subscription_status')
-        .eq('id', object.client_reference_id)
-        .single();
-      if (profileError) throw profileError;
+      const userId = object.client_reference_id || object.metadata?.app_user_id || null;
+      const profile = userId ? await findStripeUser('id', userId) : null;
+      const purchaseId = object.metadata?.purchase_id || null;
 
-      // A retry of the same signed event must not restart a trial the user has
-      // since cancelled. A genuinely new checkout has a new SetupIntent and is
-      // allowed to schedule a new season purchase.
-      if (currentProfile?.subscription_status === 'beta') {
+      if (profile?.subscription_status === 'beta') {
         console.warn(JSON.stringify({
-          level: 'warn',
-          event: 'legacy_stripe_checkout_ignored_for_beta_tester',
-          stripeEventId: event.id,
-          stripeEventType: event.type,
-          stripeCheckoutSessionId: object.id,
-          stripeSetupIntentId: object.setup_intent,
-          userId: object.client_reference_id,
-          checkoutMode: object.mode,
+          level: 'warn', event: 'legacy_stripe_checkout_ignored_for_beta_tester',
+          stripeEventId: event.id, stripeEventType: event.type,
+          stripeCheckoutSessionId: object.id, stripeSetupIntentId: object.setup_intent,
+          userId, checkoutMode: object.mode,
         }));
-      } else if (currentProfile?.stripe_setup_intent_id !== object.setup_intent) {
+        await applyStripePurchaseEvent(event, { userId });
+      } else if (profile?.stripe_setup_intent_id === object.setup_intent) {
+        const outcome = await applyStripePurchaseEvent(event, {
+          userId,
+          purchaseId,
+          checkoutSessionId: object.id,
+          setupIntentId: object.setup_intent,
+        });
+        await completeOnboardingAfterCheckout(userId, purchaseId, outcome);
+      } else {
         const setupIntent = await stripe.setupIntents.retrieve(object.setup_intent);
-        const checkoutCompletedAt = Number.isFinite(object.created)
-          ? object.created * 1000
-          : Date.now();
-        const dueAt = new Date(checkoutCompletedAt + SEASON_TRIAL_DAYS * 24 * 60 * 60 * 1000);
-
-        await supabase
-          .from('users')
-          .update({
+        const checkoutAt = Number.isFinite(object.created) ? object.created * 1000 : Date.now();
+        const checkoutDate = new Date(checkoutAt);
+        const dueAt = new Date(checkoutAt + SEASON_TRIAL_DAYS * 24 * 60 * 60 * 1000);
+        const outcome = await applyStripePurchaseEvent(event, {
+          userId,
+          purchaseId,
+          purchaseStatus: 'active',
+          checkoutSessionId: object.id,
+          setupIntentId: object.setup_intent,
+          accessStartsAt: checkoutDate.toISOString(),
+          accessEndsAt: dueAt.toISOString(),
+          profilePatch: {
             subscription_status: 'trialing',
             trial_expires_at: dueAt.toISOString(),
             stripe_customer_id: object.customer,
@@ -3599,247 +4131,466 @@ async function handleStripeWebhook(req, res) {
             stripe_setup_intent_id: object.setup_intent,
             plan_id: 'season',
             season_charge_due_at: dueAt.toISOString(),
-            plan_started_at: new Date(checkoutCompletedAt).toISOString(),
-          })
-          .eq('id', object.client_reference_id)
-          .neq('subscription_status', 'beta')
-          .throwOnError();
+            plan_started_at: checkoutDate.toISOString(),
+          },
+        });
+        await completeOnboardingAfterCheckout(userId, purchaseId, outcome);
       }
-    }
+    } else if (event.type === 'checkout.session.completed' && object.mode === 'subscription') {
+      const userId = object.client_reference_id || object.metadata?.app_user_id || null;
+      const profile = userId ? await findStripeUser('id', userId) : null;
+      const purchaseId = object.metadata?.purchase_id || null;
 
-    if (event.type === 'checkout.session.completed' && object.mode === 'subscription') {
-      const { data: currentProfile, error: profileError } = await supabase
-        .from('users')
-        .select('subscription_status')
-        .eq('id', object.client_reference_id)
-        .maybeSingle();
-      if (profileError) throw profileError;
-
-      // A stale pre-enrollment Checkout completion must not retrieve or attach
-      // a subscription to a beta account.
-      if (currentProfile?.subscription_status === 'beta') {
+      if (profile?.subscription_status === 'beta') {
         console.warn(JSON.stringify({
-          level: 'warn',
-          event: 'legacy_stripe_checkout_ignored_for_beta_tester',
-          stripeEventId: event.id,
-          stripeEventType: event.type,
-          stripeCheckoutSessionId: object.id,
-          stripeSubscriptionId: object.subscription,
-          userId: object.client_reference_id,
-          checkoutMode: object.mode,
+          level: 'warn', event: 'legacy_stripe_checkout_ignored_for_beta_tester',
+          stripeEventId: event.id, stripeEventType: event.type,
+          stripeCheckoutSessionId: object.id, stripeSubscriptionId: object.subscription,
+          userId, checkoutMode: object.mode,
         }));
+        await applyStripePurchaseEvent(event, { userId });
       } else {
-        const subscriptionId = object.subscription;
-        const sub = await stripe.subscriptions.retrieve(subscriptionId);
-        const planId = sub.metadata?.plan_id;
-
-        await supabase
-          .from('users')
-          .update({
-            subscription_status: mapStripeStatus(sub.status, planId),
+        const subscription = await stripe.subscriptions.retrieve(object.subscription);
+        const planId = subscription.metadata?.plan_id || object.metadata?.plan_id;
+        const resolvedPurchaseId = purchaseId || subscription.metadata?.purchase_id || null;
+        const purchaseStatus = purchaseStatusFromStripe(subscription.status);
+        const outcome = await applyStripePurchaseEvent(event, {
+          userId,
+          purchaseId: resolvedPurchaseId,
+          purchaseStatus,
+          checkoutSessionId: object.id,
+          subscriptionId: object.subscription,
+          accessStartsAt: Number.isFinite(subscription.start_date)
+            ? new Date(subscription.start_date * 1000).toISOString() : null,
+          accessEndsAt: accessEndsAt(subscription),
+          profilePatch: {
+            subscription_status: mapStripeStatus(subscription.status, planId),
             stripe_customer_id: object.customer,
-            stripe_subscription_id: subscriptionId,
+            stripe_subscription_id: object.subscription,
             plan_id: planId,
-            access_expires_at: accessEndsAt(sub),
-            plan_started_at: new Date(sub.start_date * 1000).toISOString(),
-            last_paid_at: new Date(sub.start_date * 1000).toISOString(),
-          })
-          .eq('id', object.client_reference_id)
-          .neq('subscription_status', 'beta')
-          .throwOnError();
+            access_expires_at: accessEndsAt(subscription),
+            plan_started_at: Number.isFinite(subscription.start_date)
+              ? new Date(subscription.start_date * 1000).toISOString() : null,
+            last_paid_at: Number.isFinite(subscription.start_date)
+              ? new Date(subscription.start_date * 1000).toISOString() : null,
+          },
+        });
+        if (purchaseStatus === 'active') await completeOnboardingAfterCheckout(userId, resolvedPurchaseId, outcome);
       }
-    }
-
-    // Season's one-time charge, fired from chargeDueSeasonPasses() below. Kept
-    // as a webhook handler too (not just the synchronous result of that
-    // function's own stripe.paymentIntents.create call) in case Stripe settles
-    // the PaymentIntent asynchronously (e.g. a bank taking a moment on an
-    // off-session charge) — this is the defense-in-depth path, the synchronous
-    // one is the common case.
-    if (event.type === 'payment_intent.succeeded' && object.metadata?.plan_id === 'season') {
-      const userId = object.metadata?.app_user_id;
-      if (userId) {
-        const paidAt = Number.isFinite(object.created) ? new Date(object.created * 1000) : new Date();
-        await supabase
-          .from('users')
-          .update({
+    } else if (event.type === 'checkout.session.expired') {
+      await applyStripePurchaseEvent(event, {
+        userId: object.client_reference_id || object.metadata?.app_user_id || null,
+        purchaseId: object.metadata?.purchase_id || null,
+        purchaseStatus: 'failed',
+        checkoutSessionId: object.id,
+      });
+    } else if (event.type === 'payment_intent.succeeded' && object.metadata?.plan_id === 'season') {
+      const userId = object.metadata?.app_user_id || null;
+      const purchaseId = object.metadata?.purchase_id || null;
+      const linked = purchaseId
+        ? await findStripePurchase({ purchaseId })
+        : await findStripePurchase({ userId });
+      if (linked?.cancel_requested_at) {
+        await supabase.rpc('set_season_charge_state', {
+          p_purchase_id: linked.id, p_state: 'succeeded', p_payment_intent_id: object.id,
+        });
+        await refundCanceledSeasonPurchase({ purchaseId: linked.id, userId: linked.user_id, paymentIntentId: object.id, finishSeasonCancel: true });
+      } else {
+        await applyStripePurchaseEvent(event, {
+          userId,
+          purchaseId,
+          purchaseStatus: 'active',
+          paymentIntentId: object.id,
+          accessStartsAt: Number.isFinite(object.created) ? new Date(object.created * 1000).toISOString() : null,
+          accessEndsAt: seasonEndsAt(Number.isFinite(object.created) ? new Date(object.created * 1000) : new Date()).toISOString(),
+          profilePatch: {
             subscription_status: 'season',
-            access_expires_at: seasonEndsAt(paidAt).toISOString(),
+            access_expires_at: seasonEndsAt(Number.isFinite(object.created) ? new Date(object.created * 1000) : new Date()).toISOString(),
             season_charge_due_at: null,
-            last_paid_at: paidAt.toISOString(),
-          })
-          .eq('id', userId)
-          .neq('subscription_status', 'beta')
-          .throwOnError();
+            last_paid_at: Number.isFinite(object.created) ? new Date(object.created * 1000).toISOString() : new Date().toISOString(),
+          },
+        });
       }
-    }
-
-    if (event.type === 'payment_intent.payment_failed' && object.metadata?.plan_id === 'season') {
-      const userId = object.metadata?.app_user_id;
-      if (userId) {
-        await supabase
-          .from('users')
-          .update({ subscription_status: 'past_due' })
-          .eq('id', userId)
-          .neq('subscription_status', 'beta')
-          .throwOnError();
+    } else if (event.type === 'payment_intent.requires_action' && object.metadata?.plan_id === 'season') {
+      const userId = object.metadata?.app_user_id || null;
+      const purchaseId = object.metadata?.purchase_id || null;
+      const linked = purchaseId ? await findStripePurchase({ purchaseId }) : await findStripePurchase({ userId });
+      if (purchaseId) {
+        await supabase.rpc('set_season_charge_state', {
+          p_purchase_id: purchaseId, p_state: 'requires_action', p_payment_intent_id: object.id,
+        });
       }
-    }
-
-    if (event.type === 'customer.subscription.updated') {
+      if (!linked?.cancel_requested_at) {
+        await applyStripePurchaseEvent(event, {
+          userId: linked?.user_id || userId,
+          purchaseId: linked?.id || purchaseId,
+          paymentIntentId: object.id,
+          profilePatch: { subscription_status: 'past_due' },
+        });
+      }
+    } else if (event.type === 'payment_intent.payment_failed' && object.metadata?.plan_id === 'season') {
+      const purchaseId = object.metadata?.purchase_id || null;
+      const linked = purchaseId ? await findStripePurchase({ purchaseId }) : await findStripePurchase({ userId: object.metadata?.app_user_id || null });
+      if (purchaseId) {
+        await supabase.rpc('set_season_charge_state', {
+          p_purchase_id: purchaseId,
+          p_state: object.status === 'requires_action' ? 'requires_action' : 'declined',
+          p_payment_intent_id: object.id,
+          p_error_code: object.last_payment_error?.code || null,
+        });
+      }
+      if (!linked?.cancel_requested_at) {
+        await applyStripePurchaseEvent(event, {
+          userId: object.metadata?.app_user_id || null,
+          purchaseId,
+          paymentIntentId: object.id,
+          profilePatch: { subscription_status: 'past_due' },
+        });
+      }
+    } else if (event.type === 'customer.subscription.updated') {
+      const purchaseId = object.metadata?.purchase_id || null;
+      const linkedPurchase = await findStripePurchase({ purchaseId, subscriptionId: object.id });
+      const linkedUser = linkedPurchase ? null : await findStripeUser('stripe_subscription_id', object.id);
       const planId = object.metadata?.plan_id;
-      await supabase
-        .from('users')
-        .update({
+      await applyStripePurchaseEvent(event, {
+        userId: linkedPurchase?.user_id || object.metadata?.app_user_id || linkedUser?.id || null,
+        purchaseId: linkedPurchase?.id || null,
+        purchaseStatus: purchaseStatusFromStripe(object.status),
+        subscriptionId: object.id,
+        accessEndsAt: accessEndsAt(object),
+        profilePatch: {
           subscription_status: mapStripeStatus(object.status, planId),
           access_expires_at: accessEndsAt(object),
           cancel_at_period_end: Boolean(object.cancel_at_period_end || object.cancel_at),
-        })
-        .eq('stripe_subscription_id', object.id)
-        .neq('subscription_status', 'beta')
-        .throwOnError();
-    }
-
-    if (event.type === 'customer.subscription.deleted') {
-      await supabase
-        .from('users')
-        .update({
+        },
+      });
+      // A card needing 3-D Secure completes Checkout while still 'incomplete';
+      // the subscription turns active here, so finish onboarding on this event too.
+      if (purchaseStatusFromStripe(object.status) === 'active' && linkedPurchase) {
+        await completeOnboardingAfterCheckout(linkedPurchase.user_id, linkedPurchase.id, 'applied');
+      }
+    } else if (event.type === 'customer.subscription.deleted') {
+      const linkedPurchase = await findStripePurchase({ subscriptionId: object.id });
+      const linkedUser = linkedPurchase ? null : await findStripeUser('stripe_subscription_id', object.id);
+      await applyStripePurchaseEvent(event, {
+        userId: linkedPurchase?.user_id || linkedUser?.id || null,
+        purchaseId: linkedPurchase?.id || null,
+        purchaseStatus: 'canceled',
+        subscriptionId: object.id,
+        accessEndsAt: new Date().toISOString(),
+        profilePatch: {
           subscription_status: 'expired',
           access_expires_at: new Date().toISOString(),
-        })
-        .eq('stripe_subscription_id', object.id)
-        .neq('subscription_status', 'beta')
-        .throwOnError();
-    }
-
-    if (event.type === 'invoice.payment_failed') {
-      // Leave access_expires_at alone — Stripe retries the charge automatically,
-      // and revoking access on the first failure would lock out someone whose
-      // card just needs a retry (a temporary decline, an expired card mid-retry
-      // window, etc).
-      let failedInvoiceUpdate = supabase
-        .from('users')
-        .update({ subscription_status: 'past_due' });
-      // A customer can have an old and a replacement subscription. Match the
-      // invoice's subscription whenever Stripe supplies it so a late failure
-      // from the old one cannot downgrade the new plan.
-      // Newer API versions (the webhook's 2026-08-26.dahlia) moved the field to
-      // parent.subscription_details.subscription.
-      const failedSubscriptionId = object.subscription ?? object.parent?.subscription_details?.subscription;
-      failedInvoiceUpdate = failedSubscriptionId
-        ? failedInvoiceUpdate.eq('stripe_subscription_id', failedSubscriptionId)
-        : failedInvoiceUpdate.eq('stripe_customer_id', object.customer);
-      failedInvoiceUpdate = failedInvoiceUpdate.neq('subscription_status', 'beta');
-      await failedInvoiceUpdate.throwOnError();
+        },
+      });
+    } else if (event.type === 'invoice.paid') {
+      const subscriptionId = object.subscription || object.parent?.subscription_details?.subscription || null;
+      let linkedPurchase = await findStripePurchase({ subscriptionId });
+      if (!linkedPurchase && subscriptionId) {
+        const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+        if (subscription.metadata?.purchase_id) {
+          linkedPurchase = await findStripePurchase({ purchaseId: subscription.metadata.purchase_id });
+        }
+      }
+      const paymentIntent = object.payment_intent;
+      const paymentIntentId = typeof paymentIntent === 'string' ? paymentIntent : paymentIntent?.id || null;
+      if (linkedPurchase && paymentIntentId) {
+        await applyStripePurchaseEvent(event, {
+          userId: linkedPurchase.user_id,
+          purchaseId: linkedPurchase.id,
+          purchaseStatus: 'active',
+          paymentIntentId,
+        });
+      } else {
+        await applyStripePurchaseEvent(event);
+      }
+    } else if (event.type === 'invoice.payment_failed') {
+      const subscriptionId = object.subscription || object.parent?.subscription_details?.subscription || null;
+      const linkedPurchase = await findStripePurchase({ subscriptionId });
+      const linkedUser = linkedPurchase
+        ? null
+        : await findStripeUser(subscriptionId ? 'stripe_subscription_id' : 'stripe_customer_id', subscriptionId || object.customer);
+      await applyStripePurchaseEvent(event, {
+        userId: linkedPurchase?.user_id || linkedUser?.id || null,
+        purchaseId: linkedPurchase?.id || null,
+        profilePatch: { subscription_status: 'past_due' },
+      });
+    } else {
+      await applyStripePurchaseEvent(event);
     }
   } catch (err) {
-    // Stripe retries on any non-2xx, and every write above is an idempotent
-    // absolute-value UPDATE, so surfacing the failure as a 500 (not silently
-    // 200-ing it) is what makes that retry actually useful instead of masking
-    // a real problem.
     console.error(`Stripe webhook handling failed (${event.type}):`, err.message);
     return res.status(500).json({ error: 'Webhook handling failed.' });
   }
 
-  res.json({ received: true });
+  return res.json({ received: true });
+}
+
+async function setSeasonChargeState(purchaseId, state, paymentIntentId = null, errorCode = null) {
+  const { data, error } = await supabase.rpc('set_season_charge_state', {
+    p_purchase_id: purchaseId,
+    p_state: state,
+    p_payment_intent_id: paymentIntentId,
+    p_error_code: errorCode,
+  });
+  if (error) throw error;
+  return data;
+}
+
+async function refundCanceledSeasonPurchase({ purchaseId, userId, paymentIntentId, finishSeasonCancel = false }) {
+  const intent = await stripe.paymentIntents.retrieve(paymentIntentId);
+  if (intent.status === 'canceled') {
+    const { error } = await supabase.from('purchases')
+      .update({ refund_status: 'none', updated_at: new Date().toISOString() })
+      .eq('id', purchaseId).eq('user_id', userId);
+    if (error) throw error;
+    if (finishSeasonCancel) {
+      await supabase.rpc('finish_season_charge_cancel', { p_user_id: userId, p_purchase_id: purchaseId });
+    }
+    return 'none';
+  }
+  if (intent.status !== 'succeeded') {
+    if (['requires_action', 'requires_confirmation', 'requires_payment_method'].includes(intent.status)) {
+      await stripe.paymentIntents.cancel(intent.id);
+      const { error } = await supabase.from('purchases')
+        .update({ refund_status: 'none', updated_at: new Date().toISOString() })
+        .eq('id', purchaseId).eq('user_id', userId);
+      if (error) throw error;
+      if (finishSeasonCancel) {
+        await supabase.rpc('finish_season_charge_cancel', { p_user_id: userId, p_purchase_id: purchaseId });
+      }
+      return 'none';
+    }
+    return 'pending';
+  }
+  const existing = await stripe.refunds.list({ payment_intent: paymentIntentId, limit: 100 });
+  let refund = (existing.data || []).find((row) => row.status === 'succeeded' || row.status === 'pending');
+  if (!refund) {
+    const { data: purchase, error: purchaseError } = await supabase.from('purchases')
+      .select('refund_attempts').eq('id', purchaseId).eq('user_id', userId).single();
+    if (purchaseError) throw purchaseError;
+    const failed = (existing.data || []).filter((row) => row.status === 'failed').length;
+    const attempt = Math.max(Number(purchase.refund_attempts) || 0, failed) + 1;
+    const { error } = await supabase.rpc('set_purchase_refund_state', {
+      p_user_id: userId, p_purchase_id: purchaseId, p_state: 'pending', p_refund_id: null,
+    });
+    if (error) throw error;
+    refund = await stripe.refunds.create({ payment_intent: paymentIntentId, reason: 'requested_by_customer' }, {
+      idempotencyKey: `cancel-season:${purchaseId}:attempt:${attempt}`,
+    });
+  }
+  const state = refund.status === 'succeeded' ? 'succeeded' : refund.status === 'failed' ? 'failed' : 'pending';
+  const { error } = await supabase.rpc('set_purchase_refund_state', {
+    p_user_id: userId, p_purchase_id: purchaseId, p_state: state, p_refund_id: refund.id,
+  });
+  if (error) throw error;
+  if (state === 'succeeded' && finishSeasonCancel) {
+    await supabase.rpc('finish_season_charge_cancel', { p_user_id: userId, p_purchase_id: purchaseId });
+  }
+  return state;
+}
+
+async function reconcileSeasonCancellationRequests() {
+  const { data: requests, error } = await supabase.from('purchases')
+    .select('id, user_id, stripe_payment_intent_id')
+    .eq('plan', 'season').eq('status', 'active')
+    .not('cancel_requested_at', 'is', null)
+    .not('stripe_payment_intent_id', 'is', null)
+    .in('season_charge_status', ['processing', 'requires_action', 'retryable', 'succeeded'])
+    .limit(50);
+  if (error) {
+    console.error('Season cancellation reconciliation query failed:', error.message);
+    return;
+  }
+  for (const purchase of Array.isArray(requests) ? requests : []) {
+    try {
+      const intent = await stripe.paymentIntents.retrieve(purchase.stripe_payment_intent_id);
+      if (intent.status === 'succeeded') {
+        await setSeasonChargeState(purchase.id, 'succeeded', intent.id);
+        await refundCanceledSeasonPurchase({
+          purchaseId: purchase.id, userId: purchase.user_id, paymentIntentId: intent.id,
+          finishSeasonCancel: true,
+        });
+      } else if (intent.status === 'canceled') {
+        await supabase.rpc('finish_season_charge_cancel', { p_user_id: purchase.user_id, p_purchase_id: purchase.id });
+      } else if (['requires_action', 'requires_confirmation', 'requires_payment_method'].includes(intent.status)) {
+        await stripe.paymentIntents.cancel(intent.id);
+        await supabase.rpc('finish_season_charge_cancel', { p_user_id: purchase.user_id, p_purchase_id: purchase.id });
+      }
+    } catch (err) {
+      console.error('Season cancellation reconciliation failed:', err.code || err.type || 'stripe_error');
+    }
+  }
 }
 
 /**
- * Fires the season pass's one, genuine one-time charge for every account
- * whose season_charge_due_at has arrived. This is the piece that makes
- * mode:'setup' + a later charge actually equivalent to "trial, then bill
- * once" — see the block comment above the /api/checkout route for why this
- * replaced a subscription-based approach.
- *
- * off_session + confirm:true resolves synchronously in the common case (a
- * normal card, no fresh authentication challenge), so success/failure is
- * usually handled right here; payment_intent.succeeded / .payment_failed in
- * the webhook above are the fallback for the rare case where Stripe settles
- * it asynchronously instead.
- *
- * Polled on an interval rather than a real cron because this app has no
- * separate worker/scheduler infra yet — the Node process is already
- * always-on. Revisit if this ever needs to survive the process restarting
- * mid-hour without missing a run (Supabase pg_cron calling a dedicated route
- * would be the natural upgrade).
+ * Claims due purchases atomically in Postgres. Retries use the same Stripe
+ * idempotency key as the former worker, so an ambiguous response cannot create
+ * a second charge. The Stripe webhook remains authoritative for paid access.
  */
 async function chargeDueSeasonPasses() {
   if (!stripe) return;
-
-  const { data: due, error } = await supabase
-    .from('users')
-    .select('id, stripe_customer_id, stripe_payment_method_id, season_charge_due_at, subscription_status')
-    .eq('plan_id', 'season')
-    .eq('subscription_status', 'trialing')
-    .not('stripe_payment_method_id', 'is', null)
-    .lte('season_charge_due_at', new Date().toISOString());
-
+  await reconcileSeasonCancellationRequests();
+  const { data: due, error } = await supabase.rpc('claim_due_season_charges', {
+    p_now: new Date().toISOString(),
+  });
   if (error) {
-    console.error('chargeDueSeasonPasses: failed to fetch due accounts:', error.message);
+    console.error('chargeDueSeasonPasses: atomic claim failed:', error.message);
     return;
   }
 
-  for (const user of due || []) {
-    if (user.subscription_status !== 'trialing') continue;
-    let intent;
+  for (const purchase of Array.isArray(due) ? due : []) {
+    let intent = null;
     try {
-      intent = await stripe.paymentIntents.create(
-        {
-          amount: SEASON_PRICE_CZK * 100, // CZK is not zero-decimal — amount is in haléře.
+      if (purchase.stripe_payment_intent_id) {
+        // Reconcile a known/ambiguous attempt before any new create request.
+        intent = await stripe.paymentIntents.retrieve(purchase.stripe_payment_intent_id);
+      } else {
+        if (purchase.attempt_number > 1) {
+          const prior = await stripe.paymentIntents.search({
+            query: `metadata['purchase_id']:'${purchase.purchase_id}'`,
+            limit: 1,
+          });
+          if (prior.data?.[0]?.id) intent = await stripe.paymentIntents.retrieve(prior.data[0].id);
+        }
+      }
+      if (!intent) {
+        intent = await stripe.paymentIntents.create({
+          amount: SEASON_PRICE_CZK * 100,
           currency: 'czk',
-          customer: user.stripe_customer_id,
-          payment_method: user.stripe_payment_method_id,
+          customer: purchase.stripe_customer_id,
+          payment_method: purchase.stripe_payment_method_id,
           off_session: true,
           confirm: true,
-          metadata: { plan_id: 'season', app_user_id: user.id },
-        },
-        {
-          // Stable across process restarts, overlapping server instances and
-          // database-update retries. A later checkout has a different due_at,
-          // so it still creates a genuinely new purchase.
-          idempotencyKey: `season:${user.id}:${user.season_charge_due_at}`,
-        }
-      );
-
-    } catch (err) {
-      // Card declined, expired, off-session auth required and refused, etc.
-      console.error(`chargeDueSeasonPasses: charge failed for user ${user.id}:`, err.message);
-      const { error: updateError } = await supabase
-        .from('users')
-        .update({ subscription_status: 'past_due' })
-        .eq('id', user.id)
-        .eq('subscription_status', 'trialing');
-      if (updateError) {
-        console.error(`chargeDueSeasonPasses: could not mark user ${user.id} past due:`, updateError.message);
+          metadata: { plan_id: 'season', app_user_id: purchase.user_id, purchase_id: purchase.purchase_id },
+        }, {
+          // Persisted by claim_due_season_charges: legacy purchases retain the
+          // old key and new purchases get one derived from their purchase id.
+          idempotencyKey: purchase.season_charge_idempotency_key,
+        });
       }
+    } catch (err) {
+      const failedIntent = err.payment_intent && typeof err.payment_intent === 'object'
+        ? err.payment_intent : null;
+      const errorCode = err.code || err.raw?.code || null;
+      const state = failedIntent?.status === 'requires_action' || errorCode === 'authentication_required'
+        ? 'requires_action'
+        : err.type === 'StripeCardError' || ['card_declined', 'expired_card', 'insufficient_funds'].includes(errorCode)
+          ? 'declined'
+          : 'retryable';
+      try {
+        await setSeasonChargeState(purchase.purchase_id, state, failedIntent?.id || null, errorCode);
+        if (state !== 'retryable') {
+          await supabase.from('users').update({ subscription_status: 'past_due' })
+            .eq('id', purchase.user_id).eq('subscription_status', 'trialing').throwOnError();
+        }
+      } catch (saveError) {
+        console.error('Could not persist season charge outcome:', saveError.code || 'database_error');
+      }
+      console.error('Season charge attempt failed:', state, errorCode || 'stripe_error');
       continue;
     }
 
-    if (intent.status === 'succeeded') {
-      try {
+    const state = intent.status === 'succeeded' ? 'succeeded'
+      : intent.status === 'requires_action' ? 'requires_action'
+        : intent.status === 'canceled' ? 'canceled'
+          : intent.status === 'requires_payment_method' ? 'declined' : 'retryable';
+    try {
+      await setSeasonChargeState(purchase.purchase_id, state, intent.id, intent.last_payment_error?.code || null);
+      const { data: current, error: currentError } = await supabase.from('purchases')
+        .select('cancel_requested_at').eq('id', purchase.purchase_id).single();
+      if (currentError) throw currentError;
+      if (current.cancel_requested_at) {
+        if (state === 'succeeded') {
+          await refundCanceledSeasonPurchase({ purchaseId: purchase.purchase_id, userId: purchase.user_id, paymentIntentId: intent.id, finishSeasonCancel: true });
+        } else if (state === 'requires_action' || state === 'declined' || state === 'canceled') {
+          if (state !== 'canceled') await stripe.paymentIntents.cancel(intent.id);
+          await supabase.rpc('finish_season_charge_cancel', { p_user_id: purchase.user_id, p_purchase_id: purchase.purchase_id });
+        }
+        continue;
+      }
+      if (state === 'succeeded') {
         const paidAt = Number.isFinite(intent.created) ? new Date(intent.created * 1000) : new Date();
-        await supabase
-          .from('users')
-          .update({
-            subscription_status: 'season',
-            access_expires_at: seasonEndsAt(paidAt).toISOString(),
-            season_charge_due_at: null,
-            last_paid_at: paidAt.toISOString(),
-          })
-          .eq('id', user.id)
-          .eq('subscription_status', 'trialing')
-          .throwOnError();
+        await supabase.from('users').update({
+          subscription_status: 'season',
+          access_expires_at: seasonEndsAt(paidAt).toISOString(),
+          season_charge_due_at: null,
+          last_paid_at: paidAt.toISOString(),
+        }).eq('id', purchase.user_id).in('subscription_status', ['trialing', 'past_due']).throwOnError();
+      } else if (state === 'requires_action' || state === 'declined') {
+        await supabase.from('users').update({ subscription_status: 'past_due' })
+          .eq('id', purchase.user_id).eq('subscription_status', 'trialing').throwOnError();
+      }
+    } catch (err) {
+      console.error('Could not persist season charge result:', err.code || err.type || 'database_error');
+    }
+  }
+
+  const { data: refundsDue, error: refundsError } = await supabase.from('purchases')
+    .select('id, user_id, plan, stripe_payment_intent_id, cancel_requested_at')
+    .eq('status', 'withdrawn').in('refund_status', ['pending', 'failed'])
+    .not('stripe_payment_intent_id', 'is', null).limit(50);
+  if (refundsError) {
+    console.error('Season charge worker: could not load pending refunds:', refundsError.message);
+  } else {
+    for (const purchase of Array.isArray(refundsDue) ? refundsDue : []) {
+      try {
+        await refundCanceledSeasonPurchase({
+          purchaseId: purchase.id,
+          userId: purchase.user_id,
+          paymentIntentId: purchase.stripe_payment_intent_id,
+          finishSeasonCancel: purchase.plan === 'season' && Boolean(purchase.cancel_requested_at),
+        });
       } catch (err) {
-        // The charge succeeded. Leave Stripe's stable idempotency key and the
-        // webhook to retry the database write; never mislabel a paid account as
-        // past due just because this local write failed.
-        console.error(`chargeDueSeasonPasses: paid user ${user.id} but could not save access:`, err.message);
+        console.error('Purchase refund reconciliation failed:', err.code || err.type || 'stripe_error');
       }
     }
-    // Any other status (e.g. requires_action) is left for the webhook to
-    // resolve once Stripe settles it, rather than guessed at here.
   }
 }
+
+app.get('/api/subscription/season-charge', requireAuth, async (req, res) => {
+  const { data: purchase, error } = await supabase.from('purchases')
+    .select('id, season_charge_status, stripe_payment_intent_id, cancel_requested_at')
+    .eq('user_id', req.user.id).eq('plan', 'season').eq('status', 'active')
+    .order('created_at', { ascending: false }).limit(1).maybeSingle();
+  if (error) return res.status(500).json({ error: 'Stav platby se nepodařilo načíst.' });
+  if (!purchase) return res.json({ status: 'none' });
+  const response = {
+    status: purchase.cancel_requested_at ? 'cancellation_pending' : purchase.season_charge_status,
+  };
+  if (purchase.season_charge_status === 'requires_action' && purchase.stripe_payment_intent_id && !purchase.cancel_requested_at) {
+    try {
+      const intent = await stripe.paymentIntents.retrieve(purchase.stripe_payment_intent_id);
+      if (intent.metadata?.purchase_id !== purchase.id || intent.metadata?.app_user_id !== req.user.id) {
+        return res.status(404).json({ error: 'Platbu se nepodařilo ověřit.' });
+      }
+      if (intent.status === 'requires_action') response.clientSecret = intent.client_secret;
+      else if (intent.status === 'succeeded') {
+        response.status = 'succeeded';
+        await setSeasonChargeState(purchase.id, 'succeeded', intent.id);
+        if (purchase.cancel_requested_at) {
+          await refundCanceledSeasonPurchase({
+            purchaseId: purchase.id, userId: req.user.id, paymentIntentId: intent.id,
+            finishSeasonCancel: true,
+          });
+          response.status = 'cancellation_pending';
+        } else {
+          const paidAt = Number.isFinite(intent.created) ? new Date(intent.created * 1000) : new Date();
+          await supabase.from('users').update({
+            subscription_status: 'season', access_expires_at: seasonEndsAt(paidAt).toISOString(),
+            season_charge_due_at: null, last_paid_at: paidAt.toISOString(),
+          }).eq('id', req.user.id).in('subscription_status', ['trialing', 'past_due']).throwOnError();
+        }
+      } else if (intent.status === 'canceled') {
+        response.status = 'canceled';
+        await setSeasonChargeState(purchase.id, 'canceled', intent.id);
+      } else response.status = 'declined';
+    } catch {
+      return res.status(503).json({ error: 'Ověření platby je dočasně nedostupné.' });
+    }
+  }
+  return res.json(response);
+});
 
 if (stripe) {
   chargeDueSeasonPasses(); // catch anything due while the server was down

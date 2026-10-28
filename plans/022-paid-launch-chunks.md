@@ -33,11 +33,24 @@ a safe **paid** launch.
 
 ## Chunk 0 — founder decisions (no agent)
 
-Answer before the related chunk starts:
-1. Access matrix (chunk 3): confirm signed-in users **without** access may still
-   do onboarding (it needs school data in the browser), and what the landing map
-   may show anonymously (name, coordinates, type only?).
-2. Existing ordinary accounts when the trial start moves (chunk 4): keep their
+Founder decisions recorded:
+1. Chunk 3: signed-in accounts without paid access may continue onboarding.
+   Keep the landing map exactly as it is now. Clicking a map dot may show the
+   same factual, view-only school detail card available to a signed-in user;
+   do not expose paid actions or the full catalogue from that public detail.
+
+2. Ordinary free trial (decided 2026-10-27, option A): dropped as a product feature.
+   App access follows a confirmed purchase (chunk 3); the only trial is the season
+   pass's 3-day card-saved trial. Chunk 4's lazy trial start stays in place but is
+   inert for accounts that have not completed onboarding.
+
+2. Founder decision 2026-10-27 (option A): there is no free ordinary-account access
+   trial. App access follows a confirmed purchase (chunk 3); the only trial is the
+   season pass's 3-day card-saved trial. Chunk 4's trial-start code stays but is
+   inert for accounts that have not completed onboarding.
+
+Still answer before the related chunk starts:
+(superseded by the decision above) Existing ordinary accounts when the trial start moves (chunk 4): keep their
    current `trial_expires_at` as is? (Recommended: yes.)
 3. Legal/operator items from the checklist's manual list (seller details, DPAs,
    minors/refund wording, day-2 reminder sender). Needed before chunk 2 ships.

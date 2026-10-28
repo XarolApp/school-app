@@ -11,10 +11,19 @@ function harness({
   stripeEnabled = true,
   cancelError,
   paymentIntentResult = { status: 'succeeded' },
+  paymentIntentError = null,
+  paymentIntentRetrieveResult = { id: 'pi_test', status: 'requires_action', client_secret: 'pi_secret', metadata: { purchase_id: 'purchase-season-1', app_user_id: 'user-test' } },
+  paymentIntentSearchResult = { data: [] },
+  refundListResult = { data: [] },
+  refundCreateResult = { id: 're_test', amount: 69000, status: 'succeeded' },
+  refundCreateError = null,
   rpcResult = { data: { testerAccessUntil: '2026-09-28T12:00:00.000Z' }, error: null },
+  rpcImpl,
+  checkoutSessionResult = { status: 'open', url: 'https://checkout.test/session' },
   authUser = { id: 'user-test', email: 'tester@example.com', email_confirmed_at: '2026-01-01T00:00:00.000Z' },
   authResult = null,
   authAdmin = null,
+  deleteUserError = null,
   requestReasonsImpl = async () => new Map(),
   env = {},
   storageListResult = async () => ({ data: [], error: null }),
@@ -27,28 +36,39 @@ function harness({
   const queries = [];
   const reasonCalls = [];
   const rpcCalls = [];
+  const operationLog = [];
   const warnings = [];
   let deletions = 0;
   let cancellations = 0;
   const paymentIntentCalls = [];
+  const paymentIntentRetrievals = [];
+  const paymentIntentSearches = [];
+  const paymentIntentCancellations = [];
+  const refundListCalls = [];
+  const refundCalls = [];
+  let activeRefundCreateError = refundCreateError;
   const checkoutCalls = [];
+  const checkoutOptions = [];
+  const checkoutRetrieveCalls = [];
+  const checkoutSessionsByKey = new Map();
   let subscriptionRetrievals = 0;
   let setupIntentRetrievals = 0;
   const db = {
     auth: {
       admin: {
-        deleteUser: async () => { deletions++; return { error: null }; },
+        deleteUser: async () => { if (deleteUserError) return { error: deleteUserError }; deletions++; return { error: null }; },
         getUserById: async () => authAdmin || { data: { user: authUser }, error: null },
       },
       getUser: async () => authResult || ({ data: { user: authUser }, error: null }),
     },
     storage: { from: () => ({
-      list: async (prefix) => storageListResult(prefix),
+      list: async (prefix, options) => storageListResult(prefix, options),
       remove: async (paths) => { storageRemovals.push(...paths); return { error: null }; },
     }) },
     rpc(name, args) {
       rpcCalls.push({ name, args });
-      return Promise.resolve(rpcResult);
+      operationLog.push(`rpc:${name}`);
+      return Promise.resolve(rpcImpl ? rpcImpl(name, args) : rpcResult);
     },
     from(table) {
       const query = { table, calls: [] };
@@ -61,6 +81,7 @@ function harness({
         }).then(resolve, reject);
         return (...args) => {
           query.calls.push([method, ...args]);
+          if (method === 'update') operationLog.push(`db:update:${table}`);
           if (method === 'throwOnError') strict = true;
           return chain;
         };
@@ -81,17 +102,39 @@ function harness({
   const stripe = {
     webhooks: { constructEvent: (event) => event },
     subscriptions: {
-      cancel: async () => { cancellations++; if (cancelError) throw cancelError; },
-      update: async () => {},
-      retrieve: async () => { subscriptionRetrievals++; return { id: 'sub_test', start_date: 1_800_000_000, status: 'active', metadata: { plan_id: 'monthly' }, current_period_end: 2000000000 }; },
+      cancel: async () => { operationLog.push('stripe:subscription.cancel'); cancellations++; if (cancelError) throw cancelError; },
+      update: async () => { operationLog.push('stripe:subscription.update'); return { current_period_end: 2_000_000_000 }; },
+      retrieve: async () => { operationLog.push('stripe:subscription.retrieve'); subscriptionRetrievals++; return { id: 'sub_test', start_date: 1_800_000_000, status: 'active', metadata: { plan_id: 'monthly' }, current_period_end: 2000000000 }; },
     },
     setupIntents: { retrieve: async () => { setupIntentRetrievals++; return { payment_method: 'pm_test' }; } },
-    checkout: { sessions: { create: async (params) => { checkoutCalls.push(params); return { url: 'https://checkout.test/session' }; } } },
-    refunds: { create: async () => ({ status: 'succeeded' }) },
+    checkout: { sessions: {
+      create: async (params, options = {}) => {
+        checkoutCalls.push(params);
+        checkoutOptions.push(options);
+        const key = options.idempotencyKey;
+        if (key && checkoutSessionsByKey.has(key)) return checkoutSessionsByKey.get(key);
+        const session = { id: `cs_test_${checkoutCalls.length}`, url: 'https://checkout.test/session' };
+        if (key) checkoutSessionsByKey.set(key, session);
+        return session;
+      },
+      retrieve: async (id) => { checkoutRetrieveCalls.push(id); return checkoutSessionResult; },
+    } },
+    refunds: {
+      list: async (params) => { refundListCalls.push(params); return refundListResult; },
+      create: async (params, options) => {
+        refundCalls.push({ params, options });
+        if (activeRefundCreateError) throw activeRefundCreateError;
+        return refundCreateResult;
+      },
+    },
     paymentIntents: {
       list: async () => ({ data: [] }),
+      retrieve: async (id) => { paymentIntentRetrievals.push(id); return typeof paymentIntentRetrieveResult === 'function' ? paymentIntentRetrieveResult(id) : { ...paymentIntentRetrieveResult, id }; },
+      search: async (params) => { paymentIntentSearches.push(params); return paymentIntentSearchResult; },
+      cancel: async (id) => { operationLog.push('stripe:payment_intent.cancel'); paymentIntentCancellations.push(id); return { id, status: 'canceled' }; },
       create: async (params, options) => {
         paymentIntentCalls.push({ params, options });
+        if (paymentIntentError) throw paymentIntentError;
         return paymentIntentResult;
       },
     },
@@ -108,7 +151,7 @@ function harness({
   // Leave all functions/routes intact, but stop before process startup.
   const module = { exports: {} };
   vm.runInNewContext(source.slice(0, source.lastIndexOf('\nif (stripe)')) +
-    '\nmodule.exports = { seasonEndsAt, handleStripeWebhook, slimProgramsForList, chargeDueSeasonPasses, paidAccessActive, betaProgramState, betaAccessState, hasPaidStatus, requireAccess, hasLivePlan, accessStateFor, createCheckoutForUser, cancelPlanForUser, withdrawPlanForUser };', {
+    '\nmodule.exports = { seasonEndsAt, handleStripeWebhook, slimProgramsForList, chargeDueSeasonPasses, paidAccessActive, betaProgramState, betaAccessState, hasPaidStatus, requireAccess, hasLivePlan, accessStateFor, createCheckoutForUser, cancelPlanForUser, withdrawPlanForUser, saveOnboardingRun };', {
     module, Date, Buffer, URL, setTimeout, clearTimeout, __dirname: join(__dirname, '..'),
     console: { log() {}, warn(...args) {
       const message = args.join(' ');
@@ -140,6 +183,7 @@ function harness({
           return requestReasonsImpl(options);
         },
       };
+      if (name === './lib/onboardingAnswers') return require('../lib/onboardingAnswers');
       if (name === 'node:fs') return fsModule;
       if (name === 'node:path') return require('node:path');
       if (name.startsWith('./lib/')) return {};
@@ -147,10 +191,11 @@ function harness({
     },
   }, { filename: 'server.js' });
   return {
-    ...module.exports, storageRemovals, routeChains, queries, reasonCalls, rpcCalls, checkoutCalls, paymentIntentCalls, warnings,
+    ...module.exports, storageRemovals, routeChains, queries, reasonCalls, rpcCalls, operationLog, checkoutCalls, checkoutOptions, checkoutRetrieveCalls, paymentIntentCalls, paymentIntentRetrievals, paymentIntentSearches, paymentIntentCancellations, refundListCalls, refundCalls, warnings,
     get subscriptionRetrievals() { return subscriptionRetrievals; },
     get setupIntentRetrievals() { return setupIntentRetrievals; },
     get deletions() { return deletions; }, get cancellations() { return cancellations; },
+    setRefundCreateError(error) { activeRefundCreateError = error; },
     async call(method, path, req = {}) {
       const res = { set() { return this; }, statusCode: 200, status(code) { this.statusCode = code; return this; }, json(body) { this.body = body; return this; }, end() { return this; }, send(body) { this.body = body; return this; } };
       await routes.get(`${method} ${path}`)({ user: { id: 'user-test' }, params: {}, headers: {}, ...req }, res);
@@ -245,13 +290,12 @@ test('on-demand explanations cache extra schools on only the caller’s default 
   };
   const h = harness({
     env: { OPENROUTER_API_KEY: 'synthetic' },
+    rpcImpl: (name, args) => {
+      extraReasons = { ...extraReasons, [args.p_school_id]: args.p_reason };
+      return { data: true, error: null };
+    },
     result: (query) => {
       if (query.table === 'questionnaire_runs') {
-        const update = query.calls.find((call) => call[0] === 'update');
-        if (update) {
-          extraReasons = update[1].extra_reasons;
-          return { data: null, error: null };
-        }
         return { data: { ...baseRun, extra_reasons: extraReasons }, error: null };
       }
       if (query.table === 'schools') return { data: [{ id: 11, name: 'Škola 11', programs: 'Gymnázium' }], error: null };
@@ -267,8 +311,9 @@ test('on-demand explanations cache extra schools on only the caller’s default 
   assert.equal(h.reasonCalls.length, 1);
   assert.equal(h.reasonCalls[0].shortlist.length, 1);
   assert.equal(h.reasonCalls[0].shortlist[0].school_id, 11);
-  const update = h.queries.find((query) => query.table === 'questionnaire_runs' && query.calls.some((call) => call[0] === 'update'));
-  assert.deepEqual(update.calls.find((call) => call[0] === 'eq' && call[1] === 'user_id'), ['eq', 'user_id', 'user-test']);
+  assert.equal(h.rpcCalls[0].name, 'cache_questionnaire_reason');
+  assert.equal(h.rpcCalls[0].args.p_user_id, 'user-test');
+  assert.equal(h.rpcCalls[0].args.p_run_id, 12);
 
   const second = await h.call('post', '/api/questionnaire/explain/:schoolId', { params: { schoolId: '11' } });
   assert.equal(second.statusCode, 200);
@@ -576,6 +621,79 @@ test('beta accounts cannot create either Stripe checkout plan, even when Stripe 
   }
 });
 
+test('same-plan checkout reuses the open purchase and Stripe session across payer contexts', async () => {
+  let pendingPurchase = null;
+  let insertedPurchase;
+  const h = harness({ result: (query) => {
+    if (query.table === 'users') {
+      return { data: { subscription_status: 'expired', stripe_customer_id: null }, error: null };
+    }
+    if (query.table === 'purchases') {
+      if (query.calls.some(([method]) => method === 'insert')) {
+        insertedPurchase = query.calls.find(([method]) => method === 'insert')[1];
+        pendingPurchase = { id: 'purchase-season-1', stripe_checkout_session_id: null, checkout_context: 'self' };
+        return { data: pendingPurchase, error: null };
+      }
+      if (query.calls.some(([method]) => method === 'update')) {
+        pendingPurchase = { ...pendingPurchase, stripe_checkout_session_id: 'cs_test_1' };
+        return { data: null, error: null };
+      }
+      return { data: pendingPurchase, error: null };
+    }
+    return { data: null, error: null };
+  } });
+
+  const first = await h.call('post', '/api/checkout', {
+    user: { id: 'user-test', email: 'tester@example.com' },
+    body: { planId: 'season' },
+  });
+  const second = await h.createCheckoutForUser({
+    userId: 'user-test', email: undefined, planId: 'season',
+    successPath: '/platba-rodice/token', cancelPath: '/platba-rodice/token', checkoutContext: 'self',
+  });
+
+  assert.equal(first.statusCode, 200);
+  assert.equal(second.status, 200);
+  assert.equal(first.body.url, second.body.url);
+  assert.equal(h.checkoutCalls.length, 1);
+  assert.equal(h.checkoutOptions[0].idempotencyKey, 'snm-checkout:purchase-season-1');
+  assert.equal(h.checkoutRetrieveCalls[0], 'cs_test_1');
+  const pendingLookup = h.queries.find((query) => query.table === 'purchases' && query.calls.some(([method]) => method === 'select'));
+  assert.equal(pendingLookup.calls.some(([method, column]) => method === 'eq' && column === 'checkout_context'), false);
+  assert.equal(insertedPurchase.price_amount_minor, 69000);
+  assert.equal(h.checkoutCalls[0].metadata.purchase_id, 'purchase-season-1');
+});
+
+test('expired pending checkout is closed before a new purchase attempt is reserved', async () => {
+  let pendingPurchase = { id: 'purchase-old', stripe_checkout_session_id: 'cs_old' };
+  let inserts = 0;
+  const h = harness({ checkoutSessionResult: { status: 'expired' }, result: (query) => {
+    if (query.table === 'users') return { data: { subscription_status: 'expired' }, error: null };
+    if (query.table === 'purchases' && query.calls.some(([method]) => method === 'update')) {
+      const update = query.calls.find(([method]) => method === 'update')[1];
+      if (update.status === 'failed') pendingPurchase = null;
+      else pendingPurchase = { ...pendingPurchase, stripe_checkout_session_id: update.stripe_checkout_session_id };
+      return { data: null, error: null };
+    }
+    if (query.table === 'purchases' && query.calls.some(([method]) => method === 'insert')) {
+      inserts++;
+      pendingPurchase = { id: 'purchase-new', stripe_checkout_session_id: null };
+      return { data: pendingPurchase, error: null };
+    }
+    if (query.table === 'purchases') return { data: pendingPurchase, error: null };
+    return { data: null, error: null };
+  } });
+
+  const response = await h.call('post', '/api/checkout', {
+    user: { id: 'user-test', email: 'tester@example.com' },
+    body: { planId: 'season' },
+  });
+
+  assert.equal(response.statusCode, 200);
+  assert.equal(inserts, 1);
+  assert.equal(h.checkoutOptions[0].idempotencyKey, 'snm-checkout:purchase-new');
+});
+
 test('beta feedback is the only API path that calls the renewal transaction', async () => {
   const h = harness();
   const res = await h.call('post', '/api/beta/feedback', { body: {
@@ -646,7 +764,7 @@ test('season charge scheduler ignores beta rows even if a stale query returns on
   const h = harness({ result: () => ({ data: [{
     id: 'user-test', subscription_status: 'beta', stripe_customer_id: 'cus_test',
     stripe_payment_method_id: 'pm_test', season_charge_due_at: '2026-09-01T00:00:00.000Z',
-  }], error: null }) });
+  }], error: null }), rpcImpl: () => ({ data: [], error: null }) });
   await h.chargeDueSeasonPasses();
   assert.equal(h.paymentIntentCalls.length, 0);
 });
@@ -661,7 +779,10 @@ test('webhook database failures are not acknowledged as successful', async () =>
     ['customer.subscription.deleted', { id: 'sub_test' }],
     ['invoice.payment_failed', { customer: 'cus_test' }],
   ]) {
-    const h = harness({ result: () => ({ data: null, error: { message: 'database unavailable' } }) });
+    const h = harness({
+      rpcResult: { data: null, error: { message: 'database unavailable' } },
+      result: () => ({ data: null, error: { message: 'database unavailable' } }),
+    });
     const res = await h.call('post', '/webhooks/stripe', { body: { type, data: { object } } });
     assert.equal(res.statusCode, 500, type);
   }
@@ -670,7 +791,7 @@ test('webhook database failures are not acknowledged as successful', async () =>
 test('failed season cancellation returns an error instead of promising no charge', async () => {
   const h = harness({ result: (query) => query.calls.some(([method]) => method === 'update')
     ? { error: { message: 'database unavailable' } }
-    : { data: { plan_id: 'season', subscription_status: 'trialing' }, error: null } });
+    : { data: { plan_id: 'season', subscription_status: 'trialing', season_charge_due_at: '2027-01-01T00:00:00.000Z' }, error: null } });
   assert.equal((await h.call('post', '/api/subscription/cancel')).statusCode, 500);
 });
 
@@ -719,19 +840,53 @@ test('season setup starts access for an expired account and records replay prote
   } });
   const created = 1_800_000_000;
   const res = await h.call('post', '/webhooks/stripe', { body: {
+    id: 'evt_season_setup', created: created - 100,
     type: 'checkout.session.completed',
     data: { object: {
-      mode: 'setup', created, customer: 'cus_test', setup_intent: 'seti_test',
+      id: 'cs_setup', mode: 'setup', created, customer: 'cus_test', setup_intent: 'seti_test',
       client_reference_id: 'user-test',
     } },
   } });
   assert.equal(res.statusCode, 200);
-  const update = h.queries
-    .flatMap((query) => query.calls)
-    .find(([method]) => method === 'update')?.[1];
-  assert.equal(update.stripe_setup_intent_id, 'seti_test');
-  assert.equal(update.trial_expires_at, new Date((created + 3 * 86400) * 1000).toISOString());
-  assert.equal(update.season_charge_due_at, update.trial_expires_at);
+  const event = h.rpcCalls.find(({ name }) => name === 'apply_stripe_purchase_event');
+  assert.equal(event.args.p_setup_intent_id, 'seti_test');
+  assert.equal(event.args.p_checkout_session_id, 'cs_setup');
+  assert.equal(event.args.p_profile_patch.stripe_setup_intent_id, 'seti_test');
+  assert.equal(event.args.p_profile_patch.trial_expires_at, new Date((created + 3 * 86400) * 1000).toISOString());
+  assert.equal(event.args.p_profile_patch.season_charge_due_at, event.args.p_profile_patch.trial_expires_at);
+});
+
+test('tracked Checkout completion applies purchase atomically and completes the onboarding account', async () => {
+  const created = 1_800_000_000;
+  const h = harness({
+    result: (query) => query.table === 'users'
+      ? { data: { id: 'user-test', subscription_status: 'expired', stripe_setup_intent_id: null }, error: null }
+      : { data: null, error: null },
+    rpcImpl: (name) => name === 'apply_stripe_purchase_event'
+      ? { data: 'applied', error: null }
+      : { data: true, error: null },
+  });
+
+  const response = await h.call('post', '/webhooks/stripe', { body: {
+    id: 'evt_tracked_setup', created: created - 100,
+    type: 'checkout.session.completed',
+    data: { object: {
+      id: 'cs_tracked', mode: 'setup', created, customer: 'cus_test', setup_intent: 'seti_test',
+      client_reference_id: 'user-test', metadata: { purchase_id: 'purchase-test', plan_id: 'season' },
+    } },
+  } });
+
+  assert.equal(response.statusCode, 200);
+  assert.equal(h.rpcCalls.length, 2);
+  assert.equal(h.rpcCalls[0].name, 'apply_stripe_purchase_event');
+  assert.equal(h.rpcCalls[0].args.p_event_id, 'evt_tracked_setup');
+  assert.equal(h.rpcCalls[0].args.p_purchase_id, 'purchase-test');
+  assert.equal(h.rpcCalls[0].args.p_checkout_session_id, 'cs_tracked');
+  assert.equal(h.rpcCalls[0].args.p_profile_patch.stripe_payment_method_id, 'pm_test');
+  assert.equal(h.rpcCalls[1].name, 'complete_paid_onboarding');
+  assert.equal(h.rpcCalls[1].args.p_user_id, 'user-test');
+  assert.equal(h.rpcCalls[1].args.p_purchase_id, 'purchase-test');
+  assert.equal(h.queries.some((query) => query.table === 'users' && query.calls.some(([method]) => method === 'update')), false);
 });
 
 test('a retried season setup event cannot restart a cancelled trial', async () => {
@@ -742,32 +897,39 @@ test('a retried season setup event cannot restart a cancelled trial', async () =
     return { data: null, error: null };
   } });
   const res = await h.call('post', '/webhooks/stripe', { body: {
+    id: 'evt_replay_setup', created: 1_800_000_100,
     type: 'checkout.session.completed',
     data: { object: {
-      mode: 'setup', created: 1_800_000_000, customer: 'cus_test',
+      id: 'cs_setup', mode: 'setup', created: 1_800_000_000, customer: 'cus_test',
       setup_intent: 'seti_test', client_reference_id: 'user-test',
     } },
   } });
   assert.equal(res.statusCode, 200);
-  assert.equal(h.queries.some((query) => query.calls.some(([method]) => method === 'update')), false);
+  assert.deepEqual({ ...h.rpcCalls[0].args.p_profile_patch }, {});
 });
 
 test('season charges reuse a stable Stripe idempotency key across retries', async () => {
   const due = {
-    id: 'user-test',
-    subscription_status: 'trialing',
+    purchase_id: 'purchase-season-1',
+    user_id: 'user-test',
     stripe_customer_id: 'cus_test',
     stripe_payment_method_id: 'pm_test',
     season_charge_due_at: '2027-01-15T12:00:00.000Z',
+    attempt_number: 1,
+    stripe_payment_intent_id: null,
+    season_charge_idempotency_key: 'season:user-test:2027-01-15T12:00:00.000Z',
   };
-  const h = harness({ result: (query) =>
-    query.calls.some(([method]) => method === 'select')
-      ? { data: [due], error: null }
-      : { data: null, error: null }
+  const h = harness({
+    rpcImpl: (name) => name === 'claim_due_season_charges' ? { data: [due], error: null } : { data: 'succeeded', error: null },
+    result: (query) => query.table === 'purchases' && query.calls.some(([method]) => method === 'select')
+      ? { data: query.calls.some(([method, column]) => method === 'eq' && column === 'id') ? { cancel_requested_at: null } : [], error: null }
+      : { data: null, error: null },
   });
   await h.chargeDueSeasonPasses();
   await h.chargeDueSeasonPasses();
   assert.equal(h.paymentIntentCalls.length, 2);
+  assert.equal(h.rpcCalls.filter((call) => call.name === 'claim_due_season_charges').length, 2);
+  assert.equal(h.paymentIntentCalls[0].params.metadata.purchase_id, 'purchase-season-1');
   assert.equal(h.paymentIntentCalls[0].options.idempotencyKey, 'season:user-test:2027-01-15T12:00:00.000Z');
   assert.equal(h.paymentIntentCalls[1].options.idempotencyKey, h.paymentIntentCalls[0].options.idempotencyKey);
 });
@@ -783,9 +945,15 @@ test('a paid season charge uses Stripe creation time and is never mislabeled pas
   const paidAt = Math.floor(new Date('2026-01-04T12:00:00.000Z').getTime() / 1000);
   const h = harness({
     paymentIntentResult: { status: 'succeeded', created: paidAt },
-    result: (query) => query.calls.some(([method]) => method === 'select')
-      ? { data: [due], error: null }
-      : { data: null, error: { message: 'database unavailable' } },
+    rpcImpl: (name) => name === 'claim_due_season_charges' ? { data: [{
+      purchase_id: 'purchase-season-1', user_id: due.id, stripe_customer_id: due.stripe_customer_id,
+      stripe_payment_method_id: due.stripe_payment_method_id, season_charge_due_at: due.season_charge_due_at,
+      attempt_number: 1, stripe_payment_intent_id: null,
+      season_charge_idempotency_key: 'season:user-test:2027-01-15T12:00:00.000Z',
+    }], error: null } : { data: 'succeeded', error: null },
+    result: (query) => query.table === 'purchases' && query.calls.some(([method]) => method === 'select')
+      ? { data: query.calls.some(([method, column]) => method === 'eq' && column === 'id') ? { cancel_requested_at: null } : [], error: null }
+      : { data: null, error: query.table === 'users' && query.calls.some(([method]) => method === 'update') ? { message: 'database unavailable' } : null },
   });
 
   await h.chargeDueSeasonPasses();
@@ -796,52 +964,214 @@ test('a paid season charge uses Stripe creation time and is never mislabeled pas
   assert.equal(updates[0][1].access_expires_at, h.seasonEndsAt(new Date(paidAt * 1000)).toISOString());
 });
 
+test('season charge stores an SCA-required intent instead of treating it as a decline', async () => {
+  const h = harness({
+    paymentIntentError: {
+      type: 'StripeCardError', code: 'authentication_required',
+      payment_intent: { id: 'pi_auth', status: 'requires_action' },
+    },
+    rpcImpl: (name) => name === 'claim_due_season_charges' ? { data: [{
+      purchase_id: 'purchase-season-1', user_id: 'user-test', stripe_customer_id: 'cus_test',
+      stripe_payment_method_id: 'pm_test', season_charge_due_at: '2027-01-15T12:00:00.000Z',
+      attempt_number: 1, stripe_payment_intent_id: null,
+      season_charge_idempotency_key: 'season:purchase-season-1',
+    }], error: null } : { data: 'requires_action', error: null },
+  });
+  await h.chargeDueSeasonPasses();
+  const saved = h.rpcCalls.find((call) => call.name === 'set_season_charge_state');
+  assert.equal(saved.args.p_state, 'requires_action');
+  assert.equal(saved.args.p_payment_intent_id, 'pi_auth');
+  assert.equal(h.paymentIntentCalls.length, 1);
+});
+
+test('ambiguous season charge retries reconcile the purchase metadata before creating again', async () => {
+  let claim = 0;
+  const h = harness({
+    paymentIntentError: { type: 'StripeConnectionError', code: 'api_connection_error' },
+    paymentIntentSearchResult: { data: [{ id: 'pi_recovered' }] },
+    paymentIntentRetrieveResult: { status: 'succeeded', created: 1_800_000_000 },
+    rpcImpl: (name) => name === 'claim_due_season_charges' ? { data: [{
+      purchase_id: 'purchase-season-1', user_id: 'user-test', stripe_customer_id: 'cus_test',
+      stripe_payment_method_id: 'pm_test', season_charge_due_at: '2027-01-15T12:00:00.000Z',
+      attempt_number: ++claim, stripe_payment_intent_id: null,
+      season_charge_idempotency_key: 'season:purchase-season-1',
+    }], error: null } : { data: 'ok', error: null },
+    result: (query) => query.table === 'purchases' && query.calls.some(([method]) => method === 'select')
+      ? { data: query.calls.some(([method, column]) => method === 'eq' && column === 'id') ? { cancel_requested_at: null } : [], error: null }
+      : { data: null, error: null },
+  });
+  await h.chargeDueSeasonPasses();
+  await h.chargeDueSeasonPasses();
+  assert.equal(h.paymentIntentCalls.length, 1);
+  assert.equal(h.paymentIntentSearches.length, 1);
+  assert.match(h.paymentIntentSearches[0].query, /purchase-season-1/);
+  assert.deepEqual(h.paymentIntentRetrievals, ['pi_recovered']);
+});
+
+test('cancellation is durably requested before Stripe cancels an SCA intent', async () => {
+  const h = harness({
+    result: (query) => query.table === 'users'
+      ? { data: { plan_id: 'season', subscription_status: 'past_due', season_charge_due_at: '2027-01-01T00:00:00.000Z' }, error: null }
+      : query.table === 'purchases'
+        ? { data: { id: 'purchase-season-1' }, error: null }
+        : { data: null, error: null },
+    rpcImpl: (name) => name === 'request_season_charge_cancel'
+      ? { data: [{ result: 'cancellation_requested', payment_intent_id: 'pi_auth', charge_status: 'requires_action' }], error: null }
+      : { data: 'canceled', error: null },
+  });
+  const result = await h.cancelPlanForUser('user-test');
+  assert.equal(result.status, 200);
+  assert.equal(h.paymentIntentCancellations[0], 'pi_auth');
+  assert.ok(h.operationLog.indexOf('rpc:request_season_charge_cancel') < h.operationLog.indexOf('stripe:payment_intent.cancel'));
+});
+
+test('monthly cancellation persists intent before the Stripe request', async () => {
+  const h = harness({
+    result: (query) => query.table === 'users'
+      ? { data: { plan_id: 'monthly', subscription_status: 'active', stripe_subscription_id: 'sub_test' }, error: null }
+      : query.table === 'purchases'
+        ? { data: { id: 'purchase-monthly-1' }, error: null }
+        : { data: null, error: null },
+  });
+  const result = await h.cancelPlanForUser('user-test');
+  assert.equal(result.status, 200);
+  assert.ok(h.operationLog.indexOf('db:update:purchases') < h.operationLog.indexOf('stripe:subscription.retrieve'));
+  assert.ok(h.operationLog.indexOf('stripe:subscription.retrieve') < h.operationLog.indexOf('stripe:subscription.update'));
+});
+
+test('the authenticated season-charge endpoint exposes only the owned SCA client secret', async () => {
+  const h = harness({
+    result: (query) => query.table === 'purchases'
+      ? { data: { id: 'purchase-season-1', season_charge_status: 'requires_action', stripe_payment_intent_id: 'pi_auth', cancel_requested_at: null }, error: null }
+      : { data: null, error: null },
+    paymentIntentRetrieveResult: {
+      id: 'pi_auth', status: 'requires_action', client_secret: 'pi_secret_private',
+      metadata: { purchase_id: 'purchase-season-1', app_user_id: 'user-test' },
+    },
+  });
+  const result = await h.call('get', '/api/subscription/season-charge');
+  assert.equal(result.body.status, 'requires_action');
+  assert.equal(result.body.clientSecret, 'pi_secret_private');
+});
+
+test('withdrawal refunds only the PaymentIntent attached to the purchase', async () => {
+  const h = harness({
+    paymentIntentRetrieveResult: { id: 'pi_linked', status: 'succeeded' },
+    result: (query) => {
+      if (query.table === 'users' && query.calls.some(([method]) => method === 'select')) return { data: {
+        stripe_customer_id: 'cus_test', stripe_subscription_id: null, plan_id: 'season',
+        subscription_status: 'season', plan_started_at: '2026-10-01T00:00:00.000Z', last_paid_at: '2026-10-03T00:00:00.000Z',
+      }, error: null };
+      if (query.table === 'purchases' && query.calls.some(([method]) => method === 'select')) return { data: {
+        id: 'purchase-season-1', plan: 'season', status: 'active', stripe_payment_intent_id: 'pi_linked',
+        stripe_subscription_id: null, refund_status: 'none', refund_attempts: 0, season_charge_status: 'succeeded',
+      }, error: null };
+      return { data: null, error: null };
+    },
+  });
+  const result = await h.withdrawPlanForUser('user-test');
+  assert.equal(result.status, 200);
+  assert.equal(result.body.refundStatus, 'succeeded');
+  assert.equal(h.refundListCalls[0].payment_intent, 'pi_linked');
+  assert.equal(h.refundListCalls[0].limit, 100);
+  assert.equal(h.refundCalls[0].params.payment_intent, 'pi_linked');
+  assert.equal(h.paymentIntentCalls.some((call) => call.params.customer === 'cus_test'), false);
+});
+
+test('a failed linked refund can be retried without changing the purchase or duplicating the charge', async () => {
+  let purchase = {
+    id: 'purchase-season-1', plan: 'season', status: 'active', stripe_payment_intent_id: 'pi_linked',
+    stripe_subscription_id: null, refund_status: 'none', refund_attempts: 0, season_charge_status: 'succeeded',
+  };
+  const h = harness({
+    paymentIntentRetrieveResult: { id: 'pi_linked', status: 'succeeded' },
+    refundCreateError: new Error('temporary refund error'),
+    result: (query) => {
+      if (query.table === 'users' && query.calls.some(([method]) => method === 'select')) return { data: {
+        stripe_customer_id: 'cus_test', stripe_subscription_id: null, plan_id: 'season',
+        subscription_status: 'season', plan_started_at: '2026-10-01T00:00:00.000Z', last_paid_at: '2026-10-03T00:00:00.000Z',
+      }, error: null };
+      if (query.table === 'purchases' && query.calls.some(([method]) => method === 'select')) return { data: { ...purchase }, error: null };
+      if (query.table === 'purchases' && query.calls.some(([method]) => method === 'update')) {
+        const patch = query.calls.find(([method]) => method === 'update')[1];
+        purchase = { ...purchase, ...patch };
+      }
+      return { data: null, error: null };
+    },
+    rpcImpl: (name, args) => {
+      if (name === 'set_purchase_refund_state') {
+        purchase = {
+          ...purchase,
+          status: 'withdrawn', refund_status: args.p_state,
+          refund_attempts: purchase.refund_attempts + (args.p_state === 'pending' && !args.p_refund_id ? 1 : 0),
+        };
+      }
+      return { data: 'ok', error: null };
+    },
+  });
+  const first = await h.withdrawPlanForUser('user-test');
+  assert.equal(first.status, 202);
+  assert.equal(first.body.refundStatus, 'failed');
+  h.setRefundCreateError(null);
+  const second = await h.withdrawPlanForUser('user-test');
+  assert.equal(second.status, 200);
+  assert.equal(second.body.refundStatus, 'succeeded');
+  assert.equal(h.refundCalls.length, 2);
+  assert.notEqual(h.refundCalls[0].options.idempotencyKey, h.refundCalls[1].options.idempotencyKey);
+  assert.ok(h.refundCalls.every((call) => call.params.payment_intent === 'pi_linked'));
+});
+
 test('season success webhooks calculate access from the payment time', async () => {
   const created = Math.floor(new Date('2026-03-25T12:00:00.000Z').getTime() / 1000);
   const h = harness({ result: () => ({ data: null, error: null }) });
   const res = await h.call('post', '/webhooks/stripe', { body: {
+    id: 'evt_season_paid', created,
     type: 'payment_intent.succeeded',
-    data: { object: { created, metadata: { plan_id: 'season', app_user_id: 'user-test' } } },
+    data: { object: { id: 'pi_season', created, metadata: { plan_id: 'season', app_user_id: 'user-test' } } },
   } });
   assert.equal(res.statusCode, 200);
-  const update = h.queries.flatMap((query) => query.calls).find(([method]) => method === 'update')[1];
-  assert.equal(update.access_expires_at, h.seasonEndsAt(new Date(created * 1000)).toISOString());
+  const event = h.rpcCalls[0].args;
+  assert.equal(event.p_payment_intent_id, 'pi_season');
+  assert.equal(event.p_profile_patch.access_expires_at, h.seasonEndsAt(new Date(created * 1000)).toISOString());
 });
 
 test('an old invoice failure cannot downgrade a replacement subscription', async () => {
-  const h = harness({ result: () => ({ data: null, error: null }) });
+  const h = harness({ result: (query) => query.table === 'users'
+    ? { data: { id: 'user-test' }, error: null }
+    : { data: null, error: null } });
   const res = await h.call('post', '/webhooks/stripe', { body: {
+    id: 'evt_old_invoice', created: 100,
     type: 'invoice.payment_failed',
     data: { object: { customer: 'cus_test', subscription: 'sub_old' } },
   } });
   assert.equal(res.statusCode, 200);
-  const updateQuery = h.queries.find((query) => query.calls.some(([method]) => method === 'update'));
-  assert.deepEqual(
-    Array.from(updateQuery.calls.find(([method]) => method === 'eq').slice(1)),
-    ['stripe_subscription_id', 'sub_old'],
-  );
+  const lookup = h.queries.find((query) => query.table === 'users');
+  assert.deepEqual(Array.from(lookup.calls.find(([method]) => method === 'eq').slice(1)), ['stripe_subscription_id', 'sub_old']);
+  assert.equal(h.rpcCalls[0].args.p_profile_patch.subscription_status, 'past_due');
 });
 
 test('webhook payloads in the dahlia API shape keep paid access self-expiring', async () => {
   // 2026-08-26.dahlia: period end lives on the subscription items and the
   // invoice's subscription under parent.subscription_details.
-  const h = harness({ result: () => ({ data: null, error: null }) });
+  const h = harness({ result: (query) => query.table === 'users'
+    ? { data: { id: 'user-test' }, error: null }
+    : { data: null, error: null } });
   const end = 1792590527;
   await h.call('post', '/webhooks/stripe', { body: {
+    id: 'evt_sub_updated', created: 200,
     type: 'customer.subscription.updated',
     data: { object: { id: 'sub_new', status: 'active', items: { data: [{ current_period_end: end }] } } },
   } });
-  const update = h.queries.find((query) => query.calls.some(([method]) => method === 'update'));
-  const values = update.calls.find(([method]) => method === 'update')[1];
-  assert.equal(values.access_expires_at, new Date(end * 1000).toISOString());
+  assert.equal(h.rpcCalls[0].args.p_profile_patch.access_expires_at, new Date(end * 1000).toISOString());
 
   const h2 = harness({ result: () => ({ data: null, error: null }) });
   await h2.call('post', '/webhooks/stripe', { body: {
+    id: 'evt_invoice_failed', created: 201,
     type: 'invoice.payment_failed',
     data: { object: { customer: 'cus_test', parent: { subscription_details: { subscription: 'sub_old' } } } },
   } });
-  const failed = h2.queries.find((query) => query.calls.some(([method]) => method === 'update'));
-  assert.deepEqual(Array.from(failed.calls.find(([method]) => method === 'eq').slice(1)), ['stripe_subscription_id', 'sub_old']);
+  assert.equal(h2.rpcCalls[0].args.p_user_id, null);
+  assert.equal(h2.rpcCalls[0].args.p_profile_patch.subscription_status, 'past_due');
 });
 
 test('review reads resolve opt-in adult names without the nonexistent public.users relationship', async () => {
@@ -1014,6 +1344,8 @@ test('parent checkout link rejects expiry and starts Stripe checkout for the chi
     result: (query) => {
       if (query.table === 'share_links') return { data: { user_id: 'child-owner', expires_at: '2999-01-01T00:00:00.000Z' }, error: null };
       if (query.table === 'users') return { data: { subscription_status: 'expired', stripe_customer_id: 'cus_child' }, error: null };
+      if (query.table === 'purchases' && query.calls.some(([method]) => method === 'insert')) return { data: { id: 'purchase-parent', stripe_checkout_session_id: null }, error: null };
+      if (query.table === 'purchases') return { data: null, error: null };
       return { data: null, error: null };
     },
   });
@@ -1084,6 +1416,7 @@ test('shared account results mirror current entitlement and expose no questionna
   const schools = Array.from({ length: 12 }, (_, index) => ({ id: index + 1, name: 'School ' + (index + 1), district: 'Praha 1' }));
   const ownerProfile = (hasAccess) => ({
     trial_expires_at: hasAccess ? '2999-01-01T00:00:00.000Z' : '2000-01-01T00:00:00.000Z',
+    onboarding_completed_at: hasAccess ? '2026-01-01T00:00:00.000Z' : null,
     subscription_status: null,
     access_expires_at: null,
     tester_access_until: null,
@@ -1351,9 +1684,310 @@ test('commute endpoint rejects malformed ids and hidden or merged schools', asyn
   }
 });
 
+test('anonymous school catalogue is a map-only projection and detail remains view-only public', async () => {
+  const source = {
+    id: 42, name: 'Škola', official_name: 'Oficiální škola', location: 'Praha', district: 'Praha 1',
+    contact: 'info@skola.cz', website: 'https://skola.cz', latitude: 50.1, longitude: 14.4,
+    merged_into: null, hidden_reason: null, secret_internal: 'must not escape',
+    school_programs: [{ typ_skoly: 'Gymnázium 4leté', kkov: '79-41-K/41',
+      jazyk_studia: 'Český', delka_studia: 4, maturitni: true, rok: 2026, school_id: 42,
+      cutoff: 86, kapacita: 90, prihlasky: 120, prijati: 90 }],
+    school_extracted_details: [{ skolne_poplatky: null }],
+  };
+  const h = harness({ result: (query) => query.table === 'schools'
+    ? { data: query.calls.some(([method]) => method === 'in') ? []
+      : query.calls.some(([method]) => method === 'single') ? source : [source], error: null }
+    : { data: null, error: null } });
+
+  const list = await h.call('get', '/api/schools', { user: null, query: {} });
+  assert.equal(list.statusCode, 200);
+  assert.deepEqual(Object.keys(list.body[0]).sort(), ['contact','district','id','latitude','location','longitude','name','official_name','school_programs','website'].sort());
+  assert.equal(list.body[0].school_programs[0].kkov, '79-41-K/41');
+  assert.equal(list.body[0].school_programs[0].cutoff, 86);
+  assert.equal(list.body[0].district, 'Praha 1');
+  assert.equal(h.queries[0].calls.find(([method]) => method === 'select')[1],
+    'id,name,official_name,location,contact,website,latitude,longitude,school_programs(maturitni,jpz_povinna,typ_skoly,jazyk_studia,kkov,zrizovatel,kapacita,cutoff,rok,prihlasky,prijati,obor_nazev,forma_vzdelavani,zamereni)');
+
+  const detail = await h.call('get', '/api/schools/:id', { user: null, params: { id: '42' } });
+  assert.equal(detail.statusCode, 200);
+  assert.equal(detail.body.name, 'Škola');
+  assert.equal(detail.body.contact, 'info@skola.cz');
+  assert.equal(detail.body.school_programs[0].school_id, 42);
+  assert.equal('secret_internal' in detail.body, false);
+  assert.equal('merged_into' in detail.body, false);
+  assert.equal('hidden_reason' in detail.body, false);
+});
+
+test('only incomplete signed-in accounts get full catalogue through onboarding scope', async () => {
+  const profile = {
+    trial_expires_at: '2999-01-01T00:00:00.000Z', subscription_status: 'trialing',
+    access_expires_at: null, onboarding_completed_at: null,
+  };
+  const rows = [{ id: 1, name: 'Škola', location: 'Praha', latitude: 50, longitude: 14,
+    school_programs: [{ typ_skoly: 'Gymnázium', kkov: '79-41-K/41', rok: 2026 }] }];
+  const h = harness({ result: (query) => query.table === 'users'
+    ? { data: profile, error: null }
+    : query.table === 'schools' ? { data: rows, error: null } : { data: null, error: null } });
+
+  const publicList = await h.call('get', '/api/schools', { query: {} });
+  assert.equal(publicList.statusCode, 200);
+  assert.equal('school_extracted_details' in publicList.body[0], false);
+
+  const onboarding = await h.call('get', '/api/schools', { query: { scope: 'onboarding' } });
+  assert.equal(onboarding.statusCode, 200);
+  assert.equal(h.queries.at(-1).calls.find(([method]) => method === 'select')[1],
+    '*, school_programs(*), school_extracted_details(*)');
+  const access = await h.accessStateFor('user-test', 'student@example.com');
+  assert.equal(access.hasAccess, false);
+  assert.equal(access.httpStatus, 403);
+  assert.equal(access.body.code, 'ONBOARDING_INCOMPLETE');
+  assert.equal(access.profile.onboarding_completed_at, null);
+});
+
+test('signed-in accounts without access can still open the map school card read-only', async () => {
+  const profile = { onboarding_completed_at: null, trial_expires_at: null, subscription_status: null };
+  const school = { id: 42, name: 'Škola', location: 'Praha', merged_into: null,
+    hidden_reason: null, school_programs: [], school_extracted_details: [] };
+  const h = harness({ result: (query) => query.table === 'users'
+    ? { data: profile, error: null }
+    : query.table === 'schools' ? { data: school, error: null } : { data: [], error: null } });
+  const response = await h.call('get', '/api/schools/:id', { params: { id: '42' } });
+  assert.equal(response.statusCode, 200);
+  assert.equal(response.body.name, 'Škola');
+  assert.equal('hidden_reason' in response.body, false);
+  const schoolRead = h.queries.find((query) => query.table === 'schools');
+  assert.equal(schoolRead.calls.find(([method]) => method === 'select')[1],
+    'id,name,official_name,location,contact,website,latitude,longitude,merged_into,hidden_reason,school_programs(*),school_extracted_details(*)');
+});
+
+test('full comparison catalogue stays gated until an account has completed onboarding and paid', async () => {
+  const profile = {
+    trial_expires_at: '2999-01-01T00:00:00.000Z', subscription_status: 'trialing',
+    access_expires_at: null, onboarding_completed_at: null,
+  };
+  const h = harness({ result: (query) => query.table === 'users'
+    ? { data: profile, error: null } : { data: [], error: null } });
+  const denied = await h.call('get', '/api/schools', { query: { ids: '1,2' } });
+  assert.equal(denied.statusCode, 402);
+  assert.equal(denied.body.code, 'PAYMENT_REQUIRED');
+  assert.equal(h.queries.some((query) => query.table === 'schools'), false);
+});
+
+test('onboarding progress validates steps and binds each saved draft to the authenticated user', async () => {
+  const profile = { onboarding_completed_at: null };
+  const invalid = harness({ result: (query) => query.table === 'users'
+    ? { data: profile, error: null } : { data: null, error: null } });
+  const rejected = await invalid.callChain('put', '/api/me/onboarding-progress', {
+    body: { stepId: '/skoly', role: 'student', answers: {}, intents: [], planId: 'season' },
+  });
+  assert.equal(rejected.statusCode, 400);
+  assert.equal(invalid.queries.length, 0);
+
+  const h = harness({ result: (query) => query.table === 'users'
+    ? { data: profile, error: null } : { data: null, error: null } });
+  const saved = await h.callChain('put', '/api/me/onboarding-progress', {
+    body: { stepId: 'q4', role: 'student', answers: { focus: ['it'] }, intents: ['srovnat'],
+      commitment: null, gender: 'f', planId: 'monthly' },
+  });
+  assert.equal(saved.statusCode, 204);
+  const row = h.queries.find((query) => query.table === 'onboarding_progress')
+    .calls.find(([method]) => method === 'upsert')[1];
+  assert.equal(row.user_id, 'user-test');
+  assert.equal(row.step_id, 'q4');
+  assert.deepEqual(row.answers, { focus: ['it'] });
+  assert.equal(row.plan_id, 'monthly');
+});
+
 test('commute endpoints return 503 when the generated matrix is missing', async () => {
   const h = harness();
   assert.equal((await h.call('get', '/api/commute/stops')).statusCode, 503);
   assert.equal((await h.call('get', '/api/schools/:id/commute', { params: { id: '12' } })).statusCode, 503);
   assert.equal(h.queries.length, 0);
+});
+
+test('the ordinary trial window opens once, on the first confirmed request that reads the profile', async () => {
+  const fresh = { trial_expires_at: null, subscription_status: 'trialing', onboarding_completed_at: '2026-01-01T00:00:00.000Z', access_expires_at: null };
+  const started = '2026-10-23T10:00:00.000Z';
+  const runAccess = async (profile, afterRpc) => {
+    let current = profile;
+    const h = harness({
+      rpcImpl: () => { current = { ...current, ...afterRpc }; return { data: started, error: null }; },
+      result: (query) => query.table === 'users' ? { data: current, error: null } : { data: null, error: null },
+    });
+    const req = { user: { id: 'user-test', email: 'tester@example.com' } };
+    const res = { statusCode: 200, status(code) { this.statusCode = code; return this; }, json(body) { this.body = body; return this; } };
+    let reached = false;
+    await h.requireAccess(req, res, () => { reached = true; });
+    return { h, res, reached };
+  };
+
+  const first = await runAccess(fresh, { trial_expires_at: '2999-01-01T00:00:00.000Z' });
+  assert.equal(first.reached, true);
+  assert.deepEqual(first.h.rpcCalls.map((call) => call.name), ['start_ordinary_trial']);
+  assert.equal(first.h.rpcCalls[0].args.p_user_id, 'user-test');
+
+  const later = await runAccess({ ...fresh, trial_expires_at: '2999-01-01T00:00:00.000Z' }, {});
+  assert.equal(later.h.rpcCalls.length, 0, 'an account with a window never calls the starter again');
+
+  const paid = await runAccess({ ...fresh, subscription_status: 'season', access_expires_at: '2999-01-01T00:00:00.000Z' }, {});
+  assert.equal(paid.h.rpcCalls.length, 0, 'paid, beta, creator and developer rows are not given a trial');
+
+  const failed = await runAccess(fresh, {});
+  assert.equal(failed.reached, false, 'a starter that leaves no window grants no access');
+  assert.equal(failed.res.statusCode, 402);
+});
+
+test('trial start schema is nullable, service-only and mirrored in the repeatable setup', () => {
+  const { readFileSync } = require('node:fs');
+  const migration = readFileSync('migrations/2026-10-23-trial-starts-at-first-signin.sql', 'utf8');
+  const setup = readFileSync('supabase-setup.sql', 'utf8');
+  for (const sql of [migration, setup]) {
+    assert.match(sql, /alter table public\.users alter column trial_expires_at drop not null/i);
+    assert.match(sql, /where u\.id = p_user_id\s+and u\.trial_expires_at is null\s+and u\.subscription_status = 'trialing'/i);
+    assert.match(sql, /revoke all on function public\.start_ordinary_trial\(uuid\) from public, anon, authenticated/i);
+    assert.match(sql, /grant execute on function public\.start_ordinary_trial\(uuid\) to service_role/i);
+    assert.doesNotMatch(sql, /clock_timestamp\(\) \+ interval '3 days',\s*'trialing'/i, 'signup trigger no longer starts the clock');
+  }
+  assert.doesNotMatch(setup, /now\(\) \+ interval '3 days',\s*'trialing'/i, 'backfill no longer starts the clock');
+});
+
+test('saving picks is one database call that keeps the old list when it fails', async () => {
+  const profile = { trial_expires_at: '2999-01-01T00:00:00.000Z', subscription_status: 'trialing', onboarding_completed_at: '2026-01-01T00:00:00.000Z' };
+  const make = (rpcImpl) => harness({ rpcImpl, result: (query) => query.table === 'users' ? { data: profile, error: null } : { data: [], error: null } });
+
+  const ok = make(() => ({ data: 2, error: null }));
+  const saved = await ok.call('put', '/api/picks', { body: { picks: [{ schoolId: 5, oborKkov: '79-41-K/41' }, { schoolId: 9 }] } });
+  assert.equal(saved.statusCode, 200);
+  assert.equal(saved.body.count, 2);
+  assert.deepEqual(ok.rpcCalls.map((c) => c.name), ['save_application_picks']);
+  assert.equal(JSON.stringify(ok.rpcCalls[0].args.p_picks.map((p) => p.school_id)), '[5,9]');
+  assert.equal(ok.queries.some((q) => q.table === 'application_picks'), false, 'no separate delete or insert from the server');
+
+  const gone = make(() => ({ data: null, error: { message: 'School unavailable', hint: 'SCHOOL_UNAVAILABLE', code: '22023' } }));
+  const rejected = await gone.call('put', '/api/picks', { body: { picks: [{ schoolId: 5 }] } });
+  assert.equal(rejected.statusCode, 400);
+  assert.equal(rejected.body.code, 'SCHOOL_UNAVAILABLE');
+
+  const broken = make(() => ({ data: null, error: { message: 'insert failed', code: '23505' } }));
+  assert.equal((await broken.call('put', '/api/picks', { body: { picks: [{ schoolId: 5 }] } })).statusCode, 500);
+
+  const dup = make(() => ({ data: 2, error: null }));
+  assert.equal((await dup.call('put', '/api/picks', { body: { picks: [{ schoolId: 5 }, { schoolId: 5 }] } })).statusCode, 400);
+  assert.equal(dup.rpcCalls.length, 0);
+});
+
+test('pick save function locks per account, validates programmes and keeps hidden-school picks', () => {
+  const { readFileSync } = require('node:fs');
+  const migration = readFileSync('migrations/2026-10-23-atomic-application-picks.sql', 'utf8');
+  const setup = readFileSync('supabase-setup.sql', 'utf8');
+  for (const sql of [migration, setup]) {
+    assert.match(sql, /create or replace function public\.save_application_picks\(p_user_id uuid, p_picks jsonb\)/i);
+    assert.match(sql, /pg_advisory_xact_lock\(hashtextextended\('application_picks:' \|\| p_user_id::text, 0\)\)/i);
+    assert.match(sql, /jsonb_array_length\(p_picks\) > 3/i);
+    assert.match(sql, /p\.school_id = sid and p\.kkov = v_kkov/i);
+    assert.match(sql, /delete from public\.application_picks ap[\s\S]{0,260}s\.merged_into is null and s\.hidden_reason is null/i);
+    assert.match(sql, /revoke all on function public\.save_application_picks\(uuid, jsonb\) from public, anon, authenticated/i);
+    assert.match(sql, /grant execute on function public\.save_application_picks\(uuid, jsonb\) to service_role/i);
+  }
+});
+
+test('parallel explanations keep every cached school and the same school costs one model call', async () => {
+  const baseRun = { id: 12, answers: { typ: 'odborna' }, matches: [] };
+  const schools = [{ id: 11, name: 'Škola 11', programs: 'Gymnázium' }, { id: 12, name: 'Škola 12', programs: 'Gymnázium' }];
+  const make = (requestReasonsImpl, cacheOk = true) => {
+    const stored = {};
+    const h = harness({
+      env: { OPENROUTER_API_KEY: 'synthetic' },
+      rpcImpl: (name, args) => { if (cacheOk) stored[args.p_school_id] = args.p_reason; return { data: cacheOk, error: null }; },
+      requestReasonsImpl,
+      result: (query) => query.table === 'questionnaire_runs'
+        ? { data: { ...baseRun, extra_reasons: {} }, error: null }
+        : query.table === 'schools' ? { data: schools, error: null } : { data: null, error: null },
+    });
+    return { h, stored };
+  };
+  const ask = (h, id) => h.call('post', '/api/questionnaire/explain/:schoolId', { params: { schoolId: String(id) }, query: { run: '12' } });
+
+  const parallel = make(async ({ shortlist }) => new Map([[shortlist[0].school_id, 'Důvod ' + shortlist[0].school_id]]));
+  const both = await Promise.all([ask(parallel.h, 11), ask(parallel.h, 12)]);
+  assert.ok(both.every((r) => r.statusCode === 200));
+  assert.equal(JSON.stringify(Object.keys(parallel.stored).sort()), '["11","12"]');
+
+  let release; const gate = new Promise((resolve) => { release = resolve; });
+  const same = make(async () => { await gate; return new Map([[11, 'Jeden důvod']]); });
+  const pair = Promise.all([ask(same.h, 11), ask(same.h, 11)]);
+  await new Promise((resolve) => setImmediate(resolve));
+  release();
+  const results = await pair;
+  assert.ok(results.every((r) => r.statusCode === 200 && r.body.reason === 'Jeden důvod'));
+  assert.equal(same.h.reasonCalls.length, 1);
+
+  const changed = make(async () => new Map([[11, 'Zastaralý důvod']]), false);
+  assert.equal((await ask(changed.h, 11)).statusCode, 502, 'answers changed while generating: nothing is cached');
+});
+
+test('explanation cache merge is per key, owner-bound and service-only', () => {
+  const { readFileSync } = require('node:fs');
+  for (const sql of [readFileSync('migrations/2026-10-23-explanation-cache-merge.sql', 'utf8'), readFileSync('supabase-setup.sql', 'utf8')]) {
+    assert.match(sql, /extra_reasons = coalesce\(r\.extra_reasons, '\{\}'::jsonb\)\s+\|\| jsonb_build_object\(p_school_id, p_reason\)/i);
+    assert.match(sql, /r\.user_id = p_user_id\s+and r\.answers = p_answers/i);
+    assert.match(sql, /grant execute on function public\.cache_questionnaire_reason\(uuid, bigint, text, jsonb, text\) to service_role/i);
+  }
+});
+
+test('account erasure lists every screenshot page and removes them all before the account', async () => {
+  const names = Array.from({ length: 2500 }, (_, i) => ({ name: `s${i}.png` }));
+  const offsets = [];
+  const h = harness({ storageListResult: async (prefix, options) => {
+    offsets.push(options.offset);
+    return { data: names.slice(options.offset, options.offset + options.limit), error: null };
+  } });
+  assert.equal((await h.call('delete', '/api/me')).statusCode, 204);
+  assert.equal(JSON.stringify(offsets), '[0,1000,2000]');
+  assert.equal(h.storageRemovals.length, 2500);
+  assert.equal(h.deletions, 1);
+
+  const exact = Array.from({ length: 1000 }, (_, i) => ({ name: `e${i}.png` }));
+  const edge = harness({ storageListResult: async (prefix, options) => ({ data: options.offset === 0 ? exact : [], error: null }) });
+  assert.equal((await edge.call('delete', '/api/me')).statusCode, 204);
+  assert.equal(edge.storageRemovals.length, 1000, 'a full first page still checks the next page');
+});
+
+test('a failed account deletion takes its own archive copy back so a retry cannot duplicate or keep it', async () => {
+  const run = (body, deleteUserError) => {
+    const h = harness({
+      deleteUserError,
+      rpcImpl: (name) => ({ data: name === 'archive_beta_contributions' ? [11, 12] : 2, error: null }),
+    });
+    return h.call('delete', '/api/me', { body }).then((res) => ({ h, res }));
+  };
+
+  const failedArchive = await run({}, { message: 'auth down' });
+  assert.equal(failedArchive.res.statusCode, 500);
+  assert.deepEqual(failedArchive.h.rpcCalls.map((c) => c.name), ['archive_beta_contributions', 'remove_beta_archive_rows']);
+  assert.equal(JSON.stringify(failedArchive.h.rpcCalls[1].args.p_ids), '[11,12]');
+
+  const deleteChoice = await run({ delete_contributions: true }, { message: 'auth down' });
+  assert.equal(deleteChoice.h.rpcCalls.length, 0, 'choosing deletion never archives, so nothing is left to undo');
+
+  const success = await run({}, null);
+  assert.equal(success.res.statusCode, 204);
+  assert.deepEqual(success.h.rpcCalls.map((c) => c.name), ['archive_beta_contributions']);
+
+  const gone = harness({
+    deleteUserError: { message: 'timeout' },
+    authAdmin: { data: { user: null }, error: null },
+    rpcImpl: () => ({ data: [21], error: null }),
+  });
+  await gone.call('delete', '/api/me', { body: {} });
+  assert.deepEqual(gone.rpcCalls.map((c) => c.name), ['archive_beta_contributions'], 'an account that is already gone keeps its archive copy');
+});
+
+test('archive functions return their ids and the undo is service-only', () => {
+  const { readFileSync } = require('node:fs');
+  for (const sql of [readFileSync('migrations/2026-10-23-account-erasure-archive-undo.sql', 'utf8'), readFileSync('supabase-setup.sql', 'utf8')]) {
+    assert.match(sql, /create function public\.archive_beta_contributions\(p_user_id uuid\)\s+returns bigint\[\]/i);
+    assert.match(sql, /delete from public\.beta_contributions_archive where id = any\(coalesce\(p_ids, '\{\}'\)\)/i);
+    assert.match(sql, /grant execute on function public\.remove_beta_archive_rows\(bigint\[\]\) to service_role/i);
+  }
 });
