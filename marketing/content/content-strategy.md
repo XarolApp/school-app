@@ -7,7 +7,8 @@ Audience: Czech 9th graders (main viewer), parents (secondary, mostly via shares
 ## Honesty and safety rules (apply to every video)
 - Zero-shame: no "budeš litovat", "promarníš budoucnost", no pressure on grades or fear of not getting in. Frame as "ušetři si čas / udělej si v tom pořádek".
 - No invented numbers, user counts, testimonials, "tisíce studentů". Only facts in the checklist below.
-- Do not promise school reviews or link sharing (disabled in beta). Do not quote prices or say payment is live (Stripe is not live-ready per CLAUDE.md). Do not say "zdarma" unless the founder confirms the access terms on launch day; default CTA is "odkaz v bio".
+- Do not promise school reviews or link sharing (disabled in beta). Per the founder (28 Oct), payments are live from 1 Nov, so prices may be referenced: Sezónní přístup 690 Kč jednorázově (3 dny zkušební), Měsíční 249 Kč. Every price line is marked "[ověř před publikací]" in scripts (confirm in the live paywall and `frontend/src/config/pricing.js` before posting). Say "zdarma" ONLY about the 3-day trial of the season pass, never about the product. Never say "lifetime"; say "sezónní přístup". CTA is always "odkaz v bio".
+- Accounts: @stredninamiru on TikTok and Instagram. Drafts only from our side: nothing is scheduled or published by Claude (Metricool brand 7545410 is connected, not used).
 - Never imply a school paid for placement. We can say: školy si pořadí koupit nemůžou (founder decision, 90-point ctx #44).
 - Historical CERMAT data is history, never a guarantee of acceptance (ctx #46). Say "loni", "v datech z CERMATu", never "tebe vezmou".
 - Do not show real user data. Screen recordings use a test/demo account.
@@ -34,11 +35,13 @@ Ranking reasoning is from general short-form behavior (loop-able, low-friction, 
 Account positioning (test, ctx #74): one account, trustworthy-but-human tone, trend-friendly hooks, no corporate voice. Name/bio should say what it is: "Výběr střední v Praze. Data, ne dojmy."
 
 ## Cadence for one person (~1-1.5 h/day)
-- 1 video/day on TikTok, cross-posted to Reels and Shorts (same file, no watermark: export clean, upload natively to each).
-- Weekly batch (Sunday, ~2.5 h): write/choose 7 scripts, record 2-3 screen-recording sessions (10 min each, vertical 9:16 via phone-frame browser or `mobile-preview.html`), generate 7 TTS voiceovers.
-- Daily (~40-60 min): edit in CapCut template (captions auto + manual fix), post at the planned time, reply to every comment for 15 min in the first hour (comment replies boost reach, and comments are research), log results in `tracking-sheet.csv`.
-- Reuse: each long script yields 1 cut-down remix after 10 days if it overperformed.
-- Do not post more than 2/day until you have 14 days of data.
+- Founder wants maximum volume for views, alongside development: design is **2 videos/day from day 1**, each cross-posted to TikTok, Reels and Shorts (same clean export, uploaded natively; ~42 platform posts per week from 14 videos).
+- Slot A (morning ~7:00, before school) = education/myth/deadline. Slot B (evening ~18:30-19:30) = comparison/demo/POV. Times are hypotheses; check TikTok analytics "active followers" after week 1.
+- Weekly mega-batch (Sunday, ~3-3.5 h): pick 14 scripts, record ONE 20-min screen-recording session for all app clips, generate 14 TTS voiceovers in one sitting, rough-cut all 14 in a CapCut template. Midweek mini-batch (Wed, 45 min): 3-4 reactive/trend videos.
+- Daily (~30-45 min): final captions check, upload both videos (drafts first, post manually), reply to comments for 15 min after posting (comments boost reach and are research), log in `tracking-sheet.csv`.
+- Reuse: an overperformer gets a remix (new hook, same content) after ~7 days.
+- Quality guardrail: volume is allowed, but every video must contain one concrete useful point. 14-day data caution is advice: after 14 days compare formats before locking the mix; it is not a cap on posting.
+- Plan A/B for a thin week: if a batch day is missed, the evergreen reserve (script 11 is evergreen and reusable any day) fills the gap.
 
 ## Batch production workflow
 1. One recording session = all app clips for the week (list is in each script's "Screeny"). Record on test account, 1080x1920, hide email/profile. Save as `clips/<screen>-<n>.mp4`.
@@ -76,6 +79,14 @@ Per video: views, avg watch %, 3-s hold if available, shares, saves, link clicks
 - Attribution: use a different UTM per platform and per week if the bio link allows (e.g. `?utm_source=tiktok&utm_campaign=w1`). If link tracking isn't set up, ask new signups "kde jsi nás viděl?".
 
 ## Open dependencies for the founder
-- Confirm launch-day CTA wording (free beta vs access terms) and whether the site gate is open to the public on 1 Nov. Until confirmed, all scripts use "odkaz v bio".
-- Verify 2027 přijímačky dates (CERMAT/MŠMT) before posting scripts 1, 2, 3, 12.
+- Confirm the site gate is open to the public from 1 Nov (CLAUDE.md: Vercel gate requires a tester code in production) and that payment screens match the price lines. All scripts use CTA "odkaz v bio".
+- vidIQ outlier research (Czech přijímačky hooks) was not run; hook patterns above are from the founder's docs and general practice, not trend data.
+- Verify 2027 přijímačky dates (CERMAT/MŠMT) before posting scripts 1, 2, 3.
 - Confirm a mobile-quality demo account exists with the 192-school catalogue.
+
+## 5 ideas I am UNSURE about
+1. **Žebříčky škol ("top 5 gymnázií podle hranice")**: high views, but invites "ranking" claims, could read as endorsing/defaming schools, and conflicts with "schools cannot buy rankings" optics. Only if framed as raw CERMAT data with the year.
+2. **Predikce přijetí ("máš X % šanci")**: huge hook, but ctx #27/#28/#46 say not launched unless reliable and never a guarantee. Skip for now.
+3. **Trendy zvuky/memy o stresu z přijímaček**: reach potential, but easy to slide into fear/shame or generic cringe for 15-year-olds.
+4. **Hlasová TTS vs jen text**: robotic Czech TTS may lower trust/retention; text-only may be less engaging. Needs an A/B on identical scripts.
+5. **Reakce na komentáře videem / duets s jinými tvůrci**: strong for engagement, but needs consistent moderation and avoids fake-testimonial territory; also tied to creator outreach, which is a separate plan.
