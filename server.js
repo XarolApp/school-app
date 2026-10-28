@@ -4748,17 +4748,30 @@ async function withdrawPlanForUser(userId) {
     };
   }
 
+  let owedMinor = null;
   try {
     // Record the request before contacting Stripe, so a process crash cannot
     // make a retry look like a fresh or unrelated purchase.
     if (purchase && purchase.status !== 'withdrawn') {
+      // The pro-rata amount is stored in the same write that makes the refund
+      // sweepable: the hourly sweep refunds everything when it finds none.
+      let quoted = null;
+      if (purchase.stripe_payment_intent_id && (purchase.refund_amount_minor === null || purchase.refund_amount_minor === undefined)) {
+        const intent = await stripe.paymentIntents.retrieve(purchase.stripe_payment_intent_id, { expand: ['latest_charge'] });
+        if (intent.status === 'succeeded') {
+          quoted = withdrawalQuote({ purchase, profile, refundableMinor: refundableOf(intent) });
+          purchase.refund_amount_minor = quoted.refundMinor;
+        }
+      }
       const { error } = await supabase.from('purchases').update({
         status: 'withdrawn',
         cancel_requested_at: new Date().toISOString(),
         refund_status: purchase.stripe_payment_intent_id ? 'pending' : 'none',
+        ...(quoted ? { refund_amount_minor: quoted.refundMinor } : {}),
         updated_at: new Date().toISOString(),
       }).eq('id', purchase.id).eq('user_id', userId);
       if (error) throw error;
+      if (quoted) owedMinor = quoted.owedMinor;
       // A friend who withdraws earns the referrer nothing.
       await supabase.from('referrals').update({ status: 'void', void_reason: 'referred_withdrew', settled_at: new Date().toISOString() })
         .eq('referred_purchase_id', purchase.id).eq('status', 'pending');
@@ -4787,7 +4800,6 @@ async function withdrawPlanForUser(userId) {
 
     let refundStatus = 'none';
     let refundedHaleru = 0;
-    let owedMinor = null;
     if (purchase && paymentIntentId) {
       const intent = await stripe.paymentIntents.retrieve(paymentIntentId, { expand: ['latest_charge'] });
       if (intent.status !== 'succeeded') {

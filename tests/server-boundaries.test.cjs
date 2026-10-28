@@ -2509,3 +2509,32 @@ test('the stale-pending cleanup never fails a one-click monthly whose subscripti
   assert.ok(cleanup.calls.some(([method, column, value]) => method === 'is' && column === 'stripe_subscription_id' && value === null));
   assert.ok(cleanup.calls.some(([method, column, value]) => method === 'is' && column === 'stripe_checkout_session_id' && value === null));
 });
+
+test('a withdrawal stores its pro-rata refund amount in the same write that makes the refund sweepable', async () => {
+  const paidAt = daysAgo(3);
+  const h = harness({
+    paymentIntentRetrieveResult: { id: 'pi_linked', status: 'succeeded', amount_received: 51200 },
+    result: (query) => {
+      if (query.table === 'users' && query.calls.some(([method]) => method === 'select')) return { data: {
+        stripe_customer_id: 'cus_test', stripe_subscription_id: null, plan_id: 'season',
+        subscription_status: 'season', plan_started_at: daysAgo(10), last_paid_at: paidAt,
+      }, error: null };
+      if (query.table === 'purchases' && query.calls.some(([method]) => method === 'select')) return { data: {
+        id: 'purchase-season-1', plan: 'season', status: 'active', stripe_payment_intent_id: 'pi_linked',
+        stripe_subscription_id: null, refund_status: 'none', refund_attempts: 0, season_charge_status: 'succeeded',
+        price_amount_minor: 51200, immediate_start_consent_at: daysAgo(10),
+        access_ends_at: season.ACCESS_END.toISOString(), refund_amount_minor: null,
+      }, error: null };
+      return { data: null, error: null };
+    },
+  });
+  await h.withdrawPlanForUser('user-test');
+  const firstWrite = h.queries.find((query) => query.table === 'purchases'
+    && query.calls.some(([method, patch]) => method === 'update' && patch?.status === 'withdrawn'));
+  assert.ok(firstWrite, 'withdrawn write not found');
+  const patch = firstWrite.calls.find(([method]) => method === 'update')[1];
+  assert.equal(patch.refund_status, 'pending');
+  assert.ok(Number.isInteger(patch.refund_amount_minor), 'refund_amount_minor must be written with refund_status=pending');
+  assert.equal(patch.refund_amount_minor, h.refundCalls[0].params.amount);
+  assert.ok(patch.refund_amount_minor < 51200);
+});
