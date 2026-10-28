@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../components/AuthContext';
+import SignedInNotice from '../components/SignedInNotice';
 import Captcha, { captchaEnabled } from '../components/Captcha';
 import PasswordInput from '../components/PasswordInput';
 import { getRememberMe } from '../supabaseClient';
@@ -20,7 +21,7 @@ function Login() {
   const [captchaToken, setCaptchaToken] = useState(null);
   const [captchaKey, setCaptchaKey] = useState(0);
   const [submitted, setSubmitted] = useState(false);
-  const { signIn, resendConfirmation } = useAuth();
+  const { signIn, resendConfirmation, isSignedIn } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();
@@ -109,6 +110,10 @@ function Login() {
     setNeedsConfirmation(false);
     setResent(true);
   };
+
+  // Never offer a second account while one is signed in (submitted: this
+  // page's own successful sign-in is navigating away).
+  if (isSignedIn && !submitted) return <SignedInNotice />;
 
   return (
     <>

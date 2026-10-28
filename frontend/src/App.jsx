@@ -78,10 +78,9 @@ function App() {
               <Route path="/pro/:slug/:token" element={<CreatorClaimDev />} />
               {/* Onboarding sits OUTSIDE the Layout on purpose: the nav bar is a
                   distraction and an exit during a 23-screen narrative flow. */}
-              {/* Closed beta: every app page needs a signed-in, confirmed account
-                  with access; signed-out visitors only see the landing, auth
-                  and legal pages. Server routes enforce the same rule. */}
-              <Route element={<ProtectedRoute />}>
+              {/* Onboarding requires a confirmed account, but an account that
+                  has not completed onboarding/checkout may enter this flow. */}
+              <Route element={<ProtectedRoute allowOnboarding />}>
                 <Route path="/onboarding" element={<Navigate to="/onboarding/welcome" replace />} />
                 <Route path="/onboarding/:stepId" element={<OnboardingFlow />} />
               </Route>
@@ -116,7 +115,7 @@ function App() {
                     signed out (no save, compare, explanation or review). */}
                 <Route
                   path="/skoly/:id"
-                  element={<ProtectedRoute publicFallback={<SchoolDetail publicView />}><SchoolDetail /></ProtectedRoute>}
+                  element={<ProtectedRoute requireAccess={false} allowPublicNoAccess publicFallback={<SchoolDetail publicView />}><SchoolDetail /></ProtectedRoute>}
                 />
                 <Route element={<ProtectedRoute />}>
                   <Route path="/admin" element={<Suspense fallback={<LoadingSpinner label="Načítání přehledů…" />}><Admin /></Suspense>} />

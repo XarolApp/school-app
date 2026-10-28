@@ -88,7 +88,7 @@ function Platba() {
     setWorking(true);
     document.documentElement.dataset.snmStripeRedirecting = 'true';
     try {
-      const { url } = await createCheckoutSession({ planId: plan.id, returnTo: '/skoly' });
+      const { url } = await createCheckoutSession({ planId: plan.id, returnTo: '/onboarding/hotovo' });
       // Full navigation on purpose — Stripe's hosted checkout page is not part
       // of this SPA. Purchase is confirmed by the webhook, not by anything
       // that happens client-side here, so there is no goNext()/setPurchased()
@@ -97,6 +97,12 @@ function Platba() {
     } catch (err) {
       delete document.documentElement.dataset.snmStripeRedirecting;
       setWorking(false);
+      // An already running plan means the payment went through; the account
+      // is only waiting for Stripe's confirmation, which the next screen awaits.
+      if (err.code === 'ALREADY_SUBSCRIBED') {
+        goToStep('hotovo');
+        return;
+      }
       setError(
         err.code === 'STRIPE_NOT_CONFIGURED'
           ? (parent ? 'Platby zatím nejsou spuštěné. Zkuste to prosím později.' : 'Platby zatím nejsou spuštěné. Zkus to prosím později.')
@@ -273,8 +279,15 @@ function Platba() {
                 </div>
               )}
               <PayCta onClick={submit} disabled={working}>
-                {working ? 'Přesměrovávám na Stripe…' : 'Objednat s povinností platby'}
+                {working ? 'Přesměrovávám na Stripe…' : plan.hasTrial ? 'Začít zkušební období' : 'Objednat s povinností platby'}
               </PayCta>
+              {plan.hasTrial && (
+                <p className="ob-microcopy ob-pw-centered">
+                  {parent
+                    ? `Dnes se nic neplatí. Po skončení zkušebního období Stripe jednorázově strhne ${formatCzk(plan.priceCzk)}, pokud ho do té doby nezrušíte v Nastavení.`
+                    : `Dnes se nic neplatí. Po skončení zkušebního období Stripe jednorázově strhne ${formatCzk(plan.priceCzk)}, pokud ho do té doby nezrušíš v Nastavení.`}
+                </p>
+              )}
               <p className="ob-microcopy ob-pw-centered">
                 {parent ? 'Objednáním souhlasíte s' : 'Objednáním souhlasíš s'}{' '}
                 <a href="/obchodni-podminky" target="_blank" rel="noreferrer">obchodními podmínkami</a>

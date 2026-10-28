@@ -1,19 +1,24 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { fetchPicks, savePicks } from '../api';
+import { useAuth } from '../components/AuthContext';
 import { useToast } from '../components/ToastContext';
 import { useG } from './gender';
 
 /** Shared add/remove behavior for a student's three ordered application picks. */
 export function usePicks() {
   const { toast } = useToast();
+  const userId = useAuth().user?.id ?? null;
   const g = useG();
   const [picks, setPicks] = useState([]);
   const [saving, setSaving] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const pickIds = useMemo(() => new Set(picks.map((pick) => pick.school.id)), [picks]);
 
+  // Another account taking over this tab starts from an empty, not-loaded list.
   useEffect(() => {
     let cancelled = false;
+    setPicks([]);
+    setLoaded(false);
     fetchPicks()
       .then((fresh) => {
         if (!cancelled) { setPicks(fresh); setLoaded(true); }
@@ -25,7 +30,7 @@ export function usePicks() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [userId]);
 
   const toggle = useCallback(async (school) => {
     if (saving || !loaded) return;

@@ -1,7 +1,7 @@
 import { track } from '../../lib/betaTrack';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { fetchHandoffStatus, fetchSchoolsForMatching, revokeHandoff, saveOnboardingAnswers } from '../../api';
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { fetchHandoffStatus, fetchOnboardingProgress, fetchSchoolsForMatching, revokeHandoff, saveOnboardingAnswers, saveOnboardingProgress } from '../../api';
 import { rankSchools } from '../../lib/matching';
 import { ObScreen, RoleSwitch } from '../../components/onboarding/ObKit';
 import HandoffLock from '../../components/onboarding/HandoffLock';
@@ -64,7 +64,7 @@ function OnboardingFlow() {
   const { stepId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const { loading, isSignedIn, user, profile, profileLoading, profileError, refreshProfile } = useAuth();
+  const { loading, isSignedIn, user, session, profile, profileLoading, profileError, refreshProfile } = useAuth();
   const isTester = profile?.isTester === true;
   const betaPreviewRequested = new URLSearchParams(location.search).get('betaPreview') === '1';
   const betaPreview =
@@ -100,6 +100,10 @@ function OnboardingFlow() {
     error: null,
     completionReached: false,
   });
+  const [progressReady, setProgressReady] = useState(false);
+  const [progressLoadError, setProgressLoadError] = useState(null);
+  const [progressSaveError, setProgressSaveError] = useState(null);
+  const [progressRetry, setProgressRetry] = useState(0);
   const quizSaveInFlight = useRef(null);
   const checkOwnerHandoff = useCallback(async () => {
     if (!ownerHandoff?.token || !ownerHandoff?.ownerSecret) return;
@@ -173,7 +177,7 @@ function OnboardingFlow() {
   // waits on the network after the labour-illusion screen has already run.
   useEffect(() => {
     let alive = true;
-    fetchSchoolsForMatching()
+    fetchSchoolsForMatching({ onboarding: true })
       .then((res) => {
         if (!alive) return;
         setSchools(res.schools);
@@ -185,6 +189,73 @@ function OnboardingFlow() {
       alive = false;
     };
   }, []);
+
+  const cleaned = useMemo(() => cleanAnswers(answers), [answers]);
+
+  // Server progress is authoritative across tabs and devices. Wait for it
+  // before rendering or writing so one account can never overwrite another's
+  // unfinished answers from this browser's sessionStorage. It is restored once
+  // per account (and per manual retry), never on a step change: the save below
+  // is debounced, so re-reading on every step would bounce the user back.
+  const stepIdRef = useRef(stepId);
+  stepIdRef.current = stepId;
+  const restoredFor = useRef(null);
+  useEffect(() => {
+    if (loading || !isSignedIn || !user?.id || profileLoading || profileError) return undefined;
+    const restoreKey = `${user.id}:${progressRetry}`;
+    if (restoredFor.current === restoreKey) return undefined;
+    let alive = true;
+    setProgressReady(false);
+    setProgressLoadError(null);
+    fetchOnboardingProgress(session?.access_token)
+      .then((saved) => {
+        if (!alive) return;
+        restoredFor.current = restoreKey;
+        if (!saved.completed) {
+          setRoleState(saved.role || null);
+          setAnswers({ ...initialAnswers(), ...(saved.answers || {}) });
+          setIntents(Array.isArray(saved.intents) ? saved.intents : []);
+          setCommitment(saved.commitment || null);
+          setGenderState(saved.gender || null);
+          writeGenderPreference(saved.gender || null);
+          setPlanId(saved.planId === 'monthly' ? 'monthly' : DEFAULT_PLAN_ID);
+          // Resume only from the entry screen; a deep link or a later step keeps its URL.
+          if (stepIdRef.current === 'welcome' && saved.stepId !== 'welcome' && stepIndexById(saved.stepId) !== -1) {
+            navigate(`/onboarding/${saved.stepId}`, { replace: true });
+          }
+        }
+        setProgressReady(true);
+      })
+      .catch((error) => {
+        if (!alive) return;
+        setProgressLoadError(error.message || 'Rozpracovaný onboarding se nepodařilo načíst.');
+      });
+    return () => { alive = false; };
+  }, [loading, isSignedIn, user?.id, session?.access_token, profileLoading, profileError, navigate, progressRetry]);
+
+  // Debounced private save. A row is written only for the signed-in owner and
+  // only while server state still says onboarding is unfinished.
+  useEffect(() => {
+    if (!progressReady || !isSignedIn || !user?.id || profile?.onboardingComplete || betaPreviewRequested) return undefined;
+    // Welcome is the screen a sign-in lands on before the resume navigation
+    // commits; saving it would overwrite the real step if that takes >350 ms.
+    // Nothing on it is worth saving, so it never writes.
+    if (stepId === 'welcome') return undefined;
+    const timer = window.setTimeout(() => {
+      saveOnboardingProgress({
+        stepId,
+        role,
+        answers: cleaned,
+        intents,
+        commitment,
+        gender,
+        planId,
+      }, session?.access_token)
+        .then(() => setProgressSaveError(null))
+        .catch((error) => setProgressSaveError(error.message || 'Rozpracovaný onboarding se nepodařilo uložit.'));
+    }, 350);
+    return () => window.clearTimeout(timer);
+  }, [progressReady, isSignedIn, user?.id, profile?.onboardingComplete, betaPreviewRequested, stepId, role, cleaned, intents, commitment, gender, planId, session?.access_token, progressRetry]);
 
   useEffect(() => {
     try {
@@ -241,7 +312,7 @@ function OnboardingFlow() {
   const goTo = useCallback(
     (index, { includeBetaPreview = false, replace = false } = {}) => {
       let clamped = Math.max(0, Math.min(STEPS.length - 1, index));
-      if ((betaPreview || (betaPreviewRequested && isTester && isSignedIn)) && STEPS[clamped]?.id === 'ucet') {
+      if ((betaPreview || (betaPreviewRequested && isTester && isSignedIn) || (isSignedIn && user?.id && clamped > stepIndex)) && STEPS[clamped]?.id === 'ucet') {
         clamped = stepIndexById('plan');
       }
       const preservePreview = isTester && isSignedIn && (betaPreviewRequested || includeBetaPreview);
@@ -251,7 +322,7 @@ function OnboardingFlow() {
       );
       window.scrollTo({ top: 0, behavior: 'auto' });
     },
-    [navigate, betaPreview, betaPreviewRequested, isTester, isSignedIn]
+    [navigate, betaPreview, betaPreviewRequested, isTester, isSignedIn, user?.id, stepIndex]
   );
 
   const goNext = useCallback(() => {
@@ -268,9 +339,9 @@ function OnboardingFlow() {
   }, [goTo, stepIndex, isSignedIn, user?.id, betaPreviewRequested]);
   const goBack = useCallback(() => {
     if (stepIndex <= 0) navigate('/');
-    else if (betaPreview && STEPS[stepIndex - 1]?.id === 'ucet') goTo(stepIndexById('cesta'));
+    else if ((betaPreview || (isSignedIn && user?.id)) && STEPS[stepIndex - 1]?.id === 'ucet') goTo(stepIndexById('cesta'));
     else goTo(stepIndex - 1);
-  }, [goTo, stepIndex, navigate, betaPreview]);
+  }, [goTo, stepIndex, navigate, betaPreview, isSignedIn, user?.id]);
 
   /** Jump to a named step. The paywall screens branch (a plan without a trial
    *  skips the trial rail entirely), and importing steps.js from a screen would
@@ -282,8 +353,6 @@ function OnboardingFlow() {
     },
     [goTo]
   );
-
-  const cleaned = useMemo(() => cleanAnswers(answers), [answers]);
 
   const startBetaPreview = useCallback(
     (id = 'hodnota') => {
@@ -310,7 +379,7 @@ function OnboardingFlow() {
       if (user?.id !== quizSave.userId) setQuizSave({ status: 'idle', userId: null, error: null });
       return;
     }
-    if (profile?.isTester !== true) {
+    if (profile?.isTester !== true && profile?.onboardingComplete) {
       setQuizSave({ status: 'idle', userId: null, error: null });
       return;
     }
@@ -338,7 +407,7 @@ function OnboardingFlow() {
       .finally(() => {
         if (quizSaveInFlight.current === quizSave.userId) quizSaveInFlight.current = null;
       });
-  }, [quizSave, stepIndex, loading, profileLoading, profileError, user?.id, profile?.isTester, isSignedIn, cleaned]);
+  }, [quizSave, stepIndex, loading, profileLoading, profileError, user?.id, profile?.isTester, profile?.onboardingComplete, isSignedIn, cleaned]);
 
   const retryQuizSave = useCallback(() => {
     if (quizSave.userId === user?.id && profileError) {
@@ -441,8 +510,22 @@ function OnboardingFlow() {
 
   if (stepIndex === -1) return null;
 
+  if (!progressReady && !progressLoadError) {
+    return <ObScreen chrome={false}><h1 className="ob-title">Načítám uložený průchod…</h1></ObScreen>;
+  }
+  if (progressLoadError) {
+    return (
+      <ObScreen chrome={false}>
+        <h1 className="ob-title">Rozpracovaný průchod se nenačetl</h1>
+        <p className="ob-hint">{progressLoadError}</p>
+        <button type="button" className="ob-btn ob-btn-secondary" onClick={() => setProgressRetry((n) => n + 1)}>Zkusit znovu</button>
+      </ObScreen>
+    );
+  }
+
   const step = STEPS[stepIndex];
   const Screen = step.component;
+  if (profile?.isCreator && PAYWALL_STEP_IDS.has(step.id)) return <Navigate to="/dotaznik" replace />;
   const quizSaveNotice =
     (quizSave.status === 'error' || (quizSave.status === 'pending' && profileError)) &&
     quizSave.userId === user?.id ? (
@@ -456,6 +539,12 @@ function OnboardingFlow() {
           : `${quizSave.error} Můžeš to zkusit znovu.`}
       </p>
       <button type="button" className="ob-btn ob-btn-secondary" onClick={retryQuizSave}>Zkusit znovu</button>
+    </div>
+  ) : null;
+  const progressSaveNotice = progressSaveError ? (
+    <div className="notice" role="status">
+      <p className="notice-text">{progressSaveError} Průchod zkusíme uložit znovu.</p>
+      <button type="button" className="ob-btn ob-btn-secondary" onClick={() => setProgressRetry((n) => n + 1)}>Uložit znovu</button>
     </div>
   ) : null;
 
@@ -512,7 +601,6 @@ function OnboardingFlow() {
   }
 
   if (betaPreview && PAYWALL_STEP_IDS.has(step.id) && !role) {
-  if (profile?.isCreator && PAYWALL_STEP_IDS.has(step.id)) return <Navigate to="/dotaznik" replace />;
     return (
       <div className="ob-root ob-role-none" data-step={step.id}>
         {quizSaveNotice}
@@ -605,6 +693,7 @@ function OnboardingFlow() {
             <button type="button" className="ob-inline-link" onClick={leaveBetaPreview}>Zpět ke školám</button>
           </div>
         )}
+        {progressSaveNotice}
         {quizSaveNotice}
         <Screen step={step} />
       </div>

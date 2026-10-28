@@ -1,9 +1,10 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { supabase, setRememberMe } from '../supabaseClient';
-import { fetchMe, updateProfile, saveOnboardingAnswers } from '../api';
+import { fetchMe, updateProfile, saveOnboardingAnswers, saveOnboardingProgress, setApiAccount } from '../api';
 import { applyTheme } from '../lib/theme';
 import { readOnboardingStash, clearOnboardingStash } from '../lib/pendingOnboardingAnswers';
 import { syncDraftOwner } from '../lib/useDraft';
+import { setPrefsOwner } from '../lib/searchPrefs';
 import { clearPendingBetaCode, normalizeBetaCode, rememberBetaCode } from '../lib/pendingBetaCode';
 import { writeGenderPreference } from '../lib/onboardingStorage';
 
@@ -67,6 +68,15 @@ async function flushOnboardingStash(activeSession) {
   const clearIfSameOwner = () => { if (readOnboardingStash()?.email === email) clearOnboardingStash(); };
   flushInFlight = true;
   try {
+    await saveOnboardingProgress({
+      stepId: stash.stepId || 'plan',
+      role: stash.role || null,
+      answers: stash.answers,
+      intents: stash.intents || [],
+      commitment: stash.commitment || null,
+      gender: stash.gender || null,
+      planId: stash.planId || 'season',
+    }, token);
     await saveOnboardingAnswers(stash.answers, token);
     if (stash.gender === 'm' || stash.gender === 'f') {
       await updateProfile({ gender: stash.gender }, token);
@@ -202,6 +212,8 @@ export function AuthProvider({ children }) {
       if (cancelled) return;
       latestUserRef.current = data.session?.user?.id ?? null;
       syncDraftOwner(latestUserRef.current);
+      setApiAccount(latestUserRef.current);
+      setPrefsOwner(latestUserRef.current);
       setSession(data.session);
       await loadProfile(data.session);
       if (!cancelled) setLoading(false);
@@ -224,6 +236,8 @@ export function AuthProvider({ children }) {
       }
       latestUserRef.current = nextSession?.user?.id ?? null;
       syncDraftOwner(latestUserRef.current);
+      setApiAccount(latestUserRef.current);
+      setPrefsOwner(latestUserRef.current);
       setSession(nextSession);
       // Deferred on purpose: this callback runs inside supabase-js's auth lock,
       // and loadProfile -> api.js calls supabase.auth.getSession(), which waits
@@ -369,7 +383,8 @@ export function AuthProvider({ children }) {
     clearPendingBetaCode();
     rememberPasswordRecovery(false);
     setIsPasswordRecovery(false);
-    await supabase.auth.signOut();
+    // This browser only: "sign out everywhere" is its own action below.
+    await supabase.auth.signOut({ scope: 'local' });
     setProfile(null);
   };
 
@@ -469,6 +484,10 @@ export function AuthProvider({ children }) {
   const adoptStoredSession = useCallback(async () => {
     const { data } = await supabase.auth.getSession();
     if (!data.session || data.session.access_token === session?.access_token) return;
+    latestUserRef.current = data.session.user?.id ?? null;
+    syncDraftOwner(latestUserRef.current);
+    setApiAccount(latestUserRef.current);
+    setPrefsOwner(latestUserRef.current);
     setSession(data.session);
     await loadProfile(data.session);
   }, [loadProfile, session?.access_token]);
@@ -488,6 +507,7 @@ export function AuthProvider({ children }) {
       (!profile?.isTester || (betaDeadlineMs !== null && betaClockNow < betaDeadlineMs))
     ),
     isDeveloper: Boolean(profile?.isDeveloper),
+    isCreator: Boolean(profile?.isCreator),
     isTester: Boolean(profile?.isTester),
     trialDaysLeft: profile?.trialDaysLeft ?? 0,
     signUp,
@@ -497,7 +517,6 @@ export function AuthProvider({ children }) {
     requestPasswordReset,
     updatePassword,
     changePassword,
-    isCreator: Boolean(profile?.isCreator),
     changeEmail,
     updateName,
     signOutEverywhere,

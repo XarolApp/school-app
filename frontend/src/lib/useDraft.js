@@ -16,10 +16,21 @@ export function clearDraftKey(key) {
   try { sessionStorage.removeItem(key); } catch { /* nothing to clear */ }
 }
 
+// Mounted drafts hold their text in memory too, so wiping storage alone would
+// let the next effect write the previous account's text straight back.
+const wipeListeners = new Set();
+
 export function useDraft(key, initial) {
   const [value, setValue] = useState(() => readDraft(key, typeof initial === 'function' ? initial() : initial));
   const keyRef = useRef(key);
+  const initialRef = useRef(initial);
   keyRef.current = key;
+  initialRef.current = initial;
+  useEffect(() => {
+    const reset = () => setValue(typeof initialRef.current === 'function' ? initialRef.current() : initialRef.current);
+    wipeListeners.add(reset);
+    return () => { wipeListeners.delete(reset); };
+  }, []);
   useEffect(() => {
     if (!key) return;
     try { sessionStorage.setItem(key, JSON.stringify(value)); } catch { /* quota or private mode: the form still works */ }
@@ -39,6 +50,7 @@ export function syncDraftOwner(userId) {
     const previous = sessionStorage.getItem(OWNER_KEY);
     if (previous && previous !== (userId || '')) {
       Object.keys(sessionStorage).filter((k) => k.startsWith('snm.')).forEach((k) => sessionStorage.removeItem(k));
+      wipeListeners.forEach((reset) => reset());
     }
     if (userId) sessionStorage.setItem(OWNER_KEY, userId);
     else sessionStorage.removeItem(OWNER_KEY);

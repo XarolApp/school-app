@@ -24,7 +24,7 @@ import { parseSchoolContact } from '../../lib/schoolContact';
  * than the component reused).
  */
 function SchoolActions({ school, isFavorite, onFavoriteChange, barRef, publicView = false }) {
-  const { isSignedIn, hasAccess } = useAuth();
+  const { isSignedIn, hasAccess, profile } = useAuth();
   const { toast } = useToast();
   const [saving, setSaving] = useState(false);
   const [compared, setCompared] = useState(() => isInCompareSelection(school.id));
@@ -33,6 +33,11 @@ function SchoolActions({ school, isFavorite, onFavoriteChange, barRef, publicVie
   const contacts = parseSchoolContact(school.contact);
 
   const canFavorite = isSignedIn && hasAccess && !publicView;
+  const publicActionHref = !isSignedIn
+    ? '/registrace'
+    : profile?.onboardingComplete
+      ? '/predplatne'
+      : '/onboarding/welcome';
 
   useEffect(() => {
     if (!canFavorite) return;
@@ -145,7 +150,9 @@ function SchoolActions({ school, isFavorite, onFavoriteChange, barRef, publicVie
           </button>
         )}
         {publicView ? (
-          <Link to="/registrace" className="ss-btn ss-btn-primary">Registrace</Link>
+          <Link to={publicActionHref} className="ss-btn ss-btn-primary">
+            {!isSignedIn ? 'Registrace' : profile?.onboardingComplete ? 'Obnovit přístup' : 'Pokračovat'}
+          </Link>
         ) : (
           compareButton
         )}
@@ -153,8 +160,11 @@ function SchoolActions({ school, isFavorite, onFavoriteChange, barRef, publicVie
       </div>
       {publicView && (
         <p className="ss-caption sd-public-note">
-          Ukládání škol, porovnání, přihláška a vysvětlení shody jsou jen pro registrované.{' '}
-          <Link to="/prihlaseni">Už máš účet? Přihlas se.</Link>
+          {!isSignedIn
+            ? <>Ukládání škol, porovnání, přihláška a vysvětlení shody jsou dostupné po registraci.{' '}<Link to="/prihlaseni">Už máš účet? Přihlas se.</Link></>
+            : profile?.onboardingComplete
+              ? 'Ukládání škol, porovnání a přihláška vyžadují aktivní přístup.'
+              : 'Dokonči úvodní průchod a aktivuj přístup, abys mohl(a) používat všechny funkce.'}
         </p>
       )}
       {canFavorite && (

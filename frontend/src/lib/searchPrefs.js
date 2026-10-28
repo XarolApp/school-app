@@ -12,6 +12,17 @@ const PRESETS_KEY = 'skolamatch.savedFilters';
 const COMPARE_KEY = 'skolamatch.compareSelection';
 const RECENT_LIMIT = 5;
 
+// These lists are per account, not per browser: a shared computer must not show
+// account A's shortlist to account B. Signed-out use keeps the plain keys.
+let owner = '';
+const scoped = (key) => (owner ? `${key}:${owner}` : key);
+export function setPrefsOwner(userId) {
+  const next = userId || '';
+  if (next === owner) return;
+  owner = next;
+  if (typeof window !== 'undefined') window.dispatchEvent(new Event(COMPARE_EVENT));
+}
+
 /** Fired on window whenever the compare selection changes (the nav badge listens). */
 export const COMPARE_EVENT = 'skolamatch:compare';
 
@@ -35,28 +46,28 @@ function writeJSON(key, value) {
 
 /** Call when a school detail page opens. Most-recent first, deduped, capped. */
 export function recordRecentSchool(schoolId) {
-  const ids = readJSON(RECENT_KEY, []);
+  const ids = readJSON(scoped(RECENT_KEY), []);
   const next = [schoolId, ...ids.filter((id) => id !== schoolId)].slice(0, RECENT_LIMIT);
-  writeJSON(RECENT_KEY, next);
+  writeJSON(scoped(RECENT_KEY), next);
 }
 
 export function getRecentSchoolIds() {
-  return readJSON(RECENT_KEY, []);
+  return readJSON(scoped(RECENT_KEY), []);
 }
 
 export function getSavedFilterPresets() {
-  return readJSON(PRESETS_KEY, []);
+  return readJSON(scoped(PRESETS_KEY), []);
 }
 
 /** `filters` is stored as-is; the caller decides what shape that is. */
 export function saveFilterPreset(name, filters) {
   const presets = getSavedFilterPresets();
   const next = [...presets.filter((p) => p.name !== name), { name, filters, savedAt: Date.now() }];
-  writeJSON(PRESETS_KEY, next);
+  writeJSON(scoped(PRESETS_KEY), next);
 }
 
 export function deleteFilterPreset(name) {
-  writeJSON(PRESETS_KEY, getSavedFilterPresets().filter((p) => p.name !== name));
+  writeJSON(scoped(PRESETS_KEY), getSavedFilterPresets().filter((p) => p.name !== name));
 }
 
 /**
@@ -66,7 +77,7 @@ export function deleteFilterPreset(name) {
  * to one another across navigation.
  */
 export function getCompareSelection() {
-  return readJSON(COMPARE_KEY, []);
+  return readJSON(scoped(COMPARE_KEY), []);
 }
 
 export function isInCompareSelection(schoolId) {
@@ -80,7 +91,7 @@ export function toggleCompareSelection(schoolId) {
   }
   const next = ids.includes(schoolId) ? ids.filter((id) => id !== schoolId) : [...ids, schoolId];
   if (!ids.includes(schoolId)) track('compare_add', { id: schoolId });
-  writeJSON(COMPARE_KEY, next);
+  writeJSON(scoped(COMPARE_KEY), next);
   if (typeof window !== 'undefined') window.dispatchEvent(new Event(COMPARE_EVENT));
   return next;
 }
@@ -94,7 +105,7 @@ export function setCompareSelection(schoolIds) {
   const next = [...new Set(schoolIds)].slice(0, 5);
   const previous = getCompareSelection();
   next.filter((id) => !previous.includes(id)).forEach((id) => track('compare_add', { id }));
-  writeJSON(COMPARE_KEY, next);
+  writeJSON(scoped(COMPARE_KEY), next);
   if (typeof window !== 'undefined') window.dispatchEvent(new Event(COMPARE_EVENT));
   return next;
 }

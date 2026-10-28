@@ -9,11 +9,12 @@ import { LoadingSpinner } from './PageSkeleton';
  * visitors instead of redirecting (the school detail opened from the
  * landing map).
  */
-function ProtectedRoute({ requireAccess = true, signedOutTo = '/prihlaseni', publicFallback = null, children = null }) {
+function ProtectedRoute({ requireAccess = true, allowOnboarding = false, allowPublicNoAccess = false, signedOutTo = '/prihlaseni', publicFallback = null, children = null }) {
   const {
     loading,
     profileLoading,
     profileError,
+    profile,
     isSignedIn,
     emailConfirmed,
     hasAccess,
@@ -69,6 +70,15 @@ function ProtectedRoute({ requireAccess = true, signedOutTo = '/prihlaseni', pub
       </div>
     );
   }
+
+  const onboardingComplete = profile?.onboardingComplete ?? Boolean(profile?.onboardingCompletedAt);
+  const isOnboarding = location.pathname === '/onboarding' || location.pathname.startsWith('/onboarding/');
+  if (!onboardingComplete && !isOnboarding && location.pathname !== '/nastaveni' && !allowPublicNoAccess) {
+    const step = /^[a-z0-9-]+$/.test(profile?.onboardingStep || '') ? profile.onboardingStep : 'welcome';
+    return <Navigate to={`/onboarding/${step}`} replace />;
+  }
+
+  if (allowOnboarding && !onboardingComplete && !hasAccess) return children ?? <Outlet />;
 
   if (requireAccess && !hasAccess) {
     return (

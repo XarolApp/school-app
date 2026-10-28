@@ -477,7 +477,7 @@ function Settings() {
   // cancellationTerms() in pricing.js explains the trial and non-renewal.
   const canCancel = !isCreator && (
     (profile?.plan_id === 'monthly' && !profile?.cancel_at_period_end && (status === 'active' || status === 'past_due')) ||
-    (status === 'trialing' && (
+    ((status === 'trialing' || (profile?.plan_id === 'season' && status === 'past_due')) && (
       Boolean(profile?.stripe_subscription_id) ||
       (profile?.plan_id === 'season' && Boolean(profile?.season_charge_due_at))
     ))
@@ -491,7 +491,9 @@ function Settings() {
       await refreshProfile();
       setOpenForm(null);
       toast(
-        cancelled === 'immediately'
+        cancelled === 'pending'
+          ? 'Požadavek na zrušení jsme uložili a ověřujeme, že platba neproběhne.'
+          : cancelled === 'immediately'
           ? 'Zrušeno. Nic ti nebude strženo.'
           : `Zrušeno. Přístup ti běží do ${formatCzDateLong(accessUntil)}.`
       );
@@ -577,13 +579,17 @@ function Settings() {
     setError(null);
     setBusy(true);
     try {
-      const { refundedCzk, at } = await withdrawFromContract();
+      const { refundedCzk, refundStatus, at } = await withdrawFromContract();
       await refreshProfile();
-      setOpenForm(null);
+      if (refundStatus !== 'failed') setOpenForm(null);
       setSuccess(
         `Odstoupení od smlouvy jsme přijali ${new Date(at).toLocaleString('cs-CZ')}. ` +
           'Předplatné je zrušené a přístup skončil. ' +
-          (refundedCzk > 0
+          (refundStatus === 'pending'
+            ? 'Vrácení platby čeká na zpracování Stripe; na kartě se může objevit až za několik pracovních dnů. '
+            : refundStatus === 'failed'
+              ? 'Vrácení se zatím nepodařilo dokončit. Tlačítkem níže můžeš bezpečně zkusit žádost odeslat znovu. '
+              : refundedCzk > 0
             ? `Vrátili jsme ti ${refundedCzk} Kč; na kartě se objeví do několika pracovních dnů. `
             : 'Nic ti nebylo strženo, není co vracet. ') +
           'Toto potvrzení si můžeš uložit nebo vyfotit.'

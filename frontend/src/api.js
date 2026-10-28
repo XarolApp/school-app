@@ -24,7 +24,16 @@ export class ApiError extends Error {
   }
 }
 
+// The account AuthContext currently shows; undefined until it has reported one.
+// A response that arrives after the signed-in account changed is dropped, so a
+// late answer for account A can never fill a screen that now belongs to B.
+let apiAccountId;
+export function setApiAccount(userId) {
+  apiAccountId = userId ?? null;
+}
+
 async function request(path, options = {}, retried = false) {
+  const accountAtStart = apiAccountId;
   const {
     data: { session },
   } = await supabase.auth.getSession();
@@ -42,6 +51,12 @@ async function request(path, options = {}, retried = false) {
   }
 
   const res = await fetch(`${API_BASE_URL}${path}`, { ...fetchOptions, headers });
+
+  // Requests pinned with `accessToken` (the onboarding flush) outlive a switch on purpose.
+  const sentAs = accessToken ? null : session?.user?.id ?? null;
+  if (sentAs && apiAccountId !== accountAtStart && apiAccountId !== sentAs) {
+    throw new ApiError('Účet se mezitím změnil.', 0, 'ACCOUNT_CHANGED');
+  }
 
   if (res.status === 204) return null;
 
@@ -169,6 +184,18 @@ export function saveOnboardingAnswers(answers, accessToken) {
   });
 }
 
+export function fetchOnboardingProgress(accessToken) {
+  return request('/api/me/onboarding-progress', accessToken ? { accessToken } : {});
+}
+
+export function saveOnboardingProgress(progress, accessToken) {
+  return request('/api/me/onboarding-progress', {
+    method: 'PUT',
+    body: JSON.stringify(progress),
+    accessToken,
+  });
+}
+
 /**
  * The standalone questionnaire (server-side lib/questionnaire.js) — a separate
  * surface from the onboarding quiz, see CLAUDE.md. GET returns the question set,
@@ -221,8 +248,8 @@ export function archiveQuestionnaireRun(id, archived) {
 // (maturitni, jpz_povinna, typ_skoly, jazyk_studia, kkov, zrizovatel,
 // kapacita) — no per-year rows, no school_ai_summary. Anything needing full
 // per-obor history or pros/cons should use fetchSchoolsByIds instead.
-export function fetchSchools() {
-  return request('/api/schools').then(withNamesAll);
+export function fetchSchools({ onboarding = false } = {}) {
+  return request(`/api/schools${onboarding ? '?scope=onboarding' : ''}`).then(withNamesAll);
 }
 
 /**
@@ -463,6 +490,10 @@ export function withdrawFromContract() {
   return request('/api/subscription/withdraw', { method: 'POST' });
 }
 
+export function fetchSeasonChargeStatus() {
+  return request('/api/subscription/season-charge');
+}
+
 /**
  * Cancels a scheduled season charge during its purchase trial, or cancels the
  * caller's monthly Stripe subscription (immediately during a subscription
@@ -484,9 +515,9 @@ export function cancelSubscription() {
  *
  * @returns {Promise<{schools:Array, isDemo:boolean, error:string|null}>}
  */
-export async function fetchSchoolsForMatching() {
+export async function fetchSchoolsForMatching({ onboarding = false } = {}) {
   try {
-    const data = await fetchSchools();
+    const data = await fetchSchools({ onboarding });
     if (Array.isArray(data) && data.length > 0) {
       return { schools: data, isDemo: false, error: null };
     }
@@ -504,6 +535,13 @@ export const submitBetaClosing = (body) => request('/api/beta/closing', { method
 export const saveBetaOnboardingRanking=(body)=>request('/api/beta/rankings',{method:'POST',body:JSON.stringify(body)});
 
 export const fetchAdminReport=tab=>request('/api/admin/'+tab);
+export const fetchAdminCreators=()=>request('/api/admin/creators');
+export const createAdminCreator=body=>request('/api/admin/creators',{method:'POST',body:JSON.stringify(body)});
+export const rotateAdminCreatorLink=id=>request(`/api/admin/creators/${encodeURIComponent(id)}/rotate`,{method:'POST',body:JSON.stringify({})});
+export const resetAdminCreatorDevices=id=>request(`/api/admin/creators/${encodeURIComponent(id)}/reset-devices`,{method:'POST',body:JSON.stringify({})});
+export const revokeAdminCreator=id=>request(`/api/admin/creators/${encodeURIComponent(id)}/revoke`,{method:'POST',body:JSON.stringify({})});
+export const restoreAdminCreator=id=>request(`/api/admin/creators/${encodeURIComponent(id)}/restore`,{method:'POST',body:JSON.stringify({})});
+export const claimCreatorLink=body=>request('/api/creator/claim',{method:'POST',body:JSON.stringify(body)});
 export const fetchAdminFeedback=id=>request('/api/admin/feedback/'+id);
 export const updateAdminFeedback=(id,body)=>request('/api/admin/feedback/'+id,{method:'PATCH',body:JSON.stringify(body)});
 export const selectAdminReview=(id,selected)=>request('/api/admin/reviews/'+id,{method:'PATCH',body:JSON.stringify({selected})});
@@ -517,10 +555,3 @@ export async function downloadAdminCsv(table){
 }
 
 export const pingVisit=()=>fetch(API_BASE_URL+'/api/visit',{method:'POST',keepalive:true}).catch(()=>{});
-export const fetchAdminCreators=()=>request('/api/admin/creators');
-export const createAdminCreator=body=>request('/api/admin/creators',{method:'POST',body:JSON.stringify(body)});
-export const rotateAdminCreatorLink=id=>request(`/api/admin/creators/${encodeURIComponent(id)}/rotate`,{method:'POST',body:JSON.stringify({})});
-export const resetAdminCreatorDevices=id=>request(`/api/admin/creators/${encodeURIComponent(id)}/reset-devices`,{method:'POST',body:JSON.stringify({})});
-export const revokeAdminCreator=id=>request(`/api/admin/creators/${encodeURIComponent(id)}/revoke`,{method:'POST',body:JSON.stringify({})});
-export const restoreAdminCreator=id=>request(`/api/admin/creators/${encodeURIComponent(id)}/restore`,{method:'POST',body:JSON.stringify({})});
-export const claimCreatorLink=body=>request('/api/creator/claim',{method:'POST',body:JSON.stringify(body)});

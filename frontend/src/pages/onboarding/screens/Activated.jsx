@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ObScreen } from '../../../components/onboarding/ObKit';
 import { PAYMENTS_MOCKED } from '../../../config/pricing';
@@ -40,13 +40,50 @@ const TASKS = {
 };
 
 function Activated() {
-  const { role, purchased } = useOnboarding();
+  const { role, purchased, refreshProfile } = useOnboarding();
   const { profile } = useAuth();
   const isTester = profile?.isTester === true;
   const parent = role === 'parent';
   const [done, setDone] = useState([]);
   const tasks = parent ? TASKS.parent : TASKS.student;
   const { beta, refreshBeta } = useBetaTools();
+
+  // Stripe confirms the payment to our server a moment after the browser comes
+  // back, and only then is the account unlocked. Ask again until it is (about a
+  // minute), instead of showing the checklist to an account that is still locked.
+  const waiting = !isTester && Boolean(profile) && profile.onboardingComplete === false;
+  const [waitedOut, setWaitedOut] = useState(false);
+  const [attempt, setAttempt] = useState(0);
+  useEffect(() => {
+    if (!waiting) return undefined;
+    setWaitedOut(false);
+    const poll = window.setInterval(() => { void refreshProfile(); }, 2000);
+    const stop = window.setTimeout(() => setWaitedOut(true), 60000);
+    return () => { window.clearInterval(poll); window.clearTimeout(stop); };
+  }, [waiting, attempt, refreshProfile]);
+
+  if (waiting) {
+    return (
+      <ObScreen chrome={false}>
+        <div className="ob-done">
+          {!waitedOut && <span className="ob-wait-spinner" role="status" aria-label="Načítání" />}
+          <h1 className="ob-title">{waitedOut ? 'Platba se ještě potvrzuje' : 'Potvrzujeme platbu'}</h1>
+          <p className="ob-lead">
+            {waitedOut
+              ? (parent ? 'Potvrzení od Stripe zatím nedorazilo. Zkuste to za chvíli znovu, nic se nestrhne dvakrát.' : 'Potvrzení od Stripe zatím nedorazilo. Zkus to za chvíli znovu, nic se nestrhne dvakrát.')
+              : (parent ? 'Chvilku prosím počkejte, odemykáme váš účet.' : 'Chvilku prosím počkej, odemykáme tvůj účet.')}
+          </p>
+          {waitedOut && (
+            <div className="ob-actions">
+              <button type="button" className="ob-btn ob-btn-primary" onClick={() => setAttempt((n) => n + 1)}>
+                Zkusit znovu
+              </button>
+            </div>
+          )}
+        </div>
+      </ObScreen>
+    );
+  }
 
   // Beta: the paywall here was only a preview, so this screen is just a thank
   // you, a ten-second rating of the payment screens and the way back to schools.

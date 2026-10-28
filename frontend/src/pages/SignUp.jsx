@@ -3,6 +3,7 @@ import { betaEnrollmentComplete, readBetaEnrollment, saveBetaEnrollment } from '
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../components/AuthContext';
+import SignedInNotice from '../components/SignedInNotice';
 import { fetchBetaSchool, startBetaVisit } from '../api';
 import { normalizeBetaCode, readPendingBetaCode } from '../lib/pendingBetaCode';
 import AuthTabs from '../components/AuthTabs';
@@ -35,7 +36,7 @@ function SignUp() {
   const [captchaToken, setCaptchaToken] = useState(null);
   const [consent, setConsent] = useState(false);
   const [captchaKey, setCaptchaKey] = useState(0);
-  const { signUp } = useAuth();
+  const { signUp, isSignedIn } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const betaParamPresent = searchParams.has('beta');
@@ -197,6 +198,10 @@ function SignUp() {
     );
   }
 
+  // Never offer a second account while one is signed in (submitted: this
+  // page's own successful sign-in is navigating away).
+  if (isSignedIn && !submitted) return <SignedInNotice />;
+
   return (
     <>
     {betaInviteProvided && <meta name="robots" content="noindex, nofollow" />}
@@ -317,7 +322,7 @@ function SignUp() {
             disabled={submitting || captchaWaiting || (betaCode && betaState !== 'ready') || invalidBetaInvite}
           >
             {submitting && <span className="btn-spinner" aria-hidden="true" />}
-            {submitting ? 'Vytvářím účet…' : captchaWaiting ? CAPTCHA_WAIT_LABEL : betaCode ? 'Vytvořit beta účet' : betaInviteProvided ? 'Přístup nelze ověřit' : `Začít ${trialDaysPhrase()} zdarma`}
+            {submitting ? 'Vytvářím účet…' : captchaWaiting ? CAPTCHA_WAIT_LABEL : betaCode ? 'Vytvořit beta účet' : betaInviteProvided ? 'Přístup nelze ověřit' : 'Vytvořit účet'}
           </button>
         </form>
       </div>

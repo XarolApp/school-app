@@ -3,7 +3,8 @@ import { Link, Navigate, useLocation, useSearchParams } from 'react-router-dom';
 import { Check } from 'lucide-react';
 import { useAuth } from '../components/AuthContext';
 import ParentPayHandoff from '../components/ParentPayHandoff';
-import { createCheckoutSession } from '../api';
+import { cancelSubscription, createCheckoutSession, fetchSeasonChargeStatus } from '../api';
+import { getStripeClient } from '../lib/stripeClient';
 import BetaSoftGate from '../components/BetaSoftGate';
 import { DEFAULT_PLAN_ID, PLANS, formatCzk, planCopy, trialDaysPhrase } from '../config/pricing';
 import { LoadingSpinner } from '../components/PageSkeleton';
@@ -57,7 +58,31 @@ function Paywall() {
   const [planId, setPlanId] = useState(DEFAULT_PLAN_ID);
   const [error, setError] = useState(null);
   const [redirecting, setRedirecting] = useState(false);
+  const [seasonCharge, setSeasonCharge] = useState(null);
+  const [chargeBusy, setChargeBusy] = useState(false);
+  const [chargeError, setChargeError] = useState(null);
   const { verifying, gaveUp } = usePostCheckoutVerification(hasAccess, refreshProfile, !isTester);
+
+  useEffect(() => {
+    if (!isSignedIn || profile?.plan_id !== 'season' || hasAccess) return undefined;
+    let live = true;
+    let timer;
+    const poll = async () => {
+      try {
+        const status = await fetchSeasonChargeStatus();
+        if (!live) return;
+        setSeasonCharge(status);
+        if (status.status === 'succeeded') await refreshProfile();
+        if (['processing', 'requires_action', 'retryable', 'cancellation_pending', 'succeeded'].includes(status.status)) {
+          timer = setTimeout(poll, 4000);
+        }
+      } catch {
+        if (live) timer = setTimeout(poll, 8000);
+      }
+    };
+    poll();
+    return () => { live = false; clearTimeout(timer); };
+  }, [isSignedIn, profile?.plan_id, hasAccess]);
 
   if (loading || (isSignedIn && profileLoading)) {
     return <LoadingSpinner />;
@@ -78,8 +103,18 @@ function Paywall() {
       </div>
     );
   }
-  if (isTester) return <BetaPaused />;
   if (hasAccess) return <Navigate to="/skoly" replace />;
+  if (profile?.isCreator) {
+    return (
+      <div className="page page-paywall">
+        <div className="auth-layout">
+          <p className="lede">Náhled pro tvůrce byl ukončen. Pokud jde o omyl, napiš nám na info@stredninamiru.cz.</p>
+          <button type="button" className="btn btn-secondary btn-block" onClick={signOut}>Odhlásit se</button>
+        </div>
+      </div>
+    );
+  }
+  if (isTester) return <BetaPaused />;
 
   if (verifying) {
     return (
@@ -104,22 +139,44 @@ function Paywall() {
       window.location.href = url;
     } catch (err) {
       delete document.documentElement.dataset.snmStripeRedirecting;
-  if (profile?.isCreator) {
-    return (
-      <div className="page page-paywall">
-        <div className="auth-layout">
-          <p className="lede">Náhled pro tvůrce byl ukončen. Pokud jde o omyl, napiš nám na info@stredninamiru.cz.</p>
-          <button type="button" className="btn btn-secondary btn-block" onClick={signOut}>Odhlásit se</button>
-        </div>
-      </div>
-    );
-  }
       setRedirecting(false);
       setError(
         err.code === 'STRIPE_NOT_CONFIGURED'
           ? 'Platby zatím nejsou spuštěné. Zkus to prosím později.'
           : err.message
       );
+    }
+  };
+
+  const handleSeasonAuthentication = async () => {
+    setChargeBusy(true);
+    setChargeError(null);
+    try {
+      const stripeClient = await getStripeClient();
+      const result = await stripeClient.confirmCardPayment(seasonCharge.clientSecret);
+      if (result.error) throw new Error(result.error.message || 'Ověření platby se nepodařilo.');
+      await refreshProfile();
+      const latest = await fetchSeasonChargeStatus();
+      setSeasonCharge(latest);
+    } catch (err) {
+      setChargeError(err.message || 'Ověření platby se nepodařilo.');
+      try { setSeasonCharge(await fetchSeasonChargeStatus()); } catch { /* next poll retries */ }
+    } finally {
+      setChargeBusy(false);
+    }
+  };
+
+  const handleCancelSeasonCharge = async () => {
+    setChargeBusy(true);
+    setChargeError(null);
+    try {
+      const result = await cancelSubscription();
+      await refreshProfile();
+      setSeasonCharge((current) => ({ ...current, status: result.cancelled === 'pending' ? 'cancellation_pending' : 'canceled' }));
+    } catch (err) {
+      setChargeError(err.message || 'Zrušení platby se nepodařilo.');
+    } finally {
+      setChargeBusy(false);
     }
   };
 
@@ -156,6 +213,37 @@ function Paywall() {
                 Přístup zatím nemáme potvrzený. Za chvíli obnov stránku — pokud se nic nezmění, ozvi se nám.
               </p>
             </div>
+          )}
+
+          {seasonCharge?.status === 'requires_action' && (
+            <section className="notice" aria-live="polite">
+              <strong>Je potřeba potvrdit platbu</strong>
+              <p className="notice-text">Banka požaduje dodatečné ověření. Platba se dokončí až po tvém potvrzení.</p>
+              {chargeError && <p className="notice-text" role="alert">{chargeError}</p>}
+              <div className="settings-form-actions">
+                <button type="button" className="btn btn-primary" onClick={handleSeasonAuthentication} disabled={chargeBusy || !seasonCharge.clientSecret}>
+                  {chargeBusy ? 'Otevírám ověření…' : 'Ověřit platbu'}
+                </button>
+                <button type="button" className="btn btn-secondary" onClick={handleCancelSeasonCharge} disabled={chargeBusy}>
+                  Zrušit a zabránit platbě
+                </button>
+              </div>
+            </section>
+          )}
+          {seasonCharge?.status === 'processing' && (
+            <div className="notice" role="status"><p className="notice-text">Platbu ověřujeme. Tato stránka se průběžně aktualizuje.</p></div>
+          )}
+          {seasonCharge?.status === 'retryable' && (
+            <div className="notice" role="status"><p className="notice-text">Platební brána je dočasně nedostupná. Platbu bezpečně zkusíme znovu.</p></div>
+          )}
+          {seasonCharge?.status === 'declined' && (
+            <div className="notice notice-error" role="alert"><p className="notice-text">Banka platbu zamítla. Zkontroluj kartu nebo zvol jiný plán.</p></div>
+          )}
+          {seasonCharge?.status === 'cancellation_pending' && (
+            <div className="notice" role="status"><p className="notice-text">Požadavek na zrušení jsme uložili a ověřujeme, že platba neproběhne.</p></div>
+          )}
+          {chargeError && seasonCharge?.status !== 'requires_action' && (
+            <div className="notice notice-error" role="alert"><p className="notice-text">{chargeError}</p></div>
           )}
 
           {error && (

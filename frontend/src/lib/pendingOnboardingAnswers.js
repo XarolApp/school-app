@@ -16,7 +16,7 @@
 const KEY = 'skolamatch.pendingOnboardingAnswers';
 const MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
 
-export function stashOnboardingAnswers(answers, email, gender = null) {
+export function stashOnboardingAnswers(answers, email, gender = null, progress = {}) {
   try {
     localStorage.setItem(
       KEY,
@@ -24,6 +24,11 @@ export function stashOnboardingAnswers(answers, email, gender = null) {
         answers,
         email: (email || '').trim().toLowerCase(),
         gender: gender === 'm' || gender === 'f' ? gender : null,
+        stepId: progress.stepId || 'plan',
+        role: progress.role === 'student' || progress.role === 'parent' ? progress.role : null,
+        intents: Array.isArray(progress.intents) ? progress.intents : [],
+        commitment: progress.commitment || null,
+        planId: progress.planId === 'monthly' ? 'monthly' : 'season',
         savedAt: Date.now(),
       })
     );

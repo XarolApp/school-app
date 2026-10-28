@@ -48,10 +48,14 @@ function CreateAccount() {
   const {
     role,
     gender,
+    intents,
+    commitment,
+    planId,
     ranked,
     cleanedAnswers,
     goNext,
     goBack,
+    goToStep,
     phase,
     isTester,
     profileResolved,
@@ -111,6 +115,12 @@ function CreateAccount() {
     setBetaEnrollment(next);
     saveBetaEnrollment(betaCode, next);
   };
+
+  // A signed-in account already exists: never offer to create another one. Real
+  // accounts carry on to the plan; testers get their own screen below.
+  useEffect(() => {
+    if (isSignedIn && user && profileResolved && !isTester) goToStep('plan', { replace: true });
+  }, [isSignedIn, user, profileResolved, isTester, goToStep]);
 
   // Wait for the signed-in account to resolve before ever showing signup.
   if (isSignedIn && user && !profileResolved) {
@@ -234,9 +244,9 @@ function CreateAccount() {
     // a different tab/device than this one (see lib/pendingOnboardingAnswers.js).
     // AuthContext flushes this stash to the server the next time this browser
     // sees a confirmed session for this same email.
-    if (Object.keys(cleanedAnswers || {}).length || (role !== 'parent' && (gender === 'm' || gender === 'f'))) {
-      stashOnboardingAnswers(cleanedAnswers || {}, email, role === 'parent' ? null : gender);
-    }
+    stashOnboardingAnswers(cleanedAnswers || {}, email, role === 'parent' ? null : gender, {
+      stepId: 'plan', role, intents, commitment, planId,
+    });
 
     // Real checkout requires a confirmed Supabase session. Advancing without
     // one strands the user at the payment button with a 401, so pause here.
@@ -273,7 +283,16 @@ function CreateAccount() {
               : 'Hned potom tě vrátíme k výběru plánu. Bez potvrzeného účtu platbu nespustíme.'}
           </p>
         </ConfirmEmailWaiting>
-        <Link to="/prihlaseni?next=/onboarding/plan" className="ob-inline-link" onClick={clearPendingConfirmation}>
+        <Link
+          to="/prihlaseni?next=/onboarding/plan"
+          className="ob-inline-link"
+          onClick={() => {
+            stashOnboardingAnswers(cleanedAnswers || {}, email, role === 'parent' ? null : gender, {
+              stepId: 'plan', role, intents, commitment, planId,
+            });
+            clearPendingConfirmation();
+          }}
+        >
           {parent ? 'Už máte účet? Přihlásit se' : 'Už máš účet? Přihlásit se'}
         </Link>
       </ObScreen>

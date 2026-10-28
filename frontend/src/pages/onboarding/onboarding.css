@@ -3017,3 +3017,19 @@
   flex-wrap: wrap;
   gap: var(--space-sm);
 }
+
+/* Waiting for Stripe's confirmation. Constant-rate rotation (an eased curve
+   pulses once per turn); the heading already says what is happening, so the
+   ring is hidden under reduced motion instead of freezing mid-turn. */
+.ob-wait-spinner {
+  display: block;
+  width: 40px;
+  height: 40px;
+  margin-bottom: var(--space-lg);
+  border-radius: 999px;
+  border: 3px solid var(--line, currentColor);
+  border-top-color: var(--acc);
+  animation: ob-wait-spin 0.8s linear infinite;
+}
+@keyframes ob-wait-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .ob-wait-spinner { display: none; } }

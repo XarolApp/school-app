@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import BrandMark from '../BrandMark';
 import { usePrefersReducedMotion } from './usePrefersReducedMotion';
+import { useAuth } from '../AuthContext';
 
 /**
  * Shared onboarding UI kit.
@@ -68,6 +69,7 @@ export function ObScreen({
   // Pre-account screens offer a way out for people who already have one.
   login = true,
 }) {
+  const { isSignedIn } = useAuth();
   const hasBar = typeof progress === 'number';
   const frame = (
     <div className={`ob-screen${wide ? ' ob-screen-wide' : ''}`}>
@@ -92,7 +94,7 @@ export function ObScreen({
               </span>
             </>
           )}
-          {login && (
+          {login && !isSignedIn && (
             <Link to="/prihlaseni" className="ob-header-login">
               Mám účet
             </Link>

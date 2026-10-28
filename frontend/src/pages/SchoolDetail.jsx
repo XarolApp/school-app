@@ -29,10 +29,11 @@ function SchoolDetail({ publicView = false }) {
   const navigate = useNavigate();
   const location = useLocation();
   const { isSignedIn, hasAccess } = useAuth();
+  const viewOnly = publicView || !hasAccess;
   const [school, setSchool] = useState(null);
   // Loaded with the school so "Proč tahle shoda" is there on first paint.
   const [questionnaire, setQuestionnaire] = useState(null);
-  const showExplanation = isSignedIn && hasAccess && !publicView;
+  const showExplanation = isSignedIn && hasAccess && !viewOnly;
   const [isFavorite, setIsFavorite] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -97,7 +98,7 @@ function SchoolDetail({ publicView = false }) {
   // /skoly only when the page was opened directly.
   const cameFromApp = window.history.state?.idx > 0;
   // Signed out there is no school list to go back to: back means the landing.
-  const backHref = publicView ? '/' : '/skoly';
+  const backHref = viewOnly ? '/' : '/skoly';
   // The page that linked here says where it wants "Zpět" to land (router state),
   // so the way back never depends on what the browser history happens to hold.
   const from = internalReturnPath(location.state?.from);
@@ -113,7 +114,7 @@ function SchoolDetail({ publicView = false }) {
         else navigate(from);
       }}
     >
-      &larr; {from && fromLabel ? `Zpět na ${fromLabel}` : cameFromApp ? 'Zpět' : publicView ? 'Zpět na úvod' : 'Zpět na výpis'}
+      &larr; {from && fromLabel ? `Zpět na ${fromLabel}` : cameFromApp ? 'Zpět' : viewOnly ? 'Zpět na úvod' : 'Zpět na výpis'}
     </a>
   );
 
@@ -161,7 +162,7 @@ function SchoolDetail({ publicView = false }) {
           <AsyncState
             kind="empty"
             title="Tuhle školu jsme nenašli"
-            action={<Link to={backHref} className="ss-btn ss-btn-primary">{publicView ? 'Zpět na úvod' : 'Zpět na školy'}</Link>}
+            action={<Link to={backHref} className="ss-btn ss-btn-primary">{viewOnly ? 'Zpět na úvod' : 'Zpět na školy'}</Link>}
           >
             Odkaz může být starý nebo škola už v databázi není.
           </AsyncState>
@@ -170,7 +171,7 @@ function SchoolDetail({ publicView = false }) {
             kind="error"
             title="Školu se nepodařilo načíst"
             onRetry={() => setLoadTick((t) => t + 1)}
-            action={<Link to={backHref} className="ss-btn ss-btn-secondary">{publicView ? 'Zpět na úvod' : 'Zpět na školy'}</Link>}
+            action={<Link to={backHref} className="ss-btn ss-btn-secondary">{viewOnly ? 'Zpět na úvod' : 'Zpět na školy'}</Link>}
           >
             Zkontroluj připojení a zkus to znovu. ({error?.message})
           </AsyncState>
@@ -216,7 +217,7 @@ function SchoolDetail({ publicView = false }) {
 
       <div className="sd-hero">
         <SchoolHero school={school} programEntries={programEntries} extracted={extracted} />
-        <SchoolActions school={school} isFavorite={isFavorite} onFavoriteChange={setIsFavorite} barRef={barRef} publicView={publicView} />
+        <SchoolActions school={school} isFavorite={isFavorite} onFavoriteChange={setIsFavorite} barRef={barRef} publicView={viewOnly} />
       </div>
 
       {showExplanation && questionnaire && <SchoolExplanation key={school.id} school={school} questionnaire={questionnaire} />}
@@ -267,7 +268,7 @@ function SchoolDetail({ publicView = false }) {
         <MissingDataGrid zrizovatel={zrizovatel} extracted={extracted} />
       </div>
 
-      {!publicView && <ReportDataDialog schoolId={school.id} />}
+      {!viewOnly && <ReportDataDialog schoolId={school.id} />}
 
       <SimilarSchools school={school} />
     </div>
