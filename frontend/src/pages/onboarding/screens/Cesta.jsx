@@ -78,11 +78,11 @@ const MILESTONES = [
     tone: 'done',
     student: {
       what: 'Přihlášky odeslané',
-      detail: 'Konzervatoře mají termín už 30. listopadu 2026. Sezónní přístup pokračuje do konce března a neobnovuje se.',
+      detail: 'Konzervatoře mají termín už 30. listopadu 2026. Sezónní přístup pokračuje do 30. června 2027 a neobnovuje se.',
     },
     parent: {
       what: 'Přihlášky odeslané',
-      detail: 'Konzervatoře mají termín už 30. listopadu 2026. Sezónní přístup pokračuje do konce března a neobnovuje se.',
+      detail: 'Konzervatoře mají termín už 30. listopadu 2026. Sezónní přístup pokračuje do 30. června 2027 a neobnovuje se.',
     },
   },
   {

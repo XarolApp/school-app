@@ -62,7 +62,7 @@ export default function BetaClosingQuestionnaire({role,onDone,onCancel,reviewOnl
     </>}
     {step===2 && <>
       <Choice label={voice('Zaplatil(a) bys za přístup?','Zaplatili byste za přístup?')} value={a.pay} options={['ano','mozna','ne'].map((v,i)=>[v,['Ano','Možná','Ne'][i]])} onChange={v=>set('pay',v)} />
-      <p>Jakou cenu by měl mít sezónní přístup (jednorázová platba, přístup až do konce března)?</p>
+      <p>Jakou cenu by měl mít sezónní přístup (jednorázová platba, přístup až do 30. června 2027)?</p>
       {['tooCheap','good','expensive','tooExpensive'].map((key,i)=><label key={key} className="ss-field-label">{['Příliš levné — pochybnosti o kvalitě','Výhodné','Drahé, ale ještě přijatelné','Příliš drahé'][i]}<span className="beta-price-input"><input className="ss-input" type="number" inputMode="numeric" min="0" max="100000" value={a.prices[key]} onChange={e=>set('prices',{...a.prices,[key]:e.target.value})} /><span aria-hidden="true">Kč</span></span></label>)}
        <Choice label={parent?'Kdo by pravděpodobně platil?':'Kdo by pravděpodobně platil?'} value={a.payer} options={['ja','rodic','spolu'].map((v,i)=>[v,['Já','Rodič','Spolu'][i]])} onChange={v=>set('payer',v)} />
        <Choice label={voice('Jaký přístup by sis spíš koupil(a)?','Jaký přístup byste si spíš koupili?')} value={a.plan} options={[["mesic","Měsíční"],["sezona","Sezónní"]]} onChange={v=>set('plan',v)} />

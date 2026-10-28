@@ -7,9 +7,10 @@ import Captcha, { captchaEnabled } from '../components/Captcha';
 import PasswordInput from '../components/PasswordInput';
 import PasswordStrength from '../components/PasswordStrength';
 import { useToast } from '../components/ToastContext';
-import { deleteAccount, cancelSubscription, withdrawFromContract, updateProfile, fetchShareLinks, deleteShareLink, setBetaTracking, withdrawHealthConsent } from '../api';
+import { deleteAccount, fetchWithdrawPreview, withdrawFromContract, updateProfile, fetchShareLinks, deleteShareLink, setBetaTracking, withdrawHealthConsent } from '../api';
 import { betaTracker } from '../lib/betaTrack';
 import { getPlan } from '../config/pricing';
+import SubscriptionManager from '../components/SubscriptionManager';
 import { supabase, getRememberMe, setRememberMe } from '../supabaseClient';
 import { DEFAULT_PALETTE, PALETTE_IDS, palettes } from '../design/tokens';
 import { applyTheme, applyThemeAnimated, MODES, readCachedTheme } from '../lib/theme';
@@ -191,6 +192,15 @@ function Settings() {
       openerRef.current.focus();
       lastSection.current = null;
     }
+  }, [openForm]);
+
+  const [withdrawPreview, setWithdrawPreview] = useState(null);
+  useEffect(() => {
+    if (openForm !== 'withdraw') return undefined;
+    let alive = true;
+    setWithdrawPreview(null);
+    fetchWithdrawPreview().then((data) => { if (alive) setWithdrawPreview(data); }).catch(() => {});
+    return () => { alive = false; };
   }, [openForm]);
   const [name, setName] = useState(null);
   const [nameSaved, setNameSaved] = useState(false);
@@ -470,40 +480,8 @@ function Settings() {
     : SUBSCRIPTION_LABELS[status] || 'Neznámý stav';
   const effectiveMode = themeMode === 'system' ? systemMode : themeMode;
 
-  // A cancel button is only meaningful when there is something Stripe would
-  // otherwise keep billing: a recurring monthly plan, or a season pass still
-  // inside its 3-day trial (cancelling there prevents the charge outright). A
-  // season pass that has already been charged has nothing recurring to stop —
-  // cancellationTerms() in pricing.js explains the trial and non-renewal.
-  const canCancel = !isCreator && (
-    (profile?.plan_id === 'monthly' && !profile?.cancel_at_period_end && (status === 'active' || status === 'past_due')) ||
-    ((status === 'trialing' || (profile?.plan_id === 'season' && status === 'past_due')) && (
-      Boolean(profile?.stripe_subscription_id) ||
-      (profile?.plan_id === 'season' && Boolean(profile?.season_charge_due_at))
-    ))
-  );
-
-  const handleCancelSubscription = async () => {
-    setError(null);
-    setBusy(true);
-    try {
-      const { cancelled, accessUntil } = await cancelSubscription();
-      await refreshProfile();
-      setOpenForm(null);
-      toast(
-        cancelled === 'pending'
-          ? 'Požadavek na zrušení jsme uložili a ověřujeme, že platba neproběhne.'
-          : cancelled === 'immediately'
-          ? 'Zrušeno. Nic ti nebude strženo.'
-          : `Zrušeno. Přístup ti běží do ${formatCzDateLong(accessUntil)}.`
-      );
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setBusy(false);
-    }
-  };
-
+  // Cancel, restore, switch, one-click re-buy and card removal live in
+  // SubscriptionManager; withdrawal stays here beside its legal text.
 
   const saveThemePreference = (field, value) => {
     const revision = themeChangeRevisionRef.current + 1;
@@ -1100,52 +1078,7 @@ function Settings() {
             </div>
           )}
 
-          {!isCreator && canCancel &&
-            (openForm === 'cancel' ? (
-              <div id="settings-form-cancel" className="settings-form settings-form-inset">
-                {error && (
-                  <div className="notice notice-error" role="alert">
-                    <p className="notice-text">{error}</p>
-                  </div>
-                )}
-                <p className="settings-section-text">
-                  {status === 'trialing'
-                    ? 'Zrušíš teď, ve zkušební době — nic ti nebude strženo.'
-                    : 'Opravdu chceš předplatné zrušit? Přístup ti zůstane do konce už zaplaceného období, pak se neobnoví.'}
-                </p>
-                <div className="settings-form-actions">
-                  <button
-                    type="button"
-                    className="btn btn-danger"
-                    onClick={handleCancelSubscription}
-                    disabled={busy}
-                  >
-                    {busy && <span className="btn-spinner" aria-hidden="true" />}
-                    {busy ? 'Ruším…' : 'Ano, zrušit'}
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-ghost"
-                    onClick={() => {
-                      setOpenForm(null);
-                      setError(null);
-                    }}
-                  >
-                    Nechat běžet
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="settings-row-actions">
-                <button
-                  type="button"
-                  className="btn btn-secondary btn-sm"
-                  onClick={(e) => openSection('cancel', e.currentTarget)}
-                >
-                  Zrušit předplatné
-                </button>
-              </div>
-            ))}
+          {!isCreator && !isTester && !isDeveloper && <SubscriptionManager profile={profile} status={status} />}
 
           {!isCreator && profile?.canWithdraw &&
             (openForm === 'withdraw' ? (
@@ -1156,8 +1089,10 @@ function Settings() {
                   </div>
                 )}
                 <p className="settings-section-text">
-                  Potvrď odstoupení od smlouvy. Zaplacenou částku ti vrátíme celou, předplatné se zruší
-                  a přístup skončí hned.
+                  Potvrď odstoupení od smlouvy. Předplatné se zruší a přístup skončí hned.{' '}
+                  {withdrawPreview && !withdrawPreview.trial
+                    ? `Za dny, kdy jsi měl/a placený přístup, zaplatíš ${withdrawPreview.owedCzk} Kč. Vrátíme ti ${withdrawPreview.refundCzk} Kč.`
+                    : withdrawPreview?.trial ? 'Ve zkušební době se nic neúčtuje.' : 'Částku, kterou ti vrátíme, právě počítáme…'}
                 </p>
                 <ul className="settings-section-text">
                   <li data-private>Jméno: <strong>{profile.name || '—'}</strong></li>
@@ -1191,7 +1126,7 @@ function Settings() {
               <div className="settings-row-actions">
                 <p className="settings-section-text">
                   Do {formatCzDateLong(profile.withdrawalEndsAt)} můžeš od smlouvy odstoupit bez udání
-                  důvodu a dostaneš zpět celou zaplacenou částku.
+                  důvodu. Za dny, kdy jsi měl/a placený přístup, zaplatíš poměrnou část; zbytek ti vrátíme.
                 </p>
                 <button
                   type="button"

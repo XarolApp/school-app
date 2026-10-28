@@ -238,7 +238,7 @@ export function Terms() {
   const gender = useGender();
   const g = (masculine, feminine) => (gender === 'f' ? feminine : masculine);
   return (
-    <LegalPage title="Obchodní podmínky" updated="10. 10. 2026">
+    <LegalPage title="Obchodní podmínky" updated="28. 10. 2026">
       <h2>1. Provozovatel a kontakt</h2>
       <p>
         Službu Střední na míru (stredninamiru.cz) provozuje Václav Kadlec, Na Lysinách 34, 147 00 Praha (fyzická osoba, neplátce DPH), e-mail: info@stredninamiru.cz (tento e-mail slouží pro všechny žádosti,
@@ -272,39 +272,72 @@ export function Terms() {
       <h2>4. Tarify a ceny</h2>
       <ul>
         <li>
-          <strong>Sezónní přístup — 690 Kč jednorázově.</strong> Začíná 3denní zkušební dobou.
-          Při objednávce se ti karta jen uloží a nic se neúčtuje. Po 3 dnech (v den uvedený při
-          objednávce) se z karty jednou strhne 690 Kč. Přístup pak trvá do 31. března; platíš-li
-          méně než 30 dní před tímto datem, trvá do 31. března následujícího roku. Poté skončí a
-          nic se neobnovuje. Neposíláme připomínku před strháním — datum a částku vidíš při
-          objednávce.
+          <strong>Sezónní přístup — jednorázově.</strong> Cena je 90 % toho, co by ode dne
+          objednávky do 22. 2. 2027 stálo měsíční předplatné, plus 49 Kč za jarní část (přijímací
+          zkoušky, výsledky, další kola), nejvýše však 499 Kč a nejméně 149 Kč. Cena se mění
+          jednou za den a od 23. 12. 2026 klesá. Od 9. 2. 2027 stojí 149 Kč a od 23. 2. 2027 se
+          tentýž přístup prodává jako jarní přístup za 149 Kč. Platí cena, kterou vidíš v okamžiku
+          objednávky; ta se pak už nemění ani po zkušební době. Přístup trvá do 30. 6. 2027, poté
+          skončí a nic se neobnovuje. Prodej končí 30. 6. 2027.
         </li>
         <li>
-          <strong>Měsíční — 249 Kč měsíčně.</strong> Bez zkušební doby. Platíš hned a platba se
-          opakuje každý měsíc ve stejný den, dokud předplatné nezrušíš. Změnu ceny oznámíme
-          nejméně 30 dní předem a můžeš předplatné před ní zrušit.
+          <strong>Zkušební doba.</strong> Sezónní přístup může začínat 3denní zkušební dobou, dokud
+          do konce přihlášek zbývá aspoň 14 dnů. Při objednávce se ti karta jen uloží a nic se
+          neúčtuje; po 3 dnech (v den uvedený při objednávce) se z karty jednou strhne cena
+          uvedená při objednávce. Zkušební doba je jen <strong>jedna na účet a jedna na platební
+          kartu</strong>. Pokud už byla využitá, uvidíš to před platbou a zaplatíš hned. Neposíláme
+          připomínku před strháním — datum a částku vidíš při objednávce.
+        </li>
+        <li>
+          <strong>Měsíční — 249 Kč měsíčně.</strong> Bez zkušební doby, prodává se do 8. 2. 2027
+          (od 9. 2. 2027, kdy do konce přihlášek zbývá 14 dnů nebo méně, se neprodává). Platíš
+          hned celých 249 Kč a platba se opakuje každý měsíc ve stejný den. Předplatné
+          <strong>samo skončí 22. 2. 2027</strong>: poslední období se účtuje jen za dny do
+          tohoto data a po něm se už nikdy nic nestrhne. Zbývá-li do 22. 2. 2027 méně než měsíc,
+          platíš jednou částku za dny do tohoto data. Celkem tak zaplatíš nejvýš částku uvedenou
+          u tarifu při objednávce. Změnu ceny oznámíme nejméně 30 dní předem.
         </li>
       </ul>
+      <p>
+        <strong>Prodloužení měsíčního předplatného do 30. 6. 2027</strong> (od 1. 2. 2027 do konce
+        přihlášek): zaplatíš 149 Kč za jarní přístup a navíc měsíční platby, které by do 22. 2. 2027
+        ještě proběhly (obvykle žádné). Měsíční předplatné se po zaplacení ukončí a přístup trvá
+        do 30. 6. 2027. Jarní přístup nelze koupit levněji než za 149 Kč.
+      </p>
+      <p>
+        <strong>Uložená karta.</strong> Stripe ti kartu uloží pro další platby, které vždy sám
+        potvrdíš tlačítkem s uvedenou částkou. Jedinou automatickou platbou je ta po zkušební době.
+        Kartu můžeš kdykoli odebrat v Nastavení (dokud se na ní nechystá platba).
+      </p>
       <p>
         Ceny jsou konečné. Nejsme plátci DPH.
         Platí se kartou přes Stripe v českých korunách.
       </p>
+      <p>
+        <strong>Pozvánky.</strong> Kdo použije pozvánku při své první objednávce sezónního přístupu
+        (dokud cena není nižší než 249 Kč), zaplatí o 100 Kč méně. Tomu, kdo pozvánku vydal, vrátíme
+        100 Kč na kartu za každého pozvaného, který si přístup ponechá déle než 14 dnů, nejvýš však
+        do výše, kterou sám zaplatil. Pozvánky nejde kombinovat; pozvání sebe sama ani platba stejnou
+        kartou se nepočítají. Program můžeme pro budoucí pozvánky ukončit.
+      </p>
 
       <h2>5. Zrušení předplatného</h2>
       <ul>
-        <li>Měsíční předplatné zrušíš kdykoli v Nastavení jedním tlačítkem. Přístup běží do konce už zaplaceného měsíce a další platba se neúčtuje.</li>
-        <li>Sezónní přístup můžeš zrušit v Nastavení během 3denní zkušební doby — pak se nestrhne nic. Po strhnutí se neobnovuje, není co rušit.</li>
+        <li>Měsíční předplatné zrušíš kdykoli v Nastavení jedním tlačítkem. Přístup běží do konce už zaplaceného období a další platba se neúčtuje. Dokud období běží, můžeš zrušení tlačítkem „Obnovit“ vzít zpět.</li>
+        <li>Sezónní přístup můžeš zrušit v Nastavení během 3denní zkušební doby — pak se nestrhne nic. Dokud zkušební doba běží, můžeš zrušení vzít zpět tlačítkem „Obnovit“ bez nové zkušební doby a bez zadávání karty. Po strhnutí se přístup neobnovuje, není co rušit.</li>
       </ul>
 
       <h2>6. Odstoupení od smlouvy a vrácení peněz</h2>
       <p>
-        Jako spotřebitel můžeš od smlouvy <strong>odstoupit do 14 dnů bez udání důvodu</strong> a
-        my ti zaplacené peníze v plné výši vrátíme. Nevyžadujeme, aby ses tohoto práva {g('vzdal', 'vzdala')},
-        a nic neúčtujeme za dobu, kdy jsi službu už {g('používal', 'používala')}.
+        Jako spotřebitel můžeš od smlouvy <strong>odstoupit do 14 dnů od objednávky bez udání
+        důvodu</strong>. Při objednávce výslovně žádáš, aby přístup začal hned. Odstoupíš-li, zaplatíš
+        poměrnou část ceny za dny, kdy jsi placený přístup {g('měl', 'měla')} — počítáno od zaplacení
+        do konce přístupu — a zbytek ti vrátíme. Ve zkušební době, dokud se nic nestrhlo, odstoupení
+        nic nestojí.
       </p>
       <ul>
-        <li>Lhůta běží 14 dní od uzavření smlouvy. U sezónního přístupu ji ještě prodlužujeme: poběží nejméně 14 dní od strhnutí platby.</li>
-        <li>Odstoupit můžeš jedním tlačítkem v <strong>Nastavení</strong> (dvoukrokově — nejdřív zkontroluješ údaje, pak odstoupení potvrdíš) nebo e-mailem na info@stredninamiru.cz; formulář níže můžeš použít, ale nemusíš.</li>
+        <li>Lhůta je jedna: běží 14 dní od objednávky (u sezónního přístupu od začátku zkušební doby). Strhnutí platby po zkušební době ji neobnovuje.</li>
+        <li>Odstoupit můžeš jedním tlačítkem v <strong>Nastavení</strong> (nejdřív uvidíš, kolik zaplatíš a kolik se vrátí, pak odstoupení potvrdíš) nebo e-mailem na info@stredninamiru.cz; formulář níže můžeš použít, ale nemusíš.</li>
         <li>Při odstoupení tlačítkem v Nastavení vrátíme peníze automaticky ihned; na kartě se objeví obvykle do několika pracovních dnů. Při odstoupení e-mailem je vrátíme nejpozději do 14 dnů od oznámení. Vždy stejným způsobem, jakým jsi {g('platil', 'platila')}. Přístup skončí okamžikem odstoupení a předplatné zrušíme.</li>
       </ul>
       <p className="legal-form">
@@ -322,12 +355,11 @@ export function Terms() {
         rodič nebo zákonný zástupce. Věk ani souhlas při objednávce neověřujeme.
       </p>
       <p>
-        Pokud nezletilý zaplatil bez souhlasu zákonného zástupce, může zákonný zástupce napsat na
-        info@stredninamiru.cz. Do 30 dnů od platby vrátíme celou zaplacenou částku. Později vrátíme
-        jen nevyužitou část: u sezónního přístupu poměrnou část ceny za období do 31. března, u
-        měsíčního předplatného poměrnou část zbylých dnů v právě běžícím měsíci — dřívější měsíce
-        se nevrací, protože byly už poskytnuté a nejde je vzít zpět. Přístup pak skončí. Odstoupit
-        (§6) a totéž do 30 dnů můžeš kdykoli snadno vyřídit tlačítkem v Nastavení.
+        Pokud nezletilý zaplatil bez souhlasu zákonného zástupce, může zákonný zástupce do 30 dnů
+        od platby napsat na info@stredninamiru.cz. Vrátíme nevyužitou část zaplacené částky: u
+        sezónního přístupu poměrnou část ceny za zbývající dobu do konce přístupu, u měsíčního
+        předplatného poměrnou část zbylých dnů v právě běžícím měsíci — dřívější měsíce se nevrací,
+        protože byly už poskytnuté a nejde je vzít zpět. Přístup pak skončí.
       </p>
 
       <h2>8. Reklamace a vady služby</h2>
@@ -413,6 +445,7 @@ export function Terms() {
         nejméně 30 dní předem a u již zaplaceného období se změna neuplatní. U měsíčního tarifu
         můžeš před účinností změny předplatné zrušit.
       </p>
+      <p>Znění účinné od 1. 11. 2026 (verze 2026-11-01).</p>
     </LegalPage>
   );
 }

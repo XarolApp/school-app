@@ -13,9 +13,22 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
+## Build the app for 8th graders — founder request 2026-10-28
+
+- [ ] Founder wants a version of the app for 8th graders (the year before the 9th-grade applications). The founder knows what this means; the scope is not written down yet — ask them to describe it before planning. Note the current product is deliberately 9th-grade only (plan 021, `lib/ninthGrade.js`, `school_programs_hidden`), and CLAUDE.md already mentions "9th (or 8th for next year)" graders, so check what that sentence meant when planning.
+
 ## Fix the top bar when the account is on trial — founder request 2026-10-27
 
 - [ ] Founder says the top bar (navbar) needs fixing while an account is on trial. What exactly looks wrong is not recorded yet — ask for a screenshot or description first. Starting points: the trial label ("Zkušební verze · ještě N dní", `showTrial` / `navbar-trial` in `frontend/src/components/Layout.jsx`, lines ~71 and ~191) and its CSS. Check desktop and 375px mobile, and the beta/creator cases (`showTrial` is already off for testers).
+
+## Plan 022 paid launch — status 2026-10-28 (founder)
+
+- [x] Chunks 1–8 implemented, committed locally (`cf33dc2`, `a189570`), independently reviewed (founder).
+- [x] Picks migration (`2026-10-23-atomic-application-picks.sql`, `v_kkov` fix) re-run on production 2026-10-28: `function_exists` true, `client_can_call` false. No re-run is pending.
+- [ ] Confirm every plan 022 / 025 migration is on production with the check query before pushing (see the report); `2026-10-28-revenue-model.sql` is new and uncommitted.
+- [ ] Stripe test-mode run (season, monthly, cancel, withdrawal) — founder gate before live keys.
+- [ ] Day-2 trial reminder email (`TRIAL_REMINDER_IMPLEMENTED = false`) — mandatory before real billing.
+- [ ] **Chunk 9: manual school-fact corrections — founder only, still open.**
 
 ## Rename the page names in URLs — founder request 2026-10-25
 
@@ -2168,3 +2181,26 @@ Context: creator outreach starts before the paid launch (strategy doc "Střední
 ## Resolved
 
 - **Public-transit provider and data-storage decision** — resolved 2026-10-18 by plan 023: use PID's public GTFS under CC BY 4.0, precompute stop-to-school estimates, and keep the selected stop local. This supersedes the 2026-09-24 Google district-matrix/OTP/Golemio brainstorm; accuracy acceptance remains open above.
+
+## Plan 025 follow-ups (2026-10-28)
+
+Closed by plan 025 (see `plans/025-revenue-and-payments-launch.md`): the misleading savings badge and per-day
+price, endless trial via cancel + re-buy, trial farming with new accounts on one card, the double monthly
+subscription, monthly billing after the deadline, the hard-coded 690 Kč charge and refund, the 30-day
+full-refund button (now 14 days pro rata), withdraw-then-rebuy loops. Not live until the migration
+`migrations/2026-10-28-revenue-model.sql` is applied and the founder test script (plan §9) passes.
+
+- [ ] **Stripe test-clock check for the monthly deadline (plan §4.4).** Create a monthly subscription on a test
+  clock, advance past 1 Feb and 22 Feb: expected invoices 249, 249, 249, ~196 and nothing after. The
+  `invoice.created` fallback (`creditLastMonthlyPeriod`) credits the last period only if Stripe did not prorate it;
+  add `invoice.created` to the `stripe listen --events` list. Record which path ran.
+- [ ] **Verify `subscriptions.update({ cancel_at })` on restore clears a pending user cancellation** (test mode).
+- [ ] **School licence (D2) and tutoring partnerships (D3):** revisit after season 2026/27.
+- [ ] **Admission dates 2027:** fill `frontend/src/config/admissionDates.js` (with a source URL per date) when Cermat
+  publishes them; ships before 22 Feb 2027.
+- [ ] **Season constants for 2027/28:** new `DEADLINE`, `ACCESS_END`, prices in `lib/season.js` before September
+  (tests that use the sale window go stale after 30 June 2027).
+- [ ] **Referral student switch:** `REFERRAL_STUDENT_REWARDS=false` limits rewards to payments made through the parent
+  link if ČOI ever objects to the student-facing program.
+- [ ] **Wallet payments** (Apple/Google Pay) may give no stable card fingerprint: a second trial is possible that way
+  (accepted ceiling).

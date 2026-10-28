@@ -23,6 +23,13 @@ const {
   requestReasons,
 } = require('./lib/questionnaire');
 const { scoreSchools } = require('./lib/matching');
+const season = require('./lib/season');
+const {
+  ACCESS_END, DEADLINE, SEASON_TRIAL_DAYS, MONTHLY_PRICE, TERMS_VERSION,
+  REFERRAL_DISCOUNT, REFERRAL_REWARD, REFERRAL_MIN_PRICE, REFERRAL_SETTLE_DAYS, WITHDRAWAL_DAYS,
+  SPRING_PRICE, SPRING_ADDON_FROM, seasonPriceCzk, isSpring, onSale, monthlyAvailable, trialAvailable,
+  monthlyQuote, springAddOnCzk, proRataOwedMinor,
+} = season;
 const { districtOfSchool } = require('./lib/pragueDistricts');
 const { shouldHold } = require('./lib/reviewFilter');
 const {
@@ -179,34 +186,11 @@ function paidAccessActive(profile) {
 }
 
 
+// A monthly plan whose cancellation is pending still runs until its period
+// ends, so it counts as live (the way back is "Obnovit", never a second subscription).
 function hasLivePlan(profile) {
   const seasonScheduled = profile?.plan_id === 'season' && Boolean(profile.season_charge_due_at);
-  return (paidAccessActive(profile) && !profile.cancel_at_period_end) || seasonScheduled;
-}
-
-
-/**
- * End of the access window for a season pass: 31 March 23:59:59 Europe/Prague,
- * the first one strictly more than 30 days after `from`.
- *
- * The 30-day floor guards against the charge landing after cancel_at: the
- * charge fires ~3 days after checkout (the trial), so a purchase made in late
- * March would otherwise compute a cancel_at before the charge ever happens,
- * and Stripe would cancel the subscription before it billed. If the naive
- * "next March 31" is under 30 days out, roll to the following year instead.
- *
- * Buying in April yields ~11 months of access — accepted as-is; the product is
- * seasonal (Sept-March) so this is a non-case in practice.
- */
-function seasonEndsAt(from = new Date()) {
-  const year = from.getFullYear();
-  // March 31 is after Prague's last-Sunday-of-March DST transition (UTC+2).
-  let end = new Date(Date.UTC(year, 2, 31, 21, 59, 59));
-  const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
-  if (end.getTime() - from.getTime() < THIRTY_DAYS_MS) {
-    end = new Date(Date.UTC(year + 1, 2, 31, 21, 59, 59));
-  }
-  return end;
+  return paidAccessActive(profile) || seasonScheduled;
 }
 
 // Access ends at whichever comes first: a scheduled cancellation, or the end of
@@ -466,7 +450,7 @@ async function ensureTrialStarted(userId, profile) {
 async function healOnboarding(userId, profile) {
   if (profile.onboarding_completed_at || !['trialing', 'active', 'season', 'past_due'].includes(profile.subscription_status)) return profile;
   const { data: purchase } = await supabase.from('purchases').select('id')
-    .eq('user_id', userId).eq('status', 'active').in('plan', ['season', 'monthly'])
+    .eq('user_id', userId).eq('status', 'active').in('plan', ['season', 'monthly', 'spring'])
     .order('created_at', { ascending: false }).limit(1).maybeSingle();
   if (!purchase?.id) return profile;
   const { data: done } = await supabase.rpc('complete_paid_onboarding', { p_user_id: userId, p_purchase_id: purchase.id });
@@ -810,30 +794,61 @@ const PROFILE_COLUMNS =
   'plan_started_at, last_paid_at, theme_palette, theme_mode, gender, tester_school_code, ' +
   'tester_access_until, tester_guidance_seen_at, onboarding_completed_at';
 
-// 14 days is the statutory minimum for everyone (§1829). Extended to 30 here
-// so the SAME self-service button also delivers the "full refund within 30
-// days" half of the minors' promise (Terms §7) — we can no longer tell a
-// minor from an adult buyer (no attestation is collected at checkout), so one
-// wider window applied to everyone is simpler and never under-delivers the
-// statutory right. Only the pro-rata-after-30-days half of that promise stays
-// a manual Stripe-dashboard process — see UNFORGET.md.
-const WITHDRAWAL_DAYS = 30;
-
-// The window runs from the later of "contract concluded" and "money taken", so a
-// season pass (charged 3 days after checkout) still gets the full window after the charge.
+// Statutory 14 days (§1829 OZ), counted from the order: checkout is when the
+// contract is concluded, and a trial's conversion does not open a new window
+// (CJEU C-565/22 Sofatutor). Minors' guardians have a manual 30-day route (Terms §7).
 function withdrawalWindowEnd(profile) {
-  const times = [profile.plan_started_at, profile.last_paid_at]
-    .filter(Boolean)
-    .map((value) => new Date(value).getTime());
-  return times.length ? new Date(Math.max(...times) + WITHDRAWAL_DAYS * 86400000) : null;
+  return profile.plan_started_at
+    ? new Date(new Date(profile.plan_started_at).getTime() + WITHDRAWAL_DAYS * 86400000)
+    : null;
 }
 
 function canWithdraw(profile) {
   const planLive =
-    (profile.plan_id === 'season' && ['trialing', 'season'].includes(profile.subscription_status)) ||
+    (['season', 'spring'].includes(profile.plan_id) && ['trialing', 'season'].includes(profile.subscription_status)) ||
     (profile.plan_id === 'monthly' && ['active', 'past_due'].includes(profile.subscription_status));
   const end = withdrawalWindowEnd(profile);
   return planLive && Boolean(end) && end > new Date();
+}
+
+// What Settings needs to draw the subscription section: the way back after a
+// cancellation, a blocked trial waiting for a decision, the saved card.
+async function paymentSummaryFor(userId, profile, now) {
+  const [{ data: purchases }, eligible, savedCard] = await Promise.all([
+    supabase.from('purchases')
+      .select('id, plan, status, trial, cancel_requested_at, season_charge_status, price_amount_minor, needs_payment_confirmation, access_ends_at')
+      .eq('user_id', userId).in('status', ['pending', 'active']).order('created_at', { ascending: false }).limit(5),
+    trialEligible(userId, now),
+    savedCardSummary(userId),
+  ]);
+  const rows = Array.isArray(purchases) ? purchases : [];
+  const pending = rows.find((p) => p.status === 'pending' && p.needs_payment_confirmation);
+  // The scheduled charge at the end of a running trial: when, and how much.
+  const runningTrial = profile.plan_id === 'season' && profile.subscription_status === 'trialing'
+    ? rows.find((p) => p.status === 'active' && p.plan === 'season' && p.trial && !p.cancel_requested_at && p.access_ends_at)
+    : null;
+  let restoreKind = null;
+  let restore = {};
+  if (profile.plan_id === 'monthly' && profile.cancel_at_period_end && paidAccessActive(profile) && now < DEADLINE) {
+    restoreKind = 'monthly';
+  } else if (profile.subscription_status === 'canceled') {
+    const trial = rows.find((p) => p.status === 'active' && p.plan === 'season' && p.trial && p.cancel_requested_at
+      && p.season_charge_status === 'canceled' && p.access_ends_at && new Date(p.access_ends_at) > now);
+    if (trial) {
+      restoreKind = 'season';
+      restore = { restoreChargeAt: trial.access_ends_at, restorePriceCzk: trial.price_amount_minor / 100 };
+    }
+  }
+  return {
+    trialEligible: eligible,
+    savedCard,
+    canRestore: Boolean(restoreKind),
+    restoreKind,
+    ...restore,
+    needsPaymentConfirmation: Boolean(pending),
+    pendingPurchase: pending ? { priceCzk: pending.price_amount_minor / 100 } : null,
+    trialCharge: runningTrial ? { chargeAt: runningTrial.access_ends_at, priceCzk: runningTrial.price_amount_minor / 100 } : null,
+  };
 }
 
 app.get('/api/me', requireAuth, async (req, res) => {
@@ -918,9 +933,11 @@ app.get('/api/me', requireAuth, async (req, res) => {
     : isCreator
       ? creatorAccess.hasAccess
       : onboardingComplete && (trialActive || subscribed);
+  const payment = isTester || isCreator || isDeveloper ? {} : await paymentSummaryFor(req.user.id, profile, now);
 
   res.json({
     ...profile,
+    ...payment,
     onboardingCompletedAt: profile.onboarding_completed_at,
     onboardingStep,
     onboardingComplete,
@@ -2622,9 +2639,16 @@ app.get('/api/pay-links/:token', requireSharing, shareLimiter, async (req, res) 
   );
   const now = new Date();
   const checkout_open = Boolean(link.expires_at && new Date(link.expires_at) > now && !hasLivePlan(profile));
+  // The parent sees the way back and the trial status, never the child's saved card.
+  const summary = await paymentSummaryFor(link.user_id, profile, now);
   return res.json({
     for_name: firstName,
     checkout_open,
+    trial_eligible: summary.trialEligible,
+    can_restore: summary.canRestore,
+    restore_kind: summary.restoreKind,
+    restore_charge_at: summary.restoreChargeAt ?? null,
+    restore_price_czk: summary.restorePriceCzk ?? null,
     expires_at: link.expires_at,
     plan: hasPlan ? {
       plan_id: profile.plan_id,
@@ -2651,6 +2675,10 @@ app.post('/api/pay-links/:token/checkout', requireSharing, checkoutLimiter, asyn
     successPath: '/platba-rodice/' + req.params.token,
     cancelPath: '/platba-rodice/' + req.params.token,
     checkoutContext: 'parent',
+    immediateStart: req.body?.immediateStart,
+    referralCode: req.body?.referralCode,
+    acknowledgedNoTrial: req.body?.acknowledgedNoTrial,
+    confirmPriceCzk: req.body?.confirmPriceCzk,
   });
   return res.status(result.status).json(result.body);
 });
@@ -2659,7 +2687,15 @@ app.post('/api/pay-links/:token/cancel', requireSharing, checkoutLimiter, async 
   const { data: link, error } = await findPaymentLink(req.params.token);
   if (error) return res.status(500).json({ error: 'Platební odkaz se nepodařilo načíst.' });
   if (!link) return paymentLinkNotFound(res);
-  const result = await cancelPlanForUser(link.user_id);
+  const result = await cancelPlanForUser(link.user_id, req.body?.reason);
+  return res.status(result.status).json(result.body);
+});
+
+app.post('/api/pay-links/:token/restore', requireSharing, checkoutLimiter, async (req, res) => {
+  const { data: link, error } = await findPaymentLink(req.params.token);
+  if (error) return res.status(500).json({ error: 'Platební odkaz se nepodařilo načíst.' });
+  if (!link) return paymentLinkNotFound(res);
+  const result = await restorePlanForUser(link.user_id);
   return res.status(result.status).json(result.body);
 });
 
@@ -2668,6 +2704,14 @@ app.post('/api/pay-links/:token/withdraw', requireSharing, checkoutLimiter, asyn
   if (error) return res.status(500).json({ error: 'Platební odkaz se nepodařilo načíst.' });
   if (!link) return paymentLinkNotFound(res);
   const result = await withdrawPlanForUser(link.user_id);
+  return res.status(result.status).json(result.body);
+});
+
+app.get('/api/pay-links/:token/withdraw-preview', requireSharing, shareLimiter, async (req, res) => {
+  const { data: link, error } = await findPaymentLink(req.params.token);
+  if (error) return res.status(500).json({ error: 'Platební odkaz se nepodařilo načíst.' });
+  if (!link) return paymentLinkNotFound(res);
+  const result = await withdrawalPreviewForUser(link.user_id);
   return res.status(result.status).json(result.body);
 });
 
@@ -3426,21 +3470,24 @@ app.patch('/api/questionnaire/runs/:id/archive', requireAuth, async (req, res) =
  * current deployment handoff before enabling real charges. Beta never bills.
  * ------------------------------------------------------------------------- */
 
-// Locked 2026-09-21. Must mirror SEASON_PRICE_CZK in frontend/src/config/pricing.js.
-// This is now the 2nd place this number lives (was previously encoded only as
-// a Stripe Price; season no longer has one). Change both together.
-const SEASON_PRICE_CZK = 690;
-// Mirrors the locked monthly Stripe Price and is stored in the purchase ledger.
-const MONTHLY_PRICE_CZK = 249;
-
-// Must mirror the seasonal purchase TRIAL_DAYS in frontend/src/config/pricing.js.
-// The ordinary-account access trial is separate (first-confirmed-sign-in change pending).
-const SEASON_TRIAL_DAYS = 3;
+// Prices, the sale window and every date live in lib/season.js (plan 025) and
+// reach the browser through GET /api/prices; the Stripe Price below is the one
+// remaining outside copy (monthly) and must stay at lib/season.js MONTHLY_PRICE.
 
 const PLAN_PRICE_ENV = {
   season: 'STRIPE_PRICE_ID_SEASON',
   monthly: 'STRIPE_PRICE_ID_MONTHLY',
 };
+
+// Statuses that mean "this account really bought something". A pending checkout
+// that was never completed does not count as a trial or a prior purchase.
+const SETTLED_STATUSES = ['active', 'canceled', 'withdrawn', 'refunded'];
+const SEASON_PLANS = ['season', 'spring'];
+// Kill switch (plan 025 §4.8): false limits referral rewards to payments made
+// through the parent payment link, should a regulator object to students.
+const REFERRAL_STUDENT_REWARDS = process.env.REFERRAL_STUDENT_REWARDS !== 'false';
+const REFERRAL_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+const deadlineUnix = () => Math.floor(DEADLINE.getTime() / 1000);
 
 // Open-redirect guard: success_url embeds this, so it must never be able to
 // carry the user off this domain. Relative paths only.
@@ -3458,10 +3505,85 @@ app.post('/api/me/redeem-beta-code', requireAuth, (req, res) => {
   });
 });
 
-async function findPendingPurchase(userId, planId, checkoutContext) {
+// One season trial per account and per card; the card half is enforced where
+// the card becomes known (the setup webhook), because Checkout hides it.
+async function trialEligible(userId, now = new Date()) {
+  if (!trialAvailable(now)) return false;
+  const { data: user } = await supabase.from('users').select('season_trial_used_at').eq('id', userId).single();
+  if (user?.season_trial_used_at) return false;
+  const { data: used } = await supabase.from('purchases').select('id')
+    .eq('user_id', userId).eq('trial', true).in('status', SETTLED_STATUSES).limit(1);
+  return !(Array.isArray(used) && used.length);
+}
+
+app.get('/api/prices', optionalAuth, async (req, res) => {
+  const now = new Date();
+  const priceCzk = seasonPriceCzk(now);
+  const body = {
+    onSale: priceCzk !== null,
+    deadline: DEADLINE.toISOString(),
+    accessEnd: ACCESS_END.toISOString(),
+    today: season.pragueDay(now),
+    season: priceCzk === null ? null : {
+      priceCzk,
+      falling: priceCzk < season.SEASON_CAP && monthlyAvailable(now),
+      trialAvailable: trialAvailable(now),
+      isSpring: isSpring(now),
+    },
+    monthly: monthlyQuote(now)
+      ? { available: true, priceCzk: MONTHLY_PRICE, ...monthlyQuote(now) }
+      : { available: false, priceCzk: MONTHLY_PRICE },
+    referral: { discountCzk: REFERRAL_DISCOUNT, available: priceCzk !== null && priceCzk >= REFERRAL_MIN_PRICE },
+    // A live monthly may extend to the end of June from 1 Feb until the deadline.
+    extend: { available: now >= SPRING_ADDON_FROM && now <= DEADLINE, springCzk: SPRING_PRICE },
+  };
+  if (req.user) {
+    body.trialEligible = body.season ? await trialEligible(req.user.id, now) : false;
+    res.set('Cache-Control', 'private, no-store');
+  } else {
+    res.set('Cache-Control', 'public, max-age=300');
+  }
+  return res.json(body);
+});
+
+// A referral code is honoured only on a first purchase and only from a referrer
+// who has paid. Anything else is ignored silently: the purchase goes on at full
+// price, so a person can never be referred in a circle (§4.8).
+async function referralReferrerEligible(referrerId) {
+  const { data } = await supabase.from('purchases')
+    .select('id, trial, season_charge_status, checkout_context')
+    .eq('user_id', referrerId).in('plan', ['season', 'spring']).eq('status', 'active')
+    .not('stripe_payment_intent_id', 'is', null).limit(5);
+  const paid = (Array.isArray(data) ? data : []).filter((p) => !p.trial || p.season_charge_status === 'succeeded');
+  if (!paid.length) return false;
+  return REFERRAL_STUDENT_REWARDS || paid.some((p) => p.checkout_context === 'parent');
+}
+
+async function resolveReferral({ userId, code, priceCzk }) {
+  const clean = typeof code === 'string' ? code.trim().toUpperCase() : '';
+  if (!/^[A-HJ-NP-Z2-9]{8}$/.test(clean) || priceCzk < REFERRAL_MIN_PRICE) return null;
+  const { data: row } = await supabase.from('referral_codes').select('user_id').eq('code', clean).maybeSingle();
+  const referrerId = row?.user_id;
+  if (!referrerId || referrerId === userId) return null;
+  if (!(await referralReferrerEligible(referrerId))) return null;
+  const { data: prior } = await supabase.from('purchases').select('id')
+    .eq('user_id', userId).in('status', SETTLED_STATUSES).limit(1);
+  if (Array.isArray(prior) && prior.length) return null;
+  const { data: already } = await supabase.from('referrals').select('id').eq('referred_user_id', userId).maybeSingle();
+  if (already) return null;
+  const { data: people } = await supabase.from('users').select('id, stripe_customer_id').in('id', [userId, referrerId]);
+  const customerOf = (id) => (Array.isArray(people) ? people : []).find((u) => u.id === id)?.stripe_customer_id || null;
+  if (customerOf(userId) && customerOf(userId) === customerOf(referrerId)) return null;
+  return { referrerId, discountMinor: REFERRAL_DISCOUNT * 100 };
+}
+
+const PENDING_COLUMNS =
+  'id, stripe_checkout_session_id, checkout_context, price_amount_minor, trial, referrer_user_id, needs_payment_confirmation';
+
+async function findPendingPurchase(userId, planId) {
   return supabase
     .from('purchases')
-    .select('id, stripe_checkout_session_id, checkout_context')
+    .select(PENDING_COLUMNS)
     .eq('user_id', userId)
     .eq('plan', planId)
     .eq('status', 'pending')
@@ -3470,8 +3592,11 @@ async function findPendingPurchase(userId, planId, checkoutContext) {
     .maybeSingle();
 }
 
-async function reservePurchase({ userId, planId, checkoutContext }) {
-  const existing = await findPendingPurchase(userId, planId, checkoutContext);
+async function reservePurchase({
+  userId, planId, checkoutContext, amountMinor, trial = false,
+  discountMinor = 0, discountKind = null, referrerUserId = null,
+}) {
+  const existing = await findPendingPurchase(userId, planId);
   if (existing.error) throw existing.error;
   if (existing.data) return existing.data;
 
@@ -3481,11 +3606,15 @@ async function reservePurchase({ userId, planId, checkoutContext }) {
       user_id: userId,
       plan: planId,
       checkout_context: checkoutContext,
-      price_amount_minor: (planId === 'season' ? SEASON_PRICE_CZK : MONTHLY_PRICE_CZK) * 100,
+      price_amount_minor: amountMinor,
       currency: 'czk',
       status: 'pending',
+      trial,
+      discount_kind: discountMinor ? discountKind : null,
+      discount_minor: discountMinor,
+      referrer_user_id: referrerUserId,
     })
-    .select('id, stripe_checkout_session_id, checkout_context')
+    .select(PENDING_COLUMNS)
     .single();
 
   if (!error) return data;
@@ -3493,77 +3622,141 @@ async function reservePurchase({ userId, planId, checkoutContext }) {
 
   // A simultaneous request inserted the unique pending row. Both requests
   // will use the same Stripe idempotency key derived from that row.
-  const raced = await findPendingPurchase(userId, planId, checkoutContext);
-  if (raced.error || !raced.data) throw raced.error || error;
-  return raced.data;
+  const raced = await findPendingPurchase(userId, planId);
+  if (raced.error) throw raced.error;
+  if (raced.data) return raced.data;
+  // A season and a spring purchase are the same product; the index treats them alike.
+  const sibling = await findPendingPurchase(userId, planId === 'spring' ? 'season' : planId === 'season' ? 'spring' : planId);
+  if (sibling.error || !sibling.data) throw sibling.error || error;
+  return sibling.data;
 }
 
-async function createCheckoutForUser({ userId, email, planId, successPath, cancelPath, checkoutContext = 'self' }) {
-  if (planId !== 'season' && planId !== 'monthly') {
-    return { status: 400, body: { error: 'Neplatný plán.' } };
-  }
+const PAYABLE_PROFILE_COLUMNS =
+  'stripe_customer_id, stripe_payment_method_id, stripe_subscription_id, email, subscription_status, ' +
+  'access_expires_at, plan_id, season_charge_due_at, cancel_at_period_end, plan_started_at, last_paid_at';
 
+// Shared start of every purchase route: who may pay, and is Stripe configured.
+async function loadPayableProfile(userId) {
   const { data: profile, error: profileError } = await supabase
     .from('users')
-    .select(
-      'stripe_customer_id, email, subscription_status, access_expires_at, plan_id, season_charge_due_at, cancel_at_period_end'
-    )
+    .select(PAYABLE_PROFILE_COLUMNS)
     .eq('id', userId)
     .single();
 
   if (profileError) {
     return {
-      status: 500,
-      body: { error: 'Nepodařilo se ověřit platební profil. Zkus to prosím znovu.' },
+      fail: { status: 500, body: { error: 'Nepodařilo se ověřit platební profil. Zkus to prosím znovu.' } },
     };
   }
-
   if (profile.subscription_status === 'beta') {
     return {
-      status: 403,
-      body: {
-        error: 'Beta účty nemohou zahájit placený přístup.',
-        code: 'BETA_CHECKOUT_DISABLED',
+      fail: {
+        status: 403,
+        body: { error: 'Beta účty nemohou zahájit placený přístup.', code: 'BETA_CHECKOUT_DISABLED' },
       },
     };
   }
-
   if (profile.subscription_status === 'creator') {
     return {
-      status: 403,
-      body: {
-        error: 'Účty s náhledem pro tvůrce nemohou zahájit placený přístup.',
-        code: 'CREATOR_CHECKOUT_DISABLED',
+      fail: {
+        status: 403,
+        body: {
+          error: 'Účty s náhledem pro tvůrce nemohou zahájit placený přístup.',
+          code: 'CREATOR_CHECKOUT_DISABLED',
+        },
       },
     };
   }
-
   if (!stripe) {
     return {
-      status: 503,
-      body: { error: 'Platby zatím nejsou nastavené.', code: 'STRIPE_NOT_CONFIGURED' },
+      fail: { status: 503, body: { error: 'Platby zatím nejsou nastavené.', code: 'STRIPE_NOT_CONFIGURED' } },
+    };
+  }
+  return { profile };
+}
+
+function alreadySubscribed(profile, parentLink = false) {
+  return {
+    status: 409,
+    body: {
+      error: parentLink
+        ? 'Dítě už má aktivní plán. Spravovat ho můžete na této stránce.'
+        : 'Už máš aktivní plán. Spravuj ho v Nastavení.',
+      code: 'ALREADY_SUBSCRIBED',
+      canRestore: Boolean(profile.cancel_at_period_end) && profile.plan_id === 'monthly',
+    },
+  };
+}
+
+const immediateStartRequired = () => ({
+  status: 400,
+  body: { error: 'Potvrď prosím, že chceš přístup hned.', code: 'IMMEDIATE_START_REQUIRED' },
+});
+const priceChanged = (priceCzk, extra = {}) => ({
+  status: 409,
+  body: { error: 'Cena se mezitím změnila.', code: 'PRICE_CHANGED', priceCzk, ...extra },
+});
+
+async function createCheckoutForUser({
+  userId, email, planId, successPath, cancelPath, checkoutContext = 'self',
+  immediateStart, referralCode, acknowledgedNoTrial, confirmPriceCzk,
+}) {
+  if (planId !== 'season' && planId !== 'monthly') {
+    return { status: 400, body: { error: 'Neplatný plán.' } };
+  }
+
+  const loaded = await loadPayableProfile(userId);
+  if (loaded.fail) return loaded.fail;
+  const { profile } = loaded;
+
+  // email === undefined is the parent's payment link (vykání, no Settings).
+  if (hasLivePlan(profile)) return alreadySubscribed(profile, email === undefined);
+  if (immediateStart !== true) return immediateStartRequired();
+
+  const now = new Date();
+  if (!onSale(now)) {
+    return { status: 409, body: { error: 'Prodej pro tuto sezónu už skončil.', code: 'SALES_CLOSED' } };
+  }
+  const isMonthly = planId === 'monthly';
+  if (isMonthly && !monthlyAvailable(now)) {
+    return {
+      status: 409,
+      body: { error: 'Měsíční předplatné už se neprodává, do konce přihlášek zbývá 14 dní nebo méně.', code: 'MONTHLY_CLOSED' },
     };
   }
 
-  if (hasLivePlan(profile)) {
-    return {
-      status: 409,
-      body: {
-        // email === undefined is the parent's payment link (vykání, no Settings).
-        error: email === undefined
-          ? 'Dítě už má aktivní plán. Spravovat ho můžete na této stránce.'
-          : 'Už máš aktivní plán. Spravuj ho v Nastavení.',
-        code: 'ALREADY_SUBSCRIBED',
-      },
-    };
+  const listCzk = isMonthly ? monthlyQuote(now).firstChargeCzk : seasonPriceCzk(now);
+  const referral = isMonthly ? null : await resolveReferral({ userId, code: referralCode, priceCzk: listCzk });
+  const amountMinor = listCzk * 100 - (referral?.discountMinor || 0);
+  if (confirmPriceCzk !== undefined && Number(confirmPriceCzk) !== amountMinor / 100) {
+    return priceChanged(amountMinor / 100, { referralApplied: Boolean(referral) });
+  }
+
+  const purchasePlan = isMonthly ? 'monthly' : isSpring(now) ? 'spring' : 'season';
+  let trial = false;
+  if (purchasePlan === 'season') {
+    trial = await trialEligible(userId, now);
+    // The UI advertised a trial (date allows one) but this account or card used it:
+    // say so before any money moves.
+    if (!trial && trialAvailable(now) && acknowledgedNoTrial !== true) {
+      return {
+        status: 409,
+        body: {
+          error: 'Zkušební období už bylo využité, zaplatíš hned.',
+          code: 'TRIAL_NOT_AVAILABLE',
+          priceCzk: amountMinor / 100,
+        },
+      };
+    }
   }
 
   // The parent payment-link path passes email: undefined deliberately. Do not
   // attach the child's saved Stripe customer either; Checkout must collect the
   // payer's own billing details and send receipts to the parent.
+  const ownCustomer = email !== undefined && profile?.stripe_customer_id && await hasOwnCardHistory(userId);
   const billingCustomer = email === undefined
     ? {}
-    : profile?.stripe_customer_id
+    : ownCustomer
       ? { customer: profile.stripe_customer_id }
       : email
         ? { customer_email: email }
@@ -3571,28 +3764,19 @@ async function createCheckoutForUser({ userId, email, planId, successPath, cance
   const successUrl = FRONTEND_URL + successPath + '?platba=ok';
   const cancelUrl = FRONTEND_URL + cancelPath;
 
-  if (planId === 'season') {
-    try {
-      return await createTrackedCheckout({
-        userId, planId, checkoutContext, amount: SEASON_PRICE_CZK * 100,
-        successUrl, cancelUrl, billingCustomer, email,
-      });
-    } catch (err) {
-      return { status: 500, body: { error: err.message } };
+  let priceId;
+  if (isMonthly) {
+    priceId = process.env[PLAN_PRICE_ENV.monthly];
+    if (!priceId) {
+      return { status: 503, body: { error: 'Platby zatím nejsou nastavené.', code: 'STRIPE_NOT_CONFIGURED' } };
     }
-  }
-
-  const priceId = process.env[PLAN_PRICE_ENV[planId]];
-  if (!priceId) {
-    return {
-      status: 503,
-      body: { error: 'Platby zatím nejsou nastavené.', code: 'STRIPE_NOT_CONFIGURED' },
-    };
   }
 
   try {
     return await createTrackedCheckout({
-      userId, planId, checkoutContext, amount: MONTHLY_PRICE_CZK * 100,
+      userId, planId: purchasePlan, checkoutContext, amountMinor, trial,
+      discountMinor: referral?.discountMinor || 0, discountKind: 'referral',
+      referrerUserId: referral?.referrerId || null,
       successUrl, cancelUrl, billingCustomer, email, priceId,
     });
   } catch (err) {
@@ -3600,22 +3784,50 @@ async function createCheckoutForUser({ userId, email, planId, successPath, cance
   }
 }
 
+async function expireCheckoutSession(sessionId) {
+  if (!sessionId) return;
+  try { await stripe.checkout.sessions.expire(sessionId); } catch { /* already closed */ }
+}
+
 async function createTrackedCheckout({
-  userId, planId, checkoutContext, amount, successUrl, cancelUrl,
-  billingCustomer, email, priceId,
+  userId, planId, checkoutContext, amountMinor, trial, discountMinor, discountKind, referrerUserId,
+  successUrl, cancelUrl, billingCustomer, email, priceId,
 }) {
-  let purchase = await reservePurchase({ userId, planId, checkoutContext });
-  if (purchase.checkout_context !== checkoutContext) {
-    // An open checkout started from the other side (student vs parent link) has
-    // the wrong return URLs: close it and start a fresh one for this caller.
-    if (purchase.stripe_checkout_session_id) {
-      try { await stripe.checkout.sessions.expire(purchase.stripe_checkout_session_id); } catch { /* already closed */ }
+  const spec = { userId, planId, checkoutContext, amountMinor, trial, discountMinor, discountKind, referrerUserId };
+  const sameDeal = (row) => row.checkout_context === checkoutContext
+    && row.price_amount_minor === amountMinor
+    && Boolean(row.trial) === trial
+    && (row.referrer_user_id || null) === (referrerUserId || null);
+  const discard = async (row) => {
+    // The open checkout has the wrong return URLs, price or terms (another
+    // payer, a new day's price, trial no longer allowed): close it, start fresh.
+    await expireCheckoutSession(row.stripe_checkout_session_id);
+    if (row.stripe_checkout_session_id) {
+      const session = await stripe.checkout.sessions.retrieve(row.stripe_checkout_session_id);
+      // A session the customer already completed is never abandoned.
+      if (session.status === 'complete') return false;
     }
     const { error } = await supabase.from('purchases')
       .update({ status: 'failed', updated_at: new Date().toISOString() })
-      .eq('id', purchase.id).eq('status', 'pending');
+      .eq('id', row.id).eq('status', 'pending');
     if (error) throw error;
-    purchase = await reservePurchase({ userId, planId, checkoutContext });
+    return true;
+  };
+  const processing = {
+    status: 409,
+    body: { error: 'Platba se právě potvrzuje. Obnov stránku za chvíli.', code: 'CHECKOUT_PROCESSING' },
+  };
+
+  let purchase = await reservePurchase(spec);
+  if (purchase.needs_payment_confirmation) {
+    return {
+      status: 409,
+      body: { error: 'Tahle karta už zkušební období měla. Potvrď platbu.', code: 'NEEDS_PAYMENT_CONFIRMATION' },
+    };
+  }
+  if (!sameDeal(purchase)) {
+    if (!(await discard(purchase))) return processing;
+    purchase = await reservePurchase(spec);
   }
   if (purchase.stripe_checkout_session_id) {
     let existingSession;
@@ -3625,7 +3837,7 @@ async function createTrackedCheckout({
       throw new Error('Nepodařilo se ověřit rozpracovanou platbu. Zkus to prosím znovu.');
     }
     if (existingSession.status === 'open' && existingSession.url) {
-      return { status: 200, body: { url: existingSession.url } };
+      return { status: 200, body: { url: existingSession.url, trial, priceCzk: amountMinor / 100, referralApplied: Boolean(referrerUserId) } };
     }
     if (existingSession.status === 'complete') {
       return {
@@ -3636,45 +3848,81 @@ async function createTrackedCheckout({
     if (existingSession.status !== 'expired') {
       throw new Error('Rozpracovanou platbu se nepodařilo bezpečně ověřit.');
     }
-
-    const { error } = await supabase
-      .from('purchases')
-      .update({ status: 'failed', updated_at: new Date().toISOString() })
-      .eq('id', purchase.id)
-      .eq('status', 'pending');
-    if (error) throw error;
-    purchase = await reservePurchase({ userId, planId, checkoutContext });
+    if (!(await discard(purchase))) return processing;
+    purchase = await reservePurchase(spec);
   }
 
   const metadata = { plan_id: planId, app_user_id: userId, purchase_id: purchase.id };
-  const sessionParams = planId === 'season'
-    ? {
-        mode: 'setup',
-        currency: 'czk',
-        ...billingCustomer,
-        ...(email === undefined ? { customer_creation: 'always' } : {}),
-        success_url: successUrl,
-        cancel_url: cancelUrl,
-        client_reference_id: userId,
+  const priceCzk = amountMinor / 100;
+  // A stale daily price must not be payable for long.
+  const expiresAt = Math.floor(Date.now() / 1000) + 3600;
+  const common = {
+    ...billingCustomer,
+    success_url: successUrl,
+    cancel_url: cancelUrl,
+    client_reference_id: userId,
+    metadata,
+  };
+  let sessionParams;
+  if (planId === 'monthly') {
+    const quote = monthlyQuote(new Date());
+    sessionParams = {
+      mode: 'subscription',
+      line_items: [{ price: priceId, quantity: 1 }],
+      ...common,
+      expires_at: expiresAt,
+      // Less than a month left: one prorated payment that ends at the deadline.
+      subscription_data: {
         metadata,
-        custom_text: {
-          submit: {
-            message: 'Uložíme jen platební metodu, nic se nestrhává hned. Za ' +
-              SEASON_TRIAL_DAYS + ' dny proběhne jednorázová platba ' +
-              SEASON_PRICE_CZK + ' Kč za celou sezónu (září–březen) — pak už nic dalšího.',
-          },
+        ...(quote?.singleCharge ? { billing_cycle_anchor: Math.floor(DEADLINE.getTime() / 1000) } : {}),
+      },
+      custom_text: {
+        submit: {
+          message: quote?.singleCharge
+            ? 'Dnes ' + quote.firstChargeCzk + ' Kč za dny do 22. 2. 2027. Nic dalšího se nestrhne, předplatné pak samo skončí.'
+            : 'Dnes 249 Kč, pak 249 Kč každý měsíc ve stejný den. Poslední platba je jen za dny do 22. 2. 2027, ' +
+              'potom předplatné samo skončí. Celkem nejvýš ' + (quote?.totalCzk ?? '') + ' Kč.',
         },
-      }
-    : {
-        mode: 'subscription',
-        line_items: [{ price: priceId, quantity: 1 }],
-        ...billingCustomer,
-        success_url: successUrl,
-        cancel_url: cancelUrl,
-        client_reference_id: userId,
-        metadata,
-        subscription_data: { metadata },
-      };
+      },
+    };
+  } else if (trial) {
+    sessionParams = {
+      mode: 'setup',
+      currency: 'czk',
+      ...common,
+      ...(email === undefined ? { customer_creation: 'always' } : {}),
+      expires_at: expiresAt,
+      custom_text: {
+        submit: {
+          message: 'Uložíme jen platební metodu, nic se nestrhává hned. Za ' +
+            SEASON_TRIAL_DAYS + ' dny proběhne jednorázová platba ' + priceCzk +
+            ' Kč za přístup do 30. 6. 2027. Zkušební období je jen jedno na účet i na kartu.',
+        },
+      },
+    };
+  } else {
+    sessionParams = {
+      mode: 'payment',
+      line_items: [{
+        price_data: {
+          currency: 'czk',
+          unit_amount: amountMinor,
+          product_data: { name: planId === 'spring' ? 'Jarní přístup do 30. 6. 2027' : 'Sezónní přístup do 30. 6. 2027' },
+        },
+        quantity: 1,
+      }],
+      ...common,
+      ...(billingCustomer.customer ? {} : { customer_creation: 'always' }),
+      payment_intent_data: { setup_future_usage: 'on_session', metadata },
+      expires_at: expiresAt,
+      custom_text: {
+        submit: {
+          message: 'Zaplatíš hned ' + priceCzk + ' Kč, jednorázově, za přístup do 30. 6. 2027. ' +
+            'Odstoupit můžeš do 14 dnů v Nastavení; vrátíme poměrnou část.',
+        },
+      },
+    };
+  }
 
   const session = await stripe.checkout.sessions.create(sessionParams, {
     idempotencyKey: `snm-checkout:${purchase.id}`,
@@ -3682,32 +3930,632 @@ async function createTrackedCheckout({
   const { error: saveError } = await supabase
     .from('purchases')
     .update({
-      price_amount_minor: amount,
+      price_amount_minor: amountMinor,
       stripe_checkout_session_id: session.id,
+      immediate_start_consent_at: new Date().toISOString(),
+      terms_version: TERMS_VERSION,
       updated_at: new Date().toISOString(),
     })
     .eq('id', purchase.id)
     .eq('status', 'pending');
   if (saveError) throw saveError;
-  return { status: 200, body: { url: session.url } };
+  return { status: 200, body: { url: session.url, trial, priceCzk, referralApplied: Boolean(referrerUserId) } };
 }
 
 app.post('/api/checkout', checkoutLimiter, requireAuth, async (req, res) => {
-  const { planId, returnTo } = req.body || {};
+  const { planId, returnTo, immediateStart, referralCode, acknowledgedNoTrial, confirmPriceCzk } = req.body || {};
   const result = await createCheckoutForUser({
     userId: req.user.id,
     email: req.user.email,
     planId,
     successPath: sanitizeReturnTo(returnTo),
     cancelPath: '/predplatne',
+    immediateStart,
+    referralCode,
+    acknowledgedNoTrial,
+    confirmPriceCzk,
   });
   return res.status(result.status).json(result.body);
 });
 
+/* ---------------------------------------------------------------------------
+ * Plan 025: saved-card purchases, restore, card management, referral.
+ * Every route here needs the signed-in account and the price the person saw
+ * (confirmPriceCzk), so a click can never charge a different amount.
+ * ------------------------------------------------------------------------- */
+
+const periodSec = (sub, field) => sub?.[field] ?? sub?.items?.data?.[0]?.[field] ?? null;
+
+// The customer on a profile may have been created by a parent's payment link.
+// It is the person's own only when they started a purchase themselves.
+async function hasOwnCardHistory(userId) {
+  const { data } = await supabase.from('purchases').select('id')
+    .eq('user_id', userId).eq('checkout_context', 'self').in('status', ['pending', ...SETTLED_STATUSES]).limit(1);
+  return Array.isArray(data) && data.length > 0;
+}
+
+// A card is "saved" for the signed-in person only when they entered it
+// themselves: its fingerprint must match a purchase they made for themselves
+// (paid, or waiting for their own confirmation). A parent's card stays the parent's.
+async function savedCardFor(userId) {
+  const { data: user } = await supabase.from('users')
+    .select('stripe_customer_id, stripe_payment_method_id').eq('id', userId).single();
+  if (!user?.stripe_customer_id) return null;
+  let paymentMethod = user.stripe_payment_method_id;
+  if (!paymentMethod) {
+    const list = await stripe.paymentMethods.list({ customer: user.stripe_customer_id, type: 'card', limit: 1 });
+    paymentMethod = list.data?.[0]?.id || null;
+  }
+  if (!paymentMethod) return null;
+  const fingerprint = await cardFingerprintOf(paymentMethod);
+  if (!fingerprint) return null;
+  const { data: own } = await supabase.from('purchases').select('id')
+    .eq('user_id', userId).eq('checkout_context', 'self').eq('card_fingerprint', fingerprint)
+    .in('status', ['pending', ...SETTLED_STATUSES]).limit(1);
+  return Array.isArray(own) && own.length ? { customer: user.stripe_customer_id, paymentMethod } : null;
+}
+
+// Clears stale pending purchases before a one-click charge. The pending row for
+// the same plan and amount is kept: a double click must reuse it so Stripe's
+// idempotency key returns the same PaymentIntent. A row is marked failed only
+// once its Checkout session is certainly closed; a completed one is left alone.
+async function abandonPendingPurchases(userId, keep = null) {
+  const { data } = await supabase.from('purchases')
+    .select('id, plan, price_amount_minor, stripe_checkout_session_id')
+    .eq('user_id', userId).eq('status', 'pending');
+  for (const row of Array.isArray(data) ? data : []) {
+    if (!row.stripe_checkout_session_id && keep && row.plan === keep.planId && row.price_amount_minor === keep.amountMinor) continue;
+    if (row.stripe_checkout_session_id) {
+      await expireCheckoutSession(row.stripe_checkout_session_id);
+      let closed = false;
+      try { closed = (await stripe.checkout.sessions.retrieve(row.stripe_checkout_session_id)).status === 'expired'; } catch { /* unknown: leave it */ }
+      if (!closed) continue;
+    }
+    await supabase.from('purchases').update({ status: 'failed', updated_at: new Date().toISOString() })
+      .eq('id', row.id).eq('status', 'pending').throwOnError();
+  }
+}
+
+// Reserve (or reuse) the pending row for a one-click purchase.
+async function reserveSavedCardPurchase({ userId, planId, amountMinor, ...rest }) {
+  await abandonPendingPurchases(userId, { planId, amountMinor });
+  const purchase = await reservePurchase({ userId, planId, checkoutContext: 'self', amountMinor, ...rest });
+  if (purchase.stripe_checkout_session_id) {
+    return { fail: { status: 409, body: { error: 'Platba se právě potvrzuje. Obnov stránku za chvíli.', code: 'CHECKOUT_PROCESSING' } } };
+  }
+  return { purchase };
+}
+
+async function failPurchase(purchaseId) {
+  await supabase.from('purchases').update({ status: 'failed', updated_at: new Date().toISOString() })
+    .eq('id', purchaseId).eq('status', 'pending');
+}
+
+// One on-session PaymentIntent with the person present. Activation is always
+// done by the payment_intent.succeeded webhook, never here.
+async function chargeSavedCardOnSession({ userId, purchaseId, amountMinor, metadata }) {
+  const card = await savedCardFor(userId);
+  if (!card) return { status: 'no_card' };
+  try {
+    const intent = await stripe.paymentIntents.create({
+      amount: amountMinor,
+      currency: 'czk',
+      customer: card.customer,
+      payment_method: card.paymentMethod,
+      confirm: true,
+      off_session: false,
+      automatic_payment_methods: { enabled: true, allow_redirects: 'never' },
+      metadata,
+    }, { idempotencyKey: 'onsession:' + purchaseId });
+    if (intent.status === 'succeeded') return { status: 'succeeded', paymentIntentId: intent.id };
+    if (intent.status === 'requires_action') {
+      return { status: 'requires_action', clientSecret: intent.client_secret, paymentIntentId: intent.id };
+    }
+    return { status: 'failed', message: 'Platba se nezdařila.' };
+  } catch (err) {
+    return { status: 'failed', message: err.message || 'Platba se nezdařila.' };
+  }
+}
+
+async function runSavedCardCharge({ userId, purchase, amountMinor, plan, extraMetadata = {} }) {
+  await supabase.from('purchases').update({
+    immediate_start_consent_at: new Date().toISOString(),
+    terms_version: TERMS_VERSION,
+    updated_at: new Date().toISOString(),
+  }).eq('id', purchase.id).eq('status', 'pending').throwOnError();
+  const result = await chargeSavedCardOnSession({
+    userId, purchaseId: purchase.id, amountMinor,
+    metadata: { plan_id: plan, app_user_id: userId, purchase_id: purchase.id, ...extraMetadata },
+  });
+  if (result.status === 'no_card') {
+    await failPurchase(purchase.id);
+    return { status: 409, body: { error: 'Nemáš uloženou kartu.', code: 'NO_SAVED_CARD' } };
+  }
+  if (result.status === 'failed') {
+    await failPurchase(purchase.id);
+    return { status: 402, body: { error: result.message, code: 'CARD_FAILED' } };
+  }
+  return { status: 200, body: { status: result.status, clientSecret: result.clientSecret || null, purchaseId: purchase.id } };
+}
+
+// Season (or, after the deadline, spring) with the saved card and no trial.
+async function seasonSavedCardPurchase(userId, { confirmPriceCzk, immediateStart } = {}) {
+  const loaded = await loadPayableProfile(userId);
+  if (loaded.fail) return loaded.fail;
+  if (hasLivePlan(loaded.profile)) return alreadySubscribed(loaded.profile);
+  if (immediateStart !== true) return immediateStartRequired();
+  const now = new Date();
+  if (!onSale(now)) return { status: 409, body: { error: 'Prodej pro tuto sezónu už skončil.', code: 'SALES_CLOSED' } };
+  const priceCzk = seasonPriceCzk(now);
+  if (Number(confirmPriceCzk) !== priceCzk) return priceChanged(priceCzk);
+  if (!(await savedCardFor(userId))) {
+    return { status: 409, body: { error: 'Nemáš uloženou kartu.', code: 'NO_SAVED_CARD' } };
+  }
+  const plan = isSpring(now) ? 'spring' : 'season';
+  const reserved = await reserveSavedCardPurchase({ userId, planId: plan, amountMinor: priceCzk * 100 });
+  if (reserved.fail) return reserved.fail;
+  return runSavedCardCharge({ userId, purchase: reserved.purchase, amountMinor: priceCzk * 100, plan });
+}
+
+// "Prodloužit do 30. 6." for a live monthly, from 1 Feb: the spring price plus
+// every monthly payment still due before the deadline (usually none), so it can
+// never be cheaper than paying monthly to the end and then buying spring.
+async function quoteExtend(userId) {
+  const loaded = await loadPayableProfile(userId);
+  if (loaded.fail) return { fail: loaded.fail };
+  const { profile } = loaded;
+  if (profile.plan_id !== 'monthly' || !profile.stripe_subscription_id || !paidAccessActive(profile)) {
+    return { fail: { status: 400, body: { error: 'Není co prodloužit.' } } };
+  }
+  const now = new Date();
+  if (now < SPRING_ADDON_FROM || now > DEADLINE) {
+    return { fail: { status: 409, body: { error: 'Prodloužit lze od 1. 2. do konce přihlášek.', code: 'EXTEND_NOT_AVAILABLE' } } };
+  }
+  let sub;
+  try {
+    sub = await stripe.subscriptions.retrieve(profile.stripe_subscription_id);
+  } catch {
+    return { fail: { status: 502, body: { error: 'Předplatné se teď nepodařilo ověřit. Zkus to prosím znovu.' } } };
+  }
+  const periodEnd = periodSec(sub, 'current_period_end');
+  const amountCzk = springAddOnCzk(periodEnd ? periodEnd * 1000 : DEADLINE);
+  return { profile, amountMinor: amountCzk * 100, springCzk: SPRING_PRICE, remainingMonthlyCzk: amountCzk - SPRING_PRICE };
+}
+
+async function extendMonthly(userId, { confirmPriceCzk, immediateStart } = {}) {
+  const quote = await quoteExtend(userId);
+  if (quote.fail) return quote.fail;
+  const { profile, amountMinor } = quote;
+  if (immediateStart !== true) return immediateStartRequired();
+  if (Number(confirmPriceCzk) !== amountMinor / 100) return priceChanged(amountMinor / 100);
+  if (!(await savedCardFor(userId))) {
+    return { status: 409, body: { error: 'Nemáš uloženou kartu.', code: 'NO_SAVED_CARD' } };
+  }
+  const reserved = await reserveSavedCardPurchase({ userId, planId: 'season', amountMinor });
+  if (reserved.fail) return reserved.fail;
+  return runSavedCardCharge({
+    userId, purchase: reserved.purchase, amountMinor, plan: 'season',
+    extraMetadata: { switch_from_subscription: profile.stripe_subscription_id },
+  });
+}
+
+// What the extend sheet shows before the person confirms. Read-only.
+app.get('/api/plan/extend-preview', requireAuth, async (req, res) => {
+  try {
+    const quote = await quoteExtend(req.user.id);
+    if (quote.fail) return res.status(quote.fail.status).json(quote.fail.body);
+    return res.json({ amountCzk: quote.amountMinor / 100, springCzk: quote.springCzk, remainingMonthlyCzk: quote.remainingMonthlyCzk });
+  } catch {
+    return res.status(500).json({ error: 'Částku se teď nepodařilo spočítat.' });
+  }
+});
+
+// Applies a state change the server itself caused through the same replay-safe
+// RPC the webhooks use, under a synthetic event id.
+function applyInternalPurchaseEvent(name, key, params) {
+  return applyStripePurchaseEvent(
+    { id: `internal:${name}:${key}`, type: `internal.${name}`, created: Math.floor(Date.now() / 1000) },
+    params,
+  );
+}
+
+// Monthly again, with the saved card. The subscription ends itself at the deadline.
+async function monthlySavedCardPurchase(userId, { confirmPriceCzk, immediateStart } = {}) {
+  const loaded = await loadPayableProfile(userId);
+  if (loaded.fail) return loaded.fail;
+  if (hasLivePlan(loaded.profile)) return alreadySubscribed(loaded.profile);
+  if (immediateStart !== true) return immediateStartRequired();
+  const now = new Date();
+  const quote = monthlyQuote(now);
+  if (!quote) {
+    return { status: 409, body: { error: 'Měsíční předplatné už se neprodává.', code: 'MONTHLY_CLOSED' } };
+  }
+  if (Number(confirmPriceCzk) !== quote.firstChargeCzk) return priceChanged(quote.firstChargeCzk);
+  const priceId = process.env[PLAN_PRICE_ENV.monthly];
+  if (!priceId) return { status: 503, body: { error: 'Platby zatím nejsou nastavené.', code: 'STRIPE_NOT_CONFIGURED' } };
+  const card = await savedCardFor(userId);
+  if (!card) return { status: 409, body: { error: 'Nemáš uloženou kartu.', code: 'NO_SAVED_CARD' } };
+
+  // A subscription that exists in Stripe but is not yet reflected in our profile must block a second one.
+  const existing = await stripe.subscriptions.list({ customer: card.customer, status: 'all', limit: 10 });
+  if ((existing.data || []).some((sub) => !['canceled', 'incomplete_expired'].includes(sub.status))) {
+    return alreadySubscribed(loaded.profile);
+  }
+  const reserved = await reserveSavedCardPurchase({ userId, planId: 'monthly', amountMinor: quote.firstChargeCzk * 100 });
+  if (reserved.fail) return reserved.fail;
+  const purchase = reserved.purchase;
+  await supabase.from('purchases').update({
+    immediate_start_consent_at: new Date().toISOString(), terms_version: TERMS_VERSION,
+    updated_at: new Date().toISOString(),
+  }).eq('id', purchase.id).eq('status', 'pending').throwOnError();
+  const metadata = { plan_id: 'monthly', app_user_id: userId, purchase_id: purchase.id };
+  let sub;
+  try {
+    sub = await stripe.subscriptions.create({
+      customer: card.customer,
+      items: [{ price: priceId }],
+      default_payment_method: card.paymentMethod,
+      cancel_at: deadlineUnix(),
+      ...(quote.singleCharge ? { billing_cycle_anchor: deadlineUnix() } : {}),
+      expand: ['latest_invoice.payment_intent'],
+      metadata,
+    }, { idempotencyKey: 'monthly-saved:' + purchase.id });
+  } catch (err) {
+    await failPurchase(purchase.id);
+    return { status: 402, body: { error: err.message || 'Platba se nezdařila.', code: 'CARD_FAILED' } };
+  }
+  const active = sub.status === 'active';
+  const outcome = await applyInternalPurchaseEvent('monthly_saved_card', purchase.id, {
+    userId,
+    purchaseId: purchase.id,
+    purchaseStatus: active ? 'active' : null,
+    subscriptionId: sub.id,
+    accessStartsAt: Number.isFinite(sub.start_date) ? new Date(sub.start_date * 1000).toISOString() : null,
+    accessEndsAt: accessEndsAt(sub),
+    profilePatch: active ? {
+      subscription_status: mapStripeStatus(sub.status, 'monthly'),
+      stripe_customer_id: card.customer,
+      stripe_subscription_id: sub.id,
+      stripe_payment_method_id: card.paymentMethod,
+      plan_id: 'monthly',
+      access_expires_at: accessEndsAt(sub),
+      plan_started_at: new Date().toISOString(),
+      last_paid_at: new Date().toISOString(),
+      cancel_at_period_end: false,
+    } : {},
+  });
+  if (active) await completeOnboardingAfterCheckout(userId, purchase.id, outcome);
+  const invoicePayment = typeof sub.latest_invoice === 'object' ? sub.latest_invoice?.payment_intent : null;
+  const clientSecret = !active && invoicePayment?.status === 'requires_action' ? invoicePayment.client_secret : null;
+  return { status: 200, body: { status: active ? 'succeeded' : clientSecret ? 'requires_action' : 'processing', clientSecret, purchaseId: purchase.id } };
+}
+
+const SAVED_CARD_ROUTES = [
+  ['/api/purchase/season-saved-card', seasonSavedCardPurchase],
+  ['/api/plan/spring', seasonSavedCardPurchase],
+  ['/api/plan/extend', extendMonthly],
+  ['/api/plan/monthly-saved-card', monthlySavedCardPurchase],
+];
+for (const [route, handler] of SAVED_CARD_ROUTES) {
+  app.post(route, checkoutLimiter, requireAuth, async (req, res) => {
+    try {
+      const result = await handler(req.user.id, req.body || {});
+      return res.status(result.status).json(result.body);
+    } catch (err) {
+      console.error('Saved-card purchase failed:', err.code || err.type || 'error');
+      return res.status(500).json({ error: 'Platbu se nepodařilo dokončit. Zkus to prosím znovu.' });
+    }
+  });
+}
+
+// A trial that was blocked (the card already had one) waits here for the
+// person's decision: pay now, or drop the card. Nothing is charged before this.
+async function pendingConfirmationFor(userId) {
+  const { data } = await supabase.from('purchases').select('id, plan, price_amount_minor, discount_minor')
+    .eq('user_id', userId).eq('status', 'pending').eq('needs_payment_confirmation', true)
+    .order('created_at', { ascending: false }).limit(1).maybeSingle();
+  return data || null;
+}
+
+app.post('/api/purchase/confirm-pending', checkoutLimiter, requireAuth, async (req, res) => {
+  try {
+    const loaded = await loadPayableProfile(req.user.id);
+    if (loaded.fail) return res.status(loaded.fail.status).json(loaded.fail.body);
+    const purchase = await pendingConfirmationFor(req.user.id);
+    if (!purchase) return res.status(404).json({ error: 'Není co potvrdit.' });
+    if (hasLivePlan(loaded.profile)) {
+      const live = alreadySubscribed(loaded.profile);
+      return res.status(live.status).json(live.body);
+    }
+    if (req.body?.immediateStart !== true) {
+      const required = immediateStartRequired();
+      return res.status(required.status).json(required.body);
+    }
+    const now = new Date();
+    if (!onSale(now)) return res.status(409).json({ error: 'Prodej pro tuto sezónu už skončil.', code: 'SALES_CLOSED' });
+    // Never charge more than today's price (it falls daily).
+    const amountMinor = Math.min(purchase.price_amount_minor, seasonPriceCzk(now) * 100 - (purchase.discount_minor || 0));
+    if (Number(req.body?.confirmPriceCzk) !== amountMinor / 100) {
+      const changed = priceChanged(amountMinor / 100);
+      return res.status(changed.status).json(changed.body);
+    }
+    const plan = isSpring(now) ? 'spring' : 'season';
+    await supabase.from('purchases').update({
+      plan, price_amount_minor: amountMinor, updated_at: now.toISOString(),
+    }).eq('id', purchase.id).eq('status', 'pending').throwOnError();
+    const result = await runSavedCardCharge({ userId: req.user.id, purchase, amountMinor, plan });
+    return res.status(result.status).json(result.body);
+  } catch (err) {
+    console.error('Pending purchase confirmation failed:', err.code || err.type || 'error');
+    return res.status(500).json({ error: 'Platbu se nepodařilo dokončit. Zkus to prosím znovu.' });
+  }
+});
+
+app.post('/api/purchase/discard-pending', requireAuth, async (req, res) => {
+  try {
+    const purchase = await pendingConfirmationFor(req.user.id);
+    if (!purchase) return res.status(404).json({ error: 'Není co zahodit.' });
+    const card = stripe ? await savedCardFor(req.user.id) : null;
+    if (card) {
+      try { await stripe.paymentMethods.detach(card.paymentMethod); } catch { /* already detached */ }
+    }
+    await supabase.from('purchases').update({ status: 'failed', needs_payment_confirmation: false, updated_at: new Date().toISOString() })
+      .eq('id', purchase.id).eq('status', 'pending').throwOnError();
+    await supabase.from('users').update({ stripe_payment_method_id: null }).eq('id', req.user.id).throwOnError();
+    savedCardCache.delete(req.user.id);
+    return res.json({ discarded: true });
+  } catch (err) {
+    console.error('Pending purchase discard failed:', err.code || err.type || 'error');
+    return res.status(500).json({ error: 'Kartu se teď nepodařilo odebrat. Zkus to prosím znovu.' });
+  }
+});
+
+// Undo a cancellation, with no new trial and no new card entry.
+async function restorePlanForUser(userId) {
+  if (!stripe) {
+    return { status: 503, body: { error: 'Platby zatím nejsou nastavené.', code: 'STRIPE_NOT_CONFIGURED' } };
+  }
+  const { data: profile, error: profileError } = await supabase
+    .from('users')
+    .select('stripe_subscription_id, plan_id, subscription_status, cancel_at_period_end, access_expires_at, season_charge_due_at')
+    .eq('id', userId)
+    .single();
+  if (profileError) {
+    return { status: 500, body: { error: 'Nepodařilo se ověřit předplatné. Zkus to prosím znovu.' } };
+  }
+
+  if (profile.plan_id === 'monthly' && profile.cancel_at_period_end && profile.stripe_subscription_id && paidAccessActive(profile)) {
+    if (new Date() >= DEADLINE) {
+      return { status: 409, body: { error: 'Přihlášky už skončily.', code: 'MONTHLY_CLOSED' } };
+    }
+    try {
+      const updated = await stripe.subscriptions.update(profile.stripe_subscription_id, { cancel_at: deadlineUnix() });
+      await supabase.from('purchases').update({ cancel_requested_at: null, cancel_reason: null, updated_at: new Date().toISOString() })
+        .eq('user_id', userId).eq('plan', 'monthly').eq('status', 'active').throwOnError();
+      await supabase.from('users').update({ cancel_at_period_end: false }).eq('id', userId).throwOnError();
+      return { status: 200, body: { restored: 'monthly', accessUntil: accessEndsAt(updated) } };
+    } catch {
+      return { status: 502, body: { error: 'Předplatné se nepodařilo obnovit. Zkus to prosím znovu.' } };
+    }
+  }
+
+  const { data: purchase, error: purchaseError } = await supabase.from('purchases')
+    .select('id, price_amount_minor, access_ends_at')
+    .eq('user_id', userId).eq('plan', 'season').eq('status', 'active').eq('trial', true)
+    .not('cancel_requested_at', 'is', null)
+    .order('created_at', { ascending: false }).limit(1).maybeSingle();
+  if (purchaseError) return { status: 500, body: { error: 'Platební stav se nepodařilo ověřit.' } };
+  if (!purchase) return { status: 400, body: { error: 'Není co obnovit.' } };
+  const { data: outcome, error: rpcError } = await supabase.rpc('restore_season_charge', {
+    p_user_id: userId, p_purchase_id: purchase.id,
+  });
+  if (rpcError) return { status: 500, body: { error: 'Obnovení se nepodařilo bezpečně uložit.' } };
+  if (outcome === 'restored') {
+    return { status: 200, body: { restored: 'season', chargeAt: purchase.access_ends_at, priceCzk: purchase.price_amount_minor / 100 } };
+  }
+  if (outcome === 'too_late') {
+    return { status: 409, body: { error: 'Zkušební období už skončilo.', code: 'RESTORE_TOO_LATE' } };
+  }
+  if (outcome === 'no_card') {
+    return { status: 409, body: { error: 'Nemáš uloženou kartu.', code: 'NO_SAVED_CARD' } };
+  }
+  return { status: 400, body: { error: 'Není co obnovit.' } };
+}
+
+app.post('/api/subscription/restore', checkoutLimiter, requireAuth, async (req, res) => {
+  const result = await restorePlanForUser(req.user.id);
+  return res.status(result.status).json(result.body);
+});
+
+// Brand and last four digits for Settings; cached briefly so /api/me stays cheap.
+const savedCardCache = new Map();
+async function savedCardSummary(userId) {
+  const cached = savedCardCache.get(userId);
+  if (cached && Date.now() - cached.at < 5 * 60 * 1000) return cached.value;
+  let value = null;
+  try {
+    const card = stripe ? await savedCardFor(userId) : null;
+    if (card) {
+      const pm = await stripe.paymentMethods.retrieve(card.paymentMethod);
+      if (pm?.card) value = { brand: pm.card.brand, last4: pm.card.last4 };
+    }
+  } catch {
+    value = null;
+  }
+  savedCardCache.set(userId, { value, at: Date.now() });
+  return value;
+}
+
+// The card stays saved after a cancellation (for one-click re-buy). It goes
+// only on request, and never while it is about to be charged.
+app.delete('/api/payment-method', checkoutLimiter, requireAuth, async (req, res) => {
+  if (!stripe) return res.status(503).json({ error: 'Platby zatím nejsou nastavené.', code: 'STRIPE_NOT_CONFIGURED' });
+  try {
+    const { data: profile, error } = await supabase.from('users')
+      .select('plan_id, subscription_status, season_charge_due_at, cancel_at_period_end, access_expires_at')
+      .eq('id', req.user.id).single();
+    if (error) return res.status(500).json({ error: 'Nepodařilo se ověřit platební profil.' });
+    if (profile.plan_id === 'season' && profile.subscription_status === 'trialing' && profile.season_charge_due_at) {
+      return res.status(409).json({ error: 'Nejdřív zruš zkušební období.', code: 'TRIAL_CARD_IN_USE' });
+    }
+    if (profile.plan_id === 'monthly' && paidAccessActive(profile) && !profile.cancel_at_period_end) {
+      return res.status(409).json({ error: 'Nejdřív zruš předplatné.', code: 'SUBSCRIPTION_CARD_IN_USE' });
+    }
+    const card = await savedCardFor(req.user.id);
+    if (card) {
+      try { await stripe.paymentMethods.detach(card.paymentMethod); } catch { /* already detached */ }
+    }
+    await supabase.from('users').update({ stripe_payment_method_id: null }).eq('id', req.user.id).throwOnError();
+    savedCardCache.delete(req.user.id);
+    return res.json({ removed: true });
+  } catch (err) {
+    console.error('Card removal failed:', err.code || err.type || 'error');
+    return res.status(502).json({ error: 'Kartu se teď nepodařilo odebrat. Zkus to prosím znovu.' });
+  }
+});
+
+/* ---------------------------------------------------------------------------
+ * Referral (plan 025 §4.8). Informational copy only, shown to people who
+ * already paid; rewards are capped at what the referrer paid, so recruiting
+ * can only give a price back, never a profit.
+ * ------------------------------------------------------------------------- */
+
+async function referrerNetPaid(referrerId) {
+  const { data: purchase } = await supabase.from('purchases').select('id, stripe_payment_intent_id')
+    .eq('user_id', referrerId).in('plan', ['season', 'spring']).eq('status', 'active')
+    .not('stripe_payment_intent_id', 'is', null)
+    .order('created_at', { ascending: false }).limit(1).maybeSingle();
+  if (!purchase?.stripe_payment_intent_id) return null;
+  const intent = await stripe.paymentIntents.retrieve(purchase.stripe_payment_intent_id, { expand: ['latest_charge'] });
+  const charge = typeof intent.latest_charge === 'object' ? intent.latest_charge : null;
+  const netMinor = charge ? charge.amount - (charge.amount_refunded || 0) : (intent.amount_received ?? intent.amount ?? 0);
+  return { netMinor, paymentIntentId: purchase.stripe_payment_intent_id };
+}
+
+async function ensureReferralCode(userId) {
+  const { data: existing } = await supabase.from('referral_codes').select('code').eq('user_id', userId).maybeSingle();
+  if (existing?.code) return existing.code;
+  for (let attempt = 0; attempt < 5; attempt += 1) {
+    let code = '';
+    for (let i = 0; i < 8; i += 1) code += REFERRAL_ALPHABET[crypto.randomInt(REFERRAL_ALPHABET.length)];
+    const { error } = await supabase.from('referral_codes').insert({ user_id: userId, code });
+    if (!error) return code;
+    if (error.code !== '23505') throw error;
+    const { data: raced } = await supabase.from('referral_codes').select('code').eq('user_id', userId).maybeSingle();
+    if (raced?.code) return raced.code;
+  }
+  throw new Error('Kód pozvánky se nepodařilo vytvořit.');
+}
+
+app.get('/api/referral', requireAuth, async (req, res) => {
+  try {
+    if (!(await referralReferrerEligible(req.user.id))) return res.json({ eligible: false });
+    const code = await ensureReferralCode(req.user.id);
+    const { data: rows } = await supabase.from('referrals')
+      .select('status, reward_minor').eq('referrer_user_id', req.user.id);
+    const list = Array.isArray(rows) ? rows : [];
+    const rewarded = list.filter((r) => r.status === 'rewarded');
+    const rewardedMinor = rewarded.reduce((sum, r) => sum + r.reward_minor, 0);
+    let capCzk = null;
+    try {
+      const paid = stripe ? await referrerNetPaid(req.user.id) : null;
+      if (paid) capCzk = Math.round((paid.netMinor + rewardedMinor) / 100);
+    } catch { capCzk = null; }
+    return res.json({
+      eligible: true,
+      code,
+      link: `${FRONTEND_URL}/?pozvanka=${code}`,
+      discountCzk: REFERRAL_DISCOUNT,
+      rewardCzk: REFERRAL_REWARD,
+      rewardedCzk: rewardedMinor / 100,
+      rewardedCount: rewarded.length,
+      pendingCount: list.filter((r) => r.status === 'pending').length,
+      capCzk,
+    });
+  } catch (err) {
+    console.error('Referral status failed:', err.code || err.type || 'error');
+    return res.status(500).json({ error: 'Pozvánky se teď nepodařilo načíst.' });
+  }
+});
+
+// Anonymous: says only whether a code could apply, never who owns it.
+app.get('/api/referral/check', shareLimiter, async (req, res) => {
+  const code = typeof req.query?.code === 'string' ? req.query.code.trim().toUpperCase() : '';
+  if (!/^[A-HJ-NP-Z2-9]{8}$/.test(code)) return res.json({ valid: false });
+  const { data: row } = await supabase.from('referral_codes').select('user_id').eq('code', code).maybeSingle();
+  return res.json({ valid: Boolean(row?.user_id && (await referralReferrerEligible(row.user_id))) });
+});
+
+// Called when a purchase turns active; the same-card check needs the fingerprint.
+async function recordReferral(purchaseId) {
+  const { data: purchase } = await supabase.from('purchases')
+    .select('id, user_id, referrer_user_id, discount_kind, card_fingerprint').eq('id', purchaseId).single();
+  if (!purchase?.referrer_user_id || purchase.discount_kind !== 'referral') return;
+  let status = 'pending';
+  let voidReason = null;
+  if (purchase.card_fingerprint) {
+    const { data: same } = await supabase.from('purchases').select('id')
+      .eq('user_id', purchase.referrer_user_id).eq('card_fingerprint', purchase.card_fingerprint).limit(1);
+    if (Array.isArray(same) && same.length) { status = 'void'; voidReason = 'same_card'; }
+  }
+  await supabase.from('referrals').upsert({
+    referrer_user_id: purchase.referrer_user_id,
+    referred_user_id: purchase.user_id,
+    referred_purchase_id: purchase.id,
+    status,
+    void_reason: voidReason,
+  }, { onConflict: 'referred_purchase_id', ignoreDuplicates: true }).throwOnError();
+}
+
+async function settleReferral(referral) {
+  const close = (status, extra = {}) => supabase.from('referrals')
+    .update({ status, settled_at: new Date().toISOString(), ...extra })
+    .eq('id', referral.id).eq('status', 'pending').throwOnError();
+  const { data: referred } = await supabase.from('purchases')
+    .select('status, trial, season_charge_status, access_starts_at').eq('id', referral.referred_purchase_id).single();
+  if (!referred) return;
+  if (['withdrawn', 'refunded', 'canceled', 'failed'].includes(referred.status)) {
+    await close('void', { void_reason: 'referred_withdrew' });
+    return;
+  }
+  if (referred.status !== 'active') return;
+  if (referred.trial && referred.season_charge_status !== 'succeeded') return; // not paid yet
+  const startedAt = referred.access_starts_at ? new Date(referred.access_starts_at).getTime() : null;
+  if (!startedAt || Date.now() < startedAt + REFERRAL_SETTLE_DAYS * 86400000) return;
+
+  const paid = await referrerNetPaid(referral.referrer_user_id);
+  if (!paid) { await close('void', { void_reason: 'referrer_not_paid' }); return; }
+  // Never pay out more than the referrer paid; 1 Kč always stays.
+  if (paid.netMinor - 100 < REFERRAL_REWARD * 100) { await close('capped'); return; }
+  const refund = await stripe.refunds.create({
+    payment_intent: paid.paymentIntentId,
+    amount: REFERRAL_REWARD * 100,
+    reason: 'requested_by_customer',
+    metadata: { referral_id: referral.id, kind: 'referral' },
+  }, { idempotencyKey: 'referral:' + referral.id });
+  await close('rewarded', { reward_minor: REFERRAL_REWARD * 100, stripe_refund_id: refund.id });
+}
+
+async function settleReferrals() {
+  try {
+    const { data } = await supabase.from('referrals')
+      .select('id, referrer_user_id, referred_user_id, referred_purchase_id').eq('status', 'pending').limit(50);
+    for (const referral of Array.isArray(data) ? data : []) {
+      try { await settleReferral(referral); } catch (err) {
+        console.error('Referral settlement failed:', err.code || err.type || 'error');
+      }
+    }
+  } catch (err) {
+    console.error('Referral settlement query failed:', err.code || 'error');
+  }
+}
+
 // requireAuth only, deliberately NOT requireAccess: an account whose access has
 // lapsed is exactly the account that most needs to be able to cancel. Keep the
 // Stripe and season-trial behavior shared with the parent's payment-link route.
-async function cancelPlanForUser(userId) {
+const CANCEL_REASONS = ['price', 'not_needed', 'other'];
+async function cancelPlanForUser(userId, reason = null) {
+  const cancelReason = CANCEL_REASONS.includes(reason) ? reason : null;
   if (!stripe) {
     return { status: 503, body: { error: 'Platby zatím nejsou nastavené.', code: 'STRIPE_NOT_CONFIGURED' } };
   }
@@ -3740,12 +4588,14 @@ async function cancelPlanForUser(userId) {
       // Stripe charge to cancel, so clearing the schedule is safe.
       const { error } = await supabase.from('users').update({
         plan_id: null, subscription_status: 'canceled', season_charge_due_at: null,
-        stripe_payment_method_id: null,
       }).eq('id', userId).eq('subscription_status', 'trialing');
       if (error) return { status: 500, body: { error: 'Předplatné se nepodařilo zrušit. Zkus to prosím znovu.' } };
       return { status: 200, body: { cancelled: 'immediately', accessUntil: null } };
     }
 
+    if (cancelReason) {
+      await supabase.from('purchases').update({ cancel_reason: cancelReason }).eq('id', purchase.id).eq('user_id', userId);
+    }
     const { data: cancelRows, error: cancelError } = await supabase.rpc('request_season_charge_cancel', {
       p_user_id: userId, p_purchase_id: purchase.id,
     });
@@ -3801,7 +4651,7 @@ async function cancelPlanForUser(userId) {
   }
   if (monthlyPurchase?.id) {
     const { error } = await supabase.from('purchases').update({
-      cancel_requested_at: new Date().toISOString(), updated_at: new Date().toISOString(),
+      cancel_requested_at: new Date().toISOString(), cancel_reason: cancelReason, updated_at: new Date().toISOString(),
     }).eq('id', monthlyPurchase.id).eq('user_id', userId).eq('status', 'active');
     if (error) return { status: 500, body: { error: 'Zrušení se nepodařilo bezpečně uložit.' } };
   }
@@ -3813,12 +4663,14 @@ async function cancelPlanForUser(userId) {
       return { status: 200, body: { cancelled: 'immediately', accessUntil: null } };
     }
 
+    // End at the period's end, or at the deadline if that comes first, so a
+    // cancelled plan never keeps access past what was paid for.
+    const endSec = periodSec(sub, 'current_period_end');
+    const cancelAtSec = endSec ? Math.min(endSec, deadlineUnix()) : deadlineUnix();
     const updated = await stripe.subscriptions.update(profile.stripe_subscription_id, {
-      cancel_at_period_end: true,
+      cancel_at: cancelAtSec,
     });
-    const accessUntil = updated.current_period_end
-      ? new Date(updated.current_period_end * 1000).toISOString()
-      : null;
+    const accessUntil = accessEndsAt({ ...sub, ...updated, cancel_at: cancelAtSec });
     return { status: 200, body: { cancelled: 'at_period_end', accessUntil } };
   } catch (err) {
     return { status: 500, body: { error: err.message } };
@@ -3826,14 +4678,40 @@ async function cancelPlanForUser(userId) {
 }
 
 app.post('/api/subscription/cancel', requireAuth, async (req, res) => {
-  const result = await cancelPlanForUser(req.user.id);
+  const result = await cancelPlanForUser(req.user.id, req.body?.reason);
   return res.status(result.status).json(result.body);
 });
 
 /**
  * Statutory 14-day withdrawal (Terms §6). The account route and parent link
  * call the same operation so a payer can cancel or withdraw from their surface.
+ *
+ * A person who expressly asked for access to start at once pays for the time
+ * used (§1834 OZ, CRD Art. 14(3)), pro rata; without that request nothing may
+ * be deducted. The refund amount is fixed on the first request and stored, so
+ * a retry after a failed refund repeats exactly the same amount.
  */
+function withdrawalQuote({ purchase, profile, refundableMinor, now = new Date() }) {
+  const owedMinor = purchase.immediate_start_consent_at
+    ? Math.min(refundableMinor, proRataOwedMinor({
+      paidMinor: purchase.price_amount_minor,
+      paidAt: profile.last_paid_at || profile.plan_started_at,
+      accessEndsAt: purchase.access_ends_at || ACCESS_END,
+      now,
+    }))
+    : 0;
+  return { owedMinor, refundMinor: Math.max(0, refundableMinor - owedMinor) };
+}
+
+function refundableOf(intent) {
+  const charge = intent.latest_charge && typeof intent.latest_charge === 'object' ? intent.latest_charge : null;
+  return charge ? charge.amount - (charge.amount_refunded || 0) : (intent.amount_received ?? intent.amount ?? 0);
+}
+
+const WITHDRAWAL_PURCHASE_COLUMNS =
+  'id, plan, status, stripe_payment_intent_id, stripe_subscription_id, refund_status, refund_attempts, ' +
+  'season_charge_status, price_amount_minor, immediate_start_consent_at, access_ends_at, refund_amount_minor';
+
 async function withdrawPlanForUser(userId) {
   if (!stripe) {
     return { status: 503, body: { error: 'Platby zatím nejsou nastavené.', code: 'STRIPE_NOT_CONFIGURED' } };
@@ -3850,7 +4728,7 @@ async function withdrawPlanForUser(userId) {
 
   const { data: purchase, error: purchaseError } = await supabase
     .from('purchases')
-    .select('id, plan, status, stripe_payment_intent_id, stripe_subscription_id, refund_status, refund_attempts, season_charge_status')
+    .select(WITHDRAWAL_PURCHASE_COLUMNS)
     .eq('user_id', userId)
     .in('status', ['active', 'withdrawn'])
     .order('created_at', { ascending: false })
@@ -3881,6 +4759,9 @@ async function withdrawPlanForUser(userId) {
         updated_at: new Date().toISOString(),
       }).eq('id', purchase.id).eq('user_id', userId);
       if (error) throw error;
+      // A friend who withdraws earns the referrer nothing.
+      await supabase.from('referrals').update({ status: 'void', void_reason: 'referred_withdrew', settled_at: new Date().toISOString() })
+        .eq('referred_purchase_id', purchase.id).eq('status', 'pending');
     }
 
     if (profile.stripe_subscription_id) {
@@ -3906,15 +4787,16 @@ async function withdrawPlanForUser(userId) {
 
     let refundStatus = 'none';
     let refundedHaleru = 0;
+    let owedMinor = null;
     if (purchase && paymentIntentId) {
-      const intent = await stripe.paymentIntents.retrieve(paymentIntentId);
+      const intent = await stripe.paymentIntents.retrieve(paymentIntentId, { expand: ['latest_charge'] });
       if (intent.status !== 'succeeded') {
         refundStatus = await refundCanceledSeasonPurchase({ purchaseId: purchase.id, userId, paymentIntentId });
       }
       const existing = intent.status === 'succeeded'
         ? await stripe.refunds.list({ payment_intent: paymentIntentId, limit: 100 })
         : { data: [] };
-      const settled = (existing.data || []).find((refund) => refund.status === 'succeeded' || refund.status === 'pending');
+      const settled = (existing.data || []).find((refund) => ['succeeded', 'pending'].includes(refund.status) && isWithdrawalRefund(refund));
       if (intent.status !== 'succeeded') {
         // The related charge has not settled, so there is nothing to refund.
       } else if (settled?.status === 'succeeded') {
@@ -3923,32 +4805,47 @@ async function withdrawPlanForUser(userId) {
       } else if (settled?.status === 'pending') {
         refundStatus = 'pending';
       } else {
-        const failed = (existing.data || []).filter((refund) => refund.status === 'failed').length;
-        const attempt = Math.max(Number(purchase.refund_attempts) || 0, failed) + 1;
-        const { error: pendingError } = await supabase.rpc('set_purchase_refund_state', {
-          p_user_id: userId, p_purchase_id: purchase.id, p_state: 'pending', p_refund_id: null,
-        });
-        if (pendingError) throw pendingError;
-        try {
-          const refund = await stripe.refunds.create({
-            payment_intent: paymentIntentId,
-            reason: 'requested_by_customer',
-          }, { idempotencyKey: `withdraw:${purchase.id}:attempt:${attempt}` });
-          refundStatus = refund.status === 'succeeded' ? 'succeeded'
-            : refund.status === 'failed' ? 'failed' : 'pending';
-          refundedHaleru = refund.status === 'succeeded' ? refund.amount : 0;
-          const { error: saveRefundError } = await supabase.rpc('set_purchase_refund_state', {
-            p_user_id: userId, p_purchase_id: purchase.id,
-            p_state: refundStatus, p_refund_id: refund.id,
+        let refundMinor = purchase.refund_amount_minor;
+        if (refundMinor === null || refundMinor === undefined) {
+          const quote = withdrawalQuote({ purchase, profile, refundableMinor: refundableOf(intent) });
+          refundMinor = quote.refundMinor;
+          owedMinor = quote.owedMinor;
+          await supabase.from('purchases').update({ refund_amount_minor: refundMinor })
+            .eq('id', purchase.id).eq('user_id', userId).throwOnError();
+        }
+        if (refundMinor <= 0) {
+          await supabase.from('purchases').update({ refund_status: 'none', updated_at: new Date().toISOString() })
+            .eq('id', purchase.id).eq('user_id', userId).throwOnError();
+        } else {
+          const failed = (existing.data || []).filter((refund) => refund.status === 'failed').length;
+          const attempt = Math.max(Number(purchase.refund_attempts) || 0, failed) + 1;
+          const { error: pendingError } = await supabase.rpc('set_purchase_refund_state', {
+            p_user_id: userId, p_purchase_id: purchase.id, p_state: 'pending', p_refund_id: null,
           });
-          if (saveRefundError) throw saveRefundError;
-        } catch (err) {
-          const { error: saveRefundError } = await supabase.rpc('set_purchase_refund_state', {
-            p_user_id: userId, p_purchase_id: purchase.id, p_state: 'failed', p_refund_id: null,
-          });
-          if (saveRefundError) throw saveRefundError;
-          console.error('Purchase-linked refund failed:', err.code || err.type || 'stripe_error');
-          refundStatus = 'failed';
+          if (pendingError) throw pendingError;
+          try {
+            const refund = await stripe.refunds.create({
+              payment_intent: paymentIntentId,
+              amount: refundMinor,
+              reason: 'requested_by_customer',
+              metadata: { kind: 'withdrawal', purchase_id: purchase.id },
+            }, { idempotencyKey: `withdraw:${purchase.id}:attempt:${attempt}` });
+            refundStatus = refund.status === 'succeeded' ? 'succeeded'
+              : refund.status === 'failed' ? 'failed' : 'pending';
+            refundedHaleru = refund.status === 'succeeded' ? refund.amount : 0;
+            const { error: saveRefundError } = await supabase.rpc('set_purchase_refund_state', {
+              p_user_id: userId, p_purchase_id: purchase.id,
+              p_state: refundStatus, p_refund_id: refund.id,
+            });
+            if (saveRefundError) throw saveRefundError;
+          } catch (err) {
+            const { error: saveRefundError } = await supabase.rpc('set_purchase_refund_state', {
+              p_user_id: userId, p_purchase_id: purchase.id, p_state: 'failed', p_refund_id: null,
+            });
+            if (saveRefundError) throw saveRefundError;
+            console.error('Purchase-linked refund failed:', err.code || err.type || 'stripe_error');
+            refundStatus = 'failed';
+          }
         }
       }
       if (settled) {
@@ -3966,7 +4863,6 @@ async function withdrawPlanForUser(userId) {
       subscription_status: 'canceled',
       access_expires_at: at,
       season_charge_due_at: null,
-      stripe_payment_method_id: null,
       cancel_at_period_end: false,
     }).eq('id', userId);
     if (error) throw error;
@@ -3976,6 +4872,7 @@ async function withdrawPlanForUser(userId) {
       body: {
         withdrawn: true,
         refundedCzk: refundedHaleru / 100,
+        owedCzk: owedMinor === null ? null : owedMinor / 100,
         refundStatus,
         at,
       },
@@ -3988,6 +4885,39 @@ async function withdrawPlanForUser(userId) {
     };
   }
 }
+
+// What the button would do, shown before the person confirms. Read-only.
+async function withdrawalPreviewForUser(userId) {
+  if (!stripe) {
+    return { status: 503, body: { error: 'Platby zatím nejsou nastavené.', code: 'STRIPE_NOT_CONFIGURED' } };
+  }
+  const { data: profile, error: profileError } = await supabase.from('users')
+    .select('stripe_subscription_id, plan_id, subscription_status, plan_started_at, last_paid_at').eq('id', userId).single();
+  if (profileError) return { status: 500, body: { error: 'Nepodařilo se ověřit předplatné.' } };
+  if (!canWithdraw(profile)) return { status: 200, body: { canWithdraw: false, owedCzk: 0, refundCzk: 0 } };
+  const { data: purchase } = await supabase.from('purchases').select(WITHDRAWAL_PURCHASE_COLUMNS)
+    .eq('user_id', userId).eq('status', 'active').order('created_at', { ascending: false }).limit(1).maybeSingle();
+  try {
+    let paymentIntentId = purchase?.stripe_payment_intent_id || null;
+    if (!paymentIntentId && purchase?.plan === 'monthly' && profile.stripe_subscription_id) {
+      const sub = await stripe.subscriptions.retrieve(profile.stripe_subscription_id, { expand: ['latest_invoice.payment_intent'] });
+      const payment = typeof sub.latest_invoice === 'object' ? sub.latest_invoice?.payment_intent : null;
+      paymentIntentId = typeof payment === 'string' ? payment : payment?.id || null;
+    }
+    // A trial that has not been charged yet costs nothing to leave.
+    if (!purchase || !paymentIntentId) return { status: 200, body: { canWithdraw: true, owedCzk: 0, refundCzk: 0, trial: true } };
+    const intent = await stripe.paymentIntents.retrieve(paymentIntentId, { expand: ['latest_charge'] });
+    const quote = withdrawalQuote({ purchase, profile, refundableMinor: refundableOf(intent) });
+    return { status: 200, body: { canWithdraw: true, owedCzk: quote.owedMinor / 100, refundCzk: quote.refundMinor / 100, trial: false } };
+  } catch {
+    return { status: 502, body: { error: 'Částku se teď nepodařilo spočítat. Zkus to prosím znovu.' } };
+  }
+}
+
+app.get('/api/subscription/withdraw-preview', requireAuth, async (req, res) => {
+  const result = await withdrawalPreviewForUser(req.user.id);
+  return res.status(result.status).json(result.body);
+});
 app.post('/api/subscription/withdraw', checkoutLimiter, requireAuth, async (req, res) => {
   const result = await withdrawPlanForUser(req.user.id);
   return res.status(result.status).json(result.body);
@@ -4026,6 +4956,15 @@ async function applyStripePurchaseEvent(event, {
     p_profile_patch: profilePatch,
   });
   if (error) throw error;
+  if (purchaseStatus === 'active' && purchaseId && ['applied', 'duplicate'].includes(data)) {
+    // Paid access exists now: a leftover "confirm your card" purchase must not be chargeable later.
+    const { data: row } = await supabase.from('purchases').select('user_id').eq('id', purchaseId).maybeSingle();
+    if (row?.user_id) {
+      await supabase.from('purchases')
+        .update({ status: 'failed', needs_payment_confirmation: false, updated_at: new Date().toISOString() })
+        .eq('user_id', row.user_id).eq('status', 'pending').eq('needs_payment_confirmation', true).neq('id', purchaseId);
+    }
+  }
   return data;
 }
 
@@ -4043,7 +4982,7 @@ async function completeOnboardingAfterCheckout(userId, purchaseId, outcome) {
 }
 
 async function findStripePurchase({ purchaseId, subscriptionId, userId }) {
-  let query = supabase.from('purchases').select('id, user_id, cancel_requested_at, stripe_payment_intent_id, refund_status');
+  let query = supabase.from('purchases').select('id, user_id, plan, trial, status, checkout_context, stripe_checkout_session_id, cancel_requested_at, stripe_payment_intent_id, refund_status');
   if (purchaseId) query = query.eq('id', purchaseId);
   else if (subscriptionId) query = query.eq('stripe_subscription_id', subscriptionId);
   else if (userId) query = query.eq('user_id', userId).eq('plan', 'season').eq('status', 'active');
@@ -4063,6 +5002,92 @@ async function findStripeUser(column, value) {
     .maybeSingle();
   if (error) throw error;
   return data || null;
+}
+
+// The fingerprint identifies a physical card across accounts; null (wallets,
+// lookup failure) leaves only the per-account rule, a known ceiling.
+async function cardFingerprintOf(paymentMethodId) {
+  if (!paymentMethodId) return null;
+  try {
+    const method = await stripe.paymentMethods.retrieve(paymentMethodId);
+    return method?.card?.fingerprint || null;
+  } catch {
+    return null;
+  }
+}
+
+// Has this account (another purchase) or this card (another account) already had its trial?
+// Idempotent tail of a setup-mode checkout: the trial-abuse records and the
+// referral. Safe to run again on a retried webhook.
+async function setupFollowUps({ userId, purchaseId, setupIntentId }) {
+  if (!userId || !purchaseId || !setupIntentId) return;
+  const { data: purchase } = await supabase.from('purchases')
+    .select('status, card_fingerprint').eq('id', purchaseId).maybeSingle();
+  if (!purchase) return;
+  const setupIntent = await stripe.setupIntents.retrieve(setupIntentId);
+  const fingerprint = purchase.card_fingerprint || await cardFingerprintOf(setupIntent.payment_method);
+  if (purchase.status === 'active') {
+    await supabase.from('purchases').update({ card_fingerprint: fingerprint, trial: true }).eq('id', purchaseId);
+    if (fingerprint) {
+      await supabase.from('trial_card_fingerprints')
+        .upsert({ fingerprint, user_id: userId }, { onConflict: 'fingerprint', ignoreDuplicates: true });
+    }
+    await supabase.from('users').update({ season_trial_used_at: new Date().toISOString() })
+      .eq('id', userId).is('season_trial_used_at', null);
+    await recordReferral(purchaseId);
+  } else if (purchase.status === 'pending' && await trialConsumedElsewhere({ userId, purchaseId, fingerprint })) {
+    await supabase.from('purchases').update({
+      needs_payment_confirmation: true, trial: false, card_fingerprint: fingerprint, updated_at: new Date().toISOString(),
+    }).eq('id', purchaseId).eq('status', 'pending');
+  }
+}
+
+async function trialConsumedElsewhere({ userId, purchaseId, fingerprint }) {
+  const { data: prior } = await supabase.from('purchases').select('id')
+    .eq('user_id', userId).eq('trial', true).neq('id', purchaseId).in('status', SETTLED_STATUSES).limit(1);
+  if (Array.isArray(prior) && prior.length) return true;
+  if (!fingerprint) return false;
+  const { data: owner } = await supabase.from('trial_card_fingerprints').select('user_id')
+    .eq('fingerprint', fingerprint).maybeSingle();
+  return Boolean(owner) && owner.user_id !== userId;
+}
+
+// A switch to the season pass ends the monthly plan once the new one is paid.
+async function finishSwitchFromMonthly(userId, subscriptionId) {
+  try {
+    await stripe.subscriptions.cancel(subscriptionId, { prorate: false, invoice_now: false });
+  } catch (err) {
+    if (err.code !== 'resource_missing') throw err;
+  }
+  await supabase.from('purchases').update({ status: 'canceled', updated_at: new Date().toISOString() })
+    .eq('user_id', userId).eq('stripe_subscription_id', subscriptionId).eq('status', 'active').throwOnError();
+}
+
+// Monthly plans end at the deadline; if Stripe did not already prorate the last
+// period, take off the days after it (idempotent per invoice). A period that
+// starts at or after the deadline, or whose remainder would be under Stripe's
+// 15 Kč minimum, is credited in full.
+async function creditLastMonthlyPeriod(invoice) {
+  if (invoice.billing_reason !== 'subscription_cycle' || invoice.status !== 'draft') return;
+  const line = invoice.lines?.data?.[0];
+  const start = line?.period?.start;
+  const end = line?.period?.end;
+  if (!line?.amount || !start || !end || end * 1000 <= DEADLINE.getTime()) return;
+  const minimum = season.MIN_CHARGE_CZK * 100;
+  // Stripe already prorated it to a sensible amount.
+  if (start * 1000 < DEADLINE.getTime() && line.amount < MONTHLY_PRICE * 100 && line.amount >= minimum) return;
+  const subscriptionId = invoice.subscription || invoice.parent?.subscription_details?.subscription || null;
+  const linked = subscriptionId ? await findStripePurchase({ subscriptionId }) : null;
+  if (!linked) return;
+  let creditMinor = start * 1000 >= DEADLINE.getTime()
+    ? line.amount
+    : Math.round(line.amount * (end * 1000 - DEADLINE.getTime()) / ((end - start) * 1000));
+  if (line.amount - creditMinor > 0 && line.amount - creditMinor < minimum) creditMinor = line.amount;
+  if (creditMinor < 100) return;
+  await stripe.invoiceItems.create({
+    customer: invoice.customer, invoice: invoice.id, currency: 'czk', amount: -creditMinor,
+    description: 'Poslední období jen do 22. 2. 2027',
+  }, { idempotencyKey: 'deadline-credit:' + invoice.id });
 }
 
 function purchaseStatusFromStripe(status) {
@@ -4110,8 +5135,31 @@ async function handleStripeWebhook(req, res) {
           setupIntentId: object.setup_intent,
         });
         await completeOnboardingAfterCheckout(userId, purchaseId, outcome);
+        // A retried delivery must still finish the trial-abuse records the first one may have missed.
+        await setupFollowUps({ userId, purchaseId, setupIntentId: object.setup_intent });
       } else {
         const setupIntent = await stripe.setupIntents.retrieve(object.setup_intent);
+        const fingerprint = await cardFingerprintOf(setupIntent.payment_method);
+        if (userId && purchaseId && await trialConsumedElsewhere({ userId, purchaseId, fingerprint })) {
+          // This account or card already had its trial: no charge is scheduled and
+          // no access is granted until the person confirms paying now (or drops the card).
+          await applyStripePurchaseEvent(event, {
+            userId,
+            purchaseId,
+            checkoutSessionId: object.id,
+            setupIntentId: object.setup_intent,
+            profilePatch: {
+              stripe_customer_id: object.customer,
+              stripe_payment_method_id: setupIntent.payment_method,
+              stripe_setup_intent_id: object.setup_intent,
+            },
+          });
+          await supabase.from('purchases').update({
+            needs_payment_confirmation: true, trial: false, card_fingerprint: fingerprint,
+            updated_at: new Date().toISOString(),
+          }).eq('id', purchaseId).eq('status', 'pending').throwOnError();
+          return res.json({ received: true });
+        }
         const checkoutAt = Number.isFinite(object.created) ? object.created * 1000 : Date.now();
         const checkoutDate = new Date(checkoutAt);
         const dueAt = new Date(checkoutAt + SEASON_TRIAL_DAYS * 24 * 60 * 60 * 1000);
@@ -4135,6 +5183,16 @@ async function handleStripeWebhook(req, res) {
           },
         });
         await completeOnboardingAfterCheckout(userId, purchaseId, outcome);
+        if (['applied', 'duplicate'].includes(outcome) && purchaseId) {
+          await supabase.from('purchases').update({ card_fingerprint: fingerprint, trial: true }).eq('id', purchaseId);
+          if (fingerprint) {
+            await supabase.from('trial_card_fingerprints')
+              .upsert({ fingerprint, user_id: userId }, { onConflict: 'fingerprint', ignoreDuplicates: true });
+          }
+          await supabase.from('users').update({ season_trial_used_at: new Date().toISOString() })
+            .eq('id', userId).is('season_trial_used_at', null);
+          await recordReferral(purchaseId);
+        }
       }
     } else if (event.type === 'checkout.session.completed' && object.mode === 'subscription') {
       const userId = object.client_reference_id || object.metadata?.app_user_id || null;
@@ -4150,8 +5208,17 @@ async function handleStripeWebhook(req, res) {
         }));
         await applyStripePurchaseEvent(event, { userId });
       } else {
-        const subscription = await stripe.subscriptions.retrieve(object.subscription);
+        let subscription = await stripe.subscriptions.retrieve(object.subscription);
+        // The plan never bills after the end of applications; the last period
+        // is charged only for the days up to the deadline (Stripe prorates it).
+        if (subscription.cancel_at !== deadlineUnix() && Date.now() < DEADLINE.getTime()) {
+          const updated = await stripe.subscriptions.update(object.subscription, {
+            cancel_at: deadlineUnix(), proration_behavior: 'create_prorations',
+          });
+          subscription = { ...subscription, ...updated };
+        }
         const planId = subscription.metadata?.plan_id || object.metadata?.plan_id;
+        const defaultMethod = subscription.default_payment_method;
         const resolvedPurchaseId = purchaseId || subscription.metadata?.purchase_id || null;
         const purchaseStatus = purchaseStatusFromStripe(subscription.status);
         const outcome = await applyStripePurchaseEvent(event, {
@@ -4167,6 +5234,7 @@ async function handleStripeWebhook(req, res) {
             subscription_status: mapStripeStatus(subscription.status, planId),
             stripe_customer_id: object.customer,
             stripe_subscription_id: object.subscription,
+            ...(defaultMethod ? { stripe_payment_method_id: typeof defaultMethod === 'string' ? defaultMethod : defaultMethod.id } : {}),
             plan_id: planId,
             access_expires_at: accessEndsAt(subscription),
             plan_started_at: Number.isFinite(subscription.start_date)
@@ -4184,37 +5252,65 @@ async function handleStripeWebhook(req, res) {
         purchaseStatus: 'failed',
         checkoutSessionId: object.id,
       });
-    } else if (event.type === 'payment_intent.succeeded' && object.metadata?.plan_id === 'season') {
+    } else if (event.type === 'payment_intent.succeeded' && SEASON_PLANS.includes(object.metadata?.plan_id)) {
       const userId = object.metadata?.app_user_id || null;
       const purchaseId = object.metadata?.purchase_id || null;
       const linked = purchaseId
         ? await findStripePurchase({ purchaseId })
         : await findStripePurchase({ userId });
+      if (linked && !linked.trial && linked.status === 'failed') {
+        await refundOrphanPayment(object, linked.id);
+        return res.json({ received: true });
+      }
       if (linked?.cancel_requested_at) {
         await supabase.rpc('set_season_charge_state', {
           p_purchase_id: linked.id, p_state: 'succeeded', p_payment_intent_id: object.id,
         });
         await refundCanceledSeasonPurchase({ purchaseId: linked.id, userId: linked.user_id, paymentIntentId: object.id, finishSeasonCancel: true });
       } else {
-        await applyStripePurchaseEvent(event, {
+        const paidAt = Number.isFinite(object.created) ? new Date(object.created * 1000) : new Date();
+        // The scheduled charge after a trial; anything else is a purchase paid on the spot.
+        const trialCharge = !linked || linked.trial;
+        const switchedFrom = object.metadata?.switch_from_subscription || null;
+        const outcome = await applyStripePurchaseEvent(event, {
           userId,
           purchaseId,
           purchaseStatus: 'active',
           paymentIntentId: object.id,
-          accessStartsAt: Number.isFinite(object.created) ? new Date(object.created * 1000).toISOString() : null,
-          accessEndsAt: seasonEndsAt(Number.isFinite(object.created) ? new Date(object.created * 1000) : new Date()).toISOString(),
+          accessStartsAt: trialCharge ? null : paidAt.toISOString(),
+          accessEndsAt: ACCESS_END.toISOString(),
           profilePatch: {
             subscription_status: 'season',
-            access_expires_at: seasonEndsAt(Number.isFinite(object.created) ? new Date(object.created * 1000) : new Date()).toISOString(),
+            access_expires_at: ACCESS_END.toISOString(),
             season_charge_due_at: null,
-            last_paid_at: Number.isFinite(object.created) ? new Date(object.created * 1000).toISOString() : new Date().toISOString(),
+            last_paid_at: paidAt.toISOString(),
+            plan_id: object.metadata.plan_id,
+            ...(trialCharge ? {} : {
+              plan_started_at: paidAt.toISOString(),
+              // A parent's card stays the parent's: it is never written onto the child's profile.
+              ...(linked?.checkout_context !== 'parent' && object.customer ? { stripe_customer_id: object.customer } : {}),
+              ...(linked?.checkout_context !== 'parent' && typeof object.payment_method === 'string' ? { stripe_payment_method_id: object.payment_method } : {}),
+              ...(switchedFrom ? { stripe_subscription_id: null, cancel_at_period_end: false } : {}),
+            }),
           },
         });
+        if (linked?.trial) await setSeasonChargeState(linked.id, 'succeeded', object.id);
+        if (!trialCharge && ['applied', 'duplicate'].includes(outcome)) {
+          const fingerprint = await cardFingerprintOf(object.payment_method);
+          if (fingerprint) await supabase.from('purchases').update({ card_fingerprint: fingerprint }).eq('id', purchaseId);
+          await completeOnboardingAfterCheckout(userId, purchaseId, outcome);
+          if (switchedFrom) await finishSwitchFromMonthly(userId, switchedFrom);
+          await recordReferral(purchaseId);
+        }
       }
-    } else if (event.type === 'payment_intent.requires_action' && object.metadata?.plan_id === 'season') {
+    } else if (event.type === 'payment_intent.requires_action' && SEASON_PLANS.includes(object.metadata?.plan_id)) {
       const userId = object.metadata?.app_user_id || null;
       const purchaseId = object.metadata?.purchase_id || null;
       const linked = purchaseId ? await findStripePurchase({ purchaseId }) : await findStripePurchase({ userId });
+      // A purchase paid on the spot (not a scheduled trial charge) is handled on screen.
+      if (linked && !linked.trial) {
+        await applyStripePurchaseEvent(event);
+      } else {
       if (purchaseId) {
         await supabase.rpc('set_season_charge_state', {
           p_purchase_id: purchaseId, p_state: 'requires_action', p_payment_intent_id: object.id,
@@ -4228,9 +5324,19 @@ async function handleStripeWebhook(req, res) {
           profilePatch: { subscription_status: 'past_due' },
         });
       }
-    } else if (event.type === 'payment_intent.payment_failed' && object.metadata?.plan_id === 'season') {
+      }
+    } else if (['payment_intent.payment_failed', 'payment_intent.canceled'].includes(event.type) && SEASON_PLANS.includes(object.metadata?.plan_id)) {
       const purchaseId = object.metadata?.purchase_id || null;
       const linked = purchaseId ? await findStripePurchase({ purchaseId }) : await findStripePurchase({ userId: object.metadata?.app_user_id || null });
+      if (linked && !linked.trial) {
+        // A one-click payment that failed or was cancelled must not block the account.
+        // (A Checkout session may retry its own PaymentIntent, so those rows stay.)
+        await applyStripePurchaseEvent(event, linked.stripe_checkout_session_id ? {} : {
+          userId: linked.user_id, purchaseId: linked.id, purchaseStatus: 'failed', paymentIntentId: object.id,
+        });
+      } else if (event.type === 'payment_intent.canceled') {
+        await applyStripePurchaseEvent(event);
+      } else {
       if (purchaseId) {
         await supabase.rpc('set_season_charge_state', {
           p_purchase_id: purchaseId,
@@ -4247,6 +5353,7 @@ async function handleStripeWebhook(req, res) {
           profilePatch: { subscription_status: 'past_due' },
         });
       }
+      }
     } else if (event.type === 'customer.subscription.updated') {
       const purchaseId = object.metadata?.purchase_id || null;
       const linkedPurchase = await findStripePurchase({ purchaseId, subscriptionId: object.id });
@@ -4261,7 +5368,12 @@ async function handleStripeWebhook(req, res) {
         profilePatch: {
           subscription_status: mapStripeStatus(object.status, planId),
           access_expires_at: accessEndsAt(object),
-          cancel_at_period_end: Boolean(object.cancel_at_period_end || object.cancel_at),
+          // "Cancelled" means the person cancelled, not that the plan is scheduled to
+          // end at the deadline (cancel_at), which every monthly plan is.
+          cancel_at_period_end: Boolean(object.cancel_at_period_end) || Boolean(linkedPurchase?.cancel_requested_at),
+          ...(linkedPurchase && purchaseStatusFromStripe(object.status) === 'active' && planId ? {
+            plan_id: planId, stripe_subscription_id: object.id, stripe_customer_id: object.customer,
+          } : {}),
         },
       });
       // A card needing 3-D Secure completes Checkout while still 'incomplete';
@@ -4283,6 +5395,9 @@ async function handleStripeWebhook(req, res) {
           access_expires_at: new Date().toISOString(),
         },
       });
+    } else if (event.type === 'invoice.created') {
+      await creditLastMonthlyPeriod(object);
+      await applyStripePurchaseEvent(event);
     } else if (event.type === 'invoice.paid') {
       const subscriptionId = object.subscription || object.parent?.subscription_details?.subscription || null;
       let linkedPurchase = await findStripePurchase({ subscriptionId });
@@ -4337,6 +5452,19 @@ async function setSeasonChargeState(purchaseId, state, paymentIntentId = null, e
   return data;
 }
 
+// Referral rewards and orphan refunds share a PaymentIntent with the withdrawal
+// but are not it. Untagged refunds predate the tags and still count.
+const isWithdrawalRefund = (refund) => !refund.metadata?.kind || ['withdrawal', 'cancel_race'].includes(refund.metadata.kind);
+
+// A payment that succeeded for a purchase we had already given up on (a double
+// click, a stale session): give it all back instead of silently keeping it.
+async function refundOrphanPayment(intent, purchaseId) {
+  console.warn(JSON.stringify({ level: 'warn', event: 'orphan_payment_refunded', paymentIntentId: intent.id, purchaseId }));
+  await stripe.refunds.create({
+    payment_intent: intent.id, reason: 'requested_by_customer', metadata: { kind: 'orphan', purchase_id: purchaseId },
+  }, { idempotencyKey: 'orphan:' + intent.id });
+}
+
 async function refundCanceledSeasonPurchase({ purchaseId, userId, paymentIntentId, finishSeasonCancel = false }) {
   const intent = await stripe.paymentIntents.retrieve(paymentIntentId);
   if (intent.status === 'canceled') {
@@ -4364,10 +5492,10 @@ async function refundCanceledSeasonPurchase({ purchaseId, userId, paymentIntentI
     return 'pending';
   }
   const existing = await stripe.refunds.list({ payment_intent: paymentIntentId, limit: 100 });
-  let refund = (existing.data || []).find((row) => row.status === 'succeeded' || row.status === 'pending');
+  let refund = (existing.data || []).find((row) => ['succeeded', 'pending'].includes(row.status) && isWithdrawalRefund(row));
   if (!refund) {
     const { data: purchase, error: purchaseError } = await supabase.from('purchases')
-      .select('refund_attempts').eq('id', purchaseId).eq('user_id', userId).single();
+      .select('refund_attempts, refund_amount_minor').eq('id', purchaseId).eq('user_id', userId).single();
     if (purchaseError) throw purchaseError;
     const failed = (existing.data || []).filter((row) => row.status === 'failed').length;
     const attempt = Math.max(Number(purchase.refund_attempts) || 0, failed) + 1;
@@ -4375,7 +5503,10 @@ async function refundCanceledSeasonPurchase({ purchaseId, userId, paymentIntentI
       p_user_id: userId, p_purchase_id: purchaseId, p_state: 'pending', p_refund_id: null,
     });
     if (error) throw error;
-    refund = await stripe.refunds.create({ payment_intent: paymentIntentId, reason: 'requested_by_customer' }, {
+    // A withdrawal stores the amount it decided on (pro rata); a cancellation
+    // before access refunds everything.
+    const partial = Number.isInteger(purchase.refund_amount_minor) ? { amount: purchase.refund_amount_minor } : {};
+    refund = await stripe.refunds.create({ payment_intent: paymentIntentId, reason: 'requested_by_customer', metadata: { kind: 'cancel_race', purchase_id: purchaseId }, ...partial }, {
       idempotencyKey: `cancel-season:${purchaseId}:attempt:${attempt}`,
     });
   }
@@ -4428,9 +5559,26 @@ async function reconcileSeasonCancellationRequests() {
  * idempotency key as the former worker, so an ambiguous response cannot create
  * a second charge. The Stripe webhook remains authoritative for paid access.
  */
+// One-click purchases that never produced a payment must not linger as
+// "pending": a pending row can hold up the account's other payments.
+async function failStalePendingPurchases() {
+  try {
+    await supabase.from('purchases')
+      .update({ status: 'failed', updated_at: new Date().toISOString() })
+      .eq('status', 'pending').eq('trial', false).eq('needs_payment_confirmation', false)
+      .is('stripe_checkout_session_id', null)
+      .lt('updated_at', new Date(Date.now() - 2 * 3600 * 1000).toISOString())
+      .throwOnError();
+  } catch (err) {
+    console.error('failStalePendingPurchases failed:', err.code || err.type || 'error');
+  }
+}
+
 async function chargeDueSeasonPasses() {
   if (!stripe) return;
   await reconcileSeasonCancellationRequests();
+  await failStalePendingPurchases();
+  await settleReferrals();
   const { data: due, error } = await supabase.rpc('claim_due_season_charges', {
     p_now: new Date().toISOString(),
   });
@@ -4455,8 +5603,12 @@ async function chargeDueSeasonPasses() {
         }
       }
       if (!intent) {
+        // The price locked at checkout, never a constant: the daily price moves.
+        if (!Number.isInteger(purchase.price_amount_minor) || purchase.price_amount_minor <= 0) {
+          throw Object.assign(new Error('missing locked price'), { type: 'LockedPriceMissing' });
+        }
         intent = await stripe.paymentIntents.create({
-          amount: SEASON_PRICE_CZK * 100,
+          amount: purchase.price_amount_minor,
           currency: 'czk',
           customer: purchase.stripe_customer_id,
           payment_method: purchase.stripe_payment_method_id,
@@ -4513,7 +5665,7 @@ async function chargeDueSeasonPasses() {
         const paidAt = Number.isFinite(intent.created) ? new Date(intent.created * 1000) : new Date();
         await supabase.from('users').update({
           subscription_status: 'season',
-          access_expires_at: seasonEndsAt(paidAt).toISOString(),
+          access_expires_at: ACCESS_END.toISOString(),
           season_charge_due_at: null,
           last_paid_at: paidAt.toISOString(),
         }).eq('id', purchase.user_id).in('subscription_status', ['trialing', 'past_due']).throwOnError();
@@ -4577,7 +5729,7 @@ app.get('/api/subscription/season-charge', requireAuth, async (req, res) => {
         } else {
           const paidAt = Number.isFinite(intent.created) ? new Date(intent.created * 1000) : new Date();
           await supabase.from('users').update({
-            subscription_status: 'season', access_expires_at: seasonEndsAt(paidAt).toISOString(),
+            subscription_status: 'season', access_expires_at: ACCESS_END.toISOString(),
             season_charge_due_at: null, last_paid_at: paidAt.toISOString(),
           }).eq('id', req.user.id).in('subscription_status', ['trialing', 'past_due']).throwOnError();
         }

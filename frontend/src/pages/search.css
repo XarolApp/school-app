@@ -1761,3 +1761,22 @@
   border-top: 1px solid var(--line);
   margin-top: var(--space-sm);
 }
+
+/* Termíny přijímacího řízení (plan 025 §6) */
+.ss-dates-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md, 12px);
+  background: var(--surface);
+  padding: var(--space-md) var(--space-lg);
+  margin-bottom: var(--space-md);
+}
+.ss-dates-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+.ss-dates-list { margin: var(--space-sm) 0 0; display: grid; gap: var(--space-xs); }
+.ss-dates-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-sm); }
+.ss-dates-row dt { color: var(--ink2); }
+.ss-dates-row dd { margin: 0; font-weight: 600; }

@@ -19,6 +19,7 @@ import { useToast } from '../components/ToastContext';
 import './decision.css';
 import { SkeletonPage, Sk, SkLines } from '../components/PageSkeleton';
 import { readHint, writeHint } from '../lib/skeletonHints';
+import { REAL_SCORE_FROM } from '../config/admissionDates';
 
 // Skeleton: the same header, tabs and two-column layout as the page below,
 // with as many pick cards as this browser saw last time.
@@ -261,7 +262,10 @@ function Prihlaska() {
 
         <div className="dp-rail">
           <div className="dp-rail-card">
-            <div className="ss-headline-sm h">Tvoje body z přijímaček</div>
+            {/* After the exams the field asks for the real result, not a practice one. */}
+            <div className="ss-headline-sm h">
+              {new Date() >= REAL_SCORE_FROM ? 'Skutečné body z přijímaček' : 'Tvoje body z přijímaček'}
+            </div>
             <PointsInput profile={profile} onSaved={setProfile} />
           </div>
 

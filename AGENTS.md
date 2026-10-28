@@ -93,6 +93,15 @@ testers within minutes. Never batch a session's work into one push at the very e
   one-line verify query, and don't push the code that depends on it until the founder
   has applied it (or confirm the code tolerates the missing column).
 
+**Review branches (founder rule, 2026-10-28).** Anything that needs the founder's or a cloud
+session's review (a finished feature, a payments/access/database change waiting for approval)
+is committed and pushed to a branch named **`review/<topic>`** (e.g. `review/plan-025`), never
+to `main`. (A plain branch called `review` cannot exist next to `review/plan-022`.) A push to a
+`review/*` branch does not deploy. Stage an explicit file list (never `git add -A`; never `.env`),
+push with `git push -u origin HEAD:review/<topic>`, and say which commit and which files are on
+it. Work only moves to `main` after the founder says it works. Cloud sessions start from the
+`review/<topic>` branch.
+
 `.env` files are gitignored and must stay that way; check `git status` before a broad
 `git add` so a secret never lands in a commit.
 
@@ -241,9 +250,13 @@ remains a full second surface (see "Platform Strategy"). It:
   on. Already implemented in `frontend/src/config/pricing.js`.
 - **No payment checkbox.** The parental-confirmation checkbox at checkout was
   removed by founder decision on 2026-09-22 (commit `9a8f8cc`). The age / guardian
-  confirmation happens once, at account creation (`ConsentCheckbox`). Minors' refunds
-  are covered by Terms §7 (full refund within 30 days, the withdrawal button in
-  Settings works for 30 days). The parent branch pays through a payment link.
+  confirmation happens once, at account creation (`ConsentCheckbox`). Plan 025 added
+  ONE different required checkbox at checkout, the express request for immediate
+  start (`immediate-start`): without it nothing may be deducted on withdrawal. Refunds:
+  the statutory 14 days from the order with a pro-rata deduction for the paid days
+  used (§1834 OZ), shown before the person confirms (`/api/subscription/withdraw-preview`);
+  minors' guardians write within 30 days and get the unused part back (Terms §7, manual).
+  The parent branch pays through a payment link.
 - **3-day free trial on the season pass only** (card saved, one charge after 3 days);
   the monthly plan has no trial and charges at checkout. The separate ordinary-account
   access trial currently starts at signup in the database trigger. **Founder decision
@@ -256,10 +269,21 @@ remains a full second surface (see "Platform Strategy"). It:
   lengthening it. Note `feature-brainstorm.md` rates one-time purchase 🔥 and monthly
   ✅ — written before the recurring decision, now partially superseded (one-time is
   back in the mix per the research, weekly never was and stays out).
-- **Prices are locked (2026-09-21): Sezónní přístup 690 Kč one-time, Měsíční 249 Kč.**
-  They live in `frontend/src/config/pricing.js`; the season price is duplicated as
-  `SEASON_PRICE_CZK` in `server.js` and the monthly one is the Stripe Price — change all
-  together.
+- **Prices (plan 025 v3, 2026-10-28): the season price falls daily.** Season = 0.9 × what
+  monthly would cost from today until the end of applications (22. 2. 2027) + 49 Kč, clamped to
+  149–499 Kč: 499 Kč until 22 Dec, then falling (333 Kč on 15 Jan), a flat 149 Kč with no trial
+  from 9 Feb (14 days or fewer left), and the same 149 Kč "jarní přístup" after the deadline; all
+  paid access ends 30. 6. 2027. Spring alone is never sold below 149 Kč. Monthly 249 Kč is charged
+  on the purchase day each month, the last period prorated to 22 Feb (`cancel_at` is set when the
+  subscription is created; the `invoice.created` credit is the safety net), one payment for the
+  days left when under a month remains, and it is not sold from 9 Feb. A live monthly user can
+  "Prodloužit do 30. 6." from 1 Feb: 149 Kč plus any monthly payment still due. Constants and date logic
+  live in `lib/season.js`, are served by `GET /api/prices`, and `frontend/src/config/pricing.js`
+  holds copy only. The charge uses the price locked on the purchase (`price_amount_minor`), never
+  a constant. One season trial per account and per card (`trial_card_fingerprints`); a repeat
+  buyer is always told "zaplatíš hned" before paying. Referral: 100 Kč off a first season
+  purchase, 100 Kč refunded to the referrer per friend who stays 14 days, capped at what the
+  referrer paid (`referrals`). Ordinary accounts have no trial of their own; access follows a purchase.
 - Schools may pay for visibility/partnerships once the platform has real users
 - Promotion via teenage TikTok/Instagram influencers (affiliate model)
 
@@ -417,6 +441,8 @@ are deployed. See the current deployment report.
 | `school_reviews` | one row per (school, user): `role`, `role_year`, `obor_nazev`, `body`, `show_name`, `verified`, `status`. No client RLS policy — server.js only. The feature is disabled during beta with `SCHOOL_REVIEWS_ENABLED=false`; see the separate consented beta website-review flow. |
 | `review_reports` | `id` primary key, `review_id`, nullable `user_id`, reason; one report per signed-in account per review, anonymous notices also supported |
 | `data_reports` | crowdsourced "Nahlásit chybu v údajích": `school_id`, `user_id`, `field`, `message`, read directly in Supabase |
+| `trial_card_fingerprints` | one row per card that has had a season trial (`fingerprint`, `user_id`); service-role only. With `users.season_trial_used_at` and `purchases.trial` it enforces one trial per account and per card. |
+| `referral_codes` / `referrals` | 8-character invitation code per paying user; one `referrals` row per referred purchase (`pending`/`rewarded`/`capped`/`void`, `reward_minor`, Stripe refund id). Service-role only. Plan 025 §4.8. |
 | `application_picks` | `(user_id, school_id)`, `priority` 1–3, optional `obor_kkov`/`obor_nazev` — the 3 schools a student is actually applying to, in binding DiPSy order. No client RLS policy — server.js only, delete-then-insert on every reorder. See plan 006 §1.1 for why this is a separate table from `favorites`. |
 | `school_notes` | `(user_id, school_id)`, free-text `body`, not limited to picked schools |
 | `decision_profile` | one row per user: `jpz_points`, legacy `jpz_source` (`nanecisto`/`ostra`) and nullable `jpz_expected_gain`. Current writes use `nanecisto` for the entered current score; expected gain is displayed separately and does not change the verdict. No per-subject breakdown |
@@ -751,8 +777,8 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
      Explanations are deterministic templates; a future AI TODO is not a current
      provider requirement.
    - **Pricing config:** `frontend/src/config/pricing.js` — every price, plan and
-     trial string. Prices are locked (690 / 249 Kč). Plans are **Sezónní přístup
-     (one-time, pre-selected, 3-day trial)** and **Měsíční (recurring, no trial)**. Weekly was
+     trial string — but NOT prices (they come from `/api/prices`). Plans are **Sezónní přístup
+     (one-time, pre-selected, 3-day trial once per account/card)** and **Měsíční (recurring, no trial)**. Weekly was
      dropped mid-build per `docs/sources/pricing_research.md` — do not add it back.
    - **No parental-confirmation step at checkout** (removed 2026-09-22, see
      Monetization). The student branch offers "Ať to zaplatí rodič" (payment link).
@@ -886,8 +912,8 @@ These are standing architectural facts about the current codebase — not TODOs.
 actionable that follows from them lives in [`UNFORGET.md`](UNFORGET.md) instead.
 
 - **Payments are wired but not live-ready.** The onboarding purchase button creates a
-  real Stripe Checkout session when keys are configured. Prices are approved at
-  690/249 Kč. Withdrawal/refund code exists but has unresolved recovery/integrity
+  real Stripe Checkout session when keys are configured. Prices follow plan 025
+  (daily season price, monthly 249 Kč). Withdrawal/refund code exists but has unresolved recovery/integrity
   defects; the day-2 reminder is not built. The lifecycle and test-mode matrix
   in the deployment handoff must pass before live activation.
 - **`/api/schools*` is currently ungated.** Founder clarification 2026-10-07:

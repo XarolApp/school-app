@@ -57,6 +57,7 @@ import SearchFilters, {
   DalsiGroup,
 } from '../components/SearchFilters';
 import FilterPopover from '../components/FilterPopover';
+import AdmissionDatesCard from '../components/AdmissionDatesCard';
 import Modal from '../components/Modal';
 import AsyncState from '../components/AsyncState';
 import useMediaQuery from '../lib/useMediaQuery';
@@ -180,6 +181,8 @@ function summarizePrograms(school) {
     nematuritni: programs.some((p) => p.maturitni === false),
     jpzPovinna: programs.some((p) => p.jpz_povinna === true),
     jpzNepovinna: programs.some((p) => p.jpz_povinna === false),
+    // Last year's results left places unfilled in at least one obor (newest year only).
+    volnaMista: programs.some((p) => p.kapacita != null && p.prijati != null && p.prijati < p.kapacita),
     typy: [...new Set(programs.map((p) => p.typ_skoly).filter(Boolean))],
     jazyky: [...new Set(programs.map((p) => p.jazyk_studia).filter(Boolean))],
     kkov: [...new Set(programs.map((p) => p.kkov).filter(Boolean))],
@@ -306,6 +309,7 @@ const DEFAULT_FILTERS = {
   postizeni: [], // 'bezne' | urceno_pro_postizeni values
   jazyky: [],
   jpz: [], // 'povinna' | 'nepovinna'
+  volna: false, // places left unfilled in last year's admission results
   obory: [], // KKOV codes, matched against one obor at a time — see oborPasses
   formy: [], // Cermat form codes: den | dal | komb | dist
   ...Object.fromEntries(RANGES.flatMap((r) => [[`${r.id}Min`, ''], [`${r.id}Max`, '']])),
@@ -588,6 +592,7 @@ function Search() {
         met: f.jpz.some((v) => (v === 'povinna' ? row.p.jpzPovinna : row.p.jpzNepovinna)),
       });
     }
+    if (f.volna) out.push({ k: 'volna', met: row.p.volnaMista });
     if (oborFiltersActive(f)) out.push({ k: 'obor', met: row.p.obory.some((o) => oborPasses(o, f)) });
     if (ctx.hasQuery) out.push({ k: 'q', met: matchesQuery(row, ctx) });
     return out;
@@ -777,6 +782,8 @@ function Search() {
     { value: 'nepovinna', label: 'JPZ nepovinná', count: listFor({ ...filters, jpz: ['nepovinna'] }).length },
   ];
 
+  const volnaOption = { checked: filters.volna, count: listFor({ ...filters, volna: true }).length };
+
   const activeCriteriaCount = [
     filters.fields.length > 0,
     filters.districts.length > 0,
@@ -786,6 +793,7 @@ function Search() {
     filters.postizeni.length > 0,
     filters.jazyky.length > 0,
     filters.jpz.length > 0,
+    filters.volna,
     oborFiltersActive(filters),
     hasQuery,
   ].filter(Boolean).length;
@@ -793,7 +801,7 @@ function Search() {
   // Collapsed groups show how many of their own filters are active, per the
   // "filter-count badge on the collapsed control" pattern.
   const rangeCount = (ids) => RANGES.filter((r) => ids.includes(r.id) && rangeActive(filters, r)).length;
-  const admissionsActiveCount = rangeCount(['cutoff', 'applicants', 'accepted', 'places']) + filters.jpz.length;
+  const admissionsActiveCount = rangeCount(['cutoff', 'applicants', 'accepted', 'places']) + filters.jpz.length + (filters.volna ? 1 : 0);
   const moreActiveCount = filters.jazyky.length + filters.formy.length + filters.postizeni.length;
 
   const chips = [];
@@ -826,6 +834,7 @@ function Search() {
       onRemove: () => toggleIn('jpz', v),
     })
   );
+  if (filters.volna) chips.push({ key: 'volna', label: 'Loni volná místa', onRemove: () => setPatch({ volna: false }) });
   {
     const byGroup = new Map();
     for (const o of oborOptions) {
@@ -922,6 +931,13 @@ function Search() {
       blame: 'omezení jazyka výuky',
       label: 'Zrušit omezení jazyka výuky',
       apply: () => setPatch({ jazyky: [] }),
+    },
+    {
+      key: 'volna',
+      active: filters.volna,
+      blame: 'omezení na volná místa z loňska',
+      label: 'Zrušit omezení na volná místa',
+      apply: () => setPatch({ volna: false }),
     },
     {
       key: 'jpz',
@@ -1119,6 +1135,7 @@ function Search() {
       zrizovatelOptions={zrizovatelOptions}
       postizeniOptions={postizeniOptions}
       jpzOptions={jpzOptions}
+      volnaOption={volnaOption}
       jazykOptions={jazykOptions}
       oborOptions={oborOptions}
       oborGroupCounts={oborGroupCounts}
@@ -1185,13 +1202,14 @@ function Search() {
       onClear: () =>
         setPatch({
           cutoffMin: '', cutoffMax: '', acceptedMin: '', acceptedMax: '', applicantsMax: '',
-          placesMin: '', placesMax: '', jpz: [],
+          placesMin: '', placesMax: '', jpz: [], volna: false,
         }),
       content: (
         <AdmissionsGroup
           filters={filters}
           setPatch={setPatch}
           jpzOptions={jpzOptions}
+          volnaOption={volnaOption}
           toggleIn={toggleIn}
           year={dataYear}
         />
@@ -1419,6 +1437,8 @@ function Search() {
           </div>
         )}
       </header>
+
+      {!loading && !error && <AdmissionDatesCard />}
 
       <div className="ss-search-controls">
         <div className="ss-search-input-wrap">

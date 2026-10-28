@@ -6,11 +6,12 @@ import { track, betaTracker } from './lib/betaTrack';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
 export class ApiError extends Error {
-  constructor(message, status, code) {
+  constructor(message, status, code, body) {
     super(message);
     this.name = 'ApiError';
     this.status = status;
     this.code = code;
+    this.body = body; // e.g. { priceCzk } on PRICE_CHANGED, so a screen can show the new amount
   }
 
   // The backend answers 402 when the trial is over and there is no
@@ -89,7 +90,8 @@ async function request(path, options = {}, retried = false) {
     throw new ApiError(
       body.error || `Požadavek selhal (${res.status})`,
       res.status,
-      body.code
+      body.code,
+      body
     );
   }
 
@@ -414,15 +416,26 @@ export function fetchPayLink(token) {
   return publicRequest('/api/pay-links/' + encodeURIComponent(token));
 }
 
-export function startPayLinkCheckout(token, planId) {
+export function startPayLinkCheckout(token, body) {
   return publicRequest('/api/pay-links/' + encodeURIComponent(token) + '/checkout', {
     method: 'POST',
-    body: JSON.stringify({ planId }),
+    body: JSON.stringify(body),
   });
 }
 
-export function cancelViaPayLink(token) {
-  return publicRequest('/api/pay-links/' + encodeURIComponent(token) + '/cancel', { method: 'POST' });
+export function cancelViaPayLink(token, reason) {
+  return publicRequest('/api/pay-links/' + encodeURIComponent(token) + '/cancel', {
+    method: 'POST',
+    body: JSON.stringify({ reason }),
+  });
+}
+
+export function restoreViaPayLink(token) {
+  return publicRequest('/api/pay-links/' + encodeURIComponent(token) + '/restore', { method: 'POST' });
+}
+
+export function withdrawPreviewViaPayLink(token) {
+  return publicRequest('/api/pay-links/' + encodeURIComponent(token) + '/withdraw-preview');
 }
 
 export function withdrawViaPayLink(token) {
@@ -479,15 +492,61 @@ export async function fetchSharedShortlist(token) {
  * account has necessarily updated yet — see SubscriptionExpired.jsx's
  * platba=ok handling.
  */
-export function createCheckoutSession({ planId, returnTo } = {}) {
+export function createCheckoutSession(body = {}) {
   return request('/api/checkout', {
     method: 'POST',
-    body: JSON.stringify({ planId, returnTo }),
+    body: JSON.stringify(body),
   });
+}
+
+/** Today's prices and the sale window; public, so it also works before sign-in. */
+export function fetchPrices() {
+  return request('/api/prices');
 }
 
 export function withdrawFromContract() {
   return request('/api/subscription/withdraw', { method: 'POST' });
+}
+
+/** What the withdraw button would do: `{ owedCzk, refundCzk, canWithdraw, trial }`. */
+export function fetchWithdrawPreview() {
+  return request('/api/subscription/withdraw-preview');
+}
+
+/** Undo a cancellation: a monthly plan, or a season trial that is still running. */
+export function restoreSubscription() {
+  return request('/api/subscription/restore', { method: 'POST' });
+}
+
+// One-click purchases with the saved card. Every call carries the price the
+// person saw, so the server refuses (PRICE_CHANGED) if it moved in between.
+export function buySeasonWithSavedCard(body) {
+  return request('/api/purchase/season-saved-card', { method: 'POST', body: JSON.stringify(body) });
+}
+export function extendPlan(body) {
+  return request('/api/plan/extend', { method: 'POST', body: JSON.stringify(body) });
+}
+export function buyMonthlyWithSavedCard(body) {
+  return request('/api/plan/monthly-saved-card', { method: 'POST', body: JSON.stringify(body) });
+}
+export function confirmPendingPurchase(body) {
+  return request('/api/purchase/confirm-pending', { method: 'POST', body: JSON.stringify(body) });
+}
+export function discardPendingPurchase() {
+  return request('/api/purchase/discard-pending', { method: 'POST' });
+}
+export function fetchExtendPreview() {
+  return request('/api/plan/extend-preview');
+}
+export function removeSavedCard() {
+  return request('/api/payment-method', { method: 'DELETE' });
+}
+
+export function fetchReferral() {
+  return request('/api/referral');
+}
+export function checkReferralCode(code) {
+  return request('/api/referral/check?code=' + encodeURIComponent(code));
 }
 
 export function fetchSeasonChargeStatus() {
@@ -501,8 +560,8 @@ export function fetchSeasonChargeStatus() {
  * subscription to cancel; withdrawal is a separate action. Returns
  * `{ cancelled: 'immediately' | 'at_period_end', accessUntil: string|null }`.
  */
-export function cancelSubscription() {
-  return request('/api/subscription/cancel', { method: 'POST' });
+export function cancelSubscription(reason) {
+  return request('/api/subscription/cancel', { method: 'POST', body: JSON.stringify({ reason }) });
 }
 
 /**

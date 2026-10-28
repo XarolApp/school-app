@@ -235,7 +235,7 @@ export function TypGroup({ typOptions, toggleIn }) {
   );
 }
 
-export function AdmissionsGroup({ filters, setPatch, jpzOptions, toggleIn, year }) {
+export function AdmissionsGroup({ filters, setPatch, jpzOptions, volnaOption, toggleIn, year }) {
   const y = year ? ` ${year}` : '';
   return (
     <>
@@ -282,6 +282,19 @@ export function AdmissionsGroup({ filters, setPatch, jpzOptions, toggleIn, year 
           onChange={() => toggleIn('jpz', option.value)}
         />
       ))}
+      {volnaOption && (
+        <>
+          <CheckOption
+            checked={volnaOption.checked}
+            label="Loni zbyla volná místa"
+            count={volnaOption.count}
+            onChange={() => setPatch({ volna: !volnaOption.checked })}
+          />
+          <p className="ss-caption ss-facet-note">
+            Podle loňských výsledků zde zůstala volná místa — šance na další kolo, ne záruka.
+          </p>
+        </>
+      )}
     </>
   );
 }
@@ -393,6 +406,7 @@ function SearchFilters({
   zrizovatelOptions,
   postizeniOptions,
   jpzOptions,
+  volnaOption,
   jazykOptions,
   oborOptions,
   oborGroupCounts,
@@ -447,6 +461,7 @@ function SearchFilters({
           filters={filters}
           setPatch={setPatch}
           jpzOptions={jpzOptions}
+          volnaOption={volnaOption}
           toggleIn={toggleIn}
           year={year}
         />

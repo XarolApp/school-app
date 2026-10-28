@@ -11,6 +11,7 @@ import {
   trialChargeDate,
   trialReminderDate,
 } from '../../../config/pricing';
+import { useOffer } from '../../../lib/usePrices';
 import { useOnboarding } from '../useOnboarding';
 import { Icon, PayCta, PayStepChrome } from './paywallKit';
 
@@ -50,12 +51,16 @@ function Zkusebni() {
   const parent = role === 'parent';
   const voice = parent ? 'parent' : 'student';
   const plan = getPlan(planId);
+  const offer = useOffer('season');
+  // The trial exists only on the season pass, only while enough time is left,
+  // and only once per account and per card (the server enforces the card part).
+  const trial = plan.id === 'season' && offer.trialAvailable;
 
   // Browser history or a direct route can reopen this screen after the plan
   // changed. A monthly plan must never display the seasonal free-trial terms.
   useEffect(() => {
-    if (!plan.hasTrial) goToStep('platba', { replace: true });
-  }, [plan.hasTrial, goToStep]);
+    if (offer.ready && !trial) goToStep('platba', { replace: true });
+  }, [offer.ready, trial, goToStep]);
 
   // Computed once per mount so the rail and the money box can never disagree
   // about the date, even across a midnight boundary.
@@ -67,7 +72,8 @@ function Zkusebni() {
     };
   }, []);
 
-  if (!plan.hasTrial) return null;
+  if (!offer.ready || !trial) return null;
+  const priceText = formatCzk(offer.priceCzk);
 
   const chargeSuffix =
     plan.billing === 'one_time' ? 'jednou' : `a pak každý ${plan.periodLabel}`;
@@ -169,7 +175,7 @@ function Zkusebni() {
                     {TRIAL_CHARGE_DAY_NUMBER}. den · {chargeLabel}
                   </span>
                   <strong className="ob-pw-rail-what">
-                    Strhne se {formatCzk(plan.priceCzk)} — {chargeSuffix}
+                    Strhne se {priceText} — {chargeSuffix}
                   </strong>
                   <span className="ob-pw-rail-detail">{planCopy(plan, voice, 'terms')}</span>
                 </div>
@@ -192,7 +198,7 @@ function Zkusebni() {
                 <span className="ob-pw-row-label">
                   Poté {chargeLabel}, {plan.priceSuffix}
                 </span>
-                <span className="ob-pw-row-value">{formatCzk(plan.priceCzk)}</span>
+                <span className="ob-pw-row-value">{priceText}</span>
               </div>
               <p className="ob-pw-fine">{planCopy(plan, voice, 'terms')}</p>
               <span className="ob-pw-rule is-accent" />

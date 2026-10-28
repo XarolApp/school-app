@@ -3,6 +3,10 @@ const assert = require('node:assert/strict');
 const { readFileSync } = require('node:fs');
 const { join } = require('node:path');
 const vm = require('node:vm');
+const season = require('../lib/season');
+// The daily price moves, so assertions compute today's value instead of hardcoding it.
+const todayMinor = () => season.seasonPriceCzk(new Date()) * 100;
+const daysAgo = (days) => new Date(Date.now() - days * 86400000).toISOString();
 
 // Exercise the actual registered handlers with deterministic external-service
 // responses. Do not load .env, bind a port, run the billing timer, or call Stripe.
@@ -29,6 +33,9 @@ function harness({
   storageListResult = async () => ({ data: [], error: null }),
   commuteMatrix = null,
   commuteMatrixPresent = false,
+  paymentMethodFingerprint = 'fp_test',
+  existingSubscriptions = [],
+  subscriptionPeriodEnd = 2000000000,
 } = {}) {
   const storageRemovals = [];
   const routes = new Map();
@@ -48,6 +55,8 @@ function harness({
   const refundCalls = [];
   let activeRefundCreateError = refundCreateError;
   const checkoutCalls = [];
+  const invoiceItemCalls = [];
+  const subscriptionUpdates = [];
   const checkoutOptions = [];
   const checkoutRetrieveCalls = [];
   const checkoutSessionsByKey = new Map();
@@ -103,10 +112,17 @@ function harness({
     webhooks: { constructEvent: (event) => event },
     subscriptions: {
       cancel: async () => { operationLog.push('stripe:subscription.cancel'); cancellations++; if (cancelError) throw cancelError; },
-      update: async () => { operationLog.push('stripe:subscription.update'); return { current_period_end: 2_000_000_000 }; },
-      retrieve: async () => { operationLog.push('stripe:subscription.retrieve'); subscriptionRetrievals++; return { id: 'sub_test', start_date: 1_800_000_000, status: 'active', metadata: { plan_id: 'monthly' }, current_period_end: 2000000000 }; },
+      update: async (id, params) => { operationLog.push('stripe:subscription.update'); subscriptionUpdates.push({ id, params }); return { current_period_end: 2_000_000_000 }; },
+      retrieve: async () => { operationLog.push('stripe:subscription.retrieve'); subscriptionRetrievals++; return { id: 'sub_test', start_date: 1_800_000_000, status: 'active', metadata: { plan_id: 'monthly' }, current_period_end: subscriptionPeriodEnd }; },
+      list: async () => ({ data: existingSubscriptions }),
     },
     setupIntents: { retrieve: async () => { setupIntentRetrievals++; return { payment_method: 'pm_test' }; } },
+    paymentMethods: {
+      retrieve: async (id) => ({ id, card: { fingerprint: paymentMethodFingerprint, brand: 'visa', last4: '4242' } }),
+      list: async () => ({ data: [{ id: 'pm_test' }] }),
+      detach: async (id) => { operationLog.push('stripe:payment_method.detach'); return { id }; },
+    },
+    invoiceItems: { create: async (params, options) => { invoiceItemCalls.push({ params, options }); return { id: 'ii_test' }; } },
     checkout: { sessions: {
       create: async (params, options = {}) => {
         checkoutCalls.push(params);
@@ -151,7 +167,7 @@ function harness({
   // Leave all functions/routes intact, but stop before process startup.
   const module = { exports: {} };
   vm.runInNewContext(source.slice(0, source.lastIndexOf('\nif (stripe)')) +
-    '\nmodule.exports = { seasonEndsAt, handleStripeWebhook, slimProgramsForList, chargeDueSeasonPasses, paidAccessActive, betaProgramState, betaAccessState, hasPaidStatus, requireAccess, hasLivePlan, accessStateFor, createCheckoutForUser, cancelPlanForUser, withdrawPlanForUser, saveOnboardingRun };', {
+    '\nmodule.exports = { handleStripeWebhook, slimProgramsForList, chargeDueSeasonPasses, paidAccessActive, betaProgramState, betaAccessState, hasPaidStatus, requireAccess, hasLivePlan, accessStateFor, createCheckoutForUser, cancelPlanForUser, withdrawPlanForUser, restorePlanForUser, settleReferrals, recordReferral, trialEligible, withdrawalQuote, saveOnboardingRun };', {
     module, Date, Buffer, URL, setTimeout, clearTimeout, __dirname: join(__dirname, '..'),
     console: { log() {}, warn(...args) {
       const message = args.join(' ');
@@ -173,6 +189,7 @@ function harness({
       if (name === './lib/betaClosing') return require('../lib/betaClosing');
       if (name === './lib/betaAnalytics') return require('../lib/betaAnalytics');
       if (name === './lib/aiUsage') return require('../lib/aiUsage');
+      if (name === './lib/season') return require('../lib/season');
       if (name === './lib/creatorLinks') return require('../lib/creatorLinks');
       if (name === './lib/pragueDistricts') return { districtOfSchool: (school) => school.district ?? null };
       if (name === './lib/matching') return { scoreSchools: (_answers, schools) => schools.map((school, index) => ({ school_id: school.id, score: 100 - index })) };
@@ -191,7 +208,7 @@ function harness({
     },
   }, { filename: 'server.js' });
   return {
-    ...module.exports, storageRemovals, routeChains, queries, reasonCalls, rpcCalls, operationLog, checkoutCalls, checkoutOptions, checkoutRetrieveCalls, paymentIntentCalls, paymentIntentRetrievals, paymentIntentSearches, paymentIntentCancellations, refundListCalls, refundCalls, warnings,
+    ...module.exports, storageRemovals, routeChains, queries, reasonCalls, rpcCalls, operationLog, checkoutCalls, checkoutOptions, checkoutRetrieveCalls, paymentIntentCalls, paymentIntentRetrievals, paymentIntentSearches, paymentIntentCancellations, refundListCalls, refundCalls, warnings, invoiceItemCalls, subscriptionUpdates,
     get subscriptionRetrievals() { return subscriptionRetrievals; },
     get setupIntentRetrievals() { return setupIntentRetrievals; },
     get deletions() { return deletions; }, get cancellations() { return cancellations; },
@@ -361,11 +378,8 @@ test('admin feedback patch cannot change attribution and review selection requir
  assert.equal((await h.callChain('patch','/api/admin/reviews/:id',{params:{id:'1'},body:{selected:false}})).statusCode,204);
 });
 
-test('season access ends on March 31 in Prague, including the rollover year', () => {
-  const h = harness();
-  for (const [from, expected] of [['2026-01-01', '31/03/2026, 23:59:59'], ['2026-03-25', '31/03/2027, 23:59:59']]) {
-    assert.equal(new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Prague', dateStyle: 'short', timeStyle: 'medium' }).format(h.seasonEndsAt(new Date(from))), expected);
-  }
+test('every paid season or spring access ends on 30 June 2027 in Prague', () => {
+  assert.equal(new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Prague', dateStyle: 'short', timeStyle: 'medium' }).format(season.ACCESS_END), '30/06/2027, 23:59:59');
 });
 
 test('past-due access follows its paid-through timestamp instead of revoking immediately', () => {
@@ -631,7 +645,7 @@ test('same-plan checkout reuses the open purchase and Stripe session across paye
     if (query.table === 'purchases') {
       if (query.calls.some(([method]) => method === 'insert')) {
         insertedPurchase = query.calls.find(([method]) => method === 'insert')[1];
-        pendingPurchase = { id: 'purchase-season-1', stripe_checkout_session_id: null, checkout_context: 'self' };
+        pendingPurchase = { id: 'purchase-season-1', stripe_checkout_session_id: null, checkout_context: 'self', price_amount_minor: todayMinor(), trial: true, referrer_user_id: null };
         return { data: pendingPurchase, error: null };
       }
       if (query.calls.some(([method]) => method === 'update')) {
@@ -645,10 +659,10 @@ test('same-plan checkout reuses the open purchase and Stripe session across paye
 
   const first = await h.call('post', '/api/checkout', {
     user: { id: 'user-test', email: 'tester@example.com' },
-    body: { planId: 'season' },
+    body: { planId: 'season', immediateStart: true },
   });
   const second = await h.createCheckoutForUser({
-    userId: 'user-test', email: undefined, planId: 'season',
+    userId: 'user-test', email: undefined, planId: 'season', immediateStart: true,
     successPath: '/platba-rodice/token', cancelPath: '/platba-rodice/token', checkoutContext: 'self',
   });
 
@@ -660,12 +674,12 @@ test('same-plan checkout reuses the open purchase and Stripe session across paye
   assert.equal(h.checkoutRetrieveCalls[0], 'cs_test_1');
   const pendingLookup = h.queries.find((query) => query.table === 'purchases' && query.calls.some(([method]) => method === 'select'));
   assert.equal(pendingLookup.calls.some(([method, column]) => method === 'eq' && column === 'checkout_context'), false);
-  assert.equal(insertedPurchase.price_amount_minor, 69000);
+  assert.equal(insertedPurchase.price_amount_minor, todayMinor());
   assert.equal(h.checkoutCalls[0].metadata.purchase_id, 'purchase-season-1');
 });
 
 test('expired pending checkout is closed before a new purchase attempt is reserved', async () => {
-  let pendingPurchase = { id: 'purchase-old', stripe_checkout_session_id: 'cs_old' };
+  let pendingPurchase = { id: 'purchase-old', stripe_checkout_session_id: 'cs_old', checkout_context: 'self', price_amount_minor: todayMinor(), trial: true, referrer_user_id: null };
   let inserts = 0;
   const h = harness({ checkoutSessionResult: { status: 'expired' }, result: (query) => {
     if (query.table === 'users') return { data: { subscription_status: 'expired' }, error: null };
@@ -686,7 +700,7 @@ test('expired pending checkout is closed before a new purchase attempt is reserv
 
   const response = await h.call('post', '/api/checkout', {
     user: { id: 'user-test', email: 'tester@example.com' },
-    body: { planId: 'season' },
+    body: { planId: 'season', immediateStart: true },
   });
 
   assert.equal(response.statusCode, 200);
@@ -886,7 +900,9 @@ test('tracked Checkout completion applies purchase atomically and completes the 
   assert.equal(h.rpcCalls[1].name, 'complete_paid_onboarding');
   assert.equal(h.rpcCalls[1].args.p_user_id, 'user-test');
   assert.equal(h.rpcCalls[1].args.p_purchase_id, 'purchase-test');
-  assert.equal(h.queries.some((query) => query.table === 'users' && query.calls.some(([method]) => method === 'update')), false);
+  const userUpdates = h.queries.filter((query) => query.table === 'users' && query.calls.some(([method]) => method === 'update'))
+    .map((query) => Object.keys(query.calls.find(([method]) => method === 'update')[1]));
+  assert.deepEqual(userUpdates, [['season_trial_used_at']]);
 });
 
 test('a retried season setup event cannot restart a cancelled trial', async () => {
@@ -918,6 +934,7 @@ test('season charges reuse a stable Stripe idempotency key across retries', asyn
     attempt_number: 1,
     stripe_payment_intent_id: null,
     season_charge_idempotency_key: 'season:user-test:2027-01-15T12:00:00.000Z',
+    price_amount_minor: 51200,
   };
   const h = harness({
     rpcImpl: (name) => name === 'claim_due_season_charges' ? { data: [due], error: null } : { data: 'succeeded', error: null },
@@ -949,7 +966,7 @@ test('a paid season charge uses Stripe creation time and is never mislabeled pas
       purchase_id: 'purchase-season-1', user_id: due.id, stripe_customer_id: due.stripe_customer_id,
       stripe_payment_method_id: due.stripe_payment_method_id, season_charge_due_at: due.season_charge_due_at,
       attempt_number: 1, stripe_payment_intent_id: null,
-      season_charge_idempotency_key: 'season:user-test:2027-01-15T12:00:00.000Z',
+      season_charge_idempotency_key: 'season:user-test:2027-01-15T12:00:00.000Z', price_amount_minor: 51200,
     }], error: null } : { data: 'succeeded', error: null },
     result: (query) => query.table === 'purchases' && query.calls.some(([method]) => method === 'select')
       ? { data: query.calls.some(([method, column]) => method === 'eq' && column === 'id') ? { cancel_requested_at: null } : [], error: null }
@@ -958,10 +975,11 @@ test('a paid season charge uses Stripe creation time and is never mislabeled pas
 
   await h.chargeDueSeasonPasses();
 
-  const updates = h.queries.flatMap((query) => query.calls).filter(([method]) => method === 'update');
+  const updates = h.queries.filter((query) => query.table === 'users').flatMap((query) => query.calls).filter(([method]) => method === 'update');
   assert.equal(updates.length, 1);
   assert.equal(updates[0][1].subscription_status, 'season');
-  assert.equal(updates[0][1].access_expires_at, h.seasonEndsAt(new Date(paidAt * 1000)).toISOString());
+  assert.equal(updates[0][1].access_expires_at, season.ACCESS_END.toISOString());
+  assert.equal(h.paymentIntentCalls[0].params.amount, 51200); // the locked price, not a constant
 });
 
 test('season charge stores an SCA-required intent instead of treating it as a decline', async () => {
@@ -974,7 +992,7 @@ test('season charge stores an SCA-required intent instead of treating it as a de
       purchase_id: 'purchase-season-1', user_id: 'user-test', stripe_customer_id: 'cus_test',
       stripe_payment_method_id: 'pm_test', season_charge_due_at: '2027-01-15T12:00:00.000Z',
       attempt_number: 1, stripe_payment_intent_id: null,
-      season_charge_idempotency_key: 'season:purchase-season-1',
+      season_charge_idempotency_key: 'season:purchase-season-1', price_amount_minor: 51200,
     }], error: null } : { data: 'requires_action', error: null },
   });
   await h.chargeDueSeasonPasses();
@@ -994,7 +1012,7 @@ test('ambiguous season charge retries reconcile the purchase metadata before cre
       purchase_id: 'purchase-season-1', user_id: 'user-test', stripe_customer_id: 'cus_test',
       stripe_payment_method_id: 'pm_test', season_charge_due_at: '2027-01-15T12:00:00.000Z',
       attempt_number: ++claim, stripe_payment_intent_id: null,
-      season_charge_idempotency_key: 'season:purchase-season-1',
+      season_charge_idempotency_key: 'season:purchase-season-1', price_amount_minor: 51200,
     }], error: null } : { data: 'ok', error: null },
     result: (query) => query.table === 'purchases' && query.calls.some(([method]) => method === 'select')
       ? { data: query.calls.some(([method, column]) => method === 'eq' && column === 'id') ? { cancel_requested_at: null } : [], error: null }
@@ -1055,20 +1073,24 @@ test('the authenticated season-charge endpoint exposes only the owned SCA client
 });
 
 test('withdrawal refunds only the PaymentIntent attached to the purchase', async () => {
-  const h = harness({
-    paymentIntentRetrieveResult: { id: 'pi_linked', status: 'succeeded' },
+  const paidAt = daysAgo(3);
+  const withdrawalHarness = (consent) => harness({
+    paymentIntentRetrieveResult: { id: 'pi_linked', status: 'succeeded', amount_received: 51200 },
     result: (query) => {
       if (query.table === 'users' && query.calls.some(([method]) => method === 'select')) return { data: {
         stripe_customer_id: 'cus_test', stripe_subscription_id: null, plan_id: 'season',
-        subscription_status: 'season', plan_started_at: '2026-10-01T00:00:00.000Z', last_paid_at: '2026-10-03T00:00:00.000Z',
+        subscription_status: 'season', plan_started_at: daysAgo(10), last_paid_at: paidAt,
       }, error: null };
       if (query.table === 'purchases' && query.calls.some(([method]) => method === 'select')) return { data: {
         id: 'purchase-season-1', plan: 'season', status: 'active', stripe_payment_intent_id: 'pi_linked',
         stripe_subscription_id: null, refund_status: 'none', refund_attempts: 0, season_charge_status: 'succeeded',
+        price_amount_minor: 51200, immediate_start_consent_at: consent ? daysAgo(10) : null,
+        access_ends_at: season.ACCESS_END.toISOString(), refund_amount_minor: null,
       }, error: null };
       return { data: null, error: null };
     },
   });
+  const h = withdrawalHarness(true);
   const result = await h.withdrawPlanForUser('user-test');
   assert.equal(result.status, 200);
   assert.equal(result.body.refundStatus, 'succeeded');
@@ -1076,20 +1098,42 @@ test('withdrawal refunds only the PaymentIntent attached to the purchase', async
   assert.equal(h.refundListCalls[0].limit, 100);
   assert.equal(h.refundCalls[0].params.payment_intent, 'pi_linked');
   assert.equal(h.paymentIntentCalls.some((call) => call.params.customer === 'cus_test'), false);
+  // Pro rata: the paid days used are kept, the rest is refunded with an explicit amount.
+  const owed = season.proRataOwedMinor({ paidMinor: 51200, paidAt, accessEndsAt: season.ACCESS_END, now: new Date() });
+  assert.ok(Math.abs(h.refundCalls[0].params.amount - (51200 - owed)) <= 1);
+  assert.ok(h.refundCalls[0].params.amount < 51200);
+
+  // Without an express request for immediate start nothing may be deducted.
+  const noConsent = withdrawalHarness(false);
+  await noConsent.withdrawPlanForUser('user-test');
+  assert.equal(noConsent.refundCalls[0].params.amount, 51200);
+});
+
+test('withdrawal is refused after 14 days from the order', async () => {
+  const h = harness({
+    result: (query) => query.table === 'users'
+      ? { data: { plan_id: 'season', subscription_status: 'season', plan_started_at: daysAgo(15), last_paid_at: daysAgo(12) }, error: null }
+      : { data: null, error: null },
+  });
+  const result = await h.withdrawPlanForUser('user-test');
+  assert.equal(result.status, 400);
+  assert.equal(result.body.code, 'NOT_WITHDRAWABLE');
 });
 
 test('a failed linked refund can be retried without changing the purchase or duplicating the charge', async () => {
   let purchase = {
     id: 'purchase-season-1', plan: 'season', status: 'active', stripe_payment_intent_id: 'pi_linked',
     stripe_subscription_id: null, refund_status: 'none', refund_attempts: 0, season_charge_status: 'succeeded',
+    price_amount_minor: 51200, immediate_start_consent_at: daysAgo(10),
+    access_ends_at: season.ACCESS_END.toISOString(), refund_amount_minor: null,
   };
   const h = harness({
-    paymentIntentRetrieveResult: { id: 'pi_linked', status: 'succeeded' },
+    paymentIntentRetrieveResult: { id: 'pi_linked', status: 'succeeded', amount_received: 51200 },
     refundCreateError: new Error('temporary refund error'),
     result: (query) => {
       if (query.table === 'users' && query.calls.some(([method]) => method === 'select')) return { data: {
         stripe_customer_id: 'cus_test', stripe_subscription_id: null, plan_id: 'season',
-        subscription_status: 'season', plan_started_at: '2026-10-01T00:00:00.000Z', last_paid_at: '2026-10-03T00:00:00.000Z',
+        subscription_status: 'season', plan_started_at: daysAgo(10), last_paid_at: daysAgo(3),
       }, error: null };
       if (query.table === 'purchases' && query.calls.some(([method]) => method === 'select')) return { data: { ...purchase }, error: null };
       if (query.table === 'purchases' && query.calls.some(([method]) => method === 'update')) {
@@ -1119,6 +1163,8 @@ test('a failed linked refund can be retried without changing the purchase or dup
   assert.equal(h.refundCalls.length, 2);
   assert.notEqual(h.refundCalls[0].options.idempotencyKey, h.refundCalls[1].options.idempotencyKey);
   assert.ok(h.refundCalls.every((call) => call.params.payment_intent === 'pi_linked'));
+  // The amount decided on the first request is repeated exactly, even days later.
+  assert.equal(h.refundCalls[0].params.amount, h.refundCalls[1].params.amount);
 });
 
 test('season success webhooks calculate access from the payment time', async () => {
@@ -1132,7 +1178,7 @@ test('season success webhooks calculate access from the payment time', async () 
   assert.equal(res.statusCode, 200);
   const event = h.rpcCalls[0].args;
   assert.equal(event.p_payment_intent_id, 'pi_season');
-  assert.equal(event.p_profile_patch.access_expires_at, h.seasonEndsAt(new Date(created * 1000)).toISOString());
+  assert.equal(event.p_profile_patch.access_expires_at, season.ACCESS_END.toISOString());
 });
 
 test('an old invoice failure cannot downgrade a replacement subscription', async () => {
@@ -1350,7 +1396,7 @@ test('parent checkout link rejects expiry and starts Stripe checkout for the chi
     },
   });
   const response = await valid.call('post', '/api/pay-links/:token/checkout', {
-    params: { token: 'valid' }, body: { planId: 'season' },
+    params: { token: 'valid' }, body: { planId: 'season', immediateStart: true },
   });
   assert.equal(response.statusCode, 200);
   assert.equal(valid.checkoutCalls.length, 1);
@@ -1381,7 +1427,11 @@ test('public payment-link profile response contains only its allowlisted fields'
   });
   const response = await h.call('get', '/api/pay-links/:token', { params: { token: 'valid' } });
   assert.equal(response.statusCode, 200);
-  assert.deepEqual(Object.keys(response.body).sort(), ['checkout_open', 'expires_at', 'for_name', 'plan'].sort());
+  assert.deepEqual(Object.keys(response.body).sort(), [
+    'can_restore', 'checkout_open', 'expires_at', 'for_name', 'plan',
+    'restore_charge_at', 'restore_kind', 'restore_price_czk', 'trial_eligible',
+  ].sort());
+  assert.equal('savedCard' in response.body, false); // the child's card is never shown to a parent
   assert.equal(response.body.for_name, 'Tereza');
   assert.equal('email' in response.body, false);
   assert.equal('id' in response.body, false);
@@ -1990,4 +2040,461 @@ test('archive functions return their ids and the undo is service-only', () => {
     assert.match(sql, /delete from public\.beta_contributions_archive where id = any\(coalesce\(p_ids, '\{\}'\)\)/i);
     assert.match(sql, /grant execute on function public\.remove_beta_archive_rows\(bigint\[\]\) to service_role/i);
   }
+});
+
+/* ---------------------------------------------------------------------------
+ * Plan 025: revenue model. Dates are frozen so the daily price and the trial
+ * window are deterministic whenever the suite runs.
+ * ------------------------------------------------------------------------- */
+const freeze = (t, iso = '2026-11-05T10:00:00+01:00') => t.mock.timers.enable({ apis: ['Date'], now: new Date(iso) });
+const checkoutArgs = { userId: 'user-test', email: 'tester@example.com', successPath: '/skoly', cancelPath: '/predplatne', immediateStart: true };
+const hasCall = (query, method, column) => query.calls.some(([m, c]) => m === method && (column === undefined || c === column));
+const purchaseRow = (extra = {}) => ({
+  id: 'purchase-025', stripe_checkout_session_id: null, checkout_context: 'self',
+  price_amount_minor: todayMinor(), trial: false, referrer_user_id: null, ...extra,
+});
+
+test('checkout needs the express request for immediate start and the price the person saw', async (t) => {
+  freeze(t);
+  const h = harness({ result: (query) => query.table === 'users'
+    ? { data: { subscription_status: 'expired', stripe_customer_id: null }, error: null }
+    : { data: null, error: null } });
+  const missing = await h.createCheckoutForUser({ ...checkoutArgs, planId: 'season', immediateStart: undefined });
+  assert.equal(missing.status, 400);
+  assert.equal(missing.body.code, 'IMMEDIATE_START_REQUIRED');
+  const changed = await h.createCheckoutForUser({ ...checkoutArgs, planId: 'season', confirmPriceCzk: 1 });
+  assert.equal(changed.status, 409);
+  assert.equal(changed.body.code, 'PRICE_CHANGED');
+  assert.equal(changed.body.priceCzk, season.seasonPriceCzk(new Date()));
+  assert.equal(h.checkoutCalls.length, 0);
+});
+
+test('a second season checkout pays at once, and only after the person was told there is no trial', async (t) => {
+  freeze(t);
+  const make = () => harness({ result: (query) => {
+    if (query.table === 'users') return { data: { subscription_status: 'expired', stripe_customer_id: null, season_trial_used_at: new Date().toISOString() }, error: null };
+    if (query.table === 'purchases' && hasCall(query, 'insert')) return { data: purchaseRow(), error: null };
+    return { data: null, error: null };
+  } });
+  const refused = await make().createCheckoutForUser({ ...checkoutArgs, planId: 'season' });
+  assert.equal(refused.status, 409);
+  assert.equal(refused.body.code, 'TRIAL_NOT_AVAILABLE');
+  assert.equal(refused.body.priceCzk, season.seasonPriceCzk(new Date()));
+
+  const h = make();
+  const ok = await h.createCheckoutForUser({ ...checkoutArgs, planId: 'season', acknowledgedNoTrial: true });
+  assert.equal(ok.status, 200);
+  assert.equal(ok.body.trial, false);
+  const session = h.checkoutCalls[0];
+  assert.equal(session.mode, 'payment');
+  assert.equal(session.line_items[0].price_data.unit_amount, todayMinor());
+  assert.equal(session.payment_intent_data.setup_future_usage, 'on_session');
+  assert.equal(session.payment_intent_data.metadata.purchase_id, 'purchase-025');
+  assert.ok(session.expires_at > Date.now() / 1000 && session.expires_at <= Date.now() / 1000 + 3601);
+});
+
+test('a card that already had a trial gets no charge schedule and no access until the person confirms', async (t) => {
+  freeze(t);
+  const created = Math.floor(Date.now() / 1000);
+  const h = harness({ result: (query) => {
+    if (query.table === 'users') return { data: { id: 'user-test', subscription_status: 'expired', stripe_setup_intent_id: null }, error: null };
+    if (query.table === 'trial_card_fingerprints') return { data: { user_id: 'someone-else' }, error: null };
+    if (query.table === 'purchases') return { data: [], error: null };
+    return { data: null, error: null };
+  } });
+  const res = await h.call('post', '/webhooks/stripe', { body: {
+    id: 'evt_blocked_card', created, type: 'checkout.session.completed',
+    data: { object: {
+      id: 'cs_blocked', mode: 'setup', created, customer: 'cus_test', setup_intent: 'seti_blocked',
+      client_reference_id: 'user-test', metadata: { purchase_id: 'purchase-blocked', plan_id: 'season' },
+    } },
+  } });
+  assert.equal(res.statusCode, 200);
+  const apply = h.rpcCalls.find((call) => call.name === 'apply_stripe_purchase_event').args;
+  assert.equal(apply.p_purchase_status, null);
+  assert.equal('season_charge_due_at' in apply.p_profile_patch, false);
+  assert.equal('subscription_status' in apply.p_profile_patch, false);
+  assert.equal(h.rpcCalls.some((call) => call.name === 'complete_paid_onboarding'), false);
+  const flagged = h.queries.find((query) => query.table === 'purchases' && hasCall(query, 'update'));
+  assert.equal(flagged.calls.find(([m]) => m === 'update')[1].needs_payment_confirmation, true);
+  assert.equal(flagged.calls.find(([m]) => m === 'update')[1].trial, false);
+});
+
+test('a cancelled monthly plan is restored, never bought a second time', async (t) => {
+  freeze(t);
+  const profile = {
+    subscription_status: 'active', plan_id: 'monthly', stripe_subscription_id: 'sub_test', stripe_customer_id: 'cus_test',
+    cancel_at_period_end: true, access_expires_at: '2999-01-01T00:00:00.000Z',
+  };
+  const h = harness({ result: (query) => query.table === 'users' ? { data: profile, error: null } : { data: null, error: null } });
+  const blocked = await h.createCheckoutForUser({ ...checkoutArgs, planId: 'monthly' });
+  assert.equal(blocked.status, 409);
+  assert.equal(blocked.body.code, 'ALREADY_SUBSCRIBED');
+  assert.equal(blocked.body.canRestore, true);
+  assert.equal(h.checkoutCalls.length, 0);
+
+  const restored = await h.restorePlanForUser('user-test');
+  assert.equal(restored.status, 200);
+  assert.equal(restored.body.restored, 'monthly');
+  assert.equal(h.subscriptionUpdates[0].params.cancel_at, Math.floor(season.DEADLINE.getTime() / 1000));
+});
+
+test('a new monthly subscription is set to end at the deadline, and that is not a cancellation', async (t) => {
+  freeze(t);
+  const created = Math.floor(Date.now() / 1000);
+  const h = harness({ result: (query) => query.table === 'users'
+    ? { data: { id: 'user-test', subscription_status: 'expired' }, error: null }
+    : { data: null, error: null } });
+  const res = await h.call('post', '/webhooks/stripe', { body: {
+    id: 'evt_monthly_done', created, type: 'checkout.session.completed',
+    data: { object: { id: 'cs_monthly', mode: 'subscription', subscription: 'sub_test', customer: 'cus_test', client_reference_id: 'user-test', metadata: { purchase_id: 'purchase-m', plan_id: 'monthly' } } },
+  } });
+  assert.equal(res.statusCode, 200);
+  assert.equal(h.subscriptionUpdates[0].params.cancel_at, Math.floor(season.DEADLINE.getTime() / 1000));
+
+  const deadlineEnd = Math.floor(season.DEADLINE.getTime() / 1000);
+  const update = (linked) => harness({ result: (query) => query.table === 'purchases'
+    ? { data: { id: 'purchase-m', user_id: 'user-test', cancel_requested_at: linked }, error: null }
+    : { data: null, error: null } });
+  const event = { id: 'evt_sub_updated', created, type: 'customer.subscription.updated',
+    data: { object: { id: 'sub_test', status: 'active', cancel_at: deadlineEnd, cancel_at_period_end: false, current_period_end: deadlineEnd - 86400, metadata: { plan_id: 'monthly', purchase_id: 'purchase-m' } } } };
+  const scheduled = update(null);
+  await scheduled.call('post', '/webhooks/stripe', { body: event });
+  assert.equal(scheduled.rpcCalls[0].args.p_profile_patch.cancel_at_period_end, false);
+  const cancelled = update('2026-11-06T00:00:00.000Z');
+  await cancelled.call('post', '/webhooks/stripe', { body: { ...event, id: 'evt_sub_cancelled' } });
+  assert.equal(cancelled.rpcCalls[0].args.p_profile_patch.cancel_at_period_end, true);
+});
+
+test('the last monthly invoice is credited for the days after the deadline, only when Stripe did not prorate it', async (t) => {
+  freeze(t);
+  const feb1 = Math.floor(new Date('2027-02-01T00:00:00+01:00').getTime() / 1000);
+  const mar1 = Math.floor(new Date('2027-03-01T00:00:00+01:00').getTime() / 1000);
+  const invoice = (amount) => ({ id: 'evt_inv_' + amount, created: feb1, type: 'invoice.created', data: { object: {
+    id: 'in_last', customer: 'cus_test', subscription: 'sub_test', status: 'draft', billing_reason: 'subscription_cycle',
+    lines: { data: [{ amount, period: { start: feb1, end: mar1 } }] },
+  } } });
+  const make = () => harness({ result: (query) => query.table === 'purchases'
+    ? { data: { id: 'purchase-m', user_id: 'user-test' }, error: null } : { data: null, error: null } });
+  const full = make();
+  await full.call('post', '/webhooks/stripe', { body: invoice(24900) });
+  const expected = Math.round(24900 * (mar1 * 1000 - season.DEADLINE.getTime()) / ((mar1 - feb1) * 1000));
+  assert.equal(full.invoiceItemCalls.length, 1);
+  assert.equal(full.invoiceItemCalls[0].params.amount, -expected);
+  assert.equal(full.invoiceItemCalls[0].options.idempotencyKey, 'deadline-credit:in_last');
+  const prorated = make();
+  await prorated.call('post', '/webhooks/stripe', { body: invoice(19600) });
+  assert.equal(prorated.invoiceItemCalls.length, 0);
+});
+
+// Referral: every rule that keeps it from paying out circularly or to oneself.
+function referralHarness({ referrerId = 'referrer', referrerPaid = true, callerPrior = false, existingReferral = false } = {}) {
+  return harness({ result: (query) => {
+    if (query.table === 'users') {
+      return { data: hasCall(query, 'in') ? [{ id: 'user-test', stripe_customer_id: null }, { id: referrerId, stripe_customer_id: null }]
+        : { subscription_status: 'expired', stripe_customer_id: null }, error: null };
+    }
+    if (query.table === 'referral_codes') return { data: { user_id: referrerId }, error: null };
+    if (query.table === 'referrals') return { data: existingReferral ? { id: 'r1' } : null, error: null };
+    if (query.table === 'purchases') {
+      if (hasCall(query, 'insert')) return { data: purchaseRow({ price_amount_minor: todayMinor() - 10000, referrer_user_id: referrerId, trial: true }), error: null };
+      if (hasCall(query, 'not', 'stripe_payment_intent_id')) return { data: referrerPaid ? [{ id: 'rp', trial: false, season_charge_status: 'not_due', checkout_context: 'self' }] : [], error: null };
+      if (hasCall(query, 'eq', 'trial')) return { data: [], error: null };
+      if (hasCall(query, 'in', 'status')) return { data: callerPrior ? [{ id: 'old' }] : [], error: null };
+    }
+    return { data: null, error: null };
+  } });
+}
+const inserted = (h) => h.queries.filter((q) => q.table === 'purchases' && hasCall(q, 'insert')).map((q) => q.calls.find(([m]) => m === 'insert')[1]);
+
+test('a referral code takes 100 Kč off a first purchase and is ignored in every circular or self-serving case', async (t) => {
+  freeze(t);
+  const args = { ...checkoutArgs, planId: 'season', referralCode: 'ABCDEFGH' };
+  const good = referralHarness();
+  assert.equal((await good.createCheckoutForUser(args)).body.referralApplied, true);
+  assert.equal(inserted(good)[0].price_amount_minor, todayMinor() - 10000);
+  assert.equal(inserted(good)[0].discount_kind, 'referral');
+  assert.equal(inserted(good)[0].referrer_user_id, 'referrer');
+
+  for (const [name, options] of [
+    ['own code', { referrerId: 'user-test' }],
+    ['referrer has not paid', { referrerPaid: false }],
+    ['caller already bought something (also stops circles: A referred B, then A uses B\'s code)', { callerPrior: true }],
+    ['caller was already referred', { existingReferral: true }],
+  ]) {
+    const h = referralHarness(options);
+    const res = await h.createCheckoutForUser(args);
+    assert.equal(res.body.referralApplied, false, name);
+    assert.equal(inserted(h)[0].price_amount_minor, todayMinor(), name);
+    assert.equal(inserted(h)[0].referrer_user_id, null, name);
+  }
+});
+
+test('a friend paying with the referrer\'s own card earns the referrer nothing', async (t) => {
+  freeze(t);
+  const h = harness({ result: (query) => {
+    if (query.table === 'purchases' && hasCall(query, 'eq', 'card_fingerprint')) return { data: [{ id: 'referrer-purchase' }], error: null };
+    if (query.table === 'purchases') return { data: { id: 'p2', user_id: 'friend', referrer_user_id: 'referrer', discount_kind: 'referral', card_fingerprint: 'fp_same' }, error: null };
+    return { data: null, error: null };
+  } });
+  await h.recordReferral('p2');
+  const upsert = h.queries.find((q) => q.table === 'referrals' && hasCall(q, 'upsert')).calls.find(([m]) => m === 'upsert')[1];
+  assert.equal(upsert.status, 'void');
+  assert.equal(upsert.void_reason, 'same_card');
+});
+
+test('referral rewards are paid after 14 days, once, and never beyond what the referrer paid', async (t) => {
+  freeze(t);
+  const settle = async ({ startedDaysAgo, charge }) => {
+    const h = harness({
+      paymentIntentRetrieveResult: { id: 'pi_ref', status: 'succeeded', latest_charge: charge },
+      result: (query) => {
+        if (query.table === 'referrals') return { data: [{ id: 'ref1', referrer_user_id: 'referrer', referred_user_id: 'friend', referred_purchase_id: 'p2' }], error: null };
+        if (query.table === 'purchases' && hasCall(query, 'eq', 'user_id')) return { data: { id: 'rp', stripe_payment_intent_id: 'pi_ref' }, error: null };
+        if (query.table === 'purchases') return { data: { status: 'active', trial: false, season_charge_status: 'not_due', access_starts_at: daysAgo(startedDaysAgo) }, error: null };
+        return { data: null, error: null };
+      },
+    });
+    await h.settleReferrals();
+    return h;
+  };
+  const early = await settle({ startedDaysAgo: 5, charge: { amount: 51200, amount_refunded: 0 } });
+  assert.equal(early.refundCalls.length, 0);
+  const due = await settle({ startedDaysAgo: 15, charge: { amount: 51200, amount_refunded: 0 } });
+  assert.equal(due.refundCalls.length, 1);
+  assert.equal(due.refundCalls[0].params.amount, 10000);
+  assert.equal(due.refundCalls[0].options.idempotencyKey, 'referral:ref1');
+  assert.equal(due.queries.filter((q) => q.table === 'referrals' && hasCall(q, 'update')).at(-1).calls.find(([m]) => m === 'update')[1].status, 'rewarded');
+  const capped = await settle({ startedDaysAgo: 15, charge: { amount: 15000, amount_refunded: 6000 } });
+  assert.equal(capped.refundCalls.length, 0);
+  assert.equal(capped.queries.filter((q) => q.table === 'referrals' && hasCall(q, 'update')).at(-1).calls.find(([m]) => m === 'update')[1].status, 'capped');
+});
+
+test('saved-card purchases charge only the confirmed price, on-session, and never a card a parent typed', async (t) => {
+  freeze(t);
+  const build = (context) => harness({ result: (query) => {
+    if (query.table === 'users') return { data: { subscription_status: 'expired', stripe_customer_id: 'cus_test', stripe_payment_method_id: 'pm_test' }, error: null };
+    if (query.table === 'purchases' && hasCall(query, 'insert')) return { data: purchaseRow(), error: null };
+    // The saved card counts only when the person's own purchase carries its fingerprint.
+    if (query.table === 'purchases' && hasCall(query, 'eq', 'card_fingerprint')) return { data: context === 'self' ? [{ id: 'own-purchase' }] : [], error: null };
+    return { data: null, error: null };
+  } });
+  const body = (extra = {}) => ({ user: { id: 'user-test', email: 'tester@example.com' }, body: { immediateStart: true, confirmPriceCzk: season.seasonPriceCzk(new Date()), ...extra } });
+
+  const wrong = await build('self').call('post', '/api/purchase/season-saved-card', body({ confirmPriceCzk: 1 }));
+  assert.equal(wrong.statusCode, 409);
+  assert.equal(wrong.body.code, 'PRICE_CHANGED');
+
+  const h = build('self');
+  const ok = await h.call('post', '/api/purchase/season-saved-card', body());
+  assert.equal(ok.statusCode, 200);
+  assert.equal(ok.body.status, 'succeeded');
+  const charge = h.paymentIntentCalls[0];
+  assert.equal(charge.params.amount, todayMinor());
+  assert.equal(charge.params.off_session, false);
+  assert.equal(charge.params.metadata.plan_id, 'season');
+  assert.equal(charge.options.idempotencyKey, 'onsession:purchase-025');
+
+  const parentCard = build('parent');
+  const refused = await parentCard.call('post', '/api/purchase/season-saved-card', body());
+  assert.equal(refused.statusCode, 409);
+  assert.equal(refused.body.code, 'NO_SAVED_CARD');
+  assert.equal(parentCard.paymentIntentCalls.length, 0);
+});
+
+/* ---------------------------------------------------------------------------
+ * Plan 025 v3: anniversary-billed monthly, extend, and the review fixes.
+ * ------------------------------------------------------------------------- */
+const feb = (day) => `2027-02-${String(day).padStart(2, '0')}T10:00:00+01:00`;
+const unixDeadline = () => Math.floor(season.DEADLINE.getTime() / 1000);
+
+test('monthly checkout bills on the purchase day; under a month left it is one payment ending at the deadline; closed from 9 Feb', async (t) => {
+  const make = () => harness({ env: { STRIPE_PRICE_ID_MONTHLY: 'price_monthly' }, result: (query) => {
+    if (query.table === 'users') return { data: { subscription_status: 'expired', stripe_customer_id: null }, error: null };
+    if (query.table === 'purchases' && hasCall(query, 'insert')) return { data: purchaseRow({ price_amount_minor: 24900 }), error: null };
+    return { data: null, error: null };
+  } });
+  freeze(t);
+  const normal = make();
+  assert.equal((await normal.createCheckoutForUser({ ...checkoutArgs, planId: 'monthly' })).status, 200);
+  const session = normal.checkoutCalls[0];
+  assert.equal('billing_cycle_anchor_config' in session.subscription_data, false);
+  assert.equal('billing_cycle_anchor' in session.subscription_data, false);
+  assert.ok(session.expires_at > Date.now() / 1000);
+
+  t.mock.timers.reset();
+  freeze(t, feb(1));
+  const single = make();
+  assert.equal((await single.createCheckoutForUser({ ...checkoutArgs, planId: 'monthly' })).status, 200);
+  assert.equal(single.checkoutCalls[0].subscription_data.billing_cycle_anchor, unixDeadline());
+
+  t.mock.timers.reset();
+  freeze(t, feb(9));
+  const closed = await make().createCheckoutForUser({ ...checkoutArgs, planId: 'monthly' });
+  assert.equal(closed.status, 409);
+  assert.equal(closed.body.code, 'MONTHLY_CLOSED');
+});
+
+test('the last monthly period is credited in full when it starts after the deadline or would be left under 15 Kč', async (t) => {
+  freeze(t, feb(1));
+  const stamp = (iso) => Math.floor(new Date(iso).getTime() / 1000);
+  const run = async (amount, start, end) => {
+    const h = harness({ result: (query) => query.table === 'purchases'
+      ? { data: { id: 'purchase-m', user_id: 'user-test' }, error: null } : { data: null, error: null } });
+    await h.call('post', '/webhooks/stripe', { body: { id: 'evt_' + amount + start, created: stamp(feb(1)), type: 'invoice.created', data: { object: {
+      id: 'in_' + start, customer: 'cus_test', subscription: 'sub_test', status: 'draft', billing_reason: 'subscription_cycle',
+      lines: { data: [{ amount, period: { start: stamp(start), end: stamp(end) } }] },
+    } } } });
+    return h.invoiceItemCalls;
+  };
+  const afterDeadline = await run(24900, '2027-02-23T00:00:00+01:00', '2027-03-23T00:00:00+01:00');
+  assert.equal(afterDeadline[0].params.amount, -24900);
+  // A renewal on 22 Feb 10:00 would keep only ~14 hours of a 28-day period: under 15 Kč, so nothing is charged.
+  const tiny = await run(24900, '2027-02-22T10:00:00+01:00', '2027-03-22T10:00:00+01:00');
+  assert.equal(tiny[0].params.amount, -24900);
+  // A sensible remainder (18 Feb renewal) is credited only for the days after the deadline.
+  const partial = await run(24900, '2027-02-18T10:00:00+01:00', '2027-03-18T10:00:00+01:00');
+  const expected = Math.round(24900 * (stamp('2027-03-18T10:00:00+01:00') * 1000 - season.DEADLINE.getTime()) / ((stamp('2027-03-18T10:00:00+01:00') - stamp('2027-02-18T10:00:00+01:00')) * 1000));
+  assert.equal(partial[0].params.amount, -expected);
+});
+
+test('extend: not before 1 Feb; 149 Kč plus the monthly payment still due before the deadline', async (t) => {
+  const monthly = { subscription_status: 'active', plan_id: 'monthly', stripe_subscription_id: 'sub_test', stripe_customer_id: 'cus_test', stripe_payment_method_id: 'pm_test', access_expires_at: '2999-01-01T00:00:00.000Z' };
+  const make = (periodEnd) => harness({ subscriptionPeriodEnd: periodEnd, result: (query) => {
+    if (query.table === 'users') return { data: monthly, error: null };
+    if (query.table === 'purchases' && hasCall(query, 'eq', 'card_fingerprint')) return { data: [{ id: 'own' }], error: null };
+    if (query.table === 'purchases' && hasCall(query, 'insert')) return { data: purchaseRow({ plan: 'season' }), error: null };
+    return { data: null, error: null };
+  } });
+  freeze(t, '2027-01-20T10:00:00+01:00');
+  const early = await make(unixDeadline()).call('get', '/api/plan/extend-preview', {});
+  assert.equal(early.statusCode, 409);
+  assert.equal(early.body.code, 'EXTEND_NOT_AVAILABLE');
+
+  t.mock.timers.reset();
+  freeze(t, feb(5));
+  const last = await make(unixDeadline()).call('get', '/api/plan/extend-preview', {});
+  assert.equal(last.body.amountCzk, 149);
+  assert.equal(last.body.remainingMonthlyCzk, 0);
+  const mid = make(Math.floor(new Date('2027-02-18T10:00:00+01:00').getTime() / 1000));
+  const preview = await mid.call('get', '/api/plan/extend-preview', {});
+  assert.ok(preview.body.remainingMonthlyCzk >= 35 && preview.body.remainingMonthlyCzk <= 45, String(preview.body.remainingMonthlyCzk));
+  const paid = await mid.call('post', '/api/plan/extend', { body: { immediateStart: true, confirmPriceCzk: preview.body.amountCzk } });
+  assert.equal(paid.statusCode, 200);
+  assert.equal(mid.paymentIntentCalls[0].params.amount, preview.body.amountCzk * 100);
+  assert.equal(mid.paymentIntentCalls[0].params.metadata.switch_from_subscription, 'sub_test');
+  const stale = await mid.call('post', '/api/plan/extend', { body: { immediateStart: true, confirmPriceCzk: 149 } });
+  assert.equal(stale.body.code, 'PRICE_CHANGED');
+});
+
+test('a double click on a one-click purchase reuses the pending row: one PaymentIntent key, nothing marked failed', async (t) => {
+  freeze(t);
+  const pending = purchaseRow();
+  const h = harness({ result: (query) => {
+    if (query.table === 'users') return { data: { subscription_status: 'expired', stripe_customer_id: 'cus_test', stripe_payment_method_id: 'pm_test' }, error: null };
+    if (query.table === 'purchases' && hasCall(query, 'eq', 'card_fingerprint')) return { data: [{ id: 'own' }], error: null };
+    if (query.table === 'purchases' && hasCall(query, 'select', 'plan')) return { data: [{ id: pending.id, plan: 'season', price_amount_minor: todayMinor(), stripe_checkout_session_id: null }], error: null };
+    if (query.table === 'purchases' && hasCall(query, 'eq', 'status') && hasCall(query, 'select')) return { data: pending, error: null };
+    return { data: null, error: null };
+  } });
+  const body = { body: { immediateStart: true, confirmPriceCzk: season.seasonPriceCzk(new Date()) } };
+  await h.call('post', '/api/purchase/season-saved-card', body);
+  await h.call('post', '/api/purchase/season-saved-card', body);
+  assert.equal(h.paymentIntentCalls.length, 2);
+  assert.deepEqual(h.paymentIntentCalls.map((call) => call.options.idempotencyKey), ['onsession:purchase-025', 'onsession:purchase-025']);
+  const failed = h.queries.filter((query) => query.table === 'purchases' && query.calls.some(([m, v]) => m === 'update' && v?.status === 'failed'));
+  assert.equal(failed.length, 0);
+});
+
+test('a payment that succeeds for an abandoned purchase is refunded in full, never kept', async (t) => {
+  freeze(t);
+  const h = harness({ result: (query) => query.table === 'purchases'
+    ? { data: { id: 'purchase-025', user_id: 'user-test', trial: false, status: 'failed', checkout_context: 'self', stripe_checkout_session_id: null }, error: null }
+    : { data: null, error: null } });
+  const res = await h.call('post', '/webhooks/stripe', { body: {
+    id: 'evt_orphan', created: Math.floor(Date.now() / 1000), type: 'payment_intent.succeeded',
+    data: { object: { id: 'pi_orphan', metadata: { plan_id: 'season', app_user_id: 'user-test', purchase_id: 'purchase-025' } } },
+  } });
+  assert.equal(res.statusCode, 200);
+  assert.equal(h.refundCalls.length, 1);
+  assert.equal(h.refundCalls[0].options.idempotencyKey, 'orphan:pi_orphan');
+  assert.equal(h.refundCalls[0].params.metadata.kind, 'orphan');
+  assert.equal(h.rpcCalls.some((call) => call.name === 'apply_stripe_purchase_event'), false);
+});
+
+test('a parent-paid purchase never puts the parent card on the child profile', async (t) => {
+  freeze(t);
+  const h = harness({ result: (query) => query.table === 'purchases'
+    ? { data: { id: 'purchase-025', user_id: 'user-test', trial: false, status: 'pending', checkout_context: 'parent', stripe_checkout_session_id: 'cs_parent' }, error: null }
+    : { data: null, error: null } });
+  await h.call('post', '/webhooks/stripe', { body: {
+    id: 'evt_parent', created: Math.floor(Date.now() / 1000), type: 'payment_intent.succeeded',
+    data: { object: { id: 'pi_parent', customer: 'cus_parent', payment_method: 'pm_parent', metadata: { plan_id: 'season', app_user_id: 'user-test', purchase_id: 'purchase-025' } } },
+  } });
+  const patch = h.rpcCalls.find((call) => call.name === 'apply_stripe_purchase_event').args.p_profile_patch;
+  assert.equal('stripe_customer_id' in patch, false);
+  assert.equal('stripe_payment_method_id' in patch, false);
+  assert.equal(patch.subscription_status, 'season');
+});
+
+test('a failed one-click payment fails its purchase; a Checkout retry keeps its row', async (t) => {
+  freeze(t);
+  const run = async (stripeCheckoutSessionId, type = 'payment_intent.payment_failed') => {
+    const h = harness({ result: (query) => query.table === 'purchases'
+      ? { data: { id: 'purchase-025', user_id: 'user-test', trial: false, status: 'pending', checkout_context: 'self', stripe_checkout_session_id: stripeCheckoutSessionId }, error: null }
+      : { data: null, error: null } });
+    await h.call('post', '/webhooks/stripe', { body: {
+      id: 'evt_' + type + stripeCheckoutSessionId, created: Math.floor(Date.now() / 1000), type,
+      data: { object: { id: 'pi_failed', metadata: { plan_id: 'season', app_user_id: 'user-test', purchase_id: 'purchase-025' } } },
+    } });
+    return h.rpcCalls.find((call) => call.name === 'apply_stripe_purchase_event').args;
+  };
+  assert.equal((await run(null)).p_purchase_status, 'failed');
+  assert.equal((await run(null, 'payment_intent.canceled')).p_purchase_status, 'failed');
+  assert.equal((await run('cs_checkout')).p_purchase_status, null);
+});
+
+test('confirm-pending refuses an account that already has a live monthly', async (t) => {
+  freeze(t);
+  const h = harness({ result: (query) => {
+    if (query.table === 'users') return { data: { subscription_status: 'active', plan_id: 'monthly', stripe_subscription_id: 'sub_test', access_expires_at: '2999-01-01T00:00:00.000Z' }, error: null };
+    if (query.table === 'purchases') return { data: { id: 'pending-1', plan: 'season', price_amount_minor: todayMinor(), discount_minor: 0 }, error: null };
+    return { data: null, error: null };
+  } });
+  const res = await h.call('post', '/api/purchase/confirm-pending', { body: { immediateStart: true, confirmPriceCzk: season.seasonPriceCzk(new Date()) } });
+  assert.equal(res.statusCode, 409);
+  assert.equal(res.body.code, 'ALREADY_SUBSCRIBED');
+  assert.equal(h.paymentIntentCalls.length, 0);
+});
+
+test('a retried setup webhook still records the trial-abuse fingerprint, the trial use and the referral', async (t) => {
+  freeze(t);
+  const created = Math.floor(Date.now() / 1000);
+  const h = harness({ result: (query) => {
+    if (query.table === 'users') return { data: { id: 'user-test', subscription_status: 'trialing', stripe_setup_intent_id: 'seti_done' }, error: null };
+    if (query.table === 'purchases') return { data: { status: 'active', card_fingerprint: null }, error: null };
+    return { data: null, error: null };
+  } });
+  await h.call('post', '/webhooks/stripe', { body: {
+    id: 'evt_setup_replay', created, type: 'checkout.session.completed',
+    data: { object: { id: 'cs_done', mode: 'setup', created, customer: 'cus_test', setup_intent: 'seti_done', client_reference_id: 'user-test', metadata: { purchase_id: 'purchase-025', plan_id: 'season' } } },
+  } });
+  const table = (name) => h.queries.filter((query) => query.table === name);
+  assert.ok(table('trial_card_fingerprints').some((query) => hasCall(query, 'upsert')));
+  assert.ok(table('users').some((query) => query.calls.some(([m, v]) => m === 'update' && v?.season_trial_used_at)));
+  assert.ok(table('purchases').some((query) => query.calls.some(([m, v]) => m === 'update' && v?.trial === true && v?.card_fingerprint === 'fp_test')));
+});
+
+test('the one-click card must be one the person entered themselves (fingerprint of their own purchase)', async (t) => {
+  freeze(t);
+  const fresh = (own) => harness({ result: (query) => {
+    if (query.table === 'users') return { data: { subscription_status: 'expired', stripe_customer_id: 'cus_test', stripe_payment_method_id: 'pm_test' }, error: null };
+    if (query.table === 'purchases' && hasCall(query, 'eq', 'card_fingerprint')) return { data: own ? [{ id: 'own' }] : [], error: null };
+    return { data: null, error: null };
+  } });
+  const body = { body: { immediateStart: true, confirmPriceCzk: season.seasonPriceCzk(new Date()) } };
+  const parentCard = fresh(false);
+  const refused = await parentCard.call('post', '/api/purchase/season-saved-card', body);
+  assert.equal(refused.body.code, 'NO_SAVED_CARD');
+  assert.equal(parentCard.paymentIntentCalls.length, 0);
 });

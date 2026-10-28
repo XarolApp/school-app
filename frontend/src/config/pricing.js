@@ -1,14 +1,17 @@
 /**
  * Střední na míru — pricing & trial configuration.
  *
- * Frontend source for price, plan and purchase-trial strings. Backend prices,
- * Stripe Price configuration and contractual terms must be reconciled separately.
- * Nothing about money may be hardcoded in a component. If you need a number
- * here that does not exist, add it here first.
+ * Frontend source for plan COPY and purchase-trial strings. PRICES are not
+ * here: since plan 025 the season price falls daily and lives on the server
+ * (lib/season.js, served by GET /api/prices; read it with usePrices()). A
+ * component must never hold an amount of its own.
  *
- * Prices locked 2026-09-21: season 690 Kč (one-time), monthly 249 Kč.
- * Historical research below explains the product decision; its market figures
- * and regulatory hypotheses are not current legal/provider verification.
+ * Plan 025 v3 (2026-10-28): season = 0.9 x what monthly would cost until the
+ * end of applications (22. 2. 2027) + 49 Kč, within 149-499 Kč, flat 149 Kč in
+ * the last 14 days. Monthly 249 Kč on the purchase day each month, the last
+ * period prorated to the deadline. All paid access ends 30. 6. 2027.
+ * Historical research below explains the earlier product decision; its market
+ * figures and regulatory hypotheses are not current legal/provider verification.
  *
  * ---------------------------------------------------------------------------
  * PLAN STRUCTURE — ruling C-8, third and current revision (2026-08-23)
@@ -57,19 +60,9 @@
  * copy you write for it, not as a discount/decoy tier.
  */
 
-// --- PRICES (Kč) — locked 2026-09-21 ---
-const MONTHLY_PRICE_CZK = 249;
-const SEASON_PRICE_CZK = 690; // one-time, whole season
-
-/** Historical Sept-March denominator; the unqualified daily display is FE-10. */
-const SEASON_DAYS = 212;
-
-/**
- * Whole months in the Sept-March decision window. Used ONLY to build the
- * "ušetříš X %" comparison on the plan screen, which must be checkable:
- * SEASON_PRICE vs MONTHLY_PRICE x SEASON_MONTHS. See savingsVsMonthly().
- */
-const SEASON_MONTHS = 7;
+// --- DATES (display only; the server owns the real ones) ---------------------
+export const DEADLINE_LABEL = '22. 2. 2027';
+export const ACCESS_END_LABEL = '30. 6. 2027';
 
 // --- TRIAL -------------------------------------------------------------------
 // Ruling C-1 (revised by the user 2026-08-23): compressed 3-day trial.
@@ -139,20 +132,18 @@ export const PLANS = [
   {
     id: 'season',
     name: 'Sezónní přístup',
-    priceCzk: SEASON_PRICE_CZK,
     billing: 'one_time',
-    periodDays: SEASON_DAYS,
     periodLabel: 'do konce přihlašovacího období',
     priceSuffix: 'jednorázově',
     // Fixed-window pass framing (UWorld precedent) — an explicit end point,
     // never "lifetime" or open-ended access. See ruling C-8 note above.
-    windowLabel: 'přístup do konce března',
+    windowLabel: 'přístup do 30. 6. 2027',
     /** What literally happens to the money. Factual, not persuasive. */
     terms: {
       student:
-        'Zaplatíš jednou. Přístup ti běží do konce března a pak skončí — nic se neobnovuje.',
+        'Zaplatíš jednou. Přístup ti běží do 30. 6. 2027 a pak skončí — nic se neobnovuje.',
       parent:
-        'Jednorázová platba. Přístup je časově omezený do konce března, pak skončí. Nic se automaticky neobnovuje.',
+        'Jednorázová platba. Přístup je časově omezený do 30. 6. 2027, pak skončí. Nic se automaticky neobnovuje.',
     },
     /** Why a user would pick this one. Persuasive, but true. */
     pitch: {
@@ -172,15 +163,13 @@ export const PLANS = [
   {
     id: 'monthly',
     name: 'Měsíční',
-    priceCzk: MONTHLY_PRICE_CZK,
     billing: 'recurring',
-    periodDays: 30,
     periodLabel: 'měsíc',
     priceSuffix: '/ měsíc',
-    windowLabel: 'obnovuje se každý měsíc',
+    windowLabel: 'samo skončí 22. 2. 2027',
     terms: {
-      student: 'Platí se každý měsíc, dokud to nezrušíš.',
-      parent: 'Platba se opakuje každý měsíc, dokud ji nezrušíte.',
+      student: 'Platí se každý měsíc, naposledy za dny do 22. 2. 2027 — pak předplatné samo skončí.',
+      parent: 'Platba se opakuje každý měsíc, naposledy za dny do 22. 2. 2027 — pak předplatné samo skončí.',
     },
     // Trust/easy-exit framing, not a cheaper decoy — see ruling C-8 note above.
     // Deliberately names the distrust out loud instead of pretending it away.
@@ -291,49 +280,8 @@ export function refundTerms(plan, role) {
     : `Do ${REFUND_GUARANTEE_DAYS} dnů ti peníze vrátíme, i bez důvodu.`;
 }
 
-/**
- * Czech decimal comma. Daily micro-cost framing (§1.5).
- * TWO decimals, not one: toFixed(1) renders 690/212 as "3,3 Kč", and a money
- * amount with one decimal place reads as a rendering bug on the exact screen
- * where the user is deciding whether we look like a real company.
- */
-export function perDayCzk(plan) {
-  const perDay = plan.priceCzk / plan.periodDays;
-  return perDay.toFixed(2).replace('.', ',');
-}
-
 export function formatCzk(amount) {
   return `${Math.round(amount).toLocaleString('cs-CZ')} Kč`;
-}
-
-export function discountedPriceCzk(plan) {
-  if (!ONE_TIME_OFFER_ENABLED || plan.id !== ONE_TIME_OFFER.planId) return plan.priceCzk;
-  return Math.round(plan.priceCzk * (1 - ONE_TIME_OFFER.discountPercent / 100));
-}
-
-/**
- * The "ušetříš X %" badge on the season card, WITH the numbers that produce it.
- *
- * A savings badge nobody can check is just a claim. Babbel's pattern (and the
- * one the approved design copies) is badge + a footnote naming both sides of
- * the comparison and admitting where it does not hold. Everything the footnote
- * needs comes out of this one function so the badge and the footnote can never
- * drift apart.
- *
- * @returns {{percent:number, referenceCzk:number, months:number,
- *            monthlyCzk:number, seasonCzk:number}}
- */
-export function savingsVsMonthly() {
-  const season = getPlan('season');
-  const monthly = getPlan('monthly');
-  const referenceCzk = monthly.priceCzk * SEASON_MONTHS;
-  return {
-    percent: Math.round((1 - season.priceCzk / referenceCzk) * 100),
-    referenceCzk,
-    months: SEASON_MONTHS,
-    monthlyCzk: monthly.priceCzk,
-    seasonCzk: season.priceCzk,
-  };
 }
 
 // --- TRIAL TIMELINE DATES ----------------------------------------------------

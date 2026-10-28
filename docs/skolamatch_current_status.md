@@ -829,6 +829,7 @@ Do not turn this into a diary.
 | — | Season pass preferred | Customer need is tied to one admissions season | Testing |
 | — | Faceless content | Founder wants anonymity | Active |
 | — | Affiliate acquisition favored | Limited upfront marketing cash | Active |
+| 2026-10-28 | Revenue model (plan 025): season = 0.9 × monthly-to-deadline + 49 Kč within 149–499 Kč (flat 149 Kč from 9 Feb), monthly 249 Kč on the purchase day with the last period prorated to 22. 2. 2027 and closed from 9 Feb, 149 Kč spring pass to 30. 6. 2027, one trial per account and card, 14-day pro-rata withdrawal, capped two-sided referral | Season beats monthly in expected revenue (education monthly renews ~56% at the first renewal); no monthly billing after applications; minimum legal refund exposure | Built locally, awaiting founder test |
 
 When a strategic decision changes, record:
 - previous decision

@@ -5,8 +5,12 @@ import { useAuth } from '../components/AuthContext';
 import ParentPayHandoff from '../components/ParentPayHandoff';
 import { cancelSubscription, createCheckoutSession, fetchSeasonChargeStatus } from '../api';
 import { getStripeClient } from '../lib/stripeClient';
+import { useOffer } from '../lib/usePrices';
+import SavedCardBuy from '../components/SavedCardBuy';
+import { cardLabel } from '../lib/payFlow';
+import { useG } from '../lib/gender';
 import BetaSoftGate from '../components/BetaSoftGate';
-import { DEFAULT_PLAN_ID, PLANS, formatCzk, planCopy, trialDaysPhrase } from '../config/pricing';
+import { ACCESS_END_LABEL, DEADLINE_LABEL, DEFAULT_PLAN_ID, PLANS, formatCzk, planCopy, trialDaysPhrase } from '../config/pricing';
 import { LoadingSpinner } from '../components/PageSkeleton';
 
 // Short statements of the included features and visible payment terms.
@@ -61,6 +65,12 @@ function Paywall() {
   const [seasonCharge, setSeasonCharge] = useState(null);
   const [chargeBusy, setChargeBusy] = useState(false);
   const [chargeError, setChargeError] = useState(null);
+  const [immediateStart, setImmediateStart] = useState(false);
+  const [cardBuy, setCardBuy] = useState(null); // 'season' | 'monthly' | null
+  const [serverNoTrial, setServerNoTrial] = useState(false);
+  const g = useG();
+  const seasonOffer = useOffer('season');
+  const monthlyOffer = useOffer('monthly');
   const { verifying, gaveUp } = usePostCheckoutVerification(hasAccess, refreshProfile, !isTester);
 
   useEffect(() => {
@@ -130,16 +140,43 @@ function Paywall() {
     );
   }
 
+  // Monthly stops being sold when too little is left before the deadline.
+  const plans = seasonOffer.ready && !seasonOffer.monthlyAvailable ? PLANS.filter((p) => p.id !== 'monthly') : PLANS;
+  const activePlanId = plans.some((p) => p.id === planId) ? planId : 'season';
+  const offer = activePlanId === 'monthly' ? monthlyOffer : seasonOffer;
+  const trial = activePlanId === 'season' && seasonOffer.trialAvailable;
+  const trialUsed = activePlanId === 'season' && Boolean(seasonOffer.prices?.season?.trialAvailable) && profile?.trialEligible === false;
+  const payNow = !trial || serverNoTrial;
+  const priceText = offer.priceCzk === null ? '…' : formatCzk(offer.priceCzk);
+  const seasonLabel = seasonOffer.isSpring ? 'Jarní přístup' : 'Sezónní přístup';
+
   const handleSubscribe = async () => {
     setError(null);
+    if (offer.priceCzk === null) return;
     setRedirecting(true);
     document.documentElement.dataset.snmStripeRedirecting = 'true';
     try {
-      const { url } = await createCheckoutSession({ planId, returnTo: '/predplatne' });
+      const { url } = await createCheckoutSession({
+        planId: activePlanId,
+        returnTo: '/predplatne',
+        immediateStart: true,
+        referralCode: offer.referralCode || undefined,
+        confirmPriceCzk: offer.priceCzk,
+        acknowledgedNoTrial: trialUsed || serverNoTrial ? true : undefined,
+      });
       window.location.href = url;
     } catch (err) {
       delete document.documentElement.dataset.snmStripeRedirecting;
       setRedirecting(false);
+      if (err.code === 'TRIAL_NOT_AVAILABLE') {
+        setServerNoTrial(true);
+        setError(`Zkušební období už bylo využité. Zaplatíš hned ${formatCzk(err.body?.priceCzk ?? offer.priceCzk)} — potvrď to tlačítkem níže.`);
+        return;
+      }
+      if (err.code === 'PRICE_CHANGED') {
+        setError(`Cena se mezitím změnila na ${formatCzk(err.body?.priceCzk)}. Obnov stránku a zkontroluj ji.`);
+        return;
+      }
       setError(
         err.code === 'STRIPE_NOT_CONFIGURED'
           ? 'Platby zatím nejsou spuštěné. Zkus to prosím později.'
@@ -188,8 +225,7 @@ function Paywall() {
           <h1>Pokračuj v hledání školy</h1>
           <p className="lede">
             Vyber si další přístup k celé databázi pražských středních škol i ke svým
-            uloženým favoritům. Sezónní plán nabízí {trialDaysPhrase()} zdarma před
-            jednorázovou platbou.
+            uloženým favoritům.{trial ? ` Sezónní plán nabízí ${trialDaysPhrase()} zdarma před jednorázovou platbou.` : ''}
           </p>
         </div>
 
@@ -252,33 +288,81 @@ function Paywall() {
             </div>
           )}
 
+          {seasonOffer.ready && !seasonOffer.onSale && (
+            <div className="notice notice-error" role="alert">
+              <p className="notice-text">Prodej pro tuto sezónu už skončil.</p>
+            </div>
+          )}
+
+          {profile?.savedCard && seasonOffer.ready && seasonOffer.onSale && (
+            <div className="stack">
+              <p className="notice-text">Máš uloženou kartu {cardLabel(profile.savedCard)}.</p>
+              {cardBuy ? (
+                <SavedCardBuy
+                  kind={cardBuy}
+                  priceCzk={cardBuy === 'monthly' ? monthlyOffer.priceCzk : seasonOffer.listCzk}
+                  card={profile.savedCard}
+                  intro={cardBuy === 'monthly' ? (monthlyOffer.monthlySingleCharge ? `Platí se jednou za dny do ${DEADLINE_LABEL}, nic dalšího se nestrhne.` : `Měsíční předplatné samo skončí ${DEADLINE_LABEL}, poslední platba je jen za dny do konce přihlášek.`) : `Přístup platí do ${ACCESS_END_LABEL}.`}
+                  onClose={() => setCardBuy(null)}
+                />
+              ) : (
+                <div className="settings-form-actions">
+                  <button type="button" className="btn btn-primary" onClick={() => setCardBuy('season')}>
+                    {seasonLabel} za {formatCzk(seasonOffer.listCzk)}
+                  </button>
+                  {seasonOffer.monthlyAvailable && (
+                    <button type="button" className="btn btn-secondary" onClick={() => setCardBuy('monthly')}>
+                      Měsíčně {formatCzk(monthlyOffer.priceCzk)}
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+
           <div className="plan-picker">
-            {PLANS.map((p) => (
-              <label key={p.id} className={`plan-picker-option${planId === p.id ? ' is-selected' : ''}`}>
+            {plans.map((p) => (
+              <label key={p.id} className={`plan-picker-option${activePlanId === p.id ? ' is-selected' : ''}`}>
                 <input
                   type="radio"
                   name="plan"
                   value={p.id}
-                  checked={planId === p.id}
+                  checked={activePlanId === p.id}
                   onChange={() => setPlanId(p.id)}
                 />
-                <span className="plan-picker-name">{p.name}</span>
+                <span className="plan-picker-name">{p.id === 'season' ? seasonLabel : p.name}</span>
                 <span className="plan-picker-price">
-                  {formatCzk(p.priceCzk)} {p.priceSuffix}
+                  {(p.id === 'monthly' ? monthlyOffer : seasonOffer).priceCzk === null ? '…' : formatCzk((p.id === 'monthly' ? monthlyOffer : seasonOffer).priceCzk)} {p.priceSuffix}
                 </span>
                 <span className="plan-picker-terms">{planCopy(p, 'student', 'terms')}</span>
               </label>
             ))}
           </div>
 
+          {trialUsed && (
+            <div className="notice" role="status">
+              <p className="notice-text">Zkušební období už bylo na tomto účtu nebo kartě využité. Zaplatíš hned {priceText}.</p>
+            </div>
+          )}
+          <label className="ob-check" htmlFor="immediate-start">
+            <input
+              id="immediate-start"
+              type="checkbox"
+              checked={immediateStart}
+              onChange={(event) => setImmediateStart(event.target.checked)}
+            />
+            <span>
+              Chci přístup hned. Beru na vědomí, že když do 14 dnů od objednávky odstoupím, zaplatím poměrnou část za dny, kdy jsem {g('měl', 'měla')} placený přístup.
+            </span>
+          </label>
           <button
             type="button"
             className="btn btn-primary btn-block"
             onClick={handleSubscribe}
-            disabled={redirecting}
+            disabled={redirecting || !immediateStart || !offer.ready || !offer.onSale}
           >
             {redirecting && <span className="btn-spinner" aria-hidden="true" />}
-            {redirecting ? 'Přesměrovávám…' : 'Objednat s povinností platby'}
+            {redirecting ? 'Přesměrovávám…' : payNow ? `Objednat s povinností platby · ${priceText}` : 'Začít zkušební období'}
           </button>
           <ParentPayHandoff voice="student" variant="inline" />
 

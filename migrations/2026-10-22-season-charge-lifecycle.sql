@@ -24,6 +24,7 @@ update public.purchases
  where plan = 'season'
    and status = 'active'
    and stripe_setup_intent_id is not null
+   and stripe_payment_intent_id is null
    and season_charge_status = 'not_due'
    and cancel_requested_at is null;
 

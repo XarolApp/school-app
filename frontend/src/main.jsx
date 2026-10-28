@@ -15,9 +15,12 @@ import './index.css'
 import App from './App.jsx'
 import { startUpdateWatcher } from './lib/updateWatcher.js'
 import { startVisitPing } from './lib/visitPing.js'
+import { captureReferralFromUrl } from './lib/referral.js'
 
 startUpdateWatcher()
 startVisitPing()
+
+captureReferralFromUrl()
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

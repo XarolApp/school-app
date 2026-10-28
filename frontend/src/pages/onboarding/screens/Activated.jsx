@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ObScreen } from '../../../components/onboarding/ObKit';
-import { PAYMENTS_MOCKED } from '../../../config/pricing';
+import { PAYMENTS_MOCKED, formatCzk } from '../../../config/pricing';
 import { useAuth } from '../../../components/AuthContext';
 import { useOnboarding } from '../useOnboarding';
+import { useG } from '../../../lib/gender';
+import { usePrices } from '../../../lib/usePrices';
+import { completeOnSession } from '../../../lib/payFlow';
+import { confirmPendingPurchase, discardPendingPurchase } from '../../../api';
 import { useBetaTools } from '../../../components/BetaToolsContext';
 import { QuickFeedback } from '../../../components/BetaReward';
 
@@ -39,9 +43,102 @@ const TASKS = {
   ],
 };
 
+/**
+ * The card entered at Checkout already had its free trial, so nothing was
+ * scheduled and nothing is unlocked. The person chooses: pay now at today's
+ * price, or drop the card. Nothing is charged before they click.
+ */
+function ConfirmPending({ profile, parent, refreshProfile, goToStep }) {
+  const g = useG();
+  const [price, setPrice] = useState(profile.pendingPurchase?.priceCzk ?? null);
+  const [consent, setConsent] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState(null);
+  const [paid, setPaid] = useState(false);
+
+  useEffect(() => {
+    if (!paid) return undefined;
+    const poll = window.setInterval(() => { void refreshProfile(); }, 2000);
+    return () => window.clearInterval(poll);
+  }, [paid, refreshProfile]);
+
+  const pay = async () => {
+    setBusy(true);
+    setError(null);
+    try {
+      const result = await confirmPendingPurchase({ immediateStart: true, confirmPriceCzk: price });
+      await completeOnSession(result);
+      setPaid(true);
+    } catch (err) {
+      if (err.code === 'PRICE_CHANGED' && err.body?.priceCzk != null) {
+        setPrice(err.body.priceCzk);
+        setError(`Cena se změnila na ${formatCzk(err.body.priceCzk)}. Zkontroluj ji a potvrď znovu.`);
+      } else {
+        setError(err.message || 'Platba se nepodařila.');
+      }
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const discard = async () => {
+    setBusy(true);
+    setError(null);
+    try {
+      await discardPendingPurchase();
+      await refreshProfile();
+      goToStep('plan');
+    } catch (err) {
+      setError(err.message || 'Kartu se nepodařilo odebrat.');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  if (paid) {
+    return (
+      <ObScreen chrome={false}>
+        <div className="ob-done">
+          <span className="ob-wait-spinner" role="status" aria-label="Načítání" />
+          <h1 className="ob-title">Potvrzujeme platbu</h1>
+          <p className="ob-lead">{parent ? 'Chvilku prosím počkejte, odemykáme účet.' : 'Chvilku prosím počkej, odemykáme tvůj účet.'}</p>
+        </div>
+      </ObScreen>
+    );
+  }
+  return (
+    <ObScreen chrome={false}>
+      <div className="ob-done">
+        <h1 className="ob-title">Tahle karta už zkušební období měla</h1>
+        <p className="ob-lead">
+          Zkušební období je jen jedno na kartu. {parent ? 'Přístup můžete mít hned' : 'Přístup můžeš mít hned'} za {price === null ? '…' : formatCzk(price)}.
+        </p>
+        {error && <div className="notice notice-error" role="alert"><p className="notice-text">{error}</p></div>}
+        <label className="ob-check" htmlFor="immediate-start-pending">
+          <input id="immediate-start-pending" type="checkbox" checked={consent} onChange={(event) => setConsent(event.target.checked)} />
+          <span>
+            {parent
+              ? 'Chci přístup hned. Beru na vědomí, že když do 14 dnů od objednávky odstoupím, zaplatím poměrnou část za dny, kdy měl/a dítě placený přístup.'
+              : `Chci přístup hned. Beru na vědomí, že když do 14 dnů od objednávky odstoupím, zaplatím poměrnou část za dny, kdy jsem ${g('měl', 'měla')} placený přístup.`}
+          </span>
+        </label>
+        <div className="ob-actions">
+          <button type="button" className="ob-btn ob-btn-primary" onClick={pay} disabled={busy || !consent || price === null}>
+            Objednat s povinností platby · {price === null ? '…' : formatCzk(price)}
+          </button>
+          <button type="button" className="ob-btn ob-btn-secondary" onClick={discard} disabled={busy}>
+            Nechci, odebrat kartu
+          </button>
+        </div>
+      </div>
+    </ObScreen>
+  );
+}
+
 function Activated() {
-  const { role, purchased, refreshProfile } = useOnboarding();
+  const { role, purchased, refreshProfile, goToStep } = useOnboarding();
   const { profile } = useAuth();
+  const { prices } = usePrices();
   const isTester = profile?.isTester === true;
   const parent = role === 'parent';
   const [done, setDone] = useState([]);
@@ -61,6 +158,10 @@ function Activated() {
     const stop = window.setTimeout(() => setWaitedOut(true), 60000);
     return () => { window.clearInterval(poll); window.clearTimeout(stop); };
   }, [waiting, attempt, refreshProfile]);
+
+  if (!isTester && profile?.needsPaymentConfirmation) {
+    return <ConfirmPending profile={profile} parent={parent} refreshProfile={refreshProfile} goToStep={goToStep} />;
+  }
 
   if (waiting) {
     return (
@@ -154,6 +255,12 @@ function Activated() {
             {parent ? 'Zpřesnit výsledky (asi 5–8 minut)' : 'Zpřesni výsledky (asi 5–8 minut)'}
           </Link>
         </div>
+
+        {purchased && prices?.referral?.available && (
+          <p className="ob-microcopy ob-pw-centered">
+            V Nastavení najdeš odkaz pro kamarády — {parent ? 'dostanou' : 'dostanou'} {formatCzk(prices.referral.discountCzk)} slevu na sezónní přístup.
+          </p>
+        )}
 
         {PAYMENTS_MOCKED && purchased && (
           <p className="ob-mock-note">

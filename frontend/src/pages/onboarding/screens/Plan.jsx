@@ -1,15 +1,16 @@
 import { ObScreen } from '../../../components/onboarding/ObKit';
 import {
+  ACCESS_END_LABEL,
+  DEADLINE_LABEL,
   PAYMENTS_MOCKED,
   PLANS,
   cancellationTerms,
   formatCzk,
   getPlan,
-  perDayCzk,
   planCopy,
-  savingsVsMonthly,
   trialFreeLabel,
 } from '../../../config/pricing';
+import { useOffer } from '../../../lib/usePrices';
 import { useOnboarding } from '../useOnboarding';
 import { useG } from '../../../lib/gender';
 import ParentPayHandoff from '../../../components/ParentPayHandoff';
@@ -27,13 +28,13 @@ import { Icon, PayCta, PayStepChrome } from './paywallKit';
  * visual weight: pre-selecting one is only legitimate because the other's cost
  * is right there, unhidden. Weekly does not exist and must not come back.
  *
- * THE SAVINGS BADGE IS CHECKABLE. "Ušetříš X %" is computed by
- * savingsVsMonthly() from the same constants the cards display, and the
- * footnote under the cards names both sides of the comparison and admits where
- * it stops holding ("kdo skončí dřív, ušetří míň"). A badge whose arithmetic
- * the reader cannot reproduce is a claim, not a saving — and Měsíční keeps its
- * own "pro koho to je" line and its own benefit so the badge cannot turn it
- * into a decoy tier, which C-8 explicitly forbids.
+ * PRICES COME FROM THE SERVER (plan 025). The season price falls a few crowns
+ * every day until the end of applications, so a number kept in this file would
+ * be wrong tomorrow. There is deliberately NO struck-through "was" price and no
+ * "sleva" wording: a price that simply falls over time is not an announced
+ * reduction, and a crossed-out figure would make it one (Omnibus Art. 6a). The
+ * comparison that remains is checkable: the monthly card names the most it can
+ * cost in total ("celkem nejvýš …"), so the season card's advantage is visible.
  *
  * VARIANT A (per the design annotation): the cards SELECT, and one shared CTA
  * at the bottom confirms. A button inside each card would put two primary
@@ -87,18 +88,23 @@ const TRUST = {
   ],
 };
 
-const reassuranceFor = (plan) => [
-  plan.hasTrial
+const reassuranceFor = (plan, offer, trial) => [
+  trial
     ? 'Dnes se z karty nestrhne nic. Ukážeme přesné datum první platby.'
-    : `Dnes se strhne ${formatCzk(plan.priceCzk)} za první měsíc.`,
+    : plan.billing === 'recurring'
+      ? `Dnes se strhne ${offer.priceCzk === null ? '…' : formatCzk(offer.priceCzk)} ${offer.monthlySingleCharge ? `za dny do ${DEADLINE_LABEL}` : 'za první měsíc'}.`
+      : `Dnes se strhne ${offer.priceCzk === null ? '…' : formatCzk(offer.priceCzk)} jednorázově.`,
   'Celé číslo karty zpracovává Stripe; v aplikaci ho neukládáme.',
   'Ceny jsou konečné. Žádné skryté poplatky.',
 ];
 
-function PlanCard({ plan, selected, onSelect, onKeyDown, voice, savings }) {
-  const perDay = perDayCzk(plan);
+function PlanCard({ plan, selected, onSelect, onKeyDown, voice, offer }) {
   const cancellation = cancellationTerms(plan, voice);
-  const showBadge = plan.recommended && savings.percent > 0;
+  const trial = plan.id === 'season' && offer.trialAvailable;
+  const priceText = offer.priceCzk === null ? '…' : formatCzk(offer.priceCzk);
+  const seasonLine = offer.isSpring
+    ? `Jarní přístup · do ${ACCESS_END_LABEL}`
+    : `${plan.priceSuffix} · ${plan.windowLabel}`;
 
   return (
     <button
@@ -110,10 +116,8 @@ function PlanCard({ plan, selected, onSelect, onKeyDown, voice, savings }) {
       aria-checked={selected}
       tabIndex={selected ? 0 : -1}
     >
-      {showBadge && (
-        <span className="ob-pw-plan-badge">
-          {voice === 'parent' ? 'Ušetříte' : 'Ušetříš'} {savings.percent} %
-        </span>
+      {offer.discountCzk > 0 && (
+        <span className="ob-pw-plan-badge">Pozvánka uplatněna: −{formatCzk(offer.discountCzk)}</span>
       )}
 
       <span className="ob-pw-plan-head">
@@ -127,22 +131,29 @@ function PlanCard({ plan, selected, onSelect, onKeyDown, voice, savings }) {
       </span>
 
       <span className="ob-pw-plan-price">
-        <span className="ob-pw-plan-perday">
-          {perDay} Kč <span className="ob-pw-plan-unit">na den</span>
-        </span>
+        <span className="ob-pw-plan-perday">{priceText}</span>
         <span className="ob-pw-plan-real">
-          {formatCzk(plan.priceCzk)} {plan.priceSuffix} · {plan.windowLabel}
+          {plan.billing === 'recurring'
+            ? (offer.monthlySingleCharge ? `jednou · přístup do ${DEADLINE_LABEL}` : `${plan.priceSuffix} · ${plan.windowLabel}`)
+            : seasonLine}
         </span>
-        {plan.recommended && savings.percent > 0 && (
+        {plan.billing === 'recurring' && offer.monthlyTotalCzk !== null && (
           <span className="ob-pw-plan-ref">
-            <s>{formatCzk(savings.referenceCzk)}</s> při platbě po měsících
+            {offer.monthlySingleCharge
+              ? `Platí se jednou za dny do ${DEADLINE_LABEL}, nic dalšího se nestrhne.`
+              : `Celkem nejvýš ${formatCzk(offer.monthlyTotalCzk)}: poslední měsíc se platí jen za dny do ${DEADLINE_LABEL}, pak předplatné samo skončí.`}
+          </span>
+        )}
+        {plan.id === 'season' && offer.seasonFalling && offer.priceCzk !== null && (
+          <span className="ob-pw-plan-ref">
+            Cena klesá s tím, kolik zbývá do {DEADLINE_LABEL}. Vždy je výhodnější než měsíční předplatné a jaro dohromady.
           </span>
         )}
       </span>
 
       <span className="ob-pw-rule" />
 
-      {plan.hasTrial ? (
+      {trial ? (
         <>
           <span className="ob-pw-plan-line">
             <Icon.shield size={16} className="ob-pw-ic is-ok" />
@@ -157,7 +168,7 @@ function PlanCard({ plan, selected, onSelect, onKeyDown, voice, savings }) {
             </span>
           </span>
         </>
-      ) : (
+      ) : plan.billing === 'recurring' ? (
         <>
           <span className="ob-pw-plan-line">
             <Icon.cross size={16} className="ob-pw-ic" />
@@ -173,6 +184,22 @@ function PlanCard({ plan, selected, onSelect, onKeyDown, voice, savings }) {
             <span>Platí se hned. Zkušební dny má jen sezónní varianta.</span>
           </span>
         </>
+      ) : (
+        <>
+          <span className="ob-pw-plan-line">
+            <Icon.info size={16} className="ob-pw-ic" />
+            <span>
+              <strong>Platí se hned.</strong>{' '}
+              {voice === 'parent'
+                ? 'Zkušební období už na tomto účtu nebo kartě proběhlo, nebo do přihlášek zbývá málo dní.'
+                : 'Zkušební období už na tomto účtu nebo kartě proběhlo, nebo do přihlášek zbývá málo dní.'}
+            </span>
+          </span>
+          <span className="ob-pw-plan-line">
+            <Icon.cross size={16} className="ob-pw-ic is-ok" />
+            <span>{planCopy(plan, voice, 'terms')}</span>
+          </span>
+        </>
       )}
     </button>
   );
@@ -183,20 +210,30 @@ function Plan() {
   const g = useG();
   const parent = role === 'parent';
   const voice = parent ? 'parent' : 'student';
-  const plan = getPlan(planId);
-  const savings = savingsVsMonthly();
+  const seasonOffer = useOffer('season');
+  const monthlyOffer = useOffer('monthly');
+  // Monthly stops being sold when too little is left before the deadline (and
+  // after it): then only the season pass is shown.
+  const plans = seasonOffer.ready && !seasonOffer.monthlyAvailable ? PLANS.filter((p) => p.id !== 'monthly') : PLANS;
+  const plan = getPlan(plans.some((p) => p.id === planId) ? planId : 'season');
+  const offer = plan.id === 'monthly' ? monthlyOffer : seasonOffer;
+  const trial = plan.id === 'season' && seasonOffer.trialAvailable;
+  const closed = seasonOffer.ready && !seasonOffer.onSale;
 
   // A plan without a trial has no trial rail to show, so step 4 is skipped
   // rather than rendered empty. The step counter still reads "ze 4" because
   // that is what this branch of the flow actually contains.
-  const onContinue = () => (plan.hasTrial ? goNext() : goToStep('platba'));
+  const onContinue = () => {
+    if (plan.id !== planId) setPlanId(plan.id);
+    return trial ? goNext() : goToStep('platba');
+  };
 
   const onPlanKeyDown = (event, index) => {
     const delta = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[event.key];
     if (!delta) return;
     event.preventDefault();
-    const next = (index + delta + PLANS.length) % PLANS.length;
-    setPlanId(PLANS[next].id);
+    const next = (index + delta + plans.length) % plans.length;
+    setPlanId(plans[next].id);
     event.currentTarget.parentElement.querySelectorAll('[role="radio"]')[next]?.focus();
   };
 
@@ -253,12 +290,12 @@ function Plan() {
 
           <div className="ob-pw-side ob-pw-buybox">
             <div className="ob-pw-plans" role="radiogroup" aria-label="Varianty přístupu">
-              {PLANS.map((p, index) => (
+              {plans.map((p, index) => (
                 <PlanCard
                   key={p.id}
                   plan={p}
                   voice={voice}
-                  savings={savings}
+                  offer={p.id === 'monthly' ? monthlyOffer : seasonOffer}
                   selected={p.id === plan.id}
                   onSelect={() => setPlanId(p.id)}
                   onKeyDown={(event) => onPlanKeyDown(event, index)}
@@ -266,20 +303,23 @@ function Plan() {
               ))}
             </div>
 
-            {savings.percent > 0 && (
-              <p className="ob-pw-fine">
-                Srovnáváme {formatCzk(savings.seasonCzk)} jednorázově proti{' '}
-                {formatCzk(savings.monthlyCzk)} měsíčně po celých {savings.months} měsíců
-                rozhodovacího období (září–březen), tedy {formatCzk(savings.referenceCzk)}. Kdo
-                skončí dřív, ušetří míň.
-              </p>
-            )}
-
             <div className="ob-pw-foot">
-              <PayCta onClick={onContinue}>{planCopy(plan, voice, 'ctaLabel')}</PayCta>
+              {closed && (
+                <div className="notice notice-error" role="alert">
+                  <p className="notice-text">Prodej pro tuto sezónu už skončil.</p>
+                </div>
+              )}
+              {seasonOffer.error && (
+                <div className="notice notice-error" role="alert">
+                  <p className="notice-text">Ceny se nepodařilo načíst. Obnov stránku.</p>
+                </div>
+              )}
+              <PayCta onClick={onContinue} disabled={!offer.ready || closed}>
+                {trial ? planCopy(plan, voice, 'ctaLabel') : offer.priceCzk === null ? 'Načítám cenu…' : `Pokračovat · ${formatCzk(offer.priceCzk)}`}
+              </PayCta>
 
               <ul className="ob-pw-chips">
-                {reassuranceFor(plan).map((line) => (
+                {reassuranceFor(plan, offer, trial).map((line) => (
                   <li key={line}>
                     <Icon.check size={14} className="ob-pw-ic is-ok" />
                     <span>{line}</span>
