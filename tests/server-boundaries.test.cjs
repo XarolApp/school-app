@@ -2498,3 +2498,14 @@ test('the one-click card must be one the person entered themselves (fingerprint 
   assert.equal(refused.body.code, 'NO_SAVED_CARD');
   assert.equal(parentCard.paymentIntentCalls.length, 0);
 });
+
+test('the stale-pending cleanup never fails a one-click monthly whose subscription is waiting for 3-D Secure', async () => {
+  const h = harness({ result: () => ({ data: [], error: null }), rpcImpl: () => ({ data: [], error: null }) });
+  await h.chargeDueSeasonPasses();
+  const cleanup = h.queries.find((query) => query.table === 'purchases'
+    && query.calls.some(([method, patch]) => method === 'update' && patch?.status === 'failed')
+    && query.calls.some(([method, column]) => method === 'eq' && column === 'trial'));
+  assert.ok(cleanup, 'cleanup query not found');
+  assert.ok(cleanup.calls.some(([method, column, value]) => method === 'is' && column === 'stripe_subscription_id' && value === null));
+  assert.ok(cleanup.calls.some(([method, column, value]) => method === 'is' && column === 'stripe_checkout_session_id' && value === null));
+});

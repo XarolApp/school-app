@@ -5564,12 +5564,16 @@ async function reconcileSeasonCancellationRequests() {
  */
 // One-click purchases that never produced a payment must not linger as
 // "pending": a pending row can hold up the account's other payments.
+// A row with a Stripe subscription is left alone: that subscription can still
+// turn active after 3-D Secure, and a failed row would then reject it as stale
+// while Stripe keeps billing. Its own incomplete_expired update fails it.
 async function failStalePendingPurchases() {
   try {
     await supabase.from('purchases')
       .update({ status: 'failed', updated_at: new Date().toISOString() })
       .eq('status', 'pending').eq('trial', false).eq('needs_payment_confirmation', false)
       .is('stripe_checkout_session_id', null)
+      .is('stripe_subscription_id', null)
       .lt('updated_at', new Date(Date.now() - 2 * 3600 * 1000).toISOString())
       .throwOnError();
   } catch (err) {
