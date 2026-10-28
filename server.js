@@ -5092,7 +5092,10 @@ async function creditLastMonthlyPeriod(invoice) {
 
 function purchaseStatusFromStripe(status) {
   if (['canceled', 'paused'].includes(status)) return 'canceled';
-  if (['incomplete', 'incomplete_expired'].includes(status)) return 'failed';
+  // 'incomplete' is a 3-D Secure payment still in flight: the purchase stays pending so
+  // the later 'active' update can complete it. Only incomplete_expired is final.
+  if (status === 'incomplete') return 'pending';
+  if (status === 'incomplete_expired') return 'failed';
   return 'active';
 }
 
