@@ -67,6 +67,18 @@
       "skillPath": "skills/influencer-marketing/SKILL.md",
       "computedHash": "65d83162f351e934fd045a81a43f10fb1fe77b77d53090daf06855d6e6bffd6f"
     },
+    "last30days": {
+      "source": "mvanhorn/last30days-skill",
+      "sourceType": "github",
+      "skillPath": "skills/last30days/SKILL.md",
+      "computedHash": "051d5721fe0c47dd9641b7bb230fcb4916ec7df7478129d4b796854f67be2137"
+    },
+    "marketing-psychology": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/marketing-psychology/SKILL.md",
+      "computedHash": "50d735eb0f5c36f379ed2200f21aeacc9b9ad85667b5d33ec6111857352a1340"
+    },
     "pick-ui-library": {
       "source": "emilkowalski/skill",
       "sourceType": "github",

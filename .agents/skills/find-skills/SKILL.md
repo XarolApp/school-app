@@ -139,3 +139,12 @@ I can still help you with this task directly! Would you like me to proceed?
 If this is something you do often, you could create your own skill:
 npx skills init my-xyz-skill
 ```
+
+## Pushing installed skills to GitHub (no symlinks)
+
+`npx skills add` installs into `.agents/skills/<name>/` and symlinks `.claude/skills/<name>` to it. **Never push symlinks.** On every branch you push to (including `main`), each skill must be a normal, fully copied folder containing `SKILL.md` (plus its `references/`, `evals/` etc.), in **both** locations:
+
+- `.agents/skills/<name>/SKILL.md`
+- `.claude/skills/<name>/SKILL.md`
+
+Before committing, replace any symlink with a real copy (`cp -RL .agents/skills/<name> .claude/skills/<name>` after removing the link), then verify with `find .claude/skills .agents/skills -type l` (must list none of the pushed skills) and `ls .claude/skills/<name>/SKILL.md`. Do this per branch: a branch that only has symlinks, or lacks the folder, is wrong. Never `git add -A`; stage explicit skill folders.
