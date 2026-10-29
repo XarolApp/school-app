@@ -3,10 +3,10 @@
 **Read all of this before starting.** It is the full spec: hook, script, motion design, screen capture, ElevenLabs voiceover, sound, and the verification required before the video counts as done. It replaces concept B ("Ječná") in `plan.md`.
 
 - Accounts: @stredninamiru (TikTok first, Instagram Reels second)
-- Format: 1080×1920, 30 fps, Czech, ~43 s
+- Format: 1080×1920, 30 fps, Czech, ~45 s
 - Audience: Prague 9th graders (14–15), **tykání**, zero-shame tone
 - Topic: a **tutorial**. How to pick a good secondary school without wasting hours, shown step by step on the real Střední na míru app.
-- CTA: **„Od 1. listopadu na stredninamiru.cz, odkaz máš v biu."**
+- CTA: **join the waitlist on stredninamiru.cz → 10 % launch discount** (see §3 CTA row and §6 for the exact line)
 
 Skills to load first: `/remotion-motion-graphics` (read SKILL.md + both references before writing any Remotion code), `/video`. The hook rules come from the founder's "Killer Hook & Script Lock-In Engineer" method, summarised in section 1.
 
@@ -14,7 +14,7 @@ Skills to load first: `/remotion-motion-graphics` (read SKILL.md + both referenc
 
 ## 0. Hard rules
 
-- **Real app, real data only.** Every app shot is the real Střední na míru UI showing live production data. No mock screens, no fictional "(ukázka)" schools, no invented numbers.
+- **Real data, not necessarily real screen recordings.** App shots can be real captures *or* animated motion-graphic mockups of the app UI (founder decision 29 Oct). Mockups must stay truthful: every school name, number and UI label on them comes from the real app/live API (`/api/schools`), and every feature shown exists today. No invented numbers, schools, labels or features, and no fictional "(ukázka)" schools.
 - **Never show or say:** prices, user counts, testimonials, reviews, "AI picks your school". Scores are deterministic and AI only writes sentences.
 - **Zero shame:** no "you'll fail" or "you're behind" framing. The pain is wasted time and chaos, not the kid.
 - **No app code changes are committed.** If you patch anything locally for capture (see §4), revert it with `git checkout` before committing, and say so in your report.
@@ -28,16 +28,16 @@ Skills to load first: `/remotion-motion-graphics` (read SKILL.md + both referenc
 
 **Subject:** choosing a secondary school in Prague. **Outcome:** save a lot of time and still pick well.
 
-**The number: 32 hours.** It's a transparent calculation, not a statistic: **192 Prague secondary schools × ~10 minutes to check one school's website and admission numbers = 1,920 min = 32 hours.** The 192 is the live catalogue count (`GET /api/schools` returned 192 on 29 Oct 2026; re-check it on the day of the render and redo the math if it changed). The lock-in states the math out loud, so it's honest.
+**The number: přes 15 hodin (more than 15 hours).** It's a transparent, conservative calculation, not a statistic: **192 Prague secondary schools × just 5 minutes each to check a school's website and admission numbers = 960 min = 16 hours, so "přes 15 hodin" is true.** The founder chose 15 (29 Oct). The 192 is the live catalogue count (`GET /api/schools` returned 192 on 29 Oct 2026; re-check on render day, and if it drops below 180, the claim breaks, so tell the founder). The lock-in states the math out loud.
 
 ### 1a. Text hook (0.0–3.0 s): animated title typography, not a caption
 
 ```
-Ušetři 32 hodin
+Ušetři přes 15 hodin
 (výběr střední školy)
 ```
 - 2 lines, line break at the natural phrase, no punctuation except the parentheses, no linking words. ✔ the Killer Hook rules.
-- Line 1 is the hero: **Archivo Narrow 700**, ~190–220 px, letter-spacing −0.03em. "32" is the **only** hero-coloured element (accent pill or glow behind it).
+- Line 1 is the hero: **Archivo Narrow 700**, ~170–200 px, letter-spacing −0.03em (check that "Ušetři přes 15 hodin" fits in 2 lines max with the subtitle; if it doesn't fit in one line, break as "Ušetři přes" / "15 hodin" and move the subtitle under it as a third, small element of the visual). "15" is the **only** hero-coloured element (accent pill or glow behind it).
 - Line 2: Archivo 500, ~54 px, ink2 colour.
 - Stays readable on screen for the full ~3 s.
 
@@ -45,32 +45,32 @@ Ušetři 32 hodin
 | Frames | What happens |
 |---|---|
 | 0–4 | Something already moves on frame 0: the tile grid (see visual hook) starts cascading in behind the text. |
-| 2–40 | **"32" is a live counter** rolling 0 → 32 (tabular-nums, spring with damping ~30), driven by the tile count (each tile = +10 min, 6 tiles = +1 h). The number scales 0.9 → 1 as it counts. |
+| 2–40 | **"15" is a live counter** rolling 0 → 15 (tabular-nums, spring with damping ~30), driven by the tile count (each tile = +5 min; the counter shows whole hours and stops at 15). The number scales 0.9 → 1 as it counts. |
 | 6–20 | "hodin" enters from the right: spring (snappy), translateX 60 → 0, opacity, slight blur 6 → 0 px. |
-| 30–42 | **"Ušetři" slams in** above/before "32": bouncy spring, scale 1.25 → 1, translateY −30 → 0, motion blur. That's the HIT. |
-| 36–46 | Accent pill wipes in behind "32" (scaleX 0 → 1, transform-origin left, ease.out), then a soft glow on the pill only. |
+| 30–42 | **"Ušetři přes" slams in** above/before "15": bouncy spring, scale 1.25 → 1, translateY −30 → 0, motion blur. That's the HIT. |
+| 36–46 | Accent pill wipes in behind "15" (scaleX 0 → 1, transform-origin left, ease.out), then a soft glow on the pill only. |
 | 44–56 | Line 2 "(výběr střední školy)" rises with word stagger (3 frames per word). |
 | 56–90 | **Hold.** Only idle breathing (scale ±1.5 %), no new elements. |
 
 ### 1b. Spoken hook (0.0–2.6 s, Tutorial format, 8 words)
-> **„Jak vybrat dobrou střední bez dvaatřiceti hodin googlení?"**
+> **„Jak vybrat dobrou střední bez patnácti hodin googlení?"**
 
 It's phrased as a "how?" so the viewer wonders how. The remixed power phrase is *„bez … hodin googlení"*: specific, informal, a pain everyone knows. Starts at frame 0.
 
 ### 1c. Visual hook (0.0–3.0 s, aligned with both)
 **192 small school tiles** (rounded rects, surface2 colour, each with a tiny bar suggesting a website) cascade into a dense grid filling the frame behind the text, staggered ~0.2 frames each. The text sits in the middle on a frosted panel so it stays readable. The tiles are what the counter counts, so the visual *is* the math. At 3.0 s comes the **transition into the tutorial: all 192 tiles implode toward the centre** (scale-through, motion blur, 10–12 frames) and resolve into the **phone frame** showing the app's first quiz screen. The message: 192 websites collapse into one app.
 
-Optional micro-detail: a small "192 škol × 10 min" label ticks in at the bottom of the grid at frames 40–60 (ink3, 34 px). It's proof inside the hook without breaking the 2-line text rule, because it's part of the visual, not the text hook.
+Optional micro-detail: a small "192 škol × 5 min" label ticks in at the bottom of the grid at frames 40–60 (ink3, 34 px). It's proof inside the hook without breaking the 2-line text rule, because it's part of the visual, not the text hook.
 
-**4 S check:** Subject = výběr střední ✔ · Stakes = 32 hours saved + good school ✔ · Speed = 8 spoken words ✔ · Super clear = one number, one promise ✔
+**4 S check:** Subject = výběr střední ✔ · Stakes = 15+ hours saved + good school ✔ · Speed = 8 spoken words ✔ · Super clear = one number, one promise ✔
 
 ---
 
 ## 2. Lock-In Zone (3.0–9.0 s)
 
-> „Tolik zabere projít weby všech sto devadesáti dvou pražských středních. Deset minut na každou. Tady je zkratka v pěti krocích."
+> „Tolik zabere projít weby všech sto devadesáti dvou pražských středních. I když na každé strávíš jen pět minut. Tady je zkratka v pěti krocích."
 
-- **Confirms** the claim (the 32 h is the math, said out loud) and **proves** it on screen: as the VO says "deset minut na každou", show **„192 × 10 min = 32 h"** as a clean equation that builds term by term (stagger 5 frames), with each term landing on its spoken word.
+- **Confirms** the claim (the 15+ h is the math, said out loud) and **proves** it on screen: as the VO says "jen pět minut", show **„192 × 5 min = 16 h"** as a clean equation that builds term by term (stagger 5 frames), with each term landing on its spoken word.
 - On "v pěti krocích", **five step chips 1–5** pop in along the top in a row (stagger 4 frames) and the first one lights up. The chips stay as a progress bar for the whole tutorial (trust lever: structure, packaging quality).
 
 ---
@@ -81,14 +81,14 @@ VO in tykání. Gender-neutral wording, with no past-tense forms such as "vybral
 
 | # | Time | VO (exact text for ElevenLabs) | Step title (kinetic type above the phone, not a caption) | App footage (real) | Motion | SFX (visible event) |
 |---|---|---|---|---|---|---|
-| H | 0–3 | „Jak vybrat dobrou střední bez dvaatřiceti hodin googlení?" | text hook (§1a) | — | §1 | soft tick roll while the counter runs; one **thump** on the "Ušetři" slam |
-| L | 3–9 | „Tolik zabere projít weby všech sto devadesáti dvou pražských středních. Deset minut na každou. Tady je zkratka v pěti krocích." | 192 × 10 min = 32 h → chips 1–5 | phone frame appears (quiz welcome) | tiles implode → phone (scale-through + motion blur) | one low **thump** on the implode (that's the cut); tick per chip (5, quiet) |
+| H | 0–3 | „Jak vybrat dobrou střední bez patnácti hodin googlení?" | text hook (§1a) | — | §1 | soft tick roll while the counter runs; one **thump** on the "Ušetři" slam |
+| L | 3–9 | „Tolik zabere projít weby všech sto devadesáti dvou pražských středních. I když na každé strávíš jen pět minut. Tady je zkratka v pěti krocích." | 192 × 5 min = 16 h → chips 1–5 | phone frame appears (quiz welcome) | tiles implode → phone (scale-through + motion blur) | one low **thump** on the implode (that's the cut); tick per chip (5, quiet) |
 | 1 | 9–16 | „Jedna. Odpověz na jedenáct otázek. Co tě baví, gympl, nebo odborka, kam chceš dojíždět. Hned vidíš školy, které ti sedí." | **1 · Odpověz na otázky** | onboarding as *student*: q1 "Co tě baví nejvíc?" (tap **IT a technika**), q3 type of school, districts map, then **reveal** "Z 192 pražských škol ti sedí N škol" | phone screen recording; tap rings on each tap; quick zoom (1 → 1.35) into the match % on the reveal | soft **tick** per tap (max 3); **pop** when the match % lands |
 | 2 | 16–22 | „Dvě. Projdi je. Filtruj podle oboru a seřaď podle shody nebo podle bodů, které loni stačily." | **2 · Projdi a vyfiltruj** | `/skoly`: open **Filtry**, pick a field (IT), then sort by **Shoda s tebou**, then switch to **Hranice přijetí**; the list re-orders | zoom on the sort control; list reorder shown at real speed | tick on each control tap |
 | 3 | 22–26 | „Tři. Ty nejlepší si ulož." | **3 · Ulož si favority** | tap save (heart) on 3 schools, then `/ulozene` showing them | heart tap gets a small accent burst (one element, hero colour) | **pop** per save (3, spaced ≥6 frames) |
 | 4 | 26–33 | „Čtyři. Porovnej je vedle sebe. V rozhodovací matici si nastav, na čem ti záleží, a uvidíš pořadí." | **4 · Porovnej + rozhodni** | `/porovnani` (3 schools side by side, horizontal pan), then `/porovnani/matice` (change one weight, ranking updates) | pan across comparison columns; zoom into the weight control, then the reordered ranking | tick on the weight change; **thump** when the ranking settles |
 | 5 | 33–38 | „Pět. Tři školy seřaď do přihlášky. Přesně v pořadí, jak je pak zadáš do DiPSy." | **5 · Seřaď přihlášku** | `/prihlaska` ("Moje přihláška"): 3 schools in order 1-2-3, move one up | drag/reorder highlighted | tick on reorder |
-| CTA | 38–43 | „Od prvního listopadu na střední na míru tečka cé zet. Odkaz máš v biu." | **stredninamiru.cz**<br>(od 1. listopadu) | phone slides down/out, logo + URL end card | URL builds letter-stagger; glow on the URL only | soft **pad** on the end card |
+| CTA | 38–45 | „Spouštíme prvního listopadu. Zapiš se na waitlist na střední na míru tečka cé zet a při spuštění dostaneš slevu deset procent. Odkaz máš v biu." | **−10 % za waitlist**<br>stredninamiru.cz | phone slides out; end card: "−10 %" badge (the single hero element) + URL + "odkaz v biu" | URL builds letter-stagger; badge springs in last | soft **pad** on the end card |
 
 **Schools to feature (for recognition and views):** save and compare **SPŠ elektrotechnická, Ječná** (id 56), **Smíchovská střední škola** (id 110) and **VOŠ a SPŠE Františka Křižíka** (id 160). All three are well-known IT schools with full 2026 Cermat data. If the quiz answers don't put them in the reveal, the reveal can show whatever the real result is. Only steps 2–5 need these schools (via search/filter).
 
@@ -102,10 +102,19 @@ VO in tykání. Gender-neutral wording, with no past-tense forms such as "vybral
 
 **Use a desktop-quality mobile capture:** Playwright at a viewport of 390×844, `deviceScaleFactor: 3`, `isMobile: true`, locale `cs-CZ`. Record video (`recordVideo` size 780×1688 or larger) and also take @3x screenshots of key frames for zoom-ins (they stay sharp). Place the footage inside a **generic drawn phone frame** (rounded rect, thin bezel, no brand-specific hardware or notch).
 
-**Access, in order of preference:**
-1. **Test account (needed for steps 2–5).** The founder adds environment secrets `MARKETING_TEST_EMAIL` / `MARKETING_TEST_PASSWORD` for a confirmed account with app access (developer allowlist or tester). Sign in through the UI. CAPTCHA: if Turnstile blocks automated sign-in, stop and ask the founder; do not try to bypass it. Production `https://stredninamiru.cz` sits behind the Vercel tester gate; the shared gate code is documented in `CLAUDE.md` ("Beta access and release behavior").
-2. **Fallback for the onboarding quiz only (step 1)**, used in the previous session and confirmed to work: run the frontend locally (`cd frontend && npm install && VITE_API_BASE_URL=https://school-app-production-be43.up.railway.app npx vite`). In `frontend/src/App.jsx`, temporarily lift the two `/onboarding` routes out of `<ProtectedRoute>` so the quiz renders signed-out. **Revert with `git checkout frontend/src/App.jsx` right after capture.** Route API calls through `page.route()` and fetch them with `curl`, because Node's `fetch` ignores the sandbox proxy. Real UI, real `/api/schools` data. Steps 2–5 need a real signed-in session, so this fallback is not enough for them.
-3. If neither works for a step, **stop and ask the founder** for a phone screen recording of that step. Never fake a screen.
+**Two ways to show each step. Pick per step whichever looks cleaner:**
+- **(a) Real capture** (Playwright, as above).
+- **(b) Motion-graphic mockup** of the app screen, rebuilt in Remotion: same layout, same Czech UI labels copied from the real component source (`frontend/src/pages/*.jsx`) and the real school names/numbers from the live API. This often looks cleaner and animates better (cards fly in, the list re-sorts with springs, the heart pops). A mockup must never show a number, label or feature the app doesn't have.
+
+**Access for real captures:**
+1. **Signed-in session via refresh token (steps 2–5).** The founder stores env vars `MARKETING_TEST_EMAIL` and `MARKETING_TEST_REFRESH_TOKEN` for a developer-allowlisted test account. Password sign-in is *not* used, because Turnstile CAPTCHA would block a headless browser. Procedure:
+   - Read the public `VITE_SUPABASE_URL` and anon key from the production JS bundle (they are public by design), or from `frontend/.env` if present.
+   - In Node: `createClient(url, anonKey).auth.refreshSession({ refresh_token: process.env.MARKETING_TEST_REFRESH_TOKEN })` → you get `session` (access + **new** refresh token; the old one is now spent).
+   - Pass the gate (POST `/__gate` with the tester code from `CLAUDE.md`, or reuse its cookie), then before loading the app, write the session JSON into `localStorage` under the key `sb-<project-ref>-auth-token` (the default supabase-js key the app reads via `rememberMeStorage` in `frontend/src/supabaseClient.js`), set `skolamatch.remember-me` = `true`, and reload.
+   - Refresh tokens rotate: after one use, the env value is dead. Do all captures within one browser session. If it fails ("Invalid Refresh Token"), stop and ask the founder for a fresh token; don't fall back to password login.
+   - The developer account may show admin-only UI (e.g. an Admin link). Crop it out or use a mockup for that frame.
+2. **Fallback for the onboarding quiz only (step 1)**, confirmed working: run the frontend locally (`cd frontend && npm install && VITE_API_BASE_URL=https://school-app-production-be43.up.railway.app npx vite`). Temporarily lift the two `/onboarding` routes in `frontend/src/App.jsx` out of `<ProtectedRoute>` and **revert with `git checkout frontend/src/App.jsx` right after capture**. Route API calls through `page.route()` + `curl` (Node `fetch` ignores the sandbox proxy).
+3. If neither works, use mockups (b). Never fake data.
 
 Production API (public catalogue): `https://school-app-production-be43.up.railway.app/api/schools`. Use it to verify any number that appears on screen.
 
@@ -140,11 +149,11 @@ Clean the capture before recording: dismiss cookie/guide banners, use the defaul
 - Speaker boost: **on**
 - Output: **MP3 44.1 kHz 192 kbps** (or WAV)
 
-**Text to paste.** Numbers are written as words for correct Czech pronunciation, and the line breaks give natural pauses:
+**Text to paste.** Numbers are written as words for correct Czech pronunciation, and the blank lines give natural pauses:
 ```
-Jak vybrat dobrou střední bez dvaatřiceti hodin googlení?
+Jak vybrat dobrou střední bez patnácti hodin googlení?
 
-Tolik zabere projít weby všech sto devadesáti dvou pražských středních. Deset minut na každou. Tady je zkratka v pěti krocích.
+Tolik zabere projít weby všech sto devadesáti dvou pražských středních. I když na každé strávíš jen pět minut. Tady je zkratka v pěti krocích.
 
 Jedna. Odpověz na jedenáct otázek. Co tě baví, gympl, nebo odborka, kam chceš dojíždět. Hned vidíš školy, které ti sedí.
 
@@ -156,9 +165,9 @@ Tři. Ty nejlepší si ulož.
 
 Pět. Tři školy seřaď do přihlášky. Přesně v pořadí, jak je pak zadáš do DiPSy.
 
-Od prvního listopadu na střední na míru tečka cé zet. Odkaz máš v biu.
+Spouštíme prvního listopadu. Zapiš se na waitlist na střední na míru tečka cé zet a při spuštění dostaneš slevu deset procent. Odkaz máš v biu.
 ```
-**Pronunciation checks after generating:** "DiPSy" must sound like *dipsy*. If it's wrong, respell it as `Dipsy` or `dyp-sy`. "googlení" should be *gůglení*; respell it as `gůglení` if needed. "cé zet" = .cz.
+**Pronunciation checks after generating:** "DiPSy" must sound like *dipsy*. If it's wrong, respell it as `Dipsy` or `dyp-sy`. "googlení" should be *gůglení*; respell it as `gůglení` if needed. "cé zet" = .cz. "waitlist" must sound English (*wejtlist*); respell it as `wejtlist` if not.
 
 **Delivery:** one file is fine. Upload it to the session as `marketing/video-b/public/vo.mp3`. The build session gets word timestamps with whisper.cpp (`@remotion/install-whisper-cpp`, a multilingual model such as `large-v3-turbo` or `medium`, language `cs`). **Use the script text above as the caption text**; take only the timings from Whisper (it misspells Czech words). Cut beats to the real timings. If the file needs re-pacing, split it on silences (≥250 ms) rather than asking for a re-record.
 
@@ -184,6 +193,7 @@ Od prvního listopadu na střední na míru tečka cé zet. Odkaz máš v biu.
 
 ## 9. Ask the founder if…
 - the test account / gate blocks capture,
-- the live school count changed (the 32 h math changes),
+- the live school count drops below 180 (the "přes 15 hodin" math breaks),
+- the 10 % waitlist discount isn't live yet on the waitlist page (don't publish a CTA promising something the page doesn't mention), or the video would post after the waitlist closes,
 - the VO runs over ~45 s at speed 1.1 (propose cuts instead of rushing),
 - any step screen looks broken or empty in production (report it as an app bug; don't hide it).
