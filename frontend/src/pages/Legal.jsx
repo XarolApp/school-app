@@ -76,8 +76,12 @@ export function Privacy() {
         </li>
         <li>
           <strong>Odhad cesty MHD (nepovinně):</strong> když zadáš zastávku nebo povolíš polohu,
-          nejbližší zastávku určíme přímo v prohlížeči. Souřadnice neodesíláme na náš server;
-          vybranou zastávku ukládáme jen v tomto prohlížeči. Odhad počítáme z jízdních řádů
+          nejbližší zastávku určíme přímo v prohlížeči. Souřadnice ani adresu neodesíláme na náš
+          server. Vybraná zastávka je v tomto prohlížeči a k účtu se uloží jen s dokončeným
+          dotazníkem (viz výše). Jakmile nastavíš limit dojezdu, prohlížeč si pro vybranou zastávku
+          vyžádá časy cest, a označení zastávky (nikdy adresa ani poloha) tak projde technickými
+          přístupovými záznamy našich poskytovatelů hostingu (Vercel, Railway), které uchovávají
+          podle své standardní lhůty. Odhad počítáme z jízdních řádů
           <a href="https://pid.cz/o-systemu/opendata/" target="_blank" rel="noopener noreferrer"> PID</a>
           {' '}pod licencí{' '}
           <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.
