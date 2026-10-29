@@ -25,10 +25,13 @@ BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 
 - [x] Chunks 1–8 implemented, committed locally (`cf33dc2`, `a189570`), independently reviewed (founder).
 - [x] Cloud review 2026-10-28 (plan 022): 4 findings, see `reports/plan-022-cloud-review-2026-10-28.md`; F1+F2 fixed in `f0a8d1d`, F3+F4 already fixed in `521aa8b`; plan 025 review `reports/plan-025-cloud-review.md`: 2 low, both fixed (`3972e8b`, `21589f8`).
-- [x] `migrations/2026-10-28-ledger-clock-fix.sql` applied in Supabase by the founder 2026-10-29. Still open before pushing `main`: Stripe test clocks (plan 025 §4.4), localhost walkthrough (`docs/handouts/plan-025-founder-test.md`), merge `main` into this branch.
+- [x] `migrations/2026-10-28-ledger-clock-fix.sql` applied in Supabase by the founder 2026-10-29. No re-run is pending.
 - [x] Picks migration (`2026-10-23-atomic-application-picks.sql`, `v_kkov` fix) re-run on production 2026-10-28: `function_exists` true, `client_can_call` false. No re-run is pending.
-- [ ] Confirm every plan 022 / 025 migration is on production with the check query before pushing (see the report); `2026-10-28-revenue-model.sql` is new and uncommitted.
-- [ ] Stripe test-mode run (season, monthly, cancel, withdrawal) — founder gate before live keys.
+- [x] `2026-10-28-revenue-model.sql` applied in Supabase by the founder (verify query returned the expected values, 2026-10-28). No re-run is pending.
+- [ ] **BLOCKER — do not push `review/plan-025` to `main` until BOTH tests below are done and pass (founder, needs Stripe TEST keys + Stripe CLI on the Mac; no cloud session can do them):**
+  - [ ] **Test B — Stripe test clocks (plan 025 §4.4 gate, handout case 6).** Run 1: start 18 Nov 2026, advance past 18 Dec, 18 Jan, 18 Feb, 22 Feb → invoices 249, 249, 249, ~40 Kč, then nothing, status `canceled`. Run 2: start 1 Feb 2027 → one invoice ~191 Kč, then nothing. Run 3: start 22 Jan 2027 → 249 Kč, then 0 Kč on 22 Feb. Record the real amounts; if any differ, stop and fix before anything else.
+  - [ ] **Test A — localhost walkthrough, every case in `docs/handouts/plan-025-founder-test.md`** (trial, cancel/restore, no endless trial, same card on a new account, monthly, withdrawal, referral, 3-D Secure card `4000 0025 0000 3155`, parent's card). Setup: `STRIPE_SECRET_KEY` (sk_test), `STRIPE_PRICE_ID_MONTHLY`, `STRIPE_WEBHOOK_SECRET` from `stripe listen --forward-to localhost:5001/webhooks/stripe` (no `--events`), `PORT=5001`, `frontend/.env` with `VITE_STRIPE_PUBLISHABLE_KEY`.
+  - [ ] After both pass: merge `main` into `review/plan-025` if it moved again, `npm test` (315 expected), then push to `main` — it deploys to production.
 - [ ] Day-2 trial reminder email (`TRIAL_REMINDER_IMPLEMENTED = false`) — mandatory before real billing.
 - [ ] **Chunk 9: manual school-fact corrections — founder only, still open.**
 
