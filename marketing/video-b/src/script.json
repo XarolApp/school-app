@@ -1,0 +1,13 @@
+{
+  "_note": "Exact ElevenLabs text from marketing/content/video-b-brief.md §6, one entry per beat. Captions use this text; only timings come from Whisper.",
+  "beats": [
+    { "id": "H", "text": "Jak vybrat dobrou střední bez patnácti hodin googlení?" },
+    { "id": "L", "text": "Tolik zabere projít weby všech sto devadesáti dvou pražských středních. I když na každé strávíš jen pět minut. Tady je zkratka v pěti krocích." },
+    { "id": "1", "text": "Jedna. Odpověz na jedenáct otázek. Co tě baví, gympl, nebo odborka, kam chceš dojíždět. Hned vidíš školy, které ti sedí." },
+    { "id": "2", "text": "Dvě. Projdi je. Filtruj podle oboru a seřaď podle shody nebo podle bodů, které loni stačily." },
+    { "id": "3", "text": "Tři. Ty nejlepší si ulož." },
+    { "id": "4", "text": "Čtyři. Porovnej je vedle sebe. V rozhodovací matici si nastav, na čem ti záleží, a uvidíš pořadí." },
+    { "id": "5", "text": "Pět. Tři školy seřaď do přihlášky. Přesně v pořadí, jak je pak zadáš do DiPSy." },
+    { "id": "CTA", "text": "Spouštíme prvního listopadu. Zapiš se na waitlist na střední na míru tečka cé zet a při spuštění dostaneš slevu deset procent. Odkaz máš v biu." }
+  ]
+}

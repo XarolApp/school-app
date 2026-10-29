@@ -13,6 +13,18 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
+## Video B build — found 2026-10-29, open
+
+- [ ] **Bug: the mobile "Řadit" sheet on `/skoly` never changes the sort.** Tapping any
+      option closes the sheet and leaves the old sort (checked on production at 390×844:
+      mouse click, touch tap and a direct radio click all fail; arrow keys work). Likely
+      cause: the option `<label>`'s `onClick` → `closeSort()` (`setSheet(null)`) unmounts
+      the radio before its `onChange` runs, `frontend/src/pages/Search.jsx:1272`. Video B's
+      step 2 shows this interaction, so fix it before the video is posted.
+- [ ] **Waitlist page doesn't mention the 10 % discount on production yet.** The copy
+      change (commit `c98dc37`, `frontend/middleware.js`) exists only on branch
+      `claude/sharp-cray-596w4h`. Video B's CTA promises it; deploy before posting.
+
 ## After the beta: deferred Codex findings (logged 2026-10-10, founder decision)
 
 Founder chose to fix C01, C09, C14, C16 (+ follow-up), C29 and C31 before the testers
