@@ -1,5 +1,7 @@
 # Short-form video plan: Stage 1, revision 2 (awaiting approval)
 
+> **Update 29 Oct:** concept B was replaced by a tutorial video ("Ušetři 32 hodin"). The full build spec is in `video-b-brief.md`.
+
 Date: 29 Oct 2026 · Accounts: @stredninamiru (TikTok + Instagram Reels) · Format: 9:16, Czech
 Goal: views first, sign-ups at stredninamiru.cz second.
 Rev 2: hooks rebuilt with the Killer Hook method (Interrupt Theory, the 4 S's, Triple Hook, Lock-In Zone), real schools chosen from Cermat 2026 data, voiceover decided, launch date 1. listopadu.
