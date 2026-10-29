@@ -166,8 +166,7 @@ would mean the file is missing there (not checked — no deploy access from this
 2. School detail annotation "v tvém limitu" / "o 8 min nad limitem" (plan §4.3) now that the limit is saved.
 3. Drop the `casti` dimension for good (see judgement call 1) once onboarding runs no longer need it.
 4. Hide the `dojezd v tvém limitu` signal from the AI prompt if you prefer the strict reading.
-5. A matrix endpoint (stop-major, base64) if you would rather keep the stop out of URLs entirely.
-6. Matrix regeneration reminder after the December PID timetable change (no job does it).
+5. Matrix regeneration reminder after the December PID timetable change (no job does it).
 
 
 ---
@@ -282,9 +281,10 @@ spočítat" when the catalogue is the offline demo, because demo ids are not in 
 1. **"Stop id only on the device until the save" is true for storage, not for transport.** To count schools and rank
    in the browser the quiz asks `GET /api/commute/stops/:id/schools`, so the stop id is in that request's URL (access
    logs), exactly as in part 1; the request happens only once a stop and a limit are answered. The quiz text therefore
-   says "uložíme ji až s dokončeným dotazníkem" (true) and does not claim the stop never leaves the device. To make it
-   literally device-only, download the whole matrix (~285 KB, `GET /api/commute/matrix` from the plan) and count locally —
-   say so and I will build it.
+   says "uložíme ji až s dokončeným dotazníkem" (true) and does not claim the stop never leaves the device. **Settled decision, 2026-10-29
+   (founder: "go with option 1"): keep this design. The stop id travels in the URL of `GET /api/commute/stops/:id/schools`
+   and is covered by the privacy-policy sentence about hosting access logs; there is no full-matrix download. Not to be
+   re-raised.**
 2. Found, not touched: `OnboardingFlow.jsx` has a misplaced `if (profile?.isCreator …) return <Navigate …>` line inside the
    `betaPreview` branch and `Navigate` is not imported (lint warns; would throw if reached). Leftover `ob-district-map*`
    CSS rules in `onboarding.css` are now unused.
