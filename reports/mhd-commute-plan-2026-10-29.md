@@ -44,6 +44,16 @@ searched all four remotes. `plan/mhd-commute` was created from `main`.
 
 No Supabase table or migration exists for it. That was a deliberate choice in plan 023.
 
+**The founder's Supabase check finding zero matching tables (2026-10-29) is expected and
+consistent with this.** The data was never meant to live in the database. It is the
+committed file above, loaded into server memory at boot (`server.js:37-50`). A separate
+"data acquisition" comparison (Google Routes, OpenTripPlanner, Golemio) is therefore not
+needed. Plan 023 already chose PID GTFS with its own routing (founder decision
+2026-10-16), and it passed the IDOS check on 2026-10-21. To confirm the deployed backend
+has the matrix loaded, run
+`curl -s https://<backend>/api/commute/stops | head -c 200`.
+A 503 response means the file is missing on Railway.
+
 ### 1.2 Shape
 
 ```
