@@ -12,6 +12,15 @@ Skills to load first: `/remotion-motion-graphics` (read SKILL.md + both referenc
 
 ---
 
+## Start here (for the build session)
+
+1. You run **locally** on the founder's machine. Check out branch `claude/sharp-cray-596w4h` and pull it first (`git fetch origin && git checkout claude/sharp-cray-596w4h && git pull`), so the skills in `.claude/skills/` are present, then run `/reload-skills`.
+2. Read this whole file, then load `/remotion-motion-graphics` and `/video`.
+3. Needed from the founder: `marketing/video-b/public/vo.mp3` (ElevenLabs, text in §6) and `marketing/video-b/.env.local` (test-account token, §4). If the voiceover isn't there yet, **build everything else first** (project, hook animation, mockups, captures, SFX) using placeholder timings from §3, then ask the founder for the file; don't generate your own voice.
+4. Commit to `claude/sharp-cray-596w4h` only.
+
+---
+
 ## 0. Hard rules
 
 - **Real data, not necessarily real screen recordings.** App shots can be real captures *or* animated motion-graphic mockups of the app UI (founder decision 29 Oct). Mockups must stay truthful: every school name, number and UI label on them comes from the real app/live API (`/api/schools`), and every feature shown exists today. No invented numbers, schools, labels or features, and no fictional "(ukázka)" schools.
@@ -106,14 +115,15 @@ VO in tykání. Gender-neutral wording, with no past-tense forms such as "vybral
 - **(a) Real capture** (Playwright, as above).
 - **(b) Motion-graphic mockup** of the app screen, rebuilt in Remotion: same layout, same Czech UI labels copied from the real component source (`frontend/src/pages/*.jsx`) and the real school names/numbers from the live API. This often looks cleaner and animates better (cards fly in, the list re-sorts with springs, the heart pops). A mockup must never show a number, label or feature the app doesn't have.
 
-**Access for real captures:**
-1. **Signed-in session via refresh token (steps 2–5).** The founder stores env vars `MARKETING_TEST_EMAIL` and `MARKETING_TEST_REFRESH_TOKEN` for a developer-allowlisted test account. Password sign-in is *not* used, because Turnstile CAPTCHA would block a headless browser. Procedure:
+**Access for real captures. This brief is run in a LOCAL Claude Code session on the founder's machine** (not the cloud container), so network is open and the Chromium/Playwright install is yours to set up (`npx playwright install chromium` if missing).
+1. **Signed-in session via refresh token (steps 2–5).** The founder has copied a Supabase `refresh_token` of a developer-allowlisted test account. Password sign-in is *not* used, because Turnstile CAPTCHA blocks automated browsers.
+   - **Where the token lives:** the founder puts it in the gitignored file `marketing/video-b/.env.local` as two lines, `MARKETING_TEST_EMAIL=...` and `MARKETING_TEST_REFRESH_TOKEN=...` (`.env.*` is gitignored; confirm with `git check-ignore -v marketing/video-b/.env.local` before using it). Load it in Node with `process.loadEnvFile('marketing/video-b/.env.local')`. **Never `cat`, print, log or commit that file or the token.** The token must not appear in your output, in screenshots, or in any file other than that one.
    - Read the public `VITE_SUPABASE_URL` and anon key from the production JS bundle (they are public by design), or from `frontend/.env` if present.
-   - In Node: `createClient(url, anonKey).auth.refreshSession({ refresh_token: process.env.MARKETING_TEST_REFRESH_TOKEN })` → you get `session` (access + **new** refresh token; the old one is now spent).
+   - In Node: `createClient(url, anonKey).auth.refreshSession({ refresh_token })` → you get a `session` (access token + a **new** refresh token; the old one is now spent). Save the new session JSON in memory or in `marketing/video-b/.session.json` (gitignore it: add `marketing/video-b/.session.json` to `.gitignore` if needed) so repeated captures reuse it without refreshing again.
    - Pass the gate (POST `/__gate` with the tester code from `CLAUDE.md`, or reuse its cookie), then before loading the app, write the session JSON into `localStorage` under the key `sb-<project-ref>-auth-token` (the default supabase-js key the app reads via `rememberMeStorage` in `frontend/src/supabaseClient.js`), set `skolamatch.remember-me` = `true`, and reload.
-   - Refresh tokens rotate: after one use, the env value is dead. Do all captures within one browser session. If it fails ("Invalid Refresh Token"), stop and ask the founder for a fresh token; don't fall back to password login.
+   - Refresh tokens rotate: after one use the original value is dead. Do all captures in one go. If it fails ("Invalid Refresh Token"), stop and ask the founder for a fresh token; don't fall back to password login.
    - The developer account may show admin-only UI (e.g. an Admin link). Crop it out or use a mockup for that frame.
-2. **Fallback for the onboarding quiz only (step 1)**, confirmed working: run the frontend locally (`cd frontend && npm install && VITE_API_BASE_URL=https://school-app-production-be43.up.railway.app npx vite`). Temporarily lift the two `/onboarding` routes in `frontend/src/App.jsx` out of `<ProtectedRoute>` and **revert with `git checkout frontend/src/App.jsx` right after capture**. Route API calls through `page.route()` + `curl` (Node `fetch` ignores the sandbox proxy).
+2. **Onboarding quiz without a login (step 1)**, confirmed working in an earlier session: run the frontend locally (`cd frontend && npm install && VITE_API_BASE_URL=https://school-app-production-be43.up.railway.app npx vite`). Temporarily lift the two `/onboarding` routes in `frontend/src/App.jsx` out of `<ProtectedRoute>` and **revert with `git checkout frontend/src/App.jsx` right after capture**. (On the founder's Mac, port 5000 is taken by AirPlay; the frontend on 5173 is unaffected because it talks to the production API.)
 3. If neither works, use mockups (b). Never fake data.
 
 Production API (public catalogue): `https://school-app-production-be43.up.railway.app/api/schools`. Use it to verify any number that appears on screen.
