@@ -48,7 +48,7 @@ higher-severity defect I could show.
 | # | Claim | Verified |
 |---|---|---|
 | 1 | Fixed in `f0a8d1d` (`incomplete` → `pending`) | Yes. The ledger allows `pending → active`; the test checks the mapping. |
-| 2 | Fixed in `f0a8d1d` (`2026-10-28-ledger-clock-fix.sql`) | Yes. The new function is the plan 025 version of `apply_stripe_purchase_event` plus only the clock changes (diffed), so it does not undo plan 025. The mirror is byte-for-byte in `supabase-setup.sql`. **The founder has not applied it yet.** |
+| 2 | Fixed in `f0a8d1d` (`2026-10-28-ledger-clock-fix.sql`) | Yes. The new function is the plan 025 version of `apply_stripe_purchase_event` plus only the clock changes (diffed), so it does not undo plan 025. The mirror is byte-for-byte in `supabase-setup.sql`. **Applied by the founder in Supabase on 2026-10-29.** |
 | 3 | Already fixed by `521aa8b` | Yes. `discard()` retrieves the session and returns `false` on `complete`; both callers return `CHECKOUT_PROCESSING` instead of failing the row. |
 | 4 | Already fixed by `521aa8b` | Yes. `claim_due_season_charges` returns `price_amount_minor` and the worker charges `purchase.price_amount_minor`. |
 

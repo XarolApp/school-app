@@ -8,7 +8,7 @@ Findings 1 and 2 were reproduced against the real `supabase-setup.sql` in a disp
 | # | Severity | Status | Where | Test |
 |---|---|---|---|---|
 | 1 | High | **Fixed** | `server.js` `purchaseStatusFromStripe` (`incomplete` → `pending`) | `finding 1…` |
-| 2 | Medium | **Fixed** (needs SQL) | `migrations/2026-10-28-ledger-clock-fix.sql`, mirrored at the end of `supabase-setup.sql` | `finding 2…` |
+| 2 | Medium | **Fixed** (SQL applied by the founder 2026-10-29) | `migrations/2026-10-28-ledger-clock-fix.sql`, mirrored at the end of `supabase-setup.sql` | `finding 2…` |
 | 3 | Medium | **Not applicable** — already fixed by `521aa8b` | `server.js` `createTrackedCheckout` → `discard()` | `finding 3…` (guard) |
 | 4 | Low | **Not applicable** — already fixed by `521aa8b` | season worker, `amount: purchase.price_amount_minor` | `finding 4…` (guard) |
 
