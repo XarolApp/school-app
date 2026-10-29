@@ -7,6 +7,7 @@ import 'leaflet/dist/leaflet.css';
 import StatInfo from './StatInfo';
 import { escapeHtml } from '../lib/escapeHtml';
 import { summarizeAdmission, formatCutoffRange } from '../lib/schoolPrograms';
+import { withinLimit } from '../lib/commute';
 import './SchoolMap.css';
 
 const geocodeCache = new Map();
@@ -44,7 +45,7 @@ function shortSchoolName(name) {
   return s;
 }
 
-function pinHtml(row, isSelected) {
+function pinHtml(row, isSelected, dimmed) {
   const adm = summarizeAdmission(row.school);
   const range = formatCutoffRange(adm);
   const label = range ? `${range}${adm.isOld ? ` (${adm.year})` : ''}` : 'bez dat';
@@ -52,7 +53,7 @@ function pinHtml(row, isSelected) {
   const shortName = escapeHtml(shortSchoolName(row.name));
   const fullName = escapeHtml(row.name);
   return (
-    `<span class="sm-pin${isSelected ? ' is-selected' : ''}${noData ? ' is-nodata' : ''}" title="${fullName}">` +
+    `<span class="sm-pin${isSelected ? ' is-selected' : ''}${noData ? ' is-nodata' : ''}${dimmed ? ' is-dim' : ''}" title="${fullName}">` +
     `<span class="sm-pin-name">${shortName}</span>` +
     `<span class="sm-pin-pct">${escapeHtml(label)}</span>` +
     `</span>`
@@ -79,7 +80,7 @@ function homePinHtml() {
  * their own stacking context) — matching 1000 is what keeps our UI visible
  * all the time, not just mid-animation.
  */
-function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
+function SchoolMap({ rows, selectedId, onSelect, renderCardActions, commute = null }) {
   const location = useLocation();
   const containerRef = useRef(null);
   const mapRef = useRef(null);
@@ -168,7 +169,7 @@ function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
 
     for (const row of visibleRows) {
       const icon = L.divIcon({
-        html: pinHtml(row, row.id === selectedId),
+        html: pinHtml(row, row.id === selectedId, Boolean(commute) && !withinLimit(commute.minutes, row.id, commute.limit)),
         className: 'sm-pin-wrap',
         iconSize: null,
       });
@@ -187,7 +188,7 @@ function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
       map.fitBounds(bounds, { padding: [40, 40], maxZoom: 15 });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visibleRows, selectedId, onSelect]);
+  }, [visibleRows, selectedId, onSelect, commute]);
 
   // Home pin — a distinct marker, added/removed independently of school pins.
   useEffect(() => {
@@ -206,6 +207,8 @@ function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
   }, [homePos]);
 
   const selectedRow = rows.find((row) => row.id === selectedId) || null;
+  const commuteInLimit = commute ? visibleRows.filter((row) => withinLimit(commute.minutes, row.id, commute.limit)).length : 0;
+  const selectedCommute = commute && selectedRow ? commute.minutes?.[selectedRow.id] : undefined;
   const selectedAdm = selectedRow ? summarizeAdmission(selectedRow.school) : null;
 
   const setHomeFromCoords = (lat, lng) => {
@@ -336,6 +339,13 @@ function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
       </div>
       )}
 
+      {commute && (
+        <p className="sm-commute-legend" role="status">
+          Do {commute.limit} min MHD{commute.stopName ? ` ze zastávky ${commute.stopName}` : ''} · {commuteInLimit}{' '}
+          {commuteInLimit === 1 ? 'škola' : commuteInLimit >= 2 && commuteInLimit <= 4 ? 'školy' : 'škol'}
+        </p>
+      )}
+
       {selectedRow && (
         <div className="sm-card">
           <div className="sm-card-head">
@@ -354,6 +364,12 @@ function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
               ×
             </button>
           </div>
+          {commute && selectedCommute !== undefined && (
+            <p className="ss-caption sm-card-commute">
+              {selectedCommute == null ? 'MHD: přes 90 minut nebo bez rozumného spojení' : `cca ${selectedCommute} min MHD`}
+              {commute.stopName ? ` ze zastávky ${commute.stopName}` : ''}
+            </p>
+          )}
           <div className="ss-stat-grid sm-card-stats">
             <div className="ss-stat-cell">
               <p className="ss-data-md">

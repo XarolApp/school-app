@@ -244,6 +244,11 @@ export function fetchCommuteStops() {
   return request('/api/commute/stops');
 }
 
+// Minutes from one stop to every visible school: { feedDate, stopId, minutes: { [schoolId]: min | null } }.
+export function fetchStopSchools(stopId) {
+  return request(`/api/commute/stops/${encodeURIComponent(stopId)}/schools`);
+}
+
 export function fetchSchoolCommute(schoolId) {
   return request(`/api/schools/${schoolId}/commute`);
 }

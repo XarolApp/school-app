@@ -1264,6 +1264,7 @@ elsewhere in the app.
 ---
 
 ## Public-transit commute requires a provider, licence and accuracy decision
+> **Superseded 2026-10-29:** decided and built in plan 023 (own RAPTOR over PID GTFS, `lib/data/commute-matrix.json`, IDOS check passed). Questionnaire/map/`/skoly` use on branch `plan/mhd-commute`; the Google/OTP evaluation below is no longer needed.
 - Current map radius is straight-line distance, not MHD travel time. Keep unavailable commute controls honest; do not substitute haversine distance under a transit label.
 - Evaluate current Google Routes TRANSIT capabilities/billing/terms or self-hosted OpenTripPlanner with PID GTFS before implementation. The old $200/month Google Maps credit estimate is obsolete: [Google replaced it with per-SKU free usage caps on 1 March 2025](https://developers.google.com/maps/billing-and-pricing/faq).
 - Verify storage/caching permissions, departure/arrival/date context, costs, privacy and service reliability. District-centre precomputation is an approximation, not a personalised home-to-school journey. Founder/provider choice remains pending.
@@ -1690,6 +1691,7 @@ Fold that fix into the redesign rather than patching it separately.
   up the `.env` addition.
 
 ## Public-transit travel time to school (commute questions deferred until this exists) — 2026-09-24
+> **Superseded 2026-10-29:** the data exists (plan 023) and the questions are built on branch `plan/mhd-commute`; awaiting founder localhost test before `main`.
 - **Found:** 2026-09-24, questionnaire brainstorm. "How far will you commute" and "do transit connections matter" were approved as good questions but cut from the first build: nothing in the app knows how long a bus/tram/metro ride to a school takes (`SchoolMap.jsx` only does straight-line radius).
 - **Urgency:** Medium — a real differentiator for a Prague school picker, but not a launch blocker.
 - **Effort:** Small — one-off precompute script + one lookup table.

@@ -55,7 +55,8 @@ export function Privacy() {
           <strong>Odpovědi v dotazníku a výsledky:</strong> co odpovíš v úvodním a samostatném
           dotazníku, včetně volné poznámky, a jaké školy ti vyšly. Účel: doporučit ti školy a ukázat
           je znovu. Základ: plnění smlouvy. Před vytvořením účtu zůstávají odpovědi jen v tvém
-          prohlížeči.
+          prohlížeči. Pokud v dotazníku zvolíš zastávku MHD, uložíme k odpovědím jen její označení
+          (ne tvoji adresu ani polohu, ty zůstanou v zařízení) a nejdelší přijatelnou dobu cesty.
         </li>
         <li>
           <strong>Údaj o zdravotním postižení (nepovinný):</strong> pokud v dotazníku uvedeš, že

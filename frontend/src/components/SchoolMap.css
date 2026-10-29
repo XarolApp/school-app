@@ -317,3 +317,30 @@
     max-width: none;
   }
 }
+
+/* Commute mode: schools beyond the limit stay on the map as faint pins. */
+.sm-pin.is-dim {
+  opacity: 0.4;
+  box-shadow: none;
+}
+.sm-pin.is-dim.is-selected {
+  opacity: 1;
+}
+.sm-commute-legend {
+  position: absolute;
+  z-index: 1000;
+  left: var(--space-md);
+  bottom: var(--space-xl);
+  max-width: calc(100% - 2 * var(--space-md));
+  margin: 0;
+  padding: var(--space-xs) var(--space-sm);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-chip);
+  background: var(--surface);
+  color: var(--text);
+  font-size: var(--fs-caption);
+  font-variant-numeric: tabular-nums;
+}
+.sm-card-commute {
+  margin: 0;
+}

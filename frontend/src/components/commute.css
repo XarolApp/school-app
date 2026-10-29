@@ -1,0 +1,291 @@
+/* Stop picker and the small text styles shared by the school-detail commute card,
+ * the questionnaire and the /skoly filter. Moved out of schoolDetail.css so the
+ * picker looks the same wherever it is mounted. */
+
+.sd-commute-picker {
+  display: grid;
+  gap: var(--space-sm);
+  position: relative;
+  min-width: 0;
+}
+.sd-commute-picker label {
+  color: var(--ink2);
+  font-size: var(--fs-body-sm);
+  font-weight: 600;
+}
+.sd-commute-picker input {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--line2);
+  border-radius: var(--r-input);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--bg);
+  color: var(--ink);
+  font: inherit;
+}
+.sd-commute-picker input:focus-visible {
+  outline: 2px solid var(--acc);
+  outline-offset: 2px;
+}
+.sd-commute-options {
+  position: absolute;
+  z-index: 20;
+  top: 100%;
+  margin-top: 2px;
+  right: 0;
+  left: 0;
+  max-height: 240px;
+  overflow-y: auto;
+  border: 1px solid var(--line2);
+  border-radius: var(--r-input);
+  background: var(--surface);
+}
+.sd-commute-options [role="option"] {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  color: var(--ink);
+  cursor: pointer;
+}
+.sd-commute-options [role="option"]:hover,
+.sd-commute-options [role="option"].is-active {
+  background: var(--acc-soft);
+}
+.sd-commute-options small {
+  flex: none;
+  color: var(--ink3);
+  font-size: var(--fs-caption);
+}
+.sd-commute-locate {
+  width: 100%;
+  justify-content: center;
+  gap: var(--space-sm);
+}
+.sd-commute-hint,
+.sd-commute-location,
+.sd-commute-walk,
+.sd-commute-attribution {
+  margin: 0;
+  color: var(--ink3);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+}
+.sd-commute-field {
+  position: relative;
+  min-width: 0;
+}
+
+/* ---------- minute-limit slider (questionnaire + /skoly) ---------- */
+.cl-control {
+  display: grid;
+  gap: var(--space-sm);
+  min-width: 0;
+}
+.cl-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+.cl-label {
+  color: var(--ink2);
+  font-size: var(--fs-body-sm);
+  font-weight: 600;
+}
+.cl-readout {
+  color: var(--ink);
+  font-family: var(--heading);
+  font-size: var(--fs-headline-sm);
+  line-height: var(--lh-headline-sm);
+  font-weight: var(--fw-headline-sm);
+  font-variant-numeric: tabular-nums;
+}
+.cl-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 28px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  touch-action: pan-y;
+}
+.cl-slider::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: var(--r-card);
+  background: linear-gradient(to right, var(--acc) var(--cl-fill), var(--line2) var(--cl-fill));
+}
+.cl-slider::-moz-range-track {
+  height: 8px;
+  border-radius: var(--r-card);
+  background: var(--line2);
+}
+.cl-slider::-moz-range-progress {
+  height: 8px;
+  border-radius: var(--r-card);
+  background: var(--acc);
+}
+.cl-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 28px;
+  height: 28px;
+  margin-top: -10px;
+  border-radius: 50%;
+  border: 3px solid var(--surface);
+  background: var(--acc);
+  box-shadow: 0 0 0 1px var(--acc), var(--shadow);
+}
+.cl-slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 3px solid var(--surface);
+  background: var(--acc);
+  box-shadow: 0 0 0 1px var(--acc), var(--shadow);
+}
+.cl-slider:focus-visible {
+  outline: 2px solid var(--acc);
+  outline-offset: 4px;
+  border-radius: var(--r-input);
+}
+.cl-ticks {
+  position: relative;
+  height: 1.3em;
+  margin: 0 14px;
+  color: var(--ink3);
+  font-size: var(--fs-caption);
+  font-variant-numeric: tabular-nums;
+}
+.cl-ticks span {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+}
+.cl-count {
+  display: grid;
+  gap: 4px;
+  min-height: 3.2em;
+}
+.cl-count p {
+  margin: 0;
+}
+.cl-count-main {
+  color: var(--ink);
+  font-size: var(--fs-body-md);
+  font-weight: 600;
+}
+.cl-count-hint {
+  color: var(--ink3);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+}
+.cl-muted {
+  color: var(--ink3);
+  font-weight: 400;
+}
+
+/* ---------- read-only preview map under the slider ---------- */
+.cpm-map {
+  height: 220px;
+  border: 1px solid var(--line2);
+  border-radius: var(--r-card);
+  overflow: hidden;
+  isolation: isolate;
+}
+.cpm-dot {
+  fill: var(--ink3);
+  fill-opacity: 0.35;
+  stroke: none;
+}
+.cpm-dot.is-in {
+  fill: var(--acc);
+  fill-opacity: 1;
+  /* The OSM tiles stay light in dark mode, so the dot carries its own edge. */
+  stroke: var(--acc);
+  stroke-opacity: 0.5;
+  stroke-width: 3;
+}
+.cpm-stop {
+  fill: var(--ink);
+  fill-opacity: 1;
+  stroke: var(--surface);
+  stroke-width: 3;
+}
+.cpm-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  margin: 0;
+  color: var(--ink3);
+  font-size: var(--fs-caption);
+}
+.cpm-legend span::before {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 6px;
+  border-radius: 50%;
+  background: var(--ink3);
+  opacity: 0.6;
+  vertical-align: -1px;
+}
+.cpm-legend .is-in::before {
+  background: var(--acc);
+  opacity: 1;
+}
+.cpm-legend .is-stop::before {
+  background: var(--ink);
+  opacity: 1;
+}
+@media (max-width: 860px) {
+  .cpm-map { height: 200px; }
+}
+
+/* ---------- the questionnaire's commute block ---------- */
+.cq-block {
+  display: grid;
+  gap: var(--space-md);
+  min-width: 0;
+}
+.cq-stop {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-sm) var(--space-md);
+  padding: var(--space-md);
+  border: 1px solid var(--line2);
+  border-radius: var(--r-card);
+  background: var(--surface);
+  color: var(--acc);
+}
+.cq-stop-main {
+  display: grid;
+  flex: 1 1 200px;
+  min-width: 0;
+}
+.cq-stop-name {
+  color: var(--ink);
+  font-weight: 600;
+}
+.cq-strict {
+  display: grid;
+  gap: var(--space-sm);
+}
+.cq-link {
+  appearance: none;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-size: var(--fs-body-sm);
+  font-weight: 600;
+  color: var(--acc);
+  cursor: pointer;
+  text-align: left;
+}
+.cq-link:hover {
+  text-decoration: underline;
+}

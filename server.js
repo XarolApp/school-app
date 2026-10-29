@@ -49,6 +49,8 @@ try {
 } catch (error) {
   console.warn(`[commute] matrix unavailable; commute endpoints return 503 (${error.message})`);
 }
+// stop group id -> column index into every `commuteMatrix.schools[id]` array.
+const commuteStopIndex = new Map((commuteMatrix?.stops || []).map((stop, index) => [stop.id, index]));
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 const SCHOOL_REVIEWS_ENABLED = process.env.SCHOOL_REVIEWS_ENABLED === 'true';
 // Link sharing (shortlist shares, results/payment links, parent handoffs,
@@ -1516,6 +1518,27 @@ async function withPredecessorPrograms(schools) {
 const SCORING_CATALOGUE_TTL_MS = 5 * 60 * 1000;
 let scoringCatalogue = { rows: null, loadedAt: 0, pending: null };
 
+/**
+ * Attaches `commute_minutes` (the matrix value for the student's stop) to
+ * every school that has a matrix column. `null` = over 90 minutes or
+ * unreachable; the field stays `undefined` for a school with no column and for
+ * every school when the matrix is not loaded or the stop is unknown, so
+ * matching.js treats those as "not known" instead of "far". Returns new
+ * objects: the scoring catalogue is shared between accounts and must not carry
+ * one student's stop.
+ */
+function withCommute(schools, stopId) {
+  const index = commuteMatrix && typeof stopId === 'string' ? commuteStopIndex.get(stopId) : undefined;
+  if (index === undefined) return schools;
+  return schools.map((school) => {
+    const column = commuteMatrix.schools[String(school.id)];
+    return Array.isArray(column) ? { ...school, commute_minutes: column[index] ?? null } : school;
+  });
+}
+
+// The one way to score a saved set of answers: stop-aware, same everywhere.
+const scoreAnswers = (answers, schools) => scoreSchools(answers, withCommute(schools, answers?.dojezd_zastavka));
+
 async function getScoringCatalogue() {
   const fresh = scoringCatalogue.rows && Date.now() - scoringCatalogue.loadedAt < SCORING_CATALOGUE_TTL_MS;
   if (fresh) return scoringCatalogue.rows;
@@ -1561,7 +1584,7 @@ async function withMatchScores(userId, schools) {
     return located;
   }
   const scores = new Map(
-    scoreSchools(run.answers, catalogue).map((match) => [match.school_id, match.score])
+    scoreAnswers(run.answers, catalogue).map((match) => [match.school_id, match.score])
   );
 
   return located.map((school) => ({
@@ -1582,6 +1605,41 @@ app.get('/api/commute/stops', (req, res) => {
   if (!commuteMatrix) return res.status(503).json({ error: 'Odhad dojezdu je dočasně nedostupný.' });
   res.set('Cache-Control', 'public, max-age=86400');
   res.json({ feedDate: commuteMatrix.feedDate, stops: commuteMatrix.stops });
+});
+
+// Every minute from one stop to every visible school, so the questionnaire and
+// the /skoly filter can count "schools within N minutes" without 192 calls.
+// Same rules as the per-school endpoint: optionalAuth-level (no auth needed),
+// hidden and merged schools never appear. The stop id is public timetable
+// data, but it is in the URL: the one place a chosen stop reaches the server
+// outside a saved questionnaire run.
+let visibleSchoolIds = { ids: null, loadedAt: 0 };
+async function getVisibleSchoolIds() {
+  if (visibleSchoolIds.ids && Date.now() - visibleSchoolIds.loadedAt < SCORING_CATALOGUE_TTL_MS) return visibleSchoolIds.ids;
+  const rows = await fetchAllSchools('id');
+  visibleSchoolIds = { ids: new Set(rows.map((row) => row.id)), loadedAt: Date.now() };
+  return visibleSchoolIds.ids;
+}
+
+app.get('/api/commute/stops/:stopId/schools', optionalAuth, async (req, res) => {
+  if (!commuteMatrix) return res.status(503).json({ error: 'Odhad dojezdu je dočasně nedostupný.' });
+  const index = commuteStopIndex.get(String(req.params.stopId));
+  if (index === undefined) return res.status(404).json({ error: 'Zastávka nebyla nalezena.' });
+
+  let visible;
+  try {
+    visible = await getVisibleSchoolIds();
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+
+  const minutes = {};
+  for (const [schoolId, column] of Object.entries(commuteMatrix.schools)) {
+    if (!Array.isArray(column) || !visible.has(Number(schoolId))) continue;
+    minutes[schoolId] = column[index] ?? null;
+  }
+  res.set('Cache-Control', 'public, max-age=3600');
+  res.json({ feedDate: commuteMatrix.feedDate, stopId: req.params.stopId, minutes });
 });
 
 app.get('/api/schools/:id/commute', optionalAuth, async (req, res) => {
@@ -2696,7 +2754,7 @@ async function buildRunResult(run) {
     (run.matches || []).map((match) => [match.school_id, match.reason || ''])
   );
 
-  const ranked = scoreSchools(run.answers, schools).sort((a, b) => b.score - a.score);
+  const ranked = scoreAnswers(run.answers, schools).sort((a, b) => b.score - a.score);
 
   return {
     id: run.id,
@@ -2777,7 +2835,9 @@ app.post(
   requireAuth,
   requireAccess,
   async (req, res) => {
-    const validation = validateAnswers(req.body?.answers);
+    const validation = validateAnswers(req.body?.answers, {
+      isCommuteStop: commuteMatrix ? (id) => commuteStopIndex.has(id) : undefined,
+    });
     if (!validation.ok) {
       return res.status(400).json({ error: validation.error });
     }
@@ -2802,7 +2862,7 @@ app.post(
     try {
       ({ matches, aiUsed, fullRanking } = await requestMatches({
         answers: validation.answers,
-        schools,
+        schools: withCommute(schools, validation.answers.dojezd_zastavka),
         apiKey: OPENROUTER_API_KEY,
         model: OPENROUTER_MODEL,
         referer: FRONTEND_URL,
@@ -2941,7 +3001,7 @@ app.post(
       const schools = await getScoringCatalogue();
       const school = schools.find((entry) => entry.id === schoolId);
       if (!school) return res.status(404).json({ error: 'Škola nebyla nalezena.' });
-      const fullOrder = scoreSchools(run.answers, schools);
+      const fullOrder = scoreAnswers(run.answers, schools);
       const match = fullOrder.find((entry) => entry.school_id === schoolId);
       if (!match) return res.status(404).json({ error: 'Školu se nepodařilo vyhodnotit.' });
 
@@ -3137,7 +3197,7 @@ app.post('/api/questionnaire/health-consent/withdraw', requireAuth, async (req, 
   for (const run of affected) {
     const { postizeni, postizeni_typ, ...answers } = run.answers;
     const oldReasons = new Map((run.matches || []).map((m) => [m.school_id, m.reason]));
-    const matches = scoreSchools(answers, schools).slice(0, REASON_COUNT).map((m) => ({
+    const matches = scoreAnswers(answers, schools).slice(0, REASON_COUNT).map((m) => ({
       school_id: m.school_id,
       score: m.score,
       reason: oldReasons.get(m.school_id) || '',

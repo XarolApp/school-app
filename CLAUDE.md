@@ -818,6 +818,17 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
      optional `body` (Cermat points) answer is copied to
      `decision_profile.jpz_points` and never sent to the AI (`privateToServer`).
      The questions are grouped by `SECTIONS` in `lib/questionnaire.js`.
+     **Commute (MHD, branch `plan/mhd-commute`, not yet on `main`):** the district
+     question `casti` is no longer asked; `dojezd_zastavka` (a PID stop-group id —
+     the only commute value saved with the run, `privateToServer`), `dojezd_limit`
+     (any whole minute 1–60; "60+" stores nothing) and `dojezd_prisnost`
+     (`preference` / `dulezite` / `nutne`) replace it. `lib/commuteScore.js` holds the
+     smooth decay and strictness penalty, `lib/matching.js` scores the `dojezd`
+     dimension from `school.commute_minutes`, which `server.js` `withCommute()` attaches
+     from `lib/data/commute-matrix.json`. `GET /api/commute/stops/:stopId/schools`
+     returns one stop's minutes to every visible school for the live count under the
+     slider (questionnaire and /skoly). Old runs that still hold `casti` keep scoring
+     (the dimension stays in `matching.js` for them and for onboarding-translated runs).
 
 10. **School detail page** (`frontend/src/pages/SchoolDetail.jsx` + one
     component per section under `frontend/src/components/schoolDetail/`) —
