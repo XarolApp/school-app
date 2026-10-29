@@ -42,9 +42,10 @@ const LANGUAGE_KEYWORDS = ['jazyk', 'bilingv', 'anglic', 'nemeck', 'spanel', 'fr
 const PRACTICE_KEYWORDS = ['praxe', 'odborny vycvik', 'ucebni obor', 'vyucni list', 'uciliste', 'dilny', 'prakticke vyucovani'];
 const MATURITA_KEYWORDS = ['maturit', 'gymnaz', 'lyceum', 'obchodni akademie', 'akademie'];
 
-/** Praha 1–22 adjacency, coarse but real geography. Used ONLY for a
- *  same / sousední / vzdálená band. We never claim minutes — we have no
- *  timetable data and saying "25 minut" would be an invented number. */
+/** Praha 1–22 adjacency, coarse but real geography (district hop counts). No
+ *  longer used by the onboarding matcher: commute is scored from real PID
+ *  timetable minutes (`commuteMinutes`, see lib/matching.js). Kept for the
+ *  similar-schools helpers that still read districts. */
 const CORE_ADJACENCY = {
   1: [2, 5, 6, 7, 8],
   2: [1, 3, 4, 5, 10],
@@ -301,6 +302,10 @@ export function deriveFeatures(school) {
   return {
     ...base,
     district: districtOf(school),
+    // MHD minutes from the student's stop, attached by the onboarding flow from
+    // the stop's row: a number, null (over 90 minutes / unreachable) or
+    // undefined (no data). Never guessed.
+    commuteMinutes: school.commute_minutes,
     breadth: base.breadth ?? programList.length,
     programList,
   };

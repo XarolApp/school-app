@@ -1247,7 +1247,9 @@ async function syncJpzPoints(userId, points) {
  * inside the onboarding flow itself (no session exists yet at that point).
  */
 async function saveOnboardingRun(userId, rawAnswers) {
-  const validation = validateOnboardingAnswers(rawAnswers);
+  const validation = validateOnboardingAnswers(rawAnswers, {
+    isCommuteStop: commuteMatrix ? (id) => commuteStopIndex.has(id) : undefined,
+  });
   if (!validation.ok) {
     return { status: 400, body: { error: validation.error }, matches: [] };
   }
@@ -1270,7 +1272,7 @@ async function saveOnboardingRun(userId, rawAnswers) {
     return { status: 503, body: { error: 'V databázi zatím nejsou žádné školy.' }, matches: [] };
   }
 
-  const matches = scoreSchools(translated, withDistricts(schools))
+  const matches = scoreAnswers(translated, withDistricts(schools))
     .slice(0, 20)
     .map(({ school_id, score }) => ({ school_id, score }));
 
@@ -3202,6 +3204,7 @@ app.post('/api/questionnaire/health-consent/withdraw', requireAuth, async (req, 
       score: m.score,
       reason: oldReasons.get(m.school_id) || '',
       signals: m.signals,
+      notes: m.notes,
       breakdown: m.breakdown,
     }));
     const { error: updateError } = await supabase.from('questionnaire_runs')

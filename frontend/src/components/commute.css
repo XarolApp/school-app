@@ -289,3 +289,40 @@
 .cq-link:hover {
   text-decoration: underline;
 }
+
+/* Self-contained so the control looks right in the questionnaire and in the onboarding quiz. */
+.cq-hint {
+  margin: 0;
+  color: var(--ink3);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+}
+.cq-label {
+  color: var(--ink);
+  font-size: var(--fs-body-sm);
+  font-weight: 600;
+}
+.cq-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+.cq-option {
+  padding: 8px 14px;
+  border-radius: var(--r-chip);
+  border: 1px solid var(--line2);
+  background: var(--surface);
+  color: var(--ink2);
+  font: inherit;
+  font-size: var(--fs-body-sm);
+  cursor: pointer;
+  text-align: left;
+}
+.cq-option:hover {
+  border-color: var(--acc-line);
+}
+.cq-option.is-on {
+  background: var(--acc);
+  border-color: var(--acc);
+  color: var(--acc-ink);
+}

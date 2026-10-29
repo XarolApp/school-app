@@ -54,6 +54,18 @@ export function saveStop(stopId) {
   } catch { /* the selected stop still works for this page */ }
 }
 
+/**
+ * Attaches `commute_minutes` from a stop's row ({ schoolId: minutes | null }):
+ * a number, null (over 90 minutes) or - when the row has no entry - left
+ * undefined, so a school with no data is "unknown" and never "far".
+ */
+export function withCommuteMinutes(schools, row) {
+  if (!row) return schools;
+  return schools.map((school) => (
+    Object.prototype.hasOwnProperty.call(row, String(school.id)) ? { ...school, commute_minutes: row[String(school.id)] } : school
+  ));
+}
+
 // ---- the minute limit ----
 
 export const COMMUTE_LIMIT_MIN = 1;
@@ -92,6 +104,8 @@ export function schoolsAvailable(count) {
   return `je dostupných ${count} škol`;
 }
 export const minutesGen = (n) => `${n} ${n === 1 ? 'minuty' : 'minut'}`;
+// "za 1 minutu / 2-4 minuty / 5 minut" (accusative, after "za").
+export const minutesAcc = (n) => `${n} ${n === 1 ? 'minutu' : n >= 2 && n <= 4 ? 'minuty' : 'minut'}`;
 
 /** The first tidy limit (multiples of 5, above `limit`, at most 60) that reaches at least `enough` schools. */
 export function suggestLimit(minutes, limit, enough = 5) {

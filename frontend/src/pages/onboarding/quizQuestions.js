@@ -51,19 +51,6 @@ const UNSURE = {
   },
 };
 
-/** Praha 1-22 options for the districts question. Values must match the `id`s
- *  in lib/pragueDistricts.js exactly — that string equality is the whole
- *  contract between the checkboxes and the clickable map. */
-const DISTRICT_OPTIONS = Array.from({ length: 22 }, (_, i) => ({
-  value: String(i + 1),
-  label: `Praha ${i + 1}`,
-}));
-
-/** How many districts a student can pick before the rest dim. Six of
- *  twenty-two would quietly turn "where would you commute to" into a much
- *  narrower question than it reads as. */
-const DISTRICTS_MAX = 10;
-
 export const QUESTIONS = [
   {
     id: 'focus',
@@ -191,9 +178,9 @@ export const QUESTIONS = [
         unsure: true,
         reassure: {
           student:
-            'Fajn — ukážeme ti obojí. Typ školy pak z výpočtu vypadne a rozhodne to, co tě baví a kam dojedeš.',
+            'Fajn — ukážeme ti obojí. Typ školy pak z výpočtu vypadne a rozhodne to, co tě baví (a dojezd, pokud ho nastavíš).',
           parent:
-            'Zobrazíme obě varianty. Typ školy z výpočtu vypadne a rozhodnou zájmy a dostupnost.',
+            'Zobrazíme obě varianty. Typ školy z výpočtu vypadne a rozhodnou zájmy (a dojezd, pokud jste ho nastavili).',
         },
       },
     ],
@@ -292,48 +279,54 @@ export const QUESTIONS = [
         parentLabel: 'Kombinace obojího',
         reassure: {
           student:
-            'To sedí na dost škol — tahle otázka ti tedy výběr nezúží a rozhodnou spíš zájmy a dojíždění.',
+            'To sedí na dost škol — tahle otázka ti tedy výběr nezúží a rozhodnou spíš zájmy a dojezd (pokud ho nastavíš).',
           parent:
-            'Této odpovědi vyhovuje řada škol, takže výběr nezúží — rozhodnou spíše zájmy a dostupnost.',
+            'Této odpovědi vyhovuje řada škol, takže výběr nezúží — rozhodnou spíše zájmy a dojezd (pokud jste ho nastavili).',
         },
       },
       UNSURE,
     ],
   },
   /**
-   * Asks which districts the student would commute TO, not where they live
-   * plus a tolerance level. This is deliberate — see the note above
-   * `location` in lib/matching.js for why. Nothing about a home address is
-   * collected: the student already knows their own sense of "too far" and
-   * answers from it directly, more accurately than a distance estimate could.
-   *
-   * `map: true` tells QuizQuestion to render the interactive district picker
-   * (components/onboarding/DistrictMap.jsx) beside the checkboxes.
+   * MHD commute: the student picks a PID stop (never an address), sets the
+   * longest ride they accept (any minute 1-60, or "60+" for no limit) and how
+   * strict that limit is. The three answers live under `commuteStop`,
+   * `commuteLimit` and `commuteStrict`; `type: 'commute'` makes QuizQuestion draw
+   * the shared commute control (components/CommuteControl.jsx) instead of an
+   * option list. Scored by the `commute` component in lib/matching.js from the
+   * stop's row of the PID timetable matrix; the server saves only the stop id.
    */
   {
-    id: 'districts',
-    key: 'districts',
-    type: 'multi',
-    map: true,
-    max: DISTRICTS_MAX,
-    panelLabel: 'Části Prahy',
+    id: 'commute',
+    key: 'commuteStop',
+    type: 'commute',
+    options: [],
+    panelLabel: 'Dojezd MHD',
     reassure: {
       student:
-        'Vzdálenost počítáme podle městských částí, ne podle jízdních řádů — minuty bychom si museli vymyslet a to neděláme.',
+        'Dojezd bereme z ranní špičky podle jízdních řádů PID jako odhad (cca). Jak přísně limit platí, určuješ pod posuvníkem.',
       parent:
-        'Dostupnost vyhodnocujeme podle městských částí, nikoli podle jízdních řádů. Konkrétní minuty bychom museli odhadovat, což neděláme.',
+        'Dojezd bereme z ranní špičky podle jízdních řádů PID jako odhad (cca). Jak přísně limit platí, nastavíte pod posuvníkem.',
     },
     student: {
-      title: 'Do kterých částí Prahy jsi ochotný/á dojíždět?',
-      hint: 'Vyber klidně víc — čím širší okruh, tím víc škol uvidíš.',
+      title: 'Odkud do školy pojedeš MHD a jak dlouho smí cesta trvat?',
+      hint: 'Vyber zastávku a nastav nejdelší cestu v minutách. Nepovinné — když nevíš, přeskoč.',
     },
     parent: {
-      title: 'Do kterých částí Prahy je dítě ochotné dojíždět?',
-      hint: 'Můžete vybrat víc částí. Pokud si nejste jistí, klidně přeskočte.',
+      title: 'Odkud bude dítě jezdit do školy MHD a jak dlouho smí cesta trvat?',
+      hint: 'Vyberte zastávku a nastavte nejdelší cestu v minutách. Nepovinné — pokud si nejste jistí, přeskočte.',
     },
-    options: DISTRICT_OPTIONS,
-    honesty:
-      'Ptáme se na části Prahy, ne na přesnou adresu — nic o tom, kde bydlíš, si neukládáme.',
+    strictOptions: [
+      { value: 'preference', label: 'Spíš přání — klidně i déle, když škola sedí', parentLabel: 'Spíše přání — i delší cesta je v pořádku, pokud škola sedí' },
+      { value: 'dulezite', label: 'Důležité — raději ne déle', parentLabel: 'Důležité — raději ne déle' },
+      { value: 'nutne', label: 'Nutnost — delší dojíždění nechci', parentLabel: 'Nutnost — delší dojíždění nechceme' },
+    ],
+    honesty: {
+      student:
+        'Neptáme se na adresu. Zastávku použijeme k výpočtu dojezdu a uložíme ji až s dokončeným dotazníkem k tvému účtu. Časy jsou odhad z jízdních řádů PID, ne záruka.',
+      parent:
+        'Neptáme se na adresu. Zastávku použijeme k výpočtu dojezdu a uložíme ji až s dokončeným dotazníkem k vašemu účtu. Časy jsou odhad z jízdních řádů PID, ne záruka.',
+    },
   },
   {
     id: 'certainty',
@@ -407,9 +400,9 @@ export const QUESTIONS = [
         parentLabel: 'Zaměření školy',
         reassure: {
           student:
-            'Tohle přímo posune váhy ve výpočtu: obor bude rozhodovat víc než adresa. Můžeš tedy skončit i o kus dál.',
+            'Tohle přímo posune váhy ve výpočtu: obor bude rozhodovat víc než dojezd. Můžeš tedy skončit i o kus dál.',
           parent:
-            'Tato volba přímo mění váhy ve výpočtu: obor rozhodne více než poloha. Ve výsledku se proto mohou objevit i vzdálenější školy.',
+            'Tato volba přímo mění váhy ve výpočtu: obor rozhodne více než dojezd. Ve výsledku se proto mohou objevit i školy s delší cestou.',
         },
       },
       {
@@ -418,9 +411,9 @@ export const QUESTIONS = [
         parentLabel: 'Dostupnost a vzdálenost',
         reassure: {
           student:
-            'Dojezd dostane větší váhu než obor. Školy z tvých částí Prahy půjdou nahoru, i když zaměření sedí jen napůl.',
+            'Dojezd dostane větší váhu než obor (když u dojezdu nastavíš zastávku a limit). Školy s kratší cestou MHD půjdou nahoru, i když zaměření sedí jen napůl.',
           parent:
-            'Dostupnost dostane větší váhu než obor. Školy z vybraných částí Prahy se posunou výše i při částečné shodě zaměření.',
+            'Dojezd dostane větší váhu než obor (pokud jste nastavili zastávku a limit). Školy s kratší cestou MHD se posunou výše i při částečné shodě zaměření.',
         },
       },
       {
@@ -429,9 +422,9 @@ export const QUESTIONS = [
         parentLabel: 'Obojí je důležité',
         reassure: {
           student:
-            'Zaměření i dostupnost zohledníme společně s ostatními odpověďmi.',
+            'Zaměření i dojezd (když ho nastavíš) zohledníme společně s ostatními odpověďmi.',
           parent:
-            'Zaměření i dostupnost zohledníme společně s ostatními odpověďmi.',
+            'Zaměření i dojezd (pokud jste ho nastavili) zohledníme společně s ostatními odpověďmi.',
         },
       },
     ],
@@ -596,8 +589,13 @@ export function reassuranceFor(question, value, role, gender = 'm') {
  * Reads the SAME state the quiz writes — the panel is a second shape of the
  * flow's state, never a second copy of it.
  */
-export function answerTags(question, value, role) {
+export function answerTags(question, value, role, answers = {}) {
   if (value === undefined || value === null || value === '') return [];
+  // The commute question holds a stop id; the panel shows the limit, not the id.
+  if (question.type === 'commute') {
+    const limit = Number(answers.commuteLimit);
+    return [Number.isInteger(limit) && limit >= 1 ? `do ${limit} min MHD` : 'bez časového limitu'];
+  }
   const values = Array.isArray(value) ? value : [value];
   return values
     .filter((v) => v !== 'nevim')

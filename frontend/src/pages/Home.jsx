@@ -266,11 +266,11 @@ function Home() {
           </article>
           <article className="ls-tile" data-reveal style={{ '--i': 1 }}>
             <h3 className="ls-h3">Porovnání vedle sebe</h3>
-            <p className="ls-body">Až čtyři školy v jedné tabulce, stejné údaje na stejném řádku.</p>
+            <p className="ls-body">Až pět škol v jedné tabulce, stejné údaje na stejném řádku.</p>
           </article>
           <article className="ls-tile" data-reveal style={{ '--i': 2 }}>
             <h3 className="ls-h3">Mapa a dojezd</h3>
-            <p className="ls-body">Vybereš městské části, kam dojedeš, a vzdálenost se promítne do shody.</p>
+            <p className="ls-body">Vybereš zastávku a nejdelší cestu MHD v minutách. Dojezd se promítne do shody a školy můžeš podle něj filtrovat.</p>
           </article>
           <article className="ls-tile" data-reveal style={{ '--i': 3 }}>
             <h3 className="ls-h3">Praktické údaje o školách</h3>

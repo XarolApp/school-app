@@ -4,7 +4,6 @@ import { ObScreen } from '../../../components/onboarding/ObKit';
 import { usePrefersReducedMotion } from '../../../components/onboarding/usePrefersReducedMotion';
 import { useOnboarding } from '../useOnboarding';
 import { SCHOOL_COUNT } from '../../../config/facts';
-import { useG } from '../../../lib/gender';
 
 /**
  * Labour illusion.
@@ -17,7 +16,7 @@ import { useG } from '../../../lib/gender';
  *
  * ITEMISED, not a bare spinner and not a percentage (onboarding-v2): each row
  * names work the matcher genuinely does — feature extraction from the programs
- * text, district hop distances, explanation assembly. Faking a step the code
+ * text, comparing MHD minutes with the limit (only when one was set), explanation assembly. Faking a step the code
  * does not perform would be the same lie as a fake percentage. The running step
  * gets a genuinely indeterminate bar, because there is no honest number to
  * report for a sub-second computation.
@@ -25,30 +24,35 @@ import { useG } from '../../../lib/gender';
  * Under prefers-reduced-motion the animation is dropped and the wait is cut to
  * a minimum; the user still sees the labels, just without motion.
  */
+// The middle step names the commute work only when there is commute work to do.
 const SUB_STEPS = {
   student: [
     'Porovnávám pražské střední školy',
-    'Porovnávám školy s částmi Prahy, které jsi vybral',
+    'Vážím tvoje odpovědi u každé školy',
     'Připravuji vysvětlení u každé školy',
   ],
   parent: [
     'Porovnáváme pražské střední školy',
-    'Vyhodnocujeme dostupnost vybraných částí Prahy',
+    'Vážíme vaše odpovědi u každé školy',
     'Připravujeme odůvodnění u každé školy',
   ],
+};
+const COMMUTE_STEP = {
+  student: 'Porovnávám dojezd MHD z tvé zastávky s tvým limitem',
+  parent: 'Porovnáváme dojezd MHD z vybrané zastávky s nastaveným limitem',
 };
 
 const STEP_MS = 1050; // 3 x 1050 = 3.15s total, inside the 2.5-4.0s window.
 
 function Calculating() {
-  const { role, goNext, schoolsLoading, schools } = useOnboarding();
-  const g = useG();
+  const { role, goNext, schoolsLoading, schools, cleanedAnswers } = useOnboarding();
   const reduced = usePrefersReducedMotion();
   const [index, setIndex] = useState(0);
   const parent = role === 'parent';
-  const steps = parent
-    ? SUB_STEPS.parent
-    : SUB_STEPS.student.map((step) => step.replace('vybral', g('vybral', 'vybrala')));
+  const commuteSet = Boolean(cleanedAnswers?.commuteStop) && Number(cleanedAnswers?.commuteLimit) >= 1;
+  const steps = (parent ? SUB_STEPS.parent : SUB_STEPS.student).map((step, i) => (
+    i === 1 && commuteSet ? COMMUTE_STEP[parent ? 'parent' : 'student'] : step
+  ));
   const stepMs = reduced ? 400 : STEP_MS;
 
   useEffect(() => {

@@ -67,9 +67,7 @@ Role comes from the beta role or the onboarding role in `localStorage`.
    to the stop when the stop came from geolocation (the walk is never stored), so detail can read
    a few minutes more than the score used. The stop-to-school value itself is identical.
 5. **Strictness default is "Důležité"** (×0.75 at the far end), preselected as soon as a limit is set.
-6. The `dojezd v tvém limitu` signal reaches the AI provider (no minutes, no stop). The plan said
-   "keep the AI prompt free of commute entirely" and also asked for this signal; I followed the
-   signal. Say if you want it hidden.
+6. Superseded by part 2 below: the AI now receives the real MHD minutes and the limit (founder request), still never the stop id or name.
 7. No separate "Vzdušná čára / MHD" mode switch on the map: commute dimming appears when the
    commute filter is active, the straight-line radius panel stays as it was.
 8. School detail "v tvém limitu / o 8 min nad limitem" (plan §4.3) is **not** built — see ideas.
@@ -78,8 +76,8 @@ Role comes from the beta role or the onboarding role in `localStorage`.
 
 ```
 npm test            # root
-# tests 262
-# pass 262
+# tests 281
+# pass 281
 # fail 0
 ```
 New: `tests/commute-score.test.cjs` (credit table ±0.02, monotone 0–120 min for every limit,
@@ -88,7 +86,8 @@ commute text for the AI, paid + far stacking), `tests/commute-copy.test.mjs` (Cz
 zero state, count = filter predicate), additions to `tests/server-boundaries.test.cjs`
 (stop-row endpoint, `withCommute`, score moves only with a stop). Changed
 `tests/questionnaire.test.cjs` (the select-all-districts test became "removed question ignored").
-Frontend: `npm run lint` 0 errors (existing warnings only), `npm run build` succeeds.
+Part 2 adds `tests/onboarding-commute.test.mjs`, `tests/commute-parity.test.mjs` and four tests in
+`tests/commute-score.test.cjs` (listed under part 2). Frontend: `npm run lint` 0 errors (existing warnings only), `npm run build` succeeds.
 `npm install` was needed in this container (root and `frontend/`); lockfiles untouched.
 
 ## Browser verification (Playwright/Chromium, 375×812 and 1280×800, light + dark)
@@ -169,3 +168,137 @@ would mean the file is missing there (not checked — no deploy access from this
 4. Hide the `dojezd v tvém limitu` signal from the AI prompt if you prefer the strict reading.
 5. A matrix endpoint (stop-major, base64) if you would rather keep the stop out of URLs entirely.
 6. Matrix regeneration reminder after the December PID timetable change (no job does it).
+
+
+---
+
+# Part 2 — onboarding quiz and explanation texts (founder decisions relayed 2026-10-29)
+
+Relayed by the orchestrator session: (1) "change the onboarding quiz as well, if we promise something
+untrue, don't promise it"; (2) "for the AI explanation it should say instead of it meets district, it
+meets the MHD time". Both built on `plan/mhd-commute`; nothing pushed to `main`.
+
+## What changed
+
+**Onboarding quiz**
+- The `districts` question (and its district map, `DistrictMap.jsx` + CSS, deleted) is replaced by a
+  `commute` question in the same slot (still 11 questions). It uses the **same control as the
+  questionnaire** (`components/CommuteControl.jsx`, extracted from the questionnaire block): stop
+  picker (name or "Použít moji polohu"), 1–60 / 60+ slider with the live count in the right voice
+  (tykání student / vykání parent), the 3-way strictness (parent wording: "…delší dojíždění nechceme"),
+  preview map. Answers stay in sessionStorage as `commuteStop`, `commuteLimit`, `commuteStrict`.
+- Browser engine (`frontend/src/lib/matching.js`): the `location` (district membership) component is
+  replaced by `commute` (weight 0.2, shifted by the "co je důležitější" answer exactly as before),
+  using the **same credit curve and strictness multiplier** as the server. `frontend/src/lib/commuteScore.js`
+  mirrors `lib/commuteScore.js`; `tests/commute-parity.test.mjs` checks constants and every
+  (limit, minute, strictness) combination are identical. Unknown minutes (no data) drop the component;
+  `null` (over 90 min) scores 0.
+- `OnboardingFlow.jsx` fetches the stop's row only once a stop **and** a limit are answered and attaches
+  `commute_minutes` to the schools used by the live counter, ranking, Reveal and explanations.
+- Server save (`lib/onboardingAnswers.js`): accepts `commuteStop` (checked against the matrix; an unknown
+  or stale stop is dropped, the rest still saves), `commuteLimit` 1–60, `commuteStrict`; translates them to
+  `dojezd_zastavka/limit/prisnost` (limit needs a stop, strictness needs a limit). Old stashes with
+  `districts` still translate to `casti`. The onboarding run is scored with the stop (`scoreAnswers`).
+
+**Explanation texts**
+- Server AI input (`lib/questionnaire.js` + `lib/matching.js`): the district signal ("leží v Praze N") is
+  gone for every run; `dojezd` now emits `dojedeš tam MHD za cca 18 min, tedy v tvém limitu 25 min` as a
+  signal only when the matrix has a real value within the limit. Over the limit it is a separate neutral
+  `note` (`MHD tam trvá cca 31 min, tedy nad tvým limitem 25 min`), shown to the AI as
+  "poznámky (neutrální, ne shoda)" and in the results fallback as "Poznámka: …" — never under
+  "Shoda podle". Null or missing minutes produce nothing. The AI receives minutes and limit only; no stop id,
+  stop name or coordinates (tests assert this on the request body). The prompt now tells it not to invent,
+  round or recompute commute times and to mention an over-limit note neutrally.
+- Onboarding `explain` / `tradeoffs` templates use the same facts (below).
+
+## Copy changes (old → new)
+
+| Where | Old | New |
+|---|---|---|
+| Quiz question title (student) | Do kterých částí Prahy jsi ochotný/á dojíždět? | Odkud do školy pojedeš MHD a jak dlouho smí cesta trvat? |
+| … hint (student) | Vyber klidně víc — čím širší okruh, tím víc škol uvidíš. | Vyber zastávku a nastav nejdelší cestu v minutách. Nepovinné — když nevíš, přeskoč. |
+| Quiz question title (parent) | Do kterých částí Prahy je dítě ochotné dojíždět? | Odkud bude dítě jezdit do školy MHD a jak dlouho smí cesta trvat? |
+| … hint (parent) | Můžete vybrat víc částí. Pokud si nejste jistí, klidně přeskočte. | Vyberte zastávku a nastavte nejdelší cestu v minutách. Nepovinné — pokud si nejste jistí, přeskočte. |
+| Reassurance (student) | **Vzdálenost počítáme podle městských částí, ne podle jízdních řádů — minuty bychom si museli vymyslet a to neděláme.** (now false) | Dojezd bereme z ranní špičky podle jízdních řádů PID jako odhad (cca). Jak přísně limit platí, určuješ pod posuvníkem. |
+| Reassurance (parent) | Dostupnost vyhodnocujeme podle městských částí, nikoli podle jízdních řádů. Konkrétní minuty bychom museli odhadovat, což neděláme. | Dojezd bereme z ranní špičky podle jízdních řádů PID jako odhad (cca). Jak přísně limit platí, nastavíte pod posuvníkem. |
+| Honesty line (one text for both) | Ptáme se na části Prahy, ne na přesnou adresu — nic o tom, kde bydlíš, si neukládáme. | student: Neptáme se na adresu. Zastávku použijeme k výpočtu dojezdu a uložíme ji až s dokončeným dotazníkem k tvému účtu. Časy jsou odhad z jízdních řádů PID, ne záruka. / parent: same with "vašemu účtu" |
+| Priority "Aby to bylo blízko" (student) | Dojezd dostane větší váhu než obor. Školy z tvých částí Prahy půjdou nahoru, i když zaměření sedí jen napůl. | Dojezd dostane větší váhu než obor (když u dojezdu nastavíš zastávku a limit). Školy s kratší cestou MHD půjdou nahoru, i když zaměření sedí jen napůl. |
+| … (parent) | Dostupnost dostane větší váhu než obor. Školy z vybraných částí Prahy se posunou výše i při částečné shodě zaměření. | Dojezd dostane větší váhu než obor (pokud jste nastavili zastávku a limit). Školy s kratší cestou MHD se posunou výše i při částečné shodě zaměření. |
+| Priority "Zaměření školy" (student / parent) | …obor bude rozhodovat víc než adresa… / …obor rozhodne více než poloha. Ve výsledku se proto mohou objevit i vzdálenější školy. | …víc než dojezd… / …víc než dojezd. Ve výsledku se proto mohou objevit i školy s delší cestou. |
+| Priority "Obojí" | Zaměření i dostupnost zohledníme společně… | Zaměření i dojezd (když ho nastavíš / pokud jste ho nastavili) zohledníme společně… |
+| Practice "Půl na půl" (student / parent) | …rozhodnou spíš zájmy a dojíždění. / …zájmy a dostupnost. | …zájmy a dojezd (pokud ho nastavíš). / …(pokud jste ho nastavili). |
+| Study type "Ještě nevím" (student / parent) | …rozhodne to, co tě baví a kam dojedeš. / …rozhodnou zájmy a dostupnost. | …rozhodne to, co tě baví (a dojezd, pokud ho nastavíš). / …zájmy (a dojezd, pokud jste ho nastavili). |
+| Calculating step 2 (student / parent) | Porovnávám školy s částmi Prahy, které jsi vybral / Vyhodnocujeme dostupnost vybraných částí Prahy (shown to everyone, even without the question) | With a stop and limit: Porovnávám dojezd MHD z tvé zastávky s tvým limitem / Porovnáváme dojezd MHD z vybrané zastávky s nastaveným limitem. Otherwise: Vážím tvoje odpovědi u každé školy / Vážíme vaše odpovědi u každé školy |
+| Stakes intent (parent) | Vyřešit dojíždění (over-promise) | Zjistit, jak dlouho se do škol jezdí MHD |
+| Reveal "Shoda podle" (student) | Je v části Prahy, kam jsi ochotný/á jezdit. | Dojedeš tam MHD za cca 20 minut, tedy v tvém limitu 25 minut. |
+| … (parent) | Škola leží v části Prahy, kam jste ochotni dojíždět. | Cesta MHD trvá cca 20 minut, tedy v limitu 25 minut, který jste nastavili. |
+| Reveal trade-off, over the limit (student) | Je mimo části Prahy, které jsi vybral/a. Ověř si skutečný dojezd. | MHD tam trvá cca 31 minut, tedy nad tvým limitem 25 minut. Ověř si skutečné spojení. |
+| … (parent) | Leží mimo části Prahy, které jste označili. Skutečný dojezd je potřeba ověřit. | Cesta MHD trvá cca 31 minut, tedy nad nastaveným limitem 25 minut. Skutečné spojení je potřeba ověřit. |
+| Landing tile "Mapa a dojezd" (`Home.jsx`) | Vybereš městské části, kam dojedeš, a vzdálenost se promítne do shody. (false) | Vybereš zastávku a nejdelší cestu MHD v minutách. Dojezd se promítne do shody a školy můžeš podle něj filtrovat. |
+| Landing tile "Porovnání vedle sebe" (found while there) | Až čtyři školy v jedné tabulce… (limit is five) | Až pět škol v jedné tabulce… |
+| Questionnaire AI prompt example | …dojíždění „Praha 12“… / leží přímo v Praze 12, kam ses chtěl dojíždět | …dojedeš tam MHD za cca 18 min, tedy v tvém limitu 25 min… / dojedeš tam MHD za cca 18 minut, tedy v limitu 25 minut, který sis nastavil |
+
+Checked and left as is (true now): Reveal "a nechceš kvůli škole trávit půl dne na cestě" (echo of the student's own
+"blízko" answer, not a product claim); paywall value screens (`Hodnota`, `Cesta`, `Plan`, …) make no commute claim.
+
+
+## Tests added / output
+
+```
+npm test
+# tests 281
+# pass 281
+# fail 0
+```
+- `tests/onboarding-commute.test.mjs` (13): with only the commute answered the browser engine equals the server's
+  `raw_score` for every limit/strictness/minute sampled; the 20-minute worked example; unknown ≠ no, null = 0;
+  strictness ordering; `withCommuteMinutes`; explanation and trade-off text (student/parent, singular "1 minutu",
+  over limit neutral, null/missing says nothing, no district); quiz definition and copy honesty (no "částí Prahy",
+  no "to neděláme"); profile tags never show the stop id; onboarding save validation/translation incl. old `districts`.
+- `tests/commute-parity.test.mjs` (2): browser vs server constants and credit/multiplier, 60 limits × 97 minutes × 5 strictness values.
+- `tests/commute-score.test.cjs` (+4): signal text with minutes, neutral note over the limit, nothing for null/missing,
+  no district sentence, and the **AI request body** (stubbed `fetch`) contains the minutes/limit text and the
+  no-inventing instruction but no stop id/name.
+- Lint: 0 errors. Build: succeeds.
+
+## Browser verification (Chromium, synthetic API as in part 1)
+
+| Check | 375×812 | 1280×800 |
+|---|---|---|
+| Quiz walked to the commute question (step 6 of 11), stop → slider 25 → "Do 25 minut se dostaneš do 48 škol." → "Nutnost" | ✔ student, ✔ parent (vykání) | ✔ student |
+| Profile panel/strip shows "do 25 min MHD", never the stop id | ✔ | ✔ |
+| sessionStorage holds `commuteStop` (id), `commuteLimit` 25, `commuteStrict` nutne | ✔ | ✔ |
+| Calculating → Reveal shows "Dojedeš tam MHD za cca 20 minut, tedy v tvém limitu 25 minut." / parent "Cesta MHD trvá cca 20 minut, tedy v limitu 25 minut, který jste nastavili." | ✔ | ✔ |
+| Live counter ("Zatím ti sedí 16 škol z 192") reacts to the commute answer | ✔ | ✔ |
+
+Not checked: the account-creation step and the stash → `POST /api/me/onboarding-answers` flush in the browser (needs a
+real signup); covered by unit tests only. Dark mode of the onboarding screens. The "Skip" path of the commute question
+beyond reading the code (`clear()` resets all three keys). Demo-catalogue mode (the control shows "Dojezd teď nejde
+spočítat" when the catalogue is the offline demo, because demo ids are not in the matrix).
+
+## Things you should know
+
+1. **"Stop id only on the device until the save" is true for storage, not for transport.** To count schools and rank
+   in the browser the quiz asks `GET /api/commute/stops/:id/schools`, so the stop id is in that request's URL (access
+   logs), exactly as in part 1; the request happens only once a stop and a limit are answered. The quiz text therefore
+   says "uložíme ji až s dokončeným dotazníkem" (true) and does not claim the stop never leaves the device. To make it
+   literally device-only, download the whole matrix (~285 KB, `GET /api/commute/matrix` from the plan) and count locally —
+   say so and I will build it.
+2. Found, not touched: `OnboardingFlow.jsx` has a misplaced `if (profile?.isCreator …) return <Navigate …>` line inside the
+   `betaPreview` branch and `Navigate` is not imported (lint warns; would throw if reached). Leftover `ob-district-map*`
+   CSS rules in `onboarding.css` are now unused.
+3. `lib/matching.js` (server) still scores `casti` for old and onboarding-translated runs; nothing narrates it.
+
+## Try it on localhost (add to the earlier steps)
+
+11. Sign in with a fresh test account (or clear `sessionStorage`), open `/onboarding/welcome`, pick "Jsem student", answer the
+    questions until "Odkud do školy pojedeš MHD…". Pick "Háje", drag to 25, choose "Nutnost". Check the count line, the
+    profile panel ("do 25 min MHD") and that the text under the question says "Neptáme se na adresu…".
+12. Finish the quiz: the Reveal should list "Dojedeš tam MHD za cca N minut, tedy v tvém limitu 25 minut." for a school
+    inside the limit (and, under the trade-offs, "MHD tam trvá cca N minut, tedy nad tvým limitem…" for one outside).
+13. Repeat as "Jsem rodič" (all copy in vykání) and once skipping the commute question (Calculating must then say
+    "Vážím tvoje odpovědi u každé školy" and no MHD line must appear anywhere).
+14. Create the account, confirm the e-mail, sign in: `/dotaznik` → "Moje sady odpovědí" shows the onboarding set; in DevTools
+    the request to `/api/me/onboarding-answers` contains `commuteStop` (the id), never coordinates.
+15. In `/dotaznik`, open the results of a run with a commute limit and use "Získat vysvětlení" (needs `OPENROUTER_API_KEY`):
+    the sentence should name the MHD minutes and the limit, never a district, stop or street.

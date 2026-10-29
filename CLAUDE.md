@@ -829,6 +829,14 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
      returns one stop's minutes to every visible school for the live count under the
      slider (questionnaire and /skoly). Old runs that still hold `casti` keep scoring
      (the dimension stays in `matching.js` for them and for onboarding-translated runs).
+     The onboarding quiz asks the same commute control (`type: 'commute'` in
+     `quizQuestions.js`, answers `commuteStop` / `commuteLimit` / `commuteStrict` in
+     sessionStorage) and scores it in the browser (`frontend/src/lib/matching.js`,
+     `frontend/src/lib/commuteScore.js`, kept identical to `lib/commuteScore.js` by
+     `tests/commute-parity.test.mjs`); `onboardingAnswers.js` saves only the stop id.
+     Explanation sentences (AI prompt, `signals`/`notes`, onboarding `explain`/`tradeoffs`)
+     state the real MHD minutes and limit, never a district, and say nothing when the
+     matrix has no value.
 
 10. **School detail page** (`frontend/src/pages/SchoolDetail.jsx` + one
     component per section under `frontend/src/components/schoolDetail/`) —

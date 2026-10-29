@@ -14,15 +14,17 @@
  */
 
 import { deriveFeatures } from './schoolFeatures.js';
+import { commuteCredit, commuteMultiplier, isCommuteLimit, DEFAULT_STRICTNESS } from './commuteScore.js';
+import { minutesAcc, minutesGen } from './commute.js';
 
-/** Base weights. Question `priority` shifts focus <-> location. */
+/** Base weights. Question `priority` shifts focus <-> commute. */
 const BASE_WEIGHTS = {
   focus: 0.32,
   studyType: 0.14,
   maturita: 0.1,
   language: 0.07,
   practice: 0.09,
-  location: 0.2,
+  commute: 0.2,
   breadth: 0.08,
   // Only counts when the optional points block is answered — see COMPONENTS.reserve.
   reserve: 0.15,
@@ -129,24 +131,26 @@ const COMPONENTS = {
   },
 
   /**
-   * Binary membership, not a distance band: the student names every district
-   * they are willing to commute TO (question `districts`, a multi-select
-   * paired with the interactive map), rather than a home district plus a
-   * tolerance level scored by hop-count.
+   * MHD travel time from the student's PID stop to this school, against the
+   * limit they set (any whole minute 1-60). Replaces the old district
+   * membership component. The minutes are the committed timetable matrix's
+   * (lib/data/commute-matrix.json, via the stop's row); the same curve as the
+   * server's lib/commuteScore.js, checked by tests/commute-parity.test.mjs.
    *
-   * This replaced the earlier home-district + hop-distance design. Reasoning
-   * kept here since it is easy to reintroduce by accident: a travel-time
-   * estimate would need a routing call and a home address, and there is no
-   * timetable data to make either honest. The student already knows their own
-   * tolerance and their own sense of "too far" — this question just asks for
-   * it directly instead of trying to infer it from geography.
+   * No limit, no stop, or no data for this school (undefined) -> dropped, never
+   * a "no". `null` is a known "over 90 minutes" and scores 0.
    */
-  location(a, f) {
-    if (!Array.isArray(a.districts) || a.districts.length === 0) return null;
-    if (f.district === null || f.district === undefined) return null;
-    const wanted = new Set(a.districts.map(Number));
-    const hit = wanted.has(f.district);
-    return { score: hit ? 1 : 0, hit, note: 'lokalita' };
+  commute(a, f) {
+    const setup = commuteSetup(a);
+    if (!setup || f.commuteMinutes === undefined) return null;
+    const minutes = f.commuteMinutes;
+    return {
+      score: commuteCredit(minutes, setup.limit),
+      hit: minutes != null && minutes <= setup.limit,
+      note: 'dojezd MHD',
+      minutes,
+      limit: setup.limit,
+    };
   },
 
   /**
@@ -175,6 +179,14 @@ const COMPONENTS = {
   },
 };
 
+/** {limit, strict} when the commute answers are complete enough to score. */
+function commuteSetup(a) {
+  if (!a.commuteStop) return null;
+  const limit = typeof a.commuteLimit === 'string' && a.commuteLimit.trim() !== '' ? Number(a.commuteLimit) : a.commuteLimit;
+  if (!isCommuteLimit(limit)) return null;
+  return { limit, strict: a.commuteStrict || DEFAULT_STRICTNESS };
+}
+
 function weightsFor(answers) {
   const w = { ...BASE_WEIGHTS };
   // Without the points block the component does not exist for this student, so
@@ -182,9 +194,9 @@ function weightsFor(answers) {
   if (!answers.reserve || answers.points === undefined || answers.points === '') delete w.reserve;
   if (answers.priority === 'zamereni') {
     w.focus += 0.08;
-    w.location -= 0.08;
+    w.commute -= 0.08;
   } else if (answers.priority === 'blizkost') {
-    w.location += 0.12;
+    w.commute += 0.12;
     w.focus -= 0.08;
     w.breadth -= 0.04;
   }
@@ -243,7 +255,11 @@ function scoreFeatures(school, f, answers, role) {
 
   const totalWeight = Object.values(weights).reduce((s, x) => s + x, 0);
   // Renormalise across components with both an answer and usable school data.
-  const score = usedWeight > 0 ? weighted / usedWeight : 0;
+  let score = usedWeight > 0 ? weighted / usedWeight : 0;
+  // How strict the limit is: a school over it is pulled down, ramped over ten
+  // minutes (the estimate is not exact). Same as the server's multiplier.
+  const setup = commuteSetup(answers);
+  if (setup && parts.commute) score *= commuteMultiplier(parts.commute.minutes, setup.limit, setup.strict);
   const confidence = totalWeight > 0 ? usedWeight / totalWeight : 0;
 
   return {
@@ -296,7 +312,7 @@ export function countCandidates(schools, answers, role = 'student') {
  * the SAME structured `result` object. The bands and every number must keep
  * coming from the math above - Claude never computes or restates a score.
  */
-export function explain(result, answers, role = 'student', gender = 'm') {
+export function explain(result, answers, role = 'student', _gender = 'm') {
   const formal = role === 'parent';
   const out = [];
   const f = result.features;
@@ -322,11 +338,13 @@ export function explain(result, answers, role = 'student', gender = 'm') {
     );
   }
 
-  if (p.location?.hit) {
+  // Only a real matrix value is stated; null minutes (over 90) say nothing.
+  if (p.commute?.hit) {
+    const { minutes, limit } = p.commute;
     out.push(
       formal
-        ? 'Škola leží v části Prahy, kam jste ochotni dojíždět.'
-        : `Je v části Prahy, kam jsi ${gender === 'f' ? 'ochotná' : 'ochotný'} jezdit.`
+        ? `Cesta MHD trvá cca ${minutesGen(minutes)}, tedy v limitu ${minutesGen(limit)}, který jste nastavili.`
+        : `Dojedeš tam MHD za cca ${minutesAcc(minutes)}, tedy v tvém limitu ${minutesGen(limit)}.`
     );
   }
 
@@ -391,11 +409,12 @@ export function tradeoffs(result, role = 'student', gender = 'm') {
         : `Typ školy není přesně ten, který jsi ${gender === 'f' ? 'vybrala' : 'vybral'}.`
     );
   }
-  if (p.location && !p.location.hit) {
+  if (p.commute && !p.commute.hit && p.commute.minutes != null) {
+    const { minutes, limit } = p.commute;
     out.push(
       formal
-        ? 'Leží mimo části Prahy, které jste označili. Skutečný dojezd je potřeba ověřit.'
-        : `Je mimo části Prahy, které jsi ${gender === 'f' ? 'vybrala' : 'vybral'}. Ověř si skutečný dojezd.`
+        ? `Cesta MHD trvá cca ${minutesGen(minutes)}, tedy nad nastaveným limitem ${minutesGen(limit)}. Skutečné spojení je potřeba ověřit.`
+        : `MHD tam trvá cca ${minutesGen(minutes)}, tedy nad tvým limitem ${minutesGen(limit)}. Ověř si skutečné spojení.`
     );
   }
   if (p.language && !p.language.hit && result.features.language === false) {

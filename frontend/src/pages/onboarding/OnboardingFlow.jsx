@@ -3,6 +3,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { fetchHandoffStatus, fetchSchoolsForMatching, revokeHandoff, saveOnboardingAnswers } from '../../api';
 import { rankSchools } from '../../lib/matching';
+import { withCommuteMinutes } from '../../lib/commute';
+import { useStopMinutes } from '../../lib/useCommute';
 import { ObScreen, RoleSwitch } from '../../components/onboarding/ObKit';
 import HandoffLock from '../../components/onboarding/HandoffLock';
 import { useAuth } from '../../components/AuthContext';
@@ -356,9 +358,19 @@ function OnboardingFlow() {
     if (betaPreview && stepId === 'ucet') goToStep('plan');
   }, [betaPreview, stepId, goToStep]);
 
+  // The commute component needs each school's MHD minutes from the chosen stop.
+  // They are fetched only once a stop AND a limit are answered, and the stop id
+  // stays in this answers object (sessionStorage) until the answers are saved.
+  const commuteStop = typeof cleaned.commuteStop === 'string' ? cleaned.commuteStop : '';
+  const commuteLimit = Number(cleaned.commuteLimit);
+  const { minutes: commuteRow } = useStopMinutes(
+    !isDemo && commuteStop && Number.isInteger(commuteLimit) && commuteLimit >= 1 ? commuteStop : null
+  );
+  const scoredSchools = useMemo(() => withCommuteMinutes(schools, commuteRow), [schools, commuteRow]);
+
   const ranked = useMemo(
-    () => (schools.length ? rankSchools(schools, cleaned, role || 'student') : []),
-    [schools, cleaned, role]
+    () => (scoredSchools.length ? rankSchools(scoredSchools, cleaned, role || 'student') : []),
+    [scoredSchools, cleaned, role]
   );
 
   // Honest chrome: a phase name, never a fabricated completion percentage.
@@ -379,7 +391,7 @@ function OnboardingFlow() {
       setIntents,
       commitment,
       setCommitment,
-      schools,
+      schools: scoredSchools,
       isDemo,
       schoolsLoading,
       schoolsError,
@@ -414,7 +426,7 @@ function OnboardingFlow() {
       setAnswer,
       intents,
       commitment,
-      schools,
+      scoredSchools,
       isDemo,
       schoolsLoading,
       schoolsError,

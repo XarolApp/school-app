@@ -193,16 +193,17 @@ test('strictness changes the order the way the plan describes', () => {
   assert.deepEqual(order(withCommute('nutne'), lineup()), [2, 3, 1, 4, 5]);
 });
 
-test('dojezd breakdown equals the credit; no minutes in signals', () => {
+test('dojezd breakdown equals the credit; signals carry minutes but never the stop', () => {
   const ranked = scoreSchools(withCommute('nutne'), lineup());
   const by = Object.fromEntries(ranked.map((m) => [m.school_id, m]));
   near(by[1].breakdown.dojezd, 0.21, 0.01);
   near(by[2].breakdown.dojezd, 0.72, 0.01);
   assert.equal(by[3].breakdown.dojezd, 1);
   assert.equal(by[5].breakdown.dojezd, 0);
-  assert.ok(by[3].signals.includes('dojezd v tvém limitu'));
-  assert.ok(!by[1].signals.includes('dojezd v tvém limitu'));
-  for (const match of ranked) assert.ok(match.signals.every((s) => !/\d+\s*min/.test(s)));
+  assert.ok(by[3].signals.includes('dojedeš tam MHD za cca 18 min, tedy v tvém limitu 20 min'));
+  assert.ok(!by[1].signals.some((s) => /MHD/.test(s)));
+  // the stop itself never appears in a signal or note
+  for (const match of ranked) assert.ok([...match.signals, ...match.notes].every((s) => !/pid-|zastáv/i.test(s)));
 });
 
 test('unknown commute (no column) sits out; answers without commute score exactly as before', () => {
@@ -234,4 +235,61 @@ test('a paid school outside a must-have limit stacks both penalties', () => {
   const [a, b] = ['7', '8'].map((id) => scoreSchools(answers, [paid, free]).find((m) => String(m.school_id) === id).raw_score);
   assert.ok(a < b);
   near(a, b * 0.5, 1);
+});
+
+// --- explanation texts: MHD minutes instead of districts ---------------------
+
+const { describeMatches, requestReasons } = require('../lib/questionnaire');
+
+const stopAnswers = (limit) => ({ oblasti: ['it'], dojezd_zastavka: 'pid-286-haje', dojezd_limit: limit });
+
+test('signals state the real MHD minutes and the limit; over the limit is a neutral note, not a match', () => {
+  const ranked = scoreSchools(stopAnswers(25), [mk(1, 'Informační technologie', 18), mk(2, 'Informační technologie', 31)]);
+  const by = Object.fromEntries(ranked.map((m) => [m.school_id, m]));
+  assert.deepEqual(by[1].signals.filter((s) => /MHD/.test(s)), ['dojedeš tam MHD za cca 18 min, tedy v tvém limitu 25 min']);
+  assert.deepEqual(by[1].notes, []);
+  assert.deepEqual(by[2].signals.filter((s) => /MHD|limit/.test(s)), []);
+  assert.deepEqual(by[2].notes, ['MHD tam trvá cca 31 min, tedy nad tvým limitem 25 min']);
+});
+
+test('null or missing minutes say nothing about commute', () => {
+  for (const minutes of [null, undefined]) {
+    const [match] = scoreSchools(stopAnswers(25), [mk(1, 'Informační technologie', minutes)]);
+    assert.deepEqual(match.signals.filter((s) => /MHD|dojezd|limit/i.test(s)), []);
+    assert.deepEqual(match.notes, []);
+  }
+});
+
+test('a district no longer produces an explanation sentence, old run or not', () => {
+  const school = { id: 1, name: 'A', programs: 'Gymnázium', school_programs: [], district: 'Praha 5' };
+  const [match] = scoreSchools({ typ: 'gymnazium', casti: ['Praha 5'] }, [school]);
+  assert.equal(match.signals.some((s) => /Prah/.test(s)), false);
+});
+
+test('the AI input carries minutes and limit but never the stop, and tells the model not to invent times', async () => {
+  const answers = stopAnswers(25);
+  const schools = [mk(1, 'Informační technologie', 18), mk(2, 'Informační technologie', 31)];
+  const ranked = scoreSchools(answers, schools);
+  const byId = new Map(schools.map((s) => [s.id, s]));
+  const text = describeMatches(ranked, byId, { fullOrder: ranked, answers });
+  assert.match(text, /dojedeš tam MHD za cca 18 min, tedy v tvém limitu 25 min/);
+  assert.match(text, /poznámky \(neutrální, ne shoda\): MHD tam trvá cca 31 min, tedy nad tvým limitem 25 min/);
+  assert.doesNotMatch(text, /pid-286|haje|zastávk/i);
+
+  const sent = [];
+  const realFetch = global.fetch;
+  global.fetch = async (url, init) => {
+    sent.push(JSON.parse(init.body));
+    return new Response(JSON.stringify({ choices: [{ message: { content: JSON.stringify({ reasons: [{ school_id: 1, reason: 'Text.' }] }) } }], usage: {} }), { status: 200 });
+  };
+  try {
+    await requestReasons({ answers, shortlist: ranked.slice(0, 1), byId, apiKey: 'k', model: 'm', referer: 'http://x', fullOrder: ranked, nameById: byId });
+  } finally {
+    global.fetch = realFetch;
+  }
+  const body = JSON.stringify(sent[0]);
+  assert.doesNotMatch(body, /pid-286|haje|zastávk/i);
+  assert.match(body, /Žádné minuty nevymýšlej, nezaokrouhluj ani nepřepočítávej/);
+  assert.match(body, /v tvém limitu 25 min/);
+  assert.doesNotMatch(body, /Praha 12|leží v Praze/);
 });

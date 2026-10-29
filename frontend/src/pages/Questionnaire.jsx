@@ -225,6 +225,7 @@ function MatchRow({ match, rank, compact, runId, extraReason = '', pending = fal
   const location = useLocation();
   const school = match.school;
   const signals = Array.isArray(match.signals) ? match.signals : [];
+  const notes = Array.isArray(match.notes) ? match.notes : [];
   // Rows the automatic fill could not reach (AI down, or the page was left)
   // keep a manual button; the server caches the result, so it costs once.
   const [generated, setGenerated] = useState('');
@@ -270,6 +271,7 @@ function MatchRow({ match, rank, compact, runId, extraReason = '', pending = fal
         {!compact && !reason && !pending && !queued && !explaining && (
           <div className="qz-why">
             {signals.length > 0 && <p className="qz-reason qz-reason-quiet">Shoda podle: {signals.join(' · ')}</p>}
+            {notes.length > 0 && <p className="qz-reason qz-reason-quiet">Poznámka: {notes.join(' · ')}</p>}
             <button type="button" className="ss-btn ss-btn-secondary ss-btn-sm qz-why-button" onClick={explain}>
               Získat vysvětlení
             </button>
