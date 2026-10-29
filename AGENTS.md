@@ -28,7 +28,7 @@ tool is used) lives in the `.agents/skills/codex-*` skills, not here.
 | Tiny, mechanical edit: typo, label rename, one obvious CSS value, boilerplate | Claude Haiku 5.5 | Anthropic's own guidance names exactly this class as Haiku work |
 | Everyday coding from a detailed plan: add an endpoint, build a component to spec, write tests, fix a known bug | Claude Sonnet 5.5, medium | Default-tier implementation work |
 | Larger multi-file implementation; fixing failing tests after an implementation | Claude Sonnet 5.5, high (Claude Code default) | |
-| Code review, and debugging (including a task Sonnet already failed on) | Claude Opus 5.5, low | Opus 5.5 at its lowest effort caught more known bugs than a higher-effort predecessor at high — more effort did not help this task shape |
+| Code review, and debugging (including a task Sonnet already failed on) | Claude Opus 5.5, high | Founder decision (27 Oct): reviews run at high effort. The 2026-09-23 benchmark found Opus 5.5 at low already caught more known bugs than a higher-effort predecessor at high |
 | Planning / architecture design | Claude Opus 5.5, medium | Benchmarked above Opus's own max effort on this task shape — more effort did not help here either |
 | Hard debugging, refactors touching many parts of the codebase; math/science/security-heavy work (auth audits, algorithm design) | Claude Opus 5.5, high | This is the task shape where more effort does help |
 | Long unattended runs over ~30 minutes: migrations, multi-repo changes | Claude Opus 5.5, xhigh | Anthropic designed this effort tier for exactly this |
@@ -187,7 +187,7 @@ I will:
 - Landing page copy drafting
 - Analytics setup planning
 
-**Why this matters:** The founder has ~5 hours/day. If the AI is coding for 30 minutes, those 30 minutes should not be "wait for the AI." They should be spent on high-leverage manual work (like actual creator outreach) that only the founder can do.
+**Why this matters:** The founder has roughly 2–4 hours/day. If the AI is coding for 30 minutes, those 30 minutes should not be "wait for the AI." They should be spent on high-leverage manual work (like actual creator outreach) that only the founder can do.
 
 ---
 
@@ -349,8 +349,8 @@ themselves. Use the browser pane / preview tools for this.
 - **AI:** GPT-6 Luna via OpenRouter (`OPENROUTER_MODEL=openai/gpt-6-luna`,
   `OPENROUTER_PROVIDER=openai/flex`) writes questionnaire explanation sentences
   and on-demand school reasons. Matching and scores are deterministic JavaScript;
-  AI never produces a score. Gemini remains in the separate scraping pipeline.
-- **Scraping:** n8n + Firecrawl + Gemini 2.5 Flash Lite (external workflow, not in this repo)
+  AI never produces a score.
+- **Scraping:** Firecrawl via `scripts/scrape-schools.js`, then `scripts/extract-school-details.js` (the old n8n workflow is retired)
 - **Payments:** Stripe Checkout + webhooks are implemented and covered by deterministic
   boundary tests. Monthly uses a subscription; season uses Setup mode followed by one
   scheduled PaymentIntent after the trial. Live keys and real-money end-to-end testing
@@ -518,7 +518,7 @@ grants. Tables without a client policy below are intended to be server-only
   every school read goes through `server.js` with the service-role key. That is what
   makes a paywall on school data possible at all.
 
-`service_role` bypasses RLS entirely, so both `server.js` and the n8n scraper keep
+`service_role` bypasses RLS entirely, so `server.js` and the scripts in `scripts/` keep
 working. Never put that key in `frontend/.env`.
 
 ---
@@ -709,17 +709,6 @@ app inside a 390×844 phone frame (dev tooling only, `frontend/public/`).
    (removing a favourite, renaming/archiving an answer set, deleting the account)
    need only `requireAuth`. An account whose trial lapsed must never be locked out
    of its own data.
-
-2. **Original n8n scraping workflow design** (external; current deployed workflow
-   not inspected by the October review — the ~60 items below are historical):
-   - Scrapes atlasskolstvi.cz directory (Prague region, pages 1-3) via Firecrawl
-   - AI extraction (Gemini 2.5 Flash Lite) pulls `{name, url}` pairs from each page
-   - Aggregates + splits into ~60 individual school items
-   - Loops through each school's individual profile page, scrapes it via Firecrawl
-   - AI extraction pulls structured `{name, location, programs, contact, website}`
-   - Validates required fields (name, location not empty)
-   - Inserts into Supabase `schools` table
-   - Logs result (Success/Needs Review) to a Google Sheet for tracking
 
 3. **GitHub repo:** `school-app` under account `XarolApp`
 
