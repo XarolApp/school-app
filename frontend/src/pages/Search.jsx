@@ -1323,8 +1323,14 @@ function Search() {
           key={o.id}
           className={`ss-sort-option${activeSort === o.id ? ' is-active' : ''}`}
           // detail > 0 = a real click; arrow keys change the radio without closing.
+          // Apply the sort here, not via the input's onChange: closing the sheet
+          // unmounts the radio before the label's synthetic input click fires.
           onClick={(event) => {
-            if (event.detail > 0) closeSort();
+            if (event.detail > 0) {
+              event.preventDefault();
+              setPatch({ sort: o.id, sortPicked: true, sortDir: '' });
+              closeSort();
+            }
           }}
         >
           <input

@@ -99,15 +99,15 @@ function gatePage({ wrongKey = false, returnTo = '/', setup = false } = {}) {
   const content = setup
     ? '<h1>Stránka se právě nastavuje.</h1>'
     : `<h1>Střední na míru ještě není spuštěné.</h1>
-      <p class="intro">Doděláváme poslední detaily. Nech nám tady e-mail a pošleme ti zprávu hned, jak otevřeme.</p>
+      <p class="intro">Doděláváme poslední detaily. Otevíráme 1. listopadu. Nech nám tady e-mail a pošleme ti zprávu hned, jak otevřeme, a k ní kód na 10 % slevu na první platbu.</p>
       <form id="waitlist" novalidate>
         <label for="wl-email">Tvůj e-mail</label>
         <input id="wl-email" type="email" name="email" autocomplete="email" required>
         <p class="error" role="alert" hidden></p>
         <button class="submit" type="submit">Dej mi vědět</button>
-        <p class="note">Použijeme ho jen na jednu zprávu o spuštění. Zpracování a odhlášení: <a href="mailto:info@stredninamiru.cz">info@stredninamiru.cz</a></p>
+        <p class="note">Použijeme ho jen na jednu zprávu o spuštění se slevovým kódem. Zpracování a odhlášení: <a href="mailto:info@stredninamiru.cz">info@stredninamiru.cz</a></p>
       </form>
-      <p class="done" role="status" hidden>Díky! Ozveme se, jakmile to bude hotové.</p>
+      <p class="done" role="status" hidden>Díky! Ozveme se hned po spuštění 1. listopadu a pošleme ti kód na 10 % slevu.</p>
       <details class="tester"><summary>Jsem tester</summary>
       <p class="intro">Zadej přístupový kód z e-mailu od školy.</p>
       ${form}
