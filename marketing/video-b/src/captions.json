@@ -1,0 +1,722 @@
+[
+ {
+  "text": "Jak",
+  "beat": "H",
+  "startMs": 60,
+  "endMs": 270
+ },
+ {
+  "text": "vybrat",
+  "beat": "H",
+  "startMs": 270,
+  "endMs": 580
+ },
+ {
+  "text": "dobrou",
+  "beat": "H",
+  "startMs": 580,
+  "endMs": 970
+ },
+ {
+  "text": "střední",
+  "beat": "H",
+  "startMs": 970,
+  "endMs": 1590
+ },
+ {
+  "text": "bez",
+  "beat": "H",
+  "startMs": 1590,
+  "endMs": 1780
+ },
+ {
+  "text": "15",
+  "beat": "H",
+  "startMs": 1780,
+  "endMs": 2130
+ },
+ {
+  "text": "hodin",
+  "beat": "H",
+  "startMs": 2130,
+  "endMs": 2450
+ },
+ {
+  "text": "googlení?",
+  "beat": "H",
+  "startMs": 2450,
+  "endMs": 3160
+ },
+ {
+  "text": "Tolik",
+  "beat": "L",
+  "startMs": 3160,
+  "endMs": 3490
+ },
+ {
+  "text": "zabere",
+  "beat": "L",
+  "startMs": 3490,
+  "endMs": 3890
+ },
+ {
+  "text": "projít",
+  "beat": "L",
+  "startMs": 3890,
+  "endMs": 4350
+ },
+ {
+  "text": "weby",
+  "beat": "L",
+  "startMs": 4350,
+  "endMs": 4610
+ },
+ {
+  "text": "všech",
+  "beat": "L",
+  "startMs": 4610,
+  "endMs": 4629
+ },
+ {
+  "text": "192",
+  "beat": "L",
+  "startMs": 4629,
+  "endMs": 5290
+ },
+ {
+  "text": "pražských",
+  "beat": "L",
+  "startMs": 5290,
+  "endMs": 6020
+ },
+ {
+  "text": "středních.",
+  "beat": "L",
+  "startMs": 6020,
+  "endMs": 6920
+ },
+ {
+  "text": "I",
+  "beat": "L",
+  "startMs": 6920,
+  "endMs": 6980
+ },
+ {
+  "text": "když",
+  "beat": "L",
+  "startMs": 6980,
+  "endMs": 7300
+ },
+ {
+  "text": "na",
+  "beat": "L",
+  "startMs": 7300,
+  "endMs": 7430
+ },
+ {
+  "text": "každé",
+  "beat": "L",
+  "startMs": 7430,
+  "endMs": 7880
+ },
+ {
+  "text": "strávíš",
+  "beat": "L",
+  "startMs": 7880,
+  "endMs": 8530
+ },
+ {
+  "text": "jen",
+  "beat": "L",
+  "startMs": 8530,
+  "endMs": 8720
+ },
+ {
+  "text": "5 minut.",
+  "beat": "L",
+  "startMs": 8720,
+  "endMs": 9480
+ },
+ {
+  "text": "Tady",
+  "beat": "L",
+  "startMs": 9480,
+  "endMs": 9710
+ },
+ {
+  "text": "je",
+  "beat": "L",
+  "startMs": 9710,
+  "endMs": 9830
+ },
+ {
+  "text": "zkratka",
+  "beat": "L",
+  "startMs": 9830,
+  "endMs": 10290
+ },
+ {
+  "text": "v",
+  "beat": "L",
+  "startMs": 10290,
+  "endMs": 10350
+ },
+ {
+  "text": "5 krocích.",
+  "beat": "L",
+  "startMs": 10350,
+  "endMs": 11160
+ },
+ {
+  "text": "Jedna.",
+  "beat": "1",
+  "startMs": 11160,
+  "endMs": 11790
+ },
+ {
+  "text": "Odpověz",
+  "beat": "1",
+  "startMs": 11790,
+  "endMs": 12610
+ },
+ {
+  "text": "na",
+  "beat": "1",
+  "startMs": 12610,
+  "endMs": 12610
+ },
+ {
+  "text": "11",
+  "beat": "1",
+  "startMs": 12610,
+  "endMs": 13080
+ },
+ {
+  "text": "otázek.",
+  "beat": "1",
+  "startMs": 13080,
+  "endMs": 13760
+ },
+ {
+  "text": "Co",
+  "beat": "1",
+  "startMs": 13760,
+  "endMs": 14010
+ },
+ {
+  "text": "tě",
+  "beat": "1",
+  "startMs": 14010,
+  "endMs": 14080
+ },
+ {
+  "text": "baví,",
+  "beat": "1",
+  "startMs": 14080,
+  "endMs": 14790
+ },
+ {
+  "text": "gympl,",
+  "beat": "1",
+  "startMs": 14790,
+  "endMs": 15160
+ },
+ {
+  "text": "nebo",
+  "beat": "1",
+  "startMs": 15160,
+  "endMs": 15480
+ },
+ {
+  "text": "odborka,",
+  "beat": "1",
+  "startMs": 15480,
+  "endMs": 16240
+ },
+ {
+  "text": "kam",
+  "beat": "1",
+  "startMs": 16240,
+  "endMs": 16390
+ },
+ {
+  "text": "chceš",
+  "beat": "1",
+  "startMs": 16390,
+  "endMs": 16690
+ },
+ {
+  "text": "dojíždět.",
+  "beat": "1",
+  "startMs": 16690,
+  "endMs": 17400
+ },
+ {
+  "text": "Hned",
+  "beat": "1",
+  "startMs": 17400,
+  "endMs": 17670
+ },
+ {
+  "text": "vidíš",
+  "beat": "1",
+  "startMs": 17670,
+  "endMs": 18060
+ },
+ {
+  "text": "školy,",
+  "beat": "1",
+  "startMs": 18060,
+  "endMs": 18540
+ },
+ {
+  "text": "které",
+  "beat": "1",
+  "startMs": 18540,
+  "endMs": 18930
+ },
+ {
+  "text": "ti",
+  "beat": "1",
+  "startMs": 18930,
+  "endMs": 19020
+ },
+ {
+  "text": "sedí.",
+  "beat": "1",
+  "startMs": 19020,
+  "endMs": 19440
+ },
+ {
+  "text": "Dvě.",
+  "beat": "2",
+  "startMs": 19440,
+  "endMs": 19740
+ },
+ {
+  "text": "Projdi",
+  "beat": "2",
+  "startMs": 19820,
+  "endMs": 20280
+ },
+ {
+  "text": "je.",
+  "beat": "2",
+  "startMs": 20280,
+  "endMs": 20770
+ },
+ {
+  "text": "Filtruj",
+  "beat": "2",
+  "startMs": 20770,
+  "endMs": 21160
+ },
+ {
+  "text": "podle",
+  "beat": "2",
+  "startMs": 21160,
+  "endMs": 21530
+ },
+ {
+  "text": "oboru",
+  "beat": "2",
+  "startMs": 21530,
+  "endMs": 21920
+ },
+ {
+  "text": "a",
+  "beat": "2",
+  "startMs": 21920,
+  "endMs": 22080
+ },
+ {
+  "text": "seřaď",
+  "beat": "2",
+  "startMs": 22080,
+  "endMs": 22480
+ },
+ {
+  "text": "podle",
+  "beat": "2",
+  "startMs": 22480,
+  "endMs": 22860
+ },
+ {
+  "text": "shody",
+  "beat": "2",
+  "startMs": 22860,
+  "endMs": 23390
+ },
+ {
+  "text": "nebo",
+  "beat": "2",
+  "startMs": 23390,
+  "endMs": 23500
+ },
+ {
+  "text": "podle",
+  "beat": "2",
+  "startMs": 23500,
+  "endMs": 23780
+ },
+ {
+  "text": "bodů,",
+  "beat": "2",
+  "startMs": 23780,
+  "endMs": 24180
+ },
+ {
+  "text": "které",
+  "beat": "2",
+  "startMs": 24180,
+  "endMs": 24490
+ },
+ {
+  "text": "loni",
+  "beat": "2",
+  "startMs": 24490,
+  "endMs": 24710
+ },
+ {
+  "text": "stačily.",
+  "beat": "2",
+  "startMs": 24710,
+  "endMs": 25400
+ },
+ {
+  "text": "Tři.",
+  "beat": "3",
+  "startMs": 25400,
+  "endMs": 25720
+ },
+ {
+  "text": "Ty",
+  "beat": "3",
+  "startMs": 25960,
+  "endMs": 25990
+ },
+ {
+  "text": "nejlepší",
+  "beat": "3",
+  "startMs": 25990,
+  "endMs": 26770
+ },
+ {
+  "text": "si",
+  "beat": "3",
+  "startMs": 26770,
+  "endMs": 26930
+ },
+ {
+  "text": "ulož.",
+  "beat": "3",
+  "startMs": 26930,
+  "endMs": 27400
+ },
+ {
+  "text": "Čtyři.",
+  "beat": "4",
+  "startMs": 27400,
+  "endMs": 28100
+ },
+ {
+  "text": "Porovnej",
+  "beat": "4",
+  "startMs": 28100,
+  "endMs": 28530
+ },
+ {
+  "text": "je",
+  "beat": "4",
+  "startMs": 28530,
+  "endMs": 28670
+ },
+ {
+  "text": "vedle",
+  "beat": "4",
+  "startMs": 28670,
+  "endMs": 29030
+ },
+ {
+  "text": "sebe.",
+  "beat": "4",
+  "startMs": 29030,
+  "endMs": 29400
+ },
+ {
+  "text": "V",
+  "beat": "4",
+  "startMs": 29400,
+  "endMs": 29580
+ },
+ {
+  "text": "rozhodovací",
+  "beat": "4",
+  "startMs": 29580,
+  "endMs": 30120
+ },
+ {
+  "text": "matici",
+  "beat": "4",
+  "startMs": 30120,
+  "endMs": 30460
+ },
+ {
+  "text": "si",
+  "beat": "4",
+  "startMs": 30460,
+  "endMs": 30580
+ },
+ {
+  "text": "nastav,",
+  "beat": "4",
+  "startMs": 30580,
+  "endMs": 30910
+ },
+ {
+  "text": "na",
+  "beat": "4",
+  "startMs": 30910,
+  "endMs": 31020
+ },
+ {
+  "text": "čem",
+  "beat": "4",
+  "startMs": 31020,
+  "endMs": 31290
+ },
+ {
+  "text": "ti",
+  "beat": "4",
+  "startMs": 31290,
+  "endMs": 31350
+ },
+ {
+  "text": "záleží,",
+  "beat": "4",
+  "startMs": 31350,
+  "endMs": 32010
+ },
+ {
+  "text": "a",
+  "beat": "4",
+  "startMs": 32010,
+  "endMs": 32020
+ },
+ {
+  "text": "uvidíš",
+  "beat": "4",
+  "startMs": 32020,
+  "endMs": 32570
+ },
+ {
+  "text": "pořadí.",
+  "beat": "4",
+  "startMs": 32570,
+  "endMs": 33120
+ },
+ {
+  "text": "Pět.",
+  "beat": "5",
+  "startMs": 33120,
+  "endMs": 33410
+ },
+ {
+  "text": "Tři",
+  "beat": "5",
+  "startMs": 33510,
+  "endMs": 33850
+ },
+ {
+  "text": "školy",
+  "beat": "5",
+  "startMs": 33850,
+  "endMs": 34220
+ },
+ {
+  "text": "seřaď",
+  "beat": "5",
+  "startMs": 34220,
+  "endMs": 34740
+ },
+ {
+  "text": "do",
+  "beat": "5",
+  "startMs": 34740,
+  "endMs": 34890
+ },
+ {
+  "text": "přihlášky.",
+  "beat": "5",
+  "startMs": 34890,
+  "endMs": 35920
+ },
+ {
+  "text": "Přesně",
+  "beat": "5",
+  "startMs": 35920,
+  "endMs": 36370
+ },
+ {
+  "text": "v",
+  "beat": "5",
+  "startMs": 36370,
+  "endMs": 36510
+ },
+ {
+  "text": "pořadí,",
+  "beat": "5",
+  "startMs": 36510,
+  "endMs": 37070
+ },
+ {
+  "text": "jak",
+  "beat": "5",
+  "startMs": 37070,
+  "endMs": 37170
+ },
+ {
+  "text": "je",
+  "beat": "5",
+  "startMs": 37170,
+  "endMs": 37290
+ },
+ {
+  "text": "pak",
+  "beat": "5",
+  "startMs": 37290,
+  "endMs": 37470
+ },
+ {
+  "text": "zadáš",
+  "beat": "5",
+  "startMs": 37470,
+  "endMs": 37880
+ },
+ {
+  "text": "do",
+  "beat": "5",
+  "startMs": 37880,
+  "endMs": 37990
+ },
+ {
+  "text": "DiPSy.",
+  "beat": "5",
+  "startMs": 37990,
+  "endMs": 38560
+ },
+ {
+  "text": "Spouštíme",
+  "beat": "CTA",
+  "startMs": 38560,
+  "endMs": 39270
+ },
+ {
+  "text": "prvního",
+  "beat": "CTA",
+  "startMs": 39270,
+  "endMs": 39780
+ },
+ {
+  "text": "listopadu.",
+  "beat": "CTA",
+  "startMs": 39780,
+  "endMs": 40400
+ },
+ {
+  "text": "Zapiš",
+  "beat": "CTA",
+  "startMs": 40400,
+  "endMs": 40790
+ },
+ {
+  "text": "se",
+  "beat": "CTA",
+  "startMs": 40790,
+  "endMs": 40920
+ },
+ {
+  "text": "na",
+  "beat": "CTA",
+  "startMs": 40920,
+  "endMs": 41050
+ },
+ {
+  "text": "waitlist",
+  "beat": "CTA",
+  "startMs": 41050,
+  "endMs": 41680
+ },
+ {
+  "text": "na",
+  "beat": "CTA",
+  "startMs": 41680,
+  "endMs": 41730
+ },
+ {
+  "text": "stredninamiru.cz",
+  "beat": "CTA",
+  "startMs": 41730,
+  "endMs": 43240
+ },
+ {
+  "text": "a",
+  "beat": "CTA",
+  "startMs": 43240,
+  "endMs": 43360
+ },
+ {
+  "text": "při",
+  "beat": "CTA",
+  "startMs": 43360,
+  "endMs": 44100
+ },
+ {
+  "text": "spuštění",
+  "beat": "CTA",
+  "startMs": 44100,
+  "endMs": 44100
+ },
+ {
+  "text": "dostaneš",
+  "beat": "CTA",
+  "startMs": 44100,
+  "endMs": 44590
+ },
+ {
+  "text": "slevu",
+  "beat": "CTA",
+  "startMs": 44590,
+  "endMs": 44755
+ },
+ {
+  "text": "10 %.",
+  "beat": "CTA",
+  "startMs": 44755,
+  "endMs": 45560
+ },
+ {
+  "text": "Odkaz",
+  "beat": "CTA",
+  "startMs": 45560,
+  "endMs": 46020
+ },
+ {
+  "text": "máš",
+  "beat": "CTA",
+  "startMs": 46020,
+  "endMs": 46400
+ },
+ {
+  "text": "v",
+  "beat": "CTA",
+  "startMs": 46400,
+  "endMs": 46472
+ },
+ {
+  "text": "biu.",
+  "beat": "CTA",
+  "startMs": 46472,
+  "endMs": 46760
+ }
+]
