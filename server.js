@@ -4677,8 +4677,23 @@ async function cancelPlanForUser(userId, reason = null) {
   }
 }
 
+// The free-text "other" reason is a separate, best-effort write: a missing
+// column or a failure here must never stop the cancellation itself.
+async function saveCancelNote(userId, note) {
+  const text = typeof note === 'string' ? note.trim().slice(0, 300) : '';
+  if (!text) return;
+  try {
+    const { data } = await supabase.from('purchases').select('id').eq('user_id', userId)
+      .order('created_at', { ascending: false }).limit(1).maybeSingle();
+    if (data?.id) await supabase.from('purchases').update({ cancel_reason_note: text }).eq('id', data.id).eq('user_id', userId);
+  } catch (err) {
+    console.warn('cancel note not saved:', err?.message);
+  }
+}
+
 app.post('/api/subscription/cancel', requireAuth, async (req, res) => {
   const result = await cancelPlanForUser(req.user.id, req.body?.reason);
+  if (result.status === 200 && req.body?.reason === 'other') await saveCancelNote(req.user.id, req.body?.note);
   return res.status(result.status).json(result.body);
 });
 

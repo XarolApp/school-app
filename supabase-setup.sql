@@ -3043,6 +3043,13 @@ grant execute on function public.apply_stripe_purchase_event(
 --        (select pg_get_function_result(p.oid) like '%price_amount_minor%' from pg_proc p where p.proname='claim_due_season_charges' and p.pronamespace='public'::regnamespace) as claim_returns_price,
 --        (select pg_get_functiondef(p.oid) like '%newer.status = ''active''%' from pg_proc p where p.proname='apply_stripe_purchase_event' and p.pronamespace='public'::regnamespace) as guard_active_only;
 
+-- Optional free-text "other" reason when a person cancels (max 300 characters).
+-- Verify: select count(*) = 1 as ok from information_schema.columns
+--   where table_name = 'purchases' and column_name = 'cancel_reason_note';
+alter table public.purchases
+  add column if not exists cancel_reason_note text check (cancel_reason_note is null or char_length(cancel_reason_note) <= 300);
+
+
 -- Plan 022 review fix (28 Oct 2026): an event that changes nothing must not move the ledger clocks.
 -- invoice.paid carries an empty profile patch; advancing users/purchases.stripe_last_event_created
 -- made a retried (older) customer.subscription.updated look stale, so a renewal's new

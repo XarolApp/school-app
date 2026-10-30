@@ -13,9 +13,9 @@ const formatDate = (iso) =>
   new Date(iso).toLocaleDateString('cs-CZ', { day: 'numeric', month: 'long', year: 'numeric' });
 
 const CANCEL_REASONS = [
-  { id: 'price', label: 'cena' },
-  { id: 'not_needed', label: 'nepotřebuji' },
-  { id: 'other', label: 'jiný důvod' },
+  { id: 'price', label: 'Cena' },
+  { id: 'not_needed', label: 'Nepotřebuji to' },
+  { id: 'other', label: 'Jiný důvod' },
 ];
 
 /** "Pozvi kamaráda": informational, shown only to people who already paid. */
@@ -68,6 +68,7 @@ function SubscriptionManager({ profile, status }) {
   const monthlyOffer = useOffer('monthly');
   const [sheet, setSheet] = useState(null); // 'cancel' | 'restore' | 'extend' | 'buy-season' | 'buy-monthly'
   const [reason, setReason] = useState(null);
+  const [note, setNote] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
   const [extendPreview, setExtendPreview] = useState(null);
@@ -100,7 +101,7 @@ function SubscriptionManager({ profile, status }) {
     }
   };
 
-  const cancel = () => run(() => cancelSubscription(reason), (result) =>
+  const cancel = () => run(() => cancelSubscription(reason, reason === 'other' ? note.trim() : ''), (result) =>
     result.cancelled === 'pending'
       ? 'Požadavek na zrušení jsme uložili a ověřujeme, že platba neproběhne.'
       : result.cancelled === 'immediately'
@@ -217,15 +218,37 @@ function SubscriptionManager({ profile, status }) {
             </button>
             <button type="button" className="btn btn-ghost" onClick={() => { setSheet(null); setError(null); }} disabled={busy}>Nechat běžet</button>
           </div>
-          <fieldset className="settings-reasons">
-            <legend className="settings-section-text">Proč rušíš? (nepovinné)</legend>
-            {CANCEL_REASONS.map((item) => (
-              <label key={item.id} className="ob-check">
-                <input type="radio" name="cancel-reason" checked={reason === item.id} onChange={() => setReason(item.id)} />
-                <span>{item.label}</span>
+          <div className="cancel-reasons" role="radiogroup" aria-labelledby="cancel-reasons-title">
+            <p id="cancel-reasons-title" className="cancel-reasons-title">Proč rušíš? <span>Nepovinné, pomůže nám to zlepšit appku.</span></p>
+            <div className="cancel-reasons-options">
+              {CANCEL_REASONS.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  role="radio"
+                  aria-checked={reason === item.id}
+                  className={`cancel-reason${reason === item.id ? ' is-selected' : ''}`}
+                  onClick={() => setReason(reason === item.id ? null : item.id)}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+            {reason === 'other' && (
+              <label className="ss-field-label cancel-reason-note">
+                <span className="ss-visually-hidden">Napiš nám důvod</span>
+                <textarea
+                  className="ss-input"
+                  rows={3}
+                  maxLength={300}
+                  value={note}
+                  onChange={(e) => setNote(e.target.value)}
+                  placeholder="Napiš nám, co se nepovedlo (bez osobních údajů)"
+                />
+                <span className="cancel-reason-count" aria-hidden="true">{note.length} / 300</span>
               </label>
-            ))}
-          </fieldset>
+            )}
+          </div>
           {trialRunning && card && seasonOffer.monthlyAvailable && (
             <div className="notice settings-inset">
               <p className="notice-text">

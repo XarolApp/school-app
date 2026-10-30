@@ -560,8 +560,8 @@ export function fetchSeasonChargeStatus() {
  * subscription to cancel; withdrawal is a separate action. Returns
  * `{ cancelled: 'immediately' | 'at_period_end', accessUntil: string|null }`.
  */
-export function cancelSubscription(reason) {
-  return request('/api/subscription/cancel', { method: 'POST', body: JSON.stringify({ reason }) });
+export function cancelSubscription(reason, note = '') {
+  return request('/api/subscription/cancel', { method: 'POST', body: JSON.stringify({ reason, note }) });
 }
 
 /**
