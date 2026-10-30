@@ -101,7 +101,12 @@ function SubscriptionManager({ profile, status }) {
     }
   };
 
-  const cancel = () => run(() => cancelSubscription(reason, reason === 'other' ? note.trim() : ''), (result) =>
+  const cancel = () => run(async () => {
+    const result = await cancelSubscription(reason, reason === 'other' ? note.trim() : '');
+    setReason(null);
+    setNote('');
+    return result;
+  }, (result) =>
     result.cancelled === 'pending'
       ? 'Požadavek na zrušení jsme uložili a ověřujeme, že platba neproběhne.'
       : result.cancelled === 'immediately'
