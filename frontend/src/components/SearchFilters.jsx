@@ -186,7 +186,7 @@ export function FieldGroup({ fieldOptions, toggleIn }) {
  * list keeps schools reachable within it. The count under the slider counts the
  * whole catalogue, so it equals the number shown in the questionnaire.
  */
-export function CommuteGroup({ filters, setPatch, stops, stop, minutes, loading, failed, parent }) {
+export function CommuteGroup({ filters, setPatch, stops, stop, minutes, loading, failed, parent, compact = false }) {
   const [editing, setEditing] = useState(false);
   if (stops === null) {
     return <p className="ss-caption ss-facet-note">Dojezd MHD se právě načítá nebo teď není dostupný.</p>;
@@ -232,7 +232,7 @@ export function CommuteGroup({ filters, setPatch, stops, stop, minutes, loading,
       {hasStop && filters.commuteLimit !== '' && (
         <button type="button" className="ss-link-btn" onClick={() => setPatch({ commuteLimit: '' })}>Zrušit limit</button>
       )}
-      <p className="ss-caption ss-facet-note">Cca, ranní špička podle jízdních řádů PID (náš výpočet, CC BY 4.0). Zastávka zůstane jen v tomto zařízení.</p>
+      {!compact && <p className="ss-caption ss-facet-note">Cca, ranní špička podle jízdních řádů PID (náš výpočet, CC BY 4.0). Zastávka zůstane jen v tomto zařízení.</p>}
     </div>
   );
 }

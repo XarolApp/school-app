@@ -5,6 +5,8 @@ import { fetchSchoolsByIds } from '../api';
 import { ArrowRight, Check, Plus, X } from 'lucide-react';
 import { getCompareSelection, getRecentSchoolIds, toggleCompareSelection, setCompareSelection } from '../lib/searchPrefs';
 import { buildComparisonRows } from '../lib/comparisonRows';
+import { useRememberedStop } from '../lib/useCommute';
+import CommuteStopBar from '../components/CommuteStopBar';
 import StatInfo from '../components/StatInfo';
 import DecisionTabs from '../components/decision/DecisionTabs';
 import ProsCons from '../components/decision/ProsCons';
@@ -16,7 +18,20 @@ import { usePicks } from '../lib/usePicks';
 // The header and table, drawn either with data or — while loading — with the
 // same rows and columns filled with grey blocks (row labels are static, the
 // column count is the comparison selection), so nothing moves when data lands.
-function CompareView({ schools, rows, pickIds, savingPick, onRemove, onClearAll, onAddToPicks, skeleton = false }) {
+// Same sections and row labels as the loaded table (buildComparisonRows), so
+// the skeleton has the real page's height and nothing jumps when data arrives.
+const SKELETON_SECTIONS = [
+  { id: 'prijimacky', title: 'Přijímačky', labels: ['Hranice přijetí', 'Přijato z přihlášených', 'Uchazečů na místo', 'Míst'] },
+  { id: 'vyvoj', title: 'Vývoj přijímaček', subtitle: 'poslední 3 roky', labels: ['Hranice v posledním roce', 'Hranice v předchozím roce', 'Hranice dva roky zpět', 'Změna nejnižší hranice'] },
+  { id: 'skola', title: 'Škola', labels: ['Cesta MHD ze zastávky', 'Typ', 'Zřizovatel', 'Ukončení', 'Jazyky výuky', 'Počet oborů'] },
+  { id: 'zivot', title: 'Život ve škole', labels: ['Úspěšnost u maturity', 'Školné za rok', 'Obědy', 'Kroužky', 'Začátek vyučování'] },
+];
+const skeletonRows = (stubs) => SKELETON_SECTIONS.map((section) => ({
+  ...section,
+  rows: section.labels.map((label) => ({ id: label, label, values: stubs.map(() => ({ text: '' })) })),
+}));
+
+function CompareView({ schools, rows, pickIds, savingPick, onRemove, onClearAll, onAddToPicks, skeleton = false, stopBar = null, onEditStop }) {
   const location = useLocation();
   return (
     <>
@@ -42,6 +57,8 @@ function CompareView({ schools, rows, pickIds, savingPick, onRemove, onClearAll,
       </div>
 
       <DecisionTabs pickCount={skeleton ? readHint('picks', 0) : pickIds.size} />
+
+      {stopBar}
 
       <div className="dp-table-scroll">
         <div className="dp-table" style={{ '--dp-cols': schools.length }}>
@@ -85,6 +102,9 @@ function CompareView({ schools, rows, pickIds, savingPick, onRemove, onClearAll,
                 <div className="dp-table-row" key={row.id}>
                   <div className="dp-table-row-label">
                     {row.label}
+                    {row.labelStop && (
+                      <> <button type="button" className="dp-stop-link" onClick={onEditStop} title="Změnit zastávku">{row.labelStop}</button></>
+                    )}
                     {row.info && <StatInfo text={row.info} />}
                   </div>
                   {row.values.map((v, i) => (
@@ -186,7 +206,10 @@ function Porovnani() {
     return selection.map((id) => byId.get(id)).filter(Boolean);
   }, [allSchools, selection]);
 
-  const rows = useMemo(() => (schools.length ? buildComparisonRows(schools) : []), [schools]);
+  const { stops, stop, minutes, choose } = useRememberedStop();
+  const [editingStop, setEditingStop] = useState(false);
+  const commute = useMemo(() => (stop && minutes ? { stopName: stop.name, minutes } : null), [stop, minutes]);
+  const rows = useMemo(() => (schools.length ? buildComparisonRows(schools, commute) : []), [schools, commute]);
 
   const handleRemove = (schoolId) => {
     const next = toggleCompareSelection(schoolId);
@@ -201,7 +224,8 @@ function Porovnani() {
     const stubs = selection.map((id) => ({ id }));
     return (
       <SkeletonPage className="decision-page" label="Načítám porovnání…">
-        <CompareView skeleton schools={stubs} rows={buildComparisonRows(stubs)} pickIds={new Set()} />
+        <CompareView skeleton schools={stubs} rows={skeletonRows(stubs)} pickIds={new Set()}
+          stopBar={<Sk h={46} r="var(--r-card)" />} />
       </SkeletonPage>
     );
   }
@@ -317,7 +341,13 @@ function Porovnani() {
   return (
     <div className="decision-page">
       <CompareView schools={schools} rows={rows} pickIds={pickIds} savingPick={savingPick}
-        onRemove={handleRemove} onClearAll={handleClearAll} onAddToPicks={toggle} />
+        onRemove={handleRemove} onClearAll={handleClearAll} onAddToPicks={toggle}
+        onEditStop={() => {
+          setEditingStop(true);
+          // The chooser is the bar above the table; bring it into view.
+          requestAnimationFrame(() => document.getElementById('compare-commute-bar')?.scrollIntoView({ block: 'center', behavior: 'smooth' }));
+        }}
+        stopBar={<CommuteStopBar stops={stops} stop={stop} onChoose={choose} idPrefix="compare-commute" editing={editingStop} onEditingChange={setEditingStop} />} />
 
       <p className="ss-caption dp-footnote">
         Hranice přijetí, míra přijetí a počty míst jsou data z Cermatu podle dostupného roku každé školy. Hranice je rozpětí

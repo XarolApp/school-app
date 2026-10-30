@@ -23,6 +23,9 @@ import { SkeletonPage, Sk, SkLines } from '../components/PageSkeleton';
 import { readHint } from '../lib/skeletonHints';
 import { useDraft } from '../lib/useDraft';
 import { usePicks } from '../lib/usePicks';
+import { useRememberedStop } from '../lib/useCommute';
+import { withCommuteMinutes } from '../lib/commute';
+import CommuteStopBar from '../components/CommuteStopBar';
 
 const LEVELS = [
   { key: 'nezalezi', label: 'Nezáleží' },
@@ -291,10 +294,11 @@ function Matice() {
     };
   }, [selection]);
 
+  const { stops, stop, minutes, choose } = useRememberedStop();
   const schools = useMemo(() => {
     const byId = new Map(allSchools.map((s) => [s.id, s]));
-    return selection.map((id) => byId.get(id)).filter(Boolean);
-  }, [allSchools, selection]);
+    return withCommuteMinutes(selection.map((id) => byId.get(id)).filter(Boolean), minutes);
+  }, [allSchools, selection, minutes]);
 
   const matchAvailable = hasMatchScores(schools);
 
@@ -476,6 +480,9 @@ function Matice() {
                   </button>
                 ))}
               </div>
+              {c.id === 'dojezd' && (
+                <CommuteStopBar stops={stops} stop={stop} onChoose={choose} idPrefix="matrix-commute" />
+              )}
             </div>
           ))}
         </div>

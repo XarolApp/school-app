@@ -1619,10 +1619,10 @@ function Search() {
 
               {view === 'map' && n > 0 && (
                 <SchoolMap
-                  // With a commute limit the map keeps the schools beyond it as
-                  // faint pins (the list drops them), so it never looks empty.
-                  rows={commuteActive ? listFor({ ...filters, commuteLimit: '' }) : sortedAll}
+                  rows={sortedAll}
                   commute={commuteActive && commuteMinutes ? { limit: commuteLimitValue, minutes: commuteMinutes, stopName: commuteStop?.name } : null}
+                  stop={commuteStop}
+                  panel={<CommuteGroup filters={filters} setPatch={setPatch} {...commuteProps} compact />}
                   selectedId={selectedMapId}
                   onSelect={handleMapSelect}
                   renderCardActions={(row) => (

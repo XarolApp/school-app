@@ -649,6 +649,11 @@
   padding: var(--space-lg);
   background: var(--surface);
 }
+.sd-hero-main > .sd-commute {
+  /* Fills the space beside the taller action card instead of leaving it blank. */
+  flex: 1;
+  align-content: start;
+}
 .sd-commute-heading {
   display: flex;
   align-items: center;

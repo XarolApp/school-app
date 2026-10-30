@@ -150,7 +150,7 @@ explicitly "log only":
   tab should forget them (privacy on a shared school computer).
 - **Comparison: data we do not have for any school.** Removed from `/porovnani`
   instead of showing "zatím doplňujeme":
-  - Public-transport commute (dojezd MHD). Also removed from the matrix.
+  - ~~Public-transport commute (dojezd MHD)~~ — added back 2026-10-30 as a `/porovnani` row and a matrix criterion (plan 023 data).
   - Where graduates go (VŠ placement / employment). `vs_pokracuje_pct` exists for only 4
     schools; `vs_uplatneni` is free text.
   - Club count (`pocet_krouzku` is 0 rows, unusable).
@@ -1691,7 +1691,7 @@ Fold that fix into the redesign rather than patching it separately.
   up the `.env` addition.
 
 ## Public-transit travel time to school (commute questions deferred until this exists) — 2026-09-24
-> **Superseded 2026-10-29:** the data exists (plan 023) and the questions are built on branch `plan/mhd-commute`; awaiting founder localhost test before `main`.
+> **Superseded 2026-10-29:** the data exists (plan 023) and the questions are built on branch `plan/mhd-commute`; founder localhost-tested 2026-10-30 and merged to `main`.
 - **Found:** 2026-09-24, questionnaire brainstorm. "How far will you commute" and "do transit connections matter" were approved as good questions but cut from the first build: nothing in the app knows how long a bus/tram/metro ride to a school takes (`SchoolMap.jsx` only does straight-line radius).
 - **Urgency:** Medium — a real differentiator for a Prague school picker, but not a launch blocker.
 - **Effort:** Small — one-off precompute script + one lookup table.

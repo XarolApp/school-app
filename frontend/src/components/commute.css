@@ -326,3 +326,44 @@
   border-color: var(--acc);
   color: var(--acc-ink);
 }
+
+/* ---------- stop bar (comparison, decision matrix) ---------- */
+.csb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  background: var(--surface);
+  color: var(--ink2);
+  font-size: var(--fs-body-sm);
+}
+.csb-text { flex: 1; min-width: 0; }
+.csb-picker { display: grid; align-items: stretch; }
+
+/* ---------- preview map: wrapper + "back to the stop" button ---------- */
+.cpm-wrap { position: relative; }
+.cpm-recenter,
+.sm-recenter-btn {
+  position: absolute;
+  z-index: 1000;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid var(--line2);
+  border-radius: var(--r-input);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  cursor: pointer;
+}
+.cpm-recenter:hover,
+.sm-recenter-btn:hover { background: var(--acc-soft); }
+.cpm-dot { cursor: pointer; }

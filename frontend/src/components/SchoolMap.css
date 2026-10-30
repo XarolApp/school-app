@@ -140,7 +140,7 @@
   left: var(--space-md);
   top: var(--space-md);
   z-index: 1000;
-  width: min(260px, calc(100% - var(--space-lg) - 44px));
+  width: min(300px, calc(100% - var(--space-lg) - 44px));
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
@@ -343,4 +343,9 @@
 }
 .sm-card-commute {
   margin: 0;
+}
+
+.sm-wrap .sm-recenter-btn {
+  top: 56px;
+  right: var(--space-md);
 }

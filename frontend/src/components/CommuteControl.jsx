@@ -159,7 +159,7 @@ function CommuteControl({ stopId, limit, strict, onChange, strictOptions = [], s
           <CommutePreviewMap schools={picture} minutes={minutes} limit={activeLimit} stop={stop} />
           <p className="cpm-legend">
             <span className="is-stop">{stop.name}</span>
-            <span className="is-in">{inLimit == null ? 'školy v limitu' : `v limitu: ${inLimit}`}</span>
+            <span className="is-in">{activeLimit == null ? 'všechny školy' : inLimit == null ? 'školy v limitu' : `v limitu: ${inLimit}`}</span>
             <span>ostatní školy</span>
           </p>
         </>

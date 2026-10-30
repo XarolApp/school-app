@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { fetchCommuteStops, fetchStopSchools } from '../api';
 import { useBetaTools } from '../components/BetaToolsContext';
 import { ROLE_KEY } from './onboardingStorage';
+import { readSavedStop, saveStop } from './commute';
 
 // One request per page load for the stop list and one per stop for its row;
 // both are static timetable data, so there is nothing to invalidate.
@@ -69,4 +70,14 @@ export function useIsParent() {
   const { beta } = useBetaTools();
   if (beta?.role === 'rodic' || beta?.role === 'ucitel') return true;
   try { return localStorage.getItem(ROLE_KEY) === 'parent'; } catch { return false; }
+}
+
+/** The remembered stop for pages with no filter state of their own (/porovnani, /matice). */
+export function useRememberedStop() {
+  const [stopId, setStopId] = useState(readSavedStop);
+  const { stops } = useCommuteStops();
+  const stop = stops?.find((entry) => entry.id === stopId) || null;
+  const { minutes } = useStopMinutes(stop ? stop.id : null);
+  const choose = (id) => { saveStop(id); setStopId(id || null); };
+  return { stops, stop, minutes, choose };
 }

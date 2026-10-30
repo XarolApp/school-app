@@ -130,6 +130,13 @@ function SchoolDetail({ publicView = false }) {
             <div className="sd-chips">{[70, 54, 80, 110].map((w) => <Sk key={w} w={w} h={34} r="999px" />)}</div>
             <Sk h={106} className="sd-fact-tiles" />
             <Sk w="60%" h={19} />
+            <div className="sd-commute">
+              <div className="sd-commute-heading"><Sk w={20} h={20} r="4px" /><Sk w="55%" h={24} /></div>
+              <Sk w="30%" h={16} />
+              <Sk h={42} r="var(--r-input)" />
+              <Sk h={42} r="var(--r-input)" />
+              <Sk w="45%" h={14} />
+            </div>
           </div>
           <div className="sd-actions">
             {[0, 1, 2, 3].map((i) => <Sk key={i} h={54} className="is-strong" />)}
@@ -146,6 +153,8 @@ function SchoolDetail({ publicView = false }) {
         )}
         <SectionNav />
         <CutoffExplainer />
+        <div className="sd-section-head"><h2 className="sd-section-title">Vývoj školy</h2><Sk w={160} h={16} /></div>
+        <Sk h={240} style={{ marginTop: 16, marginBottom: 24 }} />
         <div className="sd-section-head"><h2 className="sd-section-title">Obory a přijímačky</h2><Sk w={180} h={16} /></div>
         <Sk h={120} style={{ marginTop: 16 }} />
       </SkeletonPage>

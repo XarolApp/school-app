@@ -129,7 +129,7 @@ export function Privacy() {
         </li>
         <li>Cloudflare — ochrana formulářů proti robotům (Turnstile); zpracovává technické údaje spojení.</li>
         <li>Vercel a Railway — provoz webu a serveru.</li>
-        <li>OpenStreetMap (OpenStreetMap Foundation) — podkladové mapy a vyhledání adresy na mapě škol. Při zobrazení mapy vidí poskytovatel tvou IP adresu a při hledání i text adresy, který zadáš.</li>
+        <li>OpenStreetMap (OpenStreetMap Foundation) — podkladové mapy. Při zobrazení mapy vidí poskytovatel tvou IP adresu.</li>
         <li>Brevo (Sendinblue SAS, Francie) — odesílání e-mailů (potvrzení registrace, obnova hesla). Sídlo v EU.</li>
       </ul>
       <p>
