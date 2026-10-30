@@ -27,7 +27,7 @@ BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 - [x] Cloud review 2026-10-28 (plan 022): 4 findings, see `reports/plan-022-cloud-review-2026-10-28.md`; F1+F2 fixed in `f0a8d1d`, F3+F4 already fixed in `521aa8b`; plan 025 review `reports/plan-025-cloud-review.md`: 2 low, both fixed (`3972e8b`, `21589f8`).
 - [x] `migrations/2026-10-28-ledger-clock-fix.sql` applied in Supabase by the founder 2026-10-29. Still open before pushing `main`: Stripe test clocks (plan 025 §4.4), localhost walkthrough (`docs/handouts/plan-025-founder-test.md`), merge `main` into this branch.
 - [x] Picks migration (`2026-10-23-atomic-application-picks.sql`, `v_kkov` fix) re-run on production 2026-10-28: `function_exists` true, `client_can_call` false. No re-run is pending.
-- [ ] Confirm every plan 022 / 025 migration is on production with the check query before pushing (see the report); `2026-10-28-revenue-model.sql` is new and uncommitted.
+- [ ] Confirm every plan 022 / 025 migration is on production with the check query before pushing (see the report). `2026-10-28-revenue-model.sql` applied by the founder 2026-10-30; verify query returned purchase_cols 10, new_tables 3, fns 1, claim_returns_price true, guard_active_only true. Still open: founder localhost test (`docs/handouts/plan-025-founder-test.md`), then resolve merge conflicts with `main` (`UNFORGET.md`, `tests/server-boundaries.test.cjs`).
 - [ ] Stripe test-mode run (season, monthly, cancel, withdrawal) — founder gate before live keys.
 - [ ] Day-2 trial reminder email (`TRIAL_REMINDER_IMPLEMENTED = false`) — mandatory before real billing.
 - [ ] **Chunk 9: manual school-fact corrections — founder only, still open.**
