@@ -1,0 +1,7 @@
+# Renders, check frames, logs
+out/
+# Regenerable: node scripts/capture.mjs (needs a test-account token), tighten.mjs, music.mjs
+public/shots/*
+!public/shots/rects.json
+public/vo-tight.wav
+public/music.wav

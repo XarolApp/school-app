@@ -13,6 +13,12 @@ Migrated 2026-08-28 from CLAUDE.md's "DECISIONS YOU NEED TO MAKE", "WHAT NEEDS T
 BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 "Design system update — DESIGN.md rewritten".
 
+## Video B build — found 2026-10-29, open
+
+- [ ] **Waitlist page doesn't mention the 10 % discount on production yet.** The copy
+      change (commit `c98dc37`, `frontend/middleware.js`) exists only on branch
+      `claude/sharp-cray-596w4h`. Video B's CTA promises it; deploy before posting.
+
 ## After the beta: deferred Codex findings (logged 2026-10-10, founder decision)
 
 Founder chose to fix C01, C09, C14, C16 (+ follow-up), C29 and C31 before the testers

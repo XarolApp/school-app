@@ -20,3 +20,4 @@ scripts/data/gtfs/
 
 # graphify output (generated)
 graphify-out/
+marketing/video-b/.session.json
