@@ -467,11 +467,11 @@ back). See that script's header comment for the full pipeline, and
 `scripts/backfill-redizo.js` for the one-off manual-REDIZO pattern used on the
 handful of schools the fuzzy matcher couldn't place on its own.
 
-**Ordinary-account access trial: current code starts three days at signup in the
-database trigger.** The founder decided on 2026-10-07 that it must instead start
-at the first confirmed sign-in; implementation/migration is pending in the deployment
-handoff. This is separate from the seasonal purchase trial, whose length is configured
-in frontend pricing and the server payment flow. Beta has no paid/free purchase trial:
+**No ordinary-account access trial (founder decision 2026-10-31).** Free app access
+comes only from the season pass's 3-day card trial (it sets `trial_expires_at`);
+`server.js` no longer calls `start_ordinary_trial`, so a new account gets no window.
+New accounts still show `subscription_status = 'trialing'` with `trial_expires_at`
+null — that is a label, not access. Accounts that already had a window keep it. Beta has no paid/free purchase trial:
 it is free access in exchange for feedback, and its paywall is a preview only.
 
 `subscription_status` accepts `trialing / active / season / past_due / canceled /

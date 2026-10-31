@@ -1855,15 +1855,10 @@ test('commute endpoints return 503 when the generated matrix is missing', async 
   assert.equal(h.queries.length, 0);
 });
 
-test('the ordinary trial window opens once, on the first confirmed request that reads the profile', async () => {
+test('there is no free ordinary trial: only a season trial or a paid plan opens the app', async () => {
   const fresh = { trial_expires_at: null, subscription_status: 'trialing', onboarding_completed_at: '2026-01-01T00:00:00.000Z', access_expires_at: null };
-  const started = '2026-10-23T10:00:00.000Z';
-  const runAccess = async (profile, afterRpc) => {
-    let current = profile;
-    const h = harness({
-      rpcImpl: () => { current = { ...current, ...afterRpc }; return { data: started, error: null }; },
-      result: (query) => query.table === 'users' ? { data: current, error: null } : { data: null, error: null },
-    });
+  const runAccess = async (profile) => {
+    const h = harness({ result: (query) => query.table === 'users' ? { data: profile, error: null } : { data: null, error: null } });
     const req = { user: { id: 'user-test', email: 'tester@example.com' } };
     const res = { statusCode: 200, status(code) { this.statusCode = code; return this; }, json(body) { this.body = body; return this; } };
     let reached = false;
@@ -1871,20 +1866,13 @@ test('the ordinary trial window opens once, on the first confirmed request that 
     return { h, res, reached };
   };
 
-  const first = await runAccess(fresh, { trial_expires_at: '2999-01-01T00:00:00.000Z' });
-  assert.equal(first.reached, true);
-  assert.deepEqual(first.h.rpcCalls.map((call) => call.name), ['start_ordinary_trial']);
-  assert.equal(first.h.rpcCalls[0].args.p_user_id, 'user-test');
+  const noWindow = await runAccess(fresh);
+  assert.equal(noWindow.reached, false);
+  assert.equal(noWindow.res.statusCode, 402);
+  assert.equal(noWindow.h.rpcCalls.some((call) => call.name === 'start_ordinary_trial'), false);
 
-  const later = await runAccess({ ...fresh, trial_expires_at: '2999-01-01T00:00:00.000Z' }, {});
-  assert.equal(later.h.rpcCalls.length, 0, 'an account with a window never calls the starter again');
-
-  const paid = await runAccess({ ...fresh, subscription_status: 'season', access_expires_at: '2999-01-01T00:00:00.000Z' }, {});
-  assert.equal(paid.h.rpcCalls.length, 0, 'paid, beta, creator and developer rows are not given a trial');
-
-  const failed = await runAccess(fresh, {});
-  assert.equal(failed.reached, false, 'a starter that leaves no window grants no access');
-  assert.equal(failed.res.statusCode, 402);
+  const seasonTrial = await runAccess({ ...fresh, trial_expires_at: '2999-01-01T00:00:00.000Z' });
+  assert.equal(seasonTrial.reached, true, 'the season trial window still opens the app');
 });
 
 test('trial start schema is nullable, service-only and mirrored in the repeatable setup', () => {

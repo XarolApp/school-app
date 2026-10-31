@@ -435,17 +435,6 @@ async function closingStateFor(userId) {
     closingPaused:Boolean(data?.closing_due_at && !data.closing_done_at && new Date(data.closing_due_at).getTime()+86400000<=Date.now())};
 }
 
-// Chunk 4: the ordinary trial window opens once, on the first confirmed request
-// that reads the profile. The RPC only touches a 'trialing' row with no window,
-// so parallel first requests share one window and later sign-ins never extend it.
-async function ensureTrialStarted(userId, profile) {
-  if (profile.trial_expires_at || profile.subscription_status !== 'trialing') return profile;
-  const started = await supabase.rpc('start_ordinary_trial', { p_user_id: userId });
-  if (started.error) return profile; // no window recorded means no trial access
-  const { data } = await supabase.from('users').select('trial_expires_at').eq('id', userId).single();
-  return data ? { ...profile, trial_expires_at: data.trial_expires_at } : profile;
-}
-
 // An account with an active purchase but no completion marker (the Stripe event
 // that should have set it was lost, reordered or failed) is completed here, so a
 // paid account is never stuck in onboarding. Needs a ledger row: no purchase, no heal.
@@ -471,7 +460,6 @@ async function accessStateFor(userId, email) {
     return { hasAccess: false, httpStatus: 403, body: { error: 'Profil účtu nenalezen.' }, profile: null };
   }
 
-  profile = await ensureTrialStarted(userId, profile);
   profile = await healOnboarding(userId, profile);
 
   if (profile.subscription_status === 'beta') {
@@ -861,7 +849,6 @@ app.get('/api/me', requireAuth, async (req, res) => {
     .single();
 
   if (error) return res.status(404).json({ error: error.message });
-  profile = await ensureTrialStarted(req.user.id, profile);
   profile = await healOnboarding(req.user.id, profile);
 
   let onboardingStep = 'welcome';
@@ -3524,7 +3511,7 @@ app.patch('/api/questionnaire/runs/:id/archive', requireAuth, async (req, res) =
  *   3. chargeDueSeasonPasses() polls hourly and fires one true one-time
  *      PaymentIntent per due account, off_session, once — see that function.
  * Access during the trial window is unaffected by any of this: requireAccess
- * already grants access purely from trial_expires_at (the DB-trigger trial),
+ * already grants access purely from trial_expires_at (the season trial window),
  * independent of subscription_status — see that function above.
  *
  * Mocked boundary tests and local TEST MODE configuration are recorded; they

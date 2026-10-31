@@ -186,7 +186,7 @@ function SignUp() {
             onChangeEmail={() => setAwaitingConfirmation(false)}
           >
             {!confirmedCode && (
-              <p className="notice-text">Účet se aktivuje i s {trialDaysPhrase()} zkušebním obdobím. Bez potvrzení se do databáze škol nedostaneš.</p>
+              <p className="notice-text">Bez potvrzení e-mailu se do aplikace nedostaneš.</p>
             )}
           </ConfirmEmailWaiting>
           <Link to={`/prihlaseni${confirmedCode ? `?beta=${encodeURIComponent(confirmedCode)}` : ''}`} className="btn btn-ghost btn-block" onClick={clearPendingConfirmation}>
@@ -208,14 +208,14 @@ function SignUp() {
     <div className={`page page-auth${betaInviteProvided ? ' beta-page' : ''}`}>
       <div className="auth-layout">
         <div className="page-header">
-          <p className="eyebrow">{betaInviteProvided ? 'Školní beta program' : `${trialDaysPhrase()} zdarma`}</p>
+          <p className="eyebrow">{betaInviteProvided ? 'Školní beta program' : 'Dotazník zdarma'}</p>
           <h1>{betaCode && betaSchool ? 'Vytvořit testovací účet' : betaInviteProvided ? 'Ověřuji testovací přístup' : 'Vytvořit účet'}</h1>
           <p className="lede">
             {betaInviteProvided && !betaCode
               ? 'Testovací účet založíme, až ověříme přístupový kód.'
               : betaCode
               ? `Testování je zdarma výměnou za zpětnou vazbu. Potvrzení e-mailu je povinné; platební kartu ${betaParent?'nepotřebujete':'nepotřebuješ'} a beta účet nic nestrhne.`
-              : `Vyzkoušej celou databázi škol ${trialDaysPhrase()} zdarma. Platit začneš až potom — a jen když budeš chtít pokračovat.`}
+              : `Dotazník a první výsledky jsou zdarma. U sezónního přístupu pak máš ${trialDaysPhrase()} na vyzkoušení, než se cokoli strhne.`}
           </p>
         </div>
 
