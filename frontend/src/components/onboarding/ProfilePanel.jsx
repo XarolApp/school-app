@@ -49,7 +49,7 @@ function ProfilePanel({ answers, role, currentQuestionIndex, variant = 'panel' }
   const rows = QUESTIONS.map((q, i) => ({
     id: q.id,
     label: q.panelLabel || q.id,
-    tags: i <= furthest ? answerTags(q, answers[q.key], role) : [],
+    tags: i <= furthest ? answerTags(q, answers[q.key], role, answers) : [],
     isCurrent: i === currentQuestionIndex,
   }));
 

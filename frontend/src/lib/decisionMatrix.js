@@ -76,6 +76,12 @@ export const CRITERIA = [
     available: true,
     tooltip: 'Úspěšnost u maturitní zkoušky v procentech, sesbíraná z webu školy. Když údaj chybí u některé porovnávané školy, kritérium se nezapočítá nikomu.',
   },
+  {
+    id: 'dojezd',
+    label: 'Dojezd MHD',
+    available: true,
+    tooltip: 'Jak dlouho jedeš MHD ze zvolené zastávky, podle jízdních řádů PID v ranní špičce. Kratší cesta = lepší skóre, 60 minut a víc je nula. Bez zvolené zastávky se kritérium nezapočítá.',
+  },
 ];
 
 function relativeToMax(values, { allZero = 0 } = {}) {
@@ -127,6 +133,10 @@ function displayForCriterion(id, school, raw) {
     case 'maturita': {
       const rate = extractedOf(school)?.maturita_pass_rate_pct;
       return rate == null ? 'Tento údaj nemáme' : formatPercent(rate);
+    }
+    case 'dojezd': {
+      const m = school.commute_minutes;
+      return m === undefined ? 'Tento údaj nemáme' : m == null ? 'přes 90 min' : `cca ${m} min`;
     }
     default:
       return raw == null ? 'Tento údaj nemáme' : '';
@@ -180,6 +190,14 @@ function rawForCriterion(id, schools) {
       return schools.map((s) => {
         const rate = extractedOf(s)?.maturita_pass_rate_pct;
         return rate == null ? null : rate / 100;
+      });
+    }
+    case 'dojezd': {
+      // `commute_minutes` is attached by the page from the remembered stop:
+      // undefined = no stop or no data (unknown), null = over 90 minutes.
+      return schools.map((s) => {
+        const m = s.commute_minutes;
+        return m === undefined ? null : m == null ? 0 : Math.max(0, 1 - m / 60);
       });
     }
     default:

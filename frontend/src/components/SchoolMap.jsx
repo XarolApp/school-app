@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { returnState } from '../lib/internalReturnPath';
-import { Maximize2, Minimize2, MapPin, ChevronUp } from 'lucide-react';
+import { Maximize2, Minimize2, MapPin, ChevronUp, LocateFixed } from 'lucide-react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import StatInfo from './StatInfo';
 import { escapeHtml } from '../lib/escapeHtml';
 import { summarizeAdmission, formatCutoffRange } from '../lib/schoolPrograms';
+import { useStopCenter } from '../lib/useStopCenter';
+import './commute.css';
 import './SchoolMap.css';
-
-const geocodeCache = new Map();
 
 const PRAGUE_CENTER = [50.0755, 14.4378];
 
@@ -17,15 +17,6 @@ const PRAGUE_CENTER = [50.0755, 14.4378];
 // range across the school's obory (Cermat), the name is the real school name shortened by a
 // display heuristic (never a different school, never invented text). A
 // school with no admission data yet gets a dashed pin reading "bez dat".
-function haversineKm([lat1, lon1], [lat2, lon2]) {
-  const R = 6371;
-  const dLat = ((lat2 - lat1) * Math.PI) / 180;
-  const dLon = ((lon2 - lon1) * Math.PI) / 180;
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.sin(dLon / 2) ** 2;
-  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-}
 
 // Display-only shortening — strips corporate suffixes and, when the name is
 // long enough to survive it, a trailing street-address fragment. Falls back
@@ -59,17 +50,14 @@ function pinHtml(row, isSelected) {
   );
 }
 
-function homePinHtml() {
-  return '<span class="sm-home-pin" title="Tvoje zadaná adresa"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>';
-}
-
 /**
  * A plain Leaflet map using the imperative API: one map, school pins, one
- * home pin and one detail card.
+ * stop dot and one detail card. `panel` is the stop + minute-limit control
+ * (the same one the /skoly filter uses); `stop` is the chosen stop, which the
+ * map centres on and a button brings back after the map was dragged away.
  *
  * `rows` is the CURRENTLY FILTERED list from Search.jsx — the map only ever
- * shows what the list would show (further narrowed by the radius filter
- * below), never the unfiltered catalogue.
+ * shows what the list would show, never the unfiltered catalogue.
  *
  * Every floating control (locate panel, fullscreen button, detail card) is
  * given z-index: 1000 — Leaflet's own internal panes (tiles, markers,
@@ -79,28 +67,18 @@ function homePinHtml() {
  * their own stacking context) — matching 1000 is what keeps our UI visible
  * all the time, not just mid-animation.
  */
-function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
+function SchoolMap({ rows, selectedId, onSelect, renderCardActions, commute = null, stop = null, panel = null }) {
   const location = useLocation();
   const containerRef = useRef(null);
   const mapRef = useRef(null);
   const markersRef = useRef(new Map());
-  const homeMarkerRef = useRef(null);
+  const stopMarkerRef = useRef(null);
   const onSelectRef = useRef(onSelect);
   onSelectRef.current = onSelect;
 
   const [isFullscreen, setIsFullscreen] = useState(false);
   // Phones start with the panel folded: open it covers half the map.
   const [panelOpen, setPanelOpen] = useState(() => !window.matchMedia?.('(max-width: 860px)').matches);
-
-  // Home location lives ONLY in this component's memory for this page view —
-  // never written to localStorage, sessionStorage or the backend. Reloading
-  // the page or leaving Search clears it. This is stated to the user in the
-  // UI, not just here.
-  const [homePos, setHomePos] = useState(null); // [lat, lng] | null
-  const [addressQuery, setAddressQuery] = useState('');
-  const [addressLoading, setAddressLoading] = useState(false);
-  const [addressError, setAddressError] = useState(null);
-  const [radiusKm, setRadiusKm] = useState(15);
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
@@ -152,12 +130,8 @@ function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
     };
   }, [isFullscreen]);
 
-  // School pins — real coords, real cutoff values, narrowed by the radius
-  // filter when a home location is set.
-  const withCoords = rows.filter((row) => row.school.latitude != null && row.school.longitude != null);
-  const visibleRows = homePos
-    ? withCoords.filter((row) => haversineKm(homePos, [row.school.latitude, row.school.longitude]) <= radiusKm)
-    : withCoords;
+  // School pins — real coords, real cutoff values.
+  const visibleRows = rows.filter((row) => row.school.latitude != null && row.school.longitude != null);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -178,96 +152,35 @@ function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
       markersRef.current.set(row.id, marker);
     }
 
-    // Only auto-fit to the result set while browsing freely. Once a home
-    // location is set the map stays centred on the radius search instead of
-    // jumping back to fit whatever pins remain — the whole point of setting
-    // a home point is to hold that view still.
-    if (!homePos && visibleRows.length) {
+    // Only auto-fit to the result set while no stop is chosen; with a stop the
+    // map stays centred on it (useStopCenter) and the user moves it freely.
+    if (!stop && visibleRows.length) {
       const bounds = L.latLngBounds(visibleRows.map((row) => [row.school.latitude, row.school.longitude]));
       map.fitBounds(bounds, { padding: [40, 40], maxZoom: 15 });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visibleRows, selectedId, onSelect]);
+  }, [visibleRows, selectedId, onSelect, commute]);
 
-  // Home pin — a distinct marker, added/removed independently of school pins.
+  // The black stop dot — same look as the preview map in the questionnaire.
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
+    if (stopMarkerRef.current) {
+      stopMarkerRef.current.remove();
+      stopMarkerRef.current = null;
+    }
+    if (stop) {
+      stopMarkerRef.current = L.circleMarker([stop.lat, stop.lon], { radius: 8, className: 'cpm-stop', interactive: false }).addTo(map);
+    }
+  }, [stop]);
 
-    if (homeMarkerRef.current) {
-      homeMarkerRef.current.remove();
-      homeMarkerRef.current = null;
-    }
-    if (homePos) {
-      const icon = L.divIcon({ html: homePinHtml(), className: 'sm-pin-wrap', iconSize: null });
-      homeMarkerRef.current = L.marker(homePos, { icon, zIndexOffset: 1000 }).addTo(map);
-      map.setView(homePos, 13);
-    }
-  }, [homePos]);
+  const { off, recenter } = useStopCenter(mapRef, stop, 13);
 
   const selectedRow = rows.find((row) => row.id === selectedId) || null;
+  // Schools beyond the limit are filtered out of `rows`, so every pin is in the limit.
+  const commuteInLimit = visibleRows.length;
+  const selectedCommute = commute && selectedRow ? commute.minutes?.[selectedRow.id] : undefined;
   const selectedAdm = selectedRow ? summarizeAdmission(selectedRow.school) : null;
-
-  const setHomeFromCoords = (lat, lng) => {
-    setAddressError(null);
-    setHomePos([lat, lng]);
-  };
-
-  const centerOnMe = () => {
-    if (!navigator.geolocation) {
-      setAddressError('Tento prohlížeč neumí zjistit polohu.');
-      return;
-    }
-    setAddressError(null);
-    navigator.geolocation.getCurrentPosition(
-      (pos) => setHomeFromCoords(pos.coords.latitude, pos.coords.longitude),
-      () => setAddressError('Polohu se nepodařilo zjistit, zkus zadat ulici nebo zastávku ručně.')
-    );
-  };
-
-  const searchAddress = async (e) => {
-    e.preventDefault();
-    const q = addressQuery.trim();
-    if (!q) return;
-    setAddressLoading(true);
-    setAddressError(null);
-    // Public Nominatim: its policy forbids personal data and allows about one
-    // request per second for the whole site, so the field asks for a street,
-    // stop or district (not a home address) and repeated searches are cached.
-    // ponytail: per-tab cache only; switch to an approved geocoding provider
-    // before a cohort bigger than one school (C01).
-    const cacheKey = q.toLowerCase();
-    if (geocodeCache.has(cacheKey)) {
-      const hit = geocodeCache.get(cacheKey);
-      setAddressLoading(false);
-      if (!hit) { setAddressError('Toto místo se nepodařilo najít. Zkus ulici, zastávku nebo čtvrť.'); return; }
-      setHomeFromCoords(hit[0], hit[1]);
-      return;
-    }
-    try {
-      const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=cz&q=${encodeURIComponent(q)}`;
-      const res = await fetch(url, { headers: { Accept: 'application/json' } });
-      if (!res.ok) throw new Error('lookup failed');
-      const results = await res.json();
-      if (!results.length) {
-        geocodeCache.set(cacheKey, null);
-        setAddressError('Toto místo se nepodařilo najít. Zkus ulici, zastávku nebo čtvrť.');
-        return;
-      }
-      geocodeCache.set(cacheKey, [Number(results[0].lat), Number(results[0].lon)]);
-      setHomeFromCoords(Number(results[0].lat), Number(results[0].lon));
-    } catch {
-      setAddressError('Vyhledání adresy se nepodařilo. Zkus to znovu.');
-    } finally {
-      setAddressLoading(false);
-    }
-  };
-
-  const clearHome = () => {
-    setHomePos(null);
-    setAddressError(null);
-    setAddressQuery('');
-  };
 
   return (
     <div className={`sm-wrap${isFullscreen ? ' is-fullscreen' : ''}`}>
@@ -283,57 +196,30 @@ function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
         {isFullscreen ? <Minimize2 size={16} aria-hidden="true" /> : <Maximize2 size={16} aria-hidden="true" />}
       </button>
 
-      {!panelOpen ? (
+      {off && (
+        <button type="button" className="sm-recenter-btn" onClick={recenter}>
+          <LocateFixed size={14} aria-hidden="true" /> Vystředit zastávku
+        </button>
+      )}
+
+      {panel && (!panelOpen ? (
         <button type="button" className="sm-locate-btn sm-panel-show" onClick={() => setPanelOpen(true)} aria-expanded="false">
-          <MapPin size={14} aria-hidden="true" /> {homePos ? `Do ${radiusKm} km` : 'Hledat podle adresy'}
+          <MapPin size={14} aria-hidden="true" /> {stop ? `Zastávka: ${stop.name}` : 'Vybrat zastávku'}
         </button>
       ) : (
-      <div className="sm-locate-panel">
-        <button type="button" className="sm-panel-hide" onClick={() => setPanelOpen(false)} aria-expanded="true">
-          <ChevronUp size={14} aria-hidden="true" /> Skrýt vyhledávání
-        </button>
-        <form className="sm-address-form" onSubmit={searchAddress}>
-          <input
-            type="text"
-            value={addressQuery}
-            onChange={(e) => setAddressQuery(e.target.value)}
-            placeholder="Ulice, zastávka nebo čtvrť"
-            className="sm-address-input"
-            aria-label="Ulice, zastávka nebo čtvrť (bez čísla domu)"
-          />
-          <button type="submit" className="ss-btn ss-btn-primary ss-btn-sm" disabled={addressLoading}>
-            {addressLoading ? 'Hledám…' : 'Najít'}
+        <div className="sm-locate-panel">
+          <button type="button" className="sm-panel-hide" onClick={() => setPanelOpen(false)} aria-expanded="true">
+            <ChevronUp size={14} aria-hidden="true" /> Skrýt výběr zastávky
           </button>
-        </form>
-        <button type="button" className="sm-locate-btn" onClick={centerOnMe}>
-          Najít mě podle polohy
-        </button>
-        <p className="ss-caption sm-privacy-note">Polohu držíme jen v paměti této stránky. Zadané místo posíláme službě OpenStreetMap pro vyhledání, proto nepiš číslo domu — stačí ulice, zastávka nebo čtvrť.</p>
-        {addressError && <p className="ss-caption sm-address-error">{addressError}</p>}
+          {panel}
+        </div>
+      ))}
 
-        {homePos && (
-          <div className="sm-radius-control">
-            <div className="sm-radius-head">
-              <span className="ss-caption">Vzdálenost: do {radiusKm} km</span>
-              <button type="button" className="sm-radius-clear" onClick={clearHome}>
-                Zrušit
-              </button>
-            </div>
-            <input
-              type="range"
-              min="1"
-              max="30"
-              value={radiusKm}
-              onChange={(e) => setRadiusKm(Number(e.target.value))}
-              className="sm-radius-slider"
-              aria-label="Maximální vzdálenost v kilometrech"
-            />
-            <p className="ss-caption sm-privacy-note">
-              Vzdušná čára, ne skutečná trasa MHD. Zobrazuje {visibleRows.length} {visibleRows.length === 1 ? 'školu' : visibleRows.length <= 4 && visibleRows.length > 0 ? 'školy' : 'škol'}.
-            </p>
-          </div>
-        )}
-      </div>
+      {commute && (
+        <p className="sm-commute-legend" role="status">
+          Do {commute.limit} min MHD{commute.stopName ? ` ze zastávky ${commute.stopName}` : ''} · {commuteInLimit}{' '}
+          {commuteInLimit === 1 ? 'škola' : commuteInLimit >= 2 && commuteInLimit <= 4 ? 'školy' : 'škol'}
+        </p>
       )}
 
       {selectedRow && (
@@ -354,6 +240,12 @@ function SchoolMap({ rows, selectedId, onSelect, renderCardActions }) {
               ×
             </button>
           </div>
+          {commute && selectedCommute !== undefined && (
+            <p className="ss-caption sm-card-commute">
+              {selectedCommute == null ? 'MHD: přes 90 minut nebo bez rozumného spojení' : `cca ${selectedCommute} min MHD`}
+              {commute.stopName ? ` ze zastávky ${commute.stopName}` : ''}
+            </p>
+          )}
           <div className="ss-stat-grid sm-card-stats">
             <div className="ss-stat-cell">
               <p className="ss-data-md">

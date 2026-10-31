@@ -1,3 +1,4 @@
+import CommuteTime from './CommuteTime';
 import { summarizeCurrentYear, summarizeAdmission, formatCutoffRange } from '../../lib/schoolPrograms';
 import { oborWord } from '../../lib/pluralCz';
 import { matchBand } from '../../lib/decisionMatrix';
@@ -135,6 +136,7 @@ function SchoolHero({ school, programEntries, extracted }) {
         Čísla z Cermatu, 1. kolo přijímaček {year ?? ''}.
  Předchozí roky najdeš v grafu vývoje níž.
       </div>
+      <CommuteTime schoolId={school.id} />
     </div>
   );
 }

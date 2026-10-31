@@ -29,6 +29,8 @@ import {
   Info,
 } from 'lucide-react';
 import { fetchSchools, fetchFavorites } from '../api';
+import { COMMUTE_LIMIT_MAX, readSavedStop, withinLimit } from '../lib/commute';
+import { useCommuteStops, useIsParent, useStopMinutes } from '../lib/useCommute';
 import {
   buildIndex,
   prepareQuery,
@@ -37,7 +39,6 @@ import {
   splitPrograms,
   baseProgram,
   collectFacet,
-  compareDistricts,
   compareByCount,
 } from '../lib/schoolSearch';
 import { deriveFeatures, FOCUS_CATEGORIES } from '../lib/schoolFeatures';
@@ -48,7 +49,7 @@ import FavoriteButton from '../components/FavoriteButton';
 import SchoolMap from '../components/SchoolMap';
 import SearchFilters, {
   AdmissionsGroup,
-  DistrictGroup,
+  CommuteGroup,
   FieldGroup,
   OborGroup,
   TypGroup,
@@ -113,6 +114,10 @@ const SORTS = [
     dirs: { asc: 'od nejnižší míry přijetí', desc: 'od nejvyšší míry přijetí' },
   },
   {
+    id: 'commute', label: 'Dojezd MHD', short: 'Dojezd', tradeoff: 'kratší cesta ze tvé zastávky', defaultDir: 'asc',
+    dirs: { asc: 'od nejkratší cesty', desc: 'od nejdelší cesty' },
+  },
+  {
     id: 'places', label: 'Počet míst', short: 'Míst', tradeoff: 'míst podle posledních dostupných dat', defaultDir: 'desc',
     dirs: { asc: 'od nejméně míst', desc: 'od nejvíce míst' },
   },
@@ -133,7 +138,7 @@ const FIELD_ICONS = {
 
 const UNMET_LABELS = {
   fields: 'filtr oboru',
-  districts: 'filtr městské části',
+  commute: 'filtr dojezdu MHD',
   ukonceni: 'filtr ukončení studia',
   typySkoly: 'filtr typu školy',
   zrizovatele: 'filtr zřizovatele',
@@ -302,7 +307,10 @@ const POSTIZENI_LABELS = Object.fromEntries(POSTIZENI_OPTIONS);
 const DEFAULT_FILTERS = {
   query: '',
   fields: [],
-  districts: [],
+  // Commute filter: a PID stop id and a whole-minute limit (1-60). It only
+  // filters when both are set; '' = off. Replaces the old district facet.
+  commuteStop: '',
+  commuteLimit: '',
   ukonceni: [], // 'maturitni' | 'nematuritni'
   typySkoly: [],
   zrizovatele: [],
@@ -402,11 +410,27 @@ function Search() {
   // ?q= pre-fills the search box (used by the 404 page's search form).
   // Filters and the list/map choice survive a reload or a trip to another tab.
   const [filters, setFilters] = useState(() => {
+    // The stop chosen on a school page or in the questionnaire is offered here
+    // too (never applied as a limit until the student sets one).
+    const base = { ...DEFAULT_FILTERS, commuteStop: readSavedStop() || '' };
     const q = new URLSearchParams(window.location.search).get('q');
-    if (q) return { ...DEFAULT_FILTERS, query: q };
+    if (q) return { ...base, query: q };
     const saved = readDraft('snm.search.filters', null);
-    return saved && typeof saved === 'object' ? { ...DEFAULT_FILTERS, ...saved } : DEFAULT_FILTERS;
+    if (!saved || typeof saved !== 'object') return base;
+    // A tab restored from before the district facet was removed still holds
+    // `districts`; it is dropped instead of silently filtering by nothing.
+    const { districts: _removed, ...current } = saved;
+    return { ...base, ...current };
   });
+  const commuteLimitValue = Number(filters.commuteLimit);
+  const commuteActive = Boolean(filters.commuteStop) && Number.isInteger(commuteLimitValue) && commuteLimitValue >= 1 && commuteLimitValue <= COMMUTE_LIMIT_MAX;
+  const { stops: commuteStops } = useCommuteStops();
+  // The stop's row is requested only when something needs it (a limit or the
+  // commute sort), never just because a stop was remembered from another page.
+  const needsCommuteRow = (Number.isInteger(commuteLimitValue) && commuteLimitValue >= 1) || filters.sort === 'commute';
+  const { minutes: commuteMinutes, loading: commuteLoading, failed: commuteFailed } = useStopMinutes(filters.commuteStop && needsCommuteRow ? filters.commuteStop : null);
+  const commuteStop = commuteStops?.find((stop) => stop.id === filters.commuteStop) || null;
+  const parentVoice = useIsParent();
   useEffect(() => {
     try { sessionStorage.setItem('snm.search.filters', JSON.stringify(filters)); } catch { /* the page still works */ }
   }, [filters]);
@@ -503,7 +527,7 @@ function Search() {
     () => rows.some((r) => typeof r.school.match_score === 'number'),
     [rows]
   );
-  const sortOptions = SORTS.filter((s) => (s.id === 'relevance' ? hasQuery : s.id !== 'shoda' || hasMatch));
+  const sortOptions = SORTS.filter((s) => (s.id === 'relevance' ? hasQuery : s.id === 'commute' ? Boolean(filters.commuteStop) : s.id !== 'shoda' || hasMatch));
   // Without a questionnaire (or from an old saved 'match' sort) the list is
   // ordered by lowest cutoff, which is what the removed 'match' sort did anyway.
   // While a query is typed and the student hasn't picked a sort, the best
@@ -511,7 +535,7 @@ function Search() {
   const activeSort =
     hasQuery && (!filters.sortPicked || filters.sort === 'relevance')
       ? 'relevance'
-      : filters.sort === 'match' || filters.sort === 'relevance' || (!hasMatch && filters.sort === 'shoda')
+      : filters.sort === 'match' || filters.sort === 'relevance' || (!hasMatch && filters.sort === 'shoda') || (filters.sort === 'commute' && !commuteMinutes)
         ? 'cut'
         : filters.sort;
   const activeSortDef = SORTS.find((o) => o.id === activeSort) ?? SORTS[2];
@@ -567,7 +591,14 @@ function Search() {
   const criteriaFor = (row, f, ctx = queryCtx(f.query)) => {
     const out = [];
     if (f.fields.length) out.push({ k: 'fields', met: row.focus.some((x) => f.fields.includes(x)) });
-    if (f.districts.length) out.push({ k: 'districts', met: f.districts.includes(row.districtLabel) });
+    {
+      const limit = Number(f.commuteLimit);
+      // While the stop's row loads (or fails) the filter lets everything through
+      // instead of blanking the list.
+      if (f.commuteStop && Number.isInteger(limit) && limit >= 1 && limit <= COMMUTE_LIMIT_MAX) {
+        out.push({ k: 'commute', met: commuteMinutes ? withinLimit(commuteMinutes, row.id, limit) : true });
+      }
+    }
     if (f.ukonceni.length) {
       out.push({
         k: 'ukonceni',
@@ -612,6 +643,7 @@ function Search() {
     cut: (r) => r.admission?.cutoffMin,
     acceptance: (r) => r.admission?.acceptance,
     places: (r) => r.p.kapacita,
+    commute: (r) => commuteMinutes?.[r.id],
   };
   // A school with no value sorts after every school that has one, in either
   // direction; "null - 35" would otherwise put it first.
@@ -667,10 +699,6 @@ function Search() {
   };
 
   // ---- facet options ----
-  const districtFacet = useMemo(
-    () => collectFacet(rows, (row) => [row.districtLabel], compareDistricts),
-    [rows]
-  );
   const typFacet = useMemo(() => collectFacet(rows, (row) => row.p.typy, compareByCount), [rows]);
   const zrizovatelFacet = useMemo(
     () => collectFacet(rows, (row) => (row.p.zrizovatel ? [row.p.zrizovatel] : []), compareByCount),
@@ -710,13 +738,6 @@ function Search() {
     checked: filters.fields.includes(c.id),
     count: listFor({ ...filters, fields: [c.id] }).length,
   })).filter((o) => o.count > 0 || o.checked);
-
-  const districtOptions = districtFacet.map((d) => ({
-    value: d.value,
-    label: d.value,
-    count: listFor({ ...filters, districts: [d.value] }).length,
-    active: filters.districts.includes(d.value),
-  }));
 
   const ukonceniOptions = [
     { value: 'maturitni', label: 'Maturitní', count: listFor({ ...filters, ukonceni: ['maturitni'] }).length },
@@ -786,7 +807,7 @@ function Search() {
 
   const activeCriteriaCount = [
     filters.fields.length > 0,
-    filters.districts.length > 0,
+    commuteActive,
     filters.ukonceni.length > 0,
     filters.typySkoly.length > 0,
     filters.zrizovatele.length > 0,
@@ -809,9 +830,13 @@ function Search() {
     const c = FOCUS_CATEGORIES.find((x) => x.id === id);
     if (c) chips.push({ key: `f-${id}`, label: c.label, onRemove: () => toggleIn('fields', id) });
   });
-  filters.districts.forEach((d) =>
-    chips.push({ key: `d-${d}`, label: d, onRemove: () => toggleIn('districts', d) })
-  );
+  if (commuteActive) {
+    chips.push({
+      key: 'commute',
+      label: `Do ${commuteLimitValue} min MHD${commuteStop ? ` ze zastávky ${commuteStop.name}` : ''}`,
+      onRemove: () => setPatch({ commuteLimit: '' }),
+    });
+  }
   filters.ukonceni.forEach((v) =>
     chips.push({
       key: `u-${v}`,
@@ -868,7 +893,8 @@ function Search() {
       onRemove: () => setPatch({ [`${r.id}Min`]: '', [`${r.id}Max`]: '' }),
     })
   );
-  const clearAll = () => setFilters(DEFAULT_FILTERS);
+  // The chosen stop stays: it is a place, not a restriction.
+  const clearAll = () => setFilters({ ...DEFAULT_FILTERS, commuteStop: filters.commuteStop });
 
   // ---- empty-state: blame sentence + ranked relax options + near misses ----
   // Generic over every filter dimension — each one knows how to reset itself
@@ -884,11 +910,12 @@ function Search() {
       apply: () => setPatch({ query: '' }),
     },
     {
-      key: 'districts',
-      active: filters.districts.length > 0,
-      blame: `omezení na ${filters.districts.join(', ')}`,
-      label: 'Zrušit omezení na městskou část',
-      apply: () => setPatch({ districts: [] }),
+      key: 'commute',
+      active: commuteActive,
+      blame: `limit ${commuteLimitValue} minut MHD`,
+      label: 'Zrušit limit dojezdu',
+      reset: { commuteLimit: '' },
+      apply: () => setPatch({ commuteLimit: '' }),
     },
     {
       key: 'fields',
@@ -988,6 +1015,24 @@ function Search() {
     variant: i === 0 ? 'primary' : 'secondary',
     onApply: r.onApply,
   }));
+
+  // A commute limit that is the blocker gets its own, more useful way out:
+  // a slightly longer limit, with the number of schools it would give.
+  if (commuteActive && commuteMinutes) {
+    for (let candidate = Math.floor(commuteLimitValue / 5) * 5 + 5; candidate <= COMMUTE_LIMIT_MAX; candidate += 5) {
+      const gainN = listFor({ ...filters, commuteLimit: candidate }).length;
+      if (gainN > n) {
+        relaxOptions.unshift({
+          label: `Prodloužit limit na ${candidate} minut`,
+          gain: `→ ${gainN} ${skolGen(gainN)}`,
+          variant: 'primary',
+          onApply: () => setPatch({ commuteLimit: candidate }),
+        });
+        break;
+      }
+    }
+    relaxOptions.forEach((option, index) => { option.variant = index === 0 ? 'primary' : 'secondary'; });
+  }
 
   let blameSentence = 'Žádný jednotlivý filtr to sám neuvolní. Zruš celou kombinaci a začni od jednoho kritéria.';
   if (helpfulRelax.length) {
@@ -1122,6 +1167,14 @@ function Search() {
   const activeFacetCount = activeCriteriaCount - (hasQuery ? 1 : 0);
   const hasScore = hasMatch;
   useEffect(() => { if (!loading) writeHint('searchScore', hasScore); }, [loading, hasScore]);
+  const commuteProps = {
+    stops: commuteStops,
+    stop: commuteStop,
+    minutes: commuteMinutes,
+    loading: commuteLoading,
+    failed: commuteFailed,
+    parent: parentVoice,
+  };
   const filtersEl = (
     <SearchFilters
       filters={filters}
@@ -1130,7 +1183,7 @@ function Search() {
       total={total}
       ukonceniOptions={ukonceniOptions}
       typOptions={typOptions}
-      districtOptions={districtOptions}
+      commute={commuteProps}
       fieldOptions={fieldOptions}
       zrizovatelOptions={zrizovatelOptions}
       postizeniOptions={postizeniOptions}
@@ -1168,11 +1221,11 @@ function Search() {
       ),
     },
     {
-      id: 'districts',
-      label: 'Městská část',
-      activeCount: filters.districts.length,
-      onClear: () => setPatch({ districts: [] }),
-      content: <DistrictGroup districtOptions={districtOptions} toggleIn={toggleIn} />,
+      id: 'commute',
+      label: 'Dojezd MHD',
+      activeCount: commuteActive ? 1 : 0,
+      onClear: () => setPatch({ commuteLimit: '' }),
+      content: <CommuteGroup filters={filters} setPatch={setPatch} {...commuteProps} />,
     },
     {
       id: 'ukonceni',
@@ -1288,8 +1341,14 @@ function Search() {
           key={o.id}
           className={`ss-sort-option${activeSort === o.id ? ' is-active' : ''}`}
           // detail > 0 = a real click; arrow keys change the radio without closing.
+          // Apply the sort here, not via the input's onChange: closing the sheet
+          // unmounts the radio before the label's synthetic input click fires.
           onClick={(event) => {
-            if (event.detail > 0) closeSort();
+            if (event.detail > 0) {
+              event.preventDefault();
+              setPatch({ sort: o.id, sortPicked: true, sortDir: '' });
+              closeSort();
+            }
           }}
         >
           <input
@@ -1587,6 +1646,9 @@ function Search() {
               {view === 'map' && n > 0 && (
                 <SchoolMap
                   rows={sortedAll}
+                  commute={commuteActive && commuteMinutes ? { limit: commuteLimitValue, minutes: commuteMinutes, stopName: commuteStop?.name } : null}
+                  stop={commuteStop}
+                  panel={<CommuteGroup filters={filters} setPatch={setPatch} {...commuteProps} compact />}
                   selectedId={selectedMapId}
                   onSelect={handleMapSelect}
                   renderCardActions={(row) => (

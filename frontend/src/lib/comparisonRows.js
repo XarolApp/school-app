@@ -19,6 +19,7 @@ const TWO_SCHOOL_TAGS = {
   'nejvyšší': 'vyšší',
   'nejméně': 'méně',
   'nejvíc': 'víc',
+  'nejkratší': 'kratší',
 };
 
 function bestIndex(values, { lowerIsBetter = false } = {}) {
@@ -118,7 +119,30 @@ function historySection(schools) {
   return { id: 'vyvoj', title: 'Vývoj přijímaček', subtitle: `poslední ${years.length} roky`, rows: [...yearRows, trendRow] };
 }
 
-export function buildComparisonRows(schools) {
+// "Cesta MHD" from the chosen stop: the shortest ride is marked, a school over
+// 90 minutes counts as the longest, and a school the matrix has no value for
+// says "bez dat" - never a guess.
+function commuteRow(schools, commute) {
+  const values = schools.map((s) => {
+    const m = commute.minutes?.[s.id];
+    return m === undefined ? null : m == null ? 91 : m;
+  });
+  const built = row(
+    'dojezd',
+    'Cesta MHD ze zastávky',
+    values,
+    values.map((v) => (v > 90 ? 'přes 90 min' : `cca ${v} min`)),
+    bestIndex(values, { lowerIsBetter: true }),
+    'Odhad podle jízdních řádů PID v ranní špičce, včetně přestupů. Skutečná cesta se může lišit.',
+    'nejkratší',
+    schools.length
+  );
+  // The page renders the stop name as a button that opens the stop chooser.
+  return { ...built, labelStop: commute.stopName };
+}
+
+/** `commute`: { stopName, minutes } for the remembered stop, or omitted. */
+export function buildComparisonRows(schools, commute = null) {
   const summaries = schools.map((s) => summarizeCurrentYear(groupProgramsByObor(s)));
 
   const adms = schools.map((s) => summarizeAdmission(s));
@@ -163,6 +187,7 @@ export function buildComparisonRows(schools) {
     id: 'skola',
     title: 'Škola',
     rows: [
+      ...(commute?.minutes ? [commuteRow(schools, commute)] : []),
       {
         id: 'typ',
         label: 'Typ',

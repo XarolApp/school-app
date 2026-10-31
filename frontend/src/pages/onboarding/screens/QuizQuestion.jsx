@@ -4,7 +4,7 @@ import { SHARING_ENABLED, SHARING_OFF_NOTE } from '../../../config/features';
 import { createHandoff } from '../../../api';
 import { shareUrl } from '../../../lib/shareLink';
 import { ObButton, ObOption, ObScreen, SelectionCount } from '../../../components/onboarding/ObKit';
-import DistrictMap from '../../../components/onboarding/DistrictMap';
+import CommuteControl from '../../../components/CommuteControl';
 import ProfilePanel from '../../../components/onboarding/ProfilePanel';
 import { countCandidates } from '../../../lib/matching';
 import { useOnboarding } from '../useOnboarding';
@@ -106,15 +106,12 @@ function ParentHandoffNudge() {
 }
 
 function QuizQuestion({ step }) {
-  const { role, gender, answers, setAnswer, goNext, goBack, schools, cleanedAnswers } = useOnboarding();
+  const { role, gender, answers, setAnswer, goNext, goBack, schools, isDemo, cleanedAnswers } = useOnboarding();
   const parent = role === 'parent';
   const question = QUESTIONS[step.questionIndex];
   const copy = questionCopy(question, role, gender);
   const options = questionOptions(question, role);
   const value = answers[question.key];
-  // Synced both ways with the map, when this question has one — pointing at
-  // either representation highlights the other.
-  const [hoveredDistrict, setHoveredDistrict] = useState(null);
   const numberInputRef = useRef(null);
   const continueQuiz = useCallback(() => {
     if (question.type === 'number') {
@@ -173,7 +170,15 @@ function QuizQuestion({ step }) {
     return () => document.removeEventListener('keydown', onKey);
   }, [continueQuiz]);
 
-  const clear = () => setAnswer(question.key, question.type === 'multi' ? [] : '');
+  const clear = () => {
+    if (question.type === 'commute') {
+      setAnswer('commuteStop', '');
+      setAnswer('commuteLimit', '');
+      setAnswer('commuteStrict', '');
+      return;
+    }
+    setAnswer(question.key, question.type === 'multi' ? [] : '');
+  };
 
   /** The reassurance card. Rendered under the SELECTED row on single-choice
    *  questions and under the whole group on multi-selects. */
@@ -251,7 +256,32 @@ function QuizQuestion({ step }) {
       <h1 className="ob-title">{copy.title}</h1>
       {copy.hint && <p className="ob-hint">{copy.hint}</p>}
 
-      {question.type === 'number' ? (
+      {question.type === 'commute' ? (
+        <div className="ob-select-wrap">
+          {/* Demo catalogue ids are not in the timetable, so there is nothing to count. */}
+          {isDemo ? (
+            <p className="ob-hint">Dojezd teď nejde spočítat, otázku můžeš přeskočit.</p>
+          ) : (
+            <CommuteControl
+              stopId={answers.commuteStop || ''}
+              limit={Number.isInteger(Number(answers.commuteLimit)) && Number(answers.commuteLimit) >= 1 ? Number(answers.commuteLimit) : null}
+              strict={answers.commuteStrict || ''}
+              onChange={(patch) => {
+                if ('stop' in patch) setAnswer('commuteStop', patch.stop);
+                if ('limit' in patch) setAnswer('commuteLimit', patch.limit ?? '');
+                if ('strict' in patch) setAnswer('commuteStrict', patch.strict);
+              }}
+              strictOptions={question.strictOptions.map((o) => ({ value: o.value, label: optionLabel(o, role) }))}
+              strictLabel={parent ? 'Jak přísně má limit platit?' : 'Jak přísný je ten limit?'}
+              parent={parent}
+              mapSchools={schools}
+              prefillSaved={false}
+              idPrefix="ob-commute"
+            />
+          )}
+          {reassureCard}
+        </div>
+      ) : question.type === 'number' ? (
         <div className="ob-select-wrap">
           <input
             ref={numberInputRef}
@@ -289,18 +319,8 @@ function QuizQuestion({ step }) {
             <SelectionCount count={Array.isArray(value) ? value.length : 0} max={question.max} />
           )}
 
-          {question.map && (
-            <DistrictMap
-              selected={Array.isArray(value) ? value : []}
-              onToggle={toggleMulti}
-              max={question.max}
-              hovered={hoveredDistrict}
-              onHover={setHoveredDistrict}
-            />
-          )}
-
           <div
-            className={`ob-options${question.map ? ' ob-options--districts' : ''}`}
+            className="ob-options"
             role={question.type === 'multi' ? 'group' : 'radiogroup'}
             aria-label={copy.title}
           >
@@ -324,11 +344,6 @@ function QuizQuestion({ step }) {
                     onClick={() =>
                       question.type === 'multi' ? toggleMulti(o.value) : selectSingle(o.value)
                     }
-                    onHover={
-                      question.map
-                        ? (isOver) => setHoveredDistrict(isOver ? o.value : null)
-                        : undefined
-                    }
                   >
                     {optionLabel(o, role)}
                   </ObOption>
@@ -344,7 +359,11 @@ function QuizQuestion({ step }) {
         </>
       )}
 
-      {question.honesty && <p className="ob-honesty">{question.honesty}</p>}
+      {question.honesty && (
+        <p className="ob-honesty">
+          {typeof question.honesty === 'string' ? question.honesty : question.honesty[parent ? 'parent' : 'student']}
+        </p>
+      )}
     </ObScreen>
   );
 }

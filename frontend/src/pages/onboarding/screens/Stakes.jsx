@@ -40,7 +40,7 @@ const PARENT_INTENTS = [
   { value: 'porovnat', label: 'Porovnat je mezi sebou' },
   { value: 'sance', label: 'Zjistit, kam se dá dostat' },
   { value: 'obor', label: 'Ověřit volbu zaměření' },
-  { value: 'dojezd', label: 'Vyřešit dojíždění' },
+  { value: 'dojezd', label: 'Zjistit, jak dlouho se do škol jezdí MHD' },
   { value: 'terminy', label: 'Zorientovat se v termínech' },
 ];
 

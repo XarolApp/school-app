@@ -34,9 +34,9 @@ test('questionnaire validation accepts a complete answer set and rejects injecte
   assert.match(invalid.error, /Jaký typ školy/);
 });
 
-test('optional answers are omitted and select-all districts normalize to no preference', () => {
-  const districts = QUESTIONS.find((question) => question.id === 'casti').options.map((option) => option.value);
-  const result = validateAnswers({ ...completeAnswers, casti: districts, poznamka: '   ' });
+test('optional answers are omitted and the removed district question is ignored', () => {
+  assert.equal(QUESTIONS.some((question) => question.id === 'casti'), false);
+  const result = validateAnswers({ ...completeAnswers, casti: ['Praha 5'], poznamka: '   ' });
   assert.equal(result.ok, true);
   assert.equal('casti' in result.answers, false);
   assert.equal('poznamka' in result.answers, false);

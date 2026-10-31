@@ -263,8 +263,18 @@ test('decision matrix uses readable absolute and relative scales, with labels fo
   assert.deepEqual(schoolFee.map((row) => row.breakdown[0].display), ['placená', 'placená']);
 
   assert.equal(CRITERIA.find((criterion) => criterion.id === 'shoda').label, 'Shoda s tebou');
-  assert.equal(CRITERIA.some((criterion) => ['dojezd', 'typ'].includes(criterion.id)), false);
-  assert.equal(scoreByWeights(schools, { dojezd: 'zasadni', typ: 'zasadni' }).every((row) => row.breakdown.length === 0), true);
+  assert.equal(CRITERIA.some((criterion) => criterion.id === 'typ'), false);
+  assert.equal(scoreByWeights(schools, { typ: 'zasadni' }).every((row) => row.breakdown.length === 0), true);
+
+  // Dojezd MHD: shorter is better, 60+ min is zero, over 90 min is zero, no stop is unknown.
+  const commuting = [{ ...schools[0], commute_minutes: 15 }, { ...schools[1], commute_minutes: null }];
+  const commute = scoreByWeights(commuting, { dojezd: 'zasadni' });
+  assert.equal(commute[0].school.id, schools[0].id);
+  assert.equal(commute[0].breakdown[0].raw, 0.75);
+  assert.equal(commute[0].breakdown[0].display, 'cca 15 min');
+  assert.equal(commute[1].breakdown[0].raw, 0);
+  assert.equal(commute[1].breakdown[0].display, 'přes 90 min');
+  assert.equal(scoreByWeights(schools, { dojezd: 'zasadni' })[0].breakdown[0].included, false, 'no stop: excluded, not zero');
 });
 
 test('missing matrix data stays visible but excludes the criterion for every school', () => {

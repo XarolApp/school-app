@@ -37,6 +37,12 @@ BE BUILT NEXT", parts of "What's NOT Built Yet", and the "Pending" list under
 - [ ] Founder wants the URL page names renamed (current routes are in `frontend/src/App.jsx`: `/skoly`, `/porovnani`, `/prihlaska`, `/ulozene`, `/dotaznik`, `/prihlaseni`, `/registrace`, `/predplatne`, `/nastaveni`, `/onboarding/:stepId`, …). Which names, and to what, is not decided yet — ask first.
 - Before renaming: the auth components hardcode several of these in redirects (see CLAUDE.md "Routes are Czech"), and Supabase redirect URLs, Stripe success/cancel URLs, emailed links, share/parent links and the Vercel config may point at the old paths. Keep the old paths as `<Navigate replace>` redirects so existing links keep working. Touches tester-visible flows, so do not push without the founder's go-ahead.
 
+## Video B build — found 2026-10-29, open
+
+- [ ] **Waitlist page doesn't mention the 10 % discount on production yet.** The copy
+      change (commit `c98dc37`, `frontend/middleware.js`) exists only on branch
+      `claude/sharp-cray-596w4h`. Video B's CTA promises it; deploy before posting.
+
 ## After the beta: deferred Codex findings (logged 2026-10-10, founder decision)
 
 Founder chose to fix C01, C09, C14, C16 (+ follow-up), C29 and C31 before the testers
@@ -174,7 +180,7 @@ explicitly "log only":
   tab should forget them (privacy on a shared school computer).
 - **Comparison: data we do not have for any school.** Removed from `/porovnani`
   instead of showing "zatím doplňujeme":
-  - Public-transport commute (dojezd MHD). Also removed from the matrix.
+  - ~~Public-transport commute (dojezd MHD)~~ — added back 2026-10-30 as a `/porovnani` row and a matrix criterion (plan 023 data).
   - Where graduates go (VŠ placement / employment). `vs_pokracuje_pct` exists for only 4
     schools; `vs_uplatneni` is free text.
   - Club count (`pocet_krouzku` is 0 rows, unusable).

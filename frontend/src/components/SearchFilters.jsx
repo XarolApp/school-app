@@ -1,5 +1,8 @@
 import { useId, useState } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { Bus, ChevronDown } from 'lucide-react';
+import { COMMUTE_LIMIT_MAX, COMMUTE_LIMIT_MIN, NO_LIMIT, limitFromSlider, saveStop } from '../lib/commute';
+import StopPicker from './StopPicker';
+import CommuteLimitControl from './CommuteLimitControl';
 import { normalize } from '../lib/schoolSearch';
 import { kkovGroupName } from '../lib/kkovGroups';
 import StatInfo from './StatInfo';
@@ -178,20 +181,58 @@ export function FieldGroup({ fieldOptions, toggleIn }) {
   ));
 }
 
-export function DistrictGroup({ districtOptions, toggleIn }) {
+/**
+ * Replaces the old district facet: pick a stop, drag the minute limit, and the
+ * list keeps schools reachable within it. The count under the slider counts the
+ * whole catalogue, so it equals the number shown in the questionnaire.
+ */
+export function CommuteGroup({ filters, setPatch, stops, stop, minutes, loading, failed, parent, compact = false }) {
+  const [editing, setEditing] = useState(false);
+  if (stops === null) {
+    return <p className="ss-caption ss-facet-note">Dojezd MHD se právě načítá nebo teď není dostupný.</p>;
+  }
+  const hasStop = Boolean(stop) && !editing;
+  const limit = Number(filters.commuteLimit);
+  const sliderValue = Number.isInteger(limit) && limit >= COMMUTE_LIMIT_MIN && limit <= COMMUTE_LIMIT_MAX ? limit : NO_LIMIT;
+
   return (
-    <div className="ss-chip-group">
-      {districtOptions.map((district) => (
-        <button
-          key={district.value}
-          type="button"
-          className={`ss-district-toggle${district.active ? ' is-active' : ''}`}
-          aria-pressed={district.active}
-          onClick={() => toggleIn('districts', district.value)}
-        >
-          {district.label} <span>{district.count}</span>
-        </button>
-      ))}
+    <div className="cq-block">
+      {hasStop ? (
+        <div className="cq-stop">
+          <Bus size={18} aria-hidden="true" />
+          <div className="cq-stop-main">
+            <span className="cq-stop-name">{stop.name}</span>
+          </div>
+          <button type="button" className="cq-link" onClick={() => setEditing(true)}>Změnit</button>
+        </div>
+      ) : (
+        <StopPicker
+          stops={stops}
+          parent={parent}
+          idPrefix="search-commute"
+          initialQuery={stop?.name || ''}
+          onChoose={(picked) => {
+            saveStop(picked.id);
+            setEditing(false);
+            setPatch({ commuteStop: picked.id });
+          }}
+        />
+      )}
+      {hasStop && (
+        <CommuteLimitControl
+          idPrefix="search-commute"
+          value={sliderValue}
+          onChange={(position) => setPatch({ commuteLimit: limitFromSlider(position) ?? '' })}
+          minutes={minutes}
+          loading={loading}
+          failed={failed}
+          parent={parent}
+        />
+      )}
+      {hasStop && filters.commuteLimit !== '' && (
+        <button type="button" className="ss-link-btn" onClick={() => setPatch({ commuteLimit: '' })}>Zrušit limit</button>
+      )}
+      {!compact && <p className="ss-caption ss-facet-note">Cca, ranní špička podle jízdních řádů PID (náš výpočet, CC BY 4.0). Zastávka zůstane jen v tomto zařízení.</p>}
     </div>
   );
 }
@@ -401,7 +442,7 @@ function SearchFilters({
   total,
   ukonceniOptions,
   typOptions,
-  districtOptions,
+  commute,
   fieldOptions,
   zrizovatelOptions,
   postizeniOptions,
@@ -433,8 +474,8 @@ function SearchFilters({
 
       <hr className="ss-divider" />
 
-      <FacetSection title="Městská část" activeCount={filters.districts.length}>
-        <DistrictGroup districtOptions={districtOptions} toggleIn={toggleIn} />
+      <FacetSection title="Dojezd MHD" activeCount={Number(filters.commuteLimit) > 0 && filters.commuteStop ? 1 : 0}>
+        <CommuteGroup filters={filters} setPatch={setPatch} {...commute} />
       </FacetSection>
 
       <hr className="ss-divider" />

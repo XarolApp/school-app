@@ -21,7 +21,8 @@ import {
 import ConfirmDialog from '../components/ConfirmDialog';
 import { shareUrl } from '../lib/shareLink';
 import { ROLE_KEY } from '../lib/onboardingStorage';
-import DistrictMap from '../components/onboarding/DistrictMap';
+import CommuteQuestion from '../components/CommuteQuestion';
+import { useCommuteStops } from '../lib/useCommute';
 import './questionnaire.css';
 import { SkeletonPage, Sk, SkLines } from '../components/PageSkeleton';
 import { readHint, writeHint } from '../lib/skeletonHints';
@@ -99,7 +100,10 @@ function QuestionnaireLoading({ step, reduced }) {
 
 // Mirrors the server's conditional-question rules in lib/questionnaire.js.
 function questionApplies(question, answers) {
-  return !question.showIf || answers[question.showIf.field] === question.showIf.equals;
+  if (!question.showIf) return true;
+  const value = answers[question.showIf.field];
+  if (question.showIf.present) return value != null && value !== '';
+  return value === question.showIf.equals;
 }
 
 function formatDate(iso) {
@@ -111,23 +115,31 @@ function runName(run) {
   return run.label || `Sada z ${formatDate(run.created_at)}`;
 }
 
-function answeredCount(answers) {
-  return Object.values(answers || {}).filter((v) => (Array.isArray(v) ? v.length : v != null && v !== '')).length;
+// Counts only questions that are still asked: a saved run may carry answers to
+// removed ones (the old district question), which are ignored everywhere.
+function answeredCount(answers, questions) {
+  const asked = new Set(questions.map((q) => q.id));
+  return Object.entries(answers || {}).filter(
+    ([id, v]) => asked.has(id) && (Array.isArray(v) ? v.length : v != null && v !== '')
+  ).length;
 }
 
 // One answer as readable text: option labels for choices, the raw value otherwise.
-function answerText(question, value) {
+function answerText(question, value, stops) {
   if (value == null || value === '' || (Array.isArray(value) && !value.length)) return null;
+  if (question.type === 'stop') return stops?.find((stop) => stop.id === value)?.name ?? 'Vybraná zastávka';
+  if (question.id === 'dojezd_limit') return `${value} min`;
   const label = (v) => question.options?.find((o) => o.value === v)?.label ?? String(v);
   return Array.isArray(value) ? value.map(label).join(', ') : label(value);
 }
 
 function RunAnswers({ run, questions }) {
   const answers = run.answers || {};
+  const { stops } = useCommuteStops();
   return (
     <dl className="qz-run-answers">
       {questions.filter((q) => questionApplies(q, answers)).map((q) => {
-        const text = answerText(q, answers[q.id]);
+        const text = answerText(q, answers[q.id], stops);
         return (
           <div key={q.id} className="qz-run-answer">
             <dt>{q.label}</dt>
@@ -139,9 +151,9 @@ function RunAnswers({ run, questions }) {
   );
 }
 
-function runMeta(run, total) {
+function runMeta(run, total, questions) {
   const origin = run.source === 'onboarding' ? ' · z úvodu do aplikace' : '';
-  return `${formatDate(run.created_at)}${origin} · ${answeredCount(run.answers)} z ${total} odpovědí`;
+  return `${formatDate(run.created_at)}${origin} · ${answeredCount(run.answers, questions)} z ${total} odpovědí`;
 }
 
 // Skeleton: mirrors the three views below (results / empty / form) in the
@@ -213,6 +225,7 @@ function MatchRow({ match, rank, compact, runId, extraReason = '', pending = fal
   const location = useLocation();
   const school = match.school;
   const signals = Array.isArray(match.signals) ? match.signals : [];
+  const notes = Array.isArray(match.notes) ? match.notes : [];
   // Rows the automatic fill could not reach (AI down, or the page was left)
   // keep a manual button; the server caches the result, so it costs once.
   const [generated, setGenerated] = useState('');
@@ -258,6 +271,7 @@ function MatchRow({ match, rank, compact, runId, extraReason = '', pending = fal
         {!compact && !reason && !pending && !queued && !explaining && (
           <div className="qz-why">
             {signals.length > 0 && <p className="qz-reason qz-reason-quiet">Shoda podle: {signals.join(' · ')}</p>}
+            {notes.length > 0 && <p className="qz-reason qz-reason-quiet">Poznámka: {notes.join(' · ')}</p>}
             <button type="button" className="ss-btn ss-btn-secondary ss-btn-sm qz-why-button" onClick={explain}>
               Získat vysvětlení
             </button>
@@ -512,7 +526,7 @@ function RunRow({ run, questions, isCurrent, total, busy, onSetDefault, onArchiv
               }}
             />
             <div className="ss-caption qz-muted">
-              {runMeta(run, total)} · zbývá {LABEL_MAX - draft.length} znaků
+              {runMeta(run, total, questions)} · zbývá {LABEL_MAX - draft.length} znaků
             </div>
           </>
         ) : (
@@ -522,7 +536,7 @@ function RunRow({ run, questions, isCurrent, total, busy, onSetDefault, onArchiv
               {isCurrent && <span className="qz-badge">Výchozí</span>}
               {archived && <span className="qz-badge qz-badge-quiet">Archivováno</span>}
             </div>
-            <div className="ss-caption qz-muted">{runMeta(run, total)}</div>
+            <div className="ss-caption qz-muted">{runMeta(run, total, questions)}</div>
           </>
         )}
       </div>
@@ -846,6 +860,7 @@ function Questionnaire() {
   }
 
   const { questions, active, runs } = state.data;
+  const commuteQuestions = Object.fromEntries(questions.filter((q) => q.id.startsWith('dojezd_')).map((q) => [q.id, q]));
 
   return (
     <div className={`qz-page${view === 'form' ? ' qz-page-narrow' : ''}`}>
@@ -926,7 +941,8 @@ function Questionnaire() {
 
           <form className="qz-form" onSubmit={handleSubmit}>
             {questions
-              .filter((q) => questionApplies(q, answers))
+              // The limit and strictness are drawn inside the stop question's block.
+              .filter((q) => questionApplies(q, answers) && q.id !== 'dojezd_limit' && q.id !== 'dojezd_prisnost')
               .map((q, i, list) => (
                 <div className="field qz-question" key={q.id} data-private={q.privateToServer ? '' : undefined}>
                   {q.section && q.section !== list[i - 1]?.section && (
@@ -937,6 +953,15 @@ function Questionnaire() {
                     {q.optional && <span className="qz-optional"> (nepovinné)</span>}
                   </div>
                   {q.hint && <p className="field-hint">{q.hint}</p>}
+
+                  {q.type === 'stop' && (
+                    <CommuteQuestion
+                      answers={answers}
+                      setAnswers={setAnswers}
+                      questions={commuteQuestions}
+                      track={(key, skipped = false) => { lastKey.current = key; track('q_answer', { key, skipped }); }}
+                    />
+                  )}
 
                   {q.type === 'text' && (
                     <textarea
@@ -979,13 +1004,6 @@ function Questionnaire() {
 
                   {q.type === 'multi' && (
                     <>
-                      {q.map === 'praha-obvody' && (
-                        <DistrictMap
-                          selected={(answers[q.id] || []).map((value) => value.replace(/^Praha\s+/, ''))}
-                          max={q.max}
-                          onToggle={(district) => toggleMulti(q.id, `Praha ${district}`, q.max)}
-                        />
-                      )}
                       <div className="qz-options" role="group" aria-labelledby={`qz-label-${q.id}`}>
                         {q.options.map((opt) => {
                           const selected = Array.isArray(answers[q.id]) && answers[q.id].includes(opt.value);

@@ -55,7 +55,8 @@ export function Privacy() {
           <strong>Odpovědi v dotazníku a výsledky:</strong> co odpovíš v úvodním a samostatném
           dotazníku, včetně volné poznámky, a jaké školy ti vyšly. Účel: doporučit ti školy a ukázat
           je znovu. Základ: plnění smlouvy. Před vytvořením účtu zůstávají odpovědi jen v tvém
-          prohlížeči.
+          prohlížeči. Pokud v dotazníku zvolíš zastávku MHD, uložíme k odpovědím jen její označení
+          (ne tvoji adresu ani polohu, ty zůstanou v zařízení) a nejdelší přijatelnou dobu cesty.
         </li>
         <li>
           <strong>Údaj o zdravotním postižení (nepovinný):</strong> pokud v dotazníku uvedeš, že
@@ -75,8 +76,12 @@ export function Privacy() {
         </li>
         <li>
           <strong>Odhad cesty MHD (nepovinně):</strong> když zadáš zastávku nebo povolíš polohu,
-          nejbližší zastávku určíme přímo v prohlížeči. Souřadnice neodesíláme na náš server;
-          vybranou zastávku ukládáme jen v tomto prohlížeči. Odhad počítáme z jízdních řádů
+          nejbližší zastávku určíme přímo v prohlížeči. Souřadnice ani adresu neodesíláme na náš
+          server. Vybraná zastávka je v tomto prohlížeči a k účtu se uloží jen s dokončeným
+          dotazníkem (viz výše). Jakmile nastavíš limit dojezdu, prohlížeč si pro vybranou zastávku
+          vyžádá časy cest, a označení zastávky (nikdy adresa ani poloha) tak projde technickými
+          přístupovými záznamy našich poskytovatelů hostingu (Vercel, Railway), které uchovávají
+          podle své standardní lhůty. Odhad počítáme z jízdních řádů
           <a href="https://pid.cz/o-systemu/opendata/" target="_blank" rel="noopener noreferrer"> PID</a>
           {' '}pod licencí{' '}
           <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.
@@ -124,7 +129,7 @@ export function Privacy() {
         </li>
         <li>Cloudflare — ochrana formulářů proti robotům (Turnstile); zpracovává technické údaje spojení.</li>
         <li>Vercel a Railway — provoz webu a serveru.</li>
-        <li>OpenStreetMap (OpenStreetMap Foundation) — podkladové mapy a vyhledání adresy na mapě škol. Při zobrazení mapy vidí poskytovatel tvou IP adresu a při hledání i text adresy, který zadáš.</li>
+        <li>OpenStreetMap (OpenStreetMap Foundation) — podkladové mapy. Při zobrazení mapy vidí poskytovatel tvou IP adresu.</li>
         <li>Brevo (Sendinblue SAS, Francie) — odesílání e-mailů (potvrzení registrace, obnova hesla). Sídlo v EU.</li>
       </ul>
       <p>

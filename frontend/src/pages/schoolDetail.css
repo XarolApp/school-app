@@ -649,6 +649,11 @@
   padding: var(--space-lg);
   background: var(--surface);
 }
+.sd-hero-main > .sd-commute {
+  /* Fills the space beside the taller action card instead of leaving it blank. */
+  flex: 1;
+  align-content: start;
+}
 .sd-commute-heading {
   display: flex;
   align-items: center;
@@ -662,74 +667,6 @@
   font-size: var(--fs-headline-sm);
   line-height: var(--lh-headline-sm);
   font-weight: var(--fw-headline-sm);
-}
-.sd-commute-picker {
-  display: grid;
-  gap: var(--space-sm);
-  position: relative;
-  min-width: 0;
-}
-.sd-commute-picker label {
-  color: var(--ink2);
-  font-size: var(--fs-body-sm);
-  font-weight: 600;
-}
-.sd-commute-picker input {
-  width: 100%;
-  min-width: 0;
-  border: 1px solid var(--line2);
-  border-radius: var(--r-input);
-  padding: var(--space-sm) var(--space-md);
-  background: var(--bg);
-  color: var(--ink);
-  font: inherit;
-}
-.sd-commute-picker input:focus-visible {
-  outline: 2px solid var(--acc);
-  outline-offset: 2px;
-}
-.sd-commute-options {
-  position: absolute;
-  z-index: 20;
-  top: calc(2.3em + var(--space-sm) * 3 + 1.4em);
-  right: 0;
-  left: 0;
-  max-height: 240px;
-  overflow-y: auto;
-  border: 1px solid var(--line2);
-  border-radius: var(--r-input);
-  background: var(--surface);
-}
-.sd-commute-options [role="option"] {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--space-sm);
-  padding: var(--space-sm) var(--space-md);
-  color: var(--ink);
-  cursor: pointer;
-}
-.sd-commute-options [role="option"]:hover,
-.sd-commute-options [role="option"].is-active {
-  background: var(--acc-soft);
-}
-.sd-commute-options small {
-  flex: none;
-  color: var(--ink3);
-  font-size: var(--fs-caption);
-}
-.sd-commute-locate {
-  width: 100%;
-  justify-content: center;
-  gap: var(--space-sm);
-}
-.sd-commute-hint,
-.sd-commute-location,
-.sd-commute-walk,
-.sd-commute-attribution {
-  margin: 0;
-  color: var(--ink3);
-  font-size: var(--fs-caption);
-  line-height: var(--lh-caption);
 }
 .sd-commute-result {
   display: grid;

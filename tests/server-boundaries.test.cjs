@@ -167,7 +167,7 @@ function harness({
   // Leave all functions/routes intact, but stop before process startup.
   const module = { exports: {} };
   vm.runInNewContext(source.slice(0, source.lastIndexOf('\nif (stripe)')) +
-    '\nmodule.exports = { handleStripeWebhook, slimProgramsForList, chargeDueSeasonPasses, paidAccessActive, betaProgramState, betaAccessState, hasPaidStatus, requireAccess, hasLivePlan, accessStateFor, createCheckoutForUser, cancelPlanForUser, withdrawPlanForUser, restorePlanForUser, settleReferrals, recordReferral, trialEligible, withdrawalQuote, saveOnboardingRun };', {
+    '\nmodule.exports = { seasonEndsAt, handleStripeWebhook, slimProgramsForList, chargeDueSeasonPasses, paidAccessActive, betaProgramState, betaAccessState, hasPaidStatus, requireAccess, hasLivePlan, accessStateFor, createCheckoutForUser, cancelPlanForUser, withdrawPlanForUser, restorePlanForUser, settleReferrals, recordReferral, trialEligible, withdrawalQuote, saveOnboardingRun, withCommute };', {
     module, Date, Buffer, URL, setTimeout, clearTimeout, __dirname: join(__dirname, '..'),
     console: { log() {}, warn(...args) {
       const message = args.join(' ');
@@ -2542,4 +2542,74 @@ test('a withdrawal stores its pro-rata refund amount in the same write that make
   assert.ok(Number.isInteger(patch.refund_amount_minor), 'refund_amount_minor must be written with refund_status=pending');
   assert.equal(patch.refund_amount_minor, h.refundCalls[0].params.amount);
   assert.ok(patch.refund_amount_minor < 51200);
+});
+
+const stopRowMatrix = {
+  feedDate: '2026-10-18',
+  stops: [
+    { id: 'pid-1-a', name: 'A', lat: 50.07, lon: 14.4 },
+    { id: 'pid-2-b', name: 'B', lat: 50.08, lon: 14.5 },
+  ],
+  // 12 visible, 13 hidden after the matrix was built, 14 has a short column.
+  schools: { 12: [24, null], 13: [10, 11], 14: [5] },
+};
+
+test('stop row endpoint returns minutes to visible schools only', async () => {
+  const h = harness({
+    commuteMatrix: stopRowMatrix,
+    commuteMatrixPresent: true,
+    result: (query) => (query.table === 'schools' ? { data: [{ id: 12 }, { id: 14 }], error: null } : { data: null, error: null }),
+  });
+  const a = await h.call('get', '/api/commute/stops/:stopId/schools', { params: { stopId: 'pid-1-a' } });
+  assert.equal(a.statusCode, 200);
+  assert.equal(JSON.stringify(a.body), JSON.stringify({ feedDate: '2026-10-18', stopId: 'pid-1-a', minutes: { 12: 24, 14: 5 } }));
+  const b = await h.call('get', '/api/commute/stops/:stopId/schools', { params: { stopId: 'pid-2-b' } });
+  // null = over 90 minutes (kept, known far); a column too short for this stop reads as null too.
+  assert.equal(JSON.stringify(b.body.minutes), JSON.stringify({ 12: null, 14: null }));
+});
+
+test('stop row endpoint answers 404 for an unknown stop and 503 without the matrix', async () => {
+  const h = harness({ commuteMatrix: stopRowMatrix, commuteMatrixPresent: true });
+  assert.equal((await h.call('get', '/api/commute/stops/:stopId/schools', { params: { stopId: 'pid-nope' } })).statusCode, 404);
+  assert.equal(h.queries.length, 0);
+
+  const missing = harness();
+  assert.equal((await missing.call('get', '/api/commute/stops/:stopId/schools', { params: { stopId: 'pid-1-a' } })).statusCode, 503);
+  assert.equal(missing.queries.length, 0);
+});
+
+test('stop row endpoint is public like the other commute reads (optionalAuth, not requireAuth)', () => {
+  const h = harness({ commuteMatrix: stopRowMatrix, commuteMatrixPresent: true });
+  const chain = h.routeChains.get('get /api/commute/stops/:stopId/schools');
+  assert.equal(chain.length, 2);
+  assert.equal(chain[0].name, h.routeChains.get('get /api/schools/:id/commute')[0].name);
+});
+
+test('withCommute attaches the stop column without mutating the shared catalogue', () => {
+  const h = harness({ commuteMatrix: stopRowMatrix, commuteMatrixPresent: true });
+  const catalogue = [{ id: 12 }, { id: 14 }, { id: 99 }];
+  const withStop = h.withCommute(catalogue, 'pid-2-b');
+  assert.equal(withStop[0].commute_minutes, null); // matrix null: over 90 minutes, known far
+  assert.equal(withStop[1].commute_minutes, null); // short column: no data for this stop
+  assert.equal(withStop[2].commute_minutes, undefined); // no column at all: unknown
+  assert.equal('commute_minutes' in catalogue[0], false);
+  assert.equal(h.withCommute(catalogue, 'pid-1-a')[0].commute_minutes, 24);
+  // Unknown stop, no stop, or a bad value: untouched.
+  for (const stop of ['pid-nope', undefined, null, 42]) assert.equal(h.withCommute(catalogue, stop), catalogue);
+  assert.equal(harness().withCommute(catalogue, 'pid-1-a'), catalogue);
+});
+
+test('a stop in the answers moves match scores; no stop or no matrix leaves them identical', () => {
+  const { scoreSchools } = require('../lib/matching');
+  const schools = [{ id: 12, name: 'Blízká', programs: 'Gymnázium', school_programs: [] }, { id: 14, name: 'Daleká', programs: 'Gymnázium', school_programs: [] }];
+  const matrix = { ...stopRowMatrix, schools: { 12: [10], 14: [70] } };
+  const withMatrix = harness({ commuteMatrix: matrix, commuteMatrixPresent: true });
+  const answers = { typ: 'gymnazium', dojezd_zastavka: 'pid-1-a', dojezd_limit: 20, dojezd_prisnost: 'nutne' };
+  const scored = (h, a) => Object.fromEntries(scoreSchools(a, h.withCommute(schools, a.dojezd_zastavka)).map((m) => [m.school_id, m.score]));
+  const withStop = scored(withMatrix, answers);
+  assert.ok(withStop[12] > withStop[14]);
+  const plain = scored(withMatrix, { typ: 'gymnazium' });
+  assert.equal(plain[12], plain[14]);
+  // Matrix unavailable (503 mode): same as not having answered.
+  assert.deepEqual(scored(harness(), answers), plain);
 });
