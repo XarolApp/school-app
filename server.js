@@ -3953,7 +3953,8 @@ async function createTrackedCheckout({
       mode: 'setup',
       currency: 'czk',
       ...common,
-      ...(email === undefined ? { customer_creation: 'always' } : {}),
+      // Without a customer the saved card is single-use: no day-3 charge, no one-click rebuy.
+      ...(billingCustomer.customer ? {} : { customer_creation: 'always' }),
       expires_at: expiresAt,
       custom_text: {
         submit: {

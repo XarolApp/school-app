@@ -167,7 +167,7 @@ function harness({
   // Leave all functions/routes intact, but stop before process startup.
   const module = { exports: {} };
   vm.runInNewContext(source.slice(0, source.lastIndexOf('\nif (stripe)')) +
-    '\nmodule.exports = { seasonEndsAt, handleStripeWebhook, slimProgramsForList, chargeDueSeasonPasses, paidAccessActive, betaProgramState, betaAccessState, hasPaidStatus, requireAccess, hasLivePlan, accessStateFor, createCheckoutForUser, cancelPlanForUser, withdrawPlanForUser, restorePlanForUser, settleReferrals, recordReferral, trialEligible, withdrawalQuote, saveOnboardingRun, withCommute };', {
+    '\nmodule.exports = { handleStripeWebhook, slimProgramsForList, chargeDueSeasonPasses, paidAccessActive, betaProgramState, betaAccessState, hasPaidStatus, requireAccess, hasLivePlan, accessStateFor, createCheckoutForUser, cancelPlanForUser, withdrawPlanForUser, restorePlanForUser, settleReferrals, recordReferral, trialEligible, withdrawalQuote, saveOnboardingRun, withCommute };', {
     module, Date, Buffer, URL, setTimeout, clearTimeout, __dirname: join(__dirname, '..'),
     console: { log() {}, warn(...args) {
       const message = args.join(' ');
@@ -2091,6 +2091,19 @@ test('a second season checkout pays at once, and only after the person was told 
   assert.equal(session.payment_intent_data.setup_future_usage, 'on_session');
   assert.equal(session.payment_intent_data.metadata.purchase_id, 'purchase-025');
   assert.ok(session.expires_at > Date.now() / 1000 && session.expires_at <= Date.now() / 1000 + 3601);
+});
+
+test('a trial checkout creates a Stripe customer, so the saved card can be charged later', async (t) => {
+  freeze(t);
+  const h = harness({ result: (query) => {
+    if (query.table === 'users') return { data: { subscription_status: 'expired', stripe_customer_id: null, season_trial_used_at: null }, error: null };
+    if (query.table === 'purchases' && hasCall(query, 'insert')) return { data: purchaseRow({ trial: true }), error: null };
+    return { data: null, error: null };
+  } });
+  const ok = await h.createCheckoutForUser({ ...checkoutArgs, planId: 'season' });
+  assert.equal(ok.status, 200);
+  assert.equal(h.checkoutCalls[0].mode, 'setup');
+  assert.equal(h.checkoutCalls[0].customer_creation, 'always');
 });
 
 test('a card that already had a trial gets no charge schedule and no access until the person confirms', async (t) => {
