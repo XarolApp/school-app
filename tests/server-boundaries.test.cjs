@@ -2352,6 +2352,11 @@ test('the last monthly period is credited in full when it starts after the deadl
   // A renewal on 22 Feb 10:00 would keep only ~14 hours of a 28-day period: under 15 Kč, so nothing is charged.
   const tiny = await run(24900, '2027-02-22T10:00:00+01:00', '2027-03-22T10:00:00+01:00');
   assert.equal(tiny[0].params.amount, -24900);
+  // Stripe itself cuts a 22 Feb renewal at cancel_at: a 5 Kč sliver (period ends at the deadline) is credited too.
+  const sliver = await run(500, '2027-02-22T10:00:00+01:00', '2027-02-22T23:59:59+01:00');
+  assert.equal(sliver[0].params.amount, -500);
+  // ... but the already-cut 18 Feb period (40 Kč) is left alone.
+  assert.equal((await run(4000, '2027-02-18T10:00:00+01:00', '2027-02-22T23:59:59+01:00')).length, 0);
   // A sensible remainder (18 Feb renewal) is credited only for the days after the deadline.
   const partial = await run(24900, '2027-02-18T10:00:00+01:00', '2027-03-18T10:00:00+01:00');
   const expected = Math.round(24900 * (stamp('2027-03-18T10:00:00+01:00') * 1000 - season.DEADLINE.getTime()) / ((stamp('2027-03-18T10:00:00+01:00') - stamp('2027-02-18T10:00:00+01:00')) * 1000));

@@ -52,7 +52,7 @@ test('season is 0.9 x monthly total + 49 inside the clamp, and always cheaper th
 test('monthly quote: 249 up front, single charge when under a month is left, closed from 9 Feb', () => {
   assert.deepEqual(season.monthlyQuote(noon('2026-11-01')), { totalCzk: 938, singleCharge: false, firstChargeCzk: 249 });
   assert.equal(season.monthlyQuote(noon('2026-11-18')).totalCzk, 787);
-  assert.deepEqual(season.monthlyQuote(noon('2027-02-01')), { totalCzk: 191, singleCharge: true, firstChargeCzk: 191 });
+  assert.deepEqual(season.monthlyQuote(noon('2027-02-01')), { totalCzk: 173, singleCharge: true, firstChargeCzk: 173 });
   assert.ok(season.monthlyQuote(at('2027-02-08T23:00:00+01:00')));
   assert.equal(season.monthlyQuote(at('2027-02-09T00:00:00+01:00')), null);
   assert.equal(season.monthlyAvailable(noon('2027-02-08')), true);

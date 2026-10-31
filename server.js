@@ -5099,8 +5099,10 @@ async function creditLastMonthlyPeriod(invoice) {
   const line = invoice.lines?.data?.[0];
   const start = line?.period?.start;
   const end = line?.period?.end;
-  if (!line?.amount || !start || !end || end * 1000 <= DEADLINE.getTime()) return;
+  if (!line?.amount || !start || !end) return;
   const minimum = season.MIN_CHARGE_CZK * 100;
+  // Stripe already cut the period at cancel_at; only a sliver under the minimum is still credited (a 22 Feb renewal).
+  if (end * 1000 <= DEADLINE.getTime() && line.amount >= minimum) return;
   // Stripe already prorated it to a sensible amount.
   if (start * 1000 < DEADLINE.getTime() && line.amount < MONTHLY_PRICE * 100 && line.amount >= minimum) return;
   const subscriptionId = invoice.subscription || invoice.parent?.subscription_details?.subscription || null;
